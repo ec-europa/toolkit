@@ -1,0 +1,29 @@
+{
+    "require": {
+        "cweagans/composer-patches": "dev-checkpatched",
+        "letudiant/composer-shared-package-plugin": "dev-develop as dev-master"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/verbruggenalex/composer-patches.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/verbruggenalex/composer-shared-package-plugin.git"
+        }
+    ],
+    "extra": {
+        "shared-package": {
+            "install-binaries": true,
+            "package-exclude-list": [
+                "cweagans/composer-patches",
+                "ec-europa/subsite-starterkit",
+                "phing/phing"
+            ],
+            "symlink-dir": "vendor",
+            "vendor-dir": "/usr/share/composer"
+        }
+    }
+}
+

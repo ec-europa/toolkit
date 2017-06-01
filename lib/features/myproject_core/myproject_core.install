@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * @file
+ * Install file that takes care of project installation and updates.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * This hook effectively is an aggregation of the full installation process. Whenever
+ * an update is delivered you will add needed code to this hook as well. It is not
+ * allowed to directly call the hook_update_N() functions to build your project. The
+ * hook needs to represent an easily readable installation process.
+ */
+function myproject_core_install() {
+
+  // Enable your project active themes and set the default theme.
+  $themes = array(
+    'example_theme',
+  );
+  theme_enable($themes);
+  variable_set('theme_default', $themes[0]);
+
+  // List of modules the project needs to enable on install. By using the core
+  // feature architecture new projects will most likely define one single feature or
+  // module in the build.properties file for the subsite.install.modules property.
+  $modules = array(
+    'example_module',
+  );
+  module_enable($modules);
+}
+
+/**
+ * Enable newly delivered module.
+ */
+function myproject_core_update_7001() {
+
+  // If a new module is delivered it needs to be enabled by a hook_update_N(). The
+  // module also needs to be added to the array of modules to enable in the
+  // hook_install of the core feature.
+  $modules = array(
+    'example_module',
+  );
+  module_enable($modules);
+}
+

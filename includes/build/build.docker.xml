@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="My subsite" default="help">
+
+    <target name="start-container" description="Start docker container">
+        <echo msg='Starting container for "${docker.container.id}".' />
+        <exec command="\
+            BUILD_ID_UNIQUE=${project.id}_${docker.container.id} \
+            WORKSPACE=${docker.container.workspace} \
+            docker-compose -f vendor/ec-europa/subsite-starterkit/resources/docker/docker-compose.yml \
+            -v ${docker.container.workspace}:/${docker.container.workspace} up -d"
+        />
+    </target>
+
+    <target name="stop-container" description="Stop docker container">
+        <echo msg='Stopping container for "${docker.container.id}".' />
+        <exec command="\
+            BUILD_ID_UNIQUE=${project.id}_${docker.container.id} \
+            WORKSPACE=${docker.container.workspace} \
+            docker-compose -f resources/docker/docker-compose.yml down"
+        />
+    </target>
+
+    <target name="start-container-old" description="Start docker container">
+        <echo msg='Starting container "${docker.container.name}".' />
+        <exec command="docker run --name ${docker.container.name} -p 127.0.0.1:80:80 -v ${jenkins.workspace.dir}:/web -v${jenkins.cache.dir}:${jenkins.cache.dir} -w /web -d dev-server:latest" />
+        <exec command="docker start ${docker.container.name}" />
+        <!--<exec command="docker exec ${docker.container.name} while ! echo Ready for install. | nc ${drupal.db.host} ${drupal.db.port}; do echo Waiting for mysql...; sleep 2; done" /> -->
+        <exec command="sleep 15" />
+    </target>
+
+    <target name="stop-container-old" description="Drop database, stop and remove container">
+        <echo msg='Stopping container "${docker.container.name}".' />
+        <exec command="docker exec ${docker.container.name} ./bin/phing drush-sql-drop" />
+        <exec command="docker stop ${docker.container.name}; docker rm $(docker ps -aq)" />
+    </target>
+
+</project>

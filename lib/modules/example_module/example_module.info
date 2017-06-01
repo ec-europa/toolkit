@@ -1,0 +1,3 @@
+name = Example module
+description = An example module
+core = 7.x

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="My Subsite" default="help">
+
+    <!-- Install the subsite. -->
+    <target name="install" description="Install the subsite.">
+        <!--
+            Ensure the settings folder is writable so the installer can create
+            the settings.php file.
+         -->
+        <chmod mode="0775" failonerror="false" verbose="false" quiet="true">
+            <fileset dir="${platform.build.settings.dir}" />
+        </chmod>
+
+        <if>
+            <and>
+                <equals arg1="${platform.package.database}" arg2="1" />
+                <available file="${platform.package.cachedir}/databases/platform-dev-${platform.package.reference}.sql" type="file" />
+            </and>
+            <then>
+                <phingcall target="drush-sql-create" />
+                <phingcall target="drush-regenerate-settings" />
+                <phingcall target="drush-sql-import">
+                    <property name="database-file" value="${platform.package.cachedir}/databases/platform-dev-${platform.package.reference}.sql" />
+                </phingcall>
+            </then>
+            <else>
+                <!-- Install site with drush. -->
+                <phingcall target="drush-site-install" />
+                <!-- Backup vanilla database. -->
+                <if>
+                    <equals arg1="${platform.package.database}" arg2="1" />
+                    <then>
+                        <phingcall target="drush-sql-dump">
+                            <property name="database-file" value="${platform.package.cachedir}/databases/platform-dev-${platform.package.reference}.sql" />
+                        </phingcall>
+                    </then>
+                </if>
+            </else>
+        </if>
+
+        <!-- Enable solr if needed. -->
+        <phingcall target="drush-enable-solr" />
+
+        <!--
+            Subsites are not allowed to use their own installation profile for
+            historical reasons. The functionality is contained in one of more
+            features and modules which need to be enabled after installation.
+        -->
+        <phingcall target="enable-install-modules" />
+
+        <!-- Rebuild node access after Subsites modules activation -->
+        <phingcall target="rebuild-node-access" />
+    </target>
+
+    <!-- Enable required modules after installation of the profile. -->
+    <target name="enable-install-modules">
+        <phingcall target="drush-enable-modules">
+            <property name="drupal.modules" value="${subsite.install.modules}" />
+        </phingcall>
+    </target>
+
+    <!-- Enable development modules. -->
+    <target name="enable-development-modules">
+        <phingcall target="drush-enable-modules">
+            <property name="drupal.modules" value="${development.modules.enable}" />
+        </phingcall>
+    </target>
+
+    <!-- Set up PHP CodeSniffer. -->
+    <target name="setup-php-codesniffer" description="Generate the configuration file for PHP CodeSniffer.">
+        <if>
+            <available file="${phpcs.config}" type="file" property="phpcs.config.available" />
+            <then>
+                <echo message="Deleting existing PHP Codesniffer default configuration file." />
+                <delete file="${phpcs.config}" failonerror="false" />
+            </then>
+        </if>
+        <if>
+            <available file="${phpcs.global.config}" type="file" property="phpcs.global.config.available" />
+            <then>
+                <echo message="Deleting existing PHP Codesniffer global configuration file." />
+                <delete file="${phpcs.global.config}" failonerror="false" />
+            </then>
+        </if>
+        <phpcodesnifferconfiguration
+            configFile="${phpcs.config}"
+            extensions="${phpcs.extensions}"
+            files="${phpcs.files}"
+            globalConfig="${phpcs.global.config}"
+            ignorePatterns="${phpcs.ignore}"
+            passWarnings = "${phpcs.passwarnings}"
+            report="${phpcs.report}"
+            showProgress="${phpcs.progress}"
+            showSniffCodes="${phpcs.sniffcodes}"
+            standards="${phpcs.standards}"
+        />
+
+        <!-- Set up the git pre-push hook. -->
+        <phingcall target="setup-phpcs-pre-push"/>
+    </target>
+
+    <!-- Setup the PHP CodeSniffer pre-push hook. -->
+    <target name="setup-phpcs-pre-push" description="Activate or de-activate phpcs on git pre-push.">
+        <delete file="${phpcs.prepush.destination}" failonerror="false" />
+        <if>
+            <equals arg1="${phpcs.prepush.enable}" arg2="1" />
+            <then>
+                <mkdir dir="${project.basedir}/resources/git/hooks/pre-push"/>
+                <rel-sym link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
+            </then>
+        </if>
+    </target>
+
+    <!-- Set up Behat. -->
+    <target name="setup-behat">
+        <if>
+            <available file="${behat.yml.path}" type="file" property="behat.yml.available" />
+            <then>
+                <echo message="Deleting existing behat.yml configuration file" />
+                <delete file="${behat.yml.path}" failonerror="false" />
+            </then>
+        </if>
+        <echo message="Creating behat.yml configuration file" />
+        <loadfile property="behat.yml.content" file="${behat.yml.template}">
+            <filterchain>
+                <replacetokens>
+                    <token key="project.code.dir" value="${project.code.dir}" />
+                    <token key="drupal.site.dir" value="${drupal.site.dir}" />
+                    <token key="behat.base_url" value="${behat.base_url}" />
+                    <token key="behat.formatter.name" value="${behat.formatter.name}" />
+                </replacetokens>
+            </filterchain>
+        </loadfile>
+        <echo message="${behat.yml.content}" file="${behat.yml.path}" />
+    </target>
+
+    <!-- Run Behat tests. -->
+    <target name="behat" description="Run Behat tests.">
+        <behat
+            executable="${behat.bin}"
+            config="${behat.yml.path}"
+            strict="${behat.options.strict}"
+            verbose="${behat.options.verbosity}"
+            passthru="${behat.options.passthru}"
+        />
+    </target>
+
+    <!-- Check that the subsite starterkit is up-to-date. -->
+    <target name="check-starterkit">
+        <echo msg="Checking if the subsite starterkit is up-to-date." />
+        <exec
+            command="bin/qa check:ssk
+                --repository=${starterkit.repository}
+                --branch=${starterkit.branch}
+                --remote=${starterkit.remote}
+                --basedir=${project.basedir}
+                --no-interaction
+                --ansi"
+            passthru="true"
+            checkreturn="true"
+        />
+    </target>
+
+    <!-- Do quality assurance checks. -->
+    <target name="quality-assurance">
+        <exec
+            command="bin/qa review:full --no-interaction --ansi"
+            passthru="true"
+            checkreturn="true"
+        />
+    </target>
+
+    <!-- Run a full static analysis. -->
+    <target
+        name="mjolnir"
+        description="The Hammer Of Thor will execute a full static analysis on the deployment package. Run this before sending a delivery to QA."
+        depends="setup-php-codesniffer, quality-assurance"
+    />
+
+    <!-- Install a development version of the subsite. -->
+    <target
+        name="install-dev"
+        description="Install a local development version of the subsite."
+        depends="drush-create-files-dirs, install, enable-development-modules"
+    />
+
+    <!-- Rebuild node access. -->
+    <target name="rebuild-node-access">
+        <drush
+            command="php-eval"
+            assume="yes"
+            root="${platform.build.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>"node_access_rebuild()"</param>
+        </drush>
+    </target>
+</project>

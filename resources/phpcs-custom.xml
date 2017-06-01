@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!-- See http://pear.php.net/manual/en/package.php.php-codesniffer.annotated-ruleset.php -->
+<!-- =================================================================================== -->
+<!-- This file may be used only with explicit permission of the Quality Assurance team!  -->
+<!-- Each added exclude pattern needs to be referenced with a MULTISITE ticket where we  -->
+<!-- can confirm the allowance and check the reasoning behind it.                        -->
+<!--                                                                                     -->
+<!-- Always avoid completely disabling rules and find a way to skip the affected files   -->
+<!-- for the specified rule that is blocking your commit.                                -->
+<!-- =================================================================================== -->
+<ruleset name="Subsite">
+    <description>Custom ruleset for subsite usage.</description>
+
+    <!-- New guidelines allow for use of project property. -->
+    <!-- Remove comment to disable the project check on info files.
+    <rule ref="Drupal.InfoFiles.AutoAddedKeys.Project">
+        <severity>0</severity>
+    </rule>
+    -->
+
+    <!-- New guidelines allow for use of version property. -->
+    <!-- Remove comment to disable the version check on info files.
+    <rule ref="Drupal.InfoFiles.AutoAddedKeys.Version">
+        <severity>0</severity>
+    </rule>
+    -->
+</ruleset>

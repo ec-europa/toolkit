@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Activate or de-activate phpcs on git pre-push hook.
+./bin/phing setup-phpcs-pre-push >/dev/null

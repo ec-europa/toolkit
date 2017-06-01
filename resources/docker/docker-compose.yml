@@ -1,0 +1,56 @@
+version: '2'
+services:
+  web:
+    #image: fpfis/php56-dev
+    build: ./docker-php
+    container_name: ${BUILD_ID_UNIQUE}_php
+    environment:
+      DOCUMENT_ROOT: ${WORKSPACE}/platform
+      COMPOSER_CACHE_DIR: /var/cache/composer
+    ports:
+      - 8081:8080
+    volumes:
+      - ${WORKSPACE}:${WORKSPACE}
+      - /usr/share/composer:/usr/share/composer
+      - /usr/share/platform:/usr/share/platform
+      - /usr/share/subsites:/usr/share/subsites
+      - /var/cache/composer:/var/cache/composer
+    working_dir: ${WORKSPACE}
+    links:
+      - mysql:mysql
+      - selenium:selenium
+  mysql:
+    image: mysql:5.6
+    container_name: ${BUILD_ID_UNIQUE}_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_DATABASE: starterkit
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ''
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    expose:
+      - '3306'
+  #redis:
+  #  image: fpfis/redis
+  #varnish:
+  #  image: fpfis/nexteuropa-varnish5
+  solr:
+    # The following cores are available :
+    # - http://127.0.0.1:8983/solr/d7_search_api
+    # - http://127.0.0.1:8983/solr/d7_apachesolr
+    image: fpfis/solr5
+    container_name: ${BUILD_ID_UNIQUE}_solr
+  selenium:
+    #image: selenium/standalone-chrome
+    build: ./docker-sel
+    container_name: ${BUILD_ID_UNIQUE}_selenium
+  composer:
+    build: ./docker-com
+    environment:
+      COMPOSER_CACHE_DIR: /var/cache/composer
+    volumes:
+      - .:/app
+      - /var/cache/composer:/var/cache/composer    
+      - /usr/share/composer:/usr/share/composer
+    command: update --no-interaction --no-suggest

@@ -1,0 +1,376 @@
+# Subsite configuration
+# ---------------------
+
+# The site name.
+subsite.name = My Project
+
+# The make file containing the dependencies of the subsite.
+subsite.make = ${subsite.resources.dir}/site.make
+
+# Modules to enable after installation. Separate multiple modules with spaces.
+subsite.install.modules = myproject_core
+
+# Subsite clone configuration.
+#-----------------------------
+
+# Project ID used to generate other properties.
+project.id = <project>
+
+# Project database url scheme.
+project.database.url.scheme = https
+
+# Project database url username is used for .htaccess to file download url. Use only
+# within build.properties.local if needed. Never commit credentials on github.
+project.database.url.htaccess.username =
+
+# Project database url username is used for .htaccess to file download url. Use only
+# within build.properties.local if needed. Never commit credentials on github.
+project.database.url.htaccess.password =
+
+# Project database url. Define the scheme in project.database.url.scheme property. If
+# you want developers to use the same database this should be added to the projects
+# build.properties file.
+project.database.url = webgate.ec.europa.eu/fpfis/files-for/${project.id}/
+
+# Project database filename.  If you want developers to use the same database this
+# should be added to the projects build.properties file. The file has to be
+# compressed in .gz format. Thus ending in .sql.gz.
+project.database.filename =
+
+# The information of the project reference repository.
+project.reference.repository =
+project.reference.branch = master
+project.reference.remote = reference
+
+# The path to save deploy packages to:
+project.release.path = ${share.subsites.path}/${project.id}
+
+
+# Development configuration
+# ---------------------------------------
+
+# Development / testing modules to download.
+development.modules.download = devel maillog stage_file_proxy
+
+# Development / testing modules to enable.
+development.modules.enable = devel context field_ui maillog simpletest stage_file_proxy views_ui
+
+# The location where development modules will be installed.
+development.modules.location = devel
+
+# Variables to set for cloning production.
+development.variables.error_level = 2
+development.variables.views_ui_show_sql_query = 1
+development.variables.views_ui_show_performance_statistics = 1
+development.variables.views_show_additional_queries = 1
+development.variables.stage_file_proxy_origin = https://ec.europa.eu/${project.id}
+development.variables.stage_file_proxy_origin_dir = sites/${project.id}/files
+development.variables.stage_file_proxy_hotlink = 1
+
+
+# Drupal configuration
+# --------------------
+
+# Database settings.
+drupal.db.type = mysql
+drupal.db.name = db_name
+drupal.db.user = root
+drupal.db.password =
+drupal.db.host = 127.0.0.1
+drupal.db.port = 3306
+drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${drupal.db.name}
+
+# Solr env url. Either d7_apachesolr or d7_search_api.
+drupal.solr.activate = 1
+drupal.solr.env.url = http://solr:8983/solr/d7_apachesolr
+
+# Admin user.
+drupal.admin.username = admin
+drupal.admin.password = pass
+drupal.admin.email = ${drupal.admin.username}@example.com
+
+# The location of the .htaccess file in the Drupal root folder.
+drupal.htaccess.path = ${platform.build.dir}/.htaccess
+
+# Configuration to append to the .htaccess file in the Drupal root folder.
+drupal.htaccess.append.text =
+
+# The site name to use. Use 'all' unless you want to build a multisite setup.
+drupal.site.name = all
+
+# The Drupal core version.
+drupal.core.version = 7.x
+
+
+# Platform configuration
+# ----------------------
+
+# The root directory of the platform. This will become the Drupal root folder,
+# so point your web server here.
+platform.build.dir = ${project.basedir}/platform
+
+# The install profile to use. Either multisite_drupal_standard or
+# multisite_drupal_communities.
+platform.profile.name = multisite_drupal_standard
+
+# The branch, tag or commit to use, eg. 'master', 'develop', '2.1.56',
+# '7df0d254b'. It is possible to use MySQL style wildcards here, so you can use
+# '2.%' to get the latest tagged 2.x.x release which was built.
+# For most projects you would want to follow 'master' so that you always have
+# the latest version that is deployed on production. Use 'develop' to check if
+# your project is compatible with the upcoming release.
+platform.package.reference = 2.2.152
+
+# The provider that hosts the platform repository.
+platform.package.provider = git-hub
+
+# The name of the platform repository.
+platform.package.repository = ec-europa/platform-dev
+
+# The name of the global folder where platform downloads and installs can be stored.
+platform.package.cachedir = /tmp/platform-dev
+
+# Activate vanilla database caching to skip drush site-install.
+platform.package.database = 0
+
+# The name of the folder where the platform will be downloaded.
+platform.package.destination = ${phing.project.tmp.dir}
+
+# The path to the downloaded package. This is named 'deploy-package-${platform.package.reference}.tar.gz'.
+platform.package.tarball = deploy-package-${platform.package.reference}.tar.gz
+
+# The ContinuousPHP token. Leave this empty for open source projects. Note that
+# the NextEuropa platform is open source.
+platform.package.token =
+
+
+# Paths
+# -----
+
+# Paths to executables.
+composer.bin = composer.phar
+drush.bin = ${project.starterkit.bin}/drush
+git.bin = git
+phing.bin = ${project.starterkit.bin}/phing
+
+# Build location.
+phing.project.build.dir = build
+phing.project.src.dir = ${project.basedir}/src
+dist.build.dir = ${project.basedir}/${phing.project.build.dir}
+
+# Temporary folder.
+phing.project.tmp.dir = ${project.basedir}/tmp
+
+# Local resources.
+subsite.resources.dir = ${project.basedir}/resources
+subsite.resources.lib.dir = ${project.basedir}/lib
+subsite.resources.features.dir = ${subsite.resources.lib.dir}/features
+subsite.resources.modules.dir = ${subsite.resources.lib.dir}/modules
+subsite.resources.source.dir = ${subsite.resources.lib.dir}/src
+subsite.resources.themes.dir = ${subsite.resources.lib.dir}/themes
+subsite.resources.composer.json = ${subsite.resources.dir}/composer.json
+subsite.resources.composer.lock = ${subsite.resources.dir}/composer.lock
+
+# Temporary resources. These are generated on the fly when building.
+subsite.temporary.development.make = ${phing.project.tmp.dir}/development.make
+
+# Files and directories inside the Drupal installation for local development.
+platform.build.settings.dir = ${platform.build.sites.dir}/default
+platform.build.files.dir = ${platform.build.settings.dir}/files
+platform.build.tmp.dir = ${platform.build.settings.dir}/tmp
+
+platform.build.profiles.dir = ${platform.build.dir}/profiles
+platform.build.profile.dir = ${platform.build.profiles.dir}/${platform.profile.name}
+
+platform.build.sites.dir = ${platform.build.dir}/sites
+platform.build.subsite.dir = ${platform.build.sites.dir}/${drupal.site.name}
+platform.build.subsite.libraries.dir = ${platform.build.subsite.dir}/libraries
+platform.build.subsite.modules.dir = ${platform.build.subsite.dir}/modules
+platform.build.subsite.modules.contrib.dir = ${platform.build.subsite.modules.dir}/contrib
+platform.build.subsite.modules.custom.dir = ${platform.build.subsite.modules.dir}/custom
+platform.build.subsite.modules.features.dir = ${platform.build.subsite.modules.dir}/features
+platform.build.subsite.source.dir = ${platform.build.subsite.dir}/src
+platform.build.subsite.themes.dir = ${platform.build.subsite.dir}/themes
+platform.build.subsite.composer.json = ${platform.build.subsite.dir}/composer.json
+platform.build.subsite.composer.lock = ${platform.build.subsite.dir}/composer.lock
+
+# Files and directories inside the distribution build.
+dist.build.modules.dir = ${dist.build.dir}/modules
+dist.build.modules.custom.dir = ${dist.build.modules.dir}/custom
+dist.build.modules.features.dir = ${dist.build.modules.dir}/features
+dist.build.source.dir = ${dist.build.dir}/src
+dist.build.themes.dir = ${dist.build.dir}/themes
+dist.build.composer.json = ${dist.build.dir}/composer.json
+dist.build.composer.lock = ${dist.build.dir}/composer.lock
+
+
+# Rebuild configuration
+# ---------------------
+
+# Automatically rebuild without asking confirmation.
+platform.rebuild.auto = 0
+
+# Rebuild backup destination.
+platform.rebuild.backup.destination = ${phing.project.tmp.dir}/backup-site
+
+# Semicolon separated list of folders to backup.
+platform.rebuild.backup.folders = ${platform.build.files.dir};${platform.build.tmp.dir}
+
+# Semicolon separated list of files to backup.
+platform.rebuild.backup.files = ${platform.build.settings.dir}/settings.php
+
+
+# Behat configuration
+# -------------------
+
+# The location of the Behat executable.
+behat.bin = ${platform.build.subsite.dir}/vendor/bin/behat
+
+# The location of the Behat tests.
+behat.dir = ${project.basedir}/tests
+
+# The location of the Behat configuration template.
+behat.yml.template = ${behat.dir}/behat.yml.dist
+
+# The location of the generated Behat configuration file.
+behat.yml.path = ${behat.dir}/behat.yml
+
+# The base URL to use in Behat tests.
+behat.base_url = http://localhost:8080
+
+# The location to search for Behat subcontexts.
+behat.subcontexts.path = ${platform.build.subsite.dir}
+
+# The output format to use for Behat tests, either 'progress' or 'pretty'.
+behat.formatter.name = pretty
+
+# Enable strict mode in Behat tests. Will only pass if all tests are explicitly
+# passing.
+behat.options.strict = false
+
+# Set verbosity for Behat tests. 0 is completely silent, 1 is normal output, 2
+# shows exception backtraces, 3 shows debugging information.
+behat.options.verbosity = 2
+
+# Stream output to show progress.
+behat.options.passthru = true
+
+# The path to the custom Behat Contexts.
+behat.src.dir = ${behat.dir}/src
+
+
+# PHP CodeSniffer configuration
+# -----------------------------
+
+# The file extensions to test.
+phpcs.extensions = php inc module install info test profile theme css js
+
+# The default configuration file to generate.
+phpcs.config = ${project.basedir}/phpcs.xml
+
+# The coding standards to use, delimited by semicolons.
+phpcs.standards = ${project.starterkit.root}/phpcs-ruleset.xml;${project.basedir}/phpcs-ruleset.xml
+
+# Paths to check, delimited by semicolons.
+phpcs.files = ${subsite.resources.dir};${subsite.resources.lib.dir};${phing.project.src.dir};${behat.src.dir}
+
+# Paths to ignore, delimited by semicolons.
+phpcs.ignore =
+
+# Returns a 0 error code when only warnings are found if enabled. Ment for CI.
+phpcs.passwarnings = 0
+
+# The report format. For example 'full', 'summary', 'diff', 'xml', 'json'.
+phpcs.report = full
+
+# Whether or not to show sniff codes in the report.
+phpcs.sniffcodes = 0
+
+# Whether or not to show the progress of the run.
+phpcs.progress = 1
+
+# The location of the file containing the global configuration options.
+phpcs.global.config = ${project.starterkit.vendor}/squizlabs/php_codesniffer/CodeSniffer.conf
+
+# Whether or not to run a coding standards check before doing a git push. Note
+# that this will abort the push if the coding standards check fails.
+phpcs.prepush.enable = 1
+
+# The source and destination paths of the git pre-push hook.
+phpcs.prepush.source = ${project.starterkit.vendor}/pfrenssen/phpcs-pre-push/pre-push
+phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpcs
+
+
+# Quality Assurance
+#------------------
+
+# Gives you the possibility to disable the check:ssk that preceeds the qa review
+# commands. CI and QA will always perform this check.
+qa.check.ssk = 1
+
+
+# Host configuration
+# ------------------
+
+# The location of the webserver docroot. Used for testing on CI infrastructure.
+server.docroot = /var/www
+
+
+# Debugging configuration
+# ---------------------------------------
+
+# Verbosity of drush commands. Set to TRUE to be verbose.
+drush.verbose = FALSE
+
+# Activate or de-activate terminal color.
+drush.color = 1
+
+# Verbosity of PHP Codesniffer. Set to 0 for standard output, 1 for progress
+# report, 2 for debugging info.
+phpcs.verbose = 0
+
+
+# AWS SDK
+# -------
+aws.region = eu-west-1
+
+
+# AWS Cloud Formation
+# -------------------
+cf.template = single-server
+
+
+# AWS CodeDeploy
+# --------------
+deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
+
+
+# Subsite starterkit
+# ------------------
+
+# The location of the subsite starterkit repository.
+starterkit.repository = https://github.com/ec-europa/subsite-starterkit.git
+
+# The branch of the subsite starterkit that will be tracked.
+starterkit.branch = master
+# The name of the git remote for the starterkit.
+starterkit.remote = starterkit
+
+
+# Build defaults
+# --------------
+
+# Whether or not to stop executing the build if a directory cannot be copied.
+copy.path.haltonerror = true
+
+
+# Shared paths
+# ------------
+
+# Global share location.
+share.global.path = /usr/share
+
+# Main share locations.
+share.platform.path = ${share.global.path}/platform
+share.subsites.path = ${share.global.path}/subsites
+share.composer.path = ${share.global.path}/composer

@@ -1,0 +1,13 @@
+diff --git a/classes/phing/listener/defaults.properties b/classes/phing/listener/defaults.properties
+index 4a4dec6..262092d 100644
+--- a/classes/phing/listener/defaults.properties
++++ b/classes/phing/listener/defaults.properties
+@@ -37,7 +37,7 @@
+ ####################################################
+ 
+ AnsiColorLogger.ERROR_COLOR=01;31
+-AnsiColorLogger.WARNING_COLOR=01;35
++AnsiColorLogger.WARNING_COLOR=00;33
+ AnsiColorLogger.INFO_COLOR=00;36
+ AnsiColorLogger.VERBOSE_COLOR=00;32
+ AnsiColorLogger.DEBUG_COLOR=01;34

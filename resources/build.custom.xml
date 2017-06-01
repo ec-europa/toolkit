@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="My subsite" default="help">
+    <target
+        name="build-custom"
+        description="You can use this target to perform custom build steps for your subsite. This target is part of both build-dev and build-dist."
+    >
+        <echo message="Running custom build" />
+    </target>
+</project>

@@ -1,0 +1,37 @@
+default:
+  suites:
+    default:
+      contexts:
+        - FeatureContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\nexteuropa\Context\DrupalContext
+        - Drupal\nexteuropa\Context\MinkContext
+      filters:
+        tags: "~@wip"
+  extensions:
+    Behat\MinkExtension:
+      browser_name: '${behat.browser.name}'
+      goutte: ~
+      selenium2:
+        wd_host: '${behat.wd_host.url}'
+      javascript_session: 'selenium2'
+      base-url: '${behat.base_url}'
+      files_path: '${platform.build.dir}'
+    Drupal\DrupalExtension:
+      api_driver: 'drupal'
+      blackbox: ~
+      drupal:
+        drupal_root: '${platform.build.dir}'
+      selectors:
+        message_selector: '.messages'
+        error_message_selector: '.messages.error'
+        success_message_selector: '.messages.status'
+      subcontexts:
+        paths:
+          - '${behat.subcontexts.path}'
+      drush:
+        root: '${platform.build.dir}'
+        binary: '${drush.bin}'
+  formatters:
+    ${behat.formatter.name}: ~

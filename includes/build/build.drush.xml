@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="My subsite" default="help">
+
+    <!-- Install the site. -->
+    <target name="drush-site-install">
+        <echo message="Installing site ${subsite.name}." />
+        <drush command="site-install" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${drupal.db.url}" />
+            <option name="site-name" value="'${subsite.name}'" />
+            <option name="account-name" value="${drupal.admin.username}" />
+            <option name="account-pass" value="${drupal.admin.password}" />
+            <option name="account-mail" value="${drupal.admin.email}" />
+            <param>${platform.profile.name}</param>
+            <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
+        </drush>
+    </target>
+
+    <!-- Enable modules. -->
+    <target name="drush-enable-modules">
+        <drush
+            command="pm-enable"
+            assume="yes"
+            root="${platform.build.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>${drupal.modules}</param>
+        </drush>
+    </target>
+
+
+    <!-- Create the directories. -->
+    <target name="drush-create-files-dirs">
+        <echo message="Creating files directories for ${drupal.db.name}." />
+        <!-- Execute setttings generation script. -->
+        <drush command="php-script" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>${project.starterkit.root}/includes/drush/generate-directories.php</param>
+        </drush>
+    </target>
+
+    <!-- Create the database. -->
+    <target name="drush-sql-create">
+        <echo message="Creating database ${drupal.db.name}." />
+        <drush command="sql-create" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${drupal.db.url}" />
+        </drush>
+    </target>
+
+    <!-- Import a database. -->
+    <target name="drush-sql-import">
+        <echo message="Importing database." />
+        <drush command="sql-cli" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>&lt; ${database-file}</param>
+        </drush>
+        <phingcall target="drush-registry-rebuild" />
+        <phingcall target="drush-create-files-dirs" />
+        <!-- Update database. -->
+        <drush command="updatedb" assume="yes" root="${platform.build.dir}" bin="${drush.bin}"></drush>
+        <!-- Clear Caches. -->
+        <drush command="cc" assume="yes" root="${platform.build.dir}" bin="${drush.bin}">
+            <param>all</param>
+        </drush>
+    </target>
+
+    <!-- Drop the database. -->
+    <target name="drush-sql-drop">
+        <echo message="Dropping database ${drupal.db.name}." />
+        <drush command="sql-drop" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${drupal.db.url}" />
+        </drush>
+    </target>
+
+    <!-- Backup the database. -->
+    <target name="drush-sql-dump">
+        <echo message="Backing up database ${drupal.db.name} to ${database-file}." />
+        <dirname property="database-cachedir" file="${database-file}"/>
+        <mkdir dir="${database-cachedir}" />
+        <drush command="sql-dump" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="result-file" value="${database-file}" />
+        </drush>
+    </target>
+
+    <!-- Activate solr if needed. -->
+    <target name="drush-enable-solr">
+        <if>
+            <equals arg1="${drupal.solr.activate}" arg2="1" />
+            <then>
+                <echo message="Enable apachesolr for ${drupal.db.name}." />
+                <phingcall target="drush-enable-modules">
+                    <property name="drupal.modules" value="apachesolr" />
+                </phingcall>
+                <drush command="solr-set-env-url" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>${drupal.solr.env.url}</param>
+                </drush>
+            </then>
+        </if>
+    </target>
+
+    <!-- Execute a makefile with the no-core option. -->
+    <target name="drush-make-no-core">
+        <echo message="Running make file ${drush.make.target.file} into folder ${drush.make.root}." />
+        <drush command="make" assume="yes" bin="${drush.bin}" pipe="yes" verbose="${drush.verbose}" root="${drush.make.root}" color="${drush.color}">
+            <param>${drush.make.target.file}</param>
+            <param>${drush.make.root}</param>
+            <option name="concurrency">10</option>
+            <option name="no-patch-txt"></option>
+            <option name="no-core"></option>
+        </drush>
+    </target>
+
+    <!-- Regenerate the settings file with database credentials and development variables. -->
+    <target name="drush-regenerate-settings" description="Regenerate settings.php file." depends="check-for-default-settings-or-rebuild">
+        <copy file="${project.starterkit.root}/includes/drush/generate-settings.php" tofile="tmp/generate-settings.php" overwrite="true">
+            <filterchain>
+                <replacetokens begintoken="%%" endtoken="%%">
+                    <!-- Replace tokens in settings generation script. -->
+                    <token key="drupal.db.type" value="${drupal.db.type}" />
+                    <token key="drupal.db.name" value="${drupal.db.name}" />
+                    <token key="drupal.db.user" value="${drupal.db.user}" />
+                    <token key="drupal.db.password" value="${drupal.db.password}" />
+                    <token key="drupal.db.host" value="${drupal.db.host}" />
+                    <token key="drupal.db.port" value="${drupal.db.port}" />
+                    <token key="error_level" value="${development.variables.error_level}" />
+                    <token key="views_ui_show_sql_query" value="${development.variables.views_ui_show_sql_query}" />
+                    <token key="views_ui_show_performance_statistics" value="${development.variables.views_ui_show_performance_statistics}" />
+                    <token key="views_show_additional_queries" value="${development.variables.views_show_additional_queries}" />
+                    <token key="stage_file_proxy_origin" value="${development.variables.stage_file_proxy_origin}" />
+                    <token key="stage_file_proxy_origin_dir" value="${development.variables.stage_file_proxy_origin_dir}" />
+                    <token key="stage_file_proxy_hotlink" value="${development.variables.stage_file_proxy_hotlink}" />
+                    <token key="file_public_path" value="${platform.build.files.dir}" />
+                    <token key="file_private_path" value="${platform.build.files.dir}/private_files" />
+                    <token key="file_temporary_path" value="${platform.build.tmp.dir}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <!-- Execute setttings generation script. -->
+        <drush command="php-script" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>tmp/generate-settings.php</param>
+        </drush>
+    </target>
+
+    <!-- Rebuild registry. -->
+    <target name="drush-registry-rebuild">
+        <trycatch>
+            <try>
+                <!-- Check if registry rebuild is available. -->
+                <exec command="${drush.bin} rr --help" checkreturn="true" />
+            </try>
+            <catch>
+                <!-- Download if not available. -->
+                <phingcall target="drush-dl-rr" />
+            </catch>
+            <finally>
+                 <!-- Rebuild Registry. -->
+                 <drush command="registry-rebuild" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}">
+                     <param>--fire-bazooka</param>
+                 </drush>
+            </finally>
+        </trycatch>
+    </target>
+
+    <!-- Download registry rebuild. -->
+    <target name="drush-dl-rr">
+        <echo message="Installing registry rebuild on user account." />
+        <exec command="${drush.bin} pm-download registry_rebuild-7 -n >/dev/null" />
+        <exec command="${drush.bin} cc drush >/dev/null" />
+    </target>
+
+</project>

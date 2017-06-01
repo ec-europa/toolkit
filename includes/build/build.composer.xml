@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="My subsite" default="help">
+
+    <!-- Composer pre install CMD. -->
+    <target name="composer-pre-install-cmd">
+        <echo msg="Executing pre-install targets" />
+    </target>
+
+    <!-- Composer pre update CMD. -->
+    <target name="composer-pre-update-cmd">
+        <echo msg="Executing pre-update targets" />
+    </target>
+
+    <!-- Composer post update CMD. -->
+    <target name="composer-post-update-cmd">
+        <echo msg="Executing post-update targets" />
+    </target>
+
+
+    <!-- Composer post install CMD. -->
+    <target
+        name="composer-post-install-cmd"
+        description="Commands to execute after composer install."
+        depends="
+            copy-build-xml,
+            link-ssk-bin,
+            drush-dl-rr,
+            setup-phpcs-pre-push"
+    />
+
+    <target name="copy-build-xml">
+        <if>
+            <isset property="project-is-subsite" />
+            <then>
+                <echo msg="Refreshing subsite build.xml." />
+                <copy
+                    file="${project.starterkit.root}/resources/templates/build.starterkit.xml"
+                    tofile="${project.basedir}/build.xml"
+                    overwrite="true"
+                />
+            </then>
+        </if>
+    </target>
+
+    <target name="link-ssk-bin">
+        <rel-sym link="${project.basedir}/ssk" target="${project.starterkit.bin}" overwrite="true" />
+    </target>
+
+</project>

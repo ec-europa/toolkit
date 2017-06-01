@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the MyProject Core feature.
+ */
+
+/**
+ * Implements hook_init().
+ */
+function myproject_core_init() {
+  drupal_set_message(t('Welcome to MyProject!'));
+}
