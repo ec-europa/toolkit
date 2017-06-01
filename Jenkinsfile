@@ -20,7 +20,8 @@ def createWorkflow() {
 
             try {
                 stage('Check') {
-                    dockerExecute('./ssk/phing', 'setup-php-codesniffer quality-assurance') 
+                    dockerExecute('./ssk/phing', 'setup-php-codesniffer')
+                    dockerExecute('./ssk/phpcs', 'lib/') 
                 }
 
 
