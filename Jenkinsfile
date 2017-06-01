@@ -29,12 +29,13 @@ def createWorkflow() {
                     dockerExecute('./ssk/phing', "build-dev -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'")
                 }
 
-                //stage('Test') {
+                stage('Test') {
+                    echo "Temporarily disabled for testing"
                 //    dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
                 //    timeout(time: 2, unit: 'HOURS') {
                 //        dockerExecute('./ssk/phing', 'behat')
                 //    }
-                //}
+                }
 
                 stage('Package') {
                     dockerExecute('./ssk/phing', "build-release -D'project.release.name'='${env.BUILD_ID_UNIQUE}'")
