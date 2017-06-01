@@ -8,10 +8,10 @@
 
     <!-- Set starterkit properties. -->
     <if>
-        <available file="${project.basedir}/vendor/ec-europa/subsite-starterkit" />
+        <available file="${project.basedir}/vendor/ec-europa/ssk" />
         <then>
-            <exec command="echo $(readlink -f ${project.basedir}/vendor/ec-europa/subsite-starterkit)" outputProperty="project.starterkit.root" />
-            <!-- <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/subsite-starterkit" /> -->
+            <exec command="echo $(readlink -f ${project.basedir}/vendor/ec-europa/ssk)" outputProperty="project.starterkit.root" />
+            <!-- <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/ssk" /> -->
             <property name="project-is-subsite" value="1" />
         </then>
         <else>

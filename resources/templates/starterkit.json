@@ -1,15 +1,9 @@
 {
   "require": {
-    "ec-europa/subsite-starterkit": "dev-release/3.0"
+    "ec-europa/subsite-starterkit": "dev-master"
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/ec-europa/subsite-starterkit.git"
-    }
-  ],
   "scripts": {
-    "post-update-cmd": "PROJECT=$(pwd) composer install --working-dir=vendor/ec-europa/subsite-starterkit/includes/composer --no-interaction --no-suggest --ansi"
+    "post-update-cmd": "PROJECT=$(pwd) composer install --working-dir=vendor/ec-europa/ssk/includes/composer --no-interaction --no-suggest --ansi"
   }
 }
 
