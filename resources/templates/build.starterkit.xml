@@ -3,10 +3,8 @@
 <project name="My subsite" default="help">
 
     <!-- Set starterkit root property -->
-    <property
-        name="project.starterkit.root"
-        value="${project.basedir}/vendor/ec-europa/subsite-starterkit"
-    />
+    <exec command="echo $(readlink -f ${project.basedir}/vendor/ec-europa/ssk)" outputProperty="project.starterkit.root" />
+    <!-- <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/ssk" /> -->
 
     <!-- Import starterkit build xml files. -->
     <import file="${project.starterkit.root}/build.xml" />
