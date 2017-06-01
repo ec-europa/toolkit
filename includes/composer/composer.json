@@ -10,7 +10,7 @@
     "drupal/phingdrushtask": "^1.1",
     "drupol/phingbehattask": "^1.0",
     "drush/drush": "8.0.5",
-    "ec-europa/qa-automation": "2.6",
+    "ec-europa/qa-automation": "dev-develop",
     "ext-json": "*",
     "ext-phar": "*",
     "ext-xml": "*",

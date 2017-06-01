@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d890c8ddba224313c2a26bcd03fd3aa0",
+    "content-hash": "dab3ad2cd60a1eaa002c1cb81f41c44c",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -651,16 +651,16 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "2.6",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "112880c08fd13b47e4976560a34e37ace50607a7"
+                "reference": "de459722ee6959b63e152bef44b176721a4ffe20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/112880c08fd13b47e4976560a34e37ace50607a7",
-                "reference": "112880c08fd13b47e4976560a34e37ace50607a7",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/de459722ee6959b63e152bef44b176721a4ffe20",
+                "reference": "de459722ee6959b63e152bef44b176721a4ffe20",
                 "shasum": ""
             },
             "require": {
@@ -687,7 +687,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
-            "time": "2017-04-10T07:01:21+00:00"
+            "time": "2017-04-10 06:55:41"
         },
         {
             "name": "guzzlehttp/command",
@@ -2411,6 +2411,7 @@
     "stability-flags": {
         "cpliakas/git-wrapper": 20,
         "cweagans/composer-patches": 20,
+        "ec-europa/qa-automation": 20,
         "pear/archive_tar": 20,
         "pear/versioncontrol_git": 20
     },
