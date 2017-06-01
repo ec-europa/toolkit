@@ -4,10 +4,10 @@
 <ruleset name="NextEuropa">
     <description>Drupal coding standard for NextEuropa subsites</description>
 
-    <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal" />
-    <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice" />
-    <rule ref="./vendor/ec-europa/qa-automation/phpcs/Standards/DrupalSecure" />
-    <rule ref="./vendor/ec-europa/qa-automation/phpcs/Standards/QualityAssurance" />
+    <rule ref="./includes/composer/vendor/drupal/coder/coder_sniffer/Drupal" />
+    <rule ref="./includes/composer/vendor/drupal/coder/coder_sniffer/DrupalPractice" />
+    <rule ref="./includes/composer/vendor/ec-europa/qa-automation/phpcs/Standards/DrupalSecure" />
+    <rule ref="./includes/composer/vendor/ec-europa/qa-automation/phpcs/Standards/QualityAssurance" />
 
     <!-- Minified files don't have to comply with coding standards. -->
     <exclude-pattern>*\.min\.css</exclude-pattern>
