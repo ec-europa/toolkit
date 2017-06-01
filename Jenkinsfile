@@ -14,14 +14,12 @@ def createWorkflow() {
             stage('Init') {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
-                //sh "./ssk/phing start-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
                 sh "mkdir -p ${WORKSPACE}/platform"
                 sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d"
              }
 
             try {
                 stage('Check') {
-                    //dockerExecute('composer', 'update --no-suggest --no-interaction')
                     //dockerExecute('./ssk/phing', 'setup-php-codesniffer quality-assurance') 
                 }
 
@@ -31,11 +29,11 @@ def createWorkflow() {
                 }
 
                 //stage('Test') {
-                //    dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
-                //    timeout(time: 2, unit: 'HOURS') {
-                //        dockerExecute('./ssk/phing', 'behat')
-                //    }
-                //}
+                    dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    timeout(time: 2, unit: 'HOURS') {
+                        dockerExecute('./ssk/phing', 'behat')
+                    }
+                }
 
                 stage('Package') {
                     dockerExecute('./ssk/phing', "build-release -D'project.release.name'='${env.BUILD_ID_UNIQUE}'")
@@ -48,7 +46,6 @@ def createWorkflow() {
                 throw(err)
             } finally {
                 sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml down"
-                //sh "./ssk/phing stop-container -D'docker.container.id'=${buildId} -D'docker.container.workspace'=${WORKSPACE}"
             }
         }
 }
