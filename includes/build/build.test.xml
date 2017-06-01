@@ -150,7 +150,7 @@
     <target name="check-starterkit">
         <echo msg="Checking if the subsite starterkit is up-to-date." />
         <exec
-            command="bin/qa check:ssk
+            command="ssk/qa check:ssk
                 --repository=${starterkit.repository}
                 --branch=${starterkit.branch}
                 --remote=${starterkit.remote}
@@ -165,7 +165,7 @@
     <!-- Do quality assurance checks. -->
     <target name="quality-assurance">
         <exec
-            command="bin/qa review:full --no-interaction --ansi"
+            command="ssk/qa review:full --no-interaction --ansi"
             passthru="true"
             checkreturn="true"
         />
