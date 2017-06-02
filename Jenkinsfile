@@ -3,7 +3,7 @@ def createWorkflow() {
         properties([
             parameters([
                 choice(
-                    choices: ['2.3.48', '2.2.175', '2.1.84'],
+                    choices: "2.3.48\n2.2.175\n2.1.84",
                     description: 'Select a platform package reference.',
                     name: 'platformPackageReference')
                 ]),
