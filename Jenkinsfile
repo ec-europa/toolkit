@@ -36,7 +36,7 @@ def createWorkflow() {
 
 
                 stage('Build') {
-                    dockerExecute('./ssk/phing', "build-dev -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'")
+                    dockerExecute('./ssk/phing', "build-dev -D'platform.package.reference'='${params.platformPackageReference}' -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'")
                 }
 
                 stage('Test') {
