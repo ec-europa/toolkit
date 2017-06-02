@@ -3,16 +3,7 @@ def createWorkflow() {
    // adds job parameters within jenkinsfile
    properties([
      parameters([
-       booleanParam(
-         defaultValue: false,
-         description: 'isFoo should be false',
-         name: 'isFoo'
-       ),
-       booleanParam(
-         defaultValue: true,
-         description: 'isBar should be true',
-         name: 'isBar'
-       ),
+       choiceParam('platformPackageReference', ['2.3.48', '2.2.175', '2.1.84'], 'Platform Package Reference'),
      ])
    ])
 
@@ -58,10 +49,10 @@ def createWorkflow() {
                 }
 
                 stage('Test') {
-                    dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
-                    timeout(time: 2, unit: 'HOURS') {
-                        dockerExecute('./ssk/phing', 'behat')
-                    }
+                    //dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    //timeout(time: 2, unit: 'HOURS') {
+                    //    dockerExecute('./ssk/phing', 'behat')
+                    //}
                 }
 
                 stage('Package') {
