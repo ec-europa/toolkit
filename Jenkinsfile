@@ -1,23 +1,8 @@
 def createWorkflow() {
 
-   // adds job parameters within jenkinsfile
-   properties([
-     parameters([
-       choiceParam('platformPackageReference', ['2.3.48', '2.2.175', '2.1.84'], 'Platform Package Reference'),
-     ])
-   ])
-
-   // test the false value
-   print 'DEBUG: parameter isFoo = ' + params.isFoo
-   print "DEBUG: parameter isFoo = ${params.isFoo}"
-   sh "echo sh isFoo is ${params.isFoo}"
-   if (params.isFoo) { print "THIS SHOULD NOT DISPLAY" }
-
-   // test the true value
-   print 'DEBUG: parameter isBar = ' + params.isBar
-   print "DEBUG: parameter isBar = ${params.isBar}"
-   sh "echo sh isBar is ${params.isBar}"
-   if (params.isBar) { print "this should display" }
+        parameters {
+            choiceParam("platformPackageReference", ["2.3.48", "2.2.175", "2.1.84"], "Select a platform package reference")
+        }
 
         // Set some variables.
         def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
