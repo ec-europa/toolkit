@@ -1,8 +1,14 @@
 def createWorkflow() {
 
-        parameters {
-            choiceParam("platformPackageReference", ["2.3.48", "2.2.175", "2.1.84"], "Select a platform package reference")
-        }
+        properties([
+            parameters([
+                choice(
+                    choices: ['2.3.48', '2.2.175', '2.1.84'],
+                    description: 'Select a platform package reference.',
+                    name: 'platformPackageReference')
+                ]),
+            pipelineTriggers([])
+        ])
 
         // Set some variables.
         def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
