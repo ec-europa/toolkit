@@ -4,7 +4,6 @@ def createWorkflow() {
         def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
         def buildName = "${env.JOB_NAME}".replaceAll('%2F','_').replaceAll('/','_').replaceAll('-','_').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
-        echo "${BRANCH_NAME}"
 
         withEnv([
             "WORKSPACE=${env.WORKSPACE}",
@@ -31,11 +30,10 @@ def createWorkflow() {
                 }
 
                 stage('Test') {
-                    echo "Temporarily disabled for testing"
-                //    dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
-                //    timeout(time: 2, unit: 'HOURS') {
-                //        dockerExecute('./ssk/phing', 'behat')
-                //    }
+                    dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    timeout(time: 2, unit: 'HOURS') {
+                        dockerExecute('./ssk/phing', 'behat')
+                    }
                 }
 
                 stage('Package') {
@@ -48,7 +46,7 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                //sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml down"
+                sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml down"
             }
         }
 }
