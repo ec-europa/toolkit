@@ -5,17 +5,17 @@ services:
     build: ./docker-php
     container_name: ${BUILD_ID_UNIQUE}_php
     environment:
-      DOCUMENT_ROOT: ${WORKSPACE}/platform
+      DOCUMENT_ROOT: /var/www/html/platform
       COMPOSER_CACHE_DIR: /var/cache/composer
     ports:
       - 8081:8080
     volumes:
-      - ${WORKSPACE}:${WORKSPACE}
+      - ${WORKSPACE}:/var/www/html
       - /usr/share/composer:/usr/share/composer
       - /usr/share/platform:/usr/share/platform
       - /usr/share/subsites:/usr/share/subsites
       - /var/cache/composer:/var/cache/composer
-    working_dir: ${WORKSPACE}
+    working_dir: /var/www/html
     links:
       - mysql:mysql
       - selenium:selenium
