@@ -1,7 +1,5 @@
 def createWorkflow() {
 
-  wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
-
         properties([
             parameters([
                 choice(
@@ -18,17 +16,15 @@ def createWorkflow() {
         def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
 
         withEnv([
-            "WORKSPACE=${env.WORKSPACE}",
-            "WD_HOST_URL=http://127.0.0.1:8647/wd/hub",
             "BUILD_ID_UNIQUE=${buildName}_${buildId}",
         ]) {
 
             stage('Init') {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
-                //sh "mkdir -p ${WORKSPACE}/platform"
-                //sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d"
-                sh "./ssk/phing -D'docker.container.workspace'='${env.WORKSPACE}' -D'docker.container.id'='${buildId}' start-container"
+                //sh "mkdir -p ${env.WORKSPACE}/platform"
+                //sh "docker-compose -f ${env.WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d"
+                sh "./ssk/phing -D'docker.container.workspace'='${env.WORKSPACE}' -D'docker.container.id'='${env.BUILD_ID_UNIQUE=}' start-container"
              }
 
             try {
@@ -59,10 +55,10 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml down"
+                sh "./ssk/phing -D'docker.container.workspace'='${env.WORKSPACE}' -D'docker.container.id'='${env.BUILD_ID_UNIQUE=}' stop-container"
+                //sh "docker-compose -f ${env.WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml down"
             }
         }
-  }
 }
 
 void setBuildStatus(String message, String state) {
