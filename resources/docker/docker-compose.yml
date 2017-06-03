@@ -26,15 +26,13 @@ services:
     container_name: ${BUILD_ID_UNIQUE}_mysql
     environment:
       MYSQL_ROOT_PASSWORD: ''
-      MYSQL_DATABASE: starterkit
+      MYSQL_DATABASE: ${BUILD_ID_UNIQUE}
       MYSQL_USER: root
       MYSQL_PASSWORD: ''
       MYSQL_ROOT_HOST: '%'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     expose:
       - '3306'
-    volumes:
-      - /usr/share/platform:/docker-entrypoint-initdb.d
   #redis:
   #  image: fpfis/redis
   #varnish:

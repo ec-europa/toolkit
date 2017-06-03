@@ -15,14 +15,21 @@
         <if>
             <and>
                 <equals arg1="${platform.package.database}" arg2="1" />
-                <available file="${platform.package.cachedir}/databases/platform-dev-${platform.package.reference}.sql" type="file" />
+                <available file="${share.platform.path}/databases/platform-dev-${platform.package.reference}.sql}/platform-dev-${platform.package.reference}.sql" type="file" />
             </and>
             <then>
-                <phingcall target="drush-sql-create" />
                 <phingcall target="drush-regenerate-settings" />
-                <phingcall target="drush-sql-import">
-                    <property name="database-file" value="${platform.package.cachedir}/databases/platform-dev-${platform.package.reference}.sql" />
-                </phingcall>
+                <try>
+                    <!-- Only perform import when we fail to bootstrap correctly. -->
+                    <!-- Otherwise we have probably already imported the db on container creation.. -->
+                    <phingcall target="drush-status-bootstrap" />
+                </try>
+                <catch>
+                    <phingcall target="drush-sql-create" />
+                    <phingcall target="drush-sql-import">
+                        <property name="database-file" value="${platform.package.cachedir}/databases/platform-dev-${platform.package.refer$
+                    </phingcall>
+                </catch>
             </then>
             <else>
                 <!-- Install site with drush. -->

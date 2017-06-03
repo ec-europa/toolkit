@@ -15,6 +15,19 @@
         </drush>
     </target>
 
+    <!-- Check if site is installed. -->
+    <target name="drush-status-bootstrap">
+        <drush
+            command="status"
+            root="${platform.build.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}"
+            color="${drush.color}"
+            checkreturn="true">
+            <param>bootstrap | grep -q Successful</param>
+        </drush>
+    </target>
+
     <!-- Enable modules. -->
     <target name="drush-enable-modules">
         <drush
