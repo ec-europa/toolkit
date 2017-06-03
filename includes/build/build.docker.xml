@@ -4,11 +4,11 @@
     <target name="start-container" description="Start docker container">
         <echo msg="Starting container for ${env.BUILD_ID_UNIQUE}" />
         <mkdir dir="${env.WORKSPACE}/platform" /> 
-        <exec command="docker-compose -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d" />
+        <exec command="docker-compose -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml up --no-recreate -d" />
     </target>
 
     <target name="stop-container" description="Stop docker container">
-        <echo msg="Stopping container for ${BUILD_ID_UNIQUE}" />
+        <echo msg="Stopping container for ${env.BUILD_ID_UNIQUE}" />
         <exec command="docker-compose -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml down" />
     </target>
 
