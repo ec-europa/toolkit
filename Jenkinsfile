@@ -22,9 +22,7 @@ def createWorkflow() {
             stage('Init') {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
-                //sh "mkdir -p ${env.WORKSPACE}/platform"
-                //sh "docker-compose -f ${env.WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d"
-                sh "./ssk/phing -D'docker.container.workspace'='${env.WORKSPACE}' -D'docker.container.id'='${env.BUILD_ID_UNIQUE}' start-container"
+                sh "./ssk/phing -D'docker.container.workspace'='${env.WORKSPACE}' -D'docker.container.id'='${env.BUILD_ID_UNIQUE}' start-container -logger phing.listener.AnsiColorLogger"
              }
 
             try {
@@ -39,10 +37,10 @@ def createWorkflow() {
                 }
 
                 stage('Test') {
-                    //dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
-                    //timeout(time: 2, unit: 'HOURS') {
-                    //    dockerExecute('./ssk/phing', 'behat')
-                    //}
+                    dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    timeout(time: 2, unit: 'HOURS') {
+                        dockerExecute('./ssk/phing', 'behat')
+                    }
                 }
 
                 stage('Package') {
@@ -55,8 +53,7 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                //sh "./ssk/phing -D'docker.container.workspace'='${env.WORKSPACE}' -D'docker.container.id'='${env.BUILD_ID_UNIQUE}' stop-container"
-                //sh "docker-compose -f ${env.WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml down"
+                sh "./ssk/phing -D'docker.container.workspace'='${env.WORKSPACE}' -D'docker.container.id'='${env.BUILD_ID_UNIQUE}' stop-container -logger phing.listener.AnsiColorLogger"
             }
         }
 }
