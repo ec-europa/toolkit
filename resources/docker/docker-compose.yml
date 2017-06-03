@@ -33,6 +33,8 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     expose:
       - '3306'
+    volumes:
+      - /usr/share/platform:/docker-entrypoint-initdb.d
   #redis:
   #  image: fpfis/redis
   #varnish:

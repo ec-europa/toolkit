@@ -3,8 +3,10 @@
 
     <target name="start-container" description="Start docker container">
         <echo msg="Starting container for ${env.BUILD_ID_UNIQUE}" />
-        <mkdir dir="${env.WORKSPACE}/platform" /> 
-        <exec command="docker-compose -p ${env.BUILD_ID_UNIQUE} -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d" passthru="true" />
+        <mkdir dir="${platform.build.dir}" /> 
+        <mkdir dir="${share.platform.path}/databases/platform-dev-${platform.package.reference}" />
+        <!-- <exec command="docker-compose -p ${env.BUILD_ID_UNIQUE} -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d" passthru="true" /> -->
+        <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${env.BUILD_ID_UNIQUE} -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml -f load-db.yml up -d" passthru="true" />
     </target>
 
     <target name="stop-container" description="Stop docker container">
