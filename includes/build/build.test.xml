@@ -19,17 +19,19 @@
             </and>
             <then>
                 <phingcall target="drush-regenerate-settings" />
-                <try>
-                    <!-- Only perform import when we fail to bootstrap correctly. -->
-                    <!-- Otherwise we have probably already imported the db on container creation.. -->
-                    <phingcall target="drush-status-bootstrap" />
-                </try>
-                <catch>
-                    <phingcall target="drush-sql-create" />
-                    <phingcall target="drush-sql-import">
-                        <property name="database-file" value="${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.sql" />
-                    </phingcall>
-                </catch>
+                <trycatch>
+                    <try>
+                        <!-- Only perform import when we fail to bootstrap correctly. -->
+                        <!-- Otherwise we have probably already imported the db on container creation.. -->
+                        <phingcall target="drush-status-bootstrap" />
+                    </try>
+                    <catch>
+                        <phingcall target="drush-sql-create" />
+                        <phingcall target="drush-sql-import">
+                            <property name="database-file" value="${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.sql" />
+                        </phingcall>
+                    </catch>
+                </trycatch>
             </then>
             <else>
                 <!-- Install site with drush. -->
