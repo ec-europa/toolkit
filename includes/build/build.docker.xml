@@ -2,8 +2,8 @@
 <project name="My subsite" default="help">
 
     <target name="start-container" description="Start docker container">
-        <echo msg="Starting container for ${BUILD_ID_UNIQUE}" />
-        <mkdir dir="${WORKSPACE}/platform" /> 
+        <echo msg="Starting container for ${env.BUILD_ID_UNIQUE}" />
+        <mkdir dir="${env.WORKSPACE}/platform" /> 
         <exec command="docker-compose -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d" />
     </target>
 
