@@ -2,15 +2,13 @@
 <project name="My subsite" default="help">
 
     <target name="start-container" description="Start docker container">
-        <echo msg="Starting container for ${docker.container.id}" />
-        <mkdir dir="${docker.container.workspace}/platform" /> 
-        <!--<exec command="BUILD_ID_UNIQUE=${docker.container.id} WORKSPACE=${docker.container.workspace} docker-compose -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d" /> -->
+        <echo msg="Starting container for ${BUILD_ID_UNIQUE}" />
+        <mkdir dir="${WORKSPACE}/platform" /> 
         <exec command="docker-compose -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d" />
     </target>
 
     <target name="stop-container" description="Stop docker container">
-        <echo msg="Stopping container for ${docker.container.id}" />
-        <!-- <exec command="BUILD_ID_UNIQUE=${docker.container.id} WORKSPACE=${docker.container.workspace} docker-compose -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml down" /> -->
+        <echo msg="Stopping container for ${BUILD_ID_UNIQUE}" />
         <exec command="docker-compose -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml down" />
     </target>
 
