@@ -11,7 +11,6 @@ def createWorkflow() {
         ])
 
         // Set some variables.
-        def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
         def buildName = "${env.JOB_NAME}".replaceAll('%2F','_').replaceAll('/','_').replaceAll('-','_').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
 
@@ -25,7 +24,7 @@ def createWorkflow() {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
                 sh "mkdir -p ${WORKSPACE}/platform"
-                sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d"
+                //sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d"
              }
 
             try {

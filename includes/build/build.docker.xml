@@ -7,7 +7,7 @@
             BUILD_ID_UNIQUE=${project.id}_${docker.container.id} \
             WORKSPACE=${docker.container.workspace} \
             docker-compose -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml \
-            -v ${docker.container.workspace}:/${docker.container.workspace} up -d"
+            -v ${docker.container.workspace}:/var/www/html up -d"
         />
     </target>
 
