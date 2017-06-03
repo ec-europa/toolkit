@@ -55,7 +55,7 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                sh "./ssk/phing -D'docker.container.workspace'='${env.WORKSPACE}' -D'docker.container.id'='${env.BUILD_ID_UNIQUE}' stop-container"
+                //sh "./ssk/phing -D'docker.container.workspace'='${env.WORKSPACE}' -D'docker.container.id'='${env.BUILD_ID_UNIQUE}' stop-container"
                 //sh "docker-compose -f ${env.WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml down"
             }
         }
