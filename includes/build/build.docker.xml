@@ -9,7 +9,7 @@
 
     <target name="stop-container" description="Stop docker container">
         <echo msg="Stopping container for ${env.BUILD_ID_UNIQUE}" />
-        <exec command="docker-compose -p ${env.BUILD_ID_UNIQUE} -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml down --rmi all --volumes" passthru="true" />
+        <exec command="docker-compose -p ${env.BUILD_ID_UNIQUE} -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml down --rmi local --volumes" passthru="true" />
     </target>
 
     <target name="start-container-old" description="Start docker container">
