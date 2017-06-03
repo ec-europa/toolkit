@@ -23,7 +23,7 @@ def createWorkflow() {
             stage('Init') {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
-                sh "mkdir -p ${WORKSPACE}/platform"
+                //sh "mkdir -p ${WORKSPACE}/platform"
                 //sh "docker-compose -f ${WORKSPACE}/vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d"
              }
 
