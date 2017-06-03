@@ -7,8 +7,8 @@ services:
     environment:
       DOCUMENT_ROOT: /var/www/html/platform
       COMPOSER_CACHE_DIR: /var/cache/composer
-    ports:
-      - 8081:8080
+    #ports:
+    #  - 8081:8080
     volumes:
       - ${WORKSPACE}:/var/www/html
       - /usr/share/composer:/usr/share/composer
@@ -19,6 +19,8 @@ services:
     links:
       - mysql:mysql
       - selenium:selenium
+    expose:
+      - '8080'
   mysql:
     image: mysql:5.6
     container_name: ${BUILD_ID_UNIQUE}_mysql
