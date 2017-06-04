@@ -7,7 +7,6 @@ services:
     environment:
       DOCUMENT_ROOT: /var/www/html/platform
       COMPOSER_CACHE_DIR: /var/cache/composer
-      PATH: "/var/www/html/vendor/ec-europa/ssk/includes/composer/bin:$$PATH"
     #ports:
     #  - 8081:8080
     volumes:
