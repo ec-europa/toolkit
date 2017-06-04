@@ -27,24 +27,24 @@ def createWorkflow() {
 
             try {
                 stage('Check') {
-                    dockerExecute('./ssk/phing', 'setup-php-codesniffer')
-                    dockerExecute('./ssk/phpcs', 'lib/') 
+                    dockerExecute('phing', 'setup-php-codesniffer')
+                    dockerExecute('phpcs', 'lib/') 
                 }
 
 
                 stage('Build') {
-                    dockerExecute('./ssk/phing', "build-dev -D'platform.package.reference'='${params.platformPackageReference}' -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'")
+                    dockerExecute('phing', "build-dev -D'platform.package.reference'='${params.platformPackageReference}' -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'")
                 }
 
                 stage('Test') {
-                    //dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    //dockerExecute('phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
                     //timeout(time: 2, unit: 'HOURS') {
-                    //    dockerExecute('./ssk/phing', 'behat')
+                    //    dockerExecute('phing', 'behat')
                     //}
                 }
 
                 stage('Package') {
-                    dockerExecute('./ssk/phing', "build-release -D'project.release.name'='${env.BUILD_ID_UNIQUE}'")
+                    dockerExecute('phing', "build-release -D'project.release.name'='${env.BUILD_ID_UNIQUE}'")
                     setBuildStatus("Build complete.", "SUCCESS");
                     slackSend color: "good", message: "Subsite build ${buildLink} completed."
                 }
@@ -69,7 +69,7 @@ void setBuildStatus(String message, String state) {
 
 def dockerExecute(String executable, String command) {
     switch("${executable}") {
-        case "./ssk/phing":
+        case "phing":
             color = "-logger phing.listener.AnsiColorLogger"
             break
         case "composer":
