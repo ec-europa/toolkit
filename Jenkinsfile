@@ -37,10 +37,10 @@ def createWorkflow() {
                 }
 
                 stage('Test') {
-                    dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
-                    timeout(time: 2, unit: 'HOURS') {
-                        dockerExecute('./ssk/phing', 'behat')
-                    }
+                    //dockerExecute('./ssk/phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    //timeout(time: 2, unit: 'HOURS') {
+                    //    dockerExecute('./ssk/phing', 'behat')
+                    //}
                 }
 
                 stage('Package') {
@@ -53,7 +53,7 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                sh "./ssk/phing stop-container -logger phing.listener.AnsiColorLogger"
+                //sh "./ssk/phing stop-container -logger phing.listener.AnsiColorLogger"
             }
         }
 }
