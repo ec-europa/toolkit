@@ -5,7 +5,6 @@
         <echo msg="Starting container for ${env.BUILD_ID_UNIQUE}" />
         <mkdir dir="${platform.build.dir}" /> 
         <mkdir dir="${share.platform.path}/databases/platform-dev-${platform.package.reference}" />
-        <!-- <exec command="docker-compose -p ${env.BUILD_ID_UNIQUE} --project-directory  ${subsite.starterkit.root}/resources/docker/docker-compose.yml up -d" passthru="true" /> -->
         <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose --project-directory  ${project.starterkit.root}/resources/docker up -d" passthru="true" />
         <!-- <rel-sym link="${project.basedir}/${env.BUILD_ID_UNIQUE}" target="${subsite.starterkit.root/resources}/docker/dbash" overwrite="true" />
         <exec command="${project.basedir}/${env.BUILD_ID_UNIQUE} status" /> -->
