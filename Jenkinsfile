@@ -51,7 +51,7 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                //sh "./ssk/phing stop-container -D'container.id'='${env.BUILD_ID_UNIQUE}' -logger phing.listener.AnsiColorLogger"
+                sh "./ssk/phing stop-container -D'container.id'='${env.BUILD_ID_UNIQUE}' -logger phing.listener.AnsiColorLogger"
             }
         }
 }
