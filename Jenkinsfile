@@ -16,8 +16,7 @@ def createWorkflow() {
         def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
 
         withEnv([
-            "BUILD_ID_UNIQUE=${buildName}_${buildId}", \
-            "WORKSPACE"=${env.WORKSPACE}",
+            "BUILD_ID_UNIQUE=${buildName}_${buildId}","WORKSPACE"=${env.WORKSPACE}"
         ]) {
 
             stage('Init') {
