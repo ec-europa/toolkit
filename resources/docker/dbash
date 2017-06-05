@@ -20,7 +20,7 @@ SCRIPT_PATH=`pwd`;
 popd  > /dev/null
 
 # Execute with docker-compose.
-docker-compose -p ${BUILD_ID_UNIQUE} -f ${SCRIPT_PATH}/docker-compose.yml $@
+$(which docker-compose) -p ${BUILD_ID_UNIQUE} -f ${SCRIPT_PATH}/docker-compose.yml $@
 
 # Remove symlink if we are executing down.
 if [ $1 = "down" ]; then
