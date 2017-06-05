@@ -3,14 +3,14 @@ services:
   web:
     image: fpfis/php56-dev
     build: ./docker-php
-    container_name: ${BUILD_ID_UNIQUE}_php
+    container_name: ${env.BUILD_ID_UNIQUE}_php
     environment:
       DOCUMENT_ROOT: /var/www/html/platform
       COMPOSER_CACHE_DIR: /var/cache/composer
     #ports:
     #  - 8081:8080
     volumes:
-      - ${WORKSPACE}:/var/www/html
+      - ${env.WORKSPACE}:/var/www/html
       - /usr/share/composer:/usr/share/composer
       - /usr/share/platform:/usr/share/platform
       - /usr/share/subsites:/usr/share/subsites
@@ -23,10 +23,10 @@ services:
       - '8080'
   mysql:
     image: mysql:5.6
-    container_name: ${BUILD_ID_UNIQUE}_mysql
+    container_name: ${env.BUILD_ID_UNIQUE}_mysql
     environment:
       MYSQL_ROOT_PASSWORD: ''
-      MYSQL_DATABASE: ${BUILD_ID_UNIQUE}
+      MYSQL_DATABASE: ${env.BUILD_ID_UNIQUE}
       MYSQL_USER: root
       MYSQL_PASSWORD: ''
       MYSQL_ROOT_HOST: '%'
@@ -42,11 +42,11 @@ services:
     # - http://127.0.0.1:8983/solr/d7_search_api
     # - http://127.0.0.1:8983/solr/d7_apachesolr
     image: fpfis/solr5
-    container_name: ${BUILD_ID_UNIQUE}_solr
+    container_name: ${env.BUILD_ID_UNIQUE}_solr
   selenium:
     image: selenium/standalone-chrome
     build: ./docker-sel
-    container_name: ${BUILD_ID_UNIQUE}_selenium
+    container_name: ${env.BUILD_ID_UNIQUE}_selenium
   composer:
     build: ./docker-com
     environment:
