@@ -5,14 +5,16 @@
         <echo msg="Starting container for ${env.BUILD_ID_UNIQUE}" />
         <mkdir dir="${platform.build.dir}" /> 
         <mkdir dir="${share.platform.path}/databases/platform-dev-${platform.package.reference}" />
-        <exec command="BUILD_ID_UNIQUE=${env.BUILD_ID_UNIQUE} WORKSPACE=${env.WORKSPACE} DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose --project-directory  ${project.starterkit.root}/resources/docker -f ${project.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate" passthru="true" logoutput="true" />
+        <property name="BUILD_ID_UNIQUE" value="${env.BUILD_ID_UNIQUE}" override="true" />
+        <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose --project-directory  ${project.starterkit.root}/resources/docker -f ${project.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate" passthru="true" logoutput="true" />
         <!-- <rel-sym link="${project.basedir}/${env.BUILD_ID_UNIQUE}" target="${subsite.starterkit.root/resources}/docker/dbash" overwrite="true" />
         <exec command="${project.basedir}/${env.BUILD_ID_UNIQUE} status" /> -->
     </target>
 
     <target name="stop-container" description="Stop docker container">
         <echo msg="Stopping container for ${env.BUILD_ID_UNIQUE}" />
-        <exec command="BUILD_ID_UNIQUE=${env.BUILD_ID_UNIQUE} WORKSPACE=${env.WORKSPACE} docker-compose  --project-directory  ${project.starterkit.root}/resources/docker -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" passthru="true" />
+        <property name="BUILD_ID_UNIQUE" value="${env.BUILD_ID_UNIQUE}" override="true" />
+        <exec command="docker-compose  --project-directory  ${project.starterkit.root}/resources/docker -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" passthru="true" />
         <!-- <delete file="${project.basedir}/${env.BUILD_ID_UNIQUE}" /> -->
     </target>
 
