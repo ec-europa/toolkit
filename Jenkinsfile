@@ -26,24 +26,24 @@ def createWorkflow() {
 
             try {
                 stage('Check') {
-                    dockerExecute('phing', 'setup-php-codesniffer')
-                    dockerExecute('phpcs', 'lib/') 
+                    dockerExecute('phing', 'setup-php-codesniffer', ${env.BUILD_ID_UNIQUE})
+                    dockerExecute('phpcs', 'lib/', ${env.BUILD_ID_UNIQUE}) 
                 }
 
 
                 stage('Build') {
-                    dockerExecute('phing', "build-dev -D'platform.package.reference'='${params.platformPackageReference}' -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'")
+                    dockerExecute('phing', "build-dev -D'platform.package.reference'='${params.platformPackageReference}' -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'", ${env.BUILD_ID_UNIQUE})
                 }
 
                 stage('Test') {
-                    //dockerExecute('phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    //dockerExecute('phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'", ${env.BUILD_ID_UNIQUE})
                     //timeout(time: 2, unit: 'HOURS') {
                     //    dockerExecute('phing', 'behat')
                     //}
                 }
 
                 stage('Package') {
-                    dockerExecute('phing', "build-release -D'project.release.name'='${env.BUILD_ID_UNIQUE}'")
+                    dockerExecute('phing', "build-release -D'project.release.name'='${env.BUILD_ID_UNIQUE}'", ${env.BUILD_ID_UNIQUE})
                     setBuildStatus("Build complete.", "SUCCESS");
                     slackSend color: "good", message: "Subsite build ${buildLink} completed."
                 }
@@ -66,7 +66,7 @@ void setBuildStatus(String message, String state) {
     ]);
 }
 
-def dockerExecute(String executable, String command) {
+def dockerExecute(String executable, String command, String id) {
     switch("${executable}") {
         case "phing":
             color = "-logger phing.listener.AnsiColorLogger"
@@ -78,7 +78,7 @@ def dockerExecute(String executable, String command) {
             color = ""
             break
     }
-    sh "docker exec -u jenkins ${BUILD_ID_UNIQUE}_php ${executable} ${command} ${color}"
+    sh "docker exec -u jenkins ${id}_php ${executable} ${command} ${color}"
 }
 
 return this;
