@@ -12,7 +12,7 @@
 
     <target name="stop-container" description="Stop docker container">
         <echo msg="Stopping container for ${env.BUILD_ID_UNIQUE}" />
-        <exec command="docker-compose  --project-directory  ${project.starterkit.root}/resources/docker down --volumes" passthru="true" />
+        <exec command="docker-compose  --project-directory  ${project.starterkit.root}/resources/docker -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" passthru="true" />
         <!-- <delete file="${project.basedir}/${env.BUILD_ID_UNIQUE}" /> -->
     </target>
 
