@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#BUILD_ID_UNIQUE=ec_europa_erasmus_reference_PR_60_3a2b5
+
+docker exec -u jenkins ${BUILD_ID_UNIQUE}_php "$@"
