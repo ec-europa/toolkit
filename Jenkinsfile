@@ -25,24 +25,24 @@ def createWorkflow() {
 
             try {
                 stage('Check') {
-                    dockerExecute('phing', 'setup-php-codesniffer', ${env.BUILD_ID_UNIQUE})
-                    dockerExecute('phpcs', 'lib/', ${env.BUILD_ID_UNIQUE}) 
+                    dockerExecute('phing', 'setup-php-codesniffer', "${env.BUILD_ID_UNIQUE}")
+                    dockerExecute('phpcs', 'lib/', "${env.BUILD_ID_UNIQUE}") 
                 }
 
 
                 stage('Build') {
-                    dockerExecute('phing', "build-dev -D'platform.package.reference'='${params.platformPackageReference}' -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'", ${env.BUILD_ID_UNIQUE})
+                    dockerExecute('phing', "build-dev -D'platform.package.reference'='${params.platformPackageReference}' -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'", "${env.BUILD_ID_UNIQUE}")
                 }
 
                 stage('Test') {
-                    //dockerExecute('phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'", ${env.BUILD_ID_UNIQUE})
+                    //dockerExecute('phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'", "${env.BUILD_ID_UNIQUE}")
                     //timeout(time: 2, unit: 'HOURS') {
                     //    dockerExecute('phing', 'behat')
                     //}
                 }
 
                 stage('Package') {
-                    dockerExecute('phing', "build-release -D'project.release.name'='${env.BUILD_ID_UNIQUE}'", ${env.BUILD_ID_UNIQUE})
+                    dockerExecute('phing', "build-release -D'project.release.name'='${env.BUILD_ID_UNIQUE}'", "${env.BUILD_ID_UNIQUE}")
                     setBuildStatus("Build complete.", "SUCCESS");
                     slackSend color: "good", message: "Subsite build ${buildLink} completed."
                 }
