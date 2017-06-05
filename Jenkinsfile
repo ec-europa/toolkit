@@ -21,7 +21,7 @@ def createWorkflow() {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
                 //sh "./ssk/phing  start-container -logger phing.listener.AnsiColorLogger"
-                sh "docker-compose --project-directory vendor/ec-europa/ssk/resources/docker -f /vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d  --no-recreate"
+                sh "docker-compose --project-directory vendor/ec-europa/ssk/resources/docker -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml up -d  --no-recreate"
              }
 
             try {
@@ -53,7 +53,7 @@ def createWorkflow() {
                 throw(err)
             } finally {
                 //sh "./ssk/phing stop-container -logger phing.listener.AnsiColorLogger"
-                sh "docker-compose --project-directory vendor/ec-europa/ssk/resources/docker -f /vendor/ec-europa/ssk/resources/docker/docker-compose.yml down"
+                sh "docker-compose --project-directory vendor/ec-europa/ssk/resources/docker -f vendor/ec-europa/ssk/resources/docker/docker-compose.yml down"
             }
         }
 }
