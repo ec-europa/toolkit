@@ -1,5 +1,28 @@
 #!/bin/bash
 
-#BUILD_ID_UNIQUE=ec_europa_erasmus_reference_PR_60_3a2b5
+# Set variables if needed.
+if [ $(basename $0) != "dbash" ]; then
+  export BUILD_ID_UNIQUE=$(basename $0)
+  export WORKSPACE=$(pwd)
+fi
 
-docker exec -u jenkins ${BUILD_ID_UNIQUE}_php "$@"
+# Get correct script path.
+pushd . > /dev/null
+SCRIPT_PATH="${BASH_SOURCE[0]}";
+if ([ -h "${SCRIPT_PATH}" ]) then
+  while([ -h "${SCRIPT_PATH}" ]) do
+    cd `dirname "$SCRIPT_PATH"`;
+    SCRIPT_PATH=`readlink "${SCRIPT_PATH}"`;
+  done
+fi
+cd `dirname ${SCRIPT_PATH}` > /dev/null
+SCRIPT_PATH=`pwd`;
+popd  > /dev/null
+
+# Execute with docker-compose.
+docker-compose -p ${BUILD_ID_UNIQUE} -f ${SCRIPT_PATH}/docker-compose.yml $@
+
+# Remove symlink if we are executing down.
+if [ $1 = "down" ]; then
+  rm -f ${BUILD_ID_UNIQUE}
+fi

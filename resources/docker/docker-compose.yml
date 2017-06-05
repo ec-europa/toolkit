@@ -1,7 +1,7 @@
 version: '2.1'
 services:
   web:
-    #image: fpfis/php56-dev
+    image: fpfis/php56-dev
     build: ./docker-php
     container_name: ${BUILD_ID_UNIQUE}_php
     environment:
@@ -44,7 +44,7 @@ services:
     image: fpfis/solr5
     container_name: ${BUILD_ID_UNIQUE}_solr
   selenium:
-    #image: selenium/standalone-chrome
+    image: selenium/standalone-chrome
     build: ./docker-sel
     container_name: ${BUILD_ID_UNIQUE}_selenium
   composer:
