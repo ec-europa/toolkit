@@ -77,7 +77,7 @@ def dockerExecute(String executable, String command) {
             color = ""
             break
     }
-    sh "docker exec -u jenkins ${env.BUILD_ID_UNIQUE}_php ${executable} ${command} ${color}"
+    sh "${env.BUILD_ID_UNIQUE} exec -u jenkins web ${executable} ${command} ${color}"
 }
 
 return this;
