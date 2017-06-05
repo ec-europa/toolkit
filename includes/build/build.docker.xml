@@ -12,7 +12,6 @@
 
     <target name="stop-container" description="Stop docker container">
         <echo msg="Stopping container for ${container.id}" />
-        <property name="BUILD_ID_UNIQUE" value="${container.id}" override="true" />
         <exec command="docker-compose -p ${container.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" passthru="true" />
         <delete file="${project.basedir}/${container.id}" />
     </target>
