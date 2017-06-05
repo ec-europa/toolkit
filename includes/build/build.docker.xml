@@ -2,19 +2,19 @@
 <project name="My subsite" default="help">
 
     <target name="start-container" description="Start docker container">
-        <echo msg="Starting container for ${env.BUILD_ID_UNIQUE}" />
+        <echo msg="Starting container for ${BUILD_ID_UNIQUE}" />
         <mkdir dir="${platform.build.dir}" /> 
         <mkdir dir="${share.platform.path}/databases/platform-dev-${platform.package.reference}" />
-        <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${env.BUILD_ID_UNIQUE} -f ${project.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate" passthru="true" />
-        <rel-sym link="${project.basedir}/${env.BUILD_ID_UNIQUE}" target="${project.starterkit.root}/resources/docker/dbash" overwrite="true" />
-        <exec command="${project.basedir}/${env.BUILD_ID_UNIQUE} ps" />
+        <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${BUILD_ID_UNIQUE} -f ${project.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate" passthru="true" />
+        <rel-sym link="${project.basedir}/${BUILD_ID_UNIQUE}" target="${project.starterkit.root}/resources/docker/dbash" overwrite="true" />
+        <exec command="${project.basedir}/${BUILD_ID_UNIQUE} ps" />
     </target>
 
     <target name="stop-container" description="Stop docker container">
-        <echo msg="Stopping container for ${env.BUILD_ID_UNIQUE}" />
-        <property name="BUILD_ID_UNIQUE" value="${env.BUILD_ID_UNIQUE}" override="true" />
-        <exec command="docker-compose -p ${env.BUILD_ID_UNIQUE} -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" passthru="true" />
-        <delete file="${project.basedir}/${env.BUILD_ID_UNIQUE}" />
+        <echo msg="Stopping container for ${BUILD_ID_UNIQUE}" />
+        <property name="BUILD_ID_UNIQUE" value="${BUILD_ID_UNIQUE}" override="true" />
+        <exec command="docker-compose -p ${BUILD_ID_UNIQUE} -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" passthru="true" />
+        <delete file="${project.basedir}/${BUILD_ID_UNIQUE}" />
     </target>
 
     <target name="start-container-old" description="Start docker container">
