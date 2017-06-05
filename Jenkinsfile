@@ -18,7 +18,6 @@ def createWorkflow() {
         withEnv(["BUILD_ID_UNIQUE=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}"]) {
 
             stage('Init') {
-                echo "${WORKSPACE}"
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
                 sh "./ssk/phing  start-container -logger phing.listener.AnsiColorLogger"

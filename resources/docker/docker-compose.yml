@@ -10,7 +10,7 @@ services:
     #ports:
     #  - 8081:8080
     volumes:
-      - ${env.WORKSPACE}:/var/www/html
+      - ${WORKSPACE}:/var/www/html
       - /usr/share/composer:/usr/share/composer
       - /usr/share/platform:/usr/share/platform
       - /usr/share/subsites:/usr/share/subsites
