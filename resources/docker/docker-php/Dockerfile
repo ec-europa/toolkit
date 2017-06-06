@@ -2,8 +2,8 @@ FROM fpfis/php56-dev
 
 ENV PATH="/var/www/html/vendor/ec-europa/ssk/includes/composer/bin:${PATH}"
 
-RUN groupadd -g 1000 jenkins
-RUN useradd -g jenkins -u 1000 -m jenkins
+#RUN groupadd -g 1000 jenkins
+#RUN useradd -g jenkins -u 1000 -m jenkins
 #RUN gpasswd -a jenkins apache
 #RUN usermod apache --append --groups jenkins
 
