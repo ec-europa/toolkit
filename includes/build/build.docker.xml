@@ -15,9 +15,10 @@
     <target name="docker-stop-project" description="Stop docker project.">
         <echo msg="Stopping container for ${docker.project.id}" />
         <exec command="docker-compose -p ${docker.project.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml stop" />
-        <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
+        <exec command="${project.basedir}/ssk-${docker.project.id} ps" outputProperty="docker-stop-project-report" />
         <exec command="docker-compose -p ${docker.project.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" />
-        <exec command="rm -f ${project.basedir}/ssk-${docker.project.id}" />
+        <delete file="${project.basedir}/ssk-${docker.project.id}" />
+        <echo msg="${docker-stop-project-report}" />
     </target>
 
 </project>
