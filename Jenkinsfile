@@ -15,34 +15,34 @@ def createWorkflow() {
         def buildName = "${env.JOB_NAME}".replaceAll('ec-europa/','').replaceAll('-reference/','').replaceAll('/','_').replaceAll('-','_').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
 
-        withEnv(["BUILD_ID_UNIQUE=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}",'TERM=xterm']) {
+        withEnv(["BUILD_ID_UNIQUE=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}"]) {
 
             stage('Init') {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
-                sh "./ssk/phing  docker-start-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}' -logger phing.listener.AnsiColorLogger"
+                shellExecute('jenkins', 'phing', "docker-start-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
              }
 
             try {
                 stage('Check') {
-                    dockerExecute('phing', 'setup-php-codesniffer')
-                    dockerExecute('phpcs', 'lib/') 
+                    shellExecute('docker', 'phing', 'setup-php-codesniffer')
+                    shellExecute('docker', 'phpcs', 'lib/') 
                 }
 
 
                 stage('Build') {
-                    dockerExecute('phing', "build-dev -D'platform.package.reference'='${params.platformPackageReference}' -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'")
+                    shellExecute('docker', 'phing', "build-dev -D'platform.package.reference'='${params.platformPackageReference}' -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'")
                 }
 
                 stage('Test') {
-                    //dockerExecute('phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    //shellExecute('docker', 'phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
                     //timeout(time: 2, unit: 'HOURS') {
-                    //    dockerExecute('phing', 'behat')
+                    //    shellExecute('docker', 'phing', 'behat')
                     //}
                 }
 
                 stage('Package') {
-                    dockerExecute('phing', "build-release -D'project.release.name'='${env.BUILD_ID_UNIQUE}'")
+                    shellExecute('docker', 'phing', "build-release -D'project.release.name'='${env.BUILD_ID_UNIQUE}'")
                     setBuildStatus("Build complete.", "SUCCESS");
                     slackSend color: "good", message: "Subsite build ${buildLink} completed."
                 }
@@ -51,7 +51,7 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                sh "./ssk/phing docker-stop-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}' -logger phing.listener.AnsiColorLogger"
+                shellExecute('jenkins', 'phing', "docker-stop-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
             }
         }
 }
@@ -65,7 +65,15 @@ void setBuildStatus(String message, String state) {
     ]);
 }
 
-def dockerExecute(String executable, String command) {
+def shellExecute(String environment, String executable, String command) {
+    switch("${environment}") {
+        case "jenkins":
+            prefix = ""
+            break
+        case "docker":
+            prefix = "./ssk-${env.BUILD_ID_UNIQUE} exec -T --user jenkins web"
+            break
+
     switch("${executable}") {
         case "phing":
             color = "-logger phing.listener.AnsiColorLogger"
@@ -77,7 +85,7 @@ def dockerExecute(String executable, String command) {
             color = ""
             break
     }
-    sh "./ssk-${env.BUILD_ID_UNIQUE} exec -T --user jenkins web ${executable} ${command} ${color}"
+    sh "${prefix} ${executable} ${command} ${color}"
 }
 
 return this;
