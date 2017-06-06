@@ -17,6 +17,7 @@
         "shared-package": {
             "install-binaries": true,
             "package-exclude-list": [
+                "behat/behat",
                 "cweagans/composer-patches",
                 "phing/phing"
             ],
