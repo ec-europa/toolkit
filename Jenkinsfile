@@ -15,7 +15,7 @@ def createWorkflow() {
         def buildName = "${env.JOB_NAME}".replaceAll('ec-europa/','').replaceAll('-reference/','').replaceAll('/','_').replaceAll('-','_').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
 
-        withEnv(["BUILD_ID_UNIQUE=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}"]) {
+        withEnv(["BUILD_ID_UNIQUE=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}","PATH+SSK=${env.WORKSPACE}/ssk"]) {
 
             stage('Init') {
                 setBuildStatus("Build started.", "PENDING");
