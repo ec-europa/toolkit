@@ -11,10 +11,10 @@ ENV PATH="/var/www/html/vendor/ec-europa/ssk/includes/composer/bin:${PATH}"
 
 #USER jenkins
 
-#ADD configs/composer.json /root/.composer/composer.json
-ADD configs/composer.json /tmp/.composer/composer.json
+ADD configs/composer.json ~/.composer/composer.json
+#ADD configs/composer.json /tmp/.composer/composer.json
 
-RUN composer install --working-dir=/tmp/.composer
+RUN composer install --working-dir=~/.composer
 
 RUN curl -o ~/registry_rebuild-7.x-2.5.tar.gz -sS "https://ftp.drupal.org/files/projects/registry_rebuild-7.x-2.5.tar.gz" && \
     mkdir -p ~/.drush/registry_rebuild && \
