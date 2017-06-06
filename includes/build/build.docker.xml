@@ -3,22 +3,19 @@
 
     <target name="docker-start-project" description="Start docker project.">
         <echo msg="Starting container for ${docker.project.id}" />
-        <!-- Container needs this folder to exist for php to be able to start. -->
         <mkdir dir="${platform.build.dir}" /> 
-        <!-- Container needs this folder to exist for mounting a db if there is one in the folder. -->
         <mkdir dir="${share.platform.path}/databases/platform-dev-${platform.package.reference}" />
-        <!-- Start containers for all services in the docker-compose.yml. -->
-        <!-- @TODO: make services selectable in configuration? -->
         <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${docker.project.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate" />
-        <!-- Create a symlink for easy access to the containers. -->
         <rel-sym link="${project.basedir}/ssk-${docker.project.id}" target="${project.starterkit.root}/resources/docker/dbash" overwrite="true" />
-        <!-- Show the available containers for this project a.k.a build. -->
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
     </target>
 
     <target name="docker-stop-project" description="Stop docker project.">
         <echo msg="Stopping container for ${docker.project.id}" />
-        <exec command="docker-compose -p ${docker.project.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" passthru="true" />
+        <exec command="docker-compose -p ${docker.project.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml stop" />
+        <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
+        <echo msg="Removing container and volumes for ${docker.project.id}" />
+        <exec command="docker-compose -p ${docker.project.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" />
         <delete file="${project.basedir}/ssk-${docker.project.id}" />
     </target>
 
