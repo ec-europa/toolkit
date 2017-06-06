@@ -22,7 +22,7 @@
                 "ec-europa/ssk",
                 "phing/phing"
             ],
-            "symlink-dir": "vendor",
+            "symlink-dir": "vendor-shared",
             "vendor-dir": "/usr/share/composer"
         }
     }
