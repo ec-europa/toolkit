@@ -2,7 +2,7 @@
 <project name="My subsite" default="help">
 
     <!-- Start an environment with docker. -->
-    <target name="docker-start-project" description="Start docker project.">
+    <target name="docker-compose-up" description="Start docker project.">
         <echo msg="Starting containers for ${docker.project.id}" />
         <mkdir dir="${platform.build.dir}" /> 
         <mkdir dir="${share.platform.path}/databases/platform-dev-${platform.package.reference}" />
@@ -12,14 +12,14 @@
     </target>
 
     <!-- Stop docker environment. -->
-    <target name="docker-stop-project" description="Stop docker project.">
+    <target name="docker-compose-stop" description="Stop docker project.">
         <echo msg="Stopping containers for ${docker.project.id}" />
         <exec command="docker-compose -p ${docker.project.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml stop" />
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
     </target>
 
     <!-- Remove docker environment. -->
-    <target name="docker-trash-project" description="Trash docker project.">
+    <target name="docker-compose-down" description="Trash docker project.">
         <echo msg="Removing containers and volumes for ${docker.project.id}" />
         <exec command="docker-compose -p ${docker.project.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" />
         <delete file="${project.basedir}/ssk-${docker.project.id}" />

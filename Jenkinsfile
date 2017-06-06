@@ -20,7 +20,7 @@ def createWorkflow() {
             stage('Init') {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
-                shellExecute('jenkins', 'phing', "docker-start-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
+                shellExecute('jenkins', 'phing', "docker-compose-up -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
              }
 
             try {
@@ -51,8 +51,8 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                shellExecute('jenkins', 'phing', "docker-stop-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
-                shellExecute('jenkins', 'phing', "docker-trash-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
+                shellExecute('jenkins', 'phing', "docker-compose-stop -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
+                shellExecute('jenkins', 'phing', "docker-compose-down -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
             }
         }
 }
