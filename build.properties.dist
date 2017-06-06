@@ -374,3 +374,10 @@ share.global.path = /usr/share
 share.platform.path = ${share.global.path}/platform
 share.subsites.path = ${share.global.path}/subsites
 share.composer.path = ${share.global.path}/composer
+
+
+# Docker
+# ------
+
+# Default project id.
+docker.project.id = environment

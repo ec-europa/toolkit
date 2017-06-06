@@ -1,33 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="My subsite" default="help">
 
-    <target name="start-container" description="Start docker container">
-        <echo msg="Starting container for ${container.id}" />
+    <target name="docker-start-project" description="Start docker project.">
+        <echo msg="Starting container for ${docker.project.id}" />
+        <!-- Container needs this folder to exist for php to be able to start. -->
         <mkdir dir="${platform.build.dir}" /> 
+        <!-- Container needs this folder to exist for mounting a db if there is one in the folder. -->
         <mkdir dir="${share.platform.path}/databases/platform-dev-${platform.package.reference}" />
-        <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${container.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate" passthru="true" />
-        <rel-sym link="${project.basedir}/${container.id}" target="${project.starterkit.root}/resources/docker/dbash" overwrite="true" />
-        <exec command="${project.basedir}/${container.id} ps" />
+        <!-- Start containers for all services in the docker-compose.yml. -->
+        <!-- @TODO: make services selectable in configuration? -->
+        <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${docker.project.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate" />
+        <!-- Create a symlink for easy access to the containers. -->
+        <rel-sym link="${project.basedir}/ssk-${docker.project.id}" target="${project.starterkit.root}/resources/docker/dbash" overwrite="true" />
+        <!-- Show the available containers for this project a.k.a build. -->
+        <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
     </target>
 
-    <target name="stop-container" description="Stop docker container">
-        <echo msg="Stopping container for ${container.id}" />
-        <exec command="docker-compose -p ${container.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" passthru="true" />
-        <delete file="${project.basedir}/${container.id}" />
-    </target>
-
-    <target name="start-container-old" description="Start docker container">
-        <echo msg='Starting container "${docker.container.name}".' />
-        <exec command="docker run --name ${docker.container.name} -p 127.0.0.1:80:80 -v ${jenkins.workspace.dir}:/web -v${jenkins.cache.dir}:${jenkins.cache.dir} -w /web -d dev-server:latest" />
-        <exec command="docker start ${docker.container.name}" />
-        <!--<exec command="docker exec ${docker.container.name} while ! echo Ready for install. | nc ${drupal.db.host} ${drupal.db.port}; do echo Waiting for mysql...; sleep 2; done" /> -->
-        <exec command="sleep 15" />
-    </target>
-
-    <target name="stop-container-old" description="Drop database, stop and remove container">
-        <echo msg='Stopping container "${docker.container.name}".' />
-        <exec command="docker exec ${docker.container.name} ./bin/phing drush-sql-drop" />
-        <exec command="docker stop ${docker.container.name}; docker rm $(docker ps -aq)" />
+    <target name="docker-stop-project" description="Stop docker project.">
+        <echo msg="Stopping container for ${docker.project.id}" />
+        <exec command="docker-compose -p ${docker.project.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" passthru="true" />
+        <delete file="${project.basedir}/ssk-${docker.project.id}" />
     </target>
 
 </project>

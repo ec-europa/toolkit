@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # Set variables if needed.
-if [ $(basename $0) != "dbash" ]; then
-  export BUILD_ID_UNIQUE=$(basename $0)
+FILENAME=$(basename $0)
+if [ $FILENAME != "dbash" ]; then
+  export BUILD_ID_UNIQUE=${FILENAME#ssk-}
   export WORKSPACE=$(pwd)
 fi
 
@@ -23,6 +24,6 @@ popd  > /dev/null
 $(which docker-compose) -p ${BUILD_ID_UNIQUE} -f ${SCRIPT_PATH}/docker-compose.yml $@
 
 # Remove symlink if we are executing down.
-if [ $1 = "down" ]; then
-  rm -f ${BUILD_ID_UNIQUE}
+if [ "$1" = "down" ]; then
+  rm -f ssk-${BUILD_ID_UNIQUE}
 fi
