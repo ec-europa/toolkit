@@ -66,6 +66,7 @@ void setBuildStatus(String message, String state) {
 }
 
 def shellExecute(String environment, String executable, String command) {
+
     switch("${environment}") {
         case "jenkins":
             prefix = ""
@@ -73,6 +74,7 @@ def shellExecute(String environment, String executable, String command) {
         case "docker":
             prefix = "./ssk-${env.BUILD_ID_UNIQUE} exec -T --user jenkins web"
             break
+    }
 
     switch("${executable}") {
         case "phing":
@@ -85,6 +87,7 @@ def shellExecute(String environment, String executable, String command) {
             color = ""
             break
     }
+
     sh "${prefix} ${executable} ${command} ${color}"
 }
 
