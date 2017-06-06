@@ -301,7 +301,7 @@
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${platform.build.subsite.dir}" />
             <arg value="--no-interaction" />
-            <!-- <arg value="--no-plugins" /> -->
+            <!-- <arg value="no-plugins" /> -->
             <arg value="--no-suggest" />
             <arg value="--ansi" />
         </composer>
