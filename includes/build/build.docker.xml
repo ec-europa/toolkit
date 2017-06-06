@@ -5,7 +5,7 @@
         <echo msg="Starting container for ${container.id}" />
         <mkdir dir="${platform.build.dir}" /> 
         <mkdir dir="${share.platform.path}/databases/platform-dev-${platform.package.reference}" />
-        <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${container.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml-f vendor/ec-europa/ssk/resources/docker/load-db.yml up -d --no-recreate" passthru="true" />
+        <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${container.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate" passthru="true" />
         <rel-sym link="${project.basedir}/${container.id}" target="${project.starterkit.root}/resources/docker/dbash" overwrite="true" />
         <exec command="${project.basedir}/${container.id} ps" />
     </target>
