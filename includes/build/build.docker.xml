@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="My subsite" default="help">
 
+    <!-- Start an environment with docker. -->
     <target name="docker-start-project" description="Start docker project.">
         <echo msg="Starting container for ${docker.project.id}" />
         <mkdir dir="${platform.build.dir}" /> 
@@ -10,13 +11,13 @@
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
     </target>
 
+    <!-- Stop docker environment and cleanup. -->
     <target name="docker-stop-project" description="Stop docker project.">
         <echo msg="Stopping container for ${docker.project.id}" />
         <exec command="docker-compose -p ${docker.project.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml stop" />
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
-        <echo msg="Removing container and volumes for ${docker.project.id}" />
         <exec command="docker-compose -p ${docker.project.id} -f ${project.starterkit.root}/resources/docker/docker-compose.yml down --volumes" />
-        <delete file="${project.basedir}/ssk-${docker.project.id}" />
+        <exec command="rm -f ${project.basedir}/ssk-${docker.project.id}" />
     </target>
 
 </project>
