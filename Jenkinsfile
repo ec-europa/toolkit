@@ -20,7 +20,7 @@ def createWorkflow() {
             stage('Init') {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
-                sh "./ssk/phing  docker-start-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'"
+                sh "./ssk/phing  docker-start-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}' -logger phing.listener.AnsiColorLogger"
              }
 
             try {
@@ -51,7 +51,7 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                sh "./ssk/phing docker-stop-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'"
+                sh "./ssk/phing docker-stop-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}' -logger phing.listener.AnsiColorLogger"
             }
         }
 }
