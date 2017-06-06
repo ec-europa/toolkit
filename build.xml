@@ -2,6 +2,10 @@
 
 <project name="My subsite" default="help">
 
+    <php function="putenv">
+        <param value="TERM=xterm"/>
+    </php>
+
     <!-- Only output information on initial phing call. -->
     <property name="logoutput" value="true" />
     <property name="level" value="info" />
