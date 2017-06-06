@@ -52,6 +52,7 @@ def createWorkflow() {
                 throw(err)
             } finally {
                 shellExecute('jenkins', 'phing', "docker-stop-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
+                shellExecute('jenkins', 'phing', "docker-trash-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
             }
         }
 }
