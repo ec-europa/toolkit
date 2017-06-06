@@ -20,7 +20,6 @@ def createWorkflow() {
             stage('Init') {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
-                sh 'env'
                 sh "./ssk/phing  docker-start-project -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'"
              }
 
