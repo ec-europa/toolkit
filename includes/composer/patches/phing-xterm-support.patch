@@ -1,8 +1,8 @@
 diff --git a/bin/phing.php b/bin/phing.php
-index e414c24..428deb0 100644
+index e414c24..98c8172 100644
 --- a/bin/phing.php
 +++ b/bin/phing.php
-@@ -32,10 +32,13 @@ require_once 'phing/Phing.php';
+@@ -32,7 +32,10 @@ require_once 'phing/Phing.php';
  function hasColorSupport()
  {
      if (DIRECTORY_SEPARATOR == '\\') {
@@ -13,8 +13,4 @@ index e414c24..428deb0 100644
 +        || 'xterm' === getenv('TERM');
      }
      return function_exists('posix_isatty') && @posix_isatty(STDOUT);
--}
-+}}
- 
- // default logger
- if (!in_array('-logger', $argv) && hasColorSupport()) {
+ }
