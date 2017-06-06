@@ -69,7 +69,7 @@
       },
       "phing/phing": {
         "Customize terminal colors": "patches/phing-customize-colors.patch",
-        "Check for autoload from working dir": "patches/phing-shared-packages-autoload-compatibility.patch",
+        "Support xterm autocolor": "patches/phing-xterm-support.patch",
         "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch",
         "https://github.com/phingofficial/phing/issues/553": "patches/phing-hidden-input.patch"
       }

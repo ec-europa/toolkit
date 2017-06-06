@@ -1,0 +1,20 @@
+diff --git a/bin/phing.php b/bin/phing.php
+index e414c24..428deb0 100644
+--- a/bin/phing.php
++++ b/bin/phing.php
+@@ -32,10 +32,13 @@ require_once 'phing/Phing.php';
+ function hasColorSupport()
+ {
+     if (DIRECTORY_SEPARATOR == '\\') {
+-        return false !== getenv('ANSICON') || 'ON' === getenv('ConEmuANSI');
++        return 0 >= version_compare('10.0.10586', PHP_WINDOWS_VERSION_MAJOR.'.'.PHP_WINDOWS_VERSION_MINOR.'.'.PHP_WINDOWS_VERSION_BUILD)
++        || false !== getenv('ANSICON')
++        || 'ON' === getenv('ConEmuANSI')
++        || 'xterm' === getenv('TERM');
+     }
+     return function_exists('posix_isatty') && @posix_isatty(STDOUT);
+-}
++}}
+ 
+ // default logger
+ if (!in_array('-logger', $argv) && hasColorSupport()) {
