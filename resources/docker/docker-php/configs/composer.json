@@ -14,7 +14,7 @@
         }
     ],
     "extra": {
-        "shared-package": {
+        "_shared-package": {
             "install-binaries": true,
             "package-exclude-list": [
                 "cweagans/composer-patches",
