@@ -20,6 +20,7 @@
                 "behat/behat",
                 "cweagans/composer-patches",
                 "ec-europa/ssk",
+                "fabpot/goutte",
                 "phing/phing"
             ],
             "symlink-dir": "vendor-shared",
