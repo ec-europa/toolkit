@@ -35,10 +35,10 @@ def createWorkflow() {
                 }
 
                 stage('Test') {
-                    //shellExecute('docker', 'phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
-                    //timeout(time: 2, unit: 'HOURS') {
-                    //    shellExecute('docker', 'phing', 'behat')
-                    //}
+                    shellExecute('docker', 'phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    timeout(time: 2, unit: 'HOURS') {
+                        shellExecute('docker', 'phing', 'behat')
+                    }
                 }
 
                 stage('Package') {
