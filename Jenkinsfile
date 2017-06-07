@@ -51,8 +51,8 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                //shellExecute('jenkins', 'phing', "docker-compose-stop -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
-                //shellExecute('jenkins', 'phing', "docker-compose-down -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
+                shellExecute('jenkins', 'phing', "docker-compose-stop -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
+                shellExecute('jenkins', 'phing', "docker-compose-down -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
             }
         }
 }
