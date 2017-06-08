@@ -29,6 +29,7 @@ services:
       MYSQL_PASSWORD: ''
       MYSQL_ROOT_HOST: '%'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    command: mysqld --max_allowed_packet=32M
     expose:
       - '3306'
   #redis:
