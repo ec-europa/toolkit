@@ -1,34 +1,19 @@
-# NextEuropa Subsite Starterkit
-
-```
-T                                    \`.    T
-|    T     .--------------.___________) \   |    T
-!    |     |//////////////|___________[ ]   !  T |
-     !     `--------------'           ) (      | !
-                                      '-'      !
-```
+# NextEuropa Subsite Starterkit packaged for composer
 
 This is a starting point for creating new websites for the [NextEuropa
 platform](https://blogs.ec.europa.eu/eu-digital/content/next-europa-it-platform)
 of the European Commission.
 
-> The subsite-starterkit in combination with platform-dev has limited
-> Windows support. Issues regarding setting up the platform within this
-> operating system can be submitted either:
-> * internally by following our [contribution guide](docs/contributing.md)
-> * externally via the [issue queue on github](issues)
-
-
 ## Features
 
 - Support for NextEuropa 2.2.89 and later.
-- Easily test your code on the latest development branch of the NextEuropa
-  platform to validate if your site will work on the next release.
+- Easily test your code on any release, branch or tag of the NextEuropa
+  platform to validate your site will be compatible on an upgrade.
 - Integrated support for Behat and PHP CodeSniffer.
 - QA automation tools to provide static code checks.
-- Built-in support for Continuous Integration using ContinuousPHP.
-- Build your website in an automated way to get your entire team up and running
-  fast!
+- Built-in support for Continuous Integration using Docker Jenkins.
+- A generally accepted docker enviroment that is built expecially for this
+  project.
 
 ## Recent notable changes
 
