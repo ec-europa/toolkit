@@ -9,22 +9,22 @@ of the European Commission.
 The installation of the subsite starterkit packaged in composer depends on 3 essential files being present in your repository.
 
 > <details><summary><b>composer.json</b>: Important to take note of the script commands.</summary><p>
+> 
+> The composer package version starts at 3.0. Performing a `composer update` on this requirement will be the only thing necessary to get the subsite starterkit package installed and updated. You may choose the version which you want to install. But Quality Assurance will always run your code on the lastest release.
+> 
+> The `phingexec` script function is mereley an example for people who do not have php installed on their system, but only docker. That script will allow you to use phing to setup a development environment without too much hassle.
 
-The composer package version starts at 3.0. Performing a `composer update` on this requirement will be the only thing necessary to get the subsite starterkit package installed and updated. You may choose the version which you want to install. But Quality Assurance will always run your code on the lastest release.
-
-The `phingexec` script function is mereley an example for people who do not have php installed on their system, but only docker. That script will allow you to use phing to setup a development environment without too much hassle.
-
-```json
-{
-  "require": {
-    "ec-europa/ssk": "~3.0"
-  },
-  "scripts": {
-    "phingexec": "./ssk/phing",
-    "post-update-cmd": "PROJECT=$(pwd) composer install --working-dir=vendor/ec-europa/ssk/includes/composer --no-interaction --no-suggest --ansi"
-  }
-}
-```
+> ```json
+> {
+>   "require": {
+>     "ec-europa/ssk": "~3.0"
+>   },
+>   "scripts": {
+>     "phingexec": "./ssk/phing",
+>     "post-update-cmd": "PROJECT=$(pwd) composer install --working-dir=vendor/ec-europa/ssk/includes/composer --no-interaction --no-suggest --ansi"
+>   }
+> }
+> ```
 
 > </p></details>
 > 
