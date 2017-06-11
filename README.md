@@ -13,7 +13,7 @@ The installation of the subsite starterkit packaged in composer depends on 3 ess
 > The composer package version starts at 3.0. Performing a `composer update` on this requirement will be the only thing necessary to get the subsite starterkit package installed and updated. You may choose the version which you want to install. But Quality Assurance will always run your code on the lastest release.
 > 
 > The `phingexec` script function is mereley an example for people who do not have php installed on their system, but only docker. That script will allow you to use phing to setup a development environment without too much hassle.
-
+>
 > ```json
 > {
 >   "require": {
@@ -25,46 +25,46 @@ The installation of the subsite starterkit packaged in composer depends on 3 ess
 >   }
 > }
 > ```
-
+> 
 > </p></details>
 > 
 > <details><summary><b>build.xml</b>: This file points phing to the ssk installation root and imports it.</summary><p>
-
-This is simply a pointer file to tell phing where you've installed the ssk.<br />
-Important to note that the previous `/resources/build.custom.xml` from 2.x has been renamed to `/build.project.xml`.<br />
-Also the `/resources/phpcs-custom.xml` has been renamed and located in your project basedir at `/phpcs-ruleset.xml`.<br />
-These 2 files do no longer belong to the starterkit. They are essential to your project and fully under your control.
-
-```xml
-<?xml version="1.0" encoding="UTF-8" ?>
-<project name="My subsite" default="help">
-    <!-- Set starterkit root property -->
-    <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/ssk" />
-    <!-- Import starterkit build xml files. -->
-    <import file="${project.starterkit.root}/build.xml" />
-</project>
-```
-
+>
+>This is simply a pointer file to tell phing where you've installed the ssk.<br />
+> Important to note that the previous `/resources/build.custom.xml` from 2.x has been renamed to `/build.project.xml`.<br />
+> Also the `/resources/phpcs-custom.xml` has been renamed and located in your project basedir at `/phpcs-ruleset.xml`.<br />
+> These 2 files do no longer belong to the starterkit. They are essential to your project and fully under your control.
+> 
+>```xml
+> <?xml version="1.0" encoding="UTF-8" ?>
+><project name="My subsite" default="help">
+>    <!-- Set starterkit root property -->
+>    <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/ssk" />
+>    <!-- Import starterkit build xml files. -->
+>    <import file="${project.starterkit.root}/build.xml" />
+></project>
+>```
+>
 > </p></details>
 > 
 > <details><summary><b>Jenkinsfile</b>: Currently only important to the Quality Assurance team for CI builds.</summary><p>
-
-Again this file contains a simple pointer to the starterkits own Jenkinsfile. We are still working at giving this file a customized name so that subsites will be able to provide their own Jenkinsfile in their repository if they wish.
-
-```groovy
-def extcode
-
-node {
-  wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
-    deleteDir()
-    checkout scm
-    sh "composer update --no-interaction --no-suggest"
-    extcode = load "vendor/ec-europa/ssk/Jenkinsfile"
-    extcode.createWorkflow()
-  }
-}
-```
-
+>
+>Again this file contains a simple pointer to the starterkits own Jenkinsfile. We are still working at giving this file a customized name so that subsites will be able to provide their own Jenkinsfile in their repository if they wish.
+> 
+> ```groovy
+> def extcode
+>
+>node {
+>  wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
+>    deleteDir()
+>    checkout scm
+>    sh "composer update --no-interaction --no-suggest"
+>    extcode = load "vendor/ec-europa/ssk/Jenkinsfile"
+>    extcode.createWorkflow()
+>  }
+>}
+>```
+> 
 > </p></details>
 
 ## Features
