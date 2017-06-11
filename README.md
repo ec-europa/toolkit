@@ -4,17 +4,6 @@ This is a starting point for creating new websites for the [NextEuropa
 platform](https://blogs.ec.europa.eu/eu-digital/content/next-europa-it-platform)
 of the European Commission.
 
-## Features
-
-- Support for NextEuropa 2.2.89 and later.
-- Easily test your code on any release, branch or tag of the NextEuropa
-  platform to validate your site will be compatible on an upgrade.
-- Integrated support for Behat and PHP CodeSniffer.
-- QA automation tools to provide static code checks.
-- Built-in support for Continuous Integration using Docker Jenkins.
-- A generally accepted docker enviroment that is built expecially for this
-  project.
-
 ## Installation
 
 The installation of the starterkit packaged in composer depends on 3 files being present in your repository.
@@ -41,7 +30,7 @@ The `phingexec` script function is mereley an example for people who do not have
 
 <details><summary><b>build.xml</b>: This file points phing to the ssk installation root and imports it.</summary><p>
 
-This is simply a pointer file to tell phing where you've installed the ssk. Important to know is that the previous `/resources/build.custom.xml" is now renamed to /`build.project.xml`. Also the `/resources/phpcs-custom.xml` has been renamed and located in your project basedir at `phpcs-ruleset.xml'. But these files do no longer belong to the starterkit and are fully under your control.
+This is simply a pointer file to tell phing where you've installed the ssk. Important to know is that the previous `/resources/build.custom.xml` is now renamed to `/build.project.xml`. Also the `/resources/phpcs-custom.xml` has been renamed and located in your project basedir at `/phpcs-ruleset.xml'. These 2 files do no longer belong to the starterkit. They are essential to your project and fully under your control.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -75,6 +64,16 @@ node {
 
 </p></details>
 
+## Features
+
+- Support for NextEuropa 2.2.89 and later.
+- Easily test your code on any release, branch or tag of the NextEuropa
+  platform to validate your site will be compatible on an upgrade.
+- Integrated support for Behat and PHP CodeSniffer.
+- QA automation tools to provide static code checks.
+- Built-in support for Continuous Integration using Docker Jenkins.
+- A generally accepted docker enviroment that is built expecially for this
+  project.
 
 ## Recent notable changes
 
