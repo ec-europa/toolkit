@@ -6,11 +6,11 @@ of the European Commission.
 
 ## Installation
 
-The installation of the starterkit packaged in composer depends on 3 files being present in your repository.
+The installation of the subsite starterkit packaged in composer depends on 3 essential files being present in your repository.
 
-<details><summary><b>composer.json</b>: Important to take note of the script commands.</summary><p>
+> <details><summary><b>composer.json</b>: Important to take note of the script commands.</summary><p>
 
-SSK version is starting at 3.0. Performing a `composer update` on this requirement will be the only thing necessary to get the ssk package installed and updated. You may choose the version which you want to run. But Quality Assurance will always run your code on the lastest release.
+The composer package version starts at 3.0. Performing a `composer update` on this requirement will be the only thing necessary to get the subsite starterkit package installed and updated. You may choose the version which you want to install. But Quality Assurance will always run your code on the lastest release.
 
 The `phingexec` script function is mereley an example for people who do not have php installed on their system, but only docker. That script will allow you to use phing to setup a development environment without too much hassle.
 
@@ -26,9 +26,9 @@ The `phingexec` script function is mereley an example for people who do not have
 }
 ```
 
-</p></details>
-
-<details><summary><b>build.xml</b>: This file points phing to the ssk installation root and imports it.</summary><p>
+> </p></details>
+> 
+> <details><summary><b>build.xml</b>: This file points phing to the ssk installation root and imports it.</summary><p>
 
 This is simply a pointer file to tell phing where you've installed the ssk.<br />
 Important to note that the previous `/resources/build.custom.xml` from 2.x has been renamed to `/build.project.xml`.<br />
@@ -45,9 +45,9 @@ These 2 files do no longer belong to the starterkit. They are essential to your 
 </project>
 ```
 
-</p></details>
-
-<details><summary><b>Jenkinsfile</b>: Currently only important to the Quality Assurance team for CI builds.</summary><p>
+> </p></details>
+> 
+> <details><summary><b>Jenkinsfile</b>: Currently only important to the Quality Assurance team for CI builds.</summary><p>
 
 Again this file contains a simple pointer to the starterkits own Jenkinsfile. We are still working at giving this file a customized name so that subsites will be able to provide their own Jenkinsfile in their repository if they wish.
 
@@ -65,7 +65,7 @@ node {
 }
 ```
 
-</p></details>
+> </p></details>
 
 ## Features
 
