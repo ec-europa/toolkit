@@ -24,7 +24,7 @@ services:
     image: mysql:5.6
     environment:
       MYSQL_ROOT_PASSWORD: ''
-      MYSQL_DATABASE: ${BUILD_ID_UNIQUE}
+      MYSQL_DATABASE: ${COMPOSE_PROJECT_NAME}
       MYSQL_USER: root
       MYSQL_PASSWORD: ''
       MYSQL_ROOT_HOST: '%'
