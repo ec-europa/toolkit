@@ -15,6 +15,67 @@ of the European Commission.
 - A generally accepted docker enviroment that is built expecially for this
   project.
 
+## Installation
+
+The installation of the starterkit packaged in composer depends on 3 files being present in your repository.
+
+<details><summary><b>composer.json</b>: Important to take note of the script commands.</summary><p>
+
+SSK version is starting at 3.0. Performing a `composer update` on this requirement will be the only thing necessary to get the ssk package installed and updated. You may choose the version which you want to run. But Quality Assurance will always run your code on the lastest release.
+
+The `phingexec` script function is mereley an example for people who do not have php installed on their system, but only docker. That script will allow you to use phing to setup a development environment without too much hassle.
+
+```json
+{
+  "require": {
+    "ec-europa/ssk": "~3.0"
+  },
+  "scripts": {
+    "phingexec": "./ssk/phing",
+    "post-update-cmd": "PROJECT=$(pwd) composer install --working-dir=vendor/ec-europa/ssk/includes/composer --no-interaction --no-suggest --ansi"
+  }
+}
+```
+
+</p></details>
+
+<details><summary><b>build.xml</b>: This file points phing to the ssk installation root and imports it.</summary><p>
+
+This is simply a pointer file to tell phing where you've installed the ssk. Important to know is that the previous `/resources/build.custom.xml" is now renamed to /`build.project.xml`. Also the `/resources/phpcs-custom.xml` has been renamed and located in your project basedir at `phpcs-ruleset.xml'. But these files do no longer belong to the starterkit and are fully under your control.
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="My subsite" default="help">
+    <!-- Set starterkit root property -->
+    <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/ssk" />
+    <!-- Import starterkit build xml files. -->
+    <import file="${project.starterkit.root}/build.xml" />
+</project>
+```
+
+</p></details>
+
+<details><summary><b>Jenkinsfile</b>: Currently only important to the Quality Assurance team for CI builds.</summary><p>
+
+Again this file contains a simple pointer to the starterkits own Jenkinsfile. We are still working at giving this file a customized name so that subsites will be able to provide their own Jenkinsfile in their repository if they wish.
+
+```groovy
+def extcode
+
+node {
+  wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
+    deleteDir()
+    checkout scm
+    sh "composer update --no-interaction --no-suggest"
+    extcode = load "vendor/ec-europa/ssk/Jenkinsfile"
+    extcode.createWorkflow()
+  }
+}
+```
+
+</p></details>
+
+
 ## Recent notable changes
 
 - **2017-03-13**: The resources folder is expanded with a composer and git
