@@ -28,7 +28,6 @@
         </drush>
     </target>
 
-
     <!-- Create the directories. -->
     <target name="drush-create-files-dirs">
         <echo message="Creating files directories for ${drupal.db.name}." />
