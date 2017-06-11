@@ -9,15 +9,17 @@ of the European Commission.
 If you still use the 2.x release from https://github.com/ec-europa/subsite-starterkit which is merged in your project. You should manually delete all its files except your project specific code. As a general rule this is the case:
 
 > <details><summary><b>Starterkit 3.0 templates</b>: (fetch)</summary><p>
->
->- composer.json (ssk:3.0)
->- build.xml (ssk:3.0)
->- Jenkinsfile (ssk:3.0)
->  
+> 
+>```bash
+>- composer.json
+>- build.xml
+>- Jenkinsfile
+>```
 > </p></details>
 >
 > <details><summary><b>Subsite specific files</b>: (keep)</summary><p>
 > 
+>```bash
 >- .git/
 >- .gitattributes
 >- .gitignore
@@ -29,14 +31,15 @@ If you still use the 2.x release from https://github.com/ec-europa/subsite-start
 >- resources/composer.json
 >- resources/composer.lock
 >- tests/*
-> 
+> ```
 > </p></details>
 > 
 > <details><summary><b>Subsite specific files</b>: (keep but rename)</summary><p>
 > 
+>```bash
 >- resources/build.custom.xml => ../build.project.xml
 >- resources/phpcs-custom.xml => ../phpcs-ruleset.xml
-> 
+>```
 > </p></details>
 
 If you are absolutely certain that you have no starterkit modifications in any other files then we can let you try an upgrade path. But we do not guarantee a working starterkit after you merge the branch.
