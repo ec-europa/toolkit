@@ -73,7 +73,7 @@ def shellExecute(String environment, String executable, String command) {
             prefix = ""
             break
         case "docker":
-            prefix = "./ssk-${env.COMPOSE_PROJECT_NAME} run web"
+            prefix = "./ssk-${env.COMPOSE_PROJECT_NAME} exec --user web web"
             break
     }
 
