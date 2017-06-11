@@ -44,12 +44,16 @@ If you still use the 2.x release from https://github.com/ec-europa/subsite-start
 
 If you are absolutely certain that you have no starterkit modifications in any other files then we can let you try an upgrade path. But we do not guarantee a working starterkit after you merge the branch. So if you decide to merge the upgrade branch, please use an intermediary to forward a push request so you can review it fully.
 
-```
-$ git checkout -b intermediary
-$ git remote add starterkit https://github.com/ec-europa/subsite-starterkit.git
-$ git fetch starterkit
-$ git merge starterkit/upgrade/2.x/3.x
-```
+> <details><summary><b>Merge guide for</b>: <a href="https://github.com/ec-europa/subsite-starterkit/tree/upgrade/2.x/3.x">https://github.com/ec-europa/subsite-starterkit/tree/upgrade/2.x/3.x</a></summary><p>
+> 
+> ```
+> $ git checkout -b intermediary
+> $ git remote add starterkit https://github.com/ec-europa/subsite-starterkit.git
+> $ git fetch starterkit
+> $ git merge starterkit/upgrade/2.x/3.x
+> $ git remote rm starterkit
+> ```
+> </p></details>
 
 ## Install guide
 
