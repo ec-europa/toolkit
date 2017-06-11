@@ -45,6 +45,11 @@ project.reference.remote = reference
 # The path to save deploy packages to:
 project.release.path = ${share.subsites.path}/${project.id}
 
+# Starterkit.
+project.starterkit.composer = ${project.starterkit.root}/includes/composer
+project.starterkit.vendor = ${project.starterkit.composer}/vendor
+project.starterkit.bin = ${project.starterkit.composer}/bin
+
 
 # Development configuration
 # ---------------------------------------

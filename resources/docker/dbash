@@ -1,13 +1,20 @@
 #!/bin/bash
 
-# Set variables if needed.
+# Set project name accordingly.
+# =============================
 FILENAME=$(basename $0)
 if [ $FILENAME != "dbash" ]; then
-  export BUILD_ID_UNIQUE=${FILENAME#ssk-}
-  export WORKSPACE=$(pwd)
+  PROJECT_NAME=${FILENAME#ssk-}
+elif [ -z ${COMPOSE_PROJECT_NAME+x} ]; then
+  PROJECT_NAME=${COMPOSE_PROJECT_NAME}
+else
+  UUID=$(uuidgen)
+  PROJECT_NAME=${UUID^^}
 fi
 
-# Get correct script path.
+
+# Get path to the executing script.
+#=================================
 pushd . > /dev/null
 SCRIPT_PATH="${BASH_SOURCE[0]}";
 if ([ -h "${SCRIPT_PATH}" ]) then
@@ -20,10 +27,22 @@ cd `dirname ${SCRIPT_PATH}` > /dev/null
 SCRIPT_PATH=`pwd`;
 popd  > /dev/null
 
-# Execute with docker-compose.
-$(which docker-compose) -p ${BUILD_ID_UNIQUE} -f ${SCRIPT_PATH}/docker-compose.yml $@
+
+# Execute command with docker-compose.
+#=====================================
+COMPOSE_PROJECT_NAME=${PROJECT_NAME} WORKSPACE=$(pwd) \
+$(which docker-compose) -f ${SCRIPT_PATH}/docker-compose.yml $@
+
+
+# Add symlink if we are executing up.
+# ===================================
+if [ "$1" = "up" ] && [ $? -eq 0 ]; then
+  ln -sf ${SCRIPT_PATH}/dbash ssk-${PROJECT_NAME}
+fi
+
 
 # Remove symlink if we are executing down.
-if [ "$1" = "down" ]; then
-  rm -f ssk-${BUILD_ID_UNIQUE}
+# ========================================
+if [ "$1" = "down" ] && [ $? -eq 0 ]; then
+  rm -f ssk-${PROJECT_NAME}
 fi

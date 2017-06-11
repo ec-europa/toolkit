@@ -15,12 +15,12 @@ def createWorkflow() {
         def buildName = "${env.JOB_NAME}".replaceAll('ec-europa/','').replaceAll('-reference/','').replaceAll('/','_').replaceAll('-','_').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
 
-        withEnv(["BUILD_ID_UNIQUE=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}","PATH+SSK=${env.WORKSPACE}/ssk"]) {
+        withEnv(["COMPOSE_PROJECT_NAME=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}","PATH+SSK=${env.WORKSPACE}/ssk"]) {
 
             stage('Init') {
                 setBuildStatus("Build started.", "PENDING");
                 slackSend color: "good", message: "Subsite build ${buildLink} started."
-                shellExecute('jenkins', 'phing', "docker-compose-up -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
+                shellExecute('jenkins', 'phing', "docker-compose-up -D'docker.project.id'='${env.COMPOSE_PROJECT_NAME}'")
              }
 
             try {
@@ -35,14 +35,14 @@ def createWorkflow() {
                 }
 
                 stage('Test') {
-                    shellExecute('docker', 'phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.BUILD_ID_UNIQUE}'")
+                    shellExecute('docker', 'phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.COMPOSE_PROJECT_NAME}'")
                     timeout(time: 2, unit: 'HOURS') {
                         shellExecute('docker', 'phing', 'behat')
                     }
                 }
 
                 stage('Package') {
-                    shellExecute('docker', 'phing', "build-release -D'project.release.name'='${env.BUILD_ID_UNIQUE}'")
+                    shellExecute('docker', 'phing', "build-release -D'project.release.name'='${env.COMPOSE_PROJECT_NAME}'")
                     setBuildStatus("Build complete.", "SUCCESS");
                     slackSend color: "good", message: "Subsite build ${buildLink} completed."
                 }
@@ -51,8 +51,8 @@ def createWorkflow() {
                 slackSend color: "danger", message: "Subsite build ${buildLink} failed."
                 throw(err)
             } finally {
-                shellExecute('jenkins', 'phing', "docker-compose-stop -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
-                shellExecute('jenkins', 'phing', "docker-compose-down -D'docker.project.id'='${env.BUILD_ID_UNIQUE}'")
+                shellExecute('jenkins', 'phing', "docker-compose-stop -D'docker.project.id'='${env.COMPOSE_PROJECT_NAME}'")
+                shellExecute('jenkins', 'phing', "docker-compose-down -D'docker.project.id'='${env.COMPOSE_PROJECT_NAME}'")
             }
         }
 }
@@ -73,7 +73,7 @@ def shellExecute(String environment, String executable, String command) {
             prefix = ""
             break
         case "docker":
-            prefix = "./ssk-${env.BUILD_ID_UNIQUE} exec -T --user web web"
+            prefix = "./ssk-${env.COMPOSE_PROJECT_NAME} exec -T --user web web"
             break
     }
 
