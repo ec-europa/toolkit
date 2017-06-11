@@ -111,7 +111,7 @@
 
     <!-- Setup the PHP CodeSniffer pre-push hook. -->
     <target name="setup-phpcs-pre-push" description="Activate or de-activate phpcs on git pre-push.">
-        <delete file="${phpcs.prepush.destination}" failonerror="false" />
+        <delete file="${phpcs.prepush.destination}" failonerror="false" quiet="true" />
         <if>
             <equals arg1="${phpcs.prepush.enable}" arg2="1" />
             <then>
