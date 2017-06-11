@@ -4,7 +4,44 @@ This is a starting point for creating new websites for the [NextEuropa
 platform](https://blogs.ec.europa.eu/eu-digital/content/next-europa-it-platform)
 of the European Commission.
 
-## Installation
+## Upgrade path
+
+If you still use the 2.x release from https://github.com/ec-europa/subsite-starterkit which is merged in your project. You should manually delete all its files except your project specific code. As a general rule this is the case:
+
+> <details><summary><b>Starterkit 3.0 templates</b>: (fetch)</summary><p>
+>
+>- composer.json (ssk:3.0)
+>- build.xml (ssk:3.0)
+>- Jenkinsfile (ssk:3.0)
+>  
+> </p></details>
+>
+> <details><summary><b>Subsite specific files</b>: (keep)</summary><p>
+> 
+>- .git/
+>- .gitattributes
+>- .gitignore
+>- build.properties
+>- lib/features/*
+>- lib/modules/*
+>- lib/themes/*
+>- resources/site.make
+>- resources/composer.json
+>- resources/composer.lock
+>- tests/*
+> 
+> </p></details>
+> 
+> <details><summary><b>Subsite specific files</b>: (keep but rename)</summary><p>
+> 
+>- resources/build.custom.xml => ../build.project.xml
+>- resources/phpcs-custom.xml => ../phpcs-ruleset.xml
+> 
+> </p></details>
+
+If you are absolutely certain that you have no starterkit modifications in any other files then we can let you try an upgrade path. But we do not guarantee a working starterkit after you merge the branch.
+
+## Install guide
 
 The installation of the subsite starterkit packaged in composer depends on 3 essential files being present in your repository.
 
