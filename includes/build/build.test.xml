@@ -27,7 +27,7 @@
                     <then>
                         <phingcall target="drush-sql-create" />
                         <phingcall target="drush-sql-import">
-                            <property name="database-file" value="${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz" />
+                            <property name="database-file" value="${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.sql" />
                         </phingcall>
                     </then>
                 </if> 
