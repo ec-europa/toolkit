@@ -30,7 +30,10 @@ The `phingexec` script function is mereley an example for people who do not have
 
 <details><summary><b>build.xml</b>: This file points phing to the ssk installation root and imports it.</summary><p>
 
-This is simply a pointer file to tell phing where you've installed the ssk. Important to know is that the previous `/resources/build.custom.xml` is now renamed to `/build.project.xml`. Also the `/resources/phpcs-custom.xml` has been renamed and located in your project basedir at `/phpcs-ruleset.xml'. These 2 files do no longer belong to the starterkit. They are essential to your project and fully under your control.
+This is simply a pointer file to tell phing where you've installed the ssk.<br />
+Important to note that the previous `/resources/build.custom.xml` from 2.x has been renamed to `/build.project.xml`.<br />
+Also the `/resources/phpcs-custom.xml` has been renamed and located in your project basedir at `/phpcs-ruleset.xml`.<br />
+These 2 files do no longer belong to the starterkit. They are essential to your project and fully under your control.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
