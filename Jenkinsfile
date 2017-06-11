@@ -89,7 +89,7 @@ def shellExecute(String environment, String executable, String command) {
             break
     }
 
-    sh "${prefix} ${executable} ${command} ${color} | exit \$?"
+    sh "${prefix} ${executable} ${command} ${color} || exit \$?"
 }
 
 return this;
