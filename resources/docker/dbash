@@ -31,7 +31,7 @@ popd  > /dev/null
 # Execute command with docker-compose.
 #=====================================
 COMPOSE_PROJECT_NAME=${PROJECT_NAME} WORKSPACE=$(pwd) \
-$(which docker-compose) -f ${SCRIPT_PATH}/docker-compose.yml $@
+$(which docker-compose) -f ${SCRIPT_PATH}/docker-compose.yml $@ || exit $?
 
 
 # Add symlink if we are executing up.
