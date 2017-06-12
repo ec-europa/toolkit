@@ -4,6 +4,120 @@ This is a starting point for creating new websites for the [NextEuropa
 platform](https://blogs.ec.europa.eu/eu-digital/content/next-europa-it-platform)
 of the European Commission.
 
+## Upgrade path
+
+If you still use the 2.x release from https://github.com/ec-europa/subsite-starterkit which is merged in your project. You should manually delete all its files except your project specific code. As a general rule this is the case:
+
+> <details><summary><b>Starterkit 3.0 templates</b>: (fetch)</summary><p>
+> 
+>```bash
+>- composer.json
+>- build.xml
+>- Jenkinsfile
+>```
+> </p></details>
+>
+> <details><summary><b>Subsite specific files</b>: (keep)</summary><p>
+> 
+>```bash
+>- .git/
+>- .gitattributes
+>- .gitignore
+>- build.properties
+>- lib/features/*
+>- lib/modules/*
+>- lib/themes/*
+>- resources/site.make
+>- resources/composer.json
+>- resources/composer.lock
+>- tests/*
+> ```
+> </p></details>
+> 
+> <details><summary><b>Subsite specific files</b>: (keep but rename)</summary><p>
+> 
+>```bash
+>- resources/build.custom.xml => ../build.project.xml
+>- resources/phpcs-custom.xml => ../phpcs-ruleset.xml
+>```
+> </p></details>
+
+If you are absolutely certain that you have no starterkit modifications in any other files then we can let you try an upgrade path. But we do not guarantee a working starterkit after you merge the branch. So if you decide to merge the upgrade branch, please use an intermediary to forward a pull request so you can review it fully.
+
+> <details><summary><b>Merge guide for</b>: <a href="https://github.com/ec-europa/subsite-starterkit/tree/upgrade/2.x/3.x">https://github.com/ec-europa/subsite-starterkit/tree/upgrade/2.x/3.x</a></summary><p>
+> 
+> ```
+> $ git checkout -b intermediary
+> $ git remote add starterkit https://github.com/ec-europa/subsite-starterkit.git
+> $ git fetch starterkit
+> $ git merge starterkit/upgrade/2.x/3.x
+> $ git remote rm starterkit
+> ```
+> </p></details>
+
+## Install guide
+
+The installation of the subsite starterkit packaged in composer depends on 3 essential files being present in your repository.
+
+> <details><summary><b>composer.json</b>: Important to take note of the script commands.</summary><p>
+> 
+> The composer package version starts at 3.0. Performing a `composer update` on this requirement will be the only thing necessary to get the subsite starterkit package installed and updated. You may choose the version which you want to install. But Quality Assurance will always run your code on the lastest release.
+> 
+> The `phingexec` script function is mereley an example for people who do not have php installed on their system, but only docker. That script will allow you to use phing to setup a development environment without too much hassle.
+>
+> ```json
+> {
+>   "require": {
+>     "ec-europa/ssk": "~3.0"
+>   },
+>   "scripts": {
+>     "phingexec": "./ssk/phing",
+>     "post-update-cmd": "PROJECT=$(pwd) composer install --working-dir=vendor/ec-europa/ssk/includes/composer --no-interaction --no-suggest --ansi"
+>   }
+> }
+> ```
+> 
+> </p></details>
+> 
+> <details><summary><b>build.xml</b>: This file points phing to the ssk installation root and imports it.</summary><p>
+>
+>This is simply a pointer file to tell phing where you've installed the ssk.<br />
+> Important to note that the previous `/resources/build.custom.xml` from 2.x has been renamed to `/build.project.xml`.<br />
+> Also the `/resources/phpcs-custom.xml` has been renamed and located in your project basedir at `/phpcs-ruleset.xml`.<br />
+> These 2 files do no longer belong to the starterkit. They are essential to your project and fully under your control.
+> 
+>```xml
+> <?xml version="1.0" encoding="UTF-8" ?>
+><project name="My subsite" default="help">
+>    <!-- Set starterkit root property -->
+>    <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/ssk" />
+>    <!-- Import starterkit build xml files. -->
+>    <import file="${project.starterkit.root}/build.xml" />
+></project>
+>```
+>
+> </p></details>
+> 
+> <details><summary><b>Jenkinsfile</b>: Currently only important to the Quality Assurance team for CI builds.</summary><p>
+>
+>Again this file contains a simple pointer to the starterkits own Jenkinsfile. We are still working at giving this file a customized name so that subsites will be able to provide their own Jenkinsfile in their repository if they wish.
+> 
+> ```groovy
+> def extcode
+>
+>node {
+>  wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
+>    deleteDir()
+>    checkout scm
+>    sh "composer update --no-interaction --no-suggest"
+>    extcode = load "vendor/ec-europa/ssk/Jenkinsfile"
+>    extcode.createWorkflow()
+>  }
+>}
+>```
+> 
+> </p></details>
+
 ## Features
 
 - Support for NextEuropa 2.2.89 and later.
