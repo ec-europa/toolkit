@@ -48,20 +48,18 @@ files then we can let you try an upgrade path. But we do not guarantee a working
 starterkit after you merge the branch. So if you decide to merge the upgrade branch,
 please use an intermediary to forward a pull request so you can review it fully.
 
-> <details><summary><b>Merge guide for</b>: <a href="https://github.com/ec-europa/subsite-starterkit/tree/upgrade/2.x/3.x">https://github.com/ec-europa/subsite-starterkit/tree/upgrade/2.x/3.x</a></summary><p>
-> 
 > ```
 > $ git checkout -b intermediary
 > $ git remote add starterkit https://github.com/ec-europa/subsite-starterkit.git
 > $ git fetch starterkit
 > $ git merge starterkit/upgrade
 > ```
-> 
-> And last but not least we should remove the remote that has been replaced by the new
-> Subsite Starterkit package in your composer.json. Then you are ready to update the
-> new Subsite Starterkit for the first time.
+
+And last but not least we should remove the remote that has been replaced by the new
+Subsite Starterkit package in your composer.json. Then you are ready to update the
+new Subsite Starterkit for the first time.
+
 > ```
 > $ git remote rm starterkit
 > $ composer update
 > ```
-> </p></details>
