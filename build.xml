@@ -74,7 +74,10 @@
 
     <!-- Import project build xml file. -->
     <if>
-        <isset property="project-is-subsite" />
+        <and>
+            <isset property="project-is-subsite" />
+            <available file="${project.basedir}/build.project.xml" />
+        </and>
         <then>
             <import file="${project.basedir}/build.project.xml" />
         </then>
