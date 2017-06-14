@@ -1,16 +1,16 @@
 ## Upgrade from 2.0.x to 3.0.x
    
 Subsite Starterkit 3.0.0 introduces itself as a Composer package. In order
-to provide that a new building procedure has been put in place.
-
-These upgrade instructions assume that your subsite is a "git fork" of the
-[main repository](https://github.com/ec-europa/subsite-starterkit).
+to provide that a new building procedure has been put in place. These
+upgrade instructions assume that your subsite is a "git fork" of the old
+repository at https://github.com/ec-europa/subsite-starterkit.
 
 ### 1.1 Manual process
 Manually delete all files that are only specific to the starterkit.
-Below is a list of files "to keep". 
+Below is a list of files *to keep*. So anything not mentioned below should
+be deleted.
 
-<b>Starterkit 3.0 templates</b>:
+<b>Starterkit 3.0.0 templates</b>: (fetch)
 > 
 >```bash
 >- composer.json
@@ -18,7 +18,7 @@ Below is a list of files "to keep".
 >- Jenkinsfile
 >```
 
-<b>Subsite specific files</b>: (keep)<
+<b>Subsite specific files</b>: (to keep)
 > 
 >```bash
 >- .git/
@@ -34,7 +34,7 @@ Below is a list of files "to keep".
 >- tests/*
 > ```
 
-<b>Subsite specific files</b>: (keep but rename)
+<b>Subsite specific files</b>: (to keep and rename)
 > 
 >```bash
 >- resources/build.custom.xml => ../build.project.xml
