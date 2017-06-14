@@ -4,11 +4,22 @@ This is a starting point for creating new websites for the [NextEuropa
 platform](https://blogs.ec.europa.eu/eu-digital/content/next-europa-it-platform)
 of the European Commission.
 
-## 2. Install guide
+## 1. Install guide
 
 The installation of the Subsite Starterkit packaged in Composer depends on 3 essential
 files being present in your repository. By doing a subsite-starterkit upgrade through
-upstream merge these will be placed in your repository. 
+upstream merge these will be placed in your repository.  If this is a first time install
+you can fetch the files from ec-europa/ssk. After which you can run composer update.
+
+```
+curl https://raw.githubusercontent.com/ec-europa/ssk/master/resources/templates/build.xml > build.xml
+curl https://raw.githubusercontent.com/ec-europa/ssk/master/resources/templates/composer.json > composer.json
+curl https://raw.githubusercontent.com/ec-europa/ssk/master/resources/templates/Jenkinsfile > Jenkinsfile
+
+composer update
+```
+
+For more information on these files please refer to the repository structure.
 
 > <details><summary><b>composer.json</b>: Important to take note of the script commands.</summary><p>
 > 
@@ -73,16 +84,6 @@ setup a development environment without too much hassle.
 >```
 > 
 > </p></details>
-
-If this is a first time install you can fetch the files from ec-europa/ssk.
-After which you can run composer update.
-```
-curl https://raw.githubusercontent.com/ec-europa/ssk/master/resources/templates/build.xml > build.xml
-curl https://raw.githubusercontent.com/ec-europa/ssk/master/resources/templates/composer.json > composer.json
-curl https://raw.githubusercontent.com/ec-europa/ssk/master/resources/templates/Jenkinsfile > Jenkinsfile
-
-composer update
-```
 
 ## Features
 
