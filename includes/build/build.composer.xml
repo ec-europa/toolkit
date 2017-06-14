@@ -22,20 +22,25 @@
         name="composer-post-install-cmd"
         description="Commands to execute after composer install."
         depends="
-            copy-build-xml,
+            copy-templates,
             link-ssk-bin,
             drush-dl-rr,
             setup-phpcs-pre-push"
     />
 
-    <target name="copy-build-xml">
+    <target name="copy-templates">
         <if>
             <isset property="project-is-subsite" />
             <then>
-                <echo msg="Refreshing subsite build.xml." />
+                <echo msg="Refreshing ssk templates." />
                 <copy
-                    file="${project.starterkit.root}/resources/templates/build.starterkit.xml"
+                    file="${project.starterkit.root}/resources/templates/build.xml"
                     tofile="${project.basedir}/build.xml"
+                    overwrite="true"
+                />
+                <copy
+                    file="${project.starterkit.root}/resources/templates/Jenkinsfile"
+                    tofile="${project.basedir}/Jenkinsfile"
                     overwrite="true"
                 />
             </then>
