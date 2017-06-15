@@ -1,69 +1,36 @@
-# NextEuropa Subsite Starterkit packaged for composer
+# NextEuropa Subsite Starterkit packaged for Composer
 
 This is a starting point for creating new websites for the [NextEuropa
 platform](https://blogs.ec.europa.eu/eu-digital/content/next-europa-it-platform)
 of the European Commission.
 
-## Upgrade path
+## 1. Install guide
 
-If you still use the 2.x release from https://github.com/ec-europa/subsite-starterkit which is merged in your project. You should manually delete all its files except your project specific code. As a general rule this is the case:
+The installation of the Subsite Starterkit packaged in Composer depends on 3 essential
+files being present in your repository. By doing a subsite-starterkit upgrade through
+upstream merge these will be placed in your repository.  If this is a first time install
+you can fetch the files from ec-europa/ssk. After which you can run composer update.
 
-> <details><summary><b>Starterkit 3.0 templates</b>: (fetch)</summary><p>
-> 
->```bash
->- composer.json
->- build.xml
->- Jenkinsfile
->```
-> </p></details>
->
-> <details><summary><b>Subsite specific files</b>: (keep)</summary><p>
-> 
->```bash
->- .git/
->- .gitattributes
->- .gitignore
->- build.properties
->- lib/features/*
->- lib/modules/*
->- lib/themes/*
->- resources/site.make
->- resources/composer.json
->- resources/composer.lock
->- tests/*
-> ```
-> </p></details>
-> 
-> <details><summary><b>Subsite specific files</b>: (keep but rename)</summary><p>
-> 
->```bash
->- resources/build.custom.xml => ../build.project.xml
->- resources/phpcs-custom.xml => ../phpcs-ruleset.xml
->```
-> </p></details>
+```
+curl https://raw.githubusercontent.com/ec-europa/ssk/master/resources/templates/build.xml > build.xml
+curl https://raw.githubusercontent.com/ec-europa/ssk/master/resources/templates/composer.json > composer.json
+curl https://raw.githubusercontent.com/ec-europa/ssk/master/resources/templates/Jenkinsfile > Jenkinsfile
 
-If you are absolutely certain that you have no starterkit modifications in any other files then we can let you try an upgrade path. But we do not guarantee a working starterkit after you merge the branch. So if you decide to merge the upgrade branch, please use an intermediary to forward a pull request so you can review it fully.
+composer update
+```
 
-> <details><summary><b>Merge guide for</b>: <a href="https://github.com/ec-europa/subsite-starterkit/tree/upgrade/2.x/3.x">https://github.com/ec-europa/subsite-starterkit/tree/upgrade/2.x/3.x</a></summary><p>
-> 
-> ```
-> $ git checkout -b intermediary
-> $ git remote add starterkit https://github.com/ec-europa/subsite-starterkit.git
-> $ git fetch starterkit
-> $ git merge starterkit/upgrade/2.x/3.x
-> $ git remote rm starterkit
-> ```
-> </p></details>
-
-## Install guide
-
-The installation of the subsite starterkit packaged in composer depends on 3 essential files being present in your repository.
+For more information on these files please refer to the repository structure.
 
 > <details><summary><b>composer.json</b>: Important to take note of the script commands.</summary><p>
 > 
-> The composer package version starts at 3.0. Performing a `composer update` on this requirement will be the only thing necessary to get the subsite starterkit package installed and updated. You may choose the version which you want to install. But Quality Assurance will always run your code on the lastest release.
+> The composer package version starts at 3.0. Performing a `composer update` on this
+requirement will be the only thing necessary to get the subsite starterkit package
+installed and updated. You may choose the version which you want to install. But
+Quality Assurance will always run your code on the lastest release.
 > 
-> The `phingexec` script function is mereley an example for people who do not have php installed on their system, but only docker. That script will allow you to use phing to setup a development environment without too much hassle.
+> The `phingexec` script function is mereley an example for people who do not have php
+installed on their system, but only docker. That script will allow you to use phing to
+setup a development environment without too much hassle.
 >
 > ```json
 > {
@@ -253,8 +220,8 @@ This README is divided in different parts, please read the relevant section:
    your own project.
 5. [Contributing](docs/contributing.md): How to contribute bugfixes and
    new features to the Subsite Starterkit.
-6. [Upgrading from 1.0.x to 2.0.x](docs/upgrading.md): How to upgrade to the
-   2.0.x and enjoy full Composer support.
+6. [Upgrading from 2.0.x to 3.0.x](docs/upgrading.md): How to upgrade to the
+   2.0.x swith to the Composer package.
 7. [Running scripts on composer and/or git hooks](docs/scripts.md): Add your
    own scripts that will be called when a composer hook or git hook is
    executed.

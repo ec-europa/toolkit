@@ -1,55 +1,65 @@
-## Upgrade from 1.0.x to 2.0.x
+## Upgrade from 2.0.x to 3.0.x
    
-Subsite Starterkit 2.0.0 introduces full Composer support. In order to
-provide that a new building procedure has been put in place.
+Subsite Starterkit 3.0.0 introduces itself as a Composer package. In order
+to provide that a new building procedure has been put in place. These
+upgrade instructions assume that your subsite is a "git fork" of the old
+repository at https://github.com/ec-europa/subsite-starterkit.
 
-This upgrade instructions assume that your subsite is a "git fork" of the
-[main repository](https://github.com/ec-europa/subsite-starterkit),
-as suggested on the "Starting a new project" page.
+### 1.1 Manual process
+Manually delete all files that are only specific to the starterkit.
+Below is a list of files *to keep*. So anything not mentioned below should
+be deleted.
 
-First of all add the main Subsite Starterkit repository as a new remote: 
+<b>Starterkit 3.0.0 templates</b>: (fetch)
+> 
+>```bash
+>- composer.json
+>- build.xml
+>- Jenkinsfile
+>```
 
-```
-$ git remote add starterkit https://github.com/ec-europa/subsite-starterkit.git
-```
+<b>Subsite specific files</b>: (to keep)
+> 
+>```bash
+>- .git/
+>- .gitattributes
+>- .gitignore
+>- build.properties
+>- lib/features/*
+>- lib/modules/*
+>- lib/themes/*
+>- resources/site.make
+>- resources/composer.json
+>- resources/composer.lock
+>- tests/*
+> ```
 
-Then fetch the newly added remote:
+<b>Subsite specific files</b>: (to keep and rename)
+> 
+>```bash
+>- resources/build.custom.xml => ../build.project.xml
+>- resources/phpcs-custom.xml => ../phpcs-ruleset.xml
+>```
 
-```
-$ git fetch starterkit
-```
+### 1.2 Upgrade through upstream merge
 
-At this point run the following command to discover which commit hash has been
-tagged with `starterkit/2.0.0` (tags are prepended with `starterkit/` in order
-to avoid conflicts with existing tags on forked subsite repositories):
+If you are absolutely certain that you have no starterkit modifications in any other
+files then we can let you try an upgrade path. But we do not guarantee a working
+starterkit after you merge the branch. So if you decide to merge the upgrade branch,
+please use an intermediary to forward a pull request so you can review it fully.
 
-```
-$ git ls-remote --tags starterkit 
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa   refs/tags/starterkit/2.0.0
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   refs/tags/starterkit/1.0.1
-cccccccccccccccccccccccccccccccccccccccc   refs/tags/starterkit/1.0.0
-```
+> ```
+> $ git checkout -b intermediary
+> $ git remote add starterkit https://github.com/ec-europa/subsite-starterkit.git
+> $ git fetch starterkit
+> $ git merge starterkit/upgrade
+> ```
 
-After that just run:
+And last but not least we should remove the remote that has been replaced by the new
+Subsite Starterkit package in your composer.json. Then you are ready to update the
+new Subsite Starterkit for the first time.
 
-```
-$ git diff aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-```
-
-This will give you the list of changes you need to apply to your current repository.
-You can also merge the 2.0.0 tag into your current branch and solve conflicts manually.
-
-Now you have Subsite Starterkit 2.0.0 on your project and you need a full re-build
-in order to benefit from the new features.
-
-In your repository root run:
-
-```
-$ composer update
-```
-
-Then run:
-
-```
-$ ./bin/phing build-dev
-```
+> ```
+> $ git remote rm starterkit
+> $ composer update
+> ```
