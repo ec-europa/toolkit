@@ -4,6 +4,9 @@
 # The site name.
 subsite.name = My Project
 
+# Subsite ID. Multisite folder name. Usually repository name without "-reference"
+subsite.id = myproject
+
 # The make file containing the dependencies of the subsite.
 subsite.make = ${subsite.resources.dir}/site.make
 
@@ -13,42 +16,39 @@ subsite.install.modules = myproject_core
 # Subsite clone configuration.
 #-----------------------------
 
-# Project ID used to generate other properties.
-project.id = <project>
-
 # Project database url scheme.
-project.database.url.scheme = https
+subsite.database.url.scheme = https
 
 # Project database url username is used for .htaccess to file download url. Use only
 # within build.properties.local if needed. Never commit credentials on github.
-project.database.url.htaccess.username =
+subsite.database.url.htaccess.username =
 
 # Project database url username is used for .htaccess to file download url. Use only
 # within build.properties.local if needed. Never commit credentials on github.
-project.database.url.htaccess.password =
+subsite.database.url.htaccess.password =
 
-# Project database url. Define the scheme in project.database.url.scheme property. If
+# Project database url. Define the scheme in subsite.database.url.scheme property. If
 # you want developers to use the same database this should be added to the projects
 # build.properties file.
-project.database.url = webgate.ec.europa.eu/fpfis/files-for/${project.id}/
+subsite.database.url = webgate.ec.europa.eu/fpfis/files-for/${subsite.id}/
 
 # Project database filename.  If you want developers to use the same database this
 # should be added to the projects build.properties file. The file has to be
 # compressed in .gz format. Thus ending in .sql.gz.
-project.database.filename =
+subsite.database.filename =
 
 # The information of the project reference repository.
-project.reference.repository =
-project.reference.branch = master
-project.reference.remote = reference
+subsite.reference.repository = https://github.com/ec-europa/myproject-reference
+subsite.reference.branch = master
+subsite.reference.remote = reference
 
 # The path to save deploy packages to:
-project.release.path = ${share.subsites.path}/${project.id}
+subsite.release.path = ${share.subsites.path}/${subsite.id}
 
 # Starterkit.
-project.starterkit.composer = ${project.starterkit.root}/includes/composer
-project.starterkit.vendor = ${project.starterkit.composer}/vendor
-project.starterkit.bin = ${project.starterkit.composer}/bin
+subsite.starterkit.composer = ${subsite.starterkit.root}/includes/composer
+subsite.starterkit.vendor = ${subsite.starterkit.composer}/vendor
+subsite.starterkit.bin = ${subsite.starterkit.composer}/bin
 
 
 # Development configuration
@@ -68,8 +68,8 @@ development.variables.error_level = 2
 development.variables.views_ui_show_sql_query = 1
 development.variables.views_ui_show_performance_statistics = 1
 development.variables.views_show_additional_queries = 1
-development.variables.stage_file_proxy_origin = https://ec.europa.eu/${project.id}
-development.variables.stage_file_proxy_origin_dir = sites/${project.id}/files
+development.variables.stage_file_proxy_origin = https://ec.europa.eu/${subsite.id}
+development.variables.stage_file_proxy_origin_dir = sites/${subsite.id}/files
 development.variables.stage_file_proxy_hotlink = 1
 
 
@@ -139,7 +139,7 @@ platform.package.cachedir = /tmp/platform-dev
 platform.package.database = 0
 
 # The name of the folder where the platform will be downloaded.
-platform.package.destination = ${phing.project.tmp.dir}
+platform.package.destination = ${phing.subsite.tmp.dir}
 
 # The path to the downloaded package. This is named 'deploy-package-${platform.package.reference}.tar.gz'.
 platform.package.tarball = deploy-package-${platform.package.reference}.tar.gz
@@ -154,17 +154,17 @@ platform.package.token =
 
 # Paths to executables.
 composer.bin = composer.phar
-drush.bin = ${project.starterkit.bin}/drush
+drush.bin = ${subsite.starterkit.bin}/drush
 git.bin = git
-phing.bin = ${project.starterkit.bin}/phing
+phing.bin = ${subsite.starterkit.bin}/phing
 
 # Build location.
-phing.project.build.dir = build
-phing.project.src.dir = ${project.basedir}/src
-dist.build.dir = ${project.basedir}/${phing.project.build.dir}
+phing.subsite.build.dir = build
+phing.subsite.src.dir = ${project.basedir}/src
+dist.build.dir = ${project.basedir}/${phing.subsite.build.dir}
 
 # Temporary folder.
-phing.project.tmp.dir = ${project.basedir}/tmp
+phing.subsite.tmp.dir = ${project.basedir}/tmp
 
 # Local resources.
 subsite.resources.dir = ${project.basedir}/resources
@@ -177,7 +177,7 @@ subsite.resources.composer.json = ${subsite.resources.dir}/composer.json
 subsite.resources.composer.lock = ${subsite.resources.dir}/composer.lock
 
 # Temporary resources. These are generated on the fly when building.
-subsite.temporary.development.make = ${phing.project.tmp.dir}/development.make
+subsite.temporary.development.make = ${phing.subsite.tmp.dir}/development.make
 
 # Files and directories inside the Drupal installation for local development.
 platform.build.settings.dir = ${platform.build.sites.dir}/default
@@ -216,7 +216,7 @@ dist.build.composer.lock = ${dist.build.dir}/composer.lock
 platform.rebuild.auto = 0
 
 # Rebuild backup destination.
-platform.rebuild.backup.destination = ${phing.project.tmp.dir}/backup-site
+platform.rebuild.backup.destination = ${phing.subsite.tmp.dir}/backup-site
 
 # Semicolon separated list of folders to backup.
 platform.rebuild.backup.folders = ${platform.build.files.dir};${platform.build.tmp.dir}
@@ -274,10 +274,10 @@ phpcs.extensions = php inc module install info test profile theme css js
 phpcs.config = ${project.basedir}/phpcs.xml
 
 # The coding standards to use, delimited by semicolons.
-phpcs.standards = ${project.starterkit.root}/phpcs-ruleset.xml;${project.basedir}/phpcs-ruleset.xml
+phpcs.standards = ${subsite.starterkit.root}/phpcs-ruleset.xml;${project.basedir}/phpcs-ruleset.xml
 
 # Paths to check, delimited by semicolons.
-phpcs.files = ${subsite.resources.dir};${subsite.resources.lib.dir};${phing.project.src.dir};${behat.src.dir}
+phpcs.files = ${subsite.resources.dir};${subsite.resources.lib.dir};${phing.subsite.src.dir};${behat.src.dir}
 
 # Paths to ignore, delimited by semicolons.
 phpcs.ignore =
@@ -295,14 +295,14 @@ phpcs.sniffcodes = 0
 phpcs.progress = 1
 
 # The location of the file containing the global configuration options.
-phpcs.global.config = ${project.starterkit.vendor}/squizlabs/php_codesniffer/CodeSniffer.conf
+phpcs.global.config = ${subsite.starterkit.vendor}/squizlabs/php_codesniffer/CodeSniffer.conf
 
 # Whether or not to run a coding standards check before doing a git push. Note
 # that this will abort the push if the coding standards check fails.
 phpcs.prepush.enable = 1
 
 # The source and destination paths of the git pre-push hook.
-phpcs.prepush.source = ${project.starterkit.vendor}/pfrenssen/phpcs-pre-push/pre-push
+phpcs.prepush.source = ${subsite.starterkit.vendor}/pfrenssen/phpcs-pre-push/pre-push
 phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpcs
 
 

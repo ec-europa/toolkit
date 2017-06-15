@@ -10,11 +10,11 @@
     <if>
         <available file="${project.basedir}/vendor/ec-europa/ssk" />
         <then>
-            <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/ssk" />
+            <property name="subsite.starterkit.root" value="${project.basedir}/vendor/ec-europa/ssk" />
             <property name="project-is-subsite" value="1" />
         </then>
         <else>
-            <property name="project.starterkit.root" value="${project.basedir}" override="true" />
+            <property name="subsite.starterkit.root" value="${project.basedir}" override="true" />
         </else>
     </if>
 
@@ -31,10 +31,20 @@
             <property file="${project.basedir}/build.properties" logoutput="${logoutput}" />
         </then>
         <else>
-            <fail msg="Project needs to have a build.properties file available." />
+            <input propertyName="create-project" defaultValue="yes" validargs="no,yes" message="No build.properties file detected. Would you like to create one?" />
+            <if>
+                <equals arg1="${create-project}" arg2="yes" />
+                <then>
+                    <property file="${subsite.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
+                    <touch file="build.properties" />
+                </then>
+                <else>
+                    <echo msg="Abandon ship.." />
+                </else>
+            </if>
         </else>
     </if>
-    <property file="${project.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
+    <property file="${subsite.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
 
     <!-- Help target to list commands. -->
     <target name="help" description="Phing target list">
@@ -44,8 +54,12 @@
         </exec>
     </target>
 
+    <target name="create-subsite-directories">
+        <mkdir dir="${subsite.resources.${dir}}" />
+    </target>
+
     <!-- Set include path for custom tasks. -->
-    <includepath classpath="${project.starterkit.root}/src/Phing" />
+    <includepath classpath="${subsite.starterkit.root}/src/Phing" />
 
     <echo msg="Loading PHP Codesniffer Configuration task." level="${level}"  />
     <taskdef name="phpcodesnifferconfiguration" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
@@ -54,17 +68,17 @@
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
     <echo msg="Importing the Drush task." level="${level}" />
-    <exec command="echo $(readlink -f ${project.starterkit.root}/includes/composer/vendor/drupal/phingdrushtask)" outputProperty="vendor-drupal-phingdrushtask" />
+    <exec command="echo $(readlink -f ${subsite.starterkit.root}/includes/composer/vendor/drupal/phingdrushtask)" outputProperty="vendor-drupal-phingdrushtask" />
     <import file="${vendor-drupal-phingdrushtask}/import.xml"/>
 
     <echo msg="Importing the Behat task." level="${level}" />
-    <exec command="echo $(readlink -f ${project.starterkit.root}/includes/composer/vendor/drupol/phingbehattask)" outputProperty="vendor-drupol-phingbehattask" />
+    <exec command="echo $(readlink -f ${subsite.starterkit.root}/includes/composer/vendor/drupol/phingbehattask)" outputProperty="vendor-drupol-phingbehattask" />
     <import file="${vendor-drupol-phingbehattask}/import.xml"/>
 
     <!-- Import CPHP tasks @todo refractor when jenkins is active. -->
     <echo msg="Importing the ContinuousPHP specific Phing tasks." level="${level}"  />
-    <import file="${project.starterkit.vendor}/continuousphp/phing-tasks/tasks.xml" />
-    <import file="${project.starterkit.vendor}/continuousphp/aws-sdk-phing/tasks.xml" />
+    <import file="${subsite.starterkit.vendor}/continuousphp/phing-tasks/tasks.xml" />
+    <import file="${subsite.starterkit.vendor}/continuousphp/aws-sdk-phing/tasks.xml" />
 
     <!-- Needs to be removed when phing adds relative symlink support -->
     <!-- https://github.com/phingofficial/phing/issues/684 -->
@@ -84,12 +98,12 @@
     </if>
 
     <!-- Import starterkit build xml files. -->
-    <import file="${project.starterkit.root}/includes/build/build.clone.xml" />
-    <import file="${project.starterkit.root}/includes/build/build.composer.xml" />
-    <import file="${project.starterkit.root}/includes/build/build.drush.xml" />
-    <import file="${project.starterkit.root}/includes/build/build.docker.xml" />
-    <import file="${project.starterkit.root}/includes/build/build.package.xml" />
-    <import file="${project.starterkit.root}/includes/build/build.test.xml" />
+    <import file="${subsite.starterkit.root}/includes/build/build.clone.xml" />
+    <import file="${subsite.starterkit.root}/includes/build/build.composer.xml" />
+    <import file="${subsite.starterkit.root}/includes/build/build.drush.xml" />
+    <import file="${subsite.starterkit.root}/includes/build/build.docker.xml" />
+    <import file="${subsite.starterkit.root}/includes/build/build.package.xml" />
+    <import file="${subsite.starterkit.root}/includes/build/build.test.xml" />
 
     <!-- Disable output on consecutive phing calls. -->
     <property name="logoutput" value="false" override="true" />
