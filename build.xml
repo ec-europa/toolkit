@@ -30,19 +30,6 @@
         <then>
             <property file="${project.basedir}/build.properties" logoutput="${logoutput}" />
         </then>
-        <else>
-            <input propertyName="create-project" defaultValue="yes" validargs="no,yes" message="No build.properties file detected. Would you like to create one?" />
-            <if>
-                <equals arg1="${create-project}" arg2="yes" />
-                <then>
-                    <property file="${subsite.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
-                    <touch file="build.properties" />
-                </then>
-                <else>
-                    <echo msg="Abandon ship.." />
-                </else>
-            </if>
-        </else>
     </if>
     <property file="${subsite.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
 
