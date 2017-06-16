@@ -24,7 +24,6 @@
         depends="
             starterkit-link-binary,
             starterkit-copy-templates,
-            drush-dl-rr,
             setup-phpcs-pre-push"
     >
     </target>
