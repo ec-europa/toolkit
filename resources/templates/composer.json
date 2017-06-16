@@ -1,9 +1,0 @@
-{
-  "require": {
-    "ec-europa/ssk": "dev-master"
-  },
-  "scripts": {
-    "post-update-cmd": "PROJECT=$(pwd) composer install --working-dir=vendor/ec-europa/ssk/includes/composer --no-interaction --no-suggest --ansi"
-  }
-}
-

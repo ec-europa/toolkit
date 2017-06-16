@@ -46,7 +46,9 @@ subsite.reference.remote = reference
 subsite.release.path = ${share.subsites.path}/${subsite.id}
 
 # Starterkit.
-subsite.starterkit.composer = ${subsite.starterkit.root}/includes/composer
+subsite.starterkit.includes = ${subsite.starterkit.root}/includes
+subsite.starterkit.templates = ${subsite.starterkit.includes}/templates
+subsite.starterkit.composer = ${subsite.starterkit.includes}/composer
 subsite.starterkit.vendor = ${subsite.starterkit.composer}/vendor
 subsite.starterkit.bin = ${subsite.starterkit.composer}/bin
 
