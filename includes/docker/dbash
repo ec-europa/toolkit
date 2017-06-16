@@ -2,11 +2,11 @@
 
 # Set project name accordingly.
 # =============================
-FILENAME=$(basename $0)
-if [ $FILENAME != "dbash" ]; then
+FILENAME=${0##*/}
+if [ "$FILENAME" != "dbash" ]; then
   PROJECT_NAME=${FILENAME#ssk-}
-elif [ -z ${COMPOSE_PROJECT_NAME+x} ]; then
-  PROJECT_NAME=${COMPOSE_PROJECT_NAME}
+elif [ -n "$COMPOSE_PROJECT_NAME" ]; then
+  PROJECT_NAME=$COMPOSE_PROJECT_NAME
 else
   UUID=$(uuidgen)
   PROJECT_NAME=${UUID^^}
