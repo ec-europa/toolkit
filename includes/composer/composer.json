@@ -27,7 +27,7 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "Drupal\\nexteuropa\\": "tests/src",
+      "Drupal\\nexteuropa\\": "${PROJECT}/tests/src",
       "Drush\\Drush\\Log\\": "../../src/Drush/Log",
       "NextEuropa\\": "../../src"
     }
