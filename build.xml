@@ -62,11 +62,6 @@
     <exec command="echo $(readlink -f ${subsite.starterkit.root}/includes/composer/vendor/drupol/phingbehattask)" outputProperty="vendor-drupol-phingbehattask" />
     <import file="${vendor-drupol-phingbehattask}/import.xml"/>
 
-    <!-- Import CPHP tasks @todo refractor when jenkins is active. -->
-    <echo msg="Importing the ContinuousPHP specific Phing tasks." level="${level}"  />
-    <import file="${subsite.starterkit.vendor}/continuousphp/phing-tasks/tasks.xml" />
-    <import file="${subsite.starterkit.vendor}/continuousphp/aws-sdk-phing/tasks.xml" />
-
     <!-- Needs to be removed when phing adds relative symlink support -->
     <!-- https://github.com/phingofficial/phing/issues/684 -->
     <!-- https://github.com/phingofficial/phing/pull/695 -->

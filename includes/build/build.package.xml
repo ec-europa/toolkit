@@ -404,33 +404,16 @@
                 <!-- Create the destination directory if it doesn't exist. -->
                 <mkdir dir="${platform.package.destination}" />
                 <echo msg="Starting platform download. Depending on your connection this can take between 5-15 minutes. Go get some coffee."/>
-                <trycatch>
-                    <!-- Try downloading platform through continuousphp api. -->
-                    <try>
-                        <continuousphp-config token="${platform.package.token}"/>
-                        <continuousphp-package
-                            provider="${platform.package.provider}"
-                            repository="${platform.package.repository}"
-                            reference="${platform.package.reference}"
-                            destination="${platform.package.destination}"
-                            property="platform.package.property"
-                        />
-                        <echo msg="Downloaded platform package reference ${platform.package.property}"/>
-                    </try>
-                    <!-- Try downloading platform with curl as backup. -->
-                    <catch>
-                        <if>
-                            <http url="https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"/>
-                            <then>
-                                <exec command="curl -L -o ${platform.package.destination}/deploy-package.tar.gz https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz" passthru="true"/>
-                                <echo msg="Downloaded platform package reference ${platform.package.reference}"/>
-                            </then>
-                            <else>
-                                <fail msg="Failed downloading platform package reference ${platform.package.reference}"/>
-                            </else>
-                        </if>
-                    </catch>
-                </trycatch>
+                <if>
+                    <http url="https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"/>
+                    <then>
+                        <exec command="curl -L -o ${platform.package.destination}/deploy-package.tar.gz https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz" passthru="true"/>
+                        <echo msg="Downloaded platform package reference ${platform.package.reference}"/>
+                    </then>
+                    <else>
+                        <fail msg="Failed downloading platform package reference ${platform.package.reference}"/>
+                    </else>
+                </if>
             </then>
         </if>
     </target>
