@@ -248,7 +248,7 @@
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
     <target name="link-behat">
         <echo msg="Symlink the Behat bin and test directory in './sites/all'." />
-        <rel-sym link="${platform.build.subsite.dir}/vendor/bin/behat" target="${platform.build.subsite.dir}/vendor/behat/behat/bin/behat" overwrite="true"/>
+        <rel-sym link="${project.basedir}/ssk/behat" target="${subsite.starterkit.vendor}/bin/behat" overwrite="true"/>
         <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
     </target>
 
