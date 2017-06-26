@@ -55,12 +55,10 @@
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
     <echo msg="Importing the Drush task." level="${level}" />
-    <exec command="echo $(readlink -f ${subsite.starterkit.root}/includes/composer/vendor/drupal/phingdrushtask)" outputProperty="vendor-drupal-phingdrushtask" />
-    <import file="${vendor-drupal-phingdrushtask}/import.xml"/>
+    <import file="${subsite.starterkit.root}/includes/composer/vendor/drupal/phingdrushtask/import.xml"/>
 
     <echo msg="Importing the Behat task." level="${level}" />
-    <exec command="echo $(readlink -f ${subsite.starterkit.root}/includes/composer/vendor/drupol/phingbehattask)" outputProperty="vendor-drupol-phingbehattask" />
-    <import file="${vendor-drupol-phingbehattask}/import.xml"/>
+    <import file="${subsite.starterkit.root}/includes/composer/vendor/drupol/phingbehattask/import.xml"/>
 
     <!-- Needs to be removed when phing adds relative symlink support -->
     <!-- https://github.com/phingofficial/phing/issues/684 -->
