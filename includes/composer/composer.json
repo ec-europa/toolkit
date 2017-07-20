@@ -79,10 +79,10 @@
     }
   },
   "scripts": {
-    "pre-install-cmd": "scripts/phincalls.sh pre-install",
+    "pre-install-cmd": "scripts/phingcalls.sh pre-install",
     "pre-update-cmd": "scripts/phingcalls.sh pre-update",
     "post-install-cmd": "scripts/phingcalls.sh post-install",
-    "post-update-cmd": "scripts/phincalls.sh post-update"
+    "post-update-cmd": "scripts/phingcalls.sh post-update"
   },
   "config": {
     "bin-dir": "bin/",
