@@ -1,31 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="My subsite" default="help">
 
-    <!-- Composer pre install CMD. -->
-    <target name="composer-pre-install-cmd">
-        <echo msg="Executing pre-install targets" />
-    </target>
-
-    <!-- Composer pre update CMD. -->
-    <target name="composer-pre-update-cmd">
-        <echo msg="Executing pre-update targets" />
-    </target>
-
-    <!-- Composer post update CMD. -->
-    <target name="composer-post-update-cmd">
-        <echo msg="Executing post-update targets" />
-    </target>
-
-
-    <!-- Composer post install CMD. -->
-    <target
-        name="composer-post-install-cmd"
-        description="Commands to execute after composer install."
-        depends="
-            starterkit-link-binary,
-            starterkit-copy-templates,
-            setup-phpcs-pre-push"
-    >
+    <!-- Echo the composer hook phingcalls. -->
+    <target name="composer-get-hook-phingcalls">
+        <echoproperties prefix="composer.hook."/>
     </target>
 
     <!-- Provide handy access with root symlink to starterkit binary. -->
