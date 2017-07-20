@@ -16,7 +16,11 @@ if [ -f $PHING ] && [ -x $PHING ] && [ -n "$1" ] ; then
 
   # Execute targets, if any.
   if [ -n "$PHINGCALLS" ] ; then
-    $PHING $PHINGCALLS -Dproject.basedir=$PROJECT -logger phing.listener.AnsiColorLogger -find
+    $PHING \
+      $PHINGCALLS \
+      -Dproject.basedir=$PROJECT \
+      -logger phing.listener.AnsiColorLogger \
+      -find
   fi
 
 else
