@@ -323,7 +323,7 @@
     <!-- Link site document root to Webserver document root. -->
     <target
         name="link-docroot"
-        description="Create a Symlink from the build folder to the webserver document root.">
+        description="Create symlink from build to docroot.">
         <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
     </target>
 
@@ -628,14 +628,18 @@
         </if>
     </target>
 
-    <target name="build-release" description="Package a build-dist release." depends="build-dist">
+    <target name="build-release" description="Build subsite source code release package." depends="build-dist">
         <mkdir dir="${project.release.path}" />
         <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${phing.subsite.build.dir}" />
     </target>
 
+    <target name="build-tests" description="Build subsite tests code release package.">
+        <mkdir dir="${project.release.path}" />
+    </target>
+
     <target
-        name="build-dev"
-        description="Build a local development version of the subsite."
+        name="build-code"
+        description="Build local version of subsite without install."
         depends="
             backup-site,
             install-build-dependencies,
@@ -651,7 +655,7 @@
             restore-site"
     />
 
-    <target name="rebuild-dev" description="Build a local development version of the subsite and automatically backup site if there is one in place.">
+    <target name="build-keep" description="Build local version of subsite with backup and restore.">
         <!-- Execute build-dev with automatic rebuild enabled. -->
         <phingcall target="build-dev">
             <property name="platform.rebuild.auto" value="1" override="true"/>
@@ -660,7 +664,6 @@
 
     <target
         name="build-dist"
-        description="Build a version of the subsite intended to distribute as a release package."
         depends="
             install-build-dependencies,
             delete-dist,

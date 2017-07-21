@@ -3,7 +3,7 @@
 <project name="My subsite" default="help">
 
     <!-- Import production database. -->
-    <target name="import-prod-db" description="Import production database." depends="download-prod-db">
+    <target name="import-prod-db" depends="download-prod-db">
         <echo msg="Import production database." />
         <!-- Drop database, create if necessary and import the dump. -->
         <phingcall target="drush-sql-drop" />
@@ -15,7 +15,7 @@
     </target>
 
     <!-- Download the production database. -->
-    <target name="download-prod-db" description="Download the production database." >
+    <target name="download-prod-db" >
         <echo msg="Download the production database." />
         <!--Strips gz suffix. -->
         <php expression="substr('${project.database.filename}', 0, -3)" returnProperty="gunzipped.filename" level="debug"/>
@@ -116,6 +116,6 @@
     </target>
 
     <!-- Install a development version of the subsite with a production database. -->
-    <target name="build-clone" description="Setup a clone of production." depends="download-prod-db, drush-regenerate-settings, import-prod-db, enable-development-modules" />
+    <target name="build-clone" description="Build local version of subsite with production data." depends="download-prod-db, drush-regenerate-settings, import-prod-db, enable-development-modules" />
 
 </project>

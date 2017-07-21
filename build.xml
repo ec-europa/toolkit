@@ -51,6 +51,9 @@
     <echo msg="Loading PHP Codesniffer Configuration task." level="${level}"  />
     <taskdef name="phpcodesnifferconfiguration" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
 
+    <echo msg="Loading Phing Deprecated Call task." level="${level}"  />
+    <taskdef name="deprecated" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
+
     <echo msg="Loading Drush Makefile task." level="${level}"  />
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
@@ -80,6 +83,7 @@
     <!-- Import starterkit build xml files. -->
     <import file="${subsite.starterkit.root}/includes/build/build.clone.xml" />
     <import file="${subsite.starterkit.root}/includes/build/build.composer.xml" />
+    <import file="${subsite.starterkit.root}/includes/build/build.deprecated.xml" />
     <import file="${subsite.starterkit.root}/includes/build/build.drush.xml" />
     <import file="${subsite.starterkit.root}/includes/build/build.docker.xml" />
     <import file="${subsite.starterkit.root}/includes/build/build.package.xml" />

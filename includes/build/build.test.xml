@@ -76,7 +76,7 @@
     </target>
 
     <!-- Set up PHP CodeSniffer. -->
-    <target name="setup-php-codesniffer" description="Generate the configuration file for PHP CodeSniffer.">
+    <target name="setup-php-codesniffer">
         <if>
             <available file="${phpcs.config}" type="file" property="phpcs.config.available" />
             <then>
@@ -109,7 +109,7 @@
     </target>
 
     <!-- Setup the PHP CodeSniffer pre-push hook. -->
-    <target name="setup-phpcs-pre-push" description="Activate or de-activate phpcs on git pre-push.">
+    <target name="setup-phpcs-pre-push">
         <delete file="${phpcs.prepush.destination}" failonerror="false" quiet="true" />
         <if>
             <equals arg1="${phpcs.prepush.enable}" arg2="1" />
@@ -144,7 +144,7 @@
     </target>
 
     <!-- Run Behat tests. -->
-    <target name="behat" description="Run Behat tests.">
+    <target name="run-behat" description="Refresh configuration and run behat tests.">
         <behat
             executable="${behat.bin}"
             config="${behat.yml.path}"
@@ -154,26 +154,19 @@
         />
     </target>
 
-    <!-- Check that the subsite starterkit is up-to-date. -->
-    <target name="check-starterkit">
-        <echo msg="Checking if the subsite starterkit is up-to-date." />
+    <!-- Do quality assurance checks. -->
+    <target name="quality-assurance">
         <exec
-            command="ssk/qa check:ssk
-                --repository=${starterkit.repository}
-                --branch=${starterkit.branch}
-                --remote=${starterkit.remote}
-                --basedir=${project.basedir}
-                --no-interaction
-                --ansi"
+            command="${subsite.starterkit.bin}/qa review:full --no-interaction --ansi"
             passthru="true"
             checkreturn="true"
         />
     </target>
 
     <!-- Do quality assurance checks. -->
-    <target name="quality-assurance">
+    <target name="run-php-codesniffer">
         <exec
-            command="ssk/qa review:full --no-interaction --ansi"
+            command="${subsite.starterkit.bin}/phpcs"
             passthru="true"
             checkreturn="true"
         />
@@ -181,15 +174,22 @@
 
     <!-- Run a full static analysis. -->
     <target
-        name="mjolnir"
-        description="The Hammer Of Thor will execute a full static analysis on the deployment package. Run this before sending a delivery to QA."
+        name="run-qa"
+        description="Refresh configuration and run qa review."
         depends="setup-php-codesniffer, quality-assurance"
+    />
+
+    <!-- Run a full static analysis. -->
+    <target
+        name="run-phpcs"
+        description="Refresh configuration and run phpcs review."
+        depends="setup-php-codesniffer, run-php-codesniffer"
     />
 
     <!-- Install a development version of the subsite. -->
     <target
-        name="install-dev"
-        description="Install a local development version of the subsite."
+        name="build-clean"
+        description="Build local version of subsite with a clean install."
         depends="drush-create-files-dirs, install, enable-development-modules"
     />
 
