@@ -8,7 +8,7 @@ if [ -f $PHING ] && [ -x $PHING ] && [ -n "$1" ] ; then
   # Get phing targets.
   HOOK="composer.hook.${1//-/.}"
   PHINGCALLS=$(\
-    $PHING composer-get-hook-phingcalls \
+    $PHING composer-echo-hook-phingcalls \
     -Dproject.basedir=$PROJECT \
     -logger phing.listener.AnsiColorLogger \
     -find | grep -o "$HOOK=.*" | cut -f2- -d=\

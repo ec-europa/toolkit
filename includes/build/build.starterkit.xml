@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="Starterkit" default="help">
+
+    <!-- Provide handy access with root symlink to starterkit binary. -->
+    <target name="starterkit-link-binary">
+        <echo msg="Provide project with starterkit binary at root level." />
+        <rel-sym link="${project.basedir}/ssk" target="${subsite.starterkit.bin}" overwrite="true"/>
+    </target>
+
+    <!-- Ensure needed files are present. -->
+    <target name="starterkit-copy-templates">
+        <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
+        <copy todir="${project.basedir}">
+            <fileset dir="${subsite.starterkit.templates}" />
+        </copy>
+    </target>
+
+    <!-- Upgrade subsite-starterkit 2.x to 3.x. -->
+    <target name="starterkit-upgrade">
+
+        <!-- Delete starterkit folders. -->
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${project.basedir}/bin" />
+        </phingcall>
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${project.basedir}/docs" />
+        </phingcall>
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${project.basedir}/src" />
+        </phingcall>
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${subsite.resources.dir}/cloudformation" />
+        </phingcall>
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${subsite.resources.dir}/codedeploy" />
+        </phingcall>
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${subsite.resources.dir}/composer" />
+        </phingcall>
+        <!-- Delete starterkit files. -->
+        <delete>
+            <fileset dir="${project.basedir}">
+                <include name="CHANGELOG.md" />
+                <include name="LICENSE.md" />
+                <include name="README.md" />
+                <include name="appspec.yml" />
+                <include name="build.clone.xml" />
+                <include name="build.package.xml" />
+                <include name="build.properties.dist" />
+                <include name="build.test.xml" />
+                <include name="composer.lock" />
+                <include name="phpcs-ruleset.xml" />
+            </fileset>
+        </delete>
+        <!-- Move subsite files to new location. -->
+        <move file="${subsite.resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
+    </target>
+
+</project>

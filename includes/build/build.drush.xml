@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="My subsite" default="help">
+
+<project name="Starterkit" default="help">
 
     <!-- Install the site. -->
     <target name="drush-site-install">
@@ -16,7 +17,7 @@
     </target>
 
     <!-- Enable modules. -->
-    <target name="drush-enable-modules">
+    <target name="drush-enable-modules" hidden="true">
         <drush
             command="pm-enable"
             assume="yes"
@@ -163,6 +164,19 @@
         <echo message="Installing registry rebuild on user account." />
         <exec command="${drush.bin} pm-download registry_rebuild-7 -n >/dev/null" />
         <exec command="${drush.bin} cc drush >/dev/null" />
+    </target>
+
+    <!-- Rebuild node access. -->
+    <target name="drush-rebuild-node-access">
+        <drush
+            command="php-eval"
+            assume="yes"
+            root="${platform.build.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>"node_access_rebuild()"</param>
+        </drush>
     </target>
 
 </project>

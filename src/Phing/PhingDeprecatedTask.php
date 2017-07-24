@@ -4,11 +4,14 @@ namespace NextEuropa\Phing;
 
 require_once 'phing/Task.php';
 
+use BuildException;
+use ProjectConfigurator;
+use PhingFile;
 use Project;
+use Properties;
 
 class PhingDeprecatedTask extends \Task
 {
-
     /**
      * The called Phing task.
      *
@@ -113,15 +116,32 @@ class PhingDeprecatedTask extends \Task
      */
     public function main()
     {
-        if ($this->getOwningTarget()->getName() === "") {
-            $this->log("Cowardly refusing to call target '{$this->subTarget}' from the root", Project::MSG_WARN);
-            return;
-        }
 
-        $this->log("Target '" . $this->getOwningTarget()->getName() . "' is deprecated and has been replaced by '" . $this->subTarget . "'.", Project::MSG_WARN);
-        $this->log("A 10 second penalty is assigned to this target, please update your build.", Project::MSG_WARN);
+        $targets = $this->project->getTargets();
+        $owningTarget = $this->getOwningTarget()->getName();
+        $calledTargets= array_filter($targets, function($key) {
+            return strrpos($key, "." . $owningTarget) > 0;
+        }, ARRAY_FILTER_USE_KEY);
+
+        $this->log("Target '$owningTarget' has been replaced by '$this->subTarget'.", Project::MSG_WARN);
+        $this->log("A 10 second penalty is assigned to use of this target.", Project::MSG_WARN);
+        $this->log("Please use '$this->subTarget' from now on to avoid the penalty.", Project::MSG_WARN);
         sleep(10);
 
+        if (!empty($calledTargets)) {
+            $calledTargets = reset(array_reverse($calledTargets));
+            $reference = strtok(key($calledTargets), '.');
+            $buildFile = $this->project->getProperty("phing.file." . $reference);
+            $this->callee->setPhingfile('build.project.xml');
+            $this->callee->setOwningTarget($targets[$this->subTarget]);
+            $this->callee->setTarget($owningTarget);
+        }
+        else {
+           $this->callee->setPhingfile($this->project->getProperty("phing.file"));
+           $this->callee->setTarget($this->subTarget);
+        }
+
+        $this->log("Running PhingCallTask for target '" . $this->subTarget . "'", Project::MSG_DEBUG);
         if ($this->callee === null) {
             $this->init();
         }
@@ -130,8 +150,6 @@ class PhingDeprecatedTask extends \Task
             throw new BuildException("Attribute target is required.", $this->getLocation());
         }
 
-        $this->callee->setPhingfile($this->project->getProperty("phing.file"));
-        $this->callee->setTarget($this->subTarget);
         $this->callee->setInheritAll($this->inheritAll);
         $this->callee->setInheritRefs($this->inheritRefs);
         $this->callee->main();

@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="My subsite" default="help">
+<project name="Starterkit" default="help">
 
     <!-- Target build-dev has been replaced by build-code. -->
-    <target name="build-dev" hidden="true">
-        <deprecated target="build-code" />
-    </target>
-
-    <!-- Target rebuild-dev has been replaced by build-keep. -->
-    <target name="rebuild-dev" hidden="true">
-        <deprecated target="build-keep" />
+    <target hidden="true" name="build-dev">
+        <replaced target="build-code" />
     </target>
 
 </project>

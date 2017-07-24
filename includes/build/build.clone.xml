@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="My subsite" default="help">
+<project name="Starterkit" default="help">
 
     <!-- Import production database. -->
-    <target name="import-prod-db" depends="download-prod-db">
+    <target name="subsite-database-import" depends="subsite-database-download">
         <echo msg="Import production database." />
         <!-- Drop database, create if necessary and import the dump. -->
         <phingcall target="drush-sql-drop" />
@@ -15,7 +15,7 @@
     </target>
 
     <!-- Download the production database. -->
-    <target name="download-prod-db" >
+    <target name="subsite-database-download" >
         <echo msg="Download the production database." />
         <!--Strips gz suffix. -->
         <php expression="substr('${project.database.filename}', 0, -3)" returnProperty="gunzipped.filename" level="debug"/>
@@ -26,7 +26,7 @@
             </not>
             <then>
                 <!-- If not available, download and unzip the file. -->
-                <phingcall target="wget-prod-db" />
+                <phingcall target="subsite-database-wget" />
                 <exec command="gunzip tmp/${project.database.filename}" checkreturn="true" passthru="false" logoutput="true" />
             </then>
             <else>
@@ -38,7 +38,7 @@
     </target>
 
     <!-- Target to actually fetch the database dump. -->
-    <target name="wget-prod-db">
+    <target name="subsite-database-wget">
         <!--Generate .htaccess credential property if needed, empty if not. -->
         <if>
             <or>
@@ -78,11 +78,11 @@
         </if>
     </target>
 
-    <!-- Simple prompt for user credentials and recurse into wget-prod-db. -->
-    <target name="prompt-for-credentials-and-retry">
+    <!-- Simple prompt for user credentials and recurse into subsite-database-wget. -->
+    <target name="prompt-for-credentials-and-retry" hidden="true">
         <input propertyName="project.database.url.htaccess.username" message="Please enter your username." />
         <input hidden="true" propertyName="project.database.url.htaccess.password" message="Please enter your password." />
-        <phingcall target="wget-prod-db" />
+        <phingcall target="subsite-database-wget" />
     </target>
 
     <!-- Target to check if we have default settings, otherwise propose user to rebuild. -->
@@ -116,6 +116,6 @@
     </target>
 
     <!-- Install a development version of the subsite with a production database. -->
-    <target name="build-clone" description="Build local version of subsite with production data." depends="download-prod-db, drush-regenerate-settings, import-prod-db, enable-development-modules" />
+    <target name="build-clone" description="Build local version of subsite with production data." depends="subsite-database-download, drush-regenerate-settings, subsite-database-import, subsite-modules-development-enable" />
 
 </project>

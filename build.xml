@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="My subsite" default="help">
+<project name="Starterkit" default="help">
 
     <!-- Only output information on initial phing call. -->
     <property name="logoutput" value="true" />
@@ -41,8 +41,8 @@
         </exec>
     </target>
 
-    <target name="create-subsite-directories">
-        <mkdir dir="${subsite.resources.${dir}}" />
+    <target name="subsite-create-directories">
+        <mkdir dir="${subsite.resources.dir}" />
     </target>
 
     <!-- Set include path for custom tasks. -->
@@ -51,8 +51,8 @@
     <echo msg="Loading PHP Codesniffer Configuration task." level="${level}"  />
     <taskdef name="phpcodesnifferconfiguration" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
 
-    <echo msg="Loading Phing Deprecated Call task." level="${level}"  />
-    <taskdef name="deprecated" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
+    <echo msg="Loading Phing Deprecated Task." level="${level}"  />
+    <taskdef name="replaced" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
 
     <echo msg="Loading Drush Makefile task." level="${level}"  />
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
@@ -69,6 +69,9 @@
     <echo msg="Loading Relative Symlink task." level="${level}" />
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
 
+    <!-- Import deprecated targets first to allow projects to override them. -->
+    <import file="${subsite.starterkit.root}/includes/build/build.deprecated.xml" />
+
     <!-- Import project build xml file. -->
     <if>
         <and>
@@ -81,13 +84,14 @@
     </if>
 
     <!-- Import starterkit build xml files. -->
-    <import file="${subsite.starterkit.root}/includes/build/build.clone.xml" />
-    <import file="${subsite.starterkit.root}/includes/build/build.composer.xml" />
-    <import file="${subsite.starterkit.root}/includes/build/build.deprecated.xml" />
-    <import file="${subsite.starterkit.root}/includes/build/build.drush.xml" />
-    <import file="${subsite.starterkit.root}/includes/build/build.docker.xml" />
-    <import file="${subsite.starterkit.root}/includes/build/build.package.xml" />
-    <import file="${subsite.starterkit.root}/includes/build/build.test.xml" />
+    <import>
+        <fileset dir="${subsite.starterkit.root}/includes/build" >
+            <patternset>
+                <exclude name="build.deprecated.xml"/>
+                <include name="build.*.xml"/>
+            </patternset>
+        </fileset>
+    </import>
 
     <!-- Disable output on consecutive phing calls. -->
     <property name="logoutput" value="false" override="true" />
