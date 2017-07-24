@@ -6,6 +6,13 @@
     <property name="logoutput" value="true" />
     <property name="level" value="info" />
 
+    <!-- Help target to list commands. -->
+    <target name="help" hidden="true">
+        <exec executable="${phing.bin}" passthru="true">
+            <arg line="-l -Dlogoutput=false -Dlevel=verbose -logger phing.listener.AnsiColorLogger | sed -n '1!p'" />
+        </exec>
+    </target>
+
     <!-- Set starterkit properties. -->
     <if>
         <available file="${project.basedir}/vendor/ec-europa/ssk" />
@@ -32,14 +39,6 @@
         </then>
     </if>
     <property file="${subsite.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
-
-    <!-- Help target to list commands. -->
-    <target name="help" description="Phing target list">
-        <exec executable="${phing.bin}"
-              passthru="true">
-            <arg value="-l"/>
-        </exec>
-    </target>
 
     <target name="subsite-create-directories">
         <mkdir dir="${subsite.resources.dir}" />
