@@ -1,17 +1,18 @@
-<div class="highlight highlight-text-xml"><pre>    <span class="pl-c"><span class="pl-c">&lt;!--</span> Install a development version of the subsite. <span class="pl-c">--&gt;</span></span>
-    &lt;<span class="pl-ent">target</span>
-        <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>build-clean<span class="pl-pds">"</span></span>
-        <span class="pl-e">description</span>=<span class="pl-s"><span class="pl-pds">"</span>Build local version of subsite with a clean install.<span class="pl-pds">"</span></span>
-        <span class="pl-e">depends</span>=<span class="pl-s"><span class="pl-pds">"</span>drush-create-files-dirs, install, subsite-modules-development-enable<span class="pl-pds">"</span></span>
-/&gt;</pre></div>
+<big><pre lang="xml">
+<code>&#60;!-- Install a development version of the subsite. --&#62;
+&#60;target
+&nbsp;&nbsp;&nbsp;&nbsp;<!-- <target --> name="build-clean"
+&nbsp;&nbsp;&nbsp;&nbsp;<!-- <target --> description="Build local version of subsite with a clean install."
+&nbsp;&nbsp;&nbsp;&nbsp;<!-- <target --> depends="[test](/README.md)<samp>this</samp>, drush-create-files-dirs, install, subsite-modules-development-enable"
+/&#62;
+</pre></big>
 
-    
 ```xml
     <!-- Install a development version of the subsite. -->
     <target
         name="build-clean"
         description="Build local version of subsite with a clean install."
-        depends="<pre>drush-create-files-dirs</pre>, install, subsite-modules-development-enable"
+        depends="drush-create-files-dirs, install, subsite-modules-development-enable"
 />
 ```
 
