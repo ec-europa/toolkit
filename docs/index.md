@@ -1,9 +1,25 @@
+<div class="highlight highlight-text-xml"><pre>    <span class="pl-c"><span class="pl-c">&lt;!--</span> Install a development version of the subsite. <span class="pl-c">--&gt;</span></span>
+    &lt;<span class="pl-ent">target</span>
+        <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>build-clean<span class="pl-pds">"</span></span>
+        <span class="pl-e">description</span>=<span class="pl-s"><span class="pl-pds">"</span>Build local version of subsite with a clean install.<span class="pl-pds">"</span></span>
+        <span class="pl-e">depends</span>=<span class="pl-s"><span class="pl-pds">"</span>drush-create-files-dirs, install, subsite-modules-development-enable<span class="pl-pds">"</span></span>
+/&gt;</pre></div>
+
+    
+```xml
+    <!-- Install a development version of the subsite. -->
+    <target
+        name="build-clean"
+        description="Build local version of subsite with a clean install."
+        depends="<pre>drush-create-files-dirs</pre>, install, subsite-modules-development-enable"
+/>
+```
+
 <details><summary><b>build-clean</b>: Build local version of subsite with a clean install.</summary><p> 
 
-> 
->- <b>Code description</b>: Build local version of subsite with a clean install. 
->- <b>Code link</b>: [includes/build/build.test.xml#L193](includes/build/build.test.xml#L193)
->- <b>Dependencies</b>: drush-create-files-dirs, install, subsite-modules-development-enable
+- <b>Code description</b>: Build local version of subsite with a clean install. 
+- <b>Code link</b>: [includes/build/build.test.xml#L193](includes/build/build.test.xml#L193)
+- <b>Dependencies</b>: drush-create-files-dirs, install, subsite-modules-development-enable
 
 </p></details>
 <details><summary><b>build-clone</b>: Build local version of subsite with production data.</summary><p> 
