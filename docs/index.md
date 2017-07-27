@@ -11,10 +11,12 @@
             <td>
                 <details>
                     <summary>Build local version of subsite with a clean install.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="build-clean" description="Build local version of subsite with a clean install." depends="drush-create-files-dirs, install, subsite-modules-development-enable"/>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -23,10 +25,12 @@
             <td>
                 <details>
                     <summary>Build local version of subsite with production data.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="build-clone" description="Build local version of subsite with production data." depends="subsite-database-download, drush-regenerate-settings, subsite-database-import, subsite-modules-development-enable"/>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -35,10 +39,12 @@
             <td>
                 <details>
                     <summary>Build local version of subsite without install.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="build-code" description="Build local version of subsite without install." depends="             subsite-site-backup,             platform-delete,             platform-make,             platform-link-resources,             subsite-composer-install,             test-behat-setup-link,             test-behat-setup,             platform-update-htaccess,             test-phpcs-setup,             subsite-modules-development-download,             subsite-site-restore"/>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -47,6 +53,7 @@
             <td>
                 <details>
                     <summary>Build local version of subsite with backup and restore.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="build-keep" description="Build local version of subsite with backup and restore.">
@@ -56,6 +63,7 @@
 >         </phingcall>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -64,6 +72,7 @@
             <td>
                 <details>
                     <summary>Build subsite source code release package.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="build-release" description="Build subsite source code release package." depends="build-dist">
@@ -71,6 +80,7 @@
 >         <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${phing.subsite.build.dir}"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -79,12 +89,14 @@
             <td>
                 <details>
                     <summary>Build subsite tests code release package.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="build-tests" description="Build subsite tests code release package.">
 >         <mkdir dir="${project.release.path}"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -93,6 +105,7 @@
             <td>
                 <details>
                     <summary>Trash docker project.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="docker-compose-down" description="Trash docker project.">
@@ -101,6 +114,7 @@
 >         <delete file="${project.basedir}/ssk-${docker.project.id}"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -109,6 +123,7 @@
             <td>
                 <details>
                     <summary>Stop docker project.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="docker-compose-stop" description="Stop docker project.">
@@ -117,6 +132,7 @@
 >         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -125,6 +141,7 @@
             <td>
                 <details>
                     <summary>Start docker project.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="docker-compose-up" description="Start docker project.">
@@ -136,6 +153,7 @@
 >         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -144,6 +162,7 @@
             <td>
                 <details>
                     <summary>Install the subsite.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="install" description="Install the subsite.">
@@ -204,6 +223,7 @@
 >         <phingcall target="drush-rebuild-node-access"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -212,12 +232,14 @@
             <td>
                 <details>
                     <summary>Create symlink from build to docroot.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="link-docroot" description="Create symlink from build to docroot.">
 >         <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -226,12 +248,14 @@
             <td>
                 <details>
                     <summary>Refresh configuration and run behat tests.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="test-run-behat" description="Refresh configuration and run behat tests.">
 >         <behat executable="${behat.bin}" config="${behat.yml.path}" strict="${behat.options.strict}" verbose="${behat.options.verbosity}" passthru="${behat.options.passthru}"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -240,10 +264,12 @@
             <td>
                 <details>
                     <summary>Refresh configuration and run phpcs review.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="test-run-phpcs" description="Refresh configuration and run phpcs review." depends="test-phpcs-setup, test-run-php-codesniffer"/>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -252,10 +278,12 @@
             <td>
                 <details>
                     <summary>Refresh configuration and run qa review.</summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="test-run-qa" description="Refresh configuration and run qa review." depends="test-phpcs-setup, test-quality-assurance"/>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -264,12 +292,14 @@
             <td>
                 <details>
                     <summary> Target build-dev has been replaced by build-code. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target hidden="true" name="build-dev">
 >         <replaced target="build-code"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -278,10 +308,12 @@
             <td>
                 <details>
                     <summary> Create distribution code base. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="build-dist" hidden="true" depends="             dist-delete,             dist-make,             dist-copy-resources,             dist-composer-install"/>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -290,6 +322,7 @@
             <td>
                 <details>
                     <summary> Target to check if we have default settings, otherwise propose user to rebuild. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="check-for-default-settings-or-rebuild" hidden="true">
@@ -321,6 +354,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -329,12 +363,14 @@
             <td>
                 <details>
                     <summary> Echo the composer hook phingcalls. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="composer-echo-hook-phingcalls" hidden="true">
 >         <echoproperties prefix="composer.hook."/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -343,6 +379,7 @@
             <td>
                 <details>
                     <summary> Copies a given folder to a new location. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="copy-folder" hidden="true">
@@ -351,6 +388,7 @@
 >         </copy>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -359,6 +397,7 @@
             <td>
                 <details>
                     <summary> Create temp dirs. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="create-tmp-dirs" hidden="true">
@@ -388,6 +427,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -396,6 +436,7 @@
             <td>
                 <details>
                     <summary> Delete a given folder. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="delete-folder" hidden="true">
@@ -412,6 +453,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -420,6 +462,7 @@
             <td>
                 <details>
                     <summary> Install Composer dist dependencies for the subsite. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="dist-composer-install">
@@ -434,6 +477,7 @@
 >         </composer>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -442,6 +486,7 @@
             <td>
                 <details>
                     <summary> Copy subsite resources into the build folder. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="dist-copy-resources">
@@ -475,6 +520,7 @@
 >         <copy todir="${dist.build.dir}" file="${subsite.resources.composer.lock}"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -483,6 +529,7 @@
             <td>
                 <details>
                     <summary> Delete the previous distribution build. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="dist-delete">
@@ -492,6 +539,7 @@
 >         </phingcall>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -500,6 +548,7 @@
             <td>
                 <details>
                     <summary> Make the distribution version of the subsite. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="dist-make">
@@ -549,6 +598,7 @@
 >         </phingcall>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -557,6 +607,7 @@
             <td>
                 <details>
                     <summary> Create the directories. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-create-files-dirs">
@@ -567,6 +618,7 @@
 >         </drush>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -575,6 +627,7 @@
             <td>
                 <details>
                     <summary> Download registry rebuild. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-dl-rr">
@@ -583,6 +636,7 @@
 >         <exec command="${drush.bin} cc drush &gt;/dev/null"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -591,6 +645,7 @@
             <td>
                 <details>
                     <summary> Enable modules. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-enable-modules" hidden="true">
@@ -599,6 +654,7 @@
 >         </drush>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -607,6 +663,7 @@
             <td>
                 <details>
                     <summary> Activate solr if needed. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-enable-solr">
@@ -624,6 +681,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -632,6 +690,7 @@
             <td>
                 <details>
                     <summary> Execute a makefile with the no-core option. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-make-no-core">
@@ -645,6 +704,7 @@
 >         </drush>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -653,6 +713,7 @@
             <td>
                 <details>
                     <summary> Rebuild node access. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-rebuild-node-access">
@@ -661,6 +722,7 @@
 >         </drush>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -669,6 +731,7 @@
             <td>
                 <details>
                     <summary> Regenerate the settings file with database credentials and development variables. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-regenerate-settings" depends="check-for-default-settings-or-rebuild">
@@ -701,6 +764,7 @@
 >         </drush>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -709,6 +773,7 @@
             <td>
                 <details>
                     <summary> Rebuild registry. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-registry-rebuild">
@@ -730,6 +795,7 @@
 >         </trycatch>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -738,6 +804,7 @@
             <td>
                 <details>
                     <summary> Install the site. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-site-install">
@@ -753,6 +820,7 @@
 >         </drush>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -761,6 +829,7 @@
             <td>
                 <details>
                     <summary> Create the database. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-sql-create">
@@ -770,6 +839,7 @@
 >         </drush>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -778,6 +848,7 @@
             <td>
                 <details>
                     <summary> Drop the database. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-sql-drop">
@@ -787,6 +858,7 @@
 >         </drush>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -795,6 +867,7 @@
             <td>
                 <details>
                     <summary> Backup the database. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-sql-dump">
@@ -806,6 +879,7 @@
 >         </drush>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -814,6 +888,7 @@
             <td>
                 <details>
                     <summary> Import a database. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="drush-sql-import">
@@ -831,6 +906,7 @@
 >         </drush>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -839,6 +915,7 @@
             <td>
                 <details>
                     <summary> Install Composer dependencies for the build system. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="platform-composer-install">
@@ -851,6 +928,7 @@
 >         </composer>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -859,6 +937,7 @@
             <td>
                 <details>
                     <summary> Delete the previous development build. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="platform-delete">
@@ -873,6 +952,7 @@
 >         <echo msg="Deleting folder."/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -881,6 +961,7 @@
             <td>
                 <details>
                     <summary> Download the platform. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="platform-download">
@@ -907,6 +988,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -915,6 +997,7 @@
             <td>
                 <details>
                     <summary> Symlink the source folders for easy development. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="platform-link-resources">
@@ -927,6 +1010,7 @@
 >         <rel-sym link="${platform.build.subsite.composer.lock}" target="${subsite.resources.composer.lock}"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -935,6 +1019,7 @@
             <td>
                 <details>
                     <summary> Make the development version of the subsite. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="platform-make" depends="platform-unpack">
@@ -953,6 +1038,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -961,6 +1047,7 @@
             <td>
                 <details>
                     <summary> Unpack the platform. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="platform-unpack" depends="platform-download">
@@ -979,6 +1066,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -987,6 +1075,7 @@
             <td>
                 <details>
                     <summary> Update .htaccess. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="platform-update-htaccess">
@@ -1002,6 +1091,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1010,6 +1100,7 @@
             <td>
                 <details>
                     <summary> Simple prompt for user credentials and recurse into subsite-database-wget. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="prompt-for-credentials-and-retry" hidden="true">
@@ -1018,6 +1109,7 @@
 >         <phingcall target="subsite-database-wget"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1026,12 +1118,14 @@
             <td>
                 <details>
                     <summary> Build documentation index. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="starterkit-build-documentation-index">
 >         <build-documentation-index/>        
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1040,6 +1134,7 @@
             <td>
                 <details>
                     <summary> Ensure needed files are present. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="starterkit-copy-templates">
@@ -1049,6 +1144,7 @@
 >         </copy>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1057,6 +1153,7 @@
             <td>
                 <details>
                     <summary> Provide handy access with root symlink to starterkit binary. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="starterkit-link-binary">
@@ -1064,6 +1161,7 @@
 >         <rel-sym link="${project.basedir}/ssk" target="${subsite.starterkit.bin}" overwrite="true"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1072,6 +1170,7 @@
             <td>
                 <details>
                     <summary> Upgrade subsite-starterkit 2.x to 3.x. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="starterkit-upgrade">
@@ -1114,6 +1213,7 @@
 >         <move file="${subsite.resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1122,6 +1222,7 @@
             <td>
                 <details>
                     <summary> Install Composer dev dependencies for the subsite. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-composer-install">
@@ -1135,6 +1236,7 @@
 >         </composer>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1143,6 +1245,7 @@
             <td>
                 <details>
                     <summary> Download the production database. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-database-download">
@@ -1167,6 +1270,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1175,6 +1279,7 @@
             <td>
                 <details>
                     <summary> Import production database. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-database-import" depends="subsite-database-download">
@@ -1188,6 +1293,7 @@
 >         <phingcall target="drush-registry-rebuild"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1196,6 +1302,7 @@
             <td>
                 <details>
                     <summary> Target to actually fetch the database dump. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-database-wget">
@@ -1238,6 +1345,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1246,6 +1354,7 @@
             <td>
                 <details>
                     <summary> Download development modules. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-modules-development-download" depends="subsite-modules-development-makefile">
@@ -1256,6 +1365,7 @@
 >         </phingcall>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1264,6 +1374,7 @@
             <td>
                 <details>
                     <summary> Enable development modules. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-modules-development-enable">
@@ -1272,6 +1383,7 @@
 >         </phingcall>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1280,6 +1392,7 @@
             <td>
                 <details>
                     <summary> Generate the makefile used to download development modules. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-modules-development-makefile">
@@ -1294,6 +1407,7 @@
 >         <drushmakefile makeFile="${subsite.temporary.development.make}" coreVersion="${drupal.core.version}" projects="${development.modules.download}" defaultProjectDir="${development.modules.location}"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1302,6 +1416,7 @@
             <td>
                 <details>
                     <summary> Enable required modules after installation of the profile. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-modules-install-enable">
@@ -1310,6 +1425,7 @@
 >         </phingcall>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1318,6 +1434,7 @@
             <td>
                 <details>
                     <summary> Setup file directory </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-setup-files-directory">
@@ -1333,6 +1450,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1341,6 +1459,7 @@
             <td>
                 <details>
                     <summary> Backs up files and folders listed in platform.rebuild properties in order to rebuild. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-site-backup">
@@ -1409,6 +1528,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1417,6 +1537,7 @@
             <td>
                 <details>
                     <summary> Backs up a site item from the platform that will be removed in order to rebuild. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-site-backup-item" hidden="true">
@@ -1448,6 +1569,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1456,6 +1578,7 @@
             <td>
                 <details>
                     <summary> Restoring sites directory if backed up before rebuild-dev. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-site-restore">
@@ -1507,6 +1630,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1515,6 +1639,7 @@
             <td>
                 <details>
                     <summary> Restores a site item from the platform.rebuild.backup.destination to the new build. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="subsite-site-restore-item" hidden="true">
@@ -1546,6 +1671,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1554,6 +1680,7 @@
             <td>
                 <details>
                     <summary> Set up Behat. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="test-behat-setup">
@@ -1578,6 +1705,7 @@
 >         <echo message="${behat.yml.content}" file="${behat.yml.path}"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1586,6 +1714,7 @@
             <td>
                 <details>
                     <summary> Symlink the Behat bin and test directory in the subsite folder. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="test-behat-setup-link">
@@ -1594,6 +1723,7 @@
 >         <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1602,6 +1732,7 @@
             <td>
                 <details>
                     <summary> Set up PHP CodeSniffer. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="test-phpcs-setup">
@@ -1625,6 +1756,7 @@
 >         <phingcall target="test-phpcs-setup-prepush"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1633,6 +1765,7 @@
             <td>
                 <details>
                     <summary> Setup the PHP CodeSniffer pre-push hook. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="test-phpcs-setup-prepush">
@@ -1650,6 +1783,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1658,12 +1792,14 @@
             <td>
                 <details>
                     <summary> Do quality assurance checks. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="test-quality-assurance">
 >         <exec command="${subsite.starterkit.bin}/qa review:full --no-interaction --ansi" passthru="true" checkreturn="true"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1672,12 +1808,14 @@
             <td>
                 <details>
                     <summary> Do quality assurance checks. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="test-run-php-codesniffer">
 >         <exec command="${subsite.starterkit.bin}/phpcs" passthru="true" checkreturn="true"/>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
@@ -1686,6 +1824,7 @@
             <td>
                 <details>
                     <summary> Make the given folder writeable. </summary>
+
 > ```xml 
 > <?xml version="1.0"?>
 > <target name="unprotect-folder" hidden="true">
@@ -1700,6 +1839,7 @@
 >         </if>
 >     </target>
 > ```
+
                 </details>
             </td>
         </tr>
