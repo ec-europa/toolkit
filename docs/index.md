@@ -17,7 +17,7 @@
 > <target name="build-clean" description="Build local version of subsite with a clean install." depends="drush-create-files-dirs, install, subsite-modules-development-enable"/>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -31,7 +31,7 @@
 > <target name="build-clone" description="Build local version of subsite with production data." depends="subsite-database-download, drush-regenerate-settings, subsite-database-import, subsite-modules-development-enable"/>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -45,7 +45,7 @@
 > <target name="build-code" description="Build local version of subsite without install." depends="             subsite-site-backup,             platform-delete,             platform-make,             platform-link-resources,             subsite-composer-install,             test-behat-setup-link,             test-behat-setup,             platform-update-htaccess,             test-phpcs-setup,             subsite-modules-development-download,             subsite-site-restore"/>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -64,7 +64,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -81,7 +81,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -97,7 +97,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -115,7 +115,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -133,7 +133,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -154,7 +154,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -224,7 +224,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -240,7 +240,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -256,7 +256,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -270,7 +270,7 @@
 > <target name="test-run-phpcs" description="Refresh configuration and run phpcs review." depends="test-phpcs-setup, test-run-php-codesniffer"/>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -284,7 +284,7 @@
 > <target name="test-run-qa" description="Refresh configuration and run qa review." depends="test-phpcs-setup, test-quality-assurance"/>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -300,7 +300,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -314,7 +314,7 @@
 > <target name="build-dist" hidden="true" depends="             dist-delete,             dist-make,             dist-copy-resources,             dist-composer-install"/>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -355,7 +355,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -371,7 +371,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -389,7 +389,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -428,7 +428,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -454,7 +454,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -478,7 +478,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -521,7 +521,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -540,7 +540,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -599,7 +599,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -619,7 +619,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -637,7 +637,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -655,7 +655,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -682,7 +682,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -705,7 +705,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -723,7 +723,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -765,7 +765,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -796,7 +796,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -821,7 +821,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -840,7 +840,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -859,7 +859,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -880,7 +880,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -907,7 +907,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -929,7 +929,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -953,7 +953,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -989,7 +989,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1011,7 +1011,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1039,7 +1039,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1067,7 +1067,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1092,7 +1092,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1110,7 +1110,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1126,7 +1126,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1145,7 +1145,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1162,7 +1162,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1214,7 +1214,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1237,7 +1237,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1271,7 +1271,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1294,7 +1294,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1346,7 +1346,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1366,7 +1366,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1384,7 +1384,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1408,7 +1408,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1426,7 +1426,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1451,7 +1451,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1529,7 +1529,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1570,7 +1570,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1631,7 +1631,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1672,7 +1672,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1706,7 +1706,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1724,7 +1724,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1757,7 +1757,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1784,7 +1784,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1800,7 +1800,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1816,7 +1816,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1840,7 +1840,7 @@
 >     </target>
 > ```
 
-                </details>
+</details>
             </td>
         </tr>
     </tbody>
