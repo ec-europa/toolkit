@@ -1,7 +1,15 @@
-<big><table><thead><tr align="left" valign="top"><th>Command</th><th>Description</th></tr></thead><tbody>
-<tr align="left" valign="top">
-<td> [build-clean](/includes/build/build.test.xml#L193) </td>
-<td><details><summary>/includes/build/build.test.xml</summary>
+<big>
+<table>
+    <thead>
+        <tr align="left" valign="top">
+            <th>Command</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr align="left" valign="top">
+            <td> [build-clean](/includes/build/build.test.xml) </td>
+            <td><details><summary>/includes/build/build.test.xml</summary>
 
 > - TODO
 
@@ -489,4 +497,5 @@
 > - TODO
 
 </details></td></tr>
-</tbody></table></big>
+</tbody></table>
+</big>
