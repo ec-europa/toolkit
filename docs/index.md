@@ -11,13 +11,13 @@
             <td>
                 <details>
                     <summary>Build local version of subsite with a clean install.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="build-clean" description="Build local version of subsite with a clean install." depends="drush-create-files-dirs, install, subsite-modules-development-enable"/>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;build-clean&quot; description=&quot;Build local version of subsite with a clean install.&quot; depends=&quot;drush-create-files-dirs, install, subsite-modules-development-enable&quot;/&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -25,13 +25,13 @@
             <td>
                 <details>
                     <summary>Build local version of subsite with production data.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="build-clone" description="Build local version of subsite with production data." depends="subsite-database-download, drush-regenerate-settings, subsite-database-import, subsite-modules-development-enable"/>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;build-clone&quot; description=&quot;Build local version of subsite with production data.&quot; depends=&quot;subsite-database-download, drush-regenerate-settings, subsite-database-import, subsite-modules-development-enable&quot;/&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -39,13 +39,13 @@
             <td>
                 <details>
                     <summary>Build local version of subsite without install.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="build-code" description="Build local version of subsite without install." depends="             subsite-site-backup,             platform-delete,             platform-make,             platform-link-resources,             subsite-composer-install,             test-behat-setup-link,             test-behat-setup,             platform-update-htaccess,             test-phpcs-setup,             subsite-modules-development-download,             subsite-site-restore"/>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;build-code&quot; description=&quot;Build local version of subsite without install.&quot; depends=&quot;             subsite-site-backup,             platform-delete,             platform-make,             platform-link-resources,             subsite-composer-install,             test-behat-setup-link,             test-behat-setup,             platform-update-htaccess,             test-phpcs-setup,             subsite-modules-development-download,             subsite-site-restore&quot;/&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -53,18 +53,18 @@
             <td>
                 <details>
                     <summary>Build local version of subsite with backup and restore.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="build-keep" description="Build local version of subsite with backup and restore.">
->         <!-- Execute build-dev with automatic rebuild enabled. -->
->         <phingcall target="build-dev">
->             <property name="platform.rebuild.auto" value="1" override="true"/>
->         </phingcall>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;build-keep&quot; description=&quot;Build local version of subsite with backup and restore.&quot;&gt;
+        &lt;!-- Execute build-dev with automatic rebuild enabled. --&gt;
+        &lt;phingcall target=&quot;build-dev&quot;&gt;
+            &lt;property name=&quot;platform.rebuild.auto&quot; value=&quot;1&quot; override=&quot;true&quot;/&gt;
+        &lt;/phingcall&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -72,16 +72,16 @@
             <td>
                 <details>
                     <summary>Build subsite source code release package.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="build-release" description="Build subsite source code release package." depends="build-dist">
->         <mkdir dir="${project.release.path}"/>
->         <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${phing.subsite.build.dir}"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;build-release&quot; description=&quot;Build subsite source code release package.&quot; depends=&quot;build-dist&quot;&gt;
+        &lt;mkdir dir=&quot;${project.release.path}&quot;/&gt;
+        &lt;exec command=&quot;tar -czf ${project.release.path}/${project.release.name}.tar.gz ${phing.subsite.build.dir}&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -89,15 +89,15 @@
             <td>
                 <details>
                     <summary>Build subsite tests code release package.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="build-tests" description="Build subsite tests code release package.">
->         <mkdir dir="${project.release.path}"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;build-tests&quot; description=&quot;Build subsite tests code release package.&quot;&gt;
+        &lt;mkdir dir=&quot;${project.release.path}&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -105,17 +105,17 @@
             <td>
                 <details>
                     <summary>Trash docker project.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="docker-compose-down" description="Trash docker project.">
->         <echo msg="Removing containers and volumes for ${docker.project.id}"/>
->         <exec command="docker-compose -p ${docker.project.id} -f ${subsite.starterkit.root}/resources/docker/docker-compose.yml down --volumes"/>
->         <delete file="${project.basedir}/ssk-${docker.project.id}"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;docker-compose-down&quot; description=&quot;Trash docker project.&quot;&gt;
+        &lt;echo msg=&quot;Removing containers and volumes for ${docker.project.id}&quot;/&gt;
+        &lt;exec command=&quot;docker-compose -p ${docker.project.id} -f ${subsite.starterkit.root}/resources/docker/docker-compose.yml down --volumes&quot;/&gt;
+        &lt;delete file=&quot;${project.basedir}/ssk-${docker.project.id}&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -123,17 +123,17 @@
             <td>
                 <details>
                     <summary>Stop docker project.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="docker-compose-stop" description="Stop docker project.">
->         <echo msg="Stopping containers for ${docker.project.id}"/>
->         <exec command="docker-compose -p ${docker.project.id} -f ${subsite.starterkit.root}/resources/docker/docker-compose.yml stop"/>
->         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;docker-compose-stop&quot; description=&quot;Stop docker project.&quot;&gt;
+        &lt;echo msg=&quot;Stopping containers for ${docker.project.id}&quot;/&gt;
+        &lt;exec command=&quot;docker-compose -p ${docker.project.id} -f ${subsite.starterkit.root}/resources/docker/docker-compose.yml stop&quot;/&gt;
+        &lt;exec command=&quot;${project.basedir}/ssk-${docker.project.id} ps&quot; passthru=&quot;true&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -141,20 +141,20 @@
             <td>
                 <details>
                     <summary>Start docker project.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="docker-compose-up" description="Start docker project.">
->         <echo msg="Starting containers for ${docker.project.id}"/>
->         <mkdir dir="${platform.build.dir}"/> 
->         <mkdir dir="${share.platform.path}/databases/platform-dev-${platform.package.reference}"/>
->         <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${docker.project.id} -f ${subsite.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate"/>
->         <rel-sym link="${project.basedir}/ssk-${docker.project.id}" target="${subsite.starterkit.root}/resources/docker/dbash" overwrite="true"/>
->         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;docker-compose-up&quot; description=&quot;Start docker project.&quot;&gt;
+        &lt;echo msg=&quot;Starting containers for ${docker.project.id}&quot;/&gt;
+        &lt;mkdir dir=&quot;${platform.build.dir}&quot;/&gt; 
+        &lt;mkdir dir=&quot;${share.platform.path}/databases/platform-dev-${platform.package.reference}&quot;/&gt;
+        &lt;exec command=&quot;DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${docker.project.id} -f ${subsite.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate&quot;/&gt;
+        &lt;rel-sym link=&quot;${project.basedir}/ssk-${docker.project.id}&quot; target=&quot;${subsite.starterkit.root}/resources/docker/dbash&quot; overwrite=&quot;true&quot;/&gt;
+        &lt;exec command=&quot;${project.basedir}/ssk-${docker.project.id} ps&quot; passthru=&quot;true&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -162,69 +162,69 @@
             <td>
                 <details>
                     <summary>Install the subsite.</summary>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;install&quot; description=&quot;Install the subsite.&quot;&gt;
+        &lt;!--
+            Ensure the settings folder is writable so the installer can create
+            the settings.php file.
+         --&gt;
+        &lt;chmod mode=&quot;0775&quot; failonerror=&quot;false&quot; verbose=&quot;false&quot; quiet=&quot;true&quot;&gt;
+            &lt;fileset dir=&quot;${platform.build.settings.dir}&quot;/&gt;
+        &lt;/chmod&gt;
 
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="install" description="Install the subsite.">
->         <!--
->             Ensure the settings folder is writable so the installer can create
->             the settings.php file.
->          -->
->         <chmod mode="0775" failonerror="false" verbose="false" quiet="true">
->             <fileset dir="${platform.build.settings.dir}"/>
->         </chmod>
-> 
->         <if>
->             <and>
->                 <equals arg1="${platform.package.database}" arg2="1"/>
->                 <available file="${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.sql" type="file"/>
->             </and>
->             <then>
->                 <phingcall target="drush-regenerate-settings"/>
->                 <exec command="${drush.bin} --root=${platform.build.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap"/>
->                 <if>
->                     <not>
->                         <equals arg1="${drush-status-bootstrap}" arg2="0"/>
->                     </not>
->                     <then>
->                         <phingcall target="drush-sql-create"/>
->                         <phingcall target="drush-sql-import">
->                             <property name="database-file" value="${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.sql"/>
->                         </phingcall>
->                     </then>
->                 </if> 
->             </then>
->             <else>
->                 <!-- Install site with drush. -->
->                 <phingcall target="drush-site-install"/>
->                 <!-- Backup vanilla database. -->
->                 <if>
->                     <equals arg1="${platform.package.database}" arg2="1"/>
->                     <then>
->                         <phingcall target="drush-sql-dump">
->                             <property name="database-file" value="${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.sql"/>
->                         </phingcall>
->                     </then>
->                 </if>
->             </else>
->         </if>
-> 
->         <!-- Enable solr if needed. -->
->         <phingcall target="drush-enable-solr"/>
-> 
->         <!--
->             Subsites are not allowed to use their own installation profile for
->             historical reasons. The functionality is contained in one of more
->             features and modules which need to be enabled after installation.
->         -->
->         <phingcall target="subsite-modules-install-enable"/>
-> 
->         <!-- Rebuild node access after Subsites modules activation -->
->         <phingcall target="drush-rebuild-node-access"/>
->     </target>
-> ```
+        &lt;if&gt;
+            &lt;and&gt;
+                &lt;equals arg1=&quot;${platform.package.database}&quot; arg2=&quot;1&quot;/&gt;
+                &lt;available file=&quot;${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.sql&quot; type=&quot;file&quot;/&gt;
+            &lt;/and&gt;
+            &lt;then&gt;
+                &lt;phingcall target=&quot;drush-regenerate-settings&quot;/&gt;
+                &lt;exec command=&quot;${drush.bin} --root=${platform.build.dir} status bootstrap | grep -q Successful&quot; returnProperty=&quot;drush-status-bootstrap&quot;/&gt;
+                &lt;if&gt;
+                    &lt;not&gt;
+                        &lt;equals arg1=&quot;${drush-status-bootstrap}&quot; arg2=&quot;0&quot;/&gt;
+                    &lt;/not&gt;
+                    &lt;then&gt;
+                        &lt;phingcall target=&quot;drush-sql-create&quot;/&gt;
+                        &lt;phingcall target=&quot;drush-sql-import&quot;&gt;
+                            &lt;property name=&quot;database-file&quot; value=&quot;${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.sql&quot;/&gt;
+                        &lt;/phingcall&gt;
+                    &lt;/then&gt;
+                &lt;/if&gt; 
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;!-- Install site with drush. --&gt;
+                &lt;phingcall target=&quot;drush-site-install&quot;/&gt;
+                &lt;!-- Backup vanilla database. --&gt;
+                &lt;if&gt;
+                    &lt;equals arg1=&quot;${platform.package.database}&quot; arg2=&quot;1&quot;/&gt;
+                    &lt;then&gt;
+                        &lt;phingcall target=&quot;drush-sql-dump&quot;&gt;
+                            &lt;property name=&quot;database-file&quot; value=&quot;${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.sql&quot;/&gt;
+                        &lt;/phingcall&gt;
+                    &lt;/then&gt;
+                &lt;/if&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
 
-</details>
+        &lt;!-- Enable solr if needed. --&gt;
+        &lt;phingcall target=&quot;drush-enable-solr&quot;/&gt;
+
+        &lt;!--
+            Subsites are not allowed to use their own installation profile for
+            historical reasons. The functionality is contained in one of more
+            features and modules which need to be enabled after installation.
+        --&gt;
+        &lt;phingcall target=&quot;subsite-modules-install-enable&quot;/&gt;
+
+        &lt;!-- Rebuild node access after Subsites modules activation --&gt;
+        &lt;phingcall target=&quot;drush-rebuild-node-access&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -232,15 +232,15 @@
             <td>
                 <details>
                     <summary>Create symlink from build to docroot.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="link-docroot" description="Create symlink from build to docroot.">
->         <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;link-docroot&quot; description=&quot;Create symlink from build to docroot.&quot;&gt;
+        &lt;rel-sym link=&quot;${server.docroot}&quot; target=&quot;${platform.build.dir}&quot; overwrite=&quot;true&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -248,15 +248,15 @@
             <td>
                 <details>
                     <summary>Refresh configuration and run behat tests.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="test-run-behat" description="Refresh configuration and run behat tests.">
->         <behat executable="${behat.bin}" config="${behat.yml.path}" strict="${behat.options.strict}" verbose="${behat.options.verbosity}" passthru="${behat.options.passthru}"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;test-run-behat&quot; description=&quot;Refresh configuration and run behat tests.&quot;&gt;
+        &lt;behat executable=&quot;${behat.bin}&quot; config=&quot;${behat.yml.path}&quot; strict=&quot;${behat.options.strict}&quot; verbose=&quot;${behat.options.verbosity}&quot; passthru=&quot;${behat.options.passthru}&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -264,13 +264,13 @@
             <td>
                 <details>
                     <summary>Refresh configuration and run phpcs review.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="test-run-phpcs" description="Refresh configuration and run phpcs review." depends="test-phpcs-setup, test-run-php-codesniffer"/>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;test-run-phpcs&quot; description=&quot;Refresh configuration and run phpcs review.&quot; depends=&quot;test-phpcs-setup, test-run-php-codesniffer&quot;/&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -278,13 +278,13 @@
             <td>
                 <details>
                     <summary>Refresh configuration and run qa review.</summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="test-run-qa" description="Refresh configuration and run qa review." depends="test-phpcs-setup, test-quality-assurance"/>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;test-run-qa&quot; description=&quot;Refresh configuration and run qa review.&quot; depends=&quot;test-phpcs-setup, test-quality-assurance&quot;/&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -292,15 +292,15 @@
             <td>
                 <details>
                     <summary> Target build-dev has been replaced by build-code. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target hidden="true" name="build-dev">
->         <replaced target="build-code"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target hidden=&quot;true&quot; name=&quot;build-dev&quot;&gt;
+        &lt;replaced target=&quot;build-code&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -308,13 +308,13 @@
             <td>
                 <details>
                     <summary> Create distribution code base. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="build-dist" hidden="true" depends="             dist-delete,             dist-make,             dist-copy-resources,             dist-composer-install"/>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;build-dist&quot; hidden=&quot;true&quot; depends=&quot;             dist-delete,             dist-make,             dist-copy-resources,             dist-composer-install&quot;/&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -322,40 +322,40 @@
             <td>
                 <details>
                     <summary> Target to check if we have default settings, otherwise propose user to rebuild. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="check-for-default-settings-or-rebuild" hidden="true">
->         <if>
->             <not>
->                 <available file="${platform.build.settings.dir}/default.settings.php" type="file" property="platform.build.settings.dir.default.settings"/>
->             </not>
->             <then>
->                 <!-- If we can not find default settings in the build settings folder, prompt to ask user to rebuild. -->
->                 <echo msg="No default settings detected at ${platform.build.settings.dir}/default.settings.php." level="warning"/>
->                 <propertyprompt propertyName="platform-rebuild" defaultValue="no" promptText="Do you wish to rebuild? (y/n)"/>
->                 <if>
->                     <equals arg1="${platform-rebuild}" arg2="y"/>
->                     <then>
->                         <phingcall target="build-dev"/>
->                     </then>
->                     <else>
->                         <!-- If user chooses not to rebuild we have no other choice to fail the build. -->
->                         <echo msg="Can not re-generate settings, canceling clone task." level="error"/>
->                         <fail/>
->                     </else>
->                 </if>
->             </then>
->             <else>
->                 <!-- If we have found the default settings inform the user we will proceed with generation. -->
->                 <echo msg="Default settings found at ${platform.build.settings.dir}/default.settings.php."/>
->                 <echo msg="Proceeding with re-generation of the settings.php."/>
->             </else>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;check-for-default-settings-or-rebuild&quot; hidden=&quot;true&quot;&gt;
+        &lt;if&gt;
+            &lt;not&gt;
+                &lt;available file=&quot;${platform.build.settings.dir}/default.settings.php&quot; type=&quot;file&quot; property=&quot;platform.build.settings.dir.default.settings&quot;/&gt;
+            &lt;/not&gt;
+            &lt;then&gt;
+                &lt;!-- If we can not find default settings in the build settings folder, prompt to ask user to rebuild. --&gt;
+                &lt;echo msg=&quot;No default settings detected at ${platform.build.settings.dir}/default.settings.php.&quot; level=&quot;warning&quot;/&gt;
+                &lt;propertyprompt propertyName=&quot;platform-rebuild&quot; defaultValue=&quot;no&quot; promptText=&quot;Do you wish to rebuild? (y/n)&quot;/&gt;
+                &lt;if&gt;
+                    &lt;equals arg1=&quot;${platform-rebuild}&quot; arg2=&quot;y&quot;/&gt;
+                    &lt;then&gt;
+                        &lt;phingcall target=&quot;build-dev&quot;/&gt;
+                    &lt;/then&gt;
+                    &lt;else&gt;
+                        &lt;!-- If user chooses not to rebuild we have no other choice to fail the build. --&gt;
+                        &lt;echo msg=&quot;Can not re-generate settings, canceling clone task.&quot; level=&quot;error&quot;/&gt;
+                        &lt;fail/&gt;
+                    &lt;/else&gt;
+                &lt;/if&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;!-- If we have found the default settings inform the user we will proceed with generation. --&gt;
+                &lt;echo msg=&quot;Default settings found at ${platform.build.settings.dir}/default.settings.php.&quot;/&gt;
+                &lt;echo msg=&quot;Proceeding with re-generation of the settings.php.&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -363,15 +363,15 @@
             <td>
                 <details>
                     <summary> Echo the composer hook phingcalls. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="composer-echo-hook-phingcalls" hidden="true">
->         <echoproperties prefix="composer.hook."/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;composer-echo-hook-phingcalls&quot; hidden=&quot;true&quot;&gt;
+        &lt;echoproperties prefix=&quot;composer.hook.&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -379,17 +379,17 @@
             <td>
                 <details>
                     <summary> Copies a given folder to a new location. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="copy-folder" hidden="true">
->         <copy todir="${copy.destination.path}" haltonerror="${copy.path.haltonerror}">
->             <fileset dir="${copy.source.path}" defaultexcludes="false"/>
->         </copy>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;copy-folder&quot; hidden=&quot;true&quot;&gt;
+        &lt;copy todir=&quot;${copy.destination.path}&quot; haltonerror=&quot;${copy.path.haltonerror}&quot;&gt;
+            &lt;fileset dir=&quot;${copy.source.path}&quot; defaultexcludes=&quot;false&quot;/&gt;
+        &lt;/copy&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -397,38 +397,38 @@
             <td>
                 <details>
                     <summary> Create temp dirs. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="create-tmp-dirs" hidden="true">
->         <if>
->             <!-- Create the global cache directory if it doesn't exist. -->
->             <not>
->                 <available file="${platform.package.cachedir}" type="dir"/>
->             </not>
->             <then>
->                 <mkdir dir="${platform.package.cachedir}"/>
->             </then>
->             <else>
->                 <echo msg="Directory ${platform.package.cachedir} exists."/>
->             </else>
->         </if>
->         <if>
->             <!-- Create the destination directory if it doesn't exist. -->
->             <not>
->                 <available file="${platform.package.destination}" type="dir"/>
->             </not>
->             <then>
->                 <mkdir dir="${platform.package.destination}"/>
->             </then>
->             <else>
->                 <echo msg="Directory ${platform.package.destination} exists."/>
->             </else>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;create-tmp-dirs&quot; hidden=&quot;true&quot;&gt;
+        &lt;if&gt;
+            &lt;!-- Create the global cache directory if it doesn't exist. --&gt;
+            &lt;not&gt;
+                &lt;available file=&quot;${platform.package.cachedir}&quot; type=&quot;dir&quot;/&gt;
+            &lt;/not&gt;
+            &lt;then&gt;
+                &lt;mkdir dir=&quot;${platform.package.cachedir}&quot;/&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;echo msg=&quot;Directory ${platform.package.cachedir} exists.&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+        &lt;if&gt;
+            &lt;!-- Create the destination directory if it doesn't exist. --&gt;
+            &lt;not&gt;
+                &lt;available file=&quot;${platform.package.destination}&quot; type=&quot;dir&quot;/&gt;
+            &lt;/not&gt;
+            &lt;then&gt;
+                &lt;mkdir dir=&quot;${platform.package.destination}&quot;/&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;echo msg=&quot;Directory ${platform.package.destination} exists.&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -436,25 +436,25 @@
             <td>
                 <details>
                     <summary> Delete a given folder. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="delete-folder" hidden="true">
->         <!-- Use the faster native command on UNIX systems. -->
->         <if>
->             <os family="unix"/>
->             <then>
->                 <echo msg="rm -rf &quot;${folder.to.delete}&quot;"/>
->                 <exec command="rm -rf &quot;${folder.to.delete}&quot;" dir="${project.basedir}" passthru="true" checkreturn="true"/>
->             </then>
->             <else>
->                 <delete dir="${folder.to.delete}" includeemptydirs="true" failonerror="false"/>
->             </else>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;delete-folder&quot; hidden=&quot;true&quot;&gt;
+        &lt;!-- Use the faster native command on UNIX systems. --&gt;
+        &lt;if&gt;
+            &lt;os family=&quot;unix&quot;/&gt;
+            &lt;then&gt;
+                &lt;echo msg=&quot;rm -rf &amp;quot;${folder.to.delete}&amp;quot;&quot;/&gt;
+                &lt;exec command=&quot;rm -rf &amp;quot;${folder.to.delete}&amp;quot;&quot; dir=&quot;${project.basedir}&quot; passthru=&quot;true&quot; checkreturn=&quot;true&quot;/&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;delete dir=&quot;${folder.to.delete}&quot; includeemptydirs=&quot;true&quot; failonerror=&quot;false&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -462,23 +462,23 @@
             <td>
                 <details>
                     <summary> Install Composer dist dependencies for the subsite. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="dist-composer-install">
->         <echo msg="Run 'composer install --no-dev' in the build destination folder."/>
->         <composer command="install" composer="${composer.bin}">
->             <arg value="--working-dir=${dist.build.dir}"/>
->             <arg value="--no-interaction"/>
->             <arg value="--no-plugins"/>
->             <arg value="--no-suggest"/>
->             <arg value="--no-dev"/>
->             <arg value="--ansi"/>
->         </composer>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;dist-composer-install&quot;&gt;
+        &lt;echo msg=&quot;Run 'composer install --no-dev' in the build destination folder.&quot;/&gt;
+        &lt;composer command=&quot;install&quot; composer=&quot;${composer.bin}&quot;&gt;
+            &lt;arg value=&quot;--working-dir=${dist.build.dir}&quot;/&gt;
+            &lt;arg value=&quot;--no-interaction&quot;/&gt;
+            &lt;arg value=&quot;--no-plugins&quot;/&gt;
+            &lt;arg value=&quot;--no-suggest&quot;/&gt;
+            &lt;arg value=&quot;--no-dev&quot;/&gt;
+            &lt;arg value=&quot;--ansi&quot;/&gt;
+        &lt;/composer&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -486,42 +486,42 @@
             <td>
                 <details>
                     <summary> Copy subsite resources into the build folder. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="dist-copy-resources">
->         <echo msg="Copy custom resources."/>
->         <!-- Copy our custom modules. -->
->         <phingcall target="copy-folder">
->             <property name="copy.source.path" value="${subsite.resources.modules.dir}"/>
->             <property name="copy.destination.path" value="${dist.build.modules.custom.dir}"/>
->             <property name="copy.path.haltonerror" value="false" override="true"/>
->         </phingcall>
->         <!-- Copy our custom features. -->
->         <phingcall target="copy-folder">
->             <property name="copy.source.path" value="${subsite.resources.features.dir}"/>
->             <property name="copy.destination.path" value="${dist.build.modules.features.dir}"/>
->             <property name="copy.path.haltonerror" value="false" override="true"/>
->         </phingcall>
->         <!-- Copy our custom themes. -->
->         <phingcall target="copy-folder">
->             <property name="copy.source.path" value="${subsite.resources.themes.dir}"/>
->             <property name="copy.destination.path" value="${dist.build.themes.dir}"/>
->             <property name="copy.path.haltonerror" value="false" override="true"/>
->         </phingcall>
->         <!-- Copy our custom PSR-4 code. -->
->         <phingcall target="copy-folder">
->             <property name="copy.source.path" value="${subsite.resources.source.dir}"/>
->             <property name="copy.destination.path" value="${dist.build.source.dir}"/>
->             <property name="copy.path.haltonerror" value="false" override="true"/>
->         </phingcall>
->         <!-- Copy composer configuration. -->
->         <copy todir="${dist.build.dir}" file="${subsite.resources.composer.json}"/>
->         <copy todir="${dist.build.dir}" file="${subsite.resources.composer.lock}"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;dist-copy-resources&quot;&gt;
+        &lt;echo msg=&quot;Copy custom resources.&quot;/&gt;
+        &lt;!-- Copy our custom modules. --&gt;
+        &lt;phingcall target=&quot;copy-folder&quot;&gt;
+            &lt;property name=&quot;copy.source.path&quot; value=&quot;${subsite.resources.modules.dir}&quot;/&gt;
+            &lt;property name=&quot;copy.destination.path&quot; value=&quot;${dist.build.modules.custom.dir}&quot;/&gt;
+            &lt;property name=&quot;copy.path.haltonerror&quot; value=&quot;false&quot; override=&quot;true&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;!-- Copy our custom features. --&gt;
+        &lt;phingcall target=&quot;copy-folder&quot;&gt;
+            &lt;property name=&quot;copy.source.path&quot; value=&quot;${subsite.resources.features.dir}&quot;/&gt;
+            &lt;property name=&quot;copy.destination.path&quot; value=&quot;${dist.build.modules.features.dir}&quot;/&gt;
+            &lt;property name=&quot;copy.path.haltonerror&quot; value=&quot;false&quot; override=&quot;true&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;!-- Copy our custom themes. --&gt;
+        &lt;phingcall target=&quot;copy-folder&quot;&gt;
+            &lt;property name=&quot;copy.source.path&quot; value=&quot;${subsite.resources.themes.dir}&quot;/&gt;
+            &lt;property name=&quot;copy.destination.path&quot; value=&quot;${dist.build.themes.dir}&quot;/&gt;
+            &lt;property name=&quot;copy.path.haltonerror&quot; value=&quot;false&quot; override=&quot;true&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;!-- Copy our custom PSR-4 code. --&gt;
+        &lt;phingcall target=&quot;copy-folder&quot;&gt;
+            &lt;property name=&quot;copy.source.path&quot; value=&quot;${subsite.resources.source.dir}&quot;/&gt;
+            &lt;property name=&quot;copy.destination.path&quot; value=&quot;${dist.build.source.dir}&quot;/&gt;
+            &lt;property name=&quot;copy.path.haltonerror&quot; value=&quot;false&quot; override=&quot;true&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;!-- Copy composer configuration. --&gt;
+        &lt;copy todir=&quot;${dist.build.dir}&quot; file=&quot;${subsite.resources.composer.json}&quot;/&gt;
+        &lt;copy todir=&quot;${dist.build.dir}&quot; file=&quot;${subsite.resources.composer.lock}&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -529,18 +529,18 @@
             <td>
                 <details>
                     <summary> Delete the previous distribution build. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="dist-delete">
->         <echo msg="Delete previous build."/>
->         <phingcall target="delete-folder">
->             <property name="folder.to.delete" value="${dist.build.dir}"/>
->         </phingcall>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;dist-delete&quot;&gt;
+        &lt;echo msg=&quot;Delete previous build.&quot;/&gt;
+        &lt;phingcall target=&quot;delete-folder&quot;&gt;
+            &lt;property name=&quot;folder.to.delete&quot; value=&quot;${dist.build.dir}&quot;/&gt;
+        &lt;/phingcall&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -548,58 +548,58 @@
             <td>
                 <details>
                     <summary> Make the distribution version of the subsite. </summary>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;dist-make&quot;&gt;
+        &lt;echo msg=&quot;Delete temporary build folder.&quot;/&gt;
+        &lt;phingcall target=&quot;delete-folder&quot;&gt;
+            &lt;property name=&quot;folder.to.delete&quot; value=&quot;${phing.subsite.tmp.dir}/build&quot;/&gt;
+        &lt;/phingcall&gt;
 
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="dist-make">
->         <echo msg="Delete temporary build folder."/>
->         <phingcall target="delete-folder">
->             <property name="folder.to.delete" value="${phing.subsite.tmp.dir}/build"/>
->         </phingcall>
-> 
->         <echo msg="Make the subsite."/>
->         <!--
->             Drush make builds the site as if it is part of a complete Drupal
->             installation. The actual build is in the /sites/all subfolder. Build
->             in a temporary folder and move the subsite into place when done.
->          -->
->         <if>
->             <available file="${subsite.make}" type="file"/>
->             <then>
->                 <loadfile property="sitemake" file="${subsite.make}"/>
->                 <propertyregex property="not.empty" subject="${sitemake}" pattern="([^#; ])(libraries\[|projects\[)" match="$1" casesensitive="false" defaultvalue="empty"/>
->                 <if>
->                     <not><equals arg1="${not.empty}" arg2="empty"/></not>
->                     <then>
->                         <phingcall target="drush-make-no-core">
->                             <property name="drush.make.target.file" value="${subsite.make}"/>
->                             <property name="drush.make.root" value="${phing.subsite.tmp.dir}/build"/>
->                         </phingcall>
->                     </then>
->                     <else>
->                        <echo msg="Empty make file found. Skipping... ${not.empty}"/>
->                        <mkdir dir="${phing.subsite.tmp.dir}/build/sites/all"/>
->                     </else>
->                 </if>
->             </then>
->             <else>
->                 <echo msg="No make file found. Skipping..."/>
->                 <mkdir dir="${phing.subsite.tmp.dir}/build/sites/all"/>
->             </else>
->         </if>
-> 
->         <!-- Move the subsite to its destination. -->
->         <echo msg="mv &quot;${phing.subsite.tmp.dir}/build/sites/all/&quot; &quot;${dist.build.dir}&quot;"/>
->         <exec command="mv &quot;${phing.subsite.tmp.dir}/build/sites/all/&quot; &quot;${dist.build.dir}&quot;" dir="${project.basedir}" passthru="true" checkreturn="true"/>
-> 
->         <echo msg="Clean up temporary build folder."/>
->         <phingcall target="delete-folder">
->             <property name="folder.to.delete" value="${phing.subsite.tmp.dir}/build"/>
->         </phingcall>
->     </target>
-> ```
+        &lt;echo msg=&quot;Make the subsite.&quot;/&gt;
+        &lt;!--
+            Drush make builds the site as if it is part of a complete Drupal
+            installation. The actual build is in the /sites/all subfolder. Build
+            in a temporary folder and move the subsite into place when done.
+         --&gt;
+        &lt;if&gt;
+            &lt;available file=&quot;${subsite.make}&quot; type=&quot;file&quot;/&gt;
+            &lt;then&gt;
+                &lt;loadfile property=&quot;sitemake&quot; file=&quot;${subsite.make}&quot;/&gt;
+                &lt;propertyregex property=&quot;not.empty&quot; subject=&quot;${sitemake}&quot; pattern=&quot;([^#; ])(libraries\[|projects\[)&quot; match=&quot;$1&quot; casesensitive=&quot;false&quot; defaultvalue=&quot;empty&quot;/&gt;
+                &lt;if&gt;
+                    &lt;not&gt;&lt;equals arg1=&quot;${not.empty}&quot; arg2=&quot;empty&quot;/&gt;&lt;/not&gt;
+                    &lt;then&gt;
+                        &lt;phingcall target=&quot;drush-make-no-core&quot;&gt;
+                            &lt;property name=&quot;drush.make.target.file&quot; value=&quot;${subsite.make}&quot;/&gt;
+                            &lt;property name=&quot;drush.make.root&quot; value=&quot;${phing.subsite.tmp.dir}/build&quot;/&gt;
+                        &lt;/phingcall&gt;
+                    &lt;/then&gt;
+                    &lt;else&gt;
+                       &lt;echo msg=&quot;Empty make file found. Skipping... ${not.empty}&quot;/&gt;
+                       &lt;mkdir dir=&quot;${phing.subsite.tmp.dir}/build/sites/all&quot;/&gt;
+                    &lt;/else&gt;
+                &lt;/if&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;echo msg=&quot;No make file found. Skipping...&quot;/&gt;
+                &lt;mkdir dir=&quot;${phing.subsite.tmp.dir}/build/sites/all&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
 
-</details>
+        &lt;!-- Move the subsite to its destination. --&gt;
+        &lt;echo msg=&quot;mv &amp;quot;${phing.subsite.tmp.dir}/build/sites/all/&amp;quot; &amp;quot;${dist.build.dir}&amp;quot;&quot;/&gt;
+        &lt;exec command=&quot;mv &amp;quot;${phing.subsite.tmp.dir}/build/sites/all/&amp;quot; &amp;quot;${dist.build.dir}&amp;quot;&quot; dir=&quot;${project.basedir}&quot; passthru=&quot;true&quot; checkreturn=&quot;true&quot;/&gt;
+
+        &lt;echo msg=&quot;Clean up temporary build folder.&quot;/&gt;
+        &lt;phingcall target=&quot;delete-folder&quot;&gt;
+            &lt;property name=&quot;folder.to.delete&quot; value=&quot;${phing.subsite.tmp.dir}/build&quot;/&gt;
+        &lt;/phingcall&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -607,19 +607,19 @@
             <td>
                 <details>
                     <summary> Create the directories. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-create-files-dirs">
->         <echo message="Creating files directories for ${drupal.db.name}."/>
->         <!-- Execute setttings generation script. -->
->         <drush command="php-script" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
->             <param>${subsite.starterkit.root}/includes/drush/generate-directories.php</param>
->         </drush>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-create-files-dirs&quot;&gt;
+        &lt;echo message=&quot;Creating files directories for ${drupal.db.name}.&quot;/&gt;
+        &lt;!-- Execute setttings generation script. --&gt;
+        &lt;drush command=&quot;php-script&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot; verbose=&quot;${drush.verbose}&quot; color=&quot;${drush.color}&quot;&gt;
+            &lt;param&gt;${subsite.starterkit.root}/includes/drush/generate-directories.php&lt;/param&gt;
+        &lt;/drush&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -627,17 +627,17 @@
             <td>
                 <details>
                     <summary> Download registry rebuild. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-dl-rr">
->         <echo message="Installing registry rebuild on user account."/>
->         <exec command="${drush.bin} pm-download registry_rebuild-7 -n &gt;/dev/null"/>
->         <exec command="${drush.bin} cc drush &gt;/dev/null"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-dl-rr&quot;&gt;
+        &lt;echo message=&quot;Installing registry rebuild on user account.&quot;/&gt;
+        &lt;exec command=&quot;${drush.bin} pm-download registry_rebuild-7 -n &amp;gt;/dev/null&quot;/&gt;
+        &lt;exec command=&quot;${drush.bin} cc drush &amp;gt;/dev/null&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -645,17 +645,17 @@
             <td>
                 <details>
                     <summary> Enable modules. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-enable-modules" hidden="true">
->         <drush command="pm-enable" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
->             <param>${drupal.modules}</param>
->         </drush>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-enable-modules&quot; hidden=&quot;true&quot;&gt;
+        &lt;drush command=&quot;pm-enable&quot; assume=&quot;yes&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot; verbose=&quot;${drush.verbose}&quot; color=&quot;${drush.color}&quot;&gt;
+            &lt;param&gt;${drupal.modules}&lt;/param&gt;
+        &lt;/drush&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -663,26 +663,26 @@
             <td>
                 <details>
                     <summary> Activate solr if needed. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-enable-solr">
->         <if>
->             <equals arg1="${drupal.solr.activate}" arg2="1"/>
->             <then>
->                 <echo message="Enable apachesolr for ${drupal.db.name}."/>
->                 <phingcall target="drush-enable-modules">
->                     <property name="drupal.modules" value="apachesolr"/>
->                 </phingcall>
->                 <drush command="solr-set-env-url" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
->                     <param>${drupal.solr.env.url}</param>
->                 </drush>
->             </then>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-enable-solr&quot;&gt;
+        &lt;if&gt;
+            &lt;equals arg1=&quot;${drupal.solr.activate}&quot; arg2=&quot;1&quot;/&gt;
+            &lt;then&gt;
+                &lt;echo message=&quot;Enable apachesolr for ${drupal.db.name}.&quot;/&gt;
+                &lt;phingcall target=&quot;drush-enable-modules&quot;&gt;
+                    &lt;property name=&quot;drupal.modules&quot; value=&quot;apachesolr&quot;/&gt;
+                &lt;/phingcall&gt;
+                &lt;drush command=&quot;solr-set-env-url&quot; assume=&quot;yes&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot; verbose=&quot;${drush.verbose}&quot; color=&quot;${drush.color}&quot;&gt;
+                    &lt;param&gt;${drupal.solr.env.url}&lt;/param&gt;
+                &lt;/drush&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -690,22 +690,22 @@
             <td>
                 <details>
                     <summary> Execute a makefile with the no-core option. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-make-no-core">
->         <echo message="Running make file ${drush.make.target.file} into folder ${drush.make.root}."/>
->         <drush command="make" assume="yes" bin="${drush.bin}" pipe="yes" verbose="${drush.verbose}" root="${drush.make.root}" color="${drush.color}">
->             <param>${drush.make.target.file}</param>
->             <param>${drush.make.root}</param>
->             <option name="concurrency">10</option>
->             <option name="no-patch-txt"/>
->             <option name="no-core"/>
->         </drush>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-make-no-core&quot;&gt;
+        &lt;echo message=&quot;Running make file ${drush.make.target.file} into folder ${drush.make.root}.&quot;/&gt;
+        &lt;drush command=&quot;make&quot; assume=&quot;yes&quot; bin=&quot;${drush.bin}&quot; pipe=&quot;yes&quot; verbose=&quot;${drush.verbose}&quot; root=&quot;${drush.make.root}&quot; color=&quot;${drush.color}&quot;&gt;
+            &lt;param&gt;${drush.make.target.file}&lt;/param&gt;
+            &lt;param&gt;${drush.make.root}&lt;/param&gt;
+            &lt;option name=&quot;concurrency&quot;&gt;10&lt;/option&gt;
+            &lt;option name=&quot;no-patch-txt&quot;/&gt;
+            &lt;option name=&quot;no-core&quot;/&gt;
+        &lt;/drush&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -713,17 +713,17 @@
             <td>
                 <details>
                     <summary> Rebuild node access. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-rebuild-node-access">
->         <drush command="php-eval" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
->             <param>"node_access_rebuild()"</param>
->         </drush>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-rebuild-node-access&quot;&gt;
+        &lt;drush command=&quot;php-eval&quot; assume=&quot;yes&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot; verbose=&quot;${drush.verbose}&quot; color=&quot;${drush.color}&quot;&gt;
+            &lt;param&gt;&quot;node_access_rebuild()&quot;&lt;/param&gt;
+        &lt;/drush&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -731,41 +731,41 @@
             <td>
                 <details>
                     <summary> Regenerate the settings file with database credentials and development variables. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-regenerate-settings" depends="check-for-default-settings-or-rebuild">
->         <copy file="${subsite.starterkit.root}/includes/drush/generate-settings.php" tofile="tmp/generate-settings.php" overwrite="true">
->             <filterchain>
->                 <replacetokens begintoken="%%" endtoken="%%">
->                     <!-- Replace tokens in settings generation script. -->
->                     <token key="drupal.db.type" value="${drupal.db.type}"/>
->                     <token key="drupal.db.name" value="${drupal.db.name}"/>
->                     <token key="drupal.db.user" value="${drupal.db.user}"/>
->                     <token key="drupal.db.password" value="${drupal.db.password}"/>
->                     <token key="drupal.db.host" value="${drupal.db.host}"/>
->                     <token key="drupal.db.port" value="${drupal.db.port}"/>
->                     <token key="error_level" value="${development.variables.error_level}"/>
->                     <token key="views_ui_show_sql_query" value="${development.variables.views_ui_show_sql_query}"/>
->                     <token key="views_ui_show_performance_statistics" value="${development.variables.views_ui_show_performance_statistics}"/>
->                     <token key="views_show_additional_queries" value="${development.variables.views_show_additional_queries}"/>
->                     <token key="stage_file_proxy_origin" value="${development.variables.stage_file_proxy_origin}"/>
->                     <token key="stage_file_proxy_origin_dir" value="${development.variables.stage_file_proxy_origin_dir}"/>
->                     <token key="stage_file_proxy_hotlink" value="${development.variables.stage_file_proxy_hotlink}"/>
->                     <token key="file_public_path" value="${platform.build.files.dir}"/>
->                     <token key="file_private_path" value="${platform.build.files.dir}/private_files"/>
->                     <token key="file_temporary_path" value="${platform.build.tmp.dir}"/>
->                 </replacetokens>
->             </filterchain>
->         </copy>
->         <!-- Execute setttings generation script. -->
->         <drush command="php-script" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
->             <param>tmp/generate-settings.php</param>
->         </drush>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-regenerate-settings&quot; depends=&quot;check-for-default-settings-or-rebuild&quot;&gt;
+        &lt;copy file=&quot;${subsite.starterkit.root}/includes/drush/generate-settings.php&quot; tofile=&quot;tmp/generate-settings.php&quot; overwrite=&quot;true&quot;&gt;
+            &lt;filterchain&gt;
+                &lt;replacetokens begintoken=&quot;%%&quot; endtoken=&quot;%%&quot;&gt;
+                    &lt;!-- Replace tokens in settings generation script. --&gt;
+                    &lt;token key=&quot;drupal.db.type&quot; value=&quot;${drupal.db.type}&quot;/&gt;
+                    &lt;token key=&quot;drupal.db.name&quot; value=&quot;${drupal.db.name}&quot;/&gt;
+                    &lt;token key=&quot;drupal.db.user&quot; value=&quot;${drupal.db.user}&quot;/&gt;
+                    &lt;token key=&quot;drupal.db.password&quot; value=&quot;${drupal.db.password}&quot;/&gt;
+                    &lt;token key=&quot;drupal.db.host&quot; value=&quot;${drupal.db.host}&quot;/&gt;
+                    &lt;token key=&quot;drupal.db.port&quot; value=&quot;${drupal.db.port}&quot;/&gt;
+                    &lt;token key=&quot;error_level&quot; value=&quot;${development.variables.error_level}&quot;/&gt;
+                    &lt;token key=&quot;views_ui_show_sql_query&quot; value=&quot;${development.variables.views_ui_show_sql_query}&quot;/&gt;
+                    &lt;token key=&quot;views_ui_show_performance_statistics&quot; value=&quot;${development.variables.views_ui_show_performance_statistics}&quot;/&gt;
+                    &lt;token key=&quot;views_show_additional_queries&quot; value=&quot;${development.variables.views_show_additional_queries}&quot;/&gt;
+                    &lt;token key=&quot;stage_file_proxy_origin&quot; value=&quot;${development.variables.stage_file_proxy_origin}&quot;/&gt;
+                    &lt;token key=&quot;stage_file_proxy_origin_dir&quot; value=&quot;${development.variables.stage_file_proxy_origin_dir}&quot;/&gt;
+                    &lt;token key=&quot;stage_file_proxy_hotlink&quot; value=&quot;${development.variables.stage_file_proxy_hotlink}&quot;/&gt;
+                    &lt;token key=&quot;file_public_path&quot; value=&quot;${platform.build.files.dir}&quot;/&gt;
+                    &lt;token key=&quot;file_private_path&quot; value=&quot;${platform.build.files.dir}/private_files&quot;/&gt;
+                    &lt;token key=&quot;file_temporary_path&quot; value=&quot;${platform.build.tmp.dir}&quot;/&gt;
+                &lt;/replacetokens&gt;
+            &lt;/filterchain&gt;
+        &lt;/copy&gt;
+        &lt;!-- Execute setttings generation script. --&gt;
+        &lt;drush command=&quot;php-script&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot; verbose=&quot;${drush.verbose}&quot; color=&quot;${drush.color}&quot;&gt;
+            &lt;param&gt;tmp/generate-settings.php&lt;/param&gt;
+        &lt;/drush&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -773,30 +773,30 @@
             <td>
                 <details>
                     <summary> Rebuild registry. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-registry-rebuild">
->         <trycatch>
->             <try>
->                 <!-- Check if registry rebuild is available. -->
->                 <exec command="${drush.bin} rr --help" checkreturn="true"/>
->             </try>
->             <catch>
->                 <!-- Download if not available. -->
->                 <phingcall target="drush-dl-rr"/>
->             </catch>
->             <finally>
->                  <!-- Rebuild Registry. -->
->                  <drush command="registry-rebuild" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}">
->                      <param>--fire-bazooka</param>
->                  </drush>
->             </finally>
->         </trycatch>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-registry-rebuild&quot;&gt;
+        &lt;trycatch&gt;
+            &lt;try&gt;
+                &lt;!-- Check if registry rebuild is available. --&gt;
+                &lt;exec command=&quot;${drush.bin} rr --help&quot; checkreturn=&quot;true&quot;/&gt;
+            &lt;/try&gt;
+            &lt;catch&gt;
+                &lt;!-- Download if not available. --&gt;
+                &lt;phingcall target=&quot;drush-dl-rr&quot;/&gt;
+            &lt;/catch&gt;
+            &lt;finally&gt;
+                 &lt;!-- Rebuild Registry. --&gt;
+                 &lt;drush command=&quot;registry-rebuild&quot; assume=&quot;yes&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot; verbose=&quot;${drush.verbose}&quot;&gt;
+                     &lt;param&gt;--fire-bazooka&lt;/param&gt;
+                 &lt;/drush&gt;
+            &lt;/finally&gt;
+        &lt;/trycatch&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -804,24 +804,24 @@
             <td>
                 <details>
                     <summary> Install the site. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-site-install">
->         <echo message="Installing site ${subsite.name}."/>
->         <drush command="site-install" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
->             <option name="db-url" value="${drupal.db.url}"/>
->             <option name="site-name" value="'${subsite.name}'"/>
->             <option name="account-name" value="${drupal.admin.username}"/>
->             <option name="account-pass" value="${drupal.admin.password}"/>
->             <option name="account-mail" value="${drupal.admin.email}"/>
->             <param>${platform.profile.name}</param>
->             <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
->         </drush>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-site-install&quot;&gt;
+        &lt;echo message=&quot;Installing site ${subsite.name}.&quot;/&gt;
+        &lt;drush command=&quot;site-install&quot; assume=&quot;yes&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot; verbose=&quot;${drush.verbose}&quot; color=&quot;${drush.color}&quot;&gt;
+            &lt;option name=&quot;db-url&quot; value=&quot;${drupal.db.url}&quot;/&gt;
+            &lt;option name=&quot;site-name&quot; value=&quot;'${subsite.name}'&quot;/&gt;
+            &lt;option name=&quot;account-name&quot; value=&quot;${drupal.admin.username}&quot;/&gt;
+            &lt;option name=&quot;account-pass&quot; value=&quot;${drupal.admin.password}&quot;/&gt;
+            &lt;option name=&quot;account-mail&quot; value=&quot;${drupal.admin.email}&quot;/&gt;
+            &lt;param&gt;${platform.profile.name}&lt;/param&gt;
+            &lt;param&gt;install_configure_form.update_status_module='array(FALSE,FALSE)'&lt;/param&gt;
+        &lt;/drush&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -829,18 +829,18 @@
             <td>
                 <details>
                     <summary> Create the database. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-sql-create">
->         <echo message="Creating database ${drupal.db.name}."/>
->         <drush command="sql-create" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
->             <option name="db-url" value="${drupal.db.url}"/>
->         </drush>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-sql-create&quot;&gt;
+        &lt;echo message=&quot;Creating database ${drupal.db.name}.&quot;/&gt;
+        &lt;drush command=&quot;sql-create&quot; assume=&quot;yes&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot; verbose=&quot;${drush.verbose}&quot; color=&quot;${drush.color}&quot;&gt;
+            &lt;option name=&quot;db-url&quot; value=&quot;${drupal.db.url}&quot;/&gt;
+        &lt;/drush&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -848,18 +848,18 @@
             <td>
                 <details>
                     <summary> Drop the database. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-sql-drop">
->         <echo message="Dropping database ${drupal.db.name}."/>
->         <drush command="sql-drop" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
->             <option name="db-url" value="${drupal.db.url}"/>
->         </drush>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-sql-drop&quot;&gt;
+        &lt;echo message=&quot;Dropping database ${drupal.db.name}.&quot;/&gt;
+        &lt;drush command=&quot;sql-drop&quot; assume=&quot;yes&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot; verbose=&quot;${drush.verbose}&quot; color=&quot;${drush.color}&quot;&gt;
+            &lt;option name=&quot;db-url&quot; value=&quot;${drupal.db.url}&quot;/&gt;
+        &lt;/drush&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -867,20 +867,20 @@
             <td>
                 <details>
                     <summary> Backup the database. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-sql-dump">
->         <echo message="Backing up database ${drupal.db.name} to ${database-file}."/>
->         <dirname property="database-cachedir" file="${database-file}"/>
->         <mkdir dir="${database-cachedir}"/>
->         <drush command="sql-dump" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
->             <option name="result-file" value="${database-file}"/>
->         </drush>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-sql-dump&quot;&gt;
+        &lt;echo message=&quot;Backing up database ${drupal.db.name} to ${database-file}.&quot;/&gt;
+        &lt;dirname property=&quot;database-cachedir&quot; file=&quot;${database-file}&quot;/&gt;
+        &lt;mkdir dir=&quot;${database-cachedir}&quot;/&gt;
+        &lt;drush command=&quot;sql-dump&quot; assume=&quot;yes&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot; verbose=&quot;${drush.verbose}&quot; color=&quot;${drush.color}&quot;&gt;
+            &lt;option name=&quot;result-file&quot; value=&quot;${database-file}&quot;/&gt;
+        &lt;/drush&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -888,26 +888,26 @@
             <td>
                 <details>
                     <summary> Import a database. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="drush-sql-import">
->         <echo message="Importing database."/>
->         <drush command="sql-cli" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
->             <param>&lt; ${database-file}</param>
->         </drush>
->         <phingcall target="drush-registry-rebuild"/>
->         <phingcall target="drush-create-files-dirs"/>
->         <!-- Update database. -->
->         <drush command="updatedb" assume="yes" root="${platform.build.dir}" bin="${drush.bin}"/>
->         <!-- Clear Caches. -->
->         <drush command="cc" assume="yes" root="${platform.build.dir}" bin="${drush.bin}">
->             <param>all</param>
->         </drush>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;drush-sql-import&quot;&gt;
+        &lt;echo message=&quot;Importing database.&quot;/&gt;
+        &lt;drush command=&quot;sql-cli&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot; verbose=&quot;${drush.verbose}&quot; color=&quot;${drush.color}&quot;&gt;
+            &lt;param&gt;&amp;lt; ${database-file}&lt;/param&gt;
+        &lt;/drush&gt;
+        &lt;phingcall target=&quot;drush-registry-rebuild&quot;/&gt;
+        &lt;phingcall target=&quot;drush-create-files-dirs&quot;/&gt;
+        &lt;!-- Update database. --&gt;
+        &lt;drush command=&quot;updatedb&quot; assume=&quot;yes&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot;/&gt;
+        &lt;!-- Clear Caches. --&gt;
+        &lt;drush command=&quot;cc&quot; assume=&quot;yes&quot; root=&quot;${platform.build.dir}&quot; bin=&quot;${drush.bin}&quot;&gt;
+            &lt;param&gt;all&lt;/param&gt;
+        &lt;/drush&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -915,21 +915,21 @@
             <td>
                 <details>
                     <summary> Install Composer dependencies for the build system. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="platform-composer-install">
->         <echo msg="Run 'composer install' in platform root."/>
->         <composer command="install" composer="${composer.bin}">
->             <arg value="--working-dir=${project.basedir}"/>
->             <arg value="--no-interaction"/>
->             <arg value="--no-suggest"/>
->             <arg value="--ansi"/>
->         </composer>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;platform-composer-install&quot;&gt;
+        &lt;echo msg=&quot;Run 'composer install' in platform root.&quot;/&gt;
+        &lt;composer command=&quot;install&quot; composer=&quot;${composer.bin}&quot;&gt;
+            &lt;arg value=&quot;--working-dir=${project.basedir}&quot;/&gt;
+            &lt;arg value=&quot;--no-interaction&quot;/&gt;
+            &lt;arg value=&quot;--no-suggest&quot;/&gt;
+            &lt;arg value=&quot;--ansi&quot;/&gt;
+        &lt;/composer&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -937,23 +937,23 @@
             <td>
                 <details>
                     <summary> Delete the previous development build. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="platform-delete">
->         <echo msg="Delete previous build."/>
->         <phingcall target="unprotect-folder">
->             <property name="folder.to.unprotect" value="${platform.build.settings.dir}"/>
->         </phingcall>
->         <echo msg="Unprotecting folder."/>
->         <phingcall target="delete-folder">
->             <property name="folder.to.delete" value="${platform.build.dir}"/>
->         </phingcall>
->         <echo msg="Deleting folder."/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;platform-delete&quot;&gt;
+        &lt;echo msg=&quot;Delete previous build.&quot;/&gt;
+        &lt;phingcall target=&quot;unprotect-folder&quot;&gt;
+            &lt;property name=&quot;folder.to.unprotect&quot; value=&quot;${platform.build.settings.dir}&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;echo msg=&quot;Unprotecting folder.&quot;/&gt;
+        &lt;phingcall target=&quot;delete-folder&quot;&gt;
+            &lt;property name=&quot;folder.to.delete&quot; value=&quot;${platform.build.dir}&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;echo msg=&quot;Deleting folder.&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -961,35 +961,35 @@
             <td>
                 <details>
                     <summary> Download the platform. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="platform-download">
->         <if>
->             <available file="${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" type="file"/>
->             <then>
->                   <echo msg="Package platform-dev-${platform.package.reference}.tar.gz already downloaded."/>
->             </then>
->             <else>
->                 <!-- Create the destination directory if it doesn't exist. -->
->                 <mkdir dir="${platform.package.cachedir}"/>
->                 <echo msg="Starting platform download. Depending on your connection this can take between 5-15 minutes. Go get some coffee."/>
->                 <if>
->                     <http url="https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"/>
->                     <then>
->                         <exec command="curl -L -o ${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz" passthru="true"/>
->                         <echo msg="Downloaded platform package reference ${platform.package.reference}"/>
->                     </then>
->                     <else>
->                         <fail msg="Failed downloading platform package reference ${platform.package.reference}"/>
->                     </else>
->                 </if>
->             </else>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;platform-download&quot;&gt;
+        &lt;if&gt;
+            &lt;available file=&quot;${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz&quot; type=&quot;file&quot;/&gt;
+            &lt;then&gt;
+                  &lt;echo msg=&quot;Package platform-dev-${platform.package.reference}.tar.gz already downloaded.&quot;/&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;!-- Create the destination directory if it doesn't exist. --&gt;
+                &lt;mkdir dir=&quot;${platform.package.cachedir}&quot;/&gt;
+                &lt;echo msg=&quot;Starting platform download. Depending on your connection this can take between 5-15 minutes. Go get some coffee.&quot;/&gt;
+                &lt;if&gt;
+                    &lt;http url=&quot;https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz&quot;/&gt;
+                    &lt;then&gt;
+                        &lt;exec command=&quot;curl -L -o ${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz&quot; passthru=&quot;true&quot;/&gt;
+                        &lt;echo msg=&quot;Downloaded platform package reference ${platform.package.reference}&quot;/&gt;
+                    &lt;/then&gt;
+                    &lt;else&gt;
+                        &lt;fail msg=&quot;Failed downloading platform package reference ${platform.package.reference}&quot;/&gt;
+                    &lt;/else&gt;
+                &lt;/if&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -997,21 +997,21 @@
             <td>
                 <details>
                     <summary> Symlink the source folders for easy development. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="platform-link-resources">
->         <rel-sym link="${platform.build.subsite.modules.custom.dir}" target="${subsite.resources.modules.dir}"/>
->         <rel-sym link="${platform.build.subsite.modules.features.dir}" target="${subsite.resources.features.dir}"/>
->         <delete dir="${platform.build.subsite.themes.dir}" includeemptydirs="true" failonerror="false"/>
->         <rel-sym link="${platform.build.subsite.themes.dir}" target="${subsite.resources.themes.dir}"/>
->         <rel-sym link="${platform.build.subsite.source.dir}" target="${subsite.resources.source.dir}"/>
->         <rel-sym link="${platform.build.subsite.composer.json}" target="${subsite.resources.composer.json}"/>
->         <rel-sym link="${platform.build.subsite.composer.lock}" target="${subsite.resources.composer.lock}"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;platform-link-resources&quot;&gt;
+        &lt;rel-sym link=&quot;${platform.build.subsite.modules.custom.dir}&quot; target=&quot;${subsite.resources.modules.dir}&quot;/&gt;
+        &lt;rel-sym link=&quot;${platform.build.subsite.modules.features.dir}&quot; target=&quot;${subsite.resources.features.dir}&quot;/&gt;
+        &lt;delete dir=&quot;${platform.build.subsite.themes.dir}&quot; includeemptydirs=&quot;true&quot; failonerror=&quot;false&quot;/&gt;
+        &lt;rel-sym link=&quot;${platform.build.subsite.themes.dir}&quot; target=&quot;${subsite.resources.themes.dir}&quot;/&gt;
+        &lt;rel-sym link=&quot;${platform.build.subsite.source.dir}&quot; target=&quot;${subsite.resources.source.dir}&quot;/&gt;
+        &lt;rel-sym link=&quot;${platform.build.subsite.composer.json}&quot; target=&quot;${subsite.resources.composer.json}&quot;/&gt;
+        &lt;rel-sym link=&quot;${platform.build.subsite.composer.lock}&quot; target=&quot;${subsite.resources.composer.lock}&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1019,27 +1019,27 @@
             <td>
                 <details>
                     <summary> Make the development version of the subsite. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="platform-make" depends="platform-unpack">
->         <if>
->             <available file="${subsite.make}" type="file"/>
->             <then>
->                 <echo msg="Make the subsite."/>
->                 <phingcall target="drush-make-no-core">
->                     <property name="drush.make.target.file" value="${subsite.make}"/>
->                     <property name="drush.make.root" value="${platform.build.dir}"/>
->                 </phingcall>
->             </then>
->             <else>
->                 <echo msg="No make file found. Skipping..."/>
->             </else>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;platform-make&quot; depends=&quot;platform-unpack&quot;&gt;
+        &lt;if&gt;
+            &lt;available file=&quot;${subsite.make}&quot; type=&quot;file&quot;/&gt;
+            &lt;then&gt;
+                &lt;echo msg=&quot;Make the subsite.&quot;/&gt;
+                &lt;phingcall target=&quot;drush-make-no-core&quot;&gt;
+                    &lt;property name=&quot;drush.make.target.file&quot; value=&quot;${subsite.make}&quot;/&gt;
+                    &lt;property name=&quot;drush.make.root&quot; value=&quot;${platform.build.dir}&quot;/&gt;
+                &lt;/phingcall&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;echo msg=&quot;No make file found. Skipping...&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1047,27 +1047,27 @@
             <td>
                 <details>
                     <summary> Unpack the platform. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="platform-unpack" depends="platform-download">
->         <!-- Use the faster native commands on UNIX systems. -->
->         <if>
->             <os family="unix"/>
->             <then>
->                 <echo msg="mkdir &quot;${platform.build.dir}&quot;"/>
->                 <exec command="mkdir &quot;${platform.build.dir}&quot;" dir="${project.basedir}" passthru="true"/>
->                 <echo msg="tar xzf &quot;${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz&quot; -C &quot;${platform.build.dir}&quot;"/>
->                 <exec command="tar xzf &quot;${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz&quot; -C &quot;${platform.build.dir}&quot;" dir="${project.basedir}" passthru="true" checkreturn="true"/>
->             </then>
->             <else>
->                 <untar file="${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" todir="${platform.build.dir}"/>
->             </else>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;platform-unpack&quot; depends=&quot;platform-download&quot;&gt;
+        &lt;!-- Use the faster native commands on UNIX systems. --&gt;
+        &lt;if&gt;
+            &lt;os family=&quot;unix&quot;/&gt;
+            &lt;then&gt;
+                &lt;echo msg=&quot;mkdir &amp;quot;${platform.build.dir}&amp;quot;&quot;/&gt;
+                &lt;exec command=&quot;mkdir &amp;quot;${platform.build.dir}&amp;quot;&quot; dir=&quot;${project.basedir}&quot; passthru=&quot;true&quot;/&gt;
+                &lt;echo msg=&quot;tar xzf &amp;quot;${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz&amp;quot; -C &amp;quot;${platform.build.dir}&amp;quot;&quot;/&gt;
+                &lt;exec command=&quot;tar xzf &amp;quot;${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz&amp;quot; -C &amp;quot;${platform.build.dir}&amp;quot;&quot; dir=&quot;${project.basedir}&quot; passthru=&quot;true&quot; checkreturn=&quot;true&quot;/&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;untar file=&quot;${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz&quot; todir=&quot;${platform.build.dir}&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1075,24 +1075,24 @@
             <td>
                 <details>
                     <summary> Update .htaccess. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="platform-update-htaccess">
->         <if>
->             <istrue value="${drupal.htaccess.append.text}"/>
->             <then>
->                 <echo msg="Appended text to htaccess."/>
->                 <append destfile="${drupal.htaccess.path}" text="${drupal.htaccess.append.text}"/>
->             </then>
->             <else>
->                 <echo msg="Appended no text to htaccess."/>
->             </else>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;platform-update-htaccess&quot;&gt;
+        &lt;if&gt;
+            &lt;istrue value=&quot;${drupal.htaccess.append.text}&quot;/&gt;
+            &lt;then&gt;
+                &lt;echo msg=&quot;Appended text to htaccess.&quot;/&gt;
+                &lt;append destfile=&quot;${drupal.htaccess.path}&quot; text=&quot;${drupal.htaccess.append.text}&quot;/&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;echo msg=&quot;Appended no text to htaccess.&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1100,17 +1100,17 @@
             <td>
                 <details>
                     <summary> Simple prompt for user credentials and recurse into subsite-database-wget. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="prompt-for-credentials-and-retry" hidden="true">
->         <input propertyName="project.database.url.htaccess.username" message="Please enter your username."/>
->         <input hidden="true" propertyName="project.database.url.htaccess.password" message="Please enter your password."/>
->         <phingcall target="subsite-database-wget"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;prompt-for-credentials-and-retry&quot; hidden=&quot;true&quot;&gt;
+        &lt;input propertyName=&quot;project.database.url.htaccess.username&quot; message=&quot;Please enter your username.&quot;/&gt;
+        &lt;input hidden=&quot;true&quot; propertyName=&quot;project.database.url.htaccess.password&quot; message=&quot;Please enter your password.&quot;/&gt;
+        &lt;phingcall target=&quot;subsite-database-wget&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1118,15 +1118,15 @@
             <td>
                 <details>
                     <summary> Build documentation index. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="starterkit-build-documentation-index">
->         <build-documentation-index/>        
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;starterkit-build-documentation-index&quot;&gt;
+        &lt;build-documentation-index/&gt;        
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1134,18 +1134,18 @@
             <td>
                 <details>
                     <summary> Ensure needed files are present. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="starterkit-copy-templates">
->         <echo msg="Ensuring the presence of build.xml and Jenkinsfile."/>
->         <copy todir="${project.basedir}">
->             <fileset dir="${subsite.starterkit.templates}"/>
->         </copy>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;starterkit-copy-templates&quot;&gt;
+        &lt;echo msg=&quot;Ensuring the presence of build.xml and Jenkinsfile.&quot;/&gt;
+        &lt;copy todir=&quot;${project.basedir}&quot;&gt;
+            &lt;fileset dir=&quot;${subsite.starterkit.templates}&quot;/&gt;
+        &lt;/copy&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1153,16 +1153,16 @@
             <td>
                 <details>
                     <summary> Provide handy access with root symlink to starterkit binary. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="starterkit-link-binary">
->         <echo msg="Provide project with starterkit binary at root level."/>
->         <rel-sym link="${project.basedir}/ssk" target="${subsite.starterkit.bin}" overwrite="true"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;starterkit-link-binary&quot;&gt;
+        &lt;echo msg=&quot;Provide project with starterkit binary at root level.&quot;/&gt;
+        &lt;rel-sym link=&quot;${project.basedir}/ssk&quot; target=&quot;${subsite.starterkit.bin}&quot; overwrite=&quot;true&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1170,51 +1170,51 @@
             <td>
                 <details>
                     <summary> Upgrade subsite-starterkit 2.x to 3.x. </summary>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;starterkit-upgrade&quot;&gt;
 
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="starterkit-upgrade">
-> 
->         <!-- Delete starterkit folders. -->
->         <phingcall target="delete-folder">
->             <property name="folder.to.delete" value="${project.basedir}/bin"/>
->         </phingcall>
->         <phingcall target="delete-folder">
->             <property name="folder.to.delete" value="${project.basedir}/docs"/>
->         </phingcall>
->         <phingcall target="delete-folder">
->             <property name="folder.to.delete" value="${project.basedir}/src"/>
->         </phingcall>
->         <phingcall target="delete-folder">
->             <property name="folder.to.delete" value="${subsite.resources.dir}/cloudformation"/>
->         </phingcall>
->         <phingcall target="delete-folder">
->             <property name="folder.to.delete" value="${subsite.resources.dir}/codedeploy"/>
->         </phingcall>
->         <phingcall target="delete-folder">
->             <property name="folder.to.delete" value="${subsite.resources.dir}/composer"/>
->         </phingcall>
->         <!-- Delete starterkit files. -->
->         <delete>
->             <fileset dir="${project.basedir}">
->                 <include name="CHANGELOG.md"/>
->                 <include name="LICENSE.md"/>
->                 <include name="README.md"/>
->                 <include name="appspec.yml"/>
->                 <include name="build.clone.xml"/>
->                 <include name="build.package.xml"/>
->                 <include name="build.properties.dist"/>
->                 <include name="build.test.xml"/>
->                 <include name="composer.lock"/>
->                 <include name="phpcs-ruleset.xml"/>
->             </fileset>
->         </delete>
->         <!-- Move subsite files to new location. -->
->         <move file="${subsite.resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
->     </target>
-> ```
-
-</details>
+        &lt;!-- Delete starterkit folders. --&gt;
+        &lt;phingcall target=&quot;delete-folder&quot;&gt;
+            &lt;property name=&quot;folder.to.delete&quot; value=&quot;${project.basedir}/bin&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;phingcall target=&quot;delete-folder&quot;&gt;
+            &lt;property name=&quot;folder.to.delete&quot; value=&quot;${project.basedir}/docs&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;phingcall target=&quot;delete-folder&quot;&gt;
+            &lt;property name=&quot;folder.to.delete&quot; value=&quot;${project.basedir}/src&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;phingcall target=&quot;delete-folder&quot;&gt;
+            &lt;property name=&quot;folder.to.delete&quot; value=&quot;${subsite.resources.dir}/cloudformation&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;phingcall target=&quot;delete-folder&quot;&gt;
+            &lt;property name=&quot;folder.to.delete&quot; value=&quot;${subsite.resources.dir}/codedeploy&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;phingcall target=&quot;delete-folder&quot;&gt;
+            &lt;property name=&quot;folder.to.delete&quot; value=&quot;${subsite.resources.dir}/composer&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;!-- Delete starterkit files. --&gt;
+        &lt;delete&gt;
+            &lt;fileset dir=&quot;${project.basedir}&quot;&gt;
+                &lt;include name=&quot;CHANGELOG.md&quot;/&gt;
+                &lt;include name=&quot;LICENSE.md&quot;/&gt;
+                &lt;include name=&quot;README.md&quot;/&gt;
+                &lt;include name=&quot;appspec.yml&quot;/&gt;
+                &lt;include name=&quot;build.clone.xml&quot;/&gt;
+                &lt;include name=&quot;build.package.xml&quot;/&gt;
+                &lt;include name=&quot;build.properties.dist&quot;/&gt;
+                &lt;include name=&quot;build.test.xml&quot;/&gt;
+                &lt;include name=&quot;composer.lock&quot;/&gt;
+                &lt;include name=&quot;phpcs-ruleset.xml&quot;/&gt;
+            &lt;/fileset&gt;
+        &lt;/delete&gt;
+        &lt;!-- Move subsite files to new location. --&gt;
+        &lt;move file=&quot;${subsite.resources.dir}/phpcs-custom.xml&quot; tofile=&quot;phpcs-ruleset.xml&quot; overwrite=&quot;true&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1222,22 +1222,22 @@
             <td>
                 <details>
                     <summary> Install Composer dev dependencies for the subsite. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-composer-install">
->         <echo msg="Run 'composer install' in the subsite folder for development purposes."/>
->         <composer command="install" composer="${composer.bin}">
->             <arg value="--working-dir=${platform.build.subsite.dir}"/>
->             <arg value="--no-interaction"/>
->             <!-- <arg value="no-plugins" /> -->
->             <arg value="--no-suggest"/>
->             <arg value="--ansi"/>
->         </composer>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-composer-install&quot;&gt;
+        &lt;echo msg=&quot;Run 'composer install' in the subsite folder for development purposes.&quot;/&gt;
+        &lt;composer command=&quot;install&quot; composer=&quot;${composer.bin}&quot;&gt;
+            &lt;arg value=&quot;--working-dir=${platform.build.subsite.dir}&quot;/&gt;
+            &lt;arg value=&quot;--no-interaction&quot;/&gt;
+            &lt;!-- &lt;arg value=&quot;no-plugins&quot; /&gt; --&gt;
+            &lt;arg value=&quot;--no-suggest&quot;/&gt;
+            &lt;arg value=&quot;--ansi&quot;/&gt;
+        &lt;/composer&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1245,33 +1245,33 @@
             <td>
                 <details>
                     <summary> Download the production database. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-database-download">
->         <echo msg="Download the production database."/>
->         <!--Strips gz suffix. -->
->         <php expression="substr('${project.database.filename}', 0, -3)" returnProperty="gunzipped.filename" level="debug"/>
->         <if>
->             <not>
->                 <!-- Check if we have a previously downloaded dump available. -->
->                 <available file="tmp/${gunzipped.filename}" type="file" property="gunzipped.project.db"/>
->             </not>
->             <then>
->                 <!-- If not available, download and unzip the file. -->
->                 <phingcall target="subsite-database-wget"/>
->                 <exec command="gunzip tmp/${project.database.filename}" checkreturn="true" passthru="false" logoutput="true"/>
->             </then>
->             <else>
->                 <!-- Inform user if file was already downloaded. -->
->                 <echo msg="File ${gunzipped.filename} already downloaded."/>
->                 <echo msg="Proceeding to import."/>
->             </else>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-database-download&quot;&gt;
+        &lt;echo msg=&quot;Download the production database.&quot;/&gt;
+        &lt;!--Strips gz suffix. --&gt;
+        &lt;php expression=&quot;substr('${project.database.filename}', 0, -3)&quot; returnProperty=&quot;gunzipped.filename&quot; level=&quot;debug&quot;/&gt;
+        &lt;if&gt;
+            &lt;not&gt;
+                &lt;!-- Check if we have a previously downloaded dump available. --&gt;
+                &lt;available file=&quot;tmp/${gunzipped.filename}&quot; type=&quot;file&quot; property=&quot;gunzipped.project.db&quot;/&gt;
+            &lt;/not&gt;
+            &lt;then&gt;
+                &lt;!-- If not available, download and unzip the file. --&gt;
+                &lt;phingcall target=&quot;subsite-database-wget&quot;/&gt;
+                &lt;exec command=&quot;gunzip tmp/${project.database.filename}&quot; checkreturn=&quot;true&quot; passthru=&quot;false&quot; logoutput=&quot;true&quot;/&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;!-- Inform user if file was already downloaded. --&gt;
+                &lt;echo msg=&quot;File ${gunzipped.filename} already downloaded.&quot;/&gt;
+                &lt;echo msg=&quot;Proceeding to import.&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1279,22 +1279,22 @@
             <td>
                 <details>
                     <summary> Import production database. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-database-import" depends="subsite-database-download">
->         <echo msg="Import production database."/>
->         <!-- Drop database, create if necessary and import the dump. -->
->         <phingcall target="drush-sql-drop"/>
->         <phingcall target="drush-sql-create"/>
->         <phingcall target="drush-sql-import">
->             <property name="database-file" value="tmp/${gunzipped.filename}"/>
->         </phingcall>
->         <phingcall target="drush-registry-rebuild"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-database-import&quot; depends=&quot;subsite-database-download&quot;&gt;
+        &lt;echo msg=&quot;Import production database.&quot;/&gt;
+        &lt;!-- Drop database, create if necessary and import the dump. --&gt;
+        &lt;phingcall target=&quot;drush-sql-drop&quot;/&gt;
+        &lt;phingcall target=&quot;drush-sql-create&quot;/&gt;
+        &lt;phingcall target=&quot;drush-sql-import&quot;&gt;
+            &lt;property name=&quot;database-file&quot; value=&quot;tmp/${gunzipped.filename}&quot;/&gt;
+        &lt;/phingcall&gt;
+        &lt;phingcall target=&quot;drush-registry-rebuild&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1302,51 +1302,51 @@
             <td>
                 <details>
                     <summary> Target to actually fetch the database dump. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-database-wget">
->         <!--Generate .htaccess credential property if needed, empty if not. -->
->         <if>
->             <or>
->                 <equals arg1="${project.database.url.htaccess.username}" arg2=""/>
->                 <equals arg1="${project.database.url.htaccess.password}" arg2=""/>
->             </or>
->             <then>
->                 <!-- If username or password is not provided, empty the credential string. -->
->                 <property name="project.database.url.credentials" value="" override="true"/>
->             </then>
->             <else>
->                 <!-- If username or password is provided, build the credential string. -->
->                 <property name="project.database.url.credentials" value="${project.database.url.htaccess.username}:${project.database.url.htaccess.password}@" override="true"/>
->             </else>
->         </if>
->         <!-- Attempt to download the database dump. -->
->         <exec command="wget ${project.database.url.scheme}://${project.database.url.credentials}${project.database.url}${project.database.filename}" dir="tmp" checkreturn="false" passthru="false" outputProperty="project.database.download"/>
->         <if>
->             <!-- Upon success inform the user. -->
->             <contains string="${project.database.download}" substring="200"/>
->             <then>
->                 <echo msg="Database successfully downloaded."/>
->             </then>
->             <!-- When denied access, prompt the user for credentials and retry the download. -->
->             <elseif>
->                 <contains string="${project.database.download}" substring="401"/>
->                 <then>
->                     <phingcall target="prompt-for-credentials-and-retry"/>
->                 </then>
->             </elseif>
->             <!-- Otherwise we fail the build and display the download message. -->
->             <else>
->                 <echo msg="Failed to download the database dump. Result of wget:" level="error"/>
->                 <echo msg="${project.database.download}" level="error"/>
->                 <fail/>
->             </else>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-database-wget&quot;&gt;
+        &lt;!--Generate .htaccess credential property if needed, empty if not. --&gt;
+        &lt;if&gt;
+            &lt;or&gt;
+                &lt;equals arg1=&quot;${project.database.url.htaccess.username}&quot; arg2=&quot;&quot;/&gt;
+                &lt;equals arg1=&quot;${project.database.url.htaccess.password}&quot; arg2=&quot;&quot;/&gt;
+            &lt;/or&gt;
+            &lt;then&gt;
+                &lt;!-- If username or password is not provided, empty the credential string. --&gt;
+                &lt;property name=&quot;project.database.url.credentials&quot; value=&quot;&quot; override=&quot;true&quot;/&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;!-- If username or password is provided, build the credential string. --&gt;
+                &lt;property name=&quot;project.database.url.credentials&quot; value=&quot;${project.database.url.htaccess.username}:${project.database.url.htaccess.password}@&quot; override=&quot;true&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+        &lt;!-- Attempt to download the database dump. --&gt;
+        &lt;exec command=&quot;wget ${project.database.url.scheme}://${project.database.url.credentials}${project.database.url}${project.database.filename}&quot; dir=&quot;tmp&quot; checkreturn=&quot;false&quot; passthru=&quot;false&quot; outputProperty=&quot;project.database.download&quot;/&gt;
+        &lt;if&gt;
+            &lt;!-- Upon success inform the user. --&gt;
+            &lt;contains string=&quot;${project.database.download}&quot; substring=&quot;200&quot;/&gt;
+            &lt;then&gt;
+                &lt;echo msg=&quot;Database successfully downloaded.&quot;/&gt;
+            &lt;/then&gt;
+            &lt;!-- When denied access, prompt the user for credentials and retry the download. --&gt;
+            &lt;elseif&gt;
+                &lt;contains string=&quot;${project.database.download}&quot; substring=&quot;401&quot;/&gt;
+                &lt;then&gt;
+                    &lt;phingcall target=&quot;prompt-for-credentials-and-retry&quot;/&gt;
+                &lt;/then&gt;
+            &lt;/elseif&gt;
+            &lt;!-- Otherwise we fail the build and display the download message. --&gt;
+            &lt;else&gt;
+                &lt;echo msg=&quot;Failed to download the database dump. Result of wget:&quot; level=&quot;error&quot;/&gt;
+                &lt;echo msg=&quot;${project.database.download}&quot; level=&quot;error&quot;/&gt;
+                &lt;fail/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1354,19 +1354,19 @@
             <td>
                 <details>
                     <summary> Download development modules. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-modules-development-download" depends="subsite-modules-development-makefile">
->         <echo msg="Download development modules."/>
->         <phingcall target="drush-make-no-core">
->             <property name="drush.make.target.file" value="${subsite.temporary.development.make}"/>
->             <property name="drush.make.root" value="${platform.build.dir}"/>
->         </phingcall>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-modules-development-download&quot; depends=&quot;subsite-modules-development-makefile&quot;&gt;
+        &lt;echo msg=&quot;Download development modules.&quot;/&gt;
+        &lt;phingcall target=&quot;drush-make-no-core&quot;&gt;
+            &lt;property name=&quot;drush.make.target.file&quot; value=&quot;${subsite.temporary.development.make}&quot;/&gt;
+            &lt;property name=&quot;drush.make.root&quot; value=&quot;${platform.build.dir}&quot;/&gt;
+        &lt;/phingcall&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1374,17 +1374,17 @@
             <td>
                 <details>
                     <summary> Enable development modules. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-modules-development-enable">
->         <phingcall target="drush-enable-modules">
->             <property name="drupal.modules" value="${development.modules.enable}"/>
->         </phingcall>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-modules-development-enable&quot;&gt;
+        &lt;phingcall target=&quot;drush-enable-modules&quot;&gt;
+            &lt;property name=&quot;drupal.modules&quot; value=&quot;${development.modules.enable}&quot;/&gt;
+        &lt;/phingcall&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1392,23 +1392,23 @@
             <td>
                 <details>
                     <summary> Generate the makefile used to download development modules. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-modules-development-makefile">
->         <echo msg="Generate the makefile for development modules."/>
->         <if>
->             <available file="${subsite.temporary.development.make}" type="file" property="development.makefile.available"/>
->             <then>
->                 <echo message="Deleting existing makefile."/>
->                 <delete file="${subsite.temporary.development.make}" failonerror="false"/>
->             </then>
->         </if>
->         <drushmakefile makeFile="${subsite.temporary.development.make}" coreVersion="${drupal.core.version}" projects="${development.modules.download}" defaultProjectDir="${development.modules.location}"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-modules-development-makefile&quot;&gt;
+        &lt;echo msg=&quot;Generate the makefile for development modules.&quot;/&gt;
+        &lt;if&gt;
+            &lt;available file=&quot;${subsite.temporary.development.make}&quot; type=&quot;file&quot; property=&quot;development.makefile.available&quot;/&gt;
+            &lt;then&gt;
+                &lt;echo message=&quot;Deleting existing makefile.&quot;/&gt;
+                &lt;delete file=&quot;${subsite.temporary.development.make}&quot; failonerror=&quot;false&quot;/&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+        &lt;drushmakefile makeFile=&quot;${subsite.temporary.development.make}&quot; coreVersion=&quot;${drupal.core.version}&quot; projects=&quot;${development.modules.download}&quot; defaultProjectDir=&quot;${development.modules.location}&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1416,17 +1416,17 @@
             <td>
                 <details>
                     <summary> Enable required modules after installation of the profile. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-modules-install-enable">
->         <phingcall target="drush-enable-modules">
->             <property name="drupal.modules" value="${subsite.install.modules}"/>
->         </phingcall>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-modules-install-enable&quot;&gt;
+        &lt;phingcall target=&quot;drush-enable-modules&quot;&gt;
+            &lt;property name=&quot;drupal.modules&quot; value=&quot;${subsite.install.modules}&quot;/&gt;
+        &lt;/phingcall&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1434,24 +1434,24 @@
             <td>
                 <details>
                     <summary> Setup file directory </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-setup-files-directory">
->         <if>
->             <istrue value="${platform.build.files.dir}"/>
->             <then>
->                 <mkdir dir="${platform.build.files.dir}/private_files"/>
->                 <mkdir dir="${platform.build.tmp.dir}"/>
->                 <!-- Support CSS and JS injector. -->
->                 <mkdir dir="${platform.build.files.dir}/css_injector"/>
->                 <mkdir dir="${platform.build.files.dir}/js_injector"/>
->             </then>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-setup-files-directory&quot;&gt;
+        &lt;if&gt;
+            &lt;istrue value=&quot;${platform.build.files.dir}&quot;/&gt;
+            &lt;then&gt;
+                &lt;mkdir dir=&quot;${platform.build.files.dir}/private_files&quot;/&gt;
+                &lt;mkdir dir=&quot;${platform.build.tmp.dir}&quot;/&gt;
+                &lt;!-- Support CSS and JS injector. --&gt;
+                &lt;mkdir dir=&quot;${platform.build.files.dir}/css_injector&quot;/&gt;
+                &lt;mkdir dir=&quot;${platform.build.files.dir}/js_injector&quot;/&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1459,77 +1459,77 @@
             <td>
                 <details>
                     <summary> Backs up files and folders listed in platform.rebuild properties in order to rebuild. </summary>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-site-backup&quot;&gt;
 
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-site-backup">
-> 
->         <!-- Check if site exists. -->
->         <if>
->             <available file="${platform.build.settings.dir}/settings.php" type="file"/>
->             <then>
->                 <property name="site-detected" value="1"/>
->             </then>
->             <else>
->                 <echo msg="No site installation detected. Skipping backup."/>
->             </else>
->         </if>
-> 
->         <if>
->             <and>
->                 <equals arg1="${platform.rebuild.auto}" arg2="0"/>
->                 <equals arg1="${site-detected}" arg2="1"/>
->             </and>
->             <then>
->                 <echo msg="Installed site detected." level="warning"/>
->                 <propertyprompt propertyName="subsite-site-backup-activated" promptText="Do you wish to backup site for this build? (y/n)"/>
->                 <if>
->                     <equals arg1="${subsite-site-backup-activated}" arg2="y"/>
->                     <then>
->                         <property name="platform.rebuild.auto" value="1" override="true"/>
->                     </then>
->                 </if>
->             </then>
->         </if>
->         <if>
->             <and>
->                 <equals arg1="${platform.rebuild.auto}" arg2="1"/>
->                 <equals arg1="${site-detected}" arg2="1"/>
->             </and>
->             <then>
->                 <if>
->                     <!-- Delete any remains of previous backup attempts. -->
->                     <available file="${platform.rebuild.backup.destination}" type="dir"/>
->                     <then>
->                         <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
->                     </then>
->                 </if>
->                 <!-- Create backup directory. -->
->                 <mkdir dir="${platform.rebuild.backup.destination}"/>
->                 <!-- Make the settings directory writable because we can not delete it otherwise -->
->                 <phingcall target="unprotect-folder">
->                     <property name="folder.to.unprotect" value="${platform.build.settings.dir}"/>
->                 </phingcall>
->                 <!-- Back up folders list. -->
->                 <foreach list="${platform.rebuild.backup.folders}" param="site-item" target="subsite-site-backup-item" delimiter=";">
->                     <property name="site-item-type" value="dir"/>
->                 </foreach>
->                 <!-- Back up files list. -->
->                 <foreach list="${platform.rebuild.backup.files}" param="site-item" target="subsite-site-backup-item" delimiter=";">
->                     <property name="site-item-type" value="file"/>
->                 </foreach>
->             </then>
->         </if>
->         <if>
->             <equals arg1="${subsite-site-backup-activated}" arg2="y"/>
->             <then>
->                 <property name="platform.rebuild.auto" value="0" override="true"/>
->             </then>
->         </if>
->     </target>
-> ```
+        &lt;!-- Check if site exists. --&gt;
+        &lt;if&gt;
+            &lt;available file=&quot;${platform.build.settings.dir}/settings.php&quot; type=&quot;file&quot;/&gt;
+            &lt;then&gt;
+                &lt;property name=&quot;site-detected&quot; value=&quot;1&quot;/&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;echo msg=&quot;No site installation detected. Skipping backup.&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
 
-</details>
+        &lt;if&gt;
+            &lt;and&gt;
+                &lt;equals arg1=&quot;${platform.rebuild.auto}&quot; arg2=&quot;0&quot;/&gt;
+                &lt;equals arg1=&quot;${site-detected}&quot; arg2=&quot;1&quot;/&gt;
+            &lt;/and&gt;
+            &lt;then&gt;
+                &lt;echo msg=&quot;Installed site detected.&quot; level=&quot;warning&quot;/&gt;
+                &lt;propertyprompt propertyName=&quot;subsite-site-backup-activated&quot; promptText=&quot;Do you wish to backup site for this build? (y/n)&quot;/&gt;
+                &lt;if&gt;
+                    &lt;equals arg1=&quot;${subsite-site-backup-activated}&quot; arg2=&quot;y&quot;/&gt;
+                    &lt;then&gt;
+                        &lt;property name=&quot;platform.rebuild.auto&quot; value=&quot;1&quot; override=&quot;true&quot;/&gt;
+                    &lt;/then&gt;
+                &lt;/if&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+        &lt;if&gt;
+            &lt;and&gt;
+                &lt;equals arg1=&quot;${platform.rebuild.auto}&quot; arg2=&quot;1&quot;/&gt;
+                &lt;equals arg1=&quot;${site-detected}&quot; arg2=&quot;1&quot;/&gt;
+            &lt;/and&gt;
+            &lt;then&gt;
+                &lt;if&gt;
+                    &lt;!-- Delete any remains of previous backup attempts. --&gt;
+                    &lt;available file=&quot;${platform.rebuild.backup.destination}&quot; type=&quot;dir&quot;/&gt;
+                    &lt;then&gt;
+                        &lt;delete dir=&quot;${platform.rebuild.backup.destination}&quot; includeemptydirs=&quot;true&quot;/&gt;
+                    &lt;/then&gt;
+                &lt;/if&gt;
+                &lt;!-- Create backup directory. --&gt;
+                &lt;mkdir dir=&quot;${platform.rebuild.backup.destination}&quot;/&gt;
+                &lt;!-- Make the settings directory writable because we can not delete it otherwise --&gt;
+                &lt;phingcall target=&quot;unprotect-folder&quot;&gt;
+                    &lt;property name=&quot;folder.to.unprotect&quot; value=&quot;${platform.build.settings.dir}&quot;/&gt;
+                &lt;/phingcall&gt;
+                &lt;!-- Back up folders list. --&gt;
+                &lt;foreach list=&quot;${platform.rebuild.backup.folders}&quot; param=&quot;site-item&quot; target=&quot;subsite-site-backup-item&quot; delimiter=&quot;;&quot;&gt;
+                    &lt;property name=&quot;site-item-type&quot; value=&quot;dir&quot;/&gt;
+                &lt;/foreach&gt;
+                &lt;!-- Back up files list. --&gt;
+                &lt;foreach list=&quot;${platform.rebuild.backup.files}&quot; param=&quot;site-item&quot; target=&quot;subsite-site-backup-item&quot; delimiter=&quot;;&quot;&gt;
+                    &lt;property name=&quot;site-item-type&quot; value=&quot;file&quot;/&gt;
+                &lt;/foreach&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+        &lt;if&gt;
+            &lt;equals arg1=&quot;${subsite-site-backup-activated}&quot; arg2=&quot;y&quot;/&gt;
+            &lt;then&gt;
+                &lt;property name=&quot;platform.rebuild.auto&quot; value=&quot;0&quot; override=&quot;true&quot;/&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1537,40 +1537,40 @@
             <td>
                 <details>
                     <summary> Backs up a site item from the platform that will be removed in order to rebuild. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-site-backup-item" hidden="true">
->         <php expression="dirname(&quot;${site-item}&quot;)" returnProperty="site-item-dir"/>
->         <property name="site-item-backup-dir" value="${site-item-dir}">
->             <filterchain>
->                 <replaceregexp>
->                     <regexp pattern="${platform.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
->                 </replaceregexp>
->             </filterchain>
->         </property>
->         <if>
->             <available file="${site-item}" type="${site-item-type}"/>
->             <then>
->                 <if>
->                     <not>
->                         <available file="${site-item-backup-dir}" type="dir"/>
->                     </not>
->                     <then>
->                         <mkdir dir="${site-item-backup-dir}"/>
->                     </then>
->                 </if>
->                 <move file="${site-item}" todir="${site-item-backup-dir}" includeemptydirs="true"/>
->             </then>
->             <else>
->                 <php expression="ucwords(&quot;${site-item-type}&quot;)" returnProperty="site-item-type-capitalized"/>
->                 <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning"/>
->             </else>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-site-backup-item&quot; hidden=&quot;true&quot;&gt;
+        &lt;php expression=&quot;dirname(&amp;quot;${site-item}&amp;quot;)&quot; returnProperty=&quot;site-item-dir&quot;/&gt;
+        &lt;property name=&quot;site-item-backup-dir&quot; value=&quot;${site-item-dir}&quot;&gt;
+            &lt;filterchain&gt;
+                &lt;replaceregexp&gt;
+                    &lt;regexp pattern=&quot;${platform.build.dir}&quot; replace=&quot;${platform.rebuild.backup.destination}&quot; ignoreCase=&quot;false&quot;/&gt;
+                &lt;/replaceregexp&gt;
+            &lt;/filterchain&gt;
+        &lt;/property&gt;
+        &lt;if&gt;
+            &lt;available file=&quot;${site-item}&quot; type=&quot;${site-item-type}&quot;/&gt;
+            &lt;then&gt;
+                &lt;if&gt;
+                    &lt;not&gt;
+                        &lt;available file=&quot;${site-item-backup-dir}&quot; type=&quot;dir&quot;/&gt;
+                    &lt;/not&gt;
+                    &lt;then&gt;
+                        &lt;mkdir dir=&quot;${site-item-backup-dir}&quot;/&gt;
+                    &lt;/then&gt;
+                &lt;/if&gt;
+                &lt;move file=&quot;${site-item}&quot; todir=&quot;${site-item-backup-dir}&quot; includeemptydirs=&quot;true&quot;/&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;php expression=&quot;ucwords(&amp;quot;${site-item-type}&amp;quot;)&quot; returnProperty=&quot;site-item-type-capitalized&quot;/&gt;
+                &lt;echo msg=&quot;Skipping ${site-item}. ${site-item-type-capitalized} not found.&quot; level=&quot;warning&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1578,60 +1578,60 @@
             <td>
                 <details>
                     <summary> Restoring sites directory if backed up before rebuild-dev. </summary>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-site-restore&quot;&gt;
 
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-site-restore">
-> 
->         <!-- Check if backup exists. -->
->         <if>
->             <available file="${platform.rebuild.backup.destination}" type="dir"/>
->             <then>
->                 <property name="backup-detected" value="1"/>
->             </then>
->             <else>
->                 <echo msg="No site backup detected. Skipping restore."/>
->             </else>
->         </if>
->         <if>
->             <and>
->                 <equals arg1="${platform.rebuild.auto}" arg2="0"/>
->                 <equals arg1="${backup-detected}" arg2="1"/>
->             </and>
->             <then>
->                 <echo msg="Site backup detected." level="warning"/>
->                 <propertyprompt propertyName="subsite-site-restore-activated" promptText="Do you wish to restore site for this build? (y/n)"/>
->                 <if>
->                     <equals arg1="${subsite-site-restore-activated}" arg2="y"/>
->                     <then>
->                         <property name="platform.rebuild.auto" value="1" override="true"/>
->                     </then>
->                 </if>
->             </then>
->         </if>
->         <if>
->             <and>
->                 <equals arg1="${platform.rebuild.auto}" arg2="1"/>
->                 <equals arg1="${backup-detected}" arg2="1"/>
->             </and>
->             <then>
->                 <echo msg="Restoring site files and folders from ${platform.rebuild.backup.destination}"/>
->                 <!-- Restore folders list. -->
->                 <foreach list="${platform.rebuild.backup.folders}" param="site-item" target="subsite-site-restore-item" delimiter=";">
->                     <property name="site-item-type" value="dir"/>
->                 </foreach>
->                 <!-- Restore files list. -->
->                 <foreach list="${platform.rebuild.backup.files}" param="site-item" target="subsite-site-restore-item" delimiter=";">
->                     <property name="site-item-type" value="file"/>
->                 </foreach>
->                 <!-- Delete the site backup directory. -->
->                 <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
->             </then>
->         </if>
->     </target>
-> ```
-
-</details>
+        &lt;!-- Check if backup exists. --&gt;
+        &lt;if&gt;
+            &lt;available file=&quot;${platform.rebuild.backup.destination}&quot; type=&quot;dir&quot;/&gt;
+            &lt;then&gt;
+                &lt;property name=&quot;backup-detected&quot; value=&quot;1&quot;/&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;echo msg=&quot;No site backup detected. Skipping restore.&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+        &lt;if&gt;
+            &lt;and&gt;
+                &lt;equals arg1=&quot;${platform.rebuild.auto}&quot; arg2=&quot;0&quot;/&gt;
+                &lt;equals arg1=&quot;${backup-detected}&quot; arg2=&quot;1&quot;/&gt;
+            &lt;/and&gt;
+            &lt;then&gt;
+                &lt;echo msg=&quot;Site backup detected.&quot; level=&quot;warning&quot;/&gt;
+                &lt;propertyprompt propertyName=&quot;subsite-site-restore-activated&quot; promptText=&quot;Do you wish to restore site for this build? (y/n)&quot;/&gt;
+                &lt;if&gt;
+                    &lt;equals arg1=&quot;${subsite-site-restore-activated}&quot; arg2=&quot;y&quot;/&gt;
+                    &lt;then&gt;
+                        &lt;property name=&quot;platform.rebuild.auto&quot; value=&quot;1&quot; override=&quot;true&quot;/&gt;
+                    &lt;/then&gt;
+                &lt;/if&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+        &lt;if&gt;
+            &lt;and&gt;
+                &lt;equals arg1=&quot;${platform.rebuild.auto}&quot; arg2=&quot;1&quot;/&gt;
+                &lt;equals arg1=&quot;${backup-detected}&quot; arg2=&quot;1&quot;/&gt;
+            &lt;/and&gt;
+            &lt;then&gt;
+                &lt;echo msg=&quot;Restoring site files and folders from ${platform.rebuild.backup.destination}&quot;/&gt;
+                &lt;!-- Restore folders list. --&gt;
+                &lt;foreach list=&quot;${platform.rebuild.backup.folders}&quot; param=&quot;site-item&quot; target=&quot;subsite-site-restore-item&quot; delimiter=&quot;;&quot;&gt;
+                    &lt;property name=&quot;site-item-type&quot; value=&quot;dir&quot;/&gt;
+                &lt;/foreach&gt;
+                &lt;!-- Restore files list. --&gt;
+                &lt;foreach list=&quot;${platform.rebuild.backup.files}&quot; param=&quot;site-item&quot; target=&quot;subsite-site-restore-item&quot; delimiter=&quot;;&quot;&gt;
+                    &lt;property name=&quot;site-item-type&quot; value=&quot;file&quot;/&gt;
+                &lt;/foreach&gt;
+                &lt;!-- Delete the site backup directory. --&gt;
+                &lt;delete dir=&quot;${platform.rebuild.backup.destination}&quot; includeemptydirs=&quot;true&quot;/&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1639,40 +1639,40 @@
             <td>
                 <details>
                     <summary> Restores a site item from the platform.rebuild.backup.destination to the new build. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="subsite-site-restore-item" hidden="true">
->         <property name="site-item-backup" value="${site-item}">
->             <filterchain>
->                 <replaceregexp>
->                     <regexp pattern="${platform.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
->                 </replaceregexp>
->             </filterchain>
->         </property>
->         <if>
->             <available file="${site-item-backup}" type="${site-item-type}"/>
->             <then>
->                 <php expression="dirname(&quot;${site-item}&quot;)" returnProperty="site-item-dir"/>
->                 <if>
->                     <not>
->                         <available file="${site-item-dir}" type="dir"/>
->                     </not>
->                     <then>
->                         <mkdir dir="${site-item-dir}"/>
->                     </then>
->                 </if>
->                 <move file="${site-item-backup}" todir="${site-item-dir}" includeemptydirs="true"/>
->             </then>
->             <else>
->                 <php expression="ucwords(&quot;${site-item-type}&quot;)" returnProperty="site-item-type-capitalized"/>
->                 <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning"/>
->             </else>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;subsite-site-restore-item&quot; hidden=&quot;true&quot;&gt;
+        &lt;property name=&quot;site-item-backup&quot; value=&quot;${site-item}&quot;&gt;
+            &lt;filterchain&gt;
+                &lt;replaceregexp&gt;
+                    &lt;regexp pattern=&quot;${platform.build.dir}&quot; replace=&quot;${platform.rebuild.backup.destination}&quot; ignoreCase=&quot;false&quot;/&gt;
+                &lt;/replaceregexp&gt;
+            &lt;/filterchain&gt;
+        &lt;/property&gt;
+        &lt;if&gt;
+            &lt;available file=&quot;${site-item-backup}&quot; type=&quot;${site-item-type}&quot;/&gt;
+            &lt;then&gt;
+                &lt;php expression=&quot;dirname(&amp;quot;${site-item}&amp;quot;)&quot; returnProperty=&quot;site-item-dir&quot;/&gt;
+                &lt;if&gt;
+                    &lt;not&gt;
+                        &lt;available file=&quot;${site-item-dir}&quot; type=&quot;dir&quot;/&gt;
+                    &lt;/not&gt;
+                    &lt;then&gt;
+                        &lt;mkdir dir=&quot;${site-item-dir}&quot;/&gt;
+                    &lt;/then&gt;
+                &lt;/if&gt;
+                &lt;move file=&quot;${site-item-backup}&quot; todir=&quot;${site-item-dir}&quot; includeemptydirs=&quot;true&quot;/&gt;
+            &lt;/then&gt;
+            &lt;else&gt;
+                &lt;php expression=&quot;ucwords(&amp;quot;${site-item-type}&amp;quot;)&quot; returnProperty=&quot;site-item-type-capitalized&quot;/&gt;
+                &lt;echo msg=&quot;Skipping ${site-item}. ${site-item-type-capitalized} not found.&quot; level=&quot;warning&quot;/&gt;
+            &lt;/else&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1680,33 +1680,33 @@
             <td>
                 <details>
                     <summary> Set up Behat. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="test-behat-setup">
->         <if>
->             <available file="${behat.yml.path}" type="file" property="behat.yml.available"/>
->             <then>
->                 <echo message="Deleting existing behat.yml configuration file"/>
->                 <delete file="${behat.yml.path}" failonerror="false"/>
->             </then>
->         </if>
->         <echo message="Creating behat.yml configuration file"/>
->         <loadfile property="behat.yml.content" file="${behat.yml.template}">
->             <filterchain>
->                 <replacetokens>
->                     <token key="project.code.dir" value="${project.code.dir}"/>
->                     <token key="drupal.site.dir" value="${drupal.site.dir}"/>
->                     <token key="behat.base_url" value="${behat.base_url}"/>
->                     <token key="behat.formatter.name" value="${behat.formatter.name}"/>
->                 </replacetokens>
->             </filterchain>
->         </loadfile>
->         <echo message="${behat.yml.content}" file="${behat.yml.path}"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;test-behat-setup&quot;&gt;
+        &lt;if&gt;
+            &lt;available file=&quot;${behat.yml.path}&quot; type=&quot;file&quot; property=&quot;behat.yml.available&quot;/&gt;
+            &lt;then&gt;
+                &lt;echo message=&quot;Deleting existing behat.yml configuration file&quot;/&gt;
+                &lt;delete file=&quot;${behat.yml.path}&quot; failonerror=&quot;false&quot;/&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+        &lt;echo message=&quot;Creating behat.yml configuration file&quot;/&gt;
+        &lt;loadfile property=&quot;behat.yml.content&quot; file=&quot;${behat.yml.template}&quot;&gt;
+            &lt;filterchain&gt;
+                &lt;replacetokens&gt;
+                    &lt;token key=&quot;project.code.dir&quot; value=&quot;${project.code.dir}&quot;/&gt;
+                    &lt;token key=&quot;drupal.site.dir&quot; value=&quot;${drupal.site.dir}&quot;/&gt;
+                    &lt;token key=&quot;behat.base_url&quot; value=&quot;${behat.base_url}&quot;/&gt;
+                    &lt;token key=&quot;behat.formatter.name&quot; value=&quot;${behat.formatter.name}&quot;/&gt;
+                &lt;/replacetokens&gt;
+            &lt;/filterchain&gt;
+        &lt;/loadfile&gt;
+        &lt;echo message=&quot;${behat.yml.content}&quot; file=&quot;${behat.yml.path}&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1714,17 +1714,17 @@
             <td>
                 <details>
                     <summary> Symlink the Behat bin and test directory in the subsite folder. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="test-behat-setup-link">
->         <echo msg="Symlink the Behat bin and test directory in './sites/all'."/>
->         <rel-sym link="${project.basedir}/ssk/behat" target="${subsite.starterkit.vendor}/bin/behat" overwrite="true"/>
->         <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;test-behat-setup-link&quot;&gt;
+        &lt;echo msg=&quot;Symlink the Behat bin and test directory in './sites/all'.&quot;/&gt;
+        &lt;rel-sym link=&quot;${project.basedir}/ssk/behat&quot; target=&quot;${subsite.starterkit.vendor}/bin/behat&quot; overwrite=&quot;true&quot;/&gt;
+        &lt;rel-sym link=&quot;${platform.build.subsite.dir}/tests&quot; target=&quot;${project.basedir}/tests&quot; overwrite=&quot;true&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1732,32 +1732,32 @@
             <td>
                 <details>
                     <summary> Set up PHP CodeSniffer. </summary>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;test-phpcs-setup&quot;&gt;
+        &lt;if&gt;
+            &lt;available file=&quot;${phpcs.config}&quot; type=&quot;file&quot; property=&quot;phpcs.config.available&quot;/&gt;
+            &lt;then&gt;
+                &lt;echo message=&quot;Deleting existing PHP Codesniffer default configuration file.&quot;/&gt;
+                &lt;delete file=&quot;${phpcs.config}&quot; failonerror=&quot;false&quot;/&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+        &lt;if&gt;
+            &lt;available file=&quot;${phpcs.global.config}&quot; type=&quot;file&quot; property=&quot;phpcs.global.config.available&quot;/&gt;
+            &lt;then&gt;
+                &lt;echo message=&quot;Deleting existing PHP Codesniffer global configuration file.&quot;/&gt;
+                &lt;delete file=&quot;${phpcs.global.config}&quot; failonerror=&quot;false&quot;/&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+        &lt;phpcodesnifferconfiguration configFile=&quot;${phpcs.config}&quot; extensions=&quot;${phpcs.extensions}&quot; files=&quot;${phpcs.files}&quot; globalConfig=&quot;${phpcs.global.config}&quot; ignorePatterns=&quot;${phpcs.ignore}&quot; passWarnings=&quot;${phpcs.passwarnings}&quot; report=&quot;${phpcs.report}&quot; showProgress=&quot;${phpcs.progress}&quot; showSniffCodes=&quot;${phpcs.sniffcodes}&quot; standards=&quot;${phpcs.standards}&quot;/&gt;
 
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="test-phpcs-setup">
->         <if>
->             <available file="${phpcs.config}" type="file" property="phpcs.config.available"/>
->             <then>
->                 <echo message="Deleting existing PHP Codesniffer default configuration file."/>
->                 <delete file="${phpcs.config}" failonerror="false"/>
->             </then>
->         </if>
->         <if>
->             <available file="${phpcs.global.config}" type="file" property="phpcs.global.config.available"/>
->             <then>
->                 <echo message="Deleting existing PHP Codesniffer global configuration file."/>
->                 <delete file="${phpcs.global.config}" failonerror="false"/>
->             </then>
->         </if>
->         <phpcodesnifferconfiguration configFile="${phpcs.config}" extensions="${phpcs.extensions}" files="${phpcs.files}" globalConfig="${phpcs.global.config}" ignorePatterns="${phpcs.ignore}" passWarnings="${phpcs.passwarnings}" report="${phpcs.report}" showProgress="${phpcs.progress}" showSniffCodes="${phpcs.sniffcodes}" standards="${phpcs.standards}"/>
-> 
->         <!-- Set up the git pre-push hook. -->
->         <phingcall target="test-phpcs-setup-prepush"/>
->     </target>
-> ```
-
-</details>
+        &lt;!-- Set up the git pre-push hook. --&gt;
+        &lt;phingcall target=&quot;test-phpcs-setup-prepush&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1765,26 +1765,26 @@
             <td>
                 <details>
                     <summary> Setup the PHP CodeSniffer pre-push hook. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="test-phpcs-setup-prepush">
->         <if>
->             <equals arg1="${phpcs.prepush.enable}" arg2="1"/>
->             <then>
->                 <echo message="Enabling git pre-push hook."/>
->                 <mkdir dir="${project.basedir}/resources/git/hooks/pre-push"/>
->                 <rel-sym link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true"/>
->             </then>
->            <else>
->                 <echo message="Disabling git pre-push hook."/>
->                 <delete file="${phpcs.prepush.destination}" failonerror="false" quiet="true"/>
->           </else>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;test-phpcs-setup-prepush&quot;&gt;
+        &lt;if&gt;
+            &lt;equals arg1=&quot;${phpcs.prepush.enable}&quot; arg2=&quot;1&quot;/&gt;
+            &lt;then&gt;
+                &lt;echo message=&quot;Enabling git pre-push hook.&quot;/&gt;
+                &lt;mkdir dir=&quot;${project.basedir}/resources/git/hooks/pre-push&quot;/&gt;
+                &lt;rel-sym link=&quot;${phpcs.prepush.destination}&quot; target=&quot;${phpcs.prepush.source}&quot; overwrite=&quot;true&quot;/&gt;
+            &lt;/then&gt;
+           &lt;else&gt;
+                &lt;echo message=&quot;Disabling git pre-push hook.&quot;/&gt;
+                &lt;delete file=&quot;${phpcs.prepush.destination}&quot; failonerror=&quot;false&quot; quiet=&quot;true&quot;/&gt;
+          &lt;/else&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1792,15 +1792,15 @@
             <td>
                 <details>
                     <summary> Do quality assurance checks. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="test-quality-assurance">
->         <exec command="${subsite.starterkit.bin}/qa review:full --no-interaction --ansi" passthru="true" checkreturn="true"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;test-quality-assurance&quot;&gt;
+        &lt;exec command=&quot;${subsite.starterkit.bin}/qa review:full --no-interaction --ansi&quot; passthru=&quot;true&quot; checkreturn=&quot;true&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1808,15 +1808,15 @@
             <td>
                 <details>
                     <summary> Do quality assurance checks. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="test-run-php-codesniffer">
->         <exec command="${subsite.starterkit.bin}/phpcs" passthru="true" checkreturn="true"/>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;test-run-php-codesniffer&quot;&gt;
+        &lt;exec command=&quot;${subsite.starterkit.bin}/phpcs&quot; passthru=&quot;true&quot; checkreturn=&quot;true&quot;/&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
         <tr align="left" valign="top">
@@ -1824,23 +1824,23 @@
             <td>
                 <details>
                     <summary> Make the given folder writeable. </summary>
-
-> ```xml 
-> <?xml version="1.0"?>
-> <target name="unprotect-folder" hidden="true">
->         <!-- This should only be used on folders that need to be removed. -->
->         <if>
->             <available file="${folder.to.unprotect}" type="dir"/>
->             <then>
->                 <chmod mode="0777" failonerror="true" verbose="false" quiet="true">
->                     <fileset dir="${folder.to.unprotect}"/>
->                 </chmod>
->             </then>
->         </if>
->     </target>
-> ```
-
-</details>
+                    <pre lang="xml">
+                        <code>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;target name=&quot;unprotect-folder&quot; hidden=&quot;true&quot;&gt;
+        &lt;!-- This should only be used on folders that need to be removed. --&gt;
+        &lt;if&gt;
+            &lt;available file=&quot;${folder.to.unprotect}&quot; type=&quot;dir&quot;/&gt;
+            &lt;then&gt;
+                &lt;chmod mode=&quot;0777&quot; failonerror=&quot;true&quot; verbose=&quot;false&quot; quiet=&quot;true&quot;&gt;
+                    &lt;fileset dir=&quot;${folder.to.unprotect}&quot;/&gt;
+                &lt;/chmod&gt;
+            &lt;/then&gt;
+        &lt;/if&gt;
+    &lt;/target&gt;
+                        </code>
+                    </pre>
+                </details>
             </td>
         </tr>
     </tbody>
