@@ -11,7 +11,16 @@
             <td>
                 <details>
                     <summary>Build local version of subsite with a clean install.</summary>
-> - dependencies: [drush-create-files-dirs](/includes/build/build.drush.xml#L32), [install](/includes/build/build.test.xml#L5), [subsite-modules-development-enable](/includes/build/build.test.xml#L71)
+                    <code>
+                        <ul>
+                            <li>dependencies:</li>
+                            <ul>
+                                <li>[drush-create-files-dirs](/includes/build/build.drush.xml#L32)</li>
+                                <li>[install](/includes/build/build.test.xml#L5)</li>
+                                <li>[subsite-modules-development-enable](/includes/build/build.test.xml#L71)</li>
+                            </ul>
+                        </ul>
+                    </code>
                 </details>
             </td>
         </tr>
