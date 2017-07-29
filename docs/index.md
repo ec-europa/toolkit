@@ -11,7 +11,7 @@
             <td>
                 <details>
                     <summary>Build local version of subsite with a clean install.</summary>
-                    > - dependencies: drush-create-files-dirs, install, subsite-modules-development-enable
+> - dependencies: [drush-create-files-dirs](/includes/build/build.drush.xml#L32), [install](/includes/build/build.test.xml#L5), [subsite-modules-development-enable](/includes/build/build.test.xml#L71)
                 </details>
             </td>
         </tr>
@@ -20,7 +20,7 @@
             <td>
                 <details>
                     <summary>Build local version of subsite with production data.</summary>
-                    > - dependencies: subsite-database-download, drush-regenerate-settings, subsite-database-import, subsite-modules-development-enable
+> - dependencies: [subsite-database-download](/includes/build/build.clone.xml#L17), [drush-regenerate-settings](/includes/build/build.drush.xml#L111), [subsite-database-import](/includes/build/build.clone.xml#L5), [subsite-modules-development-enable](/includes/build/build.test.xml#L71)
                 </details>
             </td>
         </tr>
@@ -29,7 +29,7 @@
             <td>
                 <details>
                     <summary>Build local version of subsite without install.</summary>
-                    > - dependencies: subsite-site-backup, platform-delete, platform-make, platform-link-resources, subsite-composer-install, test-behat-setup-link, test-behat-setup, platform-update-htaccess, test-phpcs-setup, subsite-modules-development-download, subsite-site-restore
+> - dependencies: [subsite-site-backup](/includes/build/build.subsite.xml#L45), [platform-delete](/includes/build/build.platform.xml#L16), [platform-make](/includes/build/build.platform.xml#L65), [platform-link-resources](/includes/build/build.platform.xml#L54), [subsite-composer-install](/includes/build/build.subsite.xml#L5), [test-behat-setup-link](/includes/build/build.package.xml#L21), [test-behat-setup](/includes/build/build.test.xml#L127), [platform-update-htaccess](/includes/build/build.platform.xml#L108), [test-phpcs-setup](/includes/build/build.test.xml#L78), [subsite-modules-development-download](/includes/build/build.subsite.xml#L36), [subsite-site-restore](/includes/build/build.subsite.xml#L112)
                 </details>
             </td>
         </tr>
@@ -38,7 +38,7 @@
             <td>
                 <details>
                     <summary>Build local version of subsite with backup and restore.</summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -47,7 +47,7 @@
             <td>
                 <details>
                     <summary>Build subsite source code release package.</summary>
-                    > - dependencies: build-dist
+> - dependencies: [build-dist](/includes/build/build.package.xml#L100)
                 </details>
             </td>
         </tr>
@@ -56,7 +56,7 @@
             <td>
                 <details>
                     <summary>Build subsite tests code release package.</summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -65,7 +65,7 @@
             <td>
                 <details>
                     <summary>Trash docker project.</summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -74,7 +74,7 @@
             <td>
                 <details>
                     <summary>Stop docker project.</summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -83,7 +83,7 @@
             <td>
                 <details>
                     <summary>Start docker project.</summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -92,7 +92,7 @@
             <td>
                 <details>
                     <summary>Install the subsite.</summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -101,7 +101,7 @@
             <td>
                 <details>
                     <summary>Create symlink from build to docroot.</summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -110,7 +110,7 @@
             <td>
                 <details>
                     <summary>Refresh configuration and run behat tests.</summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -119,7 +119,7 @@
             <td>
                 <details>
                     <summary>Refresh configuration and run phpcs review.</summary>
-                    > - dependencies: test-phpcs-setup, test-run-php-codesniffer
+> - dependencies: [test-phpcs-setup](/includes/build/build.test.xml#L78), [test-run-php-codesniffer](/includes/build/build.test.xml#L170)
                 </details>
             </td>
         </tr>
@@ -128,7 +128,7 @@
             <td>
                 <details>
                     <summary>Refresh configuration and run qa review.</summary>
-                    > - dependencies: test-phpcs-setup, test-quality-assurance
+> - dependencies: [test-phpcs-setup](/includes/build/build.test.xml#L78), [test-quality-assurance](/includes/build/build.test.xml#L161)
                 </details>
             </td>
         </tr>
@@ -137,7 +137,7 @@
             <td>
                 <details>
                     <summary> Target build-dev has been replaced by build-code. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -146,7 +146,7 @@
             <td>
                 <details>
                     <summary> Create distribution code base. </summary>
-                    > - dependencies: dist-delete, dist-make, dist-copy-resources, dist-composer-install
+> - dependencies: [dist-delete](/includes/build/build.dist.xml#L50), [dist-make](/includes/build/build.dist.xml#L58), [dist-copy-resources](/includes/build/build.dist.xml#L18), [dist-composer-install](/includes/build/build.dist.xml#L5)
                 </details>
             </td>
         </tr>
@@ -155,7 +155,7 @@
             <td>
                 <details>
                     <summary> Target to check if we have default settings, otherwise propose user to rebuild. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -164,7 +164,7 @@
             <td>
                 <details>
                     <summary> Echo the composer hook phingcalls. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -173,7 +173,7 @@
             <td>
                 <details>
                     <summary> Copies a given folder to a new location. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -182,7 +182,7 @@
             <td>
                 <details>
                     <summary> Create temp dirs. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -191,7 +191,7 @@
             <td>
                 <details>
                     <summary> Delete a given folder. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -200,7 +200,7 @@
             <td>
                 <details>
                     <summary> Install Composer dist dependencies for the subsite. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -209,7 +209,7 @@
             <td>
                 <details>
                     <summary> Copy subsite resources into the build folder. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -218,16 +218,16 @@
             <td>
                 <details>
                     <summary> Delete the previous distribution build. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [dist-make](/includes/build/build.dist.xml#L58) </td>
+            <td> [dist-delete](/includes/build/build.dist.xml#L50) </td>
             <td>
                 <details>
-                    <summary> Make the distribution version of the subsite. </summary>
-                    > - dependencies: 
+                    <summary> Delete the previous distribution build. </summary>
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -236,7 +236,7 @@
             <td>
                 <details>
                     <summary> Create the directories. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -245,7 +245,7 @@
             <td>
                 <details>
                     <summary> Download registry rebuild. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -254,7 +254,7 @@
             <td>
                 <details>
                     <summary> Enable modules. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -263,7 +263,7 @@
             <td>
                 <details>
                     <summary> Activate solr if needed. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -272,7 +272,7 @@
             <td>
                 <details>
                     <summary> Execute a makefile with the no-core option. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -281,7 +281,7 @@
             <td>
                 <details>
                     <summary> Rebuild node access. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -290,7 +290,7 @@
             <td>
                 <details>
                     <summary> Regenerate the settings file with database credentials and development variables. </summary>
-                    > - dependencies: check-for-default-settings-or-rebuild
+> - dependencies: [check-for-default-settings-or-rebuild](/includes/build/build.clone.xml#L88)
                 </details>
             </td>
         </tr>
@@ -299,7 +299,7 @@
             <td>
                 <details>
                     <summary> Rebuild registry. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -308,7 +308,7 @@
             <td>
                 <details>
                     <summary> Install the site. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -317,7 +317,7 @@
             <td>
                 <details>
                     <summary> Create the database. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -326,7 +326,7 @@
             <td>
                 <details>
                     <summary> Drop the database. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -335,7 +335,7 @@
             <td>
                 <details>
                     <summary> Backup the database. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -344,7 +344,7 @@
             <td>
                 <details>
                     <summary> Import a database. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -353,7 +353,7 @@
             <td>
                 <details>
                     <summary> Install Composer dependencies for the build system. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -362,7 +362,7 @@
             <td>
                 <details>
                     <summary> Delete the previous development build. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -371,7 +371,7 @@
             <td>
                 <details>
                     <summary> Download the platform. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -380,7 +380,7 @@
             <td>
                 <details>
                     <summary> Symlink the source folders for easy development. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -389,7 +389,7 @@
             <td>
                 <details>
                     <summary> Make the development version of the subsite. </summary>
-                    > - dependencies: platform-unpack
+> - dependencies: [platform-unpack](/includes/build/build.platform.xml#L82)
                 </details>
             </td>
         </tr>
@@ -398,7 +398,7 @@
             <td>
                 <details>
                     <summary> Unpack the platform. </summary>
-                    > - dependencies: platform-download
+> - dependencies: [platform-download](/includes/build/build.platform.xml#L29)
                 </details>
             </td>
         </tr>
@@ -407,7 +407,7 @@
             <td>
                 <details>
                     <summary> Update .htaccess. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -416,7 +416,7 @@
             <td>
                 <details>
                     <summary> Simple prompt for user credentials and recurse into subsite-database-wget. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -425,7 +425,7 @@
             <td>
                 <details>
                     <summary> Build documentation index. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -434,7 +434,7 @@
             <td>
                 <details>
                     <summary> Ensure needed files are present. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -443,7 +443,7 @@
             <td>
                 <details>
                     <summary> Provide handy access with root symlink to starterkit binary. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -452,7 +452,7 @@
             <td>
                 <details>
                     <summary> Upgrade subsite-starterkit 2.x to 3.x. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -461,7 +461,7 @@
             <td>
                 <details>
                     <summary> Install Composer dev dependencies for the subsite. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -470,7 +470,7 @@
             <td>
                 <details>
                     <summary> Download the production database. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -479,7 +479,7 @@
             <td>
                 <details>
                     <summary> Import production database. </summary>
-                    > - dependencies: subsite-database-download
+> - dependencies: [subsite-database-download](/includes/build/build.clone.xml#L17)
                 </details>
             </td>
         </tr>
@@ -488,7 +488,7 @@
             <td>
                 <details>
                     <summary> Target to actually fetch the database dump. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -497,7 +497,7 @@
             <td>
                 <details>
                     <summary> Download development modules. </summary>
-                    > - dependencies: subsite-modules-development-makefile
+> - dependencies: [subsite-modules-development-makefile](/includes/build/build.subsite.xml#L18)
                 </details>
             </td>
         </tr>
@@ -506,7 +506,7 @@
             <td>
                 <details>
                     <summary> Enable development modules. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -515,7 +515,7 @@
             <td>
                 <details>
                     <summary> Generate the makefile used to download development modules. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -524,7 +524,7 @@
             <td>
                 <details>
                     <summary> Enable required modules after installation of the profile. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -533,7 +533,7 @@
             <td>
                 <details>
                     <summary> Setup file directory </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -542,7 +542,7 @@
             <td>
                 <details>
                     <summary> Backs up files and folders listed in platform.rebuild properties in order to rebuild. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -551,7 +551,7 @@
             <td>
                 <details>
                     <summary> Backs up a site item from the platform that will be removed in order to rebuild. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -560,7 +560,7 @@
             <td>
                 <details>
                     <summary> Restoring sites directory if backed up before rebuild-dev. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -569,7 +569,7 @@
             <td>
                 <details>
                     <summary> Restores a site item from the platform.rebuild.backup.destination to the new build. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -578,7 +578,7 @@
             <td>
                 <details>
                     <summary> Set up Behat. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -587,7 +587,7 @@
             <td>
                 <details>
                     <summary> Symlink the Behat bin and test directory in the subsite folder. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -596,7 +596,7 @@
             <td>
                 <details>
                     <summary> Set up PHP CodeSniffer. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -605,7 +605,7 @@
             <td>
                 <details>
                     <summary> Setup the PHP CodeSniffer pre-push hook. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -614,7 +614,7 @@
             <td>
                 <details>
                     <summary> Do quality assurance checks. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -623,7 +623,7 @@
             <td>
                 <details>
                     <summary> Do quality assurance checks. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
@@ -632,7 +632,7 @@
             <td>
                 <details>
                     <summary> Make the given folder writeable. </summary>
-                    > - dependencies: 
+> - dependencies: 
                 </details>
             </td>
         </tr>
