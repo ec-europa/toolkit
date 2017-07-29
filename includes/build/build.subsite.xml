@@ -45,7 +45,7 @@
     <!-- Backs up files and folders listed in platform.rebuild properties in order to rebuild. -->
     <target name="subsite-site-backup">
 
-    <!-- Check if site exists. -->
+        <!-- Check if site exists. -->
         <if>
             <available file="${platform.build.settings.dir}/settings.php" type="file"/>
             <then>
@@ -55,6 +55,7 @@
                 <echo msg="No site installation detected. Skipping backup." />
             </else>
         </if>
+
         <if>
             <and>
                 <equals arg1="${platform.rebuild.auto}" arg2="0"/>
@@ -72,7 +73,10 @@
             </then>
         </if>
         <if>
-            <equals arg1="${platform.rebuild.auto}" arg2="1"/>
+            <and>
+                <equals arg1="${platform.rebuild.auto}" arg2="1"/>
+                <equals arg1="${site-detected}" arg2="1"/>
+            </and>
             <then>
                 <if>
                     <!-- Delete any remains of previous backup attempts. -->
@@ -135,7 +139,10 @@
             </then>
         </if>
         <if>
-            <equals arg1="${platform.rebuild.auto}" arg2="1"/>
+            <and>
+                <equals arg1="${platform.rebuild.auto}" arg2="1"/>
+                <equals arg1="${backup-detected}" arg2="1"/>
+            </and>
             <then>
                 <echo msg="Restoring site files and folders from ${platform.rebuild.backup.destination}"/>
                 <!-- Restore folders list. -->

@@ -57,4 +57,9 @@
         <move file="${subsite.resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
     </target>
 
+    <!-- Build documentation index. -->
+    <target name="starterkit-build-documentation-index">
+        <build-documentation-index />        
+    </target>
+
 </project>
