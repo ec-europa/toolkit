@@ -94,7 +94,7 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>phing.subsite.build.dir</li>
+                                <li> [phing.subsite.build.dir](/build.properties.dist#L163) </li>
                                 <li>project.release.name</li>
                                 <li>project.release.path</li>
                             </ul></li>
@@ -128,7 +128,7 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>docker.project.id</li>
+                                <li> [docker.project.id](/build.properties.dist#L389) </li>
                                 <li>project.basedir</li>
                                 <li>subsite.starterkit.root</li>
                             </ul></li>
@@ -146,7 +146,7 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>docker.project.id</li>
+                                <li> [docker.project.id](/build.properties.dist#L389) </li>
                                 <li>project.basedir</li>
                                 <li>subsite.starterkit.root</li>
                             </ul></li>
@@ -164,11 +164,11 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>docker.project.id</li>
-                                <li>platform.build.dir</li>
-                                <li>platform.package.reference</li>
+                                <li> [docker.project.id](/build.properties.dist#L389) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
+                                <li> [platform.package.reference](/build.properties.dist#L128) </li>
                                 <li>project.basedir</li>
-                                <li>share.platform.path</li>
+                                <li> [share.platform.path](/build.properties.dist#L380) </li>
                                 <li>subsite.starterkit.root</li>
                             </ul></li>
                         </ul>
@@ -185,12 +185,12 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drush.bin</li>
-                                <li>platform.build.dir</li>
-                                <li>platform.build.settings.dir</li>
-                                <li>platform.package.database</li>
-                                <li>platform.package.reference</li>
-                                <li>share.platform.path</li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
+                                <li> [platform.build.settings.dir](/build.properties.dist#L184) </li>
+                                <li> [platform.package.database](/build.properties.dist#L140) </li>
+                                <li> [platform.package.reference](/build.properties.dist#L128) </li>
+                                <li> [share.platform.path](/build.properties.dist#L380) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -206,8 +206,8 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.build.dir</li>
-                                <li>server.docroot</li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
+                                <li> [server.docroot](/build.properties.dist#L322) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -223,11 +223,11 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>behat.bin</li>
-                                <li>behat.options.passthru</li>
-                                <li>behat.options.strict</li>
-                                <li>behat.options.verbosity</li>
-                                <li>behat.yml.path</li>
+                                <li> [behat.bin](/build.properties.dist#L233) </li>
+                                <li> [behat.options.passthru](/build.properties.dist#L262) </li>
+                                <li> [behat.options.strict](/build.properties.dist#L255) </li>
+                                <li> [behat.options.verbosity](/build.properties.dist#L259) </li>
+                                <li> [behat.yml.path](/build.properties.dist#L242) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -304,7 +304,7 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.build.settings.dir</li>
+                                <li> [platform.build.settings.dir](/build.properties.dist#L184) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -329,7 +329,7 @@
                             <li><p>Properties</p>
                             <ul>
                                 <li>copy.destination.path</li>
-                                <li>copy.path.haltonerror</li>
+                                <li> [copy.path.haltonerror](/build.properties.dist#L370) </li>
                                 <li>copy.source.path</li>
                             </ul></li>
                         </ul>
@@ -346,8 +346,8 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.package.cachedir</li>
-                                <li>platform.package.destination</li>
+                                <li> [platform.package.cachedir](/build.properties.dist#L137) </li>
+                                <li> [platform.package.destination](/build.properties.dist#L143) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -380,8 +380,8 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>composer.bin</li>
-                                <li>dist.build.dir</li>
+                                <li> [composer.bin](/build.properties.dist#L157) </li>
+                                <li> [dist.build.dir](/build.properties.dist#L165) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -397,17 +397,17 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>dist.build.dir</li>
-                                <li>dist.build.modules.custom.dir</li>
-                                <li>dist.build.modules.features.dir</li>
-                                <li>dist.build.source.dir</li>
-                                <li>dist.build.themes.dir</li>
-                                <li>subsite.resources.composer.json</li>
-                                <li>subsite.resources.composer.lock</li>
-                                <li>subsite.resources.features.dir</li>
-                                <li>subsite.resources.modules.dir</li>
-                                <li>subsite.resources.source.dir</li>
-                                <li>subsite.resources.themes.dir</li>
+                                <li> [dist.build.dir](/build.properties.dist#L165) </li>
+                                <li> [dist.build.modules.custom.dir](/build.properties.dist#L205) </li>
+                                <li> [dist.build.modules.features.dir](/build.properties.dist#L206) </li>
+                                <li> [dist.build.source.dir](/build.properties.dist#L207) </li>
+                                <li> [dist.build.themes.dir](/build.properties.dist#L208) </li>
+                                <li> [subsite.resources.composer.json](/build.properties.dist#L177) </li>
+                                <li> [subsite.resources.composer.lock](/build.properties.dist#L178) </li>
+                                <li> [subsite.resources.features.dir](/build.properties.dist#L173) </li>
+                                <li> [subsite.resources.modules.dir](/build.properties.dist#L174) </li>
+                                <li> [subsite.resources.source.dir](/build.properties.dist#L175) </li>
+                                <li> [subsite.resources.themes.dir](/build.properties.dist#L176) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -423,7 +423,7 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>dist.build.dir</li>
+                                <li> [dist.build.dir](/build.properties.dist#L165) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -439,7 +439,7 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>dist.build.dir</li>
+                                <li> [dist.build.dir](/build.properties.dist#L165) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -455,11 +455,11 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drupal.db.name</li>
-                                <li>drush.bin</li>
-                                <li>drush.color</li>
-                                <li>drush.verbose</li>
-                                <li>platform.build.dir</li>
+                                <li> [drupal.db.name](/build.properties.dist#L82) </li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [drush.color](/build.properties.dist#L332) </li>
+                                <li> [drush.verbose](/build.properties.dist#L329) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
                                 <li>subsite.starterkit.root</li>
                             </ul></li>
                         </ul>
@@ -476,7 +476,7 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drush.bin</li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -493,10 +493,10 @@
                             <li><p>Properties</p>
                             <ul>
                                 <li>drupal.modules</li>
-                                <li>drush.bin</li>
-                                <li>drush.color</li>
-                                <li>drush.verbose</li>
-                                <li>platform.build.dir</li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [drush.color](/build.properties.dist#L332) </li>
+                                <li> [drush.verbose](/build.properties.dist#L329) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -512,13 +512,13 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drupal.db.name</li>
-                                <li>drupal.solr.activate</li>
-                                <li>drupal.solr.env.url</li>
-                                <li>drush.bin</li>
-                                <li>drush.color</li>
-                                <li>drush.verbose</li>
-                                <li>platform.build.dir</li>
+                                <li> [drupal.db.name](/build.properties.dist#L82) </li>
+                                <li> [drupal.solr.activate](/build.properties.dist#L90) </li>
+                                <li> [drupal.solr.env.url](/build.properties.dist#L91) </li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [drush.color](/build.properties.dist#L332) </li>
+                                <li> [drush.verbose](/build.properties.dist#L329) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -534,11 +534,11 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drush.bin</li>
-                                <li>drush.color</li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [drush.color](/build.properties.dist#L332) </li>
                                 <li>drush.make.root</li>
                                 <li>drush.make.target.file</li>
-                                <li>drush.verbose</li>
+                                <li> [drush.verbose](/build.properties.dist#L329) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -554,10 +554,10 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drush.bin</li>
-                                <li>drush.color</li>
-                                <li>drush.verbose</li>
-                                <li>platform.build.dir</li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [drush.color](/build.properties.dist#L332) </li>
+                                <li> [drush.verbose](/build.properties.dist#L329) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -581,18 +581,18 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drupal.db.host</li>
-                                <li>drupal.db.name</li>
-                                <li>drupal.db.password</li>
-                                <li>drupal.db.port</li>
-                                <li>drupal.db.type</li>
-                                <li>drupal.db.user</li>
-                                <li>drush.bin</li>
-                                <li>drush.color</li>
-                                <li>drush.verbose</li>
-                                <li>platform.build.dir</li>
-                                <li>platform.build.files.dir</li>
-                                <li>platform.build.tmp.dir</li>
+                                <li> [drupal.db.host](/build.properties.dist#L85) </li>
+                                <li> [drupal.db.name](/build.properties.dist#L82) </li>
+                                <li> [drupal.db.password](/build.properties.dist#L84) </li>
+                                <li> [drupal.db.port](/build.properties.dist#L86) </li>
+                                <li> [drupal.db.type](/build.properties.dist#L81) </li>
+                                <li> [drupal.db.user](/build.properties.dist#L83) </li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [drush.color](/build.properties.dist#L332) </li>
+                                <li> [drush.verbose](/build.properties.dist#L329) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
+                                <li> [platform.build.files.dir](/build.properties.dist#L185) </li>
+                                <li> [platform.build.tmp.dir](/build.properties.dist#L186) </li>
                                 <li>subsite.starterkit.root</li>
                             </ul></li>
                         </ul>
@@ -609,9 +609,9 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drush.bin</li>
-                                <li>drush.verbose</li>
-                                <li>platform.build.dir</li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [drush.verbose](/build.properties.dist#L329) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -627,16 +627,16 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drupal.admin.email</li>
-                                <li>drupal.admin.password</li>
-                                <li>drupal.admin.username</li>
-                                <li>drupal.db.url</li>
-                                <li>drush.bin</li>
-                                <li>drush.color</li>
-                                <li>drush.verbose</li>
-                                <li>platform.build.dir</li>
-                                <li>platform.profile.name</li>
-                                <li>subsite.name</li>
+                                <li> [drupal.admin.email](/build.properties.dist#L96) </li>
+                                <li> [drupal.admin.password](/build.properties.dist#L95) </li>
+                                <li> [drupal.admin.username](/build.properties.dist#L94) </li>
+                                <li> [drupal.db.url](/build.properties.dist#L87) </li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [drush.color](/build.properties.dist#L332) </li>
+                                <li> [drush.verbose](/build.properties.dist#L329) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
+                                <li> [platform.profile.name](/build.properties.dist#L120) </li>
+                                <li> [subsite.name](/build.properties.dist#L4) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -652,12 +652,12 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drupal.db.name</li>
-                                <li>drupal.db.url</li>
-                                <li>drush.bin</li>
-                                <li>drush.color</li>
-                                <li>drush.verbose</li>
-                                <li>platform.build.dir</li>
+                                <li> [drupal.db.name](/build.properties.dist#L82) </li>
+                                <li> [drupal.db.url](/build.properties.dist#L87) </li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [drush.color](/build.properties.dist#L332) </li>
+                                <li> [drush.verbose](/build.properties.dist#L329) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -673,12 +673,12 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drupal.db.name</li>
-                                <li>drupal.db.url</li>
-                                <li>drush.bin</li>
-                                <li>drush.color</li>
-                                <li>drush.verbose</li>
-                                <li>platform.build.dir</li>
+                                <li> [drupal.db.name](/build.properties.dist#L82) </li>
+                                <li> [drupal.db.url](/build.properties.dist#L87) </li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [drush.color](/build.properties.dist#L332) </li>
+                                <li> [drush.verbose](/build.properties.dist#L329) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -694,11 +694,11 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drupal.db.name</li>
-                                <li>drush.bin</li>
-                                <li>drush.color</li>
-                                <li>drush.verbose</li>
-                                <li>platform.build.dir</li>
+                                <li> [drupal.db.name](/build.properties.dist#L82) </li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [drush.color](/build.properties.dist#L332) </li>
+                                <li> [drush.verbose](/build.properties.dist#L329) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -714,10 +714,10 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drush.bin</li>
-                                <li>drush.color</li>
-                                <li>drush.verbose</li>
-                                <li>platform.build.dir</li>
+                                <li> [drush.bin](/build.properties.dist#L158) </li>
+                                <li> [drush.color](/build.properties.dist#L332) </li>
+                                <li> [drush.verbose](/build.properties.dist#L329) </li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -733,7 +733,7 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>composer.bin</li>
+                                <li> [composer.bin](/build.properties.dist#L157) </li>
                                 <li>project.basedir</li>
                             </ul></li>
                         </ul>
@@ -750,8 +750,8 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.build.dir</li>
-                                <li>platform.build.settings.dir</li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
+                                <li> [platform.build.settings.dir](/build.properties.dist#L184) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -767,8 +767,8 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.package.cachedir</li>
-                                <li>platform.package.reference</li>
+                                <li> [platform.package.cachedir](/build.properties.dist#L137) </li>
+                                <li> [platform.package.reference](/build.properties.dist#L128) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -784,18 +784,18 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.build.subsite.composer.json</li>
-                                <li>platform.build.subsite.composer.lock</li>
-                                <li>platform.build.subsite.modules.custom.dir</li>
-                                <li>platform.build.subsite.modules.features.dir</li>
-                                <li>platform.build.subsite.source.dir</li>
-                                <li>platform.build.subsite.themes.dir</li>
-                                <li>subsite.resources.composer.json</li>
-                                <li>subsite.resources.composer.lock</li>
-                                <li>subsite.resources.features.dir</li>
-                                <li>subsite.resources.modules.dir</li>
-                                <li>subsite.resources.source.dir</li>
-                                <li>subsite.resources.themes.dir</li>
+                                <li> [platform.build.subsite.composer.json](/build.properties.dist#L200) </li>
+                                <li> [platform.build.subsite.composer.lock](/build.properties.dist#L201) </li>
+                                <li> [platform.build.subsite.modules.custom.dir](/build.properties.dist#L196) </li>
+                                <li> [platform.build.subsite.modules.features.dir](/build.properties.dist#L197) </li>
+                                <li> [platform.build.subsite.source.dir](/build.properties.dist#L198) </li>
+                                <li> [platform.build.subsite.themes.dir](/build.properties.dist#L199) </li>
+                                <li> [subsite.resources.composer.json](/build.properties.dist#L177) </li>
+                                <li> [subsite.resources.composer.lock](/build.properties.dist#L178) </li>
+                                <li> [subsite.resources.features.dir](/build.properties.dist#L173) </li>
+                                <li> [subsite.resources.modules.dir](/build.properties.dist#L174) </li>
+                                <li> [subsite.resources.source.dir](/build.properties.dist#L175) </li>
+                                <li> [subsite.resources.themes.dir](/build.properties.dist#L176) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -819,8 +819,8 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.build.dir</li>
-                                <li>subsite.make</li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
+                                <li> [subsite.make](/build.properties.dist#L10) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -844,9 +844,9 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.build.dir</li>
-                                <li>platform.package.cachedir</li>
-                                <li>platform.package.reference</li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
+                                <li> [platform.package.cachedir](/build.properties.dist#L137) </li>
+                                <li> [platform.package.reference](/build.properties.dist#L128) </li>
                                 <li>project.basedir</li>
                             </ul></li>
                         </ul>
@@ -863,8 +863,8 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>drupal.htaccess.append.text</li>
-                                <li>drupal.htaccess.path</li>
+                                <li> [drupal.htaccess.append.text](/build.properties.dist#L102) </li>
+                                <li> [drupal.htaccess.path](/build.properties.dist#L99) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -897,7 +897,7 @@
                             <li><p>Properties</p>
                             <ul>
                                 <li>project.basedir</li>
-                                <li>subsite.starterkit.templates</li>
+                                <li> [subsite.starterkit.templates](/build.properties.dist#L49) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -914,7 +914,7 @@
                             <li><p>Properties</p>
                             <ul>
                                 <li>project.basedir</li>
-                                <li>subsite.starterkit.bin</li>
+                                <li> [subsite.starterkit.bin](/build.properties.dist#L52) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -931,7 +931,7 @@
                             <li><p>Properties</p>
                             <ul>
                                 <li>project.basedir</li>
-                                <li>subsite.resources.dir</li>
+                                <li> [subsite.resources.dir](/build.properties.dist#L171) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -947,8 +947,8 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>composer.bin</li>
-                                <li>platform.build.subsite.dir</li>
+                                <li> [composer.bin](/build.properties.dist#L157) </li>
+                                <li> [platform.build.subsite.dir](/build.properties.dist#L192) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1035,8 +1035,8 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.build.dir</li>
-                                <li>subsite.temporary.development.make</li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
+                                <li> [subsite.temporary.development.make](/build.properties.dist#L181) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1052,7 +1052,7 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>development.modules.enable</li>
+                                <li> [development.modules.enable](/build.properties.dist#L62) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1068,10 +1068,10 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>development.modules.download</li>
-                                <li>development.modules.location</li>
-                                <li>drupal.core.version</li>
-                                <li>subsite.temporary.development.make</li>
+                                <li> [development.modules.download](/build.properties.dist#L59) </li>
+                                <li> [development.modules.location](/build.properties.dist#L65) </li>
+                                <li> [drupal.core.version](/build.properties.dist#L108) </li>
+                                <li> [subsite.temporary.development.make](/build.properties.dist#L181) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1087,7 +1087,7 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>subsite.install.modules</li>
+                                <li> [subsite.install.modules](/build.properties.dist#L13) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1103,8 +1103,8 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.build.files.dir</li>
-                                <li>platform.build.tmp.dir</li>
+                                <li> [platform.build.files.dir](/build.properties.dist#L185) </li>
+                                <li> [platform.build.tmp.dir](/build.properties.dist#L186) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1120,11 +1120,11 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.build.settings.dir</li>
-                                <li>platform.rebuild.auto</li>
-                                <li>platform.rebuild.backup.destination</li>
-                                <li>platform.rebuild.backup.files</li>
-                                <li>platform.rebuild.backup.folders</li>
+                                <li> [platform.build.settings.dir](/build.properties.dist#L184) </li>
+                                <li> [platform.rebuild.auto](/build.properties.dist#L217) </li>
+                                <li> [platform.rebuild.backup.destination](/build.properties.dist#L220) </li>
+                                <li> [platform.rebuild.backup.files](/build.properties.dist#L226) </li>
+                                <li> [platform.rebuild.backup.folders](/build.properties.dist#L223) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1140,8 +1140,8 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.build.dir</li>
-                                <li>platform.rebuild.backup.destination</li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
+                                <li> [platform.rebuild.backup.destination](/build.properties.dist#L220) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1157,10 +1157,10 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.rebuild.auto</li>
-                                <li>platform.rebuild.backup.destination</li>
-                                <li>platform.rebuild.backup.files</li>
-                                <li>platform.rebuild.backup.folders</li>
+                                <li> [platform.rebuild.auto](/build.properties.dist#L217) </li>
+                                <li> [platform.rebuild.backup.destination](/build.properties.dist#L220) </li>
+                                <li> [platform.rebuild.backup.files](/build.properties.dist#L226) </li>
+                                <li> [platform.rebuild.backup.folders](/build.properties.dist#L223) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1176,8 +1176,8 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.build.dir</li>
-                                <li>platform.rebuild.backup.destination</li>
+                                <li> [platform.build.dir](/build.properties.dist#L116) </li>
+                                <li> [platform.rebuild.backup.destination](/build.properties.dist#L220) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1193,10 +1193,10 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>behat.formatter.name</li>
+                                <li> [behat.formatter.name](/build.properties.dist#L251) </li>
                                 <li>behat.yml.content</li>
-                                <li>behat.yml.path</li>
-                                <li>behat.yml.template</li>
+                                <li> [behat.yml.path](/build.properties.dist#L242) </li>
+                                <li> [behat.yml.template](/build.properties.dist#L239) </li>
                                 <li>drupal.site.dir</li>
                                 <li>project.code.dir</li>
                             </ul></li>
@@ -1214,9 +1214,9 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>platform.build.subsite.dir</li>
+                                <li> [platform.build.subsite.dir](/build.properties.dist#L192) </li>
                                 <li>project.basedir</li>
-                                <li>subsite.starterkit.vendor</li>
+                                <li> [subsite.starterkit.vendor](/build.properties.dist#L51) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1232,16 +1232,16 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>phpcs.config</li>
-                                <li>phpcs.extensions</li>
-                                <li>phpcs.files</li>
-                                <li>phpcs.global.config</li>
-                                <li>phpcs.ignore</li>
-                                <li>phpcs.passwarnings</li>
-                                <li>phpcs.progress</li>
-                                <li>phpcs.report</li>
-                                <li>phpcs.sniffcodes</li>
-                                <li>phpcs.standards</li>
+                                <li> [phpcs.config](/build.properties.dist#L275) </li>
+                                <li> [phpcs.extensions](/build.properties.dist#L272) </li>
+                                <li> [phpcs.files](/build.properties.dist#L281) </li>
+                                <li> [phpcs.global.config](/build.properties.dist#L299) </li>
+                                <li> [phpcs.ignore](/build.properties.dist#L284) </li>
+                                <li> [phpcs.passwarnings](/build.properties.dist#L287) </li>
+                                <li> [phpcs.progress](/build.properties.dist#L296) </li>
+                                <li> [phpcs.report](/build.properties.dist#L290) </li>
+                                <li> [phpcs.sniffcodes](/build.properties.dist#L293) </li>
+                                <li> [phpcs.standards](/build.properties.dist#L278) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1257,9 +1257,9 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>phpcs.prepush.destination</li>
-                                <li>phpcs.prepush.enable</li>
-                                <li>phpcs.prepush.source</li>
+                                <li> [phpcs.prepush.destination](/build.properties.dist#L307) </li>
+                                <li> [phpcs.prepush.enable](/build.properties.dist#L303) </li>
+                                <li> [phpcs.prepush.source](/build.properties.dist#L306) </li>
                                 <li>project.basedir</li>
                             </ul></li>
                         </ul>
@@ -1276,7 +1276,7 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>subsite.starterkit.bin</li>
+                                <li> [subsite.starterkit.bin](/build.properties.dist#L52) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1292,7 +1292,7 @@
                         <ul>
                             <li><p>Properties</p>
                             <ul>
-                                <li>subsite.starterkit.bin</li>
+                                <li> [subsite.starterkit.bin](/build.properties.dist#L52) </li>
                             </ul></li>
                         </ul>
                     </sub>
