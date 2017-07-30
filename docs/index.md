@@ -283,109 +283,6 @@
     </thead>
     <tbody>
         <tr align="left" valign="top">
-            <td nowrap> [build-dev](/includes/build/build.deprecated.xml#L5)</td>
-            <td width="100%">
-                <details>
-                    <summary> Target build-dev has been replaced by build-code. </summary>
-                </details>
-            </td>
-        </tr>
-        <tr align="left" valign="top">
-            <td nowrap> [build-dist](/includes/build/build.package.xml#L100)</td>
-            <td width="100%">
-                <details>
-                    <summary> Create distribution code base. </summary>
-                    <sub>
-                        <ul>
-                            <li><p>Dependencies</p>
-                            <ul>
-                                <li>[dist-delete](/includes/build/build.dist.xml#L50)</li>
-                                <li>[dist-make](/includes/build/build.dist.xml#L58)</li>
-                                <li>[dist-copy-resources](/includes/build/build.dist.xml#L18)</li>
-                                <li>[dist-composer-install](/includes/build/build.dist.xml#L5)</li>
-                            </ul></li>
-                        </ul>
-                    </sub>
-                </details>
-            </td>
-        </tr>
-        <tr align="left" valign="top">
-            <td nowrap> [check-for-default-settings-or-rebuild](/includes/build/build.clone.xml#L88)</td>
-            <td width="100%">
-                <details>
-                    <summary> Target to check if we have default settings, otherwise propose user to rebuild. </summary>
-                    <sub>
-                        <ul>
-                            <li><p>Properties</p>
-                            <ul>
-                                <li> [platform.build.settings.dir](/build.properties.dist#L185) </li>
-                            </ul></li>
-                        </ul>
-                    </sub>
-                </details>
-            </td>
-        </tr>
-        <tr align="left" valign="top">
-            <td nowrap> [composer-echo-hook-phingcalls](/includes/build/build.composer.xml#L5)</td>
-            <td width="100%">
-                <details>
-                    <summary> Echo the composer hook phingcalls. </summary>
-                </details>
-            </td>
-        </tr>
-        <tr align="left" valign="top">
-            <td nowrap> [copy-folder](/includes/build/build.helpers.xml#L5)</td>
-            <td width="100%">
-                <details>
-                    <summary> Copies a given folder to a new location. </summary>
-                    <sub>
-                        <ul>
-                            <li><p>Properties</p>
-                            <ul>
-                                <li>copy.destination.path</li>
-                                <li> [copy.path.haltonerror](/build.properties.dist#L371) </li>
-                                <li>copy.source.path</li>
-                            </ul></li>
-                        </ul>
-                    </sub>
-                </details>
-            </td>
-        </tr>
-        <tr align="left" valign="top">
-            <td nowrap> [create-tmp-dirs](/includes/build/build.package.xml#L35)</td>
-            <td width="100%">
-                <details>
-                    <summary> Create temp dirs. </summary>
-                    <sub>
-                        <ul>
-                            <li><p>Properties</p>
-                            <ul>
-                                <li> [platform.package.cachedir](/build.properties.dist#L138) </li>
-                                <li> [platform.package.destination](/build.properties.dist#L144) </li>
-                            </ul></li>
-                        </ul>
-                    </sub>
-                </details>
-            </td>
-        </tr>
-        <tr align="left" valign="top">
-            <td nowrap> [delete-folder](/includes/build/build.helpers.xml#L12)</td>
-            <td width="100%">
-                <details>
-                    <summary> Delete a given folder. </summary>
-                    <sub>
-                        <ul>
-                            <li><p>Properties</p>
-                            <ul>
-                                <li>folder.to.delete</li>
-                                <li>project.basedir</li>
-                            </ul></li>
-                        </ul>
-                    </sub>
-                </details>
-            </td>
-        </tr>
-        <tr align="left" valign="top">
             <td nowrap> [dist-composer-install](/includes/build/build.dist.xml#L5)</td>
             <td width="100%">
                 <details>
@@ -491,26 +388,6 @@
                             <li><p>Properties</p>
                             <ul>
                                 <li> [drush.bin](/build.properties.dist#L159) </li>
-                            </ul></li>
-                        </ul>
-                    </sub>
-                </details>
-            </td>
-        </tr>
-        <tr align="left" valign="top">
-            <td nowrap> [drush-enable-modules](/includes/build/build.drush.xml#L19)</td>
-            <td width="100%">
-                <details>
-                    <summary> Enable modules. </summary>
-                    <sub>
-                        <ul>
-                            <li><p>Properties</p>
-                            <ul>
-                                <li>drupal.modules</li>
-                                <li> [drush.bin](/build.properties.dist#L159) </li>
-                                <li> [drush.color](/build.properties.dist#L333) </li>
-                                <li> [drush.verbose](/build.properties.dist#L330) </li>
-                                <li> [platform.build.dir](/build.properties.dist#L117) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -886,14 +763,6 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap> [prompt-for-credentials-and-retry](/includes/build/build.clone.xml#L81)</td>
-            <td width="100%">
-                <details>
-                    <summary> Simple prompt for user credentials and recurse into subsite-database-wget. </summary>
-                </details>
-            </td>
-        </tr>
-        <tr align="left" valign="top">
             <td nowrap> [starterkit-build-documentation](/includes/build/build.starterkit.xml#L60)</td>
             <td width="100%">
                 <details>
@@ -1146,23 +1015,6 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap> [subsite-site-backup-item](/includes/build/build.subsite.xml#L162)</td>
-            <td width="100%">
-                <details>
-                    <summary> Backs up a site item from the platform that will be removed in order to rebuild. </summary>
-                    <sub>
-                        <ul>
-                            <li><p>Properties</p>
-                            <ul>
-                                <li> [platform.build.dir](/build.properties.dist#L117) </li>
-                                <li> [platform.rebuild.backup.destination](/build.properties.dist#L221) </li>
-                            </ul></li>
-                        </ul>
-                    </sub>
-                </details>
-            </td>
-        </tr>
-        <tr align="left" valign="top">
             <td nowrap> [subsite-site-restore](/includes/build/build.subsite.xml#L112)</td>
             <td width="100%">
                 <details>
@@ -1175,23 +1027,6 @@
                                 <li> [platform.rebuild.backup.destination](/build.properties.dist#L221) </li>
                                 <li> [platform.rebuild.backup.files](/build.properties.dist#L227) </li>
                                 <li> [platform.rebuild.backup.folders](/build.properties.dist#L224) </li>
-                            </ul></li>
-                        </ul>
-                    </sub>
-                </details>
-            </td>
-        </tr>
-        <tr align="left" valign="top">
-            <td nowrap> [subsite-site-restore-item](/includes/build/build.subsite.xml#L192)</td>
-            <td width="100%">
-                <details>
-                    <summary> Restores a site item from the platform.rebuild.backup.destination to the new build. </summary>
-                    <sub>
-                        <ul>
-                            <li><p>Properties</p>
-                            <ul>
-                                <li> [platform.build.dir](/build.properties.dist#L117) </li>
-                                <li> [platform.rebuild.backup.destination](/build.properties.dist#L221) </li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1307,22 +1142,6 @@
                             <li><p>Properties</p>
                             <ul>
                                 <li> [subsite.starterkit.bin](/build.properties.dist#L53) </li>
-                            </ul></li>
-                        </ul>
-                    </sub>
-                </details>
-            </td>
-        </tr>
-        <tr align="left" valign="top">
-            <td nowrap> [unprotect-folder](/includes/build/build.helpers.xml#L32)</td>
-            <td width="100%">
-                <details>
-                    <summary> Make the given folder writeable. </summary>
-                    <sub>
-                        <ul>
-                            <li><p>Properties</p>
-                            <ul>
-                                <li>folder.to.unprotect</li>
                             </ul></li>
                         </ul>
                     </sub>
