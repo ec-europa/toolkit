@@ -1,5 +1,5 @@
 <big>
-    <details><summary><sub<h3>Dependencies</h3></sub></summary>
+    <details><summary><sub><h3>Dependencies</h3></sub></summary>
         <sub><ul>
             <li>[drush-create-files-dirs](/includes/build/build.drush.xml#L32)</li>
             <li>[install](/includes/build/build.test.xml#L5)</li>
