@@ -1,5 +1,4 @@
-## Main Targets
-<big><table>
+## Table<big><table width="100%">
     <thead>
         <tr align="left" valign="top">
             <th>Command</th>
@@ -8,8 +7,8 @@
     </thead>
     <tbody>
         <tr align="left" valign="top">
-            <td> [build-clean](/includes/build/build.test.xml#L193)</td>
-            <td>
+            <td nowrap> [build-clean](/includes/build/build.test.xml#L193)</td>
+            <td width="100%">
                 <details>
                     <summary>Build local version of subsite with a clean install.</summary>
                     <sub>
@@ -26,8 +25,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [build-clone](/includes/build/build.clone.xml#L118)</td>
-            <td>
+            <td nowrap> [build-clone](/includes/build/build.clone.xml#L118)</td>
+            <td width="100%">
                 <details>
                     <summary>Build local version of subsite with production data.</summary>
                     <sub>
@@ -45,8 +44,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [build-code](/includes/build/build.package.xml#L74)</td>
-            <td>
+            <td nowrap> [build-code](/includes/build/build.package.xml#L74)</td>
+            <td width="100%">
                 <details>
                     <summary>Build local version of subsite without install.</summary>
                     <sub>
@@ -71,16 +70,16 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [build-keep](/includes/build/build.package.xml#L92)</td>
-            <td>
+            <td nowrap> [build-keep](/includes/build/build.package.xml#L92)</td>
+            <td width="100%">
                 <details>
                     <summary>Build local version of subsite with backup and restore.</summary>
                 </details>
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [build-release](/includes/build/build.package.xml#L63)</td>
-            <td>
+            <td nowrap> [build-release](/includes/build/build.package.xml#L63)</td>
+            <td width="100%">
                 <details>
                     <summary>Build subsite source code release package.</summary>
                     <sub>
@@ -105,8 +104,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [build-tests](/includes/build/build.package.xml#L69)</td>
-            <td>
+            <td nowrap> [build-tests](/includes/build/build.package.xml#L69)</td>
+            <td width="100%">
                 <details>
                     <summary>Build subsite tests code release package.</summary>
                     <sub>
@@ -121,8 +120,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [docker-compose-down](/includes/build/build.docker.xml#L22)</td>
-            <td>
+            <td nowrap> [docker-compose-down](/includes/build/build.docker.xml#L22)</td>
+            <td width="100%">
                 <details>
                     <summary>Trash docker project.</summary>
                     <sub>
@@ -139,8 +138,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [docker-compose-stop](/includes/build/build.docker.xml#L15)</td>
-            <td>
+            <td nowrap> [docker-compose-stop](/includes/build/build.docker.xml#L15)</td>
+            <td width="100%">
                 <details>
                     <summary>Stop docker project.</summary>
                     <sub>
@@ -157,8 +156,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [docker-compose-up](/includes/build/build.docker.xml#L5)</td>
-            <td>
+            <td nowrap> [docker-compose-up](/includes/build/build.docker.xml#L5)</td>
+            <td width="100%">
                 <details>
                     <summary>Start docker project.</summary>
                     <sub>
@@ -178,8 +177,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [install](/includes/build/build.test.xml#L5)</td>
-            <td>
+            <td nowrap> [install](/includes/build/build.test.xml#L5)</td>
+            <td width="100%">
                 <details>
                     <summary>Install the subsite.</summary>
                     <sub>
@@ -199,8 +198,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [link-docroot](/includes/build/build.package.xml#L28)</td>
-            <td>
+            <td nowrap> [link-docroot](/includes/build/build.package.xml#L28)</td>
+            <td width="100%">
                 <details>
                     <summary>Create symlink from build to docroot.</summary>
                     <sub>
@@ -216,8 +215,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [test-run-behat](/includes/build/build.test.xml#L150)</td>
-            <td>
+            <td nowrap> [test-run-behat](/includes/build/build.test.xml#L150)</td>
+            <td width="100%">
                 <details>
                     <summary>Refresh configuration and run behat tests.</summary>
                     <sub>
@@ -236,8 +235,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [test-run-phpcs](/includes/build/build.test.xml#L186)</td>
-            <td>
+            <td nowrap> [test-run-phpcs](/includes/build/build.test.xml#L186)</td>
+            <td width="100%">
                 <details>
                     <summary>Refresh configuration and run phpcs review.</summary>
                     <sub>
@@ -253,8 +252,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [test-run-qa](/includes/build/build.test.xml#L179)</td>
-            <td>
+            <td nowrap> [test-run-qa](/includes/build/build.test.xml#L179)</td>
+            <td width="100%">
                 <details>
                     <summary>Refresh configuration and run qa review.</summary>
                     <sub>
@@ -271,9 +270,7 @@
         </tr>
     </tbody>
 </table>
-
-## Subtargets
-<big><table>
+## Table<big><table width="100%">
     <thead>
         <tr align="left" valign="top">
             <th>Command</th>
@@ -282,16 +279,16 @@
     </thead>
     <tbody>
         <tr align="left" valign="top">
-            <td> [build-dev](/includes/build/build.deprecated.xml#L5)</td>
-            <td>
+            <td nowrap> [build-dev](/includes/build/build.deprecated.xml#L5)</td>
+            <td width="100%">
                 <details>
                     <summary> Target build-dev has been replaced by build-code. </summary>
                 </details>
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [build-dist](/includes/build/build.package.xml#L100)</td>
-            <td>
+            <td nowrap> [build-dist](/includes/build/build.package.xml#L100)</td>
+            <td width="100%">
                 <details>
                     <summary> Create distribution code base. </summary>
                     <sub>
@@ -309,8 +306,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [check-for-default-settings-or-rebuild](/includes/build/build.clone.xml#L88)</td>
-            <td>
+            <td nowrap> [check-for-default-settings-or-rebuild](/includes/build/build.clone.xml#L88)</td>
+            <td width="100%">
                 <details>
                     <summary> Target to check if we have default settings, otherwise propose user to rebuild. </summary>
                     <sub>
@@ -325,16 +322,16 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [composer-echo-hook-phingcalls](/includes/build/build.composer.xml#L5)</td>
-            <td>
+            <td nowrap> [composer-echo-hook-phingcalls](/includes/build/build.composer.xml#L5)</td>
+            <td width="100%">
                 <details>
                     <summary> Echo the composer hook phingcalls. </summary>
                 </details>
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [copy-folder](/includes/build/build.helpers.xml#L5)</td>
-            <td>
+            <td nowrap> [copy-folder](/includes/build/build.helpers.xml#L5)</td>
+            <td width="100%">
                 <details>
                     <summary> Copies a given folder to a new location. </summary>
                     <sub>
@@ -351,8 +348,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [create-tmp-dirs](/includes/build/build.package.xml#L35)</td>
-            <td>
+            <td nowrap> [create-tmp-dirs](/includes/build/build.package.xml#L35)</td>
+            <td width="100%">
                 <details>
                     <summary> Create temp dirs. </summary>
                     <sub>
@@ -368,8 +365,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [delete-folder](/includes/build/build.helpers.xml#L12)</td>
-            <td>
+            <td nowrap> [delete-folder](/includes/build/build.helpers.xml#L12)</td>
+            <td width="100%">
                 <details>
                     <summary> Delete a given folder. </summary>
                     <sub>
@@ -385,8 +382,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [dist-composer-install](/includes/build/build.dist.xml#L5)</td>
-            <td>
+            <td nowrap> [dist-composer-install](/includes/build/build.dist.xml#L5)</td>
+            <td width="100%">
                 <details>
                     <summary> Install Composer dist dependencies for the subsite. </summary>
                     <sub>
@@ -402,8 +399,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [dist-copy-resources](/includes/build/build.dist.xml#L18)</td>
-            <td>
+            <td nowrap> [dist-copy-resources](/includes/build/build.dist.xml#L18)</td>
+            <td width="100%">
                 <details>
                     <summary> Copy subsite resources into the build folder. </summary>
                     <sub>
@@ -428,8 +425,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [dist-delete](/includes/build/build.dist.xml#L50)</td>
-            <td>
+            <td nowrap> [dist-delete](/includes/build/build.dist.xml#L50)</td>
+            <td width="100%">
                 <details>
                     <summary> Delete the previous distribution build. </summary>
                     <sub>
@@ -444,8 +441,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [dist-delete](/includes/build/build.dist.xml#L50)</td>
-            <td>
+            <td nowrap> [dist-delete](/includes/build/build.dist.xml#L50)</td>
+            <td width="100%">
                 <details>
                     <summary> Delete the previous distribution build. </summary>
                     <sub>
@@ -460,8 +457,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-create-files-dirs](/includes/build/build.drush.xml#L32)</td>
-            <td>
+            <td nowrap> [drush-create-files-dirs](/includes/build/build.drush.xml#L32)</td>
+            <td width="100%">
                 <details>
                     <summary> Create the directories. </summary>
                     <sub>
@@ -481,8 +478,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-dl-rr](/includes/build/build.drush.xml#L162)</td>
-            <td>
+            <td nowrap> [drush-dl-rr](/includes/build/build.drush.xml#L162)</td>
+            <td width="100%">
                 <details>
                     <summary> Download registry rebuild. </summary>
                     <sub>
@@ -497,8 +494,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-enable-modules](/includes/build/build.drush.xml#L19)</td>
-            <td>
+            <td nowrap> [drush-enable-modules](/includes/build/build.drush.xml#L19)</td>
+            <td width="100%">
                 <details>
                     <summary> Enable modules. </summary>
                     <sub>
@@ -517,8 +514,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-enable-solr](/includes/build/build.drush.xml#L83)</td>
-            <td>
+            <td nowrap> [drush-enable-solr](/includes/build/build.drush.xml#L83)</td>
+            <td width="100%">
                 <details>
                     <summary> Activate solr if needed. </summary>
                     <sub>
@@ -539,8 +536,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-make-no-core](/includes/build/build.drush.xml#L99)</td>
-            <td>
+            <td nowrap> [drush-make-no-core](/includes/build/build.drush.xml#L99)</td>
+            <td width="100%">
                 <details>
                     <summary> Execute a makefile with the no-core option. </summary>
                     <sub>
@@ -559,8 +556,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-rebuild-node-access](/includes/build/build.drush.xml#L169)</td>
-            <td>
+            <td nowrap> [drush-rebuild-node-access](/includes/build/build.drush.xml#L169)</td>
+            <td width="100%">
                 <details>
                     <summary> Rebuild node access. </summary>
                     <sub>
@@ -578,8 +575,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-regenerate-settings](/includes/build/build.drush.xml#L111)</td>
-            <td>
+            <td nowrap> [drush-regenerate-settings](/includes/build/build.drush.xml#L111)</td>
+            <td width="100%">
                 <details>
                     <summary> Regenerate the settings file with database credentials and development variables. </summary>
                     <sub>
@@ -614,8 +611,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-registry-rebuild](/includes/build/build.drush.xml#L142)</td>
-            <td>
+            <td nowrap> [drush-registry-rebuild](/includes/build/build.drush.xml#L142)</td>
+            <td width="100%">
                 <details>
                     <summary> Rebuild registry. </summary>
                     <sub>
@@ -632,8 +629,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-site-install](/includes/build/build.drush.xml#L5)</td>
-            <td>
+            <td nowrap> [drush-site-install](/includes/build/build.drush.xml#L5)</td>
+            <td width="100%">
                 <details>
                     <summary> Install the site. </summary>
                     <sub>
@@ -657,8 +654,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-sql-create](/includes/build/build.drush.xml#L41)</td>
-            <td>
+            <td nowrap> [drush-sql-create](/includes/build/build.drush.xml#L41)</td>
+            <td width="100%">
                 <details>
                     <summary> Create the database. </summary>
                     <sub>
@@ -678,8 +675,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-sql-drop](/includes/build/build.drush.xml#L65)</td>
-            <td>
+            <td nowrap> [drush-sql-drop](/includes/build/build.drush.xml#L65)</td>
+            <td width="100%">
                 <details>
                     <summary> Drop the database. </summary>
                     <sub>
@@ -699,8 +696,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-sql-dump](/includes/build/build.drush.xml#L73)</td>
-            <td>
+            <td nowrap> [drush-sql-dump](/includes/build/build.drush.xml#L73)</td>
+            <td width="100%">
                 <details>
                     <summary> Backup the database. </summary>
                     <sub>
@@ -719,8 +716,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [drush-sql-import](/includes/build/build.drush.xml#L49)</td>
-            <td>
+            <td nowrap> [drush-sql-import](/includes/build/build.drush.xml#L49)</td>
+            <td width="100%">
                 <details>
                     <summary> Import a database. </summary>
                     <sub>
@@ -738,8 +735,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [platform-composer-install](/includes/build/build.platform.xml#L5)</td>
-            <td>
+            <td nowrap> [platform-composer-install](/includes/build/build.platform.xml#L5)</td>
+            <td width="100%">
                 <details>
                     <summary> Install Composer dependencies for the build system. </summary>
                     <sub>
@@ -755,8 +752,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [platform-delete](/includes/build/build.platform.xml#L16)</td>
-            <td>
+            <td nowrap> [platform-delete](/includes/build/build.platform.xml#L16)</td>
+            <td width="100%">
                 <details>
                     <summary> Delete the previous development build. </summary>
                     <sub>
@@ -772,8 +769,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [platform-download](/includes/build/build.platform.xml#L29)</td>
-            <td>
+            <td nowrap> [platform-download](/includes/build/build.platform.xml#L29)</td>
+            <td width="100%">
                 <details>
                     <summary> Download the platform. </summary>
                     <sub>
@@ -789,8 +786,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [platform-link-resources](/includes/build/build.platform.xml#L54)</td>
-            <td>
+            <td nowrap> [platform-link-resources](/includes/build/build.platform.xml#L54)</td>
+            <td width="100%">
                 <details>
                     <summary> Symlink the source folders for easy development. </summary>
                     <sub>
@@ -816,8 +813,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [platform-make](/includes/build/build.platform.xml#L65)</td>
-            <td>
+            <td nowrap> [platform-make](/includes/build/build.platform.xml#L65)</td>
+            <td width="100%">
                 <details>
                     <summary> Make the development version of the subsite. </summary>
                     <sub>
@@ -841,8 +838,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [platform-unpack](/includes/build/build.platform.xml#L82)</td>
-            <td>
+            <td nowrap> [platform-unpack](/includes/build/build.platform.xml#L82)</td>
+            <td width="100%">
                 <details>
                     <summary> Unpack the platform. </summary>
                     <sub>
@@ -868,8 +865,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [platform-update-htaccess](/includes/build/build.platform.xml#L108)</td>
-            <td>
+            <td nowrap> [platform-update-htaccess](/includes/build/build.platform.xml#L108)</td>
+            <td width="100%">
                 <details>
                     <summary> Update .htaccess. </summary>
                     <sub>
@@ -885,24 +882,24 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [prompt-for-credentials-and-retry](/includes/build/build.clone.xml#L81)</td>
-            <td>
+            <td nowrap> [prompt-for-credentials-and-retry](/includes/build/build.clone.xml#L81)</td>
+            <td width="100%">
                 <details>
                     <summary> Simple prompt for user credentials and recurse into subsite-database-wget. </summary>
                 </details>
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [starterkit-build-documentation-index](/includes/build/build.starterkit.xml#L60)</td>
-            <td>
+            <td nowrap> [starterkit-build-documentation-index](/includes/build/build.starterkit.xml#L60)</td>
+            <td width="100%">
                 <details>
                     <summary> Build documentation index. </summary>
                 </details>
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [starterkit-copy-templates](/includes/build/build.starterkit.xml#L11)</td>
-            <td>
+            <td nowrap> [starterkit-copy-templates](/includes/build/build.starterkit.xml#L11)</td>
+            <td width="100%">
                 <details>
                     <summary> Ensure needed files are present. </summary>
                     <sub>
@@ -918,8 +915,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [starterkit-link-binary](/includes/build/build.starterkit.xml#L5)</td>
-            <td>
+            <td nowrap> [starterkit-link-binary](/includes/build/build.starterkit.xml#L5)</td>
+            <td width="100%">
                 <details>
                     <summary> Provide handy access with root symlink to starterkit binary. </summary>
                     <sub>
@@ -935,8 +932,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [starterkit-upgrade](/includes/build/build.starterkit.xml#L19)</td>
-            <td>
+            <td nowrap> [starterkit-upgrade](/includes/build/build.starterkit.xml#L19)</td>
+            <td width="100%">
                 <details>
                     <summary> Upgrade subsite-starterkit 2.x to 3.x. </summary>
                     <sub>
@@ -952,8 +949,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-composer-install](/includes/build/build.subsite.xml#L5)</td>
-            <td>
+            <td nowrap> [subsite-composer-install](/includes/build/build.subsite.xml#L5)</td>
+            <td width="100%">
                 <details>
                     <summary> Install Composer dev dependencies for the subsite. </summary>
                     <sub>
@@ -969,8 +966,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-database-download](/includes/build/build.clone.xml#L17)</td>
-            <td>
+            <td nowrap> [subsite-database-download](/includes/build/build.clone.xml#L17)</td>
+            <td width="100%">
                 <details>
                     <summary> Download the production database. </summary>
                     <sub>
@@ -986,8 +983,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-database-import](/includes/build/build.clone.xml#L5)</td>
-            <td>
+            <td nowrap> [subsite-database-import](/includes/build/build.clone.xml#L5)</td>
+            <td width="100%">
                 <details>
                     <summary> Import production database. </summary>
                     <sub>
@@ -1010,8 +1007,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-database-wget](/includes/build/build.clone.xml#L40)</td>
-            <td>
+            <td nowrap> [subsite-database-wget](/includes/build/build.clone.xml#L40)</td>
+            <td width="100%">
                 <details>
                     <summary> Target to actually fetch the database dump. </summary>
                     <sub>
@@ -1032,8 +1029,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-modules-development-download](/includes/build/build.subsite.xml#L36)</td>
-            <td>
+            <td nowrap> [subsite-modules-development-download](/includes/build/build.subsite.xml#L36)</td>
+            <td width="100%">
                 <details>
                     <summary> Download development modules. </summary>
                     <sub>
@@ -1057,8 +1054,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-modules-development-enable](/includes/build/build.test.xml#L71)</td>
-            <td>
+            <td nowrap> [subsite-modules-development-enable](/includes/build/build.test.xml#L71)</td>
+            <td width="100%">
                 <details>
                     <summary> Enable development modules. </summary>
                     <sub>
@@ -1073,8 +1070,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-modules-development-makefile](/includes/build/build.subsite.xml#L18)</td>
-            <td>
+            <td nowrap> [subsite-modules-development-makefile](/includes/build/build.subsite.xml#L18)</td>
+            <td width="100%">
                 <details>
                     <summary> Generate the makefile used to download development modules. </summary>
                     <sub>
@@ -1092,8 +1089,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-modules-install-enable](/includes/build/build.test.xml#L64)</td>
-            <td>
+            <td nowrap> [subsite-modules-install-enable](/includes/build/build.test.xml#L64)</td>
+            <td width="100%">
                 <details>
                     <summary> Enable required modules after installation of the profile. </summary>
                     <sub>
@@ -1108,8 +1105,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-setup-files-directory](/includes/build/build.subsite.xml#L222)</td>
-            <td>
+            <td nowrap> [subsite-setup-files-directory](/includes/build/build.subsite.xml#L222)</td>
+            <td width="100%">
                 <details>
                     <summary> Setup file directory </summary>
                     <sub>
@@ -1125,8 +1122,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-site-backup](/includes/build/build.subsite.xml#L45)</td>
-            <td>
+            <td nowrap> [subsite-site-backup](/includes/build/build.subsite.xml#L45)</td>
+            <td width="100%">
                 <details>
                     <summary> Backs up files and folders listed in platform.rebuild properties in order to rebuild. </summary>
                     <sub>
@@ -1145,8 +1142,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-site-backup-item](/includes/build/build.subsite.xml#L162)</td>
-            <td>
+            <td nowrap> [subsite-site-backup-item](/includes/build/build.subsite.xml#L162)</td>
+            <td width="100%">
                 <details>
                     <summary> Backs up a site item from the platform that will be removed in order to rebuild. </summary>
                     <sub>
@@ -1162,8 +1159,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-site-restore](/includes/build/build.subsite.xml#L112)</td>
-            <td>
+            <td nowrap> [subsite-site-restore](/includes/build/build.subsite.xml#L112)</td>
+            <td width="100%">
                 <details>
                     <summary> Restoring sites directory if backed up before rebuild-dev. </summary>
                     <sub>
@@ -1181,8 +1178,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [subsite-site-restore-item](/includes/build/build.subsite.xml#L192)</td>
-            <td>
+            <td nowrap> [subsite-site-restore-item](/includes/build/build.subsite.xml#L192)</td>
+            <td width="100%">
                 <details>
                     <summary> Restores a site item from the platform.rebuild.backup.destination to the new build. </summary>
                     <sub>
@@ -1198,8 +1195,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [test-behat-setup](/includes/build/build.test.xml#L127)</td>
-            <td>
+            <td nowrap> [test-behat-setup](/includes/build/build.test.xml#L127)</td>
+            <td width="100%">
                 <details>
                     <summary> Set up Behat. </summary>
                     <sub>
@@ -1219,8 +1216,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [test-behat-setup-link](/includes/build/build.package.xml#L21)</td>
-            <td>
+            <td nowrap> [test-behat-setup-link](/includes/build/build.package.xml#L21)</td>
+            <td width="100%">
                 <details>
                     <summary> Symlink the Behat bin and test directory in the subsite folder. </summary>
                     <sub>
@@ -1237,8 +1234,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [test-phpcs-setup](/includes/build/build.test.xml#L78)</td>
-            <td>
+            <td nowrap> [test-phpcs-setup](/includes/build/build.test.xml#L78)</td>
+            <td width="100%">
                 <details>
                     <summary> Set up PHP CodeSniffer. </summary>
                     <sub>
@@ -1262,8 +1259,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [test-phpcs-setup-prepush](/includes/build/build.test.xml#L111)</td>
-            <td>
+            <td nowrap> [test-phpcs-setup-prepush](/includes/build/build.test.xml#L111)</td>
+            <td width="100%">
                 <details>
                     <summary> Setup the PHP CodeSniffer pre-push hook. </summary>
                     <sub>
@@ -1281,8 +1278,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [test-quality-assurance](/includes/build/build.test.xml#L161)</td>
-            <td>
+            <td nowrap> [test-quality-assurance](/includes/build/build.test.xml#L161)</td>
+            <td width="100%">
                 <details>
                     <summary> Do quality assurance checks. </summary>
                     <sub>
@@ -1297,8 +1294,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [test-run-php-codesniffer](/includes/build/build.test.xml#L170)</td>
-            <td>
+            <td nowrap> [test-run-php-codesniffer](/includes/build/build.test.xml#L170)</td>
+            <td width="100%">
                 <details>
                     <summary> Do quality assurance checks. </summary>
                     <sub>
@@ -1313,8 +1310,8 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td> [unprotect-folder](/includes/build/build.helpers.xml#L32)</td>
-            <td>
+            <td nowrap> [unprotect-folder](/includes/build/build.helpers.xml#L32)</td>
+            <td width="100%">
                 <details>
                     <summary> Make the given folder writeable. </summary>
                     <sub>
