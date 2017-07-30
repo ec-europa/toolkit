@@ -763,7 +763,7 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap> [starterkit-build-documentation](/includes/build/build.starterkit.xml#L60)</td>
+            <td nowrap> [starterkit-build-docs](/includes/build/build.starterkit.xml#L60)</td>
             <td width="100%">
                 <details>
                     <summary> Build documentation index. </summary>
@@ -962,7 +962,7 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap> [subsite-modules-install-enable](/includes/build/build.test.xml#L64)</td>
+            <td nowrap> [subsite-modules-install-en](/includes/build/build.test.xml#L64)</td>
             <td width="100%">
                 <details>
                     <summary> Enable required modules after installation of the profile. </summary>
