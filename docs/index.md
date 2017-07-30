@@ -1,15 +1,14 @@
-[:link: Back to top](#top)
 ## Table
-<big><table width="100%">
+<big><table width="100%" cellpadding="0" cellspacing="0">
     <thead>
-        <tr align="left" valign="top">
-            <th>Command</th>
-            <th>Description</th>
+        <tr align="left" valign="top" cellpadding="0" cellspacing="0">
+            <th cellpadding="0" cellspacing="0">Command</th>
+            <th cellpadding="0" cellspacing="0">Description</th>
         </tr>
     </thead>
     <tbody>
         <tr align="left" valign="top">
-            <td nowrap><a name="build-clean"></a>[build-clean](/includes/build/build.test.xml#L193)</td>
+            <td nowrap><ins><h4>[build-clean](/includes/build/build.test.xml#L193)</h4></ins></td>
             <td width="100%">
                 <details>
                     <summary>Build local version of subsite with a clean install.</summary>
