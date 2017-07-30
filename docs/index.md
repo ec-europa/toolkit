@@ -1,3 +1,11 @@
+<big><dl>
+    <dt><h4>Definition list</h4></dt>
+  <dd>Is something people use sometimes.</dd>
+
+  <dt>Markdown in HTML</dt>
+  <dd>Does *not* work **very** well. Use HTML <em>tags</em>.</dd>
+</dl>
+
 
 ## Table
 <big><table width="100%">
@@ -9,7 +17,7 @@
     </thead>
     <tbody>
         <tr align="left" valign="top">
-            <td nowrap><a name="build-clean">[:link:](#build-clean)</a> [build-clean](/includes/build/build.test.xml#L193) </h4></td>
+            <td nowrap><a name="build-clean" aria-hidden="true">[:link:](#build-clean)</a> [build-clean](/includes/build/build.test.xml#L193) </h4></td>
             <td width="100%">
                 <details>
                     <summary>Build local version of subsite with a clean install.</summary>
