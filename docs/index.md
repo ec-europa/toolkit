@@ -19,7 +19,7 @@
                             <ul>
                                 <li>[drush-create-files-dirs](/includes/build/build.drush.xml#L32)</li>
                                 <li>[install](/includes/build/build.test.xml#L5)</li>
-                                <li>[subsite-modules-development-enable](/includes/build/build.test.xml#L71)</li>
+                                <li>[subsite-modules-devel-en](/includes/build/build.test.xml#L71)</li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -38,7 +38,7 @@
                                 <li>[subsite-database-download](/includes/build/build.clone.xml#L17)</li>
                                 <li>[drush-regenerate-settings](/includes/build/build.drush.xml#L111)</li>
                                 <li>[subsite-database-import](/includes/build/build.clone.xml#L5)</li>
-                                <li>[subsite-modules-development-enable](/includes/build/build.test.xml#L71)</li>
+                                <li>[subsite-modules-devel-en](/includes/build/build.test.xml#L71)</li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -63,7 +63,7 @@
                                 <li>[test-behat-setup](/includes/build/build.test.xml#L127)</li>
                                 <li>[platform-update-htaccess](/includes/build/build.platform.xml#L108)</li>
                                 <li>[test-phpcs-setup](/includes/build/build.test.xml#L78)</li>
-                                <li>[subsite-modules-development-download](/includes/build/build.subsite.xml#L36)</li>
+                                <li>[subsite-modules-devel-dl](/includes/build/build.subsite.xml#L36)</li>
                                 <li>[subsite-site-restore](/includes/build/build.subsite.xml#L112)</li>
                             </ul></li>
                         </ul>
@@ -894,7 +894,7 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap> [starterkit-build-documentation-index](/includes/build/build.starterkit.xml#L60)</td>
+            <td nowrap> [starterkit-build-documentation](/includes/build/build.starterkit.xml#L60)</td>
             <td width="100%">
                 <details>
                     <summary> Build documentation index. </summary>
@@ -1033,7 +1033,7 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap> [subsite-modules-development-download](/includes/build/build.subsite.xml#L36)</td>
+            <td nowrap> [subsite-modules-devel-dl](/includes/build/build.subsite.xml#L36)</td>
             <td width="100%">
                 <details>
                     <summary> Download development modules. </summary>
@@ -1041,7 +1041,7 @@
                         <ul>
                             <li><p>Dependencies</p>
                             <ul>
-                                <li>[subsite-modules-development-makefile](/includes/build/build.subsite.xml#L18)</li>
+                                <li>[subsite-modules-devel-mf](/includes/build/build.subsite.xml#L18)</li>
                             </ul></li>
                         </ul>
                     </sub>
@@ -1058,7 +1058,7 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap> [subsite-modules-development-enable](/includes/build/build.test.xml#L71)</td>
+            <td nowrap> [subsite-modules-devel-en](/includes/build/build.test.xml#L71)</td>
             <td width="100%">
                 <details>
                     <summary> Enable development modules. </summary>
@@ -1074,7 +1074,7 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap> [subsite-modules-development-makefile](/includes/build/build.subsite.xml#L18)</td>
+            <td nowrap> [subsite-modules-devel-mf](/includes/build/build.subsite.xml#L18)</td>
             <td width="100%">
                 <details>
                     <summary> Generate the makefile used to download development modules. </summary>
