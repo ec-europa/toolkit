@@ -1,10 +1,14 @@
-<big><dl>
-    <dt><h4>Definition list</h4></dt>
-  <dd>Is something people use sometimes.</dd>
-
-  <dt>Markdown in HTML</dt>
-  <dd>Does *not* work **very** well. Use HTML <em>tags</em>.</dd>
-</dl>
+<big>
+    <sub>
+    <ul>
+        <li><h4>Dependencies</h4></li>
+        <ul>
+            <li>[drush-create-files-dirs](/includes/build/build.drush.xml#L32)</li>
+            <li>[install](/includes/build/build.test.xml#L5)</li>
+            <li>[subsite-modules-devel-en](/includes/build/build.test.xml#L71)</li>
+        </ul>
+    </ul>
+    </sub>
 
 
 ## Table
