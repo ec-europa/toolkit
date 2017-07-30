@@ -1,14 +1,3 @@
-<big>
-    <details><summary><sub><h3>Dependencies</h3></sub></summary>
-        <sub><ul>
-            <li>[drush-create-files-dirs](/includes/build/build.drush.xml#L32)</li>
-            <li>[install](/includes/build/build.test.xml#L5)</li>
-            <li>[subsite-modules-devel-en](/includes/build/build.test.xml#L71)</li>
-        </ul></sub>
-        </details>
-    </ul>
-    </sub>
-
 
 ## Table
 <big><table width="100%">
@@ -20,10 +9,10 @@
     </thead>
     <tbody>
         <tr align="left" valign="top">
-            <td nowrap><a name="build-clean" aria-hidden="true">[:link:](#build-clean)</a> [build-clean](/includes/build/build.test.xml#L193) </h4></td>
+            <td nowrap><a name="build-clean"></a><b>build-clean</b></td>
             <td width="100%">
                 <details>
-                    <summary>Build local version of subsite with a clean install.</summary>
+                    <summary>Build local version of subsite with a clean install.  <sup><sub>[(anchor)](#build-clean) [(code)](/includes/build/build.test.xml#L193)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Dependencies</p>
@@ -38,10 +27,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="build-clone">[:link:](#build-clone)</a> [build-clone](/includes/build/build.clone.xml#L118) </h4></td>
+            <td nowrap><a name="build-clone"></a><b>build-clone</b></td>
             <td width="100%">
                 <details>
-                    <summary>Build local version of subsite with production data.</summary>
+                    <summary>Build local version of subsite with production data.  <sup><sub>[(anchor)](#build-clone) [(code)](/includes/build/build.clone.xml#L118)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Dependencies</p>
@@ -57,10 +46,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="build-code">[:link:](#build-code)</a> [build-code](/includes/build/build.package.xml#L74) </h4></td>
+            <td nowrap><a name="build-code"></a><b>build-code</b></td>
             <td width="100%">
                 <details>
-                    <summary>Build local version of subsite without install.</summary>
+                    <summary>Build local version of subsite without install.  <sup><sub>[(anchor)](#build-code) [(code)](/includes/build/build.package.xml#L74)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Dependencies</p>
@@ -83,18 +72,18 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="build-keep">[:link:](#build-keep)</a> [build-keep](/includes/build/build.package.xml#L92) </h4></td>
+            <td nowrap><a name="build-keep"></a><b>build-keep</b></td>
             <td width="100%">
                 <details>
-                    <summary>Build local version of subsite with backup and restore.</summary>
+                    <summary>Build local version of subsite with backup and restore.  <sup><sub>[(anchor)](#build-keep) [(code)](/includes/build/build.package.xml#L92)</sub></sup></summary>
                 </details>
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="build-release">[:link:](#build-release)</a> [build-release](/includes/build/build.package.xml#L63) </h4></td>
+            <td nowrap><a name="build-release"></a><b>build-release</b></td>
             <td width="100%">
                 <details>
-                    <summary>Build subsite source code release package.</summary>
+                    <summary>Build subsite source code release package.  <sup><sub>[(anchor)](#build-release) [(code)](/includes/build/build.package.xml#L63)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Dependencies</p>
@@ -117,10 +106,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="build-tests">[:link:](#build-tests)</a> [build-tests](/includes/build/build.package.xml#L69) </h4></td>
+            <td nowrap><a name="build-tests"></a><b>build-tests</b></td>
             <td width="100%">
                 <details>
-                    <summary>Build subsite tests code release package.</summary>
+                    <summary>Build subsite tests code release package.  <sup><sub>[(anchor)](#build-tests) [(code)](/includes/build/build.package.xml#L69)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -133,10 +122,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="docker-compose-down">[:link:](#docker-compose-down)</a> [docker-compose-down](/includes/build/build.docker.xml#L22) </h4></td>
+            <td nowrap><a name="docker-compose-down"></a><b>docker-compose-down</b></td>
             <td width="100%">
                 <details>
-                    <summary>Trash docker project.</summary>
+                    <summary>Trash docker project.  <sup><sub>[(anchor)](#docker-compose-down) [(code)](/includes/build/build.docker.xml#L22)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -151,10 +140,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="docker-compose-stop">[:link:](#docker-compose-stop)</a> [docker-compose-stop](/includes/build/build.docker.xml#L15) </h4></td>
+            <td nowrap><a name="docker-compose-stop"></a><b>docker-compose-stop</b></td>
             <td width="100%">
                 <details>
-                    <summary>Stop docker project.</summary>
+                    <summary>Stop docker project.  <sup><sub>[(anchor)](#docker-compose-stop) [(code)](/includes/build/build.docker.xml#L15)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -169,10 +158,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="docker-compose-up">[:link:](#docker-compose-up)</a> [docker-compose-up](/includes/build/build.docker.xml#L5) </h4></td>
+            <td nowrap><a name="docker-compose-up"></a><b>docker-compose-up</b></td>
             <td width="100%">
                 <details>
-                    <summary>Start docker project.</summary>
+                    <summary>Start docker project.  <sup><sub>[(anchor)](#docker-compose-up) [(code)](/includes/build/build.docker.xml#L5)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -190,10 +179,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="install">[:link:](#install)</a> [install](/includes/build/build.test.xml#L5) </h4></td>
+            <td nowrap><a name="install"></a><b>install</b></td>
             <td width="100%">
                 <details>
-                    <summary>Install the subsite.</summary>
+                    <summary>Install the subsite.  <sup><sub>[(anchor)](#install) [(code)](/includes/build/build.test.xml#L5)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -211,10 +200,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="link-docroot">[:link:](#link-docroot)</a> [link-docroot](/includes/build/build.package.xml#L28) </h4></td>
+            <td nowrap><a name="link-docroot"></a><b>link-docroot</b></td>
             <td width="100%">
                 <details>
-                    <summary>Create symlink from build to docroot.</summary>
+                    <summary>Create symlink from build to docroot.  <sup><sub>[(anchor)](#link-docroot) [(code)](/includes/build/build.package.xml#L28)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -228,10 +217,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="test-run-behat">[:link:](#test-run-behat)</a> [test-run-behat](/includes/build/build.test.xml#L150) </h4></td>
+            <td nowrap><a name="test-run-behat"></a><b>test-run-behat</b></td>
             <td width="100%">
                 <details>
-                    <summary>Refresh configuration and run behat tests.</summary>
+                    <summary>Refresh configuration and run behat tests.  <sup><sub>[(anchor)](#test-run-behat) [(code)](/includes/build/build.test.xml#L150)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -248,10 +237,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="test-run-phpcs">[:link:](#test-run-phpcs)</a> [test-run-phpcs](/includes/build/build.test.xml#L186) </h4></td>
+            <td nowrap><a name="test-run-phpcs"></a><b>test-run-phpcs</b></td>
             <td width="100%">
                 <details>
-                    <summary>Refresh configuration and run phpcs review.</summary>
+                    <summary>Refresh configuration and run phpcs review.  <sup><sub>[(anchor)](#test-run-phpcs) [(code)](/includes/build/build.test.xml#L186)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Dependencies</p>
@@ -265,10 +254,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="test-run-qa">[:link:](#test-run-qa)</a> [test-run-qa](/includes/build/build.test.xml#L179) </h4></td>
+            <td nowrap><a name="test-run-qa"></a><b>test-run-qa</b></td>
             <td width="100%">
                 <details>
-                    <summary>Refresh configuration and run qa review.</summary>
+                    <summary>Refresh configuration and run qa review.  <sup><sub>[(anchor)](#test-run-qa) [(code)](/includes/build/build.test.xml#L179)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Dependencies</p>
@@ -294,10 +283,10 @@
     </thead>
     <tbody>
         <tr align="left" valign="top">
-            <td nowrap><a name="dist-composer-install">[:link:](#dist-composer-install)</a> [dist-composer-install](/includes/build/build.dist.xml#L5) </h4></td>
+            <td nowrap><a name="dist-composer-install"></a><b>dist-composer-install</b></td>
             <td width="100%">
                 <details>
-                    <summary> Install Composer dist dependencies for the subsite. </summary>
+                    <summary> Install Composer dist dependencies for the subsite.   <sup><sub>[(anchor)](#dist-composer-install) [(code)](/includes/build/build.dist.xml#L5)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -311,10 +300,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="dist-copy-resources">[:link:](#dist-copy-resources)</a> [dist-copy-resources](/includes/build/build.dist.xml#L18) </h4></td>
+            <td nowrap><a name="dist-copy-resources"></a><b>dist-copy-resources</b></td>
             <td width="100%">
                 <details>
-                    <summary> Copy subsite resources into the build folder. </summary>
+                    <summary> Copy subsite resources into the build folder.   <sup><sub>[(anchor)](#dist-copy-resources) [(code)](/includes/build/build.dist.xml#L18)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -337,10 +326,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="dist-delete">[:link:](#dist-delete)</a> [dist-delete](/includes/build/build.dist.xml#L50) </h4></td>
+            <td nowrap><a name="dist-delete"></a><b>dist-delete</b></td>
             <td width="100%">
                 <details>
-                    <summary> Delete the previous distribution build. </summary>
+                    <summary> Delete the previous distribution build.   <sup><sub>[(anchor)](#dist-delete) [(code)](/includes/build/build.dist.xml#L50)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -353,10 +342,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="dist-delete">[:link:](#dist-delete)</a> [dist-delete](/includes/build/build.dist.xml#L50) </h4></td>
+            <td nowrap><a name="dist-delete"></a><b>dist-delete</b></td>
             <td width="100%">
                 <details>
-                    <summary> Delete the previous distribution build. </summary>
+                    <summary> Delete the previous distribution build.   <sup><sub>[(anchor)](#dist-delete) [(code)](/includes/build/build.dist.xml#L50)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -369,10 +358,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="drush-create-files-dirs">[:link:](#drush-create-files-dirs)</a> [drush-create-files-dirs](/includes/build/build.drush.xml#L32) </h4></td>
+            <td nowrap><a name="drush-create-files-dirs"></a><b>drush-create-files-dirs</b></td>
             <td width="100%">
                 <details>
-                    <summary> Create the directories. </summary>
+                    <summary> Create the directories.   <sup><sub>[(anchor)](#drush-create-files-dirs) [(code)](/includes/build/build.drush.xml#L32)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -390,10 +379,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="drush-dl-rr">[:link:](#drush-dl-rr)</a> [drush-dl-rr](/includes/build/build.drush.xml#L162) </h4></td>
+            <td nowrap><a name="drush-dl-rr"></a><b>drush-dl-rr</b></td>
             <td width="100%">
                 <details>
-                    <summary> Download registry rebuild. </summary>
+                    <summary> Download registry rebuild.   <sup><sub>[(anchor)](#drush-dl-rr) [(code)](/includes/build/build.drush.xml#L162)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -406,10 +395,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="drush-enable-solr">[:link:](#drush-enable-solr)</a> [drush-enable-solr](/includes/build/build.drush.xml#L83) </h4></td>
+            <td nowrap><a name="drush-enable-solr"></a><b>drush-enable-solr</b></td>
             <td width="100%">
                 <details>
-                    <summary> Activate solr if needed. </summary>
+                    <summary> Activate solr if needed.   <sup><sub>[(anchor)](#drush-enable-solr) [(code)](/includes/build/build.drush.xml#L83)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -428,10 +417,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="drush-make-no-core">[:link:](#drush-make-no-core)</a> [drush-make-no-core](/includes/build/build.drush.xml#L99) </h4></td>
+            <td nowrap><a name="drush-make-no-core"></a><b>drush-make-no-core</b></td>
             <td width="100%">
                 <details>
-                    <summary> Execute a makefile with the no-core option. </summary>
+                    <summary> Execute a makefile with the no-core option.   <sup><sub>[(anchor)](#drush-make-no-core) [(code)](/includes/build/build.drush.xml#L99)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -448,10 +437,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="drush-rebuild-node-access">[:link:](#drush-rebuild-node-access)</a> [drush-rebuild-node-access](/includes/build/build.drush.xml#L169) </h4></td>
+            <td nowrap><a name="drush-rebuild-node-access"></a><b>drush-rebuild-node-access</b></td>
             <td width="100%">
                 <details>
-                    <summary> Rebuild node access. </summary>
+                    <summary> Rebuild node access.   <sup><sub>[(anchor)](#drush-rebuild-node-access) [(code)](/includes/build/build.drush.xml#L169)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -467,10 +456,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="drush-regenerate-settings">[:link:](#drush-regenerate-settings)</a> [drush-regenerate-settings](/includes/build/build.drush.xml#L111) </h4></td>
+            <td nowrap><a name="drush-regenerate-settings"></a><b>drush-regenerate-settings</b></td>
             <td width="100%">
                 <details>
-                    <summary> Regenerate the settings file with database credentials and development variables. </summary>
+                    <summary> Regenerate the settings file with database credentials and development variables.   <sup><sub>[(anchor)](#drush-regenerate-settings) [(code)](/includes/build/build.drush.xml#L111)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Dependencies</p>
@@ -503,10 +492,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="drush-registry-rebuild">[:link:](#drush-registry-rebuild)</a> [drush-registry-rebuild](/includes/build/build.drush.xml#L142) </h4></td>
+            <td nowrap><a name="drush-registry-rebuild"></a><b>drush-registry-rebuild</b></td>
             <td width="100%">
                 <details>
-                    <summary> Rebuild registry. </summary>
+                    <summary> Rebuild registry.   <sup><sub>[(anchor)](#drush-registry-rebuild) [(code)](/includes/build/build.drush.xml#L142)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -521,10 +510,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="drush-site-install">[:link:](#drush-site-install)</a> [drush-site-install](/includes/build/build.drush.xml#L5) </h4></td>
+            <td nowrap><a name="drush-site-install"></a><b>drush-site-install</b></td>
             <td width="100%">
                 <details>
-                    <summary> Install the site. </summary>
+                    <summary> Install the site.   <sup><sub>[(anchor)](#drush-site-install) [(code)](/includes/build/build.drush.xml#L5)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -546,10 +535,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="drush-sql-create">[:link:](#drush-sql-create)</a> [drush-sql-create](/includes/build/build.drush.xml#L41) </h4></td>
+            <td nowrap><a name="drush-sql-create"></a><b>drush-sql-create</b></td>
             <td width="100%">
                 <details>
-                    <summary> Create the database. </summary>
+                    <summary> Create the database.   <sup><sub>[(anchor)](#drush-sql-create) [(code)](/includes/build/build.drush.xml#L41)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -567,10 +556,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="drush-sql-drop">[:link:](#drush-sql-drop)</a> [drush-sql-drop](/includes/build/build.drush.xml#L65) </h4></td>
+            <td nowrap><a name="drush-sql-drop"></a><b>drush-sql-drop</b></td>
             <td width="100%">
                 <details>
-                    <summary> Drop the database. </summary>
+                    <summary> Drop the database.   <sup><sub>[(anchor)](#drush-sql-drop) [(code)](/includes/build/build.drush.xml#L65)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -588,10 +577,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="drush-sql-dump">[:link:](#drush-sql-dump)</a> [drush-sql-dump](/includes/build/build.drush.xml#L73) </h4></td>
+            <td nowrap><a name="drush-sql-dump"></a><b>drush-sql-dump</b></td>
             <td width="100%">
                 <details>
-                    <summary> Backup the database. </summary>
+                    <summary> Backup the database.   <sup><sub>[(anchor)](#drush-sql-dump) [(code)](/includes/build/build.drush.xml#L73)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -608,10 +597,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="drush-sql-import">[:link:](#drush-sql-import)</a> [drush-sql-import](/includes/build/build.drush.xml#L49) </h4></td>
+            <td nowrap><a name="drush-sql-import"></a><b>drush-sql-import</b></td>
             <td width="100%">
                 <details>
-                    <summary> Import a database. </summary>
+                    <summary> Import a database.   <sup><sub>[(anchor)](#drush-sql-import) [(code)](/includes/build/build.drush.xml#L49)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -627,10 +616,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="platform-composer-install">[:link:](#platform-composer-install)</a> [platform-composer-install](/includes/build/build.platform.xml#L5) </h4></td>
+            <td nowrap><a name="platform-composer-install"></a><b>platform-composer-install</b></td>
             <td width="100%">
                 <details>
-                    <summary> Install Composer dependencies for the build system. </summary>
+                    <summary> Install Composer dependencies for the build system.   <sup><sub>[(anchor)](#platform-composer-install) [(code)](/includes/build/build.platform.xml#L5)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -644,10 +633,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="platform-delete">[:link:](#platform-delete)</a> [platform-delete](/includes/build/build.platform.xml#L16) </h4></td>
+            <td nowrap><a name="platform-delete"></a><b>platform-delete</b></td>
             <td width="100%">
                 <details>
-                    <summary> Delete the previous development build. </summary>
+                    <summary> Delete the previous development build.   <sup><sub>[(anchor)](#platform-delete) [(code)](/includes/build/build.platform.xml#L16)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -661,10 +650,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="platform-download">[:link:](#platform-download)</a> [platform-download](/includes/build/build.platform.xml#L29) </h4></td>
+            <td nowrap><a name="platform-download"></a><b>platform-download</b></td>
             <td width="100%">
                 <details>
-                    <summary> Download the platform. </summary>
+                    <summary> Download the platform.   <sup><sub>[(anchor)](#platform-download) [(code)](/includes/build/build.platform.xml#L29)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -678,10 +667,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="platform-link-resources">[:link:](#platform-link-resources)</a> [platform-link-resources](/includes/build/build.platform.xml#L54) </h4></td>
+            <td nowrap><a name="platform-link-resources"></a><b>platform-link-resources</b></td>
             <td width="100%">
                 <details>
-                    <summary> Symlink the source folders for easy development. </summary>
+                    <summary> Symlink the source folders for easy development.   <sup><sub>[(anchor)](#platform-link-resources) [(code)](/includes/build/build.platform.xml#L54)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -705,10 +694,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="platform-make">[:link:](#platform-make)</a> [platform-make](/includes/build/build.platform.xml#L65) </h4></td>
+            <td nowrap><a name="platform-make"></a><b>platform-make</b></td>
             <td width="100%">
                 <details>
-                    <summary> Make the development version of the subsite. </summary>
+                    <summary> Make the development version of the subsite.   <sup><sub>[(anchor)](#platform-make) [(code)](/includes/build/build.platform.xml#L65)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Dependencies</p>
@@ -730,10 +719,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="platform-unpack">[:link:](#platform-unpack)</a> [platform-unpack](/includes/build/build.platform.xml#L82) </h4></td>
+            <td nowrap><a name="platform-unpack"></a><b>platform-unpack</b></td>
             <td width="100%">
                 <details>
-                    <summary> Unpack the platform. </summary>
+                    <summary> Unpack the platform.   <sup><sub>[(anchor)](#platform-unpack) [(code)](/includes/build/build.platform.xml#L82)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Dependencies</p>
@@ -757,10 +746,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="platform-update-htaccess">[:link:](#platform-update-htaccess)</a> [platform-update-htaccess](/includes/build/build.platform.xml#L108) </h4></td>
+            <td nowrap><a name="platform-update-htaccess"></a><b>platform-update-htaccess</b></td>
             <td width="100%">
                 <details>
-                    <summary> Update .htaccess. </summary>
+                    <summary> Update .htaccess.   <sup><sub>[(anchor)](#platform-update-htaccess) [(code)](/includes/build/build.platform.xml#L108)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -774,18 +763,18 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="starterkit-build-docs">[:link:](#starterkit-build-docs)</a> [starterkit-build-docs](/includes/build/build.starterkit.xml#L60) </h4></td>
+            <td nowrap><a name="starterkit-build-docs"></a><b>starterkit-build-docs</b></td>
             <td width="100%">
                 <details>
-                    <summary> Build documentation index. </summary>
+                    <summary> Build documentation index.   <sup><sub>[(anchor)](#starterkit-build-docs) [(code)](/includes/build/build.starterkit.xml#L60)</sub></sup></summary>
                 </details>
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="starterkit-copy-templates">[:link:](#starterkit-copy-templates)</a> [starterkit-copy-templates](/includes/build/build.starterkit.xml#L11) </h4></td>
+            <td nowrap><a name="starterkit-copy-templates"></a><b>starterkit-copy-templates</b></td>
             <td width="100%">
                 <details>
-                    <summary> Ensure needed files are present. </summary>
+                    <summary> Ensure needed files are present.   <sup><sub>[(anchor)](#starterkit-copy-templates) [(code)](/includes/build/build.starterkit.xml#L11)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -799,10 +788,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="starterkit-link-binary">[:link:](#starterkit-link-binary)</a> [starterkit-link-binary](/includes/build/build.starterkit.xml#L5) </h4></td>
+            <td nowrap><a name="starterkit-link-binary"></a><b>starterkit-link-binary</b></td>
             <td width="100%">
                 <details>
-                    <summary> Provide handy access with root symlink to starterkit binary. </summary>
+                    <summary> Provide handy access with root symlink to starterkit binary.   <sup><sub>[(anchor)](#starterkit-link-binary) [(code)](/includes/build/build.starterkit.xml#L5)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -816,10 +805,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="starterkit-upgrade">[:link:](#starterkit-upgrade)</a> [starterkit-upgrade](/includes/build/build.starterkit.xml#L19) </h4></td>
+            <td nowrap><a name="starterkit-upgrade"></a><b>starterkit-upgrade</b></td>
             <td width="100%">
                 <details>
-                    <summary> Upgrade subsite-starterkit 2.x to 3.x. </summary>
+                    <summary> Upgrade subsite-starterkit 2.x to 3.x.   <sup><sub>[(anchor)](#starterkit-upgrade) [(code)](/includes/build/build.starterkit.xml#L19)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -833,10 +822,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="subsite-composer-install">[:link:](#subsite-composer-install)</a> [subsite-composer-install](/includes/build/build.subsite.xml#L5) </h4></td>
+            <td nowrap><a name="subsite-composer-install"></a><b>subsite-composer-install</b></td>
             <td width="100%">
                 <details>
-                    <summary> Install Composer dev dependencies for the subsite. </summary>
+                    <summary> Install Composer dev dependencies for the subsite.   <sup><sub>[(anchor)](#subsite-composer-install) [(code)](/includes/build/build.subsite.xml#L5)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -850,10 +839,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="subsite-database-download">[:link:](#subsite-database-download)</a> [subsite-database-download](/includes/build/build.clone.xml#L17) </h4></td>
+            <td nowrap><a name="subsite-database-download"></a><b>subsite-database-download</b></td>
             <td width="100%">
                 <details>
-                    <summary> Download the production database. </summary>
+                    <summary> Download the production database.   <sup><sub>[(anchor)](#subsite-database-download) [(code)](/includes/build/build.clone.xml#L17)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -867,10 +856,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="subsite-database-import">[:link:](#subsite-database-import)</a> [subsite-database-import](/includes/build/build.clone.xml#L5) </h4></td>
+            <td nowrap><a name="subsite-database-import"></a><b>subsite-database-import</b></td>
             <td width="100%">
                 <details>
-                    <summary> Import production database. </summary>
+                    <summary> Import production database.   <sup><sub>[(anchor)](#subsite-database-import) [(code)](/includes/build/build.clone.xml#L5)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Dependencies</p>
@@ -891,10 +880,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="subsite-database-wget">[:link:](#subsite-database-wget)</a> [subsite-database-wget](/includes/build/build.clone.xml#L40) </h4></td>
+            <td nowrap><a name="subsite-database-wget"></a><b>subsite-database-wget</b></td>
             <td width="100%">
                 <details>
-                    <summary> Target to actually fetch the database dump. </summary>
+                    <summary> Target to actually fetch the database dump.   <sup><sub>[(anchor)](#subsite-database-wget) [(code)](/includes/build/build.clone.xml#L40)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -913,10 +902,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="subsite-modules-devel-dl">[:link:](#subsite-modules-devel-dl)</a> [subsite-modules-devel-dl](/includes/build/build.subsite.xml#L36) </h4></td>
+            <td nowrap><a name="subsite-modules-devel-dl"></a><b>subsite-modules-devel-dl</b></td>
             <td width="100%">
                 <details>
-                    <summary> Download development modules. </summary>
+                    <summary> Download development modules.   <sup><sub>[(anchor)](#subsite-modules-devel-dl) [(code)](/includes/build/build.subsite.xml#L36)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Dependencies</p>
@@ -938,10 +927,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="subsite-modules-devel-en">[:link:](#subsite-modules-devel-en)</a> [subsite-modules-devel-en](/includes/build/build.test.xml#L71) </h4></td>
+            <td nowrap><a name="subsite-modules-devel-en"></a><b>subsite-modules-devel-en</b></td>
             <td width="100%">
                 <details>
-                    <summary> Enable development modules. </summary>
+                    <summary> Enable development modules.   <sup><sub>[(anchor)](#subsite-modules-devel-en) [(code)](/includes/build/build.test.xml#L71)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -954,10 +943,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="subsite-modules-devel-mf">[:link:](#subsite-modules-devel-mf)</a> [subsite-modules-devel-mf](/includes/build/build.subsite.xml#L18) </h4></td>
+            <td nowrap><a name="subsite-modules-devel-mf"></a><b>subsite-modules-devel-mf</b></td>
             <td width="100%">
                 <details>
-                    <summary> Generate the makefile used to download development modules. </summary>
+                    <summary> Generate the makefile used to download development modules.   <sup><sub>[(anchor)](#subsite-modules-devel-mf) [(code)](/includes/build/build.subsite.xml#L18)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -973,10 +962,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="subsite-modules-install-en">[:link:](#subsite-modules-install-en)</a> [subsite-modules-install-en](/includes/build/build.test.xml#L64) </h4></td>
+            <td nowrap><a name="subsite-modules-install-en"></a><b>subsite-modules-install-en</b></td>
             <td width="100%">
                 <details>
-                    <summary> Enable required modules after installation of the profile. </summary>
+                    <summary> Enable required modules after installation of the profile.   <sup><sub>[(anchor)](#subsite-modules-install-en) [(code)](/includes/build/build.test.xml#L64)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -989,10 +978,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="subsite-setup-files-directory">[:link:](#subsite-setup-files-directory)</a> [subsite-setup-files-directory](/includes/build/build.subsite.xml#L222) </h4></td>
+            <td nowrap><a name="subsite-setup-files-directory"></a><b>subsite-setup-files-directory</b></td>
             <td width="100%">
                 <details>
-                    <summary> Setup file directory </summary>
+                    <summary> Setup file directory   <sup><sub>[(anchor)](#subsite-setup-files-directory) [(code)](/includes/build/build.subsite.xml#L222)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -1006,10 +995,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="subsite-site-backup">[:link:](#subsite-site-backup)</a> [subsite-site-backup](/includes/build/build.subsite.xml#L45) </h4></td>
+            <td nowrap><a name="subsite-site-backup"></a><b>subsite-site-backup</b></td>
             <td width="100%">
                 <details>
-                    <summary> Backs up files and folders listed in platform.rebuild properties in order to rebuild. </summary>
+                    <summary> Backs up files and folders listed in platform.rebuild properties in order to rebuild.   <sup><sub>[(anchor)](#subsite-site-backup) [(code)](/includes/build/build.subsite.xml#L45)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -1026,10 +1015,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="subsite-site-restore">[:link:](#subsite-site-restore)</a> [subsite-site-restore](/includes/build/build.subsite.xml#L112) </h4></td>
+            <td nowrap><a name="subsite-site-restore"></a><b>subsite-site-restore</b></td>
             <td width="100%">
                 <details>
-                    <summary> Restoring sites directory if backed up before rebuild-dev. </summary>
+                    <summary> Restoring sites directory if backed up before rebuild-dev.   <sup><sub>[(anchor)](#subsite-site-restore) [(code)](/includes/build/build.subsite.xml#L112)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -1045,10 +1034,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="test-behat-setup">[:link:](#test-behat-setup)</a> [test-behat-setup](/includes/build/build.test.xml#L127) </h4></td>
+            <td nowrap><a name="test-behat-setup"></a><b>test-behat-setup</b></td>
             <td width="100%">
                 <details>
-                    <summary> Set up Behat. </summary>
+                    <summary> Set up Behat.   <sup><sub>[(anchor)](#test-behat-setup) [(code)](/includes/build/build.test.xml#L127)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -1066,10 +1055,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="test-behat-setup-link">[:link:](#test-behat-setup-link)</a> [test-behat-setup-link](/includes/build/build.package.xml#L21) </h4></td>
+            <td nowrap><a name="test-behat-setup-link"></a><b>test-behat-setup-link</b></td>
             <td width="100%">
                 <details>
-                    <summary> Symlink the Behat bin and test directory in the subsite folder. </summary>
+                    <summary> Symlink the Behat bin and test directory in the subsite folder.   <sup><sub>[(anchor)](#test-behat-setup-link) [(code)](/includes/build/build.package.xml#L21)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -1084,10 +1073,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="test-phpcs-setup">[:link:](#test-phpcs-setup)</a> [test-phpcs-setup](/includes/build/build.test.xml#L78) </h4></td>
+            <td nowrap><a name="test-phpcs-setup"></a><b>test-phpcs-setup</b></td>
             <td width="100%">
                 <details>
-                    <summary> Set up PHP CodeSniffer. </summary>
+                    <summary> Set up PHP CodeSniffer.   <sup><sub>[(anchor)](#test-phpcs-setup) [(code)](/includes/build/build.test.xml#L78)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -1109,10 +1098,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="test-phpcs-setup-prepush">[:link:](#test-phpcs-setup-prepush)</a> [test-phpcs-setup-prepush](/includes/build/build.test.xml#L111) </h4></td>
+            <td nowrap><a name="test-phpcs-setup-prepush"></a><b>test-phpcs-setup-prepush</b></td>
             <td width="100%">
                 <details>
-                    <summary> Setup the PHP CodeSniffer pre-push hook. </summary>
+                    <summary> Setup the PHP CodeSniffer pre-push hook.   <sup><sub>[(anchor)](#test-phpcs-setup-prepush) [(code)](/includes/build/build.test.xml#L111)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -1128,10 +1117,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="test-quality-assurance">[:link:](#test-quality-assurance)</a> [test-quality-assurance](/includes/build/build.test.xml#L161) </h4></td>
+            <td nowrap><a name="test-quality-assurance"></a><b>test-quality-assurance</b></td>
             <td width="100%">
                 <details>
-                    <summary> Do quality assurance checks. </summary>
+                    <summary> Do quality assurance checks.   <sup><sub>[(anchor)](#test-quality-assurance) [(code)](/includes/build/build.test.xml#L161)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
@@ -1144,10 +1133,10 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td nowrap><a name="test-run-php-codesniffer">[:link:](#test-run-php-codesniffer)</a> [test-run-php-codesniffer](/includes/build/build.test.xml#L170) </h4></td>
+            <td nowrap><a name="test-run-php-codesniffer"></a><b>test-run-php-codesniffer</b></td>
             <td width="100%">
                 <details>
-                    <summary> Do quality assurance checks. </summary>
+                    <summary> Do quality assurance checks.   <sup><sub>[(anchor)](#test-run-php-codesniffer) [(code)](/includes/build/build.test.xml#L170)</sub></sup></summary>
                     <sub>
                         <ul>
                             <li><p>Properties</p>
