@@ -1,4 +1,5 @@
-## Table<big><table width="100%">
+## Table
+<big><table width="100%">
     <thead>
         <tr align="left" valign="top">
             <th>Command</th>
@@ -270,7 +271,8 @@
         </tr>
     </tbody>
 </table>
-## Table<big><table width="100%">
+## Table
+<big><table width="100%">
     <thead>
         <tr align="left" valign="top">
             <th>Command</th>
