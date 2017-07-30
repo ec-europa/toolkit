@@ -1,4 +1,4 @@
-
+[:link: Back to top](#top)
 ## Table
 <big><table width="100%">
     <thead>
@@ -9,7 +9,7 @@
     </thead>
     <tbody>
         <tr align="left" valign="top">
-            <td nowrap><a name="build-clean"></a> [build-clean](/includes/build/build.test.xml#L193) </h4></td>
+            <td nowrap><a name="build-clean"></a>[build-clean](/includes/build/build.test.xml#L193)</td>
             <td width="100%">
                 <details>
                     <summary>Build local version of subsite with a clean install.</summary>
