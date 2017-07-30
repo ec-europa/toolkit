@@ -8,7 +8,7 @@
     </thead>
     <tbody>
         <tr align="left" valign="top">
-            <td nowrap><ins><h4>[build-clean](/includes/build/build.test.xml#L193)</h4></ins></td>
+            <td nowrap><a name="build-clean">[:link:](#build-clean)</a> [build-clean](/includes/build/build.test.xml#L193)</td>
             <td width="100%">
                 <details>
                     <summary>Build local version of subsite with a clean install.</summary>
