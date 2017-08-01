@@ -55,21 +55,21 @@
             historical reasons. The functionality is contained in one of more
             features and modules which need to be enabled after installation.
         -->
-        <phingcall target="subsite-modules-install-enable" />
+        <phingcall target="subsite-modules-install-en" />
 
         <!-- Rebuild node access after Subsites modules activation -->
         <phingcall target="drush-rebuild-node-access" />
     </target>
 
     <!-- Enable required modules after installation of the profile. -->
-    <target name="subsite-modules-install-enable">
+    <target name="subsite-modules-install-en">
         <phingcall target="drush-enable-modules">
             <property name="drupal.modules" value="${subsite.install.modules}" />
         </phingcall>
     </target>
 
     <!-- Enable development modules. -->
-    <target name="subsite-modules-development-enable">
+    <target name="subsite-modules-devel-en">
         <phingcall target="drush-enable-modules">
             <property name="drupal.modules" value="${development.modules.enable}" />
         </phingcall>
@@ -102,6 +102,7 @@
             showProgress="${phpcs.progress}"
             showSniffCodes="${phpcs.sniffcodes}"
             standards="${phpcs.standards}"
+            installedPaths="${phpcs.installed.paths}"
         />
 
         <!-- Set up the git pre-push hook. -->
@@ -194,7 +195,7 @@
     <target
         name="build-clean"
         description="Build local version of subsite with a clean install."
-        depends="drush-create-files-dirs, install, subsite-modules-development-enable"
+        depends="drush-create-files-dirs, install, subsite-modules-devel-en"
     />
 
 </project>

@@ -116,6 +116,6 @@
     </target>
 
     <!-- Install a development version of the subsite with a production database. -->
-    <target name="build-clone" description="Build local version of subsite with production data." depends="subsite-database-download, drush-regenerate-settings, subsite-database-import, subsite-modules-development-enable" />
+    <target name="build-clone" description="Build local version of subsite with production data." depends="subsite-database-download, drush-regenerate-settings, subsite-database-import, subsite-modules-devel-en" />
 
 </project>

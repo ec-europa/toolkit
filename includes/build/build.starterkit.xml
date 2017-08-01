@@ -58,7 +58,7 @@
     </target>
 
     <!-- Build documentation index. -->
-    <target name="starterkit-build-documentation-index">
+    <target name="starterkit-build-docs">
         <build-documentation-index />        
     </target>
 

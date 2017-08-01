@@ -16,7 +16,7 @@
 
 
     <!-- Generate the makefile used to download development modules. -->
-    <target name="subsite-modules-development-makefile">
+    <target name="subsite-modules-devel-mf">
         <echo msg="Generate the makefile for development modules." />
         <if>
             <available file="${subsite.temporary.development.make}" type="file" property="development.makefile.available" />
@@ -34,7 +34,7 @@
     </target>
 
     <!-- Download development modules. -->
-    <target name="subsite-modules-development-download" depends="subsite-modules-development-makefile">
+    <target name="subsite-modules-devel-dl" depends="subsite-modules-devel-mf">
         <echo msg="Download development modules." />
         <phingcall target="drush-make-no-core">
             <property name="drush.make.target.file" value="${subsite.temporary.development.make}" />

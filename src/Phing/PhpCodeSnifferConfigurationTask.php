@@ -80,6 +80,14 @@ class PhpCodeSnifferConfigurationTask extends \Task {
   private $standards = array();
 
   /**
+   * The install paths of standards.
+   *
+   * @var string
+   */
+  private $installedPaths = '';
+
+
+  /**
    * Configures PHP CodeSniffer.
    */
   public function main() {
@@ -100,9 +108,24 @@ class PhpCodeSnifferConfigurationTask extends \Task {
 
     // Add the coding standards.
     foreach ($this->standards as $standard) {
-      $element = $document->createElement('rule');
-      $element->setAttribute('ref', $standard);
-      $root_element->appendChild($element);
+      $installedPaths = explode(',', $this->installedPaths);
+      if (substr($standard, -4) === '.xml') {
+        if (file_exists($standard)) {
+          $element = $document->createElement('rule');
+          $element->setAttribute('ref', $standard);
+          $root_element->appendChild($element);
+        }
+      }
+      else {
+        foreach ($installedPaths as $installedPath) {
+          $ruleset = $installedPath . "/" . $standard . "/ruleset.xml";
+          if (file_exists($ruleset)) {
+            $element = $document->createElement('rule');
+            $element->setAttribute('ref', $ruleset);
+            $root_element->appendChild($element);
+          }
+        }
+      }
     }
 
     // Add the files to check.
@@ -252,6 +275,17 @@ PHP;
   public function setGlobalConfig($globalConfig) {
     $this->globalConfig = $globalConfig;
   }
+
+  /**
+   * Sets the installed_paths configuration..
+   *
+   * @param string $installedPaths
+   *   The paths in which the standards are installed..
+   */
+  public function setInstalledPaths($installedPaths) {
+    $this->installedPaths = $installedPaths;
+  }
+
 
   /**
    * Sets the list of patterns to ignore.

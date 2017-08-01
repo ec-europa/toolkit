@@ -275,8 +275,11 @@ phpcs.extensions = php inc module install info test profile theme css js
 # The default configuration file to generate.
 phpcs.config = ${project.basedir}/phpcs.xml
 
+# The locations for installed standards, delimited by comma.
+phpcs.installed.paths = ${subsite.starterkit.vendor}/ec-europa/qa-automation/phpcs/SubStandards
+
 # The coding standards to use, delimited by semicolons.
-phpcs.standards = ${subsite.starterkit.root}/phpcs-ruleset.xml;${project.basedir}/phpcs-ruleset.xml
+phpcs.standards = Subsite;${project.basedir}/phpcs-ruleset.xml
 
 # Paths to check, delimited by semicolons.
 phpcs.files = ${subsite.resources.dir};${subsite.resources.lib.dir};${phing.subsite.src.dir};${behat.src.dir}

@@ -3,11 +3,10 @@
   "require": {
     "cpliakas/git-wrapper": "dev-master as 1.7.1",
     "cweagans/composer-patches": "dev-checkpatched",
-    "drupal/coder": "8.2.7",
     "drupal/phingdrushtask": "^1.1",
     "drupol/phingbehattask": "^1.0",
     "drush/drush": "8.0.5",
-    "ec-europa/qa-automation": "dev-develop",
+    "ec-europa/qa-automation": "dev-release/3.0",
     "ext-json": "*",
     "ext-phar": "*",
     "ext-xml": "*",

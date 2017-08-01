@@ -85,7 +85,7 @@
             test-behat-setup,
             platform-update-htaccess,
             test-phpcs-setup,
-            subsite-modules-development-download,
+            subsite-modules-devel-dl,
             subsite-site-restore"
     />
 
