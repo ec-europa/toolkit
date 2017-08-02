@@ -15,7 +15,7 @@ tests/behat.yml
 /ssk-*
 /build/
 /platform/
-/tmp
+tmp/
 vendor/
 /includes/composer/bin/
 /resources/git/hooks/pre-push/phpcs
