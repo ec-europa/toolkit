@@ -162,7 +162,7 @@ phing.bin = ${subsite.starterkit.bin}/phing
 
 # Build location.
 phing.subsite.build.dir = build
-phing.subsite.src.dir = ${project.basedir}/src
+phing.subsite.src.dir = ${subsite.starterkit.root}/src
 dist.build.dir = ${project.basedir}/${phing.subsite.build.dir}
 
 # Temporary folder.
@@ -396,7 +396,7 @@ docker.project.id = environment
 # Composer hook phingcall target lists. Space separated only.
 # -----------------------------------------------------------
 
-composer.hook.post.install = starterkit-link-binary starterkit-copy-templates test-phpcs-setup-prepush
+composer.hook.post.install = starterkit-link-binary starterkit-copy-templates test-phpcs-setup
 composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =
