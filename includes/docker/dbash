@@ -8,8 +8,8 @@ if [ "$FILENAME" != "dbash" ]; then
 elif [ -n "$COMPOSE_PROJECT_NAME" ]; then
   PROJECT_NAME=$COMPOSE_PROJECT_NAME
 else
-  UUID=uuidgen | tr "[:upper:]" "[:lower:]" 
-  PROJECT_NAME=$(UUID)
+  UUID=$(uuidgen | tr "[:upper:]" "[:lower:]")
+  PROJECT_NAME=${UUID}
 fi
 
 
