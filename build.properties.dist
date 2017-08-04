@@ -49,7 +49,7 @@ subsite.release.path = ${share.subsites.path}/${subsite.id}
 subsite.starterkit.includes = ${subsite.starterkit.root}/includes
 subsite.starterkit.templates = ${subsite.starterkit.includes}/templates
 subsite.starterkit.composer = ${subsite.starterkit.includes}/composer
-subsite.starterkit.vendor = ${subsite.starterkit.composer}/vendor
+subsite.starterkit.vendor = ${subsite.starterkit.root}/vendor
 subsite.starterkit.bin = ${subsite.starterkit.composer}/bin
 
 
