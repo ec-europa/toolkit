@@ -10,10 +10,7 @@ services:
     #  - 8081:8080
     volumes:
       - ${WORKSPACE}:/var/www/html
-      - /usr/share/composer:/usr/share/composer
-      - /usr/share/platform:/usr/share/platform
-      - /usr/share/subsites:/usr/share/subsites
-      - /var/cache/composer:/var/cache/composer
+      - ${HOME}:/${HOME}
     working_dir: /var/www/html
     links:
       - mysql:mysql

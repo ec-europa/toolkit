@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <project name="Starterkit" default="help">
@@ -5,8 +6,9 @@
     <!-- Start an environment with docker. -->
     <target name="docker-compose-up" description="Start docker project.">
         <echo msg="Starting containers for ${docker.project.id}" />
+        <property environment="env" />
         <mkdir dir="${platform.build.dir}" /> 
-        <mkdir dir="${share.platform.path}/databases/platform-dev-${platform.package.reference}" />
+        <mkdir dir="${env.HOME}/databases/platform-dev-${platform.package.reference}" />
         <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${docker.project.id} -f ${subsite.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate" />
         <rel-sym link="${project.basedir}/ssk-${docker.project.id}" target="${subsite.starterkit.root}/resources/docker/dbash" overwrite="true" />
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
