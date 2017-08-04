@@ -8,7 +8,7 @@
         <property environment="env" />
         <mkdir dir="${platform.build.dir}" /> 
         <mkdir dir="${env.HOME}/databases/platform-dev-${platform.package.reference}" />
-        <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${docker.project.id} -f ${subsite.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate" />
+        <exec command="DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference} docker-compose -p ${docker.project.id} -f ${subsite.starterkit.root}/resources/docker/docker-compose.yml up -d --no-recreate" />
         <rel-sym link="${project.basedir}/ssk-${docker.project.id}" target="${subsite.starterkit.root}/resources/docker/dbash" overwrite="true" />
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
     </target>
