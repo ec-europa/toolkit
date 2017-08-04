@@ -378,7 +378,7 @@ copy.path.haltonerror = true
 # ------------
 
 # Global share location.
-share.global.path = /usr/share
+share.global.path = /tmp
 
 # Main share locations.
 share.platform.path = ${share.global.path}/platform

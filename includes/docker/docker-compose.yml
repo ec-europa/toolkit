@@ -6,11 +6,11 @@ services:
     environment:
       DOCUMENT_ROOT: /var/www/html/platform
       COMPOSER_CACHE_DIR: /var/cache/composer
-    #ports:
-    #  - 8081:8080
+    ports:
+      - 8081:8080
     volumes:
       - ${WORKSPACE}:/var/www/html
-      - ${HOME}:/${HOME}
+      - ${HOME}:${HOME}
     working_dir: /var/www/html
     links:
       - mysql:mysql
