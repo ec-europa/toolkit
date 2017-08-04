@@ -12,7 +12,7 @@
     <target name="starterkit-copy-templates">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
         <copy todir="${project.basedir}">
-            <fileset dir="${subsite.starterkit.templates}" />
+            <fileset dir="${subsite.starterkit.templates}/${subsite.starterkit.project}" />
         </copy>
     </target>
 

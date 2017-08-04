@@ -10,6 +10,7 @@ phpcs.xml
 tests/behat.yml
 
 # Ignore build artifacts.
+/bin/
 /ssk
 /ssk-*
 /build/

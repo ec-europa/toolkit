@@ -86,8 +86,8 @@
     "post-update-cmd": "scripts/phingcalls.sh post-update"
   },
   "config": {
-    "bin-dir": "bin/",
-    "vendor-dir": "../../vendor/",
+    "bin-dir": "../../bin",
+    "vendor-dir": "../../vendor",
     "discard-changes": true,
     "process-timeout": 1200
   }
