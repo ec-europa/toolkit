@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PHING=$(pwd)/bin/phing
+PHING=$(pwd)/../../bin/phing
 
 # If phing is available.
 if [ -f $PHING ] && [ -x $PHING ] && [ -n "$1" ] ; then
