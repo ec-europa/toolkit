@@ -10,12 +10,12 @@ phpcs.xml
 tests/behat.yml
 
 # Ignore build artifacts.
-/bin/
 /ssk
 /ssk-*
 /build/
 /platform/
 /tmp/
-vendor/
-/includes/composer/bin/
+/vendor/
+/includes/composer/bin/*
+!/includes/composer/bin/dbash
 /resources/git/hooks/pre-push/phpcs
