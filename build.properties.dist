@@ -396,7 +396,7 @@ docker.project.id = environment
 # Composer hook phingcall target lists. Space separated only.
 # -----------------------------------------------------------
 
-composer.hook.post.install = starterkit-link-binary starterkit-copy-templates test-phpcs-setup
+composer.hook.post.install = starterkit-link-binary starterkit-copy-templates test-phpcs-setup docker-compose-up
 composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =
