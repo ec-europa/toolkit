@@ -57,10 +57,10 @@
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
     <echo msg="Importing the Drush task." level="${level}" />
-    <import file="${subsite.starterkit.root}/includes/composer/vendor/drupal/phingdrushtask/import.xml"/>
+    <import file="${subsite.starterkit.vendor}/drupal/phingdrushtask/import.xml"/>
 
     <echo msg="Importing the Behat task." level="${level}" />
-    <import file="${subsite.starterkit.root}/includes/composer/vendor/drupol/phingbehattask/import.xml"/>
+    <import file="${subsite.starterkit.vendor}/drupol/phingbehattask/import.xml"/>
 
     <!-- Needs to be removed when phing adds relative symlink support -->
     <!-- https://github.com/phingofficial/phing/issues/684 -->
@@ -69,7 +69,7 @@
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
 
     <!-- Import deprecated targets first to allow projects to override them. -->
-    <import file="${subsite.starterkit.root}/includes/build/build.deprecated.xml" />
+    <import file="${subsite.starterkit.includes}/build/build.deprecated.xml" />
 
     <!-- Import project build xml file. -->
     <if>
@@ -84,7 +84,7 @@
 
     <!-- Import starterkit build xml files. -->
     <import>
-        <fileset dir="${subsite.starterkit.root}/includes/build" >
+        <fileset dir="${subsite.starterkit.includes}/build" >
             <patternset>
                 <exclude name="build.deprecated.xml"/>
                 <include name="build.*.xml"/>
