@@ -44,13 +44,3 @@ services:
   selenium:
     image: selenium/standalone-chrome
     build: ./docker-sel
-  composer:
-    image: composer/composer
-    build: ./docker-com
-    environment:
-      COMPOSER_CACHE_DIR: /var/cache/composer
-    volumes:
-      - .:/app
-      - /var/cache/composer:/var/cache/composer    
-      - /usr/share/composer:/usr/share/composer
-    command: update --no-interaction --no-suggest

@@ -126,7 +126,7 @@ platform.profile.name = multisite_drupal_standard
 # For most projects you would want to follow 'master' so that you always have
 # the latest version that is deployed on production. Use 'develop' to check if
 # your project is compatible with the upcoming release.
-platform.package.reference = 2.2.152
+platform.package.reference = 2.3.61
 
 # The provider that hosts the platform repository.
 platform.package.provider = git-hub
