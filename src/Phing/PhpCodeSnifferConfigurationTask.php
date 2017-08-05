@@ -186,7 +186,7 @@ PHP;
       $globalConfigSaved = file_put_contents($this->globalConfig, $global_config);
 
       if ($configSaved || $globalConfigSaved) {
-        if (!$configSaved) {
+        if ($configSaved) {
           $this->setTaskName("config");
           $this->log("Updating: " . $this->configFile, Project::MSG_INFO);
         }
