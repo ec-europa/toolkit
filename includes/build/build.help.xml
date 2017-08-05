@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="Starterkit" default="help">
+<project default="help">
+
+    <target name="help" description="The default target used when no arguments have been given.">
+        <exec command="phing -f ${phing.file} -l" outputProperty="phing-targets" />
+        <echo msg="${phing-targets}" />
+    </target>
+
+    <!-- Load build properties. -->
+    <if>
+        <available file="build.properties.local" type="file" />
+        <then>
+            <property file="build.properties.local" logoutput="${logoutput}" />
+        </then>
+    </if>
+    <if>
+        <available file="build.properties" type="file" />
+        <then>
+            <property file="build.properties" logoutput="${logoutput}" />
+        </then>
+    </if>
+    <property file="${subsite.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
+
 
     <!-- Copies a given folder to a new location. -->
     <target name="copy-folder" hidden="true">
@@ -39,6 +60,22 @@
                     <fileset dir="${folder.to.unprotect}" />
                 </chmod>
             </then>
+        </if>
+    </target>
+
+   <!-- Create temp dirs. -->
+    <target name="create-tmp-dirs" hidden="true">
+        <if>
+            <!-- Create the global cache directory if it doesn't exist. -->
+            <not>
+                <available file="${platform.package.cachedir}" type="dir"/>
+            </not>
+            <then>
+                <mkdir dir="${platform.package.cachedir}"/>
+            </then>
+            <else>
+                <echo msg="Directory ${platform.package.cachedir} exists."/>
+            </else>
         </if>
     </target>
 

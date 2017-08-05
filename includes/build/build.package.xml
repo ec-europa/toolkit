@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="Starterkit" default="help">
+<project default="help">
+
+    <!-- Import helper targets. -->
+    <import file="${phing.dir}/build.help.xml" />
 
     <!-- Check if site exists. -->
     <if>
@@ -17,48 +20,6 @@
             <property name="backup-detected" value="1" />
         </then>
     </if>
-
-    <!-- Symlink the Behat bin and test directory in the subsite folder. -->
-    <target name="test-behat-setup-link">
-        <echo msg="Symlink the Behat bin and test directory in './sites/all'." />
-        <rel-sym link="${project.basedir}/ssk/behat" target="${subsite.starterkit.vendor}/bin/behat" overwrite="true"/>
-        <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
-    </target>
-
-    <!-- Link site document root to Webserver document root. -->
-    <target
-        name="link-docroot"
-        description="Create symlink from build to docroot.">
-        <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
-    </target>
-
-    <!-- Create temp dirs. -->
-    <target name="create-tmp-dirs" hidden="true">
-        <if>
-            <!-- Create the global cache directory if it doesn't exist. -->
-            <not>
-                <available file="${platform.package.cachedir}" type="dir"/>
-            </not>
-            <then>
-                <mkdir dir="${platform.package.cachedir}"/>
-            </then>
-            <else>
-                <echo msg="Directory ${platform.package.cachedir} exists."/>
-            </else>
-        </if>
-        <if>
-            <!-- Create the destination directory if it doesn't exist. -->
-            <not>
-                <available file="${platform.package.destination}" type="dir"/>
-            </not>
-            <then>
-                <mkdir dir="${platform.package.destination}"/>
-            </then>
-            <else>
-                <echo msg="Directory ${platform.package.destination} exists."/>
-            </else>
-        </if>
-    </target>
 
     <!-- Build release package. -->
     <target name="build-release" description="Build subsite source code release package." depends="build-dist">
@@ -107,5 +68,21 @@
             dist-copy-resources,
             dist-composer-install"
     />
+
+
+
+    <!-- Symlink the Behat bin and test directory in the subsite folder. -->
+    <target name="test-behat-setup-link">
+        <echo msg="Symlink the Behat bin and test directory in './sites/all'." />
+        <rel-sym link="${project.basedir}/ssk/behat" target="${subsite.starterkit.vendor}/bin/behat" overwrite="true"/>
+        <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
+    </target>
+
+    <!-- Link site document root to Webserver document root. -->
+    <target
+        name="link-docroot"
+        description="Create symlink from build to docroot.">
+        <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
+    </target>
 
 </project>

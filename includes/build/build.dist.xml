@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="Starterkit" default="help">
+<project default="help">
+
+    <!-- Import helper targets. -->
+    <import file="${phing.dir}/build.help.xml" />
 
    <!-- Install Composer dist dependencies for the subsite. -->
     <target name="dist-composer-install">

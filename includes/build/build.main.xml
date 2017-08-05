@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project default="help">
+
+    <!-- Import helper targets. -->
+    <import file="${phing.dir}/build.help.xml" />
+
+    <!-- Run full functional testing with behat. -->
+    <target
+        name="test-run-behat"
+        description="Refresh configuration and run behat scenarios."
+        depends="test-behat-setup, test-behat-exec"
+    />
+
+    <!-- Run a full static analysis with phpcs. -->
+    <target
+        name="test-run-phpcs"
+        description="Refresh configuration and run phpcs review."
+        depends="test-phpcs-setup, test-phpcs-exec"
+    />
+
+    <!-- Run a full static analysis qa console. -->
+    <target
+        name="test-run-qa"
+        description="Refresh configuration and run qa review."
+        depends="test-phpcs-setup, test-qa-exec"
+    />
+
+</project>

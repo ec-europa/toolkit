@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="Starterkit" default="help">
+<project default="help">
+
+    <!-- Import helper targets. -->
+    <import file="${phing.dir}/build.help.xml" />
 
     <!-- Start an environment with docker. -->
     <target name="docker-compose-up" description="Start docker project.">

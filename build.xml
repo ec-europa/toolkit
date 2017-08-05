@@ -1,51 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="Starterkit" default="help">
+<project name="starterkit" default="help">
 
     <!-- Only output information on initial phing call. -->
     <property name="logoutput" value="true" />
     <property name="level" value="info" />
 
-    <!-- Help target to list commands. -->
-    <target name="help" hidden="true">
-        <exec executable="${phing.bin}" passthru="true">
-            <arg line="-l -Dlogoutput=false -Dlevel=verbose -logger phing.listener.AnsiColorLogger | sed -n '1!p'" />
-        </exec>
-    </target>
-
-    <!-- Set starterkit properties. -->
-    <if>
-        <available file="${project.basedir}/vendor/ec-europa/ssk" />
-        <then>
-            <property name="subsite.starterkit.root" value="${project.basedir}/vendor/ec-europa/ssk" />
-            <property name="project-is-subsite" value="1" />
-        </then>
-        <else>
-            <property name="subsite.starterkit.root" value="${project.basedir}" override="true" />
-        </else>
-    </if>
-
-    <!-- Load build properties. -->
-    <if>
-        <available file="${project.basedir}/build.properties.local" type="file" />
-        <then>
-            <property file="${project.basedir}/build.properties.local" logoutput="${logoutput}" />
-        </then>
-    </if>
-    <if>
-        <available file="${project.basedir}/build.properties" type="file" />
-        <then>
-            <property file="${project.basedir}/build.properties" logoutput="${logoutput}" />
-        </then>
-    </if>
-    <property file="${subsite.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
+    <!-- Import helper targets. -->
+    <import file="${phing.dir.starterkit}/includes/build/build.help.xml" />
 
     <target name="subsite-create-directories">
         <mkdir dir="${subsite.resources.dir}" />
     </target>
 
     <!-- Set include path for custom tasks. -->
-    <includepath classpath="${subsite.starterkit.root}/src/Phing" />
+    <includepath classpath="${ssk.root}/src/Phing" />
 
     <echo msg="Loading PHP Codesniffer Configuration task." level="${level}"  />
     <taskdef name="phpcodesnifferconfiguration" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
@@ -57,10 +26,10 @@
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
     <echo msg="Importing the Drush task." level="${level}" />
-    <import file="${subsite.starterkit.vendor}/drupal/phingdrushtask/import.xml"/>
+    <import file="${ssk.vendor}/drupal/phingdrushtask/import.xml"/>
 
     <echo msg="Importing the Behat task." level="${level}" />
-    <import file="${subsite.starterkit.vendor}/drupol/phingbehattask/import.xml"/>
+    <import file="${ssk.vendor}/drupol/phingbehattask/import.xml"/>
 
     <!-- Needs to be removed when phing adds relative symlink support -->
     <!-- https://github.com/phingofficial/phing/issues/684 -->
@@ -69,22 +38,22 @@
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
 
     <!-- Import deprecated targets first to allow projects to override them. -->
-    <import file="${subsite.starterkit.includes}/build/build.deprecated.xml" />
+    <import file="${ssk.build}/build.deprecated.xml" />
 
     <!-- Import project build xml file. -->
     <if>
         <and>
             <isset property="project-is-subsite" />
-            <available file="${project.basedir}/build.project.xml" />
+            <available file="build.project.xml" />
         </and>
         <then>
-            <import file="${project.basedir}/build.project.xml" />
+            <import file="build.project.xml" />
         </then>
     </if>
 
     <!-- Import starterkit build xml files. -->
     <import>
-        <fileset dir="${subsite.starterkit.includes}/build" >
+        <fileset dir="${ssk.build}" >
             <patternset>
                 <exclude name="build.deprecated.xml"/>
                 <include name="build.*.xml"/>
