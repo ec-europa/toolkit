@@ -47,7 +47,7 @@ subsite.release.path = ${share.subsites.path}/${subsite.id}
 
 # Starterkit locations
 ssk.root = ${phing.dir.starterkit}
-ssk.includes = ${skk.root}/includes
+ssk.includes = ${ssk.root}/includes
 ssk.build = ${ssk.includes}/build
 ssk.templates = ${ssk.includes}/templates
 ssk.composer = ${ssk.includes}/composer
