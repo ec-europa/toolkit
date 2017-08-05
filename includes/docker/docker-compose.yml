@@ -10,7 +10,7 @@ services:
       - 8081:8080
     volumes:
       - ${WORKSPACE}:/var/www/html
-      - ${HOME}:${HOME}
+      - ${HOME}:/tmp
     working_dir: /var/www/html
     links:
       - mysql:mysql
