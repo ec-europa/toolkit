@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="My platform" default="help">
+<project name="My subsite" default="help">
 
-    <!-- Set starterkit root property -->
-    <property name="subsite.starterkit.root" value="${project.basedir}/vendor/ec-europa/ssk" />
-
-    <!-- Import starterkit build xml files. -->
-    <import file="${subsite.starterkit.root}/build.xml" />
+    <property name="ssk.root" value="${project.basedir}/vendor/ec-europa/ssk" />
+    <import file="${ssk.root}/build.xml" />
 
 </project>

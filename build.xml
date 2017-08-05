@@ -40,16 +40,7 @@
     <!-- Import deprecated targets first to allow projects to override them. -->
     <import file="${ssk.build}/build.deprecated.xml" />
 
-    <!-- Import project build xml file. -->
-    <if>
-        <and>
-            <isset property="project-is-subsite" />
-            <available file="build.project.xml" />
-        </and>
-        <then>
-            <import file="build.project.xml" />
-        </then>
-    </if>
+    <import file="build.project.xml" optional="true" />
 
     <!-- Import starterkit build xml files. -->
     <import>

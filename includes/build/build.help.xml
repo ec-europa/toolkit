@@ -3,7 +3,7 @@
 <project default="help">
 
     <target name="help" description="The default target used when no arguments have been given.">
-        <exec command="phing -f ${phing.file} -l" outputProperty="phing-targets" />
+        <exec command="${phing.bin} -f ${phing.file} -l" outputProperty="phing-targets" />
         <echo msg="${phing-targets}" />
     </target>
 

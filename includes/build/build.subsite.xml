@@ -2,8 +2,8 @@
 
 <project default="help">
 
-    <!-- Import helper targets. -->
-    <import file="${phing.dir}/build.help.xml" />
+    <!-- Import helper targets if called here directly. -->
+    <import file="${phing.dir}/build.help.xml" optional="true" />
 
     <!-- Install a development version of the subsite. -->
     <target
