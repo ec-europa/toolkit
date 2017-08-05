@@ -3,7 +3,7 @@
 <project default="help">
 
     <!-- Import helper targets. -->
-    <import file="${phing.dir}/build.help.xml" />
+    <import file="${phing.dir}/build.help.xml" optional="true" />
 
     <!-- Echo the composer hook phingcalls. -->
     <target name="composer-echo-hook-phingcalls" hidden="true">
