@@ -10,22 +10,22 @@
         <echo msg="Starting containers for ${docker.project.id}" />
         <mkdir dir="${platform.build.dir}" /> 
         <mkdir dir="${share.platform.path}/databases/platform-dev-${platform.package.reference}" />
-        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${docker.project.id} -f ${subsite.starterkit.includes}/docker/docker-compose.yml up -d" />
-        <rel-sym link="${project.basedir}/ssk-${docker.project.id}" target="${subsite.starterkit.includes}/docker/dbash" overwrite="true" />
+        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${share.platform.path}/databases/platform-dev-${platform.package.reference} docker-compose -p ${docker.project.id} -f ${ssk.includes}/docker/docker-compose.yml up -d" />
+        <rel-sym link="${project.basedir}/ssk-${docker.project.id}" target="${ssk.includes}/docker/dbash" overwrite="true" />
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
     </target>
 
     <!-- Stop docker environment. -->
     <target name="docker-compose-stop" description="Stop docker project.">
         <echo msg="Stopping containers for ${docker.project.id}" />
-        <exec command="docker-compose -p ${docker.project.id} -f ${subsite.starterkit.root}/resources/docker/docker-compose.yml stop" />
+        <exec command="docker-compose -p ${docker.project.id} -f ${ssk.root}/resources/docker/docker-compose.yml stop" />
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
     </target>
 
     <!-- Remove docker environment. -->
     <target name="docker-compose-down" description="Trash docker project.">
         <echo msg="Removing containers and volumes for ${docker.project.id}" />
-        <exec command="docker-compose -p ${docker.project.id} -f ${subsite.starterkit.root}/resources/docker/docker-compose.yml down --volumes" />
+        <exec command="docker-compose -p ${docker.project.id} -f ${ssk.root}/resources/docker/docker-compose.yml down --volumes" />
         <delete file="${project.basedir}/ssk-${docker.project.id}" />
     </target>
 

@@ -36,7 +36,7 @@
     <!-- Do quality assurance checks. -->
     <target name="test-phpcs-exec">
         <exec
-            command="${subsite.starterkit.bin}/phpcs"
+            command="${ssk.bin}/phpcs"
             passthru="true"
             checkreturn="true"
         />
@@ -80,7 +80,7 @@
     <!-- Do quality assurance checks. -->
     <target name="test-qa-exec">
         <exec
-            command="${subsite.starterkit.bin}/qa \
+            command="${ssk.bin}/qa \
                 review:full \
                 --no-interaction \
                 --ansi"

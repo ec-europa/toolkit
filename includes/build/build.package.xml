@@ -74,7 +74,7 @@
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
     <target name="test-behat-setup-link">
         <echo msg="Symlink the Behat bin and test directory in './sites/all'." />
-        <rel-sym link="${project.basedir}/ssk/behat" target="${subsite.starterkit.vendor}/bin/behat" overwrite="true"/>
+        <rel-sym link="${project.basedir}/ssk/behat" target="${ssk.vendor}/bin/behat" overwrite="true"/>
         <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
     </target>
 

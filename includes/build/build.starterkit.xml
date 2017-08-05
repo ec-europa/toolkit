@@ -8,18 +8,18 @@
     <!-- Provide handy access with root symlink to starterkit binary. -->
     <target name="starterkit-link-binary">
         <echo msg="Provide project with starterkit binary at root level." />
-        <rel-sym link="${project.basedir}/ssk" target="${subsite.starterkit.bin}" overwrite="true"/>
+        <rel-sym link="${project.basedir}/ssk" target="${ssk.bin}" overwrite="true"/>
     </target>
 
     <!-- Ensure needed files are present. -->
     <target name="starterkit-copy-templates">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
         <copy todir="${project.basedir}">
-            <fileset dir="${subsite.starterkit.templates}/project" />
+            <fileset dir="${ssk.templates}/project" />
         </copy>
     </target>
 
-    <!-- Upgrade subsite-starterkit 2.x to 3.x. -->
+    <!-- Upgrade ssk 2.x to 3.x. -->
     <target name="starterkit-upgrade">
 
         <!-- Delete starterkit folders. -->
