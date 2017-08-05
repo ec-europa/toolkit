@@ -3,7 +3,12 @@
 <project default="help">
 
     <!-- Import helper targets if called here directly. -->
-    <import file="${phing.dir}/build.help.xml" optional="true" />
+    <if>
+         <available file="build.help.xml" />
+         <then>
+             <import file="build.help.xml" />
+         </then>
+     </if>
 
     <!-- Provide handy access with root symlink to starterkit binary. -->
     <target name="starterkit-link-binary">
