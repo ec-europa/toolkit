@@ -20,7 +20,7 @@
             <property file="build.properties" logoutput="${logoutput}" />
         </then>
     </if>
-    <property file="${subsite.starterkit.root}/build.properties.dist" logoutput="${logoutput}" />
+    <property file="${phing.dir.starterkit}/build.properties.dist" logoutput="${logoutput}" />
 
 
     <!-- Copies a given folder to a new location. -->
