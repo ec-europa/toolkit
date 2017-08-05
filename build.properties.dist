@@ -50,7 +50,7 @@ subsite.starterkit.includes = ${subsite.starterkit.root}/includes
 subsite.starterkit.templates = ${subsite.starterkit.includes}/templates
 subsite.starterkit.composer = ${subsite.starterkit.includes}/composer
 subsite.starterkit.vendor = ${subsite.starterkit.root}/vendor
-subsite.starterkit.bin = ${subsite.starterkit.composer}/bin
+subsite.starterkit.bin = ${subsite.starterkit.root}/bin
 
 
 # Development configuration
