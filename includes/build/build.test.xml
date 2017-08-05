@@ -98,7 +98,7 @@
             globalConfig="${phpcs.global.config}"
             ignorePatterns="${phpcs.ignore}"
             passWarnings = "${phpcs.passwarnings}"
-            report="${phpcs.report}"
+            reports="${phpcs.reports}"
             showProgress="${phpcs.progress}"
             showSniffCodes="${phpcs.sniffcodes}"
             standards="${phpcs.standards}"

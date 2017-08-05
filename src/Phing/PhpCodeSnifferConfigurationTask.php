@@ -52,11 +52,11 @@ class PhpCodeSnifferConfigurationTask extends \Task {
   private $passWarnings = FALSE;
 
   /**
-   * The report format to use.
+   * The reports format to return.
    *
-   * @var string
+   * @var array()
    */
-  private $report = '';
+  private $reports = array();
 
   /**
    * Whether or not to show progress.
@@ -146,10 +146,12 @@ class PhpCodeSnifferConfigurationTask extends \Task {
       $root_element->appendChild($element);
     }
 
-    // Add the report type.
-    if (!empty($this->report)) {
-      $this->appendArgument($document, $root_element, $this->report, 'report');
+    // Add the requested Reports..
+    foreach ($this->reports as $report) {
+      // Add the report type.
+      $this->appendArgument($document, $root_element, $report, 'report');
     }
+
 
     // Add the shorthand options.
     $shorthand_options = array(
@@ -314,14 +316,21 @@ PHP;
   }
 
   /**
-   * Sets the report format to use.
+   * Sets the report formats to use.
    *
-   * @param string $report
-   *   The report format to use.
+   * @param string $reports
+   *   A list of report types, delimited by spaces, commas or semicolons.
    */
-  public function setReport($report) {
-    $this->report = $report;
+  public function setReports($reports) {
+    $this->reports = array();
+    $token = ' ,;';
+    $standard = strtok($reports, $token);
+    while ($report !== FALSE) {
+      $this->reports[] = $reports;
+      $reports = strtok($token);
+    }
   }
+
 
   /**
    * Sets whether or not to show progress.

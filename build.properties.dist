@@ -270,6 +270,7 @@ behat.src.dir = ${behat.dir}/src
 # -----------------------------
 
 # The file extensions to test.
+# Delimited by space, comma or semicolon.
 phpcs.extensions = php inc module install info test profile theme css js
 
 # The default configuration file to generate.
@@ -278,7 +279,8 @@ phpcs.config = ${project.basedir}/phpcs.xml
 # The locations for installed standards, delimited by comma.
 phpcs.installed.paths = ${subsite.starterkit.vendor}/ec-europa/qa-automation/phpcs/SubStandards
 
-# The coding standards to use, delimited by semicolons.
+# The coding standards to enforce.
+# Delimited by space, comma or semicolon..
 phpcs.standards = Subsite;${project.basedir}/phpcs-ruleset.xml
 
 # Paths to check, delimited by semicolons.
@@ -291,7 +293,8 @@ phpcs.ignore =
 phpcs.passwarnings = 0
 
 # The report format. For example 'full', 'summary', 'diff', 'xml', 'json'.
-phpcs.report = full
+# Delimited by space, comma or semicolon.
+phpcs.reports = full summary
 
 # Whether or not to show sniff codes in the report.
 phpcs.sniffcodes = 0
