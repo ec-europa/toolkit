@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="My subsite" default="help">
+<project name="project" default="help">
 
-    <property name="ssk.root" value="${project.basedir}/vendor/ec-europa/ssk" />
+    <property name="ssk.root" value="${project.basedir}/endor/ec-europa/ssk" />
     <import file="${ssk.root}/build.xml" />
 
 </project>

@@ -2,6 +2,7 @@
 
 <project default="help">
 
+    <!-- Help function to display the targets. -->
     <target name="help" description="The default target used when no arguments have been given.">
         <exec command="${phing.bin} -f ${phing.file} -l" outputProperty="phing-targets" />
         <echo msg="${phing-targets}" />
@@ -19,9 +20,19 @@
         <then>
             <property file="build.properties" logoutput="${logoutput}" />
         </then>
+        <elseif>
+            <equals arg1="${project.basedir}" arg2="${ssk.root}" />
+            <then>
+                <fail msg="${project.basedir} ---- ${ssk.root} Without a build.properties" />
+            </then>
+        </elseif>
     </if>
-    <property file="${phing.dir.starterkit}/build.properties.dist" logoutput="${logoutput}" />
-
+    <if>
+        <available file="vendor/ec-europa/ssk/build.properties.dist" type="file" />
+        <then>
+            <property file="vendor/ec-europa/ssk/build.properties.dist" logoutput="${logoutput}" />
+        </then>
+    </if>
 
     <!-- Copies a given folder to a new location. -->
     <target name="copy-folder" hidden="true">
