@@ -2,6 +2,14 @@
 
 <project name="Starterkit" default="help">
 
+    <!-- Install a development version of the subsite. -->
+    <target
+        name="build-clean"
+        description="Build local version of subsite with a clean install."
+        depends="drush-create-files-dirs, install, subsite-modules-devel-en"
+    />
+
+
     <!-- Install Composer dev dependencies for the subsite. -->
     <target name="subsite-composer-install">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
@@ -39,6 +47,20 @@
         <phingcall target="drush-make-no-core">
             <property name="drush.make.target.file" value="${subsite.temporary.development.make}" />
             <property name="drush.make.root" value="${platform.build.dir}" />
+        </phingcall>
+    </target>
+
+    <!-- Enable required modules after installation of the profile. -->
+    <target name="subsite-modules-install-en">
+        <phingcall target="drush-enable-modules">
+            <property name="drupal.modules" value="${subsite.install.modules}" />
+        </phingcall>
+    </target>
+
+    <!-- Enable development modules. -->
+    <target name="subsite-modules-devel-en">
+        <phingcall target="drush-enable-modules">
+            <property name="drupal.modules" value="${development.modules.enable}" />
         </phingcall>
     </target>
 
