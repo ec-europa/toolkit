@@ -4,6 +4,9 @@ namespace NextEuropa\Phing;
 
 require_once 'phing/Task.php';
 
+use BuildException;
+use Project;
+
 /**
  * A Phing task to generate a configuration file for PHP CodeSniffer.
  */
@@ -168,7 +171,7 @@ class PhpCodeSnifferConfigurationTask extends \Task {
     }
 
     // Save the file.
-    file_put_contents($this->configFile, $document->saveXML());
+    $configSaved = file_put_contents($this->configFile, $document->saveXML());
 
     // If a global configuration file is passed, update this too.
     if (!empty($this->globalConfig)) {
@@ -180,7 +183,24 @@ class PhpCodeSnifferConfigurationTask extends \Task {
   'ignore_warnings_on_exit' => '$ignore_warnings_on_exit',
 );
 PHP;
-      file_put_contents($this->globalConfig, $global_config);
+      $globalConfigSaved = file_put_contents($this->globalConfig, $global_config);
+
+      if ($configSaved || $globalConfigSaved) {
+        if (!$configSaved) {
+          $this->setTaskName("config");
+          $this->log("Updating: " . $this->configFile, Project::MSG_INFO);
+        }
+        else {
+          throw new BuildException("Was unable to update: " . $this->configFile, $this->getLocation());
+        }
+        if ($globalConfigSaved) {
+          $this->setTaskName("config");
+          $this->log("Updating: " . $this->globalConfig, Project::MSG_INFO);
+        }
+        else {
+          throw new BuildException("Was unable to update ." . $this->configFile, $this->getLocation());
+        }
+      }
     }
   }
 
@@ -324,10 +344,10 @@ PHP;
   public function setReports($reports) {
     $this->reports = array();
     $token = ' ,;';
-    $standard = strtok($reports, $token);
+    $report = strtok($reports, $token);
     while ($report !== FALSE) {
       $this->reports[] = $reports;
-      $reports = strtok($token);
+      $report = strtok($token);
     }
   }
 
