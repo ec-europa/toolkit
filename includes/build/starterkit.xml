@@ -19,6 +19,7 @@
     <!-- Ensure needed files are present. -->
     <target name="starterkit-copy-templates">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
+        <copy file="${ssk.root}/build.properties.dist" tofile="${project.basedir}/build.properties.dist" overwrite="true" />
         <copy todir="${project.basedir}">
             <fileset dir="${ssk.templates}/project" />
         </copy>
