@@ -2,12 +2,8 @@
 
 <project name="starterkit" default="help">
 
-    <!-- Only output information on initial phing call. -->
-    <property name="logoutput" value="true" />
-    <property name="level" value="info" />
-
     <!-- Import helper targets. -->
-    <import file="${phing.dir.starterkit}/includes/build/build.help.xml" />
+    <import file="${phing.dir.starterkit}/includes/build/help.xml" />
 
     <target name="subsite-create-directories">
         <mkdir dir="${subsite.resources.dir}" />
@@ -16,25 +12,25 @@
     <!-- Set include path for custom tasks. -->
     <includepath classpath="${ssk.root}/src/Phing" />
 
-    <echo msg="Loading PHP Codesniffer Configuration task." level="${level}"  />
+    <echo msg="Loading PHP Codesniffer Configuration task." />
     <taskdef name="phpcodesnifferconfiguration" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
 
-    <echo msg="Loading Phing Deprecated Task." level="${level}"  />
+    <echo msg="Loading Phing Deprecated Task." />
     <taskdef name="replaced" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
 
-    <echo msg="Loading Drush Makefile task." level="${level}"  />
+    <echo msg="Loading Drush Makefile task." />
     <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
 
-    <echo msg="Importing the Drush task." level="${level}" />
+    <echo msg="Importing the Drush task." />
     <import file="${ssk.vendor}/drupal/phingdrushtask/import.xml"/>
 
-    <echo msg="Importing the Behat task." level="${level}" />
+    <echo msg="Importing the Behat task." />
     <import file="${ssk.vendor}/drupol/phingbehattask/import.xml"/>
 
     <!-- Needs to be removed when phing adds relative symlink support -->
     <!-- https://github.com/phingofficial/phing/issues/684 -->
     <!-- https://github.com/phingofficial/phing/pull/695 -->
-    <echo msg="Loading Relative Symlink task." level="${level}" />
+    <echo msg="Loading Relative Symlink task." />
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
 
     <!-- Import deprecated targets first to allow projects to override them. -->
@@ -51,9 +47,5 @@
             </patternset>
         </fileset>
     </import>
-
-    <!-- Disable output on consecutive phing calls. -->
-    <property name="logoutput" value="false" override="true" />
-    <property name="level" value="verbose" override="true" />
 
 </project>
