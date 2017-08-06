@@ -7,15 +7,14 @@
 
     <!-- Set include path for custom tasks. -->
     <includepath classpath="${ssk.root}/src/Phing" />
+
+    <!-- Custom task definititons. -->
     <taskdef name="phpcsconf" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
     <taskdef name="replaced" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
     <taskdef name="drushmf" classname="\NextEuropa\Phing\DrushMakeFileTask" />
-    <!-- Needs to be removed when phing adds relative symlink support -->
-    <!-- https://github.com/phingofficial/phing/pull/695 -->
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
     
     <!-- Import xml files for phing. -->
-    <!-- TODO: check if we can not use an autoloader to clean this build file up. -->
     <import file="${ssk.vendor}/drupal/phingdrushtask/import.xml"/>
     <import file="${ssk.vendor}/drupol/phingbehattask/import.xml"/>
 
