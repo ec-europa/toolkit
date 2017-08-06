@@ -51,7 +51,7 @@
     <target name="test-phpcs-setup" depends="test-phpcs-setup-prepush">
         <delete file="${phpcs.config}" failonerror="false" />
         <delete file="${phpcs.global.config}" failonerror="false" />
-        <phpcodesnifferconfiguration
+        <phpcsconfig
             configFile="${phpcs.config}"
             extensions="${phpcs.extensions}"
             files="${phpcs.files}"
