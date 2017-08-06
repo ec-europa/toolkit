@@ -41,7 +41,7 @@
                 <delete file="${subsite.temporary.development.make}" failonerror="false" />
             </then>
         </if>
-        <drushmakefile
+        <drushmf
             makeFile="${subsite.temporary.development.make}"
             coreVersion="${drupal.core.version}"
             projects="${development.modules.download}"
