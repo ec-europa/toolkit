@@ -11,20 +11,13 @@
 
     <!-- Set include path for custom tasks. -->
     <includepath classpath="${ssk.root}/src/Phing" />
-
-    <echo msg="Loading PHP Codesniffer Configuration task." />
-    <taskdef name="phpcodesnifferconfiguration" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
-
-    <echo msg="Loading Phing Deprecated Task." />
+    <taskdef name="phpcsconf" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
     <taskdef name="replaced" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
-
-    <echo msg="Loading Drush Makefile task." />
-    <taskdef name="drushmakefile" classname="\NextEuropa\Phing\DrushMakeFileTask" />
-
-    <echo msg="Importing the Drush task." />
+    <taskdef name="drushmf" classname="\NextEuropa\Phing\DrushMakeFileTask" />
+    
+    <!-- Import xml files for phing. -->
+    <!-- TODO: check if we can not use an autoloader to clean this build file up. -->
     <import file="${ssk.vendor}/drupal/phingdrushtask/import.xml"/>
-
-    <echo msg="Importing the Behat task." />
     <import file="${ssk.vendor}/drupol/phingbehattask/import.xml"/>
 
     <!-- Needs to be removed when phing adds relative symlink support -->
