@@ -171,14 +171,17 @@ dist.build.dir = ${project.basedir}/${phing.subsite.build.dir}
 phing.subsite.tmp.dir = ${project.basedir}/tmp
 
 # Local resources.
+project.resources.dir = ${project.basedir}/resources
 subsite.resources.dir = ${project.basedir}/resources
 subsite.resources.lib.dir = ${project.basedir}/lib
 subsite.resources.features.dir = ${subsite.resources.lib.dir}/features
 subsite.resources.modules.dir = ${subsite.resources.lib.dir}/modules
+subsite.resources.profiles.dir = ${subsite.resources.lib.dir}/profiles
 subsite.resources.source.dir = ${subsite.resources.lib.dir}/src
 subsite.resources.themes.dir = ${subsite.resources.lib.dir}/themes
-subsite.resources.composer.json = ${subsite.resources.dir}/composer.json
-subsite.resources.composer.lock = ${subsite.resources.dir}/composer.lock
+project.resources.favicon.ico = ${subsite.resources.dir}/favicon.ico
+project.resources.composer.json = ${subsite.resources.dir}/composer.json
+project.resources.composer.lock = ${subsite.resources.dir}/composer.lock
 
 # Temporary resources. These are generated on the fly when building.
 subsite.temporary.development.make = ${phing.subsite.tmp.dir}/development.make
