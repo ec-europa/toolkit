@@ -2,39 +2,61 @@
 # ---------------------
 
 # The site name.
+## REQUIRED
 subsite.name = My Project
 
 # Subsite ID. Multisite folder name. Usually repository name without "-reference"
+## REQUIRED
 subsite.id = myproject
 
-# The make file containing the dependencies of the subsite.
+# The make file containing the dependencies of the subsite
+## TODO: Add to project settings. Used by both platform and subsite.
 subsite.make = ${subsite.resources.dir}/site.make
 
 # Modules to enable after installation. Separate multiple modules with spaces.
+## REQUIRED
 subsite.install.modules = myproject_core
+
+# Subsite production url.
+## NEW REQUIRED ## Or by FPFIS API SDK
+subsite.production.url
+
+# Subsite playground url.
+## NEW REQUIRED ## Or by FPFIS API SDK
+subsite.playground.url
+
+# Subsite acceptance url.
+## NEW REQUIRED ## Or by FPFIS API SDK
+subsite.acceptance.url
+
 
 # Subsite clone configuration.
 #-----------------------------
 
 # Project database url scheme.
+## REMOVE
 subsite.database.url.scheme = https
 
 # Project database url username is used for .htaccess to file download url. Use only
 # within build.properties.local if needed. Never commit credentials on github.
+## KEEP or FPFIS API SDK github oauth.
 subsite.database.url.htaccess.username =
 
 # Project database url username is used for .htaccess to file download url. Use only
 # within build.properties.local if needed. Never commit credentials on github.
+## KEEP or FPFIS API SDK github oauth.
 subsite.database.url.htaccess.password =
 
 # Project database url. Define the scheme in subsite.database.url.scheme property. If
 # you want developers to use the same database this should be added to the projects
 # build.properties file.
+## FPFIS API SDK: Url should not be given but file should be returned for download.
 subsite.database.url = webgate.ec.europa.eu/fpfis/files-for/${subsite.id}/
 
 # Project database filename.  If you want developers to use the same database this
 # should be added to the projects build.properties file. The file has to be
 # compressed in .gz format. Thus ending in .sql.gz.
+## FPFIS API SDK: Filename should not be know but download by version (mostly master???)
 subsite.database.filename =
 
 # The information of the project reference repository.
@@ -42,10 +64,8 @@ subsite.reference.repository = https://github.com/ec-europa/myproject-reference
 subsite.reference.branch = master
 subsite.reference.remote = reference
 
-# The path to save deploy packages to:
-subsite.release.path = ${share.subsites.path}/${subsite.id}
-
 # Starterkit locations
+## NEVER BEEN BETTER:
 ssk.root = ${phing.dir.starterkit}
 ssk.includes = ${ssk.root}/includes
 ssk.build = ${ssk.includes}/build
@@ -57,7 +77,7 @@ ssk.bin = ${ssk.root}/bin
 
 # Development configuration
 # ---------------------------------------
-
+## ALL GOOD EXCEPT SFP
 # Development / testing modules to download.
 development.modules.download = devel maillog stage_file_proxy
 
@@ -72,7 +92,9 @@ development.variables.error_level = 2
 development.variables.views_ui_show_sql_query = 1
 development.variables.views_ui_show_performance_statistics = 1
 development.variables.views_show_additional_queries = 1
+## REMOVE SFP & Load by production url property or FPFIS API SDK
 development.variables.stage_file_proxy_origin = https://ec.europa.eu/${subsite.id}
+## MOVE TO FPFIS API SDK? We know it's hard coded.
 development.variables.stage_file_proxy_origin_dir = sites/${subsite.id}/files
 development.variables.stage_file_proxy_hotlink = 1
 
@@ -86,14 +108,18 @@ drupal.db.name = db_name
 drupal.db.user = root
 drupal.db.password =
 drupal.db.host = 127.0.0.1
+# TODO: replace host with docker service name?
 drupal.db.port = 3306
 drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${drupal.db.name}
+## VALIDATE: Escape this string for drush usage.
 
 # Solr env url. Either d7_apachesolr or d7_search_api.
+## QUERY: can be queried and correct module enable in install.
 drupal.solr.activate = 1
 drupal.solr.env.url = http://solr:8983/solr/d7_apachesolr
 
-# Admin user.
+# Admin user
+# GOOD.
 drupal.admin.username = admin
 drupal.admin.password = pass
 drupal.admin.email = ${drupal.admin.username}@example.com
@@ -105,9 +131,11 @@ drupal.htaccess.path = ${platform.build.dir}/.htaccess
 drupal.htaccess.append.text =
 
 # The site name to use. Use 'all' unless you want to build a multisite setup.
+## TODO: MULTISITE support would be a nice to have.
 drupal.site.name = all
 
 # The Drupal core version.
+## GOOD
 drupal.core.version = 7.x
 
 
@@ -116,10 +144,12 @@ drupal.core.version = 7.x
 
 # The root directory of the platform. This will become the Drupal root folder,
 # so point your web server here.
+## GOOD ???
 platform.build.dir = ${project.basedir}/platform
 
 # The install profile to use. Either multisite_drupal_standard or
 # multisite_drupal_communities.
+## REQUIRED
 platform.profile.name = multisite_drupal_standard
 
 # The branch, tag or commit to use, eg. 'master', 'develop', '2.1.56',
@@ -128,28 +158,36 @@ platform.profile.name = multisite_drupal_standard
 # For most projects you would want to follow 'master' so that you always have
 # the latest version that is deployed on production. Use 'develop' to check if
 # your project is compatible with the upcoming release.
+## TODO: FPFIS API SDK (platform.version.playground, platform.version.production, platform.version.acceptance).
 platform.package.reference = 2.3.61
 
 # The provider that hosts the platform repository.
+## KEEP as project?
 platform.package.provider = git-hub
 
 # The name of the platform repository.
+## KEEP as project?
 platform.package.repository = ec-europa/platform-dev
 
 # The name of the global folder where platform downloads and installs can be stored.
+## REMOVE
 platform.package.cachedir = /tmp/platform-dev
 
 # Activate vanilla database caching to skip drush site-install.
+## KEEP
 platform.package.database = 0
 
 # The name of the folder where the platform will be downloaded.
+## REMOVE
 platform.package.destination = ${phing.subsite.tmp.dir}
 
 # The path to the downloaded package. This is named 'deploy-package-${platform.package.reference}.tar.gz'.
+## KEEP or GITHUB API by version/branch
 platform.package.tarball = deploy-package-${platform.package.reference}.tar.gz
 
 # The ContinuousPHP token. Leave this empty for open source projects. Note that
 # the NextEuropa platform is open source.
+## OPENSOURCE REPLICATE: For starterkit and platform.
 platform.package.token =
 
 
@@ -157,7 +195,9 @@ platform.package.token =
 # -----
 
 # Paths to executables.
+## TODO: Document fallback system.
 composer.bin = composer.phar
+## GOOD
 drush.bin = ${ssk.bin}/drush
 git.bin = git
 phing.bin = ${ssk.bin}/phing
@@ -168,6 +208,7 @@ phing.subsite.src.dir = ${ssk.root}/src
 dist.build.dir = ${project.basedir}/${phing.subsite.build.dir}
 
 # Temporary folder.
+# GOOD BUT could be renamed.
 phing.subsite.tmp.dir = ${project.basedir}/tmp
 
 # Local resources.
@@ -218,6 +259,7 @@ dist.build.composer.lock = ${dist.build.dir}/composer.lock
 
 # Rebuild configuration
 # ---------------------
+## TO REVIEW
 
 # Automatically rebuild without asking confirmation.
 platform.rebuild.auto = 0
@@ -234,6 +276,7 @@ platform.rebuild.backup.files = ${platform.build.settings.dir}/settings.php
 
 # Behat configuration
 # -------------------
+## TO REVIEW WITH PLATFORM
 
 # The location of the Behat executable.
 behat.bin = ${platform.build.subsite.dir}/vendor/bin/behat
@@ -273,6 +316,7 @@ behat.src.dir = ${behat.dir}/src
 
 # PHP CodeSniffer configuration
 # -----------------------------
+## ALLGOOD
 
 # The file extensions to test.
 # Delimited by space, comma or semicolon.
@@ -324,6 +368,7 @@ phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpc
 
 # Gives you the possibility to disable the check:ssk that preceeds the qa review
 # commands. CI and QA will always perform this check.
+## REMOVE
 qa.check.ssk = 1
 
 
@@ -331,11 +376,13 @@ qa.check.ssk = 1
 # ------------------
 
 # The location of the webserver docroot. Used for testing on CI infrastructure.
+## GOOD
 server.docroot = /var/www
 
 
 # Debugging configuration
 # ---------------------------------------
+## GOOD
 
 # Verbosity of drush commands. Set to TRUE to be verbose.
 drush.verbose = FALSE
@@ -350,6 +397,8 @@ phpcs.verbose = 0
 
 # AWS SDK
 # -------
+## REMOVE ALL AMWS
+
 aws.region = eu-west-1
 
 
@@ -365,12 +414,14 @@ deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
 
 # Subsite starterkit
 # ------------------
+## REMOVE ALL SSK 2.0
 
 # The location of the subsite starterkit repository.
 starterkit.repository = https://github.com/ec-europa/subsite-starterkit.git
 
 # The branch of the subsite starterkit that will be tracked.
 starterkit.branch = master
+
 # The name of the git remote for the starterkit.
 starterkit.remote = starterkit
 
@@ -384,6 +435,7 @@ copy.path.haltonerror = true
 
 # Shared paths
 # ------------
+## GOOD
 
 # Global share location.
 share.global.path = /tmp
@@ -393,17 +445,21 @@ share.platform.path = ${share.global.path}/platform
 share.subsites.path = ${share.global.path}/subsites
 share.composer.path = ${share.global.path}/composer
 
+# The path to save deploy packages to:
+subsite.release.path = ${share.subsites.path}/${subsite.id}
+
 
 # Docker
 # ------
 
 # Default project id.
+## UPDATE TO BRANCHES?
 docker.project.id = environment
 
 
 # Composer hook phingcall target lists. Space separated only.
 # -----------------------------------------------------------
-
+## GOOD
 composer.hook.post.install = starterkit-link-binary starterkit-copy-templates test-run-phpcs docker-compose-up
 composer.hook.post.update =
 composer.hook.pre.install =
