@@ -13,16 +13,16 @@
     <target
         name="build-europa-theme"
         description="Downloads Europa theme and creates symlink."
-        depends="europa-theme-download-extract, europa-theme-create-symlinks" />
+        depends="theme-europa-download-extract, theme-europa-create-symlinks" />
 
     <target
         name="build-platform-dev-europa-theme"
         description="Build a local development version of the platform based on the EC Europa theme."
-        depends="platform-delete, platform-make-drupal, platform-profiles-link, platform-make-platform, platform-resources-link, platform-composer-install-dev, test-behat-setup, test-behat-setup-balancer, test-phpunit-setup, test-phpcs-setup, platform-update-htaccess, subsite-setup-files-directory, europa-theme-repo-clone, europa-theme-build" />
+        depends="platform-delete, platform-make-drupal, platform-profiles-link, platform-make-platform, platform-resources-link, platform-composer-install-dev, test-behat-setup, test-behat-setup-balancer, test-phpunit-setup, test-phpcs-setup, platform-update-htaccess, subsite-setup-files-directory, theme-europa-repo-clone, theme-europa-build" />
 
 
     <!-- This step in future will become a part of a build on the new Europa theme repository. -->
-    <target name="europa-theme-download-extract">
+    <target name="theme-europa-download-extract">
         <!-- Download the Europa theme archive for a given branch. -->
         <exec
             command="curl -L https://github.com/ec-europa/ec_europa/releases/download/${ec_europa.version}/ec_europa-${ec_europa.version}.tar.gz > profiles/common/themes/ec_europa.tar.gz"
@@ -34,10 +34,10 @@
             command="tar xzf ec_europa.tar.gz --strip=1 -C ec_europa"
             passthru="true" />
         <delete file="profiles/common/themes/ec_europa.tar.gz" quiet="true" />
-        <phingcall target="europa-theme-embed-ecl-assets" />
+        <phingcall target="theme-europa-embed-ecl-assets" />
     </target>
 
-    <target name="europa-theme-embed-ecl-assets">
+    <target name="theme-europa-embed-ecl-assets">
         <!-- Download the ECL release package. -->
         <exec
             command="curl -L https://github.com/ec-europa/europa-component-library/releases/download/${ecl.version}/framework.tar.gz > profiles/common/themes/ec_europa/framework.tar.gz"
@@ -51,7 +51,7 @@
     </target>
 
     <!-- Creates symlinks for the atomium and europa themes. -->
-    <target name="europa-theme-create-symlinks" >
+    <target name="theme-europa-create-symlinks" >
         <symlink link="profiles/${platform.profile.name}/themes">
             <fileset dir="${platform.resources.profiles.common.themes.dir}">
                 <include name="ec_europa" />
@@ -60,7 +60,7 @@
     </target>
 
     <!-- Cloning and checking out the branch of the Atomium and EC Europa theme repositories. -->
-    <target name="europa-theme-repo-clone">
+    <target name="theme-europa-repo-clone">
         <!-- Deleting theme directories before cloning -->
         <delete dir="${platform.resources.profiles.common.themes.dir}/atomium" quiet="true"/>
         <delete dir="${platform.resources.profiles.common.themes.dir}/ec_europa" quiet="true"/>
@@ -87,7 +87,7 @@
     </target>
 
     <!-- Generating assets -->
-    <target name="europa-theme-build">
+    <target name="theme-europa-build">
         <exec
             command="npm install"
             passthru="true"
