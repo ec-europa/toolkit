@@ -5,22 +5,22 @@
     <!-- ===================================
          Naming convention for main targets.
          ===================================
-         [ACTION]-[SUBJECT](-${project.type})
-         => Configured callback
+         [ACTION]-[SUBJECT]
+         => Build platform (package) for subsite
+         => Build subsite (package) for platform
          [ACTION]-[SUBJECT]-[PROJECT-TYPE]
          => Direct callback
          ===================================
          Examples:
          ===================================
-         - build-dev
-         - build-dev-subsite
-         - build-dev-platform
-         - build-dist
-         - build-dist-subsite
-         - build-dist-platform
-         - build-test
-         - build-test-subsite
-         - build-test-platform
+         - build-platform
+         - build-platform-dev
+         - build-platform-dist
+         - build-platform-test
+         - build-subsite
+         - build-subsite-dev
+         - build-subsite-dist
+         - build-subsite-test
          - run-behat
          - run-behat-subsite
          - run-behat-platform

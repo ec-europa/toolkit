@@ -11,7 +11,7 @@
      </if>
 
     <!-- Build test package. -->
-    <target name="build-test-subsite-package" description="Build subsite tests code release package.">
+    <target name="build-subsite-test-package" description="Build subsite tests code release package.">
         <mkdir dir="${project.release.path}" />
     </target>
 

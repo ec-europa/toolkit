@@ -10,8 +10,13 @@
          </then>
      </if>
 
+    <!-- Create code base. -->
     <target
-        name="build-dist-platform"
+        name="build-platform"
+        description="Build a local development version of the platform." />
+
+    <target
+        name="build-platform-dist"
         description="Build a version of the platform intended to distribute as a release package."
         depends="
             platform-delete,
@@ -23,7 +28,7 @@
             subsite-setup-files-directory" />
 
     <target
-        name="build-dev-platform"
+        name="build-platform-dev"
         description="Build a local development version of the platform."
         depends="
             platform-delete,
@@ -40,7 +45,7 @@
             build-europa-theme" />
 
     <target
-        name="build-dist-platform"
+        name="build-platform-dist"
         description="Build a version of the platform intended to distribute as a release package."
         depends="
             platform-delete,

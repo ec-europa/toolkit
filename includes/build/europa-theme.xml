@@ -16,7 +16,7 @@
         depends="theme-europa-download-extract, theme-europa-create-symlinks" />
 
     <target
-        name="build-dev-platform-theme"
+        name="build-platform-dev-theme"
         description="Build a local development version of the platform based on the EC Europa theme."
         depends="platform-delete, platform-make-drupal, platform-profiles-link, platform-make-profile, platform-resources-link, platform-composer-install-dev, test-behat-setup, test-behat-setup-balancer, test-phpunit-setup, test-phpcs-setup, platform-update-htaccess, subsite-setup-files-directory, theme-europa-repo-clone, theme-europa-build" />
 

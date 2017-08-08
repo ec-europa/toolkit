@@ -12,7 +12,7 @@
 
     <!-- Create distribution code base. -->
     <target
-        name="build-dist-subsite"
+        name="build-subsite-dist"
         description="Build files of subsite for release package."
         depends="
             subsite-dist-delete,
@@ -21,7 +21,7 @@
             subsite-dist-composer-install" />
 
     <target
-        name="build-dist-platform-multisite"
+        name="build-platform-dist-multisite"
         description="Build files of  platform intended for release package."
         depends="
             platform-delete,
@@ -33,7 +33,7 @@
 
 
     <!-- Build release package. -->
-    <target name="build-dist-subsite-package" description="Build subsite source code release package." depends="build-dist-subsite">
+    <target name="build-subsite-dist-package" description="Build subsite source code release package." depends="build-subsite-dist">
         <mkdir dir="${project.release.path}" />
         <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${phing.subsite.build.dir}" />
     </target>
