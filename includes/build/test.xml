@@ -38,6 +38,16 @@
         <echo message="${behat.yml.content}" file="${behat.yml.path}" />
     </target>
 
+    <!-- Set up Behat balancer. -->
+    <target name="test-behat-setup-balancer">
+        <behat:balancer
+            containers="${behat.load_balancer.containers}"
+            root="${behat.load_balancer.root}"
+            destination="${behat.load_balancer.destination}"
+            import="${behat.load_balancer.import}"
+        />
+    </target>
+
     <!-- Do quality assurance checks. -->
     <target name="test-phpcs-exec">
         <exec
@@ -80,6 +90,30 @@
                 <delete file="${phpcs.prepush.destination}" failonerror="false" quiet="true" />
           </else>
         </if>
+    </target>
+
+    <!-- Set up PHPUnit. -->
+    <target name="test-phpunit-setup">
+        <copy todir="${phpunit.dir}" overwrite="true">
+            <fileset dir="${phpunit.dir}" casesensitive="yes">
+                <include name="*.xml.dist"/>
+            </fileset>
+            <filterchain>
+                <replacetokens begintoken="{{ " endtoken=" }}">
+                    <token key="phpunit.base_url" value="${phpunit.base_url}" />
+                    <token key="platform.build.dir" value="${platform.build.dir}" />
+                    <token key="phpunit.dir" value="${phpunit.dir}" />
+                </replacetokens>
+            </filterchain>
+            <mapper type="glob" from="*.xml.dist" to="*.xml" />
+        </copy>
+        <symlink link="${phing.project.build.dir}" overwrite="true">
+            <fileset dir="${phpunit.dir}" casesensitive="yes">
+                <include name="*.yml"/>
+            </fileset>
+        </symlink>
+        <symlink link="${phing.project.build.dir}/tests" target="../tests" />
+        <symlink link="bin/phpunit" target="../${phing.project.build.dir}/vendor/bin/phpunit" overwrite="true"/>
     </target>
 
     <!-- Do quality assurance checks. -->

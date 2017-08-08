@@ -45,7 +45,7 @@
             subsite-site-backup,
             platform-delete,
             platform-make,
-            platform-link-resources,
+            subsite-resources-link,
             subsite-composer-install,
             test-behat-setup-link,
             test-behat-setup,

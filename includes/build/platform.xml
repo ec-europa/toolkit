@@ -13,10 +13,40 @@
     <target
         name="build-platform-dist"
         description="Build a version of the platform intended to distribute as a release package."
-        depends="platform-delete, platform-make-drupal, platform-copy-profiles, platform-make-platform, platform-copy-resources, platform-composer-install, subsite-setup-files-directory" />
+        depends="platform-delete, platform-make-drupal, platform-profiles-copy, platform-make-platform, platform-resources-copy, platform-composer-install, subsite-setup-files-directory" />
+
+    <!-- Make one of the profiles in order to build a multisite platform. -->
+    <target name="platform-make-multisite-platform">
+        <!-- Override the location of the make file. -->
+        <property name="platform.make" value="${platform.resources.dir}/${platform.profile.name}.make" override="yes" />
+        <phingcall target="platform-make-platform" />
+    </target>
+
+    <target
+        name="build-platform-dev"
+        description="Build a local development version of the platform."
+        depends="platform-delete, platform-make-drupal, platform-profiles-link, platform-make-platform, platform-resources-link, platform-composer-install-dev, test-behat-setup, test-behat-setup-balancer, test-phpunit-setup, test-phpcs-setup, platform-update-htaccess, build-europa-theme" />
+
+    <target
+        name="build-multisite-dist"
+        description="Build a multisite version of the platform intended to distribute as a release package."
+        depends="platform-delete, platform-make-drupal, platform-profiles-copy">
+
+        <!-- First make the standard profile. -->
+        <property name="platform.profile.name" value="multisite_drupal_standard" override="yes" />
+        <phingcall target="platform-make-multisite-platform" />
+
+        <!-- Then make the communities profile. -->
+        <property name="platform.profile.name" value="multisite_drupal_communities" override="yes" />
+        <phingcall target="platform-make-multisite-platform" />
+
+        <!-- Call the remaining build targets. -->
+        <phingcall target="platform-resources-copy" />
+        <phingcall target="platform-composer-install" />
+    </target>
 
 
-  <!-- Make Drupal core. -->
+    <!-- Make Drupal core. -->
     <target name="platform-make-drupal">
         <!--
             Drupal core is created in a separate target because Drush make only
@@ -60,7 +90,7 @@
     </target>
 
     <!-- Copy the profile folders for deploying on production. -->
-    <target name="platform-copy-profiles">
+    <target name="platform-profiles-copy">
         <!-- Delete the core profiles folder so it can be replaced with ours. -->
         <delete dir="${platform.build.profiles.dir}" includeemptydirs="true" failonerror="true" />
         <!-- Copy our profiles folder. -->
@@ -78,8 +108,16 @@
         </copy>
     </target>
 
+    <!-- Symlink the profile folders for easy development. -->
+    <target name="platform-profiles-link">
+        <!-- Delete the core profiles folder. -->
+        <delete dir="${platform.build.profiles.dir}" />
+        <!-- Symlink our profiles folder. -->
+        <symlink link="${platform.build.profiles.dir}" target="${platform.resources.profiles.dir}" />
+   </target>
+
     <!-- Symlink various resources for easy development. -->
-    <target name="platform-link-resources">
+    <target name="platform-resources-link">
         <!-- Composer configuration. -->
         <symlink link="${platform.build.composer.json}" target="${project.resources.composer.json}" />
         <symlink link="${platform.build.composer.lock}" target="${project.resources.composer.lock}" />
@@ -87,7 +125,7 @@
     </target>
 
     <!-- Copy various resources for deploying on production. -->
-    <target name="platform-copy-resources">
+    <target name="platform-resources-copy">
         <!-- Resources to copy to the website root. -->
         <copy todir="${platform.build.dir}">
             <fileset dir="${project.resources.dir}">
@@ -101,6 +139,16 @@
     <!-- Install Composer dependencies for the build system. -->
     <target name="platform-composer-install">
         <echo msg="Run 'composer install' in platform root." />
+        <composer command="install" composer="${composer.bin}">
+            <arg value="--working-dir=${platform.build.dir}" />
+            <arg value="--no-interaction" />
+            <arg value="--no-suggest" />
+            <arg value="--ansi" />
+        </composer>
+    </target>
+
+    <!-- Install Composer dependencies, including optional development dependencies. -->
+    <target name="platform-composer-install-dev">
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${platform.build.dir}" />
             <arg value="--no-interaction" />
@@ -145,17 +193,6 @@
                 </if>
             </else>
         </if>
-    </target>
-
-    <!-- Symlink the source folders for easy development. -->
-    <target name="platform-link-resources">
-        <rel-sym link="${platform.build.subsite.modules.custom.dir}" target="${project.resources.modules.dir}" />
-        <rel-sym link="${platform.build.subsite.modules.features.dir}" target="${project.resources.features.dir}" />
-        <delete dir="${platform.build.subsite.themes.dir}" includeemptydirs="true" failonerror="false" />
-        <rel-sym link="${platform.build.subsite.themes.dir}" target="${project.resources.themes.dir}" />
-        <rel-sym link="${platform.build.subsite.source.dir}" target="${project.resources.source.dir}" />
-        <rel-sym link="${platform.build.subsite.composer.json}" target="${project.resources.composer.json}" />
-        <rel-sym link="${platform.build.subsite.composer.lock}" target="${project.resources.composer.lock}" />
     </target>
 
     <!-- Make the development version of the subsite. -->
