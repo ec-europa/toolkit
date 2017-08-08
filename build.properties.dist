@@ -206,7 +206,7 @@ project.resources.composer.json = ${project.resources.dir}/composer.json
 project.resources.composer.lock = ${project.resources.dir}/composer.lock
 
 # Temporary resources. These are generated on the fly when building.
-project.temporary.development.make = ${phing.project.tmp.dir}/development.make
+subsite.temporary.development.make = ${phing.project.tmp.dir}/development.make
 
 # Files and directories inside the Drupal installation for local development.
 platform.build.settings.dir = ${platform.build.sites.dir}/default

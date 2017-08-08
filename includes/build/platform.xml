@@ -51,18 +51,6 @@
             platform-composer-install,
             subsite-setup-files-directory" />
 
-
-    <target
-        name="build-dist-platform-multisite"
-        description="Build a multisite version of the platform intended to distribute as a release package."
-        depends="
-            platform-delete,
-            platform-make-drupal,
-            platform-profiles-copy,
-            platform-make-profile-all,
-            platform-resources-copy,
-            platform-composer-install" />
-
     <!-- Link site document root to Webserver document root. -->
     <target
         name="build-platform-docroot"

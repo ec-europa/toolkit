@@ -13,8 +13,30 @@
     <!-- Create distribution code base. -->
     <target
         name="build-dist-subsite"
-        description="Build files for a distribution package."
-        depends="subsite-dist-delete, subsite-dist-make, subsite-dist-resources-copy, subsite-dist-composer-install" />
+        description="Build files of subsite for release package."
+        depends="
+            subsite-dist-delete,
+            subsite-dist-make,
+            subsite-dist-resources-copy,
+            subsite-dist-composer-install" />
+
+    <target
+        name="build-dist-platform-multisite"
+        description="Build files of  platform intended for release package."
+        depends="
+            platform-delete,
+            platform-make-drupal,
+            platform-profiles-copy,
+            platform-make-profile-all,
+            platform-resources-copy,
+            platform-composer-install" />
+
+
+    <!-- Build release package. -->
+    <target name="build-dist-subsite-package" description="Build subsite source code release package." depends="build-dist-subsite">
+        <mkdir dir="${project.release.path}" />
+        <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${phing.subsite.build.dir}" />
+    </target>
 
    <!-- Install Composer dist dependencies for the subsite. -->
     <target name="subsite-dist-composer-install">

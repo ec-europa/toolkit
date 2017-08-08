@@ -10,6 +10,12 @@
          </then>
      </if>
 
+    <!-- Build test package. -->
+    <target name="build-test-subsite-package" description="Build subsite tests code release package.">
+        <mkdir dir="${project.release.path}" />
+    </target>
+
+
     <!-- Run Behat tests. -->
     <target name="test-behat-exec">
         <behat

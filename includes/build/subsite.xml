@@ -10,13 +10,40 @@
          </then>
      </if>
 
-    <!-- Install a development version of the subsite. -->
+    <!-- Create code base. -->
     <target
-        name="build-dev-subsite-install"
-        description="Build local version of subsite with a clean install."
-        depends="drush-create-files-dirs, subsite-install, subsite-modules-devel-en"
+        name="build-dev-subsite"
+        description="Build local version of subsite without install."
+        depends="
+            subsite-site-backup,
+            platform-delete,
+            platform-make,
+            subsite-resources-link,
+            subsite-composer-install,
+            test-behat-setup-link,
+            test-behat-setup,
+            platform-update-htaccess,
+            test-phpcs-setup,
+            subsite-modules-devel-dl,
+            subsite-site-restore"
     />
 
+    <!-- Build code base with backup restore. -->
+    <target name="build-dev-subsite-keep" description="Build local version of subsite with backup and restore.">
+        <!-- Execute build-dev with automatic rebuild enabled. -->
+        <phingcall target="build-dev-subsite">
+            <property name="platform.rebuild.auto" value="1" override="true"/>
+        </phingcall>
+    </target>
+
+    <!-- Install a development version of the subsite. -->
+    <target
+        name="build-dev-subsite-clean"
+        description="Build local version of subsite with a clean install."
+        depends="
+            drush-create-files-dirs,
+            subsite-install,
+            subsite-modules-devel-en" />
 
     <!-- Install Composer dev dependencies for the subsite. -->
     <target name="subsite-composer-install">
