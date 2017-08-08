@@ -39,13 +39,13 @@
             <property name="folder.to.delete" value="${project.basedir}/src" />
         </phingcall>
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${subsite.resources.dir}/cloudformation" />
+            <property name="folder.to.delete" value="${project.resources.dir}/cloudformation" />
         </phingcall>
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${subsite.resources.dir}/codedeploy" />
+            <property name="folder.to.delete" value="${project.resources.dir}/codedeploy" />
         </phingcall>
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${subsite.resources.dir}/composer" />
+            <property name="folder.to.delete" value="${project.resources.dir}/composer" />
         </phingcall>
         <!-- Delete starterkit files. -->
         <delete>
@@ -63,7 +63,7 @@
             </fileset>
         </delete>
         <!-- Move subsite files to new location. -->
-        <move file="${subsite.resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
+        <move file="${project.resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
     </target>
 
     <!-- Build documentation index. -->

@@ -65,13 +65,13 @@
         <delete dir="${platform.build.profiles.dir}" includeemptydirs="true" failonerror="true" />
         <!-- Copy our profiles folder. -->
         <copy todir="${platform.build.profiles.dir}">
-            <fileset dir="${subsite.resources.profiles.dir}">
+            <fileset dir="${project.resources.profiles.dir}">
                 <include name="**" />
             </fileset>
         </copy>
         <!-- Copy common modules, themes and libraries. -->
         <copy todir="${platform.build.profiles.dir}/common">
-            <fileset dir="${subsite.resources.lib.dir}">
+            <fileset dir="${project.resources.lib.dir}">
                 <exclude name="profiles/**" />
                 <include name="**" />
             </fileset>
@@ -149,13 +149,13 @@
 
     <!-- Symlink the source folders for easy development. -->
     <target name="platform-link-resources">
-        <rel-sym link="${platform.build.subsite.modules.custom.dir}" target="${subsite.resources.modules.dir}" />
-        <rel-sym link="${platform.build.subsite.modules.features.dir}" target="${subsite.resources.features.dir}" />
+        <rel-sym link="${platform.build.subsite.modules.custom.dir}" target="${project.resources.modules.dir}" />
+        <rel-sym link="${platform.build.subsite.modules.features.dir}" target="${project.resources.features.dir}" />
         <delete dir="${platform.build.subsite.themes.dir}" includeemptydirs="true" failonerror="false" />
-        <rel-sym link="${platform.build.subsite.themes.dir}" target="${subsite.resources.themes.dir}" />
-        <rel-sym link="${platform.build.subsite.source.dir}" target="${subsite.resources.source.dir}" />
-        <rel-sym link="${platform.build.subsite.composer.json}" target="${subsite.resources.composer.json}" />
-        <rel-sym link="${platform.build.subsite.composer.lock}" target="${subsite.resources.composer.lock}" />
+        <rel-sym link="${platform.build.subsite.themes.dir}" target="${project.resources.themes.dir}" />
+        <rel-sym link="${platform.build.subsite.source.dir}" target="${project.resources.source.dir}" />
+        <rel-sym link="${platform.build.subsite.composer.json}" target="${project.resources.composer.json}" />
+        <rel-sym link="${platform.build.subsite.composer.lock}" target="${project.resources.composer.lock}" />
     </target>
 
     <!-- Make the development version of the subsite. -->

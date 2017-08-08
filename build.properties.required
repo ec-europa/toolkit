@@ -1,0 +1,35 @@
+# ----------------------------------------------------------
+# These are the minimal required properties that need to be
+# in the build.properties file to perform a build on CI. To
+# make sure that developers have this information we need to
+# write validation for checking if the properties have a
+# custom value before developers can push to github.
+# ----------------------------------------------------------
+
+# Subsite configuration
+# ---------------------
+
+subsite.id = myproject
+subsite.name = My Project
+subsite.install.modules = myproject_core
+subsite.url.production =
+
+
+# Drupal configuration
+# --------------------
+
+drupal.site.name = all
+
+
+# Platform configuration
+# ----------------------
+
+platform.profile.name = multisite_drupal_standard
+platform.package.reference = 2.3.61
+
+
+# PHP CodeSniffer configuration
+# -----------------------------
+
+phpcs.standards = Subsite;${project.basedir}/phpcs-ruleset.xml
+

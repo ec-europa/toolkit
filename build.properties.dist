@@ -2,32 +2,13 @@
 # ---------------------
 
 # The site name.
-## REQUIRED
 subsite.name = My Project
-
-# Subsite ID. Multisite folder name. Usually repository name without "-reference"
-## REQUIRED
 subsite.id = myproject
-
-# The make file containing the dependencies of the subsite
-## TODO: Add to project settings. Used by both platform and subsite.
-subsite.make = ${subsite.resources.dir}/site.make
-
-# Modules to enable after installation. Separate multiple modules with spaces.
-## REQUIRED
+subsite.make = ${project.resources.dir}/site.make
 subsite.install.modules = myproject_core
-
-# Subsite production url.
-## NEW REQUIRED ## Or by FPFIS API SDK
-subsite.production.url
-
-# Subsite playground url.
-## NEW REQUIRED ## Or by FPFIS API SDK
-subsite.playground.url
-
-# Subsite acceptance url.
-## NEW REQUIRED ## Or by FPFIS API SDK
-subsite.acceptance.url
+subsite.url.production =
+subsite.url.playground =
+subsite.url.acceptance =
 
 
 # Subsite clone configuration.
@@ -213,19 +194,19 @@ phing.subsite.tmp.dir = ${project.basedir}/tmp
 
 # Local resources.
 project.resources.dir = ${project.basedir}/resources
-subsite.resources.dir = ${project.basedir}/resources
-subsite.resources.lib.dir = ${project.basedir}/lib
-subsite.resources.features.dir = ${subsite.resources.lib.dir}/features
-subsite.resources.modules.dir = ${subsite.resources.lib.dir}/modules
-subsite.resources.profiles.dir = ${subsite.resources.lib.dir}/profiles
-subsite.resources.source.dir = ${subsite.resources.lib.dir}/src
-subsite.resources.themes.dir = ${subsite.resources.lib.dir}/themes
-project.resources.favicon.ico = ${subsite.resources.dir}/favicon.ico
-project.resources.composer.json = ${subsite.resources.dir}/composer.json
-project.resources.composer.lock = ${subsite.resources.dir}/composer.lock
+project.resources.dir = ${project.basedir}/resources
+project.resources.lib.dir = ${project.basedir}/lib
+project.resources.features.dir = ${project.resources.lib.dir}/features
+project.resources.modules.dir = ${project.resources.lib.dir}/modules
+project.resources.profiles.dir = ${project.resources.lib.dir}/profiles
+project.resources.source.dir = ${project.resources.lib.dir}/src
+project.resources.themes.dir = ${project.resources.lib.dir}/themes
+project.resources.favicon.ico = ${project.resources.dir}/favicon.ico
+project.resources.composer.json = ${project.resources.dir}/composer.json
+project.resources.composer.lock = ${project.resources.dir}/composer.lock
 
 # Temporary resources. These are generated on the fly when building.
-subsite.temporary.development.make = ${phing.subsite.tmp.dir}/development.make
+project.temporary.development.make = ${phing.project.tmp.dir}/development.make
 
 # Files and directories inside the Drupal installation for local development.
 platform.build.settings.dir = ${platform.build.sites.dir}/default
@@ -291,6 +272,7 @@ behat.yml.template = ${behat.dir}/behat.yml.dist
 behat.yml.path = ${behat.dir}/behat.yml
 
 # The base URL to use in Behat tests.
+## TODO: Make this docker compatible by using selenium:port.
 behat.base_url = http://localhost:8080
 
 # The location to search for Behat subcontexts.
@@ -333,7 +315,7 @@ phpcs.installed.paths = ${ssk.vendor}/ec-europa/qa-automation/phpcs/SubStandards
 phpcs.standards = Subsite;${project.basedir}/phpcs-ruleset.xml
 
 # Paths to check, delimited by semicolons.
-phpcs.files = ${subsite.resources.dir};${subsite.resources.lib.dir};${phing.subsite.src.dir};${behat.src.dir}
+phpcs.files = ${project.resources.dir};${project.resources.lib.dir};${phing.subsite.src.dir};${behat.src.dir}
 
 # Paths to ignore, delimited by semicolons.
 phpcs.ignore =
@@ -361,15 +343,6 @@ phpcs.prepush.enable = 1
 # The source and destination paths of the git pre-push hook.
 phpcs.prepush.source = ${ssk.vendor}/pfrenssen/phpcs-pre-push/pre-push
 phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpcs
-
-
-# Quality Assurance
-#------------------
-
-# Gives you the possibility to disable the check:ssk that preceeds the qa review
-# commands. CI and QA will always perform this check.
-## REMOVE
-qa.check.ssk = 1
 
 
 # Host configuration
@@ -410,20 +383,6 @@ cf.template = single-server
 # AWS CodeDeploy
 # --------------
 deploy.serviceRole = arn:aws:iam::918396081007:role/CodeDeploy
-
-
-# Subsite starterkit
-# ------------------
-## REMOVE ALL SSK 2.0
-
-# The location of the subsite starterkit repository.
-starterkit.repository = https://github.com/ec-europa/subsite-starterkit.git
-
-# The branch of the subsite starterkit that will be tracked.
-starterkit.branch = master
-
-# The name of the git remote for the starterkit.
-starterkit.remote = starterkit
 
 
 # Build defaults
