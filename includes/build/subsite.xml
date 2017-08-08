@@ -12,7 +12,7 @@
 
     <!-- Install a development version of the subsite. -->
     <target
-        name="build-clean"
+        name="build-dev-subsite-install"
         description="Build local version of subsite with a clean install."
         depends="drush-create-files-dirs, subsite-install, subsite-modules-devel-en"
     />

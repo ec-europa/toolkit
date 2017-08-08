@@ -11,39 +11,57 @@
      </if>
 
     <target
-        name="build-platform-dist"
+        name="build-dist-platform"
         description="Build a version of the platform intended to distribute as a release package."
-        depends="platform-delete, platform-make-drupal, platform-profiles-copy, platform-make-platform, platform-resources-copy, platform-composer-install, subsite-setup-files-directory" />
-
-    <!-- Make one of the profiles in order to build a multisite platform. -->
-    <target name="platform-make-multisite-platform">
-        <!-- Override the location of the make file. -->
-        <property name="platform.make" value="${platform.resources.dir}/${platform.profile.name}.make" override="yes" />
-        <phingcall target="platform-make-platform" />
-    </target>
+        depends="
+            platform-delete,
+            platform-make-drupal,
+            platform-profiles-copy,
+            platform-make-profile,
+            platform-resources-copy,
+            platform-composer-install,
+            subsite-setup-files-directory" />
 
     <target
         name="build-dev-platform"
         description="Build a local development version of the platform."
-        depends="platform-delete, platform-make-drupal, platform-profiles-link, platform-make-platform, platform-resources-link, platform-composer-install-dev, test-behat-setup, test-behat-setup-balancer, test-phpunit-setup, test-phpcs-setup, platform-update-htaccess, build-europa-theme" />
+        depends="
+            platform-delete,
+            platform-make-drupal,
+            platform-profiles-link,
+            platform-make-profile,
+            platform-resources-link,
+            platform-composer-install-dev,
+            test-behat-setup,
+            test-behat-setup-balancer,
+            test-phpunit-setup,
+            test-phpcs-setup,
+            platform-update-htaccess,
+            build-europa-theme" />
 
     <target
-        name="build-multisite-dist"
+        name="build-dist-platform"
+        description="Build a version of the platform intended to distribute as a release package."
+        depends="
+            platform-delete,
+            platform-make-drupal,
+            platform-profiles-copy,
+            platform-make-profile,
+            platform-resources-copy,
+            platform-composer-install,
+            subsite-setup-files-directory" />
+
+
+    <target
+        name="build-dist-platform-multisite"
         description="Build a multisite version of the platform intended to distribute as a release package."
-        depends="platform-delete, platform-make-drupal, platform-profiles-copy">
-
-        <!-- First make the standard profile. -->
-        <property name="platform.profile.name" value="multisite_drupal_standard" override="yes" />
-        <phingcall target="platform-make-multisite-platform" />
-
-        <!-- Then make the communities profile. -->
-        <property name="platform.profile.name" value="multisite_drupal_communities" override="yes" />
-        <phingcall target="platform-make-multisite-platform" />
-
-        <!-- Call the remaining build targets. -->
-        <phingcall target="platform-resources-copy" />
-        <phingcall target="platform-composer-install" />
-    </target>
+        depends="
+            platform-delete,
+            platform-make-drupal,
+            platform-profiles-copy,
+            platform-make-profile-all,
+            platform-resources-copy,
+            platform-composer-install" />
 
     <!-- Link site document root to Webserver document root. -->
     <target
@@ -52,6 +70,12 @@
         <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
     </target>
 
+    <!-- Make all of the profiles in order to build a multisite platform. -->
+    <target name="platform-make-profile-all">
+        <!-- Loop over profiles and run platform-make-profile. -->
+        <property name="profiles" value="multisite_drupal_standard,multisite_drupal_communities" />
+        <foreach list="${profiles}" param="profile-name" target="platform-make-profile" />
+    </target>
 
     <!-- Make Drupal core. -->
     <target name="platform-make-drupal">
@@ -75,8 +99,15 @@
     </target>
 
     <!-- Make the platform. -->
-    <target name="platform-make-platform">
+    <target name="platform-make-profile">
         <echo msg="Make the platform." />
+        <if>
+            <isset property="profile-name" />
+            <then>
+                <property name="platform.profile.name" value="${profile-name}" override="true" />
+                <property name="platform.make" value="${platform.resources.dir}/${profile-name}.make" override="true" />
+            </then>
+        </if>
         <drush
             command="make"
             assume="yes"
