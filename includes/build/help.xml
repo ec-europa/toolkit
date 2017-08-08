@@ -34,6 +34,23 @@
         </then>
     </if>
 
+    <!-- Check if site exists. -->
+    <if>
+        <available file="${platform.build.settings.dir}/settings.php" type="file"/>
+        <then>
+            <property name="site-detected" value="1" />
+        </then>
+    </if>
+
+    <!-- Check if backup exists. -->
+    <if>
+        <available file="${platform.rebuild.backup.destination}" type="dir"/>
+        <then>
+            <property name="backup-detected" value="1" />
+        </then>
+    </if>
+
+
     <!-- Copies a given folder to a new location. -->
     <target name="copy-folder" hidden="true">
         <copy todir="${copy.destination.path}" haltonerror="${copy.path.haltonerror}">

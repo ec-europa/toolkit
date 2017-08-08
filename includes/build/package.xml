@@ -10,36 +10,20 @@
          </then>
      </if>
 
-    <!-- Check if site exists. -->
-    <if>
-        <available file="${platform.build.settings.dir}/settings.php" type="file"/>
-        <then>
-            <property name="site-detected" value="1" />
-        </then>
-    </if>
-
-    <!-- Check if backup exists. -->
-    <if>
-        <available file="${platform.rebuild.backup.destination}" type="dir"/>
-        <then>
-            <property name="backup-detected" value="1" />
-        </then>
-    </if>
-
     <!-- Build release package. -->
-    <target name="build-release" description="Build subsite source code release package." depends="build-subsite-dist">
+    <target name="build-dist-subsite-package" description="Build subsite source code release package." depends="build-dist-subsite">
         <mkdir dir="${project.release.path}" />
         <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${phing.subsite.build.dir}" />
     </target>
 
     <!-- Build test package. -->
-    <target name="build-tests" description="Build subsite tests code release package.">
+    <target name="build-test-subsite-package" description="Build subsite tests code release package.">
         <mkdir dir="${project.release.path}" />
     </target>
 
     <!-- Create code base. -->
     <target
-        name="build-code"
+        name="build-dev-subsite"
         description="Build local version of subsite without install."
         depends="
             subsite-site-backup,
@@ -61,13 +45,6 @@
         <phingcall target="build-dev">
             <property name="platform.rebuild.auto" value="1" override="true"/>
         </phingcall>
-    </target>
-
-    <!-- Link site document root to Webserver document root. -->
-    <target
-        name="link-docroot"
-        description="Create symlink from build to docroot.">
-        <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
     </target>
 
 </project>

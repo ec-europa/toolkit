@@ -23,7 +23,7 @@
     </target>
 
     <target
-        name="build-platform-dev"
+        name="build-dev-platform"
         description="Build a local development version of the platform."
         depends="platform-delete, platform-make-drupal, platform-profiles-link, platform-make-platform, platform-resources-link, platform-composer-install-dev, test-behat-setup, test-behat-setup-balancer, test-phpunit-setup, test-phpcs-setup, platform-update-htaccess, build-europa-theme" />
 
@@ -43,6 +43,13 @@
         <!-- Call the remaining build targets. -->
         <phingcall target="platform-resources-copy" />
         <phingcall target="platform-composer-install" />
+    </target>
+
+    <!-- Link site document root to Webserver document root. -->
+    <target
+        name="build-platform-docroot"
+        description="Create symlink from build to docroot.">
+        <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
     </target>
 
 

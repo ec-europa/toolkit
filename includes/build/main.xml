@@ -2,6 +2,30 @@
 
 <project default="help">
 
+    <!-- ===================================
+         Naming convention for main targets.
+         ===================================
+         [ACTION]-[SUBJECT](-${project.type})
+         => Configured callback
+         [ACTION]-[SUBJECT]-[PROJECT-TYPE]
+         => Direct callback
+         ===================================
+         Examples:
+         ===================================
+         - build-dev
+         - build-dev-subsite
+         - build-dev-platform
+         - build-dist
+         - build-dist-subsite
+         - build-dist-platform
+         - build-test
+         - build-test-subsite
+         - build-test-platform
+         - run-behat
+         - run-behat-subsite
+         - run-behat-platform
+         =================================== -->
+
     <!-- Import helper targets if called here directly. -->
     <if>
          <available file="help.xml" />
