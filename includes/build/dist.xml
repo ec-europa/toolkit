@@ -10,8 +10,14 @@
         </then>
     </if>
 
+    <!-- Create distribution code base. -->
+    <target
+        name="build-subsite-dist"
+        hidden="true"
+        depends="subsite-dist-delete, subsite-dist-make, subsite-dist-resources-copy, subsite-dist-composer-install" />
+
    <!-- Install Composer dist dependencies for the subsite. -->
-    <target name="dist-composer-install">
+    <target name="subsite-dist-composer-install">
         <echo msg="Run 'composer install --no-dev' in the build destination folder." />
         <composer command="install" composer="${composer.bin}">
             <arg value="--working-dir=${dist.build.dir}" />
@@ -24,7 +30,7 @@
     </target>
 
     <!-- Copy project.resources into the build folder. -->
-    <target name="dist-copy-resources">
+    <target name="subsite-dist-resources-copy">
         <echo msg="Copy custom resources." />
         <!-- Copy our custom modules. -->
         <phingcall target="copy-folder">
@@ -56,7 +62,7 @@
     </target>
 
     <!-- Delete the previous distribution build. -->
-    <target name="dist-delete">
+    <target name="subsite-dist-delete">
         <echo msg="Delete previous build." />
         <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${dist.build.dir}" />
@@ -64,7 +70,7 @@
     </target>
 
     <!-- Make the distribution version of the subsite. -->
-    <target name="dist-make">
+    <target name="subsite-dist-make">
         <echo msg="Delete temporary build folder." />
         <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${phing.subsite.tmp.dir}/build" />

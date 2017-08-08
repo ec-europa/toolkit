@@ -38,6 +38,13 @@
         <echo message="${behat.yml.content}" file="${behat.yml.path}" />
     </target>
 
+    <!-- Symlink the Behat bin and test directory in the subsite folder. -->
+    <target name="test-behat-setup-link">
+        <echo msg="Symlink the Behat bin and test directory in './sites/all'." />
+        <rel-sym link="${project.basedir}/ssk/behat" target="${ssk.vendor}/bin/behat" overwrite="true"/>
+        <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
+    </target>
+
     <!-- Set up Behat balancer. -->
     <target name="test-behat-setup-balancer">
         <behat:balancer

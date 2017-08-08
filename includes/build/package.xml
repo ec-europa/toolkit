@@ -27,7 +27,7 @@
     </if>
 
     <!-- Build release package. -->
-    <target name="build-release" description="Build subsite source code release package." depends="build-dist">
+    <target name="build-release" description="Build subsite source code release package." depends="build-subsite-dist">
         <mkdir dir="${project.release.path}" />
         <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${phing.subsite.build.dir}" />
     </target>
@@ -61,26 +61,6 @@
         <phingcall target="build-dev">
             <property name="platform.rebuild.auto" value="1" override="true"/>
         </phingcall>
-    </target>
-
-    <!-- Create distribution code base. -->
-    <target
-        name="build-dist"
-        hidden="true"
-        depends="
-            dist-delete,
-            dist-make,
-            dist-copy-resources,
-            dist-composer-install"
-    />
-
-
-
-    <!-- Symlink the Behat bin and test directory in the subsite folder. -->
-    <target name="test-behat-setup-link">
-        <echo msg="Symlink the Behat bin and test directory in './sites/all'." />
-        <rel-sym link="${project.basedir}/ssk/behat" target="${ssk.vendor}/bin/behat" overwrite="true"/>
-        <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
     </target>
 
     <!-- Link site document root to Webserver document root. -->
