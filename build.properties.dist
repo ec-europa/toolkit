@@ -143,10 +143,6 @@ platform.package.cachedir = /tmp/platform-dev
 ## KEEP
 platform.package.database = 0
 
-# The name of the folder where the platform will be downloaded.
-## REMOVE
-platform.package.destination = ${phing.subsite.tmp.dir}
-
 # The path to the downloaded package. This is named 'deploy-package-${platform.package.reference}.tar.gz'.
 ## KEEP or GITHUB API by version/branch
 platform.package.tarball = deploy-package-${platform.package.reference}.tar.gz
