@@ -42,7 +42,7 @@
     <!-- Creates symlinks for the atomium and europa themes. -->
     <target name="theme-europa-create-symlinks" >
         <symlink link="profiles/${platform.profile.name}/themes">
-            <fileset dir="${platform.resources.profiles.common.themes.dir}">
+            <fileset dir="${subsite.resources.profiles.common.themes.dir}">
                 <include name="ec_europa" />
             </fileset>
         </symlink>
