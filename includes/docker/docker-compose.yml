@@ -11,6 +11,7 @@ services:
     volumes:
       - ${WORKSPACE}:${WORKSPACE}
       - ${HOME}/share:/tmp/share
+      - /var/cache/composer:/var/cache/composer
     working_dir: ${WORKSPACE}
     links:
       - mysql:mysql
