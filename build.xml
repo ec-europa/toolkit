@@ -10,7 +10,7 @@
 
     <!-- Custom task definititons. -->
     <taskdef name="phpcsconf" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
-    <taskdef name="replaced" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
+    <taskdef name="replacedby" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
     <taskdef name="drushmf" classname="\NextEuropa\Phing\DrushMakeFileTask" />
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
     
@@ -28,10 +28,14 @@
     <import>
         <fileset dir="${ssk.build}" >
             <patternset>
-                <exclude name="deprecated.xml"/>
-                <exclude name="platform.xml"/>
-                <exclude name="subsite.xml"/>
-                <include name="*.xml"/>
+                <include name="deprecated.xml"/>
+                <include name="docker.xml"/>
+                <include name="drush.xml"/>
+                <include name="europa-theme.xml"/>
+                <include name="main.xml"/>
+                <include name="project.xml"/>
+                <include name="starterkit.xml"/>
+                <include name="test.xml"/>
             </patternset>
         </fileset>
     </import>

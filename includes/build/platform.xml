@@ -10,11 +10,6 @@
          </then>
      </if>
 
-    <!-- Create code base. -->
-    <target
-        name="build-platform"
-        description="Build a local version of the platform NOT intended lor development." />
-
     <target
         name="build-platform-dist"
         description="Build a version of the platform intended to distribute as a release package."
@@ -42,7 +37,18 @@
             test-phpunit-setup,
             test-phpcs-setup,
             build-project-htaccess,
-            build-project-theme-europa" />
+            build-project-theme" />
+
+    <target
+        name="build-platform-dist-multisite"
+        description="Build files of  platform intended for release package."
+        depends="
+            project-platform-delete,
+            platform-make-drupal,
+            platform-profiles-copy,
+            platform-make-profile-all,
+            platform-resources-copy,
+            project-platform-composer-install" />
 
     <!-- Make all of the profiles in order to build a multisite platform. -->
     <target name="platform-make-profile-all">

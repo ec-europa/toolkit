@@ -10,19 +10,44 @@
          </then>
      </if>
 
+    <!-- Create code base. -->
     <target
-        name="build-project-theme-europa"
-        description="Downloads Europa theme and creates symlink."
+        name="build-project-platform"
+        description="Build NextEuropa Platform code without version control."
+        depends="
+             project-platform-delete,
+             project-platform-package-download,
+             project-platform-package-unpack" />
+
+    <!-- Create code base. -->
+    <target
+        name="build-project-subsite"
+        description="Build NextEuropa Subsite code without version control." />
+
+    <!-- Als long as there's only one theme we don't need to name it. -->
+    <target
+        name="build-project-theme"
+        description="Build EC Europa theme without version control."
         depends="
         theme-europa-download-extract,
         theme-europa-create-symlinks" />
 
+    <!-- Als long as there's only one theme we don't need to name it. -->
     <target
-        name="build-project-theme-europa-dev"
-        description="Build a local dev version of EC Europa theme."
+        name="build-project-theme-dev"
+        description="Build EC Europa theme with version control."
         depends="
             theme-europa-repo-clone,
             theme-europa-build" />
+
+    <target
+        name="build-project-clone"
+        description="Install NextEuropa site with production data."
+        depends="
+            subsite-database-download,
+            drush-regenerate-settings,
+            subsite-database-import,
+            project-modules-devel-en" />
 
     <!-- Link site document root to Webserver document root. -->
     <target
@@ -157,8 +182,48 @@
         </if>
     </target>
 
+    <!-- Generate the makefile used to download development modules. -->
+    <target name="project-modules-devel-mf">
+        <echo msg="Generate the makefile for development modules." />
+        <if>
+            <available file="${subsite.temporary.development.make}" type="file" property="development.makefile.available" />
+            <then>
+                <echo message="Deleting existing makefile." />
+                <delete file="${subsite.temporary.development.make}" failonerror="false" />
+            </then>
+        </if>
+        <drushmf
+            makeFile="${subsite.temporary.development.make}"
+            coreVersion="${drupal.core.version}"
+            projects="${development.modules.download}"
+            defaultProjectDir="${development.modules.location}" />
+    </target>
+    <!-- Download development modules. -->
+    <target name="project-modules-devel-dl" depends="project-modules-devel-mf">
+        <echo msg="Download development modules." />
+        <phingcall target="drush-make-no-core">
+            <property name="drush.make.target.file" value="${subsite.temporary.development.make}" />
+            <property name="drush.make.root" value="${platform.build.dir}" />
+        </phingcall>
+    </target>
+
+    <!-- Enable required modules after installation of the profile. -->
+    <target name="project-modules-install-en">
+        <phingcall target="drush-enable-modules">
+            <property name="drupal.modules" value="${subsite.install.modules}" />
+        </phingcall>
+    </target>
+
+    <!-- Enable development modules. -->
+    <target name="project-modules-devel-en">
+        <phingcall target="drush-enable-modules">
+            <property name="drupal.modules" value="${development.modules.enable}" />
+        </phingcall>
+    </target>
+
     <!-- Install the subsite. -->
-    <target name="build-project-install" description="Install the subsite.">
+    <target name="build-project-clean" description="Install NextEuropa site from scratch.">
+         <phingcall target="drush-create-files-dirs" />
         <!--
             Ensure the settings folder is writable so the installer can create
             the settings.php file.
@@ -210,7 +275,7 @@
             historical reasons. The functionality is contained in one of more
             features and modules which need to be enabled after installation.
         -->
-        <phingcall target="subsite-modules-install-en" />
+        <phingcall target="project-modules-install-en" />
 
         <!-- Rebuild node access after Subsites modules activation -->
         <phingcall target="drush-rebuild-node-access" />
@@ -244,6 +309,7 @@
                 <echo msg="Proceeding with re-generation of the settings.php." />
             </else>
         </if>
+        <phingcall target="project-modules-devel-en" />
     </target>
 
     <!-- Backs up files and folders listed in platform.rebuild properties in order to rebuild. -->

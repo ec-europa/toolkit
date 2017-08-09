@@ -61,6 +61,11 @@
         </else> 
     </if>
 
+    <!-- Echo the composer hook phingcalls. -->
+    <target name="composer-echo-hook-phingcalls" hidden="true">
+        <echoproperties prefix="composer.hook."/>
+    </target>
+
     <!-- Copies a given folder to a new location. -->
     <target name="copy-folder" hidden="true">
         <copy todir="${copy.destination.path}" haltonerror="${copy.path.haltonerror}">

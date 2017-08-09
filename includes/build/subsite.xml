@@ -12,16 +12,11 @@
 
     <!-- Create code base. -->
     <target
-        name="build-subsite"
-        description="Build a local version of a subsite NOT intended lor development." />
-
-    <!-- Create code base. -->
-    <target
         name="build-subsite-dev"
         description="Build local version of subsite without install."
         depends="
             subsite-site-backup,
-            project-platform-delete,
+            build-project-platform,
             subsite-make-subsite,
             subsite-resources-link,
             project-subsite-composer-install,
@@ -29,18 +24,8 @@
             test-behat-setup,
             build-project-htaccess,
             test-phpcs-setup,
-            subsite-modules-devel-dl,
-            subsite-site-restore"
-    />
-
-    <!-- Install a development version of the subsite with a production database. -->
-    <target
-        name="build-subsite-dev-clone"
-        description="Build local version of subsite with production data."
-        depends="subsite-database-download,
-            drush-regenerate-settings,
-            subsite-database-import,
-            subsite-modules-devel-en" />
+            project-modules-devel-dl,
+            subsite-site-restore" />
 
     <!-- Create distribution code base. -->
     <target
@@ -52,36 +37,21 @@
             subsite-dist-resources-copy,
             subsite-dist-composer-install" />
 
-    <target
-        name="build-platform-dist-multisite"
-        description="Build files of  platform intended for release package."
-        depends="
-            project-platform-delete,
-            platform-make-drupal,
-            platform-profiles-copy,
-            platform-make-profile-all,
-            platform-resources-copy,
-            project-platform-composer-install" />
-
     <!-- Build code base with backup restore. -->
-    <target name="build-subsite-dev-keep" description="Build local version of subsite with backup and restore.">
+    <target name="build-project-rebuild-platform" description="Rebuild NextEuropa Platform code while keeping subsite.">
         <!-- Execute build-dev with automatic rebuild enabled. -->
         <phingcall target="build-subsite-dev">
             <property name="platform.rebuild.auto" value="1" override="true"/>
         </phingcall>
     </target>
 
-    <!-- Install a development version of the subsite. -->
-    <target
-        name="build-subsite-dev-clean"
-        description="Build local version of subsite with a clean install."
-        depends="
-            drush-create-files-dirs,
-            build-project-install,
-            subsite-modules-devel-en" />
+    <!-- Build code base with backup restore. -->
+    <target name="build-project-rebuild-subsite" description="Rebuild NextEuropa Subsite code while keeping platform.">
+        <!-- TODO when subsite packages are available. -->
+    </target>
 
     <!-- Make the development version of the subsite. -->
-    <target name="subsite-make-subsite" depends="project-platform-package-download">
+    <target name="subsite-make-subsite">
         <if>
             <available file="${subsite.make}" type="file" />
             <then>
@@ -97,7 +67,6 @@
         </if>
     </target>
 
-
     <!-- Symlink the source folders for easy development. -->
     <target name="subsite-resources-link">
         <rel-sym link="${platform.build.subsite.modules.custom.dir}" target="${project.resources.modules.dir}" />
@@ -110,7 +79,7 @@
     </target>
 
     <!-- Generate the makefile used to download development modules. -->
-    <target name="subsite-modules-devel-mf">
+    <target name="project-modules-devel-mf">
         <echo msg="Generate the makefile for development modules." />
         <if>
             <available file="${subsite.temporary.development.make}" type="file" property="development.makefile.available" />
@@ -127,26 +96,121 @@
         />
     </target>
 
-    <!-- Download development modules. -->
-    <target name="subsite-modules-devel-dl" depends="subsite-modules-devel-mf">
-        <echo msg="Download development modules." />
-        <phingcall target="drush-make-no-core">
-            <property name="drush.make.target.file" value="${subsite.temporary.development.make}" />
-            <property name="drush.make.root" value="${platform.build.dir}" />
+    <!-- Build release package. -->
+    <target name="build-subsite-dist-package" description="Build subsite source code release package." depends="build-subsite-dist">
+        <mkdir dir="${project.release.path}" />
+        <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${phing.subsite.build.dir}" />
+    </target>
+
+   <!-- Install Composer dist dependencies for the subsite. -->
+    <target name="subsite-dist-composer-install">
+        <echo msg="Run 'composer install --no-dev' in the build destination folder." />
+        <composer command="install" composer="${composer.bin}">
+            <arg value="--working-dir=${dist.build.dir}" />
+            <arg value="--no-interaction" />
+            <arg value="--no-plugins" />
+            <arg value="--no-suggest" />
+            <arg value="--no-dev" />
+            <arg value="--ansi" />
+        </composer>
+    </target>
+
+    <!-- Copy project.resources into the build folder. -->
+    <target name="subsite-dist-resources-copy">
+        <echo msg="Copy custom resources." />
+        <!-- Copy our custom modules. -->
+        <phingcall target="copy-folder">
+            <property name="copy.source.path" value="${project.resources.modules.dir}" />
+            <property name="copy.destination.path" value="${dist.build.modules.custom.dir}" />
+            <property name="copy.path.haltonerror" value="false" override="true"/>
+        </phingcall>
+        <!-- Copy our custom features. -->
+        <phingcall target="copy-folder">
+            <property name="copy.source.path" value="${project.resources.features.dir}" />
+            <property name="copy.destination.path" value="${dist.build.modules.features.dir}" />
+            <property name="copy.path.haltonerror" value="false" override="true"/>
+        </phingcall>
+        <!-- Copy our custom themes. -->
+        <phingcall target="copy-folder">
+            <property name="copy.source.path" value="${project.resources.themes.dir}" />
+            <property name="copy.destination.path" value="${dist.build.themes.dir}" />
+            <property name="copy.path.haltonerror" value="false" override="true"/>
+        </phingcall>
+        <!-- Copy our custom PSR-4 code. -->
+        <phingcall target="copy-folder">
+            <property name="copy.source.path" value="${project.resources.source.dir}" />
+            <property name="copy.destination.path" value="${dist.build.source.dir}" />
+            <property name="copy.path.haltonerror" value="false" override="true"/>
+        </phingcall>
+        <!-- Copy composer configuration. -->
+        <copy todir="${dist.build.dir}" file="${project.resources.composer.json}" />
+        <copy todir="${dist.build.dir}" file="${project.resources.composer.lock}" />
+    </target>
+
+    <!-- Delete the previous distribution build. -->
+    <target name="subsite-dist-delete">
+        <echo msg="Delete previous build." />
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${dist.build.dir}" />
         </phingcall>
     </target>
 
-    <!-- Enable required modules after installation of the profile. -->
-    <target name="subsite-modules-install-en">
-        <phingcall target="drush-enable-modules">
-            <property name="drupal.modules" value="${subsite.install.modules}" />
+    <!-- Make the distribution version of the subsite. -->
+    <target name="subsite-dist-make">
+        <echo msg="Delete temporary build folder." />
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${phing.subsite.tmp.dir}/build" />
         </phingcall>
-    </target>
 
-    <!-- Enable development modules. -->
-    <target name="subsite-modules-devel-en">
-        <phingcall target="drush-enable-modules">
-            <property name="drupal.modules" value="${development.modules.enable}" />
+        <echo msg="Make the subsite." />
+        <!--
+            Drush make builds the site as if it is part of a complete Drupal
+            installation. The actual build is in the /sites/all subfolder. Build
+            in a temporary folder and move the subsite into place when done.
+         -->
+        <if>
+            <available file="${subsite.make}" type="file" />
+            <then>
+                <loadfile property="sitemake" file="${subsite.make}"/>
+                <propertyregex
+                    property="not.empty"
+                    subject="${sitemake}"
+                    pattern="([^#; ])(libraries\[|projects\[)"
+                    match="$1"
+                    casesensitive="false"
+                    defaultvalue="empty"/>
+                <if>
+                    <not><equals arg1="${not.empty}" arg2="empty" /></not>
+                    <then>
+                        <phingcall target="drush-make-no-core">
+                            <property name="drush.make.target.file" value="${subsite.make}" />
+                            <property name="drush.make.root" value="${phing.subsite.tmp.dir}/build" />
+                        </phingcall>
+                    </then>
+                    <else>
+                       <echo msg="Empty make file found. Skipping... ${not.empty}" />
+                       <mkdir dir="${phing.subsite.tmp.dir}/build/sites/all" />
+                    </else>
+                </if>
+            </then>
+            <else>
+                <echo msg="No make file found. Skipping..." />
+                <mkdir dir="${phing.subsite.tmp.dir}/build/sites/all" />
+            </else>
+        </if>
+
+        <!-- Move the subsite to its destination. -->
+        <echo msg='mv "${phing.subsite.tmp.dir}/build/sites/all/" "${dist.build.dir}"' />
+        <exec
+            command='mv "${phing.subsite.tmp.dir}/build/sites/all/" "${dist.build.dir}"'
+            dir="${project.basedir}"
+            passthru="true"
+            checkreturn="true"
+        />
+
+        <echo msg="Clean up temporary build folder." />
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${phing.subsite.tmp.dir}/build" />
         </phingcall>
     </target>
 
