@@ -12,13 +12,13 @@
     <if>
         <available file="build.properties.local" type="file" />
         <then>
-            <property file="build.properties.local" logoutput="${logoutput}" />
+            <property file="build.properties.local" />
         </then>
     </if>
     <if>
         <available file="build.properties" type="file" />
         <then>
-            <property file="build.properties" logoutput="${logoutput}" />
+            <property file="build.properties" />
         </then>
         <elseif>
             <equals arg1="${project.basedir}" arg2="${ssk.root}" />
@@ -30,7 +30,7 @@
     <if>
         <available file="vendor/ec-europa/ssk/build.properties.dist" type="file" />
         <then>
-            <property file="vendor/ec-europa/ssk/build.properties.dist" logoutput="${logoutput}" />
+            <property file="vendor/ec-europa/ssk/build.properties.dist" />
         </then>
     </if>
 

@@ -28,7 +28,6 @@
     <import>
         <fileset dir="${ssk.build}" >
             <patternset>
-                <include name="deprecated.xml"/>
                 <include name="docker.xml"/>
                 <include name="drush.xml"/>
                 <include name="europa-theme.xml"/>
