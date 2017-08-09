@@ -10,17 +10,6 @@
          </then>
     </if>
 
-    <target
-        name="build-project-theme-europa"
-        description="Downloads Europa theme and creates symlink."
-        depends="theme-europa-download-extract, theme-europa-create-symlinks" />
-
-    <target
-        name="build-project-theme-europa-dev"
-        description="Build a local development version of the platform based on the EC Europa theme."
-        depends="project-platform-delete, platform-make-drupal, platform-profiles-link, platform-make-profile, platform-resources-link, project-platform-composer-install-dev, test-behat-setup, test-behat-setup-balancer, test-phpunit-setup, test-phpcs-setup, platform-update-htaccess, project-setup-files-directory, theme-europa-repo-clone, theme-europa-build" />
-
-
     <!-- This step in future will become a part of a build on the new Europa theme repository. -->
     <target name="theme-europa-download-extract">
         <!-- Download the Europa theme archive for a given branch. -->

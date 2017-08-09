@@ -50,6 +50,16 @@
         </then>
     </if>
 
+    <!-- Check type of project and import it's build file.. -->
+    <if>
+        <available file="${project.resources.profiles.dir}" type="dir"/>
+        <then>
+            <import file="${ssk.build}/platform.xml" />
+        </then>
+        <else>
+            <import file="${ssk.build}/subsite.xml" />
+        </else> 
+    </if>
 
     <!-- Copies a given folder to a new location. -->
     <target name="copy-folder" hidden="true">

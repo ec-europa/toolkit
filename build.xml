@@ -29,6 +29,8 @@
         <fileset dir="${ssk.build}" >
             <patternset>
                 <exclude name="deprecated.xml"/>
+                <exclude name="platform.xml"/>
+                <exclude name="subsite.xml"/>
                 <include name="*.xml"/>
             </patternset>
         </fileset>

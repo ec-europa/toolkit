@@ -10,11 +10,39 @@
          </then>
      </if>
 
+    <target
+        name="build-project-theme-europa"
+        description="Downloads Europa theme and creates symlink."
+        depends="
+        theme-europa-download-extract,
+        theme-europa-create-symlinks" />
+
+    <target
+        name="build-project-theme-europa-dev"
+        description="Build a local dev version of EC Europa theme."
+        depends="
+            theme-europa-repo-clone,
+            theme-europa-build" />
+
     <!-- Link site document root to Webserver document root. -->
     <target
         name="build-project-docroot"
         description="Create symlink from build to docroot.">
         <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
+    </target>
+
+    <!-- Update .htaccess. -->
+    <target name="build-project-htaccess" description="Update .htaccess file.">
+        <if>
+            <istrue value="${drupal.htaccess.append.text}" />
+            <then>
+                <echo msg="Appended text to htaccess." />
+                <append destfile="${drupal.htaccess.path}" text="${drupal.htaccess.append.text}" />
+            </then>
+            <else>
+                <echo msg="Appended no text to htaccess." />
+            </else>
+        </if>
     </target>
 
     <!-- Delete the previous development build. -->

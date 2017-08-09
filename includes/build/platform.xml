@@ -41,7 +41,7 @@
             test-behat-setup-balancer,
             test-phpunit-setup,
             test-phpcs-setup,
-            platform-update-htaccess,
+            build-project-htaccess,
             build-project-theme-europa" />
 
     <!-- Make all of the profiles in order to build a multisite platform. -->
@@ -146,20 +146,6 @@
                 <include name="favicon.ico"></include>
             </fileset>
         </copy>
-    </target>
-
-    <!-- Update .htaccess. -->
-    <target name="platform-update-htaccess">
-        <if>
-            <istrue value="${drupal.htaccess.append.text}" />
-            <then>
-                <echo msg="Appended text to htaccess." />
-                <append destfile="${drupal.htaccess.path}" text="${drupal.htaccess.append.text}" />
-            </then>
-            <else>
-                <echo msg="Appended no text to htaccess." />
-            </else>
-        </if>
     </target>
 
 </project>
