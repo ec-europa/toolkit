@@ -13,7 +13,7 @@
     <target
         name="build-platform-dist"
         description="Build a version of the platform intended to distribute as a release package.">
- 
+
         <phingcall target="build-platform-dist-callback">
             <property name="project.build.dir" value="${project.basedir}/dist" override="true" />
             <property name="project.build.profiles.dir" value="${project.basedir}/dist/profiles" override="true" />
