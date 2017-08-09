@@ -10,28 +10,6 @@
         </then>
     </if>
 
-    <!-- Create distribution code base. -->
-    <target
-        name="build-subsite-dist"
-        description="Build files of subsite for release package."
-        depends="
-            subsite-dist-delete,
-            subsite-dist-make,
-            subsite-dist-resources-copy,
-            subsite-dist-composer-install" />
-
-    <target
-        name="build-platform-dist-multisite"
-        description="Build files of  platform intended for release package."
-        depends="
-            project-platform-delete,
-            platform-make-drupal,
-            platform-profiles-copy,
-            platform-make-profile-all,
-            platform-resources-copy,
-            project-platform-composer-install" />
-
-
     <!-- Build release package. -->
     <target name="build-subsite-dist-package" description="Build subsite source code release package." depends="build-subsite-dist">
         <mkdir dir="${project.release.path}" />

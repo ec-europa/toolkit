@@ -33,7 +33,6 @@
             subsite-site-restore"
     />
 
-
     <!-- Install a development version of the subsite with a production database. -->
     <target
         name="build-subsite-dev-clone"
@@ -42,6 +41,27 @@
             drush-regenerate-settings,
             subsite-database-import,
             subsite-modules-devel-en" />
+
+    <!-- Create distribution code base. -->
+    <target
+        name="build-subsite-dist"
+        description="Build files of subsite for release package."
+        depends="
+            subsite-dist-delete,
+            subsite-dist-make,
+            subsite-dist-resources-copy,
+            subsite-dist-composer-install" />
+
+    <target
+        name="build-platform-dist-multisite"
+        description="Build files of  platform intended for release package."
+        depends="
+            project-platform-delete,
+            platform-make-drupal,
+            platform-profiles-copy,
+            platform-make-profile-all,
+            platform-resources-copy,
+            project-platform-composer-install" />
 
     <!-- Build code base with backup restore. -->
     <target name="build-subsite-dev-keep" description="Build local version of subsite with backup and restore.">
@@ -128,296 +148,6 @@
         <phingcall target="drush-enable-modules">
             <property name="drupal.modules" value="${development.modules.enable}" />
         </phingcall>
-    </target>
-
-    <!-- Backs up files and folders listed in platform.rebuild properties in order to rebuild. -->
-    <target name="subsite-site-backup">
-
-        <!-- Check if site exists. -->
-        <if>
-            <available file="${platform.build.settings.dir}/settings.php" type="file"/>
-            <then>
-                <property name="site-detected" value="1" />
-            </then>
-            <else>
-                <echo msg="No site installation detected. Skipping backup." />
-            </else>
-        </if>
-
-        <if>
-            <and>
-                <equals arg1="${platform.rebuild.auto}" arg2="0"/>
-                <equals arg1="${site-detected}" arg2="1"/>
-            </and>
-            <then>
-                <echo msg="Installed site detected." level="warning"/>
-                <propertyprompt propertyName="subsite-site-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
-                <if>
-                    <equals arg1="${subsite-site-backup-activated}" arg2="y" />
-                    <then>
-                        <property name="platform.rebuild.auto" value="1" override="true"/>
-                    </then>
-                </if>
-            </then>
-        </if>
-        <if>
-            <and>
-                <equals arg1="${platform.rebuild.auto}" arg2="1"/>
-                <equals arg1="${site-detected}" arg2="1"/>
-            </and>
-            <then>
-                <if>
-                    <!-- Delete any remains of previous backup attempts. -->
-                    <available file="${platform.rebuild.backup.destination}" type="dir"/>
-                    <then>
-                        <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
-                    </then>
-                </if>
-                <!-- Create backup directory. -->
-                <mkdir dir="${platform.rebuild.backup.destination}"/>
-                <!-- Make the settings directory writable because we can not delete it otherwise -->
-                <phingcall target="unprotect-folder">
-                    <property name="folder.to.unprotect" value="${platform.build.settings.dir}" />
-                </phingcall>
-                <!-- Back up folders list. -->
-                <foreach list="${platform.rebuild.backup.folders}" param="site-item" target="subsite-site-backup-item" delimiter=";">
-                    <property name="site-item-type" value="dir"/>
-                </foreach>
-                <!-- Back up files list. -->
-                <foreach list="${platform.rebuild.backup.files}" param="site-item" target="subsite-site-backup-item" delimiter=";">
-                    <property name="site-item-type" value="file"/>
-                </foreach>
-            </then>
-        </if>
-        <if>
-            <equals arg1="${subsite-site-backup-activated}" arg2="y" />
-            <then>
-                <property name="platform.rebuild.auto" value="0" override="true"/>
-            </then>
-        </if>
-    </target>
-
-    <!-- Restoring sites directory if backed up before rebuild-dev. -->
-    <target name="subsite-site-restore">
-
-        <!-- Check if backup exists. -->
-        <if>
-            <available file="${platform.rebuild.backup.destination}" type="dir"/>
-            <then>
-                <property name="backup-detected" value="1" />
-            </then>
-            <else>
-                <echo msg="No site backup detected. Skipping restore." />
-            </else>
-        </if>
-        <if>
-            <and>
-                <equals arg1="${platform.rebuild.auto}" arg2="0"/>
-                <equals arg1="${backup-detected}" arg2="1"/>
-            </and>
-            <then>
-                <echo msg="Site backup detected." level="warning"/>
-                <propertyprompt propertyName="subsite-site-restore-activated" promptText="Do you wish to restore site for this build? (y/n)" />
-                <if>
-                    <equals arg1="${subsite-site-restore-activated}" arg2="y" />
-                    <then>
-                        <property name="platform.rebuild.auto" value="1" override="true"/>
-                    </then>
-                </if>
-            </then>
-        </if>
-        <if>
-            <and>
-                <equals arg1="${platform.rebuild.auto}" arg2="1"/>
-                <equals arg1="${backup-detected}" arg2="1"/>
-            </and>
-            <then>
-                <echo msg="Restoring site files and folders from ${platform.rebuild.backup.destination}"/>
-                <!-- Restore folders list. -->
-                <foreach list="${platform.rebuild.backup.folders}" param="site-item" target="subsite-site-restore-item" delimiter=";">
-                    <property name="site-item-type" value="dir"/>
-                </foreach>
-                <!-- Restore files list. -->
-                <foreach list="${platform.rebuild.backup.files}" param="site-item" target="subsite-site-restore-item" delimiter=";">
-                    <property name="site-item-type" value="file"/>
-                </foreach>
-                <!-- Delete the site backup directory. -->
-                <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
-            </then>
-        </if>
-    </target>
-
-    <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
-    <target name="subsite-site-backup-item" hidden="true">
-        <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
-        <property name="site-item-backup-dir" value="${site-item-dir}">
-            <filterchain>
-                <replaceregexp>
-                    <regexp pattern="${platform.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
-                </replaceregexp>
-            </filterchain>
-        </property>
-        <if>
-            <available file="${site-item}" type="${site-item-type}"/>
-            <then>
-                <if>
-                    <not>
-                        <available file="${site-item-backup-dir}" type="dir"/>
-                    </not>
-                    <then>
-                        <mkdir dir="${site-item-backup-dir}"/>
-                    </then>
-                </if>
-                <move file="${site-item}" todir="${site-item-backup-dir}" includeemptydirs="true"/>
-            </then>
-            <else>
-                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized"/>
-                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning"/>
-            </else>
-        </if>
-    </target>
-
-    <!-- Restores a site item from the platform.rebuild.backup.destination to the new build. -->
-    <target name="subsite-site-restore-item" hidden="true">
-        <property name="site-item-backup" value="${site-item}">
-            <filterchain>
-                <replaceregexp>
-                    <regexp pattern="${platform.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
-                </replaceregexp>
-            </filterchain>
-        </property>
-        <if>
-            <available file="${site-item-backup}" type="${site-item-type}"/>
-            <then>
-                <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
-                <if>
-                    <not>
-                        <available file="${site-item-dir}" type="dir"/>
-                    </not>
-                    <then>
-                        <mkdir dir="${site-item-dir}"/>
-                    </then>
-                </if>
-                <move file="${site-item-backup}" todir="${site-item-dir}" includeemptydirs="true"/>
-            </then>
-            <else>
-                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized"/>
-                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning"/>
-            </else>
-        </if>
-    </target>
-
-    <!-- Import production database. -->
-    <target name="subsite-database-import" depends="subsite-database-download">
-        <echo msg="Import production database." />
-        <!-- Drop database, create if necessary and import the dump. -->
-        <phingcall target="drush-sql-drop" />
-        <phingcall target="drush-sql-create" />
-        <phingcall target="drush-sql-import">
-            <property name="database-file" value="tmp/${gunzipped.filename}" />
-        </phingcall>
-        <phingcall target="drush-registry-rebuild" />
-    </target>
-
-    <!-- Download the production database. -->
-    <target name="subsite-database-download" >
-        <echo msg="Download the production database." />
-        <!--Strips gz suffix. -->
-        <php expression="substr('${project.database.filename}', 0, -3)" returnProperty="gunzipped.filename" level="debug"/>
-        <if>
-            <not>
-                <!-- Check if we have a previously downloaded dump available. -->
-                <available file="tmp/${gunzipped.filename}" type="file" property="gunzipped.project.db" />
-            </not>
-            <then>
-                <!-- If not available, download and unzip the file. -->
-                <phingcall target="subsite-database-wget" />
-                <exec command="gunzip tmp/${project.database.filename}" checkreturn="true" passthru="false" logoutput="true" />
-            </then>
-            <else>
-                <!-- Inform user if file was already downloaded. -->
-                <echo msg="File ${gunzipped.filename} already downloaded." />
-                <echo msg="Proceeding to import." />
-            </else>
-        </if>
-    </target>
-
-    <!-- Target to actually fetch the database dump. -->
-    <target name="subsite-database-wget">
-        <!--Generate .htaccess credential property if needed, empty if not. -->
-        <if>
-            <or>
-                <equals arg1="${project.database.url.htaccess.username}" arg2="" />
-                <equals arg1="${project.database.url.htaccess.password}" arg2="" />
-            </or>
-            <then>
-                <!-- If username or password is not provided, empty the credential string. -->
-                <property name="project.database.url.credentials"  value="" override="true" />
-            </then>
-            <else>
-                <!-- If username or password is provided, build the credential string. -->
-                <property name="project.database.url.credentials"  value="${project.database.url.htaccess.username}:${project.database.url.htaccess.password}@" override="true"  />
-            </else>
-        </if>
-        <!-- Attempt to download the database dump. -->
-        <exec command="wget ${project.database.url.scheme}://${project.database.url.credentials}${project.database.url}${project.database.filename}" dir="tmp" checkreturn="false" passthru="false" outputProperty="project.database.download" />
-        <if>
-            <!-- Upon success inform the user. -->
-            <contains string="${project.database.download}" substring="200" />
-            <then>
-                <echo msg="Database successfully downloaded." />
-            </then>
-            <!-- When denied access, prompt the user for credentials and retry the download. -->
-            <elseif>
-                <contains string="${project.database.download}" substring="401" />
-                <then>
-                    <phingcall target="prompt-for-credentials-and-retry" />
-                </then>
-            </elseif>
-            <!-- Otherwise we fail the build and display the download message. -->
-            <else>
-                <echo msg="Failed to download the database dump. Result of wget:" level="error" />
-                <echo msg="${project.database.download}" level="error" />
-                <fail />
-            </else>
-        </if>
-    </target>
-
-    <!-- Simple prompt for user credentials and recurse into subsite-database-wget. -->
-    <target name="prompt-for-credentials-and-retry" hidden="true">
-        <input propertyName="project.database.url.htaccess.username" message="Please enter your username." />
-        <input hidden="true" propertyName="project.database.url.htaccess.password" message="Please enter your password." />
-        <phingcall target="subsite-database-wget" />
-    </target>
-
-    <!-- Target to check if we have default settings, otherwise propose user to rebuild. -->
-    <target name="check-for-default-settings-or-rebuild" hidden="true">
-        <if>
-            <not>
-                <available file="${platform.build.settings.dir}/default.settings.php" type="file" property="platform.build.settings.dir.default.settings" />
-            </not>
-            <then>
-                <!-- If we can not find default settings in the build settings folder, prompt to ask user to rebuild. -->
-                <echo msg="No default settings detected at ${platform.build.settings.dir}/default.settings.php." level="warning" />
-                <propertyprompt propertyName="platform-rebuild" defaultValue="no" promptText="Do you wish to rebuild? (y/n)" />
-                <if>
-                    <equals arg1="${platform-rebuild}" arg2="y" />
-                    <then>
-                        <phingcall target="build-dev" />
-                    </then>
-                    <else>
-                        <!-- If user chooses not to rebuild we have no other choice to fail the build. -->
-                        <echo msg="Can not re-generate settings, canceling clone task." level="error" />
-                        <fail />
-                    </else>
-                </if>
-            </then>
-            <else>
-                <!-- If we have found the default settings inform the user we will proceed with generation. -->
-                <echo msg="Default settings found at ${platform.build.settings.dir}/default.settings.php." />
-                <echo msg="Proceeding with re-generation of the settings.php." />
-            </else>
-        </if>
     </target>
 
 </project>
