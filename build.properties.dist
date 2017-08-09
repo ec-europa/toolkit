@@ -171,7 +171,6 @@ project.make = ${project.resources.dir}/site.make
 
 # Local resources.
 project.resources.dir = ${project.basedir}/resources
-project.resources.dir = ${project.basedir}/resources
 project.resources.lib.dir = ${project.basedir}/lib
 project.resources.features.dir = ${project.resources.lib.dir}/features
 project.resources.modules.dir = ${project.resources.lib.dir}/modules
