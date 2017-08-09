@@ -41,7 +41,7 @@
     <target name="build-project-rebuild-platform" description="Rebuild NextEuropa Platform code while keeping subsite.">
         <!-- Execute build-dev with automatic rebuild enabled. -->
         <phingcall target="build-subsite-dev">
-            <property name="platform.rebuild.auto" value="1" override="true"/>
+            <property name="project.rebuild.auto" value="1" override="true"/>
         </phingcall>
     </target>
 

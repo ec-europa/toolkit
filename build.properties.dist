@@ -224,19 +224,18 @@ dist.build.composer.lock = ${dist.build.dir}/composer.lock
 
 # Rebuild configuration
 # ---------------------
-## TO REVIEW
 
 # Automatically rebuild without asking confirmation.
-platform.rebuild.auto = 0
+project.rebuild.auto = 0
 
 # Rebuild backup destination.
-platform.rebuild.backup.destination = ${phing.subsite.tmp.dir}/backup-site
+project.rebuild.backup.destination = ${phing.subsite.tmp.dir}/backup-site
 
 # Semicolon separated list of folders to backup.
-platform.rebuild.backup.folders = ${project.build.files.dir};${project.build.tmp.dir}
+project.rebuild.backup.folders = ${project.build.files.dir};${project.build.tmp.dir}
 
 # Semicolon separated list of files to backup.
-platform.rebuild.backup.files = ${project.build.settings.dir}/settings.php
+project.rebuild.backup.files = ${project.build.settings.dir}/settings.php
 
 
 # Behat configuration

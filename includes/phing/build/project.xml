@@ -312,7 +312,7 @@
         <phingcall target="project-modules-devel-en" />
     </target>
 
-    <!-- Backs up files and folders listed in platform.rebuild properties in order to rebuild. -->
+    <!-- Backs up files and folders listed in project.rebuild. properties in order to rebuild. -->
     <target name="subsite-site-backup">
 
         <!-- Check if site exists. -->
@@ -328,7 +328,7 @@
 
         <if>
             <and>
-                <equals arg1="${platform.rebuild.auto}" arg2="0"/>
+                <equals arg1="${project.rebuild.auto}" arg2="0"/>
                 <equals arg1="${site-detected}" arg2="1"/>
             </and>
             <then>
@@ -337,36 +337,36 @@
                 <if>
                     <equals arg1="${subsite-site-backup-activated}" arg2="y" />
                     <then>
-                        <property name="platform.rebuild.auto" value="1" override="true"/>
+                        <property name="project.rebuild.auto" value="1" override="true"/>
                     </then>
                 </if>
             </then>
         </if>
         <if>
             <and>
-                <equals arg1="${platform.rebuild.auto}" arg2="1"/>
+                <equals arg1="${project.rebuild.auto}" arg2="1"/>
                 <equals arg1="${site-detected}" arg2="1"/>
             </and>
             <then>
                 <if>
                     <!-- Delete any remains of previous backup attempts. -->
-                    <available file="${platform.rebuild.backup.destination}" type="dir"/>
+                    <available file="${project.rebuild.backup.destination}" type="dir"/>
                     <then>
-                        <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
+                        <delete dir="${project.rebuild.backup.destination}" includeemptydirs="true"/>
                     </then>
                 </if>
                 <!-- Create backup directory. -->
-                <mkdir dir="${platform.rebuild.backup.destination}"/>
+                <mkdir dir="${project.rebuild.backup.destination}"/>
                 <!-- Make the settings directory writable because we can not delete it otherwise -->
                 <phingcall target="unprotect-folder">
                     <property name="folder.to.unprotect" value="${project.build.settings.dir}" />
                 </phingcall>
                 <!-- Back up folders list. -->
-                <foreach list="${platform.rebuild.backup.folders}" param="site-item" target="subsite-site-backup-item" delimiter=";">
+                <foreach list="${project.rebuild.backup.folders}" param="site-item" target="subsite-site-backup-item" delimiter=";">
                     <property name="site-item-type" value="dir"/>
                 </foreach>
                 <!-- Back up files list. -->
-                <foreach list="${platform.rebuild.backup.files}" param="site-item" target="subsite-site-backup-item" delimiter=";">
+                <foreach list="${project.rebuild.backup.files}" param="site-item" target="subsite-site-backup-item" delimiter=";">
                     <property name="site-item-type" value="file"/>
                 </foreach>
             </then>
@@ -374,7 +374,7 @@
         <if>
             <equals arg1="${subsite-site-backup-activated}" arg2="y" />
             <then>
-                <property name="platform.rebuild.auto" value="0" override="true"/>
+                <property name="project.rebuild.auto" value="0" override="true"/>
             </then>
         </if>
     </target>
@@ -384,7 +384,7 @@
 
         <!-- Check if backup exists. -->
         <if>
-            <available file="${platform.rebuild.backup.destination}" type="dir"/>
+            <available file="${project.rebuild.backup.destination}" type="dir"/>
             <then>
                 <property name="backup-detected" value="1" />
             </then>
@@ -394,7 +394,7 @@
         </if>
         <if>
             <and>
-                <equals arg1="${platform.rebuild.auto}" arg2="0"/>
+                <equals arg1="${project.rebuild.auto}" arg2="0"/>
                 <equals arg1="${backup-detected}" arg2="1"/>
             </and>
             <then>
@@ -403,28 +403,28 @@
                 <if>
                     <equals arg1="${subsite-site-restore-activated}" arg2="y" />
                     <then>
-                        <property name="platform.rebuild.auto" value="1" override="true"/>
+                        <property name="project.rebuild.auto" value="1" override="true"/>
                     </then>
                 </if>
             </then>
         </if>
         <if>
             <and>
-                <equals arg1="${platform.rebuild.auto}" arg2="1"/>
+                <equals arg1="${project.rebuild.auto}" arg2="1"/>
                 <equals arg1="${backup-detected}" arg2="1"/>
             </and>
             <then>
-                <echo msg="Restoring site files and folders from ${platform.rebuild.backup.destination}"/>
+                <echo msg="Restoring site files and folders from ${project.rebuild.backup.destination}"/>
                 <!-- Restore folders list. -->
-                <foreach list="${platform.rebuild.backup.folders}" param="site-item" target="subsite-site-restore-item" delimiter=";">
+                <foreach list="${project.rebuild.backup.folders}" param="site-item" target="subsite-site-restore-item" delimiter=";">
                     <property name="site-item-type" value="dir"/>
                 </foreach>
                 <!-- Restore files list. -->
-                <foreach list="${platform.rebuild.backup.files}" param="site-item" target="subsite-site-restore-item" delimiter=";">
+                <foreach list="${project.rebuild.backup.files}" param="site-item" target="subsite-site-restore-item" delimiter=";">
                     <property name="site-item-type" value="file"/>
                 </foreach>
                 <!-- Delete the site backup directory. -->
-                <delete dir="${platform.rebuild.backup.destination}" includeemptydirs="true"/>
+                <delete dir="${project.rebuild.backup.destination}" includeemptydirs="true"/>
             </then>
         </if>
     </target>
@@ -435,7 +435,7 @@
         <property name="site-item-backup-dir" value="${site-item-dir}">
             <filterchain>
                 <replaceregexp>
-                    <regexp pattern="${project.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
+                    <regexp pattern="${project.build.dir}" replace="${project.rebuild.backup.destination}" ignoreCase="false"/>
                 </replaceregexp>
             </filterchain>
         </property>
@@ -459,12 +459,12 @@
         </if>
     </target>
 
-    <!-- Restores a site item from the platform.rebuild.backup.destination to the new build. -->
+    <!-- Restores a site item from the project.rebuild.backup.destination to the new build. -->
     <target name="subsite-site-restore-item" hidden="true">
         <property name="site-item-backup" value="${site-item}">
             <filterchain>
                 <replaceregexp>
-                    <regexp pattern="${project.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
+                    <regexp pattern="${project.build.dir}" replace="${project.rebuild.backup.destination}" ignoreCase="false"/>
                 </replaceregexp>
             </filterchain>
         </property>

@@ -44,7 +44,7 @@
 
     <!-- Check if backup exists. -->
     <if>
-        <available file="${platform.rebuild.backup.destination}" type="dir"/>
+        <available file="${project.rebuild.backup.destination}" type="dir"/>
         <then>
             <property name="backup-detected" value="1" />
         </then>
