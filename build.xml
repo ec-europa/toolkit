@@ -3,7 +3,7 @@
 <project name="starterkit" default="help">
 
     <!-- Import helper targets and load the build properties first. -->
-    <import file="${phing.dir.starterkit}/includes/build/help.xml" />
+    <import file="${phing.dir.starterkit}/includes/phing/build/help.xml" />
 
     <!-- Set include path for custom tasks. -->
     <includepath classpath="${ssk.root}/src/Phing" />
