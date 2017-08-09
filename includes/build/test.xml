@@ -120,11 +120,11 @@
             </filterchain>
             <mapper type="glob" from="*.xml.dist" to="*.xml" />
         </copy>
-        <symlink link="${project.build.dir}" overwrite="true">
+        <rel-sym link="${project.build.dir}" overwrite="true">
             <fileset dir="${phpunit.dir}" casesensitive="yes">
                 <include name="*.yml"/>
             </fileset>
-        </symlink>
+        </rel-sym>
         <rel-sym link="${project.build.dir}/tests" target="${project.basedir}/tests" />
         <rel-sym link="ssk/phpunit" target="${project.build.dir}/vendor/bin/phpunit" overwrite="true"/>
     </target>
