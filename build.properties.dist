@@ -40,6 +40,8 @@ subsite.reference.branch = master
 subsite.reference.remote = reference
 
 # Starterkit locations
+# ---------------------------------------
+
 ssk.root = ${phing.dir.starterkit}
 ssk.includes = ${ssk.root}/includes
 ssk.build = ${ssk.includes}/phing/build
@@ -101,7 +103,6 @@ drupal.htaccess.path = ${project.build.dir}/.htaccess
 drupal.htaccess.append.text =
 
 # The site name to use. Use 'all' unless you want to build a multisite setup.
-## TODO: MULTISITE support would be a nice to have.
 drupal.site.name = all
 
 # The Drupal core version.
@@ -125,26 +126,18 @@ platform.profile.name = multisite_drupal_standard
 # For most projects you would want to follow 'master' so that you always have
 # the latest version that is deployed on production. Use 'develop' to check if
 # your project is compatible with the upcoming release.
-platform.package.reference = 2.3.61
+platform.package.reference = 2.4
 
 # The provider that hosts the platform repository.
-## KEEP as project?
 platform.package.provider = git-hub
 
 # The name of the platform repository.
-## KEEP as project?
 platform.package.repository = ec-europa/platform-dev
 
-# The name of the global folder where platform downloads and installs can be stored.
-## REMOVE
-platform.package.cachedir = /tmp/platform-dev
-
 # Activate vanilla database caching to skip drush site-install.
-## KEEP
 platform.package.database = 0
 
 # The path to the downloaded package. This is named 'deploy-package-${platform.package.reference}.tar.gz'.
-## KEEP or GITHUB API by version/branch
 platform.package.tarball = deploy-package-${platform.package.reference}.tar.gz
 
 # The ContinuousPHP token. Leave this empty for open source projects. Note that

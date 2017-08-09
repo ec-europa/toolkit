@@ -86,6 +86,13 @@
     <!-- Download the platform. -->
     <target name="project-platform-package-download">
         <if>
+            <!-- Get latest stable if major version is defined. -->
+            <matches string="${platform.package.reference}" pattern="[1-9]+\.[1-9]+" />
+            <then>
+                <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K[0-9]+\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.reference" />
+            </then>
+        </if>
+        <if>
             <available file="${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" type="file"/>
             <then>
                   <echo msg="Package platform-dev-${platform.package.reference}.tar.gz already downloaded."/>
@@ -95,9 +102,9 @@
                 <mkdir dir="${platform.package.cachedir}" />
                 <echo msg="Starting platform download. Depending on your connection this can take between 5-15 minutes. Go get some coffee."/>
                 <if>
-                    <http url="https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"/>
+                    <http url="https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.reference}.tar.gz"/>
                     <then>
-                        <exec command="curl -L -o ${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz" passthru="true"/>
+                        <exec command="curl -L -o ${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.reference}.tar.gz" passthru="true"/>
                         <echo msg="Downloaded platform package reference ${platform.package.reference}"/>
                     </then>
                     <else>
