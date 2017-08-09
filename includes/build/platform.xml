@@ -85,7 +85,7 @@
             <isset property="profile-name" />
             <then>
                 <property name="platform.profile.name" value="${profile-name}" override="true" />
-                <property name="platform.make" value="${platform.resources.dir}/${profile-name}.make" override="true" />
+                <property name="project.make" value="${platform.resources.dir}/${profile-name}.make" override="true" />
             </then>
         </if>
         <drush
@@ -95,7 +95,7 @@
             pipe="yes"
             verbose="${drush.verbose}"
             root="${platform.build.dir}">
-            <param>${platform.make}</param>
+            <param>${project.make}</param>
             <param>${platform.build.dir}</param>
             <!-- Increasing the concurrency improves the build time by a factor of 3. -->
             <option name="concurrency">10</option>

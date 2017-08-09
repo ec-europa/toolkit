@@ -44,9 +44,9 @@
         name="build-project-clone"
         description="Install NextEuropa site with production data."
         depends="
-            subsite-database-download,
+            project-database-download,
             drush-regenerate-settings,
-            subsite-database-import,
+            project-database-import,
             project-modules-devel-en" />
 
     <!-- Link site document root to Webserver document root. -->
@@ -490,7 +490,7 @@
     </target>
 
     <!-- Import production database. -->
-    <target name="subsite-database-import" depends="subsite-database-download">
+    <target name="project-database-import" depends="project-database-download">
         <echo msg="Import production database." />
         <!-- Drop database, create if necessary and import the dump. -->
         <phingcall target="drush-sql-drop" />
@@ -502,7 +502,7 @@
     </target>
 
     <!-- Download the production database. -->
-    <target name="subsite-database-download" >
+    <target name="project-database-download" >
         <echo msg="Download the production database." />
         <!--Strips gz suffix. -->
         <php expression="substr('${project.database.filename}', 0, -3)" returnProperty="gunzipped.filename" level="debug"/>
@@ -513,7 +513,7 @@
             </not>
             <then>
                 <!-- If not available, download and unzip the file. -->
-                <phingcall target="subsite-database-wget" />
+                <phingcall target="project-database-wget" />
                 <exec command="gunzip tmp/${project.database.filename}" checkreturn="true" passthru="false" logoutput="true" />
             </then>
             <else>
@@ -525,7 +525,7 @@
     </target>
 
     <!-- Target to actually fetch the database dump. -->
-    <target name="subsite-database-wget">
+    <target name="project-database-wget">
         <!--Generate .htaccess credential property if needed, empty if not. -->
         <if>
             <or>
@@ -565,11 +565,11 @@
         </if>
     </target>
 
-    <!-- Simple prompt for user credentials and recurse into subsite-database-wget. -->
+    <!-- Simple prompt for user credentials and recurse into project-database-wget. -->
     <target name="prompt-for-credentials-and-retry" hidden="true">
         <input propertyName="project.database.url.htaccess.username" message="Please enter your username." />
         <input hidden="true" propertyName="project.database.url.htaccess.password" message="Please enter your password." />
-        <phingcall target="subsite-database-wget" />
+        <phingcall target="project-database-wget" />
     </target>
 
 </project>

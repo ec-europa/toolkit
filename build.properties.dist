@@ -4,7 +4,6 @@
 # The site name.
 subsite.name = My Project
 subsite.id = myproject
-subsite.make = ${project.resources.dir}/site.make
 subsite.install.modules = myproject_core
 subsite.url.production =
 subsite.url.playground =
@@ -191,6 +190,9 @@ dist.build.dir = ${project.basedir}/${phing.subsite.build.dir}
 # Temporary folder.
 # GOOD BUT could be renamed.
 phing.subsite.tmp.dir = ${project.basedir}/tmp
+
+# Project makefile.
+project.make = ${project.resources.dir}/site.make
 
 # Local resources.
 project.resources.dir = ${project.basedir}/resources
