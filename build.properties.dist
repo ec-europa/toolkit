@@ -211,12 +211,12 @@ project.resources.composer.lock = ${project.resources.dir}/composer.lock
 subsite.temporary.development.make = ${phing.project.tmp.dir}/development.make
 
 # Files and directories inside the Drupal installation for local development.
-platform.build.settings.dir = ${platform.build.sites.dir}/default
-platform.build.files.dir = ${platform.build.settings.dir}/files
-platform.build.tmp.dir = ${platform.build.settings.dir}/tmp
+project.build.settings.dir = ${platform.build.sites.dir}/default
+project.build.files.dir = ${project.build.settings.dir}/files
+project.build.tmp.dir = ${project.build.settings.dir}/tmp
 
-platform.build.profiles.dir = ${platform.build.dir}/profiles
-platform.build.profile.dir = ${platform.build.profiles.dir}/${platform.profile.name}
+project.build.profiles.dir = ${platform.build.dir}/profiles
+project.build.profile.dir = ${project.build.profiles.dir}/${platform.profile.name}
 
 platform.build.sites.dir = ${platform.build.dir}/sites
 platform.build.subsite.dir = ${platform.build.sites.dir}/${drupal.site.name}
@@ -251,10 +251,10 @@ platform.rebuild.auto = 0
 platform.rebuild.backup.destination = ${phing.subsite.tmp.dir}/backup-site
 
 # Semicolon separated list of folders to backup.
-platform.rebuild.backup.folders = ${platform.build.files.dir};${platform.build.tmp.dir}
+platform.rebuild.backup.folders = ${project.build.files.dir};${project.build.tmp.dir}
 
 # Semicolon separated list of files to backup.
-platform.rebuild.backup.files = ${platform.build.settings.dir}/settings.php
+platform.rebuild.backup.files = ${project.build.settings.dir}/settings.php
 
 
 # Behat configuration

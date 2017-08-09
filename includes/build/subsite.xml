@@ -53,11 +53,11 @@
     <!-- Make the development version of the subsite. -->
     <target name="subsite-make-subsite">
         <if>
-            <available file="${project.make}" type="file" />
+            <available file="${site.make}" type="file" />
             <then>
                 <echo msg="Make the subsite." />
                 <phingcall target="drush-make-no-core">
-                    <property name="drush.make.target.file" value="${project.make}" />
+                    <property name="drush.make.target.file" value="${site.make}" />
                     <property name="drush.make.root" value="${platform.build.dir}" />
                 </phingcall>
             </then>
@@ -169,9 +169,9 @@
             in a temporary folder and move the subsite into place when done.
          -->
         <if>
-            <available file="${project.make}" type="file" />
+            <available file="${site.make}" type="file" />
             <then>
-                <loadfile property="sitemake" file="${project.make}"/>
+                <loadfile property="sitemake" file="${site.make}"/>
                 <propertyregex
                     property="not.empty"
                     subject="${sitemake}"
@@ -183,7 +183,7 @@
                     <not><equals arg1="${not.empty}" arg2="empty" /></not>
                     <then>
                         <phingcall target="drush-make-no-core">
-                            <property name="drush.make.target.file" value="${project.make}" />
+                            <property name="drush.make.target.file" value="${site.make}" />
                             <property name="drush.make.root" value="${phing.subsite.tmp.dir}/build" />
                         </phingcall>
                     </then>

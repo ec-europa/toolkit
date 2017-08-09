@@ -74,7 +74,7 @@
     <target name="project-platform-delete">
         <echo msg="Delete previous build." />
         <phingcall target="unprotect-folder">
-            <property name="folder.to.unprotect" value="${platform.build.settings.dir}" />
+            <property name="folder.to.unprotect" value="${project.build.settings.dir}" />
         </phingcall>
         <echo msg="Unprotecting folder." />
         <phingcall target="delete-folder">
@@ -171,13 +171,13 @@
     <!-- Setup file directory -->
     <target name="project-setup-files-directory">
         <if>
-            <istrue value="${platform.build.files.dir}" />
+            <istrue value="${project.build.files.dir}" />
             <then>
-                <mkdir dir="${platform.build.files.dir}/private_files" />
-                <mkdir dir="${platform.build.tmp.dir}" />
+                <mkdir dir="${project.build.files.dir}/private_files" />
+                <mkdir dir="${project.build.tmp.dir}" />
                 <!-- Support CSS and JS injector. -->
-                <mkdir dir="${platform.build.files.dir}/css_injector" />
-                <mkdir dir="${platform.build.files.dir}/js_injector" />
+                <mkdir dir="${project.build.files.dir}/css_injector" />
+                <mkdir dir="${project.build.files.dir}/js_injector" />
             </then>
         </if>
     </target>
@@ -229,7 +229,7 @@
             the settings.php file.
          -->
         <chmod mode="0775" failonerror="false" verbose="false" quiet="true">
-            <fileset dir="${platform.build.settings.dir}" />
+            <fileset dir="${project.build.settings.dir}" />
         </chmod>
 
         <if>
@@ -285,11 +285,11 @@
     <target name="check-for-default-settings-or-rebuild" hidden="true">
         <if>
             <not>
-                <available file="${platform.build.settings.dir}/default.settings.php" type="file" property="platform.build.settings.dir.default.settings" />
+                <available file="${project.build.settings.dir}/default.settings.php" type="file" property="project.build.settings.dir.default.settings" />
             </not>
             <then>
                 <!-- If we can not find default settings in the build settings folder, prompt to ask user to rebuild. -->
-                <echo msg="No default settings detected at ${platform.build.settings.dir}/default.settings.php." level="warning" />
+                <echo msg="No default settings detected at ${project.build.settings.dir}/default.settings.php." level="warning" />
                 <propertyprompt propertyName="platform-rebuild" defaultValue="no" promptText="Do you wish to rebuild? (y/n)" />
                 <if>
                     <equals arg1="${platform-rebuild}" arg2="y" />
@@ -305,7 +305,7 @@
             </then>
             <else>
                 <!-- If we have found the default settings inform the user we will proceed with generation. -->
-                <echo msg="Default settings found at ${platform.build.settings.dir}/default.settings.php." />
+                <echo msg="Default settings found at ${project.build.settings.dir}/default.settings.php." />
                 <echo msg="Proceeding with re-generation of the settings.php." />
             </else>
         </if>
@@ -317,7 +317,7 @@
 
         <!-- Check if site exists. -->
         <if>
-            <available file="${platform.build.settings.dir}/settings.php" type="file"/>
+            <available file="${project.build.settings.dir}/settings.php" type="file"/>
             <then>
                 <property name="site-detected" value="1" />
             </then>
@@ -359,7 +359,7 @@
                 <mkdir dir="${platform.rebuild.backup.destination}"/>
                 <!-- Make the settings directory writable because we can not delete it otherwise -->
                 <phingcall target="unprotect-folder">
-                    <property name="folder.to.unprotect" value="${platform.build.settings.dir}" />
+                    <property name="folder.to.unprotect" value="${project.build.settings.dir}" />
                 </phingcall>
                 <!-- Back up folders list. -->
                 <foreach list="${platform.rebuild.backup.folders}" param="site-item" target="subsite-site-backup-item" delimiter=";">

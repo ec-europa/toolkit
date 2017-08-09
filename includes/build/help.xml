@@ -36,7 +36,7 @@
 
     <!-- Check if site exists. -->
     <if>
-        <available file="${platform.build.settings.dir}/settings.php" type="file"/>
+        <available file="${project.build.settings.dir}/settings.php" type="file"/>
         <then>
             <property name="site-detected" value="1" />
         </then>

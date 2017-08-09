@@ -85,7 +85,7 @@
             <isset property="profile-name" />
             <then>
                 <property name="platform.profile.name" value="${profile-name}" override="true" />
-                <property name="project.make" value="${platform.resources.dir}/${profile-name}.make" override="true" />
+                <property name="platform.make" value="${project.resources.dir}/${profile-name}.make" override="true" />
             </then>
         </if>
         <drush
@@ -95,7 +95,7 @@
             pipe="yes"
             verbose="${drush.verbose}"
             root="${platform.build.dir}">
-            <param>${project.make}</param>
+            <param>${platform.make}</param>
             <param>${platform.build.dir}</param>
             <!-- Increasing the concurrency improves the build time by a factor of 3. -->
             <option name="concurrency">10</option>
@@ -110,15 +110,15 @@
     <!-- Copy the profile folders for deploying on production. -->
     <target name="platform-profiles-copy">
         <!-- Delete the core profiles folder so it can be replaced with ours. -->
-        <delete dir="${platform.build.profiles.dir}" includeemptydirs="true" failonerror="true" />
+        <delete dir="${project.build.profiles.dir}" includeemptydirs="true" failonerror="true" />
         <!-- Copy our profiles folder. -->
-        <copy todir="${platform.build.profiles.dir}">
+        <copy todir="${project.build.profiles.dir}">
             <fileset dir="${project.resources.profiles.dir}">
                 <include name="**" />
             </fileset>
         </copy>
         <!-- Copy common modules, themes and libraries. -->
-        <copy todir="${platform.build.profiles.dir}/common">
+        <copy todir="${project.build.profiles.dir}/common">
             <fileset dir="${project.resources.lib.dir}">
                 <exclude name="profiles/**" />
                 <include name="**" />
@@ -129,9 +129,9 @@
     <!-- Symlink the profile folders for easy development. -->
     <target name="platform-profiles-link">
         <!-- Delete the core profiles folder. -->
-        <delete dir="${platform.build.profiles.dir}" />
+        <delete dir="${project.build.profiles.dir}" />
         <!-- Symlink our profiles folder. -->
-        <symlink link="${platform.build.profiles.dir}" target="${platform.resources.profiles.dir}" />
+        <symlink link="${project.build.profiles.dir}" target="${project.resources.profiles.dir}" />
    </target>
 
     <!-- Symlink various resources for easy development. -->
