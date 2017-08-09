@@ -17,12 +17,12 @@ default:
         wd_host: '${behat.wd_host.url}'
       javascript_session: 'selenium2'
       base-url: '${behat.base_url}'
-      files_path: '${platform.build.dir}'
+      files_path: '${project.build.dir}'
     Drupal\DrupalExtension:
       api_driver: 'drupal'
       blackbox: ~
       drupal:
-        drupal_root: '${platform.build.dir}'
+        drupal_root: '${project.build.dir}'
       selectors:
         message_selector: '.messages'
         error_message_selector: '.messages.error'
@@ -31,7 +31,7 @@ default:
         paths:
           - '${behat.subcontexts.path}'
       drush:
-        root: '${platform.build.dir}'
+        root: '${project.build.dir}'
         binary: '${drush.bin}'
   formatters:
     ${behat.formatter.name}: ~
