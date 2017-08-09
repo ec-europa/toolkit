@@ -48,7 +48,7 @@
     <target name="test-behat-setup-link">
         <echo msg="Symlink the Behat bin and test directory in './sites/all'." />
         <rel-sym link="${project.basedir}/ssk/behat" target="${ssk.vendor}/bin/behat" overwrite="true"/>
-        <rel-sym link="${platform.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
+        <rel-sym link="${project.build.subsite.dir}/tests" target="${project.basedir}/tests" overwrite="true"/>
     </target>
 
     <!-- Set up Behat balancer. -->
@@ -114,19 +114,19 @@
             <filterchain>
                 <replacetokens begintoken="{{ " endtoken=" }}">
                     <token key="phpunit.base_url" value="${phpunit.base_url}" />
-                    <token key="platform.build.dir" value="${platform.build.dir}" />
+                    <token key="project.build.dir" value="${project.build.dir}" />
                     <token key="phpunit.dir" value="${phpunit.dir}" />
                 </replacetokens>
             </filterchain>
             <mapper type="glob" from="*.xml.dist" to="*.xml" />
         </copy>
-        <symlink link="${platform.build.dir}" overwrite="true">
+        <symlink link="${project.build.dir}" overwrite="true">
             <fileset dir="${phpunit.dir}" casesensitive="yes">
                 <include name="*.yml"/>
             </fileset>
         </symlink>
-        <symlink link="${platform.build.dir}/tests" target="../tests" />
-        <symlink link="bin/phpunit" target="../${platform.build.dir}/vendor/bin/phpunit" overwrite="true"/>
+        <rel-sym link="${project.build.dir}/tests" target="${project.basedir}/tests" />
+        <rel-sym link="ssk/phpunit" target="${project.build.dir}/vendor/bin/phpunit" overwrite="true"/>
     </target>
 
     <!-- Do quality assurance checks. -->

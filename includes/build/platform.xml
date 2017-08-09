@@ -71,9 +71,9 @@
             bin="${drush.bin}"
             pipe="yes"
             verbose="${drush.verbose}"
-            root="${platform.build.dir}">
+            root="${project.build.dir}">
             <param>${drupal.make}</param>
-            <param>${platform.build.dir}</param>
+            <param>${project.build.dir}</param>
             <option name="no-patch-txt"></option>
         </drush>
     </target>
@@ -94,9 +94,9 @@
             bin="${drush.bin}"
             pipe="yes"
             verbose="${drush.verbose}"
-            root="${platform.build.dir}">
+            root="${project.build.dir}">
             <param>${platform.make}</param>
-            <param>${platform.build.dir}</param>
+            <param>${project.build.dir}</param>
             <!-- Increasing the concurrency improves the build time by a factor of 3. -->
             <option name="concurrency">10</option>
             <option name="no-patch-txt"></option>
@@ -145,7 +145,7 @@
     <!-- Copy various resources for deploying on production. -->
     <target name="platform-resources-copy">
         <!-- Resources to copy to the website root. -->
-        <copy todir="${platform.build.dir}">
+        <copy todir="${project.build.dir}">
             <fileset dir="${project.resources.dir}">
                 <!-- Composer configuration. -->
                 <include name="composer.*"></include>

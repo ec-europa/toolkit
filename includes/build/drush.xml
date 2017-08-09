@@ -13,7 +13,7 @@
     <!-- Install the site. -->
     <target name="drush-site-install">
         <echo message="Installing site ${subsite.name}." />
-        <drush command="site-install" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="site-install" assume="yes" root="${project.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${drupal.db.url}" />
             <option name="site-name" value="'${subsite.name}'" />
             <option name="account-name" value="${drupal.admin.username}" />
@@ -29,7 +29,7 @@
         <drush
             command="pm-enable"
             assume="yes"
-            root="${platform.build.dir}"
+            root="${project.build.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}"
             color="${drush.color}">
@@ -41,7 +41,7 @@
     <target name="drush-create-files-dirs">
         <echo message="Creating files directories for ${drupal.db.name}." />
         <!-- Execute setttings generation script. -->
-        <drush command="php-script" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="php-script" root="${project.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${ssk.root}/includes/drush/generate-directories.php</param>
         </drush>
     </target>
@@ -49,7 +49,7 @@
     <!-- Create the database. -->
     <target name="drush-sql-create">
         <echo message="Creating database ${drupal.db.name}." />
-        <drush command="sql-create" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="sql-create" assume="yes" root="${project.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${drupal.db.url}" />
         </drush>
     </target>
@@ -57,15 +57,15 @@
     <!-- Import a database. -->
     <target name="drush-sql-import">
         <echo message="Importing database." />
-        <drush command="sql-cli" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="sql-cli" root="${project.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
         <phingcall target="drush-registry-rebuild" />
         <phingcall target="drush-create-files-dirs" />
         <!-- Update database. -->
-        <drush command="updatedb" assume="yes" root="${platform.build.dir}" bin="${drush.bin}"></drush>
+        <drush command="updatedb" assume="yes" root="${project.build.dir}" bin="${drush.bin}"></drush>
         <!-- Clear Caches. -->
-        <drush command="cc" assume="yes" root="${platform.build.dir}" bin="${drush.bin}">
+        <drush command="cc" assume="yes" root="${project.build.dir}" bin="${drush.bin}">
             <param>all</param>
         </drush>
     </target>
@@ -73,7 +73,7 @@
     <!-- Drop the database. -->
     <target name="drush-sql-drop">
         <echo message="Dropping database ${drupal.db.name}." />
-        <drush command="sql-drop" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="sql-drop" assume="yes" root="${project.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${drupal.db.url}" />
         </drush>
     </target>
@@ -83,7 +83,7 @@
         <echo message="Backing up database ${drupal.db.name} to ${database-file}." />
         <dirname property="database-cachedir" file="${database-file}"/>
         <mkdir dir="${database-cachedir}" />
-        <drush command="sql-dump" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="sql-dump" assume="yes" root="${project.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="result-file" value="${database-file}" />
         </drush>
     </target>
@@ -97,7 +97,7 @@
                 <phingcall target="drush-enable-modules">
                     <property name="drupal.modules" value="apachesolr" />
                 </phingcall>
-                <drush command="solr-set-env-url" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+                <drush command="solr-set-env-url" assume="yes" root="${project.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
                     <param>${drupal.solr.env.url}</param>
                 </drush>
             </then>
@@ -142,7 +142,7 @@
             </filterchain>
         </copy>
         <!-- Execute setttings generation script. -->
-        <drush command="php-script" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="php-script" root="${project.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}" color="${drush.color}">
             <param>tmp/generate-settings.php</param>
         </drush>
     </target>
@@ -160,7 +160,7 @@
             </catch>
             <finally>
                  <!-- Rebuild Registry. -->
-                 <drush command="registry-rebuild" assume="yes" root="${platform.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}">
+                 <drush command="registry-rebuild" assume="yes" root="${project.build.dir}" bin="${drush.bin}" verbose="${drush.verbose}">
                      <param>--fire-bazooka</param>
                  </drush>
             </finally>
@@ -179,7 +179,7 @@
         <drush
             command="php-eval"
             assume="yes"
-            root="${platform.build.dir}"
+            root="${project.build.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}"
             color="${drush.color}">

@@ -53,7 +53,7 @@
     <target
         name="build-project-docroot"
         description="Create symlink from build to docroot.">
-        <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
+        <rel-sym link="${server.docroot}" target="${project.build.dir}" overwrite="true" />
     </target>
 
     <!-- Update .htaccess. -->
@@ -78,7 +78,7 @@
         </phingcall>
         <echo msg="Unprotecting folder." />
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${platform.build.dir}" />
+            <property name="folder.to.delete" value="${project.build.dir}" />
         </phingcall>
         <echo msg="Deleting folder." />
     </target>
@@ -114,22 +114,22 @@
         <if>
             <os family="unix"/>
             <then>
-                <echo msg='mkdir "${platform.build.dir}"'/>
+                <echo msg='mkdir "${project.build.dir}"'/>
                 <exec
-                    command='mkdir "${platform.build.dir}"'
+                    command='mkdir "${project.build.dir}"'
                     dir="${project.basedir}"
                     passthru="true"
                 />
-                <echo msg='tar xzf "${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" -C "${platform.build.dir}"'/>
+                <echo msg='tar xzf "${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" -C "${project.build.dir}"'/>
                 <exec
-                    command='tar xzf "${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" -C "${platform.build.dir}"'
+                    command='tar xzf "${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" -C "${project.build.dir}"'
                     dir="${project.basedir}"
                     passthru="true"
                     checkreturn="true"
                 />
             </then>
             <else>
-                <untar file="${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" todir="${platform.build.dir}"/>
+                <untar file="${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" todir="${project.build.dir}"/>
             </else>
         </if>
     </target>
@@ -138,7 +138,7 @@
     <target name="project-platform-composer-install">
         <echo msg="Run 'composer install' in platform root." />
         <composer command="install" composer="${composer.bin}">
-            <arg value="--working-dir=${platform.build.dir}" />
+            <arg value="--working-dir=${project.build.dir}" />
             <arg value="--no-interaction" />
             <arg value="--no-suggest" />
             <arg value="--no-dev" />
@@ -149,7 +149,7 @@
     <!-- Install Composer dependencies, including optional development dependencies. -->
     <target name="project-platform-composer-install-dev">
         <composer command="install" composer="${composer.bin}">
-            <arg value="--working-dir=${platform.build.dir}" />
+            <arg value="--working-dir=${project.build.dir}" />
             <arg value="--no-interaction" />
             <arg value="--no-suggest" />
             <arg value="--ansi" />
@@ -160,7 +160,7 @@
     <target name="project-subsite-composer-install">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <composer command="install" composer="${composer.bin}">
-            <arg value="--working-dir=${platform.build.subsite.dir}" />
+            <arg value="--working-dir=${project.build.subsite.dir}" />
             <arg value="--no-interaction" />
             <!-- <arg value="no-plugins" /> -->
             <arg value="--no-suggest" />
@@ -203,7 +203,7 @@
         <echo msg="Download development modules." />
         <phingcall target="drush-make-no-core">
             <property name="drush.make.target.file" value="${subsite.temporary.development.make}" />
-            <property name="drush.make.root" value="${platform.build.dir}" />
+            <property name="drush.make.root" value="${project.build.dir}" />
         </phingcall>
     </target>
 
@@ -239,7 +239,7 @@
             </and>
             <then>
                 <phingcall target="drush-regenerate-settings" />
-                <exec command="${drush.bin} --root=${platform.build.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap" />
+                <exec command="${drush.bin} --root=${project.build.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap" />
                 <if>
                     <not>
                         <equals arg1="${drush-status-bootstrap}" arg2="0"/>
@@ -435,7 +435,7 @@
         <property name="site-item-backup-dir" value="${site-item-dir}">
             <filterchain>
                 <replaceregexp>
-                    <regexp pattern="${platform.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
+                    <regexp pattern="${project.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
                 </replaceregexp>
             </filterchain>
         </property>
@@ -464,7 +464,7 @@
         <property name="site-item-backup" value="${site-item}">
             <filterchain>
                 <replaceregexp>
-                    <regexp pattern="${platform.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
+                    <regexp pattern="${project.build.dir}" replace="${platform.rebuild.backup.destination}" ignoreCase="false"/>
                 </replaceregexp>
             </filterchain>
         </property>

@@ -14,29 +14,24 @@ subsite.url.acceptance =
 #-----------------------------
 
 # Project database url scheme.
-## REMOVE
 subsite.database.url.scheme = https
 
 # Project database url username is used for .htaccess to file download url. Use only
 # within build.properties.local if needed. Never commit credentials on github.
-## KEEP or FPFIS API SDK github oauth.
 subsite.database.url.htaccess.username =
 
 # Project database url username is used for .htaccess to file download url. Use only
 # within build.properties.local if needed. Never commit credentials on github.
-## KEEP or FPFIS API SDK github oauth.
 subsite.database.url.htaccess.password =
 
 # Project database url. Define the scheme in subsite.database.url.scheme property. If
 # you want developers to use the same database this should be added to the projects
 # build.properties file.
-## FPFIS API SDK: Url should not be given but file should be returned for download.
 subsite.database.url = webgate.ec.europa.eu/fpfis/files-for/${subsite.id}/
 
 # Project database filename.  If you want developers to use the same database this
 # should be added to the projects build.properties file. The file has to be
 # compressed in .gz format. Thus ending in .sql.gz.
-## FPFIS API SDK: Filename should not be know but download by version (mostly master???)
 subsite.database.filename =
 
 # The information of the project reference repository.
@@ -45,7 +40,6 @@ subsite.reference.branch = master
 subsite.reference.remote = reference
 
 # Starterkit locations
-## NEVER BEEN BETTER:
 ssk.root = ${phing.dir.starterkit}
 ssk.includes = ${ssk.root}/includes
 ssk.build = ${ssk.includes}/build
@@ -57,7 +51,7 @@ ssk.bin = ${ssk.root}/bin
 
 # Development configuration
 # ---------------------------------------
-## ALL GOOD EXCEPT SFP
+
 # Development / testing modules to download.
 development.modules.download = devel maillog stage_file_proxy
 
@@ -72,9 +66,7 @@ development.variables.error_level = 2
 development.variables.views_ui_show_sql_query = 1
 development.variables.views_ui_show_performance_statistics = 1
 development.variables.views_show_additional_queries = 1
-## REMOVE SFP & Load by production url property or FPFIS API SDK
 development.variables.stage_file_proxy_origin = https://ec.europa.eu/${subsite.id}
-## MOVE TO FPFIS API SDK? We know it's hard coded.
 development.variables.stage_file_proxy_origin_dir = sites/${subsite.id}/files
 development.variables.stage_file_proxy_hotlink = 1
 
@@ -91,7 +83,6 @@ drupal.db.host = 127.0.0.1
 # TODO: replace host with docker service name?
 drupal.db.port = 3306
 drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${drupal.db.name}
-## VALIDATE: Escape this string for drush usage.
 
 # Solr env url. Either d7_apachesolr or d7_search_api.
 ## QUERY: can be queried and correct module enable in install.
@@ -99,13 +90,12 @@ drupal.solr.activate = 1
 drupal.solr.env.url = http://solr:8983/solr/d7_apachesolr
 
 # Admin user
-# GOOD.
 drupal.admin.username = admin
 drupal.admin.password = pass
 drupal.admin.email = ${drupal.admin.username}@example.com
 
 # The location of the .htaccess file in the Drupal root folder.
-drupal.htaccess.path = ${platform.build.dir}/.htaccess
+drupal.htaccess.path = ${project.build.dir}/.htaccess
 
 # Configuration to append to the .htaccess file in the Drupal root folder.
 drupal.htaccess.append.text =
@@ -115,7 +105,6 @@ drupal.htaccess.append.text =
 drupal.site.name = all
 
 # The Drupal core version.
-## GOOD
 drupal.core.version = 7.x
 
 
@@ -124,12 +113,10 @@ drupal.core.version = 7.x
 
 # The root directory of the platform. This will become the Drupal root folder,
 # so point your web server here.
-## GOOD ???
-platform.build.dir = ${project.basedir}/platform
+project.build.dir = ${project.basedir}/platform
 
 # The install profile to use. Either multisite_drupal_standard or
 # multisite_drupal_communities.
-## REQUIRED
 platform.profile.name = multisite_drupal_standard
 
 # The branch, tag or commit to use, eg. 'master', 'develop', '2.1.56',
@@ -138,7 +125,6 @@ platform.profile.name = multisite_drupal_standard
 # For most projects you would want to follow 'master' so that you always have
 # the latest version that is deployed on production. Use 'develop' to check if
 # your project is compatible with the upcoming release.
-## TODO: FPFIS API SDK (platform.version.playground, platform.version.production, platform.version.acceptance).
 platform.package.reference = 2.3.61
 
 # The provider that hosts the platform repository.
@@ -211,24 +197,24 @@ project.resources.composer.lock = ${project.resources.dir}/composer.lock
 subsite.temporary.development.make = ${phing.project.tmp.dir}/development.make
 
 # Files and directories inside the Drupal installation for local development.
-project.build.settings.dir = ${platform.build.sites.dir}/default
+project.build.settings.dir = ${project.build.sites.dir}/default
 project.build.files.dir = ${project.build.settings.dir}/files
 project.build.tmp.dir = ${project.build.settings.dir}/tmp
 
-project.build.profiles.dir = ${platform.build.dir}/profiles
+project.build.profiles.dir = ${project.build.dir}/profiles
 project.build.profile.dir = ${project.build.profiles.dir}/${platform.profile.name}
 
-platform.build.sites.dir = ${platform.build.dir}/sites
-platform.build.subsite.dir = ${platform.build.sites.dir}/${drupal.site.name}
-platform.build.subsite.libraries.dir = ${platform.build.subsite.dir}/libraries
-platform.build.project.modules.dir = ${platform.build.subsite.dir}/modules
-platform.build.project.modules.contrib.dir = ${platform.build.project.modules.dir}/contrib
-platform.build.project.modules.custom.dir = ${platform.build.project.modules.dir}/custom
-platform.build.project.modules.features.dir = ${platform.build.project.modules.dir}/features
-platform.build.subsite.source.dir = ${platform.build.subsite.dir}/src
-platform.build.subsite.themes.dir = ${platform.build.subsite.dir}/themes
-platform.build.subsite.composer.json = ${platform.build.subsite.dir}/composer.json
-platform.build.subsite.composer.lock = ${platform.build.subsite.dir}/composer.lock
+project.build.sites.dir = ${project.build.dir}/sites
+project.build.subsite.dir = ${project.build.sites.dir}/${drupal.site.name}
+project.build.subsite.libraries.dir = ${project.build.subsite.dir}/libraries
+project.build.project.modules.dir = ${project.build.subsite.dir}/modules
+project.build.project.modules.contrib.dir = ${project.build.project.modules.dir}/contrib
+project.build.project.modules.custom.dir = ${project.build.project.modules.dir}/custom
+project.build.project.modules.features.dir = ${project.build.project.modules.dir}/features
+project.build.subsite.source.dir = ${project.build.subsite.dir}/src
+project.build.subsite.themes.dir = ${project.build.subsite.dir}/themes
+project.build.subsite.composer.json = ${project.build.subsite.dir}/composer.json
+project.build.subsite.composer.lock = ${project.build.subsite.dir}/composer.lock
 
 # Files and directories inside the distribution build.
 dist.build.modules.dir = ${dist.build.dir}/modules
@@ -262,7 +248,7 @@ platform.rebuild.backup.files = ${project.build.settings.dir}/settings.php
 ## TO REVIEW WITH PLATFORM
 
 # The location of the Behat executable.
-behat.bin = ${platform.build.subsite.dir}/vendor/bin/behat
+behat.bin = ${project.build.subsite.dir}/vendor/bin/behat
 
 # The location of the Behat tests.
 behat.dir = ${project.basedir}/tests
@@ -278,7 +264,7 @@ behat.yml.path = ${behat.dir}/behat.yml
 behat.base_url = http://localhost:8080
 
 # The location to search for Behat subcontexts.
-behat.subcontexts.path = ${platform.build.subsite.dir}
+behat.subcontexts.path = ${project.build.subsite.dir}
 
 # The output format to use for Behat tests, either 'progress' or 'pretty'.
 behat.formatter.name = progress
