@@ -13,55 +13,36 @@
     <!-- Create code base. -->
     <target
         name="build-platform"
-        description="Build a local development version of the platform." />
+        description="Build a local version of the platform NOT intended lor development." />
 
     <target
         name="build-platform-dist"
         description="Build a version of the platform intended to distribute as a release package."
         depends="
-            platform-delete,
+            project-platform-delete,
             platform-make-drupal,
             platform-profiles-copy,
             platform-make-profile,
             platform-resources-copy,
-            platform-composer-install,
-            subsite-setup-files-directory" />
+            project-platform-composer-install,
+            project-setup-files-directory" />
 
     <target
         name="build-platform-dev"
         description="Build a local development version of the platform."
         depends="
-            platform-delete,
+            project-platform-delete,
             platform-make-drupal,
             platform-profiles-link,
             platform-make-profile,
             platform-resources-link,
-            platform-composer-install-dev,
+            project-platform-composer-install-dev,
             test-behat-setup,
             test-behat-setup-balancer,
             test-phpunit-setup,
             test-phpcs-setup,
             platform-update-htaccess,
-            build-europa-theme" />
-
-    <target
-        name="build-platform-dist"
-        description="Build a version of the platform intended to distribute as a release package."
-        depends="
-            platform-delete,
-            platform-make-drupal,
-            platform-profiles-copy,
-            platform-make-profile,
-            platform-resources-copy,
-            platform-composer-install,
-            subsite-setup-files-directory" />
-
-    <!-- Link site document root to Webserver document root. -->
-    <target
-        name="build-platform-docroot"
-        description="Create symlink from build to docroot.">
-        <rel-sym link="${server.docroot}" target="${platform.build.dir}" overwrite="true" />
-    </target>
+            build-project-theme-europa" />
 
     <!-- Make all of the profiles in order to build a multisite platform. -->
     <target name="platform-make-profile-all">
@@ -165,108 +146,6 @@
                 <include name="favicon.ico"></include>
             </fileset>
         </copy>
-    </target>
-
-    <!-- Install Composer dependencies for the build system. -->
-    <target name="platform-composer-install">
-        <echo msg="Run 'composer install' in platform root." />
-        <composer command="install" composer="${composer.bin}">
-            <arg value="--working-dir=${platform.build.dir}" />
-            <arg value="--no-interaction" />
-            <arg value="--no-suggest" />
-            <arg value="--ansi" />
-        </composer>
-    </target>
-
-    <!-- Install Composer dependencies, including optional development dependencies. -->
-    <target name="platform-composer-install-dev">
-        <composer command="install" composer="${composer.bin}">
-            <arg value="--working-dir=${platform.build.dir}" />
-            <arg value="--no-interaction" />
-            <arg value="--no-suggest" />
-            <arg value="--ansi" />
-        </composer>
-    </target>
-
-    <!-- Delete the previous development build. -->
-    <target name="platform-delete">
-        <echo msg="Delete previous build." />
-        <phingcall target="unprotect-folder">
-            <property name="folder.to.unprotect" value="${platform.build.settings.dir}" />
-        </phingcall>
-        <echo msg="Unprotecting folder." />
-        <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${platform.build.dir}" />
-        </phingcall>
-        <echo msg="Deleting folder." />
-    </target>
-
-    <!-- Download the platform. -->
-    <target name="platform-package-download">
-        <if>
-            <available file="${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" type="file"/>
-            <then>
-                  <echo msg="Package platform-dev-${platform.package.reference}.tar.gz already downloaded."/>
-            </then>
-            <else>
-                <!-- Create the destination directory if it doesn't exist. -->
-                <mkdir dir="${platform.package.cachedir}" />
-                <echo msg="Starting platform download. Depending on your connection this can take between 5-15 minutes. Go get some coffee."/>
-                <if>
-                    <http url="https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz"/>
-                    <then>
-                        <exec command="curl -L -o ${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz https://github.com/ec-europa/platform-dev/releases/download/${platform.package.reference}/platform-dev-${platform.package.reference}.tar.gz" passthru="true"/>
-                        <echo msg="Downloaded platform package reference ${platform.package.reference}"/>
-                    </then>
-                    <else>
-                        <fail msg="Failed downloading platform package reference ${platform.package.reference}"/>
-                    </else>
-                </if>
-            </else>
-        </if>
-    </target>
-
-    <!-- Make the development version of the subsite. -->
-    <target name="platform-make" depends="platform-package-unpack">
-        <if>
-            <available file="${subsite.make}" type="file" />
-            <then>
-                <echo msg="Make the subsite." />
-                <phingcall target="drush-make-no-core">
-                    <property name="drush.make.target.file" value="${subsite.make}" />
-                    <property name="drush.make.root" value="${platform.build.dir}" />
-                </phingcall>
-            </then>
-            <else>
-                <echo msg="No make file found. Skipping..." />
-            </else>
-        </if>
-    </target>
-
-    <!-- Unpack the platform. -->
-    <target name="platform-package-unpack" depends="platform-package-download">
-        <!-- Use the faster native commands on UNIX systems. -->
-        <if>
-            <os family="unix"/>
-            <then>
-                <echo msg='mkdir "${platform.build.dir}"'/>
-                <exec
-                    command='mkdir "${platform.build.dir}"'
-                    dir="${project.basedir}"
-                    passthru="true"
-                />
-                <echo msg='tar xzf "${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" -C "${platform.build.dir}"'/>
-                <exec
-                    command='tar xzf "${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" -C "${platform.build.dir}"'
-                    dir="${project.basedir}"
-                    passthru="true"
-                    checkreturn="true"
-                />
-            </then>
-            <else>
-                <untar file="${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" todir="${platform.build.dir}"/>
-            </else>
-        </if>
     </target>
 
     <!-- Update .htaccess. -->

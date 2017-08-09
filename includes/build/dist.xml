@@ -24,12 +24,12 @@
         name="build-platform-dist-multisite"
         description="Build files of  platform intended for release package."
         depends="
-            platform-delete,
+            project-platform-delete,
             platform-make-drupal,
             platform-profiles-copy,
             platform-make-profile-all,
             platform-resources-copy,
-            platform-composer-install" />
+            project-platform-composer-install" />
 
 
     <!-- Build release package. -->
