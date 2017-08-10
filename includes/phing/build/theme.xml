@@ -14,34 +14,34 @@
     <target name="theme-europa-download-extract">
         <!-- Download the Europa theme archive for a given branch. -->
         <exec
-            command="curl -L https://github.com/ec-europa/ec_europa/releases/download/${ec_europa.version}/ec_europa-${ec_europa.version}.tar.gz > profiles/common/themes/ec_europa.tar.gz"
+            command="curl -L https://github.com/ec-europa/ec_europa/releases/download/${ec_europa.version}/ec_europa-${ec_europa.version}.tar.gz > ${project.resources.profiles.dir}/common/themes/ec_europa.tar.gz"
             passthru="true" />
         <!-- Extract the archive -->
-        <mkdir dir="${project.build.dir}/profiles/common/themes/ec_europa" />
+        <mkdir dir="${project.resources.profiles.dir}/common/themes/ec_europa" />
         <exec
-            dir="${project.build.dir}/profiles/common/themes"
+            dir="${project.resources.profiles.dir}/common/themes"
             command="tar xzf ec_europa.tar.gz --strip=1 -C ec_europa"
             passthru="true" />
-        <delete file="${project.build.dir}/profiles/common/themes/ec_europa.tar.gz" quiet="true" />
+        <delete file="${project.resources.profiles.dir}/common/themes/ec_europa.tar.gz" quiet="true" />
         <phingcall target="theme-europa-embed-ecl-assets" />
     </target>
 
     <target name="theme-europa-embed-ecl-assets">
         <!-- Download the ECL release package. -->
         <exec
-            command="curl -L https://github.com/ec-europa/europa-component-library/releases/download/${ecl.version}/framework.tar.gz > profiles/common/themes/ec_europa/framework.tar.gz"
+            command="curl -L https://github.com/ec-europa/europa-component-library/releases/download/${ecl.version}/framework.tar.gz > ${project.resources.profiles.dir}/common/themes/ec_europa/framework.tar.gz"
             passthru="true" />
         <!-- Extract and embed the ECL artifacts into the Europa theme. -->
         <exec
-            dir="${project.build.dir}/profiles/common/themes/ec_europa"
+            dir="${project.resources.profiles.dir}/common/themes/ec_europa"
             command="tar xzf framework.tar.gz --strip=1 -C assets"
             passthru="true" />
-        <delete file="${project.build.dir}/profiles/common/themes/ec_europa/framework.tar.gz" quiet="true" />
+        <delete file="${project.resources.profiles.dir}/common/themes/ec_europa/framework.tar.gz" quiet="true" />
     </target>
 
     <!-- Creates symlinks for the atomium and europa themes. -->
     <target name="theme-europa-create-symlinks" >
-        <rel-sym link="${project.build.dir}/profiles/${platform.profile.name}/themes">
+        <rel-sym link="${project.resources.profiles.dir}/${platform.profile.name}/themes">
             <fileset dir="${project.resources.profiles.common.themes.dir}">
                 <include name="ec_europa" />
             </fileset>
