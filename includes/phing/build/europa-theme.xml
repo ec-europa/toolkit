@@ -17,12 +17,12 @@
             command="curl -L https://github.com/ec-europa/ec_europa/releases/download/${ec_europa.version}/ec_europa-${ec_europa.version}.tar.gz > profiles/common/themes/ec_europa.tar.gz"
             passthru="true" />
         <!-- Extract the archive -->
-        <mkdir dir="profiles/common/themes/ec_europa" />
+        <mkdir dir="${project.build.dir}/profiles/common/themes/ec_europa" />
         <exec
-            dir="profiles/common/themes"
+            dir="${project.build.dir}/profiles/common/themes"
             command="tar xzf ec_europa.tar.gz --strip=1 -C ec_europa"
             passthru="true" />
-        <delete file="profiles/common/themes/ec_europa.tar.gz" quiet="true" />
+        <delete file="${project.build.dir}/profiles/common/themes/ec_europa.tar.gz" quiet="true" />
         <phingcall target="theme-europa-embed-ecl-assets" />
     </target>
 
@@ -33,10 +33,10 @@
             passthru="true" />
         <!-- Extract and embed the ECL artifacts into the Europa theme. -->
         <exec
-            dir="profiles/common/themes/ec_europa"
+            dir="${project.build.dir}/profiles/common/themes/ec_europa"
             command="tar xzf framework.tar.gz --strip=1 -C assets"
             passthru="true" />
-        <delete file="profiles/common/themes/ec_europa/framework.tar.gz" quiet="true" />
+        <delete file="${project.build.dir}/profiles/common/themes/ec_europa/framework.tar.gz" quiet="true" />
     </target>
 
     <!-- Creates symlinks for the atomium and europa themes. -->
