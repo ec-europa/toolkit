@@ -87,9 +87,11 @@
     <target name="project-platform-package-download">
         <if>
             <!-- Get latest stable if major version is defined. -->
-            <matches string="${platform.package.reference}" pattern="[1-9]+\.[1-9]+" />
+            <matches string="${platform.package.reference}" pattern="^[1-9]+\.[1-9]+$" />
             <then>
-                <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K[0-9]+\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.reference" />
+                <propertyregex property="major.version" subject="${platform.package.reference}" pattern="^([1-9])+\.[1-9]+$" match="$1" override="true" />
+                <propertyregex property="minor.version" subject="${platform.package.reference}" pattern="^[1-9]+\.([1-9]+)$" match="$1" override="true" />
+                <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${major.version}\.${minor.version}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.reference" />
             </then>
         </if>
         <if>
@@ -98,7 +100,6 @@
                   <echo msg="Package platform-dev-${platform.package.reference}.tar.gz already downloaded."/>
             </then>
             <else>
-                <!-- Create the destination directory if it doesn't exist. -->
                 <mkdir dir="${platform.package.cachedir}" />
                 <echo msg="Starting platform download. Depending on your connection this can take between 5-15 minutes. Go get some coffee."/>
                 <if>

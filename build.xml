@@ -30,7 +30,7 @@
             <patternset>
                 <include name="docker.xml"/>
                 <include name="drush.xml"/>
-                <include name="europa-theme.xml"/>
+                <include name="theme.xml"/>
                 <include name="main.xml"/>
                 <include name="project.xml"/>
                 <include name="starterkit.xml"/>
