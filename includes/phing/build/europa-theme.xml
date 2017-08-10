@@ -41,11 +41,11 @@
 
     <!-- Creates symlinks for the atomium and europa themes. -->
     <target name="theme-europa-create-symlinks" >
-        <symlink link="profiles/${platform.profile.name}/themes">
+        <rel-sym link="${project.build.dir}/profiles/${platform.profile.name}/themes">
             <fileset dir="${project.resources.profiles.common.themes.dir}">
                 <include name="ec_europa" />
             </fileset>
-        </symlink>
+        </rel-sym>
     </target>
 
     <!-- Cloning and checking out the branch of the Atomium and EC Europa theme repositories. -->
