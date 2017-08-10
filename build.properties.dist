@@ -4,7 +4,7 @@
 # The site name.
 subsite.name = My Project
 subsite.id = myproject
-subsite.install.modules = myproject_core
+subsite.install.modules =
 subsite.url.production =
 subsite.url.playground =
 subsite.url.acceptance =
