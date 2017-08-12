@@ -29,8 +29,58 @@ popd  > /dev/null
 
 # Execute command with docker-compose.
 #=====================================
-COMPOSE_PROJECT_NAME=${PROJECT_NAME} WORKSPACE=$(pwd) \
-$(which docker-compose) -f ${SCRIPT_PATH}/docker-compose.yml $@ || exit $?
+COMPOSE_BINARY=$(which docker-compose)
+export COMPOSE_PROJECT_NAME=${PROJECT_NAME}
+export WORKSPACE=$(pwd)
+MYSQL_CONTAINER_ID=$(${COMPOSE_BINARY} -f ${SCRIPT_PATH}/docker-compose.yml ps -q mysql) || exit $?
+
+case $1 in
+  "backup")
+    SECONDS=0
+    # Stop the mysql container.
+    echo "Stopping mysql container."
+    ${COMPOSE_BINARY} -f ${SCRIPT_PATH}/docker-compose.yml stop mysql || exit $?
+    # Backup the DB files.
+    echo "Backing up mysql files."
+    docker run --rm \
+      --volumes-from ${MYSQL_CONTAINER_ID} \
+      carinamarina/backup backup \
+      --source /var/lib/mysql/ \
+      --stdout \
+      --zip > db-data-volume.tar.gz
+    # Start the mysql container.
+    echo "Starting mysql container."
+    ${COMPOSE_BINARY} -f ${SCRIPT_PATH}/docker-compose.yml start mysql || exit $?
+    echo "Backed up database in $SECONDS seconds."
+    ;;
+  "restore")
+    SECONDS=0
+    # Stop the mysql container.
+    echo "Stopping mysql container."
+    ${COMPOSE_BINARY} -f ${SCRIPT_PATH}/docker-compose.yml stop mysql || exit $?
+    # Drop the current DB.
+    echo "Remove mysql files within container."
+    docker run --rm \
+      --volumes-from ${MYSQL_CONTAINER_ID} \
+      alpine:3.3 rm -rf /var/lib/mysql/* || exit $?
+    # Restore the DB files.
+    echo "Restoring mysql files."
+    docker run --rm \
+      --interactive \
+      --volumes-from ${MYSQL_CONTAINER_ID} \
+      carinamarina/backup restore \
+      --destination /var/lib/mysql/ --stdin \
+      --zip < db-data-volume.tar.gz
+    # Start the mysql container.
+    echo "Starting mysql container."
+    ${COMPOSE_BINARY} -f ${SCRIPT_PATH}/docker-compose.yml start mysql || exit $?
+    echo "Restored database in $SECONDS seconds."
+    ;;
+  *)
+    COMPOSE_PROJECT_NAME=${PROJECT_NAME} WORKSPACE=$(pwd) \
+    $(which docker-compose) -f ${SCRIPT_PATH}/docker-compose.yml $@ || exit $?
+    ;;
+esac
 
 
 # Add symlink if we are executing up.
