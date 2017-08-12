@@ -46,7 +46,7 @@
     </if>
 
     <!-- Get latest stable if major version is defined. -->
-    <target name="get-platform-references" hidden="true">
+    <target name="platform-version-references" hidden="true">
         <if>
             <matches string="${platform.package.version}" pattern="^[1-9]+\." />
             <then>
@@ -114,7 +114,8 @@
                 <echo msg="Please upgrade your platform version to ${platform.version.major}.${platform.upgrade}." level="warning" />
             </then>
         </if>
-        <echoproperties regex="~^platform\.version|^platform\.package\.version\.~" />
+        <echoproperties regex="~^platform\.version|^platform\.package\.version\.~" destfile="${project.tmp.dir}/build.properties.version" />
+        <property file="${project.tmp.dir}/build.properties.version" logoutput="false" />
     </target>
 
     <!-- Check if site exists. -->
@@ -201,6 +202,18 @@
             </then>
             <else>
                 <echo msg="Directory ${platform.package.cachedir} exists."/>
+            </else>
+        </if>
+        <if>
+            <!-- Create the global cache directory if it doesn't exist. -->
+            <not>
+                <available file="${project.tmp.dir}" type="dir"/>
+            </not>
+            <then>
+                <mkdir dir="${project.tmp.dir}"/>
+            </then>
+            <else>
+                <echo msg="Directory ${project.tmp.dir} exists."/>
             </else>
         </if>
     </target>
