@@ -169,6 +169,12 @@ phing.subsite.tmp.dir = ${project.basedir}/tmp
 # Project makefile.
 project.make = ${project.resources.dir}/site.make
 
+# The build location
+phing.project.build.dir = platform
+
+# Build locations.
+platform.build.dir = ${project.basedir}/${phing.project.build.dir}
+
 # Local resources.
 project.resources.dir = ${project.basedir}/resources
 project.resources.lib.dir = ${project.basedir}/lib
@@ -232,13 +238,15 @@ project.rebuild.backup.files = ${project.build.settings.dir}/settings.php
 
 # Behat configuration
 # -------------------
-## TO REVIEW WITH PLATFORM
 
-# The location of the Behat executable.
-behat.bin = ${project.build.subsite.dir}/vendor/bin/behat
+# Browser name for selenium.
+#behat.browser.name = chrome
 
 # The location of the Behat tests.
 behat.dir = ${project.basedir}/tests
+
+# The location of the Behat executable.
+behat.bin = ${behat.dir}/vendor/behat/behat/bin/behat
 
 # The location of the Behat configuration template.
 behat.yml.template = ${behat.dir}/behat.yml.dist
@@ -247,28 +255,49 @@ behat.yml.template = ${behat.dir}/behat.yml.dist
 behat.yml.path = ${behat.dir}/behat.yml
 
 # The base URL to use in Behat tests.
-## TODO: Make this docker compatible by using selenium:port.
 behat.base_url = http://localhost:8080
 
+# The URL of the Behat webdriver host.
+behat.wd_host.url = http://selenium:4444/wd/hub
+
 # The location to search for Behat subcontexts.
-behat.subcontexts.path = ${project.build.subsite.dir}
+behat.subcontexts.path = ${project.build.profiles.dir}/common/modules
 
 # The output format to use for Behat tests, either 'progress' or 'pretty'.
 behat.formatter.name = progress
 
 # Enable strict mode in Behat tests. Will only pass if all tests are explicitly
 # passing.
-behat.options.strict = false
+behat.options.strict = true
 
 # Set verbosity for Behat tests. 0 is completely silent, 1 is normal output, 2
 # shows exception backtraces, 3 shows debugging information.
 behat.options.verbosity = 2
 
-# Stream output to show progress.
-behat.options.passthru = true
+# Load balancer Phing task configuration.
+behat.load_balancer.containers = 5
+behat.load_balancer.root = ${behat.dir}
+behat.load_balancer.destination = ${behat.dir}/balancer
+behat.load_balancer.import = ${behat.yml.path}
 
-# The path to the custom Behat Contexts.
-behat.src.dir = ${behat.dir}/src
+
+# PHPUnit configuration
+# -------------------
+
+# The location of the PHPUnit executable.
+phpunit.bin = ${project.basedir}/bin/phpunit
+
+# The location of the PHPUnit configuration files.
+phpunit.dir = ${project.basedir}/tests
+
+# The location of the PHPUnit configuration template.
+phpunit.xml.template = ${phpunit.dir}/phpunit.xml.dist
+
+# The location of the generated Behat configuration file.
+phpunit.xml.path = ${phpunit.dir}/phpunit.xml
+
+# The base URL to use in PHPUnit tests.
+phpunit.base_url = ${behat.base_url}
 
 
 # PHP CodeSniffer configuration
@@ -398,3 +427,27 @@ composer.hook.post.install = starterkit-link-binary starterkit-copy-templates
 composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =
+
+# Flickr configuration
+# --------------------
+
+# A valid API key & secret used by the behat tests
+flickr.key = foobar
+flickr.secret = bas
+
+# Integration configuration
+# -------------------------
+
+# Port on which the mocked integration server used by the behat tests will listen.
+integration.server.port = 8888
+
+# Varnish configuration
+# -------------------------
+
+# Port on which the mocked Varnish server used by the behat tests will listen.
+varnish.server.port = 8888
+
+# Drush Context configuration
+# ---------------------------
+drush.db.dump = ${platform.build.dir}/dump.sql
+
