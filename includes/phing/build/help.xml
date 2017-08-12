@@ -8,6 +8,9 @@
         <echo msg="${phing-targets}" />
     </target>
 
+    <!-- Highest priority to env variables. -->
+    <property environment="env" />
+
     <!-- Load build properties. -->
     <if>
         <available file="build.properties.local" type="file" />
@@ -31,6 +34,14 @@
         <available file="vendor/ec-europa/ssk/build.properties.dist" type="file" />
         <then>
             <property file="vendor/ec-europa/ssk/build.properties.dist" />
+        </then>
+    </if>
+
+    <!-- Set compose project name if available. -->
+    <if>
+        <isset property="env.COMPOSE_PROJECT_NAME" />
+        <then>
+            <property name="docker.project.id" value="${env.COMPOSE_PROJECT_NAME}" override="true" />
         </then>
     </if>
 
