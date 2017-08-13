@@ -16,6 +16,15 @@
         <rel-sym link="${project.basedir}/ssk" target="${ssk.bin}" overwrite="true"/>
     </target>
 
+    <target 
+        name="starterkit-init"
+        depends="
+            starterkit-copy-templates,
+            starterkit-link-binary,
+            project-platform-version-set">
+        <echo msg="Starterkit successfully initiated." />
+    </target>
+
     <!-- Ensure needed files are present. -->
     <target name="starterkit-copy-templates">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />

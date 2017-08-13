@@ -8,7 +8,7 @@
          <then>
              <import file="help.xml" />
          </then>
-     </if>
+    </if>
 
     <!-- Create code base. -->
     <target
@@ -86,30 +86,21 @@
     <!-- Download the platform. -->
     <target name="project-platform-package-download">
         <if>
-            <!-- Get latest stable if major version is defined. -->
-            <matches string="${platform.package.reference}" pattern="^[1-9]+\.[1-9]+$" />
+            <available file="${share.path.platform.packages.deploy}/platform-dev-${platform.package.version}.tar.gz" type="file"/>
             <then>
-                <propertyregex property="major.version" subject="${platform.package.reference}" pattern="^([1-9])+\.[1-9]+$" match="$1" override="true" />
-                <propertyregex property="minor.version" subject="${platform.package.reference}" pattern="^[1-9]+\.([1-9]+)$" match="$1" override="true" />
-                <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${major.version}\.${minor.version}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.reference" />
-            </then>
-        </if>
-        <if>
-            <available file="${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" type="file"/>
-            <then>
-                  <echo msg="Package platform-dev-${platform.package.reference}.tar.gz already downloaded."/>
+                  <echo msg="Package platform-dev-${platform.package.version}.tar.gz already downloaded."/>
             </then>
             <else>
-                <mkdir dir="${platform.package.cachedir}" />
+                <mkdir dir="${share.path.platform.packages.deploy}" />
                 <echo msg="Starting platform download. Depending on your connection this can take between 5-15 minutes. Go get some coffee."/>
                 <if>
-                    <http url="https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.reference}.tar.gz"/>
+                    <http url="https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.version}.tar.gz"/>
                     <then>
-                        <exec command="curl -L -o ${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.reference}.tar.gz" passthru="true"/>
-                        <echo msg="Downloaded platform package reference ${platform.package.reference}"/>
+                        <exec command="curl -L -o ${share.path.platform.packages.deploy}/platform-dev-${platform.package.version}.tar.gz https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.version}.tar.gz" passthru="true"/>
+                        <echo msg="Downloaded platform package reference ${platform.package.version}"/>
                     </then>
                     <else>
-                        <fail msg="Failed downloading platform package reference ${platform.package.reference}"/>
+                        <fail msg="Failed downloading platform package reference ${platform.package.version}"/>
                     </else>
                 </if>
             </else>
@@ -128,16 +119,16 @@
                     dir="${project.basedir}"
                     passthru="true"
                 />
-                <echo msg='tar xzf "${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" -C "${project.build.dir}"'/>
+                <echo msg='tar xzf "${share.path.platform.packages.deploy}/platform-dev-${platform.package.version}.tar.gz" -C "${project.build.dir}"'/>
                 <exec
-                    command='tar xzf "${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" -C "${project.build.dir}"'
+                    command='tar xzf "${share.path.platform.packages.deploy}/platform-dev-${platform.package.version}.tar.gz" -C "${project.build.dir}"'
                     dir="${project.basedir}"
                     passthru="true"
                     checkreturn="true"
                 />
             </then>
             <else>
-                <untar file="${platform.package.cachedir}/platform-dev-${platform.package.reference}.tar.gz" todir="${project.build.dir}"/>
+                <untar file="${share.path.platform.packages.deploy}/platform-dev-${platform.package.version}.tar.gz" todir="${project.build.dir}"/>
             </else>
         </if>
     </target>
@@ -243,7 +234,7 @@
         <if>
             <and>
                 <equals arg1="${platform.package.database}" arg2="1" />
-                <available file="${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.sql" type="file" />
+                <available file="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" type="file" />
             </and>
             <then>
                 <phingcall target="drush-regenerate-settings" />
@@ -255,7 +246,7 @@
                     <then>
                         <phingcall target="drush-sql-create" />
                         <phingcall target="drush-sql-import">
-                            <property name="database-file" value="${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.sql" />
+                            <property name="database-file" value="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" />
                         </phingcall>
                     </then>
                 </if> 
@@ -268,7 +259,7 @@
                     <equals arg1="${platform.package.database}" arg2="1" />
                     <then>
                         <phingcall target="drush-sql-dump">
-                            <property name="database-file" value="${share.platform.path}/databases/platform-dev-${platform.package.reference}/platform-dev-${platform.package.reference}.sql" />
+                            <property name="database-file" value="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" />
                         </phingcall>
                     </then>
                 </if>

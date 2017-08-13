@@ -46,7 +46,7 @@
     </if>
 
     <!-- Get latest stable if major version is defined. -->
-    <target name="platform-version-references" hidden="true">
+    <target name="project-platform-version-set" hidden="true">
         <if>
             <matches string="${platform.package.version}" pattern="^[1-9]+\." />
             <then>
@@ -191,31 +191,43 @@
     </target>
 
    <!-- Create temp dirs. -->
-    <target name="create-tmp-dirs" hidden="true">
+<!--    <target name="project-directories-ensure" hidden="true"> -->
         <if>
-            <!-- Create the global cache directory if it doesn't exist. -->
-            <not>
-                <available file="${platform.package.cachedir}" type="dir"/>
-            </not>
+            <available file="${share.path.global}" type="dir"/>
             <then>
-                <mkdir dir="${platform.package.cachedir}"/>
+                <echo msg="Global share directory ${share.path.global} available."/>
             </then>
             <else>
-                <echo msg="Directory ${platform.package.cachedir} exists."/>
+                <trycatch>
+                    <try>
+                        <exec
+                            command="mkdir -p ${share.path.global}"
+                            checkreturn="true" />
+                        <echoproperties
+                            prefix="share.path."
+                            destfile="${project.tmp.dir}/build.properties.share" />
+                    </try>
+                    <catch>
+                        <echo msg="Unable to create global share directory." level="warning"/>
+                        <echo msg="Switching over to local tmp dir for caching." />
+                        <property
+                            name="share.path.global"
+                            value="${project.tmp.dir}/${share.name}"
+                            override="true" />
+                        <mkdir dir="${share.path.global}" />
+                   </catch>
+                </trycatch>
             </else>
         </if>
         <if>
-            <!-- Create the global cache directory if it doesn't exist. -->
-            <not>
-                <available file="${project.tmp.dir}" type="dir"/>
-            </not>
+            <available file="${project.tmp.dir}" type="dir"/>
             <then>
+                <echo msg="Temporary directory ${project.tmp.dir} available."/>
+            </then>
+            <else>
                 <mkdir dir="${project.tmp.dir}"/>
-            </then>
-            <else>
-                <echo msg="Directory ${project.tmp.dir} exists."/>
             </else>
         </if>
-    </target>
+<!--    </target>-->
 
 </project>

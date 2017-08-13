@@ -159,7 +159,7 @@
     <target name="subsite-dist-make">
         <echo msg="Delete temporary build folder." />
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${phing.subsite.tmp.dir}/build" />
+            <property name="folder.to.delete" value="${project.tmp.dir}/build" />
         </phingcall>
 
         <echo msg="Make the subsite." />
@@ -184,25 +184,25 @@
                     <then>
                         <phingcall target="drush-make-no-core">
                             <property name="drush.make.target.file" value="${site.make}" />
-                            <property name="drush.make.root" value="${phing.subsite.tmp.dir}/build" />
+                            <property name="drush.make.root" value="${project.tmp.dir}/build" />
                         </phingcall>
                     </then>
                     <else>
                        <echo msg="Empty make file found. Skipping... ${not.empty}" />
-                       <mkdir dir="${phing.subsite.tmp.dir}/build/sites/all" />
+                       <mkdir dir="${project.tmp.dir}/build/sites/all" />
                     </else>
                 </if>
             </then>
             <else>
                 <echo msg="No make file found. Skipping..." />
-                <mkdir dir="${phing.subsite.tmp.dir}/build/sites/all" />
+                <mkdir dir="${project.tmp.dir}/build/sites/all" />
             </else>
         </if>
 
         <!-- Move the subsite to its destination. -->
-        <echo msg='mv "${phing.subsite.tmp.dir}/build/sites/all/" "${dist.build.dir}"' />
+        <echo msg='mv "${project.tmp.dir}/build/sites/all/" "${dist.build.dir}"' />
         <exec
-            command='mv "${phing.subsite.tmp.dir}/build/sites/all/" "${dist.build.dir}"'
+            command='mv "${project.tmp.dir}/build/sites/all/" "${dist.build.dir}"'
             dir="${project.basedir}"
             passthru="true"
             checkreturn="true"
@@ -210,7 +210,7 @@
 
         <echo msg="Clean up temporary build folder." />
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${phing.subsite.tmp.dir}/build" />
+            <property name="folder.to.delete" value="${project.tmp.dir}/build" />
         </phingcall>
     </target>
 
