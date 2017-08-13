@@ -4,7 +4,7 @@
 # The site name.
 subsite.name = My Project
 subsite.id = myproject
-subsite.install.modules =
+subsite.install.modules = myproject_core
 subsite.url.production =
 subsite.url.playground =
 subsite.url.acceptance =
@@ -121,12 +121,11 @@ project.build.dir = ${project.basedir}/platform
 platform.profile.name = multisite_drupal_standard
 
 # The branch, tag or commit to use, eg. 'master', 'develop', '2.1.56',
-# '7df0d254b'. It is possible to use MySQL style wildcards here, so you can use
-# '2.%' to get the latest tagged 2.x.x release which was built.
-# For most projects you would want to follow 'master' so that you always have
-# the latest version that is deployed on production. Use 'develop' to check if
-# your project is compatible with the upcoming release.
-platform.package.reference = 2.4
+# '7df0d254b'. It is possible to define only major and/or minor to get the
+# latest reference tag. For example 2.4 which will check online for the latest
+# available build package. For most projects you would want to follow 'master'
+# so that you always have the latest version.
+platform.package.version = 2.2
 
 # The provider that hosts the platform repository.
 platform.package.provider = git-hub
@@ -164,7 +163,7 @@ dist.build.dir = ${project.basedir}/${phing.subsite.build.dir}
 
 # Temporary folder.
 # GOOD BUT could be renamed.
-phing.subsite.tmp.dir = ${project.basedir}/tmp
+project.tmp.dir = ${project.basedir}/tmp
 
 # Project makefile.
 project.make = ${project.resources.dir}/site.make
@@ -227,7 +226,7 @@ dist.build.composer.lock = ${dist.build.dir}/composer.lock
 project.rebuild.auto = 0
 
 # Rebuild backup destination.
-project.rebuild.backup.destination = ${phing.subsite.tmp.dir}/backup-site
+project.rebuild.backup.destination = ${project.tmp.dir}/backup-site
 
 # Semicolon separated list of folders to backup.
 project.rebuild.backup.folders = ${project.build.files.dir};${project.build.tmp.dir}
@@ -398,18 +397,36 @@ copy.path.haltonerror = true
 
 # Shared paths
 # ------------
-## GOOD
 
 # Global share location.
-share.global.path = /tmp
+# This can be a volume mount from docker or a local path outside
+# of your project. Correct configuration will speed up the build
+# process immensly. CI can also mount these locations for builds.
+# TODO: Implement a cache clear command, to start fresh.
+
+share.path = /tmp
+share.name = share
+share.path.global = ${share.path}/${share.name}
 
 # Main share locations.
-share.platform.path = ${share.global.path}/platform
-share.subsites.path = ${share.global.path}/subsites
-share.composer.path = ${share.global.path}/composer
+share.path.platform = ${share.path.global}/platform
+share.path.subsites = ${share.path.global}/subsites
+share.path.composer = ${share.path.global}/composer
 
-# The path to save deploy packages to:
-subsite.release.path = ${share.subsites.path}/${subsite.id}
+# Platform packages.
+share.path.platform.packages = ${share.path.platform}/packages
+share.path.platform.packages.deploy = ${share.path.platform.packages}/deploy
+share.path.platform.packages.test = ${share.path.platform.packages}/test
+share.path.platform.packages.database = ${share.path.platform.packages}/database
+
+# Subsites packages.
+share.path.subsites.packages = ${share.path.subsites}/packages
+share.path.subsites.packages.deploy = ${share.path.subsites.packages}/deploy
+share.path.subsites.packages.deploy = ${share.path.subsites.packages}/test
+
+# Composer shared packages.
+share.path.composer.packages = ${share.path.composer}/packages
+share.path.composer.packages.shared = ${share.path.composer.packages}/shared
 
 
 # Docker
@@ -423,7 +440,7 @@ docker.project.id = environment
 # Composer hook phingcall target lists. Space separated only.
 # -----------------------------------------------------------
 ## GOOD
-composer.hook.post.install = starterkit-link-binary starterkit-copy-templates
+composer.hook.post.install = starterkit-init
 composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =
