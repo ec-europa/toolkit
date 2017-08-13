@@ -22,7 +22,9 @@
     <!-- Create code base. -->
     <target
         name="build-project-subsite"
-        description="Build NextEuropa Subsite code without version control." />
+        description="Build NextEuropa Subsite code without version control.">
+        <echo msg="TODO: subsite builds not yet developed." />
+    </target>
 
     <!-- Als long as there's only one theme we don't need to name it. -->
     <target
@@ -86,21 +88,21 @@
     <!-- Download the platform. -->
     <target name="project-platform-package-download">
         <if>
-            <available file="${share.path.platform.packages.deploy}/platform-dev-${platform.package.version}.tar.gz" type="file"/>
+            <available file="${share.path.platform.packages.deploy}/platform-dev-${platform.package.version.current}.tar.gz" type="file"/>
             <then>
-                  <echo msg="Package platform-dev-${platform.package.version}.tar.gz already downloaded."/>
+                  <echo msg="Package platform-dev-${platform.package.version.current}.tar.gz already downloaded."/>
             </then>
             <else>
                 <mkdir dir="${share.path.platform.packages.deploy}" />
                 <echo msg="Starting platform download. Depending on your connection this can take between 5-15 minutes. Go get some coffee."/>
                 <if>
-                    <http url="https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.version}.tar.gz"/>
+                    <http url="https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.version.current}.tar.gz"/>
                     <then>
-                        <exec command="curl -L -o ${share.path.platform.packages.deploy}/platform-dev-${platform.package.version}.tar.gz https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.version}.tar.gz" passthru="true"/>
-                        <echo msg="Downloaded platform package reference ${platform.package.version}"/>
+                        <exec command="curl -L -o ${share.path.platform.packages.deploy}/platform-dev-${platform.package.version.current}.tar.gz https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.version.current}.tar.gz" passthru="true"/>
+                        <echo msg="Downloaded platform package reference ${platform.package.version.current}"/>
                     </then>
                     <else>
-                        <fail msg="Failed downloading platform package reference ${platform.package.version}"/>
+                        <fail msg="Failed downloading platform package reference ${platform.package.version.current}"/>
                     </else>
                 </if>
             </else>
@@ -119,16 +121,16 @@
                     dir="${project.basedir}"
                     passthru="true"
                 />
-                <echo msg='tar xzf "${share.path.platform.packages.deploy}/platform-dev-${platform.package.version}.tar.gz" -C "${project.build.dir}"'/>
+                <echo msg='tar xzf "${share.path.platform.packages.deploy}/platform-dev-${platform.package.version.current}.tar.gz" -C "${project.build.dir}"'/>
                 <exec
-                    command='tar xzf "${share.path.platform.packages.deploy}/platform-dev-${platform.package.version}.tar.gz" -C "${project.build.dir}"'
+                    command='tar xzf "${share.path.platform.packages.deploy}/platform-dev-${platform.package.version.current}.tar.gz" -C "${project.build.dir}"'
                     dir="${project.basedir}"
                     passthru="true"
                     checkreturn="true"
                 />
             </then>
             <else>
-                <untar file="${share.path.platform.packages.deploy}/platform-dev-${platform.package.version}.tar.gz" todir="${project.build.dir}"/>
+                <untar file="${share.path.platform.packages.deploy}/platform-dev-${platform.package.version.current}.tar.gz" todir="${project.build.dir}"/>
             </else>
         </if>
     </target>

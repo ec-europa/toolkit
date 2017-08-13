@@ -35,7 +35,7 @@
     </target>
 
    <!-- Backup database. -->
-    <target name="docker-compose-backup" description="Backup database." depends="platform-version-references">
+    <target name="docker-compose-backup" description="Backup database.">
         <echo msg="Backing up database for ${docker.project.id}" />
         <property name="db-dir" value="${project.tmp.dir}/databases/platform-dev/${platform.version.major}.${platform.version.minor}/${platform.version.major}.${platform.version.minor}.${platform.version.reference}" />
         <mkdir dir="${db-dir}" />
@@ -43,7 +43,7 @@
     </target>
 
    <!-- Restore database. -->
-    <target name="docker-compose-restore" description="Restore database." depends="platform-version-references">
+    <target name="docker-compose-restore" description="Restore database.">
         <echo msg="Restoring database for ${docker.project.id}" />
         <property name="db-dir" value="${project.tmp.dir}/databases/platform-dev/${platform.version.major}.${platform.version.minor}/${platform.version.major}.${platform.version.minor}.${platform.version.reference}" />
         <mkdir dir="${db-dir}" />

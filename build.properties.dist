@@ -125,7 +125,7 @@ platform.profile.name = multisite_drupal_standard
 # latest reference tag. For example 2.4 which will check online for the latest
 # available build package. For most projects you would want to follow 'master'
 # so that you always have the latest version.
-platform.package.version = 2.2
+platform.package.version = 2.4
 
 # The provider that hosts the platform repository.
 platform.package.provider = git-hub
@@ -187,7 +187,7 @@ project.resources.composer.json = ${project.resources.dir}/composer.json
 project.resources.composer.lock = ${project.resources.dir}/composer.lock
 
 # Temporary resources. These are generated on the fly when building.
-subsite.temporary.development.make = ${phing.project.tmp.dir}/development.make
+subsite.temporary.development.make = ${project.tmp.dir}/development.make
 
 # Files and directories inside the Drupal installation for local development.
 project.build.settings.dir = ${project.build.sites.dir}/default
