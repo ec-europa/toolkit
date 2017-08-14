@@ -9,6 +9,7 @@
         name="test-run-behat"
         description="Refresh configuration and run behat scenarios."
         depends="
+            project-test-composer-install,
             test-behat-setup,
             test-behat-exec" />
 
