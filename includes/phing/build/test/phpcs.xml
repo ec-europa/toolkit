@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="PHPCS"  default="test-run-phpcs">
+
+    <property file="${phing.dir.phpcs}/phpcs.props" />
+
+    <!-- Do quality assurance checks. -->
+    <target name="test-phpcs-exec">
+        <exec
+            command="${ssk.bin}/phpcs"
+            passthru="true"
+            checkreturn="true"
+        />
+    </target>
+
+    <!-- Set up PHP CodeSniffer. -->
+    <target name="test-phpcs-setup" depends="test-phpcs-setup-prepush">
+        <delete file="${phpcs.config}" failonerror="false" />
+        <delete file="${phpcs.global.config}" failonerror="false" />
+        <phpcsconf
+            configFile="${phpcs.config}"
+            extensions="${phpcs.extensions}"
+            files="${phpcs.files}"
+            globalConfig="${phpcs.global.config}"
+            ignorePatterns="${phpcs.ignore}"
+            passWarnings = "${phpcs.passwarnings}"
+            reports="${phpcs.reports}"
+            showProgress="${phpcs.progress}"
+            showSniffCodes="${phpcs.sniffcodes}"
+            standards="${phpcs.standards}"
+            installedPaths="${phpcs.installed.paths}"
+        />
+    </target>
+
+    <!-- Setup the PHP CodeSniffer pre-push hook. -->
+    <target name="test-phpcs-setup-prepush">
+        <if>
+            <equals arg1="${phpcs.prepush.enable}" arg2="1" />
+            <then>
+                <echo message="Enabling git pre-push hook." />
+                <mkdir dir="${project.basedir}/resources/git/hooks/pre-push"/>
+                <rel-sym link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
+            </then>
+           <else>
+                <echo message="Disabling git pre-push hook." />
+                <delete file="${phpcs.prepush.destination}" failonerror="false" quiet="true" />
+          </else>
+        </if>
+    </target>
+
+</project>
