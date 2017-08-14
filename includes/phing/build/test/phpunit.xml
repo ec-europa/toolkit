@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="PHPUnit" default="test-run-phpunit">
+
+    <property file="${phing.dir.phpunit}/phpunit.props" />
+
+    <!-- Set up PHPUnit. -->
+    <target name="test-phpunit-setup">
+        <copy todir="${phpunit.dir}" overwrite="true">
+            <fileset dir="${phpunit.dir}" casesensitive="yes">
+                <include name="*.xml.dist"/>
+            </fileset>
+            <filterchain>
+                <replacetokens begintoken="{{ " endtoken=" }}">
+                    <token key="phpunit.base_url" value="${phpunit.base_url}" />
+                    <token key="platform.build.dir" value="${platform.build.dir}" />
+                    <token key="phpunit.dir" value="${phpunit.dir}" />
+                </replacetokens>
+            </filterchain>
+            <mapper type="glob" from="*.xml.dist" to="*.xml" />
+        </copy>
+        <symlink link="${platform.build.name}" overwrite="true">
+            <fileset dir="${phpunit.dir}" casesensitive="yes">
+                <include name="*.yml"/>
+            </fileset>
+        </symlink>
+        <symlink link="${platform.build.name}/tests" target="../tests" />
+        <!-- Not needed anymore...
+        <symlink link="bin/phpunit" target="../${platform.build.name}/vendor/bin/phpunit" overwrite="true"/>
+        -->
+    </target>
+
+</project>

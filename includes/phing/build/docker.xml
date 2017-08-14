@@ -13,7 +13,7 @@
     <!-- Start an environment with docker. -->
     <target name="docker-compose-up" description="Start docker project.">
         <echo msg="Starting containers for ${docker.project.id}" />
-        <mkdir dir="${project.build.dir}" /> 
+        <mkdir dir="${platform.build.dir}" /> 
         <mkdir dir="${share.path.platform.packages.database}/platform-dev-${platform.package.version}" />
         <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${share.path.platform.packages.database}/platform-dev-${platform.package.version} docker-compose -p ${docker.project.id} -f ${ssk.includes}/docker/docker-compose.yml up -d" />
         <rel-sym link="${project.basedir}/ssk-${docker.project.id}" target="${ssk.includes}/docker/dbash" overwrite="true" />

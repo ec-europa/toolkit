@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="Behat"  default="test-run-behat">
+
+    <property file="${phing.dir.behat}/behat.props" />
+
+    <!-- Run full functional testing with behat. -->
+    <target
+        name="test-run-behat"
+        description="Refresh configuration and run behat scenarios."
+        depends="
+            test-behat-setup,
+            test-behat-exec" />
+
+
+    <!-- Run Behat tests. -->
+    <target name="test-behat-exec">
+        <behat
+            executable="${behat.bin}"
+            config="${behat.yml.path}"
+            strict="${behat.options.strict}"
+            verbose="${behat.options.verbosity}"
+            passthru="${behat.options.passthru}"
+        />
+    </target>
+
+    <!-- Set up Behat. -->
+    <target name="test-behat-setup">
+        <if>
+            <isset property="env.FLICKR_KEY" />
+            <then>
+                <property name="flickr.key" value="${env.FLICKR_KEY}" override="true" />
+            </then>
+        </if>
+        <if>
+            <isset property="env.FLICKR_SECRET" />
+            <then>
+                <property name="flickr.secret" value="${env.FLICKR_SECRET}" override="true" />
+            </then>
+        </if>
+        <copy todir="${behat.dir}" overwrite="true">
+            <fileset dir="${behat.dir}" casesensitive="yes">
+                <include name="*.yml.dist"/>
+            </fileset>
+            <filterchain>
+                <replacetokens begintoken="{{ " endtoken=" }}">
+                    <token key="behat.base_url" value="${behat.base_url}" />
+                    <token key="behat.wd_host.url" value="${behat.wd_host.url}" />
+                    <token key="behat.browser.name" value="${behat.browser.name}" />
+                    <token key="platform.build.dir" value="${platform.build.dir}" />
+                    <token key="behat.subcontexts.path" value="${behat.subcontexts.path}" />
+                    <token key="flickr.key" value="${flickr.key}" />
+                    <token key="flickr.secret" value="${flickr.secret}" />
+                    <token key="drush.bin" value="${drush.bin}" />
+                    <token key="drush.db.dump" value="${drush.db.dump}" />
+                    <token key="behat.formatter.name" value="${behat.formatter.name}" />
+                    <token key="integration.server.port" value="${integration.server.port}" />
+                    <token key="varnish.server.port" value="${varnish.server.port}" />
+                </replacetokens>
+            </filterchain>
+            <mapper type="glob" from="*.yml.dist" to="*.yml" />
+        </copy>
+    </target>
+
+    <!-- Symlink the Behat bin and test directory in the subsite folder. -->
+    <target name="test-behat-setup-link">
+        <property name="behat-test-location" value="${platform.build.dir}" /> 
+        <property name="behat-test-binary" value="${platform.build.dir}/vendor/behat/behat/bin/behat" />
+        <rel-sym link="platform" overwrite="true">
+            <fileset dir="${behat.dir}" casesensitive="yes">
+                <include name="*.yml"/>
+            </fileset>
+        </rel-sym>
+        <rel-sym link="${behat-test-location}/features" target="../tests/features" />
+        <rel-sym link="${behat-test-location}/tests" target="../tests" />
+        <rel-sym link="${behat.bin}" target="${behat-test-binary}" overwrite="true"/>
+    </target>
+
+    <!-- Set up Behat balancer. -->
+    <target name="test-behat-setup-balancer">
+        <behat:balancer
+            containers="${behat.load_balancer.containers}"
+            root="${behat.load_balancer.root}"
+            destination="${behat.load_balancer.destination}"
+            import="${behat.load_balancer.import}"
+        />
+    </target>
+
+</project>

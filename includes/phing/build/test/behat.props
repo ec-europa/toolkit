@@ -1,0 +1,43 @@
+# Behat configuration
+# -------------------
+
+# Browser name for selenium.
+#behat.browser.name = chrome
+
+# The location of the Behat tests.
+behat.dir = ${project.resources.tests.dir}
+
+# The location of the Behat executable.
+behat.bin = ${behat.dir}/vendor/behat/behat/bin/behat
+
+# The location of the Behat configuration template.
+behat.yml.template = ${behat.dir}/behat.yml.dist
+
+# The location of the generated Behat configuration file.
+behat.yml.path = ${behat.dir}/behat.yml
+
+# The base URL to use in Behat tests.
+behat.base_url = http://localhost:8080
+
+# The URL of the Behat webdriver host.
+behat.wd_host.url = http://selenium:4444/wd/hub
+
+# The location to search for Behat subcontexts.
+behat.subcontexts.path = ${project.build.profiles.dir}/common/modules
+
+# The output format to use for Behat tests, either 'progress' or 'pretty'.
+behat.formatter.name = progress
+
+# Enable strict mode in Behat tests. Will only pass if all tests are explicitly
+# passing.
+behat.options.strict = true
+
+# Set verbosity for Behat tests. 0 is completely silent, 1 is normal output, 2
+# shows exception backtraces, 3 shows debugging information.
+behat.options.verbosity = 2
+
+# Load balancer Phing task configuration.
+behat.load_balancer.containers = 5
+behat.load_balancer.root = ${behat.dir}
+behat.load_balancer.destination = ${behat.dir}/balancer
+behat.load_balancer.import = ${behat.yml.path}

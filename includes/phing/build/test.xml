@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project default="help">
+<project name="test" default="help">
 
     <!-- Import helper targets if called here directly. -->
     <if>
@@ -8,15 +8,17 @@
          <then>
              <import file="help.xml" />
          </then>
-     </if>
+    </if>
 
-    <!-- Run full functional testing with behat. -->
-    <target
-        name="test-run-behat"
-        description="Refresh configuration and run behat scenarios."
-        depends="
-            test-behat-setup,
-            test-behat-exec" />
+    <!-- Import test build files. -->
+    <import>
+        <fileset dir="${phing.dir.test}">
+            <!-- When in full project mode. -->
+            <include name="test/*.xml" />
+            <!-- Wen in test package mode. -->
+            <include name="phing/*.xml" />
+        </fileset>
+    </import>
 
     <!-- Run a full static analysis with phpcs. -->
     <target
@@ -35,151 +37,56 @@
             test-qa-exec" />
 
     <!-- Build test package. -->
-    <target name="build-subsite-test-package" description="Build subsite tests code release package.">
-        <mkdir dir="${project.release.path}" />
-    </target>
+    <target name="build-project-test-package" description="Build subsite tests code release package.">
 
+        <!-- Set package name for re-use. -->
+        <property
+            name="test-package"
+            value="${project.tmp.dir}/platform-dev-test-${platform.package.version.current}.tar.gz" />
 
-    <!-- Run Behat tests. -->
-    <target name="test-behat-exec">
-        <behat
-            executable="${behat.bin}"
-            config="${behat.yml.path}"
-            strict="${behat.options.strict}"
-            verbose="${behat.options.verbosity}"
-            passthru="${behat.options.passthru}"
-        />
-    </target>
+        <!-- Delete previous test package if exists. -->
+        <delete file="${test-package}" />
 
+        <!-- Create our phing test folder. -->
+        <mkdir dir="${project.resources.tests.dir}/phing" />
 
-    <!-- Set up Behat. -->
-    <target name="test-behat-setup">
-        <if>
-            <isset property="env.FLICKR_KEY" />
-            <then>
-                <property name="flickr.key" value="${env.FLICKR_KEY}" override="true" />
-            </then>
-        </if>
-        <if>
-            <isset property="env.FLICKR_SECRET" />
-            <then>
-                <property name="flickr.secret" value="${env.FLICKR_SECRET}" override="true" />
-            </then>
-        </if>
-        <copy todir="${behat.dir}" overwrite="true">
-            <fileset dir="${behat.dir}" casesensitive="yes">
-                <include name="*.yml.dist"/>
+        <!-- Copy our phing build test folder. -->
+        <copy todir="${project.resources.tests.dir}/phing" overwrite="true">
+            <fileset dir="${phing.dir.test}/test">
+                <include name="**" />
             </fileset>
-            <filterchain>
-                <replacetokens begintoken="{{ " endtoken=" }}">
-                    <token key="behat.base_url" value="${behat.base_url}" />
-                    <token key="behat.wd_host.url" value="${behat.wd_host.url}" />
-                    <token key="behat.browser.name" value="${behat.browser.name}" />
-                    <token key="platform.build.dir" value="${platform.build.dir}" />
-                    <token key="behat.subcontexts.path" value="${behat.subcontexts.path}" />
-                    <token key="flickr.key" value="${flickr.key}" />
-                    <token key="flickr.secret" value="${flickr.secret}" />
-                    <token key="drush.bin" value="${drush.bin}" />
-                    <token key="drush.db.dump" value="${drush.db.dump}" />
-                    <token key="behat.formatter.name" value="${behat.formatter.name}" />
-                    <token key="integration.server.port" value="${integration.server.port}" />
-                    <token key="varnish.server.port" value="${varnish.server.port}" />
-                </replacetokens>
-            </filterchain>
-            <mapper type="glob" from="*.yml.dist" to="*.yml" />
         </copy>
-    </target>
 
-    <!-- Symlink the Behat bin and test directory in the subsite folder. -->
-    <target name="test-behat-setup-link">
-        <property name="behat-test-location" value="${platform.build.dir}" /> 
-        <property name="behat-test-binary" value="${platform.build.dir}/vendor/behat/behat/bin/behat" />
-        <rel-sym link="platform" overwrite="true">
-            <fileset dir="${behat.dir}" casesensitive="yes">
-                <include name="*.yml"/>
+        <!-- Copy the main build file. -->
+        <copy
+            file="${phing.dir.test}/test.xml"
+            tofile="${project.resources.tests.dir}/build.xml"
+            overwrite="true" />
+
+        <!-- Copy the main build file. -->
+        <copy
+            file="${phing.dir.test}/help.xml"
+            tofile="${project.resources.tests.dir}/phing/help.xml"
+            overwrite="true" />
+
+        <!-- Package the test dir. -->
+        <tar destfile="${test-package}" compression="gzip">
+            <fileset dir="${project.resources.tests.dir}">
+                <exclude name="vendor/**" />
+                <exclude name="bin/**" />
+                <exclude name="behat.yml" />
+                <exclude name="phpunit.xml" />
             </fileset>
-        </rel-sym>
-        <rel-sym link="${behat-test-location}/features" target="../tests/features" />
-        <rel-sym link="${behat-test-location}/tests" target="../tests" />
-        <rel-sym link="${behat.bin}" target="${behat-test-binary}" overwrite="true"/>
-    </target>
+        </tar>
 
-    <!-- Set up Behat balancer. -->
-    <target name="test-behat-setup-balancer">
-        <behat:balancer
-            containers="${behat.load_balancer.containers}"
-            root="${behat.load_balancer.root}"
-            destination="${behat.load_balancer.destination}"
-            import="${behat.load_balancer.import}"
-        />
-    </target>
-
-    <!-- Do quality assurance checks. -->
-    <target name="test-phpcs-exec">
-        <exec
-            command="${ssk.bin}/phpcs"
-            passthru="true"
-            checkreturn="true"
-        />
-    </target>
-
-    <!-- Set up PHP CodeSniffer. -->
-    <target name="test-phpcs-setup" depends="test-phpcs-setup-prepush">
-        <delete file="${phpcs.config}" failonerror="false" />
-        <delete file="${phpcs.global.config}" failonerror="false" />
-        <phpcsconf
-            configFile="${phpcs.config}"
-            extensions="${phpcs.extensions}"
-            files="${phpcs.files}"
-            globalConfig="${phpcs.global.config}"
-            ignorePatterns="${phpcs.ignore}"
-            passWarnings = "${phpcs.passwarnings}"
-            reports="${phpcs.reports}"
-            showProgress="${phpcs.progress}"
-            showSniffCodes="${phpcs.sniffcodes}"
-            standards="${phpcs.standards}"
-            installedPaths="${phpcs.installed.paths}"
-        />
-    </target>
-
-    <!-- Setup the PHP CodeSniffer pre-push hook. -->
-    <target name="test-phpcs-setup-prepush">
-        <if>
-            <equals arg1="${phpcs.prepush.enable}" arg2="1" />
-            <then>
-                <echo message="Enabling git pre-push hook." />
-                <mkdir dir="${project.basedir}/resources/git/hooks/pre-push"/>
-                <rel-sym link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
-            </then>
-           <else>
-                <echo message="Disabling git pre-push hook." />
-                <delete file="${phpcs.prepush.destination}" failonerror="false" quiet="true" />
-          </else>
-        </if>
-    </target>
-
-    <!-- Set up PHPUnit. -->
-    <target name="test-phpunit-setup">
-        <copy todir="${phpunit.dir}" overwrite="true">
-            <fileset dir="${phpunit.dir}" casesensitive="yes">
-                <include name="*.xml.dist"/>
-            </fileset>
-            <filterchain>
-                <replacetokens begintoken="{{ " endtoken=" }}">
-                    <token key="phpunit.base_url" value="${phpunit.base_url}" />
-                    <token key="project.build.dir" value="${project.build.dir}" />
-                    <token key="phpunit.dir" value="${phpunit.dir}" />
-                </replacetokens>
-            </filterchain>
-            <mapper type="glob" from="*.xml.dist" to="*.xml" />
-        </copy>
-        <rel-sym link="${project.build.dir}" overwrite="true">
-            <fileset dir="${phpunit.dir}" casesensitive="yes">
-                <include name="*.yml"/>
-            </fileset>
-        </rel-sym>
-        <rel-sym link="${project.build.dir}/tests" target="${project.basedir}/tests" />
-        <rel-sym link="ssk/phpunit" target="${project.build.dir}/vendor/bin/phpunit" overwrite="true"/>
+        <!-- Delete a the phing dir. -->
+<!--
+        <delete
+            dir="${project.resources.tests.dir}/phing"
+            includeemptydirs="true"
+            verbose="true"
+            failonerror="true" />
+-->
     </target>
 
     <!-- Do quality assurance checks. -->

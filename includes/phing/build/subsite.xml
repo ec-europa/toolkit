@@ -58,7 +58,7 @@
                 <echo msg="Make the subsite." />
                 <phingcall target="drush-make-no-core">
                     <property name="drush.make.target.file" value="${site.make}" />
-                    <property name="drush.make.root" value="${project.build.dir}" />
+                    <property name="drush.make.root" value="${platform.build.dir}" />
                 </phingcall>
             </then>
             <else>
@@ -82,17 +82,17 @@
     <target name="project-modules-devel-mf">
         <echo msg="Generate the makefile for development modules." />
         <if>
-            <available file="${subsite.temporary.development.make}" type="file" property="development.makefile.available" />
+            <available file="${project.tmp.devel.make}" type="file" property="devel.makefile.available" />
             <then>
                 <echo message="Deleting existing makefile." />
-                <delete file="${subsite.temporary.development.make}" failonerror="false" />
+                <delete file="${project.tmp.devel.make}" failonerror="false" />
             </then>
         </if>
         <drushmf
-            makeFile="${subsite.temporary.development.make}"
+            makeFile="${project.tmp.devel.make}"
             coreVersion="${drupal.core.version}"
-            projects="${development.modules.download}"
-            defaultProjectDir="${development.modules.location}"
+            projects="${devel.mdls.download}"
+            defaultProjectDir="${devel.mdls.dir}"
         />
     </target>
 

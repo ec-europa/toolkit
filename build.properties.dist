@@ -13,9 +13,6 @@ subsite.url.acceptance =
 # Subsite clone configuration.
 #-----------------------------
 
-# Project database url scheme.
-subsite.database.url.scheme = https
-
 # Project database url username is used for .htaccess to file download url. Use only
 # within build.properties.local if needed. Never commit credentials on github.
 subsite.database.url.htaccess.username =
@@ -24,14 +21,15 @@ subsite.database.url.htaccess.username =
 # within build.properties.local if needed. Never commit credentials on github.
 subsite.database.url.htaccess.password =
 
-# Project database url. Define the scheme in subsite.database.url.scheme property. If
+# Project database url. No http url scheme should be defined in this url! If
 # you want developers to use the same database this should be added to the projects
 # build.properties file.
-subsite.database.url = webgate.ec.europa.eu/fpfis/files-for/${subsite.id}/
+subsite.database.url = webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${subsite.id}/
 
 # Project database filename.  If you want developers to use the same database this
 # should be added to the projects build.properties file. The file has to be
 # compressed in .gz format. Thus ending in .sql.gz.
+# TODO: Put the name here as it has a general name now."
 subsite.database.filename =
 
 # The information of the project reference repository.
@@ -54,23 +52,19 @@ ssk.bin = ${ssk.root}/bin
 # Development configuration
 # ---------------------------------------
 
-# Development / testing modules to download.
-development.modules.download = devel maillog stage_file_proxy
-
-# Development / testing modules to enable.
-development.modules.enable = devel context field_ui maillog simpletest stage_file_proxy views_ui
-
-# The location where development modules will be installed.
-development.modules.location = devel
+# Development modules to download, enable and its directory.
+devel.mdls.download = devel maillog stage_file_proxy
+devel.mdls.enable = devel context field_ui maillog simpletest stage_file_proxy views_ui
+devel.mdls.dir = devel
 
 # Variables to set for cloning production.
-development.variables.error_level = 2
-development.variables.views_ui_show_sql_query = 1
-development.variables.views_ui_show_performance_statistics = 1
-development.variables.views_show_additional_queries = 1
-development.variables.stage_file_proxy_origin = https://ec.europa.eu/${subsite.id}
-development.variables.stage_file_proxy_origin_dir = sites/${subsite.id}/files
-development.variables.stage_file_proxy_hotlink = 1
+devel.vars.error_level = 2
+devel.vars.views_ui_show_sql_query = 1
+devel.vars.views_ui_show_performance_statistics = 1
+devel.vars.views_show_additional_queries = 1
+devel.vars.stage_file_proxy_origin = https://ec.europa.eu/${subsite.id}
+devel.vars.stage_file_proxy_origin_dir = sites/${subsite.id}/files
+devel.vars.stage_file_proxy_hotlink = 1
 
 
 # Drupal configuration
@@ -81,13 +75,11 @@ drupal.db.type = mysql
 drupal.db.name = db_name
 drupal.db.user = root
 drupal.db.password =
-drupal.db.host = 127.0.0.1
-# TODO: replace host with docker service name?
+drupal.db.host = mysql
 drupal.db.port = 3306
 drupal.db.url = ${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${drupal.db.name}
 
 # Solr env url. Either d7_apachesolr or d7_search_api.
-## QUERY: can be queried and correct module enable in install.
 drupal.solr.activate = 1
 drupal.solr.env.url = http://solr:8983/solr/d7_apachesolr
 
@@ -96,14 +88,9 @@ drupal.admin.username = admin
 drupal.admin.password = pass
 drupal.admin.email = ${drupal.admin.username}@example.com
 
-# The location of the .htaccess file in the Drupal root folder.
-drupal.htaccess.path = ${project.build.dir}/.htaccess
-
-# Configuration to append to the .htaccess file in the Drupal root folder.
+# The location of the .htaccess file in the Drupal root folder and text to append.
+drupal.htaccess.path = ${platform.build.dir}/.htaccess
 drupal.htaccess.append.text =
-
-# The site name to use. Use 'all' unless you want to build a multisite setup.
-drupal.site.name = all
 
 # The Drupal core version.
 drupal.core.version = 7.x
@@ -112,9 +99,12 @@ drupal.core.version = 7.x
 # Platform configuration
 # ----------------------
 
+# The build folder name.
+platform.build.name = platform
+
 # The root directory of the platform. This will become the Drupal root folder,
 # so point your web server here.
-project.build.dir = ${project.basedir}/platform
+platform.build.dir = ${project.basedir}/${platform.build.name}
 
 # The install profile to use. Either multisite_drupal_standard or
 # multisite_drupal_communities.
@@ -149,9 +139,7 @@ platform.package.token =
 # -----
 
 # Paths to executables.
-## TODO: Document fallback system.
 composer.bin = composer.phar
-## GOOD
 drush.bin = ${ssk.bin}/drush
 git.bin = git
 phing.bin = ${ssk.bin}/phing
@@ -162,17 +150,13 @@ phing.subsite.src.dir = ${ssk.root}/src
 dist.build.dir = ${project.basedir}/${phing.subsite.build.dir}
 
 # Temporary folder.
-# GOOD BUT could be renamed.
 project.tmp.dir = ${project.basedir}/tmp
+
+# Temporary resources. These are generated on the fly when building.
+project.tmp.devel.make = ${project.tmp.dir}/devel.make
 
 # Project makefile.
 project.make = ${project.resources.dir}/site.make
-
-# The build location
-phing.project.build.dir = platform
-
-# Build locations.
-platform.build.dir = ${project.basedir}/${phing.project.build.dir}
 
 # Local resources.
 project.resources.dir = ${project.basedir}/resources
@@ -181,29 +165,30 @@ project.resources.features.dir = ${project.resources.lib.dir}/features
 project.resources.modules.dir = ${project.resources.lib.dir}/modules
 project.resources.profiles.dir = ${project.resources.lib.dir}/profiles
 project.resources.source.dir = ${project.resources.lib.dir}/src
+project.resources.tests.dir = ${project.resources.lib.dir}/tests
 project.resources.themes.dir = ${project.resources.lib.dir}/themes
 project.resources.favicon.ico = ${project.resources.dir}/favicon.ico
 project.resources.composer.json = ${project.resources.dir}/composer.json
 project.resources.composer.lock = ${project.resources.dir}/composer.lock
 
-# Temporary resources. These are generated on the fly when building.
-subsite.temporary.development.make = ${project.tmp.dir}/development.make
+project.build.platform.sites.dir = ${platform.build.dir}/sites
+project.build.platform.settings.dir = ${project.build.platform.sites.dir}/default
+project.build.platform.composer.json = ${platform.build.dir}/composer.json
+project.build.platform.composer.lock = ${platform.build.dir}/composer.lock
+project.build.platform.favicon.ico = ${platform.build.dir}/favicon.ico
 
-# Files and directories inside the Drupal installation for local development.
-project.build.settings.dir = ${project.build.sites.dir}/default
-project.build.files.dir = ${project.build.settings.dir}/files
-project.build.tmp.dir = ${project.build.settings.dir}/tmp
-
-project.build.profiles.dir = ${project.build.dir}/profiles
+project.build.profiles.dir = ${platform.build.dir}/profiles
 project.build.profile.dir = ${project.build.profiles.dir}/${platform.profile.name}
 
-project.build.sites.dir = ${project.build.dir}/sites
-project.build.subsite.dir = ${project.build.sites.dir}/${drupal.site.name}
+project.build.subsite.name = ${project.id}
+project.build.subsite.dir = ${project.build.platform.sites.dir}/${project.build.subsite.name}
+project.build.subsite.files.dir = ${project.build.subsite.dir}/files
+project.build.subsite.tmp.dir = ${project.build.subsite.dir}/tmp
 project.build.subsite.libraries.dir = ${project.build.subsite.dir}/libraries
-project.build.project.modules.dir = ${project.build.subsite.dir}/modules
-project.build.project.modules.contrib.dir = ${project.build.project.modules.dir}/contrib
-project.build.project.modules.custom.dir = ${project.build.project.modules.dir}/custom
-project.build.project.modules.features.dir = ${project.build.project.modules.dir}/features
+project.build.subsite.modules.dir = ${project.build.subsite.dir}/modules
+project.build.subsite.modules.contrib.dir = ${project.build.subsite.modules.dir}/contrib
+project.build.subsite.modules.custom.dir = ${project.build.subsite.modules.dir}/custom
+project.build.subsite.modules.features.dir = ${project.build.subsite.modules.dir}/features
 project.build.subsite.source.dir = ${project.build.subsite.dir}/src
 project.build.subsite.themes.dir = ${project.build.subsite.dir}/themes
 project.build.subsite.composer.json = ${project.build.subsite.dir}/composer.json
@@ -235,119 +220,6 @@ project.rebuild.backup.folders = ${project.build.files.dir};${project.build.tmp.
 project.rebuild.backup.files = ${project.build.settings.dir}/settings.php
 
 
-# Behat configuration
-# -------------------
-
-# Browser name for selenium.
-#behat.browser.name = chrome
-
-# The location of the Behat tests.
-behat.dir = ${project.basedir}/tests
-
-# The location of the Behat executable.
-behat.bin = ${behat.dir}/vendor/behat/behat/bin/behat
-
-# The location of the Behat configuration template.
-behat.yml.template = ${behat.dir}/behat.yml.dist
-
-# The location of the generated Behat configuration file.
-behat.yml.path = ${behat.dir}/behat.yml
-
-# The base URL to use in Behat tests.
-behat.base_url = http://localhost:8080
-
-# The URL of the Behat webdriver host.
-behat.wd_host.url = http://selenium:4444/wd/hub
-
-# The location to search for Behat subcontexts.
-behat.subcontexts.path = ${project.build.profiles.dir}/common/modules
-
-# The output format to use for Behat tests, either 'progress' or 'pretty'.
-behat.formatter.name = progress
-
-# Enable strict mode in Behat tests. Will only pass if all tests are explicitly
-# passing.
-behat.options.strict = true
-
-# Set verbosity for Behat tests. 0 is completely silent, 1 is normal output, 2
-# shows exception backtraces, 3 shows debugging information.
-behat.options.verbosity = 2
-
-# Load balancer Phing task configuration.
-behat.load_balancer.containers = 5
-behat.load_balancer.root = ${behat.dir}
-behat.load_balancer.destination = ${behat.dir}/balancer
-behat.load_balancer.import = ${behat.yml.path}
-
-
-# PHPUnit configuration
-# -------------------
-
-# The location of the PHPUnit executable.
-phpunit.bin = ${project.basedir}/bin/phpunit
-
-# The location of the PHPUnit configuration files.
-phpunit.dir = ${project.basedir}/tests
-
-# The location of the PHPUnit configuration template.
-phpunit.xml.template = ${phpunit.dir}/phpunit.xml.dist
-
-# The location of the generated Behat configuration file.
-phpunit.xml.path = ${phpunit.dir}/phpunit.xml
-
-# The base URL to use in PHPUnit tests.
-phpunit.base_url = ${behat.base_url}
-
-
-# PHP CodeSniffer configuration
-# -----------------------------
-## ALLGOOD
-
-# The file extensions to test.
-# Delimited by space, comma or semicolon.
-phpcs.extensions = php inc module install info test profile theme css js
-
-# The default configuration file to generate.
-phpcs.config = ${project.basedir}/phpcs.xml
-
-# The locations for installed standards, delimited by comma.
-phpcs.installed.paths = ${ssk.vendor}/ec-europa/qa-automation/phpcs/SubStandards
-
-# The coding standards to enforce.
-# Delimited by space, comma or semicolon..
-phpcs.standards = Subsite;${project.basedir}/phpcs-ruleset.xml
-
-# Paths to check, delimited by semicolons.
-phpcs.files = ${project.resources.dir};${project.resources.lib.dir};${phing.subsite.src.dir};${behat.src.dir}
-
-# Paths to ignore, delimited by semicolons.
-phpcs.ignore =
-
-# Returns a 0 error code when only warnings are found if enabled. Ment for CI.
-phpcs.passwarnings = 0
-
-# The report format. For example 'full', 'summary', 'diff', 'xml', 'json'.
-# Delimited by space, comma or semicolon.
-phpcs.reports = summary
-
-# Whether or not to show sniff codes in the report.
-phpcs.sniffcodes = 0
-
-# Whether or not to show the progress of the run.
-phpcs.progress = 1
-
-# The location of the file containing the global configuration options.
-phpcs.global.config = ${ssk.vendor}/squizlabs/php_codesniffer/CodeSniffer.conf
-
-# Whether or not to run a coding standards check before doing a git push. Note
-# that this will abort the push if the coding standards check fails.
-phpcs.prepush.enable = 1
-
-# The source and destination paths of the git pre-push hook.
-phpcs.prepush.source = ${ssk.vendor}/pfrenssen/phpcs-pre-push/pre-push
-phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpcs
-
-
 # Host configuration
 # ------------------
 
@@ -365,10 +237,6 @@ drush.verbose = FALSE
 
 # Activate or de-activate terminal color.
 drush.color = 1
-
-# Verbosity of PHP Codesniffer. Set to 0 for standard output, 1 for progress
-# report, 2 for debugging info.
-phpcs.verbose = 0
 
 
 # AWS SDK

@@ -1,0 +1,18 @@
+# PHPUnit configuration
+# -------------------
+
+# The location of the PHPUnit executable.
+phpunit.bin = ${project.resources.tests.dir}/bin/phpunit
+
+# The location of the PHPUnit configuration files.
+phpunit.dir = ${project.resources.tests.dir}
+
+# The location of the PHPUnit configuration template.
+phpunit.xml.template = ${phpunit.dir}/phpunit.xml.dist
+
+# The location of the generated Behat configuration file.
+phpunit.xml.path = ${phpunit.dir}/phpunit.xml
+
+# The base URL to use in PHPUnit tests.
+phpunit.base_url = ${behat.base_url}
+

@@ -136,17 +136,6 @@
         </then>
     </if>
 
-    <!-- Check type of project and import it's build file.. -->
-    <if>
-        <available file="${project.resources.profiles.dir}" type="dir"/>
-        <then>
-            <import file="${ssk.build}/platform.xml" />
-        </then>
-        <else>
-            <import file="${ssk.build}/subsite.xml" />
-        </else> 
-    </if>
-
     <!-- Echo the composer hook phingcalls. -->
     <target name="composer-echo-hook-phingcalls" hidden="true">
         <echoproperties prefix="composer.hook."/>

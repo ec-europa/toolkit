@@ -15,7 +15,7 @@
         description="Build a version of the platform intended to distribute as a release package.">
 
         <phingcall target="build-platform-dist-callback">
-            <property name="project.build.dir" value="${project.basedir}/dist" override="true" />
+            <property name="platform.build.dir" value="${project.basedir}/dist" override="true" />
             <property name="project.build.profiles.dir" value="${project.basedir}/dist/profiles" override="true" />
         </phingcall>
     </target>
@@ -25,7 +25,7 @@
         description="Build a version of the platform intended to distribute as a release package.">
 
         <phingcall target="build-platform-dist-multisite-callback">
-            <property name="project.build.dir" value="${project.basedir}/dist" override="true" />
+            <property name="platform.build.dir" value="${project.basedir}/dist" override="true" />
             <property name="project.build.profiles.dir" value="${project.basedir}/dist/profiles" override="true" />
         </phingcall>
     </target>
@@ -91,9 +91,9 @@
             bin="${drush.bin}"
             pipe="yes"
             verbose="${drush.verbose}"
-            root="${project.build.dir}">
+            root="${platform.build.dir}">
             <param>${drupal.make}</param>
-            <param>${project.build.dir}</param>
+            <param>${platform.build.dir}</param>
             <option name="no-patch-txt"></option>
         </drush>
     </target>
@@ -114,9 +114,9 @@
             bin="${drush.bin}"
             pipe="yes"
             verbose="${drush.verbose}"
-            root="${project.build.dir}">
+            root="${platform.build.dir}">
             <param>${platform.make}</param>
-            <param>${project.build.dir}</param>
+            <param>${platform.build.dir}</param>
             <!-- Increasing the concurrency improves the build time by a factor of 3. -->
             <option name="concurrency">10</option>
             <option name="no-patch-txt"></option>
@@ -157,15 +157,15 @@
     <!-- Symlink various resources for easy development. -->
     <target name="platform-resources-link">
         <!-- Composer configuration. -->
-        <symlink link="${project.build.composer.json}" target="${project.resources.composer.json}" />
-        <symlink link="${project.build.composer.lock}" target="${project.resources.composer.lock}" />
-        <symlink link="${project.build.favicon.ico}" target="${project.resources.favicon.ico}" />
+        <symlink link="${project.build.platform.composer.json}" target="${project.resources.composer.json}" />
+        <symlink link="${project.build.platform.composer.lock}" target="${project.resources.composer.lock}" />
+        <symlink link="${project.build.platform.favicon.ico}" target="${project.resources.favicon.ico}" />
     </target>
 
     <!-- Copy various resources for deploying on production. -->
     <target name="platform-resources-copy">
         <!-- Resources to copy to the website root. -->
-        <copy todir="${project.build.dir}">
+        <copy todir="${platform.build.dir}">
             <fileset dir="${project.resources.dir}">
                 <!-- Composer configuration. -->
                 <include name="composer.*"></include>

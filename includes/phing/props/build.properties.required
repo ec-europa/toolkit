@@ -25,7 +25,7 @@ drupal.site.name = all
 # ----------------------
 
 platform.profile.name = multisite_drupal_standard
-platform.package.reference = 2.3.61
+platform.package.version = 2.3.61
 
 
 # PHP CodeSniffer configuration
