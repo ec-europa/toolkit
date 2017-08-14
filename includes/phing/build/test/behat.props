@@ -2,7 +2,7 @@
 # -------------------
 
 # Browser name for selenium.
-#behat.browser.name = chrome
+behat.browser.name = chrome
 
 # The location of the Behat tests.
 behat.dir = ${project.resources.tests.dir}
