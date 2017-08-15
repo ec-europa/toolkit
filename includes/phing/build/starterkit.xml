@@ -10,17 +10,6 @@
          </then>
      </if>
 
-    <!-- Check type of project and import it's build file.. -->
-    <if>
-        <available file="${project.resources.profiles.dir}" type="dir"/>
-        <then>
-            <import file="${ssk.build}/platform.xml" />
-        </then>
-        <else>
-            <import file="${ssk.build}/subsite.xml" />
-        </else>
-    </if>
-
     <!-- Provide handy access with root symlink to starterkit binary. -->
     <target name="starterkit-link-binary">
         <echo msg="Provide project with starterkit binary at root level." />

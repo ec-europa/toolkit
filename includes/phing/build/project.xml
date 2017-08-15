@@ -99,7 +99,7 @@
                 <if>
                     <http url="https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.version.current}.tar.gz"/>
                     <then>
-                        <exec command="curl -L -o ${share.path.platform.packages.deploy}/platform-dev-${platform.package.version.current}.tar.gz https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.version.current}.tar.gz" passthru="true"/>
+                        <exec command="curl -L${project.curl.progress} -o ${share.path.platform.packages.deploy}/platform-dev-${platform.package.version.current}.tar.gz https://platform-ci.ne-dev.eu/releases/platform-dev-${platform.package.version.current}.tar.gz" passthru="true"/>
                         <echo msg="Downloaded platform package reference ${platform.package.version.current}"/>
                     </then>
                     <else>

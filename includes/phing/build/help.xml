@@ -8,20 +8,21 @@
         <echo msg="${line.separator}${phing-targets}" />
     </target>
 
-    <!-- Highest priority to env variables. -->
-    <property environment="env" />
+    <!-- Enable output initially to show loads and logging. -->
+    <property name="logoutput" value="true" />
+    <property name="level" value="info" />
 
     <!-- Load build properties. -->
     <if>
         <available file="build.properties.local" type="file" />
         <then>
-            <property file="build.properties.local" />
+            <property file="build.properties.local" logoutput="${logoutput}" />
         </then>
     </if>
     <if>
         <available file="build.properties" type="file" />
         <then>
-            <property file="build.properties" />
+            <property file="build.properties" logoutput="${logoutput}" />
         </then>
         <elseif>
             <equals arg1="${project.basedir}" arg2="${ssk.root}" />
@@ -33,19 +34,30 @@
     <if>
         <available file="vendor/ec-europa/ssk/build.properties.dist" type="file" />
         <then>
-            <property file="vendor/ec-europa/ssk/build.properties.dist" />
+            <property file="vendor/ec-europa/ssk/build.properties.dist" logoutput="false" />
         </then>
     </if>
 
     <!-- Load version properties if available. -->
-    <property file="${project.tmp.dir}/build.properties.version" />
+    <property file="${project.tmp.dir}/build.properties.version" logoutput="${logoutput}" />
 
-    <!-- Set compose project name if available. -->
+    <!-- Subsequently import the project specific build file." -->
     <if>
-        <isset property="env.COMPOSE_PROJECT_NAME" />
+        <available file="build.project.xml" />
         <then>
-            <property name="docker.project.id" value="${env.COMPOSE_PROJECT_NAME}" override="true" />
+            <import file="build.project.xml" />
+       </then>
+    </if>
+
+   <!-- Check type of project and import it's build file.. -->
+    <if>
+        <available file="${project.resources.profiles.dir}" type="dir"/>
+        <then>
+            <import file="${ssk.build}/platform.xml" />
         </then>
+        <else>
+            <import file="${ssk.build}/subsite.xml" />
+        </else>
     </if>
 
     <!-- Get latest stable if major version is defined. -->
@@ -182,43 +194,56 @@
     </target>
 
    <!-- Create temp dirs. -->
-<!--    <target name="project-directories-ensure" hidden="true"> -->
-        <if>
-            <available file="${share.path.global}" type="dir"/>
-            <then>
-                <echo msg="Global share directory ${share.path.global} available."/>
-            </then>
-            <else>
-                <trycatch>
-                    <try>
-                        <exec
-                            command="mkdir -p ${share.path.global}"
-                            checkreturn="true" />
-                        <echoproperties
-                            prefix="share.path."
-                            destfile="${project.tmp.dir}/build.properties.share" />
-                    </try>
-                    <catch>
-                        <echo msg="Unable to create global share directory." level="warning"/>
-                        <echo msg="Switching over to local tmp dir for caching." />
-                        <property
-                            name="share.path.global"
-                            value="${project.tmp.dir}/${share.name}"
-                            override="true" />
-                        <mkdir dir="${share.path.global}" />
-                   </catch>
-                </trycatch>
-            </else>
-        </if>
-        <if>
-            <available file="${project.tmp.dir}" type="dir"/>
-            <then>
-                <echo msg="Temporary directory ${project.tmp.dir} available."/>
-            </then>
-            <else>
-                <mkdir dir="${project.tmp.dir}"/>
-            </else>
-        </if>
-<!--    </target>-->
+    <if>
+        <available file="${share.path.global}" type="dir"/>
+        <then>
+            <echo msg="Global share directory ${share.path.global} available." level="${level}" />
+        </then>
+        <else>
+            <trycatch>
+                <try>
+                    <exec
+                        command="mkdir -p ${share.path.global}"
+                        checkreturn="true" />
+                    <echoproperties
+                        prefix="share.path."
+                        destfile="${project.tmp.dir}/build.properties.share" />
+                </try>
+                <catch>
+                    <echo msg="Unable to create global share directory." level="warning"/>
+                    <echo msg="Switching over to local tmp dir for caching." />
+                    <property
+                        name="share.path.global"
+                        value="${project.tmp.dir}/${share.name}"
+                        override="true" />
+                    <mkdir dir="${share.path.global}" />
+                </catch>
+            </trycatch>
+        </else>
+    </if>
+    <if>
+        <available file="${project.tmp.dir}" type="dir"/>
+        <then>
+            <echo msg="Temporary directory ${project.tmp.dir} available." level="${level}" />
+        </then>
+        <else>
+            <mkdir dir="${project.tmp.dir}"/>
+        </else>
+    </if>
+
+    <!-- Highest priority to env variables. -->
+    <property environment="env" />
+
+    <!-- Set compose project name if available. -->
+    <if>
+        <isset property="env.COMPOSE_PROJECT_NAME" />
+        <then>
+            <property name="docker.project.id" value="${env.COMPOSE_PROJECT_NAME}" override="true" />
+        </then>
+    </if>
+
+    <!-- Disable output on consecutive phing calls. -->
+    <property name="logoutput" value="false" override="true" />
+    <property name="level" value="verbose" override="true" />
 
 </project>

@@ -14,7 +14,7 @@
     <target name="theme-europa-download-extract">
         <!-- Download the Europa theme archive for a given branch. -->
         <exec
-            command="curl -L https://github.com/ec-europa/ec_europa/releases/download/${ec_europa.version}/ec_europa-${ec_europa.version}.tar.gz > ${project.resources.profiles.dir}/common/themes/ec_europa.tar.gz"
+            command="curl -L${project.curl.progress} https://github.com/ec-europa/ec_europa/releases/download/${ec_europa.version}/ec_europa-${ec_europa.version}.tar.gz > ${project.resources.profiles.dir}/common/themes/ec_europa.tar.gz"
             passthru="true" />
         <!-- Extract the archive -->
         <mkdir dir="${project.resources.profiles.dir}/common/themes/ec_europa" />
@@ -29,7 +29,7 @@
     <target name="theme-europa-embed-ecl-assets">
         <!-- Download the ECL release package. -->
         <exec
-            command="curl -L https://github.com/ec-europa/europa-component-library/releases/download/${ecl.version}/framework.tar.gz > ${project.resources.profiles.dir}/common/themes/ec_europa/framework.tar.gz"
+            command="curl -L${project.curl.progress} https://github.com/ec-europa/europa-component-library/releases/download/${ecl.version}/framework.tar.gz > ${project.resources.profiles.dir}/common/themes/ec_europa/framework.tar.gz"
             passthru="true" />
         <!-- Extract and embed the ECL artifacts into the Europa theme. -->
         <exec
@@ -41,8 +41,8 @@
 
     <!-- Creates symlinks for the atomium and europa themes. -->
     <target name="theme-europa-create-symlinks" >
-        <rel-sym link="${project.resources.profiles.dir}/${platform.profile.name}/themes">
-            <fileset dir="${project.resources.profiles.common.themes.dir}">
+        <rel-sym link="${project.resources.profiles.dir}/${platform.profile.name}/themes" overwrite="true">
+            <fileset dir="${project.resources.profiles.common.themes.dir}" expandsymboliclinks="true">
                 <include name="ec_europa" />
             </fileset>
         </rel-sym>

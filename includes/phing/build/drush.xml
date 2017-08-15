@@ -117,7 +117,7 @@
     </target>
 
     <!-- Regenerate the settings file with database credentials and development variables. -->
-    <target name="drush-regenerate-settings" depends="check-for-default-settings-or-rebuild">
+    <target name="drush-regenerate-settings">
         <copy file="${ssk.root}/includes/drush/generate-settings.php" tofile="tmp/generate-settings.php" overwrite="true">
             <filterchain>
                 <replacetokens begintoken="%%" endtoken="%%">

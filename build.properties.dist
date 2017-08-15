@@ -37,18 +37,6 @@ subsite.reference.repository = https://github.com/ec-europa/myproject-reference
 subsite.reference.branch = master
 subsite.reference.remote = reference
 
-# Starterkit locations
-# ---------------------------------------
-
-ssk.root = ${phing.dir.starterkit}
-ssk.includes = ${ssk.root}/includes
-ssk.build = ${ssk.includes}/phing/build
-ssk.templates = ${ssk.includes}/templates
-ssk.composer = ${ssk.includes}/composer
-ssk.vendor = ${ssk.root}/vendor
-ssk.bin = ${ssk.root}/bin
-
-
 # Development configuration
 # ---------------------------------------
 
@@ -148,6 +136,9 @@ phing.bin = ${ssk.bin}/phing
 phing.subsite.build.dir = build
 phing.subsite.src.dir = ${ssk.root}/src
 dist.build.dir = ${project.basedir}/${phing.subsite.build.dir}
+
+# Curl progress type, empty for progress meter, # for progress bar..
+project.curl.progress = #
 
 # Temporary folder.
 project.tmp.dir = ${project.basedir}/tmp

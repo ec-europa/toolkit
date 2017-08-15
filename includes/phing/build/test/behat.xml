@@ -2,7 +2,7 @@
 
 <project name="Behat"  default="test-run-behat">
 
-    <property file="${phing.dir.behat}/behat.props" />
+    <property file="${phing.dir.behat}/behat.props" logoutput="false" />
 
     <!-- Run full functional testing with behat. -->
     <target

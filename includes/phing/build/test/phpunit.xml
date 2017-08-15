@@ -2,7 +2,7 @@
 
 <project name="PHPUnit" default="test-run-phpunit">
 
-    <property file="${phing.dir.phpunit}/phpunit.props" />
+    <property file="${phing.dir.phpunit}/phpunit.props" logoutput="false" />
 
     <!-- Set up PHPUnit. -->
     <target name="test-phpunit-setup">

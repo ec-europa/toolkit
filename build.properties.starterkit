@@ -1,0 +1,10 @@
+# Starterkit locations
+# ---------------------------------------
+
+ssk.root = ${phing.dir.starterkit}
+ssk.includes = ${ssk.root}/includes
+ssk.build = ${ssk.includes}/phing/build
+ssk.templates = ${ssk.includes}/templates
+ssk.composer = ${ssk.includes}/composer
+ssk.vendor = ${ssk.root}/vendor
+ssk.bin = ${ssk.root}/bin

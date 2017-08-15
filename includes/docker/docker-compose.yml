@@ -12,6 +12,9 @@ services:
       - ${WORKSPACE}:${WORKSPACE}
       - ${HOME}/share:/tmp/share
       - /var/cache/composer:/var/cache/composer
+      - /usr/bin/docker:/usr/bin/docker
+      - /usr/bin/docker-compose:/usr/bin/docker-compose
+      - /var/run/docker.sock:/var/run/docker.sock
     working_dir: ${WORKSPACE}
     links:
       - mysql:mysql

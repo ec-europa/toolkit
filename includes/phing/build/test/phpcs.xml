@@ -2,7 +2,7 @@
 
 <project name="PHPCS"  default="test-run-phpcs">
 
-    <property file="${phing.dir.phpcs}/phpcs.props" />
+    <property file="${phing.dir.phpcs}/phpcs.props" logoutput="false" />
 
     <!-- Do quality assurance checks. -->
     <target name="test-phpcs-exec">
