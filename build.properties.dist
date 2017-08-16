@@ -156,7 +156,7 @@ project.resources.features.dir = ${project.resources.lib.dir}/features
 project.resources.modules.dir = ${project.resources.lib.dir}/modules
 project.resources.profiles.dir = ${project.resources.lib.dir}/profiles
 project.resources.source.dir = ${project.resources.lib.dir}/src
-project.resources.tests.dir = ${project.resources.lib.dir}/tests
+project.resources.tests.dir = ${project.basedir}/tests
 project.resources.themes.dir = ${project.resources.lib.dir}/themes
 project.resources.favicon.ico = ${project.resources.dir}/favicon.ico
 project.resources.composer.json = ${project.resources.dir}/composer.json
@@ -281,7 +281,8 @@ share.path.platform.packages.database = ${share.path.platform.packages}/database
 # Subsites packages.
 share.path.subsites.packages = ${share.path.subsites}/packages
 share.path.subsites.packages.deploy = ${share.path.subsites.packages}/deploy
-share.path.subsites.packages.deploy = ${share.path.subsites.packages}/test
+share.path.subsites.packages.test = ${share.path.subsites.packages}/test
+share.path.subsites.packages.database = ${share.path.subsites.packages}/database
 
 # Composer shared packages.
 share.path.composer.packages = ${share.path.composer}/packages
