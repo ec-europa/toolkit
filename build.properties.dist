@@ -77,7 +77,7 @@ drupal.admin.password = pass
 drupal.admin.email = ${drupal.admin.username}@example.com
 
 # The location of the .htaccess file in the Drupal root folder and text to append.
-drupal.htaccess.path = ${platform.build.dir}/.htaccess
+drupal.htaccess.path = ${project.build.platform.dir}/.htaccess
 drupal.htaccess.append.text =
 
 # The Drupal core version.
@@ -86,13 +86,6 @@ drupal.core.version = 7.x
 
 # Platform configuration
 # ----------------------
-
-# The build folder name.
-platform.build.name = platform
-
-# The root directory of the platform. This will become the Drupal root folder,
-# so point your web server here.
-platform.build.dir = ${project.basedir}/${platform.build.name}
 
 # The install profile to use. Either multisite_drupal_standard or
 # multisite_drupal_communities.
@@ -162,26 +155,27 @@ project.resources.favicon.ico = ${project.resources.dir}/favicon.ico
 project.resources.composer.json = ${project.resources.dir}/composer.json
 project.resources.composer.lock = ${project.resources.dir}/composer.lock
 
-project.build.platform.sites.dir = ${platform.build.dir}/sites
-project.build.platform.settings.dir = ${project.build.platform.sites.dir}/default
-project.build.platform.composer.json = ${platform.build.dir}/composer.json
-project.build.platform.composer.lock = ${platform.build.dir}/composer.lock
-project.build.platform.favicon.ico = ${platform.build.dir}/favicon.ico
-
-project.build.profiles.dir = ${platform.build.dir}/profiles
-project.build.profile.dir = ${project.build.profiles.dir}/${platform.profile.name}
+project.build.platform.name = platform
+project.build.platform.dir = ${project.basedir}/${project.build.platform.name}
+project.build.platform.dir.settings = ${project.build.platform.dir.sites}/default
+project.build.platform.dir.sites = ${project.build.platform.dir}/sites
+project.build.platform.dir.profiles = ${project.build.platform.dir}/profiles
+project.build.platform.dir.profile = ${project.build.platform.dir.profiles}/${platform.profile.name}
+project.build.platform.composer.json = ${project.build.platform.dir}/composer.json
+project.build.platform.composer.lock = ${project.build.platform.dir}/composer.lock
+project.build.platform.favicon.ico = ${project.build.platform.dir}/favicon.ico
 
 project.build.subsite.name = ${project.id}
-project.build.subsite.dir = ${project.build.platform.sites.dir}/${project.build.subsite.name}
-project.build.subsite.files.dir = ${project.build.subsite.dir}/files
-project.build.subsite.tmp.dir = ${project.build.subsite.dir}/tmp
-project.build.subsite.libraries.dir = ${project.build.subsite.dir}/libraries
-project.build.subsite.modules.dir = ${project.build.subsite.dir}/modules
-project.build.subsite.modules.contrib.dir = ${project.build.subsite.modules.dir}/contrib
-project.build.subsite.modules.custom.dir = ${project.build.subsite.modules.dir}/custom
-project.build.subsite.modules.features.dir = ${project.build.subsite.modules.dir}/features
-project.build.subsite.source.dir = ${project.build.subsite.dir}/src
-project.build.subsite.themes.dir = ${project.build.subsite.dir}/themes
+project.build.subsite.dir = ${project.build.platform.dir.sites}/${project.build.subsite.name}
+project.build.subsite.dir.files = ${project.build.subsite.dir}/files
+project.build.subsite.dir.tmp = ${project.build.subsite.dir}/tmp
+project.build.subsite.dir.source = ${project.build.subsite.dir}/src
+project.build.subsite.dir.libraries = ${project.build.subsite.dir}/libraries
+project.build.subsite.dir.modules = ${project.build.subsite.dir}/modules
+project.build.subsite.dir.modules.contrib = ${project.build.subsite.dir.modules}/contrib
+project.build.subsite.dir.modules.custom = ${project.build.subsite.dir.modules}/custom
+project.build.subsite.dir.modules.features = ${project.build.subsite.dir.modules}/features
+project.build.subsite.dir.themes = ${project.build.subsite.dir}/themes
 project.build.subsite.composer.json = ${project.build.subsite.dir}/composer.json
 project.build.subsite.composer.lock = ${project.build.subsite.dir}/composer.lock
 
@@ -326,5 +320,5 @@ varnish.server.port = 8888
 
 # Drush Context configuration
 # ---------------------------
-drush.db.dump = ${platform.build.dir}/dump.sql
+drush.db.dump = ${project.build.platform.dir}/dump.sql
 
