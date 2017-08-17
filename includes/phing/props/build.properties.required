@@ -18,13 +18,13 @@ subsite.url.production =
 # Drupal configuration
 # --------------------
 
-drupal.site.name = all
+project.drupal.site.name = all
 
 
 # Platform configuration
 # ----------------------
 
-platform.profile.name = multisite_drupal_standard
+project.build.platform.profile = multisite_drupal_standard
 platform.package.version = 2.3.61
 
 

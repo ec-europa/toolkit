@@ -88,11 +88,11 @@
         <drush
             command="make"
             assume="yes"
-            bin="${drush.bin}"
+            bin="${project.bin.drush}"
             pipe="yes"
             verbose="${drush.verbose}"
             root="${project.build.platform.dir}">
-            <param>${drupal.make}</param>
+            <param>${project.build.platform.core.make}</param>
             <param>${project.build.platform.dir}</param>
             <option name="no-patch-txt"></option>
         </drush>
@@ -104,18 +104,18 @@
         <if>
             <isset property="profile-name" />
             <then>
-                <property name="platform.profile.name" value="${profile-name}" override="true" />
-                <property name="platform.make" value="${project.resources.dir}/${profile-name}.make" override="true" />
+                <property name="project.build.platform.profile" value="${profile-name}" override="true" />
+                <property name="project.build.platform.profile.make" value="${project.resources.dir}/${profile-name}.make" override="true" />
             </then>
         </if>
         <drush
             command="make"
             assume="yes"
-            bin="${drush.bin}"
+            bin="${project.bin.drush}"
             pipe="yes"
             verbose="${drush.verbose}"
             root="${project.build.platform.dir}">
-            <param>${platform.make}</param>
+            <param>${project.build.platform.profile.make}</param>
             <param>${project.build.platform.dir}</param>
             <!-- Increasing the concurrency improves the build time by a factor of 3. -->
             <option name="concurrency">10</option>
@@ -123,7 +123,7 @@
             <!-- This option will allow us to build inside an existing folder. -->
             <option name="no-core"></option>
             <!-- Install all contributed projects inside the chosen profile. -->
-            <option name="contrib-destination">profiles/${platform.profile.name}</option>
+            <option name="contrib-destination">profiles/${project.build.platform.profile}</option>
         </drush>
     </target>
 

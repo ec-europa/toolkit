@@ -41,7 +41,7 @@
 
     <!-- Creates symlinks for the atomium and europa themes. -->
     <target name="theme-europa-create-symlinks" >
-        <rel-sym link="${project.resources.dir.profiles}/${platform.profile.name}/themes" overwrite="true">
+        <rel-sym link="${project.resources.dir.profiles}/${project.build.platform.profile}/themes" overwrite="true">
             <fileset dir="${project.resources.profiles.common.themes.dir}" expandsymboliclinks="true">
                 <include name="ec_europa" />
             </fileset>

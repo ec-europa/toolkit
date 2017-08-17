@@ -4,7 +4,7 @@
 
     <!-- Help function to display the targets. -->
     <target name="help" hidden="true">
-        <exec command="${phing.bin} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
+        <exec command="${project.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
         <echo msg="${line.separator}${phing-targets}" />
     </target>
 
@@ -155,7 +155,7 @@
 
     <!-- Copies a given folder to a new location. -->
     <target name="copy-folder" hidden="true">
-        <copy todir="${copy.destination.path}" haltonerror="${copy.path.haltonerror}">
+        <copy todir="${copy.destination.path}" haltonerror="${project.build.copy.path.haltonerror}">
             <fileset dir="${copy.source.path}" defaultexcludes="false" />
         </copy>
     </target>

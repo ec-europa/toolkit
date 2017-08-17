@@ -53,11 +53,11 @@
     <!-- Make the development version of the subsite. -->
     <target name="subsite-make-subsite">
         <if>
-            <available file="${site.make}" type="file" />
+            <available file="${project.resources.site.make}" type="file" />
             <then>
                 <echo msg="Make the subsite." />
                 <phingcall target="drush-make-no-core">
-                    <property name="drush.make.target.file" value="${site.make}" />
+                    <property name="drush.make.target.file" value="${project.resources.site.make}" />
                     <property name="drush.make.root" value="${project.build.platform.dir}" />
                 </phingcall>
             </then>
@@ -90,8 +90,8 @@
         </if>
         <drushmf
             makeFile="${project.tmp.devel.make}"
-            coreVersion="${drupal.core.version}"
-            projects="${devel.mdls.download}"
+            coreVersion="${project.build.platform.core}"
+            projects="${devel.mdls.dl}"
             defaultProjectDir="${devel.mdls.dir}"
         />
     </target>
@@ -105,7 +105,7 @@
    <!-- Install Composer dist dependencies for the subsite. -->
     <target name="subsite-dist-composer-install">
         <echo msg="Run 'composer install --no-dev' in the build destination folder." />
-        <composer command="install" composer="${composer.bin}">
+        <composer command="install" composer="${project.bin.composer}">
             <arg value="--working-dir=${project.build.dist.dir}" />
             <arg value="--no-interaction" />
             <arg value="--no-plugins" />
@@ -122,25 +122,25 @@
         <phingcall target="copy-folder">
             <property name="copy.source.path" value="${project.resources.dir.modules}" />
             <property name="copy.destination.path" value="${project.build.dist.dir.modules.custom}" />
-            <property name="copy.path.haltonerror" value="false" override="true"/>
+            <property name="project.build.copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom features. -->
         <phingcall target="copy-folder">
             <property name="copy.source.path" value="${project.resources.dir.features}" />
             <property name="copy.destination.path" value="${project.build.dist.dir.modules.features}" />
-            <property name="copy.path.haltonerror" value="false" override="true"/>
+            <property name="project.build.copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom themes. -->
         <phingcall target="copy-folder">
             <property name="copy.source.path" value="${project.resources.dir.themes}" />
             <property name="copy.destination.path" value="${project.build.dist.dir.themes}" />
-            <property name="copy.path.haltonerror" value="false" override="true"/>
+            <property name="project.build.copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom PSR-4 code. -->
         <phingcall target="copy-folder">
             <property name="copy.source.path" value="${project.resources.dir.source}" />
             <property name="copy.destination.path" value="${project.build.dist.dir.source}" />
-            <property name="copy.path.haltonerror" value="false" override="true"/>
+            <property name="project.build.copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy composer configuration. -->
         <copy todir="${project.build.dist.dir}" file="${project.resources.composer.json}" />
@@ -169,9 +169,9 @@
             in a temporary folder and move the subsite into place when done.
          -->
         <if>
-            <available file="${site.make}" type="file" />
+            <available file="${project.resources.site.make}" type="file" />
             <then>
-                <loadfile property="sitemake" file="${site.make}"/>
+                <loadfile property="sitemake" file="${project.resources.site.make}"/>
                 <propertyregex
                     property="not.empty"
                     subject="${sitemake}"
@@ -183,7 +183,7 @@
                     <not><equals arg1="${not.empty}" arg2="empty" /></not>
                     <then>
                         <phingcall target="drush-make-no-core">
-                            <property name="drush.make.target.file" value="${site.make}" />
+                            <property name="drush.make.target.file" value="${project.resources.site.make}" />
                             <property name="drush.make.root" value="${project.tmp.dir}/build" />
                         </phingcall>
                     </then>
