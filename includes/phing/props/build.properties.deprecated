@@ -1,0 +1,154 @@
+subsite.name =
+subsite.make =
+subsite.install.modules =
+
+project.id =
+project.database.url.scheme =
+project.database.url.htaccess.username =
+project.database.url.htaccess.password =
+project.database.url =
+project.database.filename =
+
+project.reference.repository =
+project.reference.branch =
+project.reference.remote =
+
+development.modules.download = devel.mdls.dl
+development.modules.enable = devel.mdls.en
+development.modules.location = devel.mdls.dir
+
+development.variables.error_level = devel.mdls.error_level
+development.variables.views_ui_show_sql_query = devel.mdls.views_ui_show_sql_query
+development.variables.views_ui_show_performance_statistics = devel.mdls.views_ui_show_performance_statistics
+development.variables.views_show_additional_queries = devel.mdls.views_show_additional_queries
+development.variables.stage_file_proxy_origin = devel.mdls.stage_file_proxy_origin
+development.variables.stage_file_proxy_origin_dir = devel.mdls.stage_file_proxy_origin_dir
+development.variables.stage_file_proxy_hotlink = devel.mdls.stage_file_proxy_hotlink
+
+drupal.db.type =
+drupal.db.name =
+drupal.db.user =
+drupal.db.password =
+drupal.db.host =
+drupal.db.port =
+drupal.db.url =
+
+drupal.admin.username =
+drupal.admin.password =
+drupal.admin.email =
+
+drupal.htaccess.path =
+drupal.htaccess.append.text =
+
+drupal.site.name =
+drupal.core.version =
+
+platform.build.dir =
+platform.profile.name =
+platform.package.reference =
+platform.package.provider =
+platform.package.repository =
+platform.package.cachedir =
+platform.package.destination =
+platform.package.tarball =
+platform.package.token =
+
+composer.bin =
+drush.bin =
+git.bin =
+phing.bin =
+
+phing.project.build.dir =
+phing.project.src.dir =
+dist.build.dir =
+
+phing.project.tmp.dir =
+
+subsite.resources.dir =
+subsite.resources.lib.dir =
+subsite.resources.features.dir =
+subsite.resources.modules.dir =
+subsite.resources.source.dir =
+subsite.resources.themes.dir =
+subsite.resources.composer.json =
+subsite.resources.composer.lock =
+
+subsite.temporary.development.make =
+
+platform.build.settings.dir =
+platform.build.files.dir =
+platform.build.tmp.dir =
+
+platform.build.profiles.dir =
+platform.build.profile.dir =
+
+platform.build.sites.dir =
+platform.build.subsite.dir =
+platform.build.subsite.libraries.dir =
+platform.build.subsite.modules.dir =
+platform.build.subsite.modules.contrib.dir =
+platform.build.subsite.modules.custom.dir =
+platform.build.subsite.modules.features.dir =
+platform.build.subsite.source.dir =
+platform.build.subsite.themes.dir =
+platform.build.subsite.composer.json =
+platform.build.subsite.composer.lock =
+
+dist.build.modules.dir =
+dist.build.modules.custom.dir =
+dist.build.modules.features.dir =
+dist.build.source.dir =
+dist.build.themes.dir =
+dist.build.composer.json =
+dist.build.composer.lock =
+
+platform.rebuild.auto =
+platform.rebuild.backup.destination =
+platform.rebuild.backup.folders =
+platform.rebuild.backup.files =
+
+behat.bin =
+behat.dir =
+behat.yml.template =
+behat.yml.path =
+behat.base_url =
+behat.subcontexts.path =
+behat.formatter.name =
+behat.options.strict =
+behat.options.verbosity =
+behat.src.dir =
+
+phpcs.extensions =
+phpcs.config =
+phpcs.standards =
+phpcs.files =
+phpcs.ignore =
+phpcs.passwarnings =
+phpcs.report =
+phpcs.sniffcodes =
+phpcs.progress =
+phpcs.global.config =
+phpcs.prepush.enable =
+phpcs.prepush.source =
+phpcs.prepush.destination =
+
+qa.check.ssk =
+
+server.docroot =
+
+drush.verbose =
+
+phpcs.verbose =
+
+aws.region =
+
+cf.template =
+
+deploy.serviceRole =
+
+starterkit.repository =
+starterkit.branch =
+starterkit.remote =
+
+copy.path.haltonerror =
+

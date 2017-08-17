@@ -17,7 +17,7 @@ phpcs.installed.paths = ${ssk.vendor}/ec-europa/qa-automation/phpcs/SubStandards
 phpcs.standards = Subsite;${project.basedir}/phpcs-ruleset.xml
 
 # Paths to check, delimited by semicolons.
-phpcs.files = ${project.resources.dir};${project.resources.lib.dir};${phing.subsite.src.dir};${behat.src.dir}
+phpcs.files = ${project.resources.dir};${project.resources.lib.dir}
 
 # Paths to ignore, delimited by semicolons.
 phpcs.ignore =

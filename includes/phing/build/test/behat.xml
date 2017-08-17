@@ -48,7 +48,7 @@
                     <token key="behat.base_url" value="${behat.base_url}" />
                     <token key="behat.wd_host.url" value="${behat.wd_host.url}" />
                     <token key="behat.browser.name" value="${behat.browser.name}" />
-                    <token key="platform.build.dir" value="${platform.build.dir}" />
+                    <token key="project.build.platform.dir" value="${project.build.platform.dir}" />
                     <token key="behat.subcontexts.path" value="${behat.subcontexts.path}" />
                     <token key="flickr.key" value="${flickr.key}" />
                     <token key="flickr.secret" value="${flickr.secret}" />
@@ -65,8 +65,8 @@
 
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
     <target name="test-behat-setup-link">
-        <property name="behat-test-location" value="${platform.build.dir}" /> 
-        <property name="behat-test-binary" value="${platform.build.dir}/vendor/behat/behat/bin/behat" />
+        <property name="behat-test-location" value="${project.build.platform.dir}" />
+        <property name="behat-test-binary" value="${project.build.platform.dir}/vendor/behat/behat/bin/behat" />
         <rel-sym link="platform" overwrite="true">
             <fileset dir="${behat.dir}" casesensitive="yes">
                 <include name="*.yml"/>

@@ -58,7 +58,7 @@
                 <echo msg="Make the subsite." />
                 <phingcall target="drush-make-no-core">
                     <property name="drush.make.target.file" value="${site.make}" />
-                    <property name="drush.make.root" value="${platform.build.dir}" />
+                    <property name="drush.make.root" value="${project.build.platform.dir}" />
                 </phingcall>
             </then>
             <else>
@@ -69,11 +69,12 @@
 
     <!-- Symlink the source folders for easy development. -->
     <target name="subsite-resources-link">
-        <rel-sym link="${project.build.subsite.modules.custom.dir}" target="${project.resources.modules.dir}" />
-        <rel-sym link="${project.build.subsite.modules.features.dir}" target="${project.resources.features.dir}" />
-        <delete dir="${project.build.subsite.themes.dir}" includeemptydirs="true" failonerror="false" />
-        <rel-sym link="${project.build.subsite.themes.dir}" target="${project.resources.themes.dir}" />
-        <rel-sym link="${project.build.subsite.source.dir}" target="${project.resources.source.dir}" />
+        <mkdir dir="${project.build.subsite.dir.modules}" />
+        <rel-sym link="${project.build.subsite.dir.modules.custom}" target="${project.resources.modules.dir}" />
+        <rel-sym link="${project.build.subsite.dir.modules.features}" target="${project.resources.features.dir}" />
+        <delete dir="${project.build.subsite.dir.themes}" includeemptydirs="true" failonerror="false" />
+        <rel-sym link="${project.build.subsite.dir.themes}" target="${project.resources.themes.dir}" />
+        <rel-sym link="${project.build.subsite.dir.source}" target="${project.resources.source.dir}" />
         <rel-sym link="${project.build.subsite.composer.json}" target="${project.resources.composer.json}" />
         <rel-sym link="${project.build.subsite.composer.lock}" target="${project.resources.composer.lock}" />
     </target>

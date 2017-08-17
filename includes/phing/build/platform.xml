@@ -15,8 +15,8 @@
         description="Build a version of the platform intended to distribute as a release package.">
 
         <phingcall target="build-platform-dist-callback">
-            <property name="platform.build.dir" value="${project.basedir}/dist" override="true" />
-            <property name="project.build.profiles.dir" value="${project.basedir}/dist/profiles" override="true" />
+            <property name="project.build.platform.dir" value="${project.basedir}/dist" override="true" />
+            <property name="project.build.platform.dir.profiles" value="${project.basedir}/dist/profiles" override="true" />
         </phingcall>
     </target>
 
@@ -25,8 +25,8 @@
         description="Build a version of the platform intended to distribute as a release package.">
 
         <phingcall target="build-platform-dist-multisite-callback">
-            <property name="platform.build.dir" value="${project.basedir}/dist" override="true" />
-            <property name="project.build.profiles.dir" value="${project.basedir}/dist/profiles" override="true" />
+            <property name="project.build.platform.dir" value="${project.basedir}/dist" override="true" />
+            <property name="project.build.platform.dir.profiles" value="${project.basedir}/dist/profiles" override="true" />
         </phingcall>
     </target>
 
@@ -91,9 +91,9 @@
             bin="${drush.bin}"
             pipe="yes"
             verbose="${drush.verbose}"
-            root="${platform.build.dir}">
+            root="${project.build.platform.dir}">
             <param>${drupal.make}</param>
-            <param>${platform.build.dir}</param>
+            <param>${project.build.platform.dir}</param>
             <option name="no-patch-txt"></option>
         </drush>
     </target>
@@ -114,9 +114,9 @@
             bin="${drush.bin}"
             pipe="yes"
             verbose="${drush.verbose}"
-            root="${platform.build.dir}">
+            root="${project.build.platform.dir}">
             <param>${platform.make}</param>
-            <param>${platform.build.dir}</param>
+            <param>${project.build.platform.dir}</param>
             <!-- Increasing the concurrency improves the build time by a factor of 3. -->
             <option name="concurrency">10</option>
             <option name="no-patch-txt"></option>
@@ -130,15 +130,15 @@
     <!-- Copy the profile folders for deploying on production. -->
     <target name="platform-profiles-copy">
         <!-- Delete the core profiles folder so it can be replaced with ours. -->
-        <delete dir="${project.build.profiles.dir}" includeemptydirs="true" failonerror="true" />
+        <delete dir="${project.build.platform.dir.profiles}" includeemptydirs="true" failonerror="true" />
         <!-- Copy our profiles folder. -->
-        <copy todir="${project.build.profiles.dir}">
+        <copy todir="${project.build.platform.dir.profiles}">
             <fileset dir="${project.resources.profiles.dir}">
                 <include name="**" />
             </fileset>
         </copy>
         <!-- Copy common modules, themes and libraries. -->
-        <copy todir="${project.build.profiles.dir}/common">
+        <copy todir="${project.build.platform.dir.profiles}/common">
             <fileset dir="${project.resources.lib.dir}">
                 <exclude name="profiles/**" />
                 <include name="**" />
@@ -149,9 +149,9 @@
     <!-- Symlink the profile folders for easy development. -->
     <target name="platform-profiles-link">
         <!-- Delete the core profiles folder. -->
-        <delete dir="${project.build.profiles.dir}" />
+        <delete dir="${project.build.platform.dir.profiles}" />
         <!-- Symlink our profiles folder. -->
-        <symlink link="${project.build.profiles.dir}" target="${project.resources.profiles.dir}" />
+        <symlink link="${project.build.platform.dir.profiles}" target="${project.resources.profiles.dir}" />
    </target>
 
     <!-- Symlink various resources for easy development. -->
@@ -165,7 +165,7 @@
     <!-- Copy various resources for deploying on production. -->
     <target name="platform-resources-copy">
         <!-- Resources to copy to the website root. -->
-        <copy todir="${platform.build.dir}">
+        <copy todir="${project.build.platform.dir}">
             <fileset dir="${project.resources.dir}">
                 <!-- Composer configuration. -->
                 <include name="composer.*"></include>

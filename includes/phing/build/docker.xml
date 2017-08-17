@@ -13,7 +13,7 @@
     <!-- Start an environment with docker. -->
     <target name="docker-compose-up" description="Start docker project.">
         <echo msg="Starting containers for ${docker.project.id}" />
-        <mkdir dir="${platform.build.dir}" /> 
+        <mkdir dir="${project.build.platform.dir}" />
         <mkdir dir="${share.path.platform.packages.database}/platform-dev-${platform.package.version}" />
         <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${share.path.platform.packages.database}/platform-dev-${platform.package.version} docker-compose -p ${docker.project.id} -f ${ssk.includes}/docker/docker-compose.yml up -d" />
         <rel-sym link="${project.basedir}/ssk-${docker.project.id}" target="${ssk.includes}/docker/dbash" overwrite="true" />
@@ -23,7 +23,8 @@
     <!-- Stop docker environment. -->
     <target name="docker-compose-stop" description="Stop docker project.">
         <echo msg="Stopping containers for ${docker.project.id}" />
-        <exec command="docker-compose -p ${docker.project.id} -f ${ssk.root}/resources/docker/docker-compose.yml stop" />
+        <exec command="docker-compose -p ${docker.project.id} -f ${ssk.docker}/docker-compose.yml stop mysql" passthru="true" />
+        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${share.path.subsites.packages.database} docker-compose -p ${docker.project.id} -f ${ssk.docker}/docker-compose.yml -f ${ssk.docker}/backup-restore.yml run backup" passthru="true" />
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
     </target>
 
@@ -34,20 +35,63 @@
         <delete file="${project.basedir}/ssk-${docker.project.id}" />
     </target>
 
+   <!-- Check for mysql container. -->
+    <target name="docker-check-mysql" hidden="true">
+        <echo msg="Checking if mysql container exists" />
+        <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${ssk.includes}/docker/dbash ps mysql | grep -q 'Up\|Exit'" passthru="true" logoutput="false" returnproperty="docker-check-mysql" />
+        <echo msg="${docker-check-mysql}" />
+    </target>
+
    <!-- Backup database. -->
-    <target name="docker-compose-backup" description="Backup database.">
+   <target name="docker-compose-backup" description="Backup database.">
+        <if>
+            <isset property="backup-location" />
+            <then>
+                <mkdir dir="${backup-location}" />
+            </then>
+            <else>
+                <property name="backup-location" value="${project.tmp.dir}/databases" />
+                <property name="backup-filename" value="${docker.project.id}.tar.gz" />
+            </else>
+        </if>
         <echo msg="Backing up database for ${docker.project.id}" />
-        <property name="db-dir" value="${project.tmp.dir}/databases/platform-dev/${platform.version.major}.${platform.version.minor}/${platform.version.major}.${platform.version.minor}.${platform.version.reference}" />
-        <mkdir dir="${db-dir}" />
-        <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${ssk.includes}/docker/dbash backup ${db-dir}" passthru="true" logoutput="false" />
+        <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${ssk.includes}/docker/dbash backup ${backup-location}/${backup-filename}" passthru="true" logoutput="false" />
     </target>
 
    <!-- Restore database. -->
     <target name="docker-compose-restore" description="Restore database.">
-        <echo msg="Restoring database for ${docker.project.id}" />
-        <property name="db-dir" value="${project.tmp.dir}/databases/platform-dev/${platform.version.major}.${platform.version.minor}/${platform.version.major}.${platform.version.minor}.${platform.version.reference}" />
-        <mkdir dir="${db-dir}" />
-        <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${ssk.includes}/docker/dbash restore ${db-dir}" passthru="true" logoutput="false" />
+        <if>
+            <not>
+                <and>
+                    <isset property="backup-location" />
+                    <isset property="backup-location" />
+                </and>
+            </not>
+            <then>
+                <property name="backup-location" value="${project.tmp.dir}/databases" />
+                <property name="backup-filename" value="${docker.project.id}.tar.gz" />
+            </then>
+        </if>
+        <if>
+            <available file="${backup-location}/${backup-filename}" />
+            <then>
+                <echo msg="Restoring database for ${docker.project.id}" />
+                <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${ssk.includes}/docker/dbash restore ${backup-location}/${backup-filename}" passthru="true" logoutput="false" />
+            </then>
+            <else>
+                <echo msg="File ${backup-location}/${backup-filename} does not exist." level="error" />
+            </else>
+        </if>
+    </target>
+
+    <target name="dockercmb-test">
+        <cm-backup
+            bin="docker"
+            source="/var/lib/mysql/"
+            stdout="test.tar.gz"
+            volumesfrom="0a30c14a304c46988d7b2b58a1f7650b_mysql_1"
+            passthru="true"
+        />
     </target>
 
 </project>
