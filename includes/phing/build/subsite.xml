@@ -99,7 +99,7 @@
     <!-- Build release package. -->
     <target name="build-subsite-dist-package" description="Build subsite source code release package." depends="build-subsite-dist">
         <mkdir dir="${project.release.path}" />
-        <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${phing.subsite.build.dir}" />
+        <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${project.build.dist.name}" />
     </target>
 
    <!-- Install Composer dist dependencies for the subsite. -->
@@ -121,25 +121,25 @@
         <!-- Copy our custom modules. -->
         <phingcall target="copy-folder">
             <property name="copy.source.path" value="${project.resources.dir.modules}" />
-            <property name="copy.destination.path" value="${project.build.dist.modules.custom.dir}" />
+            <property name="copy.destination.path" value="${project.build.dist.dir.modules.custom}" />
             <property name="copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom features. -->
         <phingcall target="copy-folder">
             <property name="copy.source.path" value="${project.resources.dir.features}" />
-            <property name="copy.destination.path" value="${project.build.dist.modules.features.dir}" />
+            <property name="copy.destination.path" value="${project.build.dist.dir.modules.features}" />
             <property name="copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom themes. -->
         <phingcall target="copy-folder">
             <property name="copy.source.path" value="${project.resources.dir.themes}" />
-            <property name="copy.destination.path" value="${project.build.dist.themes.dir}" />
+            <property name="copy.destination.path" value="${project.build.dist.dir.themes}" />
             <property name="copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom PSR-4 code. -->
         <phingcall target="copy-folder">
             <property name="copy.source.path" value="${project.resources.dir.source}" />
-            <property name="copy.destination.path" value="${project.build.dist.source.dir}" />
+            <property name="copy.destination.path" value="${project.build.dist.dir.source}" />
             <property name="copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy composer configuration. -->

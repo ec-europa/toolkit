@@ -126,9 +126,7 @@ git.bin = git
 phing.bin = ${ssk.bin}/phing
 
 # Build location.
-phing.subsite.build.dir = build
 phing.subsite.src.dir = ${ssk.root}/src
-project.build.dist.dir = ${project.basedir}/${phing.subsite.build.dir}
 
 # Curl progress type, empty for progress meter, # for progress bar..
 project.curl.progress = #
@@ -180,11 +178,13 @@ project.build.subsite.composer.json = ${project.build.subsite.dir}/composer.json
 project.build.subsite.composer.lock = ${project.build.subsite.dir}/composer.lock
 
 # Files and directories inside the distribution build.
-project.build.dist.modules.dir = ${project.build.dist.dir}/modules
-project.build.dist.modules.custom.dir = ${project.build.dist.modules.dir}/custom
-project.build.dist.modules.features.dir = ${project.build.dist.modules.dir}/features
-project.build.dist.source.dir = ${project.build.dist.dir}/src
-project.build.dist.themes.dir = ${project.build.dist.dir}/themes
+project.build.dist.name = build
+project.build.dist.dir = ${project.basedir}/${project.build.dist.name}
+project.build.dist.dir.modules = ${project.build.dist.dir}/modules
+project.build.dist.dir.modules.custom = ${project.build.dist.dir.modules}/custom
+project.build.dist.dir.modules.features = ${project.build.dist.dir.modules}/features
+project.build.dist.dir.source = ${project.build.dist.dir}/src
+project.build.dist.dir.themes = ${project.build.dist.dir}/themes
 project.build.dist.composer.json = ${project.build.dist.dir}/composer.json
 project.build.dist.composer.lock = ${project.build.dist.dir}/composer.lock
 
