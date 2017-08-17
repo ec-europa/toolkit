@@ -51,7 +51,7 @@
 
    <!-- Check type of project and import it's build file.. -->
     <if>
-        <available file="${project.resources.profiles.dir}" type="dir"/>
+        <available file="${project.resources.dir.profiles}" type="dir"/>
         <then>
             <import file="${ssk.build}/platform.xml" />
         </then>

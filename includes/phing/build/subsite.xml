@@ -69,12 +69,11 @@
 
     <!-- Symlink the source folders for easy development. -->
     <target name="subsite-resources-link">
-        <mkdir dir="${project.build.subsite.dir.modules}" />
-        <rel-sym link="${project.build.subsite.dir.modules.custom}" target="${project.resources.modules.dir}" />
-        <rel-sym link="${project.build.subsite.dir.modules.features}" target="${project.resources.features.dir}" />
+        <rel-sym link="${project.build.subsite.dir.modules.custom}" target="${project.resources.dir.modules}" />
+        <rel-sym link="${project.build.subsite.dir.modules.features}" target="${project.resources.dir.features}" />
         <delete dir="${project.build.subsite.dir.themes}" includeemptydirs="true" failonerror="false" />
-        <rel-sym link="${project.build.subsite.dir.themes}" target="${project.resources.themes.dir}" />
-        <rel-sym link="${project.build.subsite.dir.source}" target="${project.resources.source.dir}" />
+        <rel-sym link="${project.build.subsite.dir.themes}" target="${project.resources.dir.themes}" />
+        <rel-sym link="${project.build.subsite.dir.source}" target="${project.resources.dir.source}" />
         <rel-sym link="${project.build.subsite.composer.json}" target="${project.resources.composer.json}" />
         <rel-sym link="${project.build.subsite.composer.lock}" target="${project.resources.composer.lock}" />
     </target>
@@ -107,7 +106,7 @@
     <target name="subsite-dist-composer-install">
         <echo msg="Run 'composer install --no-dev' in the build destination folder." />
         <composer command="install" composer="${composer.bin}">
-            <arg value="--working-dir=${dist.build.dir}" />
+            <arg value="--working-dir=${project.build.dist.dir}" />
             <arg value="--no-interaction" />
             <arg value="--no-plugins" />
             <arg value="--no-suggest" />
@@ -121,38 +120,38 @@
         <echo msg="Copy custom resources." />
         <!-- Copy our custom modules. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path" value="${project.resources.modules.dir}" />
-            <property name="copy.destination.path" value="${dist.build.modules.custom.dir}" />
+            <property name="copy.source.path" value="${project.resources.dir.modules}" />
+            <property name="copy.destination.path" value="${project.build.dist.modules.custom.dir}" />
             <property name="copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom features. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path" value="${project.resources.features.dir}" />
-            <property name="copy.destination.path" value="${dist.build.modules.features.dir}" />
+            <property name="copy.source.path" value="${project.resources.dir.features}" />
+            <property name="copy.destination.path" value="${project.build.dist.modules.features.dir}" />
             <property name="copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom themes. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path" value="${project.resources.themes.dir}" />
-            <property name="copy.destination.path" value="${dist.build.themes.dir}" />
+            <property name="copy.source.path" value="${project.resources.dir.themes}" />
+            <property name="copy.destination.path" value="${project.build.dist.themes.dir}" />
             <property name="copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom PSR-4 code. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path" value="${project.resources.source.dir}" />
-            <property name="copy.destination.path" value="${dist.build.source.dir}" />
+            <property name="copy.source.path" value="${project.resources.dir.source}" />
+            <property name="copy.destination.path" value="${project.build.dist.source.dir}" />
             <property name="copy.path.haltonerror" value="false" override="true"/>
         </phingcall>
         <!-- Copy composer configuration. -->
-        <copy todir="${dist.build.dir}" file="${project.resources.composer.json}" />
-        <copy todir="${dist.build.dir}" file="${project.resources.composer.lock}" />
+        <copy todir="${project.build.dist.dir}" file="${project.resources.composer.json}" />
+        <copy todir="${project.build.dist.dir}" file="${project.resources.composer.lock}" />
     </target>
 
     <!-- Delete the previous distribution build. -->
     <target name="subsite-dist-delete">
         <echo msg="Delete previous build." />
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${dist.build.dir}" />
+            <property name="folder.to.delete" value="${project.build.dist.dir}" />
         </phingcall>
     </target>
 
@@ -201,9 +200,9 @@
         </if>
 
         <!-- Move the subsite to its destination. -->
-        <echo msg='mv "${project.tmp.dir}/build/sites/all/" "${dist.build.dir}"' />
+        <echo msg='mv "${project.tmp.dir}/build/sites/all/" "${project.build.dist.dir}"' />
         <exec
-            command='mv "${project.tmp.dir}/build/sites/all/" "${dist.build.dir}"'
+            command='mv "${project.tmp.dir}/build/sites/all/" "${project.build.dist.dir}"'
             dir="${project.basedir}"
             passthru="true"
             checkreturn="true"

@@ -128,7 +128,7 @@ phing.bin = ${ssk.bin}/phing
 # Build location.
 phing.subsite.build.dir = build
 phing.subsite.src.dir = ${ssk.root}/src
-dist.build.dir = ${project.basedir}/${phing.subsite.build.dir}
+project.build.dist.dir = ${project.basedir}/${phing.subsite.build.dir}
 
 # Curl progress type, empty for progress meter, # for progress bar..
 project.curl.progress = #
@@ -144,13 +144,13 @@ project.make = ${project.resources.dir}/site.make
 
 # Local resources.
 project.resources.dir = ${project.basedir}/resources
-project.resources.lib.dir = ${project.basedir}/lib
-project.resources.features.dir = ${project.resources.lib.dir}/features
-project.resources.modules.dir = ${project.resources.lib.dir}/modules
-project.resources.profiles.dir = ${project.resources.lib.dir}/profiles
-project.resources.source.dir = ${project.resources.lib.dir}/src
-project.resources.tests.dir = ${project.basedir}/tests
-project.resources.themes.dir = ${project.resources.lib.dir}/themes
+project.resources.dir.lib = ${project.basedir}/lib
+project.resources.dir.features = ${project.resources.dir.lib}/features
+project.resources.dir.modules = ${project.resources.dir.lib}/modules
+project.resources.dir.profiles = ${project.resources.dir.lib}/profiles
+project.resources.dir.source = ${project.resources.dir.lib}/src
+project.resources.dir.tests = ${project.basedir}/tests
+project.resources.dir.themes = ${project.resources.dir.lib}/themes
 project.resources.favicon.ico = ${project.resources.dir}/favicon.ico
 project.resources.composer.json = ${project.resources.dir}/composer.json
 project.resources.composer.lock = ${project.resources.dir}/composer.lock
@@ -180,13 +180,13 @@ project.build.subsite.composer.json = ${project.build.subsite.dir}/composer.json
 project.build.subsite.composer.lock = ${project.build.subsite.dir}/composer.lock
 
 # Files and directories inside the distribution build.
-dist.build.modules.dir = ${dist.build.dir}/modules
-dist.build.modules.custom.dir = ${dist.build.modules.dir}/custom
-dist.build.modules.features.dir = ${dist.build.modules.dir}/features
-dist.build.source.dir = ${dist.build.dir}/src
-dist.build.themes.dir = ${dist.build.dir}/themes
-dist.build.composer.json = ${dist.build.dir}/composer.json
-dist.build.composer.lock = ${dist.build.dir}/composer.lock
+project.build.dist.modules.dir = ${project.build.dist.dir}/modules
+project.build.dist.modules.custom.dir = ${project.build.dist.modules.dir}/custom
+project.build.dist.modules.features.dir = ${project.build.dist.modules.dir}/features
+project.build.dist.source.dir = ${project.build.dist.dir}/src
+project.build.dist.themes.dir = ${project.build.dist.dir}/themes
+project.build.dist.composer.json = ${project.build.dist.dir}/composer.json
+project.build.dist.composer.lock = ${project.build.dist.dir}/composer.lock
 
 
 # Rebuild configuration

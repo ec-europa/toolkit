@@ -133,13 +133,13 @@
         <delete dir="${project.build.platform.dir.profiles}" includeemptydirs="true" failonerror="true" />
         <!-- Copy our profiles folder. -->
         <copy todir="${project.build.platform.dir.profiles}">
-            <fileset dir="${project.resources.profiles.dir}">
+            <fileset dir="${project.resources.dir.profiles}">
                 <include name="**" />
             </fileset>
         </copy>
         <!-- Copy common modules, themes and libraries. -->
         <copy todir="${project.build.platform.dir.profiles}/common">
-            <fileset dir="${project.resources.lib.dir}">
+            <fileset dir="${project.resources.dir.lib}">
                 <exclude name="profiles/**" />
                 <include name="**" />
             </fileset>
@@ -151,7 +151,7 @@
         <!-- Delete the core profiles folder. -->
         <delete dir="${project.build.platform.dir.profiles}" />
         <!-- Symlink our profiles folder. -->
-        <symlink link="${project.build.platform.dir.profiles}" target="${project.resources.profiles.dir}" />
+        <symlink link="${project.build.platform.dir.profiles}" target="${project.resources.dir.profiles}" />
    </target>
 
     <!-- Symlink various resources for easy development. -->
