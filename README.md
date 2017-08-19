@@ -173,40 +173,38 @@ specific and do not contain any credentials.
 ### Phing
 We keep the documentation light for this page because we are planning to
 move all documentation to the github wiki. For now please help yourself
-with the command listing target. You can get a list of all the available
-Phing build commands ("targets") with a short description of each main
-target.
-
-Beware: the list below is under heavy development.
+with the command listing the targets.
 
 <details><summary><b>./ssk/phing</b> or <b>./ssk/phing help</b></summary>
 
 ```
 Main targets:
 -------------------------------------------------------------------------------
- build-clean          Build local version of subsite with a clean install.
- build-clone          Build local version of subsite with production data.
- build-code           Build local version of subsite without install.
- build-keep           Build local version of subsite with backup and restore.
- build-release        Build subsite source code release package.
- build-tests          Build subsite tests code release package.
- docker-compose-down  Trash docker project.
- docker-compose-stop  Stop docker project.
- docker-compose-up    Start docker project.
- help                 The default target used when no arguments have been given.
- help_xml.help        The default target used when no arguments have been given.
- link-docroot         Create symlink from build to docroot.
- subsite-install      Install the subsite.
- test-run-behat       Refresh configuration and run behat scenarios.
- test-run-phpcs       Refresh configuration and run phpcs review.
- test-run-qa          Refresh configuration and run qa review.
+ build-platform-dev                      Build a local development version of the platform.
+ build-platform-dist                     Build a version of the platform intended to distribute as a release package.
+ build-platform-dist-callback            Build a version of the platform intended to distribute as a release package.
+ build-platform-dist-multisite           Build a version of the platform intended to distribute as a release package.
+ build-platform-dist-multisite-callback  Build files of  platform intended for release package.
+ build-project-clean                     Install NextEuropa site from scratch.
+ build-project-clone                     Install NextEuropa site with production data.
+ build-project-docroot                   Create symlink from build to docroot.
+ build-project-htaccess                  Update .htaccess file.
+ build-project-platform                  Build NextEuropa Platform code without version control.
+ build-project-subsite                   Build NextEuropa Subsite code without version control.
+ build-project-test-package              Build subsite tests code release package.
+ build-project-theme                     Build EC Europa theme without version control.
+ build-project-theme-dev                 Build EC Europa theme with version control.
+ docker-compose-backup                   Backup database.
+ docker-compose-down                     Trash docker project.
+ docker-compose-restore                  Restore database.
+ docker-compose-stop                     Stop docker project.
+ docker-compose-up                       Start docker project.
+ test-run-behat                          Refresh configuration and run behat scenarios.
+ test-run-phpcs                          Refresh configuration and run phpcs review.
+ test-run-qa                             Refresh configuration and run qa review.
 
 Subtargets:
 -------------------------------------------------------------------------------
- dist-composer-install
- dist-copy-resources
- dist-delete
- dist-make
  drush-create-files-dirs
  drush-dl-rr
  drush-enable-solr
@@ -219,36 +217,49 @@ Subtargets:
  drush-sql-drop
  drush-sql-dump
  drush-sql-import
- platform-composer-install
- platform-delete
- platform-download
- platform-link-resources
- platform-make
- platform-unpack
- platform-update-htaccess
+ platform-make-drupal
+ platform-make-profile
+ platform-make-profile-all
+ platform-profiles-copy
+ platform-profiles-link
+ platform-resources-copy
+ platform-resources-link
+ project-database-download
+ project-database-import
+ project-database-wget
+ project-modules-devel-dl
+ project-modules-devel-en
+ project-modules-devel-mf
+ project-modules-install-en
+ project-platform-composer-install
+ project-platform-composer-install-dev
+ project-platform-delete
+ project-platform-package-download
+ project-platform-package-unpack
+ project-setup-files-directory
+ project-subsite-composer-install
+ project-test-composer-install
  starterkit-build-docs
  starterkit-copy-templates
+ starterkit-init
  starterkit-link-binary
  starterkit-upgrade
- subsite-composer-install
- subsite-create-directories
- subsite-database-download
- subsite-database-import
- subsite-database-wget
- subsite-modules-devel-dl
- subsite-modules-devel-en
- subsite-modules-devel-mf
- subsite-modules-install-en
- subsite-setup-files-directory
  subsite-site-backup
  subsite-site-restore
  test-behat-exec
  test-behat-setup
+ test-behat-setup-balancer
  test-behat-setup-link
  test-phpcs-exec
  test-phpcs-setup
  test-phpcs-setup-prepush
+ test-phpunit-setup
  test-qa-exec
+ theme-europa-build
+ theme-europa-create-symlinks
+ theme-europa-download-extract
+ theme-europa-embed-ecl-assets
+ theme-europa-repo-clone
 ```
 </details>
 
