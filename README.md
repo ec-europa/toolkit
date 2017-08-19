@@ -1,227 +1,274 @@
-# NextEuropa Subsite Starterkit packaged for Composer
+[![Latest Stable Version](https://poser.pugx.org/drush/drush/v/stable.png)](https://packagist.org/packages/drush/drush) [![Total Downloads](https://poser.pugx.org/drush/drush/downloads.png)](https://packagist.org/packages/drush/drush) [![Latest Unstable Version](https://poser.pugx.org/drush/drush/v/unstable.png)](https://packagist.org/packages/drush/drush) [![License](https://poser.pugx.org/drush/drush/license.png)](https://packagist.org/packages/drush/drush) [![Documentation Status](https://readthedocs.org/projects/drush/badge/?version=master)](https://readthedocs.org/projects/drush/?badge=master)
+Shields to consider: https://shields.io/
 
-This is a starting point for creating new websites for the [NextEuropa
-platform](https://blogs.ec.europa.eu/eu-digital/content/next-europa-it-platform)
-of the European Commission.
+Note: This documentation is in progress and should not be relied on. The project is in full development.
 
-## 1. Install guide
+# NextEuropa Toolkit
+<img align="left" width="50%" src="https://ec.europa.eu/info/sites/info/themes/europa/images/svg/logo/logo--en.svg" />
 
-The installation of the Subsite Starterkit packaged in Composer depends on 3 essential
-files being present in your repository. By doing a subsite-starterkit upgrade through
-upstream merge these will be placed in your repository.  If this is a first time install
-you can fetch the files from ec-europa/ssk. After which you can run composer update.
+<p>The NextEuropa Toolkit is a composer package designed to speed up the
+development of Drupal websites in the NextEuropa project. It's main
+component is the Phing build system that builds your development
+environemnts, deploy packages and test packages.</p>
+
+<details><summary>Table of Contents</summary>
+
+- [Background](#background)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+	- [Generator](#generator)
+- [Badge](#badge)
+- [Example Readmes](#example-readmes)
+- [Related Efforts](#related-efforts)
+- [Maintainers](#maintainers)
+- [Contribute](#contribute)
+- [License](#license)
+</details>
+
+## Background
+This composer package helps developers working on Drupal websites in the
+NextEuropa project speed up and align their development. The toolkit is
+an opensource and in no way obligated to provide support or guarantee
+compatibility with your system. It is officially maintained by members
+of the Quality Assurance team for the NextEuropa project. They oversee
+general workflow and overall quality of projects. The standards emposed
+by the Quality Assurance team are a mix of internally provided standards
+and a collection of standards established by the leading contributors to
+the project.
+
+## Requirements
+There are three separate ways of using the NextEuropa project. Either
+you use an environment with Docker installed, an environment without.
+Or a mix of both.
+  
+<details><summary><b>Docker Solo</b></summary>
+
+This requirement for docker only requires docker in docker support.
+The configuration to accomplish this is complicated and if implemented
+incorrectly can give you problems. We recommend this approach only
+for seasond docker users.<br>*Required components*:
+[Docker](https://docs.docker.com/engine/installation/linux/docker-ce/centos/)
+</details>
+<details><summary><b>Docker Plus</b></summary>
+
+Instead of having the absolute minimal requirement you can install the
+host level components Composer and Phing on the non-docker environment.
+Then this can spin up the docker containers for you without having to
+configure a complicated docker installation.<br>*Required components*:
+[Composer](https://getcomposer.org/),
+[Phing](https://packagist.org/packages/phing/phing),
+[Docker](https://docs.docker.com/engine/installation/linux/docker-ce/centos/)
+</details>
+<details><summary><b>Docker Zero</b></summary>
+
+If you are not interested in the advantages that the starterkit can give
+you with the provided docker images you can keep a normal host only setup.
+But it is very much recommended to use docker as it will give you
+everything you need.<br>*Required components*:
+[Composer](https://getcomposer.org/),
+[LAMP Stack](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-centos-7)
+</details>
+
+## Installation
+There are two different types of projects to install thiis composer
+package. You can either create a platform repository or a subsite
+repository. Both types use this toolkit to build the project and it's
+release packages.
+
+<details><summary><b>composer create-project ec-europa/platform dirname ~3.0.0</b></summary>
+
+This command will clone the repository of the ec-europa/platform project
+and run composer install on it. The installation of the toolkit itself
+is run seperately to create a clear separation between the toolkit and
+your project source code. Extending the toolkit is not possible without
+contributing your functionalities through pull requests. You will be
+requested to remove or keep the VCS files after cloning the project. For
+development purposes you should NOT agree to remove these files. Only for
+deploy and testing purposes it is recommended to remove the version
+control system. There is only one official platform project which is
+maintained by the NextEuropa core development team.
+</details>
+
+<details><summary><b>composer create-project ec-europa/subsite dirname ~3.0.0</b></summary>
+
+This command will clone the repository of the ec-europa/subsite project
+and run composer install on it. The installation of the toolkit itself
+is run seperately to create a clear separation between the toolkit and
+your project source code. Extending the toolkit is not possible without
+contributing your functionalities through pull requests. You will be
+requested to remove or keep the VCS files after cloning the project.
+Upon initial creation of your project you need to remove the VCS files
+as you will commit the source code to your own repository. After your
+project is registered by NextEuropa as an official subsite you will be
+able to direct pull requests to a reference repository.
+
+After your project is accepted you can register your fork locally or
+through packagist to use the same composer create-project command on 
+your fork that serves development only.
+
+<details><summary>To locally register your package the following code to your global config.json:</summary>
+
+```json
+{
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "ec-europa/<project-id>-dev",
+        "version": "dev-master",
+        "source": {
+          "type" : "git",
+          "url" : "https://github.com/<github-account>/<project-id>-dev.git",
+          "reference" : "master"
+        }
+      }
+    }
+  ],
+}
 
 ```
-curl https://raw.githubusercontent.com/ec-europa/ssk/master/resources/templates/build.xml > build.xml
-curl https://raw.githubusercontent.com/ec-europa/ssk/master/resources/templates/composer.json > composer.json
-curl https://raw.githubusercontent.com/ec-europa/ssk/master/resources/templates/Jenkinsfile > Jenkinsfile
+</details>
 
-composer update
+<details><summary>To globally register your development repository you can visit packagist.org.</summary>
+
+[https://packagist.org/packages/submit]
+</details>
+</details>
+
+## Build properties
+There are 3 different sets of build properties file that you can use. If you
+are unfamiliar with the purpose behind each different type of properties file
+please open the descriptions and read what they are designed for.
+
+<details><summary><b>build.properties.local</b>
+<!-- Keepit simple for now
+  <sup align="right">
+    <code>never commit</code>
+  </sup>
+-->
+</summary>
+
+This file will contain configuration which is unique to your development
+environment. It is useful for specifying your database credentials and the
+username and password of the Drupal admin user so they can be used during the
+installation. Next to credentials you have many development settings that you
+can change to your liking. Because these settings are personal they should
+not be shared with the rest of the team. Make sure you never commit this file.
+</details>
+<details><summary><b>build.properties.dist</b><br>
+<!-- Keepit simple for now
+    <sup>
+      <code>never alter</code> 
+      <code>always commit</code>
+      </sup>
+-->
+  </summary>
+
+This properties file contains the default settings and acts as a loading and
+documentation file for the system to work correctly. Any time you install the
+toolkit it will be copied to your repository root. Even though it is a template
+you should not remove this file, but commmit it to your repository. The reason
+for this is that it allows you to easily check the version of the toolkit and
+what new properties were introduced or deprecated.
+</details>
+<details><summary><b>build.properties</b><br>
+<!-- Keepit simple for now
+  <sup>
+    <code>always commit</code> 
+    <code>no credentials</code><br>
+    <code>no environments</code> 
+    <code>needed for builds</code>
+  </sup>
+-->
+</summary>
+
+Always commit this file to your repository. This file is required for all
+NextEuropa projects. Without it your build system will fail with a build
+exception. It must contain a minimum set of properties, like project.id, etc.
+A list of required properties is still to be delivered. Aside from the
+required properties you can add any other properties that are project
+specific and do not contain any credentials.
+</details>
+
+## Phing command list
+We keep the documentation light for this page because we are planning to
+move all documentation to the github wiki. For now please help yourself
+with the command listing target. You can get a list of all the available
+Phing build commands ("targets") with a short description of each main
+target.
+
+Beware: the list below is under heavy development.
+
+<details><summary><b>./ssk/phing</b> or <b>./ssk/phing help</b></summary>
+
 ```
+Main targets:
+-------------------------------------------------------------------------------
+ build-clean          Build local version of subsite with a clean install.
+ build-clone          Build local version of subsite with production data.
+ build-code           Build local version of subsite without install.
+ build-keep           Build local version of subsite with backup and restore.
+ build-release        Build subsite source code release package.
+ build-tests          Build subsite tests code release package.
+ docker-compose-down  Trash docker project.
+ docker-compose-stop  Stop docker project.
+ docker-compose-up    Start docker project.
+ help                 The default target used when no arguments have been given.
+ help_xml.help        The default target used when no arguments have been given.
+ link-docroot         Create symlink from build to docroot.
+ subsite-install      Install the subsite.
+ test-run-behat       Refresh configuration and run behat scenarios.
+ test-run-phpcs       Refresh configuration and run phpcs review.
+ test-run-qa          Refresh configuration and run qa review.
 
-For more information on these files please refer to the repository structure.
-
-> <details><summary><b>composer.json</b>: Important to take note of the script commands.</summary><p>
-> 
-> The composer package version starts at 3.0. Performing a `composer update` on this
-requirement will be the only thing necessary to get the subsite starterkit package
-installed and updated. You may choose the version which you want to install. But
-Quality Assurance will always run your code on the lastest release.
-> 
-> The `phingexec` script function is mereley an example for people who do not have php
-installed on their system, but only docker. That script will allow you to use phing to
-setup a development environment without too much hassle.
->
-> ```json
-> {
->   "require": {
->     "ec-europa/ssk": "~3.0"
->   },
->   "scripts": {
->     "phingexec": "./ssk/phing",
->     "post-update-cmd": "PROJECT=$(pwd) composer install --working-dir=vendor/ec-europa/ssk/includes/composer --no-interaction --no-suggest --ansi"
->   }
-> }
-> ```
-> 
-> </p></details>
-> 
-> <details><summary><b>build.xml</b>: This file points phing to the ssk installation root and imports it.</summary><p>
->
->This is simply a pointer file to tell phing where you've installed the ssk.<br />
-> Important to note that the previous `/resources/build.custom.xml` from 2.x has been renamed to `/build.project.xml`.<br />
-> Also the `/resources/phpcs-custom.xml` has been renamed and located in your project basedir at `/phpcs-ruleset.xml`.<br />
-> These 2 files do no longer belong to the starterkit. They are essential to your project and fully under your control.
-> 
->```xml
-> <?xml version="1.0" encoding="UTF-8" ?>
-><project name="My subsite" default="help">
->    <!-- Set starterkit root property -->
->    <property name="project.starterkit.root" value="${project.basedir}/vendor/ec-europa/ssk" />
->    <!-- Import starterkit build xml files. -->
->    <import file="${project.starterkit.root}/build.xml" />
-></project>
->```
->
-> </p></details>
-> 
-> <details><summary><b>Jenkinsfile</b>: Currently only important to the Quality Assurance team for CI builds.</summary><p>
->
->Again this file contains a simple pointer to the starterkits own Jenkinsfile. We are still working at giving this file a customized name so that subsites will be able to provide their own Jenkinsfile in their repository if they wish.
-> 
-> ```groovy
-> def extcode
->
->node {
->  wrap([$class: 'AnsiColorBuildWrapper', cxolorMapName: 'xterm']) {
->    deleteDir()
->    checkout scm
->    sh "composer update --no-interaction --no-suggest"
->    extcode = load "vendor/ec-europa/ssk/Jenkinsfile"
->    extcode.createWorkflow()
->  }
->}
->```
-> 
-> </p></details>
-
-## Features
-
-- Support for NextEuropa 2.2.89 and later.
-- Easily test your code on any release, branch or tag of the NextEuropa
-  platform to validate your site will be compatible on an upgrade.
-- Integrated support for Behat and PHP CodeSniffer.
-- QA automation tools to provide static code checks.
-- Built-in support for Continuous Integration using Docker Jenkins.
-- A generally accepted docker enviroment that is built expecially for this
-  project.
-
-## Recent notable changes
-
-- **2017-03-13**: The resources folder is expanded with a composer and git
-    folder where you can place scripts that will be executed on the name of the
-    hook that matches the folder name.
-- **2017-02-04**: The build-dev target now has backup and restore support for
-    when you have a site installed. This allows you to make a selection of
-    certain files and folders to backup before build-dev and restore them after.
-    The added functionality also comes with a dedicated target "rebuild-dev".
-- **2017-02-06**: The resources/build.custom.xml is now the master build file.
-    This allows you to override starterkit build targets in this file. The phing
-    calls build-custom in build-dist and build-dev have been removed.
-- **2017-01-19**: Subsites now have a dedicated phpcs-custom.xml file in their
-    resources folder to add excludes if they wish not to clutter their code with
-    codingStandardsIgnore tags.
-- **2017-01-18**: New build target "build-clone" added to setup a local
-    clone by importing a sanitized production database.
-- **2017-01-17**: New version of QA automation tools based on symfony/console.
-- **2016-10-05**: Added QA automation tools that should be run before each time
-    you make a pull request to your reference repository.
-- **2016-08-09**: We made the `resources/site.make` optional for use. Please
-    pay attention when upgrading (merging upstream) that you don't lose
-    your `resources/site.make` in the process.
-- **2016-08-04**: The Subsite Starterkit has now actual releases. Tags are
-    prepended with `starterkit/` in order to avoid conflicts with existing tags
-    on forked subsite repositories.
-- **2016-07-19**: Subsites now support [Composer](https://getcomposer.org) 
-    dependencies. Please refer to the [Developer guide](docs/developer-guide.md) 
-    for more information.
-- **2016-07-07**: The Subsite Starterkit now supports NextEuropa 2.2.35 and later.
-- **2015-12-22**: The structure of the platform package that is being downloaded
-    from ContinuousPHP has changed. The codebase now resides in the root folder
-    instead of the `build/` folder. The platform downloads should be much faster
-    now.
-
-
-## Repository structure
-
-### 1. Project configuration
-
-The configuration of the project is managed in 3 `build.properties` files:
-
-1.  `build.properties.dist`: This contains default configuration which is
-    common for all NextEuropa projects. *This file should never be edited.*
-2.  `build.properties`: This is the configuration for your project. In here you
-    can override the default configuration with settings that are more suitable
-    for your project. Some typical settings would be the site name, the install
-    profile to use and the modules/features to enable after installation.
-3.  `build.properties.local`: This contains configuration which is unique for
-    the local development environment. In here you would place things like your
-    database credentials and the development modules you would like to install.
-    *This file should never be committed.*
-
-### 2. Project code
-
-* Your custom modules, themes and custom PHP code go in the `lib/` folder. The
-  contents of this folder get symlinked into the Drupal website at `sites/all/`.
-* Any contrib modules, themes, libraries and patches you use should be put in
-  the make file `resources/site.make`. Whenever the site is built these will be
-  downloaded and copied into the Drupal website. By default we provide an example
-  file in `resources/site.make.example`. Feel free to copy or rename this file
-  to `resources/site.make`. This make file will be included in `build-dev`
-  and `build-dist` by default.
-* If you have any custom Composer dependencies, declare them in
-  `resources/composer.json` and `resources/composer.lock`.
-* If you require custom build steps for your subsite, you are free to use the 
-  `resources/build.custom.xml` phing target. This target is included by default
-   in build-dev & build-dist targets.
-
-### 3. Drupal root
-
-The Drupal site will be placed in the `platform/` folder when it is built. Point
-your webserver here. This is also where you would execute your Drush commands.
-Your custom modules are symlinked from `platform/sites/all/modules/custom/` to
-`lib/modules/` so you can work in either location, whichever you find the most
-comfortable.
-
-### 4. Behat tests
-
-All Behat related files are located in the `tests/` folder.
-
-* `tests/behat.yml`: The Behat configuration file. This file is regenerated
-  automatically when the project is built and should never be edited or
-   committed.
-* `tests/behat.yml.dist`: The template that is used for generating `behat.yml`.
-  If you need to tweak the configuration of Behat then this is the place to do
-  that.
-* `tests/features/`: Put your Behat test scenarios here.
-* `tests/src/Context/`: The home of custom Context classes.
-
-### 5. Other files and folders
-
-* `bin/`: Contains command line executables for the various tools we use such as
-  Behat, Drush, Phing, PHP CodeSniffer etc.
-* `build/`: Will contain the build intended for deployment to production. Use
-  the `build-dist` Phing target to build it.
-* `src/`: Custom PHP code for the build system, such as project specific Phing
-  tasks.
-* `tmp/`: A temporary folder where the platform tarball is downloaded and
-  unpacked during the build process.
-* `tmp/deploy-package.tar.gz`: The platform tarball. This file is very large and
-  will only be downloaded once. When a new build is started in the future the
-  download will be skipped, unless this file is deleted manually.
-* `vendor/`: Composer dependencies and autoloader.
-
-
-## Getting started
-
-This README is divided in different parts, please read the relevant section:
-
-1. [Developer guide](docs/developer-guide.md): Explains day-to-day
-   development practices when working on a NextEuropa subsite.
-2. [Starting a new project](docs/starting-a-new-project.md): This
-   section explains how to set up a brand new project on the NextEuropa
-   platform. These instructions need only to be followed once by the lead
-   developer at the start of the project.
-3. [Converting an existing project](docs/converting-an-existing-project.md):
-   If you already have a project that runs on NextEuropa and you want to start
-   using Continuous Integration, check out this section.
-4. [Merging upstream changes](docs/merging-upstream-changes.md): How to
-   merge the latest changes that have been made to the Subsite Starterkit in
-   your own project.
-5. [Contributing](docs/contributing.md): How to contribute bugfixes and
-   new features to the Subsite Starterkit.
-6. [Upgrading from 2.0.x to 3.0.x](docs/upgrading.md): How to upgrade to the
-   2.0.x swith to the Composer package.
-7. [Running scripts on composer and/or git hooks](docs/scripts.md): Add your
-   own scripts that will be called when a composer hook or git hook is
-   executed.
+Subtargets:
+-------------------------------------------------------------------------------
+ dist-composer-install
+ dist-copy-resources
+ dist-delete
+ dist-make
+ drush-create-files-dirs
+ drush-dl-rr
+ drush-enable-solr
+ drush-make-no-core
+ drush-rebuild-node-access
+ drush-regenerate-settings
+ drush-registry-rebuild
+ drush-site-install
+ drush-sql-create
+ drush-sql-drop
+ drush-sql-dump
+ drush-sql-import
+ platform-composer-install
+ platform-delete
+ platform-download
+ platform-link-resources
+ platform-make
+ platform-unpack
+ platform-update-htaccess
+ starterkit-build-docs
+ starterkit-copy-templates
+ starterkit-link-binary
+ starterkit-upgrade
+ subsite-composer-install
+ subsite-create-directories
+ subsite-database-download
+ subsite-database-import
+ subsite-database-wget
+ subsite-modules-devel-dl
+ subsite-modules-devel-en
+ subsite-modules-devel-mf
+ subsite-modules-install-en
+ subsite-setup-files-directory
+ subsite-site-backup
+ subsite-site-restore
+ test-behat-exec
+ test-behat-setup
+ test-behat-setup-link
+ test-phpcs-exec
+ test-phpcs-setup
+ test-phpcs-setup-prepush
+ test-qa-exec
+```
+</details>
