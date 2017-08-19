@@ -17,7 +17,8 @@ environemnts, deploy packages and test packages.</p>
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-	- [Generator](#generator)
+	- [Phing](#phing)
+	- [Build properties](#build-properties)
 - [Badge](#badge)
 - [Example Readmes](#example-readmes)
 - [Related Efforts](#related-efforts)
@@ -107,7 +108,7 @@ After your project is accepted you can register your fork locally or
 through packagist to use the same composer create-project command on 
 your fork that serves development only.
 
-<details><summary>To locally register your package the following code to your global config.json:</summary>
+<details><summary>To locally register your package the following code to your global config.json:</summary><p>
 
 ```json
 {
@@ -128,70 +129,17 @@ your fork that serves development only.
 }
 
 ```
-</details>
+</p></details>
 
-<details><summary>To globally register your development repository you can visit packagist.org.</summary>
+<details><summary>To globally register your development repository you can visit packagist.org.</summary><p>
 
 [https://packagist.org/packages/submit]
-</details>
-</details>
-
-## Build properties
-There are 3 different sets of build properties file that you can use. If you
-are unfamiliar with the purpose behind each different type of properties file
-please open the descriptions and read what they are designed for.
-
-<details><summary><b>build.properties.local</b>
-<!-- Keepit simple for now
-  <sup align="right">
-    <code>never commit</code>
-  </sup>
--->
-</summary>
-
-This file will contain configuration which is unique to your development
-environment. It is useful for specifying your database credentials and the
-username and password of the Drupal admin user so they can be used during the
-installation. Next to credentials you have many development settings that you
-can change to your liking. Because these settings are personal they should
-not be shared with the rest of the team. Make sure you never commit this file.
-</details>
-<details><summary><b>build.properties.dist</b><br>
-<!-- Keepit simple for now
-    <sup>
-      <code>never alter</code> 
-      <code>always commit</code>
-      </sup>
--->
-  </summary>
-
-This properties file contains the default settings and acts as a loading and
-documentation file for the system to work correctly. Any time you install the
-toolkit it will be copied to your repository root. Even though it is a template
-you should not remove this file, but commmit it to your repository. The reason
-for this is that it allows you to easily check the version of the toolkit and
-what new properties were introduced or deprecated.
-</details>
-<details><summary><b>build.properties</b><br>
-<!-- Keepit simple for now
-  <sup>
-    <code>always commit</code> 
-    <code>no credentials</code><br>
-    <code>no environments</code> 
-    <code>needed for builds</code>
-  </sup>
--->
-</summary>
-
-Always commit this file to your repository. This file is required for all
-NextEuropa projects. Without it your build system will fail with a build
-exception. It must contain a minimum set of properties, like project.id, etc.
-A list of required properties is still to be delivered. Aside from the
-required properties you can add any other properties that are project
-specific and do not contain any credentials.
+</p></details>
 </details>
 
-## Phing command list
+## Usage
+
+### Phing
 We keep the documentation light for this page because we are planning to
 move all documentation to the github wiki. For now please help yourself
 with the command listing target. You can get a list of all the available
@@ -271,4 +219,38 @@ Subtargets:
  test-phpcs-setup-prepush
  test-qa-exec
 ```
+</details>
+
+### Build properties
+
+There are 3 different sets of build properties file that you can use. If you
+are unfamiliar with the purpose behind each different type of properties file
+please open the descriptions and read what they are designed for.
+
+<details><summary><b>build.properties.local</b></summary>
+
+This file will contain configuration which is unique to your development
+environment. It is useful for specifying your database credentials and the
+username and password of the Drupal admin user so they can be used during the
+installation. Next to credentials you have many development settings that you
+can change to your liking. Because these settings are personal they should
+not be shared with the rest of the team. Make sure you never commit this file.
+</details>
+<details><summary><b>build.properties.dist</b><br></summary>
+
+This properties file contains the default settings and acts as a loading and
+documentation file for the system to work correctly. Any time you install the
+toolkit it will be copied to your repository root. Even though it is a template
+you should not remove this file, but commmit it to your repository. The reason
+for this is that it allows you to easily check the version of the toolkit and
+what new properties were introduced or deprecated.
+</details>
+<details><summary><b>build.properties</b><br></summary>
+
+Always commit this file to your repository. This file is required for all
+NextEuropa projects. Without it your build system will fail with a build
+exception. It must contain a minimum set of properties, like project.id, etc.
+A list of required properties is still to be delivered. Aside from the
+required properties you can add any other properties that are project
+specific and do not contain any credentials.
 </details>
