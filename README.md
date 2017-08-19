@@ -265,8 +265,13 @@ Subtargets:
 
 ## Maintainers
 
-* [Alex Verbruggen](https://github.com/verbruggenalex)
-* [Joao Santos](https://github.com/jonhy81)
+|Full name|Username|Department|Role|
+|:---|:---|:---|:---|
+|Alex Verbruggen|[verbruggenalex](https://github.com/verbruggenalex)|Quality Assurance|Maintainer, Ambassador for Devops & Platform|
+|Joao Santos|[jonhy81](https://github.com/jonhy81)|Quality Assurance|Maintainer, Ambassador for Subsites|
+|Open slot|?|Devops|Co-maintainer|
+|Open slot|?|Platform|Co-maintainer|
+|Open slot|?|Subsite|Co-maintainer|
 
 ## License
 
