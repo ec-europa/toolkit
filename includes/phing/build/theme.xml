@@ -41,8 +41,8 @@
 
     <!-- Creates symlinks for the atomium and europa themes. -->
     <target name="theme-europa-create-symlinks" >
-        <rel-sym link="${project.resources.dir.profiles}/${project.build.platform.profile}/themes" overwrite="true">
-            <fileset dir="${project.resources.profiles.common.themes.dir}" expandsymboliclinks="true">
+        <rel-sym link="${project.resources.dir.lib}/${project.build.platform.profile}/themes" overwrite="true">
+            <fileset dir="${project.resources.dir.profiles.common.themes}" expandsymboliclinks="true">
                 <include name="ec_europa" />
             </fileset>
         </rel-sym>
@@ -51,27 +51,27 @@
     <!-- Cloning and checking out the branch of the Atomium and EC Europa theme repositories. -->
     <target name="theme-europa-repo-clone">
         <!-- Deleting theme directories before cloning -->
-        <delete dir="${project.resources.profiles.common.themes.dir}/atomium" quiet="true"/>
-        <delete dir="${project.resources.profiles.common.themes.dir}/ec_europa" quiet="true"/>
+        <delete dir="${project.resources.dir.profiles.common.themes}/atomium" quiet="true"/>
+        <delete dir="${project.resources.dir.profiles.common.themes}/ec_europa" quiet="true"/>
 
         <!-- Cloning the Atomium theme repo into the common profiles directory -->
         <echo msg = "Cloning the Atomium theme repository."/>
         <gitclone
             repository="${platform.theme.atomium.repo.url}"
-            targetPath="${project.resources.profiles.common.themes.dir}/atomium"/>
+            targetPath="${project.resources.dir.profiles.common.themes}/atomium"/>
         <!-- Checking out the configured branch in the cloned repo -->
         <gitcheckout
-            repository="${project.resources.profiles.common.themes.dir}/atomium"
+            repository="${project.resources.dir.profiles.common.themes}/atomium"
             branchname="${platform.theme.atomium.repo.branch}"/>
 
         <!-- cloning the EC Europa theme repo into the common profiles directory -->
         <echo msg = "Cloning the EC Europa theme repository."/>
         <gitclone
             repository="${platform.theme.europa.repo.url}"
-            targetPath="${project.resources.profiles.common.themes.dir}/ec_europa"/>
+            targetPath="${project.resources.dir.profiles.common.themes}/ec_europa"/>
         <!-- Checking out the configured branch in the cloned repo -->
         <gitcheckout
-            repository="${project.resources.profiles.common.themes.dir}/ec_europa"
+            repository="${project.resources.dir.profiles.common.themes}/ec_europa"
             branchname="${platform.theme.europa.repo.branch}"/>
     </target>
 
@@ -80,19 +80,19 @@
         <exec
             command="npm install"
             passthru="true"
-            dir="${project.resources.profiles.common.themes.dir}/ec_europa"
+            dir="${project.resources.dir.profiles.common.themes}/ec_europa"
         />
         <exec
             command="npm run build"
             passthru="true"
-            dir="${project.resources.profiles.common.themes.dir}/ec_europa"
+            dir="${project.resources.dir.profiles.common.themes}/ec_europa"
         />
         <!-- Deleting *.map files (currently there is a bug in the ecl-builder) -->
         <delete>
-            <fileset dir="${project.resources.profiles.common.themes.dir}/ec_europa/assets/css">
+            <fileset dir="${project.resources.dir.profiles.common.themes}/ec_europa/assets/css">
                 <include name="*.map" />
             </fileset>
-            <fileset dir="${project.resources.profiles.common.themes.dir}/ec_europa/wysiwyg">
+            <fileset dir="${project.resources.dir.profiles.common.themes}/ec_europa/wysiwyg">
                 <include name="*.map" />
             </fileset>
         </delete>

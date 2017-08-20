@@ -94,6 +94,7 @@ project.resources.dir.lib = ${project.basedir}/lib
 project.resources.dir.features = ${project.resources.dir.lib}/features
 project.resources.dir.modules = ${project.resources.dir.lib}/modules
 project.resources.dir.profiles = ${project.resources.dir.lib}/profiles
+project.resources.dir.profiles.common.themes = ${project.resources.profiles.dir}/common/themes
 project.resources.dir.source = ${project.resources.dir.lib}/src
 project.resources.dir.tests = ${project.basedir}/tests
 project.resources.dir.themes = ${project.resources.dir.lib}/themes
