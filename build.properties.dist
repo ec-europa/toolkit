@@ -87,6 +87,17 @@ platform.package.tarball = deploy-package-${platform.package.reference}.tar.gz
 platform.package.token = # TODO: Github API limit.
 platform.package.version = 2.4
 
+platform.theme.default = ec_resp
+platform.theme.ecl.version = v0.10.0
+platform.theme.ec_europa.version = 0.0.3
+
+platform.theme.atomium.repo.url = https://github.com/ec-europa/atomium.git
+platform.theme.atomium.repo.branch = 7.x-1.x
+platform.theme.europa.repo.url = https://github.com/ec-europa/ec_europa.git
+platform.theme.europa.repo.branch = master
+
+
+
 # Local resources.
 # ----------------
 project.resources.dir = ${project.basedir}/resources

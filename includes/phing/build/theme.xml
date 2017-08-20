@@ -14,7 +14,7 @@
     <target name="theme-europa-download-extract">
         <!-- Download the Europa theme archive for a given branch. -->
         <exec
-            command="curl -L${project.curl.progress} https://github.com/ec-europa/ec_europa/releases/download/${ec_europa.version}/ec_europa-${ec_europa.version}.tar.gz > ${project.resources.dir.profiles}/common/themes/ec_europa.tar.gz"
+            command="curl -L${project.curl.progress} https://github.com/ec-europa/ec_europa/releases/download/${platform.theme.ec_europa.version}/ec_europa-${platform.theme.ec_europa.version}.tar.gz > ${project.resources.dir.profiles}/common/themes/ec_europa.tar.gz"
             passthru="true" />
         <!-- Extract the archive -->
         <mkdir dir="${project.resources.dir.profiles}/common/themes/ec_europa" />
@@ -29,7 +29,7 @@
     <target name="theme-europa-embed-ecl-assets">
         <!-- Download the ECL release package. -->
         <exec
-            command="curl -L${project.curl.progress} https://github.com/ec-europa/europa-component-library/releases/download/${ecl.version}/framework.tar.gz > ${project.resources.dir.profiles}/common/themes/ec_europa/framework.tar.gz"
+            command="curl -L${project.curl.progress} https://github.com/ec-europa/europa-component-library/releases/download/${platform.theme.ecl.version}/framework.tar.gz > ${project.resources.dir.profiles}/common/themes/ec_europa/framework.tar.gz"
             passthru="true" />
         <!-- Extract and embed the ECL artifacts into the Europa theme. -->
         <exec
