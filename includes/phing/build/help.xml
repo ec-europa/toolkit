@@ -195,7 +195,7 @@
 
     <!-- Download and unpack package. -->
     <target name="package-download-unpack" depends="package-download, package-unpack" hidden="true">
-        <echo msg="Package successfully unpacked." />
+        <echo msg="Package ${package-name} successfully unpacked." />
     </target>
 
     <!-- Download the package. -->
@@ -206,18 +206,17 @@
                 <echo msg="Package ${package-name} already downloaded."/>
             </then>
             <else>
-                <mkdir dir="${package-cache-location}" />
-                <echo msg="Starting package download."/>
-                <if>
-                    <http url="${package-download-location}/${package-name}"/>
-                    <then>
-                        <exec command="curl -L${project.curl.progress} -o ${package-cache-location}/${package-name} ${package-download-location}/${package-name}" passthru="true"/>
+                <trycatch>
+                    <try>
+                        <mkdir dir="${package-cache-location}" />
+                        <echo msg="Starting download for package ${package-name}."/>
+                        <exec command="curl -L${project.curl.progress} -o ${package-cache-location}/${package-name} ${package-download-location}/${package-name}" passthru="true" checkreturn="true"/>
                         <echo msg="Successfully downloaded package ${package-name}."/>
-                    </then>
-                    <else>
-                        <fail msg="Failed downloading package${package-name}"/>
-                    </else>
-                </if>
+                    </try>
+                    <catch>
+                        <fail msg="Failed downloading package ${package-name}."/>
+                    </catch>
+                </trycatch>
             </else>
         </if>
     </target>
@@ -237,7 +236,7 @@
         <if>
             <os family="unix"/>
             <then>
-                <echo msg='tar xzf "${package-cache-location}/${package-name}" -C "${package-extract-location}"'/>
+                <echo msg="Unpacking ${package-name} into ${package-extract-location}."/>
                 <exec command='tar xzf "${package-cache-location}/${package-name}" ${package-extract-options} -C "${package-extract-location}"' dir="${project.basedir}" passthru="true" checkreturn="true" />
             </then>
             <else>
