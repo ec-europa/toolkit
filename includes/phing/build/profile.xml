@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project default="help">
+
+    <!-- Import helper targets if called here directly. -->
+    <if>
+         <available file="help.xml" />
+         <then>
+             <import file="help.xml" />
+         </then>
+    </if>
+
+    <target
+        name="build-platform-dist"
+        description="Build a version of the platform intended to distribute as a release package."
+        depends="
+            project-build-set-dist,
+            project-profile-set,
+            project-delete-build,
+            project-drupal-make,
+            project-profile-copy,
+            project-profile-make,
+            platform-resources-copy,
+            project-platform-composer-install,
+            project-setup-files-directory" />
+
+    <target
+            name="build-platform-dist-all"
+            description="Build files of  platform intended for release package."
+            depends="
+            project-build-set-dist,
+            project-profile-set,
+            project-delete-build,
+            project-drupal-make,
+            platform-profiles-copy,
+            project-profile-make-all,
+            platform-resources-copy,
+            project-platform-composer-install" />
+
+    <target
+        name="build-platform-dev"
+        description="Build a local development version of the platform."
+        depends="
+            project-build-set-dev,
+            project-profile-set,
+            project-delete-build,
+            project-drupal-make,
+            platform-profiles-link,
+            project-profile-make,
+            platform-resources-link,
+            project-platform-composer-install-dev,
+            test-behat-setup,
+            test-behat-setup-balancer,
+            test-phpunit-setup,
+            test-phpcs-setup,
+            build-project-htaccess,
+            build-project-theme" />
+    
+    <!-- Make Drupal core. -->
+    <target name="project-drupal-make">
+        <echo msg="Make Drupal core." />
+        <drush command="make" assume="yes" bin="${project.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${dir-build}">
+            <param>${profile-make}</param>
+            <param>${dir-build}</param>
+            <option name="no-patch-txt"></option>
+        </drush>
+    </target>
+
+    <!-- Make the platform. -->
+    <target name="project-profile-make">
+        <echo msg="Make the platform." />
+        <drush command="make" assume="yes" bin="${project.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${build-folder}">
+            <param>${profile-make}</param>
+            <param>${dir-build}</param>
+            <option name="concurrency">10</option>
+            <option name="no-patch-txt"></option>
+            <option name="no-core"></option>
+            <option name="contrib-destination">profiles/${profile-name}</option>
+        </drush>
+    </target>
+
+    <!-- Make all of the profiles in order to build a multisite platform. -->
+    <target name="project-profile-make-all">
+        <foreach param="profile-name" absparam="dir-profile" target="project-profile-make">
+            <fileset dir="${project.resources.dir.profiles}">
+                <depth max="0" min="0" />
+                <exclude name="common" />
+                <type type="dir" />
+            </fileset>
+        </foreach>
+    </target>
+
+    <!-- Copy the profiles folder to build deployment package files. -->
+    <target name="platform-profiles-copy">
+        <!-- Delete the core profiles folder so it can be replaced with ours. -->
+        <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="true" quiet="true" />
+        <!-- Copy our profiles folder. -->
+        <copy todir="${dir-profiles}">
+            <fileset dir="${project.resources.dir.profiles}" expandsymboliclinks="true">
+                <exclude name="common/**" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Copy the profile folder to build deployment package files. -->
+    <target name="project-profile-copy">
+        <!-- Delete the core profile folder so it can be replaced with ours. -->
+        <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="false" quiet="true" />
+        <mkdir dir="${dir-profile}" />
+        <!-- Copy our profile folder. -->
+        <copy todir="${dir-profile}">
+            <fileset dir="${project.resources.dir.profile}" expandsymboliclinks="true">
+                <exclude name="profiles/common/**" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Symlink the profile folders for easy development. -->
+    <target name="platform-profiles-link">
+        <delete dir="${dir-profiles}" />
+        <symlink link="${dir-profiles}" target="${project.resources.dir.profiles}" />
+   </target>
+
+    <!-- Symlink various resources for easy development. -->
+    <target name="platform-resources-link">
+        <symlink link="${dir-build}/composer.json" target="${project.resources.composer.json}" />
+        <symlink link="${dir-build}/.composer.lock" target="${project.resources.composer.lock}" />
+        <symlink link="${dir-build}/.favicon.ico" target="${project.resources.favicon.ico}" />
+    </target>
+
+    <!-- Copy various resources for deploying on production. -->
+    <target name="platform-resources-copy">
+        <copy todir="${dir-build}">
+            <fileset dir="${project.resources.dir}">
+                <include name="composer.*"></include>
+                <include name="favicon.ico"></include>
+            </fileset>
+        </copy>
+    </target>
+
+</project>

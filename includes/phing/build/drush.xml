@@ -19,7 +19,7 @@
             <option name="account-name" value="${project.drupal.admin.username}" />
             <option name="account-pass" value="${project.drupal.admin.password}" />
             <option name="account-mail" value="${project.drupal.admin.email}" />
-            <param>${project.build.platform.profile}</param>
+            <param>${platform.package.profile}</param>
             <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
         </drush>
     </target>

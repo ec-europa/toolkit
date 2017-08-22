@@ -41,19 +41,11 @@
     <!-- Load version properties if available. -->
     <property file="${project.tmp.dir}/build.properties.version" logoutput="${logoutput}" />
 
-    <!-- Subsequently import the project specific build file." -->
-    <if>
-        <available file="build.project.xml" />
-        <then>
-            <import file="build.project.xml" />
-       </then>
-    </if>
-
    <!-- Check type of project and import it's build file.. -->
     <if>
         <available file="${project.resources.dir.profiles}" type="dir"/>
         <then>
-            <import file="${ssk.build}/platform.xml" />
+            <import file="${ssk.build}/profile.xml" />
         </then>
         <else>
             <import file="${ssk.build}/subsite.xml" />
@@ -166,7 +158,7 @@
         <if>
             <os family="unix" />
             <then>
-                <echo msg='rm -rf "${folder.to.delete}"' />
+                <echo msg="Deleting folder ${folder.to.delete}." />
                 <exec
                     command='rm -rf "${folder.to.delete}"'
                     dir="${project.basedir}"
@@ -175,6 +167,7 @@
                 />
             </then>
             <else>
+                <echo msg="Deleting folder ${folder.to.delete}." />
                 <delete dir="${folder.to.delete}" includeemptydirs="true" failonerror="false" />
             </else>
         </if>
@@ -291,6 +284,14 @@
         <isset property="env.COMPOSE_PROJECT_NAME" />
         <then>
             <property name="docker.project.id" value="${env.COMPOSE_PROJECT_NAME}" override="true" />
+        </then>
+    </if>
+
+    <!-- Subsequently import the project specific build file." -->
+    <if>
+        <available file="build.project.xml" />
+        <then>
+            <import file="build.project.xml" />
         </then>
     </if>
 

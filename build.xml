@@ -3,7 +3,7 @@
 <project name="starterkit" default="help">
 
     <!-- Set starterkit paths for easy loading. -->
-    <property file="${phing.dir.starterkit}/build.properties.starterkit" />
+    <property file="${phing.dir.starterkit}/build.properties.starterkit" logoutput="false" />
 
     <!-- Set include path for custom tasks. -->
     <includepath classpath="${ssk.root}/src/Phing" />
@@ -23,9 +23,6 @@
 
     <!-- Import helper targets and load the build properties first. -->
     <import file="${ssk.build}/help.xml" />
-
-    <!-- Subsequently import the project specific build file." -->
-    <import file="build.project.xml" optional="true" />
 
     <!-- Finish import with starterkit build xml files. -->
     <import>

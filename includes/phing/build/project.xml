@@ -57,6 +57,31 @@
         <rel-sym link="${server.docroot}" target="${project.build.platform.dir}" overwrite="true" />
     </target>
 
+    <target name="project-build-set-dist">
+        <echo msg="Setting build dir to ${project.build.dist.dir}." />
+        <property name="dir-build" value="${project.build.dist.dir}" override="true" />
+        <echo msg="Setting profile dir to to ${project.build.dist.dir.profile}." />
+        <property name="dir-profile" value="${project.build.dist.dir.profile}" override="true" />
+        <echo msg="Setting profiles dir to to ${project.build.dist.dir.profiles}." />
+        <property name="dir-profiles" value="${project.build.dist.dir.profiles}" override="true" />
+    </target>
+
+    <target name="project-build-set-dev">
+        <echo msg="Setting build dir to ${project.platform.dist.dir}." />
+        <property name="dir-build" value="${project.platform.dist.dir}" override="true" />
+        <echo msg="Setting profile dir to to ${project.platform.dist.dir.profile}." />
+        <property name="dir-profile" value="${project.platform.dist.dir.profile}" override="true" />
+        <echo msg="Setting profiles dir to to ${project.platform.dist.dir.profiles}." />
+        <property name="dir-profiles" value="${project.platform.dist.dir.profiles}" override="true" />
+    </target>
+
+    <target name="project-profile-set">
+        <echo msg="Setting profile name to ${platform.package.profile}." />
+        <property name="profile-name" value="${platform.package.profile}" override="true" />
+        <echo msg="Setting profile make to ${platform.package.profile.make}." />
+        <property name="profile-make" value="${platform.package.profile.make}" override="true" />
+    </target>
+
     <!-- Update .htaccess. -->
     <target name="build-project-htaccess" description="Update .htaccess file.">
         <if>
@@ -82,7 +107,20 @@
         <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${project.build.platform.dir}" />
         </phingcall>
-        <echo msg="Deleting folder." />
+    </target>
+
+    <!-- Delete the previous development build. -->
+    <target name="project-delete-build">
+        <echo msg="Delete previous build." />
+        <!--<phingcall target="unprotect-folder">-->
+            <!--&lt;!&ndash; TODO fix &ndash;&gt;-->
+            <!--<property name="folder.to.unprotect" value="${project.build.platform.dir.settings}" />-->
+            <!--<property name="folder.to.unprotect" value="${project.build.subsite.dir}" />-->
+        <!--</phingcall>-->
+        <echo msg="Unprotecting folder." />
+        <phingcall target="delete-folder">
+            <property name="folder.to.delete" value="${dir-build}" />
+        </phingcall>
     </target>
 
     <!-- Unpack the platform. -->
