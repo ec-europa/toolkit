@@ -13,7 +13,7 @@
             <filterchain>
                 <replacetokens begintoken="{{ " endtoken=" }}">
                     <token key="phpunit.base_url" value="${phpunit.base_url}" />
-                    <token key="project.build.platform.dir.profile" value="${project.build.platform.dir.profile}" />
+                    <token key="project.resources.dir.lib" value="${project.resources.dir.lib}" />
                     <token key="phpunit.dir" value="${phpunit.dir}" />
                 </replacetokens>
             </filterchain>
