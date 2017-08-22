@@ -167,17 +167,6 @@
         </composer>
     </target>
 
-    <!-- Install Composer dependencies without development dependencies. -->
-    <target name="project-test-composer-install">
-        <echo msg="Run 'composer install' in best folder." />
-        <composer command="install" composer="${project.bin.composer}">
-            <arg value="--working-dir=${project.resources.dir.tests}" />
-            <arg value="--no-interaction" />
-            <arg value="--no-suggest" />
-            <arg value="--ansi" />
-        </composer>
-    </target>
-
     <!-- Setup file directory -->
     <target name="project-setup-files-directory">
         <if>

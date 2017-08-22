@@ -11,6 +11,7 @@
         depends="
             test-behat-setup,
             test-behat-setup-balancer,
+            test-composer-install
             test-behat-exec" />
 
 
@@ -77,15 +78,26 @@
         <rel-sym link="${behat-test-location}/tests" target="../tests" />
         <rel-sym link="${behat.bin}" target="${behat-test-binary}" overwrite="true"/>
     </target>
-
     <!-- Set up Behat balancer. -->
     <target name="test-behat-setup-balancer">
-        <behat:balancer
+    <behat:balancer
             containers="${behat.load_balancer.containers}"
+
             root="${behat.load_balancer.root}"
             destination="${behat.load_balancer.destination}"
             import="${behat.load_balancer.import}"
         />
+    </target>
+
+    <!-- Install Composer dependencies without development dependencies. -->
+    <target name="test-composer-install">
+        <echo msg="Run 'composer install' in best folder." />
+        <composer command="install" composer="${project.bin.composer}">
+            <arg value="--working-dir=${project.resources.dir.tests}" />
+            <arg value="--no-interaction" />
+            <arg value="--no-suggest" />
+            <arg value="--ansi" />
+        </composer>
     </target>
 
 </project>
