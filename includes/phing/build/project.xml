@@ -220,7 +220,7 @@
     <!-- Enable required modules after installation of the profile. -->
     <target name="project-modules-install-en">
         <phingcall target="drush-enable-modules">
-            <property name="project.drupal.modules" value="${subsite.install.modules}" />
+            <property name="project.drupal.modules" value="${project.install.modules}" />
         </phingcall>
     </target>
 
