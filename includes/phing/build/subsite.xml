@@ -90,7 +90,7 @@
         </if>
         <drushmf
             makeFile="${project.tmp.devel.make}"
-            coreVersion="${project.build.platform.core}"
+            coreVersion="${project.build.core}"
             projects="${devel.mdls.dl}"
             defaultProjectDir="${devel.mdls.dir}"
         />
@@ -99,7 +99,7 @@
     <!-- Build release package. -->
     <target name="build-subsite-dist-package" description="Build subsite source code release package." depends="build-subsite-dist">
         <mkdir dir="${project.release.path}" />
-        <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${project.build.dist.name}" />
+        <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${project.build.dist}" />
     </target>
 
    <!-- Install Composer dist dependencies for the subsite. -->

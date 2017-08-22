@@ -204,7 +204,7 @@
         </if>
         <drushmf
             makeFile="${project.tmp.devel.make}"
-            coreVersion="${project.build.platform.core}"
+            coreVersion="${project.build.core}"
             projects="${devel.mdls.dl}"
             defaultProjectDir="${devel.mdls.dir}" />
     </target>
@@ -517,7 +517,7 @@
     <target name="project-database-download" >
         <echo msg="Download the production database." />
         <!--Strips gz suffix. -->
-        <php expression="substr('${project.subsite.db.filename}', 0, -3)" returnProperty="gunzipped.filename" level="debug"/>
+        <php expression="substr('${project.db.filename}', 0, -3)" returnProperty="gunzipped.filename" level="debug"/>
         <if>
             <not>
                 <!-- Check if we have a previously downloaded dump available. -->
@@ -526,7 +526,7 @@
             <then>
                 <!-- If not available, download and unzip the file. -->
                 <phingcall target="project-database-wget" />
-                <exec command="gunzip tmp/${project.subsite.db.filename}" checkreturn="true" passthru="false" logoutput="true" />
+                <exec command="gunzip tmp/${project.db.filename}" checkreturn="true" passthru="false" logoutput="true" />
             </then>
             <else>
                 <!-- Inform user if file was already downloaded. -->
@@ -541,29 +541,29 @@
         <!--Generate .htaccess credential property if needed, empty if not. -->
         <if>
             <or>
-                <equals arg1="${project.subsite.db.url.htaccess.username}" arg2="" />
-                <equals arg1="${project.subsite.db.url.htaccess.password}" arg2="" />
+                <equals arg1="${project.db.url.htaccess.username}" arg2="" />
+                <equals arg1="${project.db.url.htaccess.password}" arg2="" />
             </or>
             <then>
                 <!-- If username or password is not provided, empty the credential string. -->
-                <property name="project.subsite.db.url.credentials"  value="" override="true" />
+                <property name="project.db.url.credentials"  value="" override="true" />
             </then>
             <else>
                 <!-- If username or password is provided, build the credential string. -->
-                <property name="project.subsite.db.url.credentials"  value="${project.subsite.db.url.htaccess.username}:${project.subsite.db.url.htaccess.password}@" override="true"  />
+                <property name="project.db.url.credentials"  value="${project.db.url.htaccess.username}:${project.db.url.htaccess.password}@" override="true"  />
             </else>
         </if>
         <!-- Attempt to download the database dump. -->
-        <exec command="wget https://${project.subsite.db.url.credentials}${project.subsite.db.url}${project.subsite.db.filename}" dir="tmp" checkreturn="false" passthru="false" outputProperty="project.subsite.db.download" />
+        <exec command="wget https://${project.db.url.credentials}${project.db.url}${project.db.filename}" dir="tmp" checkreturn="false" passthru="false" outputProperty="project.db.download" />
         <if>
             <!-- Upon success inform the user. -->
-            <contains string="${project.subsite.db.download}" substring="200" />
+            <contains string="${project.db.download}" substring="200" />
             <then>
                 <echo msg="Database successfully downloaded." />
             </then>
             <!-- When denied access, prompt the user for credentials and retry the download. -->
             <elseif>
-                <contains string="${project.subsite.db.download}" substring="401" />
+                <contains string="${project.db.download}" substring="401" />
                 <then>
                     <phingcall target="prompt-for-credentials-and-retry" />
                 </then>
@@ -571,7 +571,7 @@
             <!-- Otherwise we fail the build and display the download message. -->
             <else>
                 <echo msg="Failed to download the database dump. Result of wget:" level="error" />
-                <echo msg="${project.subsite.db.download}" level="error" />
+                <echo msg="${project.db.download}" level="error" />
                 <fail />
             </else>
         </if>
@@ -579,8 +579,8 @@
 
     <!-- Simple prompt for user credentials and recurse into project-database-wget. -->
     <target name="prompt-for-credentials-and-retry" hidden="true">
-        <input propertyName="project.subsite.db.url.htaccess.username" message="Please enter your username." />
-        <input hidden="true" propertyName="project.subsite.db.url.htaccess.password" message="Please enter your password." />
+        <input propertyName="project.db.url.htaccess.username" message="Please enter your username." />
+        <input hidden="true" propertyName="project.db.url.htaccess.password" message="Please enter your password." />
         <phingcall target="project-database-wget" />
     </target>
 
