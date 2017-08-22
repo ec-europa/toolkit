@@ -134,7 +134,7 @@ phpcs.prepush.destination =
 
 qa.check.ssk =
 
-server.docroot =
+project.docroot =
 
 drush.verbose =
 

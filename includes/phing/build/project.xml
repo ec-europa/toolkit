@@ -54,7 +54,7 @@
     <target
         name="build-project-docroot"
         description="Create symlink from build to docroot.">
-        <rel-sym link="${server.docroot}" target="${project.build.platform.dir}" overwrite="true" />
+        <rel-sym link="${project.docroot}" target="${project.build.platform.dir}" overwrite="true" />
     </target>
 
     <target name="project-build-set-dist">

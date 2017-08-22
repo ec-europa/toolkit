@@ -24,7 +24,7 @@ project.drupal.site.name = all
 # Platform configuration
 # ----------------------
 
-project.build.platform.profile = multisite_drupal_standard
+platform.package.profile = multisite_drupal_standard
 platform.package.version = 2.3.61
 
 
