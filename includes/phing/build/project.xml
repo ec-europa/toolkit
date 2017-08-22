@@ -67,12 +67,12 @@
     </target>
 
     <target name="project-build-set-dev">
-        <echo msg="Setting build dir to ${project.platform.dist.dir}." />
-        <property name="dir-build" value="${project.platform.dist.dir}" override="true" />
-        <echo msg="Setting profile dir to to ${project.platform.dist.dir.profile}." />
-        <property name="dir-profile" value="${project.platform.dist.dir.profile}" override="true" />
-        <echo msg="Setting profiles dir to to ${project.platform.dist.dir.profiles}." />
-        <property name="dir-profiles" value="${project.platform.dist.dir.profiles}" override="true" />
+        <echo msg="Setting build dir to ${project.build.platform.dir}." />
+        <property name="dir-build" value="${project.build.platform.dir}" override="true" />
+        <echo msg="Setting profile dir to to ${project.build.platform.dir.profile}." />
+        <property name="dir-profile" value="${project.build.platform.dir.profile}" override="true" />
+        <echo msg="Setting profiles dir to to ${project.build.platform.dir.profiles}." />
+        <property name="dir-profiles" value="${project.build.platform.dir.profiles}" override="true" />
     </target>
 
     <target name="project-profile-set">
