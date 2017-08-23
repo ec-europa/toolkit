@@ -7,6 +7,8 @@ services:
       DOCUMENT_ROOT: ${WORKSPACE}/platform
       COMPOSER_CACHE_DIR: /var/cache/composer
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      HTTPS_PROXY: ${HTTP_PROXY}
+      HTTP_PROXY: ${HTTP_PROXY}
     ports:
       - 8081:8080
     volumes:
@@ -22,6 +24,8 @@ services:
       - selenium:selenium
     expose:
       - '8080'
+    volumes:
+      - db-data-volume:/var/lib/mysql
   mysql:
     image: mysql:5.6
     environment:
@@ -44,5 +48,8 @@ services:
     # - http://127.0.0.1:8983/solr/d7_apachesolr
     image: fpfis/solr5
   selenium:
-    image: selenium/standalone-chrome
+    image: selenium/standalone-firefox
     build: ./docker-sel
+
+volumes:
+  db-data-volume:
