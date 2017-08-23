@@ -12,11 +12,11 @@
     <property name="logoutput" value="true" />
     <property name="level" value="info" />
 
-    <propval
-        source="build.properties"
-        required="${ssk.phing.props}/build.properties.required"
-        forbidden="${ssk.phing.props}/build.properties.forbidden"
-    />
+    <!--<propval-->
+        <!--source="build.properties"-->
+        <!--required="${ssk.phing.props}/build.properties.required"-->
+        <!--forbidden="${ssk.phing.props}/build.properties.forbidden"-->
+    <!--/>-->
 
     <!-- Load build properties. -->
     <if>

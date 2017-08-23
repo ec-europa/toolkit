@@ -123,7 +123,7 @@ class PropertiesValidateTask extends \Task
             foreach ($missing_props as $missing_prop) {
               $this->log("=> " . $missing_prop, Project::MSG_WARN);
             }
-            $message = "Properties missing from" . $this->source->getName() . ".";
+            $message = "Properties missing from " . $this->source->getName() . ".";
             $this->failOnErrorAction(null, $message, Project::MSG_ERR);
           }
         }
@@ -135,7 +135,7 @@ class PropertiesValidateTask extends \Task
             foreach ($forbidden_props as $forbidden_prop) {
               $this->log("=> " . key($missing_prop), Project::MSG_WARN);
             }
-            $message = "Forbidden properties found in" . $this->source->getName() . ".";
+            $message = "Forbidden properties found in " . $this->source->getName() . ".";
             $this->failOnErrorAction(null, $message, Project::MSG_ERR);
           }
         }
