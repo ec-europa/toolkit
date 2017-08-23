@@ -3,7 +3,9 @@
 
 ssk.root = ${phing.dir.starterkit}
 ssk.includes = ${ssk.root}/includes
-ssk.build = ${ssk.includes}/phing/build
+ssk.phing = ${ssk.includes}/phing
+ssk.phing.build = ${ssk.phing}/build
+ssk.phing.props = ${ssk.phing}/props
 ssk.templates = ${ssk.includes}/templates
 ssk.composer = ${ssk.includes}/composer
 ssk.vendor = ${ssk.root}/vendor

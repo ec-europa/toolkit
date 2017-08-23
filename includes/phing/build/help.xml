@@ -12,6 +12,12 @@
     <property name="logoutput" value="true" />
     <property name="level" value="info" />
 
+    <propval
+        source="build.properties"
+        required="${ssk.phing.props}/build.properties.required"
+        forbidden="${ssk.phing.props}/build.properties.forbidden"
+    />
+
     <!-- Load build properties. -->
     <if>
         <available file="build.properties.local" type="file" />
@@ -45,10 +51,10 @@
     <if>
         <available file="${project.resources.dir.profiles}" type="dir"/>
         <then>
-            <import file="${ssk.build}/profile.xml" />
+            <import file="${ssk.phing.build}/profile.xml" />
         </then>
         <else>
-            <import file="${ssk.build}/subsite.xml" />
+            <import file="${ssk.phing.build}/subsite.xml" />
         </else>
     </if>
 
@@ -240,28 +246,28 @@
 
    <!-- Create temp dirs. -->
     <if>
-        <available file="${share.path.global}" type="dir"/>
+        <available file="${project.share.path.global}" type="dir"/>
         <then>
-            <echo msg="Global share directory ${share.path.global} available." level="${level}" />
+            <echo msg="Global share directory ${project.share.path.global} available." level="${level}" />
         </then>
         <else>
             <trycatch>
                 <try>
                     <exec
-                        command="mkdir -p ${share.path.global}"
+                        command="mkdir -p ${project.share.path.global}"
                         checkreturn="true" />
                     <echoproperties
-                        prefix="share.path."
+                        prefix="project.share.path."
                         destfile="${project.tmp.dir}/build.properties.share" />
                 </try>
                 <catch>
                     <echo msg="Unable to create global share directory." level="warning"/>
                     <echo msg="Switching over to local tmp dir for caching." />
                     <property
-                        name="share.path.global"
-                        value="${project.tmp.dir}/${share.name}"
+                        name="project.share.path.global"
+                        value="${project.tmp.dir}/${project.share.name}"
                         override="true" />
-                    <mkdir dir="${share.path.global}" />
+                    <mkdir dir="${project.share.path.global}" />
                 </catch>
             </trycatch>
         </else>
@@ -294,6 +300,13 @@
             <import file="build.project.xml" />
         </then>
     </if>
+
+    <!-- Macke sure project id for DB is valid with underscore instead of hyphen. -->
+    <php function="str_replace" returnProperty="project.drupal.db.name">
+        <param value="-"/>
+        <param value="_"/>
+        <param value="${project.drupal.db.name}"/>
+    </php>
 
     <!-- Disable output on consecutive phing calls. -->
     <property name="logoutput" value="false" override="true" />

@@ -16,9 +16,9 @@
         <drush command="site-install" assume="yes" root="${project.build.platform.dir}" bin="${project.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${project.drupal.db.url}" />
             <option name="site-name" value="'${subsite.name}'" />
-            <option name="account-name" value="${project.drupal.admin.username}" />
-            <option name="account-pass" value="${project.drupal.admin.password}" />
-            <option name="account-mail" value="${project.drupal.admin.email}" />
+            <option name="account-name" value="${project.admin.username}" />
+            <option name="account-pass" value="${project.admin.password}" />
+            <option name="account-mail" value="${project.admin.email}" />
             <param>${platform.package.profile}</param>
             <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
         </drush>
@@ -91,14 +91,14 @@
     <!-- Activate solr if needed. -->
     <target name="drush-enable-solr">
         <if>
-            <equals arg1="${project.drupal.solr.activate}" arg2="1" />
+            <equals arg1="${project.solr.enablee}" arg2="1" />
             <then>
                 <echo message="Enable apachesolr for ${project.drupal.db.name}." />
                 <phingcall target="drush-enable-modules">
                     <property name="project.drupal.modules" value="apachesolr" />
                 </phingcall>
                 <drush command="solr-set-env-url" assume="yes" root="${project.build.platform.dir}" bin="${project.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                    <param>${project.drupal.solr.env.url}</param>
+                    <param>${project.solr.url}</param>
                 </drush>
             </then>
         </if>
@@ -118,6 +118,7 @@
 
     <!-- Regenerate the settings file with database credentials and development variables. -->
     <target name="drush-regenerate-settings">
+
         <copy file="${ssk.root}/includes/drush/generate-settings.php" tofile="tmp/generate-settings.php" overwrite="true">
             <filterchain>
                 <replacetokens begintoken="%%" endtoken="%%">

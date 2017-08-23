@@ -59,21 +59,27 @@ docker.project.id = environment
 # Drupal configuration. (configurable except url)
 # ---------------------
 project.drupal.db.type = mysql
-project.drupal.db.name = db_name
+project.drupal.db.name = ${project.id}
 project.drupal.db.user = root
 project.drupal.db.password =
 project.drupal.db.host = mysql
 project.drupal.db.port = 3306
 project.drupal.db.url = ${project.drupal.db.type}://${project.drupal.db.user}:${project.drupal.db.password}@${project.drupal.db.host}:${project.drupal.db.port}/${project.drupal.db.name}
 
-# Solr env url. Either d7_apachesolr or d7_search_api. (configurable)
-project.drupal.solr.activate = 1
-project.drupal.solr.env.url = http://solr:8983/solr/d7_apachesolr
+# Solr configuration.
+# -------------------
+project.solr.enable = 1
+project.solr.host = solr
+project.solr.port = 8983
+project.solr.type = d7_apachesolr
+project.solr.scheme = http://
+project.solr.url = ${project.solr.schem}://${project.solr.host}:${project.solr.port}/solr/${project.solr.type}
 
-# Admin user (configurable)
-project.drupal.admin.username = admin
-project.drupal.admin.password = pass
-project.drupal.admin.email = ${project.drupal.admin.username}@example.com
+# Admin configuration.
+# --------------------
+project.admin.username = admin
+project.admin.password = pass
+project.admin.email = ${project.admin.username}@example.com
 
 # Platform configuration (semi-configurable)
 # ----------------------
@@ -85,6 +91,8 @@ platform.package.repository = ec-europa/platform-dev
 platform.package.tarball = deploy-package-${platform.package.reference}.tar.gz
 platform.package.token = # TODO: Github API limit.
 platform.package.version = 2.4
+platform.package.core = 7.x
+
 
 platform.theme.default = ec_resp
 platform.theme.ecl.version = v0.10.0
@@ -118,7 +126,6 @@ project.resources.site.make = ${project.resources.dir}/site.make
 project.build.copy.path.haltonerror = true
 project.build.dist = dist
 project.build.dev = build
-project.build.core = 7.x
 project.build.site = ${project.id}
 
 # Platform build resources. (hidden?)
@@ -171,26 +178,26 @@ project.rebuild.backup.files = ${project.build.settings.dir}/settings.php
 
 # Shared paths (semi-configurable)
 # ------------
-share.path = /tmp
-share.name = share
-share.path.global = ${share.path}/${share.name}
+project.share.path = /tmp
+project.share.name = share
+project.share.path.global = ${project.share.path}/${project.share.name}
 
-share.path.platform = ${share.path.global}/platform
-share.path.subsites = ${share.path.global}/subsites
-share.path.composer = ${share.path.global}/composer
+project.share.path.platform = ${project.share.path.global}/platform
+project.share.path.subsites = ${project.share.path.global}/subsites
+project.share.path.composer = ${project.share.path.global}/composer
 
-share.path.platform.packages = ${share.path.platform}/packages
-share.path.platform.packages.deploy = ${share.path.platform.packages}/deploy
-share.path.platform.packages.test = ${share.path.platform.packages}/test
-share.path.platform.packages.database = ${share.path.platform.packages}/database
+project.share.path.platform.packages = ${project.share.path.platform}/packages
+project.share.path.platform.packages.deploy = ${project.share.path.platform.packages}/deploy
+project.share.path.platform.packages.test = ${project.share.path.platform.packages}/test
+project.share.path.platform.packages.database = ${project.share.path.platform.packages}/database
 
-share.path.subsites.packages = ${share.path.subsites}/packages
-share.path.subsites.packages.deploy = ${share.path.subsites.packages}/deploy
-share.path.subsites.packages.test = ${share.path.subsites.packages}/test
-share.path.subsites.packages.database = ${share.path.subsites.packages}/database
+project.share.path.subsites.packages = ${project.share.path.subsites}/packages
+project.share.path.subsites.packages.deploy = ${project.share.path.subsites.packages}/deploy
+project.share.path.subsites.packages.test = ${project.share.path.subsites.packages}/test
+project.share.path.subsites.packages.database = ${project.share.path.subsites.packages}/database
 
-share.path.composer.packages = ${share.path.composer}/packages
-share.path.composer.packages.shared = ${share.path.composer.packages}/shared
+project.share.path.composer.packages = ${project.share.path.composer}/packages
+project.share.path.composer.packages.shared = ${project.share.path.composer.packages}/shared
 
 # Composer hook phingcall target lists. Space separated only. (configurable)
 # -----------------------------------------------------------
@@ -199,20 +206,20 @@ composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =
 
-# Flickr configuration. (configurable)
+# Flickr configuration.
 # ---------------------
 project.flickr.key = foobar
 project.flickr.secret = bas
 
-# Integration configuration (configurable)
-# -------------------------
+# Integration configuration.
+# --------------------------
 integration.server.port = 8888
 
-# Varnish configuration. (configurable)
+# Varnish configuration.
 # ----------------------
 varnish.server.port = 8888
 
-# Drush Context configuration. (hidden?)
+# Drush Context configuration.
 # ----------------------------
 drush.db.dump = ${project.build.platform.dir}/dump.sql
 

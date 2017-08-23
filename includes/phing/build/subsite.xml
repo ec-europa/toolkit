@@ -90,7 +90,7 @@
         </if>
         <drushmf
             makeFile="${project.tmp.devel.make}"
-            coreVersion="${project.build.core}"
+            coreVersion="${project.package.core}"
             projects="${devel.mdls.dl}"
             defaultProjectDir="${devel.mdls.dir}"
         />

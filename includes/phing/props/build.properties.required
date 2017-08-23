@@ -6,30 +6,27 @@
 # custom value before developers can push to github.
 # ----------------------------------------------------------
 
-# Subsite configuration
-# ---------------------
-
-subsite.id = myproject
-subsite.name = My Project
-subsite.install.modules = myproject_core
-subsite.url.production =
-
-
-# Drupal configuration
-# --------------------
-
-project.drupal.site.name = all
-
-
-# Platform configuration
+# Subsite configuration.
 # ----------------------
+project.id = myproject
+project.install.modules = myproject_core
+project.name = My Project
+project.url.production =
 
+# Solr configuration.
+# -------------------
+project.solr.type = d7_apachesolr
+
+# Admin configuration.
+# --------------------
+project.admin.email = ${project.admin.username}@example.com
+
+# Platform configuration.
+# -----------------------
 platform.package.profile = multisite_drupal_standard
-platform.package.version = 2.3.61
+platform.package.version = 2.3
 
-
-# PHP CodeSniffer configuration
-# -----------------------------
-
-phpcs.standards = Subsite;${project.basedir}/phpcs-ruleset.xml
-
+# Rebuild configuration.
+# ----------------------
+project.rebuild.backup.folders = ${project.build.files.dir};${project.build.tmp.dir}
+project.rebuild.backup.files = ${project.build.settings.dir}/settings.php

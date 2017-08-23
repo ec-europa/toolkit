@@ -13,20 +13,21 @@
     <taskdef name="replacedby" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
     <taskdef name="drushmf" classname="\NextEuropa\Phing\DrushMakeFileTask" />
     <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
+    <taskdef name="propval" classname="\NextEuropa\Phing\PropertiesValidateTask" />
     
     <!-- Import xml files for phing. -->
     <import file="${ssk.vendor}/drupal/phingdrushtask/import.xml"/>
     <import file="${ssk.vendor}/drupol/phingbehattask/import.xml"/>
 
     <!-- Import deprecated targets first to allow projects to override them. -->
-    <import file="${ssk.build}/deprecated.xml" />
+    <import file="${ssk.phing.build}/deprecated.xml" />
 
     <!-- Import helper targets and load the build properties first. -->
-    <import file="${ssk.build}/help.xml" />
+    <import file="${ssk.phing.build}/help.xml" />
 
     <!-- Finish import with starterkit build xml files. -->
     <import>
-        <fileset dir="${ssk.build}" >
+        <fileset dir="${ssk.phing.build}" >
             <patternset>
                 <include name="docker.xml"/>
                 <include name="drush.xml"/>

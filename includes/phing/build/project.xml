@@ -127,7 +127,7 @@
     <target name="project-platform-package-unpack">
         <phingcall target="package-download-unpack">
             <property name="package-name" value="platform-dev-${platform.package.version.current}.tar.gz" />
-            <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
+            <property name="package-cache-location" value="${project.share.path.platform.packages.deploy}" />
             <property name="package-download-location" value="https://platform-ci.ne-dev.eu/releases" />
             <property name="package-extract-location" value="${project.build.platform.dir}" />
         </phingcall>
@@ -193,7 +193,7 @@
         </if>
         <drushmf
             makeFile="${project.tmp.devel.make}"
-            coreVersion="${project.build.core}"
+            coreVersion="${project.package.core}"
             projects="${devel.mdls.dl}"
             defaultProjectDir="${devel.mdls.dir}" />
     </target>
@@ -235,7 +235,7 @@
         <if>
             <and>
                 <equals arg1="${platform.package.database}" arg2="1" />
-                <available file="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" type="file" />
+                <available file="${project.share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" type="file" />
             </and>
             <then>
                 <phingcall target="drush-regenerate-settings" />
@@ -247,7 +247,7 @@
                     <then>
                         <phingcall target="drush-sql-create" />
                         <phingcall target="drush-sql-import">
-                            <property name="database-file" value="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" />
+                            <property name="database-file" value="${project.share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" />
                         </phingcall>
                     </then>
                 </if> 
@@ -260,7 +260,7 @@
                     <equals arg1="${platform.package.database}" arg2="1" />
                     <then>
                         <phingcall target="drush-sql-dump">
-                            <property name="database-file" value="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" />
+                            <property name="database-file" value="${project.share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" />
                         </phingcall>
                     </then>
                 </if>
