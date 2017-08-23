@@ -201,7 +201,7 @@ project.share.path.composer.packages.shared = ${project.share.path.composer.pack
 
 # Composer hook phingcall target lists. Space separated only. (configurable)
 # -----------------------------------------------------------
-composer.hook.post.install = starterkit-init
+composer.hook.post.install = starterkit-init docker-compose-up
 composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =
