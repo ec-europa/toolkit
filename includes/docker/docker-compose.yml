@@ -24,8 +24,6 @@ services:
       - selenium:selenium
     expose:
       - '8080'
-    volumes:
-      - db-data-volume:/var/lib/mysql
   mysql:
     image: mysql:5.6
     environment:
@@ -50,6 +48,3 @@ services:
   selenium:
     image: selenium/standalone-firefox
     build: ./docker-sel
-
-volumes:
-  db-data-volume:
