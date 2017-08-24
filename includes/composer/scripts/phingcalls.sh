@@ -10,6 +10,7 @@ if [ -f $PHING ] && [ -x $PHING ] && [ -n "$1" ] ; then
   PHINGCALLS=$(\
     $PHING composer-echo-hook-phingcalls \
     -Dproject.basedir=$PROJECT \
+    -Dproject.build.haltonerror.props.validate=false \
     -logger phing.listener.AnsiColorLogger \
     -find | grep -o "$HOOK=.*" | cut -f2- -d=\
   )
@@ -19,6 +20,7 @@ if [ -f $PHING ] && [ -x $PHING ] && [ -n "$1" ] ; then
     $PHING \
       $PHINGCALLS \
       -Dproject.basedir=$PROJECT \
+      -Dproject.build.haltonerror.props.validate=false \
       -logger phing.listener.AnsiColorLogger \
       -find
   fi
