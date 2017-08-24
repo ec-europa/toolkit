@@ -36,7 +36,7 @@ class PropertiesValidateTask extends \Task
    * thrown.
    * @var boolean
    */
-  private $failonerror = true;
+  private $haltonerror = true;
 
   /**
    * Sets the input file.
@@ -85,12 +85,12 @@ class PropertiesValidateTask extends \Task
    * If true, the task will fail if an error occurs writing the properties
    * file, otherwise errors are just logged.
    *
-   * @param  failonerror <tt>true</tt> if IO exceptions are reported as build
+   * @param  haltonerror <tt>true</tt> if IO exceptions are reported as build
    *      exceptions, or <tt>false</tt> if IO exceptions are ignored.
    */
-  public function setFailOnError($failonerror)
+  public function setHaltOnError($haltonerror)
   {
-    $this->failonerror = $failonerror;
+    $this->haltonerror = $haltonerror;
   }
 
   /**
@@ -175,7 +175,7 @@ class PropertiesValidateTask extends \Task
    */
   private function failOnErrorAction(Exception $exception = null, $message = '', $level = Project::MSG_INFO)
   {
-    if ($this->failonerror) {
+    if ($this->haltonerror) {
       throw new BuildException(
         $exception !== null ? $exception : $message,
         $this->getLocation()

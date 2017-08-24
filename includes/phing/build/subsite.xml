@@ -16,7 +16,7 @@
         description="Build local version of subsite without install."
         depends="
             project-platform-version-set,
-            project-build-set-dist,
+            project-build-set-dev,
             project-profile-set,
             subsite-site-backup,
             build-project-platform,
@@ -35,6 +35,7 @@
         name="build-subsite-dist"
         description="Build files of subsite for release package."
         depends="
+            project-build-set-dist,
             subsite-dist-delete,
             subsite-dist-make,
             subsite-dist-resources-copy,
@@ -75,13 +76,13 @@
         <mkdir dir="${project.build.subsite.dir.modules}" />
         <mkdir dir="${project.build.subsite.dir.themes}" />
         <mkdir dir="${project.build.subsite.dir.libraries}" />
-        <rel-sym link="${project.build.subsite.dir.modules.custom}" target="${project.resources.dir.modules}" />
-        <rel-sym link="${project.build.subsite.dir.modules.features}" target="${project.resources.dir.features}" />
+        <relsym link="${project.build.subsite.dir.modules.custom}" target="${project.resources.dir.modules}" />
+        <relsym link="${project.build.subsite.dir.modules.features}" target="${project.resources.dir.features}" />
         <delete dir="${project.build.subsite.dir.themes}" includeemptydirs="true" failonerror="false" />
-        <rel-sym link="${project.build.subsite.dir.themes}" target="${project.resources.dir.themes}" />
-        <rel-sym link="${project.build.subsite.dir.source}" target="${project.resources.dir.source}" />
-        <rel-sym link="${project.build.subsite.composer.json}" target="${project.resources.composer.json}" />
-        <rel-sym link="${project.build.subsite.composer.lock}" target="${project.resources.composer.lock}" />
+        <relsym link="${project.build.subsite.dir.themes}" target="${project.resources.dir.themes}" />
+        <relsym link="${project.build.subsite.dir.source}" target="${project.resources.dir.source}" />
+        <relsym link="${project.build.subsite.composer.json}" target="${project.resources.composer.json}" />
+        <relsym link="${project.build.subsite.composer.lock}" target="${project.resources.composer.lock}" />
     </target>
 
     <!-- Generate the makefile used to download development modules. -->
@@ -128,25 +129,25 @@
         <phingcall target="copy-folder">
             <property name="copy.source.path" value="${project.resources.dir.modules}" />
             <property name="copy.destination.path" value="${project.build.dist.dir.modules.custom}" />
-            <property name="project.build.copy.path.haltonerror" value="false" override="true"/>
+            <property name="project.build.haltonerror.dir.copy" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom features. -->
         <phingcall target="copy-folder">
             <property name="copy.source.path" value="${project.resources.dir.features}" />
             <property name="copy.destination.path" value="${project.build.dist.dir.modules.features}" />
-            <property name="project.build.copy.path.haltonerror" value="false" override="true"/>
+            <property name="project.build.haltonerror.dir.copy" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom themes. -->
         <phingcall target="copy-folder">
             <property name="copy.source.path" value="${project.resources.dir.themes}" />
             <property name="copy.destination.path" value="${project.build.dist.dir.themes}" />
-            <property name="project.build.copy.path.haltonerror" value="false" override="true"/>
+            <property name="project.build.haltonerror.dir.copy" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom PSR-4 code. -->
         <phingcall target="copy-folder">
             <property name="copy.source.path" value="${project.resources.dir.source}" />
             <property name="copy.destination.path" value="${project.build.dist.dir.source}" />
-            <property name="project.build.copy.path.haltonerror" value="false" override="true"/>
+            <property name="project.build.haltonerror.dir.copy" value="false" override="true"/>
         </phingcall>
         <!-- Copy composer configuration. -->
         <copy todir="${project.build.dist.dir}" file="${project.resources.composer.json}" />

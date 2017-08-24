@@ -9,11 +9,11 @@
     <includepath classpath="${ssk.root}/src/Phing" />
 
     <!-- Custom task definititons. -->
-    <taskdef name="phpcsconf" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
-    <taskdef name="replacedby" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
     <taskdef name="drushmf" classname="\NextEuropa\Phing\DrushMakeFileTask" />
-    <taskdef name="rel-sym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
+    <taskdef name="phpcsconf" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
     <taskdef name="propval" classname="\NextEuropa\Phing\PropertiesValidateTask" />
+    <taskdef name="relsym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
+    <taskdef name="replacedby" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
     
     <!-- Import xml files for phing. -->
     <import file="${ssk.vendor}/drupal/phingdrushtask/import.xml"/>

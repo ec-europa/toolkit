@@ -13,7 +13,7 @@
     <!-- Provide handy access with root symlink to starterkit binary. -->
     <target name="starterkit-link-binary">
         <echo msg="Provide project with starterkit binary at root level." />
-        <rel-sym link="${project.basedir}/ssk" target="${ssk.bin}" overwrite="true"/>
+        <relsym link="${project.basedir}/ssk" target="${ssk.bin}" overwrite="true"/>
     </target>
 
     <target 

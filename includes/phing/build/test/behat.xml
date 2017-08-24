@@ -69,14 +69,14 @@
     <target name="test-behat-setup-link">
         <property name="behat-test-location" value="${project.build.platform.dir}" />
         <property name="behat-test-binary" value="${project.build.platform.dir}/vendor/behat/behat/bin/behat" />
-        <rel-sym link="platform" overwrite="true">
+        <relsym link="platform" overwrite="true">
             <fileset dir="${behat.dir}" casesensitive="yes">
                 <include name="*.yml"/>
             </fileset>
-        </rel-sym>
-        <rel-sym link="${behat-test-location}/features" target="../tests/features" />
-        <rel-sym link="${behat-test-location}/tests" target="../tests" />
-        <rel-sym link="${behat.bin}" target="${behat-test-binary}" overwrite="true"/>
+        </relsym>
+        <relsym link="${behat-test-location}/features" target="../tests/features" />
+        <relsym link="${behat-test-location}/tests" target="../tests" />
+        <relsym link="${behat.bin}" target="${behat-test-binary}" overwrite="true"/>
     </target>
     <!-- Set up Behat balancer. -->
     <target name="test-behat-setup-balancer">

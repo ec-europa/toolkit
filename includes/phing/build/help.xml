@@ -16,7 +16,7 @@
     <propval
         source="build.properties"
         required="${ssk.phing.props}/build.properties.required"
-        failonerror="false"
+        haltonerror="${project.build.haltonerror.props.validate}"
         logoutput="${logoutput}"
     />
 
@@ -155,7 +155,7 @@
 
     <!-- Copies a given folder to a new location. -->
     <target name="copy-folder" hidden="true">
-        <copy todir="${copy.destination.path}" haltonerror="${project.build.copy.path.haltonerror}">
+        <copy todir="${copy.destination.path}" haltonerror="${project.build.haltonerror.dir.copy}">
             <fileset dir="${copy.source.path}" defaultexcludes="false" />
         </copy>
     </target>

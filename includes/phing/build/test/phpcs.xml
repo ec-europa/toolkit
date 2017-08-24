@@ -39,7 +39,7 @@
             <then>
                 <echo message="Enabling git pre-push hook." />
                 <mkdir dir="${project.basedir}/resources/git/hooks/pre-push"/>
-                <rel-sym link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
+                <relsym link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
             </then>
            <else>
                 <echo message="Disabling git pre-push hook." />

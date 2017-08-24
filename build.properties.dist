@@ -1,48 +1,46 @@
-# Binaries. (hidden?)
+# Binaries. (optional, hidden)
 # ---------
 project.bin.composer = composer.phar
 project.bin.drush = ${ssk.bin}/drush
 project.bin.git = git
 project.bin.phing = ${ssk.bin}/phing
 
-# Temporary folders and resources. (hidden?)
+# Temporary folders and resources. (optional, hidden)
 # --------------------------------
-project.tmp.dir = ${project.basedir}/tmp
-project.tmp.devel.make = ${project.tmp.dir}/devel.make
 project.docroot = /var/www/html
+project.tmp.devel.make = ${project.tmp.dir}/devel.make
+project.tmp.dir = ${project.basedir}/tmp
 
-# Subsite configuration (configurable)
+# Subsite configuration (required)
 # ---------------------
 project.id = myproject
 project.install.modules = myproject_core
 project.name = My Project
 project.theme.default = ec_resp
-project.url.acceptance =
-project.url.playground =
 project.url.production =
 
-# Development modules. (configurable)
+# Development modules. (optional, configurable)
 # --------------------
 devel.mdls.dir = devel
 devel.mdls.dl = devel maillog stage_file_proxy
 devel.mdls.en = devel context field_ui maillog simpletest stage_file_proxy views_ui
 
-# Development variables. (configurable)
+# Development variables. (optional, configurable)
 # ----------------------
 devel.vars.error_level = 2
+devel.vars.stage_file_proxy_hotlink = 1
 devel.vars.stage_file_proxy_origin = https://ec.europa.eu/${project.id}
 devel.vars.stage_file_proxy_origin_dir = sites/${project.id}/files
-devel.vars.stage_file_proxy_hotlink = 1
-devel.vars.views_ui_show_sql_query = 1
-devel.vars.views_ui_show_performance_statistics = 1
 devel.vars.views_show_additional_queries = 1
+devel.vars.views_ui_show_performance_statistics = 1
+devel.vars.views_ui_show_sql_query = 1
 
-# Debugging configuration. (configurable)
+# Debugging configuration. (optional, configurable)
 # ------------------------
-drush.verbose = FALSE
 drush.color = 1
+drush.verbose = FALSE
 
-# Curl progress type. (configurable)
+# Curl progress type. (optional, configurable)
 # -------------------
 project.curl.progress = #
 
@@ -50,14 +48,14 @@ project.curl.progress = #
 # -------
 docker.project.id = environment
 
-# Drupal configuration.
-# ---------------------
-project.db.filename =
-project.db.host = webgate.ec.europa.eu
-project.db.folder = fpfis/files-for/automate_dumps
-project.db.url = ${project.db.host}/${project.db.folder}/${project.id}/
-project.db.url.htaccess.password =
-project.db.url.htaccess.username =
+# Database configuration.
+# -----------------------
+project.db.dl.filename =
+project.db.dl.dir = fpfis/files-for/automate_dumps
+project.db.dl.host = webgate.ec.europa.eu
+project.db.dl.url = ${project.db.dl.host}/${project.db.dl.dir}/${project.id}/
+project.db.dl.url.htaccess.password =
+project.db.dl.url.htaccess.username =
 
 project.db.type = mysql
 project.db.name = ${project.id}
@@ -78,9 +76,9 @@ project.solr.url = ${project.solr.schem}://${project.solr.host}:${project.solr.p
 
 # Admin configuration.
 # --------------------
-project.admin.username = admin
-project.admin.password = pass
 project.admin.email = ${project.admin.username}@example.com
+project.admin.password = pass
+project.admin.username = admin
 
 # Platform configuration (semi-configurable)
 # ----------------------
@@ -105,6 +103,8 @@ project.theme.europa.repo.branch = master
 
 # Local resources. (hidden?)
 # ----------------
+project.resources.composer.json = ${project.resources.dir}/composer.json
+project.resources.composer.lock = ${project.resources.dir}/composer.lock
 project.resources.dir = ${project.basedir}/resources
 project.resources.dir.lib = ${project.basedir}/lib
 project.resources.dir.features = ${project.resources.dir.lib}/features
@@ -115,16 +115,18 @@ project.resources.dir.source = ${project.resources.dir.lib}/src
 project.resources.dir.tests = ${project.basedir}/tests
 project.resources.dir.themes = ${project.resources.dir.lib}/themes
 project.resources.favicon.ico = ${project.resources.dir}/favicon.ico
-project.resources.composer.json = ${project.resources.dir}/composer.json
-project.resources.composer.lock = ${project.resources.dir}/composer.lock
 project.resources.site.make = ${project.resources.dir}/site.make
 
-# Build defaults
+# Build folders.
 # --------------
-project.build.copy.path.haltonerror = true
-project.build.dist = dist
 project.build.dev = build
+project.build.dist = dist
 project.build.site = ${project.id}
+
+Build halts.
+# ----------
+project.build.haltonerror.dir.copy = true
+project.build.haltonerror.props.validate = true
 
 # Platform build resources. (hidden?)
 # -------------------------
@@ -141,21 +143,23 @@ project.build.platform.htaccess.append.text =
 
 # Subsite build resources (hidden?)
 # ------------------------
+project.build.subsite.composer.json = ${project.build.subsite.dir}/composer.json
+project.build.subsite.composer.lock = ${project.build.subsite.dir}/composer.lock
 project.build.subsite.dir = ${project.build.platform.dir.sites}/${project.build.site}
 project.build.subsite.dir.files = ${project.build.subsite.dir}/files
-project.build.subsite.dir.tmp = ${project.build.subsite.dir}/tmp
-project.build.subsite.dir.source = ${project.build.subsite.dir}/src
 project.build.subsite.dir.libraries = ${project.build.subsite.dir}/libraries
 project.build.subsite.dir.modules = ${project.build.subsite.dir}/modules
 project.build.subsite.dir.modules.contrib = ${project.build.subsite.dir.modules}/contrib
 project.build.subsite.dir.modules.custom = ${project.build.subsite.dir.modules}/custom
 project.build.subsite.dir.modules.features = ${project.build.subsite.dir.modules}/features
+project.build.subsite.dir.source = ${project.build.subsite.dir}/src
 project.build.subsite.dir.themes = ${project.build.subsite.dir}/themes
-project.build.subsite.composer.json = ${project.build.subsite.dir}/composer.json
-project.build.subsite.composer.lock = ${project.build.subsite.dir}/composer.lock
+project.build.subsite.dir.tmp = ${project.build.subsite.dir}/tmp
 
 # Distribution build files and directories. (hidden?)
 # -----------------------------------------
+project.build.dist.composer.json = ${project.build.dist.dir}/composer.json
+project.build.dist.composer.lock = ${project.build.dist.dir}/composer.lock
 project.build.dist.dir = ${project.basedir}/${project.build.dist}
 project.build.dist.dir.modules = ${project.build.dist.dir}/modules
 project.build.dist.dir.modules.custom = ${project.build.dist.dir.modules}/custom
@@ -164,38 +168,32 @@ project.build.dist.dir.profile = ${project.build.dist.dir.profiles}/${project.pr
 project.build.dist.dir.profiles = ${project.build.dist.dir}/profiles
 project.build.dist.dir.source = ${project.build.dist.dir}/src
 project.build.dist.dir.themes = ${project.build.dist.dir}/themes
-project.build.dist.composer.json = ${project.build.dist.dir}/composer.json
-project.build.dist.composer.lock = ${project.build.dist.dir}/composer.lock
 
-# Rebuild configuration (configurable)
-# ---------------------
+# Rebuild configuration. (configurable)
+# ----------------------
 project.rebuild.auto = 0
 project.rebuild.backup.destination = ${project.tmp.dir}/backup-site
-project.rebuild.backup.folders = ${project.build.files.dir};${project.build.tmp.dir}
 project.rebuild.backup.files = ${project.build.settings.dir}/settings.php
+project.rebuild.backup.folders = ${project.build.files.dir};${project.build.tmp.dir}
 
-# Shared paths (semi-configurable)
-# ------------
-project.share.path = /tmp
+# Shared paths. (semi-configurable)
+# -------------
+project.share.path = /cache
 project.share.name = share
 project.share.path.global = ${project.share.path}/${project.share.name}
-
+project.share.path.composer = ${project.share.path.global}/composer
 project.share.path.platform = ${project.share.path.global}/platform
 project.share.path.subsites = ${project.share.path.global}/subsites
-project.share.path.composer = ${project.share.path.global}/composer
-
-project.share.path.platform.packages = ${project.share.path.platform}/packages
-project.share.path.platform.packages.deploy = ${project.share.path.platform.packages}/deploy
-project.share.path.platform.packages.test = ${project.share.path.platform.packages}/test
-project.share.path.platform.packages.database = ${project.share.path.platform.packages}/database
-
-project.share.path.subsites.packages = ${project.share.path.subsites}/packages
-project.share.path.subsites.packages.deploy = ${project.share.path.subsites.packages}/deploy
-project.share.path.subsites.packages.test = ${project.share.path.subsites.packages}/test
-project.share.path.subsites.packages.database = ${project.share.path.subsites.packages}/database
-
 project.share.path.composer.packages = ${project.share.path.composer}/packages
 project.share.path.composer.packages.shared = ${project.share.path.composer.packages}/shared
+project.share.path.platform.packages = ${project.share.path.platform}/packages
+project.share.path.platform.packages.database = ${project.share.path.platform.packages}/database
+project.share.path.platform.packages.deploy = ${project.share.path.platform.packages}/deploy
+project.share.path.platform.packages.test = ${project.share.path.platform.packages}/test
+project.share.path.subsites.packages = ${project.share.path.subsites}/packages
+project.share.path.subsites.packages.database = ${project.share.path.subsites.packages}/database
+project.share.path.subsites.packages.deploy = ${project.share.path.subsites.packages}/deploy
+project.share.path.subsites.packages.test = ${project.share.path.subsites.packages}/test
 
 # Composer hook phingcall target lists. Space separated only. (configurable)
 # -----------------------------------------------------------
