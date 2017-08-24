@@ -25,13 +25,30 @@
         <echo msg="Starterkit successfully initiated." />
     </target>
 
+    <!-- Ask user if he or she wants to generate the source code structure. -->
+    <target name="starrterkit-generate-structure">
+        <if>
+            <available file="${project.resources.dir.lib}" type="dir" />
+            <then>
+                <echo msg="Project structure exists already." />
+            </then>
+            <else>
+                <input propertyName="project-type" message="What type of project do you want to create?" validargs="profile,subsite" />
+                <phingcall target="starterkit-copy-templates">
+                    <property name="project-type" value="${project-type}" override="true" />
+                </phingcall>
+            </else>
+        </if>
+    </target>
+
     <!-- Ensure needed files are present. -->
     <target name="starterkit-copy-templates">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
         <copy file="${ssk.root}/build.properties.dist" tofile="${project.basedir}/build.properties.dist" overwrite="true" />
         <copy todir="${project.basedir}">
-            <fileset dir="${ssk.templates}/project" />
+            <fileset dir="${ssk.templates}/${project-type}" />
         </copy>
+        <echo msg="Project structure for ${project-type} created." />
     </target>
 
     <!-- Upgrade ssk 2.x to 3.x. -->

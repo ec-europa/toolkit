@@ -41,6 +41,7 @@
         name="build-platform-dev"
         description="Build a local development version of the platform."
         depends="
+            project-subsite-backup,
             project-build-set-dev,
             project-profile-set,
             project-delete-build,
@@ -54,7 +55,8 @@
             test-phpunit-setup,
             test-phpcs-setup,
             build-project-htaccess,
-            build-project-theme" />
+            build-project-theme,
+            project-subsite-restore," />
     
     <!-- Make Drupal core. -->
     <target name="project-drupal-make">

@@ -15,8 +15,10 @@
         name="build-project-platform"
         description="Build NextEuropa Platform code without version control."
         depends="
-             project-platform-delete,
-             project-platform-package-unpack" />
+            project-subsite-backup,
+            project-platform-delete,
+            project-platform-package-unpack,
+            project-subsite-restore" />
 
     <!-- Create code base. -->
     <target
@@ -313,7 +315,7 @@
     </target>
 
     <!-- Backs up files and folders listed in project.rebuild. properties in order to rebuild. -->
-    <target name="subsite-site-backup">
+    <target name="project-subsite-backup">
 
         <!-- Check if site exists. -->
         <if>
@@ -333,9 +335,9 @@
             </and>
             <then>
                 <echo msg="Installed site detected." level="warning"/>
-                <propertyprompt propertyName="subsite-site-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
+                <propertyprompt propertyName="project-subsite-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
                 <if>
-                    <equals arg1="${subsite-site-backup-activated}" arg2="y" />
+                    <equals arg1="${project-subsite-backup-activated}" arg2="y" />
                     <then>
                         <property name="project.rebuild.auto" value="1" override="true"/>
                     </then>
@@ -363,17 +365,17 @@
                     <property name="folder.to.unprotect" value="${project.build.subsite.dir}" />
                 </phingcall>
                 <!-- Back up folders list. -->
-                <foreach list="${project.rebuild.backup.folders}" param="site-item" target="subsite-site-backup-item" delimiter=";">
+                <foreach list="${project.rebuild.backup.folders}" param="site-item" target="project-subsite-backup-item" delimiter=";">
                     <property name="site-item-type" value="dir"/>
                 </foreach>
                 <!-- Back up files list. -->
-                <foreach list="${project.rebuild.backup.files}" param="site-item" target="subsite-site-backup-item" delimiter=";">
+                <foreach list="${project.rebuild.backup.files}" param="site-item" target="project-subsite-backup-item" delimiter=";">
                     <property name="site-item-type" value="file"/>
                 </foreach>
             </then>
         </if>
         <if>
-            <equals arg1="${subsite-site-backup-activated}" arg2="y" />
+            <equals arg1="${project-subsite-backup-activated}" arg2="y" />
             <then>
                 <property name="project.rebuild.auto" value="0" override="true"/>
             </then>
@@ -381,7 +383,7 @@
     </target>
 
     <!-- Restoring sites directory if backed up before rebuild-dev. -->
-    <target name="subsite-site-restore">
+    <target name="project-subsite-restore">
 
         <!-- Check if backup exists. -->
         <if>
@@ -400,9 +402,9 @@
             </and>
             <then>
                 <echo msg="Site backup detected." level="warning"/>
-                <propertyprompt propertyName="subsite-site-restore-activated" promptText="Do you wish to restore site for this build? (y/n)" />
+                <propertyprompt propertyName="project-subsite-restore-activated" promptText="Do you wish to restore site for this build? (y/n)" />
                 <if>
-                    <equals arg1="${subsite-site-restore-activated}" arg2="y" />
+                    <equals arg1="${project-subsite-restore-activated}" arg2="y" />
                     <then>
                         <property name="project.rebuild.auto" value="1" override="true"/>
                     </then>
@@ -417,11 +419,11 @@
             <then>
                 <echo msg="Restoring site files and folders from ${project.rebuild.backup.destination}"/>
                 <!-- Restore folders list. -->
-                <foreach list="${project.rebuild.backup.folders}" param="site-item" target="subsite-site-restore-item" delimiter=";">
+                <foreach list="${project.rebuild.backup.folders}" param="site-item" target="project-subsite-restore-item" delimiter=";">
                     <property name="site-item-type" value="dir"/>
                 </foreach>
                 <!-- Restore files list. -->
-                <foreach list="${project.rebuild.backup.files}" param="site-item" target="subsite-site-restore-item" delimiter=";">
+                <foreach list="${project.rebuild.backup.files}" param="site-item" target="project-subsite-restore-item" delimiter=";">
                     <property name="site-item-type" value="file"/>
                 </foreach>
                 <!-- Delete the site backup directory. -->
@@ -431,7 +433,7 @@
     </target>
 
     <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
-    <target name="subsite-site-backup-item" hidden="true">
+    <target name="project-subsite-backup-item" hidden="true">
         <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
         <property name="site-item-backup-dir" value="${site-item-dir}">
             <filterchain>
@@ -461,7 +463,7 @@
     </target>
 
     <!-- Restores a site item from the project.rebuild.backup.destination to the new build. -->
-    <target name="subsite-site-restore-item" hidden="true">
+    <target name="project-subsite-restore-item" hidden="true">
         <property name="site-item-backup" value="${site-item}">
             <filterchain>
                 <replaceregexp>

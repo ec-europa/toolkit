@@ -312,7 +312,7 @@
     </if>
 
     <!-- Macke sure project id for DB is valid with underscore instead of hyphen. -->
-    <php function="str_replace" returnProperty="project.db.name">
+    <php function="str_replace" returnProperty="project.db.name" level="debug">
         <param value="-"/>
         <param value="_"/>
         <param value="${project.db.name}"/>

@@ -18,17 +18,10 @@
             project-platform-version-set,
             project-build-set-dev,
             project-profile-set,
-            subsite-site-backup,
-            build-project-platform,
             subsite-make-subsite,
             subsite-resources-link,
             project-subsite-composer-install,
-            test-behat-setup-link,
-            test-behat-setup,
-            build-project-htaccess,
-            test-phpcs-setup,
-            project-modules-devel-dl,
-            subsite-site-restore" />
+            project-modules-devel-dl" />
 
     <!-- Create distribution code base. -->
     <target
@@ -40,19 +33,6 @@
             subsite-dist-make,
             subsite-dist-resources-copy,
             subsite-dist-composer-install" />
-
-    <!-- Build code base with backup restore. -->
-    <target name="build-project-rebuild-platform" description="Rebuild NextEuropa Platform code while keeping subsite.">
-        <!-- Execute build-dev with automatic rebuild enabled. -->
-        <phingcall target="build-subsite-dev">
-            <property name="project.rebuild.auto" value="1" override="true"/>
-        </phingcall>
-    </target>
-
-    <!-- Build code base with backup restore. -->
-    <target name="build-project-rebuild-subsite" description="Rebuild NextEuropa Subsite code while keeping platform.">
-        <!-- TODO when subsite packages are available. -->
-    </target>
 
     <!-- Make the development version of the subsite. -->
     <target name="subsite-make-subsite">

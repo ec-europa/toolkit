@@ -173,8 +173,8 @@ project.build.dist.dir.themes = ${project.build.dist.dir}/themes
 # ----------------------
 project.rebuild.auto = 0
 project.rebuild.backup.destination = ${project.tmp.dir}/backup-site
-project.rebuild.backup.files = ${project.build.settings.dir}/settings.php
-project.rebuild.backup.folders = ${project.build.files.dir};${project.build.tmp.dir}
+project.rebuild.backup.files = ${project.build.subsite.dir}/settings.php
+project.rebuild.backup.folders = ${project.build.subsite.dir.files};${project.build.subsite.dir.tmp}
 
 # Shared paths. (semi-configurable)
 # -------------
