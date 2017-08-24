@@ -178,7 +178,7 @@ project.rebuild.backup.folders = ${project.build.files.dir};${project.build.tmp.
 
 # Shared paths. (semi-configurable)
 # -------------
-project.share.path = /cache
+project.share.path = /tmp
 project.share.name = share
 project.share.path.global = ${project.share.path}/${project.share.name}
 project.share.path.composer = ${project.share.path.global}/composer
