@@ -23,6 +23,7 @@
             strict="${behat.options.strict}"
             verbose="${behat.options.verbosity}"
             passthru="${behat.options.passthru}"
+            haltonerror="${behat.options.haltonerror"
             checkreturn="true"
         />
     </target>

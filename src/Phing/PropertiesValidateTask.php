@@ -130,7 +130,7 @@ class PropertiesValidateTask extends \Task
 
       if ($this->required == null && $this->forbidden == null) {
         $message = "You must define either a required or forbidden properties file.";
-        $this->failOnErrorAction(null, $message, $errorlevel);
+        $this->haltOnErrorAction(null, $message, $errorlevel);
       }
       else {
         if ($this->required != null) {
@@ -144,7 +144,7 @@ class PropertiesValidateTask extends \Task
               $this->log("=> " . $missing_prop, $warninglevel);
             }
             $message = "Properties missing from " . $this->source->getName() . ".";
-            $this->failOnErrorAction(null, $message, $errorlevel);
+            $this->haltOnErrorAction(null, $message, $errorlevel);
           }
         }
         if ($this->forbidden != null) {
@@ -156,14 +156,14 @@ class PropertiesValidateTask extends \Task
               $this->log("=> " . key($missing_prop), $warninglevel);
             }
             $message = "Forbidden properties found in " . $this->source->getName() . ".";
-            $this->failOnErrorAction(null, $message, Project::MSG_ERR);
+            $this->haltOnErrorAction(null, $message, Project::MSG_ERR);
           }
         }
       }
     }
     elseif ($this->source == null) {
       $message = "You must define a source properties file to check.";
-      $this->failOnErrorAction(null, $message, Project::MSG_ERR);
+      $this->haltOnErrorAction(null, $message, Project::MSG_ERR);
     }
   }
 
@@ -173,7 +173,7 @@ class PropertiesValidateTask extends \Task
    * @param int $level
    * @throws BuildException
    */
-  private function failOnErrorAction(Exception $exception = null, $message = '', $level = Project::MSG_INFO)
+  private function haltOnErrorAction(Exception $exception = null, $message = '', $level = Project::MSG_INFO)
   {
     if ($this->haltonerror) {
       throw new BuildException(
@@ -203,13 +203,13 @@ class PropertiesValidateTask extends \Task
 
     if ($propertiesFile->exists() && $propertiesFile->isDirectory()) {
       $message = $propertyType . " is a directory!";
-      $this->failOnErrorAction(null, $message, Project::MSG_ERR);
+      $this->haltOnErrorAction(null, $message, Project::MSG_ERR);
       return;
     }
 
     if ($propertiesFile->exists() && !$propertiesFile->canRead()) {
       $message = "Can not read from the specified " . $propertyType . "!";
-      $this->failOnErrorAction(null, $message, Project::MSG_ERR);
+      $this->haltOnErrorAction(null, $message, Project::MSG_ERR);
       return;
     }
 

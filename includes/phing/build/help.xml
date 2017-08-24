@@ -12,14 +12,6 @@
     <property name="logoutput" value="true" />
     <property name="level" value="info" />
 
-    <!--forbidden="${ssk.phing.props}/build.properties.forbidden"-->
-    <propval
-        source="build.properties"
-        required="${ssk.phing.props}/build.properties.required"
-        haltonerror="${project.build.haltonerror.props.validate}"
-        logoutput="${logoutput}"
-    />
-
     <!-- Load build properties. -->
     <if>
         <available file="build.properties.local" type="file" />
@@ -45,6 +37,14 @@
             <property file="vendor/ec-europa/ssk/build.properties.dist" logoutput="false" />
         </then>
     </if>
+
+    <!--forbidden="${ssk.phing.props}/build.properties.forbidden"-->
+    <propval
+        source="build.properties"
+        required="${ssk.phing.props}/build.properties.required"
+        haltonerror="${project.build.haltonerror.props.validate}"
+        logoutput="${logoutput}"
+    />
 
     <!-- Load version properties if available. -->
     <property file="${project.tmp.dir}/build.properties.version" logoutput="${logoutput}" />
