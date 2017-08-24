@@ -17,6 +17,7 @@
         source="build.properties"
         required="${ssk.phing.props}/build.properties.required"
         failonerror="false"
+        logoutput="${logoutput}"
     />
 
     <!-- Load build properties. -->

@@ -94,6 +94,24 @@ class PropertiesValidateTask extends \Task
   }
 
   /**
+   * Whether to log returned output as MSG_INFO instead of MSG_VERBOSE
+   * @var boolean
+   */
+  protected $logOutput = false;
+
+  /**
+   * Whether to log returned output as MSG_INFO instead of MSG_VERBOSE
+   *
+   * @param boolean $logOutput If output shall be logged visibly
+   *
+   * @return void
+   */
+  public function setLogoutput($logOutput)
+  {
+    $this->logOutput = (bool) $logOutput;
+  }
+
+  /**
    *  Run the task.
    *
    * @throws BuildException  trouble, probably file IO
@@ -102,6 +120,8 @@ class PropertiesValidateTask extends \Task
   {
     //copy the properties file
     $allProperties = array();
+    $warninglevel = $this->logOutput ? Project::MSG_WARN : Project::MSG_VERBOSE;
+    $errorlevel = $this->logOutput ? Project::MSG_ERR : Project::MSG_VERBOSE;
 
     /* load properties from file if specified, otherwise use Phing's properties */
     if ($this->source != null) {
@@ -110,7 +130,7 @@ class PropertiesValidateTask extends \Task
 
       if ($this->required == null && $this->forbidden == null) {
         $message = "You must define either a required or forbidden properties file.";
-        $this->failOnErrorAction(null, $message, Project::MSG_ERR);
+        $this->failOnErrorAction(null, $message, $errorlevel);
       }
       else {
         if ($this->required != null) {
@@ -119,21 +139,21 @@ class PropertiesValidateTask extends \Task
           if (count($intersect) != count($requiredProperties)) {
             $missing = array_diff_key($requiredProperties, $intersect);
             $missing_props = array_keys($missing);
-            $this->log("Your properties file " . $this->source->getName() . " is missing required properties:", Project::MSG_ERR);
+            $this->log("Your properties file " . $this->source->getName() . " is missing required properties:", $warninglevel);
             foreach ($missing_props as $missing_prop) {
-              $this->log("=> " . $missing_prop, Project::MSG_WARN);
+              $this->log("=> " . $missing_prop, $warninglevel);
             }
             $message = "Properties missing from " . $this->source->getName() . ".";
-            $this->failOnErrorAction(null, $message, Project::MSG_ERR);
+            $this->failOnErrorAction(null, $message, $errorlevel);
           }
         }
         if ($this->forbidden != null) {
           $forbiddenProperties = $this->checkLoadProperties($this->forbidden, "Forbidden properties file");
           $forbidden_props = array_intersect_key($forbiddenProperties, $allProperties);
           if (count($intersect) > 0) {
-            $this->log("Your properties file " . $this->source->getName() . " contains forbidden properties.", Project::MSG_ERR);
+            $this->log("Your properties file " . $this->source->getName() . " contains forbidden properties.", $warninglevel);
             foreach ($forbidden_props as $forbidden_prop) {
-              $this->log("=> " . key($missing_prop), Project::MSG_WARN);
+              $this->log("=> " . key($missing_prop), $warninglevel);
             }
             $message = "Forbidden properties found in " . $this->source->getName() . ".";
             $this->failOnErrorAction(null, $message, Project::MSG_ERR);
