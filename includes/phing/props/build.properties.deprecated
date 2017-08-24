@@ -46,12 +46,12 @@ drupal.core.version =
 platform.build.dir =
 platform.profile.name =
 platform.package.reference =
-platform.package.provider =
-platform.package.repository =
+project.profile.package.provider =
+project.profile.package.repository =
 platform.package.cachedir =
 platform.package.destination =
-platform.package.tarball =
-platform.package.token =
+project.profile.package =
+project.profile.package.provider.token =
 
 composer.bin =
 drush.bin =

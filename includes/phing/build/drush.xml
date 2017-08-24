@@ -14,12 +14,12 @@
     <target name="drush-site-install">
         <echo message="Installing site ${subsite.name}." />
         <drush command="site-install" assume="yes" root="${project.build.platform.dir}" bin="${project.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${project.drupal.db.url}" />
+            <option name="db-url" value="${project.db.url}" />
             <option name="site-name" value="'${subsite.name}'" />
             <option name="account-name" value="${project.admin.username}" />
             <option name="account-pass" value="${project.admin.password}" />
             <option name="account-mail" value="${project.admin.email}" />
-            <param>${platform.package.profile}</param>
+            <param>${project.profile}</param>
             <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
         </drush>
     </target>
@@ -39,7 +39,7 @@
 
     <!-- Create the directories. -->
     <target name="drush-create-files-dirs">
-        <echo message="Creating files directories for ${project.drupal.db.name}." />
+        <echo message="Creating files directories for ${project.db.name}." />
         <!-- Execute setttings generation script. -->
         <drush command="php-script" root="${project.build.platform.dir}" bin="${project.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${ssk.root}/includes/drush/generate-directories.php</param>
@@ -48,9 +48,9 @@
 
     <!-- Create the database. -->
     <target name="drush-sql-create">
-        <echo message="Creating database ${project.drupal.db.name}." />
+        <echo message="Creating database ${project.db.name}." />
         <drush command="sql-create" assume="yes" root="${project.build.platform.dir}" bin="${project.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${project.drupal.db.url}" />
+            <option name="db-url" value="${project.db.url}" />
         </drush>
     </target>
 
@@ -72,15 +72,15 @@
 
     <!-- Drop the database. -->
     <target name="drush-sql-drop">
-        <echo message="Dropping database ${project.drupal.db.name}." />
+        <echo message="Dropping database ${project.db.name}." />
         <drush command="sql-drop" assume="yes" root="${project.build.platform.dir}" bin="${project.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${project.drupal.db.url}" />
+            <option name="db-url" value="${project.db.url}" />
         </drush>
     </target>
 
     <!-- Backup the database. -->
     <target name="drush-sql-dump">
-        <echo message="Backing up database ${project.drupal.db.name} to ${database-file}." />
+        <echo message="Backing up database ${project.db.name} to ${database-file}." />
         <dirname property="database-cachedir" file="${database-file}"/>
         <mkdir dir="${database-cachedir}" />
         <drush command="sql-dump" assume="yes" root="${project.build.platform.dir}" bin="${project.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
@@ -93,7 +93,7 @@
         <if>
             <equals arg1="${project.solr.enablee}" arg2="1" />
             <then>
-                <echo message="Enable apachesolr for ${project.drupal.db.name}." />
+                <echo message="Enable apachesolr for ${project.db.name}." />
                 <phingcall target="drush-enable-modules">
                     <property name="project.drupal.modules" value="apachesolr" />
                 </phingcall>
@@ -123,12 +123,12 @@
             <filterchain>
                 <replacetokens begintoken="%%" endtoken="%%">
                     <!-- Replace tokens in settings generation script. -->
-                    <token key="project.drupal.db.type" value="${project.drupal.db.type}" />
-                    <token key="project.drupal.db.name" value="${project.drupal.db.name}" />
-                    <token key="project.drupal.db.user" value="${project.drupal.db.user}" />
-                    <token key="project.drupal.db.password" value="${project.drupal.db.password}" />
-                    <token key="project.drupal.db.host" value="${project.drupal.db.host}" />
-                    <token key="project.drupal.db.port" value="${project.drupal.db.port}" />
+                    <token key="project.db.type" value="${project.db.type}" />
+                    <token key="project.db.name" value="${project.db.name}" />
+                    <token key="project.db.user" value="${project.db.user}" />
+                    <token key="project.db.password" value="${project.db.password}" />
+                    <token key="project.db.host" value="${project.db.host}" />
+                    <token key="project.db.port" value="${project.db.port}" />
                     <token key="error_level" value="${devel.vars.error_level}" />
                     <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
                     <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />

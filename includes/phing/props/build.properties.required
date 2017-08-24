@@ -23,8 +23,8 @@ project.admin.email = ${project.admin.username}@example.com
 
 # Platform configuration.
 # -----------------------
-platform.package.profile = multisite_drupal_standard
-platform.package.version = 2.3
+project.profile = multisite_drupal_standard
+project.profile.package.version = 2.3
 
 # Rebuild configuration.
 # ----------------------

@@ -12,11 +12,12 @@
     <property name="logoutput" value="true" />
     <property name="level" value="info" />
 
-    <!--<propval-->
-        <!--source="build.properties"-->
-        <!--required="${ssk.phing.props}/build.properties.required"-->
-        <!--forbidden="${ssk.phing.props}/build.properties.forbidden"-->
-    <!--/>-->
+    <!--forbidden="${ssk.phing.props}/build.properties.forbidden"-->
+    <propval
+        source="build.properties"
+        required="${ssk.phing.props}/build.properties.required"
+        failonerror="false"
+    />
 
     <!-- Load build properties. -->
     <if>
@@ -61,23 +62,23 @@
     <!-- Get latest stable if major version is defined. -->
     <target name="project-platform-version-set" hidden="true">
         <if>
-            <matches string="${platform.package.version}" pattern="^[1-9]+\." />
+            <matches string="${project.profile.package.version}" pattern="^[1-9]+\." />
             <then>
                 <propertyregex
                     property="platform.version.major"
-                    subject="${platform.package.version}"
+                    subject="${project.profile.package.version}"
                     pattern="^([1-9]+)\."
                     match="$1"
                     override="true" />
                 <propertyregex
                     property="platform.version.minor"
-                    subject="${platform.package.version}"
+                    subject="${project.profile.package.version}"
                     pattern="^[1-9]+\.([1-9]+)"
                     match="$1"
                     override="true" />
                 <propertyregex
                     property="platform.version.reference"
-                    subject="${platform.package.version}"
+                    subject="${project.profile.package.version}"
                     pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
                     match="$1"
                     override="true" />
@@ -85,45 +86,45 @@
                     <isset property="platform.version.minor" />
                     <then>
                         <php expression="${platform.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.version.major}\.${platform.version.minor}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.current" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.version.major}\.${platform.upgrade}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.next" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.version.major}\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.latest" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.version.major}\.${platform.version.minor}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="project.profile.package.version.current" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.version.major}\.${platform.upgrade}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="project.profile.package.version.next" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.version.major}\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="project.profile.package.version.latest" />
                     </then>
                 </if>
             </then>
         </if>
         <if>
             <and>
-                <matches string="${platform.package.version.current}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
+                <matches string="${project.profile.package.version.current}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
                 <versioncompare
-                    version="${platform.package.version.current}"
-                    desiredVersion="${platform.package.version}"
+                    version="${project.profile.package.version.current}"
+                    desiredVersion="${project.profile.package.version}"
                     operator="gt" />
             </and>
             <then>
-                <echo msg="The platform package version is set to ${platform.package.version}." />
-                <echo msg="The build will be performed with version ${platform.package.version.current}." />
+                <echo msg="The platform package version is set to ${project.profile.package.version}." />
+                <echo msg="The build will be performed with version ${project.profile.package.version.current}." />
                 <propertyregex
                     property="platform.version.reference"
-                    subject="${platform.package.version.current}"
+                    subject="${project.profile.package.version.current}"
                     pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
                     match="$1"
                     override="true" />
-                <property name="platform.package.version" value="${platform.package.version.current}" override="true" />
+                <property name="project.profile.package.version" value="${project.profile.package.version.current}" override="true" />
             </then>
         </if>
         <if>
             <and>
-                <matches string="${platform.package.version.next}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
+                <matches string="${project.profile.package.version.next}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
                 <versioncompare
-                    version="${platform.package.version.next}"
-                    desiredVersion="${platform.package.version}"
+                    version="${project.profile.package.version.next}"
+                    desiredVersion="${project.profile.package.version}"
                     operator="gt" />
             </and>
             <then>
                 <!-- TODO: this allows for automatic upgrading if we were to provide a setting. -->
                 <php expression="${platform.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
-                <echo msg="Last released deploy package is at ${platform.package.version.latest}." level="warning" />
+                <echo msg="Last released deploy package is at ${project.profile.package.version.latest}." level="warning" />
                 <echo msg="Please upgrade your platform version to ${platform.version.major}.${platform.upgrade}." level="warning" />
             </then>
         </if>
@@ -302,10 +303,10 @@
     </if>
 
     <!-- Macke sure project id for DB is valid with underscore instead of hyphen. -->
-    <php function="str_replace" returnProperty="project.drupal.db.name">
+    <php function="str_replace" returnProperty="project.db.name">
         <param value="-"/>
         <param value="_"/>
-        <param value="${project.drupal.db.name}"/>
+        <param value="${project.db.name}"/>
     </php>
 
     <!-- Disable output on consecutive phing calls. -->

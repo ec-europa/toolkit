@@ -42,7 +42,7 @@
         <!-- Set package name for re-use. -->
         <property
             name="test-package"
-            value="${project.tmp.dir}/platform-dev-test-${platform.package.version.current}.tar.gz" />
+            value="${project.tmp.dir}/platform-dev-test-${project.profile.package.version.current}.tar.gz" />
 
         <!-- Delete previous test package if exists. -->
         <delete file="${test-package}" />

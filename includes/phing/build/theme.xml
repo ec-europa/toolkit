@@ -13,9 +13,9 @@
     <!-- This step in future will become a part of a build on the new Europa theme repository. -->
     <target name="theme-europa-download-extract">
         <phingcall target="package-download-unpack">
-            <property name="package-name" value="ec_europa-${platform.theme.ec_europa.version}.tar.gz" />
+            <property name="package-name" value="ec_europa-${project.theme.ec_europa.version}.tar.gz" />
             <property name="package-cache-location" value="${project.tmp.dir}" />
-            <property name="package-download-location" value=" https://github.com/ec-europa/ec_europa/releases/download/${platform.theme.ec_europa.version}" />
+            <property name="package-download-location" value=" https://github.com/ec-europa/ec_europa/releases/download/${project.theme.ec_europa.version}" />
             <property name="package-extract-location" value="${project.resources.dir.lib}/themes/ec_europa" />
             <property name="package-extract-options" value="--strip=1" />
         </phingcall>
@@ -26,7 +26,7 @@
         <phingcall target="package-download-unpack">
             <property name="package-name" value="framework.tar.gz" />
             <property name="package-cache-location" value="${project.tmp.dir}" />
-            <property name="package-download-location" value="https://github.com/ec-europa/europa-component-library/releases/download/${platform.theme.ecl.version}" />
+            <property name="package-download-location" value="https://github.com/ec-europa/europa-component-library/releases/download/${project.theme.ecl.version}" />
             <property name="package-extract-location" value="${project.resources.dir.lib}/themes/ec_europa/assets" />
             <property name="package-extract-options" value="--strip=1" />
         </phingcall>
@@ -50,22 +50,22 @@
         <!-- Cloning the Atomium theme repo into the common profiles directory -->
         <echo msg = "Cloning the Atomium theme repository."/>
         <gitclone
-            repository="${platform.theme.atomium.repo.url}"
+            repository="${project.theme.atomium.repo.url}"
             targetPath="${project.resources.dir.themes}/atomium"/>
         <!-- Checking out the configured branch in the cloned repo -->
         <gitcheckout
             repository="${project.resources.dir.themes}/atomium"
-            branchname="${platform.theme.atomium.repo.branch}"/>
+            branchname="${project.theme.atomium.repo.branch}"/>
 
         <!-- cloning the EC Europa theme repo into the common profiles directory -->
         <echo msg = "Cloning the EC Europa theme repository."/>
         <gitclone
-            repository="${platform.theme.europa.repo.url}"
+            repository="${project.theme.europa.repo.url}"
             targetPath="${project.resources.dir.themes}/ec_europa"/>
         <!-- Checking out the configured branch in the cloned repo -->
         <gitcheckout
             repository="${project.resources.dir.themes}/ec_europa"
-            branchname="${platform.theme.europa.repo.branch}"/>
+            branchname="${project.theme.europa.repo.branch}"/>
     </target>
 
     <!-- Generating assets -->

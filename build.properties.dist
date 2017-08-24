@@ -15,17 +15,11 @@ project.docroot = /var/www/html
 # ---------------------
 project.id = myproject
 project.install.modules = myproject_core
+project.install.theme = ec_resp
 project.name = My Project
 project.url.acceptance =
 project.url.playground =
 project.url.production =
-
-# Subsite clone configuration. (only username and password?)
-#-----------------------------
-project.db.filename =
-project.db.url = webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${project.id}/
-project.db.url.htaccess.password =
-project.db.url.htaccess.username =
 
 # Development modules. (configurable)
 # --------------------
@@ -56,15 +50,22 @@ project.curl.progress = #
 # -------
 docker.project.id = environment
 
-# Drupal configuration. (configurable except url)
+# Drupal configuration.
 # ---------------------
-project.drupal.db.type = mysql
-project.drupal.db.name = ${project.id}
-project.drupal.db.user = root
-project.drupal.db.password =
-project.drupal.db.host = mysql
-project.drupal.db.port = 3306
-project.drupal.db.url = ${project.drupal.db.type}://${project.drupal.db.user}:${project.drupal.db.password}@${project.drupal.db.host}:${project.drupal.db.port}/${project.drupal.db.name}
+project.db.filename =
+project.db.host = webgate.ec.europa.eu
+project.db.folder = fpfis/files-for/automate_dumps
+project.db.url = ${project.db.host}/${project.db.folder}/${project.id}/
+project.db.url.htaccess.password =
+project.db.url.htaccess.username =
+
+project.db.type = mysql
+project.db.name = ${project.id}
+project.db.user = root
+project.db.password =
+project.db.host = mysql
+project.db.port = 3306
+project.db.url = ${project.db.type}://${project.db.user}:${project.db.password}@${project.db.host}:${project.db.port}/${project.db.name}
 
 # Solr configuration.
 # -------------------
@@ -83,27 +84,24 @@ project.admin.email = ${project.admin.username}@example.com
 
 # Platform configuration (semi-configurable)
 # ----------------------
-platform.package.database = 0
-platform.package.profile = multisite_drupal_standard
-platform.package.profile.make = ${project.resources.dir}/${platform.package.profile}.make
-platform.package.provider = git-hub
-platform.package.repository = ec-europa/platform-dev
-platform.package.tarball = deploy-package-${platform.package.reference}.tar.gz
-platform.package.token = # TODO: Github API limit.
-platform.package.version = 2.4
-platform.package.core = 7.x
+project.profile = multisite_drupal_standard
+project.profile.core = 7.x
+project.profile.make = ${project.resources.dir}/${project.profile}.make
+project.profile.package = deploy-package-${platform.package.reference}.tar.gz
+project.profile.package.db.cache = 0
+project.profile.package.provider = git-hub
+project.profile.package.provider.token = # TODO: Github API limit.
+project.profile.package.repository = ec-europa/platform-dev
+project.profile.package.version = 2.4
 
-
-platform.theme.default = ec_resp
-platform.theme.ecl.version = v0.10.0
-platform.theme.ec_europa.version = 0.0.3
-
-platform.theme.atomium.repo.url = https://github.com/ec-europa/atomium.git
-platform.theme.atomium.repo.branch = 7.x-1.x
-platform.theme.europa.repo.url = https://github.com/ec-europa/ec_europa.git
-platform.theme.europa.repo.branch = master
-
-
+# Theme configuration. (hidden?)
+# --------------------
+project.theme.ecl.version = v0.10.0
+project.theme.ec_europa.version = 0.0.3
+project.theme.atomium.repo.url = https://github.com/ec-europa/atomium.git
+project.theme.atomium.repo.branch = 7.x-1.x
+project.theme.europa.repo.url = https://github.com/ec-europa/ec_europa.git
+project.theme.europa.repo.branch = master
 
 # Local resources. (hidden?)
 # ----------------
@@ -111,7 +109,7 @@ project.resources.dir = ${project.basedir}/resources
 project.resources.dir.lib = ${project.basedir}/lib
 project.resources.dir.features = ${project.resources.dir.lib}/features
 project.resources.dir.modules = ${project.resources.dir.lib}/modules
-project.resources.dir.profile = ${project.resources.dir.profiles}/${platform.package.profile}
+project.resources.dir.profile = ${project.resources.dir.profiles}/${project.profile}
 project.resources.dir.profiles = ${project.resources.dir.lib}/profiles
 project.resources.dir.source = ${project.resources.dir.lib}/src
 project.resources.dir.tests = ${project.basedir}/tests
@@ -133,7 +131,7 @@ project.build.site = ${project.id}
 project.build.platform.dir = ${project.basedir}/${project.build.dev}
 project.build.platform.dir.settings = ${project.build.platform.dir.sites}/default
 project.build.platform.dir.sites = ${project.build.platform.dir}/sites
-project.build.platform.dir.profile = ${project.build.platform.dir.profiles}/${platform.package.profile}
+project.build.platform.dir.profile = ${project.build.platform.dir.profiles}/${project.profile}
 project.build.platform.dir.profile.themes = ${project.build.platform.dir.profile}/themes
 project.build.platform.dir.profiles = ${project.build.platform.dir}/profiles
 project.build.platform.composer.json = ${project.build.platform.dir}/composer.json
@@ -162,7 +160,7 @@ project.build.dist.dir = ${project.basedir}/${project.build.dist}
 project.build.dist.dir.modules = ${project.build.dist.dir}/modules
 project.build.dist.dir.modules.custom = ${project.build.dist.dir.modules}/custom
 project.build.dist.dir.modules.features = ${project.build.dist.dir.modules}/features
-project.build.dist.dir.profile = ${project.build.dist.dir.profiles}/${platform.package.profile}
+project.build.dist.dir.profile = ${project.build.dist.dir.profiles}/${project.profile}
 project.build.dist.dir.profiles = ${project.build.dist.dir}/profiles
 project.build.dist.dir.source = ${project.build.dist.dir}/src
 project.build.dist.dir.themes = ${project.build.dist.dir}/themes
