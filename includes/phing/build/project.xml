@@ -130,7 +130,6 @@
             <property name="package-cache-location" value="${project.share.path.platform.packages.deploy}" />
             <property name="package-download-location" value="https://platform-ci.ne-dev.eu/releases" />
             <property name="package-extract-location" value="${project.build.platform.dir}" />
-            <property name="package-extract-options" value="" />
         </phingcall>
     </target>
 

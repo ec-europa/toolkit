@@ -15,8 +15,8 @@ project.docroot = /var/www/html
 # ---------------------
 project.id = myproject
 project.install.modules = myproject_core
-project.install.theme = ec_resp
 project.name = My Project
+project.theme.default = ec_resp
 project.url.acceptance =
 project.url.playground =
 project.url.production =

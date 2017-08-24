@@ -232,6 +232,14 @@
                 <mkdir dir="${package-extract-location}" />
             </then>
         </if>
+        <if>
+            <not>
+                <isset property="${package-extract-options}" />
+            </not>
+            <then>
+                <property name="package-extract-options" value="" />
+            </then>
+        </if>
         <!-- Use the faster native commands on UNIX systems. -->
         <if>
             <os family="unix"/>
