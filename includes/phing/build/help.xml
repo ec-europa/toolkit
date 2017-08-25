@@ -42,7 +42,6 @@
     <propval
         source="build.properties"
         required="${ssk.dir.incl.phing.props}/required.props"
-        forbidden="${ssk.dir.incl.phing.props}/forbidden.props"
         haltonerror="${project.build.haltonerror.props.validate}"
         logoutput="${logoutput}"
     />

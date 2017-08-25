@@ -1,4 +1,4 @@
-subsite.name =
+project.name =
 subsite.make =
 subsite.install.modules =
 

@@ -12,10 +12,10 @@
 
     <!-- Install the site. -->
     <target name="drush-site-install">
-        <echo message="Installing site ${subsite.name}." />
+        <echo message="Installing site ${project.name}." />
         <drush command="site-install" assume="yes" root="${project.build.platform.dir}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${project.db.url}" />
-            <option name="site-name" value="'${subsite.name}'" />
+            <option name="site-name" value="'${project.name}'" />
             <option name="account-name" value="${project.admin.username}" />
             <option name="account-pass" value="${project.admin.password}" />
             <option name="account-mail" value="${project.admin.email}" />
