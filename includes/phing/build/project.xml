@@ -171,16 +171,23 @@
 
     <!-- Setup file directory -->
     <target name="project-setup-files-directory">
-        <if>
-            <istrue value="${project.build.subsite.dir.files}" />
-            <then>
-                <mkdir dir="${project.build.subsite.dir.files}/private_files" />
-                <mkdir dir="${project.build.subsite.dir.tmp}" />
-                <!-- Support CSS and JS injector. -->
-                <mkdir dir="${project.build.subsite.dir.files}/css_injector" />
-                <mkdir dir="${project.build.subsite.dir.files}/js_injector" />
-            </then>
-        </if>
+        <trycatch>
+            <try>
+                <phingcall target="drush-create-files-dirs" />
+            </try>
+            <catch>
+                <if>
+                    <istrue value="${project.build.subsite.dir.files}" />
+                    <then>
+                        <mkdir dir="${project.build.subsite.dir.files}/private_files" />
+                        <mkdir dir="${project.build.subsite.dir.tmp}" />
+                        <!-- Support CSS and JS injector. -->
+                        <mkdir dir="${project.build.subsite.dir.files}/css_injector" />
+                        <mkdir dir="${project.build.subsite.dir.files}/js_injector" />
+                    </then>
+                </if>
+            </catch>
+        </trycatch>
     </target>
 
     <!-- Generate the makefile used to download development modules. -->
@@ -225,7 +232,7 @@
     <!-- Install the subsite. -->
     <target name="build-project-clean" description="Install NextEuropa site from scratch.">
          <mkdir dir="${project.build.subsite.dir}" />
-         <phingcall target="drush-create-files-dirs" />
+         <phingcall target="project-setup-files-directory" />
         <!--
             Ensure the settings folder is writable so the installer can create
             the settings.php file.

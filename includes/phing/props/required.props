@@ -25,8 +25,3 @@ project.admin.email = ${project.admin.username}@example.com
 # -----------------------
 project.profile = multisite_drupal_standard
 project.profile.package.version = 2.3
-
-# Rebuild configuration.
-# ----------------------
-project.rebuild.backup.folders = ${project.build.files.dir};${project.build.tmp.dir}
-project.rebuild.backup.files = ${project.build.settings.dir}/settings.php
