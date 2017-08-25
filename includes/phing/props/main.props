@@ -126,7 +126,7 @@ project.build.site = ${project.id}
 Build halts.
 # ----------
 project.build.haltonerror.dir.copy = true
-project.build.haltonerror.props.validate = true
+project.build.haltonerror.props.validate = false
 
 # Platform build resources.
 # -------------------------

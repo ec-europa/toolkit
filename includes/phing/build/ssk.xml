@@ -55,7 +55,7 @@
     <!-- Upgrade ssk 2.x to 3.x. -->
     <target name="ssk-upgrade">
         <if>
-            <available file="${project.basedir}/build.package.xml" type="dir" />
+            <available file="${project.basedir}/build.package.xml" type="file" />
             <then>
                 <input propertyName="ssk-upgrade" message="Subsite Starterkit 2.x detected. Do you wish to upgrade to 3.x?" validargs="y,n" />
                 <if>
