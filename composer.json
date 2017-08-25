@@ -1,10 +1,10 @@
 {
     "name": "ec-europa/ssk",
     "description": "Subsite Starter Kit packaged for composer",
+    "version": "3.0.0",
     "scripts": {
-        "pre-install-cmd": "@ssk-install",
-        "pre-update-cmd": "@ssk-update",
         "ssk-install": "PROJECT=${PROJECT} composer install --working-dir=includes/composer --ignore-platform-reqs --no-suggest --ansi",
-        "ssk-update": "PROJECT=${PROJECT} composer update --working-dir=includes/composer  --ignore-platform-reqs --no-suggest --ansi"
+        "ssk-update": "PROJECT=${PROJECT} composer update --working-dir=includes/composer  --ignore-platform-reqs --no-suggest --ansi",
+        "pre-update-cmd": "@ssk-install"
     }
 }
