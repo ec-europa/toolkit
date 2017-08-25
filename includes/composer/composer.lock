@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bdcd7dc5d2d943a44ed90f78472ee4b3",
+    "hash": "2945a002ab0dbf86a28712a04071943a",
     "content-hash": "5dd0e973a94575b5cb2f4f09ca782db9",
     "packages": [
         {
@@ -990,12 +990,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/VersionControl_Git.git",
-                "reference": "d2fd5c37a27541a4cea554d67cd39c73d7cb71fe"
+                "reference": "f074b9e7805197cb1019e05953960dde35ef3e31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/VersionControl_Git/zipball/d2fd5c37a27541a4cea554d67cd39c73d7cb71fe",
-                "reference": "d2fd5c37a27541a4cea554d67cd39c73d7cb71fe",
+                "url": "https://api.github.com/repos/pear/VersionControl_Git/zipball/f074b9e7805197cb1019e05953960dde35ef3e31",
+                "reference": "f074b9e7805197cb1019e05953960dde35ef3e31",
                 "shasum": ""
             },
             "require": {
@@ -1003,7 +1003,7 @@
                 "pear/pear_exception": "*"
             },
             "require-dev": {
-                "phpunit/phpunit": "*"
+                "phpunit/phpunit": "^5"
             },
             "type": "library",
             "autoload": {
@@ -1026,7 +1026,7 @@
                 }
             ],
             "description": "VersionControl_Git is a library that provides OO interface to handle Git repository.",
-            "time": "2015-11-04 13:03:54"
+            "time": "2017-08-23 19:37:51"
         },
         {
             "name": "pfrenssen/phpcs-pre-push",
@@ -1575,16 +1575,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "f29dca382a6485c3cbe6379f0c61230167681937"
+                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/f29dca382a6485c3cbe6379f0c61230167681937",
-                "reference": "f29dca382a6485c3cbe6379f0c61230167681937",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
+                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
                 "shasum": ""
             },
             "require": {
@@ -1596,7 +1596,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.5-dev"
                 }
             },
             "autoload": {
@@ -1630,7 +1630,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-09 14:24:12"
+            "time": "2017-06-14 15:44:48"
         },
         {
             "name": "symfony/process",
