@@ -19,14 +19,14 @@
     <target 
         name="ssk-init"
         depends="
-            starrterkit-generate-structure,
+            ssk-generate-structure,
             ssk-link-binary,
             project-platform-version-set">
         <echo msg="Starterkit successfully initiated." />
     </target>
 
     <!-- Ask user if he or she wants to generate the source code structure. -->
-    <target name="starrterkit-generate-structure">
+    <target name="ssk-generate-structure">
         <if>
             <available file="${project.resources.dir.lib}" type="dir" />
             <then>
@@ -92,10 +92,4 @@
         <move file="${project.resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
         <move file="${project.resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true"/>
     </target>
-
-    <!-- Build documentation index. -->
-    <target name="ssk-build-docs">
-        <build-documentation-index />        
-    </target>
-
 </project>
