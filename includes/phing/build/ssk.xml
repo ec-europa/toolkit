@@ -19,6 +19,7 @@
     <target 
         name="ssk-init"
         depends="
+            ssk-upgrade,
             ssk-generate-structure,
             ssk-link-binary,
             project-platform-version-set">
@@ -53,43 +54,54 @@
 
     <!-- Upgrade ssk 2.x to 3.x. -->
     <target name="ssk-upgrade">
-
-        <!-- Delete starterkit folders. -->
-        <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${project.basedir}/bin" />
-        </phingcall>
-        <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${project.basedir}/docs" />
-        </phingcall>
-        <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${project.basedir}/src" />
-        </phingcall>
-        <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${project.resources.dir}/cloudformation" />
-        </phingcall>
-        <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${project.resources.dir}/codedeploy" />
-        </phingcall>
-        <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${project.resources.dir}/composer" />
-        </phingcall>
-        <!-- Delete starterkit files. -->
-        <delete>
-            <fileset dir="${project.basedir}">
-                <include name="CHANGELOG.md" />
-                <include name="LICENSE.md" />
-                <include name="README.md" />
-                <include name="appspec.yml" />
-                <include name="build.clone.xml" />
-                <include name="build.package.xml" />
-                <include name="build.properties.dist" />
-                <include name="build.test.xml" />
-                <include name="composer.lock" />
-                <include name="phpcs-ruleset.xml" />
-            </fileset>
-        </delete>
-        <!-- Move subsite resources to new location. -->
-        <move file="${project.resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
-        <move file="${project.resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true"/>
+        <if>
+            <available file="${project.basedir}/build.package.xml" type="dir" />
+            <then>
+                <input propertyName="ssk-upgrade" message="Subsite Starterkit 2.x detected. Do you wish to upgrade to 3.x?" validargs="y,n" />
+                <if>
+                    <equals arg1="${ssk-upgrade}" arg2="y" />
+                    <then>
+                        <!-- Delete starterkit folders. -->
+                        <phingcall target="delete-folder">
+                            <property name="folder.to.delete" value="${project.basedir}/bin" />
+                        </phingcall>
+                        <phingcall target="delete-folder">
+                            <property name="folder.to.delete" value="${project.basedir}/docs" />
+                        </phingcall>
+                        <phingcall target="delete-folder">
+                            <property name="folder.to.delete" value="${project.basedir}/src" />
+                        </phingcall>
+                        <phingcall target="delete-folder">
+                            <property name="folder.to.delete" value="${project.resources.dir}/cloudformation" />
+                        </phingcall>
+                        <phingcall target="delete-folder">
+                            <property name="folder.to.delete" value="${project.resources.dir}/codedeploy" />
+                        </phingcall>
+                        <phingcall target="delete-folder">
+                            <property name="folder.to.delete" value="${project.resources.dir}/composer" />
+                        </phingcall>
+                        <!-- Delete starterkit files. -->
+                        <delete>
+                            <fileset dir="${project.basedir}">
+                                <include name="CHANGELOG.md" />
+                                <include name="LICENSE.md" />
+                                <include name="README.md" />
+                                <include name="appspec.yml" />
+                                <include name="build.clone.xml" />
+                                <include name="build.package.xml" />
+                                <include name="build.properties.dist" />
+                                <include name="build.test.xml" />
+                                <include name="composer.lock" />
+                                <include name="phpcs-ruleset.xml" />
+                            </fileset>
+                        </delete>
+                        <!-- Move subsite resources to new location. -->
+                        <move file="${project.resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
+                        <move file="${project.resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true"/>
+                    </then>
+                </if>
+            </then>
+        </if>
     </target>
+
 </project>
