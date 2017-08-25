@@ -23,7 +23,7 @@
     <import file="${ssk.dir.incl.phing.build}/deprecated.xml" />
 
     <!-- Import helper targets and load the build properties first. -->
-    <import file="${ssk.dir.incl.phing.build}/help.xml" />
+    <import file="${ssk.dir.incl.phing.build}/build.xml" />
 
     <!-- Finish import with starterkit build xml files. -->
     <import>

@@ -4,9 +4,9 @@
 
     <!-- Import helper targets if called here directly. -->
     <if>
-        <available file="help.xml" />
+        <available file="build.xml" />
         <then>
-            <import file="help.xml" />
+            <import file="build.xml" />
         </then>
     </if>
 
