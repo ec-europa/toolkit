@@ -19,7 +19,7 @@
     <target 
         name="ssk-init"
         depends="
-            ssk-copy-templates,
+            starrterkit-generate-structure,
             ssk-link-binary,
             project-platform-version-set">
         <echo msg="Starterkit successfully initiated." />

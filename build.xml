@@ -3,7 +3,7 @@
 <project name="starterkit" default="help">
 
     <!-- Set starterkit paths for easy loading. -->
-    <property file="${phing.dir.starterkit}/build.properties.ssk" logoutput="false" />
+    <property file="${phing.dir.starterkit}/includes/phing/props/ssk.props" logoutput="false" />
 
     <!-- Set include path for custom tasks. -->
     <includepath classpath="${ssk.dir}/src/Phing" />
