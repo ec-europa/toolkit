@@ -241,7 +241,7 @@
             </and>
             <then>
                 <phingcall target="drush-regenerate-settings" />
-                <exec command="${project.bin.drush} --root=${project.build.platform.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap" />
+                <exec command="${ssk.dir.bin.drush} --root=${project.build.platform.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap" />
                 <if>
                     <not>
                         <equals arg1="${drush-status-bootstrap}" arg2="0"/>

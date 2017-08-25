@@ -15,30 +15,30 @@
         <echo msg="Starting containers for ${docker.project.id}" />
         <mkdir dir="${project.build.platform.dir}" />
         <mkdir dir="${project.share.path.platform.packages.database}/platform-dev-${project.profile.package.version}" />
-        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${project.share.path.platform.packages.database}/platform-dev-${project.profile.package.version} docker-compose -p ${docker.project.id} -f ${ssk.includes}/docker/docker-compose.yml up -d" />
-        <relsym link="${project.basedir}/ssk-${docker.project.id}" target="${ssk.includes}/docker/dbash" overwrite="true" />
+        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${project.share.path.platform.packages.database}/platform-dev-${project.profile.package.version} docker-compose -p ${docker.project.id} -f ${ssk.incl}/docker/docker-compose.yml up -d" />
+        <relsym link="${project.basedir}/ssk-${docker.project.id}" target="${ssk.incl}/docker/dbash" overwrite="true" />
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
     </target>
 
     <!-- Stop docker environment. -->
     <target name="docker-compose-stop" description="Stop docker project.">
         <echo msg="Stopping containers for ${docker.project.id}" />
-        <exec command="docker-compose -p ${docker.project.id} -f ${ssk.docker}/docker-compose.yml stop mysql" passthru="true" />
-        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${project.share.path.subsites.packages.database} docker-compose -p ${docker.project.id} -f ${ssk.docker}/docker-compose.yml -f ${ssk.docker}/backup-restore.yml run backup" passthru="true" />
+        <exec command="docker-compose -p ${docker.project.id} -f ${ssk.dir.incl.docker}/docker-compose.yml stop mysql" passthru="true" />
+        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${project.share.path.subsites.packages.database} docker-compose -p ${docker.project.id} -f ${ssk.dir.incl.docker}/docker-compose.yml -f ${ssk.dir.incl.docker}/backup-restore.yml run backup" passthru="true" />
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
     </target>
 
     <!-- Remove docker environment. -->
     <target name="docker-compose-down" description="Trash docker project.">
         <echo msg="Removing containers and volumes for ${docker.project.id}" />
-        <exec command="docker-compose -p ${docker.project.id} -f ${ssk.root}/resources/docker/docker-compose.yml down --volumes" />
+        <exec command="docker-compose -p ${docker.project.id} -f ${ssk.dir.incl.docker}/docker-compose.yml down --volumes" />
         <delete file="${project.basedir}/ssk-${docker.project.id}" />
     </target>
 
    <!-- Check for mysql container. -->
     <target name="docker-check-mysql" hidden="true">
         <echo msg="Checking if mysql container exists" />
-        <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${ssk.includes}/docker/dbash ps mysql | grep -q 'Up\|Exit'" passthru="true" logoutput="false" returnproperty="docker-check-mysql" />
+        <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${ssk.dir.incl.docker}/dbash ps mysql | grep -q 'Up\|Exit'" passthru="true" logoutput="false" returnproperty="docker-check-mysql" />
         <echo msg="${docker-check-mysql}" />
     </target>
 
@@ -55,7 +55,7 @@
             </else>
         </if>
         <echo msg="Backing up database for ${docker.project.id}" />
-        <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${ssk.includes}/docker/dbash backup ${backup-location}/${backup-filename}" passthru="true" logoutput="false" />
+        <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${ssk.dir.incl.docker}/dbash backup ${backup-location}/${backup-filename}" passthru="true" logoutput="false" />
     </target>
 
    <!-- Restore database. -->
@@ -76,7 +76,7 @@
             <available file="${backup-location}/${backup-filename}" />
             <then>
                 <echo msg="Restoring database for ${docker.project.id}" />
-                <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${ssk.includes}/docker/dbash restore ${backup-location}/${backup-filename}" passthru="true" logoutput="false" />
+                <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${ssk.incl}/docker/dbash restore ${backup-location}/${backup-filename}" passthru="true" logoutput="false" />
             </then>
             <else>
                 <echo msg="File ${backup-location}/${backup-filename} does not exist." level="error" />

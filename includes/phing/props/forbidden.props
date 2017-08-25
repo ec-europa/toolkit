@@ -1,107 +1,41 @@
-# Binaries. (optional, hidden)
-# ---------
-project.bin.composer = composer.phar
-project.bin.drush = ${ssk.bin}/drush
-project.bin.git = git
-project.bin.phing = ${ssk.bin}/phing
-
-# Temporary folders and resources. (optional, hidden)
-# --------------------------------
-project.docroot = /var/www/html
-project.tmp.devel.make = ${project.tmp.dir}/devel.make
-project.tmp.dir = ${project.basedir}/tmp
-
-# Subsite configuration (required)
-# ---------------------
-project.id = myproject
-project.install.modules = myproject_core
-project.name = My Project
-project.theme.default = ec_resp
-project.url.production =
-
-# Development modules. (optional, configurable)
-# --------------------
-devel.mdls.dir = devel
-devel.mdls.dl = devel maillog stage_file_proxy
-devel.mdls.en = devel context field_ui maillog simpletest stage_file_proxy views_ui
-
-# Development variables. (optional, configurable)
-# ----------------------
-devel.vars.error_level = 2
-devel.vars.stage_file_proxy_hotlink = 1
-devel.vars.stage_file_proxy_origin = https://ec.europa.eu/${project.id}
-devel.vars.stage_file_proxy_origin_dir = sites/${project.id}/files
-devel.vars.views_show_additional_queries = 1
-devel.vars.views_ui_show_performance_statistics = 1
-devel.vars.views_ui_show_sql_query = 1
-
-# Debugging configuration. (optional, configurable)
-# ------------------------
-drush.color = 1
-drush.verbose = FALSE
-
-# Curl progress type. (optional, configurable)
-# -------------------
-project.curl.progress = #
-
-# Docker. (TODO)
-# -------
-docker.project.id = environment
-
-# Database configuration.
+# Starterkit directories.
 # -----------------------
-project.db.dl.filename =
-project.db.dl.dir = fpfis/files-for/automate_dumps
-project.db.dl.host = webgate.ec.europa.eu
-project.db.dl.url = ${project.db.dl.host}/${project.db.dl.dir}/${project.id}/
-project.db.dl.url.htaccess.password =
-project.db.dl.url.htaccess.username =
 
-project.db.type = mysql
-project.db.name = ${project.id}
-project.db.user = root
-project.db.password =
-project.db.host = mysql
-project.db.port = 3306
+ssk.dir = ${phing.dir.starterkit}
+ssk.dir.bin = ${ssk.dir}/bin
+ssk.dir.incl = ${ssk.dir}/includes
+ssk.dir.incl.composer = ${ssk.dir.incl}/composer
+ssk.dir.incl.docker = ${ssk.dir.incl}/docker
+ssk.dir.incl.drush = ${ssk.dir.incl}/drush
+ssk.dir.incl.phing = ${ssk.dir.incl}/phing
+ssk.dir.incl.phing.build = ${ssk.dir.incl.phing}/build
+ssk.dir.incl.phing.props = ${ssk.dir.incl.phing}/props
+ssk.dir.incl.templates = ${ssk.dir.incl}/templates
+ssk.dir.vendor = ${ssk.dir}/vendor
+
+# Starterkit binaries.
+# --------------------
+ssk.dir.bin.drush = ${ssk.dir.bin}/drush
+ssk.dir.bin.phing = ${ssk.dir.bin}/phing
+
+# Temporary folders and resources.
+# --------------------------------
+project.tmp.devel.make = ${project.tmp.dir}/devel.make
+project.tmp.dir = ${project.basedir}/.tmp
+
+# Database download settings.
+# ---------------------------
+project.db.dl.url = ${project.db.dl.host}/${project.db.dl.dir}/${project.id}/
+
+# Database connection settings.
+# -----------------------------
 project.db.url = ${project.db.type}://${project.db.user}:${project.db.password}@${project.db.host}:${project.db.port}/${project.db.name}
 
 # Solr configuration.
 # -------------------
-project.solr.enable = 1
-project.solr.host = solr
-project.solr.port = 8983
-project.solr.type = d7_apachesolr
-project.solr.scheme = http://
 project.solr.url = ${project.solr.schem}://${project.solr.host}:${project.solr.port}/solr/${project.solr.type}
 
-# Admin configuration.
-# --------------------
-project.admin.email = ${project.admin.username}@example.com
-project.admin.password = pass
-project.admin.username = admin
-
-# Platform configuration (semi-configurable)
-# ----------------------
-project.profile = multisite_drupal_standard
-project.profile.core = 7.x
-project.profile.make = ${project.resources.dir}/${project.profile}.make
-project.profile.package = deploy-package-${platform.package.reference}.tar.gz
-project.profile.package.db.cache = 0
-project.profile.package.provider = git-hub
-project.profile.package.provider.token = # TODO: Github API limit.
-project.profile.package.repository = ec-europa/platform-dev
-project.profile.package.version = 2.4
-
-# Theme configuration. (hidden?)
-# --------------------
-project.theme.ecl.version = v0.10.0
-project.theme.ec_europa.version = 0.0.3
-project.theme.atomium.repo.url = https://github.com/ec-europa/atomium.git
-project.theme.atomium.repo.branch = 7.x-1.x
-project.theme.europa.repo.url = https://github.com/ec-europa/ec_europa.git
-project.theme.europa.repo.branch = master
-
-# Local resources. (hidden?)
+# Local resources.
 # ----------------
 project.resources.composer.json = ${project.resources.dir}/composer.json
 project.resources.composer.lock = ${project.resources.dir}/composer.lock
@@ -117,18 +51,7 @@ project.resources.dir.themes = ${project.resources.dir.lib}/themes
 project.resources.favicon.ico = ${project.resources.dir}/favicon.ico
 project.resources.site.make = ${project.resources.dir}/site.make
 
-# Build folders.
-# --------------
-project.build.dev = build
-project.build.dist = dist
-project.build.site = ${project.id}
-
-Build halts.
-# ----------
-project.build.haltonerror.dir.copy = true
-project.build.haltonerror.props.validate = true
-
-# Platform build resources. (hidden?)
+# Platform build resources.
 # -------------------------
 project.build.platform.dir = ${project.basedir}/${project.build.dev}
 project.build.platform.dir.settings = ${project.build.platform.dir.sites}/default
@@ -141,7 +64,7 @@ project.build.platform.composer.lock = ${project.build.platform.dir}/composer.lo
 project.build.platform.favicon.ico = ${project.build.platform.dir}/favicon.ico
 project.build.platform.htaccess.append.text =
 
-# Subsite build resources (hidden?)
+# Subsite build resources.
 # ------------------------
 project.build.subsite.composer.json = ${project.build.subsite.dir}/composer.json
 project.build.subsite.composer.lock = ${project.build.subsite.dir}/composer.lock
@@ -156,7 +79,7 @@ project.build.subsite.dir.source = ${project.build.subsite.dir}/src
 project.build.subsite.dir.themes = ${project.build.subsite.dir}/themes
 project.build.subsite.dir.tmp = ${project.build.subsite.dir}/tmp
 
-# Distribution build files and directories. (hidden?)
+# Distribution build files and directories.
 # -----------------------------------------
 project.build.dist.composer.json = ${project.build.dist.dir}/composer.json
 project.build.dist.composer.lock = ${project.build.dist.dir}/composer.lock
@@ -169,17 +92,8 @@ project.build.dist.dir.profiles = ${project.build.dist.dir}/profiles
 project.build.dist.dir.source = ${project.build.dist.dir}/src
 project.build.dist.dir.themes = ${project.build.dist.dir}/themes
 
-# Rebuild configuration. (configurable)
-# ----------------------
-project.rebuild.auto = 0
-project.rebuild.backup.destination = ${project.tmp.dir}/backup-site
-project.rebuild.backup.files = ${project.build.subsite.dir}/settings.php
-project.rebuild.backup.folders = ${project.build.subsite.dir.files};${project.build.subsite.dir.tmp}
-
-# Shared paths. (semi-configurable)
+# Shared paths.
 # -------------
-project.share.path = /tmp
-project.share.name = share
 project.share.path.global = ${project.share.path}/${project.share.name}
 project.share.path.composer = ${project.share.path.global}/composer
 project.share.path.platform = ${project.share.path.global}/platform
@@ -194,28 +108,3 @@ project.share.path.subsites.packages = ${project.share.path.subsites}/packages
 project.share.path.subsites.packages.database = ${project.share.path.subsites.packages}/database
 project.share.path.subsites.packages.deploy = ${project.share.path.subsites.packages}/deploy
 project.share.path.subsites.packages.test = ${project.share.path.subsites.packages}/test
-
-# Composer hook phingcall target lists. Space separated only. (configurable)
-# -----------------------------------------------------------
-composer.hook.post.install = starterkit-init docker-compose-up
-composer.hook.post.update =
-composer.hook.pre.install =
-composer.hook.pre.update =
-
-# Flickr configuration.
-# ---------------------
-project.flickr.key = foobar
-project.flickr.secret = bas
-
-# Integration configuration.
-# --------------------------
-integration.server.port = 8888
-
-# Varnish configuration.
-# ----------------------
-varnish.server.port = 8888
-
-# Drush Context configuration.
-# ----------------------------
-drush.db.dump = ${project.build.platform.dir}/dump.sql
-

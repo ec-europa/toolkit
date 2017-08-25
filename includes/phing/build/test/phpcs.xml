@@ -7,7 +7,7 @@
     <!-- Do quality assurance checks. -->
     <target name="test-phpcs-exec">
         <exec
-            command="${ssk.bin}/phpcs"
+            command="${ssk.dir.bin}/phpcs"
             passthru="true"
             checkreturn="true"
         />

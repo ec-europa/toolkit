@@ -11,16 +11,16 @@
      </if>
 
     <!-- Provide handy access with root symlink to starterkit binary. -->
-    <target name="starterkit-link-binary">
+    <target name="ssk-link-binary">
         <echo msg="Provide project with starterkit binary at root level." />
-        <relsym link="${project.basedir}/ssk" target="${ssk.bin}" overwrite="true"/>
+        <relsym link="${project.basedir}/ssk" target="${ssk.dir.bin}" overwrite="true"/>
     </target>
 
     <target 
-        name="starterkit-init"
+        name="ssk-init"
         depends="
-            starterkit-copy-templates,
-            starterkit-link-binary,
+            ssk-copy-templates,
+            ssk-link-binary,
             project-platform-version-set">
         <echo msg="Starterkit successfully initiated." />
     </target>
@@ -34,7 +34,7 @@
             </then>
             <else>
                 <input propertyName="project-type" message="What type of project do you want to create?" validargs="profile,subsite" />
-                <phingcall target="starterkit-copy-templates">
+                <phingcall target="ssk-copy-templates">
                     <property name="project-type" value="${project-type}" override="true" />
                 </phingcall>
             </else>
@@ -42,17 +42,17 @@
     </target>
 
     <!-- Ensure needed files are present. -->
-    <target name="starterkit-copy-templates">
+    <target name="ssk-copy-templates">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
-        <copy file="${ssk.root}/build.properties.dist" tofile="${project.basedir}/build.properties.dist" overwrite="true" />
+        <copy file="${ssk.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.properties.dist" overwrite="true" />
         <copy todir="${project.basedir}">
-            <fileset dir="${ssk.templates}/${project-type}" />
+            <fileset dir="${ssk.dir.incl.templates}/${project-type}" />
         </copy>
         <echo msg="Project structure for ${project-type} created." />
     </target>
 
     <!-- Upgrade ssk 2.x to 3.x. -->
-    <target name="starterkit-upgrade">
+    <target name="ssk-upgrade">
 
         <!-- Delete starterkit folders. -->
         <phingcall target="delete-folder">
@@ -88,12 +88,13 @@
                 <include name="phpcs-ruleset.xml" />
             </fileset>
         </delete>
-        <!-- Move subsite files to new location. -->
+        <!-- Move subsite resources to new location. -->
         <move file="${project.resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
+        <move file="${project.resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true"/>
     </target>
 
     <!-- Build documentation index. -->
-    <target name="starterkit-build-docs">
+    <target name="ssk-build-docs">
         <build-documentation-index />        
     </target>
 

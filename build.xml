@@ -3,10 +3,10 @@
 <project name="starterkit" default="help">
 
     <!-- Set starterkit paths for easy loading. -->
-    <property file="${phing.dir.starterkit}/build.properties.starterkit" logoutput="false" />
+    <property file="${phing.dir.starterkit}/build.properties.ssk" logoutput="false" />
 
     <!-- Set include path for custom tasks. -->
-    <includepath classpath="${ssk.root}/src/Phing" />
+    <includepath classpath="${ssk.dir}/src/Phing" />
 
     <!-- Custom task definititons. -->
     <taskdef name="drushmf" classname="\NextEuropa\Phing\DrushMakeFileTask" />
@@ -16,25 +16,24 @@
     <taskdef name="replacedby" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
     
     <!-- Import xml files for phing. -->
-    <import file="${ssk.vendor}/drupal/phingdrushtask/import.xml"/>
-    <import file="${ssk.vendor}/drupol/phingbehattask/import.xml"/>
+    <import file="${ssk.dir.vendor}/drupal/phingdrushtask/import.xml"/>
+    <import file="${ssk.dir.vendor}/drupol/phingbehattask/import.xml"/>
 
     <!-- Import deprecated targets first to allow projects to override them. -->
-    <import file="${ssk.phing.build}/deprecated.xml" />
+    <import file="${ssk.dir.incl.phing.build}/deprecated.xml" />
 
     <!-- Import helper targets and load the build properties first. -->
-    <import file="${ssk.phing.build}/help.xml" />
+    <import file="${ssk.dir.incl.phing.build}/help.xml" />
 
     <!-- Finish import with starterkit build xml files. -->
     <import>
-        <fileset dir="${ssk.phing.build}" >
+        <fileset dir="${ssk.dir.incl.phing.build}" >
             <patternset>
                 <include name="docker.xml"/>
                 <include name="drush.xml"/>
                 <include name="theme.xml"/>
-                <include name="main.xml"/>
                 <include name="project.xml"/>
-                <include name="starterkit.xml"/>
+                <include name="ssk.xml"/>
                 <include name="test.xml"/>
             </patternset>
         </fileset>

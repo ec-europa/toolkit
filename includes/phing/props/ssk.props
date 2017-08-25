@@ -1,0 +1,25 @@
+# ----------------------------------------------------------
+# These are the properties that should not be altered for
+# correct toolkit integration. It is possible to override
+# the setting to disable property validation.
+# ----------------------------------------------------------
+
+# Starterkit directories.
+# -----------------------
+
+ssk.dir = ${phing.dir.starterkit}
+ssk.dir.bin = ${ssk.dir}/bin
+ssk.dir.incl = ${ssk.dir}/includes
+ssk.dir.incl.composer = ${ssk.dir.incl}/composer
+ssk.dir.incl.docker = ${ssk.dir.incl}/docker
+ssk.dir.incl.drush = ${ssk.dir.incl}/drush
+ssk.dir.incl.phing = ${ssk.dir.incl}/phing
+ssk.dir.incl.phing.build = ${ssk.dir.incl.phing}/build
+ssk.dir.incl.phing.props = ${ssk.dir.incl.phing}/props
+ssk.dir.incl.templates = ${ssk.dir.incl}/templates
+ssk.dir.vendor = ${ssk.dir}/vendor
+
+# Starterkit binaries.
+# --------------------
+ssk.dir.bin.drush = ${ssk.bin}/drush
+ssk.dir.bin.phing = ${ssk.bin}/phing

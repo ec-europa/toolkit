@@ -4,7 +4,7 @@
 
     <!-- Help function to display the targets. -->
     <target name="help" hidden="true">
-        <exec command="${project.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
+        <exec command="${ssk.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
         <echo msg="${line.separator}${phing-targets}" />
     </target>
 
@@ -25,23 +25,24 @@
             <property file="build.properties" logoutput="${logoutput}" />
         </then>
         <elseif>
-            <equals arg1="${project.basedir}" arg2="${ssk.root}" />
+            <equals arg1="${project.basedir}" arg2="${ssk.dir}" />
             <then>
-                <fail msg="${project.basedir} ---- ${ssk.root} Without a build.properties" />
+                <fail msg="${project.basedir} ---- ${ssk.dir} Without a build.properties" />
             </then>
         </elseif>
     </if>
     <if>
-        <available file="vendor/ec-europa/ssk/build.properties.dist" type="file" />
+        <available file="${ssk.dir.incl.phing.props}/main.props" type="file" />
         <then>
-            <property file="vendor/ec-europa/ssk/build.properties.dist" logoutput="false" />
+            <property file="${ssk.dir.incl.phing.props}/main.props" logoutput="false" />
         </then>
     </if>
 
-    <!--forbidden="${ssk.phing.props}/build.properties.forbidden"-->
+    <!--forbidden="${ssk.incl.phing.props}/build.properties.forbidden"-->
     <propval
         source="build.properties"
-        required="${ssk.phing.props}/build.properties.required"
+        required="${ssk.dir.incl.phing.props}/required.props"
+        forbidden="${ssk.dir.incl.phing.props}/forbidden.props"
         haltonerror="${project.build.haltonerror.props.validate}"
         logoutput="${logoutput}"
     />
@@ -49,14 +50,14 @@
     <!-- Load version properties if available. -->
     <property file="${project.tmp.dir}/build.properties.version" logoutput="${logoutput}" />
 
-   <!-- Check type of project and import it's build file.. -->
+    <!-- Check type of project and import it's build file. -->
     <if>
         <available file="${project.resources.dir.profiles}" type="dir"/>
         <then>
-            <import file="${ssk.phing.build}/profile.xml" />
+            <import file="${ssk.dir.incl.phing.build}/profile.xml" />
         </then>
         <else>
-            <import file="${ssk.phing.build}/subsite.xml" />
+            <import file="${ssk.dir.incl.phing.build}/subsite.xml" />
         </else>
     </if>
 

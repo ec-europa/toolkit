@@ -56,12 +56,12 @@
             test-phpcs-setup,
             build-project-htaccess,
             build-project-theme,
-            project-subsite-restore," />
-    
+            project-subsite-restore" />
+
     <!-- Make Drupal core. -->
     <target name="project-drupal-make">
         <echo msg="Make Drupal core." />
-        <drush command="make" assume="yes" bin="${project.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${dir-build}">
+        <drush command="make" assume="yes" bin="${ssk.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${dir-build}">
             <param>${profile-make}</param>
             <param>${dir-build}</param>
             <option name="no-patch-txt"></option>
@@ -71,7 +71,7 @@
     <!-- Make the platform. -->
     <target name="project-profile-make">
         <echo msg="Make the platform." />
-        <drush command="make" assume="yes" bin="${project.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${build-folder}">
+        <drush command="make" assume="yes" bin="${ssk.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${build-folder}">
             <param>${profile-make}</param>
             <param>${dir-build}</param>
             <option name="concurrency">10</option>
