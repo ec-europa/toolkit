@@ -31,7 +31,7 @@ pipeline:
     group: prepare
     image: fpfis/php56-dev
     commands:
-      - PROJECT=/test/ssk/build composer install
+      - PROJECT=/test/ssk composer install
 
   build-dev:
     image: fpfis/php56-dev
