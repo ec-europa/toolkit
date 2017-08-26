@@ -1,0 +1,70 @@
+workspace:
+  base: /test
+  path: ssk
+
+services:
+  web:
+    image: fpfis/php56-dev
+    environment:
+     - DOCUMENT_ROOT=/test/ssk/platform
+  mysql:
+    image: fpfis/mysql56
+  ecas:
+    image: fpfis-acpcloud622hotmail.azurecr.io/ecas
+  selenium:
+    image: selenium/standalone-chrome
+    environment:
+      - SE_OPTS=-log /tmp/selenium.log
+#  solr:
+#    image: fpfis/solr5
+
+pipeline:
+
+  prepare-mysql:
+    group: prepare
+    image: fpfis/mysql56
+    commands:
+      - sleep 5
+      - mysqladmin -h mysql -uroot create database
+
+  prepare-php:
+    group: prepare
+    image: fpfis/php56-dev
+    commands:
+      - composer update
+      - composer install
+
+  build-dev:
+    image: fpfis/php56-dev
+    commands:
+      - ./ssk/phing build-project-platform -D behat.base_url='http://web:8080' -D'behat.wd_host'='http://selenium:4444/wd/hub' -D'behat.browser_name'='chrome'
+      - ./ssk/phing build-subsite-dev -D behat.base_url='http://web:8080' -D'behat.wd_host'='http://selenium:4444/wd/hub' -D'behat.browser_name'='chrome'
+  install:
+    image: fpfis/php56-dev
+    commands:
+      - ./ssk/phing build-project-clean -D'drupal.db.host'='mysql' -D'drupal.db.name'=database
+
+  test:
+    image: fpfis/php56-dev
+    commands:
+      - ./ssk/phing test-run-behat
+
+  build-dist:
+    image: fpfis/php56-dev
+    commands:
+      - ./ssk/phing build-subsite-dist -D'composer.bin'=$(which composer)
+      - tar -czf ${DRONE_REPO_NAME}-${DRONE_TAG}.tar.gz -C build .
+    when:
+      event: tag
+
+  github_release:
+    image: plugins/github-release
+    files:
+      - ${DRONE_REPO_NAME}-${DRONE_TAG}.tar.gz
+    checksum:
+      - sha1
+      - sha256
+      - sha512
+    secrets: [ GITHUB_RELEASE_API_KEY ]
+    when:
+      event: tag
