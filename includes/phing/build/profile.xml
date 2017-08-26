@@ -79,6 +79,8 @@
             <option name="no-core"></option>
             <option name="contrib-destination">profiles/${profile-name}</option>
         </drush>
+        <echo message="Generate site aliases." />
+        <phingcall target="drush-generate-aliases" />
     </target>
 
     <!-- Make all of the profiles in order to build a multisite platform. -->

@@ -171,7 +171,7 @@ project.build.dist.dir.themes = ${project.build.dist.dir}/themes
 
 # Rebuild configuration.
 # ----------------------
-project.rebuild.auto = 0
+project.rebuild.auto = 1
 project.rebuild.backup.destination = ${project.tmp.dir}/backup-site
 project.rebuild.backup.files = ${project.build.subsite.dir}/settings.php
 project.rebuild.backup.folders = ${project.build.subsite.dir.files};${project.build.subsite.dir.tmp}

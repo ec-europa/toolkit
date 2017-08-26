@@ -114,11 +114,9 @@
     <!-- Delete the previous development build. -->
     <target name="project-delete-build">
         <echo msg="Delete previous build." />
-        <!--<phingcall target="unprotect-folder">-->
-            <!--&lt;!&ndash; TODO fix &ndash;&gt;-->
-            <!--<property name="folder.to.unprotect" value="${project.build.platform.dir.settings}" />-->
-            <!--<property name="folder.to.unprotect" value="${project.build.subsite.dir}" />-->
-        <!--</phingcall>-->
+        <phingcall target="unprotect-folder">
+            <property name="folder.to.unprotect" value="${project.build.platform.sites}" />
+        </phingcall>
         <echo msg="Unprotecting folder." />
         <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${dir-build}" />
@@ -133,6 +131,8 @@
             <property name="package-download-location" value="https://platform-ci.ne-dev.eu/releases" />
             <property name="package-extract-location" value="${project.build.platform.dir}" />
         </phingcall>
+        <echo message="Generate site aliases." />
+        <phingcall target="drush-generate-aliases" />
     </target>
 
     <!-- Install Composer dependencies without development dependencies. -->
@@ -368,8 +368,7 @@
                 <mkdir dir="${project.rebuild.backup.destination}"/>
                 <!-- Make the settings directory writable because we can not delete it otherwise -->
                 <phingcall target="unprotect-folder">
-                    <property name="folder.to.unprotect" value="${project.build.platform.dir.settings}" />
-                    <property name="folder.to.unprotect" value="${project.build.subsite.dir}" />
+                    <property name="folder.to.unprotect" value="${project.build.platform.dir.sites}" />
                 </phingcall>
                 <!-- Back up folders list. -->
                 <foreach list="${project.rebuild.backup.folders}" param="site-item" target="project-subsite-backup-item" delimiter=";">

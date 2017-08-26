@@ -9,6 +9,7 @@
     <includepath classpath="${ssk.dir}/src/Phing" />
 
     <!-- Custom task definititons. -->
+    <taskdef name="drushgal" classname="\NextEuropa\Phing\DrushGenerateAliasTask" />
     <taskdef name="drushmf" classname="\NextEuropa\Phing\DrushMakeFileTask" />
     <taskdef name="phpcsconf" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
     <taskdef name="propval" classname="\NextEuropa\Phing\PropertiesValidateTask" />
