@@ -15,6 +15,7 @@ project.id = myproject
 project.install.modules = myproject_core
 project.name = My Project
 project.theme.default = ec_resp
+project.type = subsite
 project.url.production =
 
 # Development modules.
