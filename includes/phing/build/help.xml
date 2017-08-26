@@ -181,6 +181,70 @@
         </if>
     </target>
 
+    <!-- Reset all file permission to Drupals recommendation for the lib dir. -->
+    <target name="reset-filesystem-permissions-lib">
+        <echo msg="Resetting permissions for ${project.resources.dir.lib}" />
+        <phingcall target="reset-filesystem-permissions">
+            <property name="target-dir" value="${project.resources.dir.lib}" />
+        </phingcall>
+    </target>
+
+    <!-- Reset all file permission to Drupals recommendation for the build dir. -->
+    <target name="reset-filesystem-permissions-build">
+        <echo msg="Resetting permissions for ${project.build.platform.dir}" />
+        <phingcall target="reset-filesystem-permissions">
+            <property name="target-dir" value="${project.build.platform.dir}" />
+        </phingcall>
+    </target>
+
+    <!-- Reset all file permission to Drupals recommendation for the build dir. -->
+    <target name="reset-filesystem-permissions-dist">
+        <echo msg="Resetting permissions for ${project.build.dist.dir}" />
+        <phingcall target="reset-filesystem-permissions">
+            <property name="target-dir" value="${project.build.dist.dir}" />
+        </phingcall>
+    </target>
+
+    <!-- Reset all file permission to Drupals recommendation. -->
+    <!-- https://www.drupal.org/node/244924#script-based-on-guidelines-given-above -->
+    <target name="reset-filesystem-permissions" hidden="true">
+        <if>
+            <available file="${target-dir}" type="dir" />
+            <then>
+                <chmod mode="0750" failonerror="true" verbose="false" quiet="true">
+                    <fileset dir="${target-dir}" excludes="**/sites/*/files">
+                        <type type="dir" />
+                    </fileset>
+                </chmod>
+                <chmod mode="0640" failonerror="true" verbose="false" quiet="true">
+                    <fileset dir="${target-dir}" excludes="**/sites/*/files">
+                        <type type="file" />
+                    </fileset>
+                </chmod>
+                <if>
+                    <not>
+                        <and>
+                            <contains string="${target-dir}" substring="${project.resources.dir.lib}" />
+                            <contains string="${target-dir}" substring="${project.build.dist.dir}" />
+                        </and>
+                    </not>
+                    <then>
+                        <chmod mode="0770" failonerror="true" verbose="false" quiet="true">
+                            <fileset dir="${target-dir}" includes="**/sites/*/files">
+                                <type type="dir"/>
+                            </fileset>
+                        </chmod>
+                        <chmod mode="0660" failonerror="true" verbose="false" quiet="true">
+                            <fileset dir="${target-dir}" includes="**/sites/*/files">
+                                <type type="file" />
+                            </fileset>
+                        </chmod>
+                    </then>
+                </if>
+            </then>
+        </if>
+    </target>
+
     <!-- Make the given folder writeable. -->
     <target name="unprotect-folder" hidden="true">
         <!-- This should only be used on folders that need to be removed. -->
