@@ -1,11 +1,11 @@
 {
-    "name": "verbruggenalex/subsite",
+    "name": "ec-europa/subsite",
     "require": {
         "ec-europa/ssk": "dev-master as 3.0.0"
     },
     "scripts": {
-        "post-create-project-cmd": "PROJECT=$(pwd) composer install --working-dir=vendor/ec-europa/ssk/includes/composer --no-interaction --ignore-platform-reqs --no-suggest --ansi",
-        "post-install-cmd": "PROJECT=$(pwd) composer install --working-dir=vendor/ec-europa/ssk/includes/composer --no-interaction --ignore-platform-reqs --no-suggest --ansi",
-        "post-update-cmd": "PROJECT=$(pwd) composer install --working-dir=vendor/ec-europa/ssk/includes/composer --no-interaction --ignore-platform-reqs --no-suggest --ansi"
+        "post-install-cmd": "@ssk-install",
+        "post-update-cmd": "@ssk-install",
+        "ssk-install": "PROJECT=$(pwd) composer run-script ssk-install -d ./vendor/ec-europa/ssk"
     }
 }
