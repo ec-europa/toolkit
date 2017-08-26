@@ -15,13 +15,15 @@
         name="build-subsite-dev"
         description="Build local version of subsite without install."
         depends="
+            project-subsite-backup,
             project-platform-version-set,
             project-build-set-dev,
             project-profile-set,
             subsite-make-subsite,
             subsite-resources-link,
             project-subsite-composer-install,
-            project-modules-devel-dl" />
+            project-modules-devel-dl,
+            project-subsite-restore" />
 
     <!-- Create distribution code base. -->
     <target
@@ -58,7 +60,7 @@
         <mkdir dir="${project.build.subsite.dir.libraries}" />
         <relsym link="${project.build.subsite.dir.modules.custom}" target="${project.resources.dir.modules}" />
         <relsym link="${project.build.subsite.dir.modules.features}" target="${project.resources.dir.features}" />
-        <delete dir="${project.build.subsite.dir.themes}" includeemptydirs="true" failonerror="false" />
+        <delete dir="${project.build.subsite.dir.themes}" includeemptydirs="true" failonerror="false" quiet="true" />
         <relsym link="${project.build.subsite.dir.themes}" target="${project.resources.dir.themes}" />
         <relsym link="${project.build.subsite.dir.source}" target="${project.resources.dir.source}" />
         <relsym link="${project.build.subsite.composer.json}" target="${project.resources.composer.json}" />

@@ -6,7 +6,7 @@ services:
   web:
     image: fpfis/php56-dev
     environment:
-     - DOCUMENT_ROOT=/test/ssk/platform
+     - DOCUMENT_ROOT=/test/ssk/build
   mysql:
     image: fpfis/mysql56
   ecas:
@@ -31,8 +31,7 @@ pipeline:
     group: prepare
     image: fpfis/php56-dev
     commands:
-      - composer update
-      - composer install
+      - PROJECT=/test/ssk/build composer install
 
   build-dev:
     image: fpfis/php56-dev

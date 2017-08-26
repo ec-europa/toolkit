@@ -22,8 +22,6 @@
             <param>${project.profile}</param>
             <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
         </drush>
-        <echo message="Generate site aliases." />
-        <phingcall target="drush-generate-aliases" />
     </target>
 
     <!-- Generate aliases for Drupal site by foldername. -->
