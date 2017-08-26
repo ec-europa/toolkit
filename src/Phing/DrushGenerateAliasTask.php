@@ -8,7 +8,7 @@ use Symfony\Component\Finder\Finder;
 require_once 'phing/Task.php';
 
 /**
- * A Phing task to generate a Drush make file.
+ * A Phing task to generate an aliases.drushrc.php file.
  */
 class DrushGenerateAliasTask extends \Task {
 
@@ -41,7 +41,11 @@ class DrushGenerateAliasTask extends \Task {
   private $drushDir = '/sites/all/drush';
 
   /**
-   * Generates a Drush make file.
+   * Generates an aliases.drushrc.php file.
+   *
+   * Either generates a file for:
+   *  - all sites in the sites directory.
+   *  - a single site to be added to the aliases file (appending).
    */
   public function main() {
     // Check if all required data is present.
@@ -81,7 +85,7 @@ class DrushGenerateAliasTask extends \Task {
       );
     }
 
-    $aliasesArray = "<?php \n\n" . var_export($aliases, true) . ";";
+    $aliasesArray = "<?php \n\n\$aliases = " . var_export($aliases, true) . ";";
 
     if (file_put_contents($aliasesFile, $aliasesArray)) {
       $this->log("Succesfully wrote aliases to file '" . $aliasesFile . "'", Project::MSG_INFO);
@@ -92,7 +96,7 @@ class DrushGenerateAliasTask extends \Task {
   }
 
   /**
-   * Checks if all properties required for generating the makefile are present.
+   * Checks if all properties required for generating the aliases file are present.
    *
    * @throws \BuildException
    *   Thrown when a required property is not present.
@@ -147,10 +151,12 @@ class DrushGenerateAliasTask extends \Task {
    * Sets the diurectory of drush to place the aliases in.
    *
    * @param string $drushDir
-   *   The Drush directory to place the aliases in.
+   *   The Drush directory to place the aliases in
+   *
+   * @todo: validate if it is a registered location of drush.
+   * @link: https://github.com/drush-ops/drush/blob/master/examples/example.aliases.drushrc.php#L57
    */
   public function setDrushDir($drushDir) {
     $this->drushDir = $drushDir;
   }
-
 }
