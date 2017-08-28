@@ -62,16 +62,26 @@ class RelativeSymlinkTask extends \SymlinkTask {
    *
    * @inheritDoc
    */
-  protected function symlink($target, $link) {
+  protected function symlink($target, $link, $logShort = FALSE) {
     $fs = FileSystem::getFileSystem();
 
     // Convert target to relative path.
-    $link = (new PhingFile($link))->getAbsolutePath();
+    $absolutePath = (new PhingFile($link))->getAbsolutePath();
+    $link = $absolutePath;
+
+    if ($logShort) {
+      $relativePath = str_replace($this->getProject()->getBaseDir(), "", $absolutePath);
+      $linkName = basename($absolutePath);
+    }
+    else {
+      $linkName = $link;
+    }
+
     // @codingStandardsIgnoreLine: MULTISITE-17111
     $target = rtrim($this->makePathRelative($target, dirname($link)), '/');
 
     if (is_link($link) && @readlink($link) == $target) {
-      $this->log('Link exists: ' . $link, Project::MSG_INFO);
+      $this->log('Link exists: ' . $linkName, Project::MSG_INFO);
 
       return TRUE;
     }
@@ -85,15 +95,15 @@ class RelativeSymlinkTask extends \SymlinkTask {
 
       if (is_link($link) || is_file($link)) {
         $fs->unlink($link);
-        $this->log('Link removed: ' . $link, Project::MSG_INFO);
+        $this->log('Link removed: ' . $linkName, Project::MSG_INFO);
       }
       else {
         $fs->rmdir($link, TRUE);
-        $this->log('Directory removed: ' . $link, Project::MSG_INFO);
+        $this->log('Directory removed: ' . $linkName, Project::MSG_INFO);
       }
     }
 
-    $this->log('Linking: ' . $link . ' to ' . $target, Project::MSG_INFO);
+    $this->log('Linking: ' . $linkName . ' to ' . $target, Project::MSG_INFO);
 
     return $fs->symlink($target, $link);
   }

@@ -165,9 +165,7 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
         if ($dir->exists()) {
           $subdirectories = preg_grep('~' . preg_quote($value) . '~', array_values($allProps));
           if (count($subdirectories) == 1) {
-            $this->log("Create dir and symlinks for " . $name);
             $directoryToCreate = $this->targetDir . str_replace($this->originDir, "", $value);
-            $this->makeDirectory(new PhingFile($directoryToCreate));
 
             $fsTargets = [];
 
@@ -183,7 +181,10 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
             // Add each target to the map
             foreach ($fsTargets as $target) {
               if (!empty($target)) {
-                $targets[$dir . DIRECTORY_SEPARATOR . $target] = $directoryToCreate . DIRECTORY_SEPARATOR . $target;
+                $targets[$directoryToCreate][] = array(
+                  'target' => $dir . DIRECTORY_SEPARATOR . $target,
+                  'link' => $directoryToCreate . DIRECTORY_SEPARATOR . $target,
+                );
               }
             }
           }
@@ -199,39 +200,47 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
      */
     public function main()
     {
+      $this->setTaskName('spc');
       $map = $this->getMap();
       // Multiple symlinks
-      foreach ($map as $targetPath => $name) {
-        $this->symlink($targetPath, $name);
+      foreach ($map as $directory => $symlinks) {
+        $this->makeDirectory($directory);
+        foreach ($symlinks as  $targetName => $symlink) {
+          $this->symlink($symlink['target'], $symlink['link'], TRUE);
+        }
       }
       return true;
     }
 
-  protected function symlink($targetPath, $name){
-
-    parent::symlink($targetPath, $name);
-  }
+    protected function symlink($targetPath, $name, $logShort){
+      parent::symlink($targetPath, $name, $logShort);
+    }
   
-    private function makeDirectory(PhingFile $dir) {
+    protected function makeDirectory($dir) {
+      $dir = new PhingFile($dir);
+      $relativePath = str_replace($this->getProject()->getBaseDir(), "", $dir->getAbsolutePath());
       if ($dir === null) {
         throw new BuildException("dir attribute is required", $this->getLocation());
       }
       if ($dir->isFile()) {
-        throw new BuildException("Unable to create directory as a file already exists with that name: " . $dir->getAbsolutePath(
+        throw new BuildException("Unable to create directory as a file already exists with that name: ." . $relativePath(
           ));
       }
       if (!$dir->exists()) {
         $result = $dir->mkdirs(0777 - umask());
         if (!$result) {
           if ($dir->exists()) {
-            $this->log("A different process or task has already created " . $dir->getAbsolutePath());
+            $this->log("A different process or task has already created ." . $relativePath);
             return;
           }
           $msg = "Directory " . $dir->getAbsolutePath(
             ) . " creation was not successful for an unknown reason";
           throw new BuildException($msg, $this->getLocation());
         }
-        $this->log("Created dir: " . $dir->getAbsolutePath());
+        $this->log("Created dir: ." . $relativePath);
+      }
+      else {
+        $this->log("Directory exists: ." . $relativePath);
       }
     }
 
