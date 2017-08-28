@@ -4,7 +4,7 @@ services:
     image: fpfis/php56-dev
     build: ./docker-php
     environment:
-      DOCUMENT_ROOT: ${WORKSPACE}/platform
+      DOCUMENT_ROOT: ${WORKSPACE}/build
       COMPOSER_CACHE_DIR: /var/cache/composer
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
     ports:

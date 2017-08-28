@@ -12,12 +12,12 @@
 
     <target
         name="build-dev"
-        description="Build a local development version with all distribution profiles (build-distribution-environment)."
+        description="Build a local development version with all distribution profiles."
         depends="build-distribution-environment" />
 
     <target
         name="build-dist"
-        description="Build a single profile distribution intended as a release package (build-distribution-release)."
+        description="Build a single profile distribution intended as a release package."
         depends="build-distribution-release" />
 
     <target
