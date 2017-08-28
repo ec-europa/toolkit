@@ -14,48 +14,48 @@
         name="build-platform-dist"
         description="Build a version of the platform intended to distribute as a release package."
         depends="
-            project-build-set-dist,
-            project-profile-set,
-            project-delete-build,
-            project-drupal-make,
-            project-profile-copy,
-            project-profile-make,
-            platform-resources-copy,
-            project-platform-composer-install,
-            project-setup-files-directory" />
+            build-project-set-dist,
+            build-project-set-profile,
+            build-project-platform-delete,
+            build-platform-drupal-make,
+            build-platform-profile-copy,
+            build-platform-profile-make,
+            build-platform-resources-copy,
+            build-platform-composer-install" />
 
     <target
             name="build-platform-dist-all"
             description="Build files of  platform intended for release package."
             depends="
-            project-build-set-dist,
-            project-profile-set,
-            project-delete-build,
-            project-drupal-make,
-            platform-profiles-copy,
-            project-profile-make-all,
-            platform-resources-copy,
-            project-platform-composer-install" />
+            build-project-set-dist,
+            build-project-set-profile,
+            build-project-platform-delete,
+            build-platform-drupal-make,
+            build-platform-profiles-copy,
+            build-platform-profiles-make,
+            build-platform-resources-copy,
+            build-platform-composer-install" />
 
     <target
         name="build-platform-dev"
         description="Build a local development version of the platform."
         depends="
-            project-build-set-dev,
-            project-profile-set,
-            project-subsite-backup,
-            project-delete-build,
-            project-drupal-make,
-            platform-profiles-link,
-            project-profile-make,
-            platform-resources-link,
-            project-platform-composer-install-dev,
+            build-project-set-dev,
+            build-project-set-profile,
+            build-project-subsite-backup,
+            build-project-platform-delete,
+            build-platform-drupal-make,
+            build-platform-profiles-link,
+            build-platform-profile-make,
+            build-platform-resources-link,
+            build-platform-composer-install-dev,
             build-project-htaccess,
             build-project-theme,
-            project-subsite-restore" />
+            build-project-subsite-restore,
+            build-project-setup-files" />
 
     <!-- Make Drupal core. -->
-    <target name="project-drupal-make">
+    <target name="build-platform-drupal-make">
         <echo msg="Make Drupal core." />
         <drush command="make" assume="yes" bin="${ssk.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${dir-build}">
             <param>${drupal-make}</param>
@@ -65,7 +65,7 @@
     </target>
 
     <!-- Make the platform. -->
-    <target name="project-profile-make">
+    <target name="build-platform-profile-make">
         <echo msg="Make the platform." />
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${profile-make}" />
@@ -75,8 +75,8 @@
     </target>
 
     <!-- Make all of the profiles in order to build a multisite platform. -->
-    <target name="project-profile-make-all">
-        <foreach param="profile-name" absparam="dir-profile" target="project-profile-make">
+    <target name="build-platform-profiles-make">
+        <foreach param="profile-name" absparam="dir-profile" target="build-platform-profile-make">
             <fileset dir="${lib.dir.profiles}">
                 <depth max="0" min="0" />
                 <exclude name="common" />
@@ -85,20 +85,8 @@
         </foreach>
     </target>
 
-    <!-- Copy the profiles folder to build deployment package files. -->
-    <target name="platform-profiles-copy">
-        <!-- Delete the core profiles folder so it can be replaced with ours. -->
-        <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="true" quiet="true" />
-        <!-- Copy our profiles folder. -->
-        <copy todir="${dir-profiles}">
-            <fileset dir="${lib.dir.profiles}" expandsymboliclinks="true">
-                <exclude name="common/**" />
-            </fileset>
-        </copy>
-    </target>
-
     <!-- Copy the profile folder to build deployment package files. -->
-    <target name="project-profile-copy">
+    <target name="build-platform-profile-copy">
         <!-- Delete the core profile folder so it can be replaced with ours. -->
         <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="false" quiet="true" />
         <mkdir dir="${dir-profile}" />
@@ -110,21 +98,33 @@
         </copy>
     </target>
 
+    <!-- Copy the profiles folder to build deployment package files. -->
+    <target name="build-platform-profiles-copy">
+        <!-- Delete the core profiles folder so it can be replaced with ours. -->
+        <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="true" quiet="true" />
+        <!-- Copy our profiles folder. -->
+        <copy todir="${dir-profiles}">
+            <fileset dir="${lib.dir.profiles}" expandsymboliclinks="true">
+                <exclude name="common/**" />
+            </fileset>
+        </copy>
+    </target>
+
     <!-- Symlink the profile folders for easy development. -->
-    <target name="platform-profiles-link">
+    <target name="build-platform-profiles-link">
         <delete dir="${dir-profiles}" />
         <symlink link="${dir-profiles}" target="${lib.dir.profiles}" />
    </target>
 
     <!-- Symlink various resources for easy development. -->
-    <target name="platform-resources-link">
+    <target name="build-platform-resources-link">
         <symlink link="${dir-build}/composer.json" target="${resources.dir.composer.json}" />
         <symlink link="${dir-build}/.composer.lock" target="${resources.dir.composer.lock}" />
         <symlink link="${dir-build}/.favicon.ico" target="${resources.dir.favicon.ico}" />
     </target>
 
     <!-- Copy various resources for deploying on production. -->
-    <target name="platform-resources-copy">
+    <target name="build-platform-resources-copy">
         <copy todir="${dir-build}">
             <fileset dir="${resources.dir}">
                 <include name="composer.*"></include>
