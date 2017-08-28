@@ -5,7 +5,17 @@ to provide that a new building procedure has been put in place. These
 upgrade instructions assume that your subsite is a "git fork" of the old
 repository at https://github.com/ec-europa/subsite-starterkit.
 
-### 1.1 Manual process
+### 1.1 Phing upgrade
+
+>```bash
+> curl https://raw.githubusercontent.com/ec-europa/ssk/master/includes/templates/subsite/composer.json > composer.json
+> curl https://raw.githubusercontent.com/ec-europa/ssk/master/includes/templates/subsite/build.xml > build.xml
+> rm -rf ./vendor ./bin ./composer.lock
+> composer install
+> ./toolkit/phing tookit-upgrade-starterkit
+>```
+
+### 1.2 Manual process
 Manually delete all files that are only specific to the starterkit.
 Below is a list of files *to keep*. So anything not mentioned below should
 be deleted.
@@ -41,7 +51,7 @@ be deleted.
 >- resources/phpcs-custom.xml => ../phpcs-ruleset.xml
 >```
 
-### 1.2 Upgrade through upstream merge
+### 1.3 Upgrade through upstream merge
 
 If you are absolutely certain that you have no starterkit modifications in any other
 files then we can let you try an upgrade path. But we do not guarantee a working
