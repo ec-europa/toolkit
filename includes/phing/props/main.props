@@ -208,6 +208,20 @@ composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =
 
+# Git hook phingcall target lists. Space separated only.
+# -----------------------------------------------------------
+git.hook.applypatch.msg =
+git.hook.post.update =
+git.hook.pre.commit =
+git.hook.pre.push =
+git.hook.pre.receive =
+git.hook.commit.msg
+git.hook.pre.applypatch =
+git.hook.prepare.commit.msg =
+git.hook.pre.rebase =
+git.hook.update =
+
+
 # Flickr configuration.
 # ---------------------
 project.flickr.key = foobar

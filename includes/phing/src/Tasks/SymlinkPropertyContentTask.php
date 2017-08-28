@@ -165,13 +165,13 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
         if ($dir->exists()) {
           $subdirectories = preg_grep('~' . preg_quote($value) . '~', array_values($allProps));
           if (count($subdirectories) == 1) {
-            $directoryToCreate = $this->targetDir . str_replace($this->originDir, "", $value);
+            $directoryToCreate =  str_replace($this->originDir, $this->targetDir, $value);
 
             $ds = new DirectoryScanner();
             $ds->setBasedir($dir);
             $ds->setIncludes("*");
             $ds->scan();
-            
+
             $dsIncludedDirectories = (array) $ds->getIncludedDirectories();
             $dsIncludedFiles = (array) $ds->getIncludedFiles();
 
