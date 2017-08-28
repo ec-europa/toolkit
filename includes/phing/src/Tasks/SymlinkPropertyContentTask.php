@@ -167,17 +167,17 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
           if (count($subdirectories) == 1) {
             $directoryToCreate = $this->targetDir . str_replace($this->originDir, "", $value);
 
-            $fsTargets = [];
-
             $ds = new DirectoryScanner();
             $ds->setBasedir($dir);
             $ds->setIncludes("*");
             $ds->scan();
+            
+            $dsIncludedDirectories = (array) $ds->getIncludedDirectories();
+            $dsIncludedFiles = (array) $ds->getIncludedFiles();
 
             $fsTargets = array_merge(
-              $fsTargets,
-              $ds->getIncludedDirectories(),
-              $ds->getIncludedFiles()
+              $dsIncludedDirectories,
+              $dsIncludedFiles
             );
             // Add each target to the map
             foreach ($fsTargets as $target) {
