@@ -30,7 +30,7 @@
     "psr-4": {
       "Drupal\\nexteuropa\\": "${PROJECT}/tests/src",
       "Drush\\Drush\\Log\\": "../../src/Drush/Log",
-      "NextEuropa\\": "../../src"
+      "Phing\\Ssk\\": "../phing/src"
     }
   },
   "repositories": [

@@ -1,6 +1,6 @@
 <?php
 
-namespace NextEuropa\Phing;
+namespace Phing\Ssk\Tasks;
 
 require_once 'phing/Task.php';
 

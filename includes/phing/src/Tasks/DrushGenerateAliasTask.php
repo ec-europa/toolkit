@@ -1,6 +1,6 @@
 <?php
 
-namespace NextEuropa\Phing;
+namespace Phing\Ssk\Tasks;
 
 use Project;
 use Symfony\Component\Finder\Finder;

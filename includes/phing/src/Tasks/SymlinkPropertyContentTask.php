@@ -1,11 +1,11 @@
 <?php
 
-namespace NextEuropa\Phing;
+namespace Phing\Ssk\Tasks;
 
 require_once 'phing/Task.php';
 
 use BuildException;
-use IterableFileSet;
+use DirectoryScanner;
 use PhingFile;
 use Properties;
 use ArrayIterator;
@@ -169,14 +169,15 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
 
             $fsTargets = [];
 
-            $ds = new \DirectoryScanner();
+            $ds = new DirectoryScanner();
             $ds->setBasedir($dir);
             $ds->setIncludes("*");
             $ds->scan();
 
             $fsTargets = array_merge(
               $fsTargets,
-              $ds->getIncludedDirectories()
+              $ds->getIncludedDirectories(),
+              $ds->getIncludedFiles()
             );
             // Add each target to the map
             foreach ($fsTargets as $target) {
@@ -206,14 +207,14 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
       foreach ($map as $directory => $symlinks) {
         $this->makeDirectory($directory);
         foreach ($symlinks as  $targetName => $symlink) {
-          $this->symlink($symlink['target'], $symlink['link'], TRUE);
+          $this->symlink($symlink['target'], $symlink['link']);
         }
       }
       return true;
     }
 
-    protected function symlink($targetPath, $name, $logShort){
-      parent::symlink($targetPath, $name, $logShort);
+    protected function symlink($targetPath, $link){
+      parent::symlink($targetPath, $link);
     }
   
     protected function makeDirectory($dir) {

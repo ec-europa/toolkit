@@ -54,6 +54,12 @@
             targetdir="${project.build.subsite.dir}"
             overwrite="true"
         />
+        <symlink-property-contents
+                prefix="project.resources.dir."
+                origindir="${project.resources.dir}"
+                targetdir="${project.build.subsite.dir}"
+                overwrite="true"
+        />
     </target>
 
     <!-- Generate the makefile used to download development modules. -->

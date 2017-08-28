@@ -1,0 +1,14 @@
+<project>
+    <!-- Set include path for custom tasks. -->
+    <!--<includepath classpath="${ssk.dir.incl.phing.src}/Tasks" />-->
+
+    <!-- Custom task definititons. -->
+    <taskdef name="drushgal" classname="Phing\Ssk\Tasks\DrushGenerateAliasTask" />
+    <taskdef name="drushmf" classname="Phing\Ssk\Tasks\DrushMakeFileTask" />
+    <taskdef name="gitigmerge" classname="Phing\Ssk\Tasks\GitignoreMergerTask" />
+    <taskdef name="phpcsconf" classname="Phing\Ssk\Tasks\PhpCodeSnifferConfigurationTask" />
+    <taskdef name="propval" classname="Phing\Ssk\Tasks\PropertiesValidateTask" />
+    <taskdef name="relsym" classname="Phing\Ssk\Tasks\RelativeSymlinkTask" />
+    <taskdef name="replacedby" classname="Phing\Ssk\Tasks\PhingDeprecatedTask" />
+    <taskdef name="symlink-property-contents" classname="Phing\Ssk\Tasks\SymlinkPropertyContentTask" />
+</project>

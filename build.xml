@@ -4,21 +4,9 @@
 
     <!-- Set starterkit paths for easy loading. -->
     <property file="${phing.dir.starterkit}/includes/phing/props/ssk.props" logoutput="false" />
-
-    <!-- Set include path for custom tasks. -->
-    <includepath classpath="${ssk.dir}/src/Phing" />
-
-    <!-- Custom task definititons. -->
-    <taskdef name="drushgal" classname="\NextEuropa\Phing\DrushGenerateAliasTask" />
-    <taskdef name="drushmf" classname="\NextEuropa\Phing\DrushMakeFileTask" />
-    <taskdef name="gitigmerge" classname="\NextEuropa\Phing\GitignoreMergerTask" />
-    <taskdef name="phpcsconf" classname="\NextEuropa\Phing\PhpCodeSnifferConfigurationTask" />
-    <taskdef name="propval" classname="\NextEuropa\Phing\PropertiesValidateTask" />
-    <taskdef name="relsym" classname="\NextEuropa\Phing\RelativeSymlinkTask" />
-    <taskdef name="replacedby" classname="\NextEuropa\Phing\PhingDeprecatedTask" />
-    <taskdef name="symlink-property-contents" classname="\NextEuropa\Phing\SymlinkPropertyContentTask" />
     
     <!-- Import xml files for phing. -->
+    <import file="${ssk.dir.incl.phing.build}/tasks.xml"/>
     <import file="${ssk.dir.vendor}/drupal/phingdrushtask/import.xml"/>
     <import file="${ssk.dir.vendor}/drupol/phingbehattask/import.xml"/>
 

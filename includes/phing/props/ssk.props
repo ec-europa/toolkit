@@ -15,6 +15,7 @@ ssk.dir.incl.drush = ${ssk.dir.incl}/drush
 ssk.dir.incl.phing = ${ssk.dir.incl}/phing
 ssk.dir.incl.phing.build = ${ssk.dir.incl.phing}/build
 ssk.dir.incl.phing.props = ${ssk.dir.incl.phing}/props
+ssk.dir.incl.phing.src = ${ssk.dir.incl.phing}/src
 ssk.dir.incl.templates = ${ssk.dir.incl}/templates
 ssk.dir.vendor = ${ssk.dir}/vendor
 

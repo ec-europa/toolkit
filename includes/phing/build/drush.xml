@@ -13,7 +13,7 @@
     <!-- Install the site. -->
     <target name="drush-site-install">
         <echo message="Installing site ${project.name}." />
-        <drush command="site-install" assume="yes" root="${project.build.platform.dir}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="site-install" assume="yes" root="${project.build.platform.dir}" bin="${ssk.dir.bin.drush}" alias="@${project.id}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${project.db.url}" />
             <option name="site-name" value="'${project.name}'" />
             <option name="account-name" value="${project.admin.username}" />
@@ -27,7 +27,7 @@
     <!-- Generate aliases for Drupal site by foldername. -->
     <target name="drush-generate-aliases">
         <mkdir dir="${project.build.platform.dir.sites}/all/drush" />
-        <!--<drushgal siteRoot="${project.build.platform.dir}" />-->
+        <drushgal siteRoot="${project.build.platform.dir}" />
     </target>
 
     <!-- Enable modules. -->

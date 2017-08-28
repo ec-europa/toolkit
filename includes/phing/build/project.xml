@@ -243,6 +243,9 @@
             <fileset dir="${project.build.subsite.dir}" />
         </chmod>
 
+        <!-- Regenerate aliases for this site to be included. -->
+        <phingcall target="drush-generate-aliases" />
+
         <if>
             <and>
                 <equals arg1="${project.profile.package.db.cache}" arg2="1" />
@@ -275,8 +278,6 @@
                         </phingcall>
                     </then>
                 </if>
-                <!-- Regenerate aliases for this site to be included. -->
-                <phingcall target="drush-generate-aliases" />
             </else>
         </if>
 
@@ -583,6 +584,16 @@
         <input propertyName="project.db.dl.url.htaccess.username" message="Please enter your username." />
         <input hidden="true" propertyName="project.db.dl.url.htaccess.password" message="Please enter your password." />
         <phingcall target="project-database-wget" />
+    </target>
+
+    <target name="project-validate-properties">
+        <!--forbidden="${ssk.incl.phing.props}/build.properties.forbidden"-->
+        <propval
+                source="build.properties"
+                required="${ssk.dir.incl.phing.props}/required.props"
+                haltonerror="${project.build.haltonerror.props.validate}"
+                logoutput="${logoutput}"
+        />
     </target>
 
 </project>

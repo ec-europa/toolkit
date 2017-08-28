@@ -38,14 +38,6 @@
         </then>
     </if>
 
-    <!--forbidden="${ssk.incl.phing.props}/build.properties.forbidden"-->
-    <propval
-        source="build.properties"
-        required="${ssk.dir.incl.phing.props}/required.props"
-        haltonerror="${project.build.haltonerror.props.validate}"
-        logoutput="${logoutput}"
-    />
-
     <!-- Load version properties if available. -->
     <property file="${project.tmp.dir}/build.properties.version" logoutput="${logoutput}" />
 
