@@ -103,7 +103,7 @@
     <target name="build-subsite-composer-install">
         <echo msg="Run 'composer install --no-dev' in the build destination folder." />
         <composer command="install" composer="${project.bin.composer}">
-            <arg value="--working-dir=${build.dist.dir}" />
+            <arg value="--working-dir=${build.subsite.dir}" />
             <arg value="--no-interaction" />
             <arg value="--no-plugins" />
             <arg value="--no-suggest" />

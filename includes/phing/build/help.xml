@@ -55,73 +55,73 @@
     <!-- Get latest stable if major version is defined. -->
     <target name="project-set-platform-version" hidden="true">
         <if>
-            <matches string="${profile.package.version}" pattern="^[1-9]+\." />
+            <matches string="${platform.package.version}" pattern="^[1-9]+\." />
             <then>
                 <propertyregex
-                    property="profile.package.version.major"
-                    subject="${profile.package.version}"
+                    property="platform.package.version.major"
+                    subject="${platform.package.version}"
                     pattern="^([1-9]+)\."
                     match="$1"
                     override="true" />
                 <propertyregex
-                    property="profile.package.version.minor"
-                    subject="${profile.package.version}"
+                    property="platform.package.version.minor"
+                    subject="${platform.package.version}"
                     pattern="^[1-9]+\.([1-9]+)"
                     match="$1"
                     override="true" />
                 <propertyregex
-                    property="profile.package.version.reference"
-                    subject="${profile.package.version}"
+                    property="platform.package.version.reference"
+                    subject="${platform.package.version}"
                     pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
                     match="$1"
                     override="true" />
                 <if>
-                    <isset property="profile.package.version.minor" />
+                    <isset property="platform.package.version.minor" />
                     <then>
-                        <php expression="${profile.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${profile.package.version.major}\.${profile.package.version.minor}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="profile.package.version.current" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${profile.package.version.major}\.${platform.upgrade}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="profile.package.version.next" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${profile.package.version.major}\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="profile.package.version.latest" />
+                        <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.${platform.package.version.minor}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.current" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.${platform.upgrade}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.next" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.latest" />
                     </then>
                 </if>
             </then>
         </if>
         <if>
             <and>
-                <matches string="${profile.package.version.current}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
+                <matches string="${platform.package.version.current}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
                 <versioncompare
-                    version="${profile.package.version.current}"
-                    desiredVersion="${profile.package.version}"
+                    version="${platform.package.version.current}"
+                    desiredVersion="${platform.package.version}"
                     operator="gt" />
             </and>
             <then>
-                <echo msg="The platform package version is set to ${profile.package.version}." />
-                <echo msg="The build will be performed with version ${profile.package.version.current}." />
+                <echo msg="The platform package version is set to ${platform.package.version}." />
+                <echo msg="The build will be performed with version ${platform.package.version.current}." />
                 <propertyregex
-                    property="profile.package.version.reference"
-                    subject="${profile.package.version.current}"
+                    property="platform.package.version.reference"
+                    subject="${platform.package.version.current}"
                     pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
                     match="$1"
                     override="true" />
-                <property name="profile.package.version" value="${profile.package.version.current}" override="true" />
+                <property name="platform.package.version" value="${platform.package.version.current}" override="true" />
             </then>
         </if>
         <if>
             <and>
-                <matches string="${profile.package.version.next}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
+                <matches string="${platform.package.version.next}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
                 <versioncompare
-                    version="${profile.package.version.next}"
-                    desiredVersion="${profile.package.version}"
+                    version="${platform.package.version.next}"
+                    desiredVersion="${platform.package.version}"
                     operator="gt" />
             </and>
             <then>
                 <!-- TODO: this allows for automatic upgrading if we were to provide a setting. -->
-                <php expression="${profile.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
-                <echo msg="Last released deploy package is at ${profile.package.version.latest}." level="warning" />
-                <echo msg="Please upgrade your platform version to ${profile.package.version.major}.${platform.upgrade}." level="warning" />
+                <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
+                <echo msg="Last released deploy package is at ${platform.package.version.latest}." level="warning" />
+                <echo msg="Please upgrade your platform version to ${platform.package.version.major}.${platform.upgrade}." level="warning" />
             </then>
         </if>
-        <echoproperties regex="~^project\.profile\.package\.version~" destfile="${project.tmp.dir}/build.properties.version" />
+        <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.properties.version" />
     </target>
 
     <!-- Check if site exists. -->

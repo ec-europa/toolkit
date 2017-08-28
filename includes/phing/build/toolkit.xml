@@ -64,7 +64,7 @@
     </target>
 
     <!-- Upgrade ssk 2.x to 3.x. -->
-    <target name="toolkit-upgrade">
+    <target name="toolkit-upgrade-starterkit">
         <if>
             <available file="${project.basedir}/build.package.xml" type="file" />
             <then>
@@ -109,6 +109,47 @@
                         <!-- Move subsite resources to new location. -->
                         <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
                         <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true"/>
+
+                        <move file="${lib.dir}" tofile="lib-backup" />
+                        <mkdir dir="${lib.dir.libraries}" />
+                        <mkdir dir="${lib.dir.modules}" />
+                        <mkdir dir="${lib.dir.themes}" />
+                        <mkdir dir="${lib.dir.source}" />
+                        <if>
+                            <available file="lib-backup/modules/custom" type="dir" />
+                            <then>
+                                <move todir="${lib.dir.modules.custom}" >
+                                    <fileset dir="lib-backup/modules/custom">
+                                        <include name="**" />
+                                    </fileset>
+                                </move>
+                                <delete dir="lib-backup/modules/custom" />
+                                <move todir="${lib.dir.modules.custom}" >
+                                    <fileset dir="lib-backup/modules">
+                                        <include name="**" />
+                                    </fileset>
+                                </move>
+                                <delete dir="lib-backup/modules" />
+                                <move todir="${lib.dir.themes}" >
+                                    <fileset dir="lib-backup/themesm">
+                                        <include name="**" />
+                                    </fileset>
+                                </move>
+                                <delete dir="lib-backup/themes" />
+                                <move todir="${lib.dir.libraries}" >
+                                    <fileset dir="lib-backup/libraries">
+                                        <include name="**" />
+                                    </fileset>
+                                </move>
+                                <delete dir="lib-backup/libraries" />
+                                <move todir="${lib.dir.source}" >
+                                    <fileset dir="lib-backup/src">
+                                        <include name="**" />
+                                    </fileset>
+                                </move>
+                                <delete dir="lib-backup/src" />
+                            </then>
+                        </if>
                     </then>
                 </if>
             </then>

@@ -73,7 +73,7 @@ solr.host = solr
 solr.port = 8983
 solr.type = d7_apachesolr
 solr.scheme = http://
-solr.url = ${solr.schem}://${solr.host}:${solr.port}/solr/${solr.type}
+solr.url = ${solr.scheme}://${solr.host}:${solr.port}/solr/${solr.type}
 
 # Admin configuration.
 # --------------------
@@ -87,12 +87,12 @@ profile = multisite_drupal_standard
 profile.core = 7.x
 profile.core.make = ${resources.dir}/drupal-core.make
 profile.make = ${resources.dir}/${profile}.make
-profile.package = deploy-package-${profile.package.reference}.tar.gz
-profile.package.db.cache = 0
-profile.package.provider = git-hub
-profile.package.provider.token = # TODO: Github API limit.
-profile.package.repository = ec-europa/platform-dev
-profile.package.version = 2.4
+platform.package = deploy-package-${platform.package.reference}.tar.gz
+platform.package.db.cache = 0
+platform.package.provider = git-hub
+platform.package.provider.token = # TODO: Github API limit.
+platform.package.repository = ec-europa/platform-dev
+platform.package.version = 2.4
 
 # Theme configuration (deploy props?)
 # --------------------
@@ -220,7 +220,6 @@ git.hook.pre.applypatch =
 git.hook.prepare.commit.msg =
 git.hook.pre.rebase =
 git.hook.update =
-
 
 # Flickr configuration.
 # ---------------------

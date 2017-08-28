@@ -126,7 +126,7 @@
     <!-- Unpack the platform. -->
     <target name="project-platform-package-unpack">
         <phingcall target="package-download-unpack">
-            <property name="package-name" value="platform-dev-${profile.package.version.current}.tar.gz" />
+            <property name="package-name" value="platform-dev-${platform.package.version.current}.tar.gz" />
             <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
             <property name="package-download-location" value="https://platform-ci.ne-dev.eu/releases" />
             <property name="package-extract-location" value="${build.platform.dir}" />
@@ -246,8 +246,8 @@
 
         <if>
             <and>
-                <equals arg1="${profile.package.db.cache}" arg2="1" />
-                <available file="${share.path.platform}/databases/platform-dev-${profile.package.version}/platform-dev-${profile.package.version}.sql" type="file" />
+                <equals arg1="${platform.package.db.cache}" arg2="1" />
+                <available file="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" type="file" />
             </and>
             <then>
                 <phingcall target="drush-regenerate-settings" />
@@ -259,7 +259,7 @@
                     <then>
                         <phingcall target="drush-sql-create" />
                         <phingcall target="drush-sql-import">
-                            <property name="database-file" value="${share.path.platform}/databases/platform-dev-${profile.package.version}/platform-dev-${profile.package.version}.sql" />
+                            <property name="database-file" value="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" />
                         </phingcall>
                     </then>
                 </if> 
@@ -269,10 +269,10 @@
                 <phingcall target="drush-site-install" />
                 <!-- Backup vanilla database. -->
                 <if>
-                    <equals arg1="${profile.package.db.cache}" arg2="1" />
+                    <equals arg1="${platform.package.db.cache}" arg2="1" />
                     <then>
                         <phingcall target="drush-sql-dump">
-                            <property name="database-file" value="${share.path.platform}/databases/platform-dev-${profile.package.version}/platform-dev-${profile.package.version}.sql" />
+                            <property name="database-file" value="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" />
                         </phingcall>
                     </then>
                 </if>
