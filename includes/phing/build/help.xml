@@ -48,12 +48,12 @@
             <import file="${ssk.dir.incl.phing.build}/distribution.xml" />
         </then>
         <else>
-            <import file="${ssk.dir.incl.phing.build}/subsite.xml" />
+            <import file="${ssk.dir.incl.phing.build}/site.xml" />
         </else>
     </if>
 
     <!-- Get latest stable if major version is defined. -->
-    <target name="project-distro-version-set" hidden="true">
+    <target name="project-set-distribution-version" hidden="true">
         <if>
             <matches string="${profile.package.version}" pattern="^[1-9]+\." />
             <then>

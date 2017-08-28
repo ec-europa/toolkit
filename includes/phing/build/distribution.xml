@@ -11,8 +11,17 @@
     </if>
 
     <target
-        name="build-distribution-package"
-        description="Build a version of the platform intended to distribute as a release package."
+        name="build-dev"
+        description="Build a local development version with all distribution profiles (build-distribution-environment)."
+        depends="build-distribution-environment" />
+
+    <target
+        name="build-dist"
+        description="Build a single profile distribution intended as a release package (build-distribution-release)."
+        depends="build-distribution-release" />
+
+    <target
+        name="build-distribution-release"
         depends="
             project-set-dist,
             project-set-profile,
@@ -24,8 +33,7 @@
             build-distribution-composer-install" />
 
     <target
-            name="build-distribution-package-all"
-            description="Build files of  platform intended for release package."
+            name="build-distribution-releases"
             depends="
             project-set-dist,
             project-set-profile,
@@ -38,7 +46,6 @@
 
     <target
         name="build-distribution-environment"
-        description="Build a local development version of the platform."
         depends="
             project-set-env,
             project-set-profile,

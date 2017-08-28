@@ -160,7 +160,7 @@
     </target>
 
     <!-- Install Composer dev dependencies for the subsite. -->
-    <target name="project-subsite-composer-install">
+    <target name="build-site-composer-install">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <composer command="install" composer="${project.bin.composer}">
             <arg value="--working-dir=${build.subsite.dir}" />
