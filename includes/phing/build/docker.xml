@@ -11,7 +11,7 @@
     </if>
 
     <!-- Start an environment with docker. -->
-    <target name="docker-compose-up" description="Start docker project.">
+    <target name="docker-compose-up" description="Start docker project." hidden="true">
         <echo msg="Starting containers for ${docker.project.id}" />
         <mkdir dir="${build.profile.dir}" />
         <mkdir dir="${share.path.platform.packages.database}/platform-dev-${profile.package.version}" />
@@ -21,7 +21,7 @@
     </target>
 
     <!-- Stop docker environment. -->
-    <target name="docker-compose-stop" description="Stop docker project.">
+    <target name="docker-compose-stop" description="Stop docker project." hidden="true">
         <echo msg="Stopping containers for ${docker.project.id}" />
         <exec command="docker-compose -p ${docker.project.id} -f ${ssk.dir.incl.docker}/docker-compose.yml stop mysql" passthru="true" />
         <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${share.path.subsites.packages.database} docker-compose -p ${docker.project.id} -f ${ssk.dir.incl.docker}/docker-compose.yml -f ${ssk.dir.incl.docker}/backup-restore.yml run backup" passthru="true" />
@@ -29,7 +29,7 @@
     </target>
 
     <!-- Remove docker environment. -->
-    <target name="docker-compose-down" description="Trash docker project.">
+    <target name="docker-compose-down" description="Trash docker project." hidden="true">
         <echo msg="Removing containers and volumes for ${docker.project.id}" />
         <exec command="docker-compose -p ${docker.project.id} -f ${ssk.dir.incl.docker}/docker-compose.yml down --volumes" />
         <delete file="${project.basedir}/ssk-${docker.project.id}" />
@@ -43,7 +43,7 @@
     </target>
 
    <!-- Backup database. -->
-   <target name="docker-compose-backup" description="Backup database.">
+   <target name="docker-compose-backup" description="Backup database." hidden="true">
         <if>
             <isset property="backup-location" />
             <then>
@@ -59,7 +59,7 @@
     </target>
 
    <!-- Restore database. -->
-    <target name="docker-compose-restore" description="Restore database.">
+    <target name="docker-compose-restore" description="Restore database." hidden="true">
         <if>
             <not>
                 <and>
@@ -82,16 +82,6 @@
                 <echo msg="File ${backup-location}/${backup-filename} does not exist." level="error" />
             </else>
         </if>
-    </target>
-
-    <target name="dockercmb-test">
-        <cm-backup
-            bin="docker"
-            source="/var/lib/mysql/"
-            stdout="test.tar.gz"
-            volumesfrom="0a30c14a304c46988d7b2b58a1f7650b_mysql_1"
-            passthru="true"
-        />
     </target>
 
 </project>

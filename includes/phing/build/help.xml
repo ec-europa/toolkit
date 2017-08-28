@@ -45,15 +45,15 @@
     <if>
         <available file="${lib.dir.profiles}" type="dir"/>
         <then>
-            <import file="${ssk.dir.incl.phing.build}/distribution.xml" />
+            <import file="${ssk.dir.incl.phing.build}/platform.xml" />
         </then>
         <else>
-            <import file="${ssk.dir.incl.phing.build}/site.xml" />
+            <import file="${ssk.dir.incl.phing.build}/subsite.xml" />
         </else>
     </if>
 
     <!-- Get latest stable if major version is defined. -->
-    <target name="project-set-distribution-version" hidden="true">
+    <target name="project-set-platform-version" hidden="true">
         <if>
             <matches string="${profile.package.version}" pattern="^[1-9]+\." />
             <then>

@@ -79,7 +79,7 @@ build.subsite.dir.source = ${build.subsite.dir}/src
 build.subsite.dir.themes = ${build.subsite.dir}/themes
 build.subsite.dir.tmp = ${build.subsite.dir}/tmp
 
-# Distribution build files and directories.
+# platform build files and directories.
 # -----------------------------------------
 build.dist.composer.json = ${build.dist.dir}/composer.json
 build.dist.composer.lock = ${build.dist.dir}/composer.lock

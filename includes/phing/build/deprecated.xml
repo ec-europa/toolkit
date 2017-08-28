@@ -12,7 +12,7 @@
 
     <!--&lt;!&ndash; Target build-dev has been replaced by build-code. &ndash;&gt;-->
     <!--<target hidden="true" name="build-dev">-->
-        <!--<replacedby target="build-distrodev" />-->
+        <!--<replacedby target="build-platformdev" />-->
     <!--</target>-->
 
 </project>

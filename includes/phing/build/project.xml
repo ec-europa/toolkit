@@ -12,13 +12,13 @@
 
     <!-- Create code base. -->
     <target
-        name="build-project-distro"
+        name="build-project-platform"
         description="Build NextEuropa Platform code without version control."
         depends="
-            project-site-backup,
-            project-distro-delete,
-            project-distro-package-unpack,
-            project-site-restore" />
+            project-subsite-backup,
+            project-platform-delete,
+            project-platform-package-unpack,
+            project-subsite-restore" />
 
     <!-- Create code base. -->
     <target
@@ -37,7 +37,7 @@
 
     <!-- Als long as there's only one theme we don't need to name it. -->
     <target
-        name="build-project-theme-dev"
+        name="build-theme-dev"
         description="Build EC Europa theme with version control."
         depends="
             theme-europa-repo-clone,
@@ -53,9 +53,7 @@
             project-modules-devel-en" />
 
     <!-- Link site document root to Webserver document root. -->
-    <target
-        name="build-project-docroot"
-        description="Create symlink from build to docroot.">
+    <target name="project-set-docroot">
         <relsym link="${project.docroot}" target="${build.profile.dir}" overwrite="true" />
     </target>
 
@@ -87,7 +85,7 @@
     </target>
 
     <!-- Update .htaccess. -->
-    <target name="build-project-htaccess" description="Update .htaccess file.">
+    <target name="project-set-htaccess">
         <if>
             <istrue value="${build.profile.htaccess.append.text}" />
             <then>
@@ -101,7 +99,7 @@
     </target>
 
     <!-- Delete the previous development build. -->
-    <target name="project-distro-delete">
+    <target name="project-platform-delete">
         <echo msg="Delete previous build." />
         <phingcall target="unprotect-folder">
             <property name="folder.to.unprotect" value="${build.profile.dir.settings}" />
@@ -114,7 +112,7 @@
     </target>
 
     <!-- Delete the previous development build. -->
-    <target name="project-delete-distribution">
+    <target name="project-delete-platform">
         <echo msg="Delete previous build." />
         <phingcall target="unprotect-folder">
             <property name="folder.to.unprotect" value="${build.profile.sites}" />
@@ -126,7 +124,7 @@
     </target>
 
     <!-- Unpack the platform. -->
-    <target name="project-distro-package-unpack">
+    <target name="project-platform-package-unpack">
         <phingcall target="package-download-unpack">
             <property name="package-name" value="platform-dev-${profile.package.version.current}.tar.gz" />
             <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
@@ -138,7 +136,7 @@
     </target>
 
     <!-- Install Composer dependencies without development dependencies. -->
-    <target name="build-distribution-composer-install">
+    <target name="build-platform-composer-install">
         <echo msg="Run 'composer install' in platform root." />
         <composer command="install" composer="${project.bin.composer}">
             <arg value="--working-dir=${build.profile.dir}" />
@@ -150,7 +148,7 @@
     </target>
 
     <!-- Install Composer dependencies, including optional development dependencies. -->
-    <target name="build-distribution-composer-install-dev">
+    <target name="build-platform-composer-install-dev">
         <composer command="install" composer="${project.bin.composer}">
             <arg value="--working-dir=${build.profile.dir}" />
             <arg value="--no-interaction" />
@@ -160,7 +158,7 @@
     </target>
 
     <!-- Install Composer dev dependencies for the subsite. -->
-    <target name="build-site-composer-install">
+    <target name="build-subsite-composer-install">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <composer command="install" composer="${project.bin.composer}">
             <arg value="--working-dir=${build.subsite.dir}" />
@@ -268,7 +266,7 @@
             </then>
             <else>
                 <!-- Install site with drush. -->
-                <phingcall target="drush-site-install" />
+                <phingcall target="drush-subsite-install" />
                 <!-- Backup vanilla database. -->
                 <if>
                     <equals arg1="${profile.package.db.cache}" arg2="1" />
@@ -327,7 +325,7 @@
     </target>
 
     <!-- Backs up files and folders listed in rebuild. properties in order to rebuild. -->
-    <target name="project-site-backup">
+    <target name="project-subsite-backup">
 
         <!-- Check if site exists. -->
         <if>
@@ -347,9 +345,9 @@
             </and>
             <then>
                 <echo msg="Installed site detected." level="warning"/>
-                <propertyprompt propertyName="project-site-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
+                <propertyprompt propertyName="project-subsite-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
                 <if>
-                    <equals arg1="${project-site-backup-activated}" arg2="y" />
+                    <equals arg1="${project-subsite-backup-activated}" arg2="y" />
                     <then>
                         <property name="rebuild.auto" value="1" override="true"/>
                     </then>
@@ -376,17 +374,17 @@
                     <property name="folder.to.unprotect" value="${build.profile.dir.sites}" />
                 </phingcall>
                 <!-- Back up folders list. -->
-                <foreach list="${rebuild.backup.folders}" param="site-item" target="project-site-backup-item" delimiter=";">
+                <foreach list="${rebuild.backup.folders}" param="site-item" target="project-subsite-backup-item" delimiter=";">
                     <property name="site-item-type" value="dir"/>
                 </foreach>
                 <!-- Back up files list. -->
-                <foreach list="${rebuild.backup.files}" param="site-item" target="project-site-backup-item" delimiter=";">
+                <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-backup-item" delimiter=";">
                     <property name="site-item-type" value="file"/>
                 </foreach>
             </then>
         </if>
         <if>
-            <equals arg1="${project-site-backup-activated}" arg2="y" />
+            <equals arg1="${project-subsite-backup-activated}" arg2="y" />
             <then>
                 <property name="rebuild.auto" value="0" override="true"/>
             </then>
@@ -394,7 +392,7 @@
     </target>
 
     <!-- Restoring sites directory if backed up before rebuild-dev. -->
-    <target name="project-site-restore">
+    <target name="project-subsite-restore">
 
         <!-- Check if backup exists. -->
         <if>
@@ -413,9 +411,9 @@
             </and>
             <then>
                 <echo msg="Site backup detected." level="warning"/>
-                <propertyprompt propertyName="project-site-restore-activated" promptText="Do you wish to restore site for this build? (y/n)" />
+                <propertyprompt propertyName="project-subsite-restore-activated" promptText="Do you wish to restore site for this build? (y/n)" />
                 <if>
-                    <equals arg1="${project-site-restore-activated}" arg2="y" />
+                    <equals arg1="${project-subsite-restore-activated}" arg2="y" />
                     <then>
                         <property name="rebuild.auto" value="1" override="true"/>
                     </then>
@@ -430,11 +428,11 @@
             <then>
                 <echo msg="Restoring site files and folders from ${rebuild.backup.destination}"/>
                 <!-- Restore folders list. -->
-                <foreach list="${rebuild.backup.folders}" param="site-item" target="project-site-restore-item" delimiter=";">
+                <foreach list="${rebuild.backup.folders}" param="site-item" target="project-subsite-restore-item" delimiter=";">
                     <property name="site-item-type" value="dir"/>
                 </foreach>
                 <!-- Restore files list. -->
-                <foreach list="${rebuild.backup.files}" param="site-item" target="project-site-restore-item" delimiter=";">
+                <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-restore-item" delimiter=";">
                     <property name="site-item-type" value="file"/>
                 </foreach>
                 <!-- Delete the site backup directory. -->
@@ -444,7 +442,7 @@
     </target>
 
     <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
-    <target name="project-site-backup-item" hidden="true">
+    <target name="project-subsite-backup-item" hidden="true">
         <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
         <property name="site-item-backup-dir" value="${site-item-dir}">
             <filterchain>
@@ -474,7 +472,7 @@
     </target>
 
     <!-- Restores a site item from the rebuild.backup.destination to the new build. -->
-    <target name="project-site-restore-item" hidden="true">
+    <target name="project-subsite-restore-item" hidden="true">
         <property name="site-item-backup" value="${site-item}">
             <filterchain>
                 <replaceregexp>

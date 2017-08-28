@@ -11,41 +11,46 @@
      </if>
 
     <target
-        name="build-dev"
-        description="Build a local development version of the site (build-site-environment)."
-        depends="build-site-environment" />
+        name="build-subsite-dev"
+        description="Build a local development version of the site (build-subsite-environment)."
+        depends="build-subsite-environment" />
 
     <target
-        name="build-dist"
-        description="Build a site intended as a release package (build-site-release)."
-        depends="build-site-release" />
+        name="build-subsite-dist"
+        description="Build a site intended as a release package (build-subsite-release)."
+        depends="build-subsite-release" />
+
+    <target
+        name="build-subsite-test"
+        description="Build a subsite test package to test this reslease. ."
+        depends="build-subsite-release" />
 
     <!-- Create code base. -->
     <target
-        name="build-site-environment"
+        name="build-subsite-environment"
         depends="
-            project-site-backup,
-            project-set-distribution-version,
+            project-subsite-backup,
+            project-set-platform-version,
             project-set-env,
             project-set-profile,
-            build-site-link-resources,
-            build-site-make,
-            build-site-composer-install,
+            build-subsite-link-resources,
+            build-subsite-make-site,
+            build-subsite-composer-install,
             project-modules-devel-dl,
-            project-site-restore" />
+            project-subsite-restore" />
 
-    <!-- Create distribution code base. -->
+    <!-- Create platform code base. -->
     <target
-        name="build-site-release"
+        name="build-subsite-release"
         depends="
             project-set-dist,
-            project-delete-site,
-            build-build-site-make,
-            build-site-copy-resources,
-            build-build-site-composer-install" />
+            project-subsite-delete,
+            build-subsite-make-site,
+            build-subsite-copy-resources,
+            build-subsite-composer-install" />
 
     <!-- Make the development version of the subsite. -->
-    <target name="build-site-make">
+    <target name="build-subsite-make-site">
         <echo msg="Make the subsite." />
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${resources.dir.site.make}" />
@@ -55,7 +60,7 @@
     </target>
 
     <!-- Symlink the source folders for easy development. -->
-    <target name="build-site-link-resources">
+    <target name="build-subsite-link-resources">
         <symlink-property-contents
             prefix="lib.dir."
             origindir="${lib.dir}"
@@ -89,13 +94,13 @@
     </target>
 
     <!-- Build release package. -->
-    <target name="build-site-release-package" description="Build subsite source code release package." depends="build-site-release">
+    <target name="build-subsite-release-package" depends="build-subsite-release">
         <mkdir dir="${project.release.path}" />
         <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${build.dist}" />
     </target>
 
    <!-- Install Composer dist dependencies for the subsite. -->
-    <target name="build-build-site-composer-install">
+    <target name="build-subsite-composer-install">
         <echo msg="Run 'composer install --no-dev' in the build destination folder." />
         <composer command="install" composer="${project.bin.composer}">
             <arg value="--working-dir=${build.dist.dir}" />
@@ -108,7 +113,7 @@
     </target>
 
     <!-- Copy resources into the build folder. -->
-    <target name="build-site-copy-resources">
+    <target name="build-subsite-copy-resources">
         <echo msg="Copy custom resources." />
         <!-- Copy our custom modules. -->
         <phingcall target="copy-folder">
@@ -139,19 +144,11 @@
         <copy todir="${build.dist.dir}" file="${resources.dir.composer.lock}" />
     </target>
 
-    <!-- Delete the previous distribution build. -->
-    <target name="project-delete-site">
+    <!-- Delete the previous platform build. -->
+    <target name="project-subsite-delete">
         <echo msg="Delete previous build." />
         <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${build.dist.dir}" />
-        </phingcall>
-    </target>
-
-    <!-- Make the distribution version of the subsite. -->
-    <target name="build-build-site-make">
-        <phingcall target="drush-make-no-core">
-            <property name="make-file" value="${resources.dir.site.make}" />
-            <property name="make-folder" value="${build.subsite.dir.modules}" />
         </phingcall>
     </target>
 

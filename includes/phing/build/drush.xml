@@ -11,7 +11,7 @@
     </if>
 
     <!-- Install the site. -->
-    <target name="drush-site-install">
+    <target name="drush-subsite-install">
         <echo message="Installing site ${project.name}." />
         <drush command="site-install" assume="yes" root="${build.profile.dir}" bin="${ssk.dir.bin.drush}" alias="@${project.id}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
@@ -111,7 +111,7 @@
         </if>
     </target>
 
-    <!-- Make the distribution version of the subsite. -->
+    <!-- Make the platform version of the subsite. -->
     <target name="drush-make-no-core">
         <echo msg="Delete temporary build folder." />
         <if>
