@@ -82,6 +82,8 @@
         <property name="profile-name" value="${project.profile}" override="true" />
         <echo msg="Setting profile make to ${project.profile.make}." />
         <property name="profile-make" value="${project.profile.make}" override="true" />
+        <echo msg="Setting Drupal make to ${project.profile.core.make}." />
+        <property name="drupal-make" value="${project.profile.core.make}" override="true" />
     </target>
 
     <!-- Update .htaccess. -->

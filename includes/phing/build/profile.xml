@@ -43,16 +43,13 @@
         depends="
             project-build-set-dev,
             project-profile-set,
+            project-subsite-backup,
             project-delete-build,
             project-drupal-make,
             platform-profiles-link,
             project-profile-make,
             platform-resources-link,
             project-platform-composer-install-dev,
-            test-behat-setup,
-            test-behat-setup-balancer,
-            test-phpunit-setup,
-            test-phpcs-setup,
             build-project-htaccess,
             build-project-theme,
             project-subsite-restore" />
@@ -61,7 +58,7 @@
     <target name="project-drupal-make">
         <echo msg="Make Drupal core." />
         <drush command="make" assume="yes" bin="${ssk.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${dir-build}">
-            <param>${profile-make}</param>
+            <param>${drupal-make}</param>
             <param>${dir-build}</param>
             <option name="no-patch-txt"></option>
         </drush>
@@ -70,14 +67,11 @@
     <!-- Make the platform. -->
     <target name="project-profile-make">
         <echo msg="Make the platform." />
-        <drush command="make" assume="yes" bin="${ssk.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${build-folder}">
-            <param>${profile-make}</param>
-            <param>${dir-build}</param>
-            <option name="concurrency">10</option>
-            <option name="no-patch-txt"></option>
-            <option name="no-core"></option>
-            <option name="contrib-destination">profiles/${profile-name}</option>
-        </drush>
+        <phingcall target="drush-make-no-core">
+            <property name="make-file" value="${profile-make}" />
+            <property name="make-folder" value="${dir-build}" />
+            <property name="make-destination" value="profiles/${profile-name}" />
+        </phingcall>
     </target>
 
     <!-- Make all of the profiles in order to build a multisite platform. -->

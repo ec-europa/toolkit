@@ -85,6 +85,7 @@ project.admin.username = admin
 # -----------------------
 project.profile = multisite_drupal_standard
 project.profile.core = 7.x
+project.profile.core.make = ${project.resources.dir}/drupal-core.make
 project.profile.make = ${project.resources.dir}/${project.profile}.make
 project.profile.package = deploy-package-${platform.package.reference}.tar.gz
 project.profile.package.db.cache = 0
