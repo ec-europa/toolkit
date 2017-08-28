@@ -12,12 +12,12 @@
 
     <!-- Target build-dev has been replaced by build-code. -->
     <target hidden="true" name="build-dev">
-        <replacedby target="build-platform-dev" />
+        <replacedby target="build-distrodev" />
     </target>
 
     <!-- Target build-dev has been replaced by build-code. -->
     <target hidden="true" name="build-dev">
-        <replacedby target="build-platform-dev" />
+        <replacedby target="build-distrodev" />
     </target>
 
 </project>

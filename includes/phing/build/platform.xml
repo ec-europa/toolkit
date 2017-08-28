@@ -11,51 +11,51 @@
     </if>
 
     <target
-        name="build-platform-dist"
+        name="build-distro-dist"
         description="Build a version of the platform intended to distribute as a release package."
         depends="
             build-project-set-dist,
             build-project-set-profile,
-            build-project-platform-delete,
-            build-platform-drupal-make,
-            build-platform-profile-copy,
-            build-platform-profile-make,
-            build-platform-resources-copy,
-            build-platform-composer-install" />
+            build-project-distro-delete,
+            build-distro-drupal-make,
+            build-distro-profile-copy,
+            build-distro-profile-make,
+            build-distro-resources-copy,
+            build-distro-composer-install" />
 
     <target
-            name="build-platform-dist-all"
+            name="build-distro-dist-all"
             description="Build files of  platform intended for release package."
             depends="
             build-project-set-dist,
             build-project-set-profile,
-            build-project-platform-delete,
-            build-platform-drupal-make,
-            build-platform-profiles-copy,
-            build-platform-profiles-make,
-            build-platform-resources-copy,
-            build-platform-composer-install" />
+            build-project-distro-delete,
+            build-distro-drupal-make,
+            build-distro-profiles-copy,
+            build-distro-profiles-make,
+            build-distro-resources-copy,
+            build-distro-composer-install" />
 
     <target
-        name="build-platform-dev"
+        name="build-distro-dev"
         description="Build a local development version of the platform."
         depends="
             build-project-set-dev,
             build-project-set-profile,
             build-project-subsite-backup,
-            build-project-platform-delete,
-            build-platform-drupal-make,
-            build-platform-profiles-link,
-            build-platform-profile-make,
-            build-platform-resources-link,
-            build-platform-composer-install-dev,
+            build-project-distro-delete,
+            build-distro-drupal-make,
+            build-distro-profiles-link,
+            build-distro-profile-make,
+            build-distro-resources-link,
+            build-distro-composer-install-dev,
             build-project-htaccess,
             build-project-theme,
             build-project-subsite-restore,
             build-project-setup-files" />
 
     <!-- Make Drupal core. -->
-    <target name="build-platform-drupal-make">
+    <target name="build-distro-drupal-make">
         <echo msg="Make Drupal core." />
         <drush command="make" assume="yes" bin="${ssk.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${dir-build}">
             <param>${drupal-make}</param>
@@ -65,7 +65,7 @@
     </target>
 
     <!-- Make the platform. -->
-    <target name="build-platform-profile-make">
+    <target name="build-distro-profile-make">
         <echo msg="Make the platform." />
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${profile-make}" />
@@ -75,8 +75,8 @@
     </target>
 
     <!-- Make all of the profiles in order to build a multisite platform. -->
-    <target name="build-platform-profiles-make">
-        <foreach param="profile-name" absparam="dir-profile" target="build-platform-profile-make">
+    <target name="build-distro-profiles-make">
+        <foreach param="profile-name" absparam="dir-profile" target="build-distro-profile-make">
             <fileset dir="${lib.dir.profiles}">
                 <depth max="0" min="0" />
                 <exclude name="common" />
@@ -86,7 +86,7 @@
     </target>
 
     <!-- Copy the profile folder to build deployment package files. -->
-    <target name="build-platform-profile-copy">
+    <target name="build-distro-profile-copy">
         <!-- Delete the core profile folder so it can be replaced with ours. -->
         <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="false" quiet="true" />
         <mkdir dir="${dir-profile}" />
@@ -99,7 +99,7 @@
     </target>
 
     <!-- Copy the profiles folder to build deployment package files. -->
-    <target name="build-platform-profiles-copy">
+    <target name="build-distro-profiles-copy">
         <!-- Delete the core profiles folder so it can be replaced with ours. -->
         <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="true" quiet="true" />
         <!-- Copy our profiles folder. -->
@@ -111,20 +111,20 @@
     </target>
 
     <!-- Symlink the profile folders for easy development. -->
-    <target name="build-platform-profiles-link">
+    <target name="build-distro-profiles-link">
         <delete dir="${dir-profiles}" />
         <symlink link="${dir-profiles}" target="${lib.dir.profiles}" />
    </target>
 
     <!-- Symlink various resources for easy development. -->
-    <target name="build-platform-resources-link">
+    <target name="build-distro-resources-link">
         <symlink link="${dir-build}/composer.json" target="${resources.dir.composer.json}" />
         <symlink link="${dir-build}/.composer.lock" target="${resources.dir.composer.lock}" />
         <symlink link="${dir-build}/.favicon.ico" target="${resources.dir.favicon.ico}" />
     </target>
 
     <!-- Copy various resources for deploying on production. -->
-    <target name="build-platform-resources-copy">
+    <target name="build-distro-resources-copy">
         <copy todir="${dir-build}">
             <fileset dir="${resources.dir}">
                 <include name="composer.*"></include>

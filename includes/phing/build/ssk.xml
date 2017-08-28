@@ -20,7 +20,7 @@
         name="ssk-init"
         depends="
             ssk-link-binary,
-            project-platform-version-set">
+            project-distro-version-set">
         <echo msg="Starterkit successfully initiated." />
     </target>
 

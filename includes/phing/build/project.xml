@@ -12,12 +12,12 @@
 
     <!-- Create code base. -->
     <target
-        name="build-project-platform"
+        name="build-project-distro"
         description="Build NextEuropa Platform code without version control."
         depends="
             build-project-subsite-backup,
-            project-platform-delete,
-            project-platform-package-unpack,
+            project-distro-delete,
+            project-distro-package-unpack,
             build-project-subsite-restore" />
 
     <!-- Create code base. -->
@@ -101,7 +101,7 @@
     </target>
 
     <!-- Delete the previous development build. -->
-    <target name="project-platform-delete">
+    <target name="project-distro-delete">
         <echo msg="Delete previous build." />
         <phingcall target="unprotect-folder">
             <property name="folder.to.unprotect" value="${build.profile.dir.settings}" />
@@ -114,7 +114,7 @@
     </target>
 
     <!-- Delete the previous development build. -->
-    <target name="build-project-platform-delete">
+    <target name="build-project-distro-delete">
         <echo msg="Delete previous build." />
         <phingcall target="unprotect-folder">
             <property name="folder.to.unprotect" value="${build.profile.sites}" />
@@ -126,7 +126,7 @@
     </target>
 
     <!-- Unpack the platform. -->
-    <target name="project-platform-package-unpack">
+    <target name="project-distro-package-unpack">
         <phingcall target="package-download-unpack">
             <property name="package-name" value="platform-dev-${profile.package.version.current}.tar.gz" />
             <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
@@ -138,7 +138,7 @@
     </target>
 
     <!-- Install Composer dependencies without development dependencies. -->
-    <target name="build-platform-composer-install">
+    <target name="build-distro-composer-install">
         <echo msg="Run 'composer install' in platform root." />
         <composer command="install" composer="${project.bin.composer}">
             <arg value="--working-dir=${build.profile.dir}" />
@@ -150,7 +150,7 @@
     </target>
 
     <!-- Install Composer dependencies, including optional development dependencies. -->
-    <target name="build-platform-composer-install-dev">
+    <target name="build-distro-composer-install-dev">
         <composer command="install" composer="${project.bin.composer}">
             <arg value="--working-dir=${build.profile.dir}" />
             <arg value="--no-interaction" />

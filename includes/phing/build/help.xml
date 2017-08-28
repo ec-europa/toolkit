@@ -53,7 +53,7 @@
     </if>
 
     <!-- Get latest stable if major version is defined. -->
-    <target name="project-platform-version-set" hidden="true">
+    <target name="project-distro-version-set" hidden="true">
         <if>
             <matches string="${profile.package.version}" pattern="^[1-9]+\." />
             <then>

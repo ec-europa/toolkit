@@ -16,7 +16,7 @@
         description="Build local version of subsite without install."
         depends="
             build-project-subsite-backup,
-            project-platform-version-set,
+            project-distro-version-set,
             build-project-set-dev,
             build-project-set-profile,
             subsite-resources-link,
