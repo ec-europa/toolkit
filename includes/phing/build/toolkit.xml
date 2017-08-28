@@ -92,7 +92,7 @@
                             <property name="folder.to.delete" value="${resources.dir}/composer" />
                         </phingcall>
                         <!-- Delete starterkit files. -->
-                        <delete>
+                        <delete  quiet="true">
                             <fileset dir="${project.basedir}">
                                 <include name="CHANGELOG.md" />
                                 <include name="LICENSE.md" />
@@ -107,47 +107,60 @@
                             </fileset>
                         </delete>
                         <!-- Move subsite resources to new location. -->
-                        <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
-                        <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true"/>
+                        <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true" haltonerror="false"/>
+                        <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true" haltonerror="false"/>
 
                         <move file="${lib.dir}" tofile="lib-backup" />
                         <mkdir dir="${lib.dir.libraries}" />
-                        <mkdir dir="${lib.dir.modules}" />
+                        <mkdir dir="${lib.dir.modules.custom}" />
+                        <mkdir dir="${lib.dir.modules.features}" />
                         <mkdir dir="${lib.dir.themes}" />
                         <mkdir dir="${lib.dir.source}" />
                         <if>
                             <available file="lib-backup/modules/custom" type="dir" />
                             <then>
-                                <move todir="${lib.dir.modules.custom}" >
+                                <copy todir="${lib.dir.modules.custom}" haltonerror="false">
                                     <fileset dir="lib-backup/modules/custom">
                                         <include name="**" />
                                     </fileset>
-                                </move>
-                                <delete dir="lib-backup/modules/custom" />
-                                <move todir="${lib.dir.modules.custom}" >
+                                </copy>
+                                <delete dir="lib-backup/modules/custom" quiet="true" />
+                                <copy todir="${lib.dir.modules.custom}"  haltonerror="false">
                                     <fileset dir="lib-backup/modules">
                                         <include name="**" />
                                     </fileset>
-                                </move>
-                                <delete dir="lib-backup/modules" />
-                                <move todir="${lib.dir.themes}" >
-                                    <fileset dir="lib-backup/themesm">
+                                </copy>
+                                <delete dir="lib-backup/modules" quiet="true" />
+                                <copy todir="${lib.dir.modules.features}" haltonerror="false">
+                                    <fileset dir="lib-backup/features/custom">
                                         <include name="**" />
                                     </fileset>
-                                </move>
-                                <delete dir="lib-backup/themes" />
-                                <move todir="${lib.dir.libraries}" >
+                                </copy>
+                                <delete dir="lib-backup/features/custom" quiet="true" />
+                                <copy todir="${lib.dir.modules.features}"  haltonerror="false">
+                                    <fileset dir="lib-backup/features">
+                                        <include name="**" />
+                                    </fileset>
+                                </copy>
+                                <delete dir="lib-backup/features" quiet="true" />
+                                <copy todir="${lib.dir.themes}"  haltonerror="false">
+                                    <fileset dir="lib-backup/themes">
+                                        <include name="**" />
+                                    </fileset>
+                                </copy>
+                                <delete dir="lib-backup/themes" quiet="true" />
+                                <copy todir="${lib.dir.libraries}"  haltonerror="false">
                                     <fileset dir="lib-backup/libraries">
                                         <include name="**" />
                                     </fileset>
-                                </move>
-                                <delete dir="lib-backup/libraries" />
-                                <move todir="${lib.dir.source}" >
+                                </copy>
+                                <delete dir="lib-backup/libraries" quiet="true" />
+                                <copy todir="${lib.dir.source}"  haltonerror="false">
                                     <fileset dir="lib-backup/src">
                                         <include name="**" />
                                     </fileset>
-                                </move>
-                                <delete dir="lib-backup/src" />
+                                </copy>
+                                <delete dir="lib-backup/src" quiet="true" />
                             </then>
                         </if>
                     </then>
