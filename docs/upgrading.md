@@ -15,6 +15,15 @@ repository at https://github.com/ec-europa/subsite-starterkit.
 > ./toolkit/phing tookit-upgrade-starterkit
 >```
 
+The biggest structural change is in the lib folder. Because of the new symlink system the structure in the build folder will match the structure in the lib folder. To align all projects we request to make the following lib structure:
+* libraries
+* modules
+  * custom
+  * features
+* profiles (platform only)
+* src
+* themes
+
 ### 1.2 Manual process
 Manually delete all files that are only specific to the starterkit.
 Below is a list of files *to keep*. So anything not mentioned below should
