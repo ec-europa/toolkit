@@ -14,7 +14,7 @@ project.tmp.dir = ${project.basedir}/.tmp
 project.id = myproject
 project.install.modules = myproject_core
 project.name = My Project
-theme.default = ec_resp
+project.theme.default = ec_resp
 project.type = subsite
 project.url.production =
 
@@ -41,7 +41,7 @@ drush.verbose = FALSE
 
 # Curl progress type.
 # -------------------
-project.curl.progress =
+curl.progress =
 
 # Docker. (TODO)
 # -------
