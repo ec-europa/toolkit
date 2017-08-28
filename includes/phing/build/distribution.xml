@@ -11,51 +11,51 @@
     </if>
 
     <target
-        name="build-distro-dist"
+        name="build-distribution-package"
         description="Build a version of the platform intended to distribute as a release package."
         depends="
-            build-project-set-dist,
-            build-project-set-profile,
-            build-project-distro-delete,
-            build-distro-drupal-make,
-            build-distro-profile-copy,
-            build-distro-profile-make,
-            build-distro-resources-copy,
-            build-distro-composer-install" />
+            project-set-dist,
+            project-set-profile,
+            project-delete-distribution,
+            build-distribution-make-drupal,
+            build-distribution-copy-profile,
+            build-distribution-make-profile,
+            build-distribution-copy-resources,
+            build-distribution-composer-install" />
 
     <target
-            name="build-distro-dist-all"
+            name="build-distribution-package-all"
             description="Build files of  platform intended for release package."
             depends="
-            build-project-set-dist,
-            build-project-set-profile,
-            build-project-distro-delete,
-            build-distro-drupal-make,
-            build-distro-profiles-copy,
-            build-distro-profiles-make,
-            build-distro-resources-copy,
-            build-distro-composer-install" />
+            project-set-dist,
+            project-set-profile,
+            project-delete-distribution,
+            build-distribution-make-drupal,
+            build-distribution-copy-profiles,
+            build-distribution-make-profiles,
+            build-distribution-copy-resources,
+            build-distribution-composer-install" />
 
     <target
-        name="build-distro-dev"
+        name="build-distribution-environment"
         description="Build a local development version of the platform."
         depends="
-            build-project-set-dev,
-            build-project-set-profile,
-            build-project-subsite-backup,
-            build-project-distro-delete,
-            build-distro-drupal-make,
-            build-distro-profiles-link,
-            build-distro-profile-make,
-            build-distro-resources-link,
-            build-distro-composer-install-dev,
+            project-set-env,
+            project-set-profile,
+            project-site-backup,
+            project-delete-distribution,
+            build-distribution-make-drupal,
+            build-distribution-link-profiles,
+            build-distribution-make-profiles,
+            build-distribution-link-resources,
+            build-distribution-composer-install-dev,
             build-project-htaccess,
             build-project-theme,
-            build-project-subsite-restore,
-            build-project-setup-files" />
+            project-site-restore,
+            project-setup-files" />
 
     <!-- Make Drupal core. -->
-    <target name="build-distro-drupal-make">
+    <target name="build-distribution-make-drupal">
         <echo msg="Make Drupal core." />
         <drush command="make" assume="yes" bin="${ssk.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${dir-build}">
             <param>${drupal-make}</param>
@@ -65,7 +65,7 @@
     </target>
 
     <!-- Make the platform. -->
-    <target name="build-distro-profile-make">
+    <target name="build-distribution-make-profile">
         <echo msg="Make the platform." />
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${profile-make}" />
@@ -75,8 +75,8 @@
     </target>
 
     <!-- Make all of the profiles in order to build a multisite platform. -->
-    <target name="build-distro-profiles-make">
-        <foreach param="profile-name" absparam="dir-profile" target="build-distro-profile-make">
+    <target name="build-distribution-make-profiles">
+        <foreach param="profile-name" absparam="dir-profile" target="build-distribution-make-profile">
             <fileset dir="${lib.dir.profiles}">
                 <depth max="0" min="0" />
                 <exclude name="common" />
@@ -86,7 +86,7 @@
     </target>
 
     <!-- Copy the profile folder to build deployment package files. -->
-    <target name="build-distro-profile-copy">
+    <target name="build-distribution-copy-profile">
         <!-- Delete the core profile folder so it can be replaced with ours. -->
         <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="false" quiet="true" />
         <mkdir dir="${dir-profile}" />
@@ -99,7 +99,7 @@
     </target>
 
     <!-- Copy the profiles folder to build deployment package files. -->
-    <target name="build-distro-profiles-copy">
+    <target name="build-distribution-copy-profiles">
         <!-- Delete the core profiles folder so it can be replaced with ours. -->
         <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="true" quiet="true" />
         <!-- Copy our profiles folder. -->
@@ -111,20 +111,20 @@
     </target>
 
     <!-- Symlink the profile folders for easy development. -->
-    <target name="build-distro-profiles-link">
+    <target name="build-distribution-link-profiles">
         <delete dir="${dir-profiles}" />
         <symlink link="${dir-profiles}" target="${lib.dir.profiles}" />
    </target>
 
     <!-- Symlink various resources for easy development. -->
-    <target name="build-distro-resources-link">
+    <target name="build-distribution-link-resources">
         <symlink link="${dir-build}/composer.json" target="${resources.dir.composer.json}" />
         <symlink link="${dir-build}/.composer.lock" target="${resources.dir.composer.lock}" />
         <symlink link="${dir-build}/.favicon.ico" target="${resources.dir.favicon.ico}" />
     </target>
 
     <!-- Copy various resources for deploying on production. -->
-    <target name="build-distro-resources-copy">
+    <target name="build-distribution-copy-resources">
         <copy todir="${dir-build}">
             <fileset dir="${resources.dir}">
                 <include name="composer.*"></include>

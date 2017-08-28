@@ -15,22 +15,22 @@
         name="build-subsite-dev"
         description="Build local version of subsite without install."
         depends="
-            build-project-subsite-backup,
+            project-site-backup,
             project-distro-version-set,
-            build-project-set-dev,
-            build-project-set-profile,
+            project-set-env,
+            project-set-profile,
             subsite-resources-link,
             subsite-make-subsite,
             project-subsite-composer-install,
             project-modules-devel-dl,
-            build-project-subsite-restore" />
+            project-site-restore" />
 
     <!-- Create distribution code base. -->
     <target
         name="build-subsite-dist"
         description="Build files of subsite for release package."
         depends="
-            build-project-set-dist,
+            project-set-dist,
             subsite-dist-delete,
             subsite-dist-make,
             subsite-dist-resources-copy,

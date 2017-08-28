@@ -45,7 +45,7 @@
     <if>
         <available file="${lib.dir.profiles}" type="dir"/>
         <then>
-            <import file="${ssk.dir.incl.phing.build}/platform.xml" />
+            <import file="${ssk.dir.incl.phing.build}/distribution.xml" />
         </then>
         <else>
             <import file="${ssk.dir.incl.phing.build}/subsite.xml" />
