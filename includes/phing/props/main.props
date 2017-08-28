@@ -14,7 +14,7 @@ project.tmp.dir = ${project.basedir}/.tmp
 project.id = myproject
 project.install.modules = myproject_core
 project.name = My Project
-project.theme.default = ec_resp
+theme.default = ec_resp
 project.type = subsite
 project.url.production =
 
@@ -49,157 +49,157 @@ docker.project.id = environment
 
 # Database download settings.
 # ---------------------------
-project.db.dl.filename =
-project.db.dl.dir = fpfis/files-for/automate_dumps
-project.db.dl.host = webgate.ec.europa.eu
-project.db.dl.url = ${project.db.dl.host}/${project.db.dl.dir}/${project.id}/
-project.db.dl.url.htaccess.password =
-project.db.dl.url.htaccess.username =
+db.dl.filename =
+db.dl.dir = fpfis/files-for/automate_dumps
+db.dl.host = webgate.ec.europa.eu
+db.dl.url = ${db.dl.host}/${db.dl.dir}/${project.id}/
+db.dl.url.htaccess.password =
+db.dl.url.htaccess.username =
 
 # Database connection settings.
 # -----------------------------
-project.db.type = mysql
-project.db.name = ${project.id}
-project.db.user = root
-project.db.password =
-project.db.host = mysql
-project.db.port = 3306
-project.db.url = ${project.db.type}://${project.db.user}:${project.db.password}@${project.db.host}:${project.db.port}/${project.db.name}
+db.type = mysql
+db.name = ${project.id}
+db.user = root
+db.password =
+db.host = mysql
+db.port = 3306
+db.url = ${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db.name}
 
 # Solr configuration.
 # -------------------
-project.solr.enable = 1
-project.solr.host = solr
-project.solr.port = 8983
-project.solr.type = d7_apachesolr
-project.solr.scheme = http://
-project.solr.url = ${project.solr.schem}://${project.solr.host}:${project.solr.port}/solr/${project.solr.type}
+solr.enable = 1
+solr.host = solr
+solr.port = 8983
+solr.type = d7_apachesolr
+solr.scheme = http://
+solr.url = ${solr.schem}://${solr.host}:${solr.port}/solr/${solr.type}
 
 # Admin configuration.
 # --------------------
-project.admin.email = ${project.admin.username}@example.com
-project.admin.password = pass
-project.admin.username = admin
+admin.email = ${admin.username}@example.com
+admin.password = pass
+admin.username = admin
 
 # Platform configuration. (deploy props?)
 # -----------------------
-project.profile = multisite_drupal_standard
-project.profile.core = 7.x
-project.profile.core.make = ${project.resources.dir}/drupal-core.make
-project.profile.make = ${project.resources.dir}/${project.profile}.make
-project.profile.package = deploy-package-${platform.package.reference}.tar.gz
-project.profile.package.db.cache = 0
-project.profile.package.provider = git-hub
-project.profile.package.provider.token = # TODO: Github API limit.
-project.profile.package.repository = ec-europa/platform-dev
-project.profile.package.version = 2.4
+profile = multisite_drupal_standard
+profile.core = 7.x
+profile.core.make = ${resources.dir}/drupal-core.make
+profile.make = ${resources.dir}/${profile}.make
+profile.package = deploy-package-${profile.package.reference}.tar.gz
+profile.package.db.cache = 0
+profile.package.provider = git-hub
+profile.package.provider.token = # TODO: Github API limit.
+profile.package.repository = ec-europa/platform-dev
+profile.package.version = 2.4
 
 # Theme configuration (deploy props?)
 # --------------------
-project.theme.ecl.version = v0.10.0
-project.theme.ec_europa.version = 0.0.3
-project.theme.atomium.repo.url = https://github.com/ec-europa/atomium.git
-project.theme.atomium.repo.branch = 7.x-1.x
-project.theme.europa.repo.url = https://github.com/ec-europa/ec_europa.git
-project.theme.europa.repo.branch = master
+theme.ecl.version = v0.10.0
+theme.ec_europa.version = 0.0.3
+theme.atomium.repo.url = https://github.com/ec-europa/atomium.git
+theme.atomium.repo.branch = 7.x-1.x
+theme.europa.repo.url = https://github.com/ec-europa/ec_europa.git
+theme.europa.repo.branch = master
 
 # Project resources.
 # ------------------
-project.lib.dir = ${project.basedir}/lib
-project.lib.dir.libraries = ${project.lib.dir}/libraries
-project.lib.dir.modules = ${project.lib.dir}/modules
-project.lib.dir.modules.custom = ${project.lib.dir.modules}/custom
-project.lib.dir.modules.features = ${project.lib.dir.modules}/features
-project.lib.dir.profiles = ${project.lib.dir}/profiles
-project.lib.dir.profiles.profile = ${project.lib.dir.profiles}/${project.profile}
-project.lib.dir.source = ${project.lib.dir}/src
-project.lib.dir.themes = ${project.lib.dir}/themes
+lib.dir = ${project.basedir}/lib
+lib.dir.libraries = ${lib.dir}/libraries
+lib.dir.modules = ${lib.dir}/modules
+lib.dir.modules.custom = ${lib.dir.modules}/custom
+lib.dir.modules.features = ${lib.dir.modules}/features
+lib.dir.profiles = ${lib.dir}/profiles
+lib.dir.profiles.profile = ${lib.dir.profiles}/${profile}
+lib.dir.source = ${lib.dir}/src
+lib.dir.themes = ${lib.dir}/themes
 
-project.resources.dir = ${project.basedir}/resources
-project.resources.dir.composer.json = ${project.resources.dir}/composer.json
-project.resources.dir.composer.lock = ${project.resources.dir}/composer.lock
-project.resources.dir.favicon.ico = ${project.resources.dir}/favicon.ico
-project.resources.dir.site.make = ${project.resources.dir}/site.make
+resources.dir = ${project.basedir}/resources
+resources.dir.composer.json = ${resources.dir}/composer.json
+resources.dir.composer.lock = ${resources.dir}/composer.lock
+resources.dir.favicon.ico = ${resources.dir}/favicon.ico
+resources.dir.site.make = ${resources.dir}/site.make
 
-project.tests.dir = ${project.basedir}/tests
+tests.dir = ${project.basedir}/tests
 
 # Build folders.
 # --------------
-project.build.dev = build
-project.build.dist = dist
-project.build.site = ${project.id}
+build.dev = build
+build.dist = dist
+build.site = ${project.id}
 
 Build halts.
 # ----------
-project.build.haltonerror.dir.copy = true
-project.build.haltonerror.props.validate = false
+build.haltonerror.dir.copy = true
+build.haltonerror.props.validate = false
 
 # Platform build resources.
 # -------------------------
-project.build.platform.dir = ${project.basedir}/${project.build.dev}
-project.build.platform.dir.settings = ${project.build.platform.dir.sites}/default
-project.build.platform.dir.sites = ${project.build.platform.dir}/sites
-project.build.platform.dir.profile = ${project.build.platform.dir.profiles}/${project.profile}
-project.build.platform.dir.profile.themes = ${project.build.platform.dir.profile}/themes
-project.build.platform.dir.profiles = ${project.build.platform.dir}/profiles
-project.build.platform.composer.json = ${project.build.platform.dir}/composer.json
-project.build.platform.composer.lock = ${project.build.platform.dir}/composer.lock
-project.build.platform.favicon.ico = ${project.build.platform.dir}/favicon.ico
-project.build.platform.htaccess.append.text =
+build.profile.dir = ${project.basedir}/${build.dev}
+build.profile.dir.settings = ${build.profile.dir.sites}/default
+build.profile.dir.sites = ${build.profile.dir}/sites
+build.profile.dir.profile = ${build.profile.dir.profiles}/${profile}
+build.profile.dir.profile.themes = ${build.profile.dir.profile}/themes
+build.profile.dir.profiles = ${build.profile.dir}/profiles
+build.profile.composer.json = ${build.profile.dir}/composer.json
+build.profile.composer.lock = ${build.profile.dir}/composer.lock
+build.profile.favicon.ico = ${build.profile.dir}/favicon.ico
+build.profile.htaccess.append.text =
 
 # Subsite build resources.
 # ------------------------
-project.build.subsite.composer.json = ${project.build.subsite.dir}/composer.json
-project.build.subsite.composer.lock = ${project.build.subsite.dir}/composer.lock
-project.build.subsite.dir = ${project.build.platform.dir.sites}/${project.build.site}
-project.build.subsite.dir.files = ${project.build.subsite.dir}/files
-project.build.subsite.dir.libraries = ${project.build.subsite.dir}/libraries
-project.build.subsite.dir.modules = ${project.build.subsite.dir}/modules
-project.build.subsite.dir.modules.contrib = ${project.build.subsite.dir.modules}/contrib
-project.build.subsite.dir.modules.custom = ${project.build.subsite.dir.modules}/custom
-project.build.subsite.dir.modules.features = ${project.build.subsite.dir.modules}/features
-project.build.subsite.dir.source = ${project.build.subsite.dir}/src
-project.build.subsite.dir.themes = ${project.build.subsite.dir}/themes
-project.build.subsite.dir.tmp = ${project.build.subsite.dir}/tmp
+build.subsite.composer.json = ${build.subsite.dir}/composer.json
+build.subsite.composer.lock = ${build.subsite.dir}/composer.lock
+build.subsite.dir = ${build.profile.dir.sites}/${build.site}
+build.subsite.dir.files = ${build.subsite.dir}/files
+build.subsite.dir.libraries = ${build.subsite.dir}/libraries
+build.subsite.dir.modules = ${build.subsite.dir}/modules
+build.subsite.dir.modules.contrib = ${build.subsite.dir.modules}/contrib
+build.subsite.dir.modules.custom = ${build.subsite.dir.modules}/custom
+build.subsite.dir.modules.features = ${build.subsite.dir.modules}/features
+build.subsite.dir.source = ${build.subsite.dir}/src
+build.subsite.dir.themes = ${build.subsite.dir}/themes
+build.subsite.dir.tmp = ${build.subsite.dir}/tmp
 
 # Distribution build files and directories.
 # -----------------------------------------
-project.build.dist.composer.json = ${project.build.dist.dir}/composer.json
-project.build.dist.composer.lock = ${project.build.dist.dir}/composer.lock
-project.build.dist.dir = ${project.basedir}/${project.build.dist}
-project.build.dist.dir.modules = ${project.build.dist.dir}/modules
-project.build.dist.dir.modules.custom = ${project.build.dist.dir.modules}/custom
-project.build.dist.dir.modules.features = ${project.build.dist.dir.modules}/features
-project.build.dist.dir.profile = ${project.build.dist.dir.profiles}/${project.profile}
-project.build.dist.dir.profiles = ${project.build.dist.dir}/profiles
-project.build.dist.dir.source = ${project.build.dist.dir}/src
-project.build.dist.dir.themes = ${project.build.dist.dir}/themes
+build.dist.composer.json = ${build.dist.dir}/composer.json
+build.dist.composer.lock = ${build.dist.dir}/composer.lock
+build.dist.dir = ${project.basedir}/${build.dist}
+build.dist.dir.modules = ${build.dist.dir}/modules
+build.dist.dir.modules.custom = ${build.dist.dir.modules}/custom
+build.dist.dir.modules.features = ${build.dist.dir.modules}/features
+build.dist.dir.profile = ${build.dist.dir.profiles}/${profile}
+build.dist.dir.profiles = ${build.dist.dir}/profiles
+build.dist.dir.source = ${build.dist.dir}/src
+build.dist.dir.themes = ${build.dist.dir}/themes
 
 # Rebuild configuration.
 # ----------------------
-project.rebuild.auto = 1
-project.rebuild.backup.destination = ${project.tmp.dir}/backup-site
-project.rebuild.backup.files = ${project.build.subsite.dir}/settings.php
-project.rebuild.backup.folders = ${project.build.subsite.dir.files};${project.build.subsite.dir.tmp}
+rebuild.auto = 1
+rebuild.backup.destination = ${project.tmp.dir}/backup-site
+rebuild.backup.files = ${build.subsite.dir}/settings.php
+rebuild.backup.folders = ${build.subsite.dir.files};${build.subsite.dir.tmp}
 
 # Shared paths.
 # -------------
-project.share.path = /tmp
-project.share.name = share
-project.share.path.global = ${project.share.path}/${project.share.name}
-project.share.path.composer = ${project.share.path.global}/composer
-project.share.path.platform = ${project.share.path.global}/platform
-project.share.path.subsites = ${project.share.path.global}/subsites
-project.share.path.composer.packages = ${project.share.path.composer}/packages
-project.share.path.composer.packages.shared = ${project.share.path.composer.packages}/shared
-project.share.path.platform.packages = ${project.share.path.platform}/packages
-project.share.path.platform.packages.database = ${project.share.path.platform.packages}/database
-project.share.path.platform.packages.deploy = ${project.share.path.platform.packages}/deploy
-project.share.path.platform.packages.test = ${project.share.path.platform.packages}/test
-project.share.path.subsites.packages = ${project.share.path.subsites}/packages
-project.share.path.subsites.packages.database = ${project.share.path.subsites.packages}/database
-project.share.path.subsites.packages.deploy = ${project.share.path.subsites.packages}/deploy
-project.share.path.subsites.packages.test = ${project.share.path.subsites.packages}/test
+share.path = /tmp
+share.name = share
+share.path.global = ${share.path}/${share.name}
+share.path.composer = ${share.path.global}/composer
+share.path.platform = ${share.path.global}/platform
+share.path.subsites = ${share.path.global}/subsites
+share.path.composer.packages = ${share.path.composer}/packages
+share.path.composer.packages.shared = ${share.path.composer.packages}/shared
+share.path.platform.packages = ${share.path.platform}/packages
+share.path.platform.packages.database = ${share.path.platform.packages}/database
+share.path.platform.packages.deploy = ${share.path.platform.packages}/deploy
+share.path.platform.packages.test = ${share.path.platform.packages}/test
+share.path.subsites.packages = ${share.path.subsites}/packages
+share.path.subsites.packages.database = ${share.path.subsites.packages}/database
+share.path.subsites.packages.deploy = ${share.path.subsites.packages}/deploy
+share.path.subsites.packages.test = ${share.path.subsites.packages}/test
 
 # Composer hook phingcall target lists. Space separated only.
 # -----------------------------------------------------------
@@ -224,8 +224,8 @@ git.hook.update =
 
 # Flickr configuration.
 # ---------------------
-project.flickr.key = foobar
-project.flickr.secret = bas
+flickr.key = foobar
+flickr.secret = bas
 
 # Integration configuration.
 # --------------------------
@@ -237,5 +237,5 @@ varnish.server.port = 8888
 
 # Drush Context configuration.
 # ----------------------------
-drush.db.dump = ${project.build.platform.dir}/dump.sql
+drush.db.dump = ${build.profile.dir}/dump.sql
 

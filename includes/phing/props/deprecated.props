@@ -46,19 +46,19 @@ drupal.core.version =
 platform.build.dir =
 platform.profile.name =
 platform.package.reference =
-project.profile.package.provider =
-project.profile.package.repository =
+profile.package.provider =
+profile.package.repository =
 platform.package.cachedir =
 platform.package.destination =
-project.profile.package =
-project.profile.package.provider.token =
+profile.package =
+profile.package.provider.token =
 
 composer.bin =
 drush.bin =
 git.bin =
 phing.bin =
 
-phing.project.build.dir =
+phing.build.dir =
 phing.project.src.dir =
 dist.build.dir =
 

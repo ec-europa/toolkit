@@ -42,16 +42,16 @@
         <!-- Set package name for re-use. -->
         <property
             name="test-package"
-            value="${project.tmp.dir}/platform-dev-test-${project.profile.package.version.current}.tar.gz" />
+            value="${project.tmp.dir}/platform-dev-test-${profile.package.version.current}.tar.gz" />
 
         <!-- Delete previous test package if exists. -->
         <delete file="${test-package}" />
 
         <!-- Create our phing test folder. -->
-        <mkdir dir="${project.tests.dir}/phing" />
+        <mkdir dir="${tests.dir}/phing" />
 
         <!-- Copy our phing build test folder. -->
-        <copy todir="${project.tests.dir}/phing" overwrite="true">
+        <copy todir="${tests.dir}/phing" overwrite="true">
             <fileset dir="${phing.dir.test}/test">
                 <include name="**" />
             </fileset>
@@ -60,18 +60,18 @@
         <!-- Copy the main build file. -->
         <copy
             file="${phing.dir.test}/test.xml"
-            tofile="${project.tests.dir}/build.xml"
+            tofile="${tests.dir}/build.xml"
             overwrite="true" />
 
         <!-- Copy the main build file. -->
         <copy
             file="${phing.dir.test}/build.xml"
-            tofile="${project.tests.dir}/phing/build.xml"
+            tofile="${tests.dir}/phing/build.xml"
             overwrite="true" />
 
         <!-- Package the test dir. -->
         <tar destfile="${test-package}" compression="gzip">
-            <fileset dir="${project.tests.dir}">
+            <fileset dir="${tests.dir}">
                 <exclude name="vendor/**" />
                 <exclude name="bin/**" />
                 <exclude name="behat.yml" />
@@ -82,7 +82,7 @@
         <!-- Delete a the phing dir. -->
 <!--
         <delete
-            dir="${project.tests.dir}/phing"
+            dir="${tests.dir}/phing"
             includeemptydirs="true"
             verbose="true"
             failonerror="true" />

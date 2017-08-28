@@ -29,7 +29,7 @@
         <if>
             <and>
                 <not>
-                    <available file="${project.lib.dir}" type="dir" />
+                    <available file="${lib.dir}" type="dir" />
                 </not>
                 <equals arg1="${project.basedir}" arg2="${ssk.dir}" />
             </and>
@@ -39,7 +39,7 @@
                 </phingcall>
             </then>
             <elseif>
-                <available file="${project.lib.dir}" type="dir" />
+                <available file="${lib.dir}" type="dir" />
                 <then>
                     <echo msg="Project structure exists already." />
                 </then>
@@ -83,13 +83,13 @@
                             <property name="folder.to.delete" value="${project.basedir}/src" />
                         </phingcall>
                         <phingcall target="delete-folder">
-                            <property name="folder.to.delete" value="${project.resources.dir}/cloudformation" />
+                            <property name="folder.to.delete" value="${resources.dir}/cloudformation" />
                         </phingcall>
                         <phingcall target="delete-folder">
-                            <property name="folder.to.delete" value="${project.resources.dir}/codedeploy" />
+                            <property name="folder.to.delete" value="${resources.dir}/codedeploy" />
                         </phingcall>
                         <phingcall target="delete-folder">
-                            <property name="folder.to.delete" value="${project.resources.dir}/composer" />
+                            <property name="folder.to.delete" value="${resources.dir}/composer" />
                         </phingcall>
                         <!-- Delete starterkit files. -->
                         <delete>
@@ -107,8 +107,8 @@
                             </fileset>
                         </delete>
                         <!-- Move subsite resources to new location. -->
-                        <move file="${project.resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
-                        <move file="${project.resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true"/>
+                        <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true"/>
+                        <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true"/>
                     </then>
                 </if>
             </then>

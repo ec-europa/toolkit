@@ -13,21 +13,21 @@
     <!-- Install the site. -->
     <target name="drush-site-install">
         <echo message="Installing site ${project.name}." />
-        <drush command="site-install" assume="yes" root="${project.build.platform.dir}" bin="${ssk.dir.bin.drush}" alias="@${project.id}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${project.db.url}" />
+        <drush command="site-install" assume="yes" root="${build.profile.dir}" bin="${ssk.dir.bin.drush}" alias="@${project.id}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${db.url}" />
             <option name="site-name" value="'${project.name}'" />
-            <option name="account-name" value="${project.admin.username}" />
-            <option name="account-pass" value="${project.admin.password}" />
-            <option name="account-mail" value="${project.admin.email}" />
-            <param>${project.profile}</param>
+            <option name="account-name" value="${admin.username}" />
+            <option name="account-pass" value="${admin.password}" />
+            <option name="account-mail" value="${admin.email}" />
+            <param>${profile}</param>
             <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
         </drush>
     </target>
 
     <!-- Generate aliases for Drupal site by foldername. -->
     <target name="drush-generate-aliases">
-        <mkdir dir="${project.build.platform.dir.sites}/all/drush" />
-        <drushgal siteRoot="${project.build.platform.dir}" />
+        <mkdir dir="${build.profile.dir.sites}/all/drush" />
+        <drushgal siteRoot="${build.profile.dir}" />
     </target>
 
     <!-- Enable modules. -->
@@ -35,7 +35,7 @@
         <drush
             command="pm-enable"
             assume="yes"
-            root="${project.build.platform.dir}"
+            root="${build.profile.dir}"
             alias="@${project.id}"
             bin="${ssk.dir.bin.drush}"
             verbose="${drush.verbose}"
@@ -46,51 +46,51 @@
 
     <!-- Create the directories. -->
     <target name="drush-create-files-dirs">
-        <echo message="Creating files directories for ${project.db.name}." />
+        <echo message="Creating files directories for ${db.name}." />
         <!-- Execute setttings generation script. -->
-        <drush command="php-script" root="${project.build.platform.dir}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="php-script" root="${build.profile.dir}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${ssk.dir.incl.drush}/generate-directories.php</param>
         </drush>
     </target>
 
     <!-- Create the database. -->
     <target name="drush-sql-create">
-        <echo message="Creating database ${project.db.name}." />
-        <drush command="sql-create" assume="yes" root="${project.build.platform.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${project.db.url}" />
+        <echo message="Creating database ${db.name}." />
+        <drush command="sql-create" assume="yes" root="${build.profile.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${db.url}" />
         </drush>
     </target>
 
     <!-- Import a database. -->
     <target name="drush-sql-import">
         <echo message="Importing database." />
-        <drush command="sql-cli" root="${project.build.platform.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="sql-cli" root="${build.profile.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
         <phingcall target="drush-registry-rebuild" />
         <phingcall target="drush-create-files-dirs" />
         <!-- Update database. -->
-        <drush command="updatedb" assume="yes" root="${project.build.platform.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}"></drush>
+        <drush command="updatedb" assume="yes" root="${build.profile.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}"></drush>
         <!-- Clear Caches. -->
-        <drush command="cc" assume="yes" root="${project.build.platform.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}">
+        <drush command="cc" assume="yes" root="${build.profile.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}">
             <param>all</param>
         </drush>
     </target>
 
     <!-- Drop the database. -->
     <target name="drush-sql-drop">
-        <echo message="Dropping database ${project.db.name}." />
-        <drush command="sql-drop" assume="yes" root="${project.build.platform.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${project.db.url}" />
+        <echo message="Dropping database ${db.name}." />
+        <drush command="sql-drop" assume="yes" root="${build.profile.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${db.url}" />
         </drush>
     </target>
 
     <!-- Backup the database. -->
     <target name="drush-sql-dump">
-        <echo message="Backing up database ${project.db.name} to ${database-file}." />
+        <echo message="Backing up database ${db.name} to ${database-file}." />
         <dirname property="database-cachedir" file="${database-file}"/>
         <mkdir dir="${database-cachedir}" />
-        <drush command="sql-dump" assume="yes" root="${project.build.platform.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="sql-dump" assume="yes" root="${build.profile.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="result-file" value="${database-file}" />
         </drush>
     </target>
@@ -98,14 +98,14 @@
     <!-- Activate solr if needed. -->
     <target name="drush-enable-solr">
         <if>
-            <equals arg1="${project.solr.enablee}" arg2="1" />
+            <equals arg1="${solr.enable}" arg2="1" />
             <then>
-                <echo message="Enable apachesolr for ${project.db.name}." />
+                <echo message="Enable apachesolr for ${db.name}." />
                 <phingcall target="drush-enable-modules">
                     <property name="project.drupal.modules" value="apachesolr" />
                 </phingcall>
-                <drush command="solr-set-env-url" assume="yes" root="${project.build.platform.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                    <param>${project.solr.url}</param>
+                <drush command="solr-set-env-url" assume="yes" root="${build.profile.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>${solr.url}</param>
                 </drush>
             </then>
         </if>
@@ -154,12 +154,12 @@
             <filterchain>
                 <replacetokens begintoken="%%" endtoken="%%">
                     <!-- Replace tokens in settings generation script. -->
-                    <token key="project.db.type" value="${project.db.type}" />
-                    <token key="project.db.name" value="${project.db.name}" />
-                    <token key="project.db.user" value="${project.db.user}" />
-                    <token key="project.db.password" value="${project.db.password}" />
-                    <token key="project.db.host" value="${project.db.host}" />
-                    <token key="project.db.port" value="${project.db.port}" />
+                    <token key="db.type" value="${db.type}" />
+                    <token key="db.name" value="${db.name}" />
+                    <token key="db.user" value="${db.user}" />
+                    <token key="db.password" value="${db.password}" />
+                    <token key="db.host" value="${db.host}" />
+                    <token key="db.port" value="${db.port}" />
                     <token key="error_level" value="${devel.vars.error_level}" />
                     <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
                     <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />
@@ -167,14 +167,14 @@
                     <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
                     <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
                     <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
-                    <token key="file_public_path" value="${project.build.files.dir}" />
-                    <token key="file_private_path" value="${project.build.files.dir}/private_files" />
-                    <token key="file_temporary_path" value="${project.build.tmp.dir}" />
+                    <token key="file_public_path" value="${build.files.dir}" />
+                    <token key="file_private_path" value="${build.files.dir}/private_files" />
+                    <token key="file_temporary_path" value="${build.tmp.dir}" />
                 </replacetokens>
             </filterchain>
         </copy>
         <!-- Execute setttings generation script. -->
-        <drush command="php-script" root="${project.build.platform.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="php-script" root="${build.profile.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>tmp/generate-settings.php</param>
         </drush>
     </target>
@@ -192,7 +192,7 @@
             </catch>
             <finally>
                  <!-- Rebuild Registry. -->
-                 <drush command="registry-rebuild" assume="yes" root="${project.build.platform.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}">
+                 <drush command="registry-rebuild" assume="yes" root="${build.profile.dir}" alias="@${project.id}" bin="${ssk.dir.bin.drush}" verbose="${drush.verbose}">
                      <param>--fire-bazooka</param>
                  </drush>
             </finally>
@@ -211,7 +211,7 @@
         <drush
             command="php-eval"
             assume="yes"
-            root="${project.build.platform.dir}"
+            root="${build.profile.dir}"
             alias="@${project.id}"
             bin="${ssk.dir.bin.drush}"
             verbose="${drush.verbose}"

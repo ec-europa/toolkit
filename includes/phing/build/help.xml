@@ -43,7 +43,7 @@
 
     <!-- Check type of project and import it's build file. -->
     <if>
-        <available file="${project.lib.dir.profiles}" type="dir"/>
+        <available file="${lib.dir.profiles}" type="dir"/>
         <then>
             <import file="${ssk.dir.incl.phing.build}/profile.xml" />
         </then>
@@ -55,70 +55,70 @@
     <!-- Get latest stable if major version is defined. -->
     <target name="project-platform-version-set" hidden="true">
         <if>
-            <matches string="${project.profile.package.version}" pattern="^[1-9]+\." />
+            <matches string="${profile.package.version}" pattern="^[1-9]+\." />
             <then>
                 <propertyregex
-                    property="project.profile.package.version.major"
-                    subject="${project.profile.package.version}"
+                    property="profile.package.version.major"
+                    subject="${profile.package.version}"
                     pattern="^([1-9]+)\."
                     match="$1"
                     override="true" />
                 <propertyregex
-                    property="project.profile.package.version.minor"
-                    subject="${project.profile.package.version}"
+                    property="profile.package.version.minor"
+                    subject="${profile.package.version}"
                     pattern="^[1-9]+\.([1-9]+)"
                     match="$1"
                     override="true" />
                 <propertyregex
-                    property="project.profile.package.version.reference"
-                    subject="${project.profile.package.version}"
+                    property="profile.package.version.reference"
+                    subject="${profile.package.version}"
                     pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
                     match="$1"
                     override="true" />
                 <if>
-                    <isset property="project.profile.package.version.minor" />
+                    <isset property="profile.package.version.minor" />
                     <then>
-                        <php expression="${project.profile.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${project.profile.package.version.major}\.${project.profile.package.version.minor}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="project.profile.package.version.current" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${project.profile.package.version.major}\.${platform.upgrade}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="project.profile.package.version.next" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${project.profile.package.version.major}\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="project.profile.package.version.latest" />
+                        <php expression="${profile.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${profile.package.version.major}\.${profile.package.version.minor}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="profile.package.version.current" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${profile.package.version.major}\.${platform.upgrade}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="profile.package.version.next" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${profile.package.version.major}\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="profile.package.version.latest" />
                     </then>
                 </if>
             </then>
         </if>
         <if>
             <and>
-                <matches string="${project.profile.package.version.current}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
+                <matches string="${profile.package.version.current}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
                 <versioncompare
-                    version="${project.profile.package.version.current}"
-                    desiredVersion="${project.profile.package.version}"
+                    version="${profile.package.version.current}"
+                    desiredVersion="${profile.package.version}"
                     operator="gt" />
             </and>
             <then>
-                <echo msg="The platform package version is set to ${project.profile.package.version}." />
-                <echo msg="The build will be performed with version ${project.profile.package.version.current}." />
+                <echo msg="The platform package version is set to ${profile.package.version}." />
+                <echo msg="The build will be performed with version ${profile.package.version.current}." />
                 <propertyregex
-                    property="project.profile.package.version.reference"
-                    subject="${project.profile.package.version.current}"
+                    property="profile.package.version.reference"
+                    subject="${profile.package.version.current}"
                     pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
                     match="$1"
                     override="true" />
-                <property name="project.profile.package.version" value="${project.profile.package.version.current}" override="true" />
+                <property name="profile.package.version" value="${profile.package.version.current}" override="true" />
             </then>
         </if>
         <if>
             <and>
-                <matches string="${project.profile.package.version.next}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
+                <matches string="${profile.package.version.next}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
                 <versioncompare
-                    version="${project.profile.package.version.next}"
-                    desiredVersion="${project.profile.package.version}"
+                    version="${profile.package.version.next}"
+                    desiredVersion="${profile.package.version}"
                     operator="gt" />
             </and>
             <then>
                 <!-- TODO: this allows for automatic upgrading if we were to provide a setting. -->
-                <php expression="${project.profile.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
-                <echo msg="Last released deploy package is at ${project.profile.package.version.latest}." level="warning" />
-                <echo msg="Please upgrade your platform version to ${project.profile.package.version.major}.${platform.upgrade}." level="warning" />
+                <php expression="${profile.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
+                <echo msg="Last released deploy package is at ${profile.package.version.latest}." level="warning" />
+                <echo msg="Please upgrade your platform version to ${profile.package.version.major}.${platform.upgrade}." level="warning" />
             </then>
         </if>
         <echoproperties regex="~^project\.profile\.package\.version~" destfile="${project.tmp.dir}/build.properties.version" />
@@ -126,7 +126,7 @@
 
     <!-- Check if site exists. -->
     <if>
-        <available file="${project.build.settings.dir}/settings.php" type="file"/>
+        <available file="${build.settings.dir}/settings.php" type="file"/>
         <then>
             <property name="site-detected" value="1" />
         </then>
@@ -134,7 +134,7 @@
 
     <!-- Check if backup exists. -->
     <if>
-        <available file="${project.rebuild.backup.destination}" type="dir"/>
+        <available file="${rebuild.backup.destination}" type="dir"/>
         <then>
             <property name="backup-detected" value="1" />
         </then>
@@ -152,7 +152,7 @@
 
     <!-- Copies a given folder to a new location. -->
     <target name="copy-folder" hidden="true">
-        <copy todir="${copy.destination.path}" haltonerror="${project.build.haltonerror.dir.copy}">
+        <copy todir="${copy.destination.path}" haltonerror="${build.haltonerror.dir.copy}">
             <fileset dir="${copy.source.path}" defaultexcludes="false" />
         </copy>
     </target>
@@ -180,25 +180,25 @@
 
     <!-- Reset all file permission to Drupals recommendation for the lib dir. -->
     <target name="reset-filesystem-permissions-lib">
-        <echo msg="Resetting permissions for ${project.lib.dir}" />
+        <echo msg="Resetting permissions for ${lib.dir}" />
         <phingcall target="reset-filesystem-permissions">
-            <property name="target-dir" value="${project.lib.dir}" />
+            <property name="target-dir" value="${lib.dir}" />
         </phingcall>
     </target>
 
     <!-- Reset all file permission to Drupals recommendation for the build dir. -->
     <target name="reset-filesystem-permissions-build">
-        <echo msg="Resetting permissions for ${project.build.platform.dir}" />
+        <echo msg="Resetting permissions for ${build.profile.dir}" />
         <phingcall target="reset-filesystem-permissions">
-            <property name="target-dir" value="${project.build.platform.dir}" />
+            <property name="target-dir" value="${build.profile.dir}" />
         </phingcall>
     </target>
 
     <!-- Reset all file permission to Drupals recommendation for the build dir. -->
     <target name="reset-filesystem-permissions-dist">
-        <echo msg="Resetting permissions for ${project.build.dist.dir}" />
+        <echo msg="Resetting permissions for ${build.dist.dir}" />
         <phingcall target="reset-filesystem-permissions">
-            <property name="target-dir" value="${project.build.dist.dir}" />
+            <property name="target-dir" value="${build.dist.dir}" />
         </phingcall>
     </target>
 
@@ -221,8 +221,8 @@
                 <if>
                     <not>
                         <and>
-                            <contains string="${target-dir}" substring="${project.lib.dir}" />
-                            <contains string="${target-dir}" substring="${project.build.dist.dir}" />
+                            <contains string="${target-dir}" substring="${lib.dir}" />
+                            <contains string="${target-dir}" substring="${build.dist.dir}" />
                         </and>
                     </not>
                     <then>
@@ -317,28 +317,28 @@
 
    <!-- Create temp dirs. -->
     <if>
-        <available file="${project.share.path.global}" type="dir"/>
+        <available file="${share.path.global}" type="dir"/>
         <then>
-            <echo msg="Global share directory ${project.share.path.global} available." level="${level}" />
+            <echo msg="Global share directory ${share.path.global} available." level="${level}" />
         </then>
         <else>
             <trycatch>
                 <try>
                     <exec
-                        command="mkdir -p ${project.share.path.global}"
+                        command="mkdir -p ${share.path.global}"
                         checkreturn="true" />
                     <echoproperties
-                        prefix="project.share.path."
+                        prefix="share.path."
                         destfile="${project.tmp.dir}/build.properties.share" />
                 </try>
                 <catch>
                     <echo msg="Unable to create global share directory." level="warning"/>
                     <echo msg="Switching over to local tmp dir for caching." />
                     <property
-                        name="project.share.path.global"
-                        value="${project.tmp.dir}/${project.share.name}"
+                        name="share.path.global"
+                        value="${project.tmp.dir}/${share.name}"
                         override="true" />
-                    <mkdir dir="${project.share.path.global}" />
+                    <mkdir dir="${share.path.global}" />
                 </catch>
             </trycatch>
         </else>
@@ -373,10 +373,10 @@
     </if>
 
     <!-- Macke sure project id for DB is valid with underscore instead of hyphen. -->
-    <php function="str_replace" returnProperty="project.db.name" level="debug">
+    <php function="str_replace" returnProperty="db.name" level="debug">
         <param value="-"/>
         <param value="_"/>
-        <param value="${project.db.name}"/>
+        <param value="${db.name}"/>
     </php>
 
     <!-- Disable output on consecutive phing calls. -->

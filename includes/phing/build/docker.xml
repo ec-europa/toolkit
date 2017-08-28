@@ -13,9 +13,9 @@
     <!-- Start an environment with docker. -->
     <target name="docker-compose-up" description="Start docker project.">
         <echo msg="Starting containers for ${docker.project.id}" />
-        <mkdir dir="${project.build.platform.dir}" />
-        <mkdir dir="${project.share.path.platform.packages.database}/platform-dev-${project.profile.package.version}" />
-        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${project.share.path.platform.packages.database}/platform-dev-${project.profile.package.version} docker-compose -p ${docker.project.id} -f ${ssk.incl}/docker/docker-compose.yml up -d" />
+        <mkdir dir="${build.profile.dir}" />
+        <mkdir dir="${share.path.platform.packages.database}/platform-dev-${profile.package.version}" />
+        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${share.path.platform.packages.database}/platform-dev-${profile.package.version} docker-compose -p ${docker.project.id} -f ${ssk.incl}/docker/docker-compose.yml up -d" />
         <relsym link="${project.basedir}/ssk-${docker.project.id}" target="${ssk.incl}/docker/dbash" overwrite="true" />
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
     </target>
@@ -24,7 +24,7 @@
     <target name="docker-compose-stop" description="Stop docker project.">
         <echo msg="Stopping containers for ${docker.project.id}" />
         <exec command="docker-compose -p ${docker.project.id} -f ${ssk.dir.incl.docker}/docker-compose.yml stop mysql" passthru="true" />
-        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${project.share.path.subsites.packages.database} docker-compose -p ${docker.project.id} -f ${ssk.dir.incl.docker}/docker-compose.yml -f ${ssk.dir.incl.docker}/backup-restore.yml run backup" passthru="true" />
+        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${share.path.subsites.packages.database} docker-compose -p ${docker.project.id} -f ${ssk.dir.incl.docker}/docker-compose.yml -f ${ssk.dir.incl.docker}/backup-restore.yml run backup" passthru="true" />
         <exec command="${project.basedir}/ssk-${docker.project.id} ps" passthru="true" />
     </target>
 

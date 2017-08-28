@@ -40,8 +40,8 @@
     <target name="subsite-make-subsite">
         <echo msg="Make the subsite." />
         <phingcall target="drush-make-no-core">
-            <property name="make-file" value="${project.resources.dir.site.make}" />
-            <property name="make-folder" value="${project.build.platform.dir.sites}" />
+            <property name="make-file" value="${resources.dir.site.make}" />
+            <property name="make-folder" value="${build.profile.dir.sites}" />
             <property name="make-destination" value="${project.id}" />
         </phingcall>
     </target>
@@ -49,15 +49,15 @@
     <!-- Symlink the source folders for easy development. -->
     <target name="subsite-resources-link">
         <symlink-property-contents
-            prefix="project.lib.dir."
-            origindir="${project.lib.dir}"
-            targetdir="${project.build.subsite.dir}"
+            prefix="lib.dir."
+            origindir="${lib.dir}"
+            targetdir="${build.subsite.dir}"
             overwrite="true"
         />
         <symlink-property-contents
-                prefix="project.resources.dir."
-                origindir="${project.resources.dir}"
-                targetdir="${project.build.subsite.dir}"
+                prefix="resources.dir."
+                origindir="${resources.dir}"
+                targetdir="${build.subsite.dir}"
                 overwrite="true"
         />
     </target>
@@ -74,7 +74,7 @@
         </if>
         <drushmf
             makeFile="${project.tmp.devel.make}"
-            coreVersion="${project.profile.core}"
+            coreVersion="${profile.core}"
             projects="${devel.mdls.dl}"
             defaultProjectDir="${devel.mdls.dir}"
         />
@@ -83,14 +83,14 @@
     <!-- Build release package. -->
     <target name="build-subsite-dist-package" description="Build subsite source code release package." depends="build-subsite-dist">
         <mkdir dir="${project.release.path}" />
-        <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${project.build.dist}" />
+        <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${build.dist}" />
     </target>
 
    <!-- Install Composer dist dependencies for the subsite. -->
     <target name="subsite-dist-composer-install">
         <echo msg="Run 'composer install --no-dev' in the build destination folder." />
         <composer command="install" composer="${project.bin.composer}">
-            <arg value="--working-dir=${project.build.dist.dir}" />
+            <arg value="--working-dir=${build.dist.dir}" />
             <arg value="--no-interaction" />
             <arg value="--no-plugins" />
             <arg value="--no-suggest" />
@@ -99,51 +99,51 @@
         </composer>
     </target>
 
-    <!-- Copy project.resources into the build folder. -->
+    <!-- Copy resources into the build folder. -->
     <target name="subsite-dist-resources-copy">
         <echo msg="Copy custom resources." />
         <!-- Copy our custom modules. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path" value="${project.lib.dir.modules}" />
-            <property name="copy.destination.path" value="${project.build.dist.dir.modules.custom}" />
-            <property name="project.build.haltonerror.dir.copy" value="false" override="true"/>
+            <property name="copy.source.path" value="${lib.dir.modules}" />
+            <property name="copy.destination.path" value="${build.dist.dir.modules.custom}" />
+            <property name="build.haltonerror.dir.copy" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom features. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path" value="${project.lib.dir.modules.features}" />
-            <property name="copy.destination.path" value="${project.build.dist.dir.modules.features}" />
-            <property name="project.build.haltonerror.dir.copy" value="false" override="true"/>
+            <property name="copy.source.path" value="${lib.dir.modules.features}" />
+            <property name="copy.destination.path" value="${build.dist.dir.modules.features}" />
+            <property name="build.haltonerror.dir.copy" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom themes. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path" value="${project.lib.dir.themes}" />
-            <property name="copy.destination.path" value="${project.build.dist.dir.themes}" />
-            <property name="project.build.haltonerror.dir.copy" value="false" override="true"/>
+            <property name="copy.source.path" value="${lib.dir.themes}" />
+            <property name="copy.destination.path" value="${build.dist.dir.themes}" />
+            <property name="build.haltonerror.dir.copy" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom PSR-4 code. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path" value="${project.lib.dir.source}" />
-            <property name="copy.destination.path" value="${project.build.dist.dir.source}" />
-            <property name="project.build.haltonerror.dir.copy" value="false" override="true"/>
+            <property name="copy.source.path" value="${lib.dir.source}" />
+            <property name="copy.destination.path" value="${build.dist.dir.source}" />
+            <property name="build.haltonerror.dir.copy" value="false" override="true"/>
         </phingcall>
         <!-- Copy composer configuration. -->
-        <copy todir="${project.build.dist.dir}" file="${project.resources.dir.composer.json}" />
-        <copy todir="${project.build.dist.dir}" file="${project.resources.dir.composer.lock}" />
+        <copy todir="${build.dist.dir}" file="${resources.dir.composer.json}" />
+        <copy todir="${build.dist.dir}" file="${resources.dir.composer.lock}" />
     </target>
 
     <!-- Delete the previous distribution build. -->
     <target name="subsite-dist-delete">
         <echo msg="Delete previous build." />
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${project.build.dist.dir}" />
+            <property name="folder.to.delete" value="${build.dist.dir}" />
         </phingcall>
     </target>
 
     <!-- Make the distribution version of the subsite. -->
     <target name="subsite-dist-make">
         <phingcall target="drush-make-no-core">
-            <property name="make-file" value="${project.resources.dir.site.make}" />
-            <property name="make-folder" value="${project.build.subsite.dir.modules}" />
+            <property name="make-file" value="${resources.dir.site.make}" />
+            <property name="make-folder" value="${build.subsite.dir.modules}" />
         </phingcall>
     </target>
 

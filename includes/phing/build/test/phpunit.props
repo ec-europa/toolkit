@@ -2,10 +2,10 @@
 # -------------------
 
 # The location of the PHPUnit executable.
-phpunit.bin = ${project.tests.dir}/bin/phpunit
+phpunit.bin = ${tests.dir}/bin/phpunit
 
 # The location of the PHPUnit configuration files.
-phpunit.dir = ${project.tests.dir}
+phpunit.dir = ${tests.dir}
 
 # The location of the PHPUnit configuration template.
 phpunit.xml.template = ${phpunit.dir}/phpunit.xml.dist

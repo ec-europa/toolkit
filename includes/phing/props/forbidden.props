@@ -25,86 +25,86 @@ project.tmp.dir = ${project.basedir}/.tmp
 
 # Database download settings.
 # ---------------------------
-project.db.dl.url = ${project.db.dl.host}/${project.db.dl.dir}/${project.id}/
+db.dl.url = ${db.dl.host}/${db.dl.dir}/${project.id}/
 
 # Database connection settings.
 # -----------------------------
-project.db.url = ${project.db.type}://${project.db.user}:${project.db.password}@${project.db.host}:${project.db.port}/${project.db.name}
+db.url = ${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db.name}
 
 # Solr configuration.
 # -------------------
-project.solr.url = ${project.solr.schem}://${project.solr.host}:${project.solr.port}/solr/${project.solr.type}
+solr.url = ${solr.schem}://${solr.host}:${solr.port}/solr/${solr.type}
 
 # Local resources.
 # ----------------
-project.resources.dir.composer.json = ${project.resources.dir}/composer.json
-project.resources.dir.composer.lock = ${project.resources.dir}/composer.lock
-project.resources.dir = ${project.basedir}/resources
-project.lib.dir = ${project.basedir}/lib
-project.lib.dir.modules.features = ${project.lib.dir}/features
-project.lib.dir.modules = ${project.lib.dir}/modules
-project.lib.dir.profiles.profile = ${project.lib.dir.profiles}/${project.profile}
-project.lib.dir.profiles = ${project.lib.dir}/profiles
-project.lib.dir.source = ${project.lib.dir}/src
-project.lib.dir.themes = ${project.lib.dir}/themes
-project.tests.dir = ${project.basedir}/tests
-project.resources.dir.favicon.ico = ${project.resources.dir}/favicon.ico
-project.resources.dir.site.make = ${project.resources.dir}/site.make
+resources.dir.composer.json = ${resources.dir}/composer.json
+resources.dir.composer.lock = ${resources.dir}/composer.lock
+resources.dir = ${project.basedir}/resources
+lib.dir = ${project.basedir}/lib
+lib.dir.modules.features = ${lib.dir}/features
+lib.dir.modules = ${lib.dir}/modules
+lib.dir.profiles.profile = ${lib.dir.profiles}/${profile}
+lib.dir.profiles = ${lib.dir}/profiles
+lib.dir.source = ${lib.dir}/src
+lib.dir.themes = ${lib.dir}/themes
+tests.dir = ${project.basedir}/tests
+resources.dir.favicon.ico = ${resources.dir}/favicon.ico
+resources.dir.site.make = ${resources.dir}/site.make
 
 # Platform build resources.
 # -------------------------
-project.build.platform.dir = ${project.basedir}/${project.build.dev}
-project.build.platform.dir.settings = ${project.build.platform.dir.sites}/default
-project.build.platform.dir.sites = ${project.build.platform.dir}/sites
-project.build.platform.dir.profile = ${project.build.platform.dir.profiles}/${project.profile}
-project.build.platform.dir.profile.themes = ${project.build.platform.dir.profile}/themes
-project.build.platform.dir.profiles = ${project.build.platform.dir}/profiles
-project.build.platform.composer.json = ${project.build.platform.dir}/composer.json
-project.build.platform.composer.lock = ${project.build.platform.dir}/composer.lock
-project.build.platform.favicon.ico = ${project.build.platform.dir}/favicon.ico
-project.build.platform.htaccess.append.text =
+build.profile.dir = ${project.basedir}/${build.dev}
+build.profile.dir.settings = ${build.profile.dir.sites}/default
+build.profile.dir.sites = ${build.profile.dir}/sites
+build.profile.dir.profile = ${build.profile.dir.profiles}/${profile}
+build.profile.dir.profile.themes = ${build.profile.dir.profile}/themes
+build.profile.dir.profiles = ${build.profile.dir}/profiles
+build.profile.composer.json = ${build.profile.dir}/composer.json
+build.profile.composer.lock = ${build.profile.dir}/composer.lock
+build.profile.favicon.ico = ${build.profile.dir}/favicon.ico
+build.profile.htaccess.append.text =
 
 # Subsite build resources.
 # ------------------------
-project.build.subsite.composer.json = ${project.build.subsite.dir}/composer.json
-project.build.subsite.composer.lock = ${project.build.subsite.dir}/composer.lock
-project.build.subsite.dir = ${project.build.platform.dir.sites}/${project.build.site}
-project.build.subsite.dir.files = ${project.build.subsite.dir}/files
-project.build.subsite.dir.libraries = ${project.build.subsite.dir}/libraries
-project.build.subsite.dir.modules = ${project.build.subsite.dir}/modules
-project.build.subsite.dir.modules.contrib = ${project.build.subsite.dir.modules}/contrib
-project.build.subsite.dir.modules.custom = ${project.build.subsite.dir.modules}/custom
-project.build.subsite.dir.modules.features = ${project.build.subsite.dir.modules}/features
-project.build.subsite.dir.source = ${project.build.subsite.dir}/src
-project.build.subsite.dir.themes = ${project.build.subsite.dir}/themes
-project.build.subsite.dir.tmp = ${project.build.subsite.dir}/tmp
+build.subsite.composer.json = ${build.subsite.dir}/composer.json
+build.subsite.composer.lock = ${build.subsite.dir}/composer.lock
+build.subsite.dir = ${build.profile.dir.sites}/${build.site}
+build.subsite.dir.files = ${build.subsite.dir}/files
+build.subsite.dir.libraries = ${build.subsite.dir}/libraries
+build.subsite.dir.modules = ${build.subsite.dir}/modules
+build.subsite.dir.modules.contrib = ${build.subsite.dir.modules}/contrib
+build.subsite.dir.modules.custom = ${build.subsite.dir.modules}/custom
+build.subsite.dir.modules.features = ${build.subsite.dir.modules}/features
+build.subsite.dir.source = ${build.subsite.dir}/src
+build.subsite.dir.themes = ${build.subsite.dir}/themes
+build.subsite.dir.tmp = ${build.subsite.dir}/tmp
 
 # Distribution build files and directories.
 # -----------------------------------------
-project.build.dist.composer.json = ${project.build.dist.dir}/composer.json
-project.build.dist.composer.lock = ${project.build.dist.dir}/composer.lock
-project.build.dist.dir = ${project.basedir}/${project.build.dist}
-project.build.dist.dir.modules = ${project.build.dist.dir}/modules
-project.build.dist.dir.modules.custom = ${project.build.dist.dir.modules}/custom
-project.build.dist.dir.modules.features = ${project.build.dist.dir.modules}/features
-project.build.dist.dir.profile = ${project.build.dist.dir.profiles}/${project.profile}
-project.build.dist.dir.profiles = ${project.build.dist.dir}/profiles
-project.build.dist.dir.source = ${project.build.dist.dir}/src
-project.build.dist.dir.themes = ${project.build.dist.dir}/themes
+build.dist.composer.json = ${build.dist.dir}/composer.json
+build.dist.composer.lock = ${build.dist.dir}/composer.lock
+build.dist.dir = ${project.basedir}/${build.dist}
+build.dist.dir.modules = ${build.dist.dir}/modules
+build.dist.dir.modules.custom = ${build.dist.dir.modules}/custom
+build.dist.dir.modules.features = ${build.dist.dir.modules}/features
+build.dist.dir.profile = ${build.dist.dir.profiles}/${profile}
+build.dist.dir.profiles = ${build.dist.dir}/profiles
+build.dist.dir.source = ${build.dist.dir}/src
+build.dist.dir.themes = ${build.dist.dir}/themes
 
 # Shared paths.
 # -------------
-project.share.path.global = ${project.share.path}/${project.share.name}
-project.share.path.composer = ${project.share.path.global}/composer
-project.share.path.platform = ${project.share.path.global}/platform
-project.share.path.subsites = ${project.share.path.global}/subsites
-project.share.path.composer.packages = ${project.share.path.composer}/packages
-project.share.path.composer.packages.shared = ${project.share.path.composer.packages}/shared
-project.share.path.platform.packages = ${project.share.path.platform}/packages
-project.share.path.platform.packages.database = ${project.share.path.platform.packages}/database
-project.share.path.platform.packages.deploy = ${project.share.path.platform.packages}/deploy
-project.share.path.platform.packages.test = ${project.share.path.platform.packages}/test
-project.share.path.subsites.packages = ${project.share.path.subsites}/packages
-project.share.path.subsites.packages.database = ${project.share.path.subsites.packages}/database
-project.share.path.subsites.packages.deploy = ${project.share.path.subsites.packages}/deploy
-project.share.path.subsites.packages.test = ${project.share.path.subsites.packages}/test
+share.path.global = ${share.path}/${share.name}
+share.path.composer = ${share.path.global}/composer
+share.path.platform = ${share.path.global}/platform
+share.path.subsites = ${share.path.global}/subsites
+share.path.composer.packages = ${share.path.composer}/packages
+share.path.composer.packages.shared = ${share.path.composer.packages}/shared
+share.path.platform.packages = ${share.path.platform}/packages
+share.path.platform.packages.database = ${share.path.platform.packages}/database
+share.path.platform.packages.deploy = ${share.path.platform.packages}/deploy
+share.path.platform.packages.test = ${share.path.platform.packages}/test
+share.path.subsites.packages = ${share.path.subsites}/packages
+share.path.subsites.packages.database = ${share.path.subsites.packages}/database
+share.path.subsites.packages.deploy = ${share.path.subsites.packages}/deploy
+share.path.subsites.packages.test = ${share.path.subsites.packages}/test

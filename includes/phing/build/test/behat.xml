@@ -33,13 +33,13 @@
         <if>
             <isset property="env.FLICKR_KEY" />
             <then>
-                <property name="project.flickr.key" value="${env.FLICKR_KEY}" override="true" />
+                <property name="flickr.key" value="${env.FLICKR_KEY}" override="true" />
             </then>
         </if>
         <if>
             <isset property="env.FLICKR_SECRET" />
             <then>
-                <property name="project.flickr.secret" value="${env.FLICKR_SECRET}" override="true" />
+                <property name="flickr.secret" value="${env.FLICKR_SECRET}" override="true" />
             </then>
         </if>
         <copy todir="${behat.dir}" overwrite="true">
@@ -51,10 +51,10 @@
                     <token key="behat.base_url" value="${behat.base_url}" />
                     <token key="behat.wd_host.url" value="${behat.wd_host.url}" />
                     <token key="behat.browser.name" value="${behat.browser.name}" />
-                    <token key="project.build.platform.dir" value="${project.build.platform.dir}" />
+                    <token key="build.profile.dir" value="${build.profile.dir}" />
                     <token key="behat.subcontexts.path" value="${behat.subcontexts.path}" />
-                    <token key="project.flickr.key" value="${project.flickr.key}" />
-                    <token key="project.flickr.secret" value="${project.flickr.secret}" />
+                    <token key="flickr.key" value="${flickr.key}" />
+                    <token key="flickr.secret" value="${flickr.secret}" />
                     <token key="ssk.dir.bin.drush" value="${ssk.dir.bin.drush}" />
                     <token key="drush.db.dump" value="${drush.db.dump}" />
                     <token key="behat.formatter.name" value="${behat.formatter.name}" />
@@ -68,8 +68,8 @@
 
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
     <target name="test-behat-setup-link">
-        <property name="behat-test-location" value="${project.build.platform.dir}" />
-        <property name="behat-test-binary" value="${project.build.platform.dir}/vendor/behat/behat/bin/behat" />
+        <property name="behat-test-location" value="${build.profile.dir}" />
+        <property name="behat-test-binary" value="${build.profile.dir}/vendor/behat/behat/bin/behat" />
         <relsym link="platform" overwrite="true">
             <fileset dir="${behat.dir}" casesensitive="yes">
                 <include name="*.yml"/>
@@ -94,7 +94,7 @@
     <target name="test-composer-install">
         <echo msg="Run 'composer install' in best folder." />
         <composer command="install" composer="${project.bin.composer}">
-            <arg value="--working-dir=${project.tests.dir}" />
+            <arg value="--working-dir=${tests.dir}" />
             <arg value="--no-interaction" />
             <arg value="--no-suggest" />
             <arg value="--ansi" />
