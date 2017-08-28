@@ -80,7 +80,7 @@ platform.build.files.dir =
 platform.build.tmp.dir =
 
 platform.build.profiles.dir =
-platform.build.profile.dir =
+platform.build.platform.dir =
 
 platform.build.sites.dir =
 platform.build.subsite.dir =

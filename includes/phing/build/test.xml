@@ -37,7 +37,7 @@
             test-qa-exec" />
 
     <!-- Build test package. -->
-    <target name="build-project-test">
+    <target name="build-project-test" hidden="true">
 
         <!-- Set package name for re-use. -->
         <property

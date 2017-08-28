@@ -24,8 +24,8 @@
                 <include name="drush.xml"/>
                 <include name="theme.xml"/>
                 <include name="project.xml"/>
-                <include name="ssk.xml"/>
                 <include name="test.xml"/>
+                <include name="toolkit.xml"/>
             </patternset>
         </fileset>
     </import>

@@ -4,7 +4,7 @@
 # =============================
 FILENAME=${0##*/}
 if [ "$FILENAME" != "dbash" ]; then
-  PROJECT_NAME=${FILENAME#ssk-}
+  PROJECT_NAME=${FILENAME#docker-}
 elif [ -n "$COMPOSE_PROJECT_NAME" ]; then
   PROJECT_NAME=$COMPOSE_PROJECT_NAME
 else
@@ -86,12 +86,12 @@ esac
 # Add symlink if we are executing up.
 # ===================================
 if [ "$1" = "up" ] && [ $? -eq 0 ]; then
-  ln -sf ${SCRIPT_PATH}/dbash ssk-${PROJECT_NAME}
+  ln -sf ${SCRIPT_PATH}/dbash docker-${PROJECT_NAME}
 fi
 
 
 # Remove symlink if we are executing down.
 # ========================================
 if [ "$1" = "down" ] && [ $? -eq 0 ]; then
-  rm -f ssk-${PROJECT_NAME}
+  rm -f docker-${PROJECT_NAME}
 fi

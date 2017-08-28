@@ -11,21 +11,21 @@
      </if>
 
     <!-- Provide handy access with root symlink to starterkit binary. -->
-    <target name="ssk-link-binary">
+    <target name="toolkit-link-binary">
         <echo msg="Provide project with starterkit binary at root level." />
         <relsym link="${project.basedir}/ssk" target="${ssk.dir.bin}" overwrite="true"/>
     </target>
 
     <target 
-        name="ssk-init"
+        name="toolkit-init"
         depends="
-            ssk-link-binary,
+            toolkit-link-binary,
             project-set-platform-version">
         <echo msg="Starterkit successfully initiated." />
     </target>
 
     <!-- Ask user if he or she wants to generate the source code structure. -->
-    <target name="ssk-generate-structure">
+    <target name="toolkit-generate-structure">
         <if>
             <and>
                 <not>
@@ -34,7 +34,7 @@
                 <equals arg1="${project.basedir}" arg2="${ssk.dir}" />
             </and>
             <then>
-                <phingcall target="ssk-copy-templates">
+                <phingcall target="toolkit-copy-templates">
                     <property name="project-type" value="${project.type}" override="true" />
                 </phingcall>
             </then>
@@ -46,7 +46,7 @@
             </elseif>
             <else>
                 <input propertyName="project-type" message="What type of project do you want to create?" validargs="profile,subsite" />
-                <phingcall target="ssk-copy-templates">
+                <phingcall target="toolkit-copy-templates">
                     <property name="project-type" value="${project-type}" override="true" />
                 </phingcall>
             </else>
@@ -54,7 +54,7 @@
     </target>
 
     <!-- Ensure needed files are present. -->
-    <target name="ssk-copy-templates">
+    <target name="toolkit-copy-templates">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
         <copy file="${ssk.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.properties.dist" overwrite="true" />
         <copy todir="${project.basedir}">
@@ -64,13 +64,13 @@
     </target>
 
     <!-- Upgrade ssk 2.x to 3.x. -->
-    <target name="ssk-upgrade">
+    <target name="toolkit-upgrade">
         <if>
             <available file="${project.basedir}/build.package.xml" type="file" />
             <then>
-                <input propertyName="ssk-upgrade" message="Subsite Starterkit 2.x detected. Do you wish to upgrade to 3.x?" validargs="y,n" />
+                <input propertyName="toolkit-upgrade" message="Subsite Starterkit 2.x detected. Do you wish to upgrade to 3.x?" validargs="y,n" />
                 <if>
-                    <equals arg1="${ssk-upgrade}" arg2="y" />
+                    <equals arg1="${toolkit-upgrade}" arg2="y" />
                     <then>
                         <!-- Delete starterkit folders. -->
                         <phingcall target="delete-folder">

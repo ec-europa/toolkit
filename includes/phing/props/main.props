@@ -136,22 +136,22 @@ build.haltonerror.props.validate = false
 
 # Platform build resources.
 # -------------------------
-build.profile.dir = ${project.basedir}/${build.dev}
-build.profile.dir.settings = ${build.profile.dir.sites}/default
-build.profile.dir.sites = ${build.profile.dir}/sites
-build.profile.dir.profile = ${build.profile.dir.profiles}/${profile}
-build.profile.dir.profile.themes = ${build.profile.dir.profile}/themes
-build.profile.dir.profiles = ${build.profile.dir}/profiles
-build.profile.composer.json = ${build.profile.dir}/composer.json
-build.profile.composer.lock = ${build.profile.dir}/composer.lock
-build.profile.favicon.ico = ${build.profile.dir}/favicon.ico
-build.profile.htaccess.append.text =
+build.platform.dir = ${project.basedir}/${build.dev}
+build.platform.dir.settings = ${build.platform.dir.sites}/default
+build.platform.dir.sites = ${build.platform.dir}/sites
+build.platform.dir.profile = ${build.platform.dir.profiles}/${profile}
+build.platform.dir.profile.themes = ${build.platform.dir.profile}/themes
+build.platform.dir.profiles = ${build.platform.dir}/profiles
+build.platform.composer.json = ${build.platform.dir}/composer.json
+build.platform.composer.lock = ${build.platform.dir}/composer.lock
+build.platform.favicon.ico = ${build.platform.dir}/favicon.ico
+build.platform.htaccess.append.text =
 
 # Subsite build resources.
 # ------------------------
 build.subsite.composer.json = ${build.subsite.dir}/composer.json
 build.subsite.composer.lock = ${build.subsite.dir}/composer.lock
-build.subsite.dir = ${build.profile.dir.sites}/${build.site}
+build.subsite.dir = ${build.platform.dir.sites}/${build.site}
 build.subsite.dir.files = ${build.subsite.dir}/files
 build.subsite.dir.libraries = ${build.subsite.dir}/libraries
 build.subsite.dir.modules = ${build.subsite.dir}/modules
@@ -203,7 +203,7 @@ share.path.subsites.packages.test = ${share.path.subsites.packages}/test
 
 # Composer hook phingcall target lists. Space separated only.
 # -----------------------------------------------------------
-composer.hook.post.install = ssk-init
+composer.hook.post.install = toolkit-init
 composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =
@@ -237,5 +237,5 @@ varnish.server.port = 8888
 
 # Drush Context configuration.
 # ----------------------------
-drush.db.dump = ${build.profile.dir}/dump.sql
+drush.db.dump = ${build.platform.dir}/dump.sql
 

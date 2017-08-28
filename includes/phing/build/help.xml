@@ -179,7 +179,7 @@
     </target>
 
     <!-- Reset all file permission to Drupals recommendation for the lib dir. -->
-    <target name="reset-filesystem-permissions-lib">
+    <target name="project-reset-fs-perms-lib">
         <echo msg="Resetting permissions for ${lib.dir}" />
         <phingcall target="reset-filesystem-permissions">
             <property name="target-dir" value="${lib.dir}" />
@@ -187,15 +187,15 @@
     </target>
 
     <!-- Reset all file permission to Drupals recommendation for the build dir. -->
-    <target name="reset-filesystem-permissions-build">
-        <echo msg="Resetting permissions for ${build.profile.dir}" />
+    <target name="project-reset-fs-perms-build">
+        <echo msg="Resetting permissions for ${build.platform.dir}" />
         <phingcall target="reset-filesystem-permissions">
-            <property name="target-dir" value="${build.profile.dir}" />
+            <property name="target-dir" value="${build.platform.dir}" />
         </phingcall>
     </target>
 
     <!-- Reset all file permission to Drupals recommendation for the build dir. -->
-    <target name="reset-filesystem-permissions-dist">
+    <target name="project-reset-fs-perms-dist">
         <echo msg="Resetting permissions for ${build.dist.dir}" />
         <phingcall target="reset-filesystem-permissions">
             <property name="target-dir" value="${build.dist.dir}" />

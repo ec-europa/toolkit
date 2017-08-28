@@ -34,7 +34,7 @@
 
     <!-- Creates symlinks for the atomium and europa themes. -->
     <target name="theme-europa-create-symlinks" >
-        <relsym link="${build.profile.dir.profile.themes}" overwrite="true">
+        <relsym link="${build.platform.dir.profile.themes}" overwrite="true">
             <fileset dir="${lib.dir.themes}" expandsymboliclinks="true">
                 <include name="*" />
             </fileset>
