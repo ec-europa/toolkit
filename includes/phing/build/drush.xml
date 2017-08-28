@@ -27,7 +27,7 @@
     <!-- Generate aliases for Drupal site by foldername. -->
     <target name="drush-generate-aliases">
         <mkdir dir="${project.build.platform.dir.sites}/all/drush" />
-        <drushgal siteRoot="${project.build.platform.dir}" />
+        <!--<drushgal siteRoot="${project.build.platform.dir}" />-->
     </target>
 
     <!-- Enable modules. -->
@@ -111,16 +111,40 @@
         </if>
     </target>
 
-    <!-- Execute a makefile with the no-core option. -->
+    <!-- Make the distribution version of the subsite. -->
     <target name="drush-make-no-core">
-        <echo message="Running make file ${drush.make.target.file} into folder ${drush.make.root}." />
-        <drush command="make" assume="yes" bin="${ssk.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${drush.make.root}" color="${drush.color}">
-            <param>${drush.make.target.file}</param>
-            <param>${drush.make.root}</param>
-            <option name="concurrency">10</option>
-            <option name="no-patch-txt"></option>
-            <option name="no-core"></option>
-        </drush>
+        <echo msg="Delete temporary build folder." />
+        <if>
+            <available file="${make-file}" type="file" />
+            <then>
+                <loadfile property="make-string" file="${make-file}"/>
+                <propertyregex
+                        property="not.empty"
+                        subject="${make-string}"
+                        pattern="([^#; ])(libraries\[|projects\[)"
+                        match="$1"
+                        casesensitive="false"
+                        defaultvalue="empty"/>
+                <if>
+                    <equals arg1="${not.empty}" arg2="empty" />
+                    <then>
+                        <echo msg="Empty make file found. Skipping... ${not.empty}" />
+                    </then>
+                    <else>
+                        <echo message="Running make file ${make-file} into folder ${make-folder}." />
+                        <mkdir dir="${project.tmp.dir}/make" />
+                        <drush command="make" assume="yes" bin="${ssk.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" color="${drush.color}">
+                            <param>${make-file}</param>
+                            <param>${make-folder}</param>
+                            <option name="contrib-destination">${make-destination}</option>
+                            <option name="concurrency">10</option>
+                            <option name="no-patch-txt"></option>
+                            <option name="no-core"></option>
+                        </drush>
+                    </else>
+                </if>
+            </then>
+        </if>
     </target>
 
     <!-- Regenerate the settings file with database credentials and development variables. -->

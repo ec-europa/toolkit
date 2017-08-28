@@ -94,7 +94,7 @@
     <target name="test-composer-install">
         <echo msg="Run 'composer install' in best folder." />
         <composer command="install" composer="${project.bin.composer}">
-            <arg value="--working-dir=${project.resources.dir.tests}" />
+            <arg value="--working-dir=${project.tests.dir}" />
             <arg value="--no-interaction" />
             <arg value="--no-suggest" />
             <arg value="--ansi" />

@@ -1,15 +1,18 @@
-# Ignore metadata from common editors and IDEs.
+# Ignore editor and IDE metadata.
+# -------------------------------
 *.sublime-project
 *.sublime-workspace
 .idea/
 nbproject/
 
-# Ignore local configuration overrides.
+# Ignore local configuration.
+# ---------------------------
 /build.properties.local
 /phpcs.xml
 /tests/behat.yml
 
 # Ignore build artifacts.
+# -----------------------
 /bin/
 /ssk
 /ssk-*
@@ -17,6 +20,4 @@ nbproject/
 /platform/
 /tmp/
 /vendor/
-/includes/composer/bin/*
-!/includes/composer/bin/dbash
 /resources/git/hooks/pre-push/phpcs

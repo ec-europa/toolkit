@@ -19,8 +19,6 @@
     <target 
         name="ssk-init"
         depends="
-            ssk-upgrade,
-            ssk-generate-structure,
             ssk-link-binary,
             project-platform-version-set">
         <echo msg="Starterkit successfully initiated." />
@@ -31,7 +29,7 @@
         <if>
             <and>
                 <not>
-                    <available file="${project.resources.dir.lib}" type="dir" />
+                    <available file="${project.lib.dir}" type="dir" />
                 </not>
                 <equals arg1="${project.basedir}" arg2="${ssk.dir}" />
             </and>
@@ -41,7 +39,7 @@
                 </phingcall>
             </then>
             <elseif>
-                <available file="${project.resources.dir.lib}" type="dir" />
+                <available file="${project.lib.dir}" type="dir" />
                 <then>
                     <echo msg="Project structure exists already." />
                 </then>

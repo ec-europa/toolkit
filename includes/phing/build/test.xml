@@ -48,10 +48,10 @@
         <delete file="${test-package}" />
 
         <!-- Create our phing test folder. -->
-        <mkdir dir="${project.resources.dir.tests}/phing" />
+        <mkdir dir="${project.tests.dir}/phing" />
 
         <!-- Copy our phing build test folder. -->
-        <copy todir="${project.resources.dir.tests}/phing" overwrite="true">
+        <copy todir="${project.tests.dir}/phing" overwrite="true">
             <fileset dir="${phing.dir.test}/test">
                 <include name="**" />
             </fileset>
@@ -60,18 +60,18 @@
         <!-- Copy the main build file. -->
         <copy
             file="${phing.dir.test}/test.xml"
-            tofile="${project.resources.dir.tests}/build.xml"
+            tofile="${project.tests.dir}/build.xml"
             overwrite="true" />
 
         <!-- Copy the main build file. -->
         <copy
             file="${phing.dir.test}/build.xml"
-            tofile="${project.resources.dir.tests}/phing/build.xml"
+            tofile="${project.tests.dir}/phing/build.xml"
             overwrite="true" />
 
         <!-- Package the test dir. -->
         <tar destfile="${test-package}" compression="gzip">
-            <fileset dir="${project.resources.dir.tests}">
+            <fileset dir="${project.tests.dir}">
                 <exclude name="vendor/**" />
                 <exclude name="bin/**" />
                 <exclude name="behat.yml" />
@@ -82,7 +82,7 @@
         <!-- Delete a the phing dir. -->
 <!--
         <delete
-            dir="${project.resources.dir.tests}/phing"
+            dir="${project.tests.dir}/phing"
             includeemptydirs="true"
             verbose="true"
             failonerror="true" />

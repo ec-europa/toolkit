@@ -83,7 +83,7 @@
     <!-- Make all of the profiles in order to build a multisite platform. -->
     <target name="project-profile-make-all">
         <foreach param="profile-name" absparam="dir-profile" target="project-profile-make">
-            <fileset dir="${project.resources.dir.profiles}">
+            <fileset dir="${project.lib.dir.profiles}">
                 <depth max="0" min="0" />
                 <exclude name="common" />
                 <type type="dir" />
@@ -97,7 +97,7 @@
         <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="true" quiet="true" />
         <!-- Copy our profiles folder. -->
         <copy todir="${dir-profiles}">
-            <fileset dir="${project.resources.dir.profiles}" expandsymboliclinks="true">
+            <fileset dir="${project.lib.dir.profiles}" expandsymboliclinks="true">
                 <exclude name="common/**" />
             </fileset>
         </copy>
@@ -110,7 +110,7 @@
         <mkdir dir="${dir-profile}" />
         <!-- Copy our profile folder. -->
         <copy todir="${dir-profile}">
-            <fileset dir="${project.resources.dir.profile}" expandsymboliclinks="true">
+            <fileset dir="${project.lib.dir.profiles.profile}" expandsymboliclinks="true">
                 <exclude name="profiles/common/**" />
             </fileset>
         </copy>
@@ -119,14 +119,14 @@
     <!-- Symlink the profile folders for easy development. -->
     <target name="platform-profiles-link">
         <delete dir="${dir-profiles}" />
-        <symlink link="${dir-profiles}" target="${project.resources.dir.profiles}" />
+        <symlink link="${dir-profiles}" target="${project.lib.dir.profiles}" />
    </target>
 
     <!-- Symlink various resources for easy development. -->
     <target name="platform-resources-link">
-        <symlink link="${dir-build}/composer.json" target="${project.resources.composer.json}" />
-        <symlink link="${dir-build}/.composer.lock" target="${project.resources.composer.lock}" />
-        <symlink link="${dir-build}/.favicon.ico" target="${project.resources.favicon.ico}" />
+        <symlink link="${dir-build}/composer.json" target="${project.resources.dir.composer.json}" />
+        <symlink link="${dir-build}/.composer.lock" target="${project.resources.dir.composer.lock}" />
+        <symlink link="${dir-build}/.favicon.ico" target="${project.resources.dir.favicon.ico}" />
     </target>
 
     <!-- Copy various resources for deploying on production. -->

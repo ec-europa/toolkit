@@ -102,21 +102,25 @@ project.theme.atomium.repo.branch = 7.x-1.x
 project.theme.europa.repo.url = https://github.com/ec-europa/ec_europa.git
 project.theme.europa.repo.branch = master
 
-# Local resources.
-# ----------------
-project.resources.composer.json = ${project.resources.dir}/composer.json
-project.resources.composer.lock = ${project.resources.dir}/composer.lock
+# Project resources.
+# ------------------
+project.lib.dir = ${project.basedir}/lib
+project.lib.dir.libraries = ${project.lib.dir}/libraries
+project.lib.dir.modules = ${project.lib.dir}/modules
+project.lib.dir.modules.custom = ${project.lib.dir.modules}/custom
+project.lib.dir.modules.features = ${project.lib.dir.modules}/features
+project.lib.dir.profiles = ${project.lib.dir}/profiles
+project.lib.dir.profiles.profile = ${project.lib.dir.profiles}/${project.profile}
+project.lib.dir.source = ${project.lib.dir}/src
+project.lib.dir.themes = ${project.lib.dir}/themes
+
 project.resources.dir = ${project.basedir}/resources
-project.resources.dir.lib = ${project.basedir}/lib
-project.resources.dir.features = ${project.resources.dir.lib}/features
-project.resources.dir.modules = ${project.resources.dir.lib}/modules
-project.resources.dir.profile = ${project.resources.dir.profiles}/${project.profile}
-project.resources.dir.profiles = ${project.resources.dir.lib}/profiles
-project.resources.dir.source = ${project.resources.dir.lib}/src
-project.resources.dir.tests = ${project.basedir}/tests
-project.resources.dir.themes = ${project.resources.dir.lib}/themes
-project.resources.favicon.ico = ${project.resources.dir}/favicon.ico
-project.resources.site.make = ${project.resources.dir}/site.make
+project.resources.dir.composer.json = ${project.resources.dir}/composer.json
+project.resources.dir.composer.lock = ${project.resources.dir}/composer.lock
+project.resources.dir.favicon.ico = ${project.resources.dir}/favicon.ico
+project.resources.dir.site.make = ${project.resources.dir}/site.make
+
+project.tests.dir = ${project.basedir}/tests
 
 # Build folders.
 # --------------

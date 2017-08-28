@@ -19,8 +19,8 @@
             project-platform-version-set,
             project-build-set-dev,
             project-profile-set,
-            subsite-make-subsite,
             subsite-resources-link,
+            subsite-make-subsite,
             project-subsite-composer-install,
             project-modules-devel-dl,
             project-subsite-restore" />
@@ -38,33 +38,22 @@
 
     <!-- Make the development version of the subsite. -->
     <target name="subsite-make-subsite">
-        <if>
-            <available file="${project.resources.site.make}" type="file" />
-            <then>
-                <echo msg="Make the subsite." />
-                <phingcall target="drush-make-no-core">
-                    <property name="drush.make.target.file" value="${project.resources.site.make}" />
-                    <property name="drush.make.root" value="${project.build.platform.dir}" />
-                </phingcall>
-            </then>
-            <else>
-                <echo msg="No make file found. Skipping..." />
-            </else>
-        </if>
+        <echo msg="Make the subsite." />
+        <phingcall target="drush-make-no-core">
+            <property name="make-file" value="${project.resources.dir.site.make}" />
+            <property name="make-folder" value="${project.build.platform.dir.sites}" />
+            <property name="make-destination" value="${project.id}" />
+        </phingcall>
     </target>
 
     <!-- Symlink the source folders for easy development. -->
     <target name="subsite-resources-link">
-        <mkdir dir="${project.build.subsite.dir.modules}" />
-        <mkdir dir="${project.build.subsite.dir.themes}" />
-        <mkdir dir="${project.build.subsite.dir.libraries}" />
-        <relsym link="${project.build.subsite.dir.modules.custom}" target="${project.resources.dir.modules}" />
-        <relsym link="${project.build.subsite.dir.modules.features}" target="${project.resources.dir.features}" />
-        <delete dir="${project.build.subsite.dir.themes}" includeemptydirs="true" failonerror="false" quiet="true" />
-        <relsym link="${project.build.subsite.dir.themes}" target="${project.resources.dir.themes}" />
-        <relsym link="${project.build.subsite.dir.source}" target="${project.resources.dir.source}" />
-        <relsym link="${project.build.subsite.composer.json}" target="${project.resources.composer.json}" />
-        <relsym link="${project.build.subsite.composer.lock}" target="${project.resources.composer.lock}" />
+        <symlink-property-contents
+            prefix="project.lib.dir."
+            origindir="${project.lib.dir}"
+            targetdir="${project.build.subsite.dir}"
+            overwrite="true"
+        />
     </target>
 
     <!-- Generate the makefile used to download development modules. -->
@@ -109,31 +98,31 @@
         <echo msg="Copy custom resources." />
         <!-- Copy our custom modules. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path" value="${project.resources.dir.modules}" />
+            <property name="copy.source.path" value="${project.lib.dir.modules}" />
             <property name="copy.destination.path" value="${project.build.dist.dir.modules.custom}" />
             <property name="project.build.haltonerror.dir.copy" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom features. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path" value="${project.resources.dir.features}" />
+            <property name="copy.source.path" value="${project.lib.dir.modules.features}" />
             <property name="copy.destination.path" value="${project.build.dist.dir.modules.features}" />
             <property name="project.build.haltonerror.dir.copy" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom themes. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path" value="${project.resources.dir.themes}" />
+            <property name="copy.source.path" value="${project.lib.dir.themes}" />
             <property name="copy.destination.path" value="${project.build.dist.dir.themes}" />
             <property name="project.build.haltonerror.dir.copy" value="false" override="true"/>
         </phingcall>
         <!-- Copy our custom PSR-4 code. -->
         <phingcall target="copy-folder">
-            <property name="copy.source.path" value="${project.resources.dir.source}" />
+            <property name="copy.source.path" value="${project.lib.dir.source}" />
             <property name="copy.destination.path" value="${project.build.dist.dir.source}" />
             <property name="project.build.haltonerror.dir.copy" value="false" override="true"/>
         </phingcall>
         <!-- Copy composer configuration. -->
-        <copy todir="${project.build.dist.dir}" file="${project.resources.composer.json}" />
-        <copy todir="${project.build.dist.dir}" file="${project.resources.composer.lock}" />
+        <copy todir="${project.build.dist.dir}" file="${project.resources.dir.composer.json}" />
+        <copy todir="${project.build.dist.dir}" file="${project.resources.dir.composer.lock}" />
     </target>
 
     <!-- Delete the previous distribution build. -->
@@ -146,60 +135,9 @@
 
     <!-- Make the distribution version of the subsite. -->
     <target name="subsite-dist-make">
-        <echo msg="Delete temporary build folder." />
-        <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${project.tmp.dir}/build" />
-        </phingcall>
-
-        <echo msg="Make the subsite." />
-        <!--
-            Drush make builds the site as if it is part of a complete Drupal
-            installation. The actual build is in the /sites/all subfolder. Build
-            in a temporary folder and move the subsite into place when done.
-         -->
-        <if>
-            <available file="${project.resources.site.make}" type="file" />
-            <then>
-                <loadfile property="sitemake" file="${project.resources.site.make}"/>
-                <propertyregex
-                    property="not.empty"
-                    subject="${sitemake}"
-                    pattern="([^#; ])(libraries\[|projects\[)"
-                    match="$1"
-                    casesensitive="false"
-                    defaultvalue="empty"/>
-                <if>
-                    <not><equals arg1="${not.empty}" arg2="empty" /></not>
-                    <then>
-                        <phingcall target="drush-make-no-core">
-                            <property name="drush.make.target.file" value="${project.resources.site.make}" />
-                            <property name="drush.make.root" value="${project.tmp.dir}/build" />
-                        </phingcall>
-                    </then>
-                    <else>
-                       <echo msg="Empty make file found. Skipping... ${not.empty}" />
-                       <mkdir dir="${project.tmp.dir}/build/sites/all" />
-                    </else>
-                </if>
-            </then>
-            <else>
-                <echo msg="No make file found. Skipping..." />
-                <mkdir dir="${project.tmp.dir}/build/sites/all" />
-            </else>
-        </if>
-
-        <!-- Move the subsite to its destination. -->
-        <echo msg='mv "${project.tmp.dir}/build/sites/all/" "${project.build.dist.dir}"' />
-        <exec
-            command='mv "${project.tmp.dir}/build/sites/all/" "${project.build.dist.dir}"'
-            dir="${project.basedir}"
-            passthru="true"
-            checkreturn="true"
-        />
-
-        <echo msg="Clean up temporary build folder." />
-        <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${project.tmp.dir}/build" />
+        <phingcall target="drush-make-no-core">
+            <property name="make-file" value="${project.resources.dir.site.make}" />
+            <property name="make-folder" value="${project.build.subsite.dir.modules}" />
         </phingcall>
     </target>
 

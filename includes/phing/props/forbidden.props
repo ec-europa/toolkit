@@ -37,19 +37,19 @@ project.solr.url = ${project.solr.schem}://${project.solr.host}:${project.solr.p
 
 # Local resources.
 # ----------------
-project.resources.composer.json = ${project.resources.dir}/composer.json
-project.resources.composer.lock = ${project.resources.dir}/composer.lock
+project.resources.dir.composer.json = ${project.resources.dir}/composer.json
+project.resources.dir.composer.lock = ${project.resources.dir}/composer.lock
 project.resources.dir = ${project.basedir}/resources
-project.resources.dir.lib = ${project.basedir}/lib
-project.resources.dir.features = ${project.resources.dir.lib}/features
-project.resources.dir.modules = ${project.resources.dir.lib}/modules
-project.resources.dir.profile = ${project.resources.dir.profiles}/${project.profile}
-project.resources.dir.profiles = ${project.resources.dir.lib}/profiles
-project.resources.dir.source = ${project.resources.dir.lib}/src
-project.resources.dir.tests = ${project.basedir}/tests
-project.resources.dir.themes = ${project.resources.dir.lib}/themes
-project.resources.favicon.ico = ${project.resources.dir}/favicon.ico
-project.resources.site.make = ${project.resources.dir}/site.make
+project.lib.dir = ${project.basedir}/lib
+project.lib.dir.modules.features = ${project.lib.dir}/features
+project.lib.dir.modules = ${project.lib.dir}/modules
+project.lib.dir.profiles.profile = ${project.lib.dir.profiles}/${project.profile}
+project.lib.dir.profiles = ${project.lib.dir}/profiles
+project.lib.dir.source = ${project.lib.dir}/src
+project.lib.dir.themes = ${project.lib.dir}/themes
+project.tests.dir = ${project.basedir}/tests
+project.resources.dir.favicon.ico = ${project.resources.dir}/favicon.ico
+project.resources.dir.site.make = ${project.resources.dir}/site.make
 
 # Platform build resources.
 # -------------------------

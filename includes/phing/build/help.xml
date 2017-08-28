@@ -51,7 +51,7 @@
 
     <!-- Check type of project and import it's build file. -->
     <if>
-        <available file="${project.resources.dir.profiles}" type="dir"/>
+        <available file="${project.lib.dir.profiles}" type="dir"/>
         <then>
             <import file="${ssk.dir.incl.phing.build}/profile.xml" />
         </then>
@@ -183,9 +183,9 @@
 
     <!-- Reset all file permission to Drupals recommendation for the lib dir. -->
     <target name="reset-filesystem-permissions-lib">
-        <echo msg="Resetting permissions for ${project.resources.dir.lib}" />
+        <echo msg="Resetting permissions for ${project.lib.dir}" />
         <phingcall target="reset-filesystem-permissions">
-            <property name="target-dir" value="${project.resources.dir.lib}" />
+            <property name="target-dir" value="${project.lib.dir}" />
         </phingcall>
     </target>
 
@@ -224,7 +224,7 @@
                 <if>
                     <not>
                         <and>
-                            <contains string="${target-dir}" substring="${project.resources.dir.lib}" />
+                            <contains string="${target-dir}" substring="${project.lib.dir}" />
                             <contains string="${target-dir}" substring="${project.build.dist.dir}" />
                         </and>
                     </not>
