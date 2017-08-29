@@ -31,11 +31,11 @@
         depends="
             project-subsite-backup,
             project-set-platform-version,
-            project-set-env,
+            project-set-dev,
             project-set-profile,
             build-subsite-link-resources,
             build-subsite-make-site,
-            build-subsite-composer-install,
+            project-subsite-composer-install-dev,
             project-modules-devel-dl,
             project-subsite-restore" />
 
@@ -47,7 +47,7 @@
             project-subsite-delete,
             build-subsite-make-site,
             build-subsite-copy-resources,
-            build-subsite-composer-install" />
+            project-subsite-composer-install" />
 
     <!-- Make the development version of the subsite. -->
     <target name="build-subsite-make-site">
@@ -55,7 +55,7 @@
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${resources.dir.site.make}" />
             <property name="make-folder" value="${build.platform.dir.sites}" />
-            <property name="make-destination" value="${project.id}" />
+            <property name="make-destination" value="${build.site}" />
         </phingcall>
     </target>
 
@@ -97,19 +97,6 @@
     <target name="build-subsite-release-package" depends="build-subsite-release">
         <mkdir dir="${project.release.path}" />
         <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${build.dist}" />
-    </target>
-
-   <!-- Install Composer dist dependencies for the subsite. -->
-    <target name="build-subsite-composer-install">
-        <echo msg="Run 'composer install --no-dev' in the build destination folder." />
-        <composer command="install" composer="${project.bin.composer}">
-            <arg value="--working-dir=${build.subsite.dir}" />
-            <arg value="--no-interaction" />
-            <arg value="--no-plugins" />
-            <arg value="--no-suggest" />
-            <arg value="--no-dev" />
-            <arg value="--ansi" />
-        </composer>
     </target>
 
     <!-- Copy resources into the build folder. -->

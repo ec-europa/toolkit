@@ -30,38 +30,38 @@
         depends="
             project-set-dist,
             project-set-profile,
-            project-delete-platform,
+            project-platform-delete,
             build-platform-make-drupal,
             build-platform-copy-profile,
             build-platform-make-profile,
             build-platform-copy-resources,
-            build-platform-composer-install" />
+            project-platform-composer-install" />
 
     <target
             name="build-platform-releases"
             depends="
             project-set-dist,
             project-set-profile,
-            project-delete-platform,
+            project-platform-delete,
             build-platform-make-drupal,
             build-platform-copy-profiles,
             build-platform-make-profiles,
             build-platform-copy-resources,
-            build-platform-composer-install" />
+            project-platform-composer-install" />
 
     <target
         name="build-platform-environment"
         depends="
-            project-set-env,
+            project-set-dev,
             project-set-profile,
             project-subsite-backup,
-            project-delete-platform,
+            project-platform-delete,
             build-platform-make-drupal,
             build-platform-link-profiles,
             build-platform-make-profiles,
             build-platform-link-resources,
-            build-platform-composer-install-dev,
             build-theme-dev,
+            project-platform-composer-install,
             project-set-htaccess,
             project-subsite-restore,
             project-setup-files" />

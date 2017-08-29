@@ -24,6 +24,13 @@ The biggest structural change is in the lib folder. Because of the new symlink s
 * src
 * themes
 
+Other tasks that need to happen:
+- merge the projects gitignore with the new toolkit gitignore file. This
+will probably happen through a build target.
+- remove the build-custom target from the build.project.xml. Toolkit
+should provide a new template if the original one wasn't altered.
+- 
+
 ### 1.2 Manual process
 Manually delete all files that are only specific to the starterkit.
 Below is a list of files *to keep*. So anything not mentioned below should
