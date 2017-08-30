@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="tasks" default="help">
-
-    <!-- Help function to display the targets. -->
-    <target name="help" hidden="true">
-        <exec command="${bootstrap.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
-        <echo msg="${line.separator}${phing-targets}" />
-    </target>
+<project name="extensions" default="help">
 
     <!-- External tasks that are a composer dependency. -->
     <import file="${bootstrap.dir.vendor}/drupal/phingdrushtask/import.xml"/>
     <import file="${bootstrap.dir.vendor}/drupol/phingbehattask/import.xml"/>
 
-            <!-- Custom task definititons. -->
+    <!-- Custom task definititons. -->
     <taskdef name="drushgal" classname="Phing\Ssk\Tasks\DrushGenerateAliasTask" />
     <taskdef name="drushmf" classname="Phing\Ssk\Tasks\DrushMakeFileTask" />
     <taskdef name="gitigmerge" classname="Phing\Ssk\Tasks\GitignoreMergerTask" />

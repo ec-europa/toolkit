@@ -2,14 +2,6 @@
 
 <project default="help">
 
-    <!-- Import helper targets if called here directly. -->
-    <if>
-         <available file="help.xml" />
-         <then>
-             <import file="help.xml" />
-         </then>
-    </if>
-
     <target
         name="build-theme-dev"
         description="Build EC Europa theme with version control."

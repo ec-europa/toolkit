@@ -15,7 +15,7 @@
     <import>
         <fileset dir="${phing.dir.bootstrap}/bootstrap" >
             <patternset>
-                <include name="tasks.xml"/>
+                <include name="extensions.xml"/>
                 <include name="properties.xml"/>
                 <include name="directories.xml"/>
             </patternset>

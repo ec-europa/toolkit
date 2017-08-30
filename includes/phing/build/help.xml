@@ -280,44 +280,6 @@
         </if>
     </target>
 
-   <!-- Create temp dirs. -->
-    <if>
-        <available file="${share.path.global}" type="dir"/>
-        <then>
-            <echo msg="Global share directory ${share.path.global} available." level="${level}" />
-        </then>
-        <else>
-            <trycatch>
-                <try>
-                    <exec
-                        command="mkdir -p ${share.path.global}"
-                        checkreturn="true" />
-                    <echoproperties
-                        prefix="share.path."
-                        destfile="${project.tmp.dir}/build.properties.share" />
-                </try>
-                <catch>
-                    <echo msg="Unable to create global share directory." level="warning"/>
-                    <echo msg="Switching over to local tmp dir for caching." />
-                    <property
-                        name="share.path.global"
-                        value="${project.tmp.dir}/${share.name}"
-                        override="true" />
-                    <mkdir dir="${share.path.global}" />
-                </catch>
-            </trycatch>
-        </else>
-    </if>
-    <if>
-        <available file="${project.tmp.dir}" type="dir"/>
-        <then>
-            <echo msg="Temporary directory ${project.tmp.dir} available." level="${level}" />
-        </then>
-        <else>
-            <mkdir dir="${project.tmp.dir}"/>
-        </else>
-    </if>
-
     <!-- Highest priority to env variables. -->
     <property environment="env" />
 

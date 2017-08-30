@@ -2,14 +2,6 @@
 
 <project default="help">
 
-    <!-- Import helper targets if called here directly. -->
-    <if>
-         <available file="help.xml" />
-         <then>
-             <import file="help.xml" />
-         </then>
-     </if>
-
     <!-- WRAPPER TARGETS -->
     <target name="build-subsite-dev" description="Build a local development version of the site.">
         <echo msg="Build a local development version of the site." />

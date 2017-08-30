@@ -14,7 +14,7 @@
     <import>
         <fileset dir="${bootstrap.dir.incl.phing.build}/project" >
             <patternset>
-                <!-- Theme is used by project time and has to be loaded first. -->
+                <!-- Theme is used by project type and has to be loaded first. -->
                 <include name="theme.xml" />
                 <include name="${project.type}.xml"/>
             </patternset>
@@ -47,7 +47,7 @@
         description="Install NextEuropa site with production data."
         depends="
             project-database-download,
-            drush-regenerate-settings,
+            drush-generate-settings,
             project-database-import,
             project-modules-devel-en" />
 
@@ -73,12 +73,12 @@
     </target>
 
     <!-- Link site document root to Webserver document root. -->
-    <target name="project-set-docroot">
+    <target name="project-platform-set-docroot">
         <relsym link="${project.docroot}" target="${build.platform.dir}" overwrite="true" />
     </target>
 
     <!-- Update .htaccess. -->
-    <target name="project-set-htaccess">
+    <target name="project-platform-set-htaccess">
         <if>
             <istrue value="${build.platform.htaccess.append.text}" />
             <then>
@@ -116,7 +116,7 @@
     </target>
 
     <!-- Install Composer dependencies without development dependencies. -->
-    <target name="project-composer-install">
+    <target name="project-composer-install" hidden="true">
         <if>
             <isset property="composer-no-dev"/>
             <then>
@@ -174,7 +174,7 @@
     </target>
 
     <!-- Setup file directory -->
-    <target name="project-setup-files">
+    <target name="project-subsite-setup-files">
         <trycatch>
             <try>
                 <phingcall target="drush-create-files-dirs" />
@@ -236,7 +236,7 @@
     <!-- Install the subsite. -->
     <target name="install-project-clean" description="Install NextEuropa site from scratch.">
          <mkdir dir="${build.subsite.dir}" />
-         <phingcall target="project-setup-files" />
+         <phingcall target="project-subsite-setup-files" />
         <!--
             Ensure the settings folder is writable so the installer can create
             the settings.php file.
@@ -254,7 +254,7 @@
                 <available file="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" type="file" />
             </and>
             <then>
-                <phingcall target="drush-regenerate-settings" />
+                <phingcall target="drush-generate-settings" />
                 <exec command="${bootstrap.dir.bin.drush} --root=${build.platform.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap" />
                 <if>
                     <not>

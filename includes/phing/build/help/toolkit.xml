@@ -9,7 +9,7 @@
     </target>
 
     <target 
-        name="toolkit-init"
+        name="toolkit-initialize"
         depends="
             toolkit-link-binary,
             project-platform-set-version">

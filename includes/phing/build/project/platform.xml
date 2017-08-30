@@ -2,14 +2,6 @@
 
 <project default="help">
 
-    <!-- Import helper targets if called here directly. -->
-    <if>
-         <available file="help.xml" />
-         <then>
-             <import file="help.xml" />
-         </then>
-    </if>
-
     <!-- WRAPPER TARGETS -->
 
     <!-- Build a local development version with a single platform profile. -->
@@ -97,9 +89,9 @@
             build-theme-dev,
             project-platform-composer-no-dev,
             project-modules-devel-dl,
-            project-set-htaccess,
+            project-platform-set-htaccess,
             project-subsite-restore,
-            project-setup-files" />
+            project-subsite-setup-files" />
 
     <!-- @see: build-platform-dist -->
     <target
