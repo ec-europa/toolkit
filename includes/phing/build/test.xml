@@ -2,14 +2,6 @@
 
 <project name="test" default="help">
 
-    <!-- Import helper targets if called here directly. -->
-    <if>
-         <available file="help.xml" />
-         <then>
-             <import file="help.xml" />
-         </then>
-    </if>
-
     <!-- Import test build files. -->
     <import>
         <fileset dir="${phing.dir.test}">

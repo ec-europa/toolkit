@@ -81,7 +81,7 @@
             build-platform-copy-profiles,
             build-platform-make-profiles,
             build-platform-copy-resources,
-            build-platform-install-composer" />
+            project-platform-composer-no-dev" />
 
     <!-- @see: build-platform-dev -->
     <target
@@ -95,7 +95,7 @@
             build-platform-make-profiles,
             build-platform-link-resources,
             build-theme-dev,
-            build-platform-install-composer,
+            project-platform-composer-no-dev,
             project-modules-devel-dl,
             project-set-htaccess,
             project-subsite-restore,
@@ -111,7 +111,7 @@
             build-platform-copy-profile,
             build-platform-make-profile,
             build-platform-copy-resources,
-            build-platform-install-composer" />
+            project-platform-composer-no-dev" />
 
     <!-- @see: build-platform-dist-all -->
     <target
@@ -123,7 +123,7 @@
             build-platform-copy-profiles,
             build-platform-make-profiles,
             build-platform-copy-resources,
-            build-platform-install-composer" />
+            project-platform-composer-no-dev" />
 
     <!-- CALLBACK TARGETS -->
 

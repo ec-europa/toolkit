@@ -2,14 +2,6 @@
 
 <project default="help">
 
-    <!-- Import helper targets if called here directly. -->
-    <if>
-         <available file="help.xml" />
-         <then>
-             <import file="help.xml" />
-         </then>
-    </if>
-
     <!-- Check type of project and import it's build file. -->
     <if>
         <available file="${lib.dir.profiles}" type="dir"/>
@@ -37,8 +29,8 @@
     </target>
 
     <!-- Build ec-europa theme in platform. -->
-    <target name="build-project-platform-theme-ec-europa" description="Build EC Europa theme without version control.">
-        <phingcall target="build-project-platform-theme-ec-europa-callback">
+    <target name="build-project-theme" description="Build EC Europa theme without version control.">
+        <phingcall target="build-project-theme-callback">
             <property name="dir-build" value="${build.platform.dir}" override="true" />
         </phingcall>
     </target>
@@ -51,7 +43,7 @@
     </target>
 
     <target
-        name="build-project-clone"
+        name="install-project-clone"
         description="Install NextEuropa site with production data."
         depends="
             project-database-download,
@@ -70,7 +62,7 @@
             project-subsite-restore" />
 
     <target
-        name="build-project-platform-theme-ec-europa-callback"
+        name="build-project-theme-callback"
         hidden="true"
         depends="
             theme-europa-download-extract,
@@ -148,7 +140,7 @@
     </target>
 
     <!-- Install Composer dependencies without development dependencies. -->
-    <target name="build-platform-install-composer">
+    <target name="project-platform-composer-no-dev">
         <echo msg="Run 'composer install' in platform root." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
@@ -157,7 +149,7 @@
     </target>
 
     <!-- Install Composer dependencies, including optional development dependencies. -->
-   <target name="build-platform-install-composer-dev">
+   <target name="project-platform-composer-dev">
         <echo msg="Run 'composer install' in platform root." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
@@ -165,7 +157,7 @@
     </target>
 
     <!-- Install Composer dependencies for the subsite. -->
-    <target name="project-subsite-composer-install">
+    <target name="project-subsite-composer-no-dev">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.subsite.dir}" override="true" />
@@ -174,7 +166,7 @@
     </target>
 
     <!-- Install Composer dev dependencies for the subsite. -->
-    <target name="build-subsite-composer">
+    <target name="project-subsite-composer-dev">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.subsite.dir}"/>
@@ -242,7 +234,7 @@
     </target>
 
     <!-- Install the subsite. -->
-    <target name="build-project-clean" description="Install NextEuropa site from scratch.">
+    <target name="install-project-clean" description="Install NextEuropa site from scratch.">
          <mkdir dir="${build.subsite.dir}" />
          <phingcall target="project-setup-files" />
         <!--

@@ -2,14 +2,6 @@
 
 <project default="help">
 
-    <!-- Import helper targets if called here directly. -->
-    <if>
-        <available file="help.xml" />
-        <then>
-            <import file="help.xml" />
-        </then>
-    </if>
-
     <!-- Start an environment with docker. -->
     <target name="docker-compose-up" description="Start docker project." hidden="true">
         <echo msg="Starting containers for ${docker.project.id}" />

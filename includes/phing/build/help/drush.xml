@@ -2,14 +2,6 @@
 
 <project default="help">
 
-    <!-- Import helper targets if called here directly. -->
-    <if>
-        <available file="help.xml" />
-        <then>
-            <import file="help.xml" />
-        </then>
-    </if>
-
     <!-- Install the site. -->
     <target name="drush-site-install">
         <echo message="Installing site ${project.name}." />

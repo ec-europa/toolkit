@@ -2,17 +2,9 @@
 
 <project default="help">
 
-    <!-- Import helper targets if called here directly. -->
-    <if>
-        <available file="help.xml" />
-        <then>
-            <import file="help.xml" />
-        </then>
-    </if>
-
-    <!-- Target build-clone has been replaced by build-project-clone. -->
+    <!-- Target build-clone has been replaced by install-project-clone. -->
     <target hidden="true" name="build-clone">
-        <replacedby target="build-project-clone" />
+        <replacedby target="install-project-clone" />
     </target>
 
 </project>

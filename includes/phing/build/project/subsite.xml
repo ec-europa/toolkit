@@ -41,7 +41,7 @@
             build-subsite-link-resources,
             build-subsite-make-site,
             project-modules-devel-dl,
-            build-subsite-composer">
+            project-subsite-composer-dev">
         <echo msg="Playbook for build-subsite-dev ended." />
     </target>
 
