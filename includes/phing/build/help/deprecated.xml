@@ -10,9 +10,9 @@
         </then>
     </if>
 
-    <!--&lt;!&ndash; Target build-dev has been replaced by build-code. &ndash;&gt;-->
-    <!--<target hidden="true" name="build-dev">-->
-        <!--<replacedby target="build-platformdev" />-->
-    <!--</target>-->
+    <!-- Target build-clone has been replaced by build-project-clone. -->
+    <target hidden="true" name="build-clone">
+        <replacedby target="build-project-clone" />
+    </target>
 
 </project>
