@@ -52,13 +52,15 @@ detected.
 The test file contains different targets to ease the testing of your
 project. They are split up per category:
 
-1. behat.xml: allows you to configure and run behat on your project.
-2. phpcs.xml: allows you to configure and run phpcs on your codebase.
-3. phpunit.xml: allows you to configure and run phpunit on your pruject.
+1. **behat.xml**: allows you to configure and run behat on your project.
+2. **phpcs.xml**: allows you to configure and run phpcs on your codebase.
+3. **phpunit.xml**: allows you to configure and run phpunit on your pruject.
 
 > The test system is designed to be standalone so next to a project
 > deploy package we can also create a project test package. This allows
 > for swift testing without actually needing to install the project
 > through cloning the repository.
+
+## Rules and standards
 
 
