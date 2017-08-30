@@ -4,7 +4,7 @@
 
     <!-- Check type of project and import it's build file. -->
     <if>
-        <available file="${lib.dir.profiles}" type="dir"/>
+        <available file="${lib.dir.profiles}" type="dir" />
         <then>
             <property name="project.type" value="platform" override="true" />
         </then>
@@ -12,11 +12,11 @@
 
     <!-- Finish import with starterkit build xml files. -->
     <import>
-        <fileset dir="${bootstrap.dir.incl.phing.build}/project" >
+        <fileset dir="${bootstrap.dir.incl.phing.build}/project">
             <patternset>
                 <!-- Theme is used by project type and has to be loaded first. -->
                 <include name="theme.xml" />
-                <include name="${project.type}.xml"/>
+                <include name="${project.type}.xml" />
             </patternset>
         </fileset>
     </import>
@@ -118,7 +118,7 @@
     <!-- Install Composer dependencies without development dependencies. -->
     <target name="project-composer-install" hidden="true">
         <if>
-            <isset property="composer-no-dev"/>
+            <isset property="composer-no-dev" />
             <then>
                 <composer command="install" composer="${project.bin.composer}">
                     <arg value="--working-dir=${composer-working-dir}" />
@@ -149,7 +149,7 @@
     </target>
 
     <!-- Install Composer dependencies, including optional development dependencies. -->
-   <target name="project-platform-composer-dev">
+    <target name="project-platform-composer-dev">
         <echo msg="Run 'composer install' in platform root." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
@@ -169,7 +169,7 @@
     <target name="project-subsite-composer-dev">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <phingcall target="project-composer-install">
-            <property name="composer-working-dir" value="${build.subsite.dir}"/>
+            <property name="composer-working-dir" value="${build.subsite.dir}" />
         </phingcall>
     </target>
 
@@ -235,8 +235,8 @@
 
     <!-- Install the subsite. -->
     <target name="install-project-clean" description="Install NextEuropa site from scratch.">
-         <mkdir dir="${build.subsite.dir}" />
-         <phingcall target="project-subsite-setup-files" />
+        <mkdir dir="${build.subsite.dir}" />
+        <phingcall target="project-subsite-setup-files" />
         <!--
             Ensure the settings folder is writable so the installer can create
             the settings.php file.
@@ -258,7 +258,7 @@
                 <exec command="${bootstrap.dir.bin.drush} --root=${build.platform.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap" />
                 <if>
                     <not>
-                        <equals arg1="${drush-status-bootstrap}" arg2="0"/>
+                        <equals arg1="${drush-status-bootstrap}" arg2="0" />
                     </not>
                     <then>
                         <phingcall target="drush-sql-create" />
@@ -266,7 +266,7 @@
                             <property name="database-file" value="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" />
                         </phingcall>
                     </then>
-                </if> 
+                </if>
             </then>
             <else>
                 <!-- Install site with drush. -->
@@ -333,7 +333,7 @@
 
         <!-- Check if site exists. -->
         <if>
-            <available file="${build.subsite.dir}/settings.php" type="file"/>
+            <available file="${build.subsite.dir}/settings.php" type="file" />
             <then>
                 <property name="site-detected" value="1" />
             </then>
@@ -344,53 +344,53 @@
 
         <if>
             <and>
-                <equals arg1="${rebuild.auto}" arg2="0"/>
-                <equals arg1="${site-detected}" arg2="1"/>
+                <equals arg1="${rebuild.auto}" arg2="0" />
+                <equals arg1="${site-detected}" arg2="1" />
             </and>
             <then>
-                <echo msg="Installed site detected." level="warning"/>
+                <echo msg="Installed site detected." level="warning" />
                 <propertyprompt propertyName="project-subsite-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
                 <if>
                     <equals arg1="${project-subsite-backup-activated}" arg2="y" />
                     <then>
-                        <property name="rebuild.auto" value="1" override="true"/>
+                        <property name="rebuild.auto" value="1" override="true" />
                     </then>
                 </if>
             </then>
         </if>
         <if>
             <and>
-                <equals arg1="${rebuild.auto}" arg2="1"/>
-                <equals arg1="${site-detected}" arg2="1"/>
+                <equals arg1="${rebuild.auto}" arg2="1" />
+                <equals arg1="${site-detected}" arg2="1" />
             </and>
             <then>
                 <if>
                     <!-- Delete any remains of previous backup attempts. -->
-                    <available file="${rebuild.backup.destination}" type="dir"/>
+                    <available file="${rebuild.backup.destination}" type="dir" />
                     <then>
-                        <delete dir="${rebuild.backup.destination}" includeemptydirs="true"/>
+                        <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
                     </then>
                 </if>
                 <!-- Create backup directory. -->
-                <mkdir dir="${rebuild.backup.destination}"/>
+                <mkdir dir="${rebuild.backup.destination}" />
                 <!-- Make the settings directory writable because we can not delete it otherwise -->
                 <phingcall target="unprotect-folder">
                     <property name="folder.to.unprotect" value="${build.platform.dir.sites}" />
                 </phingcall>
                 <!-- Back up folders list. -->
                 <foreach list="${rebuild.backup.folders}" param="site-item" target="project-subsite-backup-item" delimiter=";">
-                    <property name="site-item-type" value="dir"/>
+                    <property name="site-item-type" value="dir" />
                 </foreach>
                 <!-- Back up files list. -->
                 <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-backup-item" delimiter=";">
-                    <property name="site-item-type" value="file"/>
+                    <property name="site-item-type" value="file" />
                 </foreach>
             </then>
         </if>
         <if>
             <equals arg1="${project-subsite-backup-activated}" arg2="y" />
             <then>
-                <property name="rebuild.auto" value="0" override="true"/>
+                <property name="rebuild.auto" value="0" override="true" />
             </then>
         </if>
     </target>
@@ -400,7 +400,7 @@
 
         <!-- Check if backup exists. -->
         <if>
-            <available file="${rebuild.backup.destination}" type="dir"/>
+            <available file="${rebuild.backup.destination}" type="dir" />
             <then>
                 <property name="backup-detected" value="1" />
             </then>
@@ -410,67 +410,67 @@
         </if>
         <if>
             <and>
-                <equals arg1="${rebuild.auto}" arg2="0"/>
-                <equals arg1="${backup-detected}" arg2="1"/>
+                <equals arg1="${rebuild.auto}" arg2="0" />
+                <equals arg1="${backup-detected}" arg2="1" />
             </and>
             <then>
-                <echo msg="Site backup detected." level="warning"/>
+                <echo msg="Site backup detected." level="warning" />
                 <propertyprompt propertyName="project-subsite-restore-activated" promptText="Do you wish to restore site for this build? (y/n)" />
                 <if>
                     <equals arg1="${project-subsite-restore-activated}" arg2="y" />
                     <then>
-                        <property name="rebuild.auto" value="1" override="true"/>
+                        <property name="rebuild.auto" value="1" override="true" />
                     </then>
                 </if>
             </then>
         </if>
         <if>
             <and>
-                <equals arg1="${rebuild.auto}" arg2="1"/>
-                <equals arg1="${backup-detected}" arg2="1"/>
+                <equals arg1="${rebuild.auto}" arg2="1" />
+                <equals arg1="${backup-detected}" arg2="1" />
             </and>
             <then>
-                <echo msg="Restoring site files and folders from ${rebuild.backup.destination}"/>
+                <echo msg="Restoring site files and folders from ${rebuild.backup.destination}" />
                 <!-- Restore folders list. -->
                 <foreach list="${rebuild.backup.folders}" param="site-item" target="project-subsite-restore-item" delimiter=";">
-                    <property name="site-item-type" value="dir"/>
+                    <property name="site-item-type" value="dir" />
                 </foreach>
                 <!-- Restore files list. -->
                 <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-restore-item" delimiter=";">
-                    <property name="site-item-type" value="file"/>
+                    <property name="site-item-type" value="file" />
                 </foreach>
                 <!-- Delete the site backup directory. -->
-                <delete dir="${rebuild.backup.destination}" includeemptydirs="true"/>
+                <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
             </then>
         </if>
     </target>
 
     <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
     <target name="project-subsite-backup-item" hidden="true">
-        <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
+        <php expression='dirname("${site-item}")' returnProperty="site-item-dir" />
         <property name="site-item-backup-dir" value="${site-item-dir}">
             <filterchain>
                 <replaceregexp>
-                    <regexp pattern="${build.platform.dir}" replace="${rebuild.backup.destination}" ignoreCase="false"/>
+                    <regexp pattern="${build.platform.dir}" replace="${rebuild.backup.destination}" ignoreCase="false" />
                 </replaceregexp>
             </filterchain>
         </property>
         <if>
-            <available file="${site-item}" type="${site-item-type}"/>
+            <available file="${site-item}" type="${site-item-type}" />
             <then>
                 <if>
                     <not>
-                        <available file="${site-item-backup-dir}" type="dir"/>
+                        <available file="${site-item-backup-dir}" type="dir" />
                     </not>
                     <then>
-                        <mkdir dir="${site-item-backup-dir}"/>
+                        <mkdir dir="${site-item-backup-dir}" />
                     </then>
                 </if>
-                <move file="${site-item}" todir="${site-item-backup-dir}" includeemptydirs="true"/>
+                <move file="${site-item}" todir="${site-item-backup-dir}" includeemptydirs="true" />
             </then>
             <else>
-                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized"/>
-                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning"/>
+                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized" />
+                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning" />
             </else>
         </if>
     </target>
@@ -480,27 +480,27 @@
         <property name="site-item-backup" value="${site-item}">
             <filterchain>
                 <replaceregexp>
-                    <regexp pattern="${build.platform.dir}" replace="${rebuild.backup.destination}" ignoreCase="false"/>
+                    <regexp pattern="${build.platform.dir}" replace="${rebuild.backup.destination}" ignoreCase="false" />
                 </replaceregexp>
             </filterchain>
         </property>
         <if>
-            <available file="${site-item-backup}" type="${site-item-type}"/>
+            <available file="${site-item-backup}" type="${site-item-type}" />
             <then>
-                <php expression='dirname("${site-item}")' returnProperty="site-item-dir"/>
+                <php expression='dirname("${site-item}")' returnProperty="site-item-dir" />
                 <if>
                     <not>
-                        <available file="${site-item-dir}" type="dir"/>
+                        <available file="${site-item-dir}" type="dir" />
                     </not>
                     <then>
-                        <mkdir dir="${site-item-dir}"/>
+                        <mkdir dir="${site-item-dir}" />
                     </then>
                 </if>
-                <move file="${site-item-backup}" todir="${site-item-dir}" includeemptydirs="true"/>
+                <move file="${site-item-backup}" todir="${site-item-dir}" includeemptydirs="true" />
             </then>
             <else>
-                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized"/>
-                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning"/>
+                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized" />
+                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning" />
             </else>
         </if>
     </target>
@@ -518,10 +518,10 @@
     </target>
 
     <!-- Download the production database. -->
-    <target name="project-database-download" >
+    <target name="project-database-download">
         <echo msg="Download the production database." />
         <!--Strips gz suffix. -->
-        <php expression="substr('${db.dl.filename}', 0, -3)" returnProperty="gunzipped.filename" level="debug"/>
+        <php expression="substr('${db.dl.filename}', 0, -3)" returnProperty="gunzipped.filename" level="debug" />
         <if>
             <not>
                 <!-- Check if we have a previously downloaded dump available. -->
@@ -550,11 +550,11 @@
             </or>
             <then>
                 <!-- If username or password is not provided, empty the credential string. -->
-                <property name="db.dl.url.credentials"  value="" override="true" />
+                <property name="db.dl.url.credentials" value="" override="true" />
             </then>
             <else>
                 <!-- If username or password is provided, build the credential string. -->
-                <property name="db.dl.url.credentials"  value="${db.dl.url.htaccess.username}:${db.dl.url.htaccess.password}@" override="true"  />
+                <property name="db.dl.url.credentials" value="${db.dl.url.htaccess.username}:${db.dl.url.htaccess.password}@" override="true" />
             </else>
         </if>
         <!-- Attempt to download the database dump. -->
@@ -591,10 +591,10 @@
     <target name="project-validate-properties">
         <!--forbidden="${ssk.incl.phing.props}/build.properties.forbidden"-->
         <propval
-                source="build.properties"
-                required="${bootstrap.dir.incl.phing.props}/required.props"
-                haltonerror="${build.haltonerror.props.validate}"
-                logoutput="${logoutput}"
+            source="build.properties"
+            required="${bootstrap.dir.incl.phing.props}/required.props"
+            haltonerror="${build.haltonerror.props.validate}"
+            logoutput="${logoutput}"
         />
     </target>
 

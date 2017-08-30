@@ -5,10 +5,10 @@
     <!-- Provide handy access with root symlink to starterkit binary. -->
     <target name="toolkit-link-binary">
         <echo msg="Provide project with starterkit binary at root level." />
-        <relsym link="${project.basedir}/ssk" target="${bootstrap.dir.bin}" overwrite="true"/>
+        <relsym link="${project.basedir}/ssk" target="${bootstrap.dir.bin}" overwrite="true" />
     </target>
 
-    <target 
+    <target
         name="toolkit-initialize"
         depends="
             toolkit-link-binary,
@@ -84,7 +84,7 @@
                             <property name="folder.to.delete" value="${resources.dir}/composer" />
                         </phingcall>
                         <!-- Delete starterkit files. -->
-                        <delete  quiet="true">
+                        <delete quiet="true">
                             <fileset dir="${project.basedir}">
                                 <include name="CHANGELOG.md" />
                                 <include name="LICENSE.md" />
@@ -99,8 +99,8 @@
                             </fileset>
                         </delete>
                         <!-- Move subsite resources to new location. -->
-                        <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true" haltonerror="false"/>
-                        <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true" haltonerror="false"/>
+                        <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true" haltonerror="false" />
+                        <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true" haltonerror="false" />
 
                         <move file="${lib.dir}" tofile="lib-backup" />
                         <mkdir dir="${lib.dir.libraries}" />
@@ -117,7 +117,7 @@
                                     </fileset>
                                 </copy>
                                 <delete dir="lib-backup/modules/custom" quiet="true" />
-                                <copy todir="${lib.dir.modules.custom}"  haltonerror="false">
+                                <copy todir="${lib.dir.modules.custom}" haltonerror="false">
                                     <fileset dir="lib-backup/modules">
                                         <include name="**" />
                                     </fileset>
@@ -129,25 +129,25 @@
                                     </fileset>
                                 </copy>
                                 <delete dir="lib-backup/features/custom" quiet="true" />
-                                <copy todir="${lib.dir.modules.features}"  haltonerror="false">
+                                <copy todir="${lib.dir.modules.features}" haltonerror="false">
                                     <fileset dir="lib-backup/features">
                                         <include name="**" />
                                     </fileset>
                                 </copy>
                                 <delete dir="lib-backup/features" quiet="true" />
-                                <copy todir="${lib.dir.themes}"  haltonerror="false">
+                                <copy todir="${lib.dir.themes}" haltonerror="false">
                                     <fileset dir="lib-backup/themes">
                                         <include name="**" />
                                     </fileset>
                                 </copy>
                                 <delete dir="lib-backup/themes" quiet="true" />
-                                <copy todir="${lib.dir.libraries}"  haltonerror="false">
+                                <copy todir="${lib.dir.libraries}" haltonerror="false">
                                     <fileset dir="lib-backup/libraries">
                                         <include name="**" />
                                     </fileset>
                                 </copy>
                                 <delete dir="lib-backup/libraries" quiet="true" />
-                                <copy todir="${lib.dir.source}"  haltonerror="false">
+                                <copy todir="${lib.dir.source}" haltonerror="false">
                                     <fileset dir="lib-backup/src">
                                         <include name="**" />
                                     </fileset>

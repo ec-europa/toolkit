@@ -8,7 +8,7 @@
     <target name="test-phpunit-setup">
         <copy todir="${phpunit.dir}" overwrite="true">
             <fileset dir="${phpunit.dir}" casesensitive="yes">
-                <include name="*.xml.dist"/>
+                <include name="*.xml.dist" />
             </fileset>
             <filterchain>
                 <replacetokens begintoken="{{ " endtoken=" }}">
@@ -21,7 +21,7 @@
         </copy>
         <symlink link="${build.dev}" overwrite="true">
             <fileset dir="${phpunit.dir}" casesensitive="yes">
-                <include name="*.yml"/>
+                <include name="*.yml" />
             </fileset>
         </symlink>
         <symlink link="${build.dev}/tests" target="../tests" />

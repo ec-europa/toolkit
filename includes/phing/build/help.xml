@@ -10,9 +10,9 @@
 
     <!-- Finish import with starterkit build xml files. -->
     <import>
-        <fileset dir="${phing.dir.help}/help" >
+        <fileset dir="${phing.dir.help}/help">
             <patternset>
-                <include name="*.xml"/>
+                <include name="*.xml" />
             </patternset>
         </fileset>
     </import>
@@ -91,7 +91,7 @@
 
     <!-- Check if site exists. -->
     <if>
-        <available file="${build.settings.dir}/settings.php" type="file"/>
+        <available file="${build.settings.dir}/settings.php" type="file" />
         <then>
             <property name="site-detected" value="1" />
         </then>
@@ -99,7 +99,7 @@
 
     <!-- Check if backup exists. -->
     <if>
-        <available file="${rebuild.backup.destination}" type="dir"/>
+        <available file="${rebuild.backup.destination}" type="dir" />
         <then>
             <property name="backup-detected" value="1" />
         </then>
@@ -107,12 +107,12 @@
 
     <!-- Echo the composer hook phingcalls. -->
     <target name="composer-echo-hook-phingcalls" hidden="true">
-        <echoproperties prefix="composer.hook."/>
+        <echoproperties prefix="composer.hook." />
     </target>
 
     <!-- Echo the git hook phingcalls. -->
     <target name="git-echo-hook-phingcalls" hidden="true">
-        <echoproperties prefix="git.hook."/>
+        <echoproperties prefix="git.hook." />
     </target>
 
     <!-- Copies a given folder to a new location. -->
@@ -193,7 +193,7 @@
                     <then>
                         <chmod mode="0770" failonerror="true" verbose="false" quiet="true">
                             <fileset dir="${target-dir}" includes="**/sites/*/files">
-                                <type type="dir"/>
+                                <type type="dir" />
                             </fileset>
                         </chmod>
                         <chmod mode="0660" failonerror="true" verbose="false" quiet="true">
@@ -228,20 +228,20 @@
     <!-- Download the package. -->
     <target name="package-download" hidden="true">
         <if>
-            <available file="${package-cache-location}/${package-name}" type="file"/>
+            <available file="${package-cache-location}/${package-name}" type="file" />
             <then>
-                <echo msg="Package ${package-name} already downloaded."/>
+                <echo msg="Package ${package-name} already downloaded." />
             </then>
             <else>
                 <trycatch>
                     <try>
                         <mkdir dir="${package-cache-location}" />
-                        <echo msg="Starting download for package ${package-name}."/>
-                        <exec command="curl -L${curl.progress} -o ${package-cache-location}/${package-name} ${package-download-location}/${package-name}" passthru="true" checkreturn="true"/>
-                        <echo msg="Successfully downloaded package ${package-name}."/>
+                        <echo msg="Starting download for package ${package-name}." />
+                        <exec command="curl -L${curl.progress} -o ${package-cache-location}/${package-name} ${package-download-location}/${package-name}" passthru="true" checkreturn="true" />
+                        <echo msg="Successfully downloaded package ${package-name}." />
                     </try>
                     <catch>
-                        <fail msg="Failed downloading package ${package-name}."/>
+                        <fail msg="Failed downloading package ${package-name}." />
                     </catch>
                 </trycatch>
             </else>
@@ -253,7 +253,7 @@
         <!-- Create extraction directory if needed. -->
         <if>
             <not>
-                <available file="${package-extract-location}" type="dir"/>
+                <available file="${package-extract-location}" type="dir" />
             </not>
             <then>
                 <mkdir dir="${package-extract-location}" />
@@ -269,13 +269,13 @@
         </if>
         <!-- Use the faster native commands on UNIX systems. -->
         <if>
-            <os family="unix"/>
+            <os family="unix" />
             <then>
-                <echo msg="Unpacking ${package-name} into ${package-extract-location}."/>
+                <echo msg="Unpacking ${package-name} into ${package-extract-location}." />
                 <exec command='tar xzf "${package-cache-location}/${package-name}" ${package-extract-options} -C "${package-extract-location}"' dir="${project.basedir}" passthru="true" checkreturn="true" />
             </then>
             <else>
-                <untar file="${package-cache-location}/${package-name}" todir="${package-extract-location}"/>
+                <untar file="${package-cache-location}/${package-name}" todir="${package-extract-location}" />
             </else>
         </if>
     </target>
@@ -293,9 +293,9 @@
 
     <!-- Macke sure project id for DB is valid with underscore instead of hyphen. -->
     <php function="str_replace" returnProperty="db.name" level="debug">
-        <param value="-"/>
-        <param value="_"/>
-        <param value="${db.name}"/>
+        <param value="-" />
+        <param value="_" />
+        <param value="${db.name}" />
     </php>
 
     <!-- Disable output on consecutive phing calls. -->

@@ -8,12 +8,12 @@
 
     <!-- Finish import with starterkit build xml files. -->
     <import>
-        <fileset dir="${phing.dir.starterkit}/includes/phing/build" >
+        <fileset dir="${phing.dir.starterkit}/includes/phing/build">
             <patternset>
-                <include name="bootstrap.xml"/>
-                <include name="help.xml"/>
-                <include name="project.xml"/>
-                <include name="test.xml"/>
+                <include name="bootstrap.xml" />
+                <include name="help.xml" />
+                <include name="project.xml" />
+                <include name="test.xml" />
             </patternset>
         </fileset>
     </import>

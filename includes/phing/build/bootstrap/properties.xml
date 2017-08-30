@@ -42,9 +42,9 @@
 
     <!-- Macke sure project id for DB is valid with underscore instead of hyphen. -->
     <php function="str_replace" returnProperty="db.name" level="debug">
-        <param value="-"/>
-        <param value="_"/>
-        <param value="${db.name}"/>
+        <param value="-" />
+        <param value="_" />
+        <param value="${db.name}" />
     </php>
 
     <!-- Set compose project name if available. -->
@@ -57,7 +57,7 @@
 
     <!-- Check if site exists. -->
     <if>
-        <available file="${build.settings.dir}/settings.php" type="file"/>
+        <available file="${build.settings.dir}/settings.php" type="file" />
         <then>
             <property name="site-detected" value="1" />
         </then>
@@ -65,7 +65,7 @@
 
     <!-- Check if backup exists. -->
     <if>
-        <available file="${rebuild.backup.destination}" type="dir"/>
+        <available file="${rebuild.backup.destination}" type="dir" />
         <then>
             <property name="backup-detected" value="1" />
         </then>

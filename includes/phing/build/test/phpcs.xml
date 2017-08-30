@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="PHPCS"  default="test-run-phpcs">
+<project name="PHPCS" default="test-run-phpcs">
 
     <property file="${phing.dir.phpcs}/phpcs.props" logoutput="false" />
 
@@ -23,7 +23,7 @@
             files="${phpcs.files}"
             globalConfig="${phpcs.global.config}"
             ignorePatterns="${phpcs.ignore}"
-            passWarnings = "${phpcs.passwarnings}"
+            passWarnings="${phpcs.passwarnings}"
             reports="${phpcs.reports}"
             showProgress="${phpcs.progress}"
             showSniffCodes="${phpcs.sniffcodes}"
@@ -38,13 +38,13 @@
             <equals arg1="${phpcs.prepush.enable}" arg2="1" />
             <then>
                 <echo message="Enabling git pre-push hook." />
-                <mkdir dir="${project.basedir}/resources/git/hooks/pre-push"/>
+                <mkdir dir="${project.basedir}/resources/git/hooks/pre-push" />
                 <relsym link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
             </then>
-           <else>
+            <else>
                 <echo message="Disabling git pre-push hook." />
                 <delete file="${phpcs.prepush.destination}" failonerror="false" quiet="true" />
-          </else>
+            </else>
         </if>
     </target>
 

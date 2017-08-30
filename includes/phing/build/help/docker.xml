@@ -27,15 +27,15 @@
         <delete file="${project.basedir}/docker${docker.project.id}" />
     </target>
 
-   <!-- Check for mysql container. -->
+    <!-- Check for mysql container. -->
     <target name="docker-check-mysql" hidden="true">
         <echo msg="Checking if mysql container exists" />
         <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${bootstrap.dir.incl.docker}/dbash ps mysql | grep -q 'Up\|Exit'" passthru="true" logoutput="false" returnproperty="docker-check-mysql" />
         <echo msg="${docker-check-mysql}" />
     </target>
 
-   <!-- Backup database. -->
-   <target name="docker-compose-backup" description="Backup database." hidden="true">
+    <!-- Backup database. -->
+    <target name="docker-compose-backup" description="Backup database." hidden="true">
         <if>
             <isset property="backup-location" />
             <then>
@@ -50,7 +50,7 @@
         <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${bootstrap.dir.incl.docker}/dbash backup ${backup-location}/${backup-filename}" passthru="true" logoutput="false" />
     </target>
 
-   <!-- Restore database. -->
+    <!-- Restore database. -->
     <target name="docker-compose-restore" description="Restore database." hidden="true">
         <if>
             <not>

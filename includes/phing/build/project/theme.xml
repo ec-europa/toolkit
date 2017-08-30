@@ -32,7 +32,7 @@
     </target>
 
     <!-- Creates symlinks for the atomium and europa themes. -->
-    <target name="theme-europa-create-symlinks" >
+    <target name="theme-europa-create-symlinks">
         <relsym link="${build.platform.dir.profile.themes}" overwrite="true">
             <fileset dir="${lib.dir.themes}" expandsymboliclinks="true">
                 <include name="*" />
@@ -43,28 +43,28 @@
     <!-- Cloning and checking out the branch of the Atomium and EC Europa theme repositories. -->
     <target name="theme-europa-repo-clone">
         <!-- Deleting theme directories before cloning -->
-        <delete dir="${lib.dir.themes}/atomium" quiet="true"/>
-        <delete dir="${lib.dir.themes}/ec_europa" quiet="true"/>
+        <delete dir="${lib.dir.themes}/atomium" quiet="true" />
+        <delete dir="${lib.dir.themes}/ec_europa" quiet="true" />
 
         <!-- Cloning the Atomium theme repo into the common profiles directory -->
-        <echo msg = "Cloning the Atomium theme repository."/>
+        <echo msg="Cloning the Atomium theme repository." />
         <gitclone
             repository="${theme.atomium.repo.url}"
-            targetPath="${lib.dir.themes}/atomium"/>
+            targetPath="${lib.dir.themes}/atomium" />
         <!-- Checking out the configured branch in the cloned repo -->
         <gitcheckout
             repository="${lib.dir.themes}/atomium"
-            branchname="${theme.atomium.repo.branch}"/>
+            branchname="${theme.atomium.repo.branch}" />
 
         <!-- cloning the EC Europa theme repo into the common profiles directory -->
-        <echo msg = "Cloning the EC Europa theme repository."/>
+        <echo msg="Cloning the EC Europa theme repository." />
         <gitclone
             repository="${theme.europa.repo.url}"
-            targetPath="${lib.dir.themes}/ec_europa"/>
+            targetPath="${lib.dir.themes}/ec_europa" />
         <!-- Checking out the configured branch in the cloned repo -->
         <gitcheckout
             repository="${lib.dir.themes}/ec_europa"
-            branchname="${theme.europa.repo.branch}"/>
+            branchname="${theme.europa.repo.branch}" />
     </target>
 
     <!-- Generating assets -->

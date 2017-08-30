@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="Behat"  default="test-run-behat">
+<project name="Behat" default="test-run-behat">
 
     <property file="${phing.dir.behat}/behat.props" logoutput="false" />
 
@@ -44,7 +44,7 @@
         </if>
         <copy todir="${behat.dir}" overwrite="true">
             <fileset dir="${behat.dir}" casesensitive="yes">
-                <include name="*.yml.dist"/>
+                <include name="*.yml.dist" />
             </fileset>
             <filterchain>
                 <replacetokens begintoken="{{ " endtoken=" }}">
@@ -72,16 +72,16 @@
         <property name="behat-test-binary" value="${build.platform.dir}/vendor/behat/behat/bin/behat" />
         <relsym link="platform" overwrite="true">
             <fileset dir="${behat.dir}" casesensitive="yes">
-                <include name="*.yml"/>
+                <include name="*.yml" />
             </fileset>
         </relsym>
         <relsym link="${behat-test-location}/features" target="../tests/features" />
         <relsym link="${behat-test-location}/tests" target="../tests" />
-        <relsym link="${behat.bin}" target="${behat-test-binary}" overwrite="true"/>
+        <relsym link="${behat.bin}" target="${behat-test-binary}" overwrite="true" />
     </target>
     <!-- Set up Behat balancer. -->
     <target name="test-behat-setup-balancer">
-    <behat:balancer
+        <behat:balancer
             containers="${behat.load_balancer.containers}"
 
             root="${behat.load_balancer.root}"

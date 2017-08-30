@@ -72,13 +72,13 @@
         </tar>
 
         <!-- Delete a the phing dir. -->
-<!--
-        <delete
-            dir="${tests.dir}/phing"
-            includeemptydirs="true"
-            verbose="true"
-            failonerror="true" />
--->
+        <!--
+                <delete
+                    dir="${tests.dir}/phing"
+                    includeemptydirs="true"
+                    verbose="true"
+                    failonerror="true" />
+        -->
     </target>
 
     <!-- Do quality assurance checks. -->

@@ -12,7 +12,8 @@
             <option name="account-pass" value="${admin.password}" />
             <option name="account-mail" value="${admin.email}" />
             <param>${profile}</param>
-            <param>install_configure_form.update_status_module='array(FALSE,FALSE)'</param>
+            <param>install_configure_form.update_status_module='array(FALSE,FALSE)'
+            </param>
         </drush>
     </target>
 
@@ -80,7 +81,7 @@
     <!-- Backup the database. -->
     <target name="drush-sql-dump">
         <echo message="Backing up database ${db.name} to ${database-file}." />
-        <dirname property="database-cachedir" file="${database-file}"/>
+        <dirname property="database-cachedir" file="${database-file}" />
         <mkdir dir="${database-cachedir}" />
         <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${project.id}" bin="${bootstrap.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="result-file" value="${database-file}" />
@@ -109,14 +110,14 @@
         <if>
             <available file="${make-file}" type="file" />
             <then>
-                <loadfile property="make-string" file="${make-file}"/>
+                <loadfile property="make-string" file="${make-file}" />
                 <propertyregex
-                        property="not.empty"
-                        subject="${make-string}"
-                        pattern="([^#; ])(libraries\[|projects\[|includes\[)"
-                        match="$1"
-                        casesensitive="false"
-                        defaultvalue="empty"/>
+                    property="not.empty"
+                    subject="${make-string}"
+                    pattern="([^#; ])(libraries\[|projects\[|includes\[)"
+                    match="$1"
+                    casesensitive="false"
+                    defaultvalue="empty" />
                 <if>
                     <equals arg1="${not.empty}" arg2="empty" />
                     <then>
@@ -128,7 +129,8 @@
                         <drush command="make" assume="yes" bin="${bootstrap.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" color="${drush.color}">
                             <param>${make-file}</param>
                             <param>${make-folder}</param>
-                            <option name="contrib-destination">${make-destination}</option>
+                            <option name="contrib-destination">${make-destination}
+                            </option>
                             <option name="concurrency">10</option>
                             <option name="no-patch-txt"></option>
                             <option name="no-core"></option>
@@ -183,10 +185,10 @@
                 <phingcall target="drush-registry-rebuild-dl" />
             </catch>
             <finally>
-                 <!-- Rebuild Registry. -->
-                 <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${project.id}" bin="${bootstrap.dir.bin.drush}" verbose="${drush.verbose}">
-                     <param>--fire-bazooka</param>
-                 </drush>
+                <!-- Rebuild Registry. -->
+                <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${project.id}" bin="${bootstrap.dir.bin.drush}" verbose="${drush.verbose}">
+                    <param>--fire-bazooka</param>
+                </drush>
             </finally>
         </trycatch>
     </target>
