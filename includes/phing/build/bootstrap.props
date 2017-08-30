@@ -1,0 +1,26 @@
+# ----------------------------------------------------------
+# These are the properties that should not be altered for
+# correct toolkit integration. It is possible to override
+# the setting to disable property validation.
+# ----------------------------------------------------------
+
+# Starterkit directories.
+# -----------------------
+
+bootstrap.dir = ${phing.dir.starterkit}
+bootstrap.dir.incl = ${bootstrap.dir}/includes
+bootstrap.dir.incl.composer = ${bootstrap.dir.incl}/composer
+bootstrap.dir.incl.docker = ${bootstrap.dir.incl}/docker
+bootstrap.dir.incl.drush = ${bootstrap.dir.incl}/drush
+bootstrap.dir.incl.phing = ${bootstrap.dir.incl}/phing
+bootstrap.dir.incl.phing.build = ${bootstrap.dir.incl.phing}/build
+bootstrap.dir.incl.phing.props = ${bootstrap.dir.incl.phing}/props
+bootstrap.dir.incl.phing.src = ${bootstrap.dir.incl.phing}/src
+bootstrap.dir.incl.templates = ${bootstrap.dir.incl}/templates
+bootstrap.dir.vendor = ${bootstrap.dir}/vendor
+
+# Starterkit binaries.
+# --------------------
+bootstrap.dir.bin = ${bootstrap.dir}/bin
+bootstrap.dir.bin.drush = ${bootstrap.dir.bin}/drush
+bootstrap.dir.bin.phing = ${bootstrap.dir.bin}/phing

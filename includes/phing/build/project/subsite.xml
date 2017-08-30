@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project default="help">
+
+    <!-- Import helper targets if called here directly. -->
+    <if>
+         <available file="help.xml" />
+         <then>
+             <import file="help.xml" />
+         </then>
+     </if>
+
+    <!-- WRAPPER TARGETS -->
+    <target name="build-subsite-dev" description="Build a local development version of the site.">
+        <echo msg="Build a local development version of the site." />
+        <phingcall target="build-subsite-dev-playbook">
+            <property name="dir-build" value="${build.subsite.dir}" override="true" />
+        </phingcall>
+    </target>
+
+    <target name="build-subsite-dist" description="Build a site intended as a release package.">
+        <echo msg="Build a site intended as a release package." />
+        <phingcall target="build-subsite-dist-playbook">
+            <property name="dir-build" value="${build.dist}" override="true" />
+        </phingcall>
+    </target>
+
+    <target name="build-subsite-test" description="Build a subsite test package to test this reslease.">
+        <echo msg="Build a subsite test package to test this reslease." />
+        <phingcall target="build-project-test">
+            <property name="dir-build" value="${tests.dir}" override="true" />
+        </phingcall>
+    </target>
+
+    <!-- PLAYBOOK TARGETS -->
+    <target
+        name="build-subsite-dev-playbook"
+        hidden="true"
+        depends="
+            project-scratch-build,
+            build-subsite-link-resources,
+            build-subsite-make-site,
+            project-modules-devel-dl,
+            build-subsite-composer">
+        <echo msg="Playbook for build-subsite-dev ended." />
+    </target>
+
+    <target
+        name="build-subsite-dist-playbook"
+        hidden="true"
+        depends="
+            project-scratch-build,
+            build-subsite-link-resources,
+            build-subsite-make-site,
+            build-subsite-copy-resources">
+        <echo msg="Playbook for build-subsite-dist ended." />
+    </target>
+
+    <!-- CALLBACK TARGETS -->
+
+    <!-- Copy resources into the build folder. -->
+    <target name="build-subsite-copy-resources">
+        <echo msg="Copy custom resources." />
+        <!-- Delete the core profile folder so it can be replaced with ours. -->
+        <delete dir="${dir-build}" includeemptydirs="true" failonerror="false" quiet="true" />
+        <mkdir dir="${dir-build}" />
+        <!-- Copy our built site folder. -->
+        <copy todir="${dir-build}">
+            <fileset dir="${build.subsite.dir}" expandsymboliclinks="true">
+                <include name="libraries/**" />
+                <include name="modules/**" />
+                <include name="src/**" />
+                <include name="themes/**" />
+            </fileset>
+        </copy>
+        <!-- Copy our resources folder. -->
+        <copy todir="${dir-build}">
+            <fileset dir="${resources.dir}" expandsymboliclinks="true">
+                <include name="composer.json" />
+                <include name="composer.lock" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Symlink the source folders for easy development. -->
+    <target name="build-subsite-link-resources">
+        <symlink-property-contents prefix="lib.dir." origindir="${lib.dir}" targetdir="${dir-build}" overwrite="true" />
+        <symlink-property-contents prefix="resources.dir.composer." origindir="${resources.dir}" targetdir="${dir-build}" overwrite="true" />
+    </target>
+
+    <!-- Make the development version of the subsite. -->
+    <target name="build-subsite-make-site">
+        <echo msg="Make the subsite." />
+        <phingcall target="drush-make-no-core">
+            <property name="make-file" value="${resources.dir.site.make}" />
+            <property name="make-folder" value="${build.platform.dir.sites}" />
+            <property name="make-destination" value="${build.site}" />
+        </phingcall>
+    </target>
+
+    <!-- Build release package. -->
+    <target name="build-subsite-release-package" depends="build-subsite-dist">
+        <mkdir dir="${project.release.path}" />
+        <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${build.dist}" />
+    </target>
+
+</project>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="directories" default="help">
+
+    <!-- Help function to display the targets. -->
+    <target name="help" hidden="true">
+        <exec command="${bootstrap.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
+        <echo msg="${line.separator}${phing-targets}" />
+    </target>
+
+    <!-- Create temp dirs. -->
+    <if>
+        <available file="${share.path.global}" type="dir"/>
+        <then>
+            <echo msg="Global share directory ${share.path.global} available." level="${level}" />
+        </then>
+        <else>
+            <trycatch>
+                <try>
+                    <exec
+                        command="mkdir -p ${share.path.global}"
+                        checkreturn="true" />
+                    <echoproperties
+                        prefix="share.path."
+                        destfile="${project.tmp.dir}/build.properties.share" />
+                </try>
+                <catch>
+                    <echo msg="Unable to create global share directory." level="warning"/>
+                    <echo msg="Switching over to local tmp dir for caching." />
+                    <property
+                        name="share.path.global"
+                        value="${project.tmp.dir}/${share.name}"
+                        override="true" />
+                    <mkdir dir="${share.path.global}" />
+                </catch>
+            </trycatch>
+        </else>
+    </if>
+    <if>
+        <available file="${project.tmp.dir}" type="dir"/>
+        <then>
+            <echo msg="Temporary directory ${project.tmp.dir} available." level="${level}" />
+        </then>
+        <else>
+            <mkdir dir="${project.tmp.dir}"/>
+        </else>
+    </if>
+
+
+</project>

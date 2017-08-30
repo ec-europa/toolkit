@@ -1,8 +1,18 @@
-<project>
-    <!-- Set include path for custom tasks. -->
-    <!--<includepath classpath="${ssk.dir.incl.phing.src}/Tasks" />-->
+<?xml version="1.0" encoding="UTF-8" ?>
 
-    <!-- Custom task definititons. -->
+<project name="tasks" default="help">
+
+    <!-- Help function to display the targets. -->
+    <target name="help" hidden="true">
+        <exec command="${bootstrap.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
+        <echo msg="${line.separator}${phing-targets}" />
+    </target>
+
+    <!-- External tasks that are a composer dependency. -->
+    <import file="${bootstrap.dir.vendor}/drupal/phingdrushtask/import.xml"/>
+    <import file="${bootstrap.dir.vendor}/drupol/phingbehattask/import.xml"/>
+
+            <!-- Custom task definititons. -->
     <taskdef name="drushgal" classname="Phing\Ssk\Tasks\DrushGenerateAliasTask" />
     <taskdef name="drushmf" classname="Phing\Ssk\Tasks\DrushMakeFileTask" />
     <taskdef name="gitigmerge" classname="Phing\Ssk\Tasks\GitignoreMergerTask" />
@@ -11,4 +21,5 @@
     <taskdef name="relsym" classname="Phing\Ssk\Tasks\RelativeSymlinkTask" />
     <taskdef name="replacedby" classname="Phing\Ssk\Tasks\PhingDeprecatedTask" />
     <taskdef name="symlink-property-contents" classname="Phing\Ssk\Tasks\SymlinkPropertyContentTask" />
+
 </project>

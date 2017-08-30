@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project default="help">
+
+    <!-- Import helper targets if called here directly. -->
+    <if>
+         <available file="help.xml" />
+         <then>
+             <import file="help.xml" />
+         </then>
+    </if>
+
+    <!-- WRAPPER TARGETS -->
+
+    <!-- Build a local development version with a single platform profile. -->
+    <target name="build-platform-dev" description="Build a local development version with a single platform profile.">
+        <phingcall target="build-platform-dev-playbook">
+            <property name="dir-build" value="${build.platform.dir}" override="true" />
+            <property name="dir-profile" value="${build.platform.dir.profile}" override="true" />
+            <property name="dir-profiles" value="${build.platform.dir.profiles}" override="true" />
+            <property name="profile-name" value="${profile}" override="true" />
+            <property name="profile-make" value="${profile.make}" override="true" />
+            <property name="drupal-make" value="${profile.core.make}" override="true" />
+        </phingcall>
+    </target>
+
+    <!-- Build a local development version with all platform profiles. -->
+    <target name="build-platform-dev-all" description="Build a local development version with all platform profiles.">
+        <phingcall target="build-platform-dev-all-playbook">
+            <property name="dir-build" value="${build.platform.dir}" override="true" />
+            <property name="dir-profile" value="${build.platform.dir.profile}" override="true" />
+            <property name="dir-profiles" value="${build.platform.dir.profiles}" override="true" />
+            <property name="profile-name" value="${profile}" override="true" />
+            <property name="profile-make" value="${profile.make}" override="true" />
+            <property name="drupal-make" value="${profile.core.make}" override="true" />
+        </phingcall>
+    </target>
+
+    <!-- Build a single platform profile intended as a release package. -->
+    <target name="build-platform-dist" description="Build a single platform profile intended as a release package.">
+        <phingcall target="build-platform-dist-playbook">
+            <property name="composer-dev" value="no-dev" override="true" />
+            <property name="dir-build" value="${build.dist.dir}" override="true" />
+            <property name="dir-profile" value="${build.dist.dir.profile}" override="true" />
+            <property name="dir-profiles" value="${build.dist.dir.profiles}" override="true" />
+            <property name="profile-name" value="${profile}" override="true" />
+            <property name="profile-make" value="${profile.make}" override="true" />
+            <property name="drupal-make" value="${profile.core.make}" override="true" />
+        </phingcall>
+    </target>
+
+    <!-- Build all platform profiles intended as a release package. -->
+    <target name="build-platform-dist-all" description="Build all platform profiles intended as a release package.">
+        <phingcall target="build-platform-dist-all-playbook">
+            <property name="composer-dev" value="no-dev" override="true" />
+            <property name="dir-build" value="${build.dist.dir}" override="true" />
+            <property name="dir-profile" value="${build.dist.dir.profile}" override="true" />
+            <property name="dir-profiles" value="${build.dist.dir.profiles}" override="true" />
+            <property name="profile-name" value="${profile}" override="true" />
+            <property name="profile-make" value="${profile.make}" override="true" />
+            <property name="drupal-make" value="${profile.core.make}" override="true" />
+        </phingcall>
+    </target>
+
+    <!-- Build a platform test package to test this reslease. -->
+    <target name="build-platform-test" description="Build a platform test package to test this reslease.">
+        <phingcall target="build-project-test">
+            <property name="dir-build" value="${tests.dir}" override="true" />
+        </phingcall>
+    </target>
+
+    <!-- PLAYBOOK TARGETS -->
+
+    <!-- @see: build-platform-dev-all -->
+    <target
+        name="build-platform-dev-all-playbook"
+        hidden="true"
+        depends="
+            project-scratch-build,
+            build-platform-make-drupal,
+            build-platform-copy-profiles,
+            build-platform-make-profiles,
+            build-platform-copy-resources,
+            build-platform-install-composer" />
+
+    <!-- @see: build-platform-dev -->
+    <target
+        name="build-platform-dev-playbook"
+        hidden="true"
+        depends="
+            project-subsite-backup,
+            project-scratch-build,
+            build-platform-make-drupal,
+            build-platform-link-profiles,
+            build-platform-make-profiles,
+            build-platform-link-resources,
+            build-theme-dev,
+            build-platform-install-composer,
+            project-modules-devel-dl,
+            project-set-htaccess,
+            project-subsite-restore,
+            project-setup-files" />
+
+    <!-- @see: build-platform-dist -->
+    <target
+        name="build-platform-dist-playbook"
+        hidden="true"
+        depends="
+            project-scratch-build,
+            build-platform-make-drupal,
+            build-platform-copy-profile,
+            build-platform-make-profile,
+            build-platform-copy-resources,
+            build-platform-install-composer" />
+
+    <!-- @see: build-platform-dist-all -->
+    <target
+        name="build-platform-dist-all-playbook"
+        hidden="true"
+        depends="
+            project-scratch-build,
+            build-platform-make-drupal,
+            build-platform-copy-profiles,
+            build-platform-make-profiles,
+            build-platform-copy-resources,
+            build-platform-install-composer" />
+
+    <!-- CALLBACK TARGETS -->
+
+    <!-- Copy the profile folder to build deployment package files. -->
+    <target name="build-platform-copy-profile">
+        <!-- Delete the core profile folder so it can be replaced with ours. -->
+        <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="false" quiet="true" />
+        <mkdir dir="${dir-profile}" />
+        <!-- Copy our profile folder. -->
+        <copy todir="${dir-profile}">
+            <fileset dir="${lib.dir.profiles.profile}" expandsymboliclinks="true">
+                <exclude name="profiles/common/**" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Copy the profiles folder to build deployment package files. -->
+    <target name="build-platform-copy-profiles">
+        <!-- Delete the core profiles folder so it can be replaced with ours. -->
+        <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="true" quiet="true" />
+        <!-- Copy our profiles folder. -->
+        <copy todir="${dir-profiles}">
+            <fileset dir="${lib.dir.profiles}" expandsymboliclinks="true">
+                <exclude name="common/**" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Copy various resources for deploying on production. -->
+    <target name="build-platform-copy-resources">
+        <copy todir="${dir-build}">
+            <fileset dir="${resources.dir}">
+                <include name="composer.*"></include>
+                <include name="favicon.ico"></include>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Make Drupal core. -->
+    <target name="build-platform-make-drupal">
+        <echo msg="Make Drupal core." />
+        <drush command="make" assume="yes" bin="${bootstrap.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${dir-build}">
+            <param>${drupal-make}</param>
+            <param>${dir-build}</param>
+            <option name="no-patch-txt"></option>
+        </drush>
+    </target>
+
+    <!-- Symlink the profile folders for easy development. -->
+    <target name="build-platform-link-profiles">
+        <delete dir="${dir-profiles}" />
+        <symlink link="${dir-profiles}" target="${lib.dir.profiles}" />
+    </target>
+
+    <!-- Symlink various resources for easy development. -->
+    <target name="build-platform-link-resources">
+        <symlink link="${dir-build}/composer.json" target="${resources.dir.composer.json}" />
+        <symlink link="${dir-build}/.composer.lock" target="${resources.dir.composer.lock}" />
+        <symlink link="${dir-build}/.favicon.ico" target="${resources.dir.favicon.ico}" />
+    </target>
+
+    <!-- Make the platform. -->
+    <target name="build-platform-make-profile">
+        <echo msg="Make the platform." />
+        <phingcall target="drush-make-no-core">
+            <property name="make-file" value="${profile-make}" />
+            <property name="make-folder" value="${dir-build}" />
+            <property name="make-destination" value="profiles/${profile-name}" />
+        </phingcall>
+    </target>
+
+    <!-- Make all of the profiles in order to build a multisite platform. -->
+    <target name="build-platform-make-profiles">
+        <foreach param="profile-name" absparam="dir-profile" target="build-platform-make-profile">
+            <fileset dir="${lib.dir.profiles}">
+                <depth max="0" min="0" />
+                <exclude name="common" />
+                <type type="dir" />
+            </fileset>
+        </foreach>
+    </target>
+
+</project>

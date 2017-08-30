@@ -162,7 +162,14 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
       $targets = array();
       foreach ($allProps as $name => $value) {
         $dir = new PhingFile($value);
-        if ($dir->exists()) {
+        if ($dir->isFile()) {
+          $filename = basename($value);
+          $targets[$this->originDir][] = array(
+            'target' => $this->originDir . DIRECTORY_SEPARATOR . $filename,
+            'link' => $this->targetDir . DIRECTORY_SEPARATOR . $filename,
+          );
+        }
+        if ($dir->isDirectory()) {
           $subdirectories = preg_grep('~' . preg_quote($value) . '~', array_values($allProps));
           if (count($subdirectories) == 1) {
             $directoryToCreate =  str_replace($this->originDir, $this->targetDir, $value);

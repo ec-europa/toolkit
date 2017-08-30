@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="tasks" default="help">
+
+    <!-- Help function to display the targets. -->
+    <target name="help" hidden="true">
+        <exec command="${bootstrap.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
+        <echo msg="${line.separator}${phing-targets}" />
+    </target>
+
+    <!-- Highest priority to env variables. -->
+    <property environment="env" />
+
+    <!-- Load build properties. -->
+    <if>
+        <available file="build.properties.local" type="file" />
+        <then>
+            <property file="build.properties.local" logoutput="${logoutput}" />
+        </then>
+    </if>
+    <if>
+        <available file="build.properties" type="file" />
+        <then>
+            <property file="build.properties" logoutput="${logoutput}" />
+        </then>
+        <elseif>
+            <equals arg1="${project.basedir}" arg2="${bootstrap.dir}" />
+            <then>
+                <fail msg="${project.basedir} ---- ${bootstrap.dir} Without a build.properties" />
+            </then>
+        </elseif>
+    </if>
+    <if>
+        <available file="${bootstrap.dir.incl.phing.props}/main.props" type="file" />
+        <then>
+            <property file="${bootstrap.dir.incl.phing.props}/main.props" logoutput="false" />
+        </then>
+    </if>
+
+    <!-- Load version properties if available. -->
+    <property file="${project.tmp.dir}/build.properties.version" logoutput="${logoutput}" />
+
+    <!-- Macke sure project id for DB is valid with underscore instead of hyphen. -->
+    <php function="str_replace" returnProperty="db.name" level="debug">
+        <param value="-"/>
+        <param value="_"/>
+        <param value="${db.name}"/>
+    </php>
+
+    <!-- Set compose project name if available. -->
+    <if>
+        <isset property="env.COMPOSE_PROJECT_NAME" />
+        <then>
+            <property name="docker.project.id" value="${env.COMPOSE_PROJECT_NAME}" override="true" />
+        </then>
+    </if>
+
+    <!-- Check if site exists. -->
+    <if>
+        <available file="${build.settings.dir}/settings.php" type="file"/>
+        <then>
+            <property name="site-detected" value="1" />
+        </then>
+    </if>
+
+    <!-- Check if backup exists. -->
+    <if>
+        <available file="${rebuild.backup.destination}" type="dir"/>
+        <then>
+            <property name="backup-detected" value="1" />
+        </then>
+    </if>
+
+</project>

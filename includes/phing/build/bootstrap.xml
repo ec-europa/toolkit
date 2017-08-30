@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="bootstrap" default="help">
+
+    <!-- Set starterkit paths for easy loading. -->
+    <property file="${phing.dir.bootstrap}/bootstrap.props" logoutput="false" />
+
+    <!-- Help function to display the targets. -->
+    <target name="help" hidden="true">
+        <exec command="${bootstrap.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
+        <echo msg="${line.separator}${phing-targets}" />
+    </target>
+
+    <!-- Finish import with starterkit build xml files. -->
+    <import>
+        <fileset dir="${phing.dir.bootstrap}/bootstrap" >
+            <patternset>
+                <include name="tasks.xml"/>
+                <include name="properties.xml"/>
+                <include name="directories.xml"/>
+            </patternset>
+        </fileset>
+    </import>
+
+    <!-- Subsequently import the project specific build file." -->
+    <if>
+        <available file="build.project.xml" />
+        <then>
+            <import file="build.project.xml" />
+        </then>
+    </if>
+
+</project>

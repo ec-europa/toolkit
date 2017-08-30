@@ -1,59 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project default="help">
+<project name="help" default="help">
 
     <!-- Help function to display the targets. -->
     <target name="help" hidden="true">
-        <exec command="${ssk.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
+        <exec command="${bootstrap.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
         <echo msg="${line.separator}${phing-targets}" />
     </target>
 
-    <!-- Enable output initially to show loads and logging. -->
-    <property name="logoutput" value="true" />
-    <property name="level" value="info" />
-
-    <!-- Load build properties. -->
-    <if>
-        <available file="build.properties.local" type="file" />
-        <then>
-            <property file="build.properties.local" logoutput="${logoutput}" />
-        </then>
-    </if>
-    <if>
-        <available file="build.properties" type="file" />
-        <then>
-            <property file="build.properties" logoutput="${logoutput}" />
-        </then>
-        <elseif>
-            <equals arg1="${project.basedir}" arg2="${ssk.dir}" />
-            <then>
-                <fail msg="${project.basedir} ---- ${ssk.dir} Without a build.properties" />
-            </then>
-        </elseif>
-    </if>
-    <if>
-        <available file="${ssk.dir.incl.phing.props}/main.props" type="file" />
-        <then>
-            <property file="${ssk.dir.incl.phing.props}/main.props" logoutput="false" />
-        </then>
-    </if>
-
-    <!-- Load version properties if available. -->
-    <property file="${project.tmp.dir}/build.properties.version" logoutput="${logoutput}" />
-
-    <!-- Check type of project and import it's build file. -->
-    <if>
-        <available file="${lib.dir.profiles}" type="dir"/>
-        <then>
-            <import file="${ssk.dir.incl.phing.build}/platform.xml" />
-        </then>
-        <else>
-            <import file="${ssk.dir.incl.phing.build}/subsite.xml" />
-        </else>
-    </if>
+    <!-- Finish import with starterkit build xml files. -->
+    <import>
+        <fileset dir="${phing.dir.help}/help" >
+            <patternset>
+                <include name="*.xml"/>
+            </patternset>
+        </fileset>
+    </import>
 
     <!-- Get latest stable if major version is defined. -->
-    <target name="project-set-platform-version" hidden="true">
+    <target name="project-platform-set-version" hidden="true">
         <if>
             <matches string="${platform.package.version}" pattern="^[1-9]+\." />
             <then>
@@ -361,14 +326,6 @@
         <isset property="env.COMPOSE_PROJECT_NAME" />
         <then>
             <property name="docker.project.id" value="${env.COMPOSE_PROJECT_NAME}" override="true" />
-        </then>
-    </if>
-
-    <!-- Subsequently import the project specific build file." -->
-    <if>
-        <available file="build.project.xml" />
-        <then>
-            <import file="build.project.xml" />
         </then>
     </if>
 

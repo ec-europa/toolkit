@@ -2,32 +2,24 @@
 
 <project name="starterkit" default="help">
 
-    <!-- Set starterkit paths for easy loading. -->
-    <property file="${phing.dir.starterkit}/includes/phing/props/ssk.props" logoutput="false" />
-    
-    <!-- Import xml files for phing. -->
-    <import file="${ssk.dir.incl.phing.build}/tasks.xml"/>
-    <import file="${ssk.dir.vendor}/drupal/phingdrushtask/import.xml"/>
-    <import file="${ssk.dir.vendor}/drupol/phingbehattask/import.xml"/>
-
-    <!-- Import deprecated targets first to allow projects to override them. -->
-    <import file="${ssk.dir.incl.phing.build}/deprecated.xml" />
-
-    <!-- Import helper targets and load the build properties first. -->
-    <import file="${ssk.dir.incl.phing.build}/help.xml" />
+    <!-- Enable output initially to show loads and logging. -->
+    <property name="logoutput" value="true" />
+    <property name="level" value="info" />
 
     <!-- Finish import with starterkit build xml files. -->
     <import>
-        <fileset dir="${ssk.dir.incl.phing.build}" >
+        <fileset dir="${phing.dir.starterkit}/includes/phing/build" >
             <patternset>
-                <include name="docker.xml"/>
-                <include name="drush.xml"/>
-                <include name="theme.xml"/>
+                <include name="bootstrap.xml"/>
+                <include name="help.xml"/>
                 <include name="project.xml"/>
                 <include name="test.xml"/>
-                <include name="toolkit.xml"/>
             </patternset>
         </fileset>
     </import>
+
+    <!-- Disable output on consecutive phing calls. -->
+    <property name="logoutput" value="false" override="true" />
+    <property name="level" value="verbose" override="true" />
 
 </project>

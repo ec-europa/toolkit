@@ -10,6 +10,13 @@
          </then>
     </if>
 
+    <target
+        name="build-theme-dev"
+        description="Build EC Europa theme with version control."
+        depends="
+            theme-europa-repo-clone,
+            theme-europa-build" />
+
     <!-- This step in future will become a part of a build on the new Europa theme repository. -->
     <target name="theme-europa-download-extract">
         <phingcall target="package-download-unpack">

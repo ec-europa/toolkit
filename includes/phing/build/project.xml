@@ -10,38 +10,45 @@
          </then>
     </if>
 
-    <!-- Create code base. -->
-    <target
-        name="build-project-platform"
-        description="Build NextEuropa Platform code without version control."
-        depends="
-            project-subsite-backup,
-            project-platform-delete,
-            project-platform-package-unpack,
-            project-subsite-restore" />
+    <!-- Check type of project and import it's build file. -->
+    <if>
+        <available file="${lib.dir.profiles}" type="dir"/>
+        <then>
+            <property name="project.type" value="platform" override="true" />
+        </then>
+    </if>
 
-    <!-- Create code base. -->
-    <target
-        name="build-project-subsite"
-        description="Build NextEuropa Subsite code without version control.">
-        <echo msg="TODO: subsite builds not yet developed." />
+    <!-- Finish import with starterkit build xml files. -->
+    <import>
+        <fileset dir="${bootstrap.dir.incl.phing.build}/project" >
+            <patternset>
+                <!-- Theme is used by project time and has to be loaded first. -->
+                <include name="theme.xml" />
+                <include name="${project.type}.xml"/>
+            </patternset>
+        </fileset>
+    </import>
+
+    <!-- Create code base platform. -->
+    <target name="build-project-platform" description="Build NextEuropa Platform code without version control.">
+        <phingcall target="build-project-platform-callback">
+            <property name="dir-build" value="${build.platform.dir}" override="true" />
+        </phingcall>
     </target>
 
-    <!-- Als long as there's only one theme we don't need to name it. -->
-    <target
-        name="build-project-theme"
-        description="Build EC Europa theme without version control."
-        depends="
-        theme-europa-download-extract,
-        theme-europa-create-symlinks" />
+    <!-- Build ec-europa theme in platform. -->
+    <target name="build-project-platform-theme-ec-europa" description="Build EC Europa theme without version control.">
+        <phingcall target="build-project-platform-theme-ec-europa-callback">
+            <property name="dir-build" value="${build.platform.dir}" override="true" />
+        </phingcall>
+    </target>
 
-    <!-- Als long as there's only one theme we don't need to name it. -->
-    <target
-        name="build-theme-dev"
-        description="Build EC Europa theme with version control."
-        depends="
-            theme-europa-repo-clone,
-            theme-europa-build" />
+    <!-- Create code base subsite. -->
+    <target name="build-project-subsite" description="Build NextEuropa Subsite code without version control.">
+        <phingcall target="build-project-subsite-callback">
+            <property name="dir-build" value="${build.platform.dir}" override="true" />
+        </phingcall>
+    </target>
 
     <target
         name="build-project-clone"
@@ -52,40 +59,30 @@
             project-database-import,
             project-modules-devel-en" />
 
+    <target
+        name="build-project-platform-callback"
+        hidden="true"
+        depends="
+            project-subsite-backup,
+            project-scratch-build,
+            project-platform-set-version,
+            project-platform-package-unpack,
+            project-subsite-restore" />
+
+    <target
+        name="build-project-platform-theme-ec-europa-callback"
+        hidden="true"
+        depends="
+            theme-europa-download-extract,
+            theme-europa-create-symlinks" />
+
+    <target name="build-project-subsite-callback" hidden="true">
+        <echo msg="TODO: subsite builds not yet developed." />
+    </target>
+
     <!-- Link site document root to Webserver document root. -->
     <target name="project-set-docroot">
         <relsym link="${project.docroot}" target="${build.platform.dir}" overwrite="true" />
-    </target>
-
-    <target name="project-set-dist">
-        <echo msg="Setting composer install to run without dev." />
-        <property name="composer-dev" value="no-dev" override="true" />
-        <echo msg="Setting build dir to ${build.dist.dir}." />
-        <property name="dir-build" value="${build.dist.dir}" override="true" />
-        <echo msg="Setting profile dir to to ${build.dist.dir.profile}." />
-        <property name="dir-profile" value="${build.dist.dir.profile}" override="true" />
-        <echo msg="Setting profiles dir to to ${build.dist.dir.profiles}." />
-        <property name="dir-profiles" value="${build.dist.dir.profiles}" override="true" />
-    </target>
-
-    <target name="project-set-dev">
-        <echo msg="Setting composer install to run with dev." />
-        <property name="composer-dev" value="dev" override="true" />
-        <echo msg="Setting build dir to ${build.platform.dir}." />
-        <property name="dir-build" value="${build.platform.dir}" override="true" />
-        <echo msg="Setting profile dir to to ${build.platform.dir.profile}." />
-        <property name="dir-profile" value="${build.platform.dir.profile}" override="true" />
-        <echo msg="Setting profiles dir to to ${build.platform.dir.profiles}." />
-        <property name="dir-profiles" value="${build.platform.dir.profiles}" override="true" />
-    </target>
-
-    <target name="project-set-profile">
-        <echo msg="Setting profile name to ${profile}." />
-        <property name="profile-name" value="${profile}" override="true" />
-        <echo msg="Setting profile make to ${profile.make}." />
-        <property name="profile-make" value="${profile.make}" override="true" />
-        <echo msg="Setting Drupal make to ${profile.core.make}." />
-        <property name="drupal-make" value="${profile.core.make}" override="true" />
     </target>
 
     <!-- Update .htaccess. -->
@@ -103,10 +100,10 @@
     </target>
 
     <!-- Delete the previous development build. -->
-    <target name="project-platform-delete">
+    <target name="project-scratch-build">
         <echo msg="Delete previous build." />
         <phingcall target="unprotect-folder">
-            <property name="folder.to.unprotect" value="${build.platform.sites}" />
+            <property name="folder.to.unprotect" value="${dir-build}/sites/${build.site}" />
         </phingcall>
         <echo msg="Unprotecting folder." />
         <phingcall target="delete-folder">
@@ -151,7 +148,7 @@
     </target>
 
     <!-- Install Composer dependencies without development dependencies. -->
-    <target name="project-platform-composer-install">
+    <target name="build-platform-install-composer">
         <echo msg="Run 'composer install' in platform root." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
@@ -160,7 +157,7 @@
     </target>
 
     <!-- Install Composer dependencies, including optional development dependencies. -->
-   <target name="project-platform-composer-install-dev">
+   <target name="build-platform-install-composer-dev">
         <echo msg="Run 'composer install' in platform root." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
@@ -177,7 +174,7 @@
     </target>
 
     <!-- Install Composer dev dependencies for the subsite. -->
-    <target name="project-subsite-composer-install-dev">
+    <target name="build-subsite-composer">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.subsite.dir}"/>
@@ -266,7 +263,7 @@
             </and>
             <then>
                 <phingcall target="drush-regenerate-settings" />
-                <exec command="${ssk.dir.bin.drush} --root=${build.platform.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap" />
+                <exec command="${bootstrap.dir.bin.drush} --root=${build.platform.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap" />
                 <if>
                     <not>
                         <equals arg1="${drush-status-bootstrap}" arg2="0"/>
@@ -603,7 +600,7 @@
         <!--forbidden="${ssk.incl.phing.props}/build.properties.forbidden"-->
         <propval
                 source="build.properties"
-                required="${ssk.dir.incl.phing.props}/required.props"
+                required="${bootstrap.dir.incl.phing.props}/required.props"
                 haltonerror="${build.haltonerror.props.validate}"
                 logoutput="${logoutput}"
         />

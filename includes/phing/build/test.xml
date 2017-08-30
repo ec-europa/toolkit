@@ -92,7 +92,7 @@
     <!-- Do quality assurance checks. -->
     <target name="test-qa-exec">
         <exec
-            command="${ssk.dir.bin}/qa \
+            command="${bootstrap.dir.bin}/qa \
                 review:full \
                 --no-interaction \
                 --ansi"

@@ -1,22 +1,22 @@
 # Starterkit directories.
 # -----------------------
 
-ssk.dir = ${phing.dir.starterkit}
-ssk.dir.bin = ${ssk.dir}/bin
-ssk.dir.incl = ${ssk.dir}/includes
-ssk.dir.incl.composer = ${ssk.dir.incl}/composer
-ssk.dir.incl.docker = ${ssk.dir.incl}/docker
-ssk.dir.incl.drush = ${ssk.dir.incl}/drush
-ssk.dir.incl.phing = ${ssk.dir.incl}/phing
-ssk.dir.incl.phing.build = ${ssk.dir.incl.phing}/build
-ssk.dir.incl.phing.props = ${ssk.dir.incl.phing}/props
-ssk.dir.incl.templates = ${ssk.dir.incl}/templates
-ssk.dir.vendor = ${ssk.dir}/vendor
+bootstrap.dir = ${phing.dir.starterkit}
+bootstrap.dir.bin = ${bootstrap.dir}/bin
+bootstrap.dir.incl = ${bootstrap.dir}/includes
+bootstrap.dir.incl.composer = ${bootstrap.dir.incl}/composer
+bootstrap.dir.incl.docker = ${bootstrap.dir.incl}/docker
+bootstrap.dir.incl.drush = ${bootstrap.dir.incl}/drush
+bootstrap.dir.incl.phing = ${bootstrap.dir.incl}/phing
+bootstrap.dir.incl.phing.build = ${bootstrap.dir.incl.phing}/build
+bootstrap.dir.incl.phing.props = ${bootstrap.dir.incl.phing}/props
+bootstrap.dir.incl.templates = ${bootstrap.dir.incl}/templates
+bootstrap.dir.vendor = ${bootstrap.dir}/vendor
 
 # Starterkit binaries.
 # --------------------
-ssk.dir.bin.drush = ${ssk.dir.bin}/drush
-ssk.dir.bin.phing = ${ssk.dir.bin}/phing
+bootstrap.dir.bin.drush = ${bootstrap.dir.bin}/drush
+bootstrap.dir.bin.phing = ${bootstrap.dir.bin}/phing
 
 # Temporary folders and resources.
 # --------------------------------
