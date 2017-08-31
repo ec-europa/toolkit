@@ -2,9 +2,6 @@
 
 <project name="bootstrap" default="help">
 
-    <!-- Set starterkit paths for easy loading. -->
-    <property file="${phing.dir.bootstrap}/bootstrap.props" logoutput="false" />
-
     <!-- Help function to display the targets. -->
     <target name="help" hidden="true">
         <exec command="${bootstrap.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
