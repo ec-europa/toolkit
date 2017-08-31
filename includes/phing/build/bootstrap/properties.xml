@@ -38,7 +38,15 @@
     </if>
 
     <!-- Load version properties if available. -->
-    <property file="${project.tmp.dir}/build.properties.version" logoutput="${logoutput}" />
+    <if>
+        <available file="${project.tmp.dir}/build.properties.version" />
+        <then>
+            <property file="${project.tmp.dir}/build.properties.version" logoutput="${logoutput}" />
+        </then>
+        <else>
+            <mkdir dir="${project.tmp.dir}" />
+        </else>
+    </if>
 
     <!-- Macke sure project id for DB is valid with underscore instead of hyphen. -->
     <php function="str_replace" returnProperty="db.name" level="debug">
