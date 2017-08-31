@@ -5,14 +5,12 @@
     <!-- Enable output initially to show loads and logging. -->
     <property name="logoutput" value="true" />
     <property name="level" value="info" />
-
-    <!-- Set bootstrap dir property and load the bootstrap.props. -->
     <property name="bootstrap.dir" value="${phing.dir.starterkit}" />
-    <property file="${bootstrap.dir}/bootstrap.props" logoutput="false" />
+    <property file="${bootstrap.dir}/includes/phing/build/bootstrap.props" logoutput="true" />
 
     <!-- Finish import with starterkit build xml files. -->
-    <import>
-        <fileset dir="${phing.dir.starterkit}/includes/phing/build">
+   <import>
+       <fileset dir="${bootstrap.dir}/includes/phing/build">
             <patternset>
                 <include name="bootstrap.xml" />
                 <include name="help.xml" />
