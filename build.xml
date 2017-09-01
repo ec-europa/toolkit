@@ -6,11 +6,14 @@
     <property name="logoutput" value="true" />
     <property name="level" value="info" />
 
-    <!-- Finish import with starterkit build xml files. -->
-    <import file="${phing.dir.starterkit}/includes/phing/build/bootstrap.xml" />
-    <import file="${phing.dir.starterkit}/includes/phing/build/help.xml" />
-    <import file="${phing.dir.starterkit}/includes/phing/build/project.xml" />
-    <import file="${phing.dir.starterkit}/includes/phing/build/test.xml" />
+    <!-- Load toolkit properties so we have all locations. -->
+    <property file="${phing.dir.starterkit}/includes/phing/build/bootstrap.props" logoutput="true" />
+
+    <!-- Finish import with toolkit build xml files. -->
+    <import file="${toolkit.dir.incl.phing.build}/bootstrap.xml" />
+    <import file="${toolkit.dir.incl.phing.build}/help.xml" />
+    <import file="${toolkit.dir.incl.phing.build}/project.xml" />
+    <import file="${toolkit.dir.incl.phing.build}/test.xml" />
 
     <!-- Disable output on consecutive phing calls. -->
     <property name="logoutput" value="false" override="true" />
@@ -18,7 +21,7 @@
 
     <!-- Help function to display the targets. -->
     <target name="help" hidden="true">
-        <exec command="${phing.dir.starterkit}/bin/phing -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
+        <exec command="${toolkit.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
         <echo msg="${line.separator}${phing-targets}" />
     </target>
 

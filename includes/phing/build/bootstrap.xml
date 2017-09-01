@@ -2,8 +2,6 @@
 
 <project name="bootstrap" default="help">
 
-    <property file="${phing.dir.bootstrap}/bootstrap.props" logoutput="true" />
-
     <!-- Finish import with starterkit build xml files. -->
     <import file="${phing.dir.bootstrap}/bootstrap/properties.xml" />
     <import file="${phing.dir.bootstrap}/bootstrap/extensions.xml" />
@@ -11,9 +9,9 @@
 
     <!-- Subsequently import the project specific build file." -->
     <if>
-        <available file="build.project.xml" />
+        <available file="${project.basedir}/build.project.xml" />
         <then>
-            <import file="build.project.xml" />
+            <import file="${project.basedir}/build.project.xml" />
         </then>
     </if>
 
