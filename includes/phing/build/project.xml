@@ -86,6 +86,12 @@
     <!-- Delete the previous development build. -->
     <target name="project-scratch-build">
         <echo msg="Delete previous build." />
+        <if>
+            <available file="${dir-build}/default.settings.php" />
+            <then>
+                <move file="${dir-build}/default.settings.php" tofile="${project.tmp.dir}/default.settings.php" overwrite="true" />
+            </then>
+        </if>
         <phingcall target="unprotect-folder">
             <property name="folder.to.unprotect" value="${dir-build}/sites/${build.site}" />
         </phingcall>
@@ -93,7 +99,13 @@
         <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${dir-build}" />
         </phingcall>
-        <mkdir dir="${dir-build}" />
+        <mkdir dir="${dir-build}/sites/default" />
+        <if>
+            <available file="${project.tmp.dir}/default.settings.php" />
+            <then>
+                <move file="${project.tmp.dir}/default.settings.php" tofile="${dir-build}/default.settings.php" />
+            </then>
+        </if>
     </target>
 
     <!-- Unpack the platform. -->
