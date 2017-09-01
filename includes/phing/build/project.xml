@@ -110,14 +110,13 @@
 
     <!-- Unpack the platform. -->
     <target name="project-platform-package-unpack">
+        <mkdir dir="${share.path.platform.packages.deploy}" />
         <phingcall target="package-download-unpack">
             <property name="package-name" value="platform-dev-${platform.package.version.current}.tar.gz" />
             <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
             <property name="package-download-location" value="https://platform-ci.ne-dev.eu/releases" />
             <property name="package-extract-location" value="${build.platform.dir}" />
         </phingcall>
-        <echo message="Generate site aliases." />
-        <phingcall target="drush-generate-aliases" />
     </target>
 
     <!-- Install Composer dependencies without development dependencies. -->

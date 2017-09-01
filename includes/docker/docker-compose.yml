@@ -11,7 +11,7 @@ services:
       - 8081:8080
     volumes:
       - ${WORKSPACE}:${WORKSPACE}
-      - ${HOME}/share:/tmp/share
+      - /cache:/cache
       - /var/cache/composer:/var/cache/composer
       - /usr/bin/docker:/usr/bin/docker
       - /usr/bin/docker-compose:/usr/bin/docker-compose
