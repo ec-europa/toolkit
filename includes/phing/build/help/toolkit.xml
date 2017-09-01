@@ -12,6 +12,7 @@
         name="toolkit-initialize"
         depends="
             toolkit-link-binary,
+            toolkit-generate-structure,
             project-platform-set-version">
         <echo msg="Starterkit successfully initiated." />
     </target>
