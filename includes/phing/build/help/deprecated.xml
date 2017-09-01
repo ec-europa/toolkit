@@ -22,6 +22,11 @@
         <replacedby target="install-project-clean" />
     </target>
 
+    <!-- Target install-dev has been replaced by install-project-clean. -->
+    <target hidden="true" name="install-dev">
+        <replacedby target="install-project-clean" />
+    </target>
+
     <!-- Target behat has been replaced by test-run-behat. -->
     <target hidden="true" name="behat">
         <replacedby target="test-run-behat" />
@@ -45,5 +50,20 @@
     <!-- Target regenerate-settings has been replaced by drush-generate-settings. -->
     <target hidden="true" name="regenerate-settings">
         <replacedby target="drush-generate-settings" />
+    </target>
+
+    <!-- Target link-docroot has been replaced by project-platform-set-docroot. -->
+    <target hidden="true" name="link-docroot">
+        <replacedby target="project-platform-set-docroot" />
+    </target>
+
+    <!-- Target download-prod-db has been replaced by  project-database-download. -->
+    <target hidden="true" name="download-prod-db">
+        <replacedby target="project-database-download" />
+    </target>
+
+    <!-- Target import-prod-db has been replaced by project-database-import. -->
+    <target hidden="true" name="import-prod-db">
+        <replacedby target="project-database-import" />
     </target>
 </project>
