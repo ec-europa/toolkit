@@ -81,6 +81,7 @@
     </target>
     <!-- Set up Behat balancer. -->
     <target name="test-behat-setup-balancer">
+        <mkdir dir="behat.load_balancer.destination" />
         <behat:balancer
             containers="${behat.load_balancer.containers}"
 
