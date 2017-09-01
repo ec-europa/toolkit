@@ -157,7 +157,7 @@
     <!-- Make Drupal core. -->
     <target name="build-platform-make-drupal">
         <echo msg="Make Drupal core." />
-        <drush command="make" assume="yes" bin="${bootstrap.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${dir-build}">
+        <drush command="make" assume="yes" bin="${toolkit.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${dir-build}">
             <param>${drupal-make}</param>
             <param>${dir-build}</param>
             <option name="no-patch-txt"></option>

@@ -5,7 +5,7 @@
     <!-- Provide handy access with root symlink to starterkit binary. -->
     <target name="toolkit-link-binary">
         <echo msg="Provide project with starterkit binary at root level." />
-        <relsym link="${project.basedir}/ssk" target="${bootstrap.dir.bin}" overwrite="true" />
+        <relsym link="${project.basedir}/ssk" target="${toolkit.dir.bin}" overwrite="true" />
     </target>
 
     <target
@@ -23,7 +23,7 @@
                 <not>
                     <available file="${lib.dir}" type="dir" />
                 </not>
-                <equals arg1="${project.basedir}" arg2="${bootstrap.dir}" />
+                <equals arg1="${project.basedir}" arg2="${toolkit.dir}" />
             </and>
             <then>
                 <phingcall target="toolkit-copy-templates">
@@ -48,9 +48,9 @@
     <!-- Ensure needed files are present. -->
     <target name="toolkit-copy-templates">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
-        <copy file="${bootstrap.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.properties.dist" overwrite="true" />
+        <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.properties.dist" overwrite="true" />
         <copy todir="${project.basedir}">
-            <fileset dir="${bootstrap.dir.incl.templates}/${project-type}" />
+            <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
         </copy>
         <echo msg="Project structure for ${project-type} created." />
     </target>

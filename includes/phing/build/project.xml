@@ -255,7 +255,7 @@
             </and>
             <then>
                 <phingcall target="drush-generate-settings" />
-                <exec command="${bootstrap.dir.bin.drush} --root=${build.platform.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap" />
+                <exec command="${toolkit.dir.bin.drush} --root=${build.platform.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap" />
                 <if>
                     <not>
                         <equals arg1="${drush-status-bootstrap}" arg2="0" />
@@ -592,7 +592,7 @@
         <!--forbidden="${ssk.incl.phing.props}/build.properties.forbidden"-->
         <propval
             source="build.properties"
-            required="${bootstrap.dir.incl.phing.props}/required.props"
+            required="${toolkit.dir.incl.phing.props}/required.props"
             haltonerror="${build.haltonerror.props.validate}"
             logoutput="${logoutput}"
         />

@@ -3,8 +3,8 @@
 <project name="extensions" default="help">
 
     <!-- External tasks that are a composer dependency. -->
-    <import file="${bootstrap.dir.vendor}/drupal/phingdrushtask/import.xml" />
-    <import file="${bootstrap.dir.vendor}/drupol/phingbehattask/import.xml" />
+    <import file="${toolkit.dir.vendor}/drupal/phingdrushtask/import.xml" />
+    <import file="${toolkit.dir.vendor}/drupol/phingbehattask/import.xml" />
 
     <!-- Custom task definititons. -->
     <taskdef name="drushgal" classname="Phing\Ssk\Tasks\DrushGenerateAliasTask" />

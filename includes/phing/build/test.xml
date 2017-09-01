@@ -84,7 +84,7 @@
     <!-- Do quality assurance checks. -->
     <target name="test-qa-exec">
         <exec
-            command="${bootstrap.dir.bin}/qa \
+            command="${toolkit.dir.bin}/qa \
                 review:full \
                 --no-interaction \
                 --ansi"

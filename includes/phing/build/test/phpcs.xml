@@ -7,7 +7,7 @@
     <!-- Do quality assurance checks. -->
     <target name="test-phpcs-exec">
         <exec
-            command="${bootstrap.dir.bin}/phpcs"
+            command="${toolkit.dir.bin}/phpcs"
             passthru="true"
             checkreturn="true"
         />

@@ -4,7 +4,7 @@
 
     <!-- Help function to display the targets. -->
     <target name="help" hidden="true">
-        <exec command="${bootstrap.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
+        <exec command="${toolkit.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
         <echo msg="${line.separator}${phing-targets}" />
     </target>
 
@@ -24,16 +24,16 @@
             <property file="build.properties" logoutput="${logoutput}" />
         </then>
         <elseif>
-            <equals arg1="${project.basedir}" arg2="${bootstrap.dir}" />
+            <equals arg1="${project.basedir}" arg2="${toolkit.dir}" />
             <then>
-                <fail msg="${project.basedir} ---- ${bootstrap.dir} Without a build.properties" />
+                <fail msg="${project.basedir} ---- ${toolkit.dir} Without a build.properties" />
             </then>
         </elseif>
     </if>
     <if>
-        <available file="${bootstrap.dir.incl.phing.props}/main.props" type="file" />
+        <available file="${toolkit.dir.incl.phing.props}/main.props" type="file" />
         <then>
-            <property file="${bootstrap.dir.incl.phing.props}/main.props" logoutput="false" />
+            <property file="${toolkit.dir.incl.phing.props}/main.props" logoutput="false" />
         </then>
     </if>
 

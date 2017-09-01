@@ -4,7 +4,7 @@
 
     <!-- Help function to display the targets. -->
     <target name="help" hidden="true">
-        <exec command="${bootstrap.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
+        <exec command="${toolkit.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
         <echo msg="${line.separator}${phing-targets}" />
     </target>
 
