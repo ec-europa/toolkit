@@ -10,16 +10,8 @@
         </then>
     </if>
 
-    <!-- Finish import with starterkit build xml files. -->
-    <import>
-        <fileset dir="${phing.dir.project}/project">
-            <patternset>
-                <!-- Theme is used by project type and has to be loaded first. -->
-                <include name="theme.xml" />
-                <include name="${project.type}.xml" />
-            </patternset>
-        </fileset>
-    </import>
+    <import file="${phing.dir.project}/project/theme.xml" />
+    <import file="${phing.dir.project}/project/${project.type}.xml" />
 
     <!-- Create code base platform. -->
     <target name="build-project-platform" description="Build NextEuropa Platform code without version control.">

@@ -9,13 +9,10 @@
     </target>
 
     <!-- Finish import with starterkit build xml files. -->
-    <import>
-        <fileset dir="${phing.dir.help}/help">
-            <patternset>
-                <include name="*.xml" />
-            </patternset>
-        </fileset>
-    </import>
+    <import file="${phing.dir.help}/help/deprecated.xml" />
+    <import file="${phing.dir.help}/help/docker.xml" />
+    <import file="${phing.dir.help}/help/drush.xml" />
+    <import file="${phing.dir.help}/help/toolkit.xml" />
 
     <!-- Get latest stable if major version is defined. -->
     <target name="project-platform-set-version" hidden="true">
