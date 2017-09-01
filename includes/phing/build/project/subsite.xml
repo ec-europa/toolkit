@@ -53,9 +53,6 @@
     <!-- Copy resources into the build folder. -->
     <target name="build-subsite-copy-resources">
         <echo msg="Copy custom resources." />
-        <!-- Delete the core profile folder so it can be replaced with ours. -->
-        <delete dir="${dir-build}" includeemptydirs="true" failonerror="false" quiet="true" />
-        <mkdir dir="${dir-build}" />
         <!-- Copy our built site folder. -->
         <copy todir="${dir-build}">
             <fileset dir="${build.subsite.dir}" expandsymboliclinks="true">

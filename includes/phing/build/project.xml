@@ -93,6 +93,7 @@
         <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${dir-build}" />
         </phingcall>
+        <mkdir dir="${dir-build}" />
     </target>
 
     <!-- Unpack the platform. -->
