@@ -54,7 +54,7 @@
         <param value="_" />
         <param value="${db.name}" />
     </php>
-    <property name="db.name" value="db-name" override="true" />
+    <property name="db.name" value="${db-name}" override="true" />
 
     <!-- Set compose project name if available. -->
     <if>
