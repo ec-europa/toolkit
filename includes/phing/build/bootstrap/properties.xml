@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="tasks" default="help">
+<project name="properties" default="help">
 
     <!-- Help function to display the targets. -->
     <target name="help" hidden="true">

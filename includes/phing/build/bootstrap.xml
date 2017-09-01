@@ -10,10 +10,10 @@
 
     <!-- Finish import with starterkit build xml files. -->
     <import>
-        <fileset dir="${phing.dir.bootstrap}/bootstrap">
+        <fileset dir="${bootstrap.dir.incl.phing.build}/bootstrap">
             <patternset>
-                <include name="extensions.xml" />
                 <include name="properties.xml" />
+                <include name="extensions.xml" />
                 <include name="directories.xml" />
             </patternset>
         </fileset>
