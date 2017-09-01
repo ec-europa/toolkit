@@ -7,4 +7,28 @@
         <replacedby target="install-project-clone" />
     </target>
 
+    <!-- Target build-dev has been replaced by install-project-dev. -->
+    <target hidden="true" name="build-dev">
+        <replacedby target="build-subsite-dev" />
+    </target>
+
+    <!-- Target build-dist has been replaced by build-subsite-dist. -->
+    <target hidden="true" name="build-dist">
+        <replacedby target="build-subsite-dist" />
+    </target>
+
+    <!-- Target install has been replaced by install-project-clean. -->
+    <target hidden="true" name="install">
+        <replacedby target="install-project-clean" />
+    </target>
+
+    <!-- Target behat has been replaced by test-run-behat. -->
+    <target hidden="true" name="behat">
+        <replacedby target="test-run-behat" />
+    </target>
+
+    <!-- Target mjolnir has been replaced by test-run-qa. -->
+    <target hidden="true" name="mjolnir">
+        <replacedby target="test-run-qa" />
+    </target>
 </project>
