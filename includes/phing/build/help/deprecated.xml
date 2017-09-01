@@ -7,4 +7,43 @@
         <replacedby target="install-project-clone" />
     </target>
 
+    <!-- Target build-dev has been replaced by install-project-dev. -->
+    <target hidden="true" name="build-dev">
+        <replacedby target="build-subsite-dev" />
+    </target>
+
+    <!-- Target build-dist has been replaced by build-subsite-dist. -->
+    <target hidden="true" name="build-dist">
+        <replacedby target="build-subsite-dist" />
+    </target>
+
+    <!-- Target install has been replaced by install-project-clean. -->
+    <target hidden="true" name="install">
+        <replacedby target="install-project-clean" />
+    </target>
+
+    <!-- Target behat has been replaced by test-run-behat. -->
+    <target hidden="true" name="behat">
+        <replacedby target="test-run-behat" />
+    </target>
+
+    <!-- Target mjolnir has been replaced by test-run-qa. -->
+    <target hidden="true" name="mjolnir">
+        <replacedby target="test-run-qa" />
+    </target>
+
+    <!-- Target setup-php-codesniffer has been replaced by phpcs-setup. -->
+    <target hidden="true" name="setup-php-codesniffer">
+        <replacedby target="phpcs-setup" />
+    </target>
+
+    <!-- Target setup-phpcs-pre-push has been replaced by test-phpcs-setup-prepush. -->
+    <target hidden="true" name="setup-phpcs-pre-push">
+        <replacedby target="test-phpcs-setup-prepush" />
+    </target>
+
+    <!-- Target regenerate-settings has been replaced by drush-generate-settings. -->
+    <target hidden="true" name="regenerate-settings">
+        <replacedby target="drush-generate-settings" />
+    </target>
 </project>
