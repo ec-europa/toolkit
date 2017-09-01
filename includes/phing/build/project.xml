@@ -258,7 +258,7 @@
         <if>
             <and>
                 <equals arg1="${platform.package.db.cache}" arg2="1" />
-                <available file="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" type="file" />
+                <available file="${share.path.platform}/databases/platform-dev-${platform.package.version.current}/platform-dev-${platform.package.version.current}.sql" type="file" />
             </and>
             <then>
                 <phingcall target="drush-generate-settings" />
@@ -269,7 +269,7 @@
                     </not>
                     <then>
                         <phingcall target="drush-sql-import">
-                            <property name="database-file" value="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" />
+                            <property name="database-file" value="${share.path.platform}/databases/platform-dev-${platform.package.version.current}/platform-dev-${platform.package.version.current}.sql" />
                         </phingcall>
                     </then>
                 </if>
@@ -282,7 +282,7 @@
                     <equals arg1="${platform.package.db.cache}" arg2="1" />
                     <then>
                         <phingcall target="drush-sql-dump">
-                            <property name="database-file" value="${share.path.platform}/databases/platform-dev-${platform.package.version}/platform-dev-${platform.package.version}.sql" />
+                            <property name="database-file" value="${share.path.platform}/databases/platform-dev-${platform.package.version.current}/platform-dev-${platform.package.version.current}.sql" />
                         </phingcall>
                     </then>
                 </if>
