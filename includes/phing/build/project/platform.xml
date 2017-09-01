@@ -167,14 +167,14 @@
     <!-- Symlink the profile folders for easy development. -->
     <target name="build-platform-link-profiles">
         <delete dir="${dir-profiles}" />
-        <symlink link="${dir-profiles}" target="${lib.dir.profiles}" />
+        <relsym link="${dir-profiles}" target="${lib.dir.profiles}" />
     </target>
 
     <!-- Symlink various resources for easy development. -->
     <target name="build-platform-link-resources">
-        <symlink link="${dir-build}/composer.json" target="${resources.dir.composer.json}" />
-        <symlink link="${dir-build}/.composer.lock" target="${resources.dir.composer.lock}" />
-        <symlink link="${dir-build}/.favicon.ico" target="${resources.dir.favicon.ico}" />
+        <relsym link="${dir-build}/composer.json" target="${resources.dir.composer.json}" />
+        <relsym link="${dir-build}/composer.lock" target="${resources.dir.composer.lock}" />
+        <relsym link="${dir-build}/.favicon.ico" target="${resources.dir.favicon.ico}" />
     </target>
 
     <!-- Make the platform. -->

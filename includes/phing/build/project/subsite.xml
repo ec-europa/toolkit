@@ -78,6 +78,8 @@
     <target name="build-subsite-link-resources">
         <symlink-property-contents prefix="lib.dir." origindir="${lib.dir}" targetdir="${dir-build}" overwrite="true" />
         <symlink-property-contents prefix="resources.dir.composer." origindir="${resources.dir}" targetdir="${dir-build}" overwrite="true" />
+        <relsym link="${dir-build}/composer.json" target="${resources.dir.composer.json}" />
+        <relsym link="${dir-build}/composer.lock" target="${resources.dir.composer.lock}" />
     </target>
 
     <!-- Make the development version of the subsite. -->
