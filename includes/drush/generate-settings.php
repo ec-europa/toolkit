@@ -15,12 +15,12 @@ $settings['databases'] = array(
   'value' => array(
     'default' => array(
       'default' => array(
-        'driver' => '%%drupal.db.type%%',
-        'database' => '%%drupal.db.name%%',
-        'username' => '%%drupal.db.user%%',
-        'password' => '%%drupal.db.password%%',
-        'host' => '%%drupal.db.host%%',
-        'port' => '%%drupal.db.port%%',
+        'driver' => '%%db.type%%',
+        'database' => '%%db.name%%',
+        'username' => '%%db.user%%',
+        'password' => '%%db.password%%',
+        'host' => '%%db.host%%',
+        'port' => '%%db.port%%',
         'prefix' => '',
       ),
     ),
