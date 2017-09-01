@@ -99,10 +99,10 @@
         <phingcall target="delete-folder">
             <property name="folder.to.delete" value="${dir-build}" />
         </phingcall>
-        <mkdir dir="${dir-build}/sites/default" />
         <if>
             <available file="${project.tmp.dir}/default.settings.php" />
             <then>
+                <mkdir dir="${dir-build}/sites/default" />
                 <move file="${project.tmp.dir}/default.settings.php" tofile="${dir-build}/default.settings.php" />
             </then>
         </if>
