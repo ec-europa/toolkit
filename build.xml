@@ -7,7 +7,7 @@
     <property name="level" value="info" />
 
     <!-- Load toolkit properties so we have all locations. -->
-    <property file="${phing.dir.starterkit}/includes/phing/build/bootstrap.props" logoutput="true" />
+    <property file="${phing.dir.starterkit}/includes/phing/build/bootstrap.props" logoutput="${logoutput}" />
 
     <!-- Finish import with toolkit build xml files. -->
     <import file="${toolkit.dir.incl.phing.build}/bootstrap.xml" />
