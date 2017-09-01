@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project default="help">
+<project name="project" default="help">
 
     <!-- Check type of project and import it's build file. -->
     <if>
@@ -12,7 +12,7 @@
 
     <!-- Finish import with starterkit build xml files. -->
     <import>
-        <fileset dir="${bootstrap.dir.incl.phing.build}/project">
+        <fileset dir="${phing.dir.project}/project">
             <patternset>
                 <!-- Theme is used by project type and has to be loaded first. -->
                 <include name="theme.xml" />
