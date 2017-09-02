@@ -41,21 +41,21 @@
             <table width="100%">
                 <thead>
                 <tr align="left">
-                    <th width="25%">Callback target</th>
-                    <th width="25%">Buildfile</th>
-                    <th width="50%">Description</th>
+                    <th width="25%">Doesnt</th>
+                    <th width="25%">Do</th>
+                    <th width="50%">Shit</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td>project-subsite-backup</td>
-                    <td>project.xml</td>
-                    <td>Some description of this target</td>
+                    <td>dir-build</td>
+                    <td>${build.platform.dir}</td>
+                    <td>Sets the directory in which to build.</td>
                 </tr>
                 <tr>
-                    <td>project-scratch-build</td>
-                    <td>project.xml</td>
-                    <td>Some description of this target.</td>
+                    <td>dir-profiles</td>
+                    <td>${build.platform.dir.profile}</td>
+                    <td>Sets the profiles directory which to link in.</td>
                 </tr>
                 </tbody>
             </table>
