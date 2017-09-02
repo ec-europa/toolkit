@@ -1,9 +1,8 @@
 ## Wrapper targets
-
+### build-platform-dev
 <table>
     <thead>
     <tr align="left">
-        <th><h4>build-platform-dev</h4></th>
         <th width="100%">Build a local development version with a single platform profile.</th>
     </tr>
     </thead>
@@ -63,10 +62,13 @@
         </td>
     </tr>
     </tbody>
-    <thead>
-    <tr align="left">
-        <th nowrap><h4>build-platform-dev-all</h4></th>
-        <th width="100%">Build a local development version with a single platform profile.</th>
+</table>
+
+### build-platform-dev-all
+<table>
+    <thead width="100%">
+    </tr>
+        <th>Build a local development version with a single platform profile.</th>
     </tr>
     </thead>
     <tbody>
