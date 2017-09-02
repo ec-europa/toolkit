@@ -15,7 +15,7 @@
                         <tr align="left">
                             <th nowrap>Property</th>
                             <th nowrap>Value</th>
-                            <th>Description</th>
+                            <th width='@%"'>Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,68 +62,68 @@
                         <tr align="left">
                             <th>Callback name</th>
                             <th>Buildfile</th>
-                            <th>Description</th>
+                            <th width="100%">Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td nowrap>project-subsite-backup</td>
-                            <td nowrap>build/project.xml</td>
-                            <td></td>
+                            <td nowrap>./project.xml</td>
+                            <td>Backup site defined files from properties.</td>
                         </tr>
                         <tr>
                             <td nowrap>project-scratch-build</td>
-                            <td nowrap>build/project.xml</td>
-                            <td></td>
+                            <td nowrap>./project.xml</td>
+                            <td>Delete previous build to start over clean.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-drupal</td>
-                            <td nowrap>build/project/platform.xml</td>
-                            <td></td>
+                            <td nowrap>./project/platform.xml</td>
+                            <td>Build the Drupal core codebase.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-link-profiles</td>
-                            <td nowrap>build/project/platform.xml</td>
+                            <td nowrap>./project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-profiles</td>
-                            <td nowrap>build/project/platform.xml</td>
+                            <td nowrap>./project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-link-resources</td>
-                            <td nowrap>build/project/platform.xml</td>
+                            <td nowrap>./project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-theme-dev</td>
-                            <td nowrap>build/project/theme.xml</td>
+                            <td nowrap>./project/theme.xml</td>
                             <td>Build EC Europa theme with version control.</td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-composer-no-dev</td>
-                            <td nowrap>build/project.xml</td>
+                            <td nowrap>./project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-modules-devel-dl</td>
-                            <td nowrap>build/project.xml</td>
+                            <td nowrap>./project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-set-htaccess</td>
-                            <td nowrap>build/project.xml</td>
+                            <td nowrap>./project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-subsite-restore</td>
-                            <td nowrap>build/project.xml</td>
-                            <td></td>
+                            <td nowrap>./project.xml</td>
+                            <td>Restore site defined files from properties.</td>
                         </tr>
                         <tr>
                             <td nowrap>project-subsite-setup-files</td>
-                            <td nowrap>build/project.xml</td>
+                            <td nowrap>./project.xml</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -151,7 +151,7 @@
                         <tr align="left">
                             <th nowrap>Property</th>
                             <th nowrap>Value</th>
-                            <th>Description</th>
+                            <th width='@%"'>Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -198,38 +198,38 @@
                         <tr align="left">
                             <th>Callback name</th>
                             <th>Buildfile</th>
-                            <th>Description</th>
+                            <th width="100%">Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td nowrap>project-scratch-build</td>
-                            <td nowrap>build/project.xml</td>
-                            <td></td>
+                            <td nowrap>./project.xml</td>
+                            <td>Delete previous build to start over clean.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-drupal</td>
-                            <td nowrap>build/project/platform.xml</td>
-                            <td></td>
+                            <td nowrap>./project/platform.xml</td>
+                            <td>Build the Drupal core codebase.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-profiles</td>
-                            <td nowrap>build/project/platform.xml</td>
+                            <td nowrap>./project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-profiles</td>
-                            <td nowrap>build/project/platform.xml</td>
+                            <td nowrap>./project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-resources</td>
-                            <td nowrap>build/project/platform.xml</td>
+                            <td nowrap>./project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-composer-no-dev</td>
-                            <td nowrap>build/project.xml</td>
+                            <td nowrap>./project.xml</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -257,7 +257,7 @@
                         <tr align="left">
                             <th nowrap>Property</th>
                             <th nowrap>Value</th>
-                            <th>Description</th>
+                            <th width='@%"'>Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -309,38 +309,38 @@
                         <tr align="left">
                             <th>Callback name</th>
                             <th>Buildfile</th>
-                            <th>Description</th>
+                            <th width="100%">Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td nowrap>project-scratch-build</td>
-                            <td nowrap>build/project.xml</td>
-                            <td></td>
+                            <td nowrap>./project.xml</td>
+                            <td>Delete previous build to start over clean.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-drupal</td>
-                            <td nowrap>build/project/platform.xml</td>
-                            <td></td>
+                            <td nowrap>./project/platform.xml</td>
+                            <td>Build the Drupal core codebase.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-profile</td>
-                            <td nowrap>build/project/platform.xml</td>
+                            <td nowrap>./project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-profile</td>
-                            <td nowrap>build/project/platform.xml</td>
+                            <td nowrap>./project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-resources</td>
-                            <td nowrap>build/project/platform.xml</td>
+                            <td nowrap>./project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-composer-no-dev</td>
-                            <td nowrap>build/project.xml</td>
+                            <td nowrap>./project.xml</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -368,7 +368,7 @@
                         <tr align="left">
                             <th nowrap>Property</th>
                             <th nowrap>Value</th>
-                            <th>Description</th>
+                            <th width='@%"'>Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -420,38 +420,38 @@
                         <tr align="left">
                             <th>Callback name</th>
                             <th>Buildfile</th>
-                            <th>Description</th>
+                            <th width="100%">Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td nowrap>project-scratch-build</td>
-                            <td nowrap>build/project.xml</td>
-                            <td></td>
+                            <td nowrap>./project.xml</td>
+                            <td>Delete previous build to start over clean.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-drupal</td>
-                            <td nowrap>build/project/platform.xml</td>
-                            <td></td>
+                            <td nowrap>./project/platform.xml</td>
+                            <td>Build the Drupal core codebase.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-profiles</td>
-                            <td nowrap>build/project/platform.xml</td>
+                            <td nowrap>./project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-profiles</td>
-                            <td nowrap>build/project/platform.xml</td>
+                            <td nowrap>./project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-resources</td>
-                            <td nowrap>build/project/platform.xml</td>
+                            <td nowrap>./project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-composer-no-dev</td>
-                            <td nowrap>build/project.xml</td>
+                            <td nowrap>./project.xml</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -479,7 +479,7 @@
                         <tr align="left">
                             <th nowrap>Property</th>
                             <th nowrap>Value</th>
-                            <th>Description</th>
+                            <th width='@%"'>Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -501,33 +501,33 @@
                         <tr align="left">
                             <th>Callback name</th>
                             <th>Buildfile</th>
-                            <th>Description</th>
+                            <th width="100%">Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td nowrap>project-scratch-build</td>
-                            <td nowrap>build/project.xml</td>
-                            <td></td>
+                            <td nowrap>./project.xml</td>
+                            <td>Delete previous build to start over clean.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-link-resources</td>
-                            <td nowrap>build/project/subsite.xml</td>
+                            <td nowrap>./project/subsite.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-make-site</td>
-                            <td nowrap>build/project/subsite.xml</td>
+                            <td nowrap>./project/subsite.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-modules-devel-dl</td>
-                            <td nowrap>build/project.xml</td>
+                            <td nowrap>./project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-subsite-composer-dev</td>
-                            <td nowrap>build/project.xml</td>
+                            <td nowrap>./project.xml</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -555,7 +555,7 @@
                         <tr align="left">
                             <th nowrap>Property</th>
                             <th nowrap>Value</th>
-                            <th>Description</th>
+                            <th width='@%"'>Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -577,28 +577,28 @@
                         <tr align="left">
                             <th>Callback name</th>
                             <th>Buildfile</th>
-                            <th>Description</th>
+                            <th width="100%">Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td nowrap>project-scratch-build</td>
-                            <td nowrap>build/project.xml</td>
-                            <td></td>
+                            <td nowrap>./project.xml</td>
+                            <td>Delete previous build to start over clean.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-link-resources</td>
-                            <td nowrap>build/project/subsite.xml</td>
+                            <td nowrap>./project/subsite.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-make-site</td>
-                            <td nowrap>build/project/subsite.xml</td>
+                            <td nowrap>./project/subsite.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-copy-resources</td>
-                            <td nowrap>build/project/subsite.xml</td>
+                            <td nowrap>./project/subsite.xml</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -626,7 +626,7 @@
                         <tr align="left">
                             <th nowrap>Property</th>
                             <th nowrap>Value</th>
-                            <th>Description</th>
+                            <th width='@%"'>Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -648,7 +648,7 @@
                         <tr align="left">
                             <th>Callback name</th>
                             <th>Buildfile</th>
-                            <th>Description</th>
+                            <th width="100%">Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -677,7 +677,7 @@
                         <tr align="left">
                             <th nowrap>Property</th>
                             <th nowrap>Value</th>
-                            <th>Description</th>
+                            <th width='@%"'>Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -699,7 +699,7 @@
                         <tr align="left">
                             <th>Callback name</th>
                             <th>Buildfile</th>
-                            <th>Description</th>
+                            <th width="100%">Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -728,7 +728,7 @@
                         <tr align="left">
                             <th nowrap>Property</th>
                             <th nowrap>Value</th>
-                            <th>Description</th>
+                            <th width='@%"'>Description</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -750,7 +750,7 @@
                         <tr align="left">
                             <th>Callback name</th>
                             <th>Buildfile</th>
-                            <th>Description</th>
+                            <th width="100%">Description</th>
                         </tr>
                     </thead>
                     <tbody>
