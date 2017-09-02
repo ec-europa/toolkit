@@ -3,6 +3,7 @@
 <table>
     <thead>
     <tr align="left">
+        <th>Description</th>
         <th width="100%">Build a local development version with a single platform profile.</th>
     </tr>
     </thead>
@@ -66,9 +67,10 @@
 
 ### build-platform-dev-all
 <table>
-    <thead width="100%">
+    <thead>
     </tr>
-        <th>Build a local development version with a single platform profile.</th>
+        <th>Description</th>
+        <th width="100%" align="left">Build a local development version with a single platform profile.</th>
     </tr>
     </thead>
     <tbody>
