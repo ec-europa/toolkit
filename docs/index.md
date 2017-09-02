@@ -3,7 +3,7 @@
     <thead>
         <tr align="left">
             <th>Description</th>
-            <th width="100%">Build a local development version with a single platform profile.</th>
+            <th width="100%">Build a local development version with a single platform profile.<img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/checklist-20.png" align="right" /></th>
         </tr>
     </thead>
     <tbody>
@@ -139,7 +139,7 @@
     <thead>
         <tr align="left">
             <th>Description</th>
-            <th width="100%">Build a local development version with all platform profiles.</th>
+            <th width="100%">Build a local development version with all platform profiles.<img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/checklist-20.png" align="right" /></th>
         </tr>
     </thead>
     <tbody>
@@ -245,7 +245,7 @@
     <thead>
         <tr align="left">
             <th>Description</th>
-            <th width="100%">Build a single platform profile intended as a release package.</th>
+            <th width="100%">Build a single platform profile intended as a release package.<img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/checklist-20.png" align="right" /></th>
         </tr>
     </thead>
     <tbody>
@@ -356,7 +356,7 @@
     <thead>
         <tr align="left">
             <th>Description</th>
-            <th width="100%">Build all platform profiles intended as a release package.</th>
+            <th width="100%">Build all platform profiles intended as a release package.<img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/checklist-20.png" align="right" /></th>
         </tr>
     </thead>
     <tbody>
@@ -467,7 +467,7 @@
     <thead>
         <tr align="left">
             <th>Description</th>
-            <th width="100%">Build a local development version of the site.</th>
+            <th width="100%">Build a local development version of the site.<img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/checklist-20.png" align="right" /></th>
         </tr>
     </thead>
     <tbody>
@@ -543,7 +543,7 @@
     <thead>
         <tr align="left">
             <th>Description</th>
-            <th width="100%">Build a site intended as a release package.</th>
+            <th width="100%">Build a site intended as a release package.<img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/checklist-20.png" align="right" /></th>
         </tr>
     </thead>
     <tbody>
@@ -614,7 +614,7 @@
     <thead>
         <tr align="left">
             <th>Description</th>
-            <th width="100%">Build NextEuropa Platform code without version control.</th>
+            <th width="100%">Build NextEuropa Platform code without version control.<img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/checklist-20.png" align="right" /></th>
         </tr>
     </thead>
     <tbody>
@@ -665,7 +665,7 @@
     <thead>
         <tr align="left">
             <th>Description</th>
-            <th width="100%">Build EC Europa theme without version control.</th>
+            <th width="100%">Build EC Europa theme without version control.<img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/checklist-20.png" align="right" /></th>
         </tr>
     </thead>
     <tbody>
@@ -716,7 +716,7 @@
     <thead>
         <tr align="left">
             <th>Description</th>
-            <th width="100%">Build NextEuropa Subsite code without version control.</th>
+            <th width="100%">Build NextEuropa Subsite code without version control.<img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/checklist-20.png" align="right" /></th>
         </tr>
     </thead>
     <tbody>
