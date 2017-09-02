@@ -61,69 +61,69 @@
                     <thead>
                         <tr align="left">
                             <th>Callback name</th>
-                            <th>Buildfile/th>
+                            <th>Buildfile</th>
                             <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td nowrap>project-subsite-backup</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-scratch-build</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-drupal</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-link-profiles</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-profiles</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-link-resources</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-theme-dev</td>
-                            <td nowrap></td>
-                            <td></td>
+                            <td nowrap>build/project/theme.xml</td>
+                            <td>Build EC Europa theme with version control.</td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-composer-no-dev</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-modules-devel-dl</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-set-htaccess</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-subsite-restore</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-subsite-setup-files</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -197,39 +197,39 @@
                     <thead>
                         <tr align="left">
                             <th>Callback name</th>
-                            <th>Buildfile/th>
+                            <th>Buildfile</th>
                             <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td nowrap>project-scratch-build</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-drupal</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-profiles</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-profiles</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-resources</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-composer-no-dev</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -308,39 +308,39 @@
                     <thead>
                         <tr align="left">
                             <th>Callback name</th>
-                            <th>Buildfile/th>
+                            <th>Buildfile</th>
                             <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td nowrap>project-scratch-build</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-drupal</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-profile</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-profile</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-resources</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-composer-no-dev</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -419,39 +419,39 @@
                     <thead>
                         <tr align="left">
                             <th>Callback name</th>
-                            <th>Buildfile/th>
+                            <th>Buildfile</th>
                             <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td nowrap>project-scratch-build</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-drupal</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-profiles</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-profiles</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-resources</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/platform.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-composer-no-dev</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -500,34 +500,34 @@
                     <thead>
                         <tr align="left">
                             <th>Callback name</th>
-                            <th>Buildfile/th>
+                            <th>Buildfile</th>
                             <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td nowrap>project-scratch-build</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-link-resources</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/subsite.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-make-site</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/subsite.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-modules-devel-dl</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>project-subsite-composer-dev</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -576,29 +576,29 @@
                     <thead>
                         <tr align="left">
                             <th>Callback name</th>
-                            <th>Buildfile/th>
+                            <th>Buildfile</th>
                             <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td nowrap>project-scratch-build</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-link-resources</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/subsite.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-make-site</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/subsite.xml</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-copy-resources</td>
-                            <td nowrap></td>
+                            <td nowrap>build/project/subsite.xml</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -647,7 +647,7 @@
                     <thead>
                         <tr align="left">
                             <th>Callback name</th>
-                            <th>Buildfile/th>
+                            <th>Buildfile</th>
                             <th>Description</th>
                         </tr>
                     </thead>
@@ -698,7 +698,7 @@
                     <thead>
                         <tr align="left">
                             <th>Callback name</th>
-                            <th>Buildfile/th>
+                            <th>Buildfile</th>
                             <th>Description</th>
                         </tr>
                     </thead>
@@ -749,7 +749,7 @@
                     <thead>
                         <tr align="left">
                             <th>Callback name</th>
-                            <th>Buildfile/th>
+                            <th>Buildfile</th>
                             <th>Description</th>
                         </tr>
                     </thead>
