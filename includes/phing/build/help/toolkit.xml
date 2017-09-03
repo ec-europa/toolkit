@@ -162,4 +162,14 @@
         </if>
     </target>
 
+    <!-- Echo the composer hook phingcalls. -->
+    <target name="toolkit-composer-hook-phingcalls" hidden="true">
+        <echoproperties prefix="composer.hook." />
+    </target>
+
+    <!-- Echo the git hook phingcalls. -->
+    <target name="toolkit-git-hook-phingcalls" hidden="true">
+        <echoproperties prefix="git.hook." />
+    </target>
+
 </project>

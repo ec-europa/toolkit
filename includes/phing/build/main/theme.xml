@@ -10,7 +10,7 @@
             theme-europa-build" />
 
     <!-- This step in future will become a part of a build on the new Europa theme repository. -->
-    <target name="theme-europa-download-extract">
+    <target name="theme-europa-download-extract" description="Download and unpack the EC Europa theme.">
         <phingcall target="package-download-unpack">
             <property name="package-name" value="ec_europa-${theme.ec_europa.version}.tar.gz" />
             <property name="package-cache-location" value="${project.tmp.dir}" />
@@ -21,7 +21,7 @@
         <phingcall target="theme-europa-embed-ecl-assets" />
     </target>
 
-    <target name="theme-europa-embed-ecl-assets">
+    <target name="theme-europa-embed-ecl-assets" description="Download and unpack the ECL assets for EC Europa theme.">
         <phingcall target="package-download-unpack">
             <property name="package-name" value="framework.tar.gz" />
             <property name="package-cache-location" value="${project.tmp.dir}" />
@@ -32,7 +32,7 @@
     </target>
 
     <!-- Creates symlinks for the atomium and europa themes. -->
-    <target name="theme-europa-create-symlinks">
+    <target name="theme-europa-create-symlinks" description="Create symlinks to themes in lib for development.">
         <relsym link="${build.platform.dir.profile.themes}" overwrite="true">
             <fileset dir="${lib.dir.themes}" expandsymboliclinks="true">
                 <include name="*" />
@@ -41,7 +41,7 @@
     </target>
 
     <!-- Cloning and checking out the branch of the Atomium and EC Europa theme repositories. -->
-    <target name="theme-europa-repo-clone">
+    <target name="theme-europa-repo-clone" description="Clone the Atomium and EC Europa repositories.">
         <!-- Deleting theme directories before cloning -->
         <delete dir="${lib.dir.themes}/atomium" quiet="true" />
         <delete dir="${lib.dir.themes}/ec_europa" quiet="true" />
@@ -68,7 +68,7 @@
     </target>
 
     <!-- Generating assets -->
-    <target name="theme-europa-build">
+    <target name="theme-europa-build" description="Build the EC europa theme with NPM.">
         <exec
             command="npm install"
             passthru="true"

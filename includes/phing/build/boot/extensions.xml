@@ -7,6 +7,7 @@
     <import file="${toolkit.dir.vendor}/drupol/phingbehattask/import.xml" />
 
     <!-- Custom task definititons. -->
+    <taskdef name="docgen" classname="Phing\Ssk\Tasks\DocGeneratorTask" />
     <taskdef name="drushgal" classname="Phing\Ssk\Tasks\DrushGenerateAliasTask" />
     <taskdef name="drushmf" classname="Phing\Ssk\Tasks\DrushMakeFileTask" />
     <taskdef name="gitigmerge" classname="Phing\Ssk\Tasks\GitignoreMergerTask" />

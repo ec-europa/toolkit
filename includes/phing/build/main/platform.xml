@@ -120,7 +120,7 @@
     <!-- CALLBACK TARGETS -->
 
     <!-- Copy the profile folder to build deployment package files. -->
-    <target name="build-platform-copy-profile">
+    <target name="build-platform-copy-profile" description="Copies single profile for distribution.">
         <!-- Delete the core profile folder so it can be replaced with ours. -->
         <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="false" quiet="true" />
         <mkdir dir="${dir-profile}" />
@@ -133,7 +133,7 @@
     </target>
 
     <!-- Copy the profiles folder to build deployment package files. -->
-    <target name="build-platform-copy-profiles">
+    <target name="build-platform-copy-profiles" description="Copies all profiles for distirbution.">
         <!-- Delete the core profiles folder so it can be replaced with ours. -->
         <delete dir="${dir-profiles}" includeemptydirs="true" failonerror="true" quiet="true" />
         <!-- Copy our profiles folder. -->
@@ -145,7 +145,7 @@
     </target>
 
     <!-- Copy various resources for deploying on production. -->
-    <target name="build-platform-copy-resources">
+    <target name="build-platform-copy-resources" description="Copies platform resources for distribution.">
         <copy todir="${dir-build}">
             <fileset dir="${resources.dir}">
                 <include name="composer.*"></include>
@@ -155,7 +155,7 @@
     </target>
 
     <!-- Make Drupal core. -->
-    <target name="build-platform-make-drupal">
+    <target name="build-platform-make-drupal" description="Build the Drupal core codebase.">
         <echo msg="Make Drupal core." />
         <drush command="make" assume="yes" bin="${toolkit.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${dir-build}">
             <param>${drupal-make}</param>
@@ -165,20 +165,20 @@
     </target>
 
     <!-- Symlink the profile folders for easy development. -->
-    <target name="build-platform-link-profiles">
+    <target name="build-platform-link-profiles" description="Link platform profiles to lib folder for development.">
         <delete dir="${dir-profiles}" />
         <relsym link="${dir-profiles}" target="${lib.dir.profiles}" />
     </target>
 
     <!-- Symlink various resources for easy development. -->
-    <target name="build-platform-link-resources">
+    <target name="build-platform-link-resources" description="Link platform resources to lib folder for development.">
         <relsym link="${dir-build}/composer.json" target="${resources.dir.composer.json}" />
         <relsym link="${dir-build}/composer.lock" target="${resources.dir.composer.lock}" />
         <relsym link="${dir-build}/.favicon.ico" target="${resources.dir.favicon.ico}" />
     </target>
 
     <!-- Make the platform. -->
-    <target name="build-platform-make-profile">
+    <target name="build-platform-make-profile" description="Makes single profile resources with drush.">
         <echo msg="Make the platform." />
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${profile-make}" />
@@ -188,7 +188,7 @@
     </target>
 
     <!-- Make all of the profiles in order to build a multisite platform. -->
-    <target name="build-platform-make-profiles">
+    <target name="build-platform-make-profiles" description="Makes all profile resources with drush.">
         <foreach param="profile-name" absparam="dir-profile" target="build-platform-make-profile">
             <fileset dir="${lib.dir.profiles}">
                 <depth max="0" min="0" />

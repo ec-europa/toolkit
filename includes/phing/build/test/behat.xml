@@ -10,7 +10,6 @@
         description="Refresh configuration and run behat scenarios."
         depends="
             test-behat-setup,
-            test-behat-setup-balancer,
             test-composer-install,
             test-behat-exec" />
 
@@ -78,17 +77,6 @@
         <relsym link="${behat-test-location}/features" target="../tests/features" />
         <relsym link="${behat-test-location}/tests" target="../tests" />
         <relsym link="${behat.bin}" target="${behat-test-binary}" overwrite="true" />
-    </target>
-
-    <!-- Set up Behat balancer. -->
-    <target name="test-behat-setup-balancer">
-        <mkdir dir="${behat.load_balancer.destination}" />
-        <behat:balancer
-            containers="${behat.load_balancer.containers}"
-            root="${behat.load_balancer.root}"
-            destination="${behat.load_balancer.destination}"
-            import="${behat.load_balancer.import}"
-        />
     </target>
 
     <!-- Install Composer dependencies without development dependencies. -->

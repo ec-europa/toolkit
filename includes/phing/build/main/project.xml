@@ -2,41 +2,60 @@
 
 <project name="project" default="help">
 
-    <!-- Check type of project and import it's build file. -->
-    <if>
-        <available file="${lib.dir.profiles}" type="dir" />
-        <then>
-            <property name="project.type" value="platform" override="true" />
-        </then>
-    </if>
-
-    <import file="${phing.dir.project}/project/theme.xml" />
-    <import file="${phing.dir.project}/project/${project.type}.xml" />
+    <!-- Create code base platform. -->
+    <target name="install-project-clone" description="Install NextEuropa site with sanitized production data.">
+        <phingcall target="build-project-clone-playbook">
+            <property name="dir-build" value="${build.platform.dir}" override="true" />
+        </phingcall>
+    </target>
 
     <!-- Create code base platform. -->
     <target name="build-project-platform" description="Build NextEuropa Platform code without version control.">
-        <phingcall target="build-project-platform-callback">
+        <phingcall target="build-project-platform-playbook">
             <property name="dir-build" value="${build.platform.dir}" override="true" />
         </phingcall>
     </target>
 
     <!-- Build ec-europa theme in platform. -->
     <target name="build-project-theme" description="Build EC Europa theme without version control.">
-        <phingcall target="build-project-theme-callback">
+        <phingcall target="build-project-theme-playbook">
             <property name="dir-build" value="${build.platform.dir}" override="true" />
         </phingcall>
     </target>
 
     <!-- Create code base subsite. -->
     <target name="build-project-subsite" description="Build NextEuropa Subsite code without version control.">
-        <phingcall target="build-project-subsite-callback">
+        <phingcall target="build-project-subsite-playbook">
             <property name="dir-build" value="${build.platform.dir}" override="true" />
         </phingcall>
     </target>
 
+    <!-- Reset all file permission to Drupals recommendation for the lib dir. -->
+    <target name="project-reset-fs-perms-lib">
+        <echo msg="Resetting permissions for ${lib.dir}" />
+        <phingcall target="reset-filesystem-permissions">
+            <property name="target-dir" value="${lib.dir}" />
+        </phingcall>
+    </target>
+
+    <!-- Reset all file permission to Drupals recommendation for the build dir. -->
+    <target name="project-reset-fs-perms-build">
+        <echo msg="Resetting permissions for ${build.platform.dir}" />
+        <phingcall target="reset-filesystem-permissions">
+            <property name="target-dir" value="${build.platform.dir}" />
+        </phingcall>
+    </target>
+
+    <!-- Reset all file permission to Drupals recommendation for the build dir. -->
+    <target name="project-reset-fs-perms-dist">
+        <echo msg="Resetting permissions for ${build.dist.dir}" />
+        <phingcall target="reset-filesystem-permissions">
+            <property name="target-dir" value="${build.dist.dir}" />
+        </phingcall>
+    </target>
+
     <target
-        name="install-project-clone"
-        description="Install NextEuropa site with production data."
+        name="install-project-clone-playbook"
         depends="
             project-database-download,
             drush-generate-settings,
@@ -44,7 +63,7 @@
             project-modules-devel-en" />
 
     <target
-        name="build-project-platform-callback"
+        name="build-project-platform-playbook"
         hidden="true"
         depends="
             project-subsite-backup,
@@ -54,23 +73,23 @@
             project-subsite-restore" />
 
     <target
-        name="build-project-theme-callback"
+        name="build-project-theme-playbook"
         hidden="true"
         depends="
             theme-europa-download-extract,
             theme-europa-create-symlinks" />
 
-    <target name="build-project-subsite-callback" hidden="true">
+    <target name="build-project-subsite-playbook" hidden="true">
         <echo msg="TODO: subsite builds not yet developed." />
     </target>
 
     <!-- Link site document root to Webserver document root. -->
-    <target name="project-platform-set-docroot">
+    <target name="project-platform-set-docroot" description="Link the platform root to your docroot.">
         <relsym link="${project.docroot}" target="${build.platform.dir}" overwrite="true" />
     </target>
 
     <!-- Update .htaccess. -->
-    <target name="project-platform-set-htaccess">
+    <target name="project-platform-set-htaccess" description="Append htaccess config to root .htaccess.">
         <if>
             <istrue value="${build.platform.htaccess.append.text}" />
             <then>
@@ -84,7 +103,7 @@
     </target>
 
     <!-- Delete the previous development build. -->
-    <target name="project-scratch-build">
+    <target name="project-scratch-build" description="Delete previous build to start over clean.">
         <echo msg="Delete previous build." />
         <if>
             <available file="${dir-build}/default.settings.php" />
@@ -109,7 +128,7 @@
     </target>
 
     <!-- Unpack the platform. -->
-    <target name="project-platform-package-unpack">
+    <target name="project-platform-package-unpack" description="Download and unpack platform deploy package.">
         <mkdir dir="${share.path.platform.packages.deploy}" />
         <phingcall target="package-download-unpack">
             <property name="package-name" value="platform-dev-${platform.package.version.current}.tar.gz" />
@@ -120,7 +139,10 @@
     </target>
 
     <!-- Install Composer dependencies without development dependencies. -->
-    <target name="project-composer-install" hidden="true">
+    <target
+        name="project-composer-install"
+        description="Runs composer install."
+        hidden="true">
         <if>
             <isset property="composer-no-dev" />
             <then>
@@ -144,7 +166,7 @@
     </target>
 
     <!-- Install Composer dependencies without development dependencies. -->
-    <target name="project-platform-composer-no-dev">
+    <target name="project-platform-composer-no-dev" description="Run composer install without dev on platform.">
         <echo msg="Run 'composer install' in platform root." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
@@ -153,7 +175,7 @@
     </target>
 
     <!-- Install Composer dependencies, including optional development dependencies. -->
-    <target name="project-platform-composer-dev">
+    <target name="project-platform-composer-dev" description="Run composer install with dev on platform.">
         <echo msg="Run 'composer install' in platform root." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
@@ -161,7 +183,7 @@
     </target>
 
     <!-- Install Composer dependencies for the subsite. -->
-    <target name="project-subsite-composer-no-dev">
+    <target name="project-subsite-composer-no-dev" description="Run composer install without dev on subsite.">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.subsite.dir}" override="true" />
@@ -170,7 +192,7 @@
     </target>
 
     <!-- Install Composer dev dependencies for the subsite. -->
-    <target name="project-subsite-composer-dev">
+    <target name="project-subsite-composer-dev" description="Run composer install with dev on subsite.">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.subsite.dir}" />
@@ -178,7 +200,7 @@
     </target>
 
     <!-- Setup file directory -->
-    <target name="project-subsite-setup-files">
+    <target name="project-subsite-setup-files" description="Create files directories for subsite.">
         <trycatch>
             <try>
                 <phingcall target="drush-create-files-dirs" />
@@ -199,7 +221,7 @@
     </target>
 
     <!-- Generate the makefile used to download development modules. -->
-    <target name="project-modules-devel-mf">
+    <target name="project-modules-devel-mf" description="Create make file for development modules.">
         <echo msg="Generate the makefile for development modules." />
         <if>
             <available file="${project.tmp.devel.make}" type="file" property="devel.makefile.available" />
@@ -215,7 +237,7 @@
             defaultProjectDir="${devel.mdls.dir}" />
     </target>
     <!-- Download development modules. -->
-    <target name="project-modules-devel-dl" depends="project-modules-devel-mf">
+    <target name="project-modules-devel-dl" depends="project-modules-devel-mf" description="Download development modules with drush.">
         <echo msg="Download development modules." />
         <phingcall target="drush-make-no-core">
             <property name="drush.make.target.file" value="${project.tmp.devel.make}" />
@@ -224,14 +246,14 @@
     </target>
 
     <!-- Enable required modules after installation of the profile. -->
-    <target name="project-modules-install-en">
+    <target name="project-modules-install-en" description="Install list of modules to enable by default.">
         <phingcall target="drush-enable-modules">
             <property name="project.drupal.modules" value="${project.install.modules}" />
         </phingcall>
     </target>
 
     <!-- Enable development modules. -->
-    <target name="project-modules-devel-en">
+    <target name="project-modules-devel-en" description="Enable development modules with drush.">
         <phingcall target="drush-enable-modules">
             <property name="project.drupal.modules" value="${devel.mdls.en}" />
         </phingcall>
@@ -335,7 +357,7 @@
     </target>
 
     <!-- Backs up files and folders listed in rebuild. properties in order to rebuild. -->
-    <target name="project-subsite-backup">
+    <target name="project-subsite-backup" description="Backup site defined files from properties.">
 
         <!-- Check if site exists. -->
         <if>
@@ -402,7 +424,7 @@
     </target>
 
     <!-- Restoring sites directory if backed up before rebuild-dev. -->
-    <target name="project-subsite-restore">
+    <target name="project-subsite-restore" description="Restore site defined files from properties.">
 
         <!-- Check if backup exists. -->
         <if>
@@ -452,7 +474,7 @@
     </target>
 
     <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
-    <target name="project-subsite-backup-item" hidden="true">
+    <target name="project-subsite-backup-item" hidden="true" description="Backup site item from configuraton list.">
         <php expression='dirname("${site-item}")' returnProperty="site-item-dir" />
         <property name="site-item-backup-dir" value="${site-item-dir}">
             <filterchain>
@@ -482,7 +504,7 @@
     </target>
 
     <!-- Restores a site item from the rebuild.backup.destination to the new build. -->
-    <target name="project-subsite-restore-item" hidden="true">
+    <target name="project-subsite-restore-item" hidden="true" description="Restore site item from configuration list.">
         <property name="site-item-backup" value="${site-item}">
             <filterchain>
                 <replaceregexp>
@@ -512,7 +534,7 @@
     </target>
 
     <!-- Import production database. -->
-    <target name="project-database-import" depends="project-database-download">
+    <target name="project-database-import" depends="project-database-download" description="Import database for project with drush.">
         <echo msg="Import production database." />
         <!-- Drop database, create if necessary and import the dump. -->
         <phingcall target="drush-sql-drop" />
@@ -524,7 +546,7 @@
     </target>
 
     <!-- Download the production database. -->
-    <target name="project-database-download">
+    <target name="project-database-download" description="Download sanitized production database from archive.">
         <echo msg="Download the production database." />
         <!--Strips gz suffix. -->
         <php expression="substr('${db.dl.filename}', 0, -3)" returnProperty="gunzipped.filename" level="debug" />
@@ -588,13 +610,13 @@
     </target>
 
     <!-- Simple prompt for user credentials and recurse into project-database-wget. -->
-    <target name="prompt-for-credentials-and-retry" hidden="true">
+    <target name="prompt-for-credentials-and-retry" hidden="true" description="Ask for download credentials and retry if failed.">
         <input propertyName="db.dl.url.htaccess.username" message="Please enter your username." />
         <input hidden="true" propertyName="db.dl.url.htaccess.password" message="Please enter your password." />
         <phingcall target="project-database-wget" />
     </target>
 
-    <target name="project-validate-properties">
+    <target name="project-validate-properties" description="Validate the build properties file.">
         <!--forbidden="${ssk.incl.phing.props}/build.properties.forbidden"-->
         <propval
             source="build.properties"
@@ -602,6 +624,78 @@
             haltonerror="${build.haltonerror.props.validate}"
             logoutput="${logoutput}"
         />
+    </target>
+
+    <!-- Get latest stable if major version is defined. -->
+    <target name="project-platform-set-version" hidden="true" description="Save the platform version used for builds.">
+        <if>
+            <matches string="${platform.package.version}" pattern="^[1-9]+\." />
+            <then>
+                <propertyregex
+                    property="platform.package.version.major"
+                    subject="${platform.package.version}"
+                    pattern="^([1-9]+)\."
+                    match="$1"
+                    override="true" />
+                <propertyregex
+                    property="platform.package.version.minor"
+                    subject="${platform.package.version}"
+                    pattern="^[1-9]+\.([1-9]+)"
+                    match="$1"
+                    override="true" />
+                <propertyregex
+                    property="platform.package.version.reference"
+                    subject="${platform.package.version}"
+                    pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
+                    match="$1"
+                    override="true" />
+                <if>
+                    <isset property="platform.package.version.minor" />
+                    <then>
+                        <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.${platform.package.version.minor}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.current" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.${platform.upgrade}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.next" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.latest" />
+                    </then>
+                </if>
+            </then>
+        </if>
+        <if>
+            <and>
+                <matches string="${platform.package.version.current}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
+                <versioncompare
+                    version="${platform.package.version.current}"
+                    desiredVersion="${platform.package.version}"
+                    operator="gt" />
+            </and>
+            <then>
+                <echo msg="The platform package version is set to ${platform.package.version}." />
+                <echo msg="The build will be performed with version ${platform.package.version.current}." />
+                <propertyregex
+                    property="platform.package.version.reference"
+                    subject="${platform.package.version.current}"
+                    pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
+                    match="$1"
+                    override="true" />
+                <property name="platform.package.version" value="${platform.package.version.current}" override="true" />
+            </then>
+        </if>
+        <if>
+            <and>
+                <matches string="${platform.package.version.next}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
+                <versioncompare
+                    version="${platform.package.version.next}"
+                    desiredVersion="${platform.package.version}"
+                    operator="gt" />
+            </and>
+            <then>
+                <!-- TODO: this allows for automatic upgrading if we were to provide a setting. -->
+                <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
+                <echo msg="Last released deploy package is at ${platform.package.version.latest}." level="warning" />
+                <echo msg="Please upgrade your platform version to ${platform.package.version.major}.${platform.upgrade}." level="warning" />
+            </then>
+        </if>
+        <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.properties.version" />
     </target>
 
 </project>

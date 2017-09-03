@@ -51,7 +51,7 @@
     <!-- CALLBACK TARGETS -->
 
     <!-- Copy resources into the build folder. -->
-    <target name="build-subsite-copy-resources">
+    <target name="build-subsite-copy-resources" description="Copy subsite resources for distribution.">
         <echo msg="Copy custom resources." />
         <!-- Copy our built site folder. -->
         <copy todir="${dir-build}">
@@ -72,7 +72,7 @@
     </target>
 
     <!-- Symlink the source folders for easy development. -->
-    <target name="build-subsite-link-resources">
+    <target name="build-subsite-link-resources" description="Link subsite resources to lib folder for development.">
         <symlink-property-contents prefix="lib.dir." origindir="${lib.dir}" targetdir="${dir-build}" overwrite="true" />
         <symlink-property-contents prefix="resources.dir.composer." origindir="${resources.dir}" targetdir="${dir-build}" overwrite="true" />
         <relsym link="${dir-build}/composer.json" target="${resources.dir.composer.json}" />
@@ -80,7 +80,7 @@
     </target>
 
     <!-- Make the development version of the subsite. -->
-    <target name="build-subsite-make-site">
+    <target name="build-subsite-make-site" description="Makes the subsite resources with drush.">
         <echo msg="Make the subsite." />
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${resources.dir.site.make}" />
@@ -90,7 +90,7 @@
     </target>
 
     <!-- Build release package. -->
-    <target name="build-subsite-release-package" depends="build-subsite-dist">
+    <target name="build-subsite-release-package" depends="build-subsite-dist" description="Build a subsite release package for deployment.">
         <mkdir dir="${project.release.path}" />
         <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${build.dist}" />
     </target>

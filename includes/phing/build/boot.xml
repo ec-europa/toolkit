@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="bootstrap" default="help">
+<project name="boot" default="help">
 
     <!-- Finish import with starterkit build xml files. -->
     <import file="${phing.dir.bootstrap}/bootstrap/properties.xml" />

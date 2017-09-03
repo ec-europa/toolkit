@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="main" default="help">
+
+    <!-- Check type of project and import it's build file. -->
+    <if>
+        <available file="${lib.dir.profiles}" type="dir" />
+        <then>
+            <property name="project.type" value="platform" override="true" />
+        </then>
+    </if>
+
+    <import file="${phing.dir.main}/main/project.xml" />
+    <import file="${phing.dir.main}/main/theme.xml" />
+    <import file="${phing.dir.main}/main/${project.type}.xml" />
+
+</project>
