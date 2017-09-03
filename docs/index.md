@@ -60,7 +60,7 @@
                 <table width="100%">
                     <thead>
                         <tr align="left">
-                            <th>Callback name</th>
+                            <th>Callback target</th>
                             <th>Buildfile</th>
                             <th width="100%">Description</th>
                         </tr>
@@ -84,17 +84,17 @@
                         <tr>
                             <td nowrap>build-platform-link-profiles</td>
                             <td nowrap>./project/platform.xml</td>
-                            <td></td>
+                            <td>Link platform profiles to lib folder for development.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-profiles</td>
                             <td nowrap>./project/platform.xml</td>
-                            <td></td>
+                            <td>Makes all profile resources with drush.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-link-resources</td>
                             <td nowrap>./project/platform.xml</td>
-                            <td></td>
+                            <td>Link platform resources to lib folder for development.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-theme-dev</td>
@@ -104,17 +104,17 @@
                         <tr>
                             <td nowrap>project-platform-composer-no-dev</td>
                             <td nowrap>./project.xml</td>
-                            <td></td>
+                            <td>Run composer install without dev on platform.</td>
                         </tr>
                         <tr>
                             <td nowrap>project-modules-devel-dl</td>
                             <td nowrap>./project.xml</td>
-                            <td></td>
+                            <td>Download development modules with drush.</td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-set-htaccess</td>
                             <td nowrap>./project.xml</td>
-                            <td></td>
+                            <td>Append htaccess config to root .htaccess.</td>
                         </tr>
                         <tr>
                             <td nowrap>project-subsite-restore</td>
@@ -124,7 +124,7 @@
                         <tr>
                             <td nowrap>project-subsite-setup-files</td>
                             <td nowrap>./project.xml</td>
-                            <td></td>
+                            <td>Create files directories for subsite.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -196,7 +196,7 @@
                 <table width="100%">
                     <thead>
                         <tr align="left">
-                            <th>Callback name</th>
+                            <th>Callback target</th>
                             <th>Buildfile</th>
                             <th width="100%">Description</th>
                         </tr>
@@ -215,22 +215,22 @@
                         <tr>
                             <td nowrap>build-platform-copy-profiles</td>
                             <td nowrap>./project/platform.xml</td>
-                            <td></td>
+                            <td>Copies all profiles for distirbution.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-profiles</td>
                             <td nowrap>./project/platform.xml</td>
-                            <td></td>
+                            <td>Makes all profile resources with drush.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-resources</td>
                             <td nowrap>./project/platform.xml</td>
-                            <td></td>
+                            <td>Copies platform resources for distribution.</td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-composer-no-dev</td>
                             <td nowrap>./project.xml</td>
-                            <td></td>
+                            <td>Run composer install without dev on platform.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -307,7 +307,7 @@
                 <table width="100%">
                     <thead>
                         <tr align="left">
-                            <th>Callback name</th>
+                            <th>Callback target</th>
                             <th>Buildfile</th>
                             <th width="100%">Description</th>
                         </tr>
@@ -326,22 +326,22 @@
                         <tr>
                             <td nowrap>build-platform-copy-profile</td>
                             <td nowrap>./project/platform.xml</td>
-                            <td></td>
+                            <td>Copies single profile for distribution.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-profile</td>
                             <td nowrap>./project/platform.xml</td>
-                            <td></td>
+                            <td>Makes single profile resources with drush.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-resources</td>
                             <td nowrap>./project/platform.xml</td>
-                            <td></td>
+                            <td>Copies platform resources for distribution.</td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-composer-no-dev</td>
                             <td nowrap>./project.xml</td>
-                            <td></td>
+                            <td>Run composer install without dev on platform.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -418,7 +418,7 @@
                 <table width="100%">
                     <thead>
                         <tr align="left">
-                            <th>Callback name</th>
+                            <th>Callback target</th>
                             <th>Buildfile</th>
                             <th width="100%">Description</th>
                         </tr>
@@ -437,22 +437,22 @@
                         <tr>
                             <td nowrap>build-platform-copy-profiles</td>
                             <td nowrap>./project/platform.xml</td>
-                            <td></td>
+                            <td>Copies all profiles for distirbution.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-make-profiles</td>
                             <td nowrap>./project/platform.xml</td>
-                            <td></td>
+                            <td>Makes all profile resources with drush.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-platform-copy-resources</td>
                             <td nowrap>./project/platform.xml</td>
-                            <td></td>
+                            <td>Copies platform resources for distribution.</td>
                         </tr>
                         <tr>
                             <td nowrap>project-platform-composer-no-dev</td>
                             <td nowrap>./project.xml</td>
-                            <td></td>
+                            <td>Run composer install without dev on platform.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -499,7 +499,7 @@
                 <table width="100%">
                     <thead>
                         <tr align="left">
-                            <th>Callback name</th>
+                            <th>Callback target</th>
                             <th>Buildfile</th>
                             <th width="100%">Description</th>
                         </tr>
@@ -513,22 +513,22 @@
                         <tr>
                             <td nowrap>build-subsite-link-resources</td>
                             <td nowrap>./project/subsite.xml</td>
-                            <td></td>
+                            <td>Link subsite resources to lib folder for development.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-make-site</td>
                             <td nowrap>./project/subsite.xml</td>
-                            <td></td>
+                            <td>Makes the subsite resources with drush.</td>
                         </tr>
                         <tr>
                             <td nowrap>project-modules-devel-dl</td>
                             <td nowrap>./project.xml</td>
-                            <td></td>
+                            <td>Download development modules with drush.</td>
                         </tr>
                         <tr>
                             <td nowrap>project-subsite-composer-dev</td>
                             <td nowrap>./project.xml</td>
-                            <td></td>
+                            <td>Run composer install with dev on subsite.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -575,7 +575,7 @@
                 <table width="100%">
                     <thead>
                         <tr align="left">
-                            <th>Callback name</th>
+                            <th>Callback target</th>
                             <th>Buildfile</th>
                             <th width="100%">Description</th>
                         </tr>
@@ -589,17 +589,17 @@
                         <tr>
                             <td nowrap>build-subsite-link-resources</td>
                             <td nowrap>./project/subsite.xml</td>
-                            <td></td>
+                            <td>Link subsite resources to lib folder for development.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-make-site</td>
                             <td nowrap>./project/subsite.xml</td>
-                            <td></td>
+                            <td>Makes the subsite resources with drush.</td>
                         </tr>
                         <tr>
                             <td nowrap>build-subsite-copy-resources</td>
                             <td nowrap>./project/subsite.xml</td>
-                            <td></td>
+                            <td>Copy subsite resources for distribution.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -646,12 +646,37 @@
                 <table width="100%">
                     <thead>
                         <tr align="left">
-                            <th>Callback name</th>
+                            <th>Callback target</th>
                             <th>Buildfile</th>
                             <th width="100%">Description</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <td nowrap>project-subsite-backup</td>
+                            <td nowrap>./project.xml</td>
+                            <td>Backup site defined files from properties.</td>
+                        </tr>
+                        <tr>
+                            <td nowrap>project-scratch-build</td>
+                            <td nowrap>./project.xml</td>
+                            <td>Delete previous build to start over clean.</td>
+                        </tr>
+                        <tr>
+                            <td nowrap>project-platform-set-version</td>
+                            <td nowrap>./help.xml</td>
+                            <td>Save the platform version used for builds.</td>
+                        </tr>
+                        <tr>
+                            <td nowrap>project-platform-package-unpack</td>
+                            <td nowrap>./project.xml</td>
+                            <td>Download and unpack platform deploy package.</td>
+                        </tr>
+                        <tr>
+                            <td nowrap>project-subsite-restore</td>
+                            <td nowrap>./project.xml</td>
+                            <td>Restore site defined files from properties.</td>
+                        </tr>
                     </tbody>
                 </table>
                 </details>
@@ -697,12 +722,22 @@
                 <table width="100%">
                     <thead>
                         <tr align="left">
-                            <th>Callback name</th>
+                            <th>Callback target</th>
                             <th>Buildfile</th>
                             <th width="100%">Description</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <td nowrap>theme-europa-download-extract</td>
+                            <td nowrap>./project/theme.xml</td>
+                            <td>Download and unpack the EC Europa theme.</td>
+                        </tr>
+                        <tr>
+                            <td nowrap>theme-europa-create-symlinks</td>
+                            <td nowrap>./project/theme.xml</td>
+                            <td>Create symlinks to themes in lib for development.</td>
+                        </tr>
                     </tbody>
                 </table>
                 </details>
@@ -748,7 +783,7 @@
                 <table width="100%">
                     <thead>
                         <tr align="left">
-                            <th>Callback name</th>
+                            <th>Callback target</th>
                             <th>Buildfile</th>
                             <th width="100%">Description</th>
                         </tr>
