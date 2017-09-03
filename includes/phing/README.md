@@ -5,7 +5,7 @@ The build system included in this toolkit is developed to build Drupal
 7 projects based on the NextEuropa platform. It supports building the
 profiles or subsites. It consists of 4 main parts:
 
-### 1. Bootstrap
+### 1. Boot
 The bootstrap is loaded first in the main build.xml of the toolkit. The
 bootstrap is responsible for making the task runner functional. It does
 three things:
@@ -36,7 +36,7 @@ toolkit.
 
 ### 3. Main
 These are the main build targets used to create the codebase and install
-projects. There are three project types:
+projects. There are four project types:
 
 1. **project.xml**: contains shared functionalities for the next three
 build files.
