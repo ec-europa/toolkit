@@ -17,7 +17,7 @@ conditional properties.
 
 > After loading these three files it also loads the project build file
 > through the boostrap.xml itself that allows overriding any targets
-> defined by this toolkit.
+> defined further on in this toolkit.
 
 ### 2. Help
 The help build files contain helper targets. They are split up per
@@ -29,24 +29,25 @@ targets.
 (experimental!)
 3. **drush.xml**: contains drush helper targets that help manage your
 Drupal installation.
-4. **toolkit.xml**: targets related to setup and configuration of the
+4. **general.xml**: contains general helper targets that are used by the
+main callback targets.
+5. **toolkit.xml**: targets related to setup and configuration of the
 toolkit.
 
-> If a target does not belong to a category it will be defined in the
-> help.xml file itself.
-
-### 3. Project
+### 3. Main
 These are the main build targets used to create the codebase and install
 projects. There are three project types:
 
-1. **theme.xml**: builds themes like ec_europa and places
-2. **platform.xml**: builds the platform if a profiles folder is
+1. **project.xml**: contains shared functionalities for the next three
+build files.
+2. **theme.xml**: builds themes like ec_europa and places
+3. **platform.xml**: builds the platform if a profiles folder is
 detected.
-3. **subsite.xml**: builds subsites within the platform.
+4. **subsite.xml**: builds subsites within the platform.
 
 > The platform.xml and subsite.xml are loaded conditionally depending on
 > what type of project is being used. Any targets that are used by
-> multiple project types are defined in the project.xml file itself.
+> multiple project types are defined in the project.xml build file.
 
 ### 4. Test
 The test file contains different targets to ease the testing of your
@@ -60,7 +61,3 @@ project. They are split up per category:
 > deploy package we can also create a project test package. This allows
 > for swift testing without actually needing to install the project
 > through cloning the repository.
-
-## Rules and standards
-
-
