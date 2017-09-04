@@ -110,7 +110,7 @@
                         <mkdir dir="${lib.dir.themes}" />
                         <mkdir dir="${lib.dir.source}" />
                         <if>
-                            <available file="lib-backup/modules/custom" type="dir" />
+                            <available file="lib-backup" type="dir" />
                             <then>
                                 <copy todir="${lib.dir.modules.custom}" haltonerror="false">
                                     <fileset dir="lib-backup/modules/custom">
