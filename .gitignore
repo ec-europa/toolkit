@@ -21,3 +21,4 @@ nbproject/
 /.tmp/
 /vendor/
 /resources/git/hooks/pre-push/phpcs
+lib-backup/
