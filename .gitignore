@@ -22,3 +22,4 @@ nbproject/
 /vendor/
 /resources/git/hooks/pre-push/phpcs
 lib-backup/
+ssk
