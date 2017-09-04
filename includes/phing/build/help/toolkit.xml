@@ -156,6 +156,9 @@
                                 <delete dir="lib-backup/src" quiet="true" />
                             </then>
                         </if>
+
+                        <!-- Delete folder lib-backup after move files. -->
+                        <delete dir="lib-backup" quiet="true" />
                     </then>
                 </if>
             </then>
