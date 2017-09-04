@@ -2,16 +2,19 @@
 
 <project name="main" default="help">
 
+    <import file="${phing.dir.main}/main/project.xml" />
+    <import file="${phing.dir.main}/main/theme.xml" />
+
     <!-- Check type of project and import it's build file. -->
     <if>
         <available file="${lib.dir.profiles}" type="dir" />
         <then>
             <property name="project.type" value="platform" override="true" />
+            <import file="${phing.dir.main}/main/platform.xml" />
         </then>
+        <else>
+            <import file="${phing.dir.main}/main/subsite.xml" />
+        </else>
     </if>
-
-    <import file="${phing.dir.main}/main/project.xml" />
-    <import file="${phing.dir.main}/main/theme.xml" />
-    <import file="${phing.dir.main}/main/${project.type}.xml" />
 
 </project>

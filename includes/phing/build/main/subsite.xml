@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project default="help">
+<project name="subsite" default="help">
 
     <!-- WRAPPER TARGETS -->
     <target name="build-subsite-dev" description="Build a local development version of the site.">

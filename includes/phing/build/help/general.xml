@@ -2,10 +2,6 @@
 
 <project name="general" default="help">
 
-    <target name="docgen">
-        <docgen />
-    </target>
-
     <!-- Copies a given folder to a new location. -->
     <target name="copy-folder" hidden="true">
         <copy todir="${copy.destination.path}" haltonerror="${build.haltonerror.dir.copy}">

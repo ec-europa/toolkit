@@ -3,9 +3,9 @@
 <project name="boot" default="help">
 
     <!-- Finish import with starterkit build xml files. -->
-    <import file="${phing.dir.bootstrap}/bootstrap/properties.xml" />
-    <import file="${phing.dir.bootstrap}/bootstrap/extensions.xml" />
-    <import file="${phing.dir.bootstrap}/bootstrap/directories.xml" />
+    <import file="${phing.dir.boot}/boot/properties.xml" />
+    <import file="${phing.dir.boot}/boot/extensions.xml" />
+    <import file="${phing.dir.boot}/boot/directories.xml" />
 
     <!-- Subsequently import the project specific build file." -->
     <if>
