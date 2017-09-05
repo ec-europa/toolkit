@@ -150,7 +150,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td nowrap>copy-folder</td>
+            <td nowrap>folder-copy</td>
             <td width="80%">build-subsite-copy-resources</td>
         </tr>
         <tr>
@@ -646,39 +646,31 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>docgen</td>
-            <td width="80%"></td>
+            <td width="80%">Generate documentation md files for toolkit.</td>
         </tr>
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>copy-folder</td>
-            <td width="80%"></td>
+            <td nowrap>folder-copy</td>
+            <td width="80%">Copy a folder to a destination.</td>
         </tr>
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>delete-folder</td>
-            <td width="80%"></td>
+            <td nowrap>folder-delete</td>
+            <td width="80%">Delete a folder.</td>
         </tr>
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>reset-filesystem-permissions</td>
-            <td width="80%"></td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>unprotect-folder</td>
-            <td width="80%"></td>
+            <td nowrap>folder-unprotect</td>
+            <td width="80%">Open up filesystem permissions on folder.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -686,7 +678,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
             <td nowrap>package-download-unpack</td>
-            <td width="80%"></td>
+            <td width="80%">Download a package and unpack it into location.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -694,7 +686,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
             <td nowrap>package-download</td>
-            <td width="80%"></td>
+            <td width="80%">Download package with curl.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -702,7 +694,15 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
             <td nowrap>package-unpack</td>
-            <td width="80%"></td>
+            <td width="80%">Unpack package with tar zxf.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>reset-filesystem-permissions</td>
+            <td width="80%">Reset filesystem permissions.</td>
         </tr>
     </tbody>
 </table>
@@ -720,18 +720,18 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>toolkit-link-binary</td>
-            <td width="80%"></td>
+            <td nowrap>toolkit-initialize</td>
+            <td width="80%">Initializes a project for use of the toolkit.</td>
         </tr>
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>toolkit-initialize</td>
-            <td width="80%"></td>
+            <td nowrap>toolkit-link-binary</td>
+            <td width="80%">Provide project with toolkit binary at root level.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -739,7 +739,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
             <td nowrap>toolkit-generate-structure</td>
-            <td width="80%"></td>
+            <td width="80%">Create the lib directory structure.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -747,7 +747,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>toolkit-copy-templates</td>
-            <td width="80%"></td>
+            <td width="80%">Copies template files to your project for toolkit integration.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -755,7 +755,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>toolkit-upgrade-starterkit</td>
-            <td width="80%"></td>
+            <td width="80%">Perform upgrade tasks for upgrading from 2.x to 3.x.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -763,7 +763,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>toolkit-composer-hook-phingcalls</td>
-            <td width="80%"></td>
+            <td width="80%">Echo the composer hook phing targets for use in bash script.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -771,7 +771,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>toolkit-git-hook-phingcalls</td>
-            <td width="80%"></td>
+            <td width="80%">Echo the git hook phing targets for use in bash script.</td>
         </tr>
     </tbody>
 </table>
