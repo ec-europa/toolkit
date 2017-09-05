@@ -104,7 +104,7 @@
 
     <!-- Target download-platform has been replaced by build-project-platform. -->
     <target hidden="true" name="download-platform">
-        <replacedby target="build-project-platform" />
+        <replacedby target="project-build-platform" />
     </target>
 
     <!-- Target enable-development-modules has been replaced by project-modules-devel-en. -->

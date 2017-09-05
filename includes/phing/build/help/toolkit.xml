@@ -2,14 +2,9 @@
 
 <project name="toolkit" default="help">
 
-    <!-- Provide handy access with root symlink to starterkit binary. -->
-    <target name="toolkit-link-binary">
-        <echo msg="Provide project with starterkit binary at root level." />
-        <relsym link="${project.basedir}/ssk" target="${toolkit.dir.bin}" overwrite="true" />
-    </target>
-
     <target
         name="toolkit-initialize"
+        description="Initializes a project for use of the toolkit."
         depends="
             toolkit-link-binary,
             toolkit-generate-structure,
@@ -17,8 +12,14 @@
         <echo msg="Starterkit successfully initiated." />
     </target>
 
+    <!-- Provide handy access with root symlink to starterkit binary. -->
+    <target name="toolkit-link-binary" description="Provide project with toolkit binary at root level.">
+        <echo msg="Provide project with starterkit binary at root level." />
+        <relsym link="${project.basedir}/ssk" target="${toolkit.dir.bin}" overwrite="true" />
+    </target>
+
     <!-- Ask user if he or she wants to generate the source code structure. -->
-    <target name="toolkit-generate-structure">
+    <target name="toolkit-generate-structure" description="Create the lib directory structure.">
         <if>
             <and>
                 <not>
@@ -46,8 +47,12 @@
         </if>
     </target>
 
+    <target name="toolkit-generate-docs" description="Generate documentation md files for toolkit.">
+        <docgen buildfile="${project.basedir}/vendor/ec-europa/ssk/build.xml" />
+    </target>
+
     <!-- Ensure needed files are present. -->
-    <target name="toolkit-copy-templates">
+    <target name="toolkit-copy-templates" description="Copies template files to your project for toolkit integration.">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
         <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.properties.dist" overwrite="true" />
         <copy todir="${project.basedir}">
@@ -57,7 +62,7 @@
     </target>
 
     <!-- Upgrade ssk 2.x to 3.x. -->
-    <target name="toolkit-upgrade-starterkit">
+    <target name="toolkit-upgrade-starterkit" description="Perform upgrade tasks for upgrading from 2.x to 3.x.">
         <if>
             <available file="${project.basedir}/build.package.xml" type="file" />
             <then>
@@ -66,22 +71,22 @@
                     <equals arg1="${toolkit-upgrade}" arg2="y" />
                     <then>
                         <!-- Delete starterkit folders. -->
-                        <phingcall target="delete-folder">
+                        <phingcall target="folder-delete">
                             <property name="folder.to.delete" value="${project.basedir}/bin" />
                         </phingcall>
-                        <phingcall target="delete-folder">
+                        <phingcall target="folder-delete">
                             <property name="folder.to.delete" value="${project.basedir}/docs" />
                         </phingcall>
-                        <phingcall target="delete-folder">
+                        <phingcall target="folder-delete">
                             <property name="folder.to.delete" value="${project.basedir}/src" />
                         </phingcall>
-                        <phingcall target="delete-folder">
+                        <phingcall target="folder-delete">
                             <property name="folder.to.delete" value="${resources.dir}/cloudformation" />
                         </phingcall>
-                        <phingcall target="delete-folder">
+                        <phingcall target="folder-delete">
                             <property name="folder.to.delete" value="${resources.dir}/codedeploy" />
                         </phingcall>
-                        <phingcall target="delete-folder">
+                        <phingcall target="folder-delete">
                             <property name="folder.to.delete" value="${resources.dir}/composer" />
                         </phingcall>
                         <!-- Delete starterkit files. -->
@@ -110,7 +115,7 @@
                         <mkdir dir="${lib.dir.themes}" />
                         <mkdir dir="${lib.dir.source}" />
                         <if>
-                            <available file="lib-backup" type="dir" />
+                            <available file="lib-backup/modules/custom" type="dir" />
                             <then>
                                 <copy todir="${lib.dir.modules.custom}" haltonerror="false">
                                     <fileset dir="lib-backup/modules/custom">
@@ -163,12 +168,12 @@
     </target>
 
     <!-- Echo the composer hook phingcalls. -->
-    <target name="toolkit-composer-hook-phingcalls" hidden="true">
+    <target name="toolkit-composer-hook-phingcalls" description="Echo the composer hook phing targets for use in bash script." hidden="true">
         <echoproperties prefix="composer.hook." />
     </target>
 
     <!-- Echo the git hook phingcalls. -->
-    <target name="toolkit-git-hook-phingcalls" hidden="true">
+    <target name="toolkit-git-hook-phingcalls" description="Echo the git hook phing targets for use in bash script." hidden="true">
         <echoproperties prefix="git.hook." />
     </target>
 

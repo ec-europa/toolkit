@@ -4,7 +4,7 @@
 
     <!-- Create code base platform. -->
     <target
-        name="build-project-platform"
+        name="project-build-platform"
         description="Build NextEuropa Platform code without version control."
         depends="
             project-subsite-backup,
@@ -13,19 +13,23 @@
             project-platform-package-unpack,
             project-subsite-restore" />
 
+    <!-- Build subsite in platform. -->
+    <target
+        name="project-build-subsite"
+        description="Build NextEuropa Subsite code without version control (non-functional)."
+        depends="
+            project-subsite-backup,
+            project-subsite-restore">
+        <echo msg="TODO: subsite builds not yet developed." />
+    </target>
+
     <!-- Build ec-europa theme in platform. -->
     <target
-        name="build-project-theme"
+        name="project-build-theme"
         description="Build EC Europa theme without version control."
         depends="
             theme-europa-download-extract,
             theme-europa-create-symlinks" />
-
-    <target
-        name="build-project-subsite"
-        description="Build NextEuropa Subsite code without version control.">
-        <echo msg="TODO: subsite builds not yet developed." />
-    </target>
 
     <!-- Install the project with sanitized production data. -->
     <target
@@ -65,11 +69,11 @@
                 <move file="${build.platform.dir}/default.settings.php" tofile="${project.tmp.dir}/default.settings.php" overwrite="true" />
             </then>
         </if>
-        <phingcall target="unprotect-folder">
+        <phingcall target="folder-unprotect">
             <property name="folder.to.unprotect" value="${build.platform.dir}/sites/${build.site}" />
         </phingcall>
         <echo msg="Unprotecting folder." />
-        <phingcall target="delete-folder">
+        <phingcall target="folder-delete">
             <property name="folder.to.delete" value="${build.platform.dir}" />
         </phingcall>
         <if>
@@ -280,7 +284,7 @@
     </target>
 
     <!-- Target to check if we have default settings, otherwise propose user to rebuild. -->
-    <target name="check-for-default-settings-or-rebuild" hidden="true">
+    <target name="project-rebuild-check" description="Rebuild project if needed. (needs work)" hidden="true">
         <if>
             <not>
                 <available file="${build.platform.dir.settings}/default.settings.php" type="file" property="build.settings.dir.default.settings" />
@@ -356,7 +360,7 @@
                 <!-- Create backup directory. -->
                 <mkdir dir="${rebuild.backup.destination}" />
                 <!-- Make the settings directory writable because we can not delete it otherwise -->
-                <phingcall target="unprotect-folder">
+                <phingcall target="folder-unprotect">
                     <property name="folder.to.unprotect" value="${build.platform.dir.sites}" />
                 </phingcall>
                 <!-- Back up folders list. -->
@@ -523,7 +527,7 @@
     </target>
 
     <!-- Target to actually fetch the database dump. -->
-    <target name="project-database-wget">
+    <target name="project-database-wget" description="Download database with wget. (needs to be converted to curl download helper)">
         <!--Generate .htaccess credential property if needed, empty if not. -->
         <if>
             <or>

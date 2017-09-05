@@ -102,35 +102,11 @@ class DocGeneratorTask extends \Task {
           $callbackTargets = array_merge($callbackTargets, $targetDependencies);
           $targetArray += array(
             'dependencies' => $targetDependencies,
-          );
-        }
-
-        if (substr($targetName, -9) === '-playbook') {
-          $targetArray += array(
             'type' => 'playbook',
           );
-          $playbookTargets[] = $targetName;
-        }
-
-        if (count($target->xpath('./phingcall')) == 1 && count($target->xpath('./phingcall[1]/property')) > 0) {
-          $props = array();
-          $phingCallTarget = (string)$target->xpath('./phingcall[1]/@target')[0];
-          if (substr($phingCallTarget, 0, -9) === $targetName) {
-            foreach ($target->xpath('./phingcall[1]/property') as $property) {
-              $propName = (string)$property->attributes()->name;
-              $propValue = (string)$property->attributes()->value;
-              $props[] = array(
-                'name' => $propName,
-                'value' => $propValue,
-                'description' => 'Description',
-              );
-            }
-            $targetArray += array(
-              'type' => 'wrapper',
-              'properties' => $props,
-              'phingcall' => $phingCallTarget,
-            );
-            $wrapperTargets = $targetName;
+          if (count($targetDependencies) > 1) {
+            $targetArray['type'] = 'playbook';
+            $playbookTargets[] = $targetArray;
           }
         }
 
