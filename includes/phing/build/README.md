@@ -790,18 +790,18 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
             </td>
-            <td nowrap>install-project-clone</td>
-            <td width="80%">Install NextEuropa site with sanitized production data.</td>
+            <td nowrap>build-project-platform</td>
+            <td width="80%">Build NextEuropa Platform code without version control.</td>
         </tr>
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
             </td>
-            <td nowrap>build-project-platform</td>
-            <td width="80%">Build NextEuropa Platform code without version control.</td>
+            <td nowrap>build-project-subsite</td>
+            <td width="80%">Build NextEuropa Subsite code without version control.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -816,40 +816,8 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
             </td>
-            <td nowrap>build-project-subsite</td>
-            <td width="80%">Build NextEuropa Subsite code without version control.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>project-reset-fs-perms-lib</td>
-            <td width="80%"></td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>project-reset-fs-perms-build</td>
-            <td width="80%"></td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>project-reset-fs-perms-dist</td>
-            <td width="80%"></td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
-            </td>
-            <td nowrap>install-project-clone-playbook</td>
-            <td width="80%"></td>
+            <td nowrap>install-project-clone</td>
+            <td width="80%">Install NextEuropa site with sanitized production data.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -857,7 +825,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
             <td nowrap>build-project-platform-playbook</td>
-            <td width="80%"></td>
+            <td width="80%">Playbook target for build-project-platform wrapper.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -865,7 +833,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
             <td nowrap>build-project-theme-playbook</td>
-            <td width="80%"></td>
+            <td width="80%">Playbook target for build-project-theme wrapper.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -873,7 +841,15 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
             <td nowrap>build-project-subsite-playbook</td>
-            <td width="80%"></td>
+            <td width="80%">Playbook target for build-project-subsite wrapper.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
+            </td>
+            <td nowrap>install-project-clone-playbook</td>
+            <td width="80%">Playbook target for install-project-clone wrapper.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -1202,16 +1178,16 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-platform-dev-all-playbook</td>
-            <td width="80%"></td>
+            <td nowrap>build-platform-dev-playbook</td>
+            <td width="80%">Playbook target for build-platform-dev wrapper.</td>
         </tr>
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-platform-dev-playbook</td>
-            <td width="80%"></td>
+            <td nowrap>build-platform-dev-all-playbook</td>
+            <td width="80%">Playbook target for build-platform-dev-all wrapper.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -1219,7 +1195,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
             <td nowrap>build-platform-dist-playbook</td>
-            <td width="80%"></td>
+            <td width="80%">Playbook target for build-platform-dist wrapper.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -1227,7 +1203,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
             <td nowrap>build-platform-dist-all-playbook</td>
-            <td width="80%"></td>
+            <td width="80%">Playbook target for build-platform-dist-all wrapper.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -1258,14 +1234,6 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-make-drupal</td>
-            <td width="80%">Build the Drupal core codebase.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
-            </td>
             <td nowrap>build-platform-link-profiles</td>
             <td width="80%">Link platform profiles to lib folder for development.</td>
         </tr>
@@ -1276,6 +1244,14 @@
             </td>
             <td nowrap>build-platform-link-resources</td>
             <td width="80%">Link platform resources to lib folder for development.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
+            </td>
+            <td nowrap>build-platform-make-drupal</td>
+            <td width="80%">Build the Drupal core codebase.</td>
         </tr>
         <tr>
             <td nowrap>
