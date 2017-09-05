@@ -150,7 +150,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td nowrap>folder-copy</td>
+            <td nowrap>copy-folder</td>
             <td width="80%">build-subsite-copy-resources</td>
         </tr>
         <tr>
@@ -422,7 +422,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>project-rebuild-check</td>
+            <td nowrap>check-for-default-settings-or-rebuild</td>
             <td width="80%"></td>
         </tr>
         <tr>
@@ -651,6 +651,22 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
+            </td>
+            <td nowrap>package-download</td>
+            <td width="80%">Download package with curl.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
+            </td>
+            <td nowrap>package-unpack</td>
+            <td width="80%">Unpack package with tar zxf.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>folder-copy</td>
@@ -671,22 +687,6 @@
             </td>
             <td nowrap>folder-unprotect</td>
             <td width="80%">Open up filesystem permissions on folder.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
-            </td>
-            <td nowrap>package-download</td>
-            <td width="80%">Download package with curl.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
-            </td>
-            <td nowrap>package-unpack</td>
-            <td width="80%">Unpack package with tar zxf.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -1043,7 +1043,7 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
             <td nowrap>build-theme-dev</td>
             <td width="80%">Build EC Europa theme with version control.</td>
@@ -1253,7 +1253,7 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
             <td nowrap>build-subsite-dist</td>
             <td width="80%">Build a site intended as a release package.</td>
