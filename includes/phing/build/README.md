@@ -422,7 +422,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>check-for-default-settings-or-rebuild</td>
+            <td nowrap>project-rebuild-check</td>
             <td width="80%"></td>
         </tr>
         <tr>
@@ -521,7 +521,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-site-install</td>
-            <td width="80%"></td>
+            <td width="80%">Install a site.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -529,7 +529,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-generate-aliases</td>
-            <td width="80%"></td>
+            <td width="80%">Generate drush aliases for each subsite folder.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -537,7 +537,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-enable-modules</td>
-            <td width="80%"></td>
+            <td width="80%">Enable a set of modules.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -545,7 +545,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-create-files-dirs</td>
-            <td width="80%"></td>
+            <td width="80%">Create site files directories.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -553,7 +553,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-sql-create</td>
-            <td width="80%"></td>
+            <td width="80%">Create a database.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -561,7 +561,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-sql-import</td>
-            <td width="80%"></td>
+            <td width="80%">Import a database.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -569,7 +569,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-sql-drop</td>
-            <td width="80%"></td>
+            <td width="80%">Drop a database.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -577,7 +577,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-sql-dump</td>
-            <td width="80%"></td>
+            <td width="80%">Make a dump of database.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -585,7 +585,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-enable-solr</td>
-            <td width="80%"></td>
+            <td width="80%">Enable the solr module.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -593,7 +593,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-make-no-core</td>
-            <td width="80%"></td>
+            <td width="80%">Make a file without core.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -601,7 +601,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
             <td nowrap>drush-generate-settings</td>
-            <td width="80%"></td>
+            <td width="80%">Generate the settings.php file.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -609,7 +609,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-registry-rebuild</td>
-            <td width="80%"></td>
+            <td width="80%">Perform a registry rebuild.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -617,7 +617,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-registry-rebuild-dl</td>
-            <td width="80%"></td>
+            <td width="80%">Download drush registry-rebuild.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -625,7 +625,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>drush-rebuild-node-access</td>
-            <td width="80%"></td>
+            <td width="80%">Rebuild the node access.</td>
         </tr>
     </tbody>
 </table>
@@ -944,8 +944,8 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>check-for-default-settings-or-rebuild</td>
-            <td width="80%"></td>
+            <td nowrap>project-rebuild-check</td>
+            <td width="80%">Rebuild project if needed. (needs work)</td>
         </tr>
         <tr>
             <td nowrap>
@@ -1001,7 +1001,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>project-database-wget</td>
-            <td width="80%"></td>
+            <td width="80%">Download database with wget. (needs to be converted to curl download helper)</td>
         </tr>
         <tr>
             <td nowrap>
