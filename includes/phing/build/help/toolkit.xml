@@ -110,7 +110,7 @@
                         <mkdir dir="${lib.dir.themes}" />
                         <mkdir dir="${lib.dir.source}" />
                         <if>
-                            <available file="lib-backup/modules/custom" type="dir" />
+                            <available file="lib-backup" type="dir" />
                             <then>
                                 <copy todir="${lib.dir.modules.custom}" haltonerror="false">
                                     <fileset dir="lib-backup/modules/custom">
@@ -156,6 +156,9 @@
                                 <delete dir="lib-backup/src" quiet="true" />
                             </then>
                         </if>
+
+                        <!-- Delete folder lib-backup after move files. -->
+                        <delete dir="lib-backup" quiet="true" />
                     </then>
                 </if>
             </then>
