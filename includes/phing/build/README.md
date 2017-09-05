@@ -183,7 +183,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>download-platform</td>
-            <td width="80%">build-project-platform</td>
+            <td width="80%">project-build-platform</td>
         </tr>
         <tr>
             <td nowrap>
@@ -483,14 +483,6 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>docker-check-mysql</td>
-            <td width="80%"></td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
             <td nowrap>docker-compose-backup</td>
             <td width="80%">Backup database.</td>
         </tr>
@@ -501,6 +493,14 @@
             </td>
             <td nowrap>docker-compose-restore</td>
             <td width="80%">Restore database.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>docker-check-mysql</td>
+            <td width="80%">Check if mysql container exists.</td>
         </tr>
     </tbody>
 </table>
@@ -642,14 +642,6 @@
     <tbody>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>docgen</td>
-            <td width="80%">Generate documentation md files for toolkit.</td>
-        </tr>
-        <tr>
-            <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
@@ -746,6 +738,14 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
+            <td nowrap>toolkit-generate-docs</td>
+            <td width="80%">Generate documentation md files for toolkit.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
             <td nowrap>toolkit-copy-templates</td>
             <td width="80%">Copies template files to your project for toolkit integration.</td>
         </tr>
@@ -792,7 +792,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-project-platform</td>
+            <td nowrap>project-build-platform</td>
             <td width="80%">Build NextEuropa Platform code without version control.</td>
         </tr>
         <tr>
@@ -800,16 +800,16 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-project-theme</td>
-            <td width="80%">Build EC Europa theme without version control.</td>
+            <td nowrap>project-build-subsite</td>
+            <td width="80%">Build NextEuropa Subsite code without version control (non-functional).</td>
         </tr>
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-project-subsite</td>
-            <td width="80%">Build NextEuropa Subsite code without version control.</td>
+            <td nowrap>project-build-theme</td>
+            <td width="80%">Build EC Europa theme without version control.</td>
         </tr>
         <tr>
             <td nowrap>
