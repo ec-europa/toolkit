@@ -3,22 +3,8 @@
 <project name="project" default="help">
 
     <!-- Create code base platform. -->
-    <target name="install-project-clone" description="Install NextEuropa site with sanitized production data.">
-        <phingcall target="build-project-clone-playbook">
-            <property name="dir-build" value="${build.platform.dir}" override="true" />
-        </phingcall>
-    </target>
-
-    <!-- Create code base platform. -->
     <target name="build-project-platform" description="Build NextEuropa Platform code without version control.">
         <phingcall target="build-project-platform-playbook">
-            <property name="dir-build" value="${build.platform.dir}" override="true" />
-        </phingcall>
-    </target>
-
-    <!-- Build ec-europa theme in platform. -->
-    <target name="build-project-theme" description="Build EC Europa theme without version control.">
-        <phingcall target="build-project-theme-playbook">
             <property name="dir-build" value="${build.platform.dir}" override="true" />
         </phingcall>
     </target>
@@ -30,40 +16,23 @@
         </phingcall>
     </target>
 
-    <!-- Reset all file permission to Drupals recommendation for the lib dir. -->
-    <target name="project-reset-fs-perms-lib">
-        <echo msg="Resetting permissions for ${lib.dir}" />
-        <phingcall target="reset-filesystem-permissions">
-            <property name="target-dir" value="${lib.dir}" />
+    <!-- Build ec-europa theme in platform. -->
+    <target name="build-project-theme" description="Build EC Europa theme without version control.">
+        <phingcall target="build-project-theme-playbook">
+            <property name="dir-build" value="${build.platform.dir}" override="true" />
         </phingcall>
     </target>
 
-    <!-- Reset all file permission to Drupals recommendation for the build dir. -->
-    <target name="project-reset-fs-perms-build">
-        <echo msg="Resetting permissions for ${build.platform.dir}" />
-        <phingcall target="reset-filesystem-permissions">
-            <property name="target-dir" value="${build.platform.dir}" />
+    <!-- Install the project with sanitized production data. -->
+    <target name="install-project-clone" description="Install NextEuropa site with sanitized production data.">
+        <phingcall target="install-project-clone-playbook">
+            <property name="dir-build" value="${build.platform.dir}" override="true" />
         </phingcall>
     </target>
-
-    <!-- Reset all file permission to Drupals recommendation for the build dir. -->
-    <target name="project-reset-fs-perms-dist">
-        <echo msg="Resetting permissions for ${build.dist.dir}" />
-        <phingcall target="reset-filesystem-permissions">
-            <property name="target-dir" value="${build.dist.dir}" />
-        </phingcall>
-    </target>
-
-    <target
-        name="install-project-clone-playbook"
-        depends="
-            project-database-download,
-            drush-generate-settings,
-            project-database-import,
-            project-modules-devel-en" />
 
     <target
         name="build-project-platform-playbook"
+        description="Playbook target for build-project-platform wrapper."
         hidden="true"
         depends="
             project-subsite-backup,
@@ -74,14 +43,27 @@
 
     <target
         name="build-project-theme-playbook"
+        description="Playbook target for build-project-theme wrapper."
         hidden="true"
         depends="
             theme-europa-download-extract,
             theme-europa-create-symlinks" />
 
-    <target name="build-project-subsite-playbook" hidden="true">
+    <target
+        name="build-project-subsite-playbook"
+        description="Playbook target for build-project-subsite wrapper."
+        hidden="true">
         <echo msg="TODO: subsite builds not yet developed." />
     </target>
+
+    <target
+        name="install-project-clone-playbook"
+        description="Playbook target for install-project-clone wrapper."
+        depends="
+            project-database-download,
+            drush-generate-settings,
+            project-database-import,
+            project-modules-devel-en" />
 
     <!-- Link site document root to Webserver document root. -->
     <target name="project-platform-set-docroot" description="Link the platform root to your docroot.">

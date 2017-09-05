@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project default="help">
+<project name="toolkit" default="help">
 
     <!-- Provide handy access with root symlink to starterkit binary. -->
     <target name="toolkit-link-binary">
@@ -156,9 +156,6 @@
                                 <delete dir="lib-backup/src" quiet="true" />
                             </then>
                         </if>
-
-                        <!-- Delete folder lib-backup after move files. -->
-                        <delete dir="lib-backup" quiet="true" />
                     </then>
                 </if>
             </then>

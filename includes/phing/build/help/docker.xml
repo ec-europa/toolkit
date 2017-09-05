@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project default="help">
+<project name="docker" default="help">
 
     <!-- Start an environment with docker. -->
     <target name="docker-compose-up" description="Start docker project." hidden="true">

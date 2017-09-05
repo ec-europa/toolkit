@@ -2,6 +2,10 @@
 
 <project name="general" default="help">
 
+    <target name="docgen">
+        <docgen buildfile="${project.basedir}/vendor/ec-europa/ssk/build.xml" />
+    </target>
+
     <!-- Copies a given folder to a new location. -->
     <target name="copy-folder" hidden="true">
         <copy todir="${copy.destination.path}" haltonerror="${build.haltonerror.dir.copy}">
