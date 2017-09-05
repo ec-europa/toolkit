@@ -3,37 +3,9 @@
 <project name="project" default="help">
 
     <!-- Create code base platform. -->
-    <target name="build-project-platform" description="Build NextEuropa Platform code without version control.">
-        <phingcall target="build-project-platform-playbook">
-            <property name="dir-build" value="${build.platform.dir}" override="true" />
-        </phingcall>
-    </target>
-
-    <!-- Create code base subsite. -->
-    <target name="build-project-subsite" description="Build NextEuropa Subsite code without version control.">
-        <phingcall target="build-project-subsite-playbook">
-            <property name="dir-build" value="${build.platform.dir}" override="true" />
-        </phingcall>
-    </target>
-
-    <!-- Build ec-europa theme in platform. -->
-    <target name="build-project-theme" description="Build EC Europa theme without version control.">
-        <phingcall target="build-project-theme-playbook">
-            <property name="dir-build" value="${build.platform.dir}" override="true" />
-        </phingcall>
-    </target>
-
-    <!-- Install the project with sanitized production data. -->
-    <target name="install-project-clone" description="Install NextEuropa site with sanitized production data.">
-        <phingcall target="install-project-clone-playbook">
-            <property name="dir-build" value="${build.platform.dir}" override="true" />
-        </phingcall>
-    </target>
-
     <target
-        name="build-project-platform-playbook"
-        description="Playbook target for build-project-platform wrapper."
-        hidden="true"
+        name="build-project-platform"
+        description="Build NextEuropa Platform code without version control."
         depends="
             project-subsite-backup,
             project-scratch-build,
@@ -41,24 +13,24 @@
             project-platform-package-unpack,
             project-subsite-restore" />
 
+    <!-- Build ec-europa theme in platform. -->
     <target
-        name="build-project-theme-playbook"
-        description="Playbook target for build-project-theme wrapper."
-        hidden="true"
+        name="build-project-theme"
+        description="Build EC Europa theme without version control."
         depends="
             theme-europa-download-extract,
             theme-europa-create-symlinks" />
 
     <target
-        name="build-project-subsite-playbook"
-        description="Playbook target for build-project-subsite wrapper."
-        hidden="true">
+        name="build-project-subsite"
+        description="Build NextEuropa Subsite code without version control.">
         <echo msg="TODO: subsite builds not yet developed." />
     </target>
 
+    <!-- Install the project with sanitized production data. -->
     <target
-        name="install-project-clone-playbook"
-        description="Playbook target for install-project-clone wrapper."
+        name="install-project-clone"
+        description="Install NextEuropa site with sanitized production data."
         depends="
             project-database-download,
             drush-generate-settings,
@@ -88,23 +60,23 @@
     <target name="project-scratch-build" description="Delete previous build to start over clean.">
         <echo msg="Delete previous build." />
         <if>
-            <available file="${dir-build}/default.settings.php" />
+            <available file="${build.platform.dir}/default.settings.php" />
             <then>
-                <move file="${dir-build}/default.settings.php" tofile="${project.tmp.dir}/default.settings.php" overwrite="true" />
+                <move file="${build.platform.dir}/default.settings.php" tofile="${project.tmp.dir}/default.settings.php" overwrite="true" />
             </then>
         </if>
         <phingcall target="unprotect-folder">
-            <property name="folder.to.unprotect" value="${dir-build}/sites/${build.site}" />
+            <property name="folder.to.unprotect" value="${build.platform.dir}/sites/${build.site}" />
         </phingcall>
         <echo msg="Unprotecting folder." />
         <phingcall target="delete-folder">
-            <property name="folder.to.delete" value="${dir-build}" />
+            <property name="folder.to.delete" value="${build.platform.dir}" />
         </phingcall>
         <if>
             <available file="${project.tmp.dir}/default.settings.php" />
             <then>
-                <mkdir dir="${dir-build}/sites/default" />
-                <move file="${project.tmp.dir}/default.settings.php" tofile="${dir-build}/default.settings.php" />
+                <mkdir dir="${build.platform.dir}/sites/default" />
+                <move file="${project.tmp.dir}/default.settings.php" tofile="${build.platform.dir}/default.settings.php" />
             </then>
         </if>
     </target>
