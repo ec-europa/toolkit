@@ -11,9 +11,9 @@
 <table>
     <thead>
         <tr align="left">
-            <th>Type</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th nowrap>Target type</th>
+            <th nowrap>Name</th>
+            <th nowrap>Description</th>
         </tr>
     </thead>
     <tbody>
@@ -448,9 +448,9 @@
 <table>
     <thead>
         <tr align="left">
-            <th>Type</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th nowrap>Target type</th>
+            <th nowrap>Name</th>
+            <th nowrap>Description</th>
         </tr>
     </thead>
     <tbody>
@@ -509,9 +509,9 @@
 <table>
     <thead>
         <tr align="left">
-            <th>Type</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th nowrap>Target type</th>
+            <th nowrap>Name</th>
+            <th nowrap>Description</th>
         </tr>
     </thead>
     <tbody>
@@ -634,9 +634,9 @@
 <table>
     <thead>
         <tr align="left">
-            <th>Type</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th nowrap>Target type</th>
+            <th nowrap>Name</th>
+            <th nowrap>Description</th>
         </tr>
     </thead>
     <tbody>
@@ -711,9 +711,9 @@
 <table>
     <thead>
         <tr align="left">
-            <th>Type</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th nowrap>Target type</th>
+            <th nowrap>Name</th>
+            <th nowrap>Description</th>
         </tr>
     </thead>
     <tbody>
@@ -781,9 +781,9 @@
 <table>
     <thead>
         <tr align="left">
-            <th>Type</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th nowrap>Target type</th>
+            <th nowrap>Name</th>
+            <th nowrap>Description</th>
         </tr>
     </thead>
     <tbody>
@@ -1090,9 +1090,9 @@
 <table>
     <thead>
         <tr align="left">
-            <th>Type</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th nowrap>Target type</th>
+            <th nowrap>Name</th>
+            <th nowrap>Description</th>
         </tr>
     </thead>
     <tbody>
@@ -1151,9 +1151,9 @@
 <table>
     <thead>
         <tr align="left">
-            <th>Type</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th nowrap>Target type</th>
+            <th nowrap>Name</th>
+            <th nowrap>Description</th>
         </tr>
     </thead>
     <tbody>
@@ -1300,9 +1300,9 @@
 <table>
     <thead>
         <tr align="left">
-            <th>Type</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th nowrap>Target type</th>
+            <th nowrap>Name</th>
+            <th nowrap>Description</th>
         </tr>
     </thead>
     <tbody>
@@ -1385,9 +1385,9 @@
 <table>
     <thead>
         <tr align="left">
-            <th>Type</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th nowrap>Target type</th>
+            <th nowrap>Name</th>
+            <th nowrap>Description</th>
         </tr>
     </thead>
     <tbody>
