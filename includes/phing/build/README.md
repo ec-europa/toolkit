@@ -11,6 +11,7 @@
 <table>
     <thead>
         <tr align="left">
+            <th>Type</th>
             <th>Name</th>
             <th>Description</th>
         </tr>
@@ -18,427 +19,427 @@
     <tbody>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                build-clone
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>install-project-clone</td>
+            <td nowrap>build-clone</td>
+            <td width="80%">install-project-clone</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                build-dev
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>build-subsite-dev</td>
+            <td nowrap>build-dev</td>
+            <td width="80%">build-subsite-dev</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                build-dist
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>build-subsite-dist</td>
+            <td nowrap>build-dist</td>
+            <td width="80%">build-subsite-dist</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                install
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>install-project-clean</td>
+            <td nowrap>install</td>
+            <td width="80%">install-project-clean</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                install-dev
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>install-project-clean</td>
+            <td nowrap>install-dev</td>
+            <td width="80%">install-project-clean</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                behat
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>test-run-behat</td>
+            <td nowrap>behat</td>
+            <td width="80%">test-run-behat</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                mjolnir
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>test-run-qa</td>
+            <td nowrap>mjolnir</td>
+            <td width="80%">test-run-qa</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                setup-php-codesniffer
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>phpcs-setup</td>
+            <td nowrap>setup-php-codesniffer</td>
+            <td width="80%">phpcs-setup</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                setup-phpcs-pre-push
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>test-phpcs-setup-prepush</td>
+            <td nowrap>setup-phpcs-pre-push</td>
+            <td width="80%">test-phpcs-setup-prepush</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                regenerate-settings
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>drush-generate-settings</td>
+            <td nowrap>regenerate-settings</td>
+            <td width="80%">drush-generate-settings</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                link-docroot
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-platform-set-docroot</td>
+            <td nowrap>link-docroot</td>
+            <td width="80%">project-platform-set-docroot</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                download-prod-db
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-database-download</td>
+            <td nowrap>download-prod-db</td>
+            <td width="80%">project-database-download</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                import-prod-db
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-database-import</td>
+            <td nowrap>import-prod-db</td>
+            <td width="80%">project-database-import</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                backup-site
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-subsite-backup</td>
+            <td nowrap>backup-site</td>
+            <td width="80%">project-subsite-backup</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                backup-site-item
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-subsite-backup-item</td>
+            <td nowrap>backup-site-item</td>
+            <td width="80%">project-subsite-backup-item</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                copy-dist-resources
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>build-subsite-copy-resources</td>
+            <td nowrap>copy-dist-resources</td>
+            <td width="80%">build-subsite-copy-resources</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                copy-folder
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>build-subsite-copy-resources</td>
+            <td nowrap>copy-folder</td>
+            <td width="80%">build-subsite-copy-resources</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                delete-dev
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-scratch-build</td>
+            <td nowrap>delete-dev</td>
+            <td width="80%">project-scratch-build</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                delete-dist
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-scratch-build</td>
+            <td nowrap>delete-dist</td>
+            <td width="80%">project-scratch-build</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                download-development-modules
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-modules-devel-dl</td>
+            <td nowrap>download-development-modules</td>
+            <td width="80%">project-modules-devel-dl</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                download-platform
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>build-project-platform</td>
+            <td nowrap>download-platform</td>
+            <td width="80%">build-project-platform</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                enable-development-modules
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-modules-devel-en</td>
+            <td nowrap>enable-development-modules</td>
+            <td width="80%">project-modules-devel-en</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                enable-install-modules
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-modules-install-en</td>
+            <td nowrap>enable-install-modules</td>
+            <td width="80%">project-modules-install-en</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                enable-modules
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>drush-enable-modules</td>
+            <td nowrap>enable-modules</td>
+            <td width="80%">drush-enable-modules</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                generate-development-makefile
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-modules-devel-mf</td>
+            <td nowrap>generate-development-makefile</td>
+            <td width="80%">project-modules-devel-mf</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                install-build-dependencies
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-subsite-composer-no-dev</td>
+            <td nowrap>install-build-dependencies</td>
+            <td width="80%">project-subsite-composer-no-dev</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                install-dev-dependencies
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-subsite-composer-dev</td>
+            <td nowrap>install-dev-dependencies</td>
+            <td width="80%">project-subsite-composer-dev</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                link-behat
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>test-behat-setup-link</td>
+            <td nowrap>link-behat</td>
+            <td width="80%">test-behat-setup-link</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                link-dev-resources
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>build-subsite-link-resources</td>
+            <td nowrap>link-dev-resources</td>
+            <td width="80%">build-subsite-link-resources</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                make-dev
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>build-subsite-make-site</td>
+            <td nowrap>make-dev</td>
+            <td width="80%">build-subsite-make-site</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                make-dist
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>build-subsite-make-site</td>
+            <td nowrap>make-dist</td>
+            <td width="80%">build-subsite-make-site</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                quality-assurance
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>test-qa-exec</td>
+            <td nowrap>quality-assurance</td>
+            <td width="80%">test-qa-exec</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                rebuild-node-access
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>drush-rebuild-node-access</td>
+            <td nowrap>rebuild-node-access</td>
+            <td width="80%">drush-rebuild-node-access</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                restore-site
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-subsite-restore</td>
+            <td nowrap>restore-site</td>
+            <td width="80%">project-subsite-restore</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                restore-site-item
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-subsite-restore-item</td>
+            <td nowrap>restore-site-item</td>
+            <td width="80%">project-subsite-restore-item</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                setup-behat
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>test-behat-setup</td>
+            <td nowrap>setup-behat</td>
+            <td width="80%">test-behat-setup</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                setup-files-directory
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-subsite-setup-files</td>
+            <td nowrap>setup-files-directory</td>
+            <td width="80%">project-subsite-setup-files</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                unpack-platform
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-platform-package-unpack</td>
+            <td nowrap>unpack-platform</td>
+            <td width="80%">project-platform-package-unpack</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                update-htaccess
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-platform-set-htaccess</td>
+            <td nowrap>update-htaccess</td>
+            <td width="80%">project-platform-set-htaccess</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" />
-                wget-prod-db
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
-            <td>project-database-wget</td>
+            <td nowrap>wget-prod-db</td>
+            <td width="80%">project-database-wget</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                build-custom
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>build-custom</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                provision-stack
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>provision-stack</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                create-tmp-dirs
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>create-tmp-dirs</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                delete-deployment-group
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>delete-deployment-group</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                delete-stack
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>delete-stack</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                install-dist-dependencies
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>install-dist-dependencies</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                move-download-to-tmp-dir
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>move-download-to-tmp-dir</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                run-stack
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>run-stack</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                setup-aws
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>setup-aws</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                setup-deployment-group
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>setup-deployment-group</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                check-for-default-settings-or-rebuild
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>check-for-default-settings-or-rebuild</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                check-starterkit
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>check-starterkit</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                rebuild-dev
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>rebuild-dev</td>
+            <td width="80%"></td>
         </tr>
     </tbody>
 </table>
@@ -447,6 +448,7 @@
 <table>
     <thead>
         <tr align="left">
+            <th>Type</th>
             <th>Name</th>
             <th>Description</th>
         </tr>
@@ -454,51 +456,51 @@
     <tbody>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                docker-compose-up
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Start docker project.</td>
+            <td nowrap>docker-compose-up</td>
+            <td width="80%">Start docker project.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                docker-compose-stop
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Stop docker project.</td>
+            <td nowrap>docker-compose-stop</td>
+            <td width="80%">Stop docker project.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                docker-compose-down
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Trash docker project.</td>
+            <td nowrap>docker-compose-down</td>
+            <td width="80%">Trash docker project.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                docker-check-mysql
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>docker-check-mysql</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                docker-compose-backup
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Backup database.</td>
+            <td nowrap>docker-compose-backup</td>
+            <td width="80%">Backup database.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                docker-compose-restore
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Restore database.</td>
+            <td nowrap>docker-compose-restore</td>
+            <td width="80%">Restore database.</td>
         </tr>
     </tbody>
 </table>
@@ -507,6 +509,7 @@
 <table>
     <thead>
         <tr align="left">
+            <th>Type</th>
             <th>Name</th>
             <th>Description</th>
         </tr>
@@ -514,115 +517,115 @@
     <tbody>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-site-install
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-site-install</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-generate-aliases
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-generate-aliases</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-enable-modules
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-enable-modules</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-create-files-dirs
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-create-files-dirs</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-sql-create
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-sql-create</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-sql-import
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-sql-import</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-sql-drop
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-sql-drop</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-sql-dump
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-sql-dump</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-enable-solr
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-enable-solr</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-make-no-core
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-make-no-core</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                drush-generate-settings
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td></td>
+            <td nowrap>drush-generate-settings</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-registry-rebuild
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-registry-rebuild</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-registry-rebuild-dl
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-registry-rebuild-dl</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                drush-rebuild-node-access
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>drush-rebuild-node-access</td>
+            <td width="80%"></td>
         </tr>
     </tbody>
 </table>
@@ -631,6 +634,7 @@
 <table>
     <thead>
         <tr align="left">
+            <th>Type</th>
             <th>Name</th>
             <th>Description</th>
         </tr>
@@ -638,67 +642,67 @@
     <tbody>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                docgen
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>docgen</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                copy-folder
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>copy-folder</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                delete-folder
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>delete-folder</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                reset-filesystem-permissions
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>reset-filesystem-permissions</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                unprotect-folder
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>unprotect-folder</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                package-download-unpack
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>package-download-unpack</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                package-download
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td></td>
+            <td nowrap>package-download</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                package-unpack
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td></td>
+            <td nowrap>package-unpack</td>
+            <td width="80%"></td>
         </tr>
     </tbody>
 </table>
@@ -707,6 +711,7 @@
 <table>
     <thead>
         <tr align="left">
+            <th>Type</th>
             <th>Name</th>
             <th>Description</th>
         </tr>
@@ -714,59 +719,59 @@
     <tbody>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                toolkit-link-binary
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td></td>
+            <td nowrap>toolkit-link-binary</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                toolkit-initialize
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>toolkit-initialize</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                toolkit-generate-structure
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td></td>
+            <td nowrap>toolkit-generate-structure</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                toolkit-copy-templates
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>toolkit-copy-templates</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                toolkit-upgrade-starterkit
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>toolkit-upgrade-starterkit</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                toolkit-composer-hook-phingcalls
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>toolkit-composer-hook-phingcalls</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                toolkit-git-hook-phingcalls
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>toolkit-git-hook-phingcalls</td>
+            <td width="80%"></td>
         </tr>
     </tbody>
 </table>
@@ -776,6 +781,7 @@
 <table>
     <thead>
         <tr align="left">
+            <th>Type</th>
             <th>Name</th>
             <th>Description</th>
         </tr>
@@ -783,299 +789,299 @@
     <tbody>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                install-project-clone
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Install NextEuropa site with sanitized production data.</td>
+            <td nowrap>install-project-clone</td>
+            <td width="80%">Install NextEuropa site with sanitized production data.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" />
-                build-project-platform
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
             </td>
-            <td>Build NextEuropa Platform code without version control.</td>
+            <td nowrap>build-project-platform</td>
+            <td width="80%">Build NextEuropa Platform code without version control.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" />
-                build-project-theme
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
             </td>
-            <td>Build EC Europa theme without version control.</td>
+            <td nowrap>build-project-theme</td>
+            <td width="80%">Build EC Europa theme without version control.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" />
-                build-project-subsite
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
             </td>
-            <td>Build NextEuropa Subsite code without version control.</td>
+            <td nowrap>build-project-subsite</td>
+            <td width="80%">Build NextEuropa Subsite code without version control.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                project-reset-fs-perms-lib
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>project-reset-fs-perms-lib</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                project-reset-fs-perms-build
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>project-reset-fs-perms-build</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                project-reset-fs-perms-dist
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>project-reset-fs-perms-dist</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" />
-                install-project-clone-playbook
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td></td>
+            <td nowrap>install-project-clone-playbook</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" />
-                build-project-platform-playbook
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td></td>
+            <td nowrap>build-project-platform-playbook</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" />
-                build-project-theme-playbook
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td></td>
+            <td nowrap>build-project-theme-playbook</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" />
-                build-project-subsite-playbook
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td></td>
+            <td nowrap>build-project-subsite-playbook</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                project-platform-set-docroot
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Link the platform root to your docroot.</td>
+            <td nowrap>project-platform-set-docroot</td>
+            <td width="80%">Link the platform root to your docroot.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-platform-set-htaccess
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Append htaccess config to root .htaccess.</td>
+            <td nowrap>project-platform-set-htaccess</td>
+            <td width="80%">Append htaccess config to root .htaccess.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-scratch-build
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Delete previous build to start over clean.</td>
+            <td nowrap>project-scratch-build</td>
+            <td width="80%">Delete previous build to start over clean.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-platform-package-unpack
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Download and unpack platform deploy package.</td>
+            <td nowrap>project-platform-package-unpack</td>
+            <td width="80%">Download and unpack platform deploy package.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                project-composer-install
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Runs composer install.</td>
+            <td nowrap>project-composer-install</td>
+            <td width="80%">Runs composer install.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-platform-composer-no-dev
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Run composer install without dev on platform.</td>
+            <td nowrap>project-platform-composer-no-dev</td>
+            <td width="80%">Run composer install without dev on platform.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                project-platform-composer-dev
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Run composer install with dev on platform.</td>
+            <td nowrap>project-platform-composer-dev</td>
+            <td width="80%">Run composer install with dev on platform.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                project-subsite-composer-no-dev
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Run composer install without dev on subsite.</td>
+            <td nowrap>project-subsite-composer-no-dev</td>
+            <td width="80%">Run composer install without dev on subsite.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-subsite-composer-dev
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Run composer install with dev on subsite.</td>
+            <td nowrap>project-subsite-composer-dev</td>
+            <td width="80%">Run composer install with dev on subsite.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-subsite-setup-files
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Create files directories for subsite.</td>
+            <td nowrap>project-subsite-setup-files</td>
+            <td width="80%">Create files directories for subsite.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-modules-devel-mf
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Create make file for development modules.</td>
+            <td nowrap>project-modules-devel-mf</td>
+            <td width="80%">Create make file for development modules.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-modules-devel-dl
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Download development modules with drush.</td>
+            <td nowrap>project-modules-devel-dl</td>
+            <td width="80%">Download development modules with drush.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                project-modules-install-en
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Install list of modules to enable by default.</td>
+            <td nowrap>project-modules-install-en</td>
+            <td width="80%">Install list of modules to enable by default.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-modules-devel-en
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Enable development modules with drush.</td>
+            <td nowrap>project-modules-devel-en</td>
+            <td width="80%">Enable development modules with drush.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                install-project-clean
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Install NextEuropa site from scratch.</td>
+            <td nowrap>install-project-clean</td>
+            <td width="80%">Install NextEuropa site from scratch.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                check-for-default-settings-or-rebuild
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>check-for-default-settings-or-rebuild</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-subsite-backup
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Backup site defined files from properties.</td>
+            <td nowrap>project-subsite-backup</td>
+            <td width="80%">Backup site defined files from properties.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-subsite-restore
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Restore site defined files from properties.</td>
+            <td nowrap>project-subsite-restore</td>
+            <td width="80%">Restore site defined files from properties.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                project-subsite-backup-item
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Backup site item from configuraton list.</td>
+            <td nowrap>project-subsite-backup-item</td>
+            <td width="80%">Backup site item from configuraton list.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                project-subsite-restore-item
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Restore site item from configuration list.</td>
+            <td nowrap>project-subsite-restore-item</td>
+            <td width="80%">Restore site item from configuration list.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-database-import
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Import database for project with drush.</td>
+            <td nowrap>project-database-import</td>
+            <td width="80%">Import database for project with drush.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-database-download
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Download sanitized production database from archive.</td>
+            <td nowrap>project-database-download</td>
+            <td width="80%">Download sanitized production database from archive.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                project-database-wget
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>project-database-wget</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                prompt-for-credentials-and-retry
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Ask for download credentials and retry if failed.</td>
+            <td nowrap>prompt-for-credentials-and-retry</td>
+            <td width="80%">Ask for download credentials and retry if failed.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                project-validate-properties
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Validate the build properties file.</td>
+            <td nowrap>project-validate-properties</td>
+            <td width="80%">Validate the build properties file.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                project-platform-set-version
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Save the platform version used for builds.</td>
+            <td nowrap>project-platform-set-version</td>
+            <td width="80%">Save the platform version used for builds.</td>
         </tr>
     </tbody>
 </table>
@@ -1084,6 +1090,7 @@
 <table>
     <thead>
         <tr align="left">
+            <th>Type</th>
             <th>Name</th>
             <th>Description</th>
         </tr>
@@ -1091,51 +1098,51 @@
     <tbody>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-theme-dev
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Build EC Europa theme with version control.</td>
+            <td nowrap>build-theme-dev</td>
+            <td width="80%">Build EC Europa theme with version control.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                theme-europa-download-extract
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Download and unpack the EC Europa theme.</td>
+            <td nowrap>theme-europa-download-extract</td>
+            <td width="80%">Download and unpack the EC Europa theme.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                theme-europa-embed-ecl-assets
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Download and unpack the ECL assets for EC Europa theme.</td>
+            <td nowrap>theme-europa-embed-ecl-assets</td>
+            <td width="80%">Download and unpack the ECL assets for EC Europa theme.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                theme-europa-create-symlinks
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Create symlinks to themes in lib for development.</td>
+            <td nowrap>theme-europa-create-symlinks</td>
+            <td width="80%">Create symlinks to themes in lib for development.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                theme-europa-repo-clone
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Clone the Atomium and EC Europa repositories.</td>
+            <td nowrap>theme-europa-repo-clone</td>
+            <td width="80%">Clone the Atomium and EC Europa repositories.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                theme-europa-build
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Build the EC europa theme with NPM.</td>
+            <td nowrap>theme-europa-build</td>
+            <td width="80%">Build the EC europa theme with NPM.</td>
         </tr>
     </tbody>
 </table>
@@ -1144,6 +1151,7 @@
 <table>
     <thead>
         <tr align="left">
+            <th>Type</th>
             <th>Name</th>
             <th>Description</th>
         </tr>
@@ -1151,139 +1159,139 @@
     <tbody>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" />
-                build-platform-dev
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
             </td>
-            <td>Build a local development version with a single platform profile.</td>
+            <td nowrap>build-platform-dev</td>
+            <td width="80%">Build a local development version with a single platform profile.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" />
-                build-platform-dev-all
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
             </td>
-            <td>Build a local development version with all platform profiles.</td>
+            <td nowrap>build-platform-dev-all</td>
+            <td width="80%">Build a local development version with all platform profiles.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" />
-                build-platform-dist
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
             </td>
-            <td>Build a single platform profile intended as a release package.</td>
+            <td nowrap>build-platform-dist</td>
+            <td width="80%">Build a single platform profile intended as a release package.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" />
-                build-platform-dist-all
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
             </td>
-            <td>Build all platform profiles intended as a release package.</td>
+            <td nowrap>build-platform-dist-all</td>
+            <td width="80%">Build all platform profiles intended as a release package.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                build-platform-test
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Build a platform test package to test this reslease.</td>
+            <td nowrap>build-platform-test</td>
+            <td width="80%">Build a platform test package to test this reslease.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" />
-                build-platform-dev-all-playbook
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td></td>
+            <td nowrap>build-platform-dev-all-playbook</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" />
-                build-platform-dev-playbook
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td></td>
+            <td nowrap>build-platform-dev-playbook</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" />
-                build-platform-dist-playbook
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td></td>
+            <td nowrap>build-platform-dist-playbook</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" />
-                build-platform-dist-all-playbook
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td></td>
+            <td nowrap>build-platform-dist-all-playbook</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-platform-copy-profile
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Copies single profile for distribution.</td>
+            <td nowrap>build-platform-copy-profile</td>
+            <td width="80%">Copies single profile for distribution.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-platform-copy-profiles
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Copies all profiles for distirbution.</td>
+            <td nowrap>build-platform-copy-profiles</td>
+            <td width="80%">Copies all profiles for distirbution.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-platform-copy-resources
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Copies platform resources for distribution.</td>
+            <td nowrap>build-platform-copy-resources</td>
+            <td width="80%">Copies platform resources for distribution.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-platform-make-drupal
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Build the Drupal core codebase.</td>
+            <td nowrap>build-platform-make-drupal</td>
+            <td width="80%">Build the Drupal core codebase.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-platform-link-profiles
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Link platform profiles to lib folder for development.</td>
+            <td nowrap>build-platform-link-profiles</td>
+            <td width="80%">Link platform profiles to lib folder for development.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-platform-link-resources
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Link platform resources to lib folder for development.</td>
+            <td nowrap>build-platform-link-resources</td>
+            <td width="80%">Link platform resources to lib folder for development.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-platform-make-profile
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Makes single profile resources with drush.</td>
+            <td nowrap>build-platform-make-profile</td>
+            <td width="80%">Makes single profile resources with drush.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-platform-make-profiles
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Makes all profile resources with drush.</td>
+            <td nowrap>build-platform-make-profiles</td>
+            <td width="80%">Makes all profile resources with drush.</td>
         </tr>
     </tbody>
 </table>
@@ -1292,6 +1300,7 @@
 <table>
     <thead>
         <tr align="left">
+            <th>Type</th>
             <th>Name</th>
             <th>Description</th>
         </tr>
@@ -1299,75 +1308,75 @@
     <tbody>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" />
-                build-subsite-dev
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
             </td>
-            <td>Build a local development version of the site.</td>
+            <td nowrap>build-subsite-dev</td>
+            <td width="80%">Build a local development version of the site.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-subsite-dist
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Build a site intended as a release package.</td>
+            <td nowrap>build-subsite-dist</td>
+            <td width="80%">Build a site intended as a release package.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                build-subsite-test
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Build a subsite test package to test this reslease.</td>
+            <td nowrap>build-subsite-test</td>
+            <td width="80%">Build a subsite test package to test this reslease.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" />
-                build-subsite-dev-playbook
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td></td>
+            <td nowrap>build-subsite-dev-playbook</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" />
-                build-subsite-dist-playbook
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td></td>
+            <td nowrap>build-subsite-dist-playbook</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-subsite-copy-resources
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Copy subsite resources for distribution.</td>
+            <td nowrap>build-subsite-copy-resources</td>
+            <td width="80%">Copy subsite resources for distribution.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-subsite-link-resources
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Link subsite resources to lib folder for development.</td>
+            <td nowrap>build-subsite-link-resources</td>
+            <td width="80%">Link subsite resources to lib folder for development.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                build-subsite-make-site
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td>Makes the subsite resources with drush.</td>
+            <td nowrap>build-subsite-make-site</td>
+            <td width="80%">Makes the subsite resources with drush.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                build-subsite-release-package
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Build a subsite release package for deployment.</td>
+            <td nowrap>build-subsite-release-package</td>
+            <td width="80%">Build a subsite release package for deployment.</td>
         </tr>
     </tbody>
 </table>
@@ -1376,6 +1385,7 @@
 <table>
     <thead>
         <tr align="left">
+            <th>Type</th>
             <th>Name</th>
             <th>Description</th>
         </tr>
@@ -1383,35 +1393,35 @@
     <tbody>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                test-run-phpcs
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Refresh configuration and run phpcs review.</td>
+            <td nowrap>test-run-phpcs</td>
+            <td width="80%">Refresh configuration and run phpcs review.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                test-run-qa
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td>Refresh configuration and run qa review.</td>
+            <td nowrap>test-run-qa</td>
+            <td width="80%">Refresh configuration and run qa review.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" />
-                build-project-test
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td></td>
+            <td nowrap>build-project-test</td>
+            <td width="80%"></td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" />
-                test-qa-exec
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td></td>
+            <td nowrap>test-qa-exec</td>
+            <td width="80%"></td>
         </tr>
     </tbody>
 </table>
