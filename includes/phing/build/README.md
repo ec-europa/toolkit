@@ -643,6 +643,14 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
+            </td>
+            <td nowrap>package-download-unpack</td>
+            <td width="80%">Download a package and unpack it into location.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>folder-copy</td>
@@ -663,14 +671,6 @@
             </td>
             <td nowrap>folder-unprotect</td>
             <td width="80%">Open up filesystem permissions on folder.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
-            </td>
-            <td nowrap>package-download-unpack</td>
-            <td width="80%">Download a package and unpack it into location.</td>
         </tr>
         <tr>
             <td nowrap>
