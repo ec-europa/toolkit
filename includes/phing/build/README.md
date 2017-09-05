@@ -1136,7 +1136,7 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>build-platform-dev</td>
             <td width="80%">Build a local development version with a single platform profile.</td>
@@ -1144,7 +1144,7 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>build-platform-dev-all</td>
             <td width="80%">Build a local development version with all platform profiles.</td>
@@ -1152,7 +1152,7 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>build-platform-dist</td>
             <td width="80%">Build a single platform profile intended as a release package.</td>
@@ -1160,7 +1160,7 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>build-platform-dist-all</td>
             <td width="80%">Build all platform profiles intended as a release package.</td>
@@ -1175,35 +1175,27 @@
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-dev-playbook</td>
-            <td width="80%">Playbook target for build-platform-dev wrapper.</td>
+            <td nowrap>build-platform-delete</td>
+            <td width="80%">Build a platform test package to test this reslease.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-dev-all-playbook</td>
-            <td width="80%">Playbook target for build-platform-dev-all wrapper.</td>
+            <td nowrap>build-platform-type-dev</td>
+            <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-dist-playbook</td>
-            <td width="80%">Playbook target for build-platform-dist wrapper.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
-            </td>
-            <td nowrap>build-platform-dist-all-playbook</td>
-            <td width="80%">Playbook target for build-platform-dist-all wrapper.</td>
+            <td nowrap>build-platform-type-dist</td>
+            <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
         <tr>
             <td nowrap>
@@ -1285,7 +1277,7 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png" align="left" alt="wrapper" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>build-subsite-dev</td>
             <td width="80%">Build a local development version of the site.</td>
@@ -1308,19 +1300,27 @@
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-dev-playbook</td>
-            <td width="80%"></td>
+            <td nowrap>build-subsite-delete</td>
+            <td width="80%">Delete subsite build.</td>
         </tr>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-dist-playbook</td>
-            <td width="80%"></td>
+            <td nowrap>build-subsite-type-dev</td>
+            <td width="80%">Sets the type of build (dev or dist).</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
+            </td>
+            <td nowrap>build-subsite-type-dist</td>
+            <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
         <tr>
             <td nowrap>
