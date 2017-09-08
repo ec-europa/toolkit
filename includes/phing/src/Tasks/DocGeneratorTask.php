@@ -60,6 +60,8 @@ class DocGeneratorTask extends \Task {
 
     ini_set('xdebug.var_display_max_depth', 10);
 
+    $this->checkRequirements();
+
     $project = $this->getProject();
     $basedir = $project->getBasedir();
     $buildFile = $this->buildFile;
@@ -106,7 +108,7 @@ class DocGeneratorTask extends \Task {
           );
           if (count($targetDependencies) > 1) {
             $targetArray['type'] = 'playbook';
-            $playbookTargets[] = $targetArray;
+            $playbookTargets[] = $targetName;
           }
         }
 
@@ -126,7 +128,7 @@ class DocGeneratorTask extends \Task {
     }
 
     foreach ($targetsArray as $key => $targetArray) {
-      if (in_array($targetArray['name'], $callbackTargets)) {
+      if (in_array($targetArray['name'], $callbackTargets) && !in_array($targetArray['name'], $playbookTargets)) {
         $targetsArray[$key]['type'] = 'callback';
       }
       elseif (!isset($targetArray['type'])) {

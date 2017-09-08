@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="platform" default="help">
+<project name="platform" description="Builds the platform if a profiles folder is detected." default="">
 
     <!-- Build a local development version with a single platform profile. -->
     <target

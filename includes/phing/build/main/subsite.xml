@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="subsite" default="help">
+<project name="subsite" description="Builds subsites within the platform." default="">
 
     <target
         name="build-subsite-dev"

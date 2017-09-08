@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="theme" default="help">
+<project name="theme" description="Builds themes like ec_europa and places files in correct location." default="">
 
     <target
         name="build-theme-dev"

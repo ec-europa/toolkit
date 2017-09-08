@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="extensions" default="help">
+<project name="extensions" description="Custom classes for extra tasks, conditions, etc." default="">
 
     <!-- External tasks that are a composer dependency. -->
     <import file="${toolkit.dir.vendor}/drupal/phingdrushtask/import.xml" />
@@ -11,6 +11,7 @@
     <taskdef name="drushgal" classname="Phing\Ssk\Tasks\DrushGenerateAliasTask" />
     <taskdef name="drushmf" classname="Phing\Ssk\Tasks\DrushMakeFileTask" />
     <taskdef name="gitigmerge" classname="Phing\Ssk\Tasks\GitignoreMergerTask" />
+    <taskdef name="help" classname="Phing\Ssk\Tasks\PhingHelpTask" />
     <taskdef name="phpcsconf" classname="Phing\Ssk\Tasks\PhpCodeSnifferConfigurationTask" />
     <taskdef name="propval" classname="Phing\Ssk\Tasks\PropertiesValidateTask" />
     <taskdef name="relsym" classname="Phing\Ssk\Tasks\RelativeSymlinkTask" />

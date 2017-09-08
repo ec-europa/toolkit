@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="general" default="help">
+<project name="general" description="General helper targets that can be used by multiple projects." default="">
 
     <!-- Download and unpack package. -->
     <target

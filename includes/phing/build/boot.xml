@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="boot" default="help">
+<project name="boot" description="Contains all import files needed for the starterkit to function." default="">
 
     <!-- Finish import with starterkit build xml files. -->
     <import file="${phing.dir.boot}/boot/properties.xml" />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="main" default="help">
+<project name="main" default="">
 
     <import file="${phing.dir.main}/main/project.xml" />
     <import file="${phing.dir.main}/main/theme.xml" />

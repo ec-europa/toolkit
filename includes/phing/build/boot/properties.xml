@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="properties" default="help">
-
-    <!-- Help function to display the targets. -->
-    <target name="help" hidden="true">
-        <exec command="${toolkit.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
-        <echo msg="${line.separator}${phing-targets}" />
-    </target>
+<project name="properties" description="Build properties for configuration and setting of conditional properties." default="">
 
     <!-- Highest priority to env variables. -->
     <property environment="env" />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="toolkit" default="help">
+<project name="toolkit" description="Targets related to setup and configuration of the toolkit." default="">
 
     <target
         name="toolkit-initialize"

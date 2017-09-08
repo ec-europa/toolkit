@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="drush" default="help">
+<project name="drush" description="Contains drush helper targets that help manage your Drupal installation." default="">
 
     <!-- Install the site. -->
     <target name="drush-site-install" description="Install a site.">

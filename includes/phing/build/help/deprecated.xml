@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="deprecated" default="help">
+<project name="deprecated" description="Contains a mapping of subsite-starterkit to toolkit targets." default="">
 
     <!-- Target build-clone has been replaced by install-project-clone. -->
     <target hidden="true" name="build-clone">

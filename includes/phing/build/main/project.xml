@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="project" default="help">
+<project name="project" description="Targets shared by differenct project types." default="">
 
     <!-- Create code base platform. -->
     <target
@@ -218,6 +218,7 @@
     </target>
 
     <!-- Install the subsite. -->
+    <!-- TODO: Convert to playbook. -->
     <target name="install-project-clean" description="Install NextEuropa site from scratch.">
         <mkdir dir="${build.subsite.dir}" />
         <phingcall target="project-subsite-setup-files" />

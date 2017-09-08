@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="docker" default="help">
+<project name="docker" description="Contains phing targets to manage docker containers. (experimental!)." default="">
 
     <!-- Start an environment with docker. -->
     <target name="docker-compose-up" description="Start docker project." hidden="true">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="test" default="help">
+<project name="test" description="The test file contains different targets to ease the testing of your project." default="">
 
     <!-- Import test build files. -->
     <import>
