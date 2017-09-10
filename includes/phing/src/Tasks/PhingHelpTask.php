@@ -42,9 +42,6 @@ class PhingHelpTask extends \Task
     {
         if (empty($this->getOwningTarget()->getName())) {
             $project = $this->getProject();
-            $project->setDefaultTarget('help');
-//            $location = $this->getLocation()->toString();
-//            $buildFileRoot = substr($location, 0, strpos($location, ":"));
             $buildFileRoot = $project->getProperty('phing.file');
             $buildList = $this->getBuildList($buildFileRoot);
             $targets = array();
@@ -56,6 +53,7 @@ class PhingHelpTask extends \Task
 
                     $task = clone $this;
                     $task->setBuildFile($buildFile);
+                    $task->setOwningTarget($target);
 
                     $target->addTask($task);
                     $this->project->addTarget('help-' . $info['name'], $target);
@@ -65,6 +63,9 @@ class PhingHelpTask extends \Task
                         'visibility' => 'hidden',
                         'description' => $buildList[$buildFile]['description'],
                     );
+                }
+                if ($buildFile === $buildFileRoot) {
+                    $project->setDefaultTarget($target->getName());
                 }
             }
             $this->project->helpTargets = $targets;
@@ -80,21 +81,17 @@ class PhingHelpTask extends \Task
     {
         $buildFileRoot = $this->getProject()->getProperty('phing.file');
         $buildFile = $this->buildFile;
+        $buildList = $this->getBuildList($buildFileRoot);
+        $parents = array();
         $targets = array();
-        if (is_file($this->buildFile)) {
-            $buildList = $this->getBuildList($this->buildFile);
-            if ($buildFile !== $buildFileRoot) {
-                $parents = array($this->buildFile);
-                foreach ($buildList as $buildFile => $buildInfo) {
-                    if ($this->buildFile === $buildFile || in_array($buildInfo['parent'], $parents)) {
-                        $parents[] = $buildFile;
-                        $targets = array_merge($targets, $this->getBuildTargets($buildFile));
-                    }
+        if (is_file($this->buildFile) && !empty($this->getOwningTarget()->getName())) {
+            foreach ($buildList as $buildFile => $buildInfo) {
+                if ($this->buildFile === $buildFile || in_array($buildInfo['parent'], $parents)) {
+                    $parents[] = $buildFile;
+                    $targets = array_merge($targets, $this->getBuildTargets($buildFile));
                 }
             }
-            else {
-                $targets = array_merge_recursive($targets, $this->project->helpTargets);
-            }
+            $targets = array_merge($targets, $this->project->helpTargets);
             $this->printBuildTargets($targets, $buildFile, $buildList);
         }
     }
@@ -180,7 +177,7 @@ class PhingHelpTask extends \Task
                     }
                 }
 
-                $this->getBuildList($importFile, $level + 1, $buildFile, $buildList);
+                PhingHelpTask::getBuildList($importFile, $level + 1, $buildFile, $buildList);
             }
         }
         return $buildList;

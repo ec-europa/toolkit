@@ -64,23 +64,23 @@
     <target name="project-scratch-build" description="Delete previous build to start over clean.">
         <echo msg="Delete previous build." />
         <if>
-            <available file="${build.platform.dir}/default.settings.php" />
+            <available file="${build.platform.dir.settings}/default.settings.php" />
             <then>
-                <move file="${build.platform.dir}/default.settings.php" tofile="${project.tmp.dir}/default.settings.php" overwrite="true" />
+                <move file="${build.platform.dir.settings}/default.settings.php" tofile="${project.tmp.dir}/default.settings.php" overwrite="true" />
             </then>
         </if>
         <phingcall target="folder-unprotect">
-            <property name="folder.to.unprotect" value="${build.platform.dir}/sites/${build.site}" />
-        </phingcall>
+            <property name="folder.to.unprotect" value="${dir-build}" />
+    </phingcall>
         <echo msg="Unprotecting folder." />
         <phingcall target="folder-delete">
-            <property name="folder.to.delete" value="${build.platform.dir}" />
+            <property name="folder.to.delete" value="${dir-build}" />
         </phingcall>
         <if>
             <available file="${project.tmp.dir}/default.settings.php" />
             <then>
-                <mkdir dir="${build.platform.dir}/sites/default" />
-                <move file="${project.tmp.dir}/default.settings.php" tofile="${build.platform.dir}/default.settings.php" />
+                <mkdir dir="${build.platform.dir.settings}" />
+                <move file="${project.tmp.dir}/default.settings.php" tofile="${build.platform.dir.settings}/default.settings.php" />
             </then>
         </if>
     </target>

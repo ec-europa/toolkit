@@ -2,6 +2,7 @@
 
 namespace Phing\Ssk\Tasks;
 
+use Phing\Ssk\Tasks\PhingHelpTask;
 use Project;
 use Symfony\Component\Finder\Finder;
 
@@ -19,36 +20,6 @@ class DocGeneratorTask extends \Task {
    */
   private $buildfile = '';
 
-  private function getBuildList($buildFile, &$buildList = array()) {
-
-    if ($xml = simplexml_load_file($buildFile)) {
-      $importFiles = array();
-
-      foreach ($xml->xpath('//import[@file]') as $import) {
-        $importFile = (string)$import->attributes()->file;
-        // Replace tokens.
-        if (preg_match_all('/\$\{(.*?)\}/s', $importFile, $matches)) {
-          foreach ($matches[0] as $key => $match) {
-            $tokenText = $this->getProject()->getProperty($matches[1][$key]);
-            $importFile = str_replace($match, $tokenText, $importFile);
-           }
-        }
-        $importFiles[] = $importFile;
-      }
-      array_walk_recursive($buildList,
-        function (&$v, $k, $u) {
-          if ($v == $u[0]) {
-            $v = array($u[0] => $u[1]);
-          }
-        },
-        [$buildFile, $importFiles]);
-
-      foreach($importFiles as $importFile) {
-        $this->getBuildList($importFile, $buildList);
-      }
-    }
-  }
-
   /**
    * Generates an aliases.drushrc.php file.
    *
@@ -60,19 +31,11 @@ class DocGeneratorTask extends \Task {
 
     ini_set('xdebug.var_display_max_depth', 10);
 
-    $this->checkRequirements();
+//    $this->checkRequirements();
 
     $project = $this->getProject();
-    $basedir = $project->getBasedir();
     $buildFile = $this->buildFile;
-    $buildList = array($buildFile);
-    $this->getBuildList($buildFile, $buildList);
-
-    $buildFiles = new Finder();
-    $buildFiles
-      ->files()
-      ->name('*.xml')
-      ->in($basedir . '/vendor/ec-europa/ssk/includes/phing');
+    $buildList = PhingHelpTask::getBuildList($buildFile);
 
     $targetsArray = array();
     $wrapperTargets = array();
@@ -81,9 +44,8 @@ class DocGeneratorTask extends \Task {
     $deprecatedTargets = array();
     $helperTargets = array();
 
-    foreach ($buildFiles as $buildFile) {
-      $buildFilePath = $buildFile->getRealPath();
-      $xml = simplexml_load_file($buildFilePath);
+    foreach ($buildList as $buildFile => $info) {
+      $xml = simplexml_load_file($buildFile);
 
       foreach ($xml->xpath('//target') as $target) {
 
@@ -95,7 +57,7 @@ class DocGeneratorTask extends \Task {
           'name' => $targetName,
           'description' => $targetDescription,
           'visibility' => $targetVisibility,
-          'buildfile' => $buildFilePath,
+          'buildfile' => $buildFile,
         );
 
         if (isset($target->attributes()->depends)) {
@@ -137,18 +99,14 @@ class DocGeneratorTask extends \Task {
     }
     $this->wrapperTargetTable($wrapperTargets, $playbookTargets, $callbackTargets);
 
-    $iterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($buildList), \RecursiveIteratorIterator::SELF_FIRST);
-    $output = '';
-    for($iterator; $iterator->valid(); $iterator->next())
-    {
-      $depth = ($iterator->getDepth() + 1) / 2;
-      if (is_file($iterator->key())) {
-        $buildFile = $iterator->key();
+    foreach ($buildList as $buildFile => $info) {
+      $depth = $info['level'] + 1;
+      if (is_file($buildFile)) {
         $xml = simplexml_load_file($buildFile);
         $targets = array_filter($targetsArray, function($v, $k) use ($buildFile) {
           return $v['buildfile'] === $buildFile;
         }, ARRAY_FILTER_USE_BOTH);
-        $projectName = ucfirst((string) $xml->xpath('//project/@name')[0]);
+        $projectName = $info['name'];
         $output .= str_repeat('#', $depth) . ' ' . $projectName . "\n";
         if (!empty($projectName) && count($targets) > 1){
           $output .= "<table>\n";

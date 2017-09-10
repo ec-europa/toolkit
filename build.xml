@@ -2,27 +2,7 @@
 
 <project name="starterkit" default="help">
 
-    <!-- Enable output initially to show loads and logging. -->
-    <property name="logoutput" value="true" />
-    <property name="level" value="info" />
-
-    <!-- Load toolkit properties so we have all locations. -->
-    <property file="${phing.dir.starterkit}/includes/phing/build/boot.props" logoutput="${logoutput}" />
-
-    <!-- Finish import with toolkit build xml files. -->
-    <import file="${toolkit.dir.incl.phing.build}/boot.xml" />
-    <import file="${toolkit.dir.incl.phing.build}/help.xml" />
-    <import file="${toolkit.dir.incl.phing.build}/main.xml" />
-    <import file="${toolkit.dir.incl.phing.build}/test.xml" />
-
-    <!-- Disable output on consecutive phing calls. -->
-    <property name="logoutput" value="false" override="true" />
-    <property name="level" value="verbose" override="true" />
-
-    <!-- Help function to display the targets. -->
-    <target name="help" hidden="true">
-        <exec command="${toolkit.dir.bin.phing} -f ${phing.file} -l | sed -n '/Main targets/,$p'" outputproperty="phing-targets" logoutput="false" />
-        <echo msg="${line.separator}${phing-targets}" />
-    </target>
+    <property name="toolkit.dir" value="${project.basedir}" />
+    <import file="${toolkit.dir}/includes/phing/build.xml" />
 
 </project>
