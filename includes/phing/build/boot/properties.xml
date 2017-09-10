@@ -7,15 +7,15 @@
 
     <!-- Load build properties. -->
     <if>
-        <available file="build.properties.local" type="file" />
+        <available file="${project.basedir}/build.properties.local" type="file" />
         <then>
-            <property file="build.properties.local" logoutput="${logoutput}" />
+            <property file="${project.basedir}/build.properties.local" logoutput="${logoutput}" />
         </then>
     </if>
     <if>
-        <available file="build.properties" type="file" />
+        <available file="${project.basedir}/build.properties" type="file" />
         <then>
-            <property file="build.properties" logoutput="${logoutput}" />
+            <property file="${project.basedir}/build.properties" logoutput="${logoutput}" />
         </then>
         <elseif>
             <equals arg1="${project.basedir}" arg2="${toolkit.dir}" />

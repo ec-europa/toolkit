@@ -41,7 +41,7 @@
     <target name="drush-create-files-dirs" description="Create site files directories." hidden="true">
         <echo message="Creating files directories for ${db.name}." />
         <!-- Execute setttings generation script. -->
-        <drush command="php-script" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${build.site}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="php-script" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${toolkit.dir.incl.drush}/generate-directories.php</param>
         </drush>
     </target>
