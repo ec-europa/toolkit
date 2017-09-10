@@ -2,7 +2,7 @@
 
 <project name="starterkit" default="help">
 
-    <property name="toolkit.dir" value="${project.basedir}" />
+    <property name="toolkit.dir" value="${phing.dir.starterkit}" />
     <import file="${toolkit.dir}/includes/phing/build.xml" />
 
 </project>
