@@ -157,8 +157,9 @@ class PhingHelpTask extends \Task
      */
     public function getBuildList($buildFile, $level = 0, $parent = '', &$buildList = array()) {
 
-        if (($buildFileXml = simplexml_load_file($buildFile))
-          && ($buildFileName = $buildFileXml->xpath('//project/@name')[0])) {
+        if (is_file($buildFile)) {
+            $buildFileXml = simplexml_load_file($buildFile);
+            $buildFileName = $buildFileXml->xpath('//project/@name')[0];
             $buildList[$buildFile] = array(
               'level' => $level,
               'parent' => $parent,
