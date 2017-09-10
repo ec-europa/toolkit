@@ -159,29 +159,30 @@ class PhingHelpTask extends \Task
 
         if (is_file($buildFile)) {
             $buildFileXml = simplexml_load_file($buildFile);
-            $buildFileName = $buildFileXml->xpath('//project/@name')[0];
-            $buildList[$buildFile] = array(
-              'level' => $level,
-              'parent' => $parent,
-              'name' => (string) $buildFileName,
-              'description' => (string) $buildFileXml->xpath('//project/@description')[0],
-            );
+            if ($buildFileName = $buildFileXml->xpath('//project/@name')[0]) {
+                $buildList[$buildFile] = array(
+                  'level' => $level,
+                  'parent' => $parent,
+                  'name' => (string)$buildFileName,
+                  'description' => (string)$buildFileXml->xpath('//project/@description')[0],
+                );
 
-            foreach ($buildFileXml->xpath('//import[@file]') as $import) {
-                $importFile = (string)$import->attributes()->file;
+                foreach ($buildFileXml->xpath('//import[@file]') as $import) {
+                    $importFile = (string)$import->attributes()->file;
 
-                // Replace tokens.
-                if (preg_match_all('/\$\{(.*?)\}/s', $importFile, $matches)) {
-                    foreach ($matches[0] as $key => $match) {
-                        $tokenText = $this->getProject()->getProperty($matches[1][$key]);
-                        $importFile = str_replace($match, $tokenText, $importFile);
+                    // Replace tokens.
+                    if (preg_match_all('/\$\{(.*?)\}/s', $importFile, $matches)) {
+                        foreach ($matches[0] as $key => $match) {
+                            $tokenText = $this->getProject()->getProperty($matches[1][$key]);
+                            $importFile = str_replace($match, $tokenText, $importFile);
+                        }
                     }
-                }
 
-                PhingHelpTask::getBuildList($importFile, $level + 1, $buildFile, $buildList);
+                    PhingHelpTask::getBuildList($importFile, $level + 1, $buildFile, $buildList);
+                }
             }
+            return $buildList;
         }
-        return $buildList;
     }
 
     /**
