@@ -20,13 +20,21 @@ $directories = array(
 );
 
 foreach ($directories as $directory) {
-  // Check if directory exists.
-  if ($directory && !is_dir($directory)) {
-    // Let mkdir() recursively create directories and use the default directory
-    // permissions.
-    if (@drupal_mkdir($directory, NULL, TRUE)) {
-      // @codingStandardsIgnoreLine
-      @chmod($directory, 0775);
+  if (!is_dir($directory) && !drupal_mkdir($directory, NULL, TRUE)) {
+    watchdog('file system', 'The directory %directory does not exist and could not be created.', array('%directory' => $directory), WATCHDOG_ERROR);
+  }
+  if (is_dir($directory) && !is_writable($directory) && !drupal_chmod($directory)) {
+    watchdog('file system', 'The directory %directory exists but is not writable and could not be made writable.', array('%directory' => $directory), WATCHDOG_ERROR);
+  }
+  elseif (is_dir($directory)) {
+    $public_dir = variable_get('file_public_path', conf_path() . '/files');
+    if ($directory == $public_dir) {
+      // Create public .htaccess file.
+      file_create_htaccess($directory, FALSE);
+    }
+    else {
+      // Create private .htaccess file.
+      file_create_htaccess($directory);
     }
   }
 }
