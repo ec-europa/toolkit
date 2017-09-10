@@ -166,11 +166,11 @@
 
     <!-- Setup file directory -->
     <target name="project-subsite-setup-files" description="Create files directories for subsite.">
-        <!--<trycatch>-->
-            <!--<try>-->
-                <!--<phingcall target="drush-create-files-dirs" />-->
-            <!--</try>-->
-            <!--<catch>-->
+        <trycatch>
+            <try>
+                <phingcall target="drush-create-files-dirs" />
+            </try>
+            <catch>
                 <if>
                     <istrue value="${build.subsite.dir.files}" />
                     <then>
@@ -181,8 +181,8 @@
                         <mkdir dir="${build.subsite.dir.files}/js_injector" />
                     </then>
                 </if>
-            <!--</catch>-->
-        <!--</trycatch>-->
+            </catch>
+        </trycatch>
     </target>
 
     <!-- Generate the makefile used to download development modules. -->
