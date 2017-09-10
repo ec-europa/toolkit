@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="project" default="help">
+<project name="my-project" description="The link between your project and starterkit." default="">
 
-    <import file="${project.basedir}/vendor/ec-europa/ssk/build.xml" />
+    <property name="toolkit.dir" value="${project.basedir}/vendor/ec-europa/ssk" />
+    <import file="${toolkit.dir}/includes/phing/build.xml" />
 
 </project>
