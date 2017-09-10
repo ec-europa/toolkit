@@ -24,7 +24,7 @@ pipeline:
     group: prepare
     image: fpfis/php56-dev
     commands:
-      - PROJECT=$(pwd) composer update
+      - composer ssk-install
     volumes:
       - /cache:/cache
 
