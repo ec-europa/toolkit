@@ -61,7 +61,6 @@
             <param>&lt; ${database-file}</param>
         </drush>
         <phingcall target="drush-registry-rebuild" />
-        <phingcall target="drush-create-files-dirs" />
         <!-- Update database. -->
         <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}"></drush>
         <!-- Clear Caches. -->
@@ -211,6 +210,20 @@
             verbose="${drush.verbose}"
             color="${drush.color}">
             <param>"node_access_rebuild()"</param>
+        </drush>
+    </target>
+
+    <!-- Rebuild node access. -->
+    <target name="drush-file-ensure-htaccess" description="Rebuild the node access.">
+        <drush
+            command="php-eval"
+            assume="yes"
+            root="${build.platform.dir}"
+            alias="@${build.site}"
+            bin="${toolkit.dir.bin.drush}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>"file_ensure_htaccess()"</param>
         </drush>
     </target>
 

@@ -166,23 +166,18 @@
 
     <!-- Setup file directory -->
     <target name="project-subsite-setup-files" description="Create files directories for subsite.">
-        <trycatch>
-            <try>
-                <phingcall target="drush-create-files-dirs" />
-            </try>
-            <catch>
-                <if>
-                    <istrue value="${build.subsite.dir.files}" />
-                    <then>
-                        <mkdir dir="${build.subsite.dir.files}/private_files" />
-                        <mkdir dir="${build.subsite.dir.tmp}" />
-                        <!-- Support CSS and JS injector. -->
-                        <mkdir dir="${build.subsite.dir.files}/css_injector" />
-                        <mkdir dir="${build.subsite.dir.files}/js_injector" />
-                    </then>
-                </if>
-            </catch>
-        </trycatch>
+        <if>
+            <istrue value="${build.subsite.dir.files}" />
+            <then>
+                <mkdir dir="${build.subsite.dir.files}/private_files" />
+                <mkdir dir="${build.subsite.dir.tmp}" />
+                <!-- Support CSS and JS injector. -->
+                <mkdir dir="${build.subsite.dir.files}/css_injector" />
+                <mkdir dir="${build.subsite.dir.files}/js_injector" />
+            </then>
+        </if>
+        <phingcall target="drush-file-ensure-htaccess" />
+
     </target>
 
     <!-- Generate the makefile used to download development modules. -->
@@ -228,7 +223,7 @@
     <!-- TODO: Convert to playbook. -->
     <target name="install-project-clean" description="Install NextEuropa site from scratch.">
         <mkdir dir="${build.subsite.dir}" />
-        <phingcall target="project-subsite-setup-files" />
+        <!--<phingcall target="project-subsite-setup-files" />-->
         <!--
             Ensure the settings folder is writable so the installer can create
             the settings.php file.
@@ -276,6 +271,8 @@
                 </if>
             </else>
         </if>
+
+        <phingcall target="project-subsite-setup-files" />
 
         <!-- Enable solr if needed. -->
         <phingcall target="drush-enable-solr" />
