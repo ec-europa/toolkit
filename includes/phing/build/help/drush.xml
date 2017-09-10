@@ -61,7 +61,7 @@
             <param>&lt; ${database-file}</param>
         </drush>
         <phingcall target="drush-registry-rebuild" />
-        <!--<phingcall target="drush-create-files-dirs" />-->
+        <phingcall target="drush-create-files-dirs" />
         <phingcall target="drush-file-ensure-htaccess" />
         <!-- Enable solr if needed. -->
         <phingcall target="drush-enable-solr" />

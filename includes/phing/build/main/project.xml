@@ -222,7 +222,7 @@
     <!-- TODO: Convert to playbook. -->
     <target name="install-project-clean" description="Install NextEuropa site from scratch.">
         <!--<mkdir dir="${build.subsite.dir}" />-->
-        <phingcall target="project-subsite-setup-files" />
+        <!--<phingcall target="project-subsite-setup-files" />-->
         <!--
             Ensure the settings folder is writable so the installer can create
             the settings.php file.
