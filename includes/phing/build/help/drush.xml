@@ -161,9 +161,9 @@
                     <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
                     <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
                     <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
-                    <token key="file_public_path" value="${build.files.dir}" />
-                    <token key="file_private_path" value="${build.files.dir}/private_files" />
-                    <token key="file_temporary_path" value="${build.tmp.dir}" />
+                    <token key="file_public_path" value="${build.subsite.dir.files}" />
+                    <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
+                    <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
                 </replacetokens>
             </filterchain>
         </copy>
