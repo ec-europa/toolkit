@@ -20,10 +20,10 @@ $directories = array(
 );
 
 foreach ($directories as $directory) {
-  if (!is_dir($directory) && !drupal_mkdir($directory, NULL, TRUE)) {
+  if (!is_dir($directory) && !@drupal_mkdir($directory, NULL, TRUE)) {
     watchdog('file system', 'The directory %directory does not exist and could not be created.', array('%directory' => $directory), WATCHDOG_ERROR);
   }
-  if (is_dir($directory) && !is_writable($directory) && !drupal_chmod($directory)) {
+  if (is_dir($directory) && !is_writable($directory) && !@drupal_chmod($directory)) {
     watchdog('file system', 'The directory %directory exists but is not writable and could not be made writable.', array('%directory' => $directory), WATCHDOG_ERROR);
   }
   elseif (is_dir($directory)) {
