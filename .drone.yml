@@ -20,15 +20,15 @@ services:
 
 pipeline:
 
-  prepare-php:
+  toolkit:
     group: prepare
     image: fpfis/php56-dev
     commands:
-      - composer ssk-install
+      - PROJECT=$(pwd) composer ssk-install
     volumes:
       - /cache:/cache
 
-  build-dev:
+  build:
     image: fpfis/php56-dev
     commands:
       - ./ssk/phing project-build-platform
@@ -39,7 +39,7 @@ pipeline:
   install:
     image: fpfis/php56-dev
     commands:
-      - ./ssk/phing install-project-clean -D'db.host'='mysql' -D'db.name'=database
+      - ./ssk/phing install-project-clean
     volumes:
       - /cache:/cache
 
