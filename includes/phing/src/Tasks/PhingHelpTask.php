@@ -42,12 +42,13 @@ class PhingHelpTask extends \Task
     {
         if (empty($this->getOwningTarget()->getName())) {
             $project = $this->getProject();
+            $projectTargets = $this->project->getTargets();
             $buildFileRoot = $project->getProperty('phing.file');
             $buildList = $this->getBuildList($buildFileRoot);
             $targets = array();
 
             foreach ($buildList as $buildFile => $info) {
-                if (is_file($buildFile)) {
+                if (!isset($projectTargets['help-' . $info['name']]) && is_file($buildFile)) {
                     $target = new Target();
                     $target->setName('help-' . $info['name']);
 

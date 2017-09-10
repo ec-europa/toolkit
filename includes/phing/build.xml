@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="starterkit" description="The main starterkit build file." default="help">
+<project name="build" description="The main starterkit build file." default="help">
 
     <!-- Enable output initially to show loads and logging. -->
     <property name="logoutput" value="true" />
     <property name="level" value="info" />
 
     <!-- Load toolkit properties so we have all locations. -->
-    <property file="${phing.dir.starterkit}/build/boot.props" logoutput="${logoutput}" />
+    <property file="${phing.dir.build}/build/boot.props" logoutput="${logoutput}" />
 
     <!-- Finish import with toolkit build xml files. -->
     <import file="${toolkit.dir.incl.phing.build}/boot.xml" />
