@@ -221,15 +221,13 @@
     <!-- Install the subsite. -->
     <!-- TODO: Convert to playbook. -->
     <target name="install-project-clean" description="Install NextEuropa site from scratch.">
-        <mkdir dir="${build.subsite.dir}" />
+        <!--<mkdir dir="${build.subsite.dir}" />-->
         <phingcall target="project-subsite-setup-files" />
         <!--
             Ensure the settings folder is writable so the installer can create
             the settings.php file.
          -->
-        <chmod mode="0775" failonerror="false" verbose="false" quiet="true">
-            <fileset dir="${build.subsite.dir}" />
-        </chmod>
+        <exec command="chmod 775 ${build.platform.dir.settings}" />
 
         <!-- Regenerate aliases for this site to be included. -->
         <phingcall target="drush-generate-aliases" />
