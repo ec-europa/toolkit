@@ -20,38 +20,41 @@ services:
 
 pipeline:
 
-  prepare-mysql:
-    group: prepare
-    image: fpfis/mysql56
-    commands:
-      - sleep 5
-      - mysqladmin -h mysql -uroot create database
-
   prepare-php:
     group: prepare
     image: fpfis/php56-dev
     commands:
-      - PROJECT=/test/ssk composer install
+      - composer update
+#      - ./ssk/phing
+    volumes:
+      - /cache:/cache
 
   build-dev:
     image: fpfis/php56-dev
     commands:
-      - ./ssk/phing build-project-platform -D behat.base_url='http://web:8080' -D'behat.wd_host'='http://selenium:4444/wd/hub' -D'behat.browser_name'='chrome'
-      - ./ssk/phing build-subsite-dev -D behat.base_url='http://web:8080' -D'behat.wd_host'='http://selenium:4444/wd/hub' -D'behat.browser_name'='chrome'
+      - ./ssk/phing project-build-platform
+      - ./ssk/phing build-subsite-dev
+    volumes:
+      - /cache:/cache
+
   install:
     image: fpfis/php56-dev
     commands:
-      - ./ssk/phing build-project-clean -D'drupal.db.host'='mysql' -D'drupal.db.name'=database
+      - ./ssk/phing install-project-clean -D'db.host'='mysql' -D'db.name'=database
+    volumes:
+      - /cache:/cache
 
   test:
     image: fpfis/php56-dev
     commands:
       - ./ssk/phing test-run-behat
+    volumes:
+      - /cache:/cache
 
   build-dist:
     image: fpfis/php56-dev
     commands:
-      - ./ssk/phing build-subsite-dist -D'composer.bin'=$(which composer)
+      - ./ssk/phing build-platform-dist -D'composer.bin'=$(which composer)
       - tar -czf ${DRONE_REPO_NAME}-${DRONE_TAG}.tar.gz -C build .
     when:
       event: tag
