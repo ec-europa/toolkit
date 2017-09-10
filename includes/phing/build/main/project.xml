@@ -176,8 +176,7 @@
                 <mkdir dir="${build.subsite.dir.files}/js_injector" />
             </then>
         </if>
-        <!--<phingcall target="drush-file-ensure-htaccess" />-->
-
+        <phingcall target="drush-file-ensure-htaccess" />
     </target>
 
     <!-- Generate the makefile used to download development modules. -->
@@ -223,6 +222,7 @@
     <!-- TODO: Convert to playbook. -->
     <target name="install-project-clean" description="Install NextEuropa site from scratch.">
         <mkdir dir="${build.subsite.dir}" />
+        <phingcall target="project-subsite-setup-files" />
         <!--
             Ensure the settings folder is writable so the installer can create
             the settings.php file.
