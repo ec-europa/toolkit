@@ -8,6 +8,9 @@ nbproject/
 # Ignore local configuration.
 # ---------------------------
 /build.properties.local
+/build.properties.dist
+/build.project.xml
+/phpcs-ruleset.xml
 /phpcs.xml
 /tests/behat.yml
 
@@ -17,6 +20,9 @@ nbproject/
 /ssk
 /ssk-*
 /build/
+/lib
+/resources
+/tests
 /platform/
 /.tmp/
 /vendor/
