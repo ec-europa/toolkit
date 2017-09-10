@@ -176,7 +176,7 @@
                 <mkdir dir="${build.subsite.dir.files}/js_injector" />
             </then>
         </if>
-        <phingcall target="drush-file-ensure-htaccess" />
+        <!--<phingcall target="drush-file-ensure-htaccess" />-->
     </target>
 
     <!-- Generate the makefile used to download development modules. -->
@@ -270,9 +270,6 @@
                 </if>
             </else>
         </if>
-
-        <!-- Enable solr if needed. -->
-        <phingcall target="drush-enable-solr" />
 
         <!--
             Subsites are not allowed to use their own installation profile for

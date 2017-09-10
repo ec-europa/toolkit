@@ -63,6 +63,8 @@
         <phingcall target="drush-registry-rebuild" />
         <!--<phingcall target="drush-create-files-dirs" />-->
         <phingcall target="drush-file-ensure-htaccess" />
+        <!-- Enable solr if needed. -->
+        <phingcall target="drush-enable-solr" />
         <!-- Update database. -->
         <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}"></drush>
         <!-- Clear Caches. -->
