@@ -8,7 +8,7 @@
         description="Build NextEuropa Platform code without version control."
         depends="
             project-subsite-backup,
-            project-scratch-build,
+            project-platform-delete,
             project-platform-set-version,
             project-platform-package-unpack,
             project-subsite-restore" />
@@ -40,6 +40,13 @@
             drush-generate-settings,
             project-database-import,
             project-modules-devel-en" />
+
+    <!-- Delete a platform build. -->
+    <target name="project-platform-delete" description="Remove previous platform build..">
+        <phingcall target="project-scratch-build">
+            <property name="dir-build" value="${build.platform.dir}" override="true" />
+        </phingcall>
+    </target>
 
     <!-- Link site document root to Webserver document root. -->
     <target name="project-platform-set-docroot" description="Link the platform root to your docroot.">
