@@ -119,36 +119,66 @@
                             </fileset>
                         </copy>
                         <delete dir="lib-backup/modules/custom" quiet="true" />
+                    </then>
+                </if>
+                <if>
+                    <available file="lib-backup/modules" type="dir" />
+                    <then>
                         <copy todir="${lib.dir.modules.custom}" haltonerror="false">
                             <fileset dir="lib-backup/modules">
                                 <include name="**" />
                             </fileset>
                         </copy>
                         <delete dir="lib-backup/modules" quiet="true" />
+                    </then>
+                </if>
+                <if>
+                    <available file="lib-backup/features/custom" type="dir" />
+                    <then>
                         <copy todir="${lib.dir.modules.features}" haltonerror="false">
                             <fileset dir="lib-backup/features/custom">
                                 <include name="**" />
                             </fileset>
                         </copy>
                         <delete dir="lib-backup/features/custom" quiet="true" />
+                    </then>
+                </if>
+                <if>
+                    <available file="lib-backup/features" type="dir" />
+                    <then>
                         <copy todir="${lib.dir.modules.features}" haltonerror="false">
                             <fileset dir="lib-backup/features">
                                 <include name="**" />
                             </fileset>
                         </copy>
                         <delete dir="lib-backup/features" quiet="true" />
+                    </then>
+                </if>
+                <if>
+                    <available file="lib-backup/themes" type="dir" />
+                    <then>
                         <copy todir="${lib.dir.themes}" haltonerror="false">
                             <fileset dir="lib-backup/themes">
                                 <include name="**" />
                             </fileset>
                         </copy>
                         <delete dir="lib-backup/themes" quiet="true" />
+                    </then>
+                </if>
+                <if>
+                    <available file="lib-backup/libraries" type="dir" />
+                    <then>
                         <copy todir="${lib.dir.libraries}" haltonerror="false">
                             <fileset dir="lib-backup/libraries">
                                 <include name="**" />
                             </fileset>
                         </copy>
                         <delete dir="lib-backup/libraries" quiet="true" />
+                    </then>
+                </if>
+                <if>
+                    <available file="lib-backup/src" type="dir" />
+                    <then>
                         <copy todir="${lib.dir.source}" haltonerror="false">
                             <fileset dir="lib-backup/src">
                                 <include name="**" />
