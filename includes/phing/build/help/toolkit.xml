@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="toolkit" description="Targets related to setup and configuration of the toolkit." default="">
+<project name="toolkit" default="help">
 
     <target
         name="toolkit-initialize"
@@ -66,101 +66,95 @@
         <if>
             <available file="${project.basedir}/build.package.xml" type="file" />
             <then>
-                <input propertyName="toolkit-upgrade" message="Subsite Starterkit 2.x detected. Do you wish to upgrade to 3.x?" validargs="y,n" />
-                <if>
-                    <equals arg1="${toolkit-upgrade}" arg2="y" />
-                    <then>
-                        <!-- Delete starterkit folders. -->
-                        <phingcall target="folder-delete">
-                            <property name="folder.to.delete" value="${project.basedir}/bin" />
-                        </phingcall>
-                        <phingcall target="folder-delete">
-                            <property name="folder.to.delete" value="${project.basedir}/docs" />
-                        </phingcall>
-                        <phingcall target="folder-delete">
-                            <property name="folder.to.delete" value="${project.basedir}/src" />
-                        </phingcall>
-                        <phingcall target="folder-delete">
-                            <property name="folder.to.delete" value="${resources.dir}/cloudformation" />
-                        </phingcall>
-                        <phingcall target="folder-delete">
-                            <property name="folder.to.delete" value="${resources.dir}/codedeploy" />
-                        </phingcall>
-                        <phingcall target="folder-delete">
-                            <property name="folder.to.delete" value="${resources.dir}/composer" />
-                        </phingcall>
-                        <!-- Delete starterkit files. -->
-                        <delete quiet="true">
-                            <fileset dir="${project.basedir}">
-                                <include name="CHANGELOG.md" />
-                                <include name="LICENSE.md" />
-                                <include name="README.md" />
-                                <include name="appspec.yml" />
-                                <include name="build.clone.xml" />
-                                <include name="build.package.xml" />
-                                <include name="build.properties.dist" />
-                                <include name="build.test.xml" />
-                                <include name="composer.lock" />
-                                <include name="phpcs-ruleset.xml" />
-                            </fileset>
-                        </delete>
-                        <!-- Move subsite resources to new location. -->
-                        <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true" haltonerror="false" />
-                        <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true" haltonerror="false" />
+                <!-- Delete starterkit folders. -->
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${project.basedir}/bin" />
+                </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${project.basedir}/docs" />
+                </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${project.basedir}/src" />
+                </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${resources.dir}/cloudformation" />
+                </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${resources.dir}/codedeploy" />
+                </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${resources.dir}/composer" />
+                </phingcall>
+                <!-- Delete starterkit files. -->
+                <delete quiet="true">
+                    <fileset dir="${project.basedir}">
+                        <include name="CHANGELOG.md" />
+                        <include name="LICENSE.md" />
+                        <include name="README.md" />
+                        <include name="appspec.yml" />
+                        <include name="build.clone.xml" />
+                        <include name="build.package.xml" />
+                        <include name="build.properties.dist" />
+                        <include name="build.test.xml" />
+                        <include name="composer.lock" />
+                        <include name="phpcs-ruleset.xml" />
+                    </fileset>
+                </delete>
+                <!-- Move subsite resources to new location. -->
+                <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true" haltonerror="false" />
+                <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true" haltonerror="false" />
 
-                        <move file="${lib.dir}" tofile="lib-backup" />
-                        <mkdir dir="${lib.dir.libraries}" />
-                        <mkdir dir="${lib.dir.modules.custom}" />
-                        <mkdir dir="${lib.dir.modules.features}" />
-                        <mkdir dir="${lib.dir.themes}" />
-                        <mkdir dir="${lib.dir.source}" />
-                        <if>
-                            <available file="lib-backup/modules/custom" type="dir" />
-                            <then>
-                                <copy todir="${lib.dir.modules.custom}" haltonerror="false">
-                                    <fileset dir="lib-backup/modules/custom">
-                                        <include name="**" />
-                                    </fileset>
-                                </copy>
-                                <delete dir="lib-backup/modules/custom" quiet="true" />
-                                <copy todir="${lib.dir.modules.custom}" haltonerror="false">
-                                    <fileset dir="lib-backup/modules">
-                                        <include name="**" />
-                                    </fileset>
-                                </copy>
-                                <delete dir="lib-backup/modules" quiet="true" />
-                                <copy todir="${lib.dir.modules.features}" haltonerror="false">
-                                    <fileset dir="lib-backup/features/custom">
-                                        <include name="**" />
-                                    </fileset>
-                                </copy>
-                                <delete dir="lib-backup/features/custom" quiet="true" />
-                                <copy todir="${lib.dir.modules.features}" haltonerror="false">
-                                    <fileset dir="lib-backup/features">
-                                        <include name="**" />
-                                    </fileset>
-                                </copy>
-                                <delete dir="lib-backup/features" quiet="true" />
-                                <copy todir="${lib.dir.themes}" haltonerror="false">
-                                    <fileset dir="lib-backup/themes">
-                                        <include name="**" />
-                                    </fileset>
-                                </copy>
-                                <delete dir="lib-backup/themes" quiet="true" />
-                                <copy todir="${lib.dir.libraries}" haltonerror="false">
-                                    <fileset dir="lib-backup/libraries">
-                                        <include name="**" />
-                                    </fileset>
-                                </copy>
-                                <delete dir="lib-backup/libraries" quiet="true" />
-                                <copy todir="${lib.dir.source}" haltonerror="false">
-                                    <fileset dir="lib-backup/src">
-                                        <include name="**" />
-                                    </fileset>
-                                </copy>
-                                <delete dir="lib-backup/src" quiet="true" />
-                            </then>
-                        </if>
+                <move file="${lib.dir}" tofile="lib-backup" />
+                <mkdir dir="${lib.dir.libraries}" />
+                <mkdir dir="${lib.dir.modules.custom}" />
+                <mkdir dir="${lib.dir.modules.features}" />
+                <mkdir dir="${lib.dir.themes}" />
+                <mkdir dir="${lib.dir.source}" />
+                <if>
+                    <available file="lib-backup/modules/custom" type="dir" />
+                    <then>
+                        <copy todir="${lib.dir.modules.custom}" haltonerror="false">
+                            <fileset dir="lib-backup/modules/custom">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/modules/custom" quiet="true" />
+                        <copy todir="${lib.dir.modules.custom}" haltonerror="false">
+                            <fileset dir="lib-backup/modules">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/modules" quiet="true" />
+                        <copy todir="${lib.dir.modules.features}" haltonerror="false">
+                            <fileset dir="lib-backup/features/custom">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/features/custom" quiet="true" />
+                        <copy todir="${lib.dir.modules.features}" haltonerror="false">
+                            <fileset dir="lib-backup/features">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/features" quiet="true" />
+                        <copy todir="${lib.dir.themes}" haltonerror="false">
+                            <fileset dir="lib-backup/themes">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/themes" quiet="true" />
+                        <copy todir="${lib.dir.libraries}" haltonerror="false">
+                            <fileset dir="lib-backup/libraries">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/libraries" quiet="true" />
+                        <copy todir="${lib.dir.source}" haltonerror="false">
+                            <fileset dir="lib-backup/src">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/src" quiet="true" />
                     </then>
                 </if>
             </then>
