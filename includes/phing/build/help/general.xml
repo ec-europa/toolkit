@@ -56,16 +56,25 @@
             </then>
         </if>
         <!-- Use the faster native commands on UNIX systems. -->
-        <if>
-            <os family="unix" />
-            <then>
-                <echo msg="Unpacking ${package-name} into ${package-extract-location}." />
-                <exec command='tar xzf "${package-cache-location}/${package-name}" ${package-extract-options} -C "${package-extract-location}"' dir="${project.basedir}" passthru="true" checkreturn="true" />
-            </then>
-            <else>
-                <untar file="${package-cache-location}/${package-name}" todir="${package-extract-location}" />
-            </else>
-        </if>
+        <trycatch>
+            <try>
+                <if>
+                    <os family="unix" />
+                    <then>
+                        <echo msg="Unpacking ${package-name} into ${package-extract-location}." />
+                        <exec command='tar xzf "${package-cache-location}/${package-name}" ${package-extract-options} -C "${package-extract-location}"' dir="${project.basedir}" passthru="true" checkreturn="true" />
+                    </then>
+                    <else>
+                        <untar file="${package-cache-location}/${package-name}" todir="${package-extract-location}" />
+                    </else>
+                </if>
+            </try>
+            <catch>
+                <delete file="${package-cache-location}/${package-name}" failonerror="true" />
+                <!-- Dangerous! Might become a loop... -->
+                <phingcall target="package-download-unpack" />
+            </catch>
+        </trycatch>
     </target>
 
     <!-- Copies a given folder to a new location. -->
