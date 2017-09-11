@@ -103,7 +103,7 @@
 
                 <!-- Copy the tests over theirs, if they have custom ones it can break. -->
                 <copy todir="${tests.dir}" overwrite="true" haltonerror="false">
-                    <fileset dir="${toolkit.dir.incl.templates}/tests">
+                    <fileset dir="${toolkit.dir.incl.templates}/subsite/tests">
                         <include name="**" />
                     </fileset>
                 </copy>
