@@ -108,6 +108,43 @@
                     </fileset>
                 </copy>
 
+                <!-- Copy composer if it matches starterkit 2.x master. -->
+                <exec command="curl https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/composer.json > ${project.tmp.dir}/composer.json"  />
+                <trycatch>
+                    <try>
+                        <exec command="cmp ${resources.dir.composer.json} ${project.tmp.dir}/composer.json" checkreturn="true" />
+                        <echo msg="Custom ${resources.dir.composer.json} file detected. Not overwriting with ssk 3.x version." level="warning" />
+                    </try>
+                    <catch>
+                        <copy file="${toolkit.dir.incl.templates}/subsite/resources/composer.json" tofile="${resources.dir.composer.json}" />
+                        <copy file="${toolkit.dir.incl.templates}/subsite/resources/composer.lock" tofile="${resources.dir.composer.lock}" />
+                    </catch>
+                </trycatch>
+
+                <!-- Copy new site.make if it matches starterkit 2.x master. -->
+                <exec command="curl https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/site.make > ${project.tmp.dir}/site.make"  />
+                <trycatch>
+                    <try>
+                        <exec command="cmp ${resources.dir.site.make} ${project.tmp.dir}/site.make" checkreturn="true" />
+                        <echo msg="Custom ${resources.dir.site.make} file detected. Not overwriting with ssk 3.x version." level="warning" />
+                    </try>
+                    <catch>
+                        <copy file="${toolkit.dir.incl.templates}/subsite/resources/site.make" tofile="${resources.dir.site.make}" />
+                    </catch>
+                </trycatch>
+
+                <!-- Copy new .gitignore if it matches starterkit 2.x master. -->
+                <exec command="curl https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/.gitignore > ${project.tmp.dir}/.gitignore"  />
+                <trycatch>
+                    <try>
+                        <exec command="cmp ${project.basedir}/.gitignore ${project.tmp.dir}/.gitignore" checkreturn="true" />
+                        <echo msg="Custom .gitignore file detected. Not overwriting with ssk 3.x version." level="warning" />
+                    </try>
+                    <catch>
+                        <copy file="${toolkit.dir.incl.templates}/subsite/resources/site.make" tofile="${resources.dir.site.make}" />
+                    </catch>
+                </trycatch>
+
                 <!-- Move subsite resources to new location. -->
                 <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true" haltonerror="false" />
                 <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true" haltonerror="false" />

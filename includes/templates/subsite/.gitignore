@@ -1,0 +1,25 @@
+# Ignore editor and IDE metadata.
+# -------------------------------
+*.sublime-project
+*.sublime-workspace
+.idea/
+nbproject/
+
+# Ignore local configuration.
+# ---------------------------
+/build.properties.local
+/phpcs.xml
+/tests/behat.yml
+
+# Ignore build artifacts.
+# -----------------------
+/bin/
+/ssk
+/ssk-*
+/build/
+/platform/
+/.tmp/
+/vendor/
+/resources/git/hooks/pre-push/phpcs
+lib-backup/
+ssk
