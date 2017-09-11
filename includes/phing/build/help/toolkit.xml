@@ -108,11 +108,10 @@
                     </fileset>
                 </copy>
 
-                <!-- Copy composer if it matches starterkit 2.x master. -->
-                <exec command="curl https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/composer.json > ${project.tmp.dir}/composer.json"  />
+                <exec command="curl -L${curl.progress} -o ${project.tmp.dir}/composer.json https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/composer.json" passthru="true" />
                 <trycatch>
                     <try>
-                        <exec command="diff ${resources.dir.composer.json} ${project.tmp.dir}/composer.json" checkreturn="true" />
+                        <exec command="diff ${resources.dir.composer.json} ${project.tmp.dir}/composer.json" passthru="true" checkreturn="true" />
                         <copy file="${toolkit.dir.incl.templates}/subsite/resources/composer.json" tofile="${resources.dir.composer.json}" />
                         <copy file="${toolkit.dir.incl.templates}/subsite/resources/composer.lock" tofile="${resources.dir.composer.lock}" />
                     </try>
@@ -122,10 +121,11 @@
                 </trycatch>
 
                 <!-- Copy new site.make if it matches starterkit 2.x master. -->
-                <exec command="curl https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/site.make > ${project.tmp.dir}/site.make"  />
+                <exec command="curl -L${curl.progress} -o ${project.tmp.dir}/site.make https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/site.make" passthru="true" />
+
                 <trycatch>
                     <try>
-                        <exec command="diff ${resources.dir.site.make} ${project.tmp.dir}/site.make" checkreturn="true" />
+                        <exec command="diff ${resources.dir.site.make} ${project.tmp.dir}/site.make" passthru="true" checkreturn="true" />
                         <copy file="${toolkit.dir.incl.templates}/subsite/resources/site.make" tofile="${resources.dir.site.make}" />
                     </try>
                     <catch>
@@ -134,10 +134,11 @@
                 </trycatch>
 
                 <!-- Copy new .gitignore if it matches starterkit 2.x master. -->
-                <exec command="curl https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/.gitignore > ${project.tmp.dir}/.gitignore"  />
+                <exec command="curl -L${curl.progress} -o ${project.tmp.dir}/.gitignore https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/.gitignore" passthru="true" />
+
                 <trycatch>
                     <try>
-                        <exec command="diff ${project.basedir}/.gitignore ${project.tmp.dir}/.gitignore" checkreturn="true" />
+                        <exec command="diff ${project.basedir}/.gitignore ${project.tmp.dir}/.gitignore" passthru="true" checkreturn="true" />
                         <copy file="${toolkit.dir.incl.templates}/subsite/resources/.gitignore" tofile="${project.basedir}/.gitignore" />
                     </try>
                     <catch>
