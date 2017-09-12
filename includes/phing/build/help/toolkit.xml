@@ -110,7 +110,7 @@
                     </fileset>
                 </copy>
 
-                <exec command="curl -L${curl.progress} -o ${project.tmp.dir}/composer.json https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/composer.json" />
+                <exec command="curl -L -o ${project.tmp.dir}/composer.json https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/composer.json" />
                 <trycatch>
                     <try>
                         <exec command="diff ${resources.dir.composer.json} ${project.tmp.dir}/composer.json" passthru="true" checkreturn="true" />
@@ -123,7 +123,7 @@
                 </trycatch>
 
                 <!-- Copy new site.make if it matches starterkit 2.x master. -->
-                <exec command="curl -L${curl.progress} -o ${project.tmp.dir}/site.make https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/site.make" />
+                <exec command="curl -L -o ${project.tmp.dir}/site.make https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/site.make" />
 
                 <trycatch>
                     <try>
@@ -136,7 +136,7 @@
                 </trycatch>
 
                 <!-- Copy new .gitignore if it matches starterkit 2.x master. -->
-                <exec command="curl -L${curl.progress} -o ${project.tmp.dir}/.gitignore https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/.gitignore" />
+                <exec command="curl -L -o ${project.tmp.dir}/.gitignore https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/.gitignore" />
 
                 <trycatch>
                     <try>
