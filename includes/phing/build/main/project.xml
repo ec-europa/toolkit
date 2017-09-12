@@ -496,7 +496,7 @@
         <phingcall target="drush-sql-drop" />
         <phingcall target="drush-sql-create" />
         <phingcall target="drush-sql-import">
-            <property name="database-file" value="tmp/${gunzipped.filename}" />
+            <property name="database-file" value="${project.tmp.dir}/${gunzipped.filename}" />
         </phingcall>
         <phingcall target="drush-registry-rebuild" />
     </target>
@@ -509,7 +509,7 @@
         <if>
             <not>
                 <!-- Check if we have a previously downloaded dump available. -->
-                <available file="tmp/${gunzipped.filename}" type="file" property="gunzipped.db" />
+                <available file="${project.tmp.dir}/${gunzipped.filename}" type="file" property="gunzipped.db" />
             </not>
             <then>
                 <!-- If not available, download and unzip the file. -->
