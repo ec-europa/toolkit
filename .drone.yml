@@ -35,7 +35,7 @@ pipeline:
   install:
     image: fpfis/php56-dev
     commands:
-      - ./ssk/phing install-project-clone -D'db.dl.username'=${ASDA_NAME} -D'db.dl.password'=${ASDA_PASS}
+      - ./ssk/phing install-project-clone -D'db.dl.username'=${ASDA_USER} -D'db.dl.password'=${ASDA_PASS}
     volumes:
       - /cache:/cache
 
