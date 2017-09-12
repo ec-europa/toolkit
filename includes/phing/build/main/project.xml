@@ -78,7 +78,7 @@
         </if>
         <phingcall target="folder-unprotect">
             <property name="folder.to.unprotect" value="${dir-build}" />
-    </phingcall>
+        </phingcall>
         <echo msg="Unprotecting folder." />
         <phingcall target="folder-delete">
             <property name="folder.to.delete" value="${dir-build}" />
@@ -512,8 +512,13 @@
             </not>
             <then>
                 <!-- If not available, download and unzip the file. -->
-                <phingcall target="project-database-wget" />
-                <exec command="gunzip tmp/${db.dl.filename}" checkreturn="true" passthru="false" logoutput="true" />
+                <echo msg="https://${db.dl.username}:${db.dl.password}@${db.dl.url}${db.dl.filename}" />
+                <phingcall target="package-download">
+                    <property name="package-name" value="${db.dl.filename}" />
+                    <property name="package-cache-location" value="${project.tmp.dir}" />
+                    <property name="package-download-location" value="https://${db.dl.url}" />
+                </phingcall>
+                <exec command="gunzip ${project.tmp.dir}/${db.dl.filename}" checkreturn="true" passthru="false" logoutput="true" />
             </then>
             <else>
                 <!-- Inform user if file was already downloaded. -->
@@ -521,54 +526,6 @@
                 <echo msg="Proceeding to import." />
             </else>
         </if>
-    </target>
-
-    <!-- Target to actually fetch the database dump. -->
-    <target name="project-database-wget" description="Download database with wget. (needs to be converted to curl download helper)">
-        <!--Generate .htaccess credential property if needed, empty if not. -->
-        <if>
-            <or>
-                <equals arg1="${db.dl.url.htaccess.username}" arg2="" />
-                <equals arg1="${db.dl.url.htaccess.password}" arg2="" />
-            </or>
-            <then>
-                <!-- If username or password is not provided, empty the credential string. -->
-                <property name="db.dl.url.credentials" value="" override="true" />
-            </then>
-            <else>
-                <!-- If username or password is provided, build the credential string. -->
-                <property name="db.dl.url.credentials" value="${db.dl.url.htaccess.username}:${db.dl.url.htaccess.password}@" override="true" />
-            </else>
-        </if>
-        <!-- Attempt to download the database dump. -->
-        <exec command="wget https://${db.dl.url.credentials}${db.dl.url}${db.dl.filename}" dir="tmp" checkreturn="false" passthru="false" outputProperty="db.dl.download" />
-        <if>
-            <!-- Upon success inform the user. -->
-            <contains string="${db.dl.download}" substring="200" />
-            <then>
-                <echo msg="Database successfully downloaded." />
-            </then>
-            <!-- When denied access, prompt the user for credentials and retry the download. -->
-            <elseif>
-                <contains string="${db.dl.download}" substring="401" />
-                <then>
-                    <phingcall target="prompt-for-credentials-and-retry" />
-                </then>
-            </elseif>
-            <!-- Otherwise we fail the build and display the download message. -->
-            <else>
-                <echo msg="Failed to download the database dump. Result of wget:" level="error" />
-                <echo msg="${db.dl.download}" level="error" />
-                <fail />
-            </else>
-        </if>
-    </target>
-
-    <!-- Simple prompt for user credentials and recurse into project-database-wget. -->
-    <target name="prompt-for-credentials-and-retry" hidden="true" description="Ask for download credentials and retry if failed.">
-        <input propertyName="db.dl.url.htaccess.username" message="Please enter your username." />
-        <input hidden="true" propertyName="db.dl.url.htaccess.password" message="Please enter your password." />
-        <phingcall target="project-database-wget" />
     </target>
 
     <target name="project-validate-properties" description="Validate the build properties file.">

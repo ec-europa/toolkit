@@ -19,14 +19,7 @@ services:
 #    image: fpfis/solr5
 
 pipeline:
-  trigger-subsite:
-    image: fpfis/drone-plugin-github-topic
-    username: ec-europa
-    topic: ne-subsite-d7
-    secrets: [ github_api_token, drone_api_endpoint, drone_api_token ]
-
   toolkit:
-    group: prepare
     image: fpfis/php56-dev
     commands:
       - PROJECT=$(pwd) composer ssk-install
