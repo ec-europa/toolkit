@@ -34,7 +34,6 @@ pipeline:
 
   install:
     image: fpfis/php56-dev
-    secrets: [ asda_pass ]
     commands:
       - ./ssk/phing install-project-clean
     volumes:
