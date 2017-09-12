@@ -37,7 +37,7 @@ pipeline:
     environment:
      - ASDA_PASS=${ASDA_PASS}
     commands:
-      - ./ssk/phing install-project-clone -D'project.id'='belgium' -D'db.dl.username'='belgium' -D'db.dl.password'={{ASDA_PASS}}
+      - ./ssk/phing install-project-clone -D'project.id'='belgium' -D'db.dl.username'='belgium' -D'db.dl.password'=$${ASDA_PASS}
     volumes:
       - /cache:/cache
 
