@@ -25,26 +25,18 @@ def createWorkflow() {
 
             try {
                 stage('Check') {
-                    shellExecute('docker', 'phing', 'setup-php-codesniffer')
-                    shellExecute('docker', 'phpcs', 'lib/') 
+                    shellExecute('docker', 'phing', 'test-run-phpcs')
                 }
 
-
                 stage('Build') {
-                    shellExecute('docker', 'phing', "build-dev -D'platform.package.reference'='${params.platformPackageReference}' -D'behat.wd_host.url'='http://selenium:4444/wd/hub' -D'behat.browser.name'='chrome'")
+                    shellExecute('docker', 'phing', "build-platform-dev)
                 }
 
                 stage('Test') {
-                    shellExecute('docker', 'phing', "install-dev -D'drupal.db.host'='mysql' -D'drupal.db.name'='${env.COMPOSE_PROJECT_NAME}'")
+                    shellExecute('docker', 'phing', "install-project-clean -D'drupal.db.name'='${env.COMPOSE_PROJECT_NAME}'")
                     timeout(time: 2, unit: 'HOURS') {
-                        shellExecute('docker', 'phing', 'behat')
+                        shellExecute('docker', 'phing', 'test-run-behat')
                     }
-                }
-
-                stage('Package') {
-                    shellExecute('docker', 'phing', "build-release -D'project.release.name'='${env.COMPOSE_PROJECT_NAME}'")
-                    setBuildStatus("Build complete.", "SUCCESS");
-                    slackSend color: "good", message: "Subsite build ${buildLink} completed."
                 }
             } catch(err) {
                 setBuildStatus("Build failed.", "FAILURE");
