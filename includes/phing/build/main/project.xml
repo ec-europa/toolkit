@@ -37,6 +37,7 @@
         description="Install NextEuropa site with sanitized production data."
         depends="
             project-database-download,
+            drush-generate-aliases,
             drush-generate-settings,
             project-database-import,
             project-modules-devel-en" />
