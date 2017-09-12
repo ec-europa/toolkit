@@ -9,14 +9,12 @@ services:
      - DOCUMENT_ROOT=/test/ssk/build
   mysql:
     image: fpfis/mysql56
-#  ecas:
-#    image: fpfis-acpcloud622hotmail.azurecr.io/ecas
   selenium:
     image: selenium/standalone-chrome
     environment:
       - SE_OPTS=-log /tmp/selenium.log
-#  solr:
-#    image: fpfis/solr5
+  solr:
+    image: fpfis/solr5
 
 pipeline:
   toolkit:
@@ -47,23 +45,3 @@ pipeline:
       - ./ssk/phing test-run-behat
     volumes:
       - /cache:/cache
-
-  build-dist:
-    image: fpfis/php56-dev
-    commands:
-      - ./ssk/phing build-platform-dist -D'composer.bin'=$(which composer)
-      - tar -czf ${DRONE_REPO_NAME}-${DRONE_TAG}.tar.gz -C build .
-    when:
-      event: tag
-
-  github_release:
-    image: plugins/github-release
-    files:
-      - ${DRONE_REPO_NAME}-${DRONE_TAG}.tar.gz
-    checksum:
-      - sha1
-      - sha256
-      - sha512
-    secrets: [ GITHUB_RELEASE_API_KEY ]
-    when:
-      event: tag
