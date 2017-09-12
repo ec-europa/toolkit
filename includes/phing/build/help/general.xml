@@ -25,7 +25,7 @@
                     <try>
                         <mkdir dir="${package-cache-location}" />
                         <echo msg="Starting download for package ${package-name}." />
-                        <exec command="curl -L${curl.progress} -o ${package-cache-location}/${package-name} ${package-download-location}/${package-name}" passthru="true" checkreturn="true" />
+                        <exec command="curl -L -o ${package-cache-location}/${package-name} ${package-download-location}/${package-name}" passthru="true" checkreturn="true" />
                         <echo msg="Successfully downloaded package ${package-name}." />
                     </try>
                     <catch>

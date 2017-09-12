@@ -516,7 +516,7 @@
                 <phingcall target="package-download">
                     <property name="package-name" value="${db.dl.filename}" />
                     <property name="package-cache-location" value="${project.tmp.dir}" />
-                    <property name="package-download-location" value="https://${db.dl.url}" />
+                    <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
                 </phingcall>
                 <exec command="gunzip ${project.tmp.dir}/${db.dl.filename}" checkreturn="true" passthru="false" logoutput="true" />
             </then>
