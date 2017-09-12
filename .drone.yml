@@ -19,8 +19,6 @@ services:
 #    image: fpfis/solr5
 
 pipeline:
-
-pipeline:
   trigger-subsite:
     image: fpfis/drone-plugin-github-topic
     username: ec-europa
