@@ -132,8 +132,7 @@
                         <drush command="make" assume="yes" bin="${toolkit.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" color="${drush.color}">
                             <param>${make-file}</param>
                             <param>${make-folder}</param>
-                            <option name="contrib-destination">${make-destination}
-                            </option>
+                            <option name="contrib-destination">${make-destination}</option>
                             <option name="concurrency">10</option>
                             <option name="no-patch-txt"></option>
                             <option name="no-core"></option>
