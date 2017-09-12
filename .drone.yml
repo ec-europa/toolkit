@@ -36,7 +36,8 @@ pipeline:
     image: fpfis/php56-dev
     secrets: [ asda_pass ]
     commands:
-      - ./ssk/phing install-project-clone -D'project.id'='belgium' -D'db.dl.username'='belgium' -D'db.dl.password'=$${ASDA_PASS}
+      - ./ssk/phing install-project-clone -D'project.id'='belgium' -D'db.dl.username'='belgium' -D'db.dl.filename'='sanitized_daily_multisite_belgium_production.sql.gz
+' -D'db.dl.password'=$${ASDA_PASS}
     volumes:
       - /cache:/cache
 

@@ -512,7 +512,6 @@
             </not>
             <then>
                 <!-- If not available, download and unzip the file. -->
-                <echo msg="https://${db.dl.username}:${db.dl.password}@${db.dl.url}${db.dl.filename}" />
                 <phingcall target="package-download">
                     <property name="package-name" value="${db.dl.filename}" />
                     <property name="package-cache-location" value="${project.tmp.dir}" />
