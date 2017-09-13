@@ -45,4 +45,3 @@ pipeline:
       - ./ssk/phing test-run-behat
     volumes:
       - /cache:/cache
-
