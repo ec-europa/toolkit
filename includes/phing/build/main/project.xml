@@ -492,38 +492,36 @@
     <!-- Import production database. -->
     <target name="project-database-import" depends="project-database-download" description="Import database for project with drush.">
         <echo msg="Import production database." />
+        <exec command='find ${project.tmp.dir} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
         <!-- Drop database, create if necessary and import the dump. -->
         <phingcall target="drush-sql-drop" />
         <phingcall target="drush-sql-create" />
         <phingcall target="drush-sql-import">
-            <property name="database-file" value="${project.tmp.dir}/${gunzipped.filename}" />
+            <property name="database-file" value="${db-dl-file}" />
         </phingcall>
         <phingcall target="drush-registry-rebuild" />
     </target>
 
     <!-- Download the production database. -->
     <target name="project-database-download" description="Download sanitized production database from archive.">
-        <echo msg="Download the production database." />
-        <!--Strips gz suffix. -->
-        <php expression="substr('${db.dl.filename}', 0, -3)" returnProperty="gunzipped.filename" level="debug" />
+        <exec command='find ${project.tmp.dir} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
         <if>
-            <not>
-                <!-- Check if we have a previously downloaded dump available. -->
-                <available file="${project.tmp.dir}/${gunzipped.filename}" type="file" property="gunzipped.db" />
-            </not>
+            <!-- Check if we have a previously downloaded dump available. -->
+            <available file="${db-dl-file}" type="file" />
             <then>
+                <!-- Inform user if file was already downloaded. -->
+                <echo msg="File ${db-dl-file} already downloaded." />
+                <echo msg="Proceeding to import." />
+            </then>
+            <else>
                 <!-- If not available, download and unzip the file. -->
+                <echo msg="Download the production database." />
                 <phingcall target="package-download">
                     <property name="package-name" value="${db.dl.filename}" />
                     <property name="package-cache-location" value="${project.tmp.dir}" />
                     <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
                 </phingcall>
                 <exec command="gunzip ${project.tmp.dir}/${db.dl.filename}" checkreturn="true" passthru="false" logoutput="true" />
-            </then>
-            <else>
-                <!-- Inform user if file was already downloaded. -->
-                <echo msg="File ${gunzipped.filename} already downloaded." />
-                <echo msg="Proceeding to import." />
             </else>
         </if>
     </target>
