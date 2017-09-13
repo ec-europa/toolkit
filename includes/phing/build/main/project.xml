@@ -499,6 +499,7 @@
         <phingcall target="drush-sql-import">
             <property name="database-file" value="${db-dl-file}" />
         </phingcall>
+        <phingcall target="drush-create-files-dirs" />
         <phingcall target="drush-registry-rebuild" />
     </target>
 
