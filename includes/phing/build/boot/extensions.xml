@@ -3,6 +3,7 @@
 <project name="extensions" description="Custom classes for extra tasks, conditions, etc." default="">
 
     <!-- External tasks that are a composer dependency. -->
+    <import file="${toolkit.dir.vendor}/ec-europa/backtrac-php-client/phing/import.xml" />
     <import file="${toolkit.dir.vendor}/drupal/phingdrushtask/import.xml" />
     <import file="${toolkit.dir.vendor}/drupol/phingbehattask/import.xml" />
 
