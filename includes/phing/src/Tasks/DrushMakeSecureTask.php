@@ -4,24 +4,23 @@ namespace Phing\Ssk\Tasks;
 
 use BuildException;
 use Project;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 require_once 'phing/Task.php';
 
 /**
- * A Phing task to generate a Drush make file.
+ * A Phing task to check for projects not covered by Drupal's security advisory.
  */
 class DrushMakeSecureTask extends \Task {
 
   /**
-   * The path to the makefile to generate.
+   * The path to the makefile to check for insecure projects.
    *
    * @var string
    */
   private $makeFile = '';
 
   /**
-   * The typo of coverage to fail on
+   * The type of coverage to fail on
    *
    * @var array
    */
@@ -33,10 +32,13 @@ class DrushMakeSecureTask extends \Task {
   public function main() {
     // Check if all required data is present.
     $this->checkRequirements();
+
+    // Get the make file content.
     $makeFileContents = file_get_contents($this->makeFile);
     $make = $this->drupalParseInfoFormat($makeFileContents);
     $found = FALSE;
 
+    // Loop over all projects per type.
     foreach ($make as $type => $projects) {
       if (in_array($type, array('projects', 'libraries'))) {
         foreach ($projects as $project => $contents) {
@@ -143,17 +145,19 @@ class DrushMakeSecureTask extends \Task {
   }
 
   /**
-   * Sets the path to the makefile to generate.
+   * Sets the path to the makefile to check.
    *
    * @param string $makeFile
-   *   The path to the makefile to generate.
+   *   The path to the makefile to check.
    */
   public function setMakeFile($makeFile) {
     $this->makeFile = $makeFile;
   }
 
   /**
-   * Todo
+   * Fail on insecure projects. Can be revoked or not-covered.
+   *
+   * @param $failOn
    */
   public function setFailOn($failOn) {
     $this->failOn = [];
@@ -164,5 +168,4 @@ class DrushMakeSecureTask extends \Task {
       $fail = strtok($token);
     }
   }
-
 }
