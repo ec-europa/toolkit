@@ -230,4 +230,17 @@
         </drush>
     </target>
 
+    <target name="drush-make-secure-all">
+        <echo msg="Checking make files for projects not covered by Drupal's security advisory." />
+        <foreach param="makefile" absparam="makefile-path" target="drush-make-secure">
+            <fileset dir="${resources.dir}">
+                <include name="*.make" />
+            </fileset>
+        </foreach>
+    </target>
+
+    <target name="drush-make-secure">
+        <drushms makefile="${makefile-path}" failon="revoked" />
+    </target>
+
 </project>

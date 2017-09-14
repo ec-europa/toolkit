@@ -10,6 +10,7 @@
     <taskdef name="docgen" classname="Phing\Ssk\Tasks\DocGeneratorTask" />
     <taskdef name="drushgal" classname="Phing\Ssk\Tasks\DrushGenerateAliasTask" />
     <taskdef name="drushmf" classname="Phing\Ssk\Tasks\DrushMakeFileTask" />
+    <taskdef name="drushms" classname="Phing\Ssk\Tasks\DrushMakeSecureTask" />
     <taskdef name="gitigmerge" classname="Phing\Ssk\Tasks\GitignoreMergerTask" />
     <taskdef name="help" classname="Phing\Ssk\Tasks\PhingHelpTask" />
     <taskdef name="phpcsconf" classname="Phing\Ssk\Tasks\PhpCodeSnifferConfigurationTask" />
