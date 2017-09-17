@@ -5,6 +5,7 @@
     <!-- External tasks that are a composer dependency. -->
     <import file="${toolkit.dir.vendor}/drupal/phingdrushtask/import.xml" />
     <import file="${toolkit.dir.vendor}/drupol/phingbehattask/import.xml" />
+    <import file="${toolkit.dir.vendor}/kasperg/phing-github/import.xml" />
 
     <!-- Custom task definititons. -->
     <taskdef name="docgen" classname="Phing\Ssk\Tasks\DocGeneratorTask" />

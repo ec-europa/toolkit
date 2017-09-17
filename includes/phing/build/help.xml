@@ -7,6 +7,7 @@
     <import file="${phing.dir.help}/help/docker.xml" />
     <import file="${phing.dir.help}/help/drush.xml" />
     <import file="${phing.dir.help}/help/general.xml" />
+    <import file="${phing.dir.help}/help/github.xml" />
     <import file="${phing.dir.help}/help/toolkit.xml" />
 
     <!-- Check if site exists. -->

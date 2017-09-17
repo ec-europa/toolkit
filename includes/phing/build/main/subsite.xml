@@ -19,11 +19,13 @@
         name="build-subsite-dist"
         description="Build a site intended as a release package."
         depends="
-            build-subsite-type-dist,
-            build-subsite-delete,
+            build-subsite-type-dev,
             build-subsite-link-resources,
             build-subsite-make-site,
-            build-subsite-copy-resources">
+            build-subsite-type-dist,
+            build-subsite-delete,
+            build-subsite-copy-resources,
+            build-subsite-package">
         <echo msg="Playbook for build-subsite-dist ended." />
     </target>
 
@@ -31,6 +33,27 @@
         <echo msg="Build a subsite test package to test this reslease." />
         <phingcall target="build-project-test">
             <property name="dir-build" value="${tests.dir}" override="true" />
+        </phingcall>
+    </target>
+
+    <target name="build-subsite-package" description="Build a subsite package in the releases folder.">
+        <echo msg="Build a subsite package in releases folder." />
+        <tar destfile="${project.id}.tar.gz" compression="gzip">
+            <fileset dir="${build.${build-type}.dir}">
+                <exclude name="vendor/**" />
+                <exclude name="bin/**" />
+                <exclude name="behat.yml" />
+                <exclude name="phpunit.xml" />
+            </fileset>
+        </tar>
+    </target>
+
+    <!-- Build a platform test package to test this reslease. -->
+    <target name="build-subsite-release" description="Uploads the distribution package as release to github.">
+        <php expression="'test-' . rand();" returnProperty="random"/>
+        <phingcall target="github-create-release-assets">
+            <property name="github-tag-name" value="${random}" override="true" />
+            <property name="github-tag-hash" value="master" override="true" />
         </phingcall>
     </target>
 

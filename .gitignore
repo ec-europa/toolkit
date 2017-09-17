@@ -18,8 +18,9 @@ nbproject/
 # -----------------------
 /bin/
 /ssk
-/ssk-*
+/docker-*
 /build/
+/dist/
 /lib
 /resources
 /tests

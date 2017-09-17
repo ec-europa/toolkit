@@ -11,6 +11,7 @@
     "ext-tidy": "^2.0",
     "ext-xml": "*",
     "guzzlehttp/guzzle": "^6.2.1",
+    "kasperg/phing-github": "dev-feature/import",
     "pear/archive_tar": "^1.4@dev",
     "pear/versioncontrol_git": "dev-master",
     "pfrenssen/phpcs-pre-push": "1.0",
@@ -37,6 +38,10 @@
     {
       "type": "vcs",
       "url": "https://github.com/verbruggenalex/composer-patches.git"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/verbruggenalex/phing-github.git"
     },
     {
       "type": "vcs",
