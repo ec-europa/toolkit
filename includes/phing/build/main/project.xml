@@ -11,6 +11,7 @@
             project-platform-delete,
             project-platform-set-version,
             project-platform-package-unpack,
+            project-platform-devops-unpack,
             project-subsite-restore" />
 
     <!-- Build subsite in platform. -->
@@ -101,6 +102,18 @@
             <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
             <property name="package-download-location" value="https://platform-ci.ne-dev.eu/releases" />
             <property name="package-extract-location" value="${build.platform.dir}" />
+        </phingcall>
+    </target>
+
+    <!-- Unpack the platform. -->
+    <target name="project-platform-devops-unpack" description="Download and unpack fpfis resource package.">
+        <mkdir dir="${share.path.platform.packages.deploy}" />
+        <phingcall target="package-download-unpack">
+            <property name="package-name" value="${platform.package.version.major}.${platform.package.version.minor}.tar.gz" />
+            <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
+            <property name="package-download-location" value="https://github.com/ec-europa/platform-deploy/archive/fpfis-conf" />
+            <property name="package-extract-location" value="${build.platform.dir}" />
+            <property name="package-extract-options" value="--strip=1" />
         </phingcall>
     </target>
 
