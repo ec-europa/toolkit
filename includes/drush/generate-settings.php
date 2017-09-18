@@ -39,7 +39,6 @@ $variables = array(
   'file_public_path' => '%%file_public_path%%',
   'file_private_path' => '%%file_private_path%%',
   'file_temporary_path' => '%%file_temporary_path%%',
-  'https' => 1,
 );
 
 // Setup individual development variables.

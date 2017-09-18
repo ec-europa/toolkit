@@ -12,6 +12,7 @@
             project-platform-set-version,
             project-platform-package-unpack,
             project-platform-devops-unpack,
+            project-platform-set-htaccess,
             project-subsite-restore" />
 
     <!-- Build subsite in platform. -->
@@ -61,7 +62,7 @@
             <istrue value="${build.platform.htaccess.append.text}" />
             <then>
                 <echo msg="Appended text to htaccess." />
-                <append destfile="${build.platform.dir/.htaccess" text="${build.platform.htaccess.append.text}" />
+                <append destfile="${build.platform.dir}/.htaccess" text="${build.platform.htaccess.append.text}" />
             </then>
             <else>
                 <echo msg="Appended no text to htaccess." />
