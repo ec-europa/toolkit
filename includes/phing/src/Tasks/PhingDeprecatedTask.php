@@ -38,15 +38,19 @@ class PhingDeprecatedTask extends \Task
      */
     private $inheritRefs = false;
 
+
     /**
      *  If true, pass all properties to the new Phing project.
      *  Defaults to true. Future use.
+     *
      * @param boolean new value
      */
     public function setInheritAll($inherit)
     {
         $this->inheritAll = (boolean) $inherit;
-    }
+
+    }//end setInheritAll()
+
 
     /**
      *  If true, pass all references to the new Phing project.
@@ -57,16 +61,21 @@ class PhingDeprecatedTask extends \Task
     public function setInheritRefs($inheritRefs)
     {
         $this->inheritRefs = (boolean) $inheritRefs;
-    }
+
+    }//end setInheritRefs()
+
 
     /**
      * Target to execute, required.
+     *
      * @param $target
      */
     public function setTarget($target)
     {
         $this->subTarget = (string) $target;
-    }
+
+    }//end setTarget()
+
 
     /**
      *  init this task by creating new instance of the phing task and
@@ -80,44 +89,51 @@ class PhingDeprecatedTask extends \Task
         $this->callee->setHaltOnFailure(true);
         $this->callee->setLocation($this->getLocation());
         $this->callee->init();
-    }
+
+    }//end init()
+
 
     /**
      *  hand off the work to the phing task of ours, after setting it up
+     *
      * @throws BuildException on validation failure or if the target didn't
      *  execute.
      */
     public function main()
     {
 
-        $sec = 0;
-        $target =  $this->getOwningTarget();
-        $targetName = $target->getName();
+        $sec           = 0;
+        $target        = $this->getOwningTarget();
+        $targetName    = $target->getName();
         $subTargetName = $this->subTarget;
-        $allTargets = $this->project->getTargets();
-        $usedTargets= array_filter($allTargets, function($key) {
-            return strrpos($key, "." . $targetName) > 0;
-        }, ARRAY_FILTER_USE_KEY);
+        $allTargets    = $this->project->getTargets();
+        $usedTargets   = array_filter(
+            $allTargets,
+            function ($key) {
+                return strrpos($key, ".".$targetName) > 0;
+            },
+            ARRAY_FILTER_USE_KEY
+        );
 
         // If the target was redefined outside of the starterkit.
         if (!empty($usedTargets)) {
-            $sec = 10;
+            $sec       = 10;
             $newTarget = $targetName;
             $buildFile = "build.project.xml";
-            $target = $allTargets[$subTargetName];
+            $target    = $allTargets[$subTargetName];
         }
         // If a deprecated target is called without redefinition.
         else {
-            $sec = 5;
+            $sec       = 5;
             $newTarget = $subTargetName;
             $buildFile = $this->project->getProperty("phing.file");
         }
 
         // Inform user of the deprecated target.
-        $this->log("Target '" . $targetName . "' has been replaced by '" . $subTargetName . "'.", Project::MSG_WARN);
-        $this->log("A " . $sec . " second penalty is assigned usage of this target.", Project::MSG_WARN);
-        $this->log("Please use '" . $subTargetName . "' instead to avoid the penalty.", Project::MSG_WARN);
-        $this->log("Running PhingCallTask for target '" . $subTargetName . "'", Project::MSG_DEBUG);
+        $this->log("Target '".$targetName."' has been replaced by '".$subTargetName."'.", Project::MSG_WARN);
+        $this->log("A ".$sec." second penalty is assigned usage of this target.", Project::MSG_WARN);
+        $this->log("Please use '".$subTargetName."' instead to avoid the penalty.", Project::MSG_WARN);
+        $this->log("Running PhingCallTask for target '".$subTargetName."'", Project::MSG_DEBUG);
         sleep($sec);
 
         if ($this->callee === null) {
@@ -134,5 +150,8 @@ class PhingDeprecatedTask extends \Task
         $this->callee->setInheritAll($this->inheritAll);
         $this->callee->setInheritRefs($this->inheritRefs);
         $this->callee->main();
-    }
-}
+
+    }//end main()
+
+
+}//end class

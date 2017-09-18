@@ -17,33 +17,44 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
      * If this is true, then errors generated during file output will become
      * build errors, and if false, then such errors will be logged, but not
      * thrown.
+     *
      * @var boolean
      */
     private $failonerror = true;
 
-    /** @var string $prefix */
+    /**
+     * @var string $prefix
+     */
     private $prefix = '';
 
-    /** @var string $regex */
+    /**
+     * @var string $regex
+     */
     private $regex = '';
 
-    /** @var string  */
+    /**
+     * @var string
+     */
     private $originDir = '';
 
-      /** @var string  */
+      /**
+       * @var string
+       */
     private $targetDir = '';
+
 
     /**
      * If true, the task will fail if an error occurs writing the properties
      * file, otherwise errors are just logged.
      *
-     * @param  failonerror <tt>true</tt> if IO exceptions are reported as build
+     * @param failonerror <tt>true</tt> if IO exceptions are reported as build
      *      exceptions, or <tt>false</tt> if IO exceptions are ignored.
      */
     public function setFailOnError($failonerror)
     {
         $this->failonerror = $failonerror;
-    }
+
+    }//end setFailOnError()
 
 
     /**
@@ -64,7 +75,9 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
         if ($prefix != null && strlen($prefix) != 0) {
             $this->prefix = $prefix;
         }
-    }
+
+    }//end setPrefix()
+
 
     /**
      *  If the regex is set, then only properties whose names match it
@@ -84,7 +97,9 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
         if ($regex != null && strlen($regex) != 0) {
             $this->regex = $regex;
         }
-    }
+
+    }//end setRegex()
+
 
     /**
      * Sets the path to the directory of which to create symlinks to.
@@ -92,9 +107,12 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
      * @param string $originDir
      *   The path to the directory in which to create symlinks to
      */
-    public function setOriginDir($originDir) {
-      $this->originDir = $originDir;
-    }
+    public function setOriginDir($originDir)
+    {
+        $this->originDir = $originDir;
+
+    }//end setOriginDir()
+
 
     /**
      * Sets the path to the directory in which to put the symlinks
@@ -102,9 +120,12 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
      * @param string $targetDir
      *   The path to the directory in which to put the symlinks
      */
-    public function setTargetDir($targetDir) {
-      $this->targetDir = $targetDir;
-    }
+    public function setTargetDir($targetDir)
+    {
+        $this->targetDir = $targetDir;
+
+    }//end setTargetDir()
+
 
     /**
      * getter for _link
@@ -114,92 +135,101 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
      */
     public function getLink()
     {
-      if ($this->targetDir === null) {
-        throw new BuildException('Targetdir not set');
-      }
-      return $this->targetDir;
-    }
-
-  /**
-   * Generates an array of directories / files to be linked
-   * If _filesets is empty, returns getTarget()
-   *
-   * @throws BuildException
-   * @return array|string
-   */
-    protected function getMap() {
-
-      if ($this->prefix != null && $this->regex != null) {
-          throw new BuildException("Please specify either prefix or regex, but not both", $this->getLocation());
-      }
-
-      if (empty($this->targetDir)) {
-        throw new BuildException("Please specify the target directory to put the symlinks in.", $this->getLocation());
-      }
-
-      //copy the properties file
-      $allProps = $this->getProject()->getProperties();
-
-      ksort($allProps);
-      $props = new Properties();
-
-      if ($this->regex !== '') {
-        $a = new ArrayIterator($allProps);
-        $i = new RegexIterator($a, $this->regex, RegexIterator::MATCH, RegexIterator::USE_KEY);
-        $allProps = iterator_to_array($i);
-      }
-      if ($this->prefix !== '') {
-        $a = new ArrayIterator($allProps);
-        $i = new RegexIterator(
-          $a,
-          '~^' . preg_quote($this->prefix, '~') . '.*~',
-          RegexIterator::MATCH,
-          RegexIterator::USE_KEY
-        );
-        $allProps = iterator_to_array($i);
-      }
-
-      $targets = array();
-      foreach ($allProps as $name => $value) {
-        $dir = new PhingFile($value);
-        if ($dir->isFile()) {
-          $filename = basename($value);
-          $targets[$this->originDir][] = array(
-            'target' => $this->originDir . DIRECTORY_SEPARATOR . $filename,
-            'link' => $this->targetDir . DIRECTORY_SEPARATOR . $filename,
-          );
+        if ($this->targetDir === null) {
+            throw new BuildException('Targetdir not set');
         }
-        if ($dir->isDirectory()) {
-          $subdirectories = preg_grep('~' . preg_quote($value) . '~', array_values($allProps));
-          if (count($subdirectories) == 1) {
-            $directoryToCreate =  str_replace($this->originDir, $this->targetDir, $value);
 
-            $ds = new DirectoryScanner();
-            $ds->setBasedir($dir);
-            $ds->setIncludes("*");
-            $ds->scan();
+        return $this->targetDir;
 
-            $dsIncludedDirectories = (array) $ds->getIncludedDirectories();
-            $dsIncludedFiles = (array) $ds->getIncludedFiles();
+    }//end getLink()
 
-            $fsTargets = array_merge(
-              $dsIncludedDirectories,
-              $dsIncludedFiles
+
+    /**
+     * Generates an array of directories / files to be linked
+     * If _filesets is empty, returns getTarget()
+     *
+     * @throws BuildException
+     * @return array|string
+     */
+    protected function getMap()
+    {
+
+        if ($this->prefix != null && $this->regex != null) {
+            throw new BuildException("Please specify either prefix or regex, but not both", $this->getLocation());
+        }
+
+        if (empty($this->targetDir)) {
+            throw new BuildException("Please specify the target directory to put the symlinks in.", $this->getLocation());
+        }
+
+        // copy the properties file
+        $allProps = $this->getProject()->getProperties();
+
+        ksort($allProps);
+        $props = new Properties();
+
+        if ($this->regex !== '') {
+            $a        = new ArrayIterator($allProps);
+            $i        = new RegexIterator($a, $this->regex, RegexIterator::MATCH, RegexIterator::USE_KEY);
+            $allProps = iterator_to_array($i);
+        }
+
+        if ($this->prefix !== '') {
+            $a        = new ArrayIterator($allProps);
+            $i        = new RegexIterator(
+                $a,
+                '~^'.preg_quote($this->prefix, '~').'.*~',
+                RegexIterator::MATCH,
+                RegexIterator::USE_KEY
             );
-            // Add each target to the map
-            foreach ($fsTargets as $target) {
-              if (!empty($target)) {
-                $targets[$directoryToCreate][] = array(
-                  'target' => $dir . DIRECTORY_SEPARATOR . $target,
-                  'link' => $directoryToCreate . DIRECTORY_SEPARATOR . $target,
-                );
-              }
-            }
-          }
+            $allProps = iterator_to_array($i);
         }
-      }
-      return $targets;
-    }
+
+        $targets = array();
+        foreach ($allProps as $name => $value) {
+            $dir = new PhingFile($value);
+            if ($dir->isFile()) {
+                $filename = basename($value);
+                $targets[$this->originDir][] = array(
+                                                'target' => $this->originDir.DIRECTORY_SEPARATOR.$filename,
+                                                'link'   => $this->targetDir.DIRECTORY_SEPARATOR.$filename,
+                                               );
+            }
+
+            if ($dir->isDirectory()) {
+                $subdirectories = preg_grep('~'.preg_quote($value).'~', array_values($allProps));
+                if (count($subdirectories) == 1) {
+                    $directoryToCreate = str_replace($this->originDir, $this->targetDir, $value);
+
+                    $ds = new DirectoryScanner();
+                    $ds->setBasedir($dir);
+                    $ds->setIncludes("*");
+                    $ds->scan();
+
+                    $dsIncludedDirectories = (array) $ds->getIncludedDirectories();
+                    $dsIncludedFiles       = (array) $ds->getIncludedFiles();
+
+                    $fsTargets = array_merge(
+                        $dsIncludedDirectories,
+                        $dsIncludedFiles
+                    );
+                    // Add each target to the map
+                    foreach ($fsTargets as $target) {
+                        if (!empty($target)) {
+                            $targets[$directoryToCreate][] = array(
+                                                              'target' => $dir.DIRECTORY_SEPARATOR.$target,
+                                                              'link'   => $directoryToCreate.DIRECTORY_SEPARATOR.$target,
+                                                             );
+                        }
+                    }
+                }//end if
+            }//end if
+        }//end foreach
+
+        return $targets;
+
+    }//end getMap()
+
 
     /**
      * Main entry point for task
@@ -208,54 +238,69 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
      */
     public function main()
     {
-      $this->setTaskName('spc');
-      $map = $this->getMap();
-      // Multiple symlinks
-      foreach ($map as $directory => $symlinks) {
-        $this->makeDirectory($directory);
-        foreach ($symlinks as  $targetName => $symlink) {
-          $this->symlink($symlink['target'], $symlink['link']);
+        $this->setTaskName('spc');
+        $map = $this->getMap();
+        // Multiple symlinks
+        foreach ($map as $directory => $symlinks) {
+            $this->makeDirectory($directory);
+            foreach ($symlinks as  $targetName => $symlink) {
+                $this->symlink($symlink['target'], $symlink['link']);
+            }
         }
-      }
-      return true;
-    }
 
-    protected function symlink($targetPath, $link){
-      parent::symlink($targetPath, $link);
-    }
-  
-    protected function makeDirectory($dir) {
-      $dir = new PhingFile($dir);
-      $relativePath = str_replace($this->getProject()->getBaseDir(), "", $dir->getAbsolutePath());
-      if ($dir === null) {
-        throw new BuildException("dir attribute is required", $this->getLocation());
-      }
-      if ($dir->isFile()) {
-        throw new BuildException("Unable to create directory as a file already exists with that name: ." . $relativePath(
-          ));
-      }
-      if (!$dir->exists()) {
-        $result = $dir->mkdirs(0777 - umask());
-        if (!$result) {
-          if ($dir->exists()) {
-            $this->log("A different process or task has already created ." . $relativePath);
-            return;
-          }
-          $msg = "Directory " . $dir->getAbsolutePath(
-            ) . " creation was not successful for an unknown reason";
-          throw new BuildException($msg, $this->getLocation());
+        return true;
+
+    }//end main()
+
+
+    protected function symlink($targetPath, $link)
+    {
+        parent::symlink($targetPath, $link);
+
+    }//end symlink()
+
+
+    protected function makeDirectory($dir)
+    {
+        $dir          = new PhingFile($dir);
+        $relativePath = str_replace($this->getProject()->getBaseDir(), "", $dir->getAbsolutePath());
+        if ($dir === null) {
+            throw new BuildException("dir attribute is required", $this->getLocation());
         }
-        $this->log("Created dir: ." . $relativePath);
-      }
-      else {
-        $this->log("Directory exists: ." . $relativePath);
-      }
-    }
+
+        if ($dir->isFile()) {
+            throw new BuildException(
+                "Unable to create directory as a file already exists with that name: .".$relativePath(
+                )
+            );
+        }
+
+        if (!$dir->exists()) {
+            $result = $dir->mkdirs(0777 - umask());
+            if (!$result) {
+                if ($dir->exists()) {
+                    $this->log("A different process or task has already created .".$relativePath);
+                    return;
+                }
+
+                $msg = "Directory ".$dir->getAbsolutePath(
+                )." creation was not successful for an unknown reason";
+                throw new BuildException($msg, $this->getLocation());
+            }
+
+            $this->log("Created dir: .".$relativePath);
+        }
+        else {
+            $this->log("Directory exists: .".$relativePath);
+        }
+
+    }//end makeDirectory()
+
 
     /**
      * @param Exception $exception
-     * @param string $message
-     * @param int $level
+     * @param string    $message
+     * @param int       $level
      * @throws BuildException
      */
     private function failOnErrorAction(Exception $exception = null, $message = '', $level = Project::MSG_INFO)
@@ -267,11 +312,12 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
             );
         } else {
             $this->log(
-                $exception !== null && $message === ''
-                    ? $exception->getMessage()
-                    : $message,
+                $exception !== null && $message === '' ? $exception->getMessage() : $message,
                 $level
             );
         }
-    }
-}
+
+    }//end failOnErrorAction()
+
+
+}//end class

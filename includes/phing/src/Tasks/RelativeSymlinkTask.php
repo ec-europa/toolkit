@@ -11,101 +11,109 @@ use Project;
 /**
  * Generates relative symlinks based on a target / link combination.
  */
-class RelativeSymlinkTask extends \SymlinkTask {
+class RelativeSymlinkTask extends \SymlinkTask
+{
 
-  /**
-   * Convert an absolute end path to a relative path.
-   *
-   * @param string $endPath
-   *   Absolute path of target.
-   * @param string $startPath
-   *   Absolute path where traversal begins.
-   *
-   * @return string
-   *   Path of target relative to starting path.
-   */
-  public function makePathRelative($endPath, $startPath) {
-    // Normalize separators on Windows.
-    if ('\\' === DIRECTORY_SEPARATOR) {
-      $endPath = str_replace('\\', '/', $endPath);
-      $startPath = str_replace('\\', '/', $startPath);
-    }
 
-    // Split the paths into arrays.
-    $startPathArr = explode('/', trim($startPath, '/'));
-    $endPathArr = explode('/', trim($endPath, '/'));
+    /**
+     * Convert an absolute end path to a relative path.
+     *
+     * @param string $endPath
+     *   Absolute path of target.
+     * @param string $startPath
+     *   Absolute path where traversal begins.
+     *
+     * @return string
+     *   Path of target relative to starting path.
+     */
+    public function makePathRelative($endPath, $startPath)
+    {
+        // Normalize separators on Windows.
+        if ('\\' === DIRECTORY_SEPARATOR) {
+            $endPath   = str_replace('\\', '/', $endPath);
+            $startPath = str_replace('\\', '/', $startPath);
+        }
 
-    // Find for which directory the common path stops.
-    $index = 0;
-    while (isset($startPathArr[$index]) && isset($endPathArr[$index]) && $startPathArr[$index] === $endPathArr[$index]) {
-      ++$index;
-    }
+        // Split the paths into arrays.
+        $startPathArr = explode('/', trim($startPath, '/'));
+        $endPathArr   = explode('/', trim($endPath, '/'));
 
-    // Determine how deep the start path is relative to the
-    // common path (ie, "web/bundles" = 2 levels).
-    $depth = count($startPathArr) - $index;
+        // Find for which directory the common path stops.
+        $index = 0;
+        while (isset($startPathArr[$index]) && isset($endPathArr[$index]) && $startPathArr[$index] === $endPathArr[$index]) {
+            ++$index;
+        }
 
-    // Repeated "../" for each level need to reach the common path.
-    $traverser = str_repeat('../', $depth);
+        // Determine how deep the start path is relative to the
+        // common path (ie, "web/bundles" = 2 levels).
+        $depth = (count($startPathArr) - $index);
 
-    $endPathRemainder = implode('/', array_slice($endPathArr, $index));
+        // Repeated "../" for each level need to reach the common path.
+        $traverser = str_repeat('../', $depth);
 
-    // Construct $endPath from traversing to the common path, then to the
-    // remaining $endPath.
-    $relativePath = $traverser . ('' !== $endPathRemainder ? $endPathRemainder . '/' : '');
+        $endPathRemainder = implode('/', array_slice($endPathArr, $index));
 
-    return '' === $relativePath ? './' : $relativePath;
-  }
+        // Construct $endPath from traversing to the common path, then to the
+        // remaining $endPath.
+        $relativePath = $traverser.('' !== $endPathRemainder ? $endPathRemainder.'/' : '');
 
-  /**
-   * Create the symlink.
-   *
-   * @inheritDoc
-   */
-  protected function symlink($target, $link, $logShort = FALSE) {
-    $fs = FileSystem::getFileSystem();
+        return '' === $relativePath ? './' : $relativePath;
 
-    // Convert target to relative path.
-    $absolutePath = (new PhingFile($link))->getAbsolutePath();
-    $link = $absolutePath;
+    }//end makePathRelative()
 
-    if ($logShort) {
-      $relativePath = str_replace($this->getProject()->getBaseDir(), "", $absolutePath);
-      $linkName = basename($absolutePath);
-    }
-    else {
-      $linkName = $link;
-    }
 
-    // @codingStandardsIgnoreLine: MULTISITE-17111
-    $target = rtrim($this->makePathRelative($target, dirname($link)), '/');
+    /**
+     * Create the symlink.
+     *
+     * @inheritDoc
+     */
+    protected function symlink($target, $link, $logShort = false)
+    {
+        $fs = FileSystem::getFileSystem();
 
-    if (is_link($link) && @readlink($link) == $target) {
-      $this->log('Link exists: ' . $linkName, Project::MSG_INFO);
+        // Convert target to relative path.
+        $absolutePath = (new PhingFile($link))->getAbsolutePath();
+        $link         = $absolutePath;
 
-      return TRUE;
-    }
+        if ($logShort) {
+            $relativePath = str_replace($this->getProject()->getBaseDir(), "", $absolutePath);
+            $linkName     = basename($absolutePath);
+        }
+        else {
+            $linkName = $link;
+        }
 
-    if (file_exists($link) || is_link($link)) {
-      if (!$this->getOverwrite()) {
-        $this->log('Not overwriting existing link ' . $link, Project::MSG_ERR);
+        // @codingStandardsIgnoreLine: MULTISITE-17111
+        $target = rtrim($this->makePathRelative($target, dirname($link)), '/');
 
-        return FALSE;
-      }
+        if (is_link($link) && @readlink($link) == $target) {
+            $this->log('Link exists: '.$linkName, Project::MSG_INFO);
 
-      if (is_link($link) || is_file($link)) {
-        $fs->unlink($link);
-        $this->log('Link removed: ' . $linkName, Project::MSG_INFO);
-      }
-      else {
-        $fs->rmdir($link, TRUE);
-        $this->log('Directory removed: ' . $linkName, Project::MSG_INFO);
-      }
-    }
+            return true;
+        }
 
-    $this->log('Linking: ' . $linkName . ' to ' . $target, Project::MSG_INFO);
+        if (file_exists($link) || is_link($link)) {
+            if (!$this->getOverwrite()) {
+                $this->log('Not overwriting existing link '.$link, Project::MSG_ERR);
 
-    return $fs->symlink($target, $link);
-  }
+                return false;
+            }
 
-}
+            if (is_link($link) || is_file($link)) {
+                $fs->unlink($link);
+                $this->log('Link removed: '.$linkName, Project::MSG_INFO);
+            }
+            else {
+                $fs->rmdir($link, true);
+                $this->log('Directory removed: '.$linkName, Project::MSG_INFO);
+            }
+        }
+
+        $this->log('Linking: '.$linkName.' to '.$target, Project::MSG_INFO);
+
+        return $fs->symlink($target, $link);
+
+    }//end symlink()
+
+
+}//end class
