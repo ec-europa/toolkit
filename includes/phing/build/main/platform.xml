@@ -74,22 +74,10 @@
         </phingcall>
     </target>
 
-    <!-- Sets the type of build to dev. -->
-    <target name="build-platform-type-dev" description="Sets the type of build (dev or dist).">
-        <property name="build-type" value="platform" override="true" />
-    </target>
-
-    <!-- Sets the type of build to dist. -->
-    <target name="build-platform-type-dist" description="Sets the type of build (dev or dist).">
-        <property name="build-type" value="dist" override="true" />
-    </target>
-
     <!-- Copy the profile folder to build deployment package files. -->
     <target name="build-platform-copy-profile" description="Copies single profile for distribution.">
-        <!-- Delete the core profile folder so it can be replaced with ours. -->
         <delete dir="${build.${build-type}.dir.profiles}" includeemptydirs="true" failonerror="false" quiet="true" />
         <mkdir dir="${build.${build-type}.dir.profile}" />
-        <!-- Copy our profile folder. -->
         <copy todir="${build.${build-type}.dir.profile}">
             <fileset dir="${lib.dir.profiles.profile}" expandsymboliclinks="true">
                 <exclude name="profiles/common/**" />
@@ -99,9 +87,7 @@
 
     <!-- Copy the profiles folder to build deployment package files. -->
     <target name="build-platform-copy-profiles" description="Copies all profiles for distirbution.">
-        <!-- Delete the core profiles folder so it can be replaced with ours. -->
         <delete dir="${build.${build-type}.dir.profiles}" includeemptydirs="true" failonerror="true" quiet="true" />
-        <!-- Copy our profiles folder. -->
         <copy todir="${build.${build-type}.dir.profiles}">
             <fileset dir="${lib.dir.profiles}" expandsymboliclinks="true">
                 <exclude name="common/**" />
@@ -161,6 +147,16 @@
                 <type type="dir" />
             </fileset>
         </foreach>
+    </target>
+
+    <!-- Sets the type of build to dev. -->
+    <target name="build-platform-type-dev" description="Sets the type of build (dev or dist).">
+        <property name="build-type" value="platform" override="true" />
+    </target>
+
+    <!-- Sets the type of build to dist. -->
+    <target name="build-platform-type-dist" description="Sets the type of build (dev or dist).">
+        <property name="build-type" value="dist" override="true" />
     </target>
 
 </project>
