@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * A Phing help.
+ *
+ * PHP Version 5 and 7
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
+ */
+
 namespace Phing\Ssk\Tasks;
 
 require_once 'phing/Task.php';
@@ -10,6 +22,15 @@ use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Target;
 
+/**
+ * A Phing help.
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
+ */
 class PhingHelpTask extends \Task
 {
     /**
@@ -17,14 +38,14 @@ class PhingHelpTask extends \Task
      *
      * @var string
      */
-    private $buildfile = '';
+    private $_buildfile = '';
 
     /**
      * The location of the build file to generate docs for.
      *
      * @var string
      */
-    private $buildlist = '';
+    private $_buildlist = '';
 
     /**
      * An array of help targets that are generated.
@@ -35,8 +56,10 @@ class PhingHelpTask extends \Task
 
 
     /**
-     *  init this task by creating new instance of the phing task and
-     *  configuring it's by calling its own init method.
+     * Init this task by creating new instance of the phing task and
+     * configuring it's by calling its own init method.
+     *
+     * @return void
      */
     public function init()
     {
@@ -77,21 +100,23 @@ class PhingHelpTask extends \Task
 
 
     /**
-     *  hand off the work to the phing task of ours, after setting it up
+     *  Hand off the work to the phing task of ours, after setting it up
      *
      * @throws BuildException on validation failure or if the target didn't
      *  execute.
+     *
+     * @return void
      */
     public function main()
     {
         $buildFileRoot = $this->getProject()->getProperty('phing.file');
-        $buildFile     = $this->buildFile;
+        $buildFile     = $this->_buildFile;
         $buildList     = $this->getBuildList($buildFileRoot);
         $parents       = array();
         $targets       = array();
-        if (is_file($this->buildFile) && !empty($this->getOwningTarget()->getName())) {
+        if (is_file($this->_buildFile) && !empty($this->getOwningTarget()->getName())) {
             foreach ($buildList as $buildFile => $buildInfo) {
-                if ($this->buildFile === $buildFile || in_array($buildInfo['parent'], $parents)) {
+                if ($this->_buildFile === $buildFile || in_array($buildInfo['parent'], $parents)) {
                     $parents[] = $buildFile;
                     $targets   = array_merge($targets, $this->getBuildTargets($buildFile));
                 }
@@ -103,7 +128,15 @@ class PhingHelpTask extends \Task
 
     }//end main()
 
-
+    /**
+     * Print Build Targets
+     *
+     * @param array $targets   Targets
+     * @param array $buildFile Build file name
+     * @param array $buildList Build list
+     *
+     * @return void
+     */
     protected function printBuildTargets($targets, $buildFile, $buildList)
     {
         $output = new ConsoleOutput();
@@ -135,7 +168,8 @@ class PhingHelpTask extends \Task
     /**
      * Helper function to get the targets out of file.
      *
-     * @param  string $importFile
+     * @param string $importFile File to import
+     *
      * @return array
      */
     protected function getBuildTargets($importFile)
@@ -172,10 +206,11 @@ class PhingHelpTask extends \Task
     /**
      * Helper function to get the full list of buildfiles through imports.
      *
-     * @param  string $buildFile
-     * @param  int    $level
-     * @param  string $parent
-     * @param  array  $buildList
+     * @param string $buildFile Build file
+     * @param int    $level     Level
+     * @param string $parent    Parent
+     * @param array  $buildList Build list
+     *
      * @return array
      */
     public function getBuildList($buildFile, $level = 0, $parent = '', &$buildList = array())
@@ -215,49 +250,50 @@ class PhingHelpTask extends \Task
     /**
      * Sets the Phing file for which to generate help commands.
      *
-     * @param string $buildfile
-     *   The Phing file for which to generate help commands.
+     * @param string $buildfile The Phing file for which to generate help commands.
+     *
+     * @return void
      */
     public function setBuildFile($buildfile)
     {
-        $this->buildFile = $buildfile;
-
+        $this->_buildFile = $buildfile;
     }//end setBuildFile()
 
 
     /**
      * Sets the build list for which we can ask for help.
      *
-     * @param string $buildlist
-     *   The build list for which we can ask for help.
+     * @param string $buildlist The build list for which we can ask for help.
+     *
+     * @return void
      */
     public function setBuildList($buildlist)
     {
-        $this->buildList = $buildlist;
-
+        $this->_buildList = $buildlist;
     }//end setBuildList()
 
 
     /**
      * Sets the help targets for the project.
      *
-     * @param array $helptargets
-     *   The help targets for the project.
+     * @param array $helpTargets The help targets for the project.
+     *
+     * @return void
      */
     public function setHelpTargets($helpTargets)
     {
         $this->helpTargets = $helpTargets;
-
     }//end setHelpTargets()
 
 
     /**
      * Gets the help targets for the project.
+     *
+     * @return void
      */
     public function getHelpTargets()
     {
         return $this->helpTargets;
-
     }//end getHelpTargets()
 
 
