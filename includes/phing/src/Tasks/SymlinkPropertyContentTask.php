@@ -349,10 +349,10 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
     /**
      * Throw exception if error found.
      *
-     * @param  Exception $exception Exception to throw
-     * @param  string    $message   Message to display
-     * @param  int       $level     Exception level
-     * 
+     * @param Exception $exception Exception to throw
+     * @param string    $message   Message to display
+     * @param int       $level     Exception level
+     *
      * @throws BuildException
      *
      * @return void

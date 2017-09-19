@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Phing validate task.
+ *
+ * PHP Version 5 and 7
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
+ */
+
 namespace Phing\Ssk\Tasks;
 
 require_once 'phing/Task.php';
@@ -10,6 +22,15 @@ use PhingFile;
 use Project;
 use Properties;
 
+/**
+ * Phing validate task.
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
+ */
 class PropertiesValidateTask extends \Task
 {
     /**
