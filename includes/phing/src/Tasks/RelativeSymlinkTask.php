@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Generates relative symlinks based on a target / link combination.
+ *
+ * PHP Version 5 and 7
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
+ */
 namespace Phing\Ssk\Tasks;
 
 require_once 'phing/Task.php';
@@ -10,21 +21,23 @@ use Project;
 
 /**
  * Generates relative symlinks based on a target / link combination.
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
  */
 class RelativeSymlinkTask extends \SymlinkTask
 {
 
-
     /**
      * Convert an absolute end path to a relative path.
      *
-     * @param string $endPath
-     *   Absolute path of target.
-     * @param string $startPath
-     *   Absolute path where traversal begins.
+     * @param string $endPath   Absolute path of target.
+     * @param string $startPath Absolute path where traversal begins.
      *
-     * @return string
-     *   Path of target relative to starting path.
+     * @return string Path of target relative to starting path.
      */
     public function makePathRelative($endPath, $startPath)
     {
@@ -63,9 +76,13 @@ class RelativeSymlinkTask extends \SymlinkTask
 
 
     /**
-     * Create the symlink.
+     * Create the Symlink.
      *
-     * @inheritDoc
+     * @param string      $target   Symlink target
+     * @param string      $link     Symlink name
+     * @param string bool $logShort Control type of link
+     *
+     * @return bool
      */
     protected function symlink($target, $link, $logShort = false)
     {
@@ -78,8 +95,7 @@ class RelativeSymlinkTask extends \SymlinkTask
         if ($logShort) {
             $relativePath = str_replace($this->getProject()->getBaseDir(), "", $absolutePath);
             $linkName     = basename($absolutePath);
-        }
-        else {
+        } else {
             $linkName = $link;
         }
 
@@ -102,8 +118,7 @@ class RelativeSymlinkTask extends \SymlinkTask
             if (is_link($link) || is_file($link)) {
                 $fs->unlink($link);
                 $this->log('Link removed: '.$linkName, Project::MSG_INFO);
-            }
-            else {
+            } else {
                 $fs->rmdir($link, true);
                 $this->log('Directory removed: '.$linkName, Project::MSG_INFO);
             }
