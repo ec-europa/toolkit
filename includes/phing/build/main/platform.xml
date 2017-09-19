@@ -67,13 +67,6 @@
         </phingcall>
     </target>
 
-    <!-- Delete a platform build. -->
-    <target name="build-platform-delete" description="Build a platform test package to test this reslease.">
-        <phingcall target="project-scratch-build">
-            <property name="dir-build" value="${build.${build-type}.dir}" override="true" />
-        </phingcall>
-    </target>
-
     <!-- Copy the profile folder to build deployment package files. -->
     <target name="build-platform-copy-profile" description="Copies single profile for distribution.">
         <delete dir="${build.${build-type}.dir.profiles}" includeemptydirs="true" failonerror="false" quiet="true" />
@@ -103,6 +96,13 @@
                 <include name="favicon.ico"></include>
             </fileset>
         </copy>
+    </target>
+
+    <!-- Delete a platform build. -->
+    <target name="build-platform-delete" description="Build a platform test package to test this reslease.">
+        <phingcall target="project-scratch-build">
+            <property name="dir-build" value="${build.${build-type}.dir}" override="true" />
+        </phingcall>
     </target>
 
     <!-- Symlink the profile folders for easy development. -->
