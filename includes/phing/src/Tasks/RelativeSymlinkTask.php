@@ -53,7 +53,11 @@ class RelativeSymlinkTask extends \SymlinkTask
 
         // Find for which directory the common path stops.
         $index = 0;
-        while (isset($startPathArr[$index]) && isset($endPathArr[$index]) && $startPathArr[$index] === $endPathArr[$index]) {
+        while (
+            isset($startPathArr[$index]) &&
+            isset($endPathArr[$index]) &&
+            $startPathArr[$index] === $endPathArr[$index]
+        ) {
             ++$index;
         }
 
@@ -93,14 +97,20 @@ class RelativeSymlinkTask extends \SymlinkTask
         $link         = $absolutePath;
 
         if ($logShort) {
-            $relativePath = str_replace($this->getProject()->getBaseDir(), "", $absolutePath);
+            $relativePath = str_replace(
+                $this->getProject()->getBaseDir(),
+                "", $absolutePath
+            );
             $linkName     = basename($absolutePath);
         } else {
             $linkName = $link;
         }
 
         // @codingStandardsIgnoreLine: MULTISITE-17111
-        $target = rtrim($this->makePathRelative($target, dirname($link)), '/');
+        $target = rtrim(
+            $this->makePathRelative($target, dirname($link)),
+            '/'
+        );
 
         if (is_link($link) && @readlink($link) == $target) {
             $this->log('Link exists: '.$linkName, Project::MSG_INFO);

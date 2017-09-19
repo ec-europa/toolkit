@@ -81,9 +81,21 @@ class DocGeneratorTask extends \Task
                                );
 
                 if (isset($target->attributes()->depends)) {
-                        $targetDependenciesString = (string) $target->xpath('./@depends')[0];
-                        $targetDependencies       = explode(',', str_replace(' ', '', $targetDependenciesString));
-                        $callbackTargets          = array_merge($callbackTargets, $targetDependencies);
+                        $targetDependenciesString = (string) $target->xpath(
+                            './@depends'
+                        )[0];
+                        $targetDependencies       = explode(
+                            ',',
+                            str_replace(
+                                ' ',
+                                '',
+                                $targetDependenciesString
+                            )
+                        );
+                        $callbackTargets = array_merge(
+                            $callbackTargets,
+                            $targetDependencies
+                        );
                         $targetArray += array(
                                          'dependencies' => $targetDependencies,
                                          'type'         => 'playbook',
@@ -95,7 +107,9 @@ class DocGeneratorTask extends \Task
                 }
 
                 if (count($target->xpath('./replacedby')) == 1) {
-                          $replacedBy          = (string) $target->xpath('./replacedby[1]/@target')[0];
+                          $replacedBy = (string) $target->xpath(
+                              './replacedby[1]/@target'
+                          )[0];
                           $deprecatedTargets[] = $targetName;
                           $targetArray         = array_merge(
                               $targetArray,
@@ -112,14 +126,22 @@ class DocGeneratorTask extends \Task
         }//end foreach
 
         foreach ($targetsArray as $key => $targetArray) {
-            if (in_array($targetArray['name'], $callbackTargets) && !in_array($targetArray['name'], $playbookTargets)) {
+            if (in_array($targetArray['name'], $callbackTargets) && !in_array(
+                $targetArray['name'],
+                $playbookTargets
+            )
+            ) {
                 $targetsArray[$key]['type'] = 'callback';
             } elseif (!isset($targetArray['type'])) {
                 $targetsArray[$key]['type'] = 'helper';
             }
         }
 
-        $this->wrapperTargetTable($wrapperTargets, $playbookTargets, $callbackTargets);
+        $this->wrapperTargetTable(
+            $wrapperTargets,
+            $playbookTargets,
+            $callbackTargets
+        );
 
         foreach ($buildList as $buildFile => $info) {
             $depth = ($info['level'] + 1);

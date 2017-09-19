@@ -159,10 +159,22 @@ class PhingDeprecatedTask extends \Task
         }
 
         // Inform user of the deprecated target.
-        $this->log("Target '".$targetName."' has been replaced by '".$subTargetName."'.", Project::MSG_WARN);
-        $this->log("A ".$sec." second penalty is assigned usage of this target.", Project::MSG_WARN);
-        $this->log("Please use '".$subTargetName."' instead to avoid the penalty.", Project::MSG_WARN);
-        $this->log("Running PhingCallTask for target '".$subTargetName."'", Project::MSG_DEBUG);
+        $this->log(
+            "Target '".$targetName."' has been replaced by '".$subTargetName."'.",
+            Project::MSG_WARN
+        );
+        $this->log(
+            "A ".$sec." second penalty is assigned usage of this target.",
+            Project::MSG_WARN
+        );
+        $this->log(
+            "Please use '".$subTargetName."' instead to avoid the penalty.",
+            Project::MSG_WARN
+        );
+        $this->log(
+            "Running PhingCallTask for target '".$subTargetName."'",
+            Project::MSG_DEBUG
+        );
         sleep($sec);
 
         if ($this->_callee === null) {
@@ -170,7 +182,10 @@ class PhingDeprecatedTask extends \Task
         }
 
         if ($this->subTarget === null) {
-            throw new BuildException("Attribute target is required.", $this->getLocation());
+            throw new BuildException(
+                "Attribute target is required.",
+                $this->getLocation()
+            );
         }
 
         $this->_callee->setPhingfile($buildFile);

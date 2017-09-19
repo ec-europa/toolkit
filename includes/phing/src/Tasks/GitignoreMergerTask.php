@@ -71,7 +71,13 @@ class GitignoreMergerTask extends \Task
         if (!empty($gitignoreFiles) && is_array($gitignoreFiles)) {
             foreach ($gitignoreFiles as $gitignoreFile) {
                 if (is_file($gitignoreFile)) {
-                    $gitignoreFileArray = array_merge($gitignoreFileArray, file($gitignoreFile, (FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)));
+                    $gitignoreFileArray = array_merge(
+                        $gitignoreFileArray,
+                        file(
+                            $gitignoreFile,
+                            (FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)
+                        )
+                    );
                 }
             }
         }
