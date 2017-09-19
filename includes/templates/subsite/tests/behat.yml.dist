@@ -31,7 +31,7 @@ default:
         paths:
           - '{{ behat.subcontexts.path }}'
       drush:
-        root: '{{ build.platform.dir }}'
+        root: '{{ build.subsite.dir }}'
         binary: '{{ toolkit.dir.bin.drush }}'
   formatters:
     {{ behat.formatter.name }}: ~

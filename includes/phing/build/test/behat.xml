@@ -51,6 +51,7 @@
                     <token key="behat.wd_host.url" value="${behat.wd_host.url}" />
                     <token key="behat.browser.name" value="${behat.browser.name}" />
                     <token key="build.platform.dir" value="${build.platform.dir}" />
+                    <token key="build.subsite.dir" value="${build.subsite.dir}" />
                     <token key="behat.subcontexts.path" value="${behat.subcontexts.path}" />
                     <token key="flickr.key" value="${flickr.key}" />
                     <token key="flickr.secret" value="${flickr.secret}" />
