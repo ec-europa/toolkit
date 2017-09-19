@@ -10,7 +10,7 @@
             build-subsite-delete,
             build-subsite-link-resources,
             build-subsite-make-site,
-            project-modules-devel-make,
+            project-modules-devel-en,
             project-subsite-composer-dev">
         <echo msg="Playbook for build-subsite-dev ended." />
     </target>

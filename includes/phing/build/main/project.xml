@@ -212,7 +212,7 @@
     </target>
 
     <!-- Enable development modules. -->
-    <target name="project-modules-devel-en" description="Enable development modules with drush.">
+    <target name="project-modules-devel-en" depends="project-modules-devel-make" description="Enable development modules with drush.">
         <phingcall target="drush-enable-modules">
             <property name="project.drupal.modules" value="${devel.mdls.en}" />
         </phingcall>
