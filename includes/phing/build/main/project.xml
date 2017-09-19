@@ -194,28 +194,13 @@
         <!--<phingcall target="drush-file-ensure-htaccess" />-->
     </target>
 
-    <!-- Generate the makefile used to download development modules. -->
-    <target name="project-modules-devel-mf" description="Create make file for development modules.">
-        <echo msg="Generate the makefile for development modules." />
-        <if>
-            <available file="${project.tmp.devel.make}" type="file" property="devel.makefile.available" />
-            <then>
-                <echo message="Deleting existing makefile." />
-                <delete file="${project.tmp.devel.make}" failonerror="false" />
-            </then>
-        </if>
-        <drushmf
-            makeFile="${project.tmp.devel.make}"
-            coreVersion="${profile.core}"
-            projects="${devel.mdls.dl}"
-            defaultProjectDir="${devel.mdls.dir}" />
-    </target>
-    <!-- Download development modules. -->
-    <target name="project-modules-devel-dl" depends="project-modules-devel-mf" description="Download development modules with drush.">
-        <echo msg="Download development modules." />
+    <!-- Make the development version of the subsite. -->
+    <target name="project-modules-devel-make" description="Makes the development resources with drush.">
+        <echo msg="Make the development resources." />
         <phingcall target="drush-make-no-core">
-            <property name="drush.make.target.file" value="${project.tmp.devel.make}" />
-            <property name="drush.make.root" value="${build.platform.dir}" />
+            <property name="make-file" value="${resources.dir.devel.make}" />
+            <property name="make-folder" value="${build.platform.dir.sites}" />
+            <property name="make-destination" value="${build.site}" />
         </phingcall>
     </target>
 

@@ -116,6 +116,7 @@ resources.dir = ${project.basedir}/resources
 resources.dir.composer.json = ${resources.dir}/composer.json
 resources.dir.composer.lock = ${resources.dir}/composer.lock
 resources.dir.favicon.ico = ${resources.dir}/favicon.ico
+resources.dir.devel.make = ${resources.dir}/devel.make
 resources.dir.site.make = ${resources.dir}/site.make
 
 tests.dir = ${project.basedir}/tests
