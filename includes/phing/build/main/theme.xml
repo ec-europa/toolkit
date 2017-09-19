@@ -9,18 +9,13 @@
             theme-europa-repo-clone,
             theme-europa-build" />
 
-    <!-- Generating assets -->
-    <target name="theme-europa-build" description="Build the EC europa theme with NPM.">
-        <exec
-                command="npm install"
-                passthru="true"
-                dir="${lib.dir.themes}/ec_europa"
-        />
-        <exec
-                command="npm run build"
-                passthru="true"
-                dir="${lib.dir.themes}/ec_europa"
-        />
+    <!-- Generating assets.  -->
+    <target name="theme-europa-build"
+        description="Build the EC europa theme with NPM.">
+
+        <exec command="npm install" passthru="true" dir="${lib.dir.themes}/ec_europa"/>
+        <exec command="npm run build" passthru="true" dir="${lib.dir.themes}/ec_europa" />
+
         <!-- Deleting *.map files (currently there is a bug in the ecl-builder) -->
         <delete>
             <fileset dir="${lib.dir.themes}/ec_europa/assets/css">
@@ -33,34 +28,32 @@
     </target>
 
     <!-- Cloning and checking out the branch of the Atomium and EC Europa theme repositories. -->
-    <target name="theme-europa-repo-clone" description="Clone the Atomium and EC Europa repositories.">
+    <target name="theme-europa-repo-clone"
+        description="Clone the Atomium and EC Europa repositories.">
+
         <!-- Deleting theme directories before cloning -->
         <delete dir="${lib.dir.themes}/atomium" quiet="true" />
         <delete dir="${lib.dir.themes}/ec_europa" quiet="true" />
 
         <!-- Cloning the Atomium theme repo into the common profiles directory -->
         <echo msg="Cloning the Atomium theme repository." />
-        <gitclone
-                repository="${theme.atomium.repo.url}"
-                targetPath="${lib.dir.themes}/atomium" />
+        <gitclone repository="${theme.atomium.repo.url}" targetPath="${lib.dir.themes}/atomium" />
+
         <!-- Checking out the configured branch in the cloned repo -->
-        <gitcheckout
-                repository="${lib.dir.themes}/atomium"
-                branchname="${theme.atomium.repo.branch}" />
+        <gitcheckout repository="${lib.dir.themes}/atomium" branchname="${theme.atomium.repo.branch}" />
 
         <!-- cloning the EC Europa theme repo into the common profiles directory -->
         <echo msg="Cloning the EC Europa theme repository." />
-        <gitclone
-                repository="${theme.europa.repo.url}"
-                targetPath="${lib.dir.themes}/ec_europa" />
+        <gitclone repository="${theme.europa.repo.url}" targetPath="${lib.dir.themes}/ec_europa" />
+
         <!-- Checking out the configured branch in the cloned repo -->
-        <gitcheckout
-                repository="${lib.dir.themes}/ec_europa"
-                branchname="${theme.europa.repo.branch}" />
+        <gitcheckout repository="${lib.dir.themes}/ec_europa" branchname="${theme.europa.repo.branch}" />
     </target>
 
     <!-- Creates symlinks for the Atomium and Europa themes. -->
-    <target name="theme-europa-create-symlinks" description="Create symlinks to themes in lib for development.">
+    <target name="theme-europa-create-symlinks"
+        description="Create symlinks to themes in lib for development.">
+
         <relsym link="${build.platform.dir.profile.themes}" overwrite="true">
             <fileset dir="${lib.dir.themes}" expandsymboliclinks="true">
                 <include name="*" />
@@ -69,7 +62,9 @@
     </target>
 
     <!-- This step in future will become a part of a build on the new Europa theme repository. -->
-    <target name="theme-europa-download-extract" description="Download and unpack the EC Europa theme.">
+    <target name="theme-europa-download-extract"
+        description="Download and unpack the EC Europa theme.">
+
         <phingcall target="package-download-unpack">
             <property name="package-name" value="ec_europa-${theme.ec_europa.version}.tar.gz" />
             <property name="package-cache-location" value="${project.tmp.dir}" />
@@ -77,11 +72,14 @@
             <property name="package-extract-location" value="${lib.dir}/themes/ec_europa" />
             <property name="package-extract-options" value="--strip=1" />
         </phingcall>
+
         <phingcall target="theme-europa-embed-ecl-assets" />
     </target>
 
     <!-- Download and unpack the ECL assets for EC Europa theme. -->
-    <target name="theme-europa-embed-ecl-assets" description="Download and unpack the ECL assets for EC Europa theme.">
+    <target name="theme-europa-embed-ecl-assets"
+        description="Download and unpack the ECL assets for EC Europa theme.">
+
         <phingcall target="package-download-unpack">
             <property name="package-name" value="framework.tar.gz" />
             <property name="package-cache-location" value="${project.tmp.dir}" />

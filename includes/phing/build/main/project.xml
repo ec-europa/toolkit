@@ -2,13 +2,12 @@
 
 <project name="project" description="Targets shared by differenct project types." default="">
     <!-- Install the subsite. TODO: Convert to playbook.-->
-    <target name="install-project-clean" description="Install NextEuropa site from scratch.">
+    <target name="install-project-clean"
+        description="Install NextEuropa site from scratch.">
+
         <!--<mkdir dir="${build.subsite.dir}" />-->
         <phingcall target="project-subsite-setup-files" />
-        <!--
-            Ensure the settings folder is writable so the installer can create
-            the settings.php file.
-         -->
+        <!-- Ensure the settings folder is writable so the installer can create the settings.php file.-->
         <exec command="chmod 775 ${build.platform.dir.settings}" />
 
         <!-- Regenerate aliases for this site to be included. -->
@@ -64,8 +63,8 @@
 
     <!-- Install the project with sanitized production data. -->
     <target name="install-project-clone"
-            description="Install NextEuropa site with sanitized production data."
-            depends="
+        description="Install NextEuropa site with sanitized production data."
+        depends="
             project-database-download,
             drush-generate-aliases,
             drush-generate-settings,
@@ -90,6 +89,7 @@
         depends="
             project-subsite-backup,
             project-subsite-restore">
+
         <echo msg="TODO: subsite builds not yet developed." />
     </target>
 
@@ -102,8 +102,9 @@
 
     <!-- Install Composer dependencies without development dependencies. -->
     <target name="project-composer-install"
-            description="Runs composer install."
-            hidden="true">
+        description="Runs composer install."
+        hidden="true">
+
         <if>
             <isset property="composer-no-dev" />
             <then>
@@ -127,7 +128,9 @@
     </target>
 
     <!-- Download the production database. -->
-    <target name="project-database-download" description="Download sanitized production database from archive.">
+    <target name="project-database-download"
+        description="Download sanitized production database from archive.">
+
         <exec command='find ${project.tmp.dir} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
         <if>
             <!-- Check if we have a previously downloaded dump available. -->
@@ -151,7 +154,10 @@
     </target>
 
     <!-- Import production database. -->
-    <target name="project-database-import" depends="project-database-download" description="Import database for project with drush.">
+    <target name="project-database-import"
+        description="Import database for project with drush."
+        depends="project-database-download">
+
         <echo msg="Import production database." />
         <exec command='find ${project.tmp.dir} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
         <!-- Drop database, create if necessary and import the dump. -->
@@ -163,21 +169,27 @@
     </target>
 
     <!-- Enable development modules. -->
-    <target name="project-modules-devel-en" description="Enable development modules with drush.">
+    <target name="project-modules-devel-en"
+        description="Enable development modules with drush.">
+
         <phingcall target="drush-enable-modules">
             <property name="project.drupal.modules" value="${devel.mdls.en}" />
         </phingcall>
     </target>
 
     <!-- Delete a platform build. -->
-    <target name="project-platform-delete" description="Remove previous platform build..">
+    <target name="project-platform-delete"
+        description="Remove previous platform build..">
+
         <phingcall target="project-scratch-build">
             <property name="dir-build" value="${build.platform.dir}" override="true" />
         </phingcall>
     </target>
 
     <!-- Unpack the platform. -->
-    <target name="project-platform-devops-unpack" description="Download and unpack fpfis resource package.">
+    <target name="project-platform-devops-unpack"
+        description="Download and unpack fpfis resource package.">
+
         <mkdir dir="${share.path.platform.packages.deploy}" />
         <phingcall target="package-download-unpack">
             <property name="package-name" value="${platform.package.version.major}.${platform.package.version.minor}.tar.gz" />
@@ -189,7 +201,9 @@
     </target>
 
     <!-- Unpack the platform. -->
-    <target name="project-platform-package-unpack" description="Download and unpack platform deploy package.">
+    <target name="project-platform-package-unpack"
+        description="Download and unpack platform deploy package.">
+
         <mkdir dir="${share.path.platform.packages.deploy}" />
         <phingcall target="package-download-unpack">
             <property name="package-name" value="platform-dev-${platform.package.version.current}.tar.gz" />
@@ -200,7 +214,9 @@
     </target>
 
     <!-- Update .htaccess. -->
-    <target name="project-platform-set-htaccess" description="Append htaccess config to root .htaccess.">
+    <target name="project-platform-set-htaccess"
+        description="Append htaccess config to root .htaccess.">
+
         <if>
             <istrue value="${build.platform.htaccess.append.text}" />
             <then>
@@ -214,28 +230,16 @@
     </target>
 
     <!-- Get latest stable if major version is defined. -->
-    <target name="project-platform-set-version" hidden="true" description="Save the platform version used for builds.">
+    <target name="project-platform-set-version"
+        description="Save the platform version used for builds."
+        hidden="true">
+
         <if>
             <matches string="${platform.package.version}" pattern="^[1-9]+\." />
             <then>
-                <propertyregex
-                        property="platform.package.version.major"
-                        subject="${platform.package.version}"
-                        pattern="^([1-9]+)\."
-                        match="$1"
-                        override="true" />
-                <propertyregex
-                        property="platform.package.version.minor"
-                        subject="${platform.package.version}"
-                        pattern="^[1-9]+\.([1-9]+)"
-                        match="$1"
-                        override="true" />
-                <propertyregex
-                        property="platform.package.version.reference"
-                        subject="${platform.package.version}"
-                        pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
-                        match="$1"
-                        override="true" />
+                <propertyregex property="platform.package.version.major" subject="${platform.package.version}" pattern="^([1-9]+)\." match="$1" override="true" />
+                <propertyregex property="platform.package.version.minor" subject="${platform.package.version}" pattern="^[1-9]+\.([1-9]+)" match="$1" override="true" />
+                <propertyregex property="platform.package.version.reference" subject="${platform.package.version}" pattern="^[1-9]+\.[1-9]+\.([1-9]+)" match="$1" override="true" />
                 <if>
                     <isset property="platform.package.version.minor" />
                     <then>
@@ -250,30 +254,19 @@
         <if>
             <and>
                 <matches string="${platform.package.version.current}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
-                <versioncompare
-                        version="${platform.package.version.current}"
-                        desiredVersion="${platform.package.version}"
-                        operator="gt" />
+                <versioncompare version="${platform.package.version.current}" desiredVersion="${platform.package.version}" operator="gt" />
             </and>
             <then>
                 <echo msg="The platform package version is set to ${platform.package.version}." />
                 <echo msg="The build will be performed with version ${platform.package.version.current}." />
-                <propertyregex
-                        property="platform.package.version.reference"
-                        subject="${platform.package.version.current}"
-                        pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
-                        match="$1"
-                        override="true" />
+                <propertyregex property="platform.package.version.reference" subject="${platform.package.version.current}" pattern="^[1-9]+\.[1-9]+\.([1-9]+)" match="$1" override="true" />
                 <property name="platform.package.version" value="${platform.package.version.current}" override="true" />
             </then>
         </if>
         <if>
             <and>
                 <matches string="${platform.package.version.next}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
-                <versioncompare
-                        version="${platform.package.version.next}"
-                        desiredVersion="${platform.package.version}"
-                        operator="gt" />
+                <versioncompare version="${platform.package.version.next}" desiredVersion="${platform.package.version}" operator="gt" />
             </and>
             <then>
                 <!-- TODO: this allows for automatic upgrading if we were to provide a setting. -->
@@ -286,7 +279,9 @@
     </target>
 
     <!-- Delete the previous development build. -->
-    <target name="project-scratch-build" description="Delete previous build to start over clean.">
+    <target name="project-scratch-build"
+        description="Delete previous build to start over clean.">
+
         <echo msg="Delete previous build." />
         <if>
             <available file="${build.platform.dir.settings}/default.settings.php" />
@@ -297,6 +292,7 @@
         <phingcall target="folder-unprotect">
             <property name="folder.to.unprotect" value="${dir-build}" />
         </phingcall>
+
         <echo msg="Unprotecting folder." />
         <phingcall target="folder-delete">
             <property name="folder.to.delete" value="${dir-build}" />
@@ -311,7 +307,8 @@
     </target>
 
     <!-- Backs up files and folders listed in rebuild. properties in order to rebuild. -->
-    <target name="project-subsite-backup" description="Backup site defined files from properties.">
+    <target name="project-subsite-backup"
+        description="Backup site defined files from properties.">
 
         <!-- Check if site exists. -->
         <if>
@@ -378,7 +375,9 @@
     </target>
 
     <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
-    <target name="project-subsite-backup-item" hidden="true" description="Backup site item from configuraton list.">
+    <target name="project-subsite-backup-item"
+        description="Backup site item from configuraton list."  hidden="true">
+
         <php expression='dirname("${site-item}")' returnProperty="site-item-dir" />
         <property name="site-item-backup-dir" value="${site-item-dir}">
             <filterchain>
@@ -408,7 +407,8 @@
     </target>
 
     <!-- Restoring sites directory if backed up before rebuild-dev. -->
-    <target name="project-subsite-restore" description="Restore site defined files from properties.">
+    <target name="project-subsite-restore"
+        description="Restore site defined files from properties.">
 
         <!-- Check if backup exists. -->
         <if>
@@ -458,7 +458,9 @@
     </target>
 
     <!-- Restores a site item from the rebuild.backup.destination to the new build. -->
-    <target name="project-subsite-restore-item" hidden="true" description="Restore site item from configuration list.">
+    <target name="project-subsite-restore-item"
+        description="Restore site item from configuration list." hidden="true">
+
         <property name="site-item-backup" value="${site-item}">
             <filterchain>
                 <replaceregexp>
@@ -488,7 +490,9 @@
     </target>
 
     <!-- Setup file directory -->
-    <target name="project-subsite-setup-files" description="Create files directories for subsite.">
+    <target name="project-subsite-setup-files"
+        description="Create files directories for subsite.">
+
         <if>
             <istrue value="${build.subsite.dir.files}" />
             <then>
@@ -503,7 +507,9 @@
     </target>
 
     <!-- Make the development version of the subsite. -->
-    <target name="project-modules-devel-make" description="Makes the development resources with drush.">
+    <target name="project-modules-devel-make"
+        description="Makes the development resources with drush.">
+
         <echo msg="Make the development resources." />
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${resources.dir.devel.make}" />
@@ -513,14 +519,18 @@
     </target>
 
     <!-- Enable required modules after installation of the profile. -->
-    <target name="project-modules-install-en" description="Install list of modules to enable by default.">
+    <target name="project-modules-install-en"
+        description="Install list of modules to enable by default.">
+
         <phingcall target="drush-enable-modules">
             <property name="project.drupal.modules" value="${project.install.modules}" />
         </phingcall>
     </target>
 
     <!-- Install Composer dependencies, including optional development dependencies. -->
-    <target name="project-platform-composer-dev" description="Run composer install with dev on platform.">
+    <target name="project-platform-composer-dev"
+        description="Run composer install with dev on platform.">
+
         <echo msg="Run 'composer install' in platform root." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
@@ -528,7 +538,9 @@
     </target>
 
     <!-- Install Composer dependencies without development dependencies. -->
-    <target name="project-platform-composer-no-dev" description="Run composer install without dev on platform.">
+    <target name="project-platform-composer-no-dev"
+        description="Run composer install without dev on platform.">
+
         <echo msg="Run 'composer install' in platform root." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
@@ -537,12 +549,16 @@
     </target>
 
     <!-- Link site document root to Webserver document root. -->
-    <target name="project-platform-set-docroot" description="Link the platform root to your docroot.">
+    <target name="project-platform-set-docroot"
+        description="Link the platform root to your docroot.">
+
         <relsym link="${project.docroot}" target="${build.platform.dir}" overwrite="true" />
     </target>
 
     <!-- Target to check if we have default settings, otherwise propose user to rebuild. -->
-    <target name="project-rebuild-check" description="Rebuild project if needed. (needs work)" hidden="true">
+    <target name="project-rebuild-check"
+        description="Rebuild project if needed. (needs work)" hidden="true">
+
         <if>
             <not>
                 <available file="${build.platform.dir.settings}/default.settings.php" type="file" property="build.settings.dir.default.settings" />
@@ -573,7 +589,9 @@
     </target>
 
     <!-- Install Composer dependencies for the subsite. -->
-    <target name="project-subsite-composer-no-dev" description="Run composer install without dev on subsite.">
+    <target name="project-subsite-composer-no-dev"
+        description="Run composer install without dev on subsite.">
+
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.subsite.dir}" override="true" />
@@ -582,7 +600,9 @@
     </target>
 
     <!-- Install Composer dev dependencies for the subsite. -->
-    <target name="project-subsite-composer-dev" description="Run composer install with dev on subsite.">
+    <target name="project-subsite-composer-dev"
+        description="Run composer install with dev on subsite.">
+
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.subsite.dir}" />
@@ -590,14 +610,11 @@
     </target>
 
     <!-- Validate the build properties file -->
-    <target name="project-validate-properties" description="Validate the build properties file.">
+    <target name="project-validate-properties"
+        description="Validate the build properties file.">
+
         <!--forbidden="${ssk.incl.phing.props}/build.properties.forbidden"-->
-        <propval
-            source="build.properties"
-            required="${toolkit.dir.incl.phing.props}/required.props"
-            haltonerror="${build.haltonerror.props.validate}"
-            logoutput="${logoutput}"
-        />
+        <propval source="build.properties" required="${toolkit.dir.incl.phing.props}/required.props" haltonerror="${build.haltonerror.props.validate}" logoutput="${logoutput}"/>
     </target>
 
 </project>
