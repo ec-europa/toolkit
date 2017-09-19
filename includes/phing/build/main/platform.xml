@@ -3,8 +3,7 @@
 <project name="platform" description="Builds the platform if a profiles folder is detected." default="">
 
     <!-- Build a local development version with a single platform profile. -->
-    <target
-        name="build-platform-dev"
+    <target name="build-platform-dev"
         description="Build a local development version with a single platform profile."
         depends="
             project-subsite-backup,
@@ -22,8 +21,7 @@
             project-subsite-setup-files" />
 
     <!-- Build a local development version with all platform profiles. -->
-    <target
-        name="build-platform-dev-all"
+    <target name="build-platform-dev-all"
         description="Build a local development version with all platform profiles."
         depends="
             build-platform-type-dev,
@@ -35,8 +33,7 @@
             project-platform-composer-no-dev" />
 
     <!-- Build a single platform profile intended as a release package. -->
-    <target
-        name="build-platform-dist"
+    <target name="build-platform-dist"
         description="Build a single platform profile intended as a release package."
         depends="
             build-platform-type-dist,
@@ -48,8 +45,7 @@
             project-platform-composer-no-dev" />
 
     <!-- Build all platform profiles intended as a release package. -->
-    <target
-        name="build-platform-dist-all"
+    <target name="build-platform-dist-all"
         description="Build all platform profiles intended as a release package."
         depends="
             build-platform-type-dist,
