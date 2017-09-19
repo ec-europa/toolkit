@@ -9,7 +9,10 @@
 
     <!-- Subsequently import the project specific build file." -->
     <if>
-        <available file="${project.basedir}/build.project.xml" />
+        <and>
+            <available file="${project.basedir}/build.project.xml" />
+            <referenceexists ref="root" />
+        </and>
         <then>
             <import file="${project.basedir}/build.project.xml" />
         </then>
