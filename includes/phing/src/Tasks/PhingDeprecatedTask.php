@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Deprecated tasks.
+ *
+ * PHP Version 5 and 7
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
+ */
 namespace Phing\Ssk\Tasks;
 
 require_once 'phing/Task.php';
@@ -8,6 +19,15 @@ use BuildException;
 use PhingFile;
 use Project;
 
+/**
+ * A Phing task to for deprecated tasks.
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
+ */
 class PhingDeprecatedTask extends \Task
 {
     /**
@@ -15,39 +35,41 @@ class PhingDeprecatedTask extends \Task
      *
      * @var PhingTask
      */
-    private $callee;
+    private $_callee;
 
     /**
      * The target to call if subsite doesn't use it..
      *
      * @var string
      */
-    private $subTargetName;
+    private $_subTargetName;
 
     /**
      * Whether to inherit all properties from current project.
      *
      * @var boolean
      */
-    private $inheritAll = true;
+    private $_inheritAll = true;
 
     /**
      * Whether to inherit refs from current project.
      *
      * @var boolean
      */
-    private $inheritRefs = false;
+    private $_inheritRefs = false;
 
 
     /**
      *  If true, pass all properties to the new Phing project.
      *  Defaults to true. Future use.
      *
-     * @param boolean new value
+     * @param boolean $inherit new value
+     *
+     * @return void
      */
     public function setInheritAll($inherit)
     {
-        $this->inheritAll = (boolean) $inherit;
+        $this->_inheritAll = (boolean) $inherit;
 
     }//end setInheritAll()
 
@@ -56,11 +78,13 @@ class PhingDeprecatedTask extends \Task
      *  If true, pass all references to the new Phing project.
      *  Defaults to false. Future use.
      *
-     * @param boolean new value
+     * @param boolean $inheritRefs new value
+     *
+     * @return void
      */
     public function setInheritRefs($inheritRefs)
     {
-        $this->inheritRefs = (boolean) $inheritRefs;
+        $this->_inheritRefs = (boolean) $inheritRefs;
 
     }//end setInheritRefs()
 
@@ -68,7 +92,9 @@ class PhingDeprecatedTask extends \Task
     /**
      * Target to execute, required.
      *
-     * @param $target
+     * @param string $target Target to be called
+     *
+     * @return void
      */
     public function setTarget($target)
     {
@@ -78,26 +104,30 @@ class PhingDeprecatedTask extends \Task
 
 
     /**
-     *  init this task by creating new instance of the phing task and
+     *  Init this task by creating new instance of the phing task and
      *  configuring it's by calling its own init method.
+     *
+     * @return void
      */
     public function init()
     {
-        $this->callee = $this->project->createTask("phing");
-        $this->callee->setOwningTarget($this->getOwningTarget());
-        $this->callee->setTaskName($this->getTaskName());
-        $this->callee->setHaltOnFailure(true);
-        $this->callee->setLocation($this->getLocation());
-        $this->callee->init();
+        $this->_callee = $this->project->createTask("phing");
+        $this->_callee->setOwningTarget($this->getOwningTarget());
+        $this->_callee->setTaskName($this->getTaskName());
+        $this->_callee->setHaltOnFailure(true);
+        $this->_callee->setLocation($this->getLocation());
+        $this->_callee->init();
 
     }//end init()
 
 
     /**
-     *  hand off the work to the phing task of ours, after setting it up
+     *  Hand off the work to the phing task of ours, after setting it up
      *
      * @throws BuildException on validation failure or if the target didn't
      *  execute.
+     *
+     * @return void
      */
     public function main()
     {
@@ -121,9 +151,8 @@ class PhingDeprecatedTask extends \Task
             $newTarget = $targetName;
             $buildFile = "build.project.xml";
             $target    = $allTargets[$subTargetName];
-        }
-        // If a deprecated target is called without redefinition.
-        else {
+        } else {
+            // If a deprecated target is called without redefinition.
             $sec       = 5;
             $newTarget = $subTargetName;
             $buildFile = $this->project->getProperty("phing.file");
@@ -136,7 +165,7 @@ class PhingDeprecatedTask extends \Task
         $this->log("Running PhingCallTask for target '".$subTargetName."'", Project::MSG_DEBUG);
         sleep($sec);
 
-        if ($this->callee === null) {
+        if ($this->_callee === null) {
             $this->init();
         }
 
@@ -144,12 +173,12 @@ class PhingDeprecatedTask extends \Task
             throw new BuildException("Attribute target is required.", $this->getLocation());
         }
 
-        $this->callee->setPhingfile($buildFile);
-        $this->callee->setTarget($newTarget);
-        $this->callee->setOwningTarget($target);
-        $this->callee->setInheritAll($this->inheritAll);
-        $this->callee->setInheritRefs($this->inheritRefs);
-        $this->callee->main();
+        $this->_callee->setPhingfile($buildFile);
+        $this->_callee->setTarget($newTarget);
+        $this->_callee->setOwningTarget($target);
+        $this->_callee->setInheritAll($this->_inheritAll);
+        $this->_callee->setInheritRefs($this->_inheritRefs);
+        $this->_callee->main();
 
     }//end main()
 
