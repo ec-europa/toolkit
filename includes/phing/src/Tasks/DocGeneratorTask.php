@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Documentation generator.
+ *
+ * PHP Version 5 and 7
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
+ */
+
 namespace Phing\Ssk\Tasks;
 
 use Phing\Ssk\Tasks\PhingHelpTask;
@@ -10,6 +22,12 @@ require_once 'phing/Task.php';
 
 /**
  * A Phing task to generate an aliases.drushrc.php file.
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
  */
 class DocGeneratorTask extends \Task
 {
@@ -19,8 +37,7 @@ class DocGeneratorTask extends \Task
      *
      * @var string
      */
-    private $buildfile = '';
-
+    private $_buildfile = '';
 
     /**
      * Generates an aliases.drushrc.php file.
@@ -28,6 +45,8 @@ class DocGeneratorTask extends \Task
      * Either generates a file for:
      *  - all sites in the sites directory.
      *  - a single site to be added to the aliases file (appending).
+     *
+     * @return void
      */
     public function main()
     {
@@ -36,7 +55,7 @@ class DocGeneratorTask extends \Task
 
         // $this->checkRequirements();
         $project   = $this->getProject();
-        $buildFile = $this->buildFile;
+        $buildFile = $this->_buildFile;
         $buildList = PhingHelpTask::getBuildList($buildFile);
 
         $targetsArray      = array();
@@ -95,8 +114,7 @@ class DocGeneratorTask extends \Task
         foreach ($targetsArray as $key => $targetArray) {
             if (in_array($targetArray['name'], $callbackTargets) && !in_array($targetArray['name'], $playbookTargets)) {
                 $targetsArray[$key]['type'] = 'callback';
-            }
-            else if (!isset($targetArray['type'])) {
+            } elseif (!isset($targetArray['type'])) {
                 $targetsArray[$key]['type'] = 'helper';
             }
         }
@@ -131,8 +149,7 @@ class DocGeneratorTask extends \Task
                         $output .= "            <td nowrap>\n";
                         if ($target['visibility'] === 'visible') {
                             $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png\" align=\"left\" alt=\"visible\" />\n";
-                        }
-                        else {
+                        } else {
                               $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png\" align=\"left\" alt=\"hidden\" />\n";
                         }
 
@@ -166,12 +183,20 @@ class DocGeneratorTask extends \Task
             }//end if
         }//end foreach
 
-        echo "$output";
-        // var_dump($targetsArray);
+        echo $output;
 
     }//end main()
 
 
+    /**
+     * This function should do something interesting.
+     *
+     * @param mixed $wrapperTargets  I have no idea.
+     * @param array $playbookTargets I have no idea.
+     * @param array $callbackTargets something where
+     *
+     * @return void
+     */
     protected function wrapperTargetTable($wrapperTargets, $playbookTargets, $callbackTargets)
     {
         $output = '';
@@ -243,12 +268,13 @@ class DocGeneratorTask extends \Task
 
     }//end wrapperTargetTable()
 
-
     /**
      * Checks if all properties required for generating the aliases file are present.
      *
      * @throws \BuildException
      *   Thrown when a required property is not present.
+     *
+     * @return void
      */
     protected function checkRequirements()
     {
@@ -261,17 +287,16 @@ class DocGeneratorTask extends \Task
 
     }//end checkRequirements()
 
-
     /**
      * Sets the Phing file to generate docs for.
      *
-     * @param string $buildfile
-     *   The Phing directory to generate docs for.
+     * @param string $buildfile The Phing directory to generate docs for.
+     *
+     * @return void
      */
     public function setBuildFile($buildfile)
     {
-        $this->buildFile = $buildfile;
-
+        $this->_buildFile = $buildfile;
     }//end setBuildFile()
 
 
