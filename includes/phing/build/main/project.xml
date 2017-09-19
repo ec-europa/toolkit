@@ -1,225 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <project name="project" description="Targets shared by differenct project types." default="">
-
-    <!-- Create code base platform. -->
-    <target
-        name="project-build-platform"
-        description="Build NextEuropa Platform code without version control."
-        depends="
-            project-subsite-backup,
-            project-platform-delete,
-            project-platform-set-version,
-            project-platform-package-unpack,
-            project-platform-devops-unpack,
-            project-platform-set-htaccess,
-            project-subsite-restore" />
-
-    <!-- Build subsite in platform. -->
-    <target
-        name="project-build-subsite"
-        description="Build NextEuropa Subsite code without version control (non-functional)."
-        depends="
-            project-subsite-backup,
-            project-subsite-restore">
-        <echo msg="TODO: subsite builds not yet developed." />
-    </target>
-
-    <!-- Build ec-europa theme in platform. -->
-    <target
-        name="project-build-theme"
-        description="Build EC Europa theme without version control."
-        depends="
-            theme-europa-download-extract,
-            theme-europa-create-symlinks" />
-
-    <!-- Install the project with sanitized production data. -->
-    <target
-        name="install-project-clone"
-        description="Install NextEuropa site with sanitized production data."
-        depends="
-            project-database-download,
-            drush-generate-aliases,
-            drush-generate-settings,
-            project-database-import,
-            project-modules-devel-en" />
-
-    <!-- Delete a platform build. -->
-    <target name="project-platform-delete" description="Remove previous platform build..">
-        <phingcall target="project-scratch-build">
-            <property name="dir-build" value="${build.platform.dir}" override="true" />
-        </phingcall>
-    </target>
-
-    <!-- Link site document root to Webserver document root. -->
-    <target name="project-platform-set-docroot" description="Link the platform root to your docroot.">
-        <relsym link="${project.docroot}" target="${build.platform.dir}" overwrite="true" />
-    </target>
-
-    <!-- Update .htaccess. -->
-    <target name="project-platform-set-htaccess" description="Append htaccess config to root .htaccess.">
-        <if>
-            <istrue value="${build.platform.htaccess.append.text}" />
-            <then>
-                <echo msg="Appended text to htaccess." />
-                <append destfile="${build.platform.dir}/.htaccess" text="${build.platform.htaccess.append.text}" />
-            </then>
-            <else>
-                <echo msg="Appended no text to htaccess." />
-            </else>
-        </if>
-    </target>
-
-    <!-- Delete the previous development build. -->
-    <target name="project-scratch-build" description="Delete previous build to start over clean.">
-        <echo msg="Delete previous build." />
-        <if>
-            <available file="${build.platform.dir.settings}/default.settings.php" />
-            <then>
-                <move file="${build.platform.dir.settings}/default.settings.php" tofile="${project.tmp.dir}/default.settings.php" overwrite="true" />
-            </then>
-        </if>
-        <phingcall target="folder-unprotect">
-            <property name="folder.to.unprotect" value="${dir-build}" />
-        </phingcall>
-        <echo msg="Unprotecting folder." />
-        <phingcall target="folder-delete">
-            <property name="folder.to.delete" value="${dir-build}" />
-        </phingcall>
-        <if>
-            <available file="${project.tmp.dir}/default.settings.php" />
-            <then>
-                <mkdir dir="${build.platform.dir.settings}" />
-                <move file="${project.tmp.dir}/default.settings.php" tofile="${build.platform.dir.settings}/default.settings.php" />
-            </then>
-        </if>
-    </target>
-
-    <!-- Unpack the platform. -->
-    <target name="project-platform-package-unpack" description="Download and unpack platform deploy package.">
-        <mkdir dir="${share.path.platform.packages.deploy}" />
-        <phingcall target="package-download-unpack">
-            <property name="package-name" value="platform-dev-${platform.package.version.current}.tar.gz" />
-            <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
-            <property name="package-download-location" value="https://platform-ci.ne-dev.eu/releases" />
-            <property name="package-extract-location" value="${build.platform.dir}" />
-        </phingcall>
-    </target>
-
-    <!-- Unpack the platform. -->
-    <target name="project-platform-devops-unpack" description="Download and unpack fpfis resource package.">
-        <mkdir dir="${share.path.platform.packages.deploy}" />
-        <phingcall target="package-download-unpack">
-            <property name="package-name" value="${platform.package.version.major}.${platform.package.version.minor}.tar.gz" />
-            <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
-            <property name="package-download-location" value="https://github.com/ec-europa/platform-deploy/archive/fpfis-conf" />
-            <property name="package-extract-location" value="${build.platform.dir}" />
-            <property name="package-extract-options" value="--strip=1" />
-        </phingcall>
-    </target>
-
-    <!-- Install Composer dependencies without development dependencies. -->
-    <target
-        name="project-composer-install"
-        description="Runs composer install."
-        hidden="true">
-        <if>
-            <isset property="composer-no-dev" />
-            <then>
-                <composer command="install" composer="${project.bin.composer}">
-                    <arg value="--working-dir=${composer-working-dir}" />
-                    <arg value="--no-interaction" />
-                    <arg value="--no-suggest" />
-                    <arg value="--no-dev" />
-                    <arg value="--ansi" />
-                </composer>
-            </then>
-            <else>
-                <composer command="install" composer="${project.bin.composer}">
-                    <arg value="--working-dir=${composer-working-dir}" />
-                    <arg value="--no-interaction" />
-                    <arg value="--no-suggest" />
-                    <arg value="--ansi" />
-                </composer>
-            </else>
-        </if>
-    </target>
-
-    <!-- Install Composer dependencies without development dependencies. -->
-    <target name="project-platform-composer-no-dev" description="Run composer install without dev on platform.">
-        <echo msg="Run 'composer install' in platform root." />
-        <phingcall target="project-composer-install">
-            <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
-            <property name="composer-no-dev" value="true" override="true" />
-        </phingcall>
-    </target>
-
-    <!-- Install Composer dependencies, including optional development dependencies. -->
-    <target name="project-platform-composer-dev" description="Run composer install with dev on platform.">
-        <echo msg="Run 'composer install' in platform root." />
-        <phingcall target="project-composer-install">
-            <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
-        </phingcall>
-    </target>
-
-    <!-- Install Composer dependencies for the subsite. -->
-    <target name="project-subsite-composer-no-dev" description="Run composer install without dev on subsite.">
-        <echo msg="Run 'composer install' in the subsite folder for development purposes." />
-        <phingcall target="project-composer-install">
-            <property name="composer-working-dir" value="${build.subsite.dir}" override="true" />
-            <property name="composer-no-dev" value="true" override="true" />
-        </phingcall>
-    </target>
-
-    <!-- Install Composer dev dependencies for the subsite. -->
-    <target name="project-subsite-composer-dev" description="Run composer install with dev on subsite.">
-        <echo msg="Run 'composer install' in the subsite folder for development purposes." />
-        <phingcall target="project-composer-install">
-            <property name="composer-working-dir" value="${build.subsite.dir}" />
-        </phingcall>
-    </target>
-
-    <!-- Setup file directory -->
-    <target name="project-subsite-setup-files" description="Create files directories for subsite.">
-        <if>
-            <istrue value="${build.subsite.dir.files}" />
-            <then>
-                <mkdir dir="${build.subsite.dir.files}/private_files" />
-                <mkdir dir="${build.subsite.dir.tmp}" />
-                <!-- Support CSS and JS injector. -->
-                <mkdir dir="${build.subsite.dir.files}/css_injector" />
-                <mkdir dir="${build.subsite.dir.files}/js_injector" />
-            </then>
-        </if>
-        <!--<phingcall target="drush-file-ensure-htaccess" />-->
-    </target>
-
-    <!-- Make the development version of the subsite. -->
-    <target name="project-modules-devel-make" description="Makes the development resources with drush.">
-        <echo msg="Make the development resources." />
-        <phingcall target="drush-make-no-core">
-            <property name="make-file" value="${resources.dir.devel.make}" />
-            <property name="make-folder" value="${build.platform.dir.sites}" />
-            <property name="make-destination" value="${build.site}" />
-        </phingcall>
-    </target>
-
-    <!-- Enable required modules after installation of the profile. -->
-    <target name="project-modules-install-en" description="Install list of modules to enable by default.">
-        <phingcall target="drush-enable-modules">
-            <property name="project.drupal.modules" value="${project.install.modules}" />
-        </phingcall>
-    </target>
-
-    <!-- Enable development modules. -->
-    <target name="project-modules-devel-en" description="Enable development modules with drush.">
-        <phingcall target="drush-enable-modules">
-            <property name="project.drupal.modules" value="${devel.mdls.en}" />
-        </phingcall>
-    </target>
-
-    <!-- Install the subsite. -->
-    <!-- TODO: Convert to playbook. -->
+    <!-- Install the subsite. TODO: Convert to playbook.-->
     <target name="install-project-clean" description="Install NextEuropa site from scratch.">
         <!--<mkdir dir="${build.subsite.dir}" />-->
         <phingcall target="project-subsite-setup-files" />
@@ -280,35 +62,252 @@
         <phingcall target="drush-rebuild-node-access" />
     </target>
 
-    <!-- Target to check if we have default settings, otherwise propose user to rebuild. -->
-    <target name="project-rebuild-check" description="Rebuild project if needed. (needs work)" hidden="true">
+    <!-- Install the project with sanitized production data. -->
+    <target name="install-project-clone"
+            description="Install NextEuropa site with sanitized production data."
+            depends="
+            project-database-download,
+            drush-generate-aliases,
+            drush-generate-settings,
+            project-database-import,
+            project-modules-devel-en" />
+
+    <!-- Create code base platform. -->
+    <target name="project-build-platform"
+        description="Build NextEuropa Platform code without version control."
+        depends="
+            project-subsite-backup,
+            project-platform-delete,
+            project-platform-set-version,
+            project-platform-package-unpack,
+            project-platform-devops-unpack,
+            project-platform-set-htaccess,
+            project-subsite-restore" />
+
+    <!-- Build subsite in platform. -->
+    <target name="project-build-subsite"
+        description="Build NextEuropa Subsite code without version control (non-functional)."
+        depends="
+            project-subsite-backup,
+            project-subsite-restore">
+        <echo msg="TODO: subsite builds not yet developed." />
+    </target>
+
+    <!-- Build ec-europa theme in platform. -->
+    <target name="project-build-theme"
+        description="Build EC Europa theme without version control."
+        depends="
+            theme-europa-download-extract,
+            theme-europa-create-symlinks" />
+
+    <!-- Install Composer dependencies without development dependencies. -->
+    <target name="project-composer-install"
+            description="Runs composer install."
+            hidden="true">
         <if>
-            <not>
-                <available file="${build.platform.dir.settings}/default.settings.php" type="file" property="build.settings.dir.default.settings" />
-            </not>
+            <isset property="composer-no-dev" />
             <then>
-                <!-- If we can not find default settings in the build settings folder, prompt to ask user to rebuild. -->
-                <echo msg="No default settings detected at ${build.platform.dir.settings}/default.settings.php." level="warning" />
-                <propertyprompt propertyName="platform-rebuild" defaultValue="no" promptText="Do you wish to rebuild? (y/n)" />
-                <if>
-                    <equals arg1="${platform-rebuild}" arg2="y" />
-                    <then>
-                        <phingcall target="build-dev" />
-                    </then>
-                    <else>
-                        <!-- If user chooses not to rebuild we have no other choice to fail the build. -->
-                        <echo msg="Can not re-generate settings, canceling clone task." level="error" />
-                        <fail />
-                    </else>
-                </if>
+                <composer command="install" composer="${project.bin.composer}">
+                    <arg value="--working-dir=${composer-working-dir}" />
+                    <arg value="--no-interaction" />
+                    <arg value="--no-suggest" />
+                    <arg value="--no-dev" />
+                    <arg value="--ansi" />
+                </composer>
             </then>
             <else>
-                <!-- If we have found the default settings inform the user we will proceed with generation. -->
-                <echo msg="Default settings found at ${build.platform.dir.settings}/default.settings.php." />
-                <echo msg="Proceeding with re-generation of the settings.php." />
+                <composer command="install" composer="${project.bin.composer}">
+                    <arg value="--working-dir=${composer-working-dir}" />
+                    <arg value="--no-interaction" />
+                    <arg value="--no-suggest" />
+                    <arg value="--ansi" />
+                </composer>
             </else>
         </if>
-        <phingcall target="project-modules-devel-en" />
+    </target>
+
+    <!-- Download the production database. -->
+    <target name="project-database-download" description="Download sanitized production database from archive.">
+        <exec command='find ${project.tmp.dir} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
+        <if>
+            <!-- Check if we have a previously downloaded dump available. -->
+            <available file="${db-dl-file}" type="file" />
+            <then>
+                <!-- Inform user if file was already downloaded. -->
+                <echo msg="File ${db-dl-file} already downloaded." />
+                <echo msg="Proceeding to import." />
+            </then>
+            <else>
+                <!-- If not available, download and unzip the file. -->
+                <echo msg="Download the production database." />
+                <phingcall target="package-download">
+                    <property name="package-name" value="${db.dl.filename}" />
+                    <property name="package-cache-location" value="${project.tmp.dir}" />
+                    <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
+                </phingcall>
+                <exec command="gunzip ${project.tmp.dir}/${db.dl.filename}" checkreturn="true" passthru="false" logoutput="true" />
+            </else>
+        </if>
+    </target>
+
+    <!-- Import production database. -->
+    <target name="project-database-import" depends="project-database-download" description="Import database for project with drush.">
+        <echo msg="Import production database." />
+        <exec command='find ${project.tmp.dir} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
+        <!-- Drop database, create if necessary and import the dump. -->
+        <phingcall target="drush-sql-drop" />
+        <phingcall target="drush-sql-create" />
+        <phingcall target="drush-sql-import">
+            <property name="database-file" value="${db-dl-file}" />
+        </phingcall>
+    </target>
+
+    <!-- Enable development modules. -->
+    <target name="project-modules-devel-en" description="Enable development modules with drush.">
+        <phingcall target="drush-enable-modules">
+            <property name="project.drupal.modules" value="${devel.mdls.en}" />
+        </phingcall>
+    </target>
+
+    <!-- Delete a platform build. -->
+    <target name="project-platform-delete" description="Remove previous platform build..">
+        <phingcall target="project-scratch-build">
+            <property name="dir-build" value="${build.platform.dir}" override="true" />
+        </phingcall>
+    </target>
+
+    <!-- Unpack the platform. -->
+    <target name="project-platform-devops-unpack" description="Download and unpack fpfis resource package.">
+        <mkdir dir="${share.path.platform.packages.deploy}" />
+        <phingcall target="package-download-unpack">
+            <property name="package-name" value="${platform.package.version.major}.${platform.package.version.minor}.tar.gz" />
+            <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
+            <property name="package-download-location" value="https://github.com/ec-europa/platform-deploy/archive/fpfis-conf" />
+            <property name="package-extract-location" value="${build.platform.dir}" />
+            <property name="package-extract-options" value="--strip=1" />
+        </phingcall>
+    </target>
+
+    <!-- Unpack the platform. -->
+    <target name="project-platform-package-unpack" description="Download and unpack platform deploy package.">
+        <mkdir dir="${share.path.platform.packages.deploy}" />
+        <phingcall target="package-download-unpack">
+            <property name="package-name" value="platform-dev-${platform.package.version.current}.tar.gz" />
+            <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
+            <property name="package-download-location" value="https://platform-ci.ne-dev.eu/releases" />
+            <property name="package-extract-location" value="${build.platform.dir}" />
+        </phingcall>
+    </target>
+
+    <!-- Update .htaccess. -->
+    <target name="project-platform-set-htaccess" description="Append htaccess config to root .htaccess.">
+        <if>
+            <istrue value="${build.platform.htaccess.append.text}" />
+            <then>
+                <echo msg="Appended text to htaccess." />
+                <append destfile="${build.platform.dir}/.htaccess" text="${build.platform.htaccess.append.text}" />
+            </then>
+            <else>
+                <echo msg="Appended no text to htaccess." />
+            </else>
+        </if>
+    </target>
+
+    <!-- Get latest stable if major version is defined. -->
+    <target name="project-platform-set-version" hidden="true" description="Save the platform version used for builds.">
+        <if>
+            <matches string="${platform.package.version}" pattern="^[1-9]+\." />
+            <then>
+                <propertyregex
+                        property="platform.package.version.major"
+                        subject="${platform.package.version}"
+                        pattern="^([1-9]+)\."
+                        match="$1"
+                        override="true" />
+                <propertyregex
+                        property="platform.package.version.minor"
+                        subject="${platform.package.version}"
+                        pattern="^[1-9]+\.([1-9]+)"
+                        match="$1"
+                        override="true" />
+                <propertyregex
+                        property="platform.package.version.reference"
+                        subject="${platform.package.version}"
+                        pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
+                        match="$1"
+                        override="true" />
+                <if>
+                    <isset property="platform.package.version.minor" />
+                    <then>
+                        <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.${platform.package.version.minor}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.current" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.${platform.upgrade}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.next" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.latest" />
+                    </then>
+                </if>
+            </then>
+        </if>
+        <if>
+            <and>
+                <matches string="${platform.package.version.current}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
+                <versioncompare
+                        version="${platform.package.version.current}"
+                        desiredVersion="${platform.package.version}"
+                        operator="gt" />
+            </and>
+            <then>
+                <echo msg="The platform package version is set to ${platform.package.version}." />
+                <echo msg="The build will be performed with version ${platform.package.version.current}." />
+                <propertyregex
+                        property="platform.package.version.reference"
+                        subject="${platform.package.version.current}"
+                        pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
+                        match="$1"
+                        override="true" />
+                <property name="platform.package.version" value="${platform.package.version.current}" override="true" />
+            </then>
+        </if>
+        <if>
+            <and>
+                <matches string="${platform.package.version.next}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
+                <versioncompare
+                        version="${platform.package.version.next}"
+                        desiredVersion="${platform.package.version}"
+                        operator="gt" />
+            </and>
+            <then>
+                <!-- TODO: this allows for automatic upgrading if we were to provide a setting. -->
+                <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
+                <echo msg="Last released deploy package is at ${platform.package.version.latest}." level="warning" />
+                <echo msg="Please upgrade your platform version to ${platform.package.version.major}.${platform.upgrade}." level="warning" />
+            </then>
+        </if>
+        <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.properties.version" />
+    </target>
+
+    <!-- Delete the previous development build. -->
+    <target name="project-scratch-build" description="Delete previous build to start over clean.">
+        <echo msg="Delete previous build." />
+        <if>
+            <available file="${build.platform.dir.settings}/default.settings.php" />
+            <then>
+                <move file="${build.platform.dir.settings}/default.settings.php" tofile="${project.tmp.dir}/default.settings.php" overwrite="true" />
+            </then>
+        </if>
+        <phingcall target="folder-unprotect">
+            <property name="folder.to.unprotect" value="${dir-build}" />
+        </phingcall>
+        <echo msg="Unprotecting folder." />
+        <phingcall target="folder-delete">
+            <property name="folder.to.delete" value="${dir-build}" />
+        </phingcall>
+        <if>
+            <available file="${project.tmp.dir}/default.settings.php" />
+            <then>
+                <mkdir dir="${build.platform.dir.settings}" />
+                <move file="${project.tmp.dir}/default.settings.php" tofile="${build.platform.dir.settings}/default.settings.php" />
+            </then>
+        </if>
     </target>
 
     <!-- Backs up files and folders listed in rebuild. properties in order to rebuild. -->
@@ -378,6 +377,36 @@
         </if>
     </target>
 
+    <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
+    <target name="project-subsite-backup-item" hidden="true" description="Backup site item from configuraton list.">
+        <php expression='dirname("${site-item}")' returnProperty="site-item-dir" />
+        <property name="site-item-backup-dir" value="${site-item-dir}">
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="${build.platform.dir}" replace="${rebuild.backup.destination}" ignoreCase="false" />
+                </replaceregexp>
+            </filterchain>
+        </property>
+        <if>
+            <available file="${site-item}" type="${site-item-type}" />
+            <then>
+                <if>
+                    <not>
+                        <available file="${site-item-backup-dir}" type="dir" />
+                    </not>
+                    <then>
+                        <mkdir dir="${site-item-backup-dir}" />
+                    </then>
+                </if>
+                <move file="${site-item}" todir="${site-item-backup-dir}" includeemptydirs="true" />
+            </then>
+            <else>
+                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized" />
+                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning" />
+            </else>
+        </if>
+    </target>
+
     <!-- Restoring sites directory if backed up before rebuild-dev. -->
     <target name="project-subsite-restore" description="Restore site defined files from properties.">
 
@@ -428,36 +457,6 @@
         </if>
     </target>
 
-    <!-- Backs up a site item from the platform that will be removed in order to rebuild. -->
-    <target name="project-subsite-backup-item" hidden="true" description="Backup site item from configuraton list.">
-        <php expression='dirname("${site-item}")' returnProperty="site-item-dir" />
-        <property name="site-item-backup-dir" value="${site-item-dir}">
-            <filterchain>
-                <replaceregexp>
-                    <regexp pattern="${build.platform.dir}" replace="${rebuild.backup.destination}" ignoreCase="false" />
-                </replaceregexp>
-            </filterchain>
-        </property>
-        <if>
-            <available file="${site-item}" type="${site-item-type}" />
-            <then>
-                <if>
-                    <not>
-                        <available file="${site-item-backup-dir}" type="dir" />
-                    </not>
-                    <then>
-                        <mkdir dir="${site-item-backup-dir}" />
-                    </then>
-                </if>
-                <move file="${site-item}" todir="${site-item-backup-dir}" includeemptydirs="true" />
-            </then>
-            <else>
-                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized" />
-                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning" />
-            </else>
-        </if>
-    </target>
-
     <!-- Restores a site item from the rebuild.backup.destination to the new build. -->
     <target name="project-subsite-restore-item" hidden="true" description="Restore site item from configuration list.">
         <property name="site-item-backup" value="${site-item}">
@@ -488,42 +487,109 @@
         </if>
     </target>
 
-    <!-- Import production database. -->
-    <target name="project-database-import" depends="project-database-download" description="Import database for project with drush.">
-        <echo msg="Import production database." />
-        <exec command='find ${project.tmp.dir} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
-        <!-- Drop database, create if necessary and import the dump. -->
-        <phingcall target="drush-sql-drop" />
-        <phingcall target="drush-sql-create" />
-        <phingcall target="drush-sql-import">
-            <property name="database-file" value="${db-dl-file}" />
+    <!-- Setup file directory -->
+    <target name="project-subsite-setup-files" description="Create files directories for subsite.">
+        <if>
+            <istrue value="${build.subsite.dir.files}" />
+            <then>
+                <mkdir dir="${build.subsite.dir.files}/private_files" />
+                <mkdir dir="${build.subsite.dir.tmp}" />
+                <!-- Support CSS and JS injector. -->
+                <mkdir dir="${build.subsite.dir.files}/css_injector" />
+                <mkdir dir="${build.subsite.dir.files}/js_injector" />
+            </then>
+        </if>
+        <!--<phingcall target="drush-file-ensure-htaccess" />-->
+    </target>
+
+    <!-- Make the development version of the subsite. -->
+    <target name="project-modules-devel-make" description="Makes the development resources with drush.">
+        <echo msg="Make the development resources." />
+        <phingcall target="drush-make-no-core">
+            <property name="make-file" value="${resources.dir.devel.make}" />
+            <property name="make-folder" value="${build.platform.dir.sites}" />
+            <property name="make-destination" value="${build.site}" />
         </phingcall>
     </target>
 
-    <!-- Download the production database. -->
-    <target name="project-database-download" description="Download sanitized production database from archive.">
-        <exec command='find ${project.tmp.dir} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
-        <if>
-            <!-- Check if we have a previously downloaded dump available. -->
-            <available file="${db-dl-file}" type="file" />
-            <then>
-                <!-- Inform user if file was already downloaded. -->
-                <echo msg="File ${db-dl-file} already downloaded." />
-                <echo msg="Proceeding to import." />
-            </then>
-            <else>
-                <!-- If not available, download and unzip the file. -->
-                <echo msg="Download the production database." />
-                <phingcall target="package-download">
-                    <property name="package-name" value="${db.dl.filename}" />
-                    <property name="package-cache-location" value="${project.tmp.dir}" />
-                    <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
-                </phingcall>
-                <exec command="gunzip ${project.tmp.dir}/${db.dl.filename}" checkreturn="true" passthru="false" logoutput="true" />
-            </else>
-        </if>
+    <!-- Enable required modules after installation of the profile. -->
+    <target name="project-modules-install-en" description="Install list of modules to enable by default.">
+        <phingcall target="drush-enable-modules">
+            <property name="project.drupal.modules" value="${project.install.modules}" />
+        </phingcall>
     </target>
 
+    <!-- Install Composer dependencies, including optional development dependencies. -->
+    <target name="project-platform-composer-dev" description="Run composer install with dev on platform.">
+        <echo msg="Run 'composer install' in platform root." />
+        <phingcall target="project-composer-install">
+            <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
+        </phingcall>
+    </target>
+
+    <!-- Install Composer dependencies without development dependencies. -->
+    <target name="project-platform-composer-no-dev" description="Run composer install without dev on platform.">
+        <echo msg="Run 'composer install' in platform root." />
+        <phingcall target="project-composer-install">
+            <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
+            <property name="composer-no-dev" value="true" override="true" />
+        </phingcall>
+    </target>
+
+    <!-- Link site document root to Webserver document root. -->
+    <target name="project-platform-set-docroot" description="Link the platform root to your docroot.">
+        <relsym link="${project.docroot}" target="${build.platform.dir}" overwrite="true" />
+    </target>
+
+    <!-- Target to check if we have default settings, otherwise propose user to rebuild. -->
+    <target name="project-rebuild-check" description="Rebuild project if needed. (needs work)" hidden="true">
+        <if>
+            <not>
+                <available file="${build.platform.dir.settings}/default.settings.php" type="file" property="build.settings.dir.default.settings" />
+            </not>
+            <then>
+                <!-- If we can not find default settings in the build settings folder, prompt to ask user to rebuild. -->
+                <echo msg="No default settings detected at ${build.platform.dir.settings}/default.settings.php." level="warning" />
+                <propertyprompt propertyName="platform-rebuild" defaultValue="no" promptText="Do you wish to rebuild? (y/n)" />
+                <if>
+                    <equals arg1="${platform-rebuild}" arg2="y" />
+                    <then>
+                        <phingcall target="build-dev" />
+                    </then>
+                    <else>
+                        <!-- If user chooses not to rebuild we have no other choice to fail the build. -->
+                        <echo msg="Can not re-generate settings, canceling clone task." level="error" />
+                        <fail />
+                    </else>
+                </if>
+            </then>
+            <else>
+                <!-- If we have found the default settings inform the user we will proceed with generation. -->
+                <echo msg="Default settings found at ${build.platform.dir.settings}/default.settings.php." />
+                <echo msg="Proceeding with re-generation of the settings.php." />
+            </else>
+        </if>
+        <phingcall target="project-modules-devel-en" />
+    </target>
+
+    <!-- Install Composer dependencies for the subsite. -->
+    <target name="project-subsite-composer-no-dev" description="Run composer install without dev on subsite.">
+        <echo msg="Run 'composer install' in the subsite folder for development purposes." />
+        <phingcall target="project-composer-install">
+            <property name="composer-working-dir" value="${build.subsite.dir}" override="true" />
+            <property name="composer-no-dev" value="true" override="true" />
+        </phingcall>
+    </target>
+
+    <!-- Install Composer dev dependencies for the subsite. -->
+    <target name="project-subsite-composer-dev" description="Run composer install with dev on subsite.">
+        <echo msg="Run 'composer install' in the subsite folder for development purposes." />
+        <phingcall target="project-composer-install">
+            <property name="composer-working-dir" value="${build.subsite.dir}" />
+        </phingcall>
+    </target>
+
+    <!-- Validate the build properties file -->
     <target name="project-validate-properties" description="Validate the build properties file.">
         <!--forbidden="${ssk.incl.phing.props}/build.properties.forbidden"-->
         <propval
@@ -532,78 +598,6 @@
             haltonerror="${build.haltonerror.props.validate}"
             logoutput="${logoutput}"
         />
-    </target>
-
-    <!-- Get latest stable if major version is defined. -->
-    <target name="project-platform-set-version" hidden="true" description="Save the platform version used for builds.">
-        <if>
-            <matches string="${platform.package.version}" pattern="^[1-9]+\." />
-            <then>
-                <propertyregex
-                    property="platform.package.version.major"
-                    subject="${platform.package.version}"
-                    pattern="^([1-9]+)\."
-                    match="$1"
-                    override="true" />
-                <propertyregex
-                    property="platform.package.version.minor"
-                    subject="${platform.package.version}"
-                    pattern="^[1-9]+\.([1-9]+)"
-                    match="$1"
-                    override="true" />
-                <propertyregex
-                    property="platform.package.version.reference"
-                    subject="${platform.package.version}"
-                    pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
-                    match="$1"
-                    override="true" />
-                <if>
-                    <isset property="platform.package.version.minor" />
-                    <then>
-                        <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.${platform.package.version.minor}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.current" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.${platform.upgrade}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.next" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.latest" />
-                    </then>
-                </if>
-            </then>
-        </if>
-        <if>
-            <and>
-                <matches string="${platform.package.version.current}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
-                <versioncompare
-                    version="${platform.package.version.current}"
-                    desiredVersion="${platform.package.version}"
-                    operator="gt" />
-            </and>
-            <then>
-                <echo msg="The platform package version is set to ${platform.package.version}." />
-                <echo msg="The build will be performed with version ${platform.package.version.current}." />
-                <propertyregex
-                    property="platform.package.version.reference"
-                    subject="${platform.package.version.current}"
-                    pattern="^[1-9]+\.[1-9]+\.([1-9]+)"
-                    match="$1"
-                    override="true" />
-                <property name="platform.package.version" value="${platform.package.version.current}" override="true" />
-            </then>
-        </if>
-        <if>
-            <and>
-                <matches string="${platform.package.version.next}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
-                <versioncompare
-                    version="${platform.package.version.next}"
-                    desiredVersion="${platform.package.version}"
-                    operator="gt" />
-            </and>
-            <then>
-                <!-- TODO: this allows for automatic upgrading if we were to provide a setting. -->
-                <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
-                <echo msg="Last released deploy package is at ${platform.package.version.latest}." level="warning" />
-                <echo msg="Please upgrade your platform version to ${platform.package.version.major}.${platform.upgrade}." level="warning" />
-            </then>
-        </if>
-        <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.properties.version" />
     </target>
 
 </project>

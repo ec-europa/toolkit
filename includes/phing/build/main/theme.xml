@@ -2,12 +2,71 @@
 
 <project name="theme" description="Builds themes like ec_europa and places files in correct location." default="">
 
-    <target
-        name="build-theme-dev"
+    <!-- Build EC Europa theme with version control. -->
+    <target name="build-theme-dev"
         description="Build EC Europa theme with version control."
         depends="
             theme-europa-repo-clone,
             theme-europa-build" />
+
+    <!-- Generating assets -->
+    <target name="theme-europa-build" description="Build the EC europa theme with NPM.">
+        <exec
+                command="npm install"
+                passthru="true"
+                dir="${lib.dir.themes}/ec_europa"
+        />
+        <exec
+                command="npm run build"
+                passthru="true"
+                dir="${lib.dir.themes}/ec_europa"
+        />
+        <!-- Deleting *.map files (currently there is a bug in the ecl-builder) -->
+        <delete>
+            <fileset dir="${lib.dir.themes}/ec_europa/assets/css">
+                <include name="*.map" />
+            </fileset>
+            <fileset dir="${lib.dir.themes}/ec_europa/wysiwyg">
+                <include name="*.map" />
+            </fileset>
+        </delete>
+    </target>
+
+    <!-- Cloning and checking out the branch of the Atomium and EC Europa theme repositories. -->
+    <target name="theme-europa-repo-clone" description="Clone the Atomium and EC Europa repositories.">
+        <!-- Deleting theme directories before cloning -->
+        <delete dir="${lib.dir.themes}/atomium" quiet="true" />
+        <delete dir="${lib.dir.themes}/ec_europa" quiet="true" />
+
+        <!-- Cloning the Atomium theme repo into the common profiles directory -->
+        <echo msg="Cloning the Atomium theme repository." />
+        <gitclone
+                repository="${theme.atomium.repo.url}"
+                targetPath="${lib.dir.themes}/atomium" />
+        <!-- Checking out the configured branch in the cloned repo -->
+        <gitcheckout
+                repository="${lib.dir.themes}/atomium"
+                branchname="${theme.atomium.repo.branch}" />
+
+        <!-- cloning the EC Europa theme repo into the common profiles directory -->
+        <echo msg="Cloning the EC Europa theme repository." />
+        <gitclone
+                repository="${theme.europa.repo.url}"
+                targetPath="${lib.dir.themes}/ec_europa" />
+        <!-- Checking out the configured branch in the cloned repo -->
+        <gitcheckout
+                repository="${lib.dir.themes}/ec_europa"
+                branchname="${theme.europa.repo.branch}" />
+    </target>
+
+    <!-- Creates symlinks for the Atomium and Europa themes. -->
+    <target name="theme-europa-create-symlinks" description="Create symlinks to themes in lib for development.">
+        <relsym link="${build.platform.dir.profile.themes}" overwrite="true">
+            <fileset dir="${lib.dir.themes}" expandsymboliclinks="true">
+                <include name="*" />
+            </fileset>
+        </relsym>
+    </target>
 
     <!-- This step in future will become a part of a build on the new Europa theme repository. -->
     <target name="theme-europa-download-extract" description="Download and unpack the EC Europa theme.">
@@ -21,6 +80,7 @@
         <phingcall target="theme-europa-embed-ecl-assets" />
     </target>
 
+    <!-- Download and unpack the ECL assets for EC Europa theme. -->
     <target name="theme-europa-embed-ecl-assets" description="Download and unpack the ECL assets for EC Europa theme.">
         <phingcall target="package-download-unpack">
             <property name="package-name" value="framework.tar.gz" />
@@ -31,62 +91,4 @@
         </phingcall>
     </target>
 
-    <!-- Creates symlinks for the atomium and europa themes. -->
-    <target name="theme-europa-create-symlinks" description="Create symlinks to themes in lib for development.">
-        <relsym link="${build.platform.dir.profile.themes}" overwrite="true">
-            <fileset dir="${lib.dir.themes}" expandsymboliclinks="true">
-                <include name="*" />
-            </fileset>
-        </relsym>
-    </target>
-
-    <!-- Cloning and checking out the branch of the Atomium and EC Europa theme repositories. -->
-    <target name="theme-europa-repo-clone" description="Clone the Atomium and EC Europa repositories.">
-        <!-- Deleting theme directories before cloning -->
-        <delete dir="${lib.dir.themes}/atomium" quiet="true" />
-        <delete dir="${lib.dir.themes}/ec_europa" quiet="true" />
-
-        <!-- Cloning the Atomium theme repo into the common profiles directory -->
-        <echo msg="Cloning the Atomium theme repository." />
-        <gitclone
-            repository="${theme.atomium.repo.url}"
-            targetPath="${lib.dir.themes}/atomium" />
-        <!-- Checking out the configured branch in the cloned repo -->
-        <gitcheckout
-            repository="${lib.dir.themes}/atomium"
-            branchname="${theme.atomium.repo.branch}" />
-
-        <!-- cloning the EC Europa theme repo into the common profiles directory -->
-        <echo msg="Cloning the EC Europa theme repository." />
-        <gitclone
-            repository="${theme.europa.repo.url}"
-            targetPath="${lib.dir.themes}/ec_europa" />
-        <!-- Checking out the configured branch in the cloned repo -->
-        <gitcheckout
-            repository="${lib.dir.themes}/ec_europa"
-            branchname="${theme.europa.repo.branch}" />
-    </target>
-
-    <!-- Generating assets -->
-    <target name="theme-europa-build" description="Build the EC europa theme with NPM.">
-        <exec
-            command="npm install"
-            passthru="true"
-            dir="${lib.dir.themes}/ec_europa"
-        />
-        <exec
-            command="npm run build"
-            passthru="true"
-            dir="${lib.dir.themes}/ec_europa"
-        />
-        <!-- Deleting *.map files (currently there is a bug in the ecl-builder) -->
-        <delete>
-            <fileset dir="${lib.dir.themes}/ec_europa/assets/css">
-                <include name="*.map" />
-            </fileset>
-            <fileset dir="${lib.dir.themes}/ec_europa/wysiwyg">
-                <include name="*.map" />
-            </fileset>
-        </delete>
-    </target>
 </project>
