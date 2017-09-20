@@ -2,9 +2,7 @@
 
 <project name="platform" description="Builds the platform if a profiles folder is detected." default="">
 
-    <!-- Build a local development version with a single platform profile. -->
-    <target name="build-platform-dev"
-        description="Build a local development version with a single platform profile."
+    <target name="build-platform-dev" description="Build a local development version with a single platform profile."
         depends="
             project-subsite-backup,
             build-platform-type-dev,
@@ -20,9 +18,7 @@
             project-subsite-restore,
             project-subsite-setup-files" />
 
-    <!-- Build a local development version with all platform profiles. -->
-    <target name="build-platform-dev-all"
-        description="Build a local development version with all platform profiles."
+    <target name="build-platform-dev-all" description="Build a local development version with all platform profiles."
         depends="
             build-platform-type-dev,
             build-platform-delete,
@@ -32,9 +28,7 @@
             build-platform-copy-resources,
             project-platform-composer-no-dev" />
 
-    <!-- Build a single platform profile intended as a release package. -->
-    <target name="build-platform-dist"
-        description="Build a single platform profile intended as a release package."
+    <target name="build-platform-dist" description="Build a single platform profile intended as a release package."
         depends="
             build-platform-type-dist,
             build-platform-delete,
@@ -44,9 +38,7 @@
             build-platform-copy-resources,
             project-platform-composer-no-dev" />
 
-    <!-- Build all platform profiles intended as a release package. -->
-    <target name="build-platform-dist-all"
-        description="Build all platform profiles intended as a release package."
+    <target name="build-platform-dist-all" description="Build all platform profiles intended as a release package."
         depends="
             build-platform-type-dist,
             build-platform-delete,
@@ -56,19 +48,13 @@
             build-platform-copy-resources,
             project-platform-composer-no-dev" />
 
-    <!-- Build a platform test package to test this release. -->
-    <target name="build-platform-test"
-        description="Build a platform test package to test this release.">
-
+    <target name="build-platform-test" description="Build a platform test package to test this release.">
         <phingcall target="build-project-test">
             <property name="dir-build" value="${tests.dir}" override="true" />
         </phingcall>
     </target>
 
-    <!-- Copy the profile folder to build deployment package files. -->
-    <target name="build-platform-copy-profile"
-        description="Copy single profile for distribution.">
-
+    <target name="build-platform-copy-profile" description="Copy single profile for distribution.">
         <delete dir="${build.${build-type}.dir.profiles}" includeemptydirs="true" failonerror="false" quiet="true" />
         <mkdir dir="${build.${build-type}.dir.profile}" />
         <copy todir="${build.${build-type}.dir.profile}">
@@ -78,10 +64,7 @@
         </copy>
     </target>
 
-    <!-- Copy the profiles folder to build deployment package files. -->
-    <target name="build-platform-copy-profiles"
-        description="Copy all profiles for distribution.">
-
+    <target name="build-platform-copy-profiles" description="Copy all profiles for distribution.">
         <delete dir="${build.${build-type}.dir.profiles}" includeemptydirs="true" failonerror="true" quiet="true" />
         <copy todir="${build.${build-type}.dir.profiles}">
             <fileset dir="${lib.dir.profiles}" expandsymboliclinks="true">
@@ -90,10 +73,7 @@
         </copy>
     </target>
 
-    <!-- Copy various resources for deploying on production. -->
-    <target name="build-platform-copy-resources"
-        description="Copy platform resources for distribution.">
-
+    <target name="build-platform-copy-resources" description="Copy platform resources for distribution.">
         <copy todir="${build.${build-type}.dir}">
             <fileset dir="${resources.dir}">
                 <include name="composer.*"></include>
@@ -102,36 +82,24 @@
         </copy>
     </target>
 
-    <!-- Delete a platform build. -->
-    <target name="build-platform-delete"
-        description="Build a platform test package to test this release.">
-
+    <target name="build-platform-delete" description="Build a platform test package to test this release.">
         <phingcall target="project-scratch-build">
             <property name="dir-build" value="${build.${build-type}.dir}" override="true" />
         </phingcall>
     </target>
 
-    <!-- Symlink the profile folders for easy development. -->
-    <target name="build-platform-link-profiles"
-        description="Link platform profiles to lib folder for development.">
-
+    <target name="build-platform-link-profiles" description="Link platform profiles to lib folder for development.">
         <delete dir="${build.${build-type}.dir.profiles}" />
         <relsym link="${build.${build-type}.dir.profiles}" target="${lib.dir.profiles}" />
     </target>
 
-    <!-- Symlink various resources for easy development. -->
-    <target name="build-platform-link-resources"
-        description="Link platform resources to lib folder for development.">
-
+    <target name="build-platform-link-resources" description="Link platform resources to lib folder for development.">
         <relsym link="${build.${build-type}.dir}/composer.json" target="${resources.dir.composer.json}" />
         <relsym link="${build.${build-type}.dir}/composer.lock" target="${resources.dir.composer.lock}" />
         <relsym link="${build.${build-type}.dir}/.favicon.ico" target="${resources.dir.favicon.ico}" />
     </target>
 
-    <!-- Make Drupal core. -->
-    <target name="build-platform-make-drupal"
-        description="Build the Drupal core codebase.">
-
+    <target name="build-platform-make-drupal" description="Build the Drupal core codebase.">
         <echo msg="Make Drupal core." />
         <drush command="make" assume="yes" bin="${toolkit.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${build.${build-type}.dir}">
             <param>${profile.core.make}</param>
@@ -140,10 +108,7 @@
         </drush>
     </target>
 
-    <!-- Make the platform. -->
-    <target name="build-platform-make-profile"
-        description="Makes single profile resources with drush.">
-
+    <target name="build-platform-make-profile" description="Makes single profile resources with drush.">
         <echo msg="Make the platform." />
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${profile.make}" />
@@ -152,10 +117,7 @@
         </phingcall>
     </target>
 
-    <!-- Make all of the profiles in order to build a multisite platform. -->
-    <target name="build-platform-make-profiles"
-        description="Makes all profile resources with drush.">
-
+    <target name="build-platform-make-profiles" description="Makes all profile resources with drush.">
         <foreach param="profile-name" absparam="dir-profile" target="build-platform-make-profile">
             <fileset dir="${lib.dir.profiles}">
                 <depth max="0" min="0" />
@@ -165,17 +127,11 @@
         </foreach>
     </target>
 
-    <!-- Sets the type of build to dev. -->
-    <target name="build-platform-type-dev"
-        description="Sets the type of build (dev or dist).">
-
+    <target name="build-platform-type-dev" description="Sets the type of build (dev or dist).">
         <property name="build-type" value="platform" override="true" />
     </target>
 
-å    <!-- Sets the type of build to dist. -->
-    <target name="build-platform-type-dist"
-        description="Sets the type of build (dev or dist).">
-
+    <target name="build-platform-type-dist" description="Sets the type of build (dev or dist).">
         <property name="build-type" value="dist" override="true" />
     </target>
 
