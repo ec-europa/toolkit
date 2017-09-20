@@ -5,8 +5,8 @@
  *
  * PHP Version 5 and 7
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -22,8 +22,8 @@ use Project;
 /**
  * A Phing task to for deprecated tasks.
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -137,6 +137,7 @@ class PhingDeprecatedTask extends \Task
         $targetName    = $target->getName();
         $subTargetName = $this->subTarget;
         $allTargets    = $this->project->getTargets();
+
         $usedTargets   = array_filter(
             $allTargets,
             function ($key) {
@@ -159,10 +160,22 @@ class PhingDeprecatedTask extends \Task
         }
 
         // Inform user of the deprecated target.
-        $this->log("Target '".$targetName."' has been replaced by '".$subTargetName."'.", Project::MSG_WARN);
-        $this->log("A ".$sec." second penalty is assigned usage of this target.", Project::MSG_WARN);
-        $this->log("Please use '".$subTargetName."' instead to avoid the penalty.", Project::MSG_WARN);
-        $this->log("Running PhingCallTask for target '".$subTargetName."'", Project::MSG_DEBUG);
+        $this->log(
+            "Target '".$targetName."' has been replaced by '".$subTargetName."'.",
+            Project::MSG_WARN
+        );
+        $this->log(
+            "A ".$sec." second penalty is assigned usage of this target.",
+            Project::MSG_WARN
+        );
+        $this->log(
+            "Please use '".$subTargetName."' instead to avoid the penalty.",
+            Project::MSG_WARN
+        );
+        $this->log(
+            "Running PhingCallTask for target '".$subTargetName."'",
+            Project::MSG_DEBUG
+        );
         sleep($sec);
 
         if ($this->_callee === null) {
@@ -170,7 +183,10 @@ class PhingDeprecatedTask extends \Task
         }
 
         if ($this->subTarget === null) {
-            throw new BuildException("Attribute target is required.", $this->getLocation());
+            throw new BuildException(
+                "Attribute target is required.",
+                $this->getLocation()
+            );
         }
 
         $this->_callee->setPhingfile($buildFile);

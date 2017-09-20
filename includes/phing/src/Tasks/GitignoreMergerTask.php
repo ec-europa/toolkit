@@ -5,8 +5,8 @@
  *
  * PHP Version 5 and 7
  *
- * @category Tools
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -20,8 +20,8 @@ use BuildException;
 /**
  * A Phing task to merge ignore file.
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -46,8 +46,9 @@ class GitignoreMergerTask extends \Task
     public function setGitignoreFiles($gitignoreFiles)
     {
         $this->gitignoreFiles = array();
-        $token = ' ,;';
-        $file  = strtok($gitignoreFiles, $token);
+        $token                = ' ,;';
+        $file                 = strtok($gitignoreFiles, $token);
+
         while ($file !== false) {
             $this->gitignoreFiles[] = $file;
             $file = strtok($token);
@@ -68,10 +69,17 @@ class GitignoreMergerTask extends \Task
         $gitignoreFiles     = $this->gitignoreFiles;
         $gitignoreMerged    = array();
         $gitignoreFileArray = array();
+
         if (!empty($gitignoreFiles) && is_array($gitignoreFiles)) {
             foreach ($gitignoreFiles as $gitignoreFile) {
                 if (is_file($gitignoreFile)) {
-                    $gitignoreFileArray = array_merge($gitignoreFileArray, file($gitignoreFile, (FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)));
+                    $gitignoreFileArray = array_merge(
+                        $gitignoreFileArray,
+                        file(
+                            $gitignoreFile,
+                            (FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)
+                        )
+                    );
                 }
             }
         }
@@ -94,6 +102,5 @@ class GitignoreMergerTask extends \Task
         }
 
     }//end main()
-
 
 }//end class

@@ -5,8 +5,8 @@
  *
  * PHP Version 5 and 7
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -23,8 +23,8 @@ require_once 'phing/Task.php';
 /**
  * A Phing task to generate an aliases.drushrc.php file.
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -74,34 +74,48 @@ class DocGeneratorTask extends \Task
                 $targetDescription = (string) $target->attributes()->description;
 
                 $targetArray = array(
-                                'name'        => $targetName,
-                                'description' => $targetDescription,
-                                'visibility'  => $targetVisibility,
-                                'buildfile'   => $buildFile,
-                               );
+                    'name'        => $targetName,
+                    'description' => $targetDescription,
+                    'visibility'  => $targetVisibility,
+                    'buildfile'   => $buildFile,
+                );
 
                 if (isset($target->attributes()->depends)) {
-                        $targetDependenciesString = (string) $target->xpath('./@depends')[0];
-                        $targetDependencies       = explode(',', str_replace(' ', '', $targetDependenciesString));
-                        $callbackTargets          = array_merge($callbackTargets, $targetDependencies);
+                        $targetDependenciesString = (string) $target->xpath(
+                            './@depends'
+                        )[0];
+                        $targetDependencies       = explode(
+                            ',',
+                            str_replace(
+                                ' ',
+                                '',
+                                $targetDependenciesString
+                            )
+                        );
+                        $callbackTargets = array_merge(
+                            $callbackTargets,
+                            $targetDependencies
+                        );
                         $targetArray += array(
-                                         'dependencies' => $targetDependencies,
-                                         'type'         => 'playbook',
-                                        );
+                             'dependencies' => $targetDependencies,
+                             'type'         => 'playbook',
+                        );
                     if (count($targetDependencies) > 1) {
-                                      $targetArray['type'] = 'playbook';
-                                      $playbookTargets[]   = $targetName;
+                        $targetArray['type'] = 'playbook';
+                        $playbookTargets[]   = $targetName;
                     }
                 }
 
                 if (count($target->xpath('./replacedby')) == 1) {
-                          $replacedBy          = (string) $target->xpath('./replacedby[1]/@target')[0];
+                          $replacedBy = (string) $target->xpath(
+                              './replacedby[1]/@target'
+                          )[0];
                           $deprecatedTargets[] = $targetName;
                           $targetArray         = array_merge(
                               $targetArray,
                               array(
-                               'type'        => 'deprecated',
-                               'description' => $replacedBy,
+                                  'type'        => 'deprecated',
+                                  'description' => $replacedBy,
                               )
                           );
                 }
@@ -112,14 +126,22 @@ class DocGeneratorTask extends \Task
         }//end foreach
 
         foreach ($targetsArray as $key => $targetArray) {
-            if (in_array($targetArray['name'], $callbackTargets) && !in_array($targetArray['name'], $playbookTargets)) {
+            if (in_array($targetArray['name'], $callbackTargets) && !in_array(
+                $targetArray['name'],
+                $playbookTargets
+            )
+            ) {
                 $targetsArray[$key]['type'] = 'callback';
             } elseif (!isset($targetArray['type'])) {
                 $targetsArray[$key]['type'] = 'helper';
             }
         }
 
-        $this->wrapperTargetTable($wrapperTargets, $playbookTargets, $callbackTargets);
+        $this->wrapperTargetTable(
+            $wrapperTargets,
+            $playbookTargets,
+            $callbackTargets
+        );
 
         foreach ($buildList as $buildFile => $info) {
             $depth = ($info['level'] + 1);
@@ -264,12 +286,16 @@ class DocGeneratorTask extends \Task
             $output .= "</table>\n\n";
         }//end foreach
 
-        file_put_contents('/home/verbral/github/ec-europa/subsite/structure.md', $output);
+        file_put_contents(
+            '/home/verbral/github/ec-europa/subsite/structure.md',
+            $output
+        );
 
     }//end wrapperTargetTable()
 
     /**
-     * Checks if all properties required for generating the aliases file are present.
+     * Checks if all properties required for generating the aliases file are
+     * present.
      *
      * @throws \BuildException
      *   Thrown when a required property is not present.
@@ -281,7 +307,9 @@ class DocGeneratorTask extends \Task
         $required_properties = array('phingDir');
         foreach ($required_properties as $required_property) {
             if (empty($this->$required_property)) {
-                throw new \BuildException("Missing required property '$required_property'.");
+                throw new \BuildException(
+                    "Missing required property '$required_property'."
+                );
             }
         }
 

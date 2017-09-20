@@ -5,8 +5,8 @@
  *
  * PHP Version 5 and 7
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -22,8 +22,8 @@ use Project;
 /**
  * Generates relative symlinks based on a target / link combination.
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -53,7 +53,11 @@ class RelativeSymlinkTask extends \SymlinkTask
 
         // Find for which directory the common path stops.
         $index = 0;
-        while (isset($startPathArr[$index]) && isset($endPathArr[$index]) && $startPathArr[$index] === $endPathArr[$index]) {
+        while (
+            isset($startPathArr[$index]) &&
+            isset($endPathArr[$index]) &&
+            $startPathArr[$index] === $endPathArr[$index]
+        ) {
             ++$index;
         }
 
@@ -93,14 +97,20 @@ class RelativeSymlinkTask extends \SymlinkTask
         $link         = $absolutePath;
 
         if ($logShort) {
-            $relativePath = str_replace($this->getProject()->getBaseDir(), "", $absolutePath);
+            $relativePath = str_replace(
+                $this->getProject()->getBaseDir(),
+                "", $absolutePath
+            );
             $linkName     = basename($absolutePath);
         } else {
             $linkName = $link;
         }
 
         // @codingStandardsIgnoreLine: MULTISITE-17111
-        $target = rtrim($this->makePathRelative($target, dirname($link)), '/');
+        $target = rtrim(
+            $this->makePathRelative($target, dirname($link)),
+            '/'
+        );
 
         if (is_link($link) && @readlink($link) == $target) {
             $this->log('Link exists: '.$linkName, Project::MSG_INFO);
@@ -110,17 +120,26 @@ class RelativeSymlinkTask extends \SymlinkTask
 
         if (file_exists($link) || is_link($link)) {
             if (!$this->getOverwrite()) {
-                $this->log('Not overwriting existing link '.$link, Project::MSG_ERR);
+                $this->log(
+                    'Not overwriting existing link '.$link,
+                    Project::MSG_ERR
+                );
 
                 return false;
             }
 
             if (is_link($link) || is_file($link)) {
                 $fs->unlink($link);
-                $this->log('Link removed: '.$linkName, Project::MSG_INFO);
+                $this->log(
+                    'Link removed: '.$linkName,
+                    Project::MSG_INFO
+                );
             } else {
                 $fs->rmdir($link, true);
-                $this->log('Directory removed: '.$linkName, Project::MSG_INFO);
+                $this->log(
+                    'Directory removed: '.$linkName,
+                    Project::MSG_INFO
+                );
             }
         }
 

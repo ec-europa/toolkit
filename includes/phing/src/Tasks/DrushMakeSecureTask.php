@@ -5,8 +5,8 @@
  *
  * PHP Version 5 and 7
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -22,8 +22,8 @@ require_once 'phing/Task.php';
 /**
  * A Phing task to check for projects not covered by Drupal's security advisory.
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -171,12 +171,14 @@ class DrushMakeSecureTask extends \Task
     protected function checkRequirements()
     {
         $required_properties = array(
-                                'failOn',
-                                'makeFile',
-                               );
+            'failOn',
+            'makeFile',
+        );
         foreach ($required_properties as $required_property) {
             if (empty($this->$required_property)) {
-                throw new \BuildException("Missing required property '$required_property'.");
+                throw new \BuildException(
+                    "Missing required property '$required_property'."
+                );
             }
         }
     }//end checkRequirements()
@@ -205,11 +207,12 @@ class DrushMakeSecureTask extends \Task
     public function setFailOn($failOn)
     {
         $this->_failOn = [];
-        $token        = ' ,;';
-        $fail         = strtok($failOn, $token);
+        $token         = ' ,;';
+        $fail          = strtok($failOn, $token);
+
         while ($fail !== false) {
             $this->_failOn[] = $fail;
-            $fail           = strtok($token);
+            $fail            = strtok($token);
         }
 
     }//end setFailOn()

@@ -5,8 +5,8 @@
  *
  * PHP Version 5 and 7
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -21,8 +21,8 @@ require_once 'phing/Task.php';
 /**
  * A Phing task to generate a Drush make file.
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -78,9 +78,9 @@ class DrushMakeFileTask extends \Task
 
         // Add required properties.
         $contents = [
-                     'core' => $this->_coreVersion,
-                     'api'  => $this->_apiVersion,
-                    ];
+            'core' => $this->_coreVersion,
+            'api'  => $this->_apiVersion,
+        ];
 
         // Add projects.
         foreach ($this->_projects as $project) {
@@ -100,7 +100,8 @@ class DrushMakeFileTask extends \Task
 
 
     /**
-     * Checks if all properties required for generating the makefile are present.
+     * Checks if all properties required for generating the makefile are
+     * present.
      *
      * @throws \BuildException
      *   Thrown when a required property is not present.
@@ -110,13 +111,15 @@ class DrushMakeFileTask extends \Task
     protected function checkRequirements()
     {
         $required_properties = array(
-                                '_apiVersion',
-                                '_coreVersion',
-                                '_makeFile',
-                               );
+            '_apiVersion',
+            '_coreVersion',
+            '_makeFile',
+        );
         foreach ($required_properties as $required_property) {
             if (empty($this->$required_property)) {
-                throw new \BuildException("Missing required property '$required_property'.");
+                throw new \BuildException(
+                    "Missing required property '$required_property'."
+                );
             }
         }
 
@@ -187,7 +190,8 @@ class DrushMakeFileTask extends \Task
     /**
      * Sets the default projects directory.
      *
-     * @param string $defaultProjectDir The Drupal core version. For example '8.x'.
+     * @param string $defaultProjectDir The Drupal core version.
+     *                                  For example '8.x'.
      *
      * @return void
      */

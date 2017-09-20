@@ -5,8 +5,8 @@
  *
  * PHP Version 5 and 7
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -21,8 +21,8 @@ use Project;
 /**
  * A Phing task to generate a configuration file for PHP CodeSniffer.
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -118,7 +118,7 @@ class PhpCodeSnifferConfigurationTask extends \Task
         // Check if all required data is present.
         $this->checkRequirements();
 
-        $document = new \DOMDocument('1.0', 'UTF-8');
+        $document               = new \DOMDocument('1.0', 'UTF-8');
         $document->formatOutput = true;
 
         // Create the root 'ruleset' element.
@@ -127,7 +127,10 @@ class PhpCodeSnifferConfigurationTask extends \Task
         $document->appendChild($root_element);
 
         // Add the description.
-        $element = $document->createElement('description', 'Default PHP CodeSniffer configuration for NextEuropa subsites.');
+        $element = $document->createElement(
+            'description',
+            'Default PHP CodeSniffer configuration for NextEuropa subsites.'
+        );
         $root_element->appendChild($element);
 
         // Add the coding standards.
@@ -160,7 +163,12 @@ class PhpCodeSnifferConfigurationTask extends \Task
         // Add file extensions.
         if (!empty($this->_extensions)) {
             $extensions = implode(',', $this->_extensions);
-            $this->appendArgument($document, $root_element, $extensions, 'extensions');
+            $this->appendArgument(
+                $document,
+                $root_element,
+                $extensions,
+                'extensions'
+            );
         }
 
         // Add ignore patterns.
@@ -177,9 +185,9 @@ class PhpCodeSnifferConfigurationTask extends \Task
 
         // Add the shorthand options.
         $shorthand_options = array(
-                              'p' => 'showProgress',
-                              's' => 'showSniffCodes',
-                             );
+            'p' => 'showProgress',
+            's' => 'showSniffCodes',
+        );
 
         $options = array_filter(
             $shorthand_options,
@@ -189,11 +197,18 @@ class PhpCodeSnifferConfigurationTask extends \Task
         );
 
         if (!empty($options)) {
-            $this->appendArgument($document, $root_element, implode('', array_flip($options)));
+            $this->appendArgument(
+                $document,
+                $root_element,
+                implode('', array_flip($options))
+            );
         }
 
         // Save the file.
-        $configSaved = file_put_contents($this->_configFile, $document->saveXML());
+        $configSaved = file_put_contents(
+            $this->_configFile,
+            $document->saveXML()
+        );
 
         // If a global configuration file is passed, update this too.
         if (!empty($this->_globalConfig)) {
@@ -205,21 +220,36 @@ class PhpCodeSnifferConfigurationTask extends \Task
   'ignore_warnings_on_exit' => '$ignore_warnings_on_exit',
 );
 PHP;
-            $globalConfigSaved       = file_put_contents($this->_globalConfig, $global_config);
+            $globalConfigSaved = file_put_contents(
+                $this->_globalConfig,
+                $global_config
+            );
 
             if ($configSaved || $globalConfigSaved) {
                 if ($configSaved) {
                     $this->setTaskName("config");
-                    $this->log("Updating: ".$this->_configFile, Project::MSG_INFO);
+                    $this->log(
+                        "Updating: ".$this->_configFile,
+                        Project::MSG_INFO
+                    );
                 } else {
-                    throw new BuildException("Was unable to update: ".$this->_configFile, $this->getLocation());
+                    throw new BuildException(
+                        "Was unable to update: ".$this->_configFile,
+                        $this->getLocation()
+                    );
                 }
 
                 if ($globalConfigSaved) {
                     $this->setTaskName("config");
-                    $this->log("Updating: ".$this->_globalConfig, Project::MSG_INFO);
+                    $this->log(
+                        "Updating: ".$this->_globalConfig,
+                        Project::MSG_INFO
+                    );
                 } else {
-                    throw new BuildException("Was unable to update .".$this->_configFile, $this->getLocation());
+                    throw new BuildException(
+                        "Was unable to update .".$this->_configFile,
+                        $this->getLocation()
+                    );
                 }
             }
         }//end if
@@ -235,14 +265,19 @@ PHP;
      *
      * @param \DOMDocument $document The document that will contain the argument
      *                               to append.
-     * @param \DOMElement  $element  The parent element of the argument to append.
+     * @param \DOMElement  $element  The parent element of the argument
+     *                               to append.
      * @param string       $value    The argument value.
      * @param string       $name     Optional argument name.
      *
      * @return void
      */
-    protected function appendArgument(\DOMDocument $document, \DOMElement $element, $value, $name = '')
-    {
+    protected function appendArgument(
+        \DOMDocument $document,
+        \DOMElement $element,
+        $value,
+        $name = ''
+    ) {
         $argument = $document->createElement('arg');
         if (!empty($name)) {
             $argument->setAttribute('name', $name);
@@ -267,13 +302,16 @@ PHP;
     protected function checkRequirements()
     {
         $required_properties = array(
-                                '_configFile',
-                                '_files',
-                                '_standards',
-                               );
+            '_configFile',
+            '_files',
+            '_standards',
+        );
+
         foreach ($required_properties as $required_property) {
             if (empty($this->$required_property)) {
-                throw new \BuildException("Missing required property '$required_property'.");
+                throw new \BuildException(
+                    "Missing required property '$required_property'."
+                );
             }
         }
 
@@ -305,11 +343,12 @@ PHP;
     public function setExtensions($extensions)
     {
         $this->_extensions = array();
-        $token            = ' ,;';
-        $extension        = strtok($extensions, $token);
+        $token             = ' ,;';
+        $extension         = strtok($extensions, $token);
+
         while ($extension !== false) {
             $this->_extensions[] = $extension;
-            $extension          = strtok($token);
+            $extension           = strtok($token);
         }
 
     }//end setExtensions()
@@ -326,11 +365,12 @@ PHP;
     public function setFiles($files)
     {
         $this->_files = array();
-        $token       = ' ,;';
-        $file        = strtok($files, $token);
+        $token        = ' ,;';
+        $file         = strtok($files, $token);
+
         while ($file !== false) {
             $this->_files[] = $file;
-            $file          = strtok($token);
+            $file           = strtok($token);
         }
 
     }//end setFiles()
@@ -354,7 +394,8 @@ PHP;
     /**
      * Sets the installed_paths configuration..
      *
-     * @param string $installedPaths The paths in which the standards are installed.
+     * @param string $installedPaths The paths in which the standards
+     *                               are installed.
      *
      * @return void
      */
@@ -376,11 +417,12 @@ PHP;
     public function setIgnorePatterns($ignorePatterns)
     {
         $this->_ignorePatterns = array();
-        $token   = ' ,;';
-        $pattern = strtok($ignorePatterns, $token);
+        $token                 = ' ,;';
+        $pattern               = strtok($ignorePatterns, $token);
+
         while ($pattern !== false) {
             $this->_ignorePatterns[] = $pattern;
-            $pattern = strtok($token);
+            $pattern                 = strtok($token);
         }
 
     }//end setIgnorePatterns()

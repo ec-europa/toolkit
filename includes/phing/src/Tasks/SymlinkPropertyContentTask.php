@@ -5,8 +5,8 @@
  *
  * PHP Version 5 and 7
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -26,8 +26,8 @@ use RegexIterator;
 /**
  * Symlink property content task.
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -76,8 +76,8 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
      * file, otherwise errors are just logged.
      *
      * @param bool $failonerror <tt>true</tt> if IO exceptions are reported as
-     *                          build exceptions, or <tt>false</tt> if IO exceptions
-     *                          are ignored.
+     *                          build exceptions, or <tt>false</tt> if IO
+     *                          exceptions are ignored.
      *
      * @return void
      */
@@ -139,7 +139,8 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
     /**
      * Sets the path to the directory of which to create symlinks to.
      *
-     * @param string $originDir The path to the directory in which to create symlinks to
+     * @param string $originDir The path to the directory in which to create
+     *                          symlinks to
      *
      * @return void
      */
@@ -153,7 +154,8 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
     /**
      * Sets the path to the directory in which to put the symlinks
      *
-     * @param string $targetDir The path to the directory in which to put the symlinks
+     * @param string $targetDir The path to the directory in which to put the
+     *                          symlinks
      *
      * @return void
      */
@@ -230,15 +232,19 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
             if ($dir->isFile()) {
                 $filename = basename($value);
                 $targets[$this->_originDir][] = array(
-                                                'target' => $this->_originDir.DIRECTORY_SEPARATOR.$filename,
-                                                'link'   => $this->_targetDir.DIRECTORY_SEPARATOR.$filename,
-                                               );
+                    'target' => $this->_originDir.DIRECTORY_SEPARATOR.$filename,
+                    'link'   => $this->_targetDir.DIRECTORY_SEPARATOR.$filename,
+                );
             }
 
             if ($dir->isDirectory()) {
                 $subdirectories = preg_grep('~'.preg_quote($value).'~', array_values($allProps));
                 if (count($subdirectories) == 1) {
-                    $directoryToCreate = str_replace($this->_originDir, $this->_targetDir, $value);
+                    $directoryToCreate = str_replace(
+                        $this->_originDir,
+                        $this->_targetDir,
+                        $value
+                    );
 
                     $ds = new DirectoryScanner();
                     $ds->setBasedir($dir);
@@ -256,9 +262,9 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
                     foreach ($fsTargets as $target) {
                         if (!empty($target)) {
                             $targets[$directoryToCreate][] = array(
-                                                              'target' => $dir.DIRECTORY_SEPARATOR.$target,
-                                                              'link'   => $directoryToCreate.DIRECTORY_SEPARATOR.$target,
-                                                             );
+                                'target' => $dir.DIRECTORY_SEPARATOR.$target,
+                                'link'   => $directoryToCreate.DIRECTORY_SEPARATOR.$target,
+                            );
                         }
                     }
                 }//end if
@@ -316,13 +322,15 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
         $dir          = new PhingFile($dir);
         $relativePath = str_replace($this->getProject()->getBaseDir(), "", $dir->getAbsolutePath());
         if ($dir === null) {
-            throw new BuildException("dir attribute is required", $this->getLocation());
+            throw new BuildException(
+                "dir attribute is required",
+                $this->getLocation()
+            );
         }
 
         if ($dir->isFile()) {
             throw new BuildException(
-                "Unable to create directory as a file already exists with that name: .".$relativePath(
-                )
+                "Unable to create directory as a file already exists with that name: .".$relativePath
             );
         }
 

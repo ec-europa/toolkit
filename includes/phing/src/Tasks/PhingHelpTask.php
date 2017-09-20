@@ -5,8 +5,8 @@
  *
  * PHP Version 5 and 7
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -25,8 +25,8 @@ use Target;
 /**
  * A Phing help.
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -82,10 +82,10 @@ class PhingHelpTask extends \Task
                     $this->project->addTarget('help-'.$info['name'], $target);
 
                     $targets[$buildFileRoot][] = array(
-                                                  'name'        => $target->getName(),
-                                                  'visibility'  => 'hidden',
-                                                  'description' => $buildList[$buildFile]['description'],
-                                                 );
+                        'name'        => $target->getName(),
+                        'visibility'  => 'hidden',
+                        'description' => $buildList[$buildFile]['description'],
+                     );
                 }
 
                 if ($buildFile === $buildFileRoot) {
@@ -114,11 +114,19 @@ class PhingHelpTask extends \Task
         $buildList     = $this->getBuildList($buildFileRoot);
         $parents       = array();
         $targets       = array();
-        if (is_file($this->_buildFile) && !empty($this->getOwningTarget()->getName())) {
+
+        if (is_file($this->_buildFile)
+            && !empty($this->getOwningTarget()->getName())
+        ) {
             foreach ($buildList as $buildFile => $buildInfo) {
-                if ($this->_buildFile === $buildFile || in_array($buildInfo['parent'], $parents)) {
+                if ($this->_buildFile === $buildFile
+                    || in_array($buildInfo['parent'], $parents)
+                ) {
                     $parents[] = $buildFile;
-                    $targets   = array_merge($targets, $this->getBuildTargets($buildFile));
+                    $targets   = array_merge(
+                        $targets,
+                        $this->getBuildTargets($buildFile)
+                    );
                 }
             }
 
@@ -143,18 +151,28 @@ class PhingHelpTask extends \Task
         $table  = new Table($output);
         $table->setHeaders(
             array(
-             array(
-              'Target name',
-              'Visibility',
-              'Description',
-             ),
+                array(
+                    'Target name',
+                    'Visibility',
+                    'Description',
+                ),
             ),
-            array(new TableCell($buildList[$buildFile]['name'], array('colspan' => 3)))
+            array(
+                new TableCell(
+                    $buildList[$buildFile]['name'],
+                    array('colspan' => 3)
+                )
+            )
         );
         foreach ($targets as $file => $targets) {
             $table->addRow(new TableSeparator());
             $table->addRow(
-                array(new TableCell($buildList[$file]['name'], array('colspan' => 3)))
+                array(
+                    new TableCell(
+                        $buildList[$file]['name'],
+                        array('colspan' => 3)
+                    )
+                )
             );
             $table->addRow(new TableSeparator());
             $table->addRows($targets);
@@ -180,7 +198,9 @@ class PhingHelpTask extends \Task
         // Replace tokens.
         if (preg_match_all('/\$\{(.*?)\}/s', $importFile, $matches)) {
             foreach ($matches[0] as $key => $match) {
-                $tokenText  = $this->getProject()->getProperty($matches[1][$key]);
+                $tokenText  = $this->getProject()->getProperty(
+                    $matches[1][$key]
+                );
                 $importFile = str_replace($match, $tokenText, $importFile);
             }
         }
@@ -191,11 +211,12 @@ class PhingHelpTask extends \Task
             $targetName        = (string) $target->attributes()->name;
             $targetVisibility  = (string) $target->attributes()->hidden == 'true' ? 'hidden' : 'visible';
             $targetDescription = (string) $target->attributes()->description;
+
             $targets[$importFile][] = array(
-                                       'name'        => $targetName,
-                                       'visibility'  => $targetVisibility,
-                                       'description' => $targetDescription,
-                                      );
+                'name'        => $targetName,
+                'visibility'  => $targetVisibility,
+                'description' => $targetDescription,
+            );
         }
 
         return $targets;
@@ -213,18 +234,24 @@ class PhingHelpTask extends \Task
      *
      * @return array
      */
-    public function getBuildList($buildFile, $level = 0, $parent = '', &$buildList = array())
-    {
+    public function getBuildList(
+        $buildFile,
+        $level = 0,
+        $parent = '',
+        &$buildList = array()
+    ) {
 
         if (is_file($buildFile)) {
             $buildFileXml = simplexml_load_file($buildFile);
             if ($buildFileName = $buildFileXml->xpath('//project/@name')[0]) {
                 $buildList[$buildFile] = array(
-                                          'level'       => $level,
-                                          'parent'      => $parent,
-                                          'name'        => (string) $buildFileName,
-                                          'description' => (string) $buildFileXml->xpath('//project/@description')[0],
-                                         );
+                    'level'       => $level,
+                    'parent'      => $parent,
+                    'name'        => (string) $buildFileName,
+                    'description' => (string) $buildFileXml->xpath(
+                        '//project/@description'
+                    )[0],
+                );
 
                 foreach ($buildFileXml->xpath('//import[@file]') as $import) {
                     $importFile = (string) $import->attributes()->file;
@@ -232,12 +259,23 @@ class PhingHelpTask extends \Task
                     // Replace tokens.
                     if (preg_match_all('/\$\{(.*?)\}/s', $importFile, $matches)) {
                         foreach ($matches[0] as $key => $match) {
-                            $tokenText  = $this->getProject()->getProperty($matches[1][$key]);
-                            $importFile = str_replace($match, $tokenText, $importFile);
+                            $tokenText  = $this->getProject()->getProperty(
+                                $matches[1][$key]
+                            );
+                            $importFile = str_replace(
+                                $match,
+                                $tokenText,
+                                $importFile
+                            );
                         }
                     }
 
-                    PhingHelpTask::getBuildList($importFile, ($level + 1), $buildFile, $buildList);
+                    PhingHelpTask::getBuildList(
+                        $importFile,
+                        ($level + 1),
+                        $buildFile,
+                        $buildList
+                    );
                 }
             }//end if
 
@@ -295,6 +333,5 @@ class PhingHelpTask extends \Task
     {
         return $this->helpTargets;
     }//end getHelpTargets()
-
 
 }//end class

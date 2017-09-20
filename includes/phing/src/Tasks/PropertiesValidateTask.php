@@ -5,8 +5,8 @@
  *
  * PHP Version 5 and 7
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -25,8 +25,8 @@ use Properties;
 /**
  * Phing validate task.
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -123,8 +123,9 @@ class PropertiesValidateTask extends \Task
      * If true, the task will fail if an error occurs writing the properties
      * file, otherwise errors are just logged.
      *
-     * @param bool $haltonerror <tt>true</tt> if IO exceptions are reported as build
-     *                          exceptions, or <tt>false</tt> if IO exceptions are ignored.
+     * @param bool $haltonerror <tt>true</tt> if IO exceptions are reported as
+     *                          build exceptions, or <tt>false</tt> if IO
+     *                          exceptions are ignored.
      *
      * @return void
      */
@@ -261,6 +262,7 @@ class PropertiesValidateTask extends \Task
         $fileParserFactory = new FileParserFactory();
         $fileParser        = $fileParserFactory->createParser($propertiesFile->getFileExtension());
         $properties        = new Properties(null, $fileParser);
+
         $properties->load($propertiesFile);
 
         return $properties->getProperties();

@@ -5,8 +5,8 @@
  *
  * PHP Version 5 and 7
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -22,8 +22,8 @@ require_once 'phing/Task.php';
 /**
  * A Phing task to generate an aliases.drushrc.php file.
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -74,15 +74,20 @@ class DrushGenerateAliasTask extends \Task
         // Check if all required data is present.
         $this->checkRequirements();
 
-        $drushDir    = $this->_drushDir == '/sites/all/drush' ? $this->_siteRoot.$this->_drushDir : $this->_drushDir;
+        if ($this->_drushDir == '/sites/all/drush') {
+            $drushDir = $this->_siteRoot.$this->_drushDir;
+        } else {
+            $drushDir = $this->_drushDir;
+        }
+
         $aliasesFile = $drushDir.'/aliases.drushrc.php';
 
         $aliases = array(
-                    'default' => array(
-                        'uri'  => 'default',
-                        'root' => $this->_siteRoot,
-                      ),
-                    );
+            'default' => array(
+                'uri'  => 'default',
+                'root' => $this->_siteRoot,
+            ),
+        );
 
         if (empty($this->_aliasName)) {
             $sites = new Finder();
@@ -94,29 +99,36 @@ class DrushGenerateAliasTask extends \Task
 
             foreach ($sites as $site) {
                 $aliases[$site->getBasename()] = array(
-                                                  'uri'  => $site->getBasename(),
-                                                  'root' => $aliases['default']['root'],
-                                                 );
+                   'uri'  => $site->getBasename(),
+                   'root' => $aliases['default']['root'],
+                );
             }
         } else {
             $aliases += $this->loadAliases($aliasesFile);
             $aliases[$this->_aliasName] = array(
-                                          'uri'  => $this->_aliasName,
-                                          'root' => $aliases['default']['root'],
-                                         );
+                'uri'  => $this->_aliasName,
+                'root' => $aliases['default']['root'],
+            );
         }//end if
 
         $aliasesArray = "<?php \n\n\$aliases = ".var_export($aliases, true).";";
 
         if (file_put_contents($aliasesFile, $aliasesArray)) {
-            $this->log("Succesfully wrote aliases to file '".$aliasesFile."'", Project::MSG_INFO);
+            $this->log(
+                "Succesfully wrote aliases to file '".$aliasesFile."'",
+                Project::MSG_INFO
+            );
         } else {
-            $this->log("Was unable to write aliases to file '".$aliasesFile."'", Project::MSG_WARN);
+            $this->log(
+                "Was unable to write aliases to file '".$aliasesFile."'",
+                Project::MSG_WARN
+            );
         }
     }//end main()
 
     /**
-     * Checks if all properties required for generating the aliases file are present.
+     * Checks if all properties required for generating the aliases file are
+     * present.
      *
      * @throws \BuildException
      *   Thrown when a required property is not present.
@@ -128,7 +140,9 @@ class DrushGenerateAliasTask extends \Task
         $required_properties = array('_siteRoot');
         foreach ($required_properties as $required_property) {
             if (empty($this->$required_property)) {
-                throw new \BuildException("Missing required property '$required_property'.");
+                throw new \BuildException(
+                    "Missing required property '$required_property'."
+                );
             }
         }
     }//end checkRequirements()
