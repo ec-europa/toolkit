@@ -114,6 +114,7 @@ class PhingHelpTask extends \Task
         $buildList     = $this->getBuildList($buildFileRoot);
         $parents       = array();
         $targets       = array();
+
         if (is_file($this->_buildFile)
             && !empty($this->getOwningTarget()->getName())
         ) {
@@ -150,11 +151,11 @@ class PhingHelpTask extends \Task
         $table  = new Table($output);
         $table->setHeaders(
             array(
-             array(
-              'Target name',
-              'Visibility',
-              'Description',
-             ),
+                array(
+                    'Target name',
+                    'Visibility',
+                    'Description',
+                ),
             ),
             array(
                 new TableCell(
@@ -210,11 +211,12 @@ class PhingHelpTask extends \Task
             $targetName        = (string) $target->attributes()->name;
             $targetVisibility  = (string) $target->attributes()->hidden == 'true' ? 'hidden' : 'visible';
             $targetDescription = (string) $target->attributes()->description;
+
             $targets[$importFile][] = array(
-                                       'name'        => $targetName,
-                                       'visibility'  => $targetVisibility,
-                                       'description' => $targetDescription,
-                                      );
+                'name'        => $targetName,
+                'visibility'  => $targetVisibility,
+                'description' => $targetDescription,
+            );
         }
 
         return $targets;
@@ -331,6 +333,5 @@ class PhingHelpTask extends \Task
     {
         return $this->helpTargets;
     }//end getHelpTargets()
-
 
 }//end class
