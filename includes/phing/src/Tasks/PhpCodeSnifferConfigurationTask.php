@@ -118,7 +118,7 @@ class PhpCodeSnifferConfigurationTask extends \Task
         // Check if all required data is present.
         $this->checkRequirements();
 
-        $document = new \DOMDocument('1.0', 'UTF-8');
+        $document               = new \DOMDocument('1.0', 'UTF-8');
         $document->formatOutput = true;
 
         // Create the root 'ruleset' element.
@@ -185,9 +185,9 @@ class PhpCodeSnifferConfigurationTask extends \Task
 
         // Add the shorthand options.
         $shorthand_options = array(
-                              'p' => 'showProgress',
-                              's' => 'showSniffCodes',
-                             );
+            'p' => 'showProgress',
+            's' => 'showSniffCodes',
+        );
 
         $options = array_filter(
             $shorthand_options,
@@ -302,10 +302,11 @@ PHP;
     protected function checkRequirements()
     {
         $required_properties = array(
-                                '_configFile',
-                                '_files',
-                                '_standards',
-                               );
+            '_configFile',
+            '_files',
+            '_standards',
+        );
+
         foreach ($required_properties as $required_property) {
             if (empty($this->$required_property)) {
                 throw new \BuildException(
@@ -364,11 +365,12 @@ PHP;
     public function setFiles($files)
     {
         $this->_files = array();
-        $token       = ' ,;';
-        $file        = strtok($files, $token);
+        $token        = ' ,;';
+        $file         = strtok($files, $token);
+
         while ($file !== false) {
             $this->_files[] = $file;
-            $file          = strtok($token);
+            $file           = strtok($token);
         }
 
     }//end setFiles()
@@ -415,11 +417,12 @@ PHP;
     public function setIgnorePatterns($ignorePatterns)
     {
         $this->_ignorePatterns = array();
-        $token   = ' ,;';
-        $pattern = strtok($ignorePatterns, $token);
+        $token                 = ' ,;';
+        $pattern               = strtok($ignorePatterns, $token);
+
         while ($pattern !== false) {
             $this->_ignorePatterns[] = $pattern;
-            $pattern = strtok($token);
+            $pattern                 = strtok($token);
         }
 
     }//end setIgnorePatterns()

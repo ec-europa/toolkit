@@ -46,8 +46,9 @@ class GitignoreMergerTask extends \Task
     public function setGitignoreFiles($gitignoreFiles)
     {
         $this->gitignoreFiles = array();
-        $token = ' ,;';
-        $file  = strtok($gitignoreFiles, $token);
+        $token                = ' ,;';
+        $file                 = strtok($gitignoreFiles, $token);
+
         while ($file !== false) {
             $this->gitignoreFiles[] = $file;
             $file = strtok($token);
@@ -68,6 +69,7 @@ class GitignoreMergerTask extends \Task
         $gitignoreFiles     = $this->gitignoreFiles;
         $gitignoreMerged    = array();
         $gitignoreFileArray = array();
+
         if (!empty($gitignoreFiles) && is_array($gitignoreFiles)) {
             foreach ($gitignoreFiles as $gitignoreFile) {
                 if (is_file($gitignoreFile)) {
@@ -100,6 +102,5 @@ class GitignoreMergerTask extends \Task
         }
 
     }//end main()
-
 
 }//end class

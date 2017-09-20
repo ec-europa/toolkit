@@ -74,11 +74,11 @@ class DocGeneratorTask extends \Task
                 $targetDescription = (string) $target->attributes()->description;
 
                 $targetArray = array(
-                                'name'        => $targetName,
-                                'description' => $targetDescription,
-                                'visibility'  => $targetVisibility,
-                                'buildfile'   => $buildFile,
-                               );
+                    'name'        => $targetName,
+                    'description' => $targetDescription,
+                    'visibility'  => $targetVisibility,
+                    'buildfile'   => $buildFile,
+                );
 
                 if (isset($target->attributes()->depends)) {
                         $targetDependenciesString = (string) $target->xpath(
@@ -97,12 +97,12 @@ class DocGeneratorTask extends \Task
                             $targetDependencies
                         );
                         $targetArray += array(
-                                         'dependencies' => $targetDependencies,
-                                         'type'         => 'playbook',
-                                        );
+                             'dependencies' => $targetDependencies,
+                             'type'         => 'playbook',
+                        );
                     if (count($targetDependencies) > 1) {
-                                      $targetArray['type'] = 'playbook';
-                                      $playbookTargets[]   = $targetName;
+                        $targetArray['type'] = 'playbook';
+                        $playbookTargets[]   = $targetName;
                     }
                 }
 
@@ -114,8 +114,8 @@ class DocGeneratorTask extends \Task
                           $targetArray         = array_merge(
                               $targetArray,
                               array(
-                               'type'        => 'deprecated',
-                               'description' => $replacedBy,
+                                  'type'        => 'deprecated',
+                                  'description' => $replacedBy,
                               )
                           );
                 }

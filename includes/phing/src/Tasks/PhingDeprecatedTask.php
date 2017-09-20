@@ -137,6 +137,7 @@ class PhingDeprecatedTask extends \Task
         $targetName    = $target->getName();
         $subTargetName = $this->subTarget;
         $allTargets    = $this->project->getTargets();
+
         $usedTargets   = array_filter(
             $allTargets,
             function ($key) {

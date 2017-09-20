@@ -262,6 +262,7 @@ class PropertiesValidateTask extends \Task
         $fileParserFactory = new FileParserFactory();
         $fileParser        = $fileParserFactory->createParser($propertiesFile->getFileExtension());
         $properties        = new Properties(null, $fileParser);
+
         $properties->load($propertiesFile);
 
         return $properties->getProperties();

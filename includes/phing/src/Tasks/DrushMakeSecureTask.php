@@ -171,9 +171,9 @@ class DrushMakeSecureTask extends \Task
     protected function checkRequirements()
     {
         $required_properties = array(
-                                'failOn',
-                                'makeFile',
-                               );
+            'failOn',
+            'makeFile',
+        );
         foreach ($required_properties as $required_property) {
             if (empty($this->$required_property)) {
                 throw new \BuildException(
@@ -207,11 +207,12 @@ class DrushMakeSecureTask extends \Task
     public function setFailOn($failOn)
     {
         $this->_failOn = [];
-        $token        = ' ,;';
-        $fail         = strtok($failOn, $token);
+        $token         = ' ,;';
+        $fail          = strtok($failOn, $token);
+
         while ($fail !== false) {
             $this->_failOn[] = $fail;
-            $fail           = strtok($token);
+            $fail            = strtok($token);
         }
 
     }//end setFailOn()

@@ -78,9 +78,9 @@ class DrushMakeFileTask extends \Task
 
         // Add required properties.
         $contents = [
-                     'core' => $this->_coreVersion,
-                     'api'  => $this->_apiVersion,
-                    ];
+            'core' => $this->_coreVersion,
+            'api'  => $this->_apiVersion,
+        ];
 
         // Add projects.
         foreach ($this->_projects as $project) {
@@ -111,10 +111,10 @@ class DrushMakeFileTask extends \Task
     protected function checkRequirements()
     {
         $required_properties = array(
-                                '_apiVersion',
-                                '_coreVersion',
-                                '_makeFile',
-                               );
+            '_apiVersion',
+            '_coreVersion',
+            '_makeFile',
+        );
         foreach ($required_properties as $required_property) {
             if (empty($this->$required_property)) {
                 throw new \BuildException(

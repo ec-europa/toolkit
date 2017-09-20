@@ -83,11 +83,11 @@ class DrushGenerateAliasTask extends \Task
         $aliasesFile = $drushDir.'/aliases.drushrc.php';
 
         $aliases = array(
-                    'default' => array(
-                        'uri'  => 'default',
-                        'root' => $this->_siteRoot,
-                      ),
-                    );
+            'default' => array(
+                'uri'  => 'default',
+                'root' => $this->_siteRoot,
+            ),
+        );
 
         if (empty($this->_aliasName)) {
             $sites = new Finder();
@@ -106,9 +106,9 @@ class DrushGenerateAliasTask extends \Task
         } else {
             $aliases += $this->loadAliases($aliasesFile);
             $aliases[$this->_aliasName] = array(
-                                          'uri'  => $this->_aliasName,
-                                          'root' => $aliases['default']['root'],
-                                         );
+                'uri'  => $this->_aliasName,
+                'root' => $aliases['default']['root'],
+            );
         }//end if
 
         $aliasesArray = "<?php \n\n\$aliases = ".var_export($aliases, true).";";
