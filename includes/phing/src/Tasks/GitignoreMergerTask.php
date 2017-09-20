@@ -1,11 +1,31 @@
 <?php
 
+/**
+ * Gitigone Merger.
+ *
+ * PHP Version 5 and 7
+ *
+ * @category Tools
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
+ */
 namespace Phing\Ssk\Tasks;
 
 require_once 'phing/Task.php';
 
 use BuildException;
 
+/**
+ * A Phing task to merge ignore file.
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
+ */
 class GitignoreMergerTask extends \Task
 {
     /**
@@ -19,7 +39,9 @@ class GitignoreMergerTask extends \Task
     /**
      * Sets the list gitignore gitignoreFiles to merge.
      *
-     * @param string gitignoreFiles
+     * @param string $gitignoreFiles list of ignore files to be merged
+     *
+     * @return void
      */
     public function setGitignoreFiles($gitignoreFiles)
     {
@@ -38,6 +60,8 @@ class GitignoreMergerTask extends \Task
      *  Run the task.
      *
      * @throws BuildException  trouble, probably file IO
+     *
+     * @return void
      */
     public function main()
     {
@@ -58,8 +82,7 @@ class GitignoreMergerTask extends \Task
                 if (!isset($gitignoreMerged[$section])) {
                     $gitignoreMerged[$section] = array();
                 }
-            }
-            else {
+            } else {
                 $gitignoreMerged[$section][] = $gitignoreLine;
             }
         }

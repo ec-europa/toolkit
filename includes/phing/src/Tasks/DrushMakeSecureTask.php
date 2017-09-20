@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * A Phing task to check for projects not covered by Drupal's security advisory.
+ *
+ * PHP Version 5 and 7
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
+ */
+
 namespace Phing\Ssk\Tasks;
 
 use BuildException;
@@ -9,6 +21,12 @@ require_once 'phing/Task.php';
 
 /**
  * A Phing task to check for projects not covered by Drupal's security advisory.
+ *
+ * @category Documentation
+ * @package  SSK
+ * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
+ * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
+ * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
  */
 class DrushMakeSecureTask extends \Task
 {
@@ -18,18 +36,20 @@ class DrushMakeSecureTask extends \Task
      *
      * @var string
      */
-    private $makeFile = '';
+    private $_makeFile = '';
 
     /**
      * The type of coverage to fail on
      *
      * @var array
      */
-    private $failOn = [];
+    private $_failOn = [];
 
 
     /**
      * Generates a Drush make file.
+     *
+     * @return void
      */
     public function main()
     {
@@ -37,7 +57,7 @@ class DrushMakeSecureTask extends \Task
         $this->checkRequirements();
 
         // Get the make file content.
-        $makeFileContents = file_get_contents($this->makeFile);
+        $makeFileContents = file_get_contents($this->_makeFile);
         $make  = $this->drupalParseInfoFormat($makeFileContents);
         $found = false;
 
@@ -57,13 +77,13 @@ class DrushMakeSecureTask extends \Task
 
                         if ($advisory == 'revoked') {
                             $this->log('This project is not covered by Drupal’s security advisory policy: '.$project, Project::MSG_ERR);
-                            $failed = in_array('revoked', $this->failOn) ? true : false;
+                            $failed = in_array('revoked', $this->_failOn) ? true : false;
                             $found  = true;
                         }
 
                         if ($advisory == 'not-covered') {
                             $this->log('This project is not covered by Drupal’s security advisory policy: '.$project, Project::MSG_WARN);
-                            $failed = in_array('not-covered', $this->failOn) ? true : false;
+                            $failed = in_array('not-covered', $this->_failOn) ? true : false;
                             $found  = true;
                         }
                     }//end if
@@ -87,8 +107,9 @@ class DrushMakeSecureTask extends \Task
     /**
      * Parses data in Drupal's .info format.
      *
-     * @param string $data
-     *   The contents of the file.
+     * @param string $data The contents of the file.
+     *
+     * @return void
      */
     public function drupalParseInfoFormat($data)
     {
@@ -137,15 +158,15 @@ class DrushMakeSecureTask extends \Task
         }//end if
 
         return $info;
-
     }//end drupalParseInfoFormat()
 
 
     /**
      * Checks if all properties required for generating the makefile are present.
      *
-     * @throws \BuildException
-     *   Thrown when a required property is not present.
+     * @throws \BuildException Thrown when a required property is not present.
+     *
+     * @return void
      */
     protected function checkRequirements()
     {
@@ -158,39 +179,39 @@ class DrushMakeSecureTask extends \Task
                 throw new \BuildException("Missing required property '$required_property'.");
             }
         }
-
     }//end checkRequirements()
 
 
     /**
      * Sets the path to the makefile to check.
      *
-     * @param string $makeFile
-     *   The path to the makefile to check.
+     * @param string $makeFile The path to the makefile to check.
+     *
+     * @return void
      */
     public function setMakeFile($makeFile)
     {
-        $this->makeFile = $makeFile;
-
+        $this->_makeFile = $makeFile;
     }//end setMakeFile()
 
 
     /**
      * Fail on insecure projects. Can be revoked or not-covered.
      *
-     * @param $failOn
+     * @param bool $failOn Flag
+     *
+     * @return void
      */
     public function setFailOn($failOn)
     {
-        $this->failOn = [];
+        $this->_failOn = [];
         $token        = ' ,;';
         $fail         = strtok($failOn, $token);
         while ($fail !== false) {
-            $this->failOn[] = $fail;
+            $this->_failOn[] = $fail;
             $fail           = strtok($token);
         }
 
     }//end setFailOn()
-
 
 }//end class
