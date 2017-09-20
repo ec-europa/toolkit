@@ -5,8 +5,8 @@
  *
  * PHP Version 5 and 7
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
@@ -26,8 +26,8 @@ use RegexIterator;
 /**
  * Symlink property content task.
  *
- * @category Documentation
- * @package  SSK
+ * @category BuildSystem
+ * @package  DrupalToolkit
  * @author   DIGIT NEXTEUROPA QA <DIGIT-NEXTEUROPA-QA@ec.europa.eu>
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/ssk/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
