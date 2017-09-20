@@ -19,7 +19,7 @@ default:
       base-url: '{{ behat.base_url }}'
       files_path: '{{ build.platform.dir }}'
     Drupal\DrupalExtension:
-      api_driver: 'drupal'
+      api_driver: 'drush'
       blackbox: ~
       drupal:
         drupal_root: '{{ build.platform.dir }}'
@@ -31,7 +31,7 @@ default:
         paths:
           - '{{ behat.subcontexts.path }}'
       drush:
-        alias: '@{{ drush.site.alias }}'
+        alias: '{{ drush.site.alias }}'
         binary: '{{ toolkit.dir.bin.drush }}'
   formatters:
     {{ behat.formatter.name }}: ~
