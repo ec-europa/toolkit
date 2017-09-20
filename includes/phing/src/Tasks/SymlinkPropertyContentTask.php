@@ -330,7 +330,8 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
 
         if ($dir->isFile()) {
             throw new BuildException(
-                "Unable to create directory as a file already exists with that name: .".$relativePath);
+                "Unable to create directory as a file already exists with that name: .".$relativePath
+            );
         }
 
         if (!$dir->exists()) {
