@@ -100,7 +100,8 @@ class DrushMakeFileTask extends \Task
 
 
     /**
-     * Checks if all properties required for generating the makefile are present.
+     * Checks if all properties required for generating the makefile are
+     * present.
      *
      * @throws \BuildException
      *   Thrown when a required property is not present.
@@ -189,7 +190,8 @@ class DrushMakeFileTask extends \Task
     /**
      * Sets the default projects directory.
      *
-     * @param string $defaultProjectDir The Drupal core version. For example '8.x'.
+     * @param string $defaultProjectDir The Drupal core version.
+     *                                  For example '8.x'.
      *
      * @return void
      */

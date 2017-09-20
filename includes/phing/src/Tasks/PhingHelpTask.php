@@ -197,7 +197,9 @@ class PhingHelpTask extends \Task
         // Replace tokens.
         if (preg_match_all('/\$\{(.*?)\}/s', $importFile, $matches)) {
             foreach ($matches[0] as $key => $match) {
-                $tokenText  = $this->getProject()->getProperty($matches[1][$key]);
+                $tokenText  = $this->getProject()->getProperty(
+                    $matches[1][$key]
+                );
                 $importFile = str_replace($match, $tokenText, $importFile);
             }
         }

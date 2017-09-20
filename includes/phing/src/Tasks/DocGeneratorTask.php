@@ -286,12 +286,16 @@ class DocGeneratorTask extends \Task
             $output .= "</table>\n\n";
         }//end foreach
 
-        file_put_contents('/home/verbral/github/ec-europa/subsite/structure.md', $output);
+        file_put_contents(
+            '/home/verbral/github/ec-europa/subsite/structure.md',
+            $output
+        );
 
     }//end wrapperTargetTable()
 
     /**
-     * Checks if all properties required for generating the aliases file are present.
+     * Checks if all properties required for generating the aliases file are
+     * present.
      *
      * @throws \BuildException
      *   Thrown when a required property is not present.
@@ -303,7 +307,9 @@ class DocGeneratorTask extends \Task
         $required_properties = array('phingDir');
         foreach ($required_properties as $required_property) {
             if (empty($this->$required_property)) {
-                throw new \BuildException("Missing required property '$required_property'.");
+                throw new \BuildException(
+                    "Missing required property '$required_property'."
+                );
             }
         }
 

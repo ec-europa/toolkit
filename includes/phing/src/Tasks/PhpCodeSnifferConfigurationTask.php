@@ -205,7 +205,9 @@ class PhpCodeSnifferConfigurationTask extends \Task
         }
 
         // Save the file.
-        $configSaved = file_put_contents($this->_configFile, $document->saveXML());
+        $configSaved = file_put_contents(
+            $this->_configFile,
+            $document->saveXML());
 
         // If a global configuration file is passed, update this too.
         if (!empty($this->_globalConfig)) {
@@ -225,7 +227,10 @@ PHP;
             if ($configSaved || $globalConfigSaved) {
                 if ($configSaved) {
                     $this->setTaskName("config");
-                    $this->log("Updating: ".$this->_configFile, Project::MSG_INFO);
+                    $this->log(
+                        "Updating: ".$this->_configFile,
+                        Project::MSG_INFO
+                    );
                 } else {
                     throw new BuildException(
                         "Was unable to update: ".$this->_configFile,
@@ -235,7 +240,10 @@ PHP;
 
                 if ($globalConfigSaved) {
                     $this->setTaskName("config");
-                    $this->log("Updating: ".$this->_globalConfig, Project::MSG_INFO);
+                    $this->log(
+                        "Updating: ".$this->_globalConfig,
+                        Project::MSG_INFO
+                    );
                 } else {
                     throw new BuildException(
                         "Was unable to update .".$this->_configFile,
@@ -256,7 +264,8 @@ PHP;
      *
      * @param \DOMDocument $document The document that will contain the argument
      *                               to append.
-     * @param \DOMElement  $element  The parent element of the argument to append.
+     * @param \DOMElement $element   The parent element of the argument
+     *                               to append.
      * @param string       $value    The argument value.
      * @param string       $name     Optional argument name.
      *
@@ -382,7 +391,8 @@ PHP;
     /**
      * Sets the installed_paths configuration..
      *
-     * @param string $installedPaths The paths in which the standards are installed.
+     * @param string $installedPaths The paths in which the standards
+     *                               are installed.
      *
      * @return void
      */

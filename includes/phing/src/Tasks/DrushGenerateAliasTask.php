@@ -127,7 +127,8 @@ class DrushGenerateAliasTask extends \Task
     }//end main()
 
     /**
-     * Checks if all properties required for generating the aliases file are present.
+     * Checks if all properties required for generating the aliases file are
+     * present.
      *
      * @throws \BuildException
      *   Thrown when a required property is not present.

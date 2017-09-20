@@ -123,8 +123,9 @@ class PropertiesValidateTask extends \Task
      * If true, the task will fail if an error occurs writing the properties
      * file, otherwise errors are just logged.
      *
-     * @param bool $haltonerror <tt>true</tt> if IO exceptions are reported as build
-     *                          exceptions, or <tt>false</tt> if IO exceptions are ignored.
+     * @param bool $haltonerror <tt>true</tt> if IO exceptions are reported as
+     *                          build exceptions, or <tt>false</tt> if IO
+     *                          exceptions are ignored.
      *
      * @return void
      */

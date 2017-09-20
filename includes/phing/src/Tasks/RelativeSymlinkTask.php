@@ -120,17 +120,26 @@ class RelativeSymlinkTask extends \SymlinkTask
 
         if (file_exists($link) || is_link($link)) {
             if (!$this->getOverwrite()) {
-                $this->log('Not overwriting existing link '.$link, Project::MSG_ERR);
+                $this->log(
+                    'Not overwriting existing link '.$link,
+                    Project::MSG_ERR
+                );
 
                 return false;
             }
 
             if (is_link($link) || is_file($link)) {
                 $fs->unlink($link);
-                $this->log('Link removed: '.$linkName, Project::MSG_INFO);
+                $this->log(
+                    'Link removed: '.$linkName,
+                    Project::MSG_INFO
+                );
             } else {
                 $fs->rmdir($link, true);
-                $this->log('Directory removed: '.$linkName, Project::MSG_INFO);
+                $this->log(
+                    'Directory removed: '.$linkName,
+                    Project::MSG_INFO
+                );
             }
         }
 
