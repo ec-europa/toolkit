@@ -1,6 +1,6 @@
 FROM fpfis/php56-dev
 
-ENV PATH="/var/www/html/vendor/ec-europa/ssk/includes/composer/bin:${PATH}"
+ENV PATH="/var/www/html/vendor/ec-europa/toolkit/includes/composer/bin:${PATH}"
 
 ADD configs/composer.json /tmp/.composer/composer.json
 

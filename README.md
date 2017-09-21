@@ -137,7 +137,7 @@ up your project and is integrated with the CI and CD tools to optimize
 the development process. To show the list of possible targets you can
 execute:
 
-<details><summary><b>./ssk/phing</b></summary>
+<details><summary><b>./toolkit/phing</b></summary>
 
 ```
 +---------------------------------------+------------+-------------------------------------------------------------------------------+

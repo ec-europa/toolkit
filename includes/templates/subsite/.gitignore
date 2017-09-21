@@ -14,12 +14,12 @@ nbproject/
 # Ignore build artifacts.
 # -----------------------
 /bin/
-/ssk
-/ssk-*
+/toolkit
+/toolkit-*
 /build/
 /platform/
 /.tmp/
 /vendor/
 /resources/git/hooks/pre-push/phpcs
 lib-backup/
-ssk
+toolkit

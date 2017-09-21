@@ -15,7 +15,7 @@
     <!-- Provide handy access with root symlink to starterkit binary. -->
     <target name="toolkit-link-binary" description="Provide project with toolkit binary at root level.">
         <echo msg="Provide project with starterkit binary at root level." />
-        <relsym link="${project.basedir}/ssk" target="${toolkit.dir.bin}" overwrite="true" />
+        <relsym link="${project.basedir}/toolkit" target="${toolkit.dir.bin}" overwrite="true" />
     </target>
 
     <!-- Ask user if he or she wants to generate the source code structure. -->
@@ -48,7 +48,7 @@
     </target>
 
     <target name="toolkit-generate-docs" description="Generate documentation md files for toolkit.">
-        <docgen buildfile="${project.basedir}/vendor/ec-europa/ssk/build.xml" />
+        <docgen buildfile="${project.basedir}/vendor/ec-europa/toolkit/build.xml" />
     </target>
 
     <!-- Ensure needed files are present. -->
@@ -61,7 +61,7 @@
         <echo msg="Project structure for ${project-type} created." />
     </target>
 
-    <!-- Upgrade ssk 2.x to 3.x. -->
+    <!-- Upgrade toolkit 2.x to 3.x. -->
     <target name="toolkit-upgrade-starterkit" description="Perform upgrade tasks for upgrading from 2.x to 3.x.">
         <if>
             <available file="${project.basedir}/build.package.xml" type="file" />
@@ -118,7 +118,7 @@
                         <copy file="${toolkit.dir.incl.templates}/subsite/resources/composer.lock" tofile="${resources.dir.composer.lock}" />
                     </try>
                     <catch>
-                        <echo msg="Custom ${resources.dir.composer.json} file detected. Not overwriting with ssk 3.x version." level="warning" />
+                        <echo msg="Custom ${resources.dir.composer.json} file detected. Not overwriting with toolkit 3.x version." level="warning" />
                     </catch>
                 </trycatch>
 
@@ -131,7 +131,7 @@
                         <copy file="${toolkit.dir.incl.templates}/subsite/resources/site.make" tofile="${resources.dir.site.make}" />
                     </try>
                     <catch>
-                        <echo msg="Custom ${resources.dir.site.make} file detected. Not overwriting with ssk 3.x version." level="warning" />
+                        <echo msg="Custom ${resources.dir.site.make} file detected. Not overwriting with toolkit 3.x version." level="warning" />
                     </catch>
                 </trycatch>
 
@@ -144,7 +144,7 @@
                         <copy file="${toolkit.dir.incl.templates}/subsite/resources/.gitignore" tofile="${project.basedir}/.gitignore" />
                     </try>
                     <catch>
-                        <echo msg="Custom .gitignore file detected. Not overwriting with ssk 3.x version." level="warning" />
+                        <echo msg="Custom .gitignore file detected. Not overwriting with toolkit 3.x version." level="warning" />
                     </catch>
                 </trycatch>
 

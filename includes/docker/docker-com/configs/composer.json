@@ -19,7 +19,7 @@
             "package-exclude-list": [
                 "behat/behat",
                 "cweagans/composer-patches",
-                "ec-europa/ssk",
+                "ec-europa/toolkit",
                 "phing/phing"
             ],
             "symlink-dir": "vendor",

@@ -2,7 +2,7 @@
 
 <project name="my-project" description="The link between your project and starterkit." default="">
 
-    <property name="toolkit.dir" value="${project.basedir}/vendor/ec-europa/ssk" />
+    <property name="toolkit.dir" value="${project.basedir}/vendor/ec-europa/toolkit" />
     <import file="${toolkit.dir}/includes/phing/build.xml" />
 
 </project>
