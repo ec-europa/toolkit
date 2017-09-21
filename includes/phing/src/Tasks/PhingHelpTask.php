@@ -165,17 +165,19 @@ class PhingHelpTask extends \Task
             )
         );
         foreach ($targets as $file => $targets) {
-            $table->addRow(new TableSeparator());
-            $table->addRow(
-                array(
+            if ($buildList[$file]['name'] != "deprecated") {
+                $table->addRow(new TableSeparator());
+                $table->addRow(
+                  array(
                     new TableCell(
-                        $buildList[$file]['name'],
-                        array('colspan' => 3)
+                      $buildList[$file]['name'],
+                      array('colspan' => 3)
                     )
-                )
-            );
-            $table->addRow(new TableSeparator());
-            $table->addRows($targets);
+                  )
+                );
+                $table->addRow(new TableSeparator());
+                $table->addRows($targets);
+            }
         }
 
         $table->render();
