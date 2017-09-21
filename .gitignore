@@ -7,12 +7,12 @@ nbproject/
 
 # Ignore local configuration.
 # ---------------------------
-/build.develop.props
-/build.default.props
-/build.project.xml
-/phpcs-ruleset.xml
-/phpcs.xml
-/tests/behat.yml
+build.develop.props
+build.default.props
+build.project.xml
+phpcs-ruleset.xml
+phpcs.xml
+tests/behat.yml
 
 # Ignore build artifacts.
 # -----------------------
