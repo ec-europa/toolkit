@@ -1,0 +1,145 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "28fd2f9f01dc2a696fd2929cc9f8c86f",
+    "content-hash": "8e73133e2e433afa354afd72c0d84762",
+    "packages": [
+        {
+            "name": "cweagans/composer-patches",
+            "version": "dev-checkpatched",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/verbruggenalex/composer-patches.git",
+                "reference": "5b63ccc68eee83c2b382297074e1b4836d090a16"
+            },
+            "require": {
+                "composer-plugin-api": "^1.0",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "composer/composer": "~1.0",
+                "phpunit/phpunit": "~4.6"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "cweagans\\Composer\\Patches"
+            },
+            "autoload": {
+                "psr-4": {
+                    "cweagans\\Composer\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "cweagans\\Composer\\Tests\\": "tests"
+                }
+            },
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Cameron Eagans",
+                    "email": "me@cweagans.net"
+                }
+            ],
+            "description": "Provides a way to patch Composer packages.",
+            "time": "2017-04-16 11:19:19"
+        },
+        {
+            "name": "ec-europa/ssk",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ec-europa/ssk.git",
+                "reference": "0c1e1904fc9d36c5768fc978e598a7ea27c5c01f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/ssk/zipball/0c1e1904fc9d36c5768fc978e598a7ea27c5c01f",
+                "reference": "0c1e1904fc9d36c5768fc978e598a7ea27c5c01f",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Subsite Starter Kit packaged for composer",
+            "time": "2017-09-20 19:18:49"
+        },
+        {
+            "name": "letudiant/composer-shared-package-plugin",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/verbruggenalex/composer-shared-package-plugin.git",
+                "reference": "8fc05d8874e82bbfa3be16b8419b9c8befca1cb7"
+            },
+            "require": {
+                "composer-plugin-api": "~1.0",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "dev-master",
+                "composer/composer": "dev-master",
+                "phpunit/phpunit": "~4.7",
+                "symfony/var-dumper": "~2.7"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "LEtudiant\\Composer\\SharedPackagePlugin",
+                "branch-alias": {
+                    "dev-master": "3.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "LEtudiant\\Composer\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "Test\\Unit\\LEtudiant\\Composer\\": "tests/unit"
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sylvain Lorinet",
+                    "email": "sylvain.lorinet@gmail.com"
+                }
+            ],
+            "description": "This composer plugin allows you to share selected packages between your projects with symlinks.",
+            "support": {
+                "issues": "https://github.com/letudiant/composer-shared-package-plugin/issues"
+            },
+            "time": "2017-04-21 09:50:16"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [
+        {
+            "alias": "3.0.0",
+            "alias_normalized": "3.0.0.0",
+            "version": "9999999-dev",
+            "package": "ec-europa/ssk"
+        },
+        {
+            "alias": "dev-master",
+            "alias_normalized": "9999999-dev",
+            "version": "dev-develop",
+            "package": "letudiant/composer-shared-package-plugin"
+        }
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "ec-europa/ssk": 20,
+        "cweagans/composer-patches": 20,
+        "letudiant/composer-shared-package-plugin": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
