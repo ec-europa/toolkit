@@ -31,7 +31,7 @@
     "psr-4": {
       "Drupal\\nexteuropa\\": "${PROJECT}/tests/src",
       "Drush\\Drush\\Log\\": "../../src/Drush/Log",
-      "Phing\\Ssk\\": "../phing/src"
+      "Phing\\Toolkit\\": "../phing/src"
     }
   },
   "repositories": [

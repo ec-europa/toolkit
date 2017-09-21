@@ -12,7 +12,7 @@
  * @link     https://github.com/ec-europa/toolkit/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
  */
 
-namespace Phing\Ssk\Tasks;
+namespace Phing\Toolkit\Tasks;
 
 use Symfony\Component\Yaml\Dumper;
 

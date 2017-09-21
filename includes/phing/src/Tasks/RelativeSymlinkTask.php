@@ -11,7 +11,7 @@
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/toolkit/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
  */
-namespace Phing\Ssk\Tasks;
+namespace Phing\Toolkit\Tasks;
 
 require_once 'phing/Task.php';
 
