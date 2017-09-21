@@ -6,6 +6,6 @@
     "scripts": {
         "post-install-cmd": "@ssk-install",
         "post-update-cmd": "@ssk-install",
-        "ssk-install": "PROJECT=$(pwd) composer run-script ssk-install -d ./vendor/ec-europa/ssk"
+        "ssk-install": "PROJECT=$(pwd) composer run-script ssk-install -d ./vendor/ec-europa/toolkit"
     }
 }

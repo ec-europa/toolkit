@@ -2,7 +2,7 @@
 
 <project name="project" default="help">
 
-    <property name="ssk.root" value="${project.basedir}/vendor/ec-europa/ssk" />
+    <property name="ssk.root" value="${project.basedir}/vendor/ec-europa/toolkit" />
     <import file="${ssk.root}/build.xml" />
 
 </project>

@@ -48,7 +48,7 @@
     </target>
 
     <target name="toolkit-generate-docs" description="Generate documentation md files for toolkit.">
-        <docgen buildfile="${project.basedir}/vendor/ec-europa/ssk/build.xml" />
+        <docgen buildfile="${project.basedir}/vendor/ec-europa/toolkit/build.xml" />
     </target>
 
     <!-- Ensure needed files are present. -->
@@ -151,6 +151,7 @@
                 <!-- Move subsite resources to new location. -->
                 <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true" haltonerror="false" />
                 <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true" haltonerror="false" />
+                <copy file="${toolkit.dir.incl.templates}/subsite/resources/devel.make" tofile="${resources.dir.devel.make}" />
 
                 <move file="${lib.dir}" tofile="lib-backup" />
                 <mkdir dir="${lib.dir.libraries}" />
