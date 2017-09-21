@@ -345,11 +345,11 @@ execute:
 | build-project-test                    | hidden     |                                                                               |
 | test-qa-exec                          | visible    |                                                                               |
 +---------------------------------------+------------+-------------------------------------------------------------------------------+
-| starterkit                                                                                                                         |
+| toolkit                                                                                                                         |
 +---------------------------------------+------------+-------------------------------------------------------------------------------+
-| help-starterkit                       | hidden     |                                                                               |
-| help-build                            | hidden     | The main starterkit build file.                                               |
-| help-boot                             | hidden     | Contains all import files needed for the starterkit to function.              |
+| help-toolkit                       | hidden     |                                                                               |
+| help-build                            | hidden     | The main toolkit build file.                                               |
+| help-boot                             | hidden     | Contains all import files needed for the toolkit to function.              |
 | help-properties                       | hidden     | Build properties for configuration and setting of conditional properties.     |
 | help-extensions                       | hidden     | Custom classes for extra tasks, conditions, etc.                              |
 | help-directories                      | hidden     | Create needed directories to optimize builds.                                 |
@@ -379,7 +379,7 @@ If you are unfamiliar with the purpose behind each different type of
 properties file please open the descriptions and read what they are
 designed for.
 
-<details><summary><b>default.props</b><br></summary>
+<details><summary><b>build.default.props</b><br></summary>
 
 This properties file contains the default settings, acts as a loading
 mechanism and is an example file of what properties are available to
@@ -387,7 +387,7 @@ you. Upon the installation or update of the toolkit this file will be
 placed in your repository.
 
 </details>
-<details><summary><b>develop.props</b></summary>
+<details><summary><b>build.develop.props</b></summary>
 
 This file will contain configuration which is unique to your development
 environment. It is useful for specifying your database credentials and
@@ -397,7 +397,7 @@ settings that you can change to your liking. Because these settings are
 personal they should not be shared with the rest of the team. Make sure
 you never commit this file.
 </details>
-<details><summary><b>project.props</b><br></summary>
+<details><summary><b>build.project.props</b><br></summary>
 
 Always commit this file to your repository. This file is required for
 all NextEuropa projects. Without it your build system will fail. It must

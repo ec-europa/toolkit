@@ -1,0 +1,15 @@
+project.id = belgium
+
+# Database download settings.
+# ---------------------------
+db.dl.filename = sanitized_daily_multisite_belgium_production.sql.gz
+db.dl.password = WCO4y1PDAKVBV7226VY2
+db.dl.username = belgium
+
+github.owner = ec-europa
+github.team = 2007651
+github.repo = fpfis-get-repo-list
+github.user = verbruggenalex
+github.token = 39794c482bc3a6d6087bdc6b5ebba9691ee52f0c
+github.pass =
+github.auth = http-token

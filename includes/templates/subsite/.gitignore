@@ -7,7 +7,7 @@ nbproject/
 
 # Ignore local configuration.
 # ---------------------------
-/build.properties.local
+/build.develop.props
 /phpcs.xml
 /tests/behat.yml
 

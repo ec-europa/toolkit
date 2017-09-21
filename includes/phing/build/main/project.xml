@@ -219,7 +219,7 @@
                 <echo msg="Please upgrade your platform version to ${platform.package.version.major}.${platform.upgrade}." level="warning" />
             </then>
         </if>
-        <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.properties.version" />
+        <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.project.props.version" />
     </target>
 
     <target name="project-scratch-build" description="Delete previous build to start over clean.">
@@ -500,7 +500,7 @@
     </target>
 
     <target name="project-validate-properties" description="Validate the build properties file.">
-        <propval source="build.properties" required="${toolkit.dir.incl.phing.props}/required.props" haltonerror="${build.haltonerror.props.validate}" logoutput="${logoutput}"/>
+        <propval source="build.project.props" required="${toolkit.dir.incl.phing.props}/required.props" haltonerror="${build.haltonerror.props.validate}" logoutput="${logoutput}"/>
     </target>
 
 </project>

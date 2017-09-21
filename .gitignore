@@ -7,8 +7,8 @@ nbproject/
 
 # Ignore local configuration.
 # ---------------------------
-/build.properties.local
-/build.properties.dist
+/build.develop.props
+/build.default.props
 /build.project.xml
 /phpcs-ruleset.xml
 /phpcs.xml

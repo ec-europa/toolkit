@@ -50,7 +50,7 @@ be deleted.
 >- .git/
 >- .gitattributes
 >- .gitignore
->- build.properties
+>- build.project.props
 >- lib/features/*
 >- lib/modules/*
 >- lib/themes/*

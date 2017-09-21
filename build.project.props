@@ -2,7 +2,7 @@
 # ----------------------
 project.id = ssk
 project.install.modules = example_module
-project.name = Subsite Starterkit
+project.name = Toolkit
 project.url.production =
 
 # Solr configuration.

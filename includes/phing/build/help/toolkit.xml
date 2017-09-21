@@ -54,7 +54,7 @@
     <!-- Ensure needed files are present. -->
     <target name="toolkit-copy-templates" description="Copies template files to your project for toolkit integration.">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
-        <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.properties.dist" overwrite="true" />
+        <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
         <copy todir="${project.basedir}">
             <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
         </copy>
@@ -94,7 +94,7 @@
                         <include name="appspec.yml" />
                         <include name="build.clone.xml" />
                         <include name="build.package.xml" />
-                        <include name="build.properties.dist" />
+                        <include name="build.project.props.dist" />
                         <include name="build.test.xml" />
                         <include name="composer.lock" />
                         <include name="phpcs-ruleset.xml" />
