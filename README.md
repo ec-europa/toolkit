@@ -1,7 +1,4 @@
-[![Latest Stable Version](https://poser.pugx.org/drush/drush/v/stable.png)](https://packagist.org/packages/drush/drush) [![Total Downloads](https://poser.pugx.org/drush/drush/downloads.png)](https://packagist.org/packages/drush/drush) [![Latest Unstable Version](https://poser.pugx.org/drush/drush/v/unstable.png)](https://packagist.org/packages/drush/drush) [![License](https://poser.pugx.org/drush/drush/license.png)](https://packagist.org/packages/drush/drush) [![Documentation Status](https://readthedocs.org/projects/drush/badge/?version=master)](https://readthedocs.org/projects/drush/?badge=master)
-Shields to consider: https://shields.io/
-
-Note: This documentation is in progress and should not be relied on. The project is in full development.
+[![Build Status](https://drone.ne-dev.eu/api/badges/ec-europa/toolkit/status.svg)](https://drone.ne-dev.eu/ec-europa/toolkit)
 
 # NextEuropa Toolkit
 <img align="left" width="50%" src="https://ec.europa.eu/info/sites/info/themes/europa/images/svg/logo/logo--en.svg" />
@@ -26,14 +23,12 @@ environments, deploy packages and test packages.</p>
 
 ## Background
 This composer package helps developers working on Drupal websites in the
-NextEuropa project speed up and align their development. The toolkit is
-opensource and in no way obligated to provide support or guarantee
-compatibility with your system. It is officially maintained by members
-of the Quality Assurance team for the NextEuropa project. They oversee
-general workflow and overall quality of projects. The standards emposed
-by the Quality Assurance team are a mix of internally provided standards
-and a collection of standards established by the leading contributors to
-the project.
+NextEuropa project speed up and align their development. It is
+officially maintained by members of the Quality Assurance team for the
+NextEuropa project. They oversee general workflow and overall quality of
+projects. The standards enforced by the Quality Assurance team are a mix
+of internally provided standards and a collection of standards
+established by the leading contributors to the project.
 
 ## Requirements
 There are three separate ways of using the NextEuropa project. Either
@@ -135,39 +130,6 @@ your fork that serves development only.
 </details>
 
 ## Usage
-
-### Build properties
-
-There are 3 different sets of build properties files that you can use.
-If you are unfamiliar with the purpose behind each different type of
-properties file please open the descriptions and read what they are
-designed for.
-
-<details><summary><b>default.props</b><br></summary>
-
-This properties file contains the default settings, acts as a loading
-mechanism and is an example file of what properties are available to
-you. Upon the installation or update of the toolkit this file will be
-placed in your repository.
-
-</details>
-<details><summary><b>develop.props</b></summary>
-
-This file will contain configuration which is unique to your development
-environment. It is useful for specifying your database credentials and
-the username and password of the Drupal admin user so they can be used
-during the installation. Next to credentials you have many development
-settings that you can change to your liking. Because these settings are
-personal they should not be shared with the rest of the team. Make sure
-you never commit this file.
-</details>
-<details><summary><b>project.props</b><br></summary>
-
-Always commit this file to your repository. This file is required for
-all NextEuropa projects. Without it your build system will fail. It must
-contain a minimum set of properties, like project.id, etc. The toolkit
-will notify you if any properties are missing.
-</details>
 
 ### Phing
 This is the main component of the toolkit. It allows you to locally set
@@ -410,13 +372,47 @@ execute:
 ```
 </details>
 
+### Properties
+
+There are 3 different sets of build properties files that you can use.
+If you are unfamiliar with the purpose behind each different type of
+properties file please open the descriptions and read what they are
+designed for.
+
+<details><summary><b>default.props</b><br></summary>
+
+This properties file contains the default settings, acts as a loading
+mechanism and is an example file of what properties are available to
+you. Upon the installation or update of the toolkit this file will be
+placed in your repository.
+
+</details>
+<details><summary><b>develop.props</b></summary>
+
+This file will contain configuration which is unique to your development
+environment. It is useful for specifying your database credentials and
+the username and password of the Drupal admin user so they can be used
+during the installation. Next to credentials you have many development
+settings that you can change to your liking. Because these settings are
+personal they should not be shared with the rest of the team. Make sure
+you never commit this file.
+</details>
+<details><summary><b>project.props</b><br></summary>
+
+Always commit this file to your repository. This file is required for
+all NextEuropa projects. Without it your build system will fail. It must
+contain a minimum set of properties, like project.id, etc. The toolkit
+will notify you if any properties are missing.
+</details>
+
+
 ## Maintainers
 
 This project is maintained by members of the Quality Assurance team who
 review incoming pull requests for the NextEuropa project. The board on
 which they operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
 
-<details><summary><b>Toolkit maintainers</b></summary>
+<details><summary><b>Contact list</b></summary>
 
 |Full name|Username|Department|Role|
 |:---|:---|:---|:---|
@@ -425,6 +421,9 @@ which they operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
 </details>
 
 ## License
+
+The toolkit is an opensource project. We welcome contributions and bug
+reports.
 
 * [European Union Public License 1.1](LICENSE.md)
 
