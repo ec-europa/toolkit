@@ -2,9 +2,7 @@
 
 <project name="toolkit" default="help">
 
-    <target
-        name="toolkit-initialize"
-        description="Initializes a project for use of the toolkit."
+    <target name="toolkit-initialize" description="Initializes a project for use of the toolkit."
         depends="
             toolkit-link-binary,
             toolkit-generate-structure,
@@ -12,13 +10,23 @@
         <echo msg="Starterkit successfully initiated." />
     </target>
 
-    <!-- Provide handy access with root symlink to starterkit binary. -->
-    <target name="toolkit-link-binary" description="Provide project with toolkit binary at root level.">
-        <echo msg="Provide project with starterkit binary at root level." />
-        <relsym link="${project.basedir}/toolkit" target="${toolkit.dir.bin}" overwrite="true" />
+    <target name="toolkit-composer-hook-phingcalls" description="Echo the composer hook phing targets for use in bash script." hidden="true">
+        <echoproperties prefix="composer.hook." />
     </target>
 
-    <!-- Ask user if he or she wants to generate the source code structure. -->
+    <target name="toolkit-copy-templates" description="Copies template files to your project for toolkit integration.">
+        <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
+        <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
+        <copy todir="${project.basedir}">
+            <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
+        </copy>
+        <echo msg="Project structure for ${project-type} created." />
+    </target>
+
+    <target name="toolkit-generate-docs" description="Generate documentation md files for toolkit.">
+        <docgen buildfile="${project.basedir}/vendor/ec-europa/toolkit/build.xml" />
+    </target>
+
     <target name="toolkit-generate-structure" description="Create the lib directory structure.">
         <if>
             <and>
@@ -47,21 +55,15 @@
         </if>
     </target>
 
-    <target name="toolkit-generate-docs" description="Generate documentation md files for toolkit.">
-        <docgen buildfile="${project.basedir}/vendor/ec-europa/toolkit/build.xml" />
+    <target name="toolkit-git-hook-phingcalls" description="Echo the git hook phing targets for use in bash script." hidden="true">
+        <echoproperties prefix="git.hook." />
     </target>
 
-    <!-- Ensure needed files are present. -->
-    <target name="toolkit-copy-templates" description="Copies template files to your project for toolkit integration.">
-        <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
-        <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
-        <copy todir="${project.basedir}">
-            <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
-        </copy>
-        <echo msg="Project structure for ${project-type} created." />
+    <target name="toolkit-link-binary" description="Provide project with toolkit binary at root level.">
+        <echo msg="Provide project with starterkit binary at root level." />
+        <relsym link="${project.basedir}/toolkit" target="${toolkit.dir.bin}" overwrite="true" />
     </target>
 
-    <!-- Upgrade toolkit 2.x to 3.x. -->
     <target name="toolkit-upgrade-starterkit" description="Perform upgrade tasks for upgrading from 2.x to 3.x.">
         <if>
             <available file="${project.basedir}/build.package.xml" type="file" />
@@ -238,16 +240,6 @@
                 </if>
             </then>
         </if>
-    </target>
-
-    <!-- Echo the composer hook phingcalls. -->
-    <target name="toolkit-composer-hook-phingcalls" description="Echo the composer hook phing targets for use in bash script." hidden="true">
-        <echoproperties prefix="composer.hook." />
-    </target>
-
-    <!-- Echo the git hook phingcalls. -->
-    <target name="toolkit-git-hook-phingcalls" description="Echo the git hook phing targets for use in bash script." hidden="true">
-        <echoproperties prefix="git.hook." />
     </target>
 
 </project>
