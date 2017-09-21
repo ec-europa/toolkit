@@ -2,28 +2,13 @@
 
 <project name="drush" description="Contains drush helper targets that help manage your Drupal installation." default="">
 
-    <!-- Install the site. -->
-    <target name="drush-site-install" description="Install a site.">
-        <echo message="Installing site ${project.name}." />
-        <drush command="site-install" assume="yes" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${build.site}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${db.url}" />
-            <option name="site-name" value="'${project.name}'" />
-            <option name="account-name" value="${admin.username}" />
-            <option name="account-pass" value="${admin.password}" />
-            <option name="account-mail" value="${admin.email}" />
-            <param>${profile}</param>
-            <param>install_configure_form.update_status_module='array(FALSE,FALSE)'
-            </param>
+    <target name="drush-create-files-dirs" description="Create site files directories." hidden="true">
+        <echo message="Creating files directories for ${db.name}." />
+        <drush command="php-script" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>${toolkit.dir.incl.drush}/generate-directories.php</param>
         </drush>
     </target>
 
-    <!-- Generate aliases for Drupal site by foldername. -->
-    <target name="drush-generate-aliases" description="Generate drush aliases for each subsite folder.">
-        <mkdir dir="${build.platform.dir.sites}/all/drush" />
-        <drushgal siteRoot="${build.platform.dir}" />
-    </target>
-
-    <!-- Enable modules. -->
     <target name="drush-enable-modules" description="Enable a set of modules." hidden="true">
         <drush
             command="pm-enable"
@@ -37,61 +22,6 @@
         </drush>
     </target>
 
-    <!-- Create the directories. -->
-    <target name="drush-create-files-dirs" description="Create site files directories." hidden="true">
-        <echo message="Creating files directories for ${db.name}." />
-        <!-- Execute setttings generation script. -->
-        <drush command="php-script" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>${toolkit.dir.incl.drush}/generate-directories.php</param>
-        </drush>
-    </target>
-
-    <!-- Create the database. -->
-    <target name="drush-sql-create" description="Create a database.">
-        <echo message="Creating database ${db.name}." />
-        <drush command="sql-create" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${db.url}" />
-        </drush>
-    </target>
-
-    <!-- Import a database. -->
-    <target name="drush-sql-import" description="Import a database.">
-        <echo message="Importing database." />
-        <drush command="sql-cli" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>&lt; ${database-file}</param>
-        </drush>
-        <phingcall target="drush-create-files-dirs" />
-        <phingcall target="drush-file-ensure-htaccess" />
-        <phingcall target="drush-registry-rebuild" />
-        <!-- Enable solr if needed. -->
-        <phingcall target="drush-enable-solr" />
-        <!-- Update database. -->
-        <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}"></drush>
-        <!-- Clear Caches. -->
-        <drush command="cc" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}">
-            <param>all</param>
-        </drush>
-    </target>
-
-    <!-- Drop the database. -->
-    <target name="drush-sql-drop" description="Drop a database.">
-        <echo message="Dropping database ${db.name}." />
-        <drush command="sql-drop" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${db.url}" />
-        </drush>
-    </target>
-
-    <!-- Backup the database. -->
-    <target name="drush-sql-dump" description="Make a dump of database.">
-        <echo message="Backing up database ${db.name} to ${database-file}." />
-        <dirname property="database-cachedir" file="${database-file}" />
-        <mkdir dir="${database-cachedir}" />
-        <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="result-file" value="${database-file}" />
-        </drush>
-    </target>
-
-    <!-- Activate solr if needed. -->
     <target name="drush-enable-solr" description="Enable the solr module.">
         <if>
             <equals arg1="${solr.enable}" arg2="1" />
@@ -108,7 +38,54 @@
         </if>
     </target>
 
-    <!-- Make the platform version of the subsite. -->
+    <target name="drush-file-ensure-htaccess" description="Rebuild the node access.">
+        <drush
+            command="php-eval"
+            assume="yes"
+            root="${build.platform.dir}"
+            alias="@${build.site}"
+            bin="${toolkit.dir.bin.drush}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>"file_ensure_htaccess()"</param>
+        </drush>
+    </target>
+
+    <target name="drush-generate-aliases" description="Generate drush aliases for each subsite folder.">
+        <mkdir dir="${build.platform.dir.sites}/all/drush" />
+        <drushgal siteRoot="${build.platform.dir}" />
+    </target>
+
+    <target name="drush-generate-settings" description="Generate the settings.php file.">
+
+        <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="tmp/generate-settings.php" overwrite="true">
+            <filterchain>
+                <replacetokens begintoken="%%" endtoken="%%">
+                    <token key="db.type" value="${db.type}" />
+                    <token key="db.name" value="${db.name}" />
+                    <token key="db.user" value="${db.user}" />
+                    <token key="db.password" value="${db.password}" />
+                    <token key="db.host" value="${db.host}" />
+                    <token key="db.port" value="${db.port}" />
+                    <token key="base_url" value="${project.url.base}" />
+                    <token key="error_level" value="${devel.vars.error_level}" />
+                    <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
+                    <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />
+                    <token key="views_show_additional_queries" value="${devel.vars.views_show_additional_queries}" />
+                    <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
+                    <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
+                    <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
+                    <token key="file_public_path" value="${build.subsite.dir.files}" />
+                    <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
+                    <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <drush command="php-script" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>tmp/generate-settings.php</param>
+        </drush>
+    </target>
+
     <target name="drush-make-no-core" description="Make a file without core." hidden="true">
         <if>
             <available file="${make-file}" type="file" />
@@ -143,52 +120,28 @@
         </if>
     </target>
 
-    <!-- Regenerate the settings file with database credentials and development variables. -->
-    <target name="drush-generate-settings" description="Generate the settings.php file.">
-
-        <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="tmp/generate-settings.php" overwrite="true">
-            <filterchain>
-                <replacetokens begintoken="%%" endtoken="%%">
-                    <!-- Replace tokens in settings generation script. -->
-                    <token key="db.type" value="${db.type}" />
-                    <token key="db.name" value="${db.name}" />
-                    <token key="db.user" value="${db.user}" />
-                    <token key="db.password" value="${db.password}" />
-                    <token key="db.host" value="${db.host}" />
-                    <token key="db.port" value="${db.port}" />
-                    <token key="base_url" value="${project.url.base}" />
-                    <token key="error_level" value="${devel.vars.error_level}" />
-                    <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
-                    <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />
-                    <token key="views_show_additional_queries" value="${devel.vars.views_show_additional_queries}" />
-                    <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
-                    <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
-                    <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
-                    <token key="file_public_path" value="${build.subsite.dir.files}" />
-                    <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
-                    <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
-                </replacetokens>
-            </filterchain>
-        </copy>
-        <!-- Execute setttings generation script. -->
-        <drush command="php-script" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>tmp/generate-settings.php</param>
-        </drush>
+    <target name="drush-make-secure" description="Check make file for insecure modules.">
+        <drushms makefile="${makefile-path}" failon="revoked" />
     </target>
 
-    <!-- Rebuild registry. -->
+    <target name="drush-make-secure-all" description="Check all make files for insecure modules.">
+        <echo msg="Checking make files for projects not covered by Drupal's security advisory." />
+        <foreach param="makefile" absparam="makefile-path" target="drush-make-secure">
+            <fileset dir="${resources.dir}">
+                <include name="*.make" />
+            </fileset>
+        </foreach>
+    </target>
+
     <target name="drush-registry-rebuild" description="Perform a registry rebuild.">
         <trycatch>
             <try>
-                <!-- Check if registry rebuild is available. -->
                 <exec command="${toolkit.dir.bin.drush} rr --help" checkreturn="true" />
             </try>
             <catch>
-                <!-- Download if not available. -->
                 <phingcall target="drush-registry-rebuild-dl" />
             </catch>
             <finally>
-                <!-- Rebuild Registry. -->
                 <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
                     <param>--fire-bazooka</param>
                 </drush>
@@ -196,14 +149,12 @@
         </trycatch>
     </target>
 
-    <!-- Download registry rebuild. -->
     <target name="drush-registry-rebuild-dl" description="Download drush registry-rebuild.">
         <echo message="Installing registry rebuild on user account." />
         <exec command="${toolkit.dir.bin.drush} pm-download registry_rebuild-7 -n >/dev/null" />
         <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
     </target>
 
-    <!-- Rebuild node access. -->
     <target name="drush-rebuild-node-access" description="Rebuild the node access.">
         <drush
             command="php-eval"
@@ -217,31 +168,56 @@
         </drush>
     </target>
 
-    <!-- Rebuild node access. -->
-    <target name="drush-file-ensure-htaccess" description="Rebuild the node access.">
-        <drush
-            command="php-eval"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${build.site}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>"file_ensure_htaccess()"</param>
+    <target name="drush-site-install" description="Install a site.">
+        <echo message="Installing site ${project.name}." />
+        <drush command="site-install" assume="yes" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${build.site}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${db.url}" />
+            <option name="site-name" value="'${project.name}'" />
+            <option name="account-name" value="${admin.username}" />
+            <option name="account-pass" value="${admin.password}" />
+            <option name="account-mail" value="${admin.email}" />
+            <param>${profile}</param>
+            <param>install_configure_form.update_status_module='array(FALSE,FALSE)'
+            </param>
         </drush>
     </target>
 
-    <target name="drush-make-secure-all">
-        <echo msg="Checking make files for projects not covered by Drupal's security advisory." />
-        <foreach param="makefile" absparam="makefile-path" target="drush-make-secure">
-            <fileset dir="${resources.dir}">
-                <include name="*.make" />
-            </fileset>
-        </foreach>
+    <target name="drush-sql-create" description="Create a database.">
+        <echo message="Creating database ${db.name}." />
+        <drush command="sql-create" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${db.url}" />
+        </drush>
     </target>
 
-    <target name="drush-make-secure">
-        <drushms makefile="${makefile-path}" failon="revoked" />
+    <target name="drush-sql-import" description="Import a database.">
+        <echo message="Importing database." />
+        <drush command="sql-cli" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>&lt; ${database-file}</param>
+        </drush>
+        <phingcall target="drush-create-files-dirs" />
+        <phingcall target="drush-file-ensure-htaccess" />
+        <phingcall target="drush-registry-rebuild" />
+        <phingcall target="drush-enable-solr" />
+        <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}"></drush>
+        <drush command="cc" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}">
+            <param>all</param>
+        </drush>
+    </target>
+
+    <target name="drush-sql-drop" description="Drop a database.">
+        <echo message="Dropping database ${db.name}." />
+        <drush command="sql-drop" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${db.url}" />
+        </drush>
+    </target>
+
+    <target name="drush-sql-dump" description="Make a dump of database.">
+        <echo message="Backing up database ${db.name} to ${database-file}." />
+        <dirname property="database-cachedir" file="${database-file}" />
+        <mkdir dir="${database-cachedir}" />
+        <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="result-file" value="${database-file}" />
+        </drush>
     </target>
 
 </project>
