@@ -2,18 +2,6 @@
 
 <project name="general" description="General helper targets that can be used by multiple projects." default="">
 
-    <!-- Download and unpack package. -->
-    <target
-        name="package-download-unpack"
-        description="Download a package and unpack it into location."
-        hidden="true"
-        depends="
-            package-download,
-            package-unpack">
-        <echo msg="Package ${package-name} successfully unpacked." />
-    </target>
-
-    <!-- Download the package. -->
     <target name="package-download" description="Download package with curl." hidden="true">
         <if>
             <available file="${package-cache-location}/${package-name}" type="file" />
@@ -36,7 +24,10 @@
         </if>
     </target>
 
-    <!-- Unpack the package. -->
+    <target name="package-download-unpack" description="Download a package and unpack it into location." hidden="true" depends="package-download,package-unpack">
+        <echo msg="Package ${package-name} successfully unpacked." />
+    </target>
+
     <target name="package-unpack" description="Unpack package with tar zxf." hidden="true">
         <!-- Create extraction directory if needed. -->
         <if>
@@ -77,50 +68,8 @@
         </trycatch>
     </target>
 
-    <!-- Copies a given folder to a new location. -->
-    <target name="folder-copy" description="Copy a folder to a destination." hidden="true">
-        <copy todir="${copy.destination.path}" haltonerror="${build.haltonerror.dir.copy}">
-            <fileset dir="${copy.source.path}" defaultexcludes="false" />
-        </copy>
-    </target>
-
-    <!-- Delete a given folder. -->
-    <target name="folder-delete" description="Delete a folder." hidden="true">
-        <!-- Use the faster native command on UNIX systems. -->
-        <if>
-            <os family="unix" />
-            <then>
-                <echo msg="Deleting folder ${folder.to.delete}." />
-                <exec
-                    command='rm -rf "${folder.to.delete}"'
-                    dir="${project.basedir}"
-                    passthru="true"
-                    checkreturn="true"
-                />
-            </then>
-            <else>
-                <echo msg="Deleting folder ${folder.to.delete}." />
-                <delete dir="${folder.to.delete}" includeemptydirs="true" failonerror="false" />
-            </else>
-        </if>
-    </target>
-
-    <!-- Make the given folder writeable. -->
-    <target name="folder-unprotect" description="Open up filesystem permissions on folder." hidden="true">
-        <!-- This should only be used on folders that need to be removed. -->
-        <if>
-            <available file="${folder.to.unprotect}" type="dir" />
-            <then>
-                <chmod mode="0777" failonerror="true" verbose="false" quiet="true">
-                    <fileset dir="${folder.to.unprotect}" />
-                </chmod>
-            </then>
-        </if>
-    </target>
-
-    <!-- Reset all file permission to Drupals recommendation. -->
-    <!-- https://www.drupal.org/node/244924#script-based-on-guidelines-given-above -->
     <target name="reset-filesystem-permissions" description="Reset filesystem permissions." hidden="true">
+        <!-- https://www.drupal.org/node/244924#script-based-on-guidelines-given-above -->
         <if>
             <available file="${target-dir}" type="dir" />
             <then>
