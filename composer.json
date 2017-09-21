@@ -1,6 +1,6 @@
 {
-    "name": "ec-europa/ssk",
-    "description": "Subsite Starter Kit packaged for composer",
+    "name": "ec-europa/toolkit",
+    "description": "NextEuropa Toolkit packaged for composer",
     "version": "3.0.0",
     "scripts": {
         "ssk-install": "PROJECT=${PROJECT} composer install --working-dir=includes/composer --ignore-platform-reqs --no-suggest --ansi",
