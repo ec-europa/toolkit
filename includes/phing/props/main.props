@@ -16,7 +16,7 @@ project.install.modules = myproject_core
 project.name = My Project
 project.theme.default = ec_resp
 project.type = subsite
-project.url.base = http://localhost:8080
+project.url.base = http://web:8080
 project.url.production =
 
 # Development modules.
