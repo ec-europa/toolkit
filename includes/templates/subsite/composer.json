@@ -1,7 +1,7 @@
 {
     "name": "ec-europa/subsite",
     "require": {
-        "ec-europa/ssk": "dev-develop as 3.0.0"
+        "ec-europa/toolkit": "dev-develop as 3.0.0"
     },
     "scripts": {
         "post-install-cmd": "@ssk-install",
