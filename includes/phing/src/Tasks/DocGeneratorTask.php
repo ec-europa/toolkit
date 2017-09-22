@@ -55,8 +55,7 @@ class DocGeneratorTask extends \Task
 
         // $this->checkRequirements();
         $project   = $this->getProject();
-        $buildFile = $this->_buildFile;
-        $buildList = PhingHelpTask::getBuildList($buildFile);
+        $buildList = PhingHelpTask::getBuildList($this->_buildFile);
 
         $targetsArray      = array();
         $wrapperTargets    = array();
@@ -137,10 +136,15 @@ class DocGeneratorTask extends \Task
             }
         }
 
-        $this->wrapperTargetTable(
+        $targetTable = $this->wrapperTargetTable(
             $wrapperTargets,
             $playbookTargets,
             $callbackTargets
+        );
+
+        file_put_contents(
+          $project->getProperty('build.dir') . "/docs/target-list.md",
+          $targetTable
         );
 
         foreach ($buildList as $buildFile => $info) {
@@ -286,10 +290,7 @@ class DocGeneratorTask extends \Task
             $output .= "</table>\n\n";
         }//end foreach
 
-        file_put_contents(
-            '/home/verbral/github/ec-europa/subsite/structure.md',
-            $output
-        );
+        return $output;
 
     }//end wrapperTargetTable()
 
