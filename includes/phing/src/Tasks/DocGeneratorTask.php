@@ -159,9 +159,9 @@ class DocGeneratorTask extends \Task
                     },
                     ARRAY_FILTER_USE_BOTH
                 );
-                $output     .= str_repeat('#', $depth).' '.$projectName."\n";
                 if (!empty($projectName) && count($targets) > 1) {
-                        $output .= "<table>\n";
+                    $output .= str_repeat('#', $depth).' '.$projectName."\n";
+                    $output .= "<table>\n";
                         $output .= "    <thead>\n";
                         $output .= "        <tr align=\"left\">\n";
                         $output .= "            <th nowrap>Target type</th>\n";
