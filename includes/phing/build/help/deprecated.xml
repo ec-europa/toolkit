@@ -23,11 +23,11 @@
     </target>
 
     <target hidden="true" name="build-dev">
-        <replacedby target="build-subsite-dev" />
+        <replacedby target="build-dev" />
     </target>
 
     <target hidden="true" name="build-dist">
-        <replacedby target="build-subsite-dist" />
+        <replacedby target="build-dist" />
     </target>
 
     <target hidden="true" name="check-for-default-settings-or-rebuild">
@@ -43,11 +43,11 @@
     </target>
 
     <target hidden="true" name="copy-dist-resources">
-        <replacedby target="build-subsite-copy-resources" />
+        <replacedby target="subsite-copy-resources" />
     </target>
 
     <target hidden="true" name="copy-folder">
-        <replacedby target="build-subsite-copy-resources" />
+        <replacedby target="subsite-copy-resources" />
     </target>
 
     <target hidden="true" name="delete-dev">
@@ -123,7 +123,7 @@
     </target>
 
     <target hidden="true" name="link-dev-resources">
-        <replacedby target="build-subsite-link-resources" />
+        <replacedby target="subsite-link-resources" />
     </target>
 
     <target hidden="true" name="link-docroot">
@@ -131,11 +131,11 @@
     </target>
 
     <target hidden="true" name="make-dev">
-        <replacedby target="build-subsite-make-site" />
+        <replacedby target="subsite-make-site" />
     </target>
 
     <target hidden="true" name="make-dist">
-        <replacedby target="build-subsite-make-site" />
+        <replacedby target="subsite-make-site" />
     </target>
 
     <target hidden="true" name="mjolnir">

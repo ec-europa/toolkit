@@ -768,7 +768,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-platform-dev</td>
+            <td nowrap>build-dev</td>
             <td width="80%">Build a local development version with a single platform profile.</td>
         </tr>
         <tr>
@@ -776,7 +776,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-platform-dev-all</td>
+            <td nowrap>build-dev-all</td>
             <td width="80%">Build a local development version with all platform profiles.</td>
         </tr>
         <tr>
@@ -784,7 +784,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-platform-dist</td>
+            <td nowrap>build-dist</td>
             <td width="80%">Build a single platform profile intended as a release package.</td>
         </tr>
         <tr>
@@ -792,7 +792,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-platform-dist-all</td>
+            <td nowrap>build-dist-all</td>
             <td width="80%">Build all platform profiles intended as a release package.</td>
         </tr>
         <tr>
@@ -800,7 +800,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>build-platform-test</td>
+            <td nowrap>build-test</td>
             <td width="80%">Build a platform test package to test this release.</td>
         </tr>
         <tr>
@@ -808,7 +808,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-copy-profile</td>
+            <td nowrap>build-copy-profile</td>
             <td width="80%">Copy single profile for distribution.</td>
         </tr>
         <tr>
@@ -816,7 +816,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-copy-profiles</td>
+            <td nowrap>build-copy-profiles</td>
             <td width="80%">Copy all profiles for distribution.</td>
         </tr>
         <tr>
@@ -824,7 +824,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-copy-resources</td>
+            <td nowrap>build-copy-resources</td>
             <td width="80%">Copy platform resources for distribution.</td>
         </tr>
         <tr>
@@ -832,7 +832,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-delete</td>
+            <td nowrap>build-delete</td>
             <td width="80%">Build a platform test package to test this release.</td>
         </tr>
         <tr>
@@ -840,7 +840,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-link-profiles</td>
+            <td nowrap>build-link-profiles</td>
             <td width="80%">Link platform profiles to lib folder for development.</td>
         </tr>
         <tr>
@@ -848,7 +848,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-link-resources</td>
+            <td nowrap>build-link-resources</td>
             <td width="80%">Link platform resources to lib folder for development.</td>
         </tr>
         <tr>
@@ -856,7 +856,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-make-drupal</td>
+            <td nowrap>build-make-drupal</td>
             <td width="80%">Build the Drupal core codebase.</td>
         </tr>
         <tr>
@@ -864,7 +864,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-make-profile</td>
+            <td nowrap>build-make-profile</td>
             <td width="80%">Makes single profile resources with drush.</td>
         </tr>
         <tr>
@@ -872,7 +872,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-make-profiles</td>
+            <td nowrap>build-make-profiles</td>
             <td width="80%">Makes all profile resources with drush.</td>
         </tr>
         <tr>
@@ -880,7 +880,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-type-dev</td>
+            <td nowrap>build-type-dev</td>
             <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
         <tr>
@@ -888,7 +888,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-type-dist</td>
+            <td nowrap>build-type-dist</td>
             <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
     </tbody>
@@ -909,7 +909,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-subsite-dev</td>
+            <td nowrap>build-dev</td>
             <td width="80%">Build a local development version of the site.</td>
         </tr>
         <tr>
@@ -917,7 +917,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-subsite-dist</td>
+            <td nowrap>build-dist</td>
             <td width="80%">Build a site intended as a release package.</td>
         </tr>
         <tr>
@@ -925,7 +925,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-copy-resources</td>
+            <td nowrap>subsite-copy-resources</td>
             <td width="80%">Copy subsite resources for distribution.</td>
         </tr>
         <tr>
@@ -933,7 +933,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-delete</td>
+            <td nowrap>subsite-delete</td>
             <td width="80%">Delete subsite build.</td>
         </tr>
         <tr>
@@ -941,7 +941,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-make-site</td>
+            <td nowrap>subsite-make-site</td>
             <td width="80%">Makes the subsite resources with drush.</td>
         </tr>
         <tr>
@@ -949,7 +949,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-package</td>
+            <td nowrap>subsite-package</td>
             <td width="80%">Build a subsite package in the releases folder.</td>
         </tr>
         <tr>
@@ -957,7 +957,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>build-subsite-release</td>
+            <td nowrap>subsite-release</td>
             <td width="80%">Uploads the distribution package as release to github.</td>
         </tr>
         <tr>
@@ -965,7 +965,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-link-resources</td>
+            <td nowrap>subsite-link-resources</td>
             <td width="80%">Link subsite resources to lib folder for development.</td>
         </tr>
         <tr>
@@ -973,7 +973,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-subsite-release-package</td>
+            <td nowrap>subsite-release-package</td>
             <td width="80%">Build a subsite release package for deployment.</td>
         </tr>
         <tr>
@@ -981,7 +981,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>build-subsite-test</td>
+            <td nowrap>subsite-test</td>
             <td width="80%">Build a subsite test package to test this release.</td>
         </tr>
         <tr>
@@ -989,7 +989,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-type-dev</td>
+            <td nowrap>subsite-type-dev</td>
             <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
         <tr>
@@ -997,7 +997,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-type-dist</td>
+            <td nowrap>subsite-type-dist</td>
             <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
     </tbody>
