@@ -149,7 +149,8 @@ class DocGeneratorTask extends \Task
 
         foreach ($buildList as $buildFile => $info) {
             $depth = ($info['level'] + 1);
-            if (is_file($buildFile)) {
+            $projectName = $info['name'];
+            if (is_file($buildFile) && $info['name'] != "deprecated") {
                 $xml     = simplexml_load_file($buildFile);
                 $targets = array_filter(
                     $targetsArray,
@@ -158,7 +159,6 @@ class DocGeneratorTask extends \Task
                     },
                     ARRAY_FILTER_USE_BOTH
                 );
-                $projectName = $info['name'];
                 $output     .= str_repeat('#', $depth).' '.$projectName."\n";
                 if (!empty($projectName) && count($targets) > 1) {
                         $output .= "<table>\n";
