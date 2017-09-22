@@ -808,7 +808,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-copy-profile</td>
+            <td nowrap>platform-copy-profile</td>
             <td width="80%">Copy single profile for distribution.</td>
         </tr>
         <tr>
@@ -816,7 +816,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-copy-profiles</td>
+            <td nowrap>platform-copy-profiles</td>
             <td width="80%">Copy all profiles for distribution.</td>
         </tr>
         <tr>
@@ -824,7 +824,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-copy-resources</td>
+            <td nowrap>platform-copy-resources</td>
             <td width="80%">Copy platform resources for distribution.</td>
         </tr>
         <tr>
@@ -832,7 +832,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-delete</td>
+            <td nowrap>platform-delete</td>
             <td width="80%">Build a platform test package to test this release.</td>
         </tr>
         <tr>
@@ -840,7 +840,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-link-profiles</td>
+            <td nowrap>platform-link-profiles</td>
             <td width="80%">Link platform profiles to lib folder for development.</td>
         </tr>
         <tr>
@@ -848,7 +848,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-link-resources</td>
+            <td nowrap>platform-link-resources</td>
             <td width="80%">Link platform resources to lib folder for development.</td>
         </tr>
         <tr>
@@ -856,7 +856,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-make-drupal</td>
+            <td nowrap>platform-make-drupal</td>
             <td width="80%">Build the Drupal core codebase.</td>
         </tr>
         <tr>
@@ -864,7 +864,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-make-profile</td>
+            <td nowrap>platform-make-profile</td>
             <td width="80%">Makes single profile resources with drush.</td>
         </tr>
         <tr>
@@ -872,7 +872,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-make-profiles</td>
+            <td nowrap>platform-make-profiles</td>
             <td width="80%">Makes all profile resources with drush.</td>
         </tr>
         <tr>
@@ -880,7 +880,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-type-dev</td>
+            <td nowrap>platform-type-dev</td>
             <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
         <tr>
@@ -888,7 +888,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-type-dist</td>
+            <td nowrap>platform-type-dist</td>
             <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
     </tbody>

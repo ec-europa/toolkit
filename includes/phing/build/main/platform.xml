@@ -5,12 +5,12 @@
     <target name="build-dev" description="Build a local development version with a single platform profile."
         depends="
             project-subsite-backup,
-            build-type-dev,
-            build-delete,
-            build-make-drupal,
-            build-link-profiles,
-            build-make-profiles,
-            build-link-resources,
+            platform-type-dev,
+            platform-delete,
+            platform-make-drupal,
+            platform-link-profiles,
+            platform-make-profiles,
+            platform-link-resources,
             build-theme-dev,
             project-platform-composer-no-dev,
             project-modules-devel-dl,
@@ -20,32 +20,32 @@
 
     <target name="build-dev-all" description="Build a local development version with all platform profiles."
         depends="
-            build-type-dev,
-            build-delete,
-            build-make-drupal,
-            build-copy-profiles,
-            build-make-profiles,
-            build-copy-resources,
+            platform-type-dev,
+            platform-delete,
+            platform-make-drupal,
+            platform-copy-profiles,
+            platform-make-profiles,
+            platform-copy-resources,
             project-platform-composer-no-dev" />
 
     <target name="build-dist" description="Build a single platform profile intended as a release package."
         depends="
-            build-type-dist,
-            build-delete,
-            build-make-drupal,
-            build-copy-profile,
-            build-make-profile,
-            build-copy-resources,
+            platform-type-dist,
+            platform-delete,
+            platform-make-drupal,
+            platform-copy-profile,
+            platform-make-profile,
+            platform-copy-resources,
             project-platform-composer-no-dev" />
 
     <target name="build-dist-all" description="Build all platform profiles intended as a release package."
         depends="
-            build-type-dist,
-            build-delete,
-            build-make-drupal,
-            build-copy-profiles,
-            build-make-profiles,
-            build-copy-resources,
+            platform-type-dist,
+            platform-delete,
+            platform-make-drupal,
+            platform-copy-profiles,
+            platform-make-profiles,
+            platform-copy-resources,
             project-platform-composer-no-dev" />
 
     <target name="build-test" description="Build a platform test package to test this release.">
@@ -54,7 +54,7 @@
         </phingcall>
     </target>
 
-    <target name="build-copy-profile" description="Copy single profile for distribution.">
+    <target name="platform-copy-profile" description="Copy single profile for distribution.">
         <delete dir="${build.${build-type}.dir.profiles}" includeemptydirs="true" failonerror="false" quiet="true" />
         <mkdir dir="${build.${build-type}.dir.profile}" />
         <copy todir="${build.${build-type}.dir.profile}">
@@ -64,7 +64,7 @@
         </copy>
     </target>
 
-    <target name="build-copy-profiles" description="Copy all profiles for distribution.">
+    <target name="platform-copy-profiles" description="Copy all profiles for distribution.">
         <delete dir="${build.${build-type}.dir.profiles}" includeemptydirs="true" failonerror="true" quiet="true" />
         <copy todir="${build.${build-type}.dir.profiles}">
             <fileset dir="${lib.dir.profiles}" expandsymboliclinks="true">
@@ -73,7 +73,7 @@
         </copy>
     </target>
 
-    <target name="build-copy-resources" description="Copy platform resources for distribution.">
+    <target name="platform-copy-resources" description="Copy platform resources for distribution.">
         <copy todir="${build.${build-type}.dir}">
             <fileset dir="${resources.dir}">
                 <include name="composer.*"></include>
@@ -82,24 +82,24 @@
         </copy>
     </target>
 
-    <target name="build-delete" description="Build a platform test package to test this release.">
+    <target name="platform-delete" description="Build a platform test package to test this release.">
         <phingcall target="project-scratch-build">
             <property name="dir-build" value="${build.${build-type}.dir}" override="true" />
         </phingcall>
     </target>
 
-    <target name="build-link-profiles" description="Link platform profiles to lib folder for development.">
+    <target name="platform-link-profiles" description="Link platform profiles to lib folder for development.">
         <delete dir="${build.${build-type}.dir.profiles}" />
         <relsym link="${build.${build-type}.dir.profiles}" target="${lib.dir.profiles}" />
     </target>
 
-    <target name="build-link-resources" description="Link platform resources to lib folder for development.">
+    <target name="platform-link-resources" description="Link platform resources to lib folder for development.">
         <relsym link="${build.${build-type}.dir}/composer.json" target="${resources.dir.composer.json}" />
         <relsym link="${build.${build-type}.dir}/composer.lock" target="${resources.dir.composer.lock}" />
         <relsym link="${build.${build-type}.dir}/.favicon.ico" target="${resources.dir.favicon.ico}" />
     </target>
 
-    <target name="build-make-drupal" description="Build the Drupal core codebase.">
+    <target name="platform-make-drupal" description="Build the Drupal core codebase.">
         <echo msg="Make Drupal core." />
         <drush command="make" assume="yes" bin="${toolkit.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${build.${build-type}.dir}">
             <param>${profile.core.make}</param>
@@ -108,7 +108,7 @@
         </drush>
     </target>
 
-    <target name="build-make-profile" description="Makes single profile resources with drush.">
+    <target name="platform-make-profile" description="Makes single profile resources with drush.">
         <echo msg="Make the platform." />
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${profile.make}" />
@@ -117,8 +117,8 @@
         </phingcall>
     </target>
 
-    <target name="build-make-profiles" description="Makes all profile resources with drush.">
-        <foreach param="profile-name" absparam="dir-profile" target="build-make-profile">
+    <target name="platform-make-profiles" description="Makes all profile resources with drush.">
+        <foreach param="profile-name" absparam="dir-profile" target="platform-make-profile">
             <fileset dir="${lib.dir.profiles}">
                 <depth max="0" min="0" />
                 <exclude name="common" />
@@ -127,11 +127,11 @@
         </foreach>
     </target>
 
-    <target name="build-type-dev" description="Sets the type of build (dev or dist).">
+    <target name="platform-type-dev" description="Sets the type of build (dev or dist).">
         <property name="build-type" value="platform" override="true" />
     </target>
 
-    <target name="build-type-dist" description="Sets the type of build (dev or dist).">
+    <target name="platform-type-dist" description="Sets the type of build (dev or dist).">
         <property name="build-type" value="dist" override="true" />
     </target>
 
