@@ -290,66 +290,10 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
-            </td>
-            <td nowrap>github-init-target</td>
-            <td width="80%"></td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>github-init-auth</td>
-            <td width="80%"></td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>github-init-user</td>
-            <td width="80%"></td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>github-init-team</td>
-            <td width="80%"></td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>github-init-pass</td>
-            <td width="80%"></td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>github-init-token</td>
-            <td width="80%"></td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
-            </td>
-            <td nowrap>github-init-owner</td>
-            <td width="80%"></td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
-            </td>
-            <td nowrap>github-init-repo</td>
-            <td width="80%"></td>
+            <td nowrap>github-auth</td>
+            <td width="80%">Authenticate on GitHub.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -357,7 +301,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
             <td nowrap>github-create-release</td>
-            <td width="80%"></td>
+            <td width="80%">Create release on GitHub.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -365,7 +309,63 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
             <td nowrap>github-create-release-assets</td>
-            <td width="80%"></td>
+            <td width="80%">Upload release assets to github.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
+            </td>
+            <td nowrap>github-init</td>
+            <td width="80%">Initialize credentials and target.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
+            </td>
+            <td nowrap>github-init-owner</td>
+            <td width="80%">Ask for repository owner if not set.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>github-init-pass</td>
+            <td width="80%">Ask for password if not set.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
+            </td>
+            <td nowrap>github-init-repo</td>
+            <td width="80%">Ask for repository name if not set.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>github-init-team</td>
+            <td width="80%">Ask for team id if not set.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>github-init-token</td>
+            <td width="80%">Ask for token if not set.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>github-init-user</td>
+            <td width="80%">Ask for username if not set.</td>
         </tr>
     </tbody>
 </table>
