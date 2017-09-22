@@ -768,7 +768,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-dev</td>
+            <td nowrap>build-platform-dev</td>
             <td width="80%">Build a local development version with a single platform profile.</td>
         </tr>
         <tr>
@@ -776,7 +776,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-dev-all</td>
+            <td nowrap>build-platform-dev-all</td>
             <td width="80%">Build a local development version with all platform profiles.</td>
         </tr>
         <tr>
@@ -784,7 +784,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-dist</td>
+            <td nowrap>build-platform-dist</td>
             <td width="80%">Build a single platform profile intended as a release package.</td>
         </tr>
         <tr>
@@ -792,7 +792,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-dist-all</td>
+            <td nowrap>build-platform-dist-all</td>
             <td width="80%">Build all platform profiles intended as a release package.</td>
         </tr>
         <tr>
@@ -800,7 +800,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>build-test</td>
+            <td nowrap>build-platform-test</td>
             <td width="80%">Build a platform test package to test this release.</td>
         </tr>
         <tr>
@@ -909,7 +909,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-dev</td>
+            <td nowrap>build-subsite-dev</td>
             <td width="80%">Build a local development version of the site.</td>
         </tr>
         <tr>
@@ -917,7 +917,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-dist</td>
+            <td nowrap>build-subsite-dist</td>
             <td width="80%">Build a site intended as a release package.</td>
         </tr>
         <tr>

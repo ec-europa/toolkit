@@ -2,7 +2,7 @@
 
 <project name="subsite" description="Builds subsites within the platform." default="">
 
-    <target name="build-dev" description="Build a local development version of the site."
+    <target name="build-subsite-dev" description="Build a local development version of the site."
         depends="
             subsite-type-dev,
             subsite-delete,
@@ -10,10 +10,10 @@
             subsite-make-site,
             project-modules-devel-make,
             project-subsite-composer-dev">
-        <echo msg="Playbook for build-dev ended." />
+        <echo msg="Playbook for build-subsite-dev ended." />
     </target>
 
-    <target name="build-dist" description="Build a site intended as a release package."
+    <target name="build-subsite-dist" description="Build a site intended as a release package."
         depends="
             subsite-type-dev,
             subsite-link-resources,
@@ -22,7 +22,7 @@
             subsite-delete,
             subsite-copy-resources,
             subsite-package">
-        <echo msg="Playbook for build-dist ended." />
+        <echo msg="Playbook for build-subsite-dist ended." />
     </target>
 
     <target name="subsite-copy-resources" description="Copy subsite resources for distribution.">
@@ -89,7 +89,7 @@
 
     <target name="subsite-release-package" description="Build a subsite release package for deployment."
         depends="
-            build-dist">
+            build-subsite-dist">
         <mkdir dir="${project.release.path}" />
         <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${build.dist}" />
     </target>

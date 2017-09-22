@@ -2,7 +2,7 @@
 
 <project name="platform" description="Builds the platform if a profiles folder is detected." default="">
 
-    <target name="build-dev" description="Build a local development version with a single platform profile."
+    <target name="build-platform-dev" description="Build a local development version with a single platform profile."
         depends="
             project-subsite-backup,
             platform-type-dev,
@@ -18,7 +18,7 @@
             project-subsite-restore,
             project-subsite-setup-files" />
 
-    <target name="build-dev-all" description="Build a local development version with all platform profiles."
+    <target name="build-platform-dev-all" description="Build a local development version with all platform profiles."
         depends="
             platform-type-dev,
             platform-delete,
@@ -28,7 +28,7 @@
             platform-copy-resources,
             project-platform-composer-no-dev" />
 
-    <target name="build-dist" description="Build a single platform profile intended as a release package."
+    <target name="build-platform-dist" description="Build a single platform profile intended as a release package."
         depends="
             platform-type-dist,
             platform-delete,
@@ -38,7 +38,7 @@
             platform-copy-resources,
             project-platform-composer-no-dev" />
 
-    <target name="build-dist-all" description="Build all platform profiles intended as a release package."
+    <target name="build-platform-dist-all" description="Build all platform profiles intended as a release package."
         depends="
             platform-type-dist,
             platform-delete,
@@ -48,7 +48,7 @@
             platform-copy-resources,
             project-platform-composer-no-dev" />
 
-    <target name="build-test" description="Build a platform test package to test this release.">
+    <target name="build-platform-test" description="Build a platform test package to test this release.">
         <phingcall target="build-project-test">
             <property name="dir-build" value="${tests.dir}" override="true" />
         </phingcall>
