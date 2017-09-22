@@ -79,7 +79,7 @@ class DocGeneratorTask extends \Task
                     'buildfile'   => $buildFile,
                 );
 
-                if (strpos("build-", $targetName) === 0) {
+                if (strpos($targetName, "build-") === 0) {
                         $targetDependenciesString = (string) $target->xpath(
                             './@depends'
                         )[0];
