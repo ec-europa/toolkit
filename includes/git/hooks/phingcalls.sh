@@ -8,7 +8,7 @@ if [ -f $PHING ] && [ -x $PHING ] && [ -n "$1" ] ; then
   # Get phing targets.
   HOOK="git.hook.${1//-/.}"
   PHINGCALLS=$(\
-    $PHING toolkit-git-hook-phingcalls \
+    $PHING toolkit-hooks-git \
     -Dproject.basedir=$PROJECT \
     -Dproject.build.haltonerror.props.validate=false \
     -logger phing.listener.AnsiColorLogger \

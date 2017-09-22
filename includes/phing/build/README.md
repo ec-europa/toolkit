@@ -714,7 +714,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>toolkit-initialize</td>
+            <td nowrap>build-toolkit</td>
             <td width="80%">Initializes a project for use of the toolkit.</td>
         </tr>
         <tr>
@@ -722,7 +722,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>toolkit-link-binary</td>
+            <td nowrap>toolkit-binary-link</td>
             <td width="80%">Provide project with toolkit binary at root level.</td>
         </tr>
         <tr>
@@ -730,7 +730,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>toolkit-generate-structure</td>
+            <td nowrap>toolkit-structure-generate</td>
             <td width="80%">Create the lib directory structure.</td>
         </tr>
         <tr>
@@ -738,7 +738,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>toolkit-generate-docs</td>
+            <td nowrap>toolkit-markdown-generate</td>
             <td width="80%">Generate documentation md files for toolkit.</td>
         </tr>
         <tr>
@@ -746,7 +746,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>toolkit-copy-templates</td>
+            <td nowrap>toolkit-templates-copy</td>
             <td width="80%">Copies template files to your project for toolkit integration.</td>
         </tr>
         <tr>
@@ -754,7 +754,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>toolkit-upgrade-starterkit</td>
+            <td nowrap>toolkit-starterkit-upgrade</td>
             <td width="80%">Perform upgrade tasks for upgrading from 2.x to 3.x.</td>
         </tr>
         <tr>
@@ -762,7 +762,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>toolkit-composer-hook-phingcalls</td>
+            <td nowrap>toolkit-hooks-composer</td>
             <td width="80%">Echo the composer hook phing targets for use in bash script.</td>
         </tr>
         <tr>
@@ -770,7 +770,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>toolkit-git-hook-phingcalls</td>
+            <td nowrap>toolkit-hooks-git</td>
             <td width="80%">Echo the git hook phing targets for use in bash script.</td>
         </tr>
     </tbody>

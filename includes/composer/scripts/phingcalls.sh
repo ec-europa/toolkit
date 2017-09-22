@@ -8,7 +8,7 @@ if [ -f $PHING ] && [ -x $PHING ] && [ -n "$1" ] ; then
   # Get phing targets.
   HOOK="composer.hook.${1//-/.}"
   PHINGCALLS=$(\
-    $PHING toolkit-composer-hook-phingcalls \
+    $PHING toolkit-hooks-composer \
     -Dproject.basedir=$PROJECT \
     -Dproject.build.haltonerror.props.validate=false \
     -logger phing.listener.AnsiColorLogger \

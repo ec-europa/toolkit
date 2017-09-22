@@ -2,69 +2,32 @@
 
 <project name="toolkit" default="help">
 
-    <target name="toolkit-initialize" description="Initializes a project for use of the toolkit."
+    <target name="build-toolkit" description="Initializes a project for use of the toolkit."
         depends="
-            toolkit-link-binary,
-            toolkit-generate-structure,
+            toolkit-binary-link,
+            toolkit-structure-generate,
             project-platform-set-version">
         <echo msg="Starterkit successfully initiated." />
     </target>
 
-    <target name="toolkit-composer-hook-phingcalls" description="Echo the composer hook phing targets for use in bash script." hidden="true">
-        <echoproperties prefix="composer.hook." />
-    </target>
-
-    <target name="toolkit-copy-templates" description="Copies template files to your project for toolkit integration.">
-        <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
-        <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
-        <copy todir="${project.basedir}">
-            <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
-        </copy>
-        <echo msg="Project structure for ${project-type} created." />
-    </target>
-
-    <target name="toolkit-generate-docs" description="Generate documentation md files for toolkit.">
-        <docgen buildfile="${project.basedir}/build.xml" />
-    </target>
-
-    <target name="toolkit-generate-structure" description="Create the lib directory structure.">
-        <if>
-            <and>
-                <not>
-                    <available file="${lib.dir}" type="dir" />
-                </not>
-                <!-- <equals arg1="${project.basedir}" arg2="${toolkit.dir}" /> -->
-            </and>
-            <then>
-                <phingcall target="toolkit-copy-templates">
-                    <property name="project-type" value="${project.type}" override="true" />
-                </phingcall>
-            </then>
-            <elseif>
-                <available file="${lib.dir}" type="dir" />
-                <then>
-                    <echo msg="Project structure exists already." />
-                </then>
-            </elseif>
-            <else>
-                <input propertyName="project-type" message="What type of project do you want to create?" validargs="profile,subsite" />
-                <phingcall target="toolkit-copy-templates">
-                    <property name="project-type" value="${project-type}" override="true" />
-                </phingcall>
-            </else>
-        </if>
-    </target>
-
-    <target name="toolkit-git-hook-phingcalls" description="Echo the git hook phing targets for use in bash script." hidden="true">
-        <echoproperties prefix="git.hook." />
-    </target>
-
-    <target name="toolkit-link-binary" description="Provide project with toolkit binary at root level.">
+    <target name="toolkit-binary-link" description="Provide project with toolkit binary at root level.">
         <echo msg="Provide project with starterkit binary at root level." />
         <relsym link="${project.basedir}/toolkit" target="${toolkit.dir.bin}" overwrite="true" />
     </target>
 
-    <target name="toolkit-upgrade-starterkit" description="Perform upgrade tasks for upgrading from 2.x to 3.x.">
+    <target name="toolkit-hooks-composer" description="Echo the composer hook phing targets for use in bash script." hidden="true">
+        <echoproperties prefix="composer.hook." />
+    </target>
+
+    <target name="toolkit-hooks-git" description="Echo the git hook phing targets for use in bash script." hidden="true">
+        <echoproperties prefix="git.hook." />
+    </target>
+
+    <target name="toolkit-markdown-generate" description="Generate documentation md files for toolkit.">
+        <docgen buildfile="${project.basedir}/build.xml" />
+    </target>
+
+    <target name="toolkit-starterkit-upgrade" description="Perform upgrade tasks for upgrading from 2.x to 3.x.">
         <if>
             <available file="${project.basedir}/build.package.xml" type="file" />
             <then>
@@ -240,6 +203,43 @@
                 </if>
             </then>
         </if>
+    </target>
+
+    <target name="toolkit-structure-generate" description="Create the lib directory structure.">
+        <if>
+            <and>
+                <not>
+                    <available file="${lib.dir}" type="dir" />
+                </not>
+                <!-- <equals arg1="${project.basedir}" arg2="${toolkit.dir}" /> -->
+            </and>
+            <then>
+                <phingcall target="toolkit-templates-copy">
+                    <property name="project-type" value="${project.type}" override="true" />
+                </phingcall>
+            </then>
+            <elseif>
+                <available file="${lib.dir}" type="dir" />
+                <then>
+                    <echo msg="Project structure exists already." />
+                </then>
+            </elseif>
+            <else>
+                <input propertyName="project-type" message="What type of project do you want to create?" validargs="profile,subsite" />
+                <phingcall target="toolkit-templates-copy">
+                    <property name="project-type" value="${project-type}" override="true" />
+                </phingcall>
+            </else>
+        </if>
+    </target>
+
+    <target name="toolkit-templates-copy" description="Copies template files to your project for toolkit integration.">
+        <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
+        <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
+        <copy todir="${project.basedir}">
+            <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
+        </copy>
+        <echo msg="Project structure for ${project-type} created." />
     </target>
 
 </project>
