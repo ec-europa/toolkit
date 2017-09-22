@@ -71,51 +71,27 @@
     <tbody>
         <tr>
             <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>drush-create-files-dirs</td>
-            <td width="80%">Create site files directories.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>drush-enable-modules</td>
-            <td width="80%">Enable a set of modules.</td>
-        </tr>
-        <tr>
-            <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-enable-solr</td>
-            <td width="80%">Enable the solr module.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>drush-file-ensure-htaccess</td>
-            <td width="80%">Rebuild the node access.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>drush-generate-aliases</td>
+            <td nowrap>drush-aliases-generate</td>
             <td width="80%">Generate drush aliases for each subsite folder.</td>
         </tr>
         <tr>
             <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>drush-files-dirs-create</td>
+            <td width="80%">Create site files directories.</td>
+        </tr>
+        <tr>
+            <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-generate-settings</td>
-            <td width="80%">Generate the settings.php file.</td>
+            <td nowrap>drush-files-dirs-htaccess</td>
+            <td width="80%">Ensure the presence of htaccess files.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -143,6 +119,22 @@
         </tr>
         <tr>
             <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>drush-modules-enable</td>
+            <td width="80%">Enable a set of modules.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>drush-node-access-rebuild</td>
+            <td width="80%">Rebuild the node access.</td>
+        </tr>
+        <tr>
+            <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
@@ -162,8 +154,8 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-rebuild-node-access</td>
-            <td width="80%">Rebuild the node access.</td>
+            <td nowrap>drush-settings-generate</td>
+            <td width="80%">Generate the settings.php file.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -172,6 +164,14 @@
             </td>
             <td nowrap>drush-site-install</td>
             <td width="80%">Install a site.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>drush-solr-enable</td>
+            <td width="80%">Enable the solr module.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -524,26 +524,10 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>project-modules-devel-en</td>
-            <td width="80%">Enable development modules with drush.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
             <td nowrap>project-platform-delete</td>
             <td width="80%">Remove previous platform build..</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
-            </td>
-            <td nowrap>project-platform-devops-unpack</td>
-            <td width="80%">Download and unpack fpfis resource package.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -614,7 +598,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>project-subsite-setup-files</td>
+            <td nowrap>project-subsite-files-setup</td>
             <td width="80%">Create files directories for subsite.</td>
         </tr>
         <tr>
@@ -624,6 +608,22 @@
             </td>
             <td nowrap>project-modules-devel-make</td>
             <td width="80%">Makes the development resources with drush.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>project-modules-devel-en</td>
+            <td width="80%">Enable development modules with drush.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
+            </td>
+            <td nowrap>project-modules-devops-dl</td>
+            <td width="80%">Download and unpack fpfis resource package.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -659,6 +659,14 @@
         </tr>
         <tr>
             <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>project-properties-validate</td>
+            <td width="80%">Validate the build properties file.</td>
+        </tr>
+        <tr>
+            <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
@@ -680,14 +688,6 @@
             </td>
             <td nowrap>project-subsite-composer-dev</td>
             <td width="80%">Run composer install with dev on subsite.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>project-validate-properties</td>
-            <td width="80%">Validate the build properties file.</td>
         </tr>
     </tbody>
 </table>

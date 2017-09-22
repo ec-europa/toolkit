@@ -8,7 +8,7 @@
             project-platform-delete,
             project-platform-set-version,
             project-platform-package-unpack,
-            project-platform-devops-unpack,
+            project-modules-devops-dl,
             project-platform-set-htaccess,
             project-subsite-restore" />
 
@@ -25,10 +25,10 @@
             theme-europa-create-symlinks" />
 
     <target name="install-project-clean" description="Install NextEuropa site from scratch.">
-        <phingcall target="project-subsite-setup-files" />
+        <phingcall target="project-subsite-files-setup" />
         <exec command="chmod 775 ${build.platform.dir.settings}" />
 
-        <phingcall target="drush-generate-aliases" />
+        <phingcall target="drush-aliases-generate" />
         <phingcall target="drush-sql-create" />
 
         <if>
@@ -37,7 +37,7 @@
                 <available file="${share.path.platform}/databases/platform-dev-${platform.package.version.current}/platform-dev-${platform.package.version.current}.sql" type="file" />
             </and>
             <then>
-                <phingcall target="drush-generate-settings" />
+                <phingcall target="drush-settings-generate" />
                 <exec command="${toolkit.dir.bin.drush} --root=${build.platform.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap" />
                 <if>
                     <not>
@@ -65,14 +65,14 @@
 
         <phingcall target="project-modules-install-en" />
 
-        <phingcall target="drush-rebuild-node-access" />
+        <phingcall target="drush-node-access-rebuild" />
     </target>
 
     <target name="install-project-clone" description="Install NextEuropa site with sanitized production data."
         depends="
             project-database-download,
-            drush-generate-aliases,
-            drush-generate-settings,
+            drush-aliases-generate,
+            drush-settings-generate,
             project-database-import,
             project-modules-devel-en" />
 
@@ -131,26 +131,9 @@
         </phingcall>
     </target>
 
-    <target name="project-modules-devel-en" description="Enable development modules with drush.">
-        <phingcall target="drush-enable-modules">
-            <property name="project.drupal.modules" value="${devel.mdls.en}" />
-        </phingcall>
-    </target>
-
     <target name="project-platform-delete" description="Remove previous platform build..">
         <phingcall target="project-scratch-build">
             <property name="dir-build" value="${build.platform.dir}" override="true" />
-        </phingcall>
-    </target>
-
-    <target name="project-platform-devops-unpack" description="Download and unpack fpfis resource package.">
-        <mkdir dir="${share.path.platform.packages.deploy}" />
-        <phingcall target="package-download-unpack">
-            <property name="package-name" value="${platform.package.version.major}.${platform.package.version.minor}.tar.gz" />
-            <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
-            <property name="package-download-location" value="https://github.com/ec-europa/platform-deploy/archive/fpfis-conf" />
-            <property name="package-extract-location" value="${build.platform.dir}" />
-            <property name="package-extract-options" value="--strip=1" />
         </phingcall>
     </target>
 
@@ -410,7 +393,7 @@
         </if>
     </target>
 
-    <target name="project-subsite-setup-files" description="Create files directories for subsite.">
+    <target name="project-subsite-files-setup" description="Create files directories for subsite.">
         <if>
             <istrue value="${build.subsite.dir.files}" />
             <then>
@@ -431,8 +414,25 @@
         </phingcall>
     </target>
 
+    <target name="project-modules-devel-en" description="Enable development modules with drush.">
+        <phingcall target="drush-modules-enable">
+            <property name="project.drupal.modules" value="${devel.mdls.en}" />
+        </phingcall>
+    </target>
+
+    <target name="project-modules-devops-dl" description="Download and unpack fpfis resource package.">
+        <mkdir dir="${share.path.platform.packages.deploy}" />
+        <phingcall target="package-download-unpack">
+            <property name="package-name" value="${platform.package.version.major}.${platform.package.version.minor}.tar.gz" />
+            <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
+            <property name="package-download-location" value="https://github.com/ec-europa/platform-deploy/archive/fpfis-conf" />
+            <property name="package-extract-location" value="${build.platform.dir}" />
+            <property name="package-extract-options" value="--strip=1" />
+        </phingcall>
+    </target>
+
     <target name="project-modules-install-en" description="Install list of modules to enable by default.">
-        <phingcall target="drush-enable-modules">
+        <phingcall target="drush-modules-enable">
             <property name="project.drupal.modules" value="${project.install.modules}" />
         </phingcall>
     </target>
@@ -454,6 +454,10 @@
 
     <target name="project-platform-set-docroot" description="Link the platform root to your docroot.">
         <relsym link="${project.docroot}" target="${build.platform.dir}" overwrite="true" />
+    </target>
+
+    <target name="project-properties-validate" description="Validate the build properties file.">
+        <propval source="build.project.props" required="${toolkit.dir.incl.phing.props}/required.props" haltonerror="${build.haltonerror.props.validate}" logoutput="${logoutput}"/>
     </target>
 
     <target name="project-rebuild-check" description="Rebuild project if needed. (needs work)"
@@ -497,10 +501,6 @@
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.subsite.dir}" />
         </phingcall>
-    </target>
-
-    <target name="project-validate-properties" description="Validate the build properties file.">
-        <propval source="build.project.props" required="${toolkit.dir.incl.phing.props}/required.props" haltonerror="${build.haltonerror.props.validate}" logoutput="${logoutput}"/>
     </target>
 
 </project>

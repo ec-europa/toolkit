@@ -95,7 +95,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>regenerate-settings</td>
-            <td width="80%">drush-generate-settings</td>
+            <td width="80%">drush-settings-generate</td>
         </tr>
         <tr>
             <td nowrap>
@@ -207,7 +207,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>enable-modules</td>
-            <td width="80%">drush-enable-modules</td>
+            <td width="80%">drush-modules-enable</td>
         </tr>
         <tr>
             <td nowrap>
@@ -279,7 +279,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>rebuild-node-access</td>
-            <td width="80%">drush-rebuild-node-access</td>
+            <td width="80%">drush-node-access-rebuild</td>
         </tr>
         <tr>
             <td nowrap>
@@ -311,7 +311,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>setup-files-directory</td>
-            <td width="80%">project-subsite-setup-files</td>
+            <td width="80%">project-subsite-files-setup</td>
         </tr>
         <tr>
             <td nowrap>
@@ -528,7 +528,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-generate-aliases</td>
+            <td nowrap>drush-aliases-generate</td>
             <td width="80%">Generate drush aliases for each subsite folder.</td>
         </tr>
         <tr>
@@ -536,7 +536,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-enable-modules</td>
+            <td nowrap>drush-modules-enable</td>
             <td width="80%">Enable a set of modules.</td>
         </tr>
         <tr>
@@ -544,7 +544,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-create-files-dirs</td>
+            <td nowrap>drush-files-dirs-create</td>
             <td width="80%">Create site files directories.</td>
         </tr>
         <tr>
@@ -584,7 +584,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-enable-solr</td>
+            <td nowrap>drush-solr-enable</td>
             <td width="80%">Enable the solr module.</td>
         </tr>
         <tr>
@@ -600,7 +600,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>drush-generate-settings</td>
+            <td nowrap>drush-settings-generate</td>
             <td width="80%">Generate the settings.php file.</td>
         </tr>
         <tr>
@@ -624,7 +624,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-rebuild-node-access</td>
+            <td nowrap>drush-node-access-rebuild</td>
             <td width="80%">Rebuild the node access.</td>
         </tr>
     </tbody>
@@ -896,7 +896,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>project-subsite-setup-files</td>
+            <td nowrap>project-subsite-files-setup</td>
             <td width="80%">Create files directories for subsite.</td>
         </tr>
         <tr>
@@ -1016,7 +1016,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>project-validate-properties</td>
+            <td nowrap>project-properties-validate</td>
             <td width="80%">Validate the build properties file.</td>
         </tr>
         <tr>

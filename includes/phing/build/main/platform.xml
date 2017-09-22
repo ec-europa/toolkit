@@ -16,7 +16,7 @@
             project-modules-devel-dl,
             project-platform-set-htaccess,
             project-subsite-restore,
-            project-subsite-setup-files" />
+            project-subsite-files-setup" />
 
     <target name="build-platform-dev-all" description="Build a local development version with all platform profiles."
         depends="

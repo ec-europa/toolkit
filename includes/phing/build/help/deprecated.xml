@@ -87,7 +87,7 @@
     </target>
 
     <target hidden="true" name="enable-modules">
-        <replacedby target="drush-enable-modules" />
+        <replacedby target="drush-modules-enable" />
     </target>
 
     <target hidden="true" name="generate-development-makefile">
@@ -159,11 +159,11 @@
     </target>
 
     <target hidden="true" name="rebuild-node-access">
-        <replacedby target="drush-rebuild-node-access" />
+        <replacedby target="drush-node-access-rebuild" />
     </target>
 
     <target hidden="true" name="regenerate-settings">
-        <replacedby target="drush-generate-settings" />
+        <replacedby target="drush-settings-generate" />
     </target>
 
     <target hidden="true" name="restore-site">
@@ -191,7 +191,7 @@
     </target>
 
     <target hidden="true" name="setup-files-directory">
-        <replacedby target="project-subsite-setup-files" />
+        <replacedby target="project-subsite-files-setup" />
     </target>
 
     <target hidden="true" name="setup-php-codesniffer">
