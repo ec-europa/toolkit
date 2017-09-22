@@ -43,11 +43,11 @@
     </target>
 
     <target hidden="true" name="copy-dist-resources">
-        <replacedby target="subsite-copy-resources" />
+        <replacedby target="subsite-resources-copy" />
     </target>
 
     <target hidden="true" name="copy-folder">
-        <replacedby target="subsite-copy-resources" />
+        <replacedby target="subsite-resources-copy" />
     </target>
 
     <target hidden="true" name="delete-dev">
@@ -123,7 +123,7 @@
     </target>
 
     <target hidden="true" name="link-dev-resources">
-        <replacedby target="subsite-link-resources" />
+        <replacedby target="subsite-resources-link" />
     </target>
 
     <target hidden="true" name="link-docroot">
@@ -131,11 +131,11 @@
     </target>
 
     <target hidden="true" name="make-dev">
-        <replacedby target="subsite-make-site" />
+        <replacedby target="subsite-make" />
     </target>
 
     <target hidden="true" name="make-dist">
-        <replacedby target="subsite-make-site" />
+        <replacedby target="subsite-make" />
     </target>
 
     <target hidden="true" name="mjolnir">

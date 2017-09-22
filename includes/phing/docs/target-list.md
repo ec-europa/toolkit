@@ -925,8 +925,8 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>subsite-copy-resources</td>
-            <td width="80%">Copy subsite resources for distribution.</td>
+            <td nowrap>build-subsite-test</td>
+            <td width="80%">Build a subsite test package to test this release.</td>
         </tr>
         <tr>
             <td nowrap>
@@ -941,7 +941,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>subsite-make-site</td>
+            <td nowrap>subsite-make</td>
             <td width="80%">Makes the subsite resources with drush.</td>
         </tr>
         <tr>
@@ -965,7 +965,15 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>subsite-link-resources</td>
+            <td nowrap>subsite-resources-copy</td>
+            <td width="80%">Copy subsite resources for distribution.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
+            </td>
+            <td nowrap>subsite-resources-link</td>
             <td width="80%">Link subsite resources to lib folder for development.</td>
         </tr>
         <tr>
@@ -975,14 +983,6 @@
             </td>
             <td nowrap>subsite-release-package</td>
             <td width="80%">Build a subsite release package for deployment.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
-            </td>
-            <td nowrap>subsite-test</td>
-            <td width="80%">Build a subsite test package to test this release.</td>
         </tr>
         <tr>
             <td nowrap>

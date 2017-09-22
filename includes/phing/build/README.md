@@ -143,7 +143,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>copy-dist-resources</td>
-            <td width="80%">subsite-copy-resources</td>
+            <td width="80%">subsite-resources-copy</td>
         </tr>
         <tr>
             <td nowrap>
@@ -151,7 +151,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>copy-folder</td>
-            <td width="80%">subsite-copy-resources</td>
+            <td width="80%">subsite-resources-copy</td>
         </tr>
         <tr>
             <td nowrap>
@@ -247,7 +247,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>link-dev-resources</td>
-            <td width="80%">subsite-link-resources</td>
+            <td width="80%">subsite-resources-link</td>
         </tr>
         <tr>
             <td nowrap>
@@ -255,7 +255,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>make-dev</td>
-            <td width="80%">subsite-make-site</td>
+            <td width="80%">subsite-make</td>
         </tr>
         <tr>
             <td nowrap>
@@ -263,7 +263,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>make-dist</td>
-            <td width="80%">subsite-make-site</td>
+            <td width="80%">subsite-make</td>
         </tr>
         <tr>
             <td nowrap>
@@ -1295,7 +1295,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>subsite-copy-resources</td>
+            <td nowrap>subsite-resources-copy</td>
             <td width="80%">Copy subsite resources for distribution.</td>
         </tr>
         <tr>
@@ -1303,7 +1303,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>subsite-link-resources</td>
+            <td nowrap>subsite-resources-link</td>
             <td width="80%">Link subsite resources to lib folder for development.</td>
         </tr>
         <tr>
@@ -1311,7 +1311,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>subsite-make-site</td>
+            <td nowrap>subsite-make</td>
             <td width="80%">Makes the subsite resources with drush.</td>
         </tr>
         <tr>
