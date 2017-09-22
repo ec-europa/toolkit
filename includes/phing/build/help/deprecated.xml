@@ -71,7 +71,7 @@
     </target>
 
     <target hidden="true" name="download-platform">
-        <replacedby target="project-build-platform" />
+        <replacedby target="build-project-platform" />
     </target>
 
     <target hidden="true" name="download-prod-db">

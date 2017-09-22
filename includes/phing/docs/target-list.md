@@ -460,6 +460,30 @@
         <tr>
             <td nowrap>
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
+            </td>
+            <td nowrap>build-project-platform</td>
+            <td width="80%">Build NextEuropa Platform code without version control.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
+            </td>
+            <td nowrap>build-project-subsite</td>
+            <td width="80%">Build NextEuropa Subsite code without version control.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
+            </td>
+            <td nowrap>build-project-theme</td>
+            <td width="80%">Build EC Europa theme without version control.</td>
+        </tr>
+        <tr>
+            <td nowrap>
+                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
             <td nowrap>install-project-clean</td>
@@ -472,30 +496,6 @@
             </td>
             <td nowrap>install-project-clone</td>
             <td width="80%">Install NextEuropa site with sanitized production data.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
-            </td>
-            <td nowrap>project-build-platform</td>
-            <td width="80%">Build NextEuropa Platform code without version control.</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
-            </td>
-            <td nowrap>project-build-subsite</td>
-            <td width="80%">Build NextEuropa Subsite code without version control (non-functional).</td>
-        </tr>
-        <tr>
-            <td nowrap>
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
-                <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
-            </td>
-            <td nowrap>project-build-theme</td>
-            <td width="80%">Build EC Europa theme without version control.</td>
         </tr>
         <tr>
             <td nowrap>

@@ -183,7 +183,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>download-platform</td>
-            <td width="80%">project-build-platform</td>
+            <td width="80%">build-project-platform</td>
         </tr>
         <tr>
             <td nowrap>
@@ -792,7 +792,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>project-build-platform</td>
+            <td nowrap>build-project-platform</td>
             <td width="80%">Build NextEuropa Platform code without version control.</td>
         </tr>
         <tr>
@@ -800,7 +800,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>project-build-subsite</td>
+            <td nowrap>build-project-subsite</td>
             <td width="80%">Build NextEuropa Subsite code without version control (non-functional).</td>
         </tr>
         <tr>
@@ -808,7 +808,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>project-build-theme</td>
+            <td nowrap>build-project-theme</td>
             <td width="80%">Build EC Europa theme without version control.</td>
         </tr>
         <tr>

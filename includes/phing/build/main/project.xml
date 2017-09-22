@@ -2,6 +2,28 @@
 
 <project name="project" description="Targets shared by differenct project types." default="">
 
+    <target name="build-project-platform" description="Build NextEuropa Platform code without version control."
+        depends="
+            project-subsite-backup,
+            project-platform-delete,
+            project-platform-set-version,
+            project-platform-package-unpack,
+            project-platform-devops-unpack,
+            project-platform-set-htaccess,
+            project-subsite-restore" />
+
+    <target name="build-project-subsite" description="Build NextEuropa Subsite code without version control."
+        depends="
+            project-subsite-backup,
+            project-subsite-restore">
+        <echo msg="TODO: subsite builds not yet developed." />
+    </target>
+
+    <target name="build-project-theme" description="Build EC Europa theme without version control."
+        depends="
+            theme-europa-download-extract,
+            theme-europa-create-symlinks" />
+
     <target name="install-project-clean" description="Install NextEuropa site from scratch.">
         <phingcall target="project-subsite-setup-files" />
         <exec command="chmod 775 ${build.platform.dir.settings}" />
@@ -53,28 +75,6 @@
             drush-generate-settings,
             project-database-import,
             project-modules-devel-en" />
-
-    <target name="project-build-platform" description="Build NextEuropa Platform code without version control."
-        depends="
-            project-subsite-backup,
-            project-platform-delete,
-            project-platform-set-version,
-            project-platform-package-unpack,
-            project-platform-devops-unpack,
-            project-platform-set-htaccess,
-            project-subsite-restore" />
-
-    <target name="project-build-subsite" description="Build NextEuropa Subsite code without version control (non-functional)."
-        depends="
-            project-subsite-backup,
-            project-subsite-restore">
-        <echo msg="TODO: subsite builds not yet developed." />
-    </target>
-
-    <target name="project-build-theme" description="Build EC Europa theme without version control."
-        depends="
-            theme-europa-download-extract,
-            theme-europa-create-symlinks" />
 
     <target name="project-composer-install" description="Runs composer install."
         hidden="true">
