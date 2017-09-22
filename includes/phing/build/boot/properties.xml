@@ -33,9 +33,9 @@
 
     <!-- Load version properties if available. -->
     <if>
-        <available file="${project.tmp.dir}/build.project.props.version" />
+        <available file="${project.tmp.dir}/build.version.props" />
         <then>
-            <property file="${project.tmp.dir}/build.project.props.version" logoutput="${logoutput}" />
+            <property file="${project.tmp.dir}/build.version.props" logoutput="${logoutput}" />
         </then>
         <else>
             <mkdir dir="${project.tmp.dir}" />

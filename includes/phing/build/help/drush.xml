@@ -124,7 +124,7 @@
 
     <target name="drush-settings-generate" description="Generate the settings.php file.">
 
-        <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="tmp/generate-settings.php" overwrite="true">
+        <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="${project.tmp.dir}/generate-settings.php" overwrite="true">
             <filterchain>
                 <replacetokens begintoken="%%" endtoken="%%">
                     <token key="db.type" value="${db.type}" />
@@ -148,7 +148,7 @@
             </filterchain>
         </copy>
         <drush command="php-script" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>tmp/generate-settings.php</param>
+            <param>${project.tmp.dir}/generate-settings.php</param>
         </drush>
     </target>
 
