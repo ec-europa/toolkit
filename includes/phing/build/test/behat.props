@@ -19,6 +19,9 @@ behat.yml.path = ${behat.dir}/behat.yml
 # The base URL to use in Behat tests.
 behat.base_url = http://web:8080
 
+# A drush alias to run behat on.
+behat.drush.alias = docker
+
 # The URL of the Behat webdriver host.
 behat.wd_host.url = http://selenium:4444/wd/hub
 

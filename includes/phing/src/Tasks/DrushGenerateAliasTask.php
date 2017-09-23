@@ -87,6 +87,10 @@ class DrushGenerateAliasTask extends \Task
                 'uri'  => 'default',
                 'root' => $this->_siteRoot,
             ),
+            'docker' => array(
+                'uri'  => 'http://web:8080',
+                'root' => $this->_siteRoot,
+            ),
         );
 
         if (empty($this->_aliasName)) {
