@@ -151,8 +151,15 @@
         <if>
             <istrue value="${build.platform.htaccess.append.text}" />
             <then>
-                <echo msg="Appended text to htaccess." />
-                <append destfile="${build.platform.dir}/.htaccess" text="${build.platform.htaccess.append.text}" />
+                <if>
+                    <available file="${build.platform.htaccess.append.text}" />
+                    <then>
+                        <append file="${build.platform.htaccess.append.text}" destFile="${build.platform.dir}/.htaccess" />
+                    </then>
+                    <else>
+                        <append text="${build.platform.htaccess.append.text}" destFile="${build.platform.dir}/.htaccess" />
+                    </else>
+                </if>
             </then>
             <else>
                 <echo msg="Appended no text to htaccess." />
