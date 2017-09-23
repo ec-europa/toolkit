@@ -27,7 +27,7 @@ pipeline:
   build:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing project-build-platform
+      - ./toolkit/phing build-project-platform
       - ./toolkit/phing build-subsite-dev
     volumes:
       - /cache:/cache
