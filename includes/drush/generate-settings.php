@@ -50,9 +50,9 @@ foreach ($variables as $key => $value) {
 }
 
 // Set base url.
-$settings['https'] = array(
+$settings['base_url'] = array(
   'required' => TRUE,
-  'value' => (bool) TRUE,
+  'value' => '%%base_url%%',
 );
 
 // Rewrite the settings.php file with our array.
