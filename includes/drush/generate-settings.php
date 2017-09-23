@@ -49,11 +49,11 @@ foreach ($variables as $key => $value) {
   );
 }
 
-// Set base url.
-$settings['base_url'] = array(
-  'required' => TRUE,
-  'value' => '%%base_url%%',
-);
+//// Set base url.
+//$settings['base_url'] = array(
+//  'required' => TRUE,
+//  'value' => '%%base_url%%',
+//);
 
 // Rewrite the settings.php file with our array.
 drupal_rewrite_settings($settings);
