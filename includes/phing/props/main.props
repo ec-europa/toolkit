@@ -144,7 +144,7 @@ build.platform.dir.profiles = ${build.platform.dir}/profiles
 build.platform.composer.json = ${build.platform.dir}/composer.json
 build.platform.composer.lock = ${build.platform.dir}/composer.lock
 build.platform.favicon.ico = ${build.platform.dir}/favicon.ico
-build.platform.htaccess.append.text = ${resources.dir}/.htaccess
+build.platform.htaccess.append.text =
 
 # Subsite build resources.
 # ------------------------
