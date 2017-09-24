@@ -123,7 +123,7 @@
     </target>
 
     <target name="drush-settings-generate" description="Generate the settings.php file.">
-
+        <exec command="chmod 775 ${build.subsite.dir}/settings.php" />
         <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="${project.tmp.dir}/generate-settings.php" overwrite="true">
             <filterchain>
                 <replacetokens begintoken="%%" endtoken="%%">
@@ -195,9 +195,9 @@
         <drush command="sql-cli" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
-        <phingcall target="drush-registry-rebuild" />
         <phingcall target="drush-files-dirs-create" />
         <phingcall target="drush-files-dirs-htaccess" />
+        <phingcall target="drush-registry-rebuild" />
         <phingcall target="drush-solr-enable" />
         <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}"></drush>
         <drush command="cc" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}">
