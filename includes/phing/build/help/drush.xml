@@ -192,10 +192,10 @@
 
     <target name="drush-sql-import" description="Import a database.">
         <echo message="Importing database." />
+        <phingcall target="drush-files-dirs-create" />
         <drush command="sql-cli" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
-        <phingcall target="drush-files-dirs-create" />
         <phingcall target="drush-files-dirs-htaccess" />
         <phingcall target="drush-registry-rebuild" />
         <phingcall target="drush-solr-enable" />
