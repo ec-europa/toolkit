@@ -73,6 +73,7 @@
             project-database-download,
             drush-aliases-generate,
             drush-settings-generate,
+            project-subsite-files-setup,
             project-database-import,
             project-modules-devel-en" />
 
