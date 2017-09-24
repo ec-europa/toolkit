@@ -196,7 +196,7 @@
         <drush command="sql-cli" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
-        <phingcall target="drush-files-dirs-htaccess" />
+        <!--<phingcall target="drush-files-dirs-htaccess" />-->
         <phingcall target="drush-registry-rebuild" />
         <phingcall target="drush-solr-enable" />
         <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}"></drush>
