@@ -65,7 +65,7 @@
             <mapper type="glob" from="*.yml.dist" to="*.yml" />
         </copy>
         <!-- Workaround for Drone. -->
-        <!--<exec command="chown 1000:1000  ${build.subsite.dir.tmp}" />-->
+        <exec command="chown 1000:1000  ${build.subsite.dir.tmp}" />
     </target>
 
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
