@@ -109,6 +109,8 @@ your fork that serves development only.
 
 ## User guide
 
+The toolkit contains different components that help you in development. The main component is the Phing build system that let's you easily set up the project locally and can be used in CI tools like Jenkins, Drone and Travis.
+
 <details><summary><b>Phing</b></summary>
 
 - [Phing toolkit](./includes/phing/README.md)
