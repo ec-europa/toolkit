@@ -5,8 +5,6 @@
     <target name="drush-aliases-generate" description="Generate drush aliases for each subsite folder.">
         <mkdir dir="${build.platform.dir.sites}/all/drush" />
         <drushgal siteRoot="${build.platform.dir}" />
-        <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
-        <exec command="${toolkit.dir.bin.drush} status" />
     </target>
 
     <target name="drush-files-dirs-create" description="Create site files directories." hidden="true">
@@ -152,6 +150,8 @@
         <drush command="php-script" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${project.tmp.dir}/generate-settings.php</param>
         </drush>
+        <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
+        <exec command="${toolkit.dir.bin.drush} status" passthru="true" />
     </target>
 
     <target name="drush-site-install" description="Install a site.">
