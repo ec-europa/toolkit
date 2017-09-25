@@ -8,15 +8,7 @@ development of Drupal websites in the NextEuropa project. It's main
 component is the Phing build system that builds your development
 environments, deploy packages and test packages.</p>
 
-<b><details><summary>Table of Contents</summary>
-
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [User guide](#user-guide)
-- [Maintainers](#maintainers)
-- [Contribute](#contribute)
-- [License](#license)
-</details></b>
+|[Requirements](#requirements) - [Installation](#installation) - [User guide](#user-guide) - [Maintainers](#maintainers)
 
 ## Requirements
 There are three separate ways of using the NextEuropa project. Either
@@ -143,13 +135,6 @@ which they operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
 |Alex Verbruggen|[verbruggenalex]|Quality Assurance|Maintainer + Contact for Devops & Platform|
 |Joao Santos|[jonhy81]|Quality Assurance|Maintainer + Contact for Subsites|
 </details>
-
-## License
-
-The toolkit is an opensource project. We welcome contributions and bug
-reports.
-
-* [European Union Public License 1.1](LICENSE.md)
 
 [https://webgate.ec.europa.eu/CITnet/jira]: https://webgate.ec.europa.eu/CITnet/jira/secure/RapidBoard.jspa?rapidView=581
 [verbruggenalex]: https://github.com/verbruggenalex
