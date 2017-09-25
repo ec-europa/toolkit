@@ -10,7 +10,6 @@ environments, deploy packages and test packages.</p>
 
 <b><details><summary>Table of Contents</summary>
 
-- [Background](#background)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
