@@ -109,13 +109,19 @@ your fork that serves development only.
 
 ## User guide
 
-### Phing
-This is the main component of the toolkit. It allows you to locally set
-up your project and is integrated with the CI and CD tools to optimize
-the development process. To learn more about the phing targets, read
-more here:
+<details><summary><b>Phing</b></summary>
 
-- [**Phing toolkit**](./includes/phing/README.md) : [Properties](./includes/phing/docs/properties.md) - [Main builds](./includes/phing/docs/main-builds.md) - [Target list](./includes/phing/docs/properties.md/target-list)
+- [Phing toolkit](./includes/phing/README.md)
+    - [Properties](./includes/phing/docs/properties.md)
+    - [Main builds](./includes/phing/docs/main-builds.md)
+    - [Target list](./includes/phing/docs/properties.md/target-list)
+</details>
+<b><details><summary>Composer hooks</summary>
+</details></b>
+<b><details><summary>Git hooks</summary>
+</details></b>
+<b><details><summary>Docker</summary>
+</details></b>
 
 ## Maintainers
 
