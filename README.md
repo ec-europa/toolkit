@@ -8,9 +8,7 @@ development of Drupal websites in the NextEuropa project. It's main
 component is the Phing build system that builds your development
 environments, deploy packages and test packages.</p>
 
-<big><p align="center">
 [Requirements](#requirements) - [Installation](#installation) - [User guide](#user-guide) - [Maintainers](#maintainers)
-</p></big>
 
 ## Requirements
 There are three separate ways of using the NextEuropa project. Either
