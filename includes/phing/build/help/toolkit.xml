@@ -119,7 +119,7 @@
                 <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true" haltonerror="false" />
                 <copy file="${toolkit.dir.incl.templates}/subsite/resources/devel.make" tofile="${resources.dir.devel.make}" />
 
-                <move file="${lib.dir}" tofile="lib-backup" />
+                <move file="${lib.dir}" tofile="lib-backup" overwrite="true" includeemptydirs="true" preservepermissions="true" />
                 <mkdir dir="${lib.dir.libraries}" />
                 <mkdir dir="${lib.dir.modules.custom}" />
                 <mkdir dir="${lib.dir.modules.features}" />
