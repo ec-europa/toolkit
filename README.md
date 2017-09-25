@@ -21,15 +21,6 @@ environments, deploy packages and test packages.</p>
 - [License](#license)
 </details></b>
 
-## Background
-This composer package helps developers working on Drupal websites in the
-NextEuropa project speed up and align their development. It is
-officially maintained by members of the Quality Assurance team for the
-NextEuropa project. They oversee general workflow and overall quality of
-projects. The standards enforced by the Quality Assurance team are a mix
-of internally provided standards and a collection of standards
-established by the leading contributors to the project.
-
 ## Requirements
 There are three separate ways of using the NextEuropa project. Either
 you use an environment with Docker installed, an environment without, or
