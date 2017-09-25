@@ -212,6 +212,7 @@
                 </if>
             </then>
         </if>
+        <delete dir="lib-backup" />
     </target>
 
     <target name="toolkit-structure-generate" description="Create the lib directory structure.">
