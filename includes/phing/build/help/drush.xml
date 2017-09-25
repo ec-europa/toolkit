@@ -3,7 +3,7 @@
 <project name="drush" description="Contains drush helper targets that help manage your Drupal installation." default="">
 
     <if>
-        <equals arg1="${build.site}" arg2="default" />µ
+        <equals arg1="${build.site}" arg2="default" />
         <then>
             <property name="drush-alias" value="self" override="true" />
         </then>
