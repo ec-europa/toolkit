@@ -12,9 +12,7 @@ environments, deploy packages and test packages.</p>
 
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Usage](#usage)
-	- [Phing](#phing)
-	- [Properties](#properties)
+- [User guide](#user-guide)
 - [Maintainers](#maintainers)
 - [Contribute](#contribute)
 - [License](#license)
@@ -119,7 +117,7 @@ your fork that serves development only.
 </p></details>
 </details>
 
-## Usage
+## User guide
 
 ### Phing
 This is the main component of the toolkit. It allows you to locally set
@@ -127,13 +125,10 @@ up your project and is integrated with the CI and CD tools to optimize
 the development process. To learn more about the phing targets, read
 more here:
 
-<b><details><summary>Table of Contents</summary>
-
 - [Phing toolkit](./includes/phing/README.md)
     - [Properties](./includes/phing/docs/properties.md)
     - [Main builds](./includes/phing/docs/main-builds.md)
     - [Target list](./includes/phing/docs/properties.md/target-list)
-</details></b>
 
 ## Maintainers
 
