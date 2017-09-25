@@ -2,16 +2,6 @@
 
 <project name="drush" description="Contains drush helper targets that help manage your Drupal installation." default="">
 
-    <if>
-        <equals arg1="${build.site}" arg2="default" />
-        <then>
-            <property name="drush-alias" value="self" override="true" />
-        </then>
-        <else>
-            <property name="drush-alias" value="${build.site}" override="true" />
-        </else>
-    </if>
-
     <target name="drush-aliases-generate" description="Generate drush aliases for each subsite folder.">
         <mkdir dir="${build.platform.dir.sites}/all/drush" />
         <drushgal siteRoot="${build.platform.dir}" />
@@ -19,7 +9,7 @@
 
     <target name="drush-files-dirs-create" description="Create site files directories." hidden="true">
         <echo message="Creating files directories for ${db.name}." />
-        <drush command="php-script" root="${build.platform.dir}" alias="@${drush-alias}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="php-script" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${toolkit.dir.incl.drush}/generate-directories.php</param>
         </drush>
     </target>
@@ -29,7 +19,7 @@
             command="php-eval"
             assume="yes"
             root="${build.platform.dir}"
-            alias="@${drush-alias}"
+            alias="@${build.site}"
             bin="${toolkit.dir.bin.drush}"
             verbose="${drush.verbose}"
             color="${drush.color}">
@@ -89,7 +79,7 @@
             command="pm-enable"
             assume="yes"
             root="${build.platform.dir}"
-            alias="@${drush-alias}"
+            alias="@${build.site}"
             bin="${toolkit.dir.bin.drush}"
             verbose="${drush.verbose}"
             color="${drush.color}">
@@ -102,7 +92,7 @@
             command="php-eval"
             assume="yes"
             root="${build.platform.dir}"
-            alias="@${drush-alias}"
+            alias="@${build.site}"
             bin="${toolkit.dir.bin.drush}"
             verbose="${drush.verbose}"
             color="${drush.color}">
@@ -119,7 +109,7 @@
                 <phingcall target="drush-registry-rebuild-dl" />
             </catch>
             <finally>
-                <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush-alias}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+                <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
                     <param>--fire-bazooka</param>
                 </drush>
             </finally>
@@ -157,16 +147,18 @@
                 </replacetokens>
             </filterchain>
         </copy>
-        <drush command="php-script" root="${build.platform.dir}" alias="@${drush-alias}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="php-script" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${project.tmp.dir}/generate-settings.php</param>
         </drush>
-        <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
-        <exec command="${toolkit.dir.bin.drush} status" passthru="true" />
+        <drush command="cc" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}">
+            <param>drush</param>
+        </drush>
+        <drush command="status" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" />
     </target>
 
     <target name="drush-site-install" description="Install a site.">
         <echo message="Installing site ${project.name}." />
-        <drush command="site-install" assume="yes" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${drush-alias}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="site-install" assume="yes" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${build.site}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
             <option name="site-name" value="'${project.name}'" />
             <option name="account-name" value="${admin.username}" />
@@ -188,7 +180,7 @@
                     <property name="project.drupal.modules" value="apachesolr" />
                 </phingcall>
                 <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
-                <drush command="solr-set-env-url" assume="yes" root="${build.platform.dir}" alias="@${drush-alias}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                <drush command="solr-set-env-url" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
                     <param>${solr.url}</param>
                 </drush>
             </then>
@@ -197,7 +189,7 @@
 
     <target name="drush-sql-create" description="Create a database.">
         <echo message="Creating database ${db.name}." />
-        <drush command="sql-create" assume="yes" root="${build.platform.dir}" alias="@${drush-alias}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="sql-create" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
         </drush>
     </target>
@@ -205,21 +197,21 @@
     <target name="drush-sql-import" description="Import a database.">
         <echo message="Importing database." />
         <phingcall target="drush-files-dirs-create" />
-        <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush-alias}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="sql-cli" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
         <phingcall target="drush-registry-rebuild" />
         <phingcall target="drush-files-dirs-htaccess" />
         <phingcall target="drush-solr-enable" />
-        <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${drush-alias}" bin="${toolkit.dir.bin.drush}"></drush>
-        <drush command="cc" assume="yes" root="${build.platform.dir}" alias="@${drush-alias}" bin="${toolkit.dir.bin.drush}">
+        <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}"></drush>
+        <drush command="cc" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}">
             <param>all</param>
         </drush>
     </target>
 
     <target name="drush-sql-drop" description="Drop a database.">
         <echo message="Dropping database ${db.name}." />
-        <drush command="sql-drop" assume="yes" root="${build.platform.dir}" alias="@${drush-alias}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="sql-drop" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
         </drush>
     </target>
@@ -228,7 +220,7 @@
         <echo message="Backing up database ${db.name} to ${database-file}." />
         <dirname property="database-cachedir" file="${database-file}" />
         <mkdir dir="${database-cachedir}" />
-        <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush-alias}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="result-file" value="${database-file}" />
         </drush>
     </target>
