@@ -22,6 +22,19 @@
         <echoproperties prefix="git.hook." />
     </target>
 
+    <target name="toolkit-hooks-git-setup" description="Copy the phingcall.sh script to each hook file." hidden="true">
+        <foreach param="filename" absparam="absfilename" target="toolkit-hooks-git-copy-phingcall-script">
+            <fileset dir="${project.basedir}/.git/hooks/">
+                <include name="*.sample"/>
+            </fileset>
+        </foreach>
+    </target>
+
+    <target name="toolkit-hooks-git-copy-phingcall-script" hidden="true">
+        <basename property="hook-name" file="${filename}" suffix=".sample"/>
+        <copy file="${toolkit.dir.incl.git}/hooks/phingcalls.sh" tofile="${project.basedir}/.git/hooks/${hook-name}" />
+    </target>
+
     <target name="toolkit-markdown-generate" description="Generate documentation md files for toolkit.">
         <docgen buildfile="${project.basedir}/build.xml" />
     </target>

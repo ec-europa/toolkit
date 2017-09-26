@@ -12,6 +12,7 @@ toolkit.dir.incl = ${toolkit.dir}/includes
 toolkit.dir.incl.composer = ${toolkit.dir.incl}/composer
 toolkit.dir.incl.docker = ${toolkit.dir.incl}/docker
 toolkit.dir.incl.drush = ${toolkit.dir.incl}/drush
+toolkit.dir.incl.git = ${toolkit.dir.incl}/git
 toolkit.dir.incl.phing = ${toolkit.dir.incl}/phing
 toolkit.dir.incl.phing.build = ${toolkit.dir.incl.phing}/build
 toolkit.dir.incl.phing.props = ${toolkit.dir.incl.phing}/props
