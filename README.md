@@ -109,21 +109,28 @@ your fork that serves development only.
 
 ## User guide
 
-The toolkit contains different components that help you in development. The main component is the Phing build system that let's you easily set up the project locally and can be used in CI tools like Jenkins, Drone and Travis.
+The toolkit contains different components that help you in development.
+The main component is the Phing build system that let's you easily set
+up the project locally and can be used in CI tools like Jenkins, Drone
+and Travis.
 
-<details><summary><b>Phing</b></summary>
-
-- [Phing toolkit](./includes/phing/README.md)
-    - [Properties](./includes/phing/docs/properties.md)
-    - [Main builds](./includes/phing/docs/main-builds.md)
-    - [Target list](./includes/phing/docs/properties.md/target-list)
-</details>
-<b><details><summary>Composer hooks</summary>
-</details></b>
-<b><details><summary>Git hooks</summary>
-</details></b>
-<b><details><summary>Docker</summary>
-</details></b>
+- [Configuring a project]()
+    - [Installation explained]()
+    - [Using build properties]()
+- [Building the codebase]()
+    - [Platform builds]()
+    - [Subsite builds]()
+    - [Theme builds]()
+- [Installing the project]()
+    - [Clean installation]()
+    - [Clone installation]()
+- [Testing the codebase]()
+    - [Coding Standards]()
+    - [Behat testing]()
+    - [PHP Unit testing]()
+- [Using Composer hooks]()
+- [Using Git hooks]()
+- [Using Docker environment]()
 
 ## Maintainers
 
@@ -133,10 +140,8 @@ which they operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
 
 <details><summary><b>Contact list</b></summary>
 
-|Full name|Username|Department|Role|
-|:---|:---|:---|:---|
-|Alex Verbruggen|[verbruggenalex]|Quality Assurance|Maintainer + Contact for Devops & Platform|
-|Joao Santos|[jonhy81]|Quality Assurance|Maintainer + Contact for Subsites|
+[Alex Verbruggen](verbruggenalex): Maintainer -Quality Assurance
+[Joao Santos](jonhy81): Maintainer - Quality Assurance
 </details>
 
 [https://webgate.ec.europa.eu/CITnet/jira]: https://webgate.ec.europa.eu/CITnet/jira/secure/RapidBoard.jspa?rapidView=581
