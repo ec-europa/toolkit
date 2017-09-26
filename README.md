@@ -128,7 +128,7 @@ and Travis.
     - [Coding Standards]()
     - [Behat testing]()
     - [PHP Unit testing]()
-- [Using Composer hooks]()
+- [Using Composer hooks](./docs/composer-hooks.md)
 - [Using Git hooks]()
 - [Using Docker environment]()
 

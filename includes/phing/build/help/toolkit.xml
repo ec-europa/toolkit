@@ -2,12 +2,11 @@
 
 <project name="toolkit" default="help">
 
-    <target name="build-toolkit" description="Initializes a project for use of the toolkit."
+    <target name="build-toolkit" description="Initializes toolkit and project directories."
         depends="
             toolkit-binary-link,
-            toolkit-structure-generate,
-            project-platform-set-version">
-        <echo msg="Starterkit successfully initiated." />
+            toolkit-structure-generate">
+        <echo msg="Toolkit successfully initialized." />
     </target>
 
     <target name="toolkit-binary-link" description="Provide project with toolkit binary at root level.">
