@@ -212,7 +212,7 @@ composer.hook.pre.update =
 git.hook.applypatch.msg =
 git.hook.post.update =
 git.hook.pre.commit =
-git.hook.pre.push =
+git.hook.pre.push = project-platform-set-version
 git.hook.pre.receive =
 git.hook.commit.msg
 git.hook.pre.applypatch =
