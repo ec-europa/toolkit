@@ -13,7 +13,6 @@
             platform-resources-link,
             build-theme-dev,
             project-platform-composer-no-dev,
-            project-modules-devel-dl,
             project-platform-set-htaccess,
             project-subsite-restore,
             project-subsite-files-setup" />
