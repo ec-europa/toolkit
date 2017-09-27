@@ -34,6 +34,7 @@
         <basename file="${absfilename}" property="hook-name" suffix=".active" />
         <dirname file="${absfilename}" property="hook-dir" />
         <exec command="mv ${absfilename} ${hook-dir}/${hook-name}.sample" />
+        <delete file="${project.basedir}/.git/hooks/${hook-name}" quiet="true" />
         <echo msg="Git hook ${hook-name} is inactive." />
     </target>
 
@@ -77,19 +78,6 @@
                 <echo msg="Git hook ${hook-name} is inactive." />
             </else>
         </if>
-    </target>
-
-    <target name="toolkit-hooks-git-disable" description="Disable the phingcall.sh script for each hook file.">
-        <foreach param="filename" absparam="absfilename" target="toolkit-hooks-git-disable-hook">
-            <fileset dir="${project.basedir}/.git/hooks/">
-                <exclude name="*.sample"/>
-            </fileset>
-        </foreach>
-    </target>
-
-    <target name="toolkit-hooks-git-disable-hook" description="Disable the phingcall.sh script for a single hook file." hidden="true">
-        <copy file="${project.basedir}/.git/hooks/${filename}" tofile="${project.basedir}/.git/hooks/${filename}.sample" />
-        <delete file="${project.basedir}/.git/hooks/${filename}" />
     </target>
 
     <target name="toolkit-markdown-generate" description="Generate documentation md files for toolkit.">
