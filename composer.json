@@ -3,8 +3,8 @@
     "description": "NextEuropa Toolkit packaged for composer",
     "version": "3.0.0",
     "scripts": {
-        "ssk-install": "PROJECT=${PROJECT} composer install --working-dir=includes/composer --ignore-platform-reqs --no-suggest --ansi",
-        "ssk-update": "PROJECT=${PROJECT} composer update --working-dir=includes/composer  --ignore-platform-reqs --no-suggest --ansi",
-        "pre-update-cmd": "@ssk-install"
+        "toolkit-install": "PROJECT=${PROJECT} composer install --working-dir=includes/composer --ignore-platform-reqs --no-suggest --ansi",
+        "toolkit-update": "PROJECT=${PROJECT} composer update --working-dir=includes/composer  --ignore-platform-reqs --no-suggest --ansi",
+        "pre-update-cmd": "@toolkit-install"
     }
 }

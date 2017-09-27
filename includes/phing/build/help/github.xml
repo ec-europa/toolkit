@@ -2,11 +2,7 @@
 
 <project name="github" description="Contains phing targets for github." default="">
 
-    <!-- Only asks for repository when properties are not set on global level. -->
-    <target name="github-init-target" depends="github-init-owner, github-init-repo" />
-
-    <!-- Only asks for credentials when properties are not set on global level. -->
-    <target name="github-init-auth">
+    <target name="github-auth" description="Authenticate on GitHub.">
         <if>
             <or>
                 <equals arg1="${github.auth}" arg2="http-toekn" />
@@ -26,45 +22,55 @@
         </if>
     </target>
 
-    <target name="github-init-user" hidden="true" unless="github.user">
-        <input message="Enter your GitHub username."  propertyName="github.user" />
-    </target>
-
-    <target name="github-init-team" hidden="true" unless="github.team">
-        <input message="Enter your GitHub team."  propertyName="github.team" />
-    </target>
-
-    <target name="github-init-pass" hidden="true" unless="github.pass">
-        <input message="Enter your GitHub password." propertyName="github.pass" hidden="true" />
-    </target>
-
-    <target name="github-init-token" hidden="true" unless="github.token">
-        <input message="Enter your GitHub token." propertyName="github.token" hidden="true" />
-    </target>
-
-    <target name="github-init-owner" hidden="true" unless="github.owner">
-        <input message="Enter owner of the repository." propertyName="github.owner" />
-    </target>
-
-    <target name="github-init-repo" hidden="true" unless="github.repo">
-        <input message="Enter name of the repository."  propertyName="github.repo" />
-    </target>
-
-    <!-- Create a github release. -->
-    <target name="github-create-release" depends="github-init-auth, github-init-target">
+    <target name="github-create-release" description="Create release on GitHub."
+        depends="
+            github-auth,
+            github-init">
         <gh-create-release
             tagName="${github-tag-name}"
             commitish="${github-tag-hash}"
             releaseId="release" />
     </target>
 
-    <!-- Create github release assets. -->
-    <target name="github-create-release-assets" depends="github-init-auth, github-init-repo, github-create-release">
+    <target name="github-create-release-assets" description="Upload release assets to github."
+        depends="
+            github-auth,
+            github-init,
+            github-create-release">
         <gh-create-assets releaseId="${release}">
             <fileset dir=".">
                 <include name="${project.id}.tar.gz" />
             </fileset>
         </gh-create-assets>
+    </target>
+
+    <target name="github-init" description="Initialize credentials and target."
+        depends="
+            github-init-owner,
+            github-init-repo" />
+
+    <target name="github-init-owner" description="Ask for repository owner if not set." hidden="true" unless="github.owner">
+        <input message="Enter owner of the repository." propertyName="github.owner" />
+    </target>
+
+    <target name="github-init-pass" description="Ask for password if not set." hidden="true" unless="github.pass">
+        <input message="Enter your GitHub password." propertyName="github.pass" hidden="true" />
+    </target>
+
+    <target name="github-init-repo"  description="Ask for repository name if not set." hidden="true" unless="github.repo">
+        <input message="Enter name of the repository."  propertyName="github.repo" />
+    </target>
+
+    <target name="github-init-team" description="Ask for team id if not set." hidden="true" unless="github.team">
+        <input message="Enter your GitHub team."  propertyName="github.team" />
+    </target>
+
+    <target name="github-init-token" description="Ask for token if not set." hidden="true" unless="github.token">
+        <input message="Enter your GitHub token." propertyName="github.token" hidden="true" />
+    </target>
+
+    <target name="github-init-user" description="Ask for username if not set." hidden="true" unless="github.user">
+        <input message="Enter your GitHub username."  propertyName="github.user" />
     </target>
 
 </project>

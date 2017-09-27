@@ -12,9 +12,9 @@
  * @link     https://github.com/ec-europa/toolkit/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
  */
 
-namespace Phing\Ssk\Tasks;
+namespace Phing\Toolkit\Tasks;
 
-use Phing\Ssk\Tasks\PhingHelpTask;
+use Phing\Toolkit\Tasks\PhingHelpTask;
 use Project;
 use Symfony\Component\Finder\Finder;
 
@@ -55,12 +55,11 @@ class DocGeneratorTask extends \Task
 
         // $this->checkRequirements();
         $project   = $this->getProject();
-        $buildFile = $this->_buildFile;
-        $buildList = PhingHelpTask::getBuildList($buildFile);
+        $buildList = PhingHelpTask::getBuildList($this->_buildFile);
 
         $targetsArray      = array();
         $wrapperTargets    = array();
-        $playbookTargets   = array();
+        $buildTargets   = array();
         $callbackTargets   = array();
         $deprecatedTargets = array();
         $helperTargets     = array();
@@ -80,7 +79,7 @@ class DocGeneratorTask extends \Task
                     'buildfile'   => $buildFile,
                 );
 
-                if (isset($target->attributes()->depends)) {
+                if (strpos($targetName, "build-") === 0) {
                         $targetDependenciesString = (string) $target->xpath(
                             './@depends'
                         )[0];
@@ -98,11 +97,11 @@ class DocGeneratorTask extends \Task
                         );
                         $targetArray += array(
                              'dependencies' => $targetDependencies,
-                             'type'         => 'playbook',
+                             'type'         => 'build',
                         );
                     if (count($targetDependencies) > 1) {
-                        $targetArray['type'] = 'playbook';
-                        $playbookTargets[]   = $targetName;
+                        $targetArray['type'] = 'build';
+                        $buildTargets[]   = $targetName;
                     }
                 }
 
@@ -128,7 +127,7 @@ class DocGeneratorTask extends \Task
         foreach ($targetsArray as $key => $targetArray) {
             if (in_array($targetArray['name'], $callbackTargets) && !in_array(
                 $targetArray['name'],
-                $playbookTargets
+                $buildTargets
             )
             ) {
                 $targetsArray[$key]['type'] = 'callback';
@@ -137,15 +136,21 @@ class DocGeneratorTask extends \Task
             }
         }
 
-        $this->wrapperTargetTable(
+        $targetTable = $this->wrapperTargetTable(
             $wrapperTargets,
-            $playbookTargets,
+            $buildTargets,
             $callbackTargets
+        );
+
+        file_put_contents(
+          $project->getProperty('build.dir') . "/docs/target-list.md",
+          $targetTable
         );
 
         foreach ($buildList as $buildFile => $info) {
             $depth = ($info['level'] + 1);
-            if (is_file($buildFile)) {
+            $projectName = $info['name'];
+            if (is_file($buildFile) && $info['name'] != "deprecated") {
                 $xml     = simplexml_load_file($buildFile);
                 $targets = array_filter(
                     $targetsArray,
@@ -154,10 +159,9 @@ class DocGeneratorTask extends \Task
                     },
                     ARRAY_FILTER_USE_BOTH
                 );
-                $projectName = $info['name'];
-                $output     .= str_repeat('#', $depth).' '.$projectName."\n";
                 if (!empty($projectName) && count($targets) > 1) {
-                        $output .= "<table>\n";
+                    $output .= str_repeat('#', $depth).' '.$projectName."\n";
+                    $output .= "<table>\n";
                         $output .= "    <thead>\n";
                         $output .= "        <tr align=\"left\">\n";
                         $output .= "            <th nowrap>Target type</th>\n";
@@ -179,8 +183,8 @@ class DocGeneratorTask extends \Task
                         case 'wrapper':
                             $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png\" align=\"left\" alt=\"wrapper\" />\n";
                             break;
-                        case 'playbook':
-                            $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png\" align=\"left\" alt=\"playbook\" />\n";
+                        case 'build':
+                            $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png\" align=\"left\" alt=\"build\" />\n";
                             break;
                         case 'deprecated':
                             $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png\" align=\"left\" alt=\"deprecated\" />\n";
@@ -214,12 +218,12 @@ class DocGeneratorTask extends \Task
      * This function should do something interesting.
      *
      * @param mixed $wrapperTargets  I have no idea.
-     * @param array $playbookTargets I have no idea.
+     * @param array $buildTargets I have no idea.
      * @param array $callbackTargets something where
      *
      * @return void
      */
-    protected function wrapperTargetTable($wrapperTargets, $playbookTargets, $callbackTargets)
+    protected function wrapperTargetTable($wrapperTargets, $buildTargets, $callbackTargets)
     {
         $output = '';
         foreach ($wrapperTargets as $targetName => $wrapperTarget) {
@@ -269,7 +273,7 @@ class DocGeneratorTask extends \Task
             $output .= "                        </tr>\n";
             $output .= "                    </thead>\n";
             $output .= "                    <tbody>\n";
-            foreach ($playbookTargets[$targetName.'-playbook']['dependencies'] as $callback) {
+            foreach ($buildTargets[$targetName.'-build']['dependencies'] as $callback) {
                 $output .= "                        <tr>\n";
                 $output .= "                            <td nowrap>".$callback."</td>\n";
                 $output .= "                            <td nowrap>".str_replace('build/', './', $callbackTargets[$callback]['buildfile'])."</td>\n";
@@ -286,10 +290,7 @@ class DocGeneratorTask extends \Task
             $output .= "</table>\n\n";
         }//end foreach
 
-        file_put_contents(
-            '/home/verbral/github/ec-europa/subsite/structure.md',
-            $output
-        );
+        return $output;
 
     }//end wrapperTargetTable()
 
