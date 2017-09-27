@@ -301,14 +301,14 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
      *
      * @param string $targetPath Target of symlink
      * @param string $link       Symlink
+     * @param bool   $logShort   Log short
      *
      * @return void
      */
-    protected function symlink($targetPath, $link)
+    protected function symlink($targetPath, $link, $logShort = false)
     {
-        parent::symlink($targetPath, $link);
+        parent::symlink($targetPath, $link, $logShort);
     }//end symlink()
-
 
     /**
      * Create a directory
