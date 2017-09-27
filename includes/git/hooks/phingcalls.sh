@@ -4,7 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PHING=".$DIR/../../bin/phing"
 
 # If phing is available.
-if [ -f $PHING ] && [ -x $PHING ] && [ -n "$1" ] ; then
+if [ -f $PHING ] && [ -x $PHING ] ; then
 
   # Get phing targets.
   HOOK="git.hook.${1//-/.}"
