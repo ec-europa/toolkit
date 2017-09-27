@@ -48,7 +48,7 @@
 
     <target name="toolkit-hooks-git-update-hook" description="Update a single git hook." hidden="true">
         <propertyregex property="hook-name" subject="${filename}" pattern="(.*?)\.[active|sample]" match="$1" />
-        <exec command="ls -Am ${toolkit.dir.incl.git}/hooks/${hook-name}" outputproperty="toolkit-hook-directory-contents" error="/dev/null" />
+        <exec command="ls -Am ${toolkit.dir.incl.git.hooks}/${hook-name}" outputproperty="toolkit-hook-directory-contents" error="/dev/null" />
         <exec command="ls -Am ${project.basedir}/resources/git/hooks/${hook-name}" outputproperty="project-hook-directory-contents" error="/dev/null" />
         <php expression='trim("${toolkit-hook-directory-contents}, ${project-hook-directory-contents}", ", ");' level="debug" returnProperty="hook-directory-contents" />
         <if>
@@ -61,7 +61,7 @@
                 </not>
             </and>
             <then>
-                <exec command="cp ${toolkit.dir.incl.git}/hooks/execute.sh ${project.basedir}/.git/hooks/${hook-name}" />
+                <exec command="cp ${toolkit.dir.incl.git.hooks}/execute.sh ${project.basedir}/.git/hooks/${hook-name}" />
                 <echo msg="Git hook ${hook-name} is active for: ${hook-directory-contents}." level="warning" />
                 <if>
                     <available file="${project.basedir}/.git/hooks/${hook-name}.sample" />
