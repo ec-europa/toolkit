@@ -34,8 +34,8 @@
         <basename file="${absfilename}" property="hook-name" suffix=".active" />
         <dirname file="${absfilename}" property="hook-dir" />
         <exec command="mv ${absfilename} ${hook-dir}/${hook-name}.sample" />
-        <delete file="${project.basedir}/.git/hooks/${hook-name}" quiet="true" />
-        <echo msg="Git hook ${hook-name} is inactive." />
+        <exec command="rm -rf ${project.basedir}/.git/hooks/${hook-name}" />
+        <echo msg="Git hook ${hook-name} is inactivated." />
     </target>
 
     <target name="toolkit-hooks-git-update" description="Update all git hooks.">
@@ -48,11 +48,14 @@
 
     <target name="toolkit-hooks-git-update-hook" description="Update a single git hook." hidden="true">
         <propertyregex property="hook-name" subject="${filename}" pattern="(.*?)\.[active|sample]" match="$1" />
-        <exec command="ls -Am ${project.basedir}/resources/git/hooks/${hook-name}" outputProperty="hook-directory-contents" />
+        <exec command="ls -Am ${toolkit.dir.incl.git}/hooks/${hook-name}" outputproperty="toolkit-hook-directory-contents" error="/dev/null" />
+        <exec command="ls -Am ${project.basedir}/resources/git/hooks/${hook-name}" outputproperty="project-hook-directory-contents" error="/dev/null" />
+        <php expression='trim("${toolkit-hook-directory-contents}, ${project-hook-directory-contents}", ", ");' level="debug" returnProperty="hook-directory-contents" />
         <if>
             <and>
-                <available file="${project.basedir}/resources/git/hooks/${hook-name}" type="dir" />
-                <istrue value="${hook-directory-contents}" />
+                <not>
+                    <isfalse value="${hook-directory-contents}" />
+                </not>
                 <not>
                     <available file="${project.basedir}/.git/hooks/${hook-name}.active" type="dir" />
                 </not>
@@ -63,7 +66,7 @@
                 <if>
                     <available file="${project.basedir}/.git/hooks/${hook-name}.sample" />
                     <then>
-                        <move file="${project.basedir}/.git/hooks/${hook-name}.sample" tofile="${project.basedir}/.git/hooks/${hook-name}.active" overwrite="true" haltonerror="false" />
+                        <exec command="mv ${project.basedir}/.git/hooks/${hook-name}.sample ${project.basedir}/.git/hooks/${hook-name}.active" />
                     </then>
                 </if>
             </then>
@@ -71,8 +74,8 @@
                 <if>
                     <available file="${project.basedir}/.git/hooks/${hook-name}.active" type="dir" />
                     <then>
-                        <delete file="${project.basedir}/.git/hooks/${hook-name}" />
-                        <move file="${project.basedir}/.git/hooks/${hook-name}.active" tofile="${project.basedir}/.git/hooks/${hook-name}.sample" haltonerror="false" overwrite="true" />
+                        <exec command="rm -rf ${project.basedir}/.git/hooks/${hook-name}" />
+                        <exec command="mv ${project.basedir}/.git/hooks/${hook-name}.active ${project.basedir}/.git/hooks/${hook-name}.sample" />
                     </then>
                 </if>
                 <echo msg="Git hook ${hook-name} is inactive." />
