@@ -36,6 +36,8 @@ resources/
 └── site.make
 ```
 
+> Note: the script itself should be made executable to work.
+
 ### 2. toolkit-hooks-git-disable
 This target will delete the execution scripts so no more git hooks will
 be invoked.
