@@ -23,7 +23,7 @@
     </target>
 
     <target name="toolkit-hooks-git-disable" description="Disable all git hooks.">
-        <foreach param="filename" absparam="absfilename" target="toolkit-hooks-git-disable-hook">
+        <foreach param="hook-name" absparam="abshook-name" target="toolkit-hooks-git-disable-hook">
             <fileset dir="${project.basedir}/.git/hooks">
                 <include name="*.active" />
             </fileset>
@@ -31,37 +31,43 @@
     </target>
 
     <target name="toolkit-hooks-git-disable-hook" description="Disable a single git hook." hidden="true">
-        <basename file="${absfilename}" property="hook-name" suffix=".active" />
-        <dirname file="${absfilename}" property="hook-dir" />
-        <exec command="mv ${absfilename} ${hook-dir}/${hook-name}.sample" />
-        <exec command="rm -rf ${project.basedir}/.git/hooks/${hook-name}" />
-        <echo msg="Git hook ${hook-name} is inactivated." />
+        <if>
+            <available file="${project.basedir}/.git/hooks" type="dir" />
+            <then>
+                <propertyregex property="hook-name" subject="${hook-name}" pattern="(.*?)\.active" match="$1" override="true" />
+                <dirname file="${abshook-name}" property="hook-dir" />
+                <exec command="mv ${abshook-name} ${hook-dir}/${hook-name}.sample" />
+                <exec command="rm -rf ${project.basedir}/.git/hooks/${hook-name}" />
+                <echo msg="Git hook ${hook-name} is inactivated." />
+            </then>
+        </if>
     </target>
 
     <target name="toolkit-hooks-git-update" description="Update all git hooks.">
-        <foreach param="filename" absparam="absfilename" target="toolkit-hooks-git-update-hook">
-            <fileset dir="${project.basedir}/.git/hooks">
-                <include name="*.*" />
-            </fileset>
-        </foreach>
+        <if>
+            <available file="${project.basedir}/.git/hooks" type="dir" />
+            <then>
+                <foreach param="hook-name" absparam="abshook-name" target="toolkit-hooks-git-update-hook">
+                    <fileset dir="${toolkit.dir.incl.git.hooks}">
+                        <type type="dir" />
+                        <depth max="1" />
+                        <depth min="0" />
+                    </fileset>
+                </foreach>
+            </then>
+        </if>
     </target>
 
     <target name="toolkit-hooks-git-update-hook" description="Update a single git hook." hidden="true">
-        <propertyregex property="hook-name" subject="${filename}" pattern="(.*?)\.[active|sample]" match="$1" />
-        <exec command="ls -Am ${toolkit.dir.incl.git.hooks}/${hook-name}" outputproperty="toolkit-hook-directory-contents" error="/dev/null" />
-        <exec command="ls -Am ${project.basedir}/resources/git/hooks/${hook-name}" outputproperty="project-hook-directory-contents" error="/dev/null" />
+        <exec command="ls -Am -I .gitkeep ${toolkit.dir.incl.git.hooks}/${hook-name}" outputproperty="toolkit-hook-directory-contents" error="/dev/null" />
+        <exec command="ls -Am -I .gitkeep ${project.basedir}/resources/git/hooks/${hook-name}" outputproperty="project-hook-directory-contents" error="/dev/null" />
         <php expression='trim("${toolkit-hook-directory-contents}, ${project-hook-directory-contents}", ", ");' level="debug" returnProperty="hook-directory-contents" />
         <if>
             <and>
-                <not>
-                    <isfalse value="${hook-directory-contents}" />
-                </not>
-                <not>
-                    <available file="${project.basedir}/.git/hooks/${hook-name}.active" type="dir" />
-                </not>
+                <istrue value="${hook-directory-contents}" />
             </and>
             <then>
-                <exec command="cp ${toolkit.dir.incl.git.hooks}/execute.sh ${project.basedir}/.git/hooks/${hook-name}" />
+                <exec command="cp ${toolkit.dir.incl.git}/execute.sh ${project.basedir}/.git/hooks/${hook-name}" />
                 <echo msg="Git hook ${hook-name} is active for: ${hook-directory-contents}." level="warning" />
                 <if>
                     <available file="${project.basedir}/.git/hooks/${hook-name}.sample" />
@@ -77,6 +83,9 @@
                         <exec command="rm -rf ${project.basedir}/.git/hooks/${hook-name}" />
                         <exec command="mv ${project.basedir}/.git/hooks/${hook-name}.active ${project.basedir}/.git/hooks/${hook-name}.sample" />
                     </then>
+                    <else>
+                        <exec command="touch ${project.basedir}/.git/hooks/${hook-name}.sample" />
+                    </else>
                 </if>
                 <echo msg="Git hook ${hook-name} is inactive." />
             </else>
