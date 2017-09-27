@@ -132,7 +132,7 @@ phpcs.prepush.enable =
 phpcs.prepush.source =
 phpcs.prepush.destination =
 
-qa.check.ssk =
+qa.check.toolkit =
 
 project.docroot =
 

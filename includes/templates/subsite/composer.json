@@ -4,8 +4,8 @@
         "ec-europa/toolkit": "dev-develop as 3.0.0"
     },
     "scripts": {
-        "post-install-cmd": "@ssk-install",
-        "post-update-cmd": "@ssk-install",
-        "ssk-install": "PROJECT=$(pwd) composer run-script ssk-install -d ./vendor/ec-europa/toolkit"
+        "post-install-cmd": "@toolkit-install",
+        "post-update-cmd": "@toolkit-install",
+        "toolkit-install": "PROJECT=$(pwd) composer run-script toolkit-install -d ./vendor/ec-europa/toolkit"
     }
 }

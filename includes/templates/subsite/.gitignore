@@ -7,19 +7,19 @@ nbproject/
 
 # Ignore local configuration.
 # ---------------------------
-/build.properties.local
+/build.develop.props
 /phpcs.xml
 /tests/behat.yml
 
 # Ignore build artifacts.
 # -----------------------
 /bin/
-/ssk
-/ssk-*
+/toolkit
+/toolkit-*
 /build/
 /platform/
 /.tmp/
 /vendor/
 /resources/git/hooks/pre-push/phpcs
 lib-backup/
-ssk
+toolkit

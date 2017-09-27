@@ -8,11 +8,11 @@ repository at https://github.com/ec-europa/subsite-starterkit.
 ### 1.1 Phing upgrade
 
 >```bash
-> curl https://raw.githubusercontent.com/ec-europa/ssk/master/includes/templates/subsite/composer.json > composer.json
-> curl https://raw.githubusercontent.com/ec-europa/ssk/master/includes/templates/subsite/build.xml > build.xml
+> curl https://raw.githubusercontent.com/ec-europa/toolkit/master/includes/templates/subsite/composer.json > composer.json
+> curl https://raw.githubusercontent.com/ec-europa/toolkit/master/includes/templates/subsite/build.xml > build.xml
 > rm -rf ./vendor ./bin ./composer.lock
 > composer install
-> ./ssk/phing toolkit-upgrade-starterkit
+> ./toolkit/phing toolkit-upgrade-starterkit
 >```
 
 The biggest structural change is in the lib folder. Because of the new symlink system the structure in the build folder will match the structure in the lib folder. To align all projects we request to make the following lib structure:
@@ -50,7 +50,7 @@ be deleted.
 >- .git/
 >- .gitattributes
 >- .gitignore
->- build.properties
+>- build.project.props
 >- lib/features/*
 >- lib/modules/*
 >- lib/themes/*

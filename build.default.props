@@ -16,7 +16,6 @@ project.install.modules = myproject_core
 project.name = My Project
 project.theme.default = ec_resp
 project.type = subsite
-project.url.base = http://web:8080
 project.url.production =
 
 # Development modules.
@@ -116,7 +115,6 @@ resources.dir = ${project.basedir}/resources
 resources.dir.composer.json = ${resources.dir}/composer.json
 resources.dir.composer.lock = ${resources.dir}/composer.lock
 resources.dir.favicon.ico = ${resources.dir}/favicon.ico
-resources.dir.devel.make = ${resources.dir}/devel.make
 resources.dir.site.make = ${resources.dir}/site.make
 
 tests.dir = ${project.basedir}/tests
@@ -202,7 +200,7 @@ share.path.subsites.packages.test = ${share.path.subsites.packages}/test
 
 # Composer hook phingcall target lists. Space separated only.
 # -----------------------------------------------------------
-composer.hook.post.install = build-toolkit
+composer.hook.post.install = toolkit-initialize
 composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =

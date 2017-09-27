@@ -2,113 +2,31 @@
 
 <project name="drush" description="Contains drush helper targets that help manage your Drupal installation." default="">
 
-    <!-- Install the site. -->
-    <target name="drush-site-install" description="Install a site.">
-        <echo message="Installing site ${project.name}." />
-        <drush command="site-install" assume="yes" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${build.site}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${db.url}" />
-            <option name="site-name" value="'${project.name}'" />
-            <option name="account-name" value="${admin.username}" />
-            <option name="account-pass" value="${admin.password}" />
-            <option name="account-mail" value="${admin.email}" />
-            <param>${profile}</param>
-            <param>install_configure_form.update_status_module='array(FALSE,FALSE)'
-            </param>
-        </drush>
-    </target>
-
-    <!-- Generate aliases for Drupal site by foldername. -->
-    <target name="drush-generate-aliases" description="Generate drush aliases for each subsite folder.">
+    <target name="drush-aliases-generate" description="Generate drush aliases for each subsite folder.">
         <mkdir dir="${build.platform.dir.sites}/all/drush" />
         <drushgal siteRoot="${build.platform.dir}" />
     </target>
 
-    <!-- Enable modules. -->
-    <target name="drush-enable-modules" description="Enable a set of modules." hidden="true">
+    <target name="drush-files-dirs-create" description="Create site files directories." hidden="true">
+        <echo message="Creating files directories for ${db.name}." />
+        <drush command="php-script" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>${toolkit.dir.incl.drush}/generate-directories.php</param>
+        </drush>
+    </target>
+
+    <target name="drush-files-dirs-htaccess" description="Ensure the presence of htaccess files.">
         <drush
-            command="pm-enable"
+            command="php-eval"
             assume="yes"
             root="${build.platform.dir}"
             alias="@${build.site}"
             bin="${toolkit.dir.bin.drush}"
             verbose="${drush.verbose}"
             color="${drush.color}">
-            <param>${project.drupal.modules}</param>
+            <param>"file_ensure_htaccess()"</param>
         </drush>
     </target>
 
-    <!-- Create the directories. -->
-    <target name="drush-create-files-dirs" description="Create site files directories." hidden="true">
-        <echo message="Creating files directories for ${db.name}." />
-        <!-- Execute setttings generation script. -->
-        <drush command="php-script" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>${toolkit.dir.incl.drush}/generate-directories.php</param>
-        </drush>
-    </target>
-
-    <!-- Create the database. -->
-    <target name="drush-sql-create" description="Create a database.">
-        <echo message="Creating database ${db.name}." />
-        <drush command="sql-create" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${db.url}" />
-        </drush>
-    </target>
-
-    <!-- Import a database. -->
-    <target name="drush-sql-import" description="Import a database.">
-        <echo message="Importing database." />
-        <drush command="sql-cli" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>&lt; ${database-file}</param>
-        </drush>
-        <phingcall target="drush-create-files-dirs" />
-        <phingcall target="drush-file-ensure-htaccess" />
-        <phingcall target="drush-registry-rebuild" />
-        <!-- Enable solr if needed. -->
-        <phingcall target="drush-enable-solr" />
-        <!-- Update database. -->
-        <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}"></drush>
-        <!-- Clear Caches. -->
-        <drush command="cc" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}">
-            <param>all</param>
-        </drush>
-    </target>
-
-    <!-- Drop the database. -->
-    <target name="drush-sql-drop" description="Drop a database.">
-        <echo message="Dropping database ${db.name}." />
-        <drush command="sql-drop" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${db.url}" />
-        </drush>
-    </target>
-
-    <!-- Backup the database. -->
-    <target name="drush-sql-dump" description="Make a dump of database.">
-        <echo message="Backing up database ${db.name} to ${database-file}." />
-        <dirname property="database-cachedir" file="${database-file}" />
-        <mkdir dir="${database-cachedir}" />
-        <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="result-file" value="${database-file}" />
-        </drush>
-    </target>
-
-    <!-- Activate solr if needed. -->
-    <target name="drush-enable-solr" description="Enable the solr module.">
-        <if>
-            <equals arg1="${solr.enable}" arg2="1" />
-            <then>
-                <echo message="Enable apachesolr for ${db.name}." />
-                <phingcall target="drush-enable-modules">
-                    <property name="project.drupal.modules" value="apachesolr" />
-                </phingcall>
-                <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
-                <drush command="solr-set-env-url" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                    <param>${solr.url}</param>
-                </drush>
-            </then>
-        </if>
-    </target>
-
-    <!-- Make the platform version of the subsite. -->
     <target name="drush-make-no-core" description="Make a file without core." hidden="true">
         <if>
             <available file="${make-file}" type="file" />
@@ -143,13 +61,72 @@
         </if>
     </target>
 
-    <!-- Regenerate the settings file with database credentials and development variables. -->
-    <target name="drush-generate-settings" description="Generate the settings.php file.">
+    <target name="drush-make-secure" description="Check make file for insecure modules.">
+        <drushms makefile="${makefile-path}" failon="revoked" />
+    </target>
 
-        <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="tmp/generate-settings.php" overwrite="true">
+    <target name="drush-make-secure-all" description="Check all make files for insecure modules.">
+        <echo msg="Checking make files for projects not covered by Drupal's security advisory." />
+        <foreach param="makefile" absparam="makefile-path" target="drush-make-secure">
+            <fileset dir="${resources.dir}">
+                <include name="*.make" />
+            </fileset>
+        </foreach>
+    </target>
+
+    <target name="drush-modules-enable" description="Enable a set of modules." hidden="true">
+        <drush
+            command="pm-enable"
+            assume="yes"
+            root="${build.platform.dir}"
+            alias="@${build.site}"
+            bin="${toolkit.dir.bin.drush}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>${project.drupal.modules}</param>
+        </drush>
+    </target>
+
+    <target name="drush-node-access-rebuild" description="Rebuild the node access.">
+        <drush
+            command="php-eval"
+            assume="yes"
+            root="${build.platform.dir}"
+            alias="@${build.site}"
+            bin="${toolkit.dir.bin.drush}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>"node_access_rebuild()"</param>
+        </drush>
+    </target>
+
+    <target name="drush-registry-rebuild" description="Perform a registry rebuild.">
+        <trycatch>
+            <try>
+                <exec command="${toolkit.dir.bin.drush} rr --help" checkreturn="true" />
+            </try>
+            <catch>
+                <phingcall target="drush-registry-rebuild-dl" />
+            </catch>
+            <finally>
+                <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+                    <param>--fire-bazooka</param>
+                </drush>
+            </finally>
+        </trycatch>
+    </target>
+
+    <target name="drush-registry-rebuild-dl" description="Download drush registry-rebuild.">
+        <echo message="Installing registry rebuild on user account." />
+        <exec command="${toolkit.dir.bin.drush} pm-download registry_rebuild-7 -n >/dev/null" />
+        <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
+    </target>
+
+    <target name="drush-settings-generate" description="Generate the settings.php file.">
+        <exec command="chmod 775 ${build.subsite.dir}/settings.php" />
+        <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="${project.tmp.dir}/generate-settings.php" overwrite="true">
             <filterchain>
                 <replacetokens begintoken="%%" endtoken="%%">
-                    <!-- Replace tokens in settings generation script. -->
                     <token key="db.type" value="${db.type}" />
                     <token key="db.name" value="${db.name}" />
                     <token key="db.user" value="${db.user}" />
@@ -170,78 +147,82 @@
                 </replacetokens>
             </filterchain>
         </copy>
-        <!-- Execute setttings generation script. -->
         <drush command="php-script" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>tmp/generate-settings.php</param>
+            <param>${project.tmp.dir}/generate-settings.php</param>
         </drush>
+        <drush command="cc" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}">
+            <param>drush</param>
+        </drush>
+        <drush command="status" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" />
     </target>
 
-    <!-- Rebuild registry. -->
-    <target name="drush-registry-rebuild" description="Perform a registry rebuild.">
-        <trycatch>
-            <try>
-                <!-- Check if registry rebuild is available. -->
-                <exec command="${toolkit.dir.bin.drush} rr --help" checkreturn="true" />
-            </try>
-            <catch>
-                <!-- Download if not available. -->
-                <phingcall target="drush-registry-rebuild-dl" />
-            </catch>
-            <finally>
-                <!-- Rebuild Registry. -->
-                <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
-                    <param>--fire-bazooka</param>
+    <target name="drush-site-install" description="Install a site.">
+        <echo message="Installing site ${project.name}." />
+        <drush command="site-install" assume="yes" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${build.site}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${db.url}" />
+            <option name="site-name" value="'${project.name}'" />
+            <option name="account-name" value="${admin.username}" />
+            <option name="account-pass" value="${admin.password}" />
+            <option name="account-mail" value="${admin.email}" />
+            <param>${profile}</param>
+            <param>install_configure_form.update_status_module='array(FALSE,FALSE)'
+            </param>
+        </drush>
+        <phingcall target="drush-settings-generate" />
+    </target>
+
+    <target name="drush-solr-enable" description="Enable the solr module.">
+        <if>
+            <equals arg1="${solr.enable}" arg2="1" />
+            <then>
+                <echo message="Enable apachesolr for ${db.name}." />
+                <phingcall target="drush-modules-enable">
+                    <property name="project.drupal.modules" value="apachesolr" />
+                </phingcall>
+                <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
+                <drush command="solr-set-env-url" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>${solr.url}</param>
                 </drush>
-            </finally>
-        </trycatch>
+            </then>
+        </if>
     </target>
 
-    <!-- Download registry rebuild. -->
-    <target name="drush-registry-rebuild-dl" description="Download drush registry-rebuild.">
-        <echo message="Installing registry rebuild on user account." />
-        <exec command="${toolkit.dir.bin.drush} pm-download registry_rebuild-7 -n >/dev/null" />
-        <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
-    </target>
-
-    <!-- Rebuild node access. -->
-    <target name="drush-rebuild-node-access" description="Rebuild the node access.">
-        <drush
-            command="php-eval"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${build.site}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>"node_access_rebuild()"</param>
+    <target name="drush-sql-create" description="Create a database.">
+        <echo message="Creating database ${db.name}." />
+        <drush command="sql-create" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${db.url}" />
         </drush>
     </target>
 
-    <!-- Rebuild node access. -->
-    <target name="drush-file-ensure-htaccess" description="Rebuild the node access.">
-        <drush
-            command="php-eval"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${build.site}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>"file_ensure_htaccess()"</param>
+    <target name="drush-sql-import" description="Import a database.">
+        <echo message="Importing database." />
+        <phingcall target="drush-files-dirs-create" />
+        <drush command="sql-cli" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>&lt; ${database-file}</param>
+        </drush>
+        <phingcall target="drush-registry-rebuild" />
+        <phingcall target="drush-files-dirs-htaccess" />
+        <phingcall target="drush-solr-enable" />
+        <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}"></drush>
+        <drush command="cc" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}">
+            <param>all</param>
         </drush>
     </target>
 
-    <target name="drush-make-secure-all">
-        <echo msg="Checking make files for projects not covered by Drupal's security advisory." />
-        <foreach param="makefile" absparam="makefile-path" target="drush-make-secure">
-            <fileset dir="${resources.dir}">
-                <include name="*.make" />
-            </fileset>
-        </foreach>
+    <target name="drush-sql-drop" description="Drop a database.">
+        <echo message="Dropping database ${db.name}." />
+        <drush command="sql-drop" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${db.url}" />
+        </drush>
     </target>
 
-    <target name="drush-make-secure">
-        <drushms makefile="${makefile-path}" failon="revoked" />
+    <target name="drush-sql-dump" description="Make a dump of database.">
+        <echo message="Backing up database ${db.name} to ${database-file}." />
+        <dirname property="database-cachedir" file="${database-file}" />
+        <mkdir dir="${database-cachedir}" />
+        <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="result-file" value="${database-file}" />
+        </drush>
     </target>
 
 </project>
