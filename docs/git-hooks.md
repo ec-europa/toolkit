@@ -21,7 +21,20 @@ bash script to the `.git/hooks` location with the chosen hook name. If
 no scripts are found in the folder it will remove any previous execution
 script. When you execute a git command that triggers a certain hook and
 there is an execution script present it will execute all the scripts
-contained in these folders in alpahnumerical order.
+contained in these folders in alpahnumerical order. Here is an example
+of a script being placed in the `resources/git/hooks/pre-push` folder:
+
+```
+resources/
+├── composer.json
+├── composer.lock
+├── devel.make
+├── git
+│   └── hooks
+│       └── pre-push
+│           └── phpcs -> ../../../../vendor/pfrenssen/phpcs-pre-push/pre-push
+└── site.make
+```
 
 ### 2. toolkit-hooks-git-disable
 This target will delete the execution scripts so no more git hooks will
