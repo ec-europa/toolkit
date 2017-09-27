@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PHING="$DIR/../../bin/phing"
+PHING=".$DIR/../../bin/phing"
 
 # If phing is available.
 if [ -f $PHING ] && [ -x $PHING ] && [ -n "$1" ] ; then
