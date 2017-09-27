@@ -23,7 +23,7 @@
     </target>
 
     <target name="toolkit-hooks-git-enable" description="Enable the phingcall.sh script for each hook file.">
-        <foreach param="filename" absparam="absfilename" target="toolkit-hooks-git-copy-phingcall-script">
+        <foreach param="filename" absparam="absfilename" target="toolkit-hooks-git-enable-hook">
             <fileset dir="${project.basedir}/.git/hooks/">
                 <include name="*.sample"/>
             </fileset>
@@ -31,7 +31,7 @@
     </target>
 
     <target name="toolkit-hooks-git-disable" description="Disable the phingcall.sh script for each hook file.">
-        <foreach param="filename" absparam="absfilename" target="toolkit-hooks-git-enable-hook">
+        <foreach param="filename" absparam="absfilename" target="toolkit-hooks-git-disable-hook">
             <fileset dir="${project.basedir}/.git/hooks/">
                 <exclude name="*.sample"/>
             </fileset>
@@ -45,8 +45,8 @@
     </target>
 
     <target name="toolkit-hooks-git-disable-hook" description="Disable the phingcall.sh script for a single hook file." hidden="true">
-        <copy file="${project.basedir}/.git/hooks/${hook-name}" tofile="${project.basedir}/.git/hooks/${hook-name}.sample" />
-        <delete file="${project.basedir}/.git/hooks/${hook-name}" />
+        <copy file="${project.basedir}/.git/hooks/${filename}" tofile="${project.basedir}/.git/hooks/${filename}.sample" />
+        <delete file="${project.basedir}/.git/hooks/${filename}" />
     </target>
 
     <target name="toolkit-markdown-generate" description="Generate documentation md files for toolkit.">
