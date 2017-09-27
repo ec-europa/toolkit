@@ -17,10 +17,11 @@ after the hook you wish to use. Two locations will be scanned:
 - `resources/git/hooks`
 
 If any scripts are found in these locations the toolkit will copy a
-bash script to the `.git/hooks` location with the chosen hook name.
-Then when you execute a git command that triggers a certain hook it will
-execute all the scripts located in these folders in alpahnumerical
-order.
+bash script to the `.git/hooks` location with the chosen hook name. If
+no scripts are found in the folder it will remove any previous execution
+script. When you execute a git command that triggers a certain hook and
+there is an execution script present it will execute all the scripts
+contained in these folders in alpahnumerical order.
 
 ### 2. toolkit-hooks-git-disable
 
