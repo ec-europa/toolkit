@@ -54,7 +54,7 @@
                 <available file="${project.basedir}/resources/git/hooks/${hook-name}" type="dir" />
                 <istrue value="${hook-directory-contents}" />
                 <not>
-                    <available file="${project.basedir}/resources/git/hooks/${hook-name}.active" type="dir" />
+                    <available file="${project.basedir}/.git/hooks/${hook-name}.active" type="dir" />
                 </not>
             </and>
             <then>
