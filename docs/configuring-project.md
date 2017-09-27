@@ -10,12 +10,12 @@ a reference to the toolkit or visa versa. The three files are:
 
 ### composer.json
 
-This file<sup>(1)</sup> installs the toolkit by the use of the composer
-post-install-cmd hook. The reason we do a seperated install is to avoid
-developers running composer update on the toolkit. Now regardles of
-wether you run composer install or update, you will always install the
-toolkit as it is defined in its own composer.lock file. For a clearer
-picture look at the folder structure<sup>(2)</sup>.
+The [composer.json]<sup>(1)</sup> installs the toolkit by the use of the
+composer post-install-cmd hook. The reason we do a seperated install is
+to avoid developers running composer update on the toolkit. Now
+regardles of wether you run composer install or update, you will always
+install the toolkit as it is defined in its own composer.lock file. For
+a clearer picture look at the folder structure<sup>(2)</sup>.
 
 <details><summary><b>View source <sup>(1)</sup></b></summary>
 
@@ -54,7 +54,7 @@ picture look at the folder structure<sup>(2)</sup>.
 
 The build.xml file should be located in the root of your project. And
 this file should not be altered in any way. If you need to override
-targets within the toolkit you can create a **build.project.xml** file.
+targets within the toolkit you can create a [build.project.xml] file.
 
 <details><summary><b>View source <sup>(1)</sup></b></summary>
 
@@ -73,6 +73,45 @@ targets within the toolkit you can create a **build.project.xml** file.
 
 ### build.project.props
 
-This is the previous build.properties file. To make it more obvious it
-is required to build your project we have renamed it in such a way. In
-this file there are a few properties that should always be declared.
+In the previous release this file was called build.properties. To make
+it more obvious it is essential to your project we have renamed it in
+such a way. In this file there are a few properties that are required.
+The definitions of these required properties you find in a file named
+[required.props]<sup>(1)</sup>
+
+<details><summary><b>View source <sup>(1)</sup></b></summary>
+
+```init
+# -------------------------------------------------------------
+# These are the minimal required properties that need to be
+# in the build.project.props file to perform a build on CI. To
+# make sure that developers have this information validation is
+# implemented to check if all properties have been defined.
+# -------------------------------------------------------------
+
+# Subsite configuration.
+# ----------------------
+project.id = myproject
+project.install.modules = myproject_core
+project.name = My Project
+project.url.production =
+
+# Solr configuration.
+# -------------------
+solr.type = d7_apachesolr
+
+# Admin configuration.
+# --------------------
+admin.email = ${admin.username}@example.com
+
+# Platform configuration.
+# -----------------------
+profile = multisite_drupal_standard
+platform.package.version = 2.3
+```
+</details>
+
+[build.project.xml]: (/includes/templates/subsite/build.project.xml)
+[composer.json]: (/includes/composer/composer.json)
+[composer.lock]: (/includes/composer/composer.lock)
+[required.props]: (/includes/phing/props/required.props)
