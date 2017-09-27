@@ -22,12 +22,61 @@
         <echoproperties prefix="git.hook." />
     </target>
 
-    <target name="toolkit-hooks-git-enable" description="Enable the phingcall.sh script for each hook file.">
-        <foreach param="filename" absparam="absfilename" target="toolkit-hooks-git-enable-hook">
-            <fileset dir="${project.basedir}/.git/hooks/">
-                <include name="*.sample"/>
+    <target name="toolkit-hooks-git-disable" description="Disable all git hooks.">
+        <foreach param="filename" absparam="absfilename" target="toolkit-hooks-git-disable-hook">
+            <fileset dir="${project.basedir}/.git/hooks">
+                <include name="*.active" />
             </fileset>
         </foreach>
+    </target>
+
+    <target name="toolkit-hooks-git-disable-hook" description="Disable a single git hook." hidden="true">
+        <basename file="${absfilename}" property="hook-name" suffix=".active" />
+        <dirname file="${absfilename}" property="hook-dir" />
+        <exec command="mv ${absfilename} ${hook-dir}/${hook-name}.sample" />
+        <echo msg="Git hook ${hook-name} is inactive." />
+    </target>
+
+    <target name="toolkit-hooks-git-update" description="Update all git hooks.">
+        <foreach param="filename" absparam="absfilename" target="toolkit-hooks-git-update-hook">
+            <fileset dir="${project.basedir}/.git/hooks">
+                <include name="*.*" />
+            </fileset>
+        </foreach>
+    </target>
+
+    <target name="toolkit-hooks-git-update-hook" description="Update a single git hook." hidden="true">
+        <propertyregex property="hook-name" subject="${filename}" pattern="(.*?)\.[active|sample]" match="$1" />
+        <exec command="ls -Am ${project.basedir}/resources/git/hooks/${hook-name}" outputProperty="hook-directory-contents" />
+        <if>
+            <and>
+                <available file="${project.basedir}/resources/git/hooks/${hook-name}" type="dir" />
+                <istrue value="${hook-directory-contents}" />
+                <not>
+                    <available file="${project.basedir}/resources/git/hooks/${hook-name}.active" type="dir" />
+                </not>
+            </and>
+            <then>
+                <exec command="cp ${toolkit.dir.incl.git}/hooks/execute.sh ${project.basedir}/.git/hooks/${hook-name}" />
+                <echo msg="Git hook ${hook-name} is active for: ${hook-directory-contents}." level="warning" />
+                <if>
+                    <available file="${project.basedir}/.git/hooks/${hook-name}.sample" />
+                    <then>
+                        <move file="${project.basedir}/.git/hooks/${hook-name}.sample" tofile="${project.basedir}/.git/hooks/${hook-name}.active" overwrite="true" haltonerror="false" />
+                    </then>
+                </if>
+            </then>
+            <else>
+                <if>
+                    <available file="${project.basedir}/.git/hooks/${hook-name}.active" type="dir" />
+                    <then>
+                        <delete file="${project.basedir}/.git/hooks/${hook-name}" />
+                        <move file="${project.basedir}/.git/hooks/${hook-name}.active" tofile="${project.basedir}/.git/hooks/${hook-name}.sample" haltonerror="false" overwrite="true" />
+                    </then>
+                </if>
+                <echo msg="Git hook ${hook-name} is inactive." />
+            </else>
+        </if>
     </target>
 
     <target name="toolkit-hooks-git-disable" description="Disable the phingcall.sh script for each hook file.">
@@ -36,12 +85,6 @@
                 <exclude name="*.sample"/>
             </fileset>
         </foreach>
-    </target>
-
-    <target name="toolkit-hooks-git-enable-hook" description="Enable the phingcall.sh script for a single hook file." hidden="true">
-        <basename property="hook-name" file="${filename}" suffix=".sample"/>
-        <copy file="${toolkit.dir.incl.git}/hooks/phingcalls.sh" tofile="${project.basedir}/.git/hooks/${hook-name}" />
-        <delete file="${absfilename}" />
     </target>
 
     <target name="toolkit-hooks-git-disable-hook" description="Disable the phingcall.sh script for a single hook file." hidden="true">
