@@ -24,6 +24,5 @@ there is an execution script present it will execute all the scripts
 contained in these folders in alpahnumerical order.
 
 ### 2. toolkit-hooks-git-disable
-
 This target will delete the execution scripts so no more git hooks will
 be invoked.
