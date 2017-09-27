@@ -10,10 +10,14 @@ a reference to the toolkit or visa versa. The three files are:
 
 ### composer.json
 
-The composer.json that installs the toolkit does this by the use of the
-composer post-install-cmd hook:
+This file<sup>(1)</sup> installs the toolkit by the use of the composer
+post-install-cmd hook. The reason we do a seperated install is to avoid
+developers running composer update on the toolkit. Now regardles of
+wether you run composer install or update, you will always install the
+toolkit as it is defined in its own composer.lock file. For a clearer
+picture look at the folder structure<sup>(2)</sup>.
 
-<details><summary><b>View source:</b></summary>
+<details><summary><b>View source <sup>(1)</sup></b></summary>
 
 ```json
 {
@@ -29,14 +33,7 @@ composer post-install-cmd hook:
 }
 ```
 </details>
-
-The reason we do a seperated install is to avoid developers running
-composer update on the toolkit. Now regardles of wether you run composer
-install or update, you will always install the toolkit as it is defined
-in its own composer.lock file. The resulting installation will look like
-this:
-
-<details><summary><b>View folder structure:</b></summary>
+<details><summary><b>View folder structure <sup>(2)</sup></b></summary>
 
 <big><pre><code>.
 ├── lib
@@ -59,7 +56,7 @@ The build.xml file should be located in the root of your project. And
 this file should not be altered in any way. If you need to override
 targets within the toolkit you can create a **build.project.xml** file.
 
-<details><summary><b>View source:</b></summary>
+<details><summary><b>View source <sup>(1)</sup></b></summary>
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -75,3 +72,7 @@ targets within the toolkit you can create a **build.project.xml** file.
 
 
 ### build.project.props
+
+This is the previous build.properties file. To make it more obvious it
+is required to build your project we have renamed it in such a way. In
+this file there are a few properties that should always be declared.
