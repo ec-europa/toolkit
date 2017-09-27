@@ -463,10 +463,6 @@
         <relsym link="${project.docroot}" target="${build.platform.dir}" overwrite="true" />
     </target>
 
-    <target name="project-properties-validate" description="Validate the build properties file.">
-        <propval source="build.project.props" required="${toolkit.dir.incl.phing.props}/required.props" haltonerror="${build.haltonerror.props.validate}" logoutput="${logoutput}"/>
-    </target>
-
     <target name="project-rebuild-check" description="Rebuild project if needed. (needs work)"
         hidden="true">
         <if>
