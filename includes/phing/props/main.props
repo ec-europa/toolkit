@@ -1,3 +1,7 @@
+# -----------------------------------------------------------------------------------
+# The main properties of the toolkit. Most of them are build and development related.
+# -----------------------------------------------------------------------------------
+
 # Binaries.
 # ---------
 project.bin.composer = composer.phar
@@ -223,4 +227,5 @@ varnish.server.port = 8888
 # Drush Context configuration.
 # ----------------------------
 drush.db.dump = ${build.platform.dir}/dump.sql
+
 

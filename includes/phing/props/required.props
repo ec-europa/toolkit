@@ -1,10 +1,9 @@
-# ----------------------------------------------------------
+# -------------------------------------------------------------
 # These are the minimal required properties that need to be
 # in the build.project.props file to perform a build on CI. To
-# make sure that developers have this information we need to
-# write validation for checking if the properties have a
-# custom value before developers can push to github.
-# ----------------------------------------------------------
+# make sure that developers have this information validation is
+# implemented to check if all properties have been defined.
+# -------------------------------------------------------------
 
 # Subsite configuration.
 # ----------------------
