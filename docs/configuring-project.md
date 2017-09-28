@@ -42,7 +42,7 @@ the default file that Phing looks for when you execute it.
 If there is a need to customize certain build targets you can override them by
 placing a [build.project.xml] file in the root of your project. Then it is just
 a matter of re-using the name of the target you wish to alter and place your
-custom logic there. Beware, overriding buiild targets can have unexpected
+custom logic there. Beware, overriding build targets can have unexpected
 results if your project is running on a CI provider that has pipelines
 especially constructed for toolkit builds.
 
