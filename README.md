@@ -114,9 +114,10 @@ The main component is the Phing build system that let's you easily set
 up the project locally and can be used in CI tools like Jenkins, Drone
 and Travis.
 
-- [Configuring a project]()
-    - [Installation explained]()
-    - [Using build properties]()
+- [Configuring a project](./configuring-project)
+    - [Installation explained](./configuring-project#installation-explained)
+    - [Using build properties](./configuring-project#using-build-properties)
+    - [Using build xml files](./configuring-project#using-build-xml-files)
 - [Building the codebase]()
     - [Platform builds]()
     - [Subsite builds]()

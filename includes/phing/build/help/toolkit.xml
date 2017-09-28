@@ -9,9 +9,28 @@
         <echo msg="Toolkit successfully initialized." />
     </target>
 
+    <target name="toolkit-append-props" description="Append the contents of a properties file to build.default.props.">
+        <php expression='str_replace("${project.basedir}", ".", "${props-file-path}");' returnProperty="props-file-path-relative" />
+        <append destFile="${project.basedir}/build.default.props" text="# Toolkit location: ${props-file-path-relative}${line.separator}" />
+        <append destFile="${project.basedir}/build.default.props" file="${props-file-path}" />
+    </target>
+
     <target name="toolkit-binary-link" description="Provide project with toolkit binary at root level.">
         <echo msg="Provide project with starterkit binary at root level." />
         <relsym link="${project.basedir}/toolkit" target="${toolkit.dir.bin}" overwrite="true" />
+    </target>
+
+    <target name="toolkit-default-props" description="Provide project with an overview of all default build properties.">
+        <echo msg="Providing project with a build.default.props file." />
+        <exec command="> ${project.basedir}/build.default.props" />
+        <foreach param="props-file-name" absparam="props-file-path" target="toolkit-append-props">
+            <fileset dir="${toolkit.dir.incl.phing}">
+                <include name="**/*.props" />
+                <exclude name="**/required.props" />
+                <exclude name="**/forbidden.props" />
+                <exclude name="**/deprecated.props" />
+            </fileset>
+        </foreach>
     </target>
 
     <target name="toolkit-hooks-composer" description="Echo the composer hook phing targets for use in bash script." hidden="true">
