@@ -6,7 +6,11 @@ in depth into the installation process.
 ## Installation explained
 
 The toolkit requires 3 files to be present in your repository that make
-a reference to the toolkit or visa versa. The three files are:
+a reference to the toolkit or visa versa.
+
+* composer.json
+* build.xml
+* build.project.props
 
 ### composer.json
 
@@ -37,7 +41,7 @@ The [build.xml] file has be located in the root of your project. This
 file should not be altered in any way. If you need to override targets
 within the toolkit you can also create a [build.project.xml] file in the
 root of your project. For more on this check out the section
-[Using a project build file](#using-project-build-file).
+[Using build xml files](#using-build-xml-files).
 
 
 ## Using build properties
@@ -75,7 +79,7 @@ execute phing. This will display the targets per file.
 [build.default.props]: ../build.default.props
 [build.project.xml]: ../includes/templates/subsite/build.project.xml
 [build.xml]: ../build.xml
-[composer.json]: ../includes/composer/composer.json
+[composer.json]: ../includes/templates/subsite/composer.json
 [composer.lock]: ../includes/composer/composer.lock
 [.gitignore]: ../includes/templates/subsite/.gitignore
 [required.props]: ../includes/phing/props/required.props
