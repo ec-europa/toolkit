@@ -125,7 +125,7 @@ locally and can be used in CI tools like Jenkins, Drone and Travis.
     - [Behat testing]()
     - [PHP Unit testing]()
 - [Using Composer hooks](./docs/composer-hooks.md)
-- [Using Git hooks]()
+- [Using Git hooks](./docs/git-hooks.md)
 - [Using Docker environment]()
 
 ## Maintainers
