@@ -6,7 +6,7 @@ in depth into the installation process.
 ## Installation explained
 
 The toolkit requires 3 files to be present in your repository that make
-a reference to the toolkit or visa versa.
+a reference to the toolkit or vice versa.
 
 * composer.json
 * build.xml
@@ -16,7 +16,7 @@ a reference to the toolkit or visa versa.
 
 The [composer.json] installs the toolkit by the use of the composer
 hooks. The reason we do a seperated install is to avoid developers
-running composer update on the toolkit. Now regardles of wether you run
+running composer update on the toolkit. Now regardless of wether you run
 composer install or update, you will always install the toolkit as it is
 defined in its own [composer.lock] file. For a clearer picture here is
 an example of the resulting folder structure after installing a toolkit.
