@@ -18,8 +18,8 @@ The [composer.json] installs the toolkit by the use of the composer
 hooks. The reason we do a seperated install is to avoid developers
 running composer update on the toolkit. Now regardles of wether you run
 composer install or update, you will always install the toolkit as it is
-defined in its own composer.lock file. For a clearer picture here is an
-example of the resulting folder structure:
+defined in its own [composer.lock] file. For a clearer picture here is
+an example of the resulting folder structure after installing a toolkit.
 
 <big><pre><code>.
 ├── lib
@@ -51,15 +51,15 @@ root of your project. For more on this check out the section
 The current toolkit is modular and saves different properties files in
 different locations. At installation of the toolkit you will get an
 aggregated [build.default.props] file copied to the root of your project
-to have easy access to all possible conguration of the toolkit. This file
-is never loaded into active configuration. To re-generate this file
+to have easy access to all possible conguration of the toolkit. This
+file is never loaded into active configuration. To re-generate this file
 manually you can execute a Phing target called toolkit-default-props.
 
 ### build.develop.props
 
 This file is intended for local use only and needs to be included in the
-[.gitignore] of your project. Here you can store any configuration that is
-needed to run your project locally. Useful for storing credentials and
+[.gitignore] of your project. Here you can store any configuration that
+is needed to run your project locally. Useful for storing credentials and
 individual preferences for development.
 
 ### build.project.props
@@ -74,7 +74,15 @@ The definitions of these required properties you find in a file named
 ## Using build xml files
 
 To list all available targets defined in the toolkit you simply have to
-execute phing. This will display the targets per file.
+execute phing. This will display the targets per file. If there is a
+need to customize certain build targets you can override them by placing
+a [build.project.xml] file in the root of your project. Then it is just
+a matter of re-using the name of the target you wish to alter and place
+your custom logic there.
+
+> Note: overriding buiild targets can have unexpected results of your
+> project is running on a CI provider that has pipelines especially
+> designed for toolkit builds.
 
 [build.default.props]: ../build.default.props
 [build.project.xml]: ../includes/templates/subsite/build.project.xml
