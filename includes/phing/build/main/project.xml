@@ -179,9 +179,9 @@
                     <isset property="platform.package.version.minor" />
                     <then>
                         <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.${platform.package.version.minor}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.current" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.${platform.upgrade}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.next" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.latest" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | egrep -o 'platform-dev-${platform.package.version.major}\.${platform.package.version.minor}\.[0-9]+' | sed -e 's/^platform-dev-//' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.current" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | egrep -o 'platform-dev-${platform.package.version.major}\.${platform.upgrade}\.[0-9]+' | sed -e 's/^platform-dev-//' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.next" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | egrep -o 'platform-dev-${platform.package.version.major}\.[0-9]+\.[0-9]+' | sed -e 's/^platform-dev-//' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.latest" />
                     </then>
                 </if>
             </then>
