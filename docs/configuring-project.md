@@ -66,6 +66,12 @@ such a way. In this file there are a few properties that are required.
 The definitions of these required properties you find in a file named
 [required.props].
 
+
+## Using build xml files
+
+To list all available targets defined in the toolkit you simply have to
+execute phing. This will display the targets per file.
+
 [build.default.props]: (/build.default.props)
 [build.project.xml]: (/includes/templates/subsite/build.project.xml)
 [build.xml]: (/build.xml)
