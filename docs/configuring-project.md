@@ -35,7 +35,7 @@ example of the resulting folder structure:
 
 The [build.xml] file has be located in the root of your project. This
 file should not be altered in any way. If you need to override targets
-within the toolkit you can also create a build.project.xml file in the
+within the toolkit you can also create a [build.project.xml] file in the
 root of your project. For more on this check out the section
 [Using a project build file](#using-project-build-file).
 
@@ -72,10 +72,10 @@ The definitions of these required properties you find in a file named
 To list all available targets defined in the toolkit you simply have to
 execute phing. This will display the targets per file.
 
-[build.default.props]: (/build.default.props)
-[build.project.xml]: (/includes/templates/subsite/build.project.xml)
-[build.xml]: (/build.xml)
-[composer.json]: (/includes/composer/composer.json)
-[composer.lock]: (/includes/composer/composer.lock)
-[.gitignore]: (/templates/subsite.gitignore)
-[required.props]: (/includes/phing/props/required.props)
+[build.default.props]: (../build.default.props)
+[build.project.xml]: (../includes/templates/subsite/build.project.xml)
+[build.xml]: (../build.xml)
+[composer.json]: (../includes/composer/composer.json)
+[composer.lock]: (../includes/composer/composer.lock)
+[.gitignore]: (../includes/templates/subsite/.gitignore)
+[required.props]: (../includes/phing/props/required.props)
