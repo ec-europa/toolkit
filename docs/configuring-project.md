@@ -72,10 +72,10 @@ The definitions of these required properties you find in a file named
 To list all available targets defined in the toolkit you simply have to
 execute phing. This will display the targets per file.
 
-[build.default.props]: (../build.default.props)
-[build.project.xml]: (../includes/templates/subsite/build.project.xml)
-[build.xml]: (../build.xml)
-[composer.json]: (../includes/composer/composer.json)
-[composer.lock]: (../includes/composer/composer.lock)
-[.gitignore]: (../includes/templates/subsite/.gitignore)
-[required.props]: (../includes/phing/props/required.props)
+[build.default.props]: ../build.default.props
+[build.project.xml]: ../includes/templates/subsite/build.project.xml
+[build.xml]: ../build.xml
+[composer.json]: ../includes/composer/composer.json
+[composer.lock]: ../includes/composer/composer.lock
+[.gitignore]: ../includes/templates/subsite/.gitignore
+[required.props]: ../includes/phing/props/required.props
