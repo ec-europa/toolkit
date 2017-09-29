@@ -10,19 +10,186 @@ few steps.
 
 
 <details>
-    <summary>execute <code>composer create-project</code></summary>
-    <p>Toolkit provide a package to make all process easier</p>
+    <summary>execute <code>composer create-project ec-europa/subsite toolkit-demo dev-master</code></summary>
+&nbsp;
 
 ```
-composer create-project ec-europa/subsite toolkit-demo dev-master
+Toolkit provide a package to make all process easier, this will download and install
+all the tools you need to start working in your project.
 ```
 
 </details>
 <details>
     <summary>update the file <code>build.project.props</code></summary>
-    <p>Toolkit provide a package to make all process easier</p>
+&nbsp;
 
-<p>Example of build.project.props </p>
+```
+You should provide in the root of your project a file name build.project.props
+with the global information for your project like:
+- Project ID
+- platform version
+- Production URL
+- ...
+
+You can see an example bellow.
+```
+> Please check this [page](/docs) for more information.
+
+</details>
+<details>
+    <summary>create the file <code>build.develop.props</code></summary>
+&nbsp;
+
+```
+This file should include your local environment information like: data
+connection, website url and others. This file should <strong>never
+be commited to repository</strong>, it is intended to hold private
+information that should not be shared.
+
+You can see an example bellow.
+```
+
+</details>
+<details>
+    <summary>execute <code>./toolkit/phing build-project-platform</code></summary>
+&nbsp;
+
+```
+Toolkit provide a phing target to build the platform, please refer to targets documentation
+get more details.
+```
+
+</details>
+<details>
+    <summary>execute <code>./toolkit/phing build-subsite-dev</code></summary>
+&nbsp;
+
+```
+Toolkit provide a phing target to build your project, please refer to targets documentation
+get more details.
+```
+
+</details>
+<details>
+    <summary>execute <code>./toolkit/phing install-project-dev</code></summary>
+&nbsp;
+
+```
+Toolkit provide a phing target to install your subsite project, please refer to
+targets documentation get more details.
+```
+
+</details>
+
+
+<p>
+&nbsp;
+
+<p>Now put it all together and using terminal we got</p>
+
+```
+# Create the project from scratch in a folder name toolkit-demo
+$ composer create-project ec-europa/subsite toolkit-demo dev-master
+$ cd toolkit-devo
+
+# Edit the file build.project.props to add the required information 
+$ vim build.project.props
+
+# Create the build.developer.props and add your local settings there
+# touch build.develop.props
+$ vim build.develop.props
+
+# Build the platform, subsite and install it though phing
+$ ./toolkit/phing build-project-platform build-subsite-dev install-project-clean
+```
+&nbsp;
+
+## Clone installation
+With toolkit you can clone the  production environment of a specif subsite easily.
+Some requirements need to be filled to be able to clone:
+1. You should have access to repository of the project
+2. You should request the ASDA credentials in order to be able to download the daily snapshot
+
+If you don't have the credentials, please request it near your project-manager. 
+
+
+<details>
+    <summary>execute <code>composer create-project ec-europa/subsite toolkit-demo dev-master</code></summary>
+&nbsp;
+
+```
+Toolkit provide a package to make all process easier, this will download and install
+all the tools you need to start working in your project.
+```
+
+</details>
+<details>
+    <summary>update the file <code>build.project.props</code></summary>
+&nbsp;
+
+```
+You should provide in the root of your project a file name build.project.props
+with the global information for your project like:
+- Project ID
+- platform version
+- Production URL
+- ...
+
+You can see an example bellow.
+```
+> Please check this [page](/docs) for more information.
+
+</details>
+<details>
+    <summary>create the file <code>build.develop.props</code></summary>
+&nbsp;
+
+```
+This file should include your local environment information like: data
+connection, website url and others. This file should <strong>never
+be commited to repository</strong>, it is intended to hold private
+information that should not be shared.
+
+You can see an example bellow.
+```
+
+</details>
+<details>
+    <summary>execute <code>./toolkit/phing build-project-platform</code></summary>
+&nbsp;
+
+```
+Toolkit provide a phing target to build the platform, please refer to targets documentation
+get more details.
+```
+
+</details>
+<details>
+    <summary>execute <code>./toolkit/phing build-subsite-dev</code></summary>
+&nbsp;
+
+```
+Toolkit provide a phing target to build your project, please refer to targets documentation
+get more details.
+```
+
+</details>
+<details>
+    <summary>execute <code>./toolkit/phing install-project-clone</code></summary>
+&nbsp;
+
+```
+Toolkit provide a phing target to clone your subsite project, please refer to
+targets documentation get more details.
+```
+
+</details>
+
+
+<p>
+&nbsp;
+
+<p>Example of build.project.props</p>
 
 ```
 # Subsite configuration.
@@ -37,13 +204,7 @@ profile = multisite_drupal_standard
 platform.package.version = 2.3
 ```
 
-</details>
-<details>
-    <summary>create the file <code>build.develop.props</code></summary>
-    <p>This file should include your local environment
-    information like: data connection, website url and others. This file should <strong>never
-    be commited to repository</strong>, it is intended to hold private information that should
-    not be shared.</p>
+<p>Example of build.develop.props</p>
 
 ```
 project.url.base = http://vs-nxte-santosj.net1.cec.eu.int/coolsite
@@ -51,57 +212,4 @@ project.url.base = http://vs-nxte-santosj.net1.cec.eu.int/coolsite
 db.password = <your-database-password-here>
 db.her create-project ec-europa/subsite toolkit-demo dev-master
 ```
-
-</details>
-<details>
-    <summary>execute <code>./toolkit/phing build-project-platform</code></summary>
-    <p>Toolkit provide a phing target to build platform</p>
-
-```
-$ ./toolkit/phing build-project-platform
-```
-
-</details>
-<details>
-    <summary>execute <code>./toolkit/phing build-subsite-dev</code></summary>
-    <p>Toolkit provide a phing target to build your project</p>
-
-```
-$ ./toolkit/phing build-subsite-dev 
-```
-
-</details>
-<details>
-    <summary>execute <code>./toolkit/phing install-project-clean</code></summary>
-    <p>Toolkit provide a phing target to install your drupal project</p>
-
-```
-$ ./toolkit/phing install-project-clean
-```
-
-</details>
-
-
-<p>
 &nbsp;
-
-<p>Now put it all together and using terminal we got</p>
-
-```
-# Create the project from scratch in a folder name toolkit-demo
-$> composer create-project ec-europa/subsite toolkit-demo dev-master
-$> cd toolkit-devo
-
-# Edit the file build.project.props to add the required information 
-$> vim build.project.props
-
-# Create the build.developer.props and add your local settings there
-# touch build.develop.props
-$> vim build.develop.props
-
-# Build the platform, subsite and install it though phing
-$> ./toolkit/phing build-project-platform build-subsite-dev install-project-clean
-```
-&nbsp;
-
-## Clone installation
