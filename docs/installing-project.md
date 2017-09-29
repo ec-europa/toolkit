@@ -130,11 +130,22 @@ If you don't have the credentials, please request it near your project-manager.
 <p>Example of build.project.props</p>
 
 ```
-# Subsite configuration.
+# Subsite configuration example.
 # ----------------------
-project.id = toolkit-demo
-project.name = Toolkit Demo
-project.url.production = http://toolkit-demo.com
+
+project.id = <my project id here>
+
+project.install.modules = 
+project.name = <my project name>
+project.url.production = <my production url here>
+
+# Solr configuration.
+# -------------------
+project.solr.type = d7_apachesolr
+
+# Admin configuration.
+# --------------------
+project.admin.email = ${project.admin.username}@example.com
 
 # Platform configuration.
 # -----------------------
@@ -145,9 +156,19 @@ platform.package.version = 2.3
 <p>Example of build.develop.props</p>
 
 ```
-project.url.base = http://vs-nxte-santosj.net1.cec.eu.int/coolsite
+# Subsite developer configuration example.
+# ----------------------
 
-db.password = <your-database-password-here>
-db.her create-project ec-europa/subsite toolkit-demo dev-master
+project.url.base = <your local url here>
+
+db.password = <your database password here>
+db.host = <your database host  here>
+
+share.path = /tmp/cache
+
+# Database download settings.
+# ---------------------------
+db.dl.filename = <your asda database dump name here>
+db.dl.password = <your-asda-password-here>
+db.dl.username = <your-asda-username-here>
 ```
-&nbsp;
