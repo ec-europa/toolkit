@@ -11,78 +11,47 @@ few steps.
 
 <details>
     <summary>execute <code>composer create-project ec-europa/subsite toolkit-demo dev-master</code></summary>
-&nbsp;
-
-```
-Toolkit provide a package to make all process easier, this will download and install
-all the tools you need to start working in your project.
-```
+    <p>Toolkit provide a package to make all process easier, this will download and
+    install all the tools you need to start working in your project.</p>
 
 </details>
 <details>
     <summary>update the file <code>build.project.props</code></summary>
-&nbsp;
-
-```
-You should provide in the root of your project a file name build.project.props
-with the global information for your project like:
-- Project ID
-- platform version
-- Production URL
-- ...
-
-You can see an example bellow.
-```
-> Please check this [page](/docs) for more information.
+    <p>You should provide in the root of your project a file name build.project.props
+    with the global information for your project like: Project ID, platform
+    version or Production URL</p>
+    <p>You can see an example bellow.</p>
+    > Please check this [page](/docs) for more information.
 
 </details>
 <details>
     <summary>create the file <code>build.develop.props</code></summary>
-&nbsp;
-
-```
-This file should include your local environment information like: data
-connection, website url and others. This file should <strong>never
-be commited to repository</strong>, it is intended to hold private
-information that should not be shared.
-
-You can see an example bellow.
-```
+    <p>This file should include your local environment information like: data
+    connection, website url and others. This file should <strong>never
+    be commited to repository</strong>, it is intended to hold private
+    information that should not be shared.</p>
+    <p>You can see an example bellow.</p>
 
 </details>
 <details>
     <summary>execute <code>./toolkit/phing build-project-platform</code></summary>
-&nbsp;
-
-```
-Toolkit provide a phing target to build the platform, please refer to targets documentation
-get more details.
-```
+    <p>Toolkit provide a phing target to build the platform, please refer to targets documentation
+    get more details.</p>
 
 </details>
 <details>
     <summary>execute <code>./toolkit/phing build-subsite-dev</code></summary>
-&nbsp;
-
-```
-Toolkit provide a phing target to build your project, please refer to targets documentation
-get more details.
-```
+    <p>Toolkit provide a phing target to build your project, please refer to targets documentation
+    get more details.</p>
 
 </details>
 <details>
     <summary>execute <code>./toolkit/phing install-project-dev</code></summary>
-&nbsp;
-
-```
-Toolkit provide a phing target to install your subsite project, please refer to
-targets documentation get more details.
-```
+    <p>Toolkit provide a phing target to install your subsite project, please refer to
+    targets documentation get more details.</p>
 
 </details>
 
-
-<p>
 &nbsp;
 
 <p>Now put it all together and using terminal we got</p>
@@ -112,76 +81,45 @@ Some requirements need to be filled to be able to clone:
 
 If you don't have the credentials, please request it near your project-manager. 
 
-
 <details>
     <summary>execute <code>composer create-project ec-europa/subsite toolkit-demo dev-master</code></summary>
-&nbsp;
-
-```
-Toolkit provide a package to make all process easier, this will download and install
-all the tools you need to start working in your project.
-```
+    <p>Toolkit provide a package to make all process easier, this will download and
+    install all the tools you need to start working in your project.</p>
 
 </details>
 <details>
     <summary>update the file <code>build.project.props</code></summary>
-&nbsp;
-
-```
-You should provide in the root of your project a file name build.project.props
-with the global information for your project like:
-- Project ID
-- platform version
-- Production URL
-- ...
-
-You can see an example bellow.
-```
-> Please check this [page](/docs) for more information.
+    <p>You should provide in the root of your project a file name build.project.props
+    with the global information for your project like: Project ID, platform
+    version or Production URL</p>
+    <p>You can see an example bellow.</p>
+    > Please check this [page](/docs) for more information.
 
 </details>
 <details>
     <summary>create the file <code>build.develop.props</code></summary>
-&nbsp;
-
-```
-This file should include your local environment information like: data
-connection, website url and others. This file should <strong>never
-be commited to repository</strong>, it is intended to hold private
-information that should not be shared.
-
-You can see an example bellow.
-```
+    <p>This file should include your local environment information like: data
+    connection, website url and others. This file should <strong>never
+    be commited to repository</strong>, it is intended to hold private
+    information that should not be shared.</p>
+    <p>You can see an example bellow.</p>
 
 </details>
 <details>
     <summary>execute <code>./toolkit/phing build-project-platform</code></summary>
-&nbsp;
-
-```
-Toolkit provide a phing target to build the platform, please refer to targets documentation
-get more details.
-```
+    <p>Toolkit provide a phing target to build the platform, please refer to targets documentation
+    get more details.</p>
 
 </details>
 <details>
     <summary>execute <code>./toolkit/phing build-subsite-dev</code></summary>
-&nbsp;
-
-```
-Toolkit provide a phing target to build your project, please refer to targets documentation
-get more details.
-```
-
+    <p>Toolkit provide a phing target to build your project, please refer to targets documentation
+    get more details.</p>
 </details>
 <details>
     <summary>execute <code>./toolkit/phing install-project-clone</code></summary>
-&nbsp;
-
-```
-Toolkit provide a phing target to clone your subsite project, please refer to
-targets documentation get more details.
-```
+    <p>Toolkit provide a phing target to clone your subsite project, please refer to
+    targets documentation get more details.</p>
 
 </details>
 
