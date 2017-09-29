@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# Append JIRA number to commit msg.
+
+
+branchPath=$(git symbolic-ref -q HEAD) #Somthing like refs/heads/myBranchName
+branchName=${branchPath##*/}      #Get text behind the last / of the branch path
+
+firstLine=$(head -n1 $1)
+
+commit_regex='([A-Z]-[0-9]+|#[0-9])'
+
+touch .branchNameFile
+
+echo $branchName > .branchNameFile
+
+if ! grep -iqE "$commit_regex" "$1"; then
+  if grep -iqE "$commit_regex" .branchNameFile; then
+    if ! [ -z "$firstLine"  ] ;then #Check that this is not an amend by checking that the first line is empty
+      echo "$branchName: $firstLine" > "$1" #Insert branch name at the start of the commit message file
+    fi
+  fi
+fi
+
+rm .branchNameFile >&2
