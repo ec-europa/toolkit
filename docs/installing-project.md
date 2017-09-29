@@ -6,36 +6,90 @@ used in an unix environment.
 ## Clean installation
 With toolkit you can install in few minutes a new project in order to start working
 or test some new functionality. The process is quite simple and can be done in
-5 steps.
+few steps.
 
-1. Create a new project, toolokit provide a *package* to make it easier
-   ```composer create-project ec-europa/subsite toolkit-demo dev-master```
-2. Update the file `build.project.props` with the proper information. 
-```
-# Subsite configuration.
-# ----------------------
-project.id = toolkit-demo
-project.name = Toolkit Demo
-project.url.production = http://toolkit-demo.com
+<big>
+    <details>
+    <summary>Create the project with composer</summary>
+    <p>Toolkit provide a package to make all process easier</p>
+    ```
+    composer create-project ec-europa/subsite toolkit-demo dev-master
+    ```
+    </details>
+</big>
+<big>
+    <details>
+    <summary>Update the file `build.project.props` with the proper information</summary>
+    <p>Toolkit provide a package to make all process easier</p>
+    ```
+    $ composer create-project ec-europa/subsite toolkit-demo dev-master
+    ```
 
-# Platform configuration.
-# -----------------------
-profile = multisite_drupal_standard
-platform.package.version = 2.3
-```
-3. Create a file named build.develop.props to include your local environment
-information like: data connection, website url and others. This file should **never
-be commited to repository**, it is intended to hold private information that should
-not be shared.
-```
-project.url.base = http://vs-nxte-santosj.net1.cec.eu.int/coolsite
+    <p>Example of build.project.props</p> 
 
-db.password = <your-database-password-here>
-db.host = <your-database-host-here>
-```
-3. Build NextEuropa Platform `./toolkit/phing build-project-platform`
-4. Build the local development version of the site `./toolkit/phing build-subsite-dev`
-5. Install NextEuropa site from scratch. `./toolkit/phing install-project-clean`
+    ```
+    # Subsite configuration.
+    # ----------------------
+    project.id = toolkit-demo
+    project.name = Toolkit Demo
+    project.url.production = http://toolkit-demo.com
+
+    # Platform configuration.
+    # -----------------------
+    profile = multisite_drupal_standard
+    platform.package.version = 2.3
+    ```
+
+    </details>
+</big>
+
+<big>
+    <details>
+    <summary>Create a file named build.develop.props</summary>
+    <p>this file should include your local environment
+    information like: data connection, website url and others. This file should **never
+    be commited to repository**, it is intended to hold private information that should
+    not be shared.</p>
+
+    ```
+    project.url.base = http://vs-nxte-santosj.net1.cec.eu.int/coolsite
+
+    db.password = <your-database-password-here>
+    db.her create-project ec-europa/subsite toolkit-demo dev-master
+    ```
+
+    </details>
+</big>
+
+<big>
+    <details>
+    <summary>Build NextEuropa Platform</summary>
+    <p>Toolkit provide a phing target to build platform</p>
+    ```
+    $ ./toolkit/phing build-project-platform
+    ```
+    </details>
+</big>
+
+<big>
+    <details>
+    <summary>Build the local development version of the site</summary>
+    <p>Toolkit provide a phing target to build your project</p>
+    ```
+    $ ./toolkit/phing build-subsite-dev 
+    ```
+    </details>
+</big>
+
+<big>
+    <details>
+    <summary>Install NextEuropa site from scratch</summary>
+    <p>Toolkit provide a phing target to install your drupal project</p>
+    ```
+    $ ./toolkit/phing install-project-clean
+    ```
+    </details>
+</big>
 
 Now put it all together and usiung terminal we got:
 ```bash
