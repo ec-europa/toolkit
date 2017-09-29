@@ -8,83 +8,90 @@ With toolkit you can install in few minutes a new project in order to start work
 or test some new functionality. The process is quite simple and can be done in
 few steps.
 
-<big>
+
 <details>
     <summary>Create the project with composer</summary>
     <p>Toolkit provide a package to make all process easier</p>
-    <code>
-    composer create-project ec-europa/subsite toolkit-demo dev-master
-    </code>
+
+```
+composer create-project ec-europa/subsite toolkit-demo dev-master
+```
+
 </details>
 <details>
     <summary>Update the file **build.project.props** with the proper information</summary>
     <p>Toolkit provide a package to make all process easier</p>
-    
-    <code>
-    $ composer create-project ec-europa/subsite toolkit-demo dev-master
-    <code>
 
-    Example of build.project.props
-    <code>
-    # Subsite configuration.
-    # ----------------------
-    project.id = toolkit-demo
-    project.name = Toolkit Demo
-    project.url.production = http://toolkit-demo.com
+```
+$ composer create-project ec-europa/subsite toolkit-demo dev-master
+```
 
-    # Platform configuration.
-    # -----------------------
-    profile = multisite_drupal_standard
-    platform.package.version = 2.3
-    </code>
+<p>Example of build.project.props </p>
+
+```
+# Subsite configuration.
+# ----------------------
+project.id = toolkit-demo
+project.name = Toolkit Demo
+project.url.production = http://toolkit-demo.com
+
+# Platform configuration.
+# -----------------------
+profile = multisite_drupal_standard
+platform.package.version = 2.3
+```
+
 </details>
 <details>
     <summary>Create the file build.develop.props</summary>
-    <p>
-    This file should include your local environment
+    <p>This file should include your local environment
     information like: data connection, website url and others. This file should **never
     be commited to repository**, it is intended to hold private information that should
-    not be shared.
+    not be shared.</p>
 
-    <code>
+```
     project.url.base = http://vs-nxte-santosj.net1.cec.eu.int/coolsite
 
     db.password = <your-database-password-here>
     db.her create-project ec-europa/subsite toolkit-demo dev-master
-    </code>
-    </p>
+```
+
 </details>
 <details>
     <summary>Build the Platform</summary>
-    <p>Toolkit provide a phing target to build platform
-    <code>
-    $ ./toolkit/phing build-project-platform
-    </code>
-    </p>
+    <p>Toolkit provide a phing target to build platform</p>
+
+```
+$ ./toolkit/phing build-project-platform
+```
+
 </details>
 <details>
     <summary>Build the local development environment</summary>
-    <p>Toolkit provide a phing target to build your project
-    <code>
-    $ ./toolkit/phing build-subsite-dev 
-    </code>
-    </p>
+    <p>Toolkit provide a phing target to build your project</p>
+
+```
+$ ./toolkit/phing build-subsite-dev 
+```
+
 </details>
 <details>
     <summary>Install the site</summary>
-    <p>
-    Toolkit provide a phing target to install your drupal project
-    <code>
-    $ ./toolkit/phing install-project-clean
-    </code>
-    </p>
+    <p>Toolkit provide a phing target to install your drupal project</p>
+
+```
+$ ./toolkit/phing install-project-clean
+```
+
 </details>
 
-</big>
 
 <p>
-Now put it all together and using terminal we got:
-<code>
+&nbsp;
+
+<p>Now put it all together and using terminal we got</p>
+
+```
 # Create the project from scratch in a folder name toolkit-demo
 $> composer create-project ec-europa/subsite toolkit-demo dev-master
 $> cd toolkit-devo
@@ -98,7 +105,7 @@ $> vim build.develop.props
 
 # Build the platform, subsite and install it though phing
 $> ./toolkit/phing build-project-platform build-subsite-dev install-project-clean
-<code>
-</p>
+```
+&nbsp;
 
 ## Clone installation
