@@ -46,7 +46,7 @@ few steps.
 
 </details>
 <details>
-    <summary>execute <code>./toolkit/phing install-project-dev</code></summary>
+    <summary>execute <code>./toolkit/phing install-project-clean</code></summary>
     <p>Toolkit provide a phing target to install your subsite project, please refer to
     targets documentation get more details.</p>
 
