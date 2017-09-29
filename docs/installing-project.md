@@ -10,7 +10,7 @@ few steps.
 
 
 <details>
-    <summary>Create the project with composer</summary>
+    <summary>execute <code>composer create-project</code></summary>
     <p>Toolkit provide a package to make all process easier</p>
 
 ```
@@ -19,12 +19,8 @@ composer create-project ec-europa/subsite toolkit-demo dev-master
 
 </details>
 <details>
-    <summary>Update the file **build.project.props** with the proper information</summary>
+    <summary>update the file <code>build.project.props</code></summary>
     <p>Toolkit provide a package to make all process easier</p>
-
-```
-$ composer create-project ec-europa/subsite toolkit-demo dev-master
-```
 
 <p>Example of build.project.props </p>
 
@@ -43,22 +39,22 @@ platform.package.version = 2.3
 
 </details>
 <details>
-    <summary>Create the file build.develop.props</summary>
+    <summary>create the file <code>build.develop.props</code></summary>
     <p>This file should include your local environment
-    information like: data connection, website url and others. This file should **never
-    be commited to repository**, it is intended to hold private information that should
+    information like: data connection, website url and others. This file should <strong>never
+    be commited to repository</strong>, it is intended to hold private information that should
     not be shared.</p>
 
 ```
-    project.url.base = http://vs-nxte-santosj.net1.cec.eu.int/coolsite
+project.url.base = http://vs-nxte-santosj.net1.cec.eu.int/coolsite
 
-    db.password = <your-database-password-here>
-    db.her create-project ec-europa/subsite toolkit-demo dev-master
+db.password = <your-database-password-here>
+db.her create-project ec-europa/subsite toolkit-demo dev-master
 ```
 
 </details>
 <details>
-    <summary>Build the Platform</summary>
+    <summary>execute <code>./toolkit/phing build-project-platform</code></summary>
     <p>Toolkit provide a phing target to build platform</p>
 
 ```
@@ -67,7 +63,7 @@ $ ./toolkit/phing build-project-platform
 
 </details>
 <details>
-    <summary>Build the local development environment</summary>
+    <summary>execute <code>./toolkit/phing build-subsite-dev</code></summary>
     <p>Toolkit provide a phing target to build your project</p>
 
 ```
@@ -76,7 +72,7 @@ $ ./toolkit/phing build-subsite-dev
 
 </details>
 <details>
-    <summary>Install the site</summary>
+    <summary>execute <code>./toolkit/phing install-project-clean</code></summary>
     <p>Toolkit provide a phing target to install your drupal project</p>
 
 ```
