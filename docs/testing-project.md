@@ -1,4 +1,4 @@
-# Testing
+# Testing project
 
 This guide explains how to use the resources provided by toolkit to test your 
 project. You can list all resources available by typing the command <code>toolkit/phing help-test</code>.
@@ -82,5 +82,3 @@ BUILD FAILED
 ## Behat testing
 <p>To run behat tests you should execute the command <code>./toolkit/phing test-run-behat</code>
 in the root path of your project. The test and configuration are by default in the folder /tests.</p>
-
-## PHP Unit testing
