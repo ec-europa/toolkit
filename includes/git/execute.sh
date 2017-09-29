@@ -10,7 +10,7 @@ SOURCEDIR=$( dirname "$SOURCE" )
 while [ -h "$SOURCE" ]; do
   DIR="$( cd -P $SOURCEDIR && pwd )"
   SOURCE="$(readlink "$SOURCE")"
-  [[ "$SOURCE" != /* ]] && SOURCE="$DIR/$SOURCE"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
