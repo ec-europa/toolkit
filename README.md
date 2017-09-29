@@ -123,6 +123,7 @@ locally and can be used in CI tools like Jenkins, Drone and Travis.
 - [Testing the project](/docs/testing-project.md/#testing-project)
     - [Coding Standards](docs/testing-project.md#coding-standards)
     - [Behat testing](docs/testing-project.md#behat-testing)
+    - [QA Automation](docs/testing-project.md#qa-automation)
 - [Using Composer hooks](./docs/composer-hooks.md)
 - [Using Git hooks](./docs/git-hooks.md)
 - [Using Docker environment]()
