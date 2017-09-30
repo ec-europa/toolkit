@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Execute all scripts in the folder that matches the scripts filename.
 # This execution script is merely a template which will
