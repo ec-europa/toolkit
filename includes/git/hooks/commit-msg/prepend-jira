@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo $1
+
 # If commit message is a fixup message, ignore it
 [[ -n "$(cat $1 | grep 'fixup!')" ]] && FIXUP="YES"
 
