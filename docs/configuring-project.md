@@ -2,17 +2,17 @@
 
 <big><table><thead><tr><th nowrap> [Setting up a project](./setting-up-project.md#setting-up-a-project) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Building the codebase](./building-codebase.md#building-the-codebase) </th></tr></thead></table>
 
-This guide explains the basic structure of the toolkit and which files can be
-used in what context.
-
-## Build properties
+This guide walks you through the different kind of build properties filee and
+what configuration belongs where. It is important that you choose the correct
+file to store your configurration in. These files need to be located in the root
+of your project.
 
 ### Default properties
 
 This file is never loaded into active configuration and purely acts as an
 overview of all build properties that are available to you.
 
-<details><summary>execute <code>cat build.default.props</code></summary><p>
+<details><summary>Example of the build.default.project file</summary><p>
 
 ```yaml
 # Toolkit location: ./includes/phing/build/boot.props
@@ -422,7 +422,7 @@ drush.db.dump = ${build.platform.dir}/dump.sql
 In this file you can define properties that are specific to your local 
 development environment. This file may not be committed into the repository.
 
-<details><summary>Example build.develop.props</summary><p>
+<details><summary>Example of a build.develop.props file</summary><p>
 
 ```yaml
 # Development modules.
@@ -454,10 +454,10 @@ db.port = 3306
 ### Project properties
 
 In this file you should only define properties that are specific to the project.
-Without this file CI can not run tests on your project. It also has a number of
-required properties that you can find in the file named [required.props].
+It also has a number of required properties that you can find in the file named
+[required.props].
 
-<details><summary>Example build.project.props</summary><p>
+<details><summary>Example of a build.project.props file</summary><p>
 
 ```yaml
 # Subsite configuration.
