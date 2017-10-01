@@ -1,6 +1,6 @@
-# Testing project
+# Testing the project
 
-<big><table><thead><tr><th nowrap> [Installing a project](./installing-project.md#installing-a-project) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Todo](./todo) </th></tr></thead></table>
+<big><table><thead><tr><th nowrap> [Installing a project](./installing-project.md#installing-the-project) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Todo](./todo) </th></tr></thead></table>
 
 This guide explains how to use the resources provided by toolkit to test your 
 project. You can list all resources available by typing the command <code>toolkit/phing help-test</code>.

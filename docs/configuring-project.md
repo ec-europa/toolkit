@@ -9,12 +9,9 @@ used in what context.
 
 ### build.default.props
 
-The current toolkit is modular and saves different properties files in different
-locations. At installation of the toolkit you will get an aggregated
-[build.default.props] file copied to the root of your project to have easy
-access to all possible conguration of the toolkit. This file is never loaded
-into active configuration. To re-generate this file manually you can execute a
-Phing target called toolkit-default-props.
+At installation of the toolkit you will get an aggregated [build.default.props]
+file copied to the root of your project to have easy access to all possible
+conguration of the toolkit. This file is never loaded into active configuration.
 
 ### build.develop.props
 
