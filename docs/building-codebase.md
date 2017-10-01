@@ -4,27 +4,18 @@
 
 There are three different types of codebases you can build.
 
-**Functional codebase**: Build codebase by download of a release package.
-**Developer codebase**: Build codebase by symlinking to the `lib/` folder.
-**Distribution codebase**: Build codebase intended to be packaged for release.
+**Functional codebase**: Build codebase by download of a release package.<br>
+**Developer codebase**: Build codebase by symlinking to the `lib/` folder.<br>
+**Distribution codebase**: Build codebase intended to be packaged for release.<br>
 
 ## Platform builds
-
-Important build properties to configure platform builds:
-
-```yaml
-# Define what platform profile your project uses.
-profile = multisite_drupal_standard
-# Define what version of the platform you project uses.
-platform.package.version = 2.4
-```
 
 <details><p><summary>execute <code>./toolkit/phing build-project-platform</code></summary></p>
 
 This build downloads the latest released platform deploy package depending on
 what version you specified as the platform.package.version property. After
 download it unpacks it to the build folder. This build is mainly used by subsites
-ho need to test their code on a cetain platform version.
+that need to test their code on a cetain platform version.
 </p></details>
 
 <!-- <details><p><summary>execute <code>composer create-project ec-europa/platform toolkit-demo dev-master</code></summary> 
@@ -70,13 +61,6 @@ the `./toolkit/phing build-project-platform` command.
 </p></details>
 
 ## Subsite builds
-
-Important build properties to configure subsite builds:
-
-```yaml
-# Folder located under ./build/sites
-build.site = default
-```
 
 <details><p><summary>execute <code>./toolkit/phing build-project-subsite</code></summary></p>
 
