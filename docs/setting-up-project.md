@@ -1,6 +1,6 @@
 # Setting up a project
 
-<big><table><thead><tr><th nowrap> [NextEuropa Toolkit](../README.md#user-guide) </th><th width="100%" align="center"> [Home](../README.md) </th><th nowrap> [Configuring a project](./configuring-project.md#configuring-a-project) </th></tr></thead></table>
+<big><table><thead><tr><th nowrap> [NextEuropa Toolkit](../README.md) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Configuring a project](./configuring-project.md#configuring-a-project) </th></tr></thead></table>
 
 ## Getting the sourcecode
 
