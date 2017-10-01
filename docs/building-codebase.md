@@ -1,5 +1,7 @@
 # Building the codebase
 
+<big><table><thead><tr><th nowrap> [Configuring a project](./configuring-project#confguring-a-project) </th><th width="100%" align="center"> [Home](../README.md) </th><th nowrap> [Installing a project](./installing-project.md#installing-a-project) </th></tr></thead></table>
+
 There are three different types of codebases you can build.
 
 1. **Functional codebase**: Build codebase by download of a release package.
