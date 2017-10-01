@@ -40,76 +40,16 @@ much recommended to use docker as it will give you everything you need.
 [LAMP Stack](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-centos-7)
 </details>
 
-## Installation
-There are two different types of projects for which to install this composer
-package. You can either create a new platform repository or a new subsite
-repository. Both types use this toolkit to build the project and it's release
-packages.
-
-<details><summary><b>composer create-project ec-europa/platform dirname ~3.0.0</b></summary>
-
-This command will clone the repository of the ec-europa/platform project and run
-composer install on it. The installation of the toolkit itself is run seperately
-to create a clear separation between the toolkit and your project source code.
-Extending the toolkit is not possible without contributing your functionalities
-through pull requests. You will be requested to remove or keep the VCS files
-after cloning the project. For development purposes you should NOT agree to
-remove these files. Only for deploy and testing purposes it is recommended to
-remove the version control system. There is only one official platform project
-which is maintained by the NextEuropa core development team.
-</details>
-
-<details><summary><b>composer create-project ec-europa/subsite dirname ~3.0.0</b></summary>
-
-This command will clone the repository of the ec-europa/subsite project and run
-composer install on it. The installation of the toolkit itself is run seperately
-to create a clear separation between the toolkit and your project source code.
-Extending the toolkit is not possible without contributing your functionalities
-through pull requests. You will be requested to remove or keep the VCS files
-after cloning the project. Upon initial creation of your project you need to
-remove the VCS files as you will commit the source code to your own repository.
-After your project is registered by NextEuropa as an official subsite you will
-be able to direct pull requests to a reference repository.
-
-After your project is accepted you can register your fork locally or through
-packagist to use the same composer create-project command on  your fork that
-serves development only.
-
-<details><summary>To locally register your package the following code to your global config.json:</summary><p>
-
-```json
-{
-  "repositories": [
-    {
-      "type": "package",
-      "package": {
-        "name": "ec-europa/<project-id>-dev",
-        "version": "dev-master",
-        "source": {
-          "type" : "git",
-          "url" : "https://github.com/<github-account>/<project-id>-dev.git",
-          "reference" : "master"
-        }
-      }
-    }
-  ],
-}
-
-```
-</p></details>
-
-<details><summary>To globally register your development repository you can visit packagist.org.</summary><p>
-
-[https://packagist.org/packages/submit]
-</p></details>
-</details>
-
 ## User guide
 
 The toolkit contains different components that help you in development. The main
 component is the Phing build system that let's you easily set up the project
 locally and can be used in CI tools like Jenkins, Drone and Travis.
 
+- [Setting up a project](/docs/setting-up-project.md#setting-up-project)
+    - [Getting the source code](/docs/setting-up-project.md#setting-up-project)
+        - [New project](/docs/setting-up-project.md#new-project)
+        - [Existing project](/docs/setting-up-project.md#existing-project)
 - [Configuring a project](/docs/configuring-project.md#configuring-a-project)
     - [Build files](docs/configuring-project.md#build-files)
     - [Build properties](docs/configuring-project.md#build-properties)

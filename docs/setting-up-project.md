@@ -11,7 +11,7 @@ To instatiate a new project that will be running as a subsite on the NextEuropa
 platform you only have to execute one command which will perform multiple steps
 for you automatically.
 
-<details><summary>composer create-project ec-europa/subsite project-id ~3.0.0 --no-interaction</summary><p>
+<details><summary><code>composer create-project ec-europa/subsite project-id ~3.0.0 --no-interaction</code></summary><p>
 <blockquote>
 <details><p><summary>1. Clone the subsite repository</summary>
 
@@ -289,7 +289,7 @@ To instantiate an existing project with the compser create-project command
 you need to simulate the package registry locally. After that composer will
 target the repository you defined in the package definition.
 
-<details><summary>nano ~/.composer/config.json</summary><p>
+<details><summary><code>nano ~/.composer/config.json</code></summary><p>
 
 ```json
 {
@@ -312,7 +312,7 @@ target the repository you defined in the package definition.
 ```
 </p></details>
 
-<details><summary>composer create-project &#x3C;owner-name&#x3E;/&#x3C;project-id&#x3E;-dev project-id dev-master --keep-vcs --no-interaction</summary><p>
+<details><summary><code>composer create-project &#x3C;owner-name&#x3E;/&#x3C;project-id&#x3E;-dev project-id dev-master --keep-vcs --no-interaction</code></summary><p>
 
 <blockquote>
 <details><p><summary>1. Clone the subsite repository</summary>
