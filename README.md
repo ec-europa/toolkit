@@ -46,8 +46,8 @@ The toolkit contains different components that help you in development. The main
 component is the Phing build system that let's you easily set up the project
 locally and can be used in CI tools like Jenkins, Drone and Travis.
 
-- [Setting up a project](/docs/setting-up-project.md#setting-up-project)
-    - [Getting the source code](/docs/setting-up-project.md#setting-up-project)
+- [Setting up a project](/docs/setting-up-project.md#setting-up-a-project)
+    - [Getting the source code](/docs/setting-up-project.md#getting-the-source-code)
         - [New project](/docs/setting-up-project.md#new-project)
         - [Existing project](/docs/setting-up-project.md#existing-project)
 - [Configuring a project](/docs/configuring-project.md#configuring-a-project)

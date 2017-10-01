@@ -1,5 +1,7 @@
 # Configuring a project
 
+<big><table><thead><tr><th nowrap> [Setting up a project](./setting-up-project.md) </th><th width="100%" align="center"> [Home](../README.md) </th><th nowrap> [Building the codebase](./building-codebase.md) </th></tr></thead></table>
+
 This guide explains the basic structure of the toolkit and which files can be
 used in what context.
 
