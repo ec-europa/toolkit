@@ -1,4 +1,7 @@
 # Installing a project
+
+<big><table><thead><tr><th nowrap> [Building the codebase](./building-codebase.md#building-the-codebase) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Testing a project](./testing-project.md#testing-a-project) </th></tr></thead></table>
+
 This guide explains how to install a new project or how to 
 clone your production website using the toolkit. This guide is intended to be
 used in an unix environment.
