@@ -14,8 +14,8 @@ There are three different types of codebases you can build.
 
 This build downloads the latest released platform deploy package depending on
 what version you specified as the platform.package.version property. After
-download it unpacks it to the build folder. This build is mainly used by subsites
-that need to test their code on a cetain platform version.
+download it is unpacked to the build folder. This build is mainly used by subsites
+that need to test their code on a specific platform version.
 </p></details>
 
 <!-- <details><p><summary>execute <code>composer create-project ec-europa/platform toolkit-demo dev-master</code></summary> 
@@ -32,8 +32,8 @@ refer to the [build.default.props] file that is provided by the toolkit.
 </p></details> -->
 <details><p><summary>execute <code>./toolkit/phing build-platform-dev</code></summary></p>
 
-Build the actual codebase. This action will transform your `lib/` and
-`resources/` folder into a Drupal codebase which you can install. This action by
+Build the actual codebase, this will transform your `lib/` and
+`resources/` folder into a Drupal codebase which you can installed. This action by
 default will start by backing up any site specific files if there were any
 present.
 
@@ -50,12 +50,12 @@ download.
 </p></details> -->
 <details><p><summary>execute <code>./toolkit/phing build-platform-dist</code></summary></p>
 
-Build the disstribution files for a single profile. You can change the profile
+Build the distribution files for a single profile. You can change the profile
 either through changing the property in your build properties file or through
-defining it in the command itself with the `-D'profile'=` option.
+defining it in the command itself with the `-D 'profile'=` option.
 
-This build will only build the files necessary for deployment. The result of the
-build will be compressed and uploaded to github when your project gets tagged
+This build will only build the files necessary for deployment and the result 
+will be compressed and uploaded to github when your project gets tagged
 for release. After the release this package will be available for download by
 the `./toolkit/phing build-project-platform` command.
 </p></details>
@@ -94,15 +94,15 @@ properties. After succesful download it will unpack the package into the
 <details><p><summary>execute <code>./toolkit/phing build-subsite-dev</code></summary>
 
 Builds all resources and symlinks the individual modules, themes and libraries
-to their location in the lib/ folder. The `lib/` folder effectively becomes a
-mirror of `build/sites/default`. 
+to their location in the lib/ folder. The `build/sites/default` folder effectively becomes a
+mirror of `lib/`.
 </p></details>
 
 <details><p><summary>execute <code>./toolkit/phing build-subsite-dist</code></summary></p>
 
-Build the disstribution files for a single subsite. You can change the subsite
+Build the distribution files for a single subsite, you can change the subsite
 either through changing the property in your build properties file or through
-defining it in the command itself with the `-D'subsite'=` option.
+defining it in the command itself with the `-D 'subsite'=` option.
 
 This build will only build the files necessary for deployment. The result of the
 build will be compressed and uploaded to github when your project gets tagged
