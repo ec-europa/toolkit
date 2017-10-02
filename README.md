@@ -6,7 +6,7 @@
 <p>The NextEuropa Toolkit is a composer package designed to speed up the
 development of Drupal websites in the NextEuropa project. It's main component is
 the Phing build system that builds your development environments, deploy
-packages and test packages.</p>
+and test packages.</p>
 
 ## Requirements
 There are three separate ways of using the NextEuropa project. Either you use an
@@ -16,7 +16,7 @@ environment with Docker installed, an environment without, or a mix of both.
 
 This requirement for docker only needs to have docker in docker support. The
 configuration to accomplish this is complex and if implemented incorrectly can
-give you problems. We recommend this approach only for seasond docker users.
+give you problems. We recommend this approach only for seasoned docker users.
 <br>*Required components*:
 [Docker](https://docs.docker.com/engine/installation/linux/docker-ce/centos/)
 </details>
@@ -42,9 +42,9 @@ much recommended to use docker as it will give you everything you need.
 
 ## User guide
 
-The toolkit contains different components that help you in development. The main
+The toolkit contains different components that help you during the development, the main
 component is the Phing build system that let's you easily set up the project
-locally and can be used in CI tools like Jenkins, Drone and Travis.
+locally and can be used in CI tools like Jenkins, Drone or Travis.
 
 - [Setting up a project](/docs/setting-up-project.md#setting-up-a-project)
     - [Getting the source code](/docs/setting-up-project.md#getting-the-source-code)
@@ -76,8 +76,8 @@ operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
 
 <details><summary><b>Contact list</b></summary>
 
-[Alex Verbruggen](verbruggenalex): Maintainer -Quality Assurance
-[Joao Santos](jonhy81): Maintainer - Quality Assurance
+- [Alex Verbruggen](verbruggenalex): Maintainer - Quality Assurance
+- [Joao Santos](jonhy81): Maintainer - Quality Assurance
 </details>
 
 [https://webgate.ec.europa.eu/CITnet/jira]: https://webgate.ec.europa.eu/CITnet/jira/secure/RapidBoard.jspa?rapidView=581
