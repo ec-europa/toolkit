@@ -1,6 +1,6 @@
 # Setting up a project
 
-<big><table><thead><tr><th nowrap> [NextEuropa Toolkit](../README.md#nexteuropa-toolkit) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Configuring a project](./configuring-project.md#configuring-a-project) </th></tr></thead></table>
+<big><table><thead><tr><th nowrap > [NextEuropa Toolkit](../README.md#nexteuropa-toolkit) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Configuring a project](./configuring-project.md#configuring-a-project) </th></tr></thead></table>
 
 ## Getting the sourcecode
 
@@ -287,7 +287,7 @@ Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]? y
 
 ### Existing project
 
-To instantiate an existing project with the compser create-project command
+To instantiate an existing project with the composer create-project command
 you need to simulate the package registry locally. After that composer will
 target the repository you defined in the package definition.
 
