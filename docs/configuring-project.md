@@ -2,9 +2,9 @@
 
 <big><table><thead><tr><th nowrap> [Setting up a project](./setting-up-project.md#setting-up-a-project) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Building the codebase](./building-codebase.md#building-the-codebase) </th></tr></thead></table>
 
-This guide walks you through the different kind of build properties filee and
+This guide walks you through the different kind of build properties files and
 what configuration belongs where. It is important that you choose the correct
-file to store your configurration in. These files need to be located in the root
+file to store your configuration in. These files need to be located in the root
 of your project.
 
 ### Default properties
@@ -12,7 +12,7 @@ of your project.
 This file is never loaded into active configuration and purely acts as an
 overview of all build properties that are available to you.
 
-<details><summary>Example of the build.default.project file</summary><p>
+<details><summary>Example of the <code>build.default.project</code> file</summary><p>
 
 ```yaml
 # Toolkit location: ./includes/phing/build/boot.props
@@ -422,7 +422,7 @@ drush.db.dump = ${build.platform.dir}/dump.sql
 In this file you can define properties that are specific to your local 
 development environment. This file may not be committed into the repository.
 
-<details><summary>Example of a build.develop.props file</summary><p>
+<details><summary>Example of a <code>build.develop.props</code> file</summary><p>
 
 ```yaml
 # Development modules.
@@ -457,7 +457,7 @@ In this file you should only define properties that are specific to the project.
 It also has a number of required properties that you can find in the file named
 [required.props].
 
-<details><summary>Example of a build.project.props file</summary><p>
+<details><summary>Example of a <code>build.project.props</code> file</summary><p>
 
 ```yaml
 # Subsite configuration.
@@ -480,11 +480,11 @@ platform.package.version = 2.4
 
 ### build.xml
 
-The [build.xml] file has be located in the root of your project. This file
+The [build.xml] file has be located in the root of your project, this file
 should not be altered in any way. It contains the link to your toolkit and it is
 the default file that Phing looks for when you execute it.
 
-### buld.project.xml
+### build.project.xml
 
 If there is a need to customize certain build targets you can override them by
 placing a [build.project.xml] file in the root of your project. Then it is just
@@ -497,8 +497,8 @@ especially constructed for toolkit builds.
 ### composer.json
 
 The [composer.json] installs the toolkit by the use of the composer hooks. The
-reason we do a seperated install is to avoid developers running composer update
-on the toolkit. Now regardles of wether you run composer install or update, you
+reason we do a separated install is to avoid developers running composer update
+on the toolkit. Now regardless of wether you run composer install or update, you
 will always install the toolkit as it is defined in its own [composer.lock]
 file. For a clearer picture here is an example of the resulting folder structure
 after installing a toolkit.
