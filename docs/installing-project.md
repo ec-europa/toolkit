@@ -48,7 +48,7 @@ have all installation steps written into the module and feature install files.
 
 <details><summary>execute <code>./toolkit/phing install-project-clean</code></summary><p>
 
-This target will install your site from scratch. And by default it will save the
+This target will install your site from scratch and by default it will save the
 database right after install to cache it. That way on a future build with the
 same platform version you will skip a part of the installation process.
 </p></details>
