@@ -12,9 +12,8 @@
             <property file="${project.basedir}/build.develop.props" logoutput="${logoutput}" />
         </then>
     </if>
-    <exec command="find . -maxdepth 1 -type l -ls | grep './docker-'" outputProperty="docker-environments"  />
     <if>
-        <istrue value="${docker-environments}" />
+        <available file="/.dockerenv" />
         <then>
             <property file="${toolkit.dir.incl.phing.props}/docker.props" logoutput="${logoutput}" />
         </then>
