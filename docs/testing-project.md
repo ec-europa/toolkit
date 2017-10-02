@@ -84,7 +84,3 @@ BUILD FAILED
 ## Behat testing
 <p>To run behat tests you should execute the command <code>./toolkit/phing test-run-behat</code>
 in the root path of your project. The test and configuration are by default in the folder /tests.</p>
-
-## QA Automation
-<p>To run QA automated tests you should execute the command <code>./toolkit/phing test-run-qa</code>
-in the root path of your project.</p>
