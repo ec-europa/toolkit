@@ -1,0 +1,4 @@
+db.host = mysql
+solr.host = solr
+behat.base_url = http://web:8080
+behat.wd_host.url = http://selenium:4444/wd/hub
