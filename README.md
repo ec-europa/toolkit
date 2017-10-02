@@ -63,10 +63,10 @@ locally and can be used in CI tools like Jenkins, Drone and Travis.
 - [Testing the project](/docs/testing-project.md/#testing-project)
     - [PHPCS testing](docs/testing-project.md#phpcs-testing)
     - [Behat testing](docs/testing-project.md#behat-testing)
-    - [QA Automation](docs/testing-project.md#qa-automation)
+    - [PHPUnit testing](docs/testing-project.md#phpunit-testing)
 - [Using Composer hooks](/docs/composer-hooks.md#using-composer-hooks)
 - [Using Git hooks](/docs/git-hooks.md#using-git-hooks)
-- [Using Docker environment](/docs/using-docker#using-docker-environment)
+- [Using Docker environment](/docs/using-docker.md#using-docker-environment)
 
 ## Maintainers
 
