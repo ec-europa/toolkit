@@ -76,8 +76,8 @@ operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
 
 <details><summary><b>Contact list</b></summary>
 
-- [Alex Verbruggen](verbruggenalex): Maintainer - Quality Assurance
-- [Joao Santos](jonhy81): Maintainer - Quality Assurance
+- [Alex Verbruggen](https://github.com/verbruggenalex): Maintainer - Quality Assurance
+- [Joao Santos](https://github.com/jonhy81): Maintainer - Quality Assurance
 </details>
 
 [https://webgate.ec.europa.eu/CITnet/jira]: https://webgate.ec.europa.eu/CITnet/jira/secure/RapidBoard.jspa?rapidView=581
