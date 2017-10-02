@@ -66,7 +66,7 @@ locally and can be used in CI tools like Jenkins, Drone and Travis.
     - [PHPUnit testing](docs/testing-project.md#phpunit-testing)
 - [Using Composer hooks](/docs/composer-hooks.md#using-composer-hooks)
 - [Using Git hooks](/docs/git-hooks.md#using-git-hooks)
-- [Using Docker environment](/docs/using-docker.md#using-docker-environment)
+- [Using Docker environment](/docs/docker-environment.md#using-docker-environment)
 
 ## Maintainers
 

@@ -1,6 +1,6 @@
 # Using Git hooks
 
-<big><table><thead><tr><th nowrap> [Using Composer hooks](./composer-hooks.md#using-composer-hooks) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Using Docker](./using-docker.md#using-docker) </th></tr></thead></table>
+<big><table><thead><tr><th nowrap> [Using Composer hooks](./composer-hooks.md#using-composer-hooks) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Using Docker](./docker-environment.md#using-docker-environment) </th></tr></thead></table>
 
 The toolkit allows you to hook into git events. This is useful for
 example if you want to apply standards to commit messages or need to
