@@ -1,6 +1,6 @@
 # Using Docker environment
 
-<big><table><thead><tr><th nowrap> [Using Git hooks](./git-hhooks.md#using-git-hooks) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [NextEuropa Toolkit](../README.md#nexteuropa-toolkit) </th></tr></thead></table>
+<big><table><thead><tr><th nowrap> [Using Git hooks](./git-hooks.md#using-git-hooks) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [NextEuropa Toolkit](../README.md#nexteuropa-toolkit) </th></tr></thead></table>
 
 The toolkit allows comes with a docker environment that can help you set up an
 environment much faster. This feature is still experimental and in progress.
