@@ -37,11 +37,6 @@
         <echoproperties prefix="composer.hook." />
     </target>
 
-    <target name="toolkit-hooks-git" description="Echo the git hook phing targets for use in bash script." hidden="true">
-        <echoproperties prefix="git.hook." />
-    </target>
-
-
     <target name="toolkit-hooks-git-delete" description="Delete all git hooks.">
         <if>
             <available file="${project.basedir}/.git/hooks" type="dir" />
