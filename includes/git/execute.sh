@@ -4,8 +4,8 @@
 # This execution script is merely a template which will
 # be copied when there are git hooks defined.
 HOOK=$(basename $0)
-
 HOOK_DIR="resources/git/hooks/$HOOK"
+
 if [ -d $HOOK_DIR ] ; then
   for SCRIPT in $HOOK_DIR/*
   do
@@ -14,3 +14,5 @@ if [ -d $HOOK_DIR ] ; then
     fi
   done
 fi
+
+
