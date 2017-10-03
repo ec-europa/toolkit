@@ -2,6 +2,29 @@
 
 <project name="general" description="General helper targets that can be used by multiple projects." default="">
 
+    <target name="cache-delete" description="Delete cached files for the current build version."
+        hidden="true">
+        <echo msg="Cleaning cached and temporary file..." />
+        <if>
+            <available file="${share.path.platform}/databases/platform-dev-${platform.package.version.current}/platform-dev-${platform.package.version.current}.sql" type="file" />
+            <then>
+                <delete dir="${share.path.platform}/databases/platform-dev-${platform.package.version.current}/" includeemptydirs="true" failonerror="false" />
+            </then>
+        </if>
+        <if>
+            <available file="${share.path.platform.packages.deploy}/platform-dev-${platform.package.version.current}.tar.gz" type="file" />
+            <then>
+                <delete file="${share.path.platform.packages.deploy}/platform-dev-${platform.package.version.current}.tar.gz" failonerror="false" />
+            </then>
+        </if>
+        <if>
+        <available file="${project.tmp.dir}" type="dir" />
+        <then>
+            <delete dir="${project.tmp.dir}/" failonerror="false" includeemptydirs="true"/>
+        </then>
+        </if>
+    </target>
+
     <target name="folder-copy" description="Copy a folder to a destination." hidden="true">
         <copy todir="${copy.destination.path}" haltonerror="${build.haltonerror.dir.copy}">
             <fileset dir="${copy.source.path}" defaultexcludes="false" />
