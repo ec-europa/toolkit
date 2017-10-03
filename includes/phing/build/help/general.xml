@@ -2,7 +2,7 @@
 
 <project name="general" description="General helper targets that can be used by multiple projects." default="">
 
-    <target name="cache-delete" description="Delete cached files for the current build version."
+    <target name="cache-clear-all" description="Delete all files stored in cache."
         hidden="true">
         <echo msg="Cleaning cached and temporary file..." />
         <if>

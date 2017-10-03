@@ -36,11 +36,11 @@ available settings.</p>
 
 #### How to clean the cache?
 <p>Toolkit provide a specific target to allow to remove all the cached files.
-You should execute <code>./toolkit/phing cache-delete</code> to clean all the
+You should execute <code>./toolkit/phing cache-clear-all</code> to clean all the
 caches.</p>
 
 ```
-$> toolkit/phing cache-delete
+$> toolkit/phing cache-clear-all
 Buildfile: /home/santosj/SourceCode/coolsite/build.xml
  [property] Loading ~/coolsite/vendor/ec-europa/toolkit/includes/phing/build/boot.props
  [property] Loading ~/coolsite/build.develop.props
