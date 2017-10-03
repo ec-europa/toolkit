@@ -41,23 +41,31 @@
         <echoproperties prefix="git.hook." />
     </target>
 
-    <target name="toolkit-hooks-git-disable" description="Disable all git hooks.">
-        <foreach param="hook-name" absparam="abshook-name" target="toolkit-hooks-git-disable-hook">
-            <fileset dir="${project.basedir}/.git/hooks">
-                <include name="*.active" />
-            </fileset>
-        </foreach>
-    </target>
 
-    <target name="toolkit-hooks-git-disable-hook" description="Disable a single git hook." hidden="true">
+    <target name="toolkit-hooks-git-delete" description="Delete all git hooks.">
         <if>
             <available file="${project.basedir}/.git/hooks" type="dir" />
             <then>
-                <propertyregex property="hook-name" subject="${hook-name}" pattern="(.*?)\.active" match="$1" override="true" />
-                <dirname file="${abshook-name}" property="hook-dir" />
-                <exec command="mv ${abshook-name} ${hook-dir}/${hook-name}.sample" />
-                <exec command="rm -rf ${project.basedir}/.git/hooks/${hook-name}" />
-                <echo msg="Git hook ${hook-name} is inactivated." />
+                <foreach param="hook-name" absparam="abshook-name" target="toolkit-hooks-git-delete-hook">
+                    <fileset dir="${project.basedir}/.git/hooks">
+                        <type type="file" />
+                        <depth max="1" />
+                        <depth min="0" />
+                    </fileset>
+                </foreach>
+            </then>
+            <else>
+                <echo msg="No git hooks directory detected at: ${project.basedir}/.git/hooks" level="warning" />
+            </else>
+        </if>
+    </target>
+
+    <target name="toolkit-hooks-git-delete-hook" description="Delete a single git hook." hidden="true">
+        <if>
+            <available file="${project.basedir}/.git/hooks" type="dir" />
+            <then>
+                <exec command="rm ${project.basedir}/.git/hooks/${hook-name}" />
+                <echo msg="Git hook ${hook-name} is inactivated." level="warning" />
             </then>
         </if>
     </target>
@@ -74,6 +82,7 @@
                         <depth max="2" />
                         <depth min="1" />
                     </fileset>
+                    <mapper type="regexp" from="(.*?)/(.*?)" to="\1"/>
                 </foreach>
             </then>
         </if>
