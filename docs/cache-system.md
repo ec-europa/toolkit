@@ -1,24 +1,19 @@
 # Cache system
 
-<p>In order to keep toolkip faster, we included some cache system in order to
-cache:</p>
+<p>In order to keep toolkip faster, we included a cache system, this is splitted
+in 2 levels:</p>
 
 <details>
-    <p><summary>Platform package</summary></p>
-    <p>Toolkip stores a copy of platform package in your <code>share.path</code>
-    directory.</p>
+    <p><summary>Global cache</summary></p>
+    <p>Toolkit stores files to be shared accross all your projects, you can
+    control the place where the files are stored by updating the property
+    <code>share.path</code> in your <code>build.develop.props</code> file.</p>
 </details>
 <details>
-    <p><summary>Theme package</summary></p>
-    <p>Some stuff here</p>
-</details>
-<details>
-    <p><summary>Database dump</summary></p>
-    <p>Some stuff here.</p>
-</details>
-<details>
-    <p><summary>ASDA Dump</summary></p>
-    <p>some stuff here.</p>
+    <p><summary>Local cache</summary></p>
+    <p>Inside your project folder your have a folder .tmp that stores some cached
+    files like database dumps and others. This is also used when the global cache
+    is not available and toolkit cannot generate it.</p>
 </details>
 
 #### How to configure the cache in your project?
@@ -37,23 +32,27 @@ available settings.</p>
 #### How to clean the cache?
 <p>Toolkit provide a specific target to allow to remove all the cached files.
 You should execute <code>./toolkit/phing cache-clear-all</code> to clean all the
-caches.</p>
+caches, this will affect the global and local cache.</p>
 
 ```
 $> toolkit/phing cache-clear-all
 Buildfile: /home/santosj/SourceCode/coolsite/build.xml
  [property] Loading ~/coolsite/vendor/ec-europa/toolkit/includes/phing/build/boot.props
- [property] Loading ~/coolsite/build.develop.props
- [property] Loading ~/coolsite/build.project.props
- [property] Loading ~/coolsite/.tmp/build.version.props
+ [property] Loading ~e/coolsite/build.develop.props
+ [property] Loading ~e/coolsite/build.project.props
+ [property] Loading ~e/coolsite/.tmp/build.version.props
      [echo] Global share directory /tmp/cache/share available.
      [echo] Temporary directory ~/coolsite/.tmp available.
 
-root > cache-delete:
+root > cache-clear-all:
 
-     [echo] Cleaning cached files...
-   [delete] Deleting directory /tmp/cache/share/platform/databases/platform-dev-2.3.71
-   [delete] Deleting: /tmp/cache/share/platform/packages/deploy/platform-dev-2.3.71.tar.gz
+     [echo] Cleaning cached and temporary file...
+   [delete] Deleting directory /tmp/cache
    [delete] Deleting directory ~/coolsite/.tmp
+
+BUILD FINISHED
+
+Total time: 0.7483 seconds
+
 
 ```

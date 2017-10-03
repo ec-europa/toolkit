@@ -5,14 +5,17 @@
     <target name="cache-clear-all" description="Delete all files stored in cache."
         hidden="true">
         <echo msg="Cleaning cached and temporary file..." />
-        <available file="${share.path}" type="dir" />
-        <then>
-            <delete dir="${share.path}/" failonerror="false" includeemptydirs="true"/>
-        </then>
-        <available file="${project.tmp.dir}" type="dir" />
-        <then>
-            <delete dir="${project.tmp.dir}/" failonerror="false" includeemptydirs="true"/>
-        </then>
+        <if>
+            <available file="${share.path}" type="dir" />
+            <then>
+                <delete dir="${share.path}/" failonerror="false" includeemptydirs="true"/>
+            </then>
+        </if>
+        <if>
+            <available file="${project.tmp.dir}" type="dir" />
+            <then>
+                <delete dir="${project.tmp.dir}/" failonerror="false" includeemptydirs="true"/>
+            </then>
         </if>
     </target>
 
