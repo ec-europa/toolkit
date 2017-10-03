@@ -5,19 +5,10 @@
     <target name="cache-clear-all" description="Delete all files stored in cache."
         hidden="true">
         <echo msg="Cleaning cached and temporary file..." />
-        <if>
-            <available file="${share.path.platform}/databases/platform-dev-${platform.package.version.current}/platform-dev-${platform.package.version.current}.sql" type="file" />
-            <then>
-                <delete dir="${share.path.platform}/databases/platform-dev-${platform.package.version.current}/" includeemptydirs="true" failonerror="false" />
-            </then>
-        </if>
-        <if>
-            <available file="${share.path.platform.packages.deploy}/platform-dev-${platform.package.version.current}.tar.gz" type="file" />
-            <then>
-                <delete file="${share.path.platform.packages.deploy}/platform-dev-${platform.package.version.current}.tar.gz" failonerror="false" />
-            </then>
-        </if>
-        <if>
+        <available file="${share.path}" type="dir" />
+        <then>
+            <delete dir="${share.path}/" failonerror="false" includeemptydirs="true"/>
+        </then>
         <available file="${project.tmp.dir}" type="dir" />
         <then>
             <delete dir="${project.tmp.dir}/" failonerror="false" includeemptydirs="true"/>
