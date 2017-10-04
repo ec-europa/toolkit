@@ -364,6 +364,47 @@ site installation
 <details><p><summary>execute <code>./toolkit/phing test-run-phpunit</code></summary></p>
 
 ```
-TODO
+Buildfile: ~/ssk/build.xml
+ [property] Loading ~/ssk/includes/phing/build/boot.props
+ [property] Loading ~/ssk/build.develop.props
+ [property] Loading ~/ssk/build.project.props
+ [property] Loading ~/ssk/.tmp/build.version.props
+     [echo] Global share directory /cache/share available.
+     [echo] Temporary directory ~/ssk/.tmp available.
+
+core > test-phpunit-setup:
+
+     [copy] Copying 1 file to ~/ssk/tests
+
+core > test-composer-install:
+
+     [echo] Run 'composer install' in best folder.
+ [composer] Composer binary not found at "composer.phar"
+ [composer] Composer binary found at "/usr/local/bin/composer", updating location
+ [composer] Executing /usr/bin/php /usr/local/bin/composer install --working-dir=~/ssk/tests --no-interaction --no-suggest --ansi
+Loading composer repositories with package information
+Installing dependencies (including require-dev) from lock file
+Nothing to install or update
+Package guzzle/guzzle is abandoned, you should avoid using it. Use guzzlehttp/guzzle instead.
+Generating autoload files
+
+core > test-phpunit-exec:
+
+PHPUnit 5.6.4 by Sebastian Bergmann and contributors.
+
+.                                                                   1 / 1 (100%)
+
+Time: 1.31 seconds, Memory: 45.75MB
+
+OK (1 test, 3 assertions)
+
+core > test-run-phpunit:
+
+
+BUILD FINISHED
+
+Total time: 6.5193 seconds
+
+
 ```
 </p></details>
