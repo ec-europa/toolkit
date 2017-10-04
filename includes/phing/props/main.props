@@ -186,8 +186,8 @@ rebuild.backup.folders = ${build.subsite.dir.files};${build.subsite.dir.tmp}
 
 # Shared paths.
 # -------------
-share.path = /cache
-share.name = share
+share.path = /tmp
+share.name = toolkit
 share.path.global = ${share.path}/${share.name}
 share.path.composer = ${share.path.global}/composer
 share.path.platform = ${share.path.global}/platform
