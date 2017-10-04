@@ -3,18 +3,30 @@
 <project name="general" description="General helper targets that can be used by multiple projects." default="">
 
     <target name="cache-clear-all" description="Delete all files stored in cache."
-        hidden="true">
-        <echo msg="Cleaning cached and temporary file..." />
+        depends="
+            cache-clear-global,
+            cache-clear-local">
+        <echo msg="Finished clearing all caches." />
+    </target>
+
+    <target name="cache-clear-global" description="Delete all files stored in global cache.">
         <if>
-            <available file="${share.path}" type="dir" />
+            <available file="${share.path.global}" type="dir" />
             <then>
-                <delete dir="${share.path}/" failonerror="false" includeemptydirs="true"/>
+                <delete failonerror="false">
+                    <fileset dir="${share.path.global}" includes="**" />
+                </delete>
             </then>
         </if>
+    </target>
+
+    <target name="cache-clear-local" description="Delete all files stored in local cache.">
         <if>
             <available file="${project.tmp.dir}" type="dir" />
             <then>
-                <delete dir="${project.tmp.dir}/" failonerror="false" includeemptydirs="true"/>
+                <delete failonerror="false">
+                    <fileset dir="${project.tmp.dir}" includes="**" />
+                </delete>
             </then>
         </if>
     </target>
