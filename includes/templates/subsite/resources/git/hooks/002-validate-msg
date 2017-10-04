@@ -1,19 +1,12 @@
 #!/bin/sh
 #
-# This script validates the last commit message and also update the
-# CHANGELOG.md file with the update information.
-#
-# To use this:
-# cp ./commit-msg .git/hooks
-# cp ./post-commit .git/hooks
-# chmod =x ./git/hooks/commit-msg ./git/hooks/post-commit
+# This is an example script to validate the presenca of an issue identifier
+# in the commit message.
 
 commit_regex='([A-Z]-[0-9]+|merge+|#[0-9])'
-error_msg="Aborting commit. Your commit message is missing an issue identifier('MULTISITE-123'), #123 or 'Merge'"
+error_msg="Aborting commit. Your commit message is missing an issue identifier('ABCD-123'), #123 or 'Merge'"
 
 if ! grep -iqE "$commit_regex" "$1"; then
-
     echo "$error_msg" >&2
     exit 1
-
 fi

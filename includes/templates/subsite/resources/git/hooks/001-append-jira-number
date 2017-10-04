@@ -1,13 +1,14 @@
 #!/bin/sh
 #
-# Append JIRA number to commit msg.
+# This is example script that scan your branch name looking for a JIRA number
+# and append it to begining of your commit. Also scan the current commit message
+# to avoid duplicates.
 
 
 branchPath=$(git symbolic-ref -q HEAD) #Somthing like refs/heads/myBranchName
 branchName=${branchPath##*/}      #Get text behind the last / of the branch path
 
 firstLine=$(head -n1 $1)
-
 commit_regex='([A-Z]-[0-9]+|#[0-9])'
 
 touch .branchNameFile
