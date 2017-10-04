@@ -13,10 +13,9 @@ of your git hook scripts.
 
 ### 1. toolkit-hooks-git-update
 The execution of this target is automatically triggered after toolkit
-installation. The target will look for scripts in a folder that is named
-after the hook you wish to use. Two locations will be scanned:
-- `vendor/ec-europa/toolkit/includes/git/hooks`
-- `resources/git/hooks`
+installation. The target will look for scripts in a folder inside of
+`resources/git/hooks` that is named with the name of the git hook you wish to
+use. 
 
 If any scripts are found in these locations the toolkit will copy a
 bash script to the `.git/hooks` location with the chosen hook name. If
