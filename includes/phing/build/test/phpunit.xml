@@ -7,7 +7,7 @@
     <!-- Execute PHPUnit tests. -->
     <target name="test-phpunit-exec">
         <exec
-            command="${phpunit.bin} -c ${project.basedir}/tests/phpunit.xml"
+            command="${phpunit.bin} -c ${tests.dir}/phpunit.xml"
             passthru="true"
             checkreturn="true"
         />
