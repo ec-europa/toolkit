@@ -13,7 +13,7 @@ To instatiate a new project that will be running as a subsite on the NextEuropa
 platform you only have to execute one command which will perform multiple steps
 for you automatically.
 
-<details><summary><code>composer create-project ec-europa/subsite project-id ~3.0.0 --no-interaction</code></summary><p>
+<details><summary><code>composer create-project ec-europa/subsite project-id dev-master --no-interaction</code></summary><p>
 <blockquote>
 <details><p><summary>1. Clone the subsite repository</summary>
 
