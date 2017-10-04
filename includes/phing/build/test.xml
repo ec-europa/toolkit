@@ -26,6 +26,7 @@
         description="Refresh configuration and run phpunit tests."
         depends="
             test-phpunit-setup,
+            test-composer-install,
             test-phpunit-exec" />
 
     <!-- Run a full static analysis qa console. -->
