@@ -1,13 +1,13 @@
-project.name =
-subsite.make =
-subsite.install.modules =
+project.name = project.name
+subsite.make = resources.dir.site.make
+subsite.install.modules = project.install.modules
 
-project.id =
+project.id = project.id
 project.database.url.scheme =
-project.database.url.htaccess.username =
-project.database.url.htaccess.password =
-project.database.url =
-project.database.filename =
+project.database.url.htaccess.username = db.dl.username
+project.database.url.htaccess.password = db.dl.password
+project.database.url = db.dl.url
+project.database.filename = db.dl.filename
 
 project.reference.repository =
 project.reference.branch =
@@ -25,22 +25,22 @@ development.variables.stage_file_proxy_origin = devel.mdls.stage_file_proxy_orig
 development.variables.stage_file_proxy_origin_dir = devel.mdls.stage_file_proxy_origin_dir
 development.variables.stage_file_proxy_hotlink = devel.mdls.stage_file_proxy_hotlink
 
-drupal.db.type =
-drupal.db.name =
-drupal.db.user =
-drupal.db.password =
-drupal.db.host =
-drupal.db.port =
-drupal.db.url =
+drupal.db.type = db.type
+drupal.db.name = db.name
+drupal.db.user = db.user
+drupal.db.password = db.password
+drupal.db.host = db.host
+drupal.db.port = db.port
+drupal.db.url = db.url
 
-drupal.admin.username =
-drupal.admin.password =
-drupal.admin.email =
+drupal.admin.username = admin.username
+drupal.admin.password = admin.password
+drupal.admin.email = admin.email
 
 drupal.htaccess.path =
-drupal.htaccess.append.text =
+drupal.htaccess.append.text = build.platform.htaccess.append.text
 
-drupal.site.name =
+drupal.site.name = project.name
 drupal.core.version =
 
 platform.build.dir =
@@ -53,14 +53,14 @@ platform.package.destination =
 platform.package =
 platform.package.provider.token =
 
-composer.bin =
-drush.bin =
-git.bin =
-phing.bin =
+composer.bin = project.bin.composer
+drush.bin = toolkit.dir.bin.drush
+git.bin = project.bin.git
+phing.bin = toolkit.dir.bin.phing
 
 phing.build.dir =
 phing.project.src.dir =
-dist.build.dir =
+dist.build.dir = build.dist
 
 phing.project.tmp.dir =
 
