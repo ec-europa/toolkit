@@ -62,14 +62,14 @@ db.type = mysql
 db.name = ${project.id}
 db.user = root
 db.password =
-db.host = mysql
+db.host = 127.0.0.1
 db.port = 3306
 db.url = ${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db.name}
 
 # Solr configuration.
 # -------------------
 solr.enable = 1
-solr.host = solr
+solr.host = 127.0.0.1
 solr.port = 8983
 solr.type = d7_apachesolr
 solr.scheme = http
