@@ -15,7 +15,7 @@
     </target>
 
     <target hidden="true" name="build-clone">
-        <replacedby target="install-project-clone" />
+        <replacedby target="install-clone" />
     </target>
 
     <target hidden="true" name="build-custom">
@@ -71,7 +71,7 @@
     </target>
 
     <target hidden="true" name="download-platform">
-        <replacedby target="build-project-platform" />
+        <replacedby target="build-platform" />
     </target>
 
     <target hidden="true" name="download-prod-db">
@@ -99,7 +99,7 @@
     </target>
 
     <target hidden="true" name="install">
-        <replacedby target="install-project-clean" />
+        <replacedby target="install-clean" />
     </target>
 
     <target hidden="true" name="install-build-dependencies">
@@ -107,7 +107,7 @@
     </target>
 
     <target hidden="true" name="install-dev">
-        <replacedby target="install-project-clean" />
+        <replacedby target="install-clean" />
     </target>
 
     <target hidden="true" name="install-dev-dependencies">

@@ -10,7 +10,7 @@ There are three different types of codebases you can build.
 
 ## Platform builds
 
-<details><p><summary>execute <code>./toolkit/phing build-project-platform</code></summary></p>
+<details><p><summary>execute <code>./toolkit/phing build-platform</code></summary></p>
 
 This build downloads the latest released platform deploy package depending on
 what version you specified as the platform.package.version property. After
@@ -41,7 +41,7 @@ Currently platform-dev has not migrated to the toolkit yet for building their
 codebase. This is a work in progress. If you are developing for a subsite this
 part of the documentation does not apply to your codebase.
 </p></details>
-<!-- <details><p><summary>execute <code>./toolkit/phing build-project-subsite</code></summary>
+<!-- <details><p><summary>execute <code>./toolkit/phing build-subsite</code></summary>
 
 This feature has not been implemented yet. It would allow platform developers
 to install any subsite that is using the platform. To complete this feature, CI
@@ -57,12 +57,12 @@ defining it in the command itself with the `-D 'profile'=` option.
 This build will only build the files necessary for deployment and the result 
 will be compressed and uploaded to github when your project gets tagged
 for release. After the release this package will be available for download by
-the `./toolkit/phing build-project-platform` command.
+the `./toolkit/phing build-platform` command.
 </p></details>
 
 ## Subsite builds
 
-<details><p><summary>execute <code>./toolkit/phing build-project-subsite</code></summary></p>
+<details><p><summary>execute <code>./toolkit/phing build-subsite</code></summary></p>
 
 This build downloads and unpacks the latest released subsite deploy package and
 unpacks it to the `build/sites/default` folder. This build will be mainly used
@@ -85,7 +85,7 @@ Put the properties file in the root of your project and add the build properties
 you wish to set. For more information on the list of available build properties
 refer to the [build.default.props] file that is provided by the toolkit.
 </p></details>
-<details><p><summary>execute <code>./toolkit/phing build-project-platform</code></summary>
+<details><p><summary>execute <code>./toolkit/phing build-platform</code></summary>
 
 Downloads the platform package of which you defined the version in your build
 properties. After succesful download it will unpack the package into the
@@ -107,5 +107,5 @@ defining it in the command itself with the `-D 'subsite'=` option.
 This build will only build the files necessary for deployment. The result of the
 build will be compressed and uploaded to github when your project gets tagged
 for release. After the release this package will be available for download by
-the `./toolkit/phing build-project-subsite` command.
+the `./toolkit/phing build-subsite` command.
 </p></details>

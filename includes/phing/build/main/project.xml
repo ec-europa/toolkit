@@ -2,7 +2,7 @@
 
 <project name="project" description="Targets shared by differenct project types." default="">
 
-    <target name="build-project-platform" description="Build NextEuropa Platform code without version control."
+    <target name="build-platform" description="Build NextEuropa Platform code without version control."
         depends="
             project-subsite-backup,
             project-platform-delete,
@@ -12,19 +12,19 @@
             project-platform-set-htaccess,
             project-subsite-restore" />
 
-    <target name="build-project-subsite" description="Build NextEuropa Subsite code without version control."
+    <target name="build-subsite" description="Build NextEuropa Subsite code without version control."
         depends="
             project-subsite-backup,
             project-subsite-restore">
         <echo msg="TODO: subsite builds not yet developed." />
     </target>
 
-    <target name="build-project-theme" description="Build EC Europa theme without version control."
+    <target name="build-theme" description="Build EC Europa theme without version control."
         depends="
             theme-europa-download-extract,
             theme-europa-create-symlinks" />
 
-    <target name="install-project-clean" description="Install NextEuropa site from scratch.">
+    <target name="install-clean" description="Install NextEuropa site from scratch.">
         <phingcall target="project-subsite-files-setup" />
         <exec command="chmod 775 ${build.platform.dir.settings}" />
 
@@ -68,7 +68,7 @@
         <phingcall target="drush-node-access-rebuild" />
     </target>
 
-    <target name="install-project-clone" description="Install NextEuropa site with sanitized production data."
+    <target name="install-clone" description="Install NextEuropa site with sanitized production data."
         depends="
             project-database-download,
             drush-aliases-generate,

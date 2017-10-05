@@ -462,7 +462,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="build" />
             </td>
-            <td nowrap>build-project-platform</td>
+            <td nowrap>build-platform</td>
             <td width="80%">Build NextEuropa Platform code without version control.</td>
         </tr>
         <tr>
@@ -470,7 +470,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="build" />
             </td>
-            <td nowrap>build-project-subsite</td>
+            <td nowrap>build-subsite</td>
             <td width="80%">Build NextEuropa Subsite code without version control.</td>
         </tr>
         <tr>
@@ -478,7 +478,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="build" />
             </td>
-            <td nowrap>build-project-theme</td>
+            <td nowrap>build-theme</td>
             <td width="80%">Build EC Europa theme without version control.</td>
         </tr>
         <tr>
@@ -486,7 +486,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>install-project-clean</td>
+            <td nowrap>install-clean</td>
             <td width="80%">Install NextEuropa site from scratch.</td>
         </tr>
         <tr>
@@ -494,7 +494,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>install-project-clone</td>
+            <td nowrap>install-clone</td>
             <td width="80%">Install NextEuropa site with sanitized production data.</td>
         </tr>
         <tr>

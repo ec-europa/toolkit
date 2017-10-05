@@ -33,7 +33,7 @@ def createWorkflow() {
                 }
 
                 stage('Test') {
-                    shellExecute('docker', 'phing', "install-project-clean -D'drupal.db.name'='${env.COMPOSE_PROJECT_NAME}'")
+                    shellExecute('docker', 'phing', "install-clean -D'drupal.db.name'='${env.COMPOSE_PROJECT_NAME}'")
                     timeout(time: 2, unit: 'HOURS') {
                         shellExecute('docker', 'phing', 'test-run-behat')
                     }
