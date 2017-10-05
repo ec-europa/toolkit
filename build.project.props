@@ -17,3 +17,7 @@ project.admin.email = ${project.admin.username}@example.com
 # -----------------------
 profile = multisite_drupal_standard
 platform.package.version = 2.3
+
+# Repository configuration.
+# -----------------------
+project.maintainer = 
