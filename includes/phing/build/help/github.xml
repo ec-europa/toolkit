@@ -73,55 +73,30 @@
         <input message="Enter your GitHub username."  propertyName="github.user" />
     </target>
 
-    <target name="github-contributor-list" description="List collaborators of the github repository">
+    <target name="github-collaborators" description="List collaborators of the github repository">
         <repository-contributors
             projectId="${project.id}"
-            projectMaintainer="${project.maintainer}"
+            reference="${project.repository.name}"
+            maintainer="${project.maintainer}"
             />
     </target>
 
-    <target name="github-contributor-add" description="Add collaborator to github repository">
-        <if>
-            <available file="${subsite.resources.repository.collaborators}" type="file" property="github.users" />
-            <then>
-                <if>
-                    <available file="build.properties" type="file" property="project.reference.repository" />
-                    <then>
-                        <repository-contributors
-                                repoOwner="${repo.owner}"
-                                repoOwnerPass="${repo.owner.pass}"
-                                repoName="${repo.name}"
-                                repoUsers="${repo.collaborators}"
-                                op="add"
-                        />
-                    </then>
-                    <else>
-                        <echo message="No repository defined, please review your configuration." />
-                    </else>
-                </if>
-            </then>
-            <else>
-                <echo message="No users available, skipping target." />
-            </else>
-        </if>
+    <target name="github-collaborator-add" description="Add maintainer to github repository">
+        <repository-contributors
+            projectId="${project.id}"
+            reference="${project.repository.name}"
+            maintainer="${project.maintainer}"
+            op="add"
+        />
     </target>
 
-    <target name="github-contributor-remove" description="Remove collaborator from github repository">
-        <if>
-            <available file="${subsite.resources.repository.collaborators}" type="file" property="github.users" />
-            <then>
-                <repository-contributors
-                        repoOwner="${repo.owner}"
-                        repoOwnerPass="${repo.owner.pass}"
-                        repoName="${repo.name}"
-                        repoUsers="${repo.collaborators}"
-                        op="remove"
-                />
-            </then>
-            <else>
-                <echo message="No users available, removing all users ;)..... or not!" />
-            </else>
-        </if>
+    <target name="github-collaborator-remove" description="Remove maintainer from github repository">
+        <repository-contributors
+            projectId="${project.id}"
+            reference="${project.repository.name}"
+            maintainer="${project.maintainer}"
+            op="remove"
+            />
     </target>
 
 </project>
