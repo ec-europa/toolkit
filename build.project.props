@@ -1,6 +1,6 @@
 # Subsite configuration.
 # ----------------------
-project.id = toolkit
+project.id = qa-collaborators
 project.install.modules = example_module
 project.name = Toolkit
 project.url.production =
@@ -20,4 +20,5 @@ platform.package.version = 2.3
 
 # Repository configuration.
 # -----------------------
-project.maintainer = 
+project.maintainer =
+project.repository.name =

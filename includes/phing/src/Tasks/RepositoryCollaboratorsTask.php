@@ -15,6 +15,7 @@
 namespace Phing\Toolkit\Tasks;
 
 use Symfony\Component\Yaml\Dumper;
+use League\CLImate\CLImate;
 
 require_once 'phing/Task.php';
 
@@ -51,6 +52,10 @@ class RepositoryCollaboratorsTask extends \Task
     public function setProjectId($projectId)
     {
         $this->projectId = $projectId;
+
+        $this->_githubUser = getenv('GITHUB_USER');
+        $this->_githubPass = getenv('GITHUB_PASS');
+        $this->_githubCredentials = $this->_githubUser. ":" .$this->_githubPass;
     }
 
     /**
@@ -96,9 +101,9 @@ class RepositoryCollaboratorsTask extends \Task
      */
     public function init()
     {
-        $this->_githubUser = getenv('GITHUB_USER');
-        $this->_githubPass = getenv('GITHUB_PASS');
-        $this->_githubCredentials = $this->_githubUser. ":" .$this->_githubPass;
+//        $this->_githubUser = getenv('GITHUB_USER');
+//        $this->_githubPass = getenv('GITHUB_PASS');
+//        $this->_githubCredentials = $this->_githubUser. ":" .$this->_githubPass;
     }
 
     /**
@@ -128,6 +133,7 @@ class RepositoryCollaboratorsTask extends \Task
      */
     public function main()
     {
+
         // Check if all required data is present.
         $this->checkRequirements();
 
@@ -209,8 +215,13 @@ class RepositoryCollaboratorsTask extends \Task
      */
     protected function overview()
     {
+        $climate = new League\CLImate\CLImate;
+
+        $climate->out('This prints to the terminal.');
+
+
         // List reference.
-        echo " https://github.com/ec-europa/" . $this->reference;
+        echo " https://github.com/" . $this->reference;
         foreach ($this->collaborators[$this->reference] as $collaborator) {
 
             echo "\n " . $collaborator['pull'] .
