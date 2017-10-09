@@ -17,7 +17,8 @@
     "pfrenssen/phpcs-pre-push": "1.0",
     "phing/phing": "~2.10",
     "php": ">=5.4.0",
-    "wimg/php-compatibility": "~7.0.7"
+    "wimg/php-compatibility": "~7.0.7",
+    "league/climate": "^3.2"
   },
   "require-dev": {
     "behat/behat": "~3.1.0@rc",
