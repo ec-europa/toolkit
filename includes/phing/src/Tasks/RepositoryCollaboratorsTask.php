@@ -27,7 +27,7 @@ require_once 'phing/Task.php';
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/toolkit/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
  */
-class RepositoryContributorsTask extends \Task
+class RepositoryCollaboratorsTask extends \Task
 {
 
     private $_githubUser        = '';
