@@ -16,7 +16,7 @@ class RepositoryContributorsTask extends \Task {
    *
    * @var string
    */
-  private $repoOwner = '';
+  private $repoOwner = 'ec-europa';
 
   /**
    * The repository owner password.
@@ -38,6 +38,20 @@ class RepositoryContributorsTask extends \Task {
    * @var int
    */
   private $repoUsers = '';
+
+  /**
+   * The project id.
+   *
+   * @var int
+   */
+  private $projectId = '';
+
+  /**
+   * The the project maintainer.
+   *
+   * @var int
+   */
+  private $projectMaintainer = '';
 
   /**
    * Operation to be executed.
@@ -66,7 +80,7 @@ class RepositoryContributorsTask extends \Task {
           $this->add();
           break;
 
-        case 'list':
+        case 'lista':
           $this->list($this->repoName);
           break;
 
@@ -75,7 +89,7 @@ class RepositoryContributorsTask extends \Task {
           break;
 
         default:
-          $this->list($this->repoName);
+          $this->lista($this->repoName);
           break;
       }
   }
@@ -83,8 +97,7 @@ class RepositoryContributorsTask extends \Task {
   /**
    * List all collaborators for a given repository.
    */
-  protected function list($repository) {
-
+  protected function lista($repository) {
     $endpoint = 'repos/' . $this->repoOwner . '/' . $repository . '/collaborators';
     echo $endpoint;
     echo "\n\n";
@@ -93,14 +106,17 @@ class RepositoryContributorsTask extends \Task {
     $collaborators = json_decode($result['data']);
 
 
+
     echo "#\tPULL\tPUSH\tADMIN\tUSER\n";
     foreach ($collaborators as $key => $collaborator) {
-      echo "#" . $key
-       . "\t".  $collaborator->permissions->pull
-       . "\t". $collaborator->permissions->push
-       . "\t". $collaborator->permissions->admin
-       . "\t". $collaborator->login
-       . "\n";
+      if (!$collaborator->permissions->admin) {
+        echo "#" . $key
+          . "\t" . $collaborator->permissions->pull
+          . "\t" . $collaborator->permissions->push
+          . "\t" . $collaborator->permissions->admin
+          . "\t" . $collaborator->login
+          . "\n";
+      }
     }
   }
 
@@ -151,7 +167,7 @@ class RepositoryContributorsTask extends \Task {
     curl_setopt($ch, CURLOPT_URL,'https://api.github.com/' . $endpoint);
     curl_setopt($ch, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
     curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-    curl_setopt($ch, CURLOPT_USERPWD, 'jonhy81:jjrs2012');
+    curl_setopt($ch, CURLOPT_USERPWD, '<user-here>:<pass-here>');
     curl_setopt($ch, CURLOPT_USERAGENT,'Starterkit Drupal');
 
     if (count($params) > 0 ) {
@@ -178,7 +194,7 @@ class RepositoryContributorsTask extends \Task {
    *   Thrown when a required property is not present.
    */
   protected function checkRequirements() {
-    $required_properties = array('repoOwner', 'repoOwnerPass', 'repoName');
+    $required_properties = array('projectId');
     foreach ($required_properties as $required_property) {
       if (empty($this->$required_property)) {
         throw new \BuildException("Missing required property '$required_property'.");
@@ -224,6 +240,15 @@ class RepositoryContributorsTask extends \Task {
    */
   public function setRepoUsers($repoUsers) {
     $this->repoUsers = $repoUsers;
+  }
+
+  public function setProjectId($projectId) {
+    $this->projectId = $projectId;
+    $this->repoName = $projectId . "-reference";
+  }
+
+  public function setProjectMaintainer($projectMaintainer) {
+    $this->projectMaintainer = $projectMaintainer;
   }
 
     /**

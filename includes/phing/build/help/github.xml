@@ -74,19 +74,10 @@
     </target>
 
     <target name="github-contributor-list" description="List collaborators of the github repository">
-        <if>
-            <available file="${subsite.resources.repository.collaborators}" type="file" property="repo.name" />
-            <then>
-                <repositorycollaborators
-                        repoOwner="${repo.owner}"
-                        repoOwnerPass="${repo..pass}"
-                        repoName="${repo.name}"
-                />
-            </then>
-            <else>
-                <echo message="No repository defined, please review your configuration." />
-            </else>
-        </if>
+        <repository-contributors
+            projectId="${project.id}"
+            projectMaintainer="${project.maintainer}"
+            />
     </target>
 
     <target name="github-contributor-add" description="Add collaborator to github repository">
@@ -96,7 +87,7 @@
                 <if>
                     <available file="build.properties" type="file" property="project.reference.repository" />
                     <then>
-                        <repositorycollaborators
+                        <repository-contributors
                                 repoOwner="${repo.owner}"
                                 repoOwnerPass="${repo.owner.pass}"
                                 repoName="${repo.name}"
@@ -119,7 +110,7 @@
         <if>
             <available file="${subsite.resources.repository.collaborators}" type="file" property="github.users" />
             <then>
-                <repositorycollaborators
+                <repository-contributors
                         repoOwner="${repo.owner}"
                         repoOwnerPass="${repo.owner.pass}"
                         repoName="${repo.name}"

@@ -18,7 +18,7 @@
     <taskdef name="propval" classname="Phing\Toolkit\Tasks\PropertiesValidateTask" />
     <taskdef name="relsym" classname="Phing\Toolkit\Tasks\RelativeSymlinkTask" />
     <taskdef name="replacedby" classname="Phing\Toolkit\Tasks\PhingDeprecatedTask" />
-    <taskdef name="repositorycollaborators" classname="\Phing\Toolkit\Tasks\RepositoryContributorsTask" />
+    <taskdef name="repository-contributors" classname="\Phing\Toolkit\Tasks\RepositoryContributorsTask" />
     <taskdef name="symlink-property-contents" classname="Phing\Toolkit\Tasks\SymlinkPropertyContentTask" />
 
 </project>
