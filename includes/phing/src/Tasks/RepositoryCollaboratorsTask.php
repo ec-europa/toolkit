@@ -215,11 +215,6 @@ class RepositoryCollaboratorsTask extends \Task
      */
     protected function overview()
     {
-        $climate = new League\CLImate\CLImate;
-
-        $climate->out('This prints to the terminal.');
-
-
         // List reference.
         echo " https://github.com/" . $this->reference;
         foreach ($this->collaborators[$this->reference] as $collaborator) {
