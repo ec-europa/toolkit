@@ -211,35 +211,33 @@ class RepositoryCollaboratorsTask extends \Task
         $this->collaborators[$repository] = $collaborators_temp;
     }
 
-  /**
-   * Set all invitations for a given repository.
-   *
-   * @param string $repository   Repository name.
-   * @param bool   $ignore_admin Include or not admins in the list.
-   *
-   * @return void
-   */
-  protected function setInvitations($repository)
-  {
-    $invitations_temp = [];
+    /**
+     * Set all invitations for a given repository.
+     *
+     * @param string $repository Repository name.
+     *
+     * @return void
+     */
+    protected function setInvitations($repository)
+    {
+        $invitations_temp = [];
 
-    // Get contributors for reference repository.
-    $endpoint = 'repos/' . $repository . '/invitations';
-    $result = $this->repositoryQuery($endpoint);
+        // Get contributors for reference repository.
+        $endpoint = 'repos/' . $repository . '/invitations';
+        $result = $this->repositoryQuery($endpoint);
 
-    $invitations = json_decode($result['data']);
+        $invitations = json_decode($result['data']);
 
-    foreach ($invitations as $key => $invite) {
+        foreach ($invitations as $key => $invite) {
+            $invitations_temp[] = [
+                'name'       => $invite->invitee->login,
+                'inviter'    => $invite->inviter->login,
+                'created_at' => $invite->created_at,
+            ];
+        }
 
-      $invitations_temp[] = [
-        'name'      => $invite->invitee->login,
-        'inviter'   => $invite->inviter->login,
-        'created_at' => $invite->created_at,
-      ];
+        $this->invitations[$repository] = $invitations_temp;
     }
-
-    $this->invitations[$repository] = $invitations_temp;
-  }
 
     /**
      * List all collaborators for a given repository.
