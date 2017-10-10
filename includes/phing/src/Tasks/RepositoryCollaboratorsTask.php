@@ -234,12 +234,9 @@ class RepositoryCollaboratorsTask extends \Task
       $invitations_temp[] = [
         'name'      => $invite->invitee->login,
         'inviter'   => $invite->inviter->login,
-        'create_at' => $invite->created_at,
+        'created_at' => $invite->created_at,
       ];
     }
-
-    var_dump($invitations_temp);
-    die;
 
     $this->invitations[$repository] = $invitations_temp;
   }
@@ -267,7 +264,7 @@ class RepositoryCollaboratorsTask extends \Task
             echo "\n\n Pending invitations:";
             foreach ($this->invitations[$this->reference] as $invite) {
                 echo "\n " . $invite['name'] .
-                    " (created by " . $invite['inviter'] .
+                    " (invited by " . $invite['inviter'] .
                     " in " . $invite['created_at'] .")";
             }
         }
