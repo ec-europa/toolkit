@@ -77,24 +77,24 @@
         <repository-contributors
             projectId="${project.id}"
             reference="${project.repository.name}"
-            maintainer="${project.maintainer}"
+            maintainer="${project.collaborators}"
             />
     </target>
 
-    <target name="github-collaborator-add" description="Add maintainer to github repository">
+    <target name="github-collaborators-add" description="Add maintainer to github repository">
         <repository-contributors
             projectId="${project.id}"
             reference="${project.repository.name}"
-            maintainer="${project.maintainer}"
+            maintainers="${project.collaborators}"
             op="add"
         />
     </target>
 
-    <target name="github-collaborator-remove" description="Remove maintainer from github repository">
+    <target name="github-collaborators-remove" description="Remove maintainer from github repository">
         <repository-contributors
             projectId="${project.id}"
             reference="${project.repository.name}"
-            maintainer="${project.maintainer}"
+            maintainers="${project.collaborators}"
             op="remove"
             />
     </target>
