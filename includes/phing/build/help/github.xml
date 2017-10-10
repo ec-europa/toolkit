@@ -86,7 +86,7 @@
             projectId="${project.id}"
             reference="${project.repository.name}"
             maintainers="${project.collaborators}"
-            op="add"
+            operation="add"
         />
     </target>
 
@@ -95,7 +95,7 @@
             projectId="${project.id}"
             reference="${project.repository.name}"
             maintainers="${project.collaborators}"
-            op="remove"
+            operation="remove"
             />
     </target>
 

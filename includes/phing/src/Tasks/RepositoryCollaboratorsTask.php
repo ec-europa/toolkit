@@ -15,7 +15,6 @@
 namespace Phing\Toolkit\Tasks;
 
 use Symfony\Component\Yaml\Dumper;
-use League\CLImate\CLImate;
 
 require_once 'phing/Task.php';
 
@@ -30,17 +29,14 @@ require_once 'phing/Task.php';
  */
 class RepositoryCollaboratorsTask extends \Task
 {
-
-    private $_githubUser        = '';
-    private $_githubPass        = '';
-    private $_githubCredentials = '';
+    private $_Credentials = '';
 
     public $reference     = '';
     public $forks         = [];
     public $collaborators = [];
     public $invitations   = [];
     public $maintainers   = [];
-    public $op            = '';
+    public $operation     = '';
     public $projectId     = '';
 
     /**
@@ -54,9 +50,7 @@ class RepositoryCollaboratorsTask extends \Task
     {
         $this->projectId = $projectId;
 
-        $this->_githubUser = getenv('GITHUB_USER');
-        $this->_githubPass = getenv('GITHUB_PASS');
-        $this->_githubCredentials = $this->_githubUser. ":" .$this->_githubPass;
+        $this->_Credentials = getenv('GITHUB_USER'). ":" . getenv('GITHUB_PASS');
     }
 
     /**
@@ -86,13 +80,13 @@ class RepositoryCollaboratorsTask extends \Task
     /**
      * Sets the operation to be executed.
      *
-     * @param string $op The operation name.
+     * @param string $operation The operation name.
      *
      * @return void
      */
-    public function setOp($op)
+    public function setOperation($operation)
     {
-        $this->op = $op;
+        $this->operation = $operation;
     }
 
     /**
@@ -115,11 +109,11 @@ class RepositoryCollaboratorsTask extends \Task
      */
     protected function checkRequirements()
     {
-        $required_properties = array('projectId');
-        foreach ($required_properties as $required_property) {
-            if (empty($this->$required_property)) {
+        $requiredProperties = array('projectId');
+        foreach ($requiredProperties as $requiredProperty) {
+            if (empty($this->$requiredProperty)) {
                 throw new \BuildException(
-                    "Missing required property " . $required_property . "."
+                    "Missing required property " . $requiredProperty . "."
                 );
             }
         }
@@ -140,12 +134,13 @@ class RepositoryCollaboratorsTask extends \Task
         $this->setCollaborators($this->reference);
         $this->setInvitations($this->reference);
 
-        foreach ($this->forks as $fullName => $url) {
+        $forks = array_keys($this->forks);
+        foreach ($forks as $fullName) {
             $this->setCollaborators($fullName);
             $this->setInvitations($fullName);
         }
 
-        switch ($this->op) {
+        switch ($this->operation) {
         case 'add':
             foreach ($this->maintainers as $user) {
                 $this->addUser($user);
@@ -184,14 +179,13 @@ class RepositoryCollaboratorsTask extends \Task
     /**
      * Set all collaborators for a given repository.
      *
-     * @param string $repository   Repository name.
-     * @param bool   $ignore_admin Include or not admins in the list.
+     * @param string $repository Repository name.
      *
      * @return void
      */
-    protected function setCollaborators($repository, $ignore_admin = false)
+    protected function setCollaborators($repository)
     {
-        $collaborators_temp = [];
+        $collaboratorsTemp = [];
 
         // Get contributors for reference repository.
         $endpoint = 'repos/' . $repository . '/collaborators';
@@ -199,8 +193,8 @@ class RepositoryCollaboratorsTask extends \Task
 
         $collaborators = json_decode($result['data']);
 
-        foreach ($collaborators as $key => $collaborator) {
-            $collaborators_temp[] = [
+        foreach ($collaborators as $collaborator) {
+            $collaboratorsTemp[] = [
                 'name' => $collaborator->login,
                 'pull' => $collaborator->permissions->pull,
                 'push' => $collaborator->permissions->push,
@@ -208,7 +202,7 @@ class RepositoryCollaboratorsTask extends \Task
             ];
         }
 
-        $this->collaborators[$repository] = $collaborators_temp;
+        $this->collaborators[$repository] = $collaboratorsTemp;
     }
 
     /**
@@ -220,7 +214,7 @@ class RepositoryCollaboratorsTask extends \Task
      */
     protected function setInvitations($repository)
     {
-        $invitations_temp = [];
+        $invitationsTemp = [];
 
         // Get contributors for reference repository.
         $endpoint = 'repos/' . $repository . '/invitations';
@@ -228,15 +222,15 @@ class RepositoryCollaboratorsTask extends \Task
 
         $invitations = json_decode($result['data']);
 
-        foreach ($invitations as $key => $invite) {
-            $invitations_temp[] = [
+        foreach ($invitations as $invite) {
+            $invitationsTemp[] = [
                 'name'       => $invite->invitee->login,
                 'inviter'    => $invite->inviter->login,
                 'created_at' => $invite->created_at,
             ];
         }
 
-        $this->invitations[$repository] = $invitations_temp;
+        $this->invitations[$repository] = $invitationsTemp;
     }
 
     /**
@@ -345,36 +339,41 @@ class RepositoryCollaboratorsTask extends \Task
      * Execute a query against gitHub REST API 3.
      *
      * @param string $endpoint gitHub endpoint.
-     * @param bool   $type     Type of POST to execute, false by default.
+     * @param string $type     Type of POST to execute, false by default.
      *
      * @return array Return query result.
      */
-    protected function repositoryQuery($endpoint, $type = false)
+    protected function repositoryQuery($endpoint, $type = 'POST')
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.github.com/' . $endpoint);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERPWD, $this->_githubCredentials);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Toolkit Drupal');
+        $curlHandle = curl_init();
+        curl_setopt(
+            $curlHandle,
+            CURLOPT_URL,
+            'https://api.github.com/' . $endpoint
+        );
+        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curlHandle, CURLOPT_USERPWD, $this->_Credentials);
+        curl_setopt($curlHandle, CURLOPT_USERAGENT, 'Toolkit Drupal');
 
-        if ($type != false) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ["content-length: 0"]);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $type);
+        if ($type != 'POST') {
+            curl_setopt($curlHandle, CURLOPT_HTTPHEADER, ["content-length: 0"]);
+            curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, $type);
             if ($type == 'PUT') {
                 curl_setopt(
-                    $ch, CURLOPT_POSTFIELDS,
+                    $curlHandle,
+                    CURLOPT_POSTFIELDS,
                     http_build_query(['permission' => 'pull'])
                 );
             }
         }
 
-        $result=curl_exec($ch);
-        $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);   //get status code
-        curl_close($ch);
+        $result=curl_exec($curlHandle);
+        $statusCode = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
+        curl_close($curlHandle);
 
         return [
-            'status' => $status_code,
+            'status' => $statusCode,
             'data' => $result
         ];
     }
