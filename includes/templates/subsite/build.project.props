@@ -20,5 +20,5 @@ platform.package.version = 2.3
 
 # Github configuration.
 # -----------------------
-project.maintainer =
+project.collaborators =
 project.repository.name =
