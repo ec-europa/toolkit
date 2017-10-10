@@ -38,7 +38,7 @@ class RepositoryCollaboratorsTask extends \Task
     public $reference     = '';
     public $forks         = [];
     public $collaborators = [];
-    public $maintainer    = '';
+    public $maintainers   = [];
     public $op            = '';
     public $projectId     = '';
 
@@ -71,15 +71,15 @@ class RepositoryCollaboratorsTask extends \Task
     }
 
     /**
-     * Sets the project maintainer.
+     * Sets the project maintainers.
      *
-     * @param string $maintainer The repository maintainer.
+     * @param string $maintainers The repository maintainers.
      *
      * @return void
      */
-    public function setMaintainer($maintainer)
+    public function setMaintainers($maintainers)
     {
-        $this->maintainer = $maintainer;
+        $this->maintainers = explode(' ', $maintainers);
     }
 
     /**
@@ -101,9 +101,7 @@ class RepositoryCollaboratorsTask extends \Task
      */
     public function init()
     {
-//        $this->_githubUser = getenv('GITHUB_USER');
-//        $this->_githubPass = getenv('GITHUB_PASS');
-//        $this->_githubCredentials = $this->_githubUser. ":" .$this->_githubPass;
+        // Init code here.
     }
 
     /**
@@ -133,14 +131,11 @@ class RepositoryCollaboratorsTask extends \Task
      */
     public function main()
     {
-
-        // Check if all required data is present.
+        // Check requirements.
         $this->checkRequirements();
 
-        // Init repository.
+        // Init forks and collaborators information.
         $this->setForks();
-
-        // Init contributor information.
         $this->setCollaborators($this->reference);
         foreach ($this->forks as $fullName => $url) {
             $this->setCollaborators($fullName);
@@ -148,10 +143,14 @@ class RepositoryCollaboratorsTask extends \Task
 
         switch ($this->op) {
         case 'add':
-            $this->add();
+            foreach ($this->maintainers as $user) {
+                $this->addUser($user);
+            }
             break;
         case 'remove':
-            $this->remove();
+            foreach ($this->maintainers as $user) {
+                $this->removeUser($user);
+            }
             break;
         default:
             $this->overview();
@@ -243,33 +242,34 @@ class RepositoryCollaboratorsTask extends \Task
     }
 
     /**
-     * List all collaborators for a given repository.
+     * Add a specific user to a given repository.
+     *
+     * @param string $user The GitHub username to be added to repository
      *
      * @return void
      */
-    protected function add()
+    protected function addUser($user)
     {
-        $endpoint = 'repos/' . $this->reference . '/collaborators/' .
-            $this->maintainer;
+        $endpoint = 'repos/' . $this->reference . '/collaborators/' . $user;
 
         $result = $this->repositoryQuery($endpoint);
 
         if ($result['status'] == '204') {
-            echo "Collaborator " . $this->maintainer .
+            echo "Collaborator " . $user .
                 " already in the list of collaborators, no action required.\n";
         } else {
             $result = $this->repositoryQuery($endpoint, 'PUT');
 
             if ($result['status'] == '204') {
-                echo "Collaborator " . $this->maintainer .
+                echo "Collaborator " . $user .
                     " have now READ access to repository.\n";
             } else {
                 if ($result['status'] == '201') {
-                    echo "Collaborator " . $this->maintainer .
+                    echo "Collaborator " . $user .
                         " is now invited, waiting acceptance.\n";
                 } else {
-                    echo "Not possible add " . $this->maintainer .
-                        " to the list of colaborators, operation failed.\n";
+                    echo "Not possible add " . $user .
+                        " to the list of collaborators, operation failed.\n";
                 }
             }
         }
@@ -278,24 +278,24 @@ class RepositoryCollaboratorsTask extends \Task
     /**
      * Remove specific user from repository.
      *
+     * @param string $user Name of GitHub user to be removed.
+     *
      * @return void
      */
-    protected function remove()
+    protected function removeUser($user)
     {
-        $endpoint = 'repos/' . $this->reference . '/collaborators/' .
-            $this->maintainer;
+        $endpoint = 'repos/' . $this->reference . '/collaborators/' . $user;
         $result = $this->repositoryQuery($endpoint);
 
         if ($result['status'] == '204') {
             $result = $this->repositoryQuery($endpoint, 'DELETE');
             if ($result['status'] == '204') {
-                echo "Collaborator " . $this->maintainer .
-                    " removed from repository.\n";
+                echo "Collaborator " . $user . " removed from repository.\n";
             } else {
                 echo "Something happened, checking...\n";
             }
         } else {
-            echo "Collaborator " . $this->maintainer . " not found.\n";
+            echo "Collaborator " . $user . " not found.\n";
         }
     }
 
