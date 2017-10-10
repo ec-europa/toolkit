@@ -242,7 +242,7 @@ class RepositoryCollaboratorsTask extends \Task
     }
 
     /**
-     * Add a specific user to a given repository.
+     * List all collaborators for a given repository.
      *
      * @param string $user The GitHub username to be added to repository
      *
