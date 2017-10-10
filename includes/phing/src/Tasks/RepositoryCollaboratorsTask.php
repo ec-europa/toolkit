@@ -38,6 +38,7 @@ class RepositoryCollaboratorsTask extends \Task
     public $reference     = '';
     public $forks         = [];
     public $collaborators = [];
+    public $invitations   = [];
     public $maintainers   = [];
     public $op            = '';
     public $projectId     = '';
@@ -134,11 +135,14 @@ class RepositoryCollaboratorsTask extends \Task
         // Check requirements.
         $this->checkRequirements();
 
-        // Init forks and collaborators information.
+        // Init forks, collaborators and invites information.
         $this->setForks();
         $this->setCollaborators($this->reference);
+        $this->setInvitations($this->reference);
+
         foreach ($this->forks as $fullName => $url) {
             $this->setCollaborators($fullName);
+            $this->setInvitations($fullName);
         }
 
         switch ($this->op) {
@@ -159,7 +163,7 @@ class RepositoryCollaboratorsTask extends \Task
     }
 
     /**
-     * List all forks for a given repository.
+     * Set all forks for a given repository.
      *
      * @return void
      */
@@ -178,7 +182,7 @@ class RepositoryCollaboratorsTask extends \Task
     }
 
     /**
-     * List all collaborators for a given repository.
+     * Set all collaborators for a given repository.
      *
      * @param string $repository   Repository name.
      * @param bool   $ignore_admin Include or not admins in the list.
@@ -207,6 +211,39 @@ class RepositoryCollaboratorsTask extends \Task
         $this->collaborators[$repository] = $collaborators_temp;
     }
 
+  /**
+   * Set all invitations for a given repository.
+   *
+   * @param string $repository   Repository name.
+   * @param bool   $ignore_admin Include or not admins in the list.
+   *
+   * @return void
+   */
+  protected function setInvitations($repository)
+  {
+    $invitations_temp = [];
+
+    // Get contributors for reference repository.
+    $endpoint = 'repos/' . $repository . '/invitations';
+    $result = $this->repositoryQuery($endpoint);
+
+    $invitations = json_decode($result['data']);
+
+    foreach ($invitations as $key => $invite) {
+
+      $invitations_temp[] = [
+        'name'      => $invite->invitee->login,
+        'inviter'   => $invite->inviter->login,
+        'create_at' => $invite->created_at,
+      ];
+    }
+
+    var_dump($invitations_temp);
+    die;
+
+    $this->invitations[$repository] = $invitations_temp;
+  }
+
     /**
      * List all collaborators for a given repository.
      *
@@ -216,6 +253,7 @@ class RepositoryCollaboratorsTask extends \Task
     {
         // List reference.
         echo " https://github.com/" . $this->reference;
+        echo "\n\n Current collaborators:";
         foreach ($this->collaborators[$this->reference] as $collaborator) {
 
             echo "\n " . $collaborator['pull'] .
@@ -224,6 +262,15 @@ class RepositoryCollaboratorsTask extends \Task
                 "\t" . $collaborator['name'];
         }
 
+        // List all invitation pending for Reference repository.
+        if (count($this->invitations[$this->reference]) > 0 ) {
+            echo "\n\n Pending invitations:";
+            foreach ($this->invitations[$this->reference] as $invite) {
+                echo "\n " . $invite['name'] .
+                    " (created by " . $invite['inviter'] .
+                    " in " . $invite['created_at'] .")";
+            }
+        }
         // List forks.
         if (count($this->forks) > 0 ) {
             foreach ($this->forks as $fullname => $url) {

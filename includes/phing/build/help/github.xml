@@ -77,7 +77,7 @@
         <repository-contributors
             projectId="${project.id}"
             reference="${project.repository.name}"
-            maintainer="${project.collaborators}"
+            maintainers="${project.collaborators}"
             />
     </target>
 
