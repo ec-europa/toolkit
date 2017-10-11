@@ -29,8 +29,6 @@ require_once 'phing/Task.php';
  */
 class RepositoryCollaboratorsTask extends \Task
 {
-    private $_Credentials = '';
-
     public $reference     = '';
     public $forks         = [];
     public $collaborators = [];
@@ -49,8 +47,6 @@ class RepositoryCollaboratorsTask extends \Task
     public function setProjectId($projectId)
     {
         $this->projectId = $projectId;
-
-        $this->_Credentials = getenv('GITHUB_USER'). ":" . getenv('GITHUB_PASS');
     }
 
     /**
@@ -293,22 +289,25 @@ class RepositoryCollaboratorsTask extends \Task
         if ($result['status'] == '204') {
             echo "Collaborator " . $user .
                 " already in the list of collaborators, no action required.\n";
-        } else {
-            $result = $this->repositoryQuery($endpoint, 'PUT');
-
-            if ($result['status'] == '204') {
-                echo "Collaborator " . $user .
-                    " have now READ access to repository.\n";
-            } else {
-                if ($result['status'] == '201') {
-                    echo "Collaborator " . $user .
-                        " is now invited, waiting acceptance.\n";
-                } else {
-                    echo "Not possible add " . $user .
-                        " to the list of collaborators, operation failed.\n";
-                }
-            }
+            return;
         }
+
+        $result = $this->repositoryQuery($endpoint, 'PUT');
+
+        if ($result['status'] == '204') {
+            echo "Collaborator " . $user .
+                " have now READ access to repository.\n";
+            return;
+        }
+
+        if ($result['status'] == '201') {
+            echo "Collaborator " . $user .
+                " is now invited, waiting acceptance.\n";
+            return;
+        }
+
+        echo "Not possible add " . $user .
+                " to the list of collaborators, operation failed.\n";
     }
 
     /**
@@ -327,12 +326,11 @@ class RepositoryCollaboratorsTask extends \Task
             $result = $this->repositoryQuery($endpoint, 'DELETE');
             if ($result['status'] == '204') {
                 echo "Collaborator " . $user . " removed from repository.\n";
-            } else {
-                echo "Something happened, checking...\n";
+                return;
             }
-        } else {
-            echo "Collaborator " . $user . " not found.\n";
+            echo "Something happened, checking...\n";
         }
+        echo "Collaborator " . $user . " not found.\n";
     }
 
     /**
@@ -345,6 +343,7 @@ class RepositoryCollaboratorsTask extends \Task
      */
     protected function repositoryQuery($endpoint, $type = 'POST')
     {
+        $credentials = getenv('GITHUB_USER'). ":" . getenv('GITHUB_PASS');
         $curlHandle = curl_init();
         curl_setopt(
             $curlHandle,
@@ -353,7 +352,7 @@ class RepositoryCollaboratorsTask extends \Task
         );
         curl_setopt($curlHandle, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
         curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curlHandle, CURLOPT_USERPWD, $this->_Credentials);
+        curl_setopt($curlHandle, CURLOPT_USERPWD, $credentials);
         curl_setopt($curlHandle, CURLOPT_USERAGENT, 'Toolkit Drupal');
 
         if ($type != 'POST') {
