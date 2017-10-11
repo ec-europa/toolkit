@@ -1,6 +1,6 @@
 # Subsite configuration.
 # ----------------------
-project.id = qa-collaborators
+project.id = toolkit
 project.install.modules = example_module
 project.name = Toolkit
 project.url.production =
@@ -17,8 +17,3 @@ project.admin.email = ${project.admin.username}@example.com
 # -----------------------
 profile = multisite_drupal_standard
 platform.package.version = 2.3
-
-# Repository configuration.
-# -----------------------
-project.maintainer =
-project.repository.name =
