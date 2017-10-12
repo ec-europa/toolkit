@@ -1,3 +1,5 @@
+# Docker integration
+# ------------------
 db.host = mysql
 solr.host = solr
 behat.base_url = http://web:8080

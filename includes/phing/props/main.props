@@ -44,7 +44,7 @@ drush.color = 1
 drush.verbose = FALSE
 
 # Docker. (TODO)
-# -------
+# ------------------------
 docker.project.id = environment
 
 # Database download settings.
@@ -131,7 +131,7 @@ build.dist = dist
 build.site = default
 #build.site = ${project.id}
 
-Build halts.
+# Build halts.
 # ----------
 build.haltonerror.dir.copy = true
 build.haltonerror.props.validate = false

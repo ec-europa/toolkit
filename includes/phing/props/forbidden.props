@@ -1,6 +1,5 @@
 # Starterkit directories.
 # -----------------------
-
 toolkit.dir = ${phing.dir.starterkit}
 toolkit.dir.bin = ${toolkit.dir}/bin
 toolkit.dir.incl = ${toolkit.dir}/includes
