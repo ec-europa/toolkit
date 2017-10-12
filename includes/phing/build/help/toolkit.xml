@@ -131,7 +131,7 @@
                         <include name="appspec.yml" />
                         <include name="build.clone.xml" />
                         <include name="build.package.xml" />
-                        <include name="build.project.props.dist" />
+                        <include name="build.properties.dist" />
                         <include name="build.test.xml" />
                         <include name="composer.lock" />
                         <include name="phpcs-ruleset.xml" />
