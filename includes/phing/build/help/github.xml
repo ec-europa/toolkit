@@ -99,4 +99,8 @@
             />
     </target>
 
+    <target name="github-teams" description="List all currents teams">
+        <repository-team operation="list" />
+    </target>
+
 </project>
