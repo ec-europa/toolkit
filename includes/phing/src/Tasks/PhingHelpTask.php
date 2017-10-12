@@ -168,12 +168,12 @@ class PhingHelpTask extends \Task
             if ($buildList[$file]['name'] != "deprecated") {
                 $table->addRow(new TableSeparator());
                 $table->addRow(
-                  array(
-                    new TableCell(
-                      $buildList[$file]['name'],
-                      array('colspan' => 3)
+                    array(
+                        new TableCell(
+                            $buildList[$file]['name'],
+                            array('colspan' => 3)
+                        )
                     )
-                  )
                 );
                 $table->addRow(new TableSeparator());
                 $table->addRows($targets);

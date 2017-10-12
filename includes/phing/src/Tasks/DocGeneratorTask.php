@@ -143,8 +143,8 @@ class DocGeneratorTask extends \Task
         );
 
         file_put_contents(
-          $project->getProperty('build.dir') . "/docs/target-list.md",
-          $targetTable
+            $project->getProperty('build.dir') . "/docs/target-list.md",
+            $targetTable
         );
 
         foreach ($buildList as $buildFile => $info) {
@@ -215,11 +215,11 @@ class DocGeneratorTask extends \Task
 
 
     /**
-     * This function should do something interesting.
+     * Wrapper documentation inside a table.
      *
-     * @param mixed $wrapperTargets  I have no idea.
-     * @param array $buildTargets I have no idea.
-     * @param array $callbackTargets something where
+     * @param mixed $wrapperTargets  Array with Wrapper targets.
+     * @param array $buildTargets    Build targets list.
+     * @param array $callbackTargets Callback target list.
      *
      * @return void
      */

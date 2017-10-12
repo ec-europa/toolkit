@@ -53,7 +53,7 @@ locally and can be used in CI tools like Jenkins, Drone or Travis.
 - [Configuring a project](/docs/configuring-project.md#configuring-a-project)
     - [Build properties](docs/configuring-project.md#build-properties)
     - [Build files](docs/configuring-project.md#build-files)
-    - [Cache system](docs/cache-system.md#cache-system)
+    - [Cache system](docs/configuring-project.md#cache-system)
 - [Building the codebase](docs/building-codebase.md#building-the-codebase)
     - [Platform builds](docs/building-codebase.md#platform-builds)
     - [Subsite builds](docs/building-codebase.md#subsite-builds)
@@ -84,3 +84,4 @@ operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
 [https://webgate.ec.europa.eu/CITnet/jira]: https://webgate.ec.europa.eu/CITnet/jira/secure/RapidBoard.jspa?rapidView=581
 [verbruggenalex]: https://github.com/verbruggenalex
 [jonhy81]: https://github.com/jonhy81
+
