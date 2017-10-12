@@ -26,7 +26,7 @@
     <target name="docker-compose-down" description="Trash docker project." hidden="true">
         <echo msg="Removing containers and volumes for ${docker.project.id}" />
         <exec command="docker-compose -p ${docker.project.id} -f ${toolkit.dir.incl.docker}/docker-compose.yml down --volumes" />
-        <delete file="${project.basedir}/docker${docker.project.id}" />
+        <delete file="${project.basedir}/docker-${docker.project.id}" />
     </target>
 
     <target name="docker-compose-restore" description="Restore database." hidden="true">

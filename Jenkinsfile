@@ -28,7 +28,7 @@ def createWorkflow() {
                     shellExecute('docker', 'phing', 'toolkit-starterkit-upgrade')
                 }
                 stage('Check') {
-                    shellExecute('docker', 'phing', 'test-run-phpcs')
+                    //shellExecute('docker', 'phing', 'test-run-phpcs')
                 }
 
                 stage('Build') {
