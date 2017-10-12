@@ -24,6 +24,9 @@ def createWorkflow() {
              }
 
             try {
+                stage('Upgrade') {
+                    shellExecute('docker', 'phing', 'toolkit-starterkit-upgrade')
+                }
                 stage('Check') {
                     shellExecute('docker', 'phing', 'test-run-phpcs')
                 }
@@ -65,7 +68,7 @@ def shellExecute(String environment, String executable, String command) {
             prefix = ""
             break
         case "docker":
-            prefix = "./toolkit-${env.COMPOSE_PROJECT_NAME} exec -T --user web web"
+            prefix = "./docker-${env.COMPOSE_PROJECT_NAME} exec -T --user web web"
             break
     }
 
