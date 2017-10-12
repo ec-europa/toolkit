@@ -364,24 +364,24 @@ site installation
 <details><p><summary>execute <code>./toolkit/phing test-run-phpunit</code></summary></p>
 
 ```
-Buildfile: ~/ssk/build.xml
- [property] Loading ~/ssk/includes/phing/build/boot.props
- [property] Loading ~/ssk/build.develop.props
- [property] Loading ~/ssk/build.project.props
- [property] Loading ~/ssk/.tmp/build.version.props
+Buildfile: ~/toolkit/build.xml
+ [property] Loading ~/toolkit/includes/phing/build/boot.props
+ [property] Loading ~/toolkit/build.develop.props
+ [property] Loading ~/toolkit/build.project.props
+ [property] Loading ~/toolkit/.tmp/build.version.props
      [echo] Global share directory /cache/share available.
-     [echo] Temporary directory ~/ssk/.tmp available.
+     [echo] Temporary directory ~/toolkit/.tmp available.
 
 core > test-phpunit-setup:
 
-     [copy] Copying 1 file to ~/ssk/tests
+     [copy] Copying 1 file to ~/toolkit/tests
 
 core > test-composer-install:
 
      [echo] Run 'composer install' in best folder.
  [composer] Composer binary not found at "composer.phar"
  [composer] Composer binary found at "/usr/local/bin/composer", updating location
- [composer] Executing /usr/bin/php /usr/local/bin/composer install --working-dir=~/ssk/tests --no-interaction --no-suggest --ansi
+ [composer] Executing /usr/bin/php /usr/local/bin/composer install --working-dir=~/toolkit/tests --no-interaction --no-suggest --ansi
 Loading composer repositories with package information
 Installing dependencies (including require-dev) from lock file
 Nothing to install or update
