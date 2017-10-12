@@ -256,6 +256,7 @@ platform.package.version = 2.4
 # -----------------------
 project.collaborators =
 project.repository.name =
+project.repository.team =
 
 # Theme configuration (deploy props?)
 # --------------------

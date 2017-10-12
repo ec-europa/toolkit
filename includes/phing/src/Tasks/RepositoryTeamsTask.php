@@ -316,7 +316,7 @@ class RepositoryTeamsTask extends \Task
     }
 
     /**
-     * Get all collaborators for a given repository.
+     * Get all collaborators for a given repository, admins are excluded.
      *
      * @return void
      */
@@ -327,7 +327,9 @@ class RepositoryTeamsTask extends \Task
         $result = $this->_query($endpoint);
 
         foreach ($result['data'] as $collaborator) {
-            $this->githubCollaborators[] = $collaborator->login;
+            if (!$collaborator->permissions->admin) {
+                $this->githubCollaborators[] = $collaborator->login;
+            }
         }
 
     }

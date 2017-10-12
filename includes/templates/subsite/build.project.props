@@ -22,3 +22,4 @@ platform.package.version = 2.3
 # -----------------------
 project.collaborators =
 project.repository.name =
+project.repository.team =
