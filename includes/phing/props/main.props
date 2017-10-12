@@ -1,3 +1,7 @@
+# -----------------------------------------------------------------------------------
+# The main properties of the toolkit. Most of them are build and development related.
+# -----------------------------------------------------------------------------------
+
 # Binaries.
 # ---------
 project.bin.composer = composer.phar
@@ -16,13 +20,12 @@ project.install.modules = myproject_core
 project.name = My Project
 project.theme.default = ec_resp
 project.type = subsite
-project.url.base = http://localhost:8080
+project.url.base = http://web:8080
 project.url.production =
 
 # Development modules.
 # --------------------
 devel.mdls.dir = devel
-devel.mdls.dl = devel maillog stage_file_proxy
 devel.mdls.en = devel context field_ui maillog simpletest stage_file_proxy views_ui
 
 # Development variables.
@@ -41,7 +44,7 @@ drush.color = 1
 drush.verbose = FALSE
 
 # Docker. (TODO)
-# -------
+# ------------------------
 docker.project.id = environment
 
 # Database download settings.
@@ -59,14 +62,14 @@ db.type = mysql
 db.name = ${project.id}
 db.user = root
 db.password =
-db.host = mysql
+db.host = 127.0.0.1
 db.port = 3306
 db.url = ${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db.name}
 
 # Solr configuration.
 # -------------------
 solr.enable = 1
-solr.host = solr
+solr.host = 127.0.0.1
 solr.port = 8983
 solr.type = d7_apachesolr
 solr.scheme = http
@@ -78,7 +81,7 @@ admin.email = ${admin.username}@example.com
 admin.password = pass
 admin.username = admin
 
-# Platform configuration. (deploy props?)
+# Platform configuration.
 # -----------------------
 profile = multisite_drupal_standard
 profile.core = 7.x
@@ -128,7 +131,7 @@ build.dist = dist
 build.site = default
 #build.site = ${project.id}
 
-Build halts.
+# Build halts.
 # ----------
 build.haltonerror.dir.copy = true
 build.haltonerror.props.validate = false
@@ -183,8 +186,8 @@ rebuild.backup.folders = ${build.subsite.dir.files};${build.subsite.dir.tmp}
 
 # Shared paths.
 # -------------
-share.path = /cache
-share.name = share
+share.path = /tmp
+share.name = toolkit
 share.path.global = ${share.path}/${share.name}
 share.path.composer = ${share.path.global}/composer
 share.path.platform = ${share.path.global}/platform
@@ -202,23 +205,10 @@ share.path.subsites.packages.test = ${share.path.subsites.packages}/test
 
 # Composer hook phingcall target lists. Space separated only.
 # -----------------------------------------------------------
-composer.hook.post.install = toolkit-initialize
+composer.hook.post.install = build-toolkit
 composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =
-
-# Git hook phingcall target lists. Space separated only.
-# -----------------------------------------------------------
-git.hook.applypatch.msg =
-git.hook.post.update =
-git.hook.pre.commit =
-git.hook.pre.push =
-git.hook.pre.receive =
-git.hook.commit.msg
-git.hook.pre.applypatch =
-git.hook.prepare.commit.msg =
-git.hook.pre.rebase =
-git.hook.update =
 
 # Flickr configuration.
 # ---------------------
@@ -236,4 +226,5 @@ varnish.server.port = 8888
 # Drush Context configuration.
 # ----------------------------
 drush.db.dump = ${build.platform.dir}/dump.sql
+
 

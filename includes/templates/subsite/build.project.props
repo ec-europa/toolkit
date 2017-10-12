@@ -1,6 +1,6 @@
 # Subsite configuration.
 # ----------------------
-project.id = ssk
+project.id = toolkit
 project.install.modules =
 project.name = Subsite Starterkit
 project.url.production =

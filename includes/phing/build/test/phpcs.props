@@ -1,6 +1,6 @@
-# PHP CodeSniffer configuration
-# -----------------------------
-## ALLGOOD
+# -----------------------------------------------------------------------------------
+# PHPCS sprecific configuration
+# -----------------------------------------------------------------------------------
 
 # The file extensions to test.
 # Delimited by space, comma or semicolon.
@@ -49,4 +49,5 @@ phpcs.prepush.enable = 1
 # The source and destination paths of the git pre-push hook.
 phpcs.prepush.source = ${toolkit.dir.vendor}/pfrenssen/phpcs-pre-push/pre-push
 phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpcs
+
 

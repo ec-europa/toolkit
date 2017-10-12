@@ -1,13 +1,13 @@
-project.name =
-subsite.make =
-subsite.install.modules =
+project.name = project.name
+subsite.make = resources.dir.site.make
+subsite.install.modules = project.install.modules
 
-project.id =
+project.id = project.id
 project.database.url.scheme =
-project.database.url.htaccess.username =
-project.database.url.htaccess.password =
-project.database.url =
-project.database.filename =
+project.database.url.htaccess.username = db.dl.username
+project.database.url.htaccess.password = db.dl.password
+project.database.url = db.dl.url
+project.database.filename = db.dl.filename
 
 project.reference.repository =
 project.reference.branch =
@@ -25,120 +25,120 @@ development.variables.stage_file_proxy_origin = devel.mdls.stage_file_proxy_orig
 development.variables.stage_file_proxy_origin_dir = devel.mdls.stage_file_proxy_origin_dir
 development.variables.stage_file_proxy_hotlink = devel.mdls.stage_file_proxy_hotlink
 
-drupal.db.type =
-drupal.db.name =
-drupal.db.user =
-drupal.db.password =
-drupal.db.host =
-drupal.db.port =
-drupal.db.url =
+drupal.db.type = db.type
+drupal.db.name = db.name
+drupal.db.user = db.user
+drupal.db.password = db.password
+drupal.db.host = db.host
+drupal.db.port = db.port
+drupal.db.url = db.url
 
-drupal.admin.username =
-drupal.admin.password =
-drupal.admin.email =
+drupal.admin.username = admin.username
+drupal.admin.password = admin.password
+drupal.admin.email = admin.email
 
 drupal.htaccess.path =
-drupal.htaccess.append.text =
+drupal.htaccess.append.text = build.platform.htaccess.append.text
 
-drupal.site.name =
+drupal.site.name = project.name
 drupal.core.version =
 
-platform.build.dir =
-platform.profile.name =
-platform.package.reference =
-platform.package.provider =
-platform.package.repository =
-platform.package.cachedir =
+platform.build.dir = build.platform.dir
+platform.profile.name = profile
+platform.package.reference = platform.package.reference
+platform.package.provider = platform.package.version
+platform.package.repository = platform.package.repository
+platform.package.cachedir = share.path.platform.packages
 platform.package.destination =
-platform.package =
-platform.package.provider.token =
+platform.package = platform.package.version
+platform.package.provider.token = platform.package.provider.token
 
-composer.bin =
-drush.bin =
-git.bin =
-phing.bin =
+composer.bin = project.bin.composer
+drush.bin = toolkit.dir.bin.drush
+git.bin = project.bin.git
+phing.bin = toolkit.dir.bin.phing
 
-phing.build.dir =
-phing.project.src.dir =
-dist.build.dir =
+phing.build.dir = toolkit.dir.incl.phing.build
+phing.project.src.dir = toolkit.dir.incl.phing.src
+dist.build.dir = build.dist
 
 phing.project.tmp.dir =
 
-subsite.resources.dir =
-subsite.resources.lib.dir =
-subsite.resources.features.dir =
-subsite.resources.modules.dir =
-subsite.resources.source.dir =
-subsite.resources.themes.dir =
-subsite.resources.composer.json =
-subsite.resources.composer.lock =
+subsite.resources.dir = lib.dir
+subsite.resources.lib.dir = lib.dir.libraries
+subsite.resources.features.dir = lib.dir.modules.features
+subsite.resources.modules.dir = lib.dir.modules.custom
+subsite.resources.source.dir = lib.dir.source
+subsite.resources.themes.dir = lib.dir.themes
+subsite.resources.composer.json = resources.dir.composer.json
+subsite.resources.composer.lock = resources.dir.composer.lock
 
-subsite.temporary.development.make =
+subsite.temporary.development.make = resources.dir.devel.make
 
-platform.build.settings.dir =
-platform.build.files.dir =
-platform.build.tmp.dir =
+platform.build.settings.dir = build.platform.dir.settings
+platform.build.files.dir = build.subsite.dir.files
+platform.build.tmp.dir = build.subsite.dir.tmp
 
-platform.build.profiles.dir =
-platform.build.platform.dir =
+platform.build.profiles.dir = build.platform.dir.profiles
+platform.build.platform.dir = build.platform.dir
 
-platform.build.sites.dir =
-platform.build.subsite.dir =
-platform.build.subsite.libraries.dir =
-platform.build.subsite.modules.dir =
-platform.build.subsite.modules.contrib.dir =
-platform.build.subsite.modules.custom.dir =
-platform.build.subsite.modules.features.dir =
-platform.build.subsite.source.dir =
-platform.build.subsite.themes.dir =
-platform.build.subsite.composer.json =
-platform.build.subsite.composer.lock =
+platform.build.sites.dir = build.platform.dir.sites
+platform.build.subsite.dir = build.subsite.dir
+platform.build.subsite.libraries.dir = build.subsite.dir.libraries
+platform.build.subsite.modules.dir = build.subsite.dir.modules
+platform.build.subsite.modules.contrib.dir = build.subsite.dir.modules.contrib
+platform.build.subsite.modules.custom.dir = build.subsite.dir.modules.custom
+platform.build.subsite.modules.features.dir = build.subsite.dir.modules.features
+platform.build.subsite.source.dir = build.subsite.dir.source
+platform.build.subsite.themes.dir = build.subsite.dir.themes
+platform.build.subsite.composer.json = build.subsite.composer.json
+platform.build.subsite.composer.lock = build.subsite.composer.lock
 
-dist.build.modules.dir =
-dist.build.modules.custom.dir =
-dist.build.modules.features.dir =
-dist.build.source.dir =
-dist.build.themes.dir =
-dist.build.composer.json =
-dist.build.composer.lock =
+dist.build.modules.dir = build.dist.dir
+dist.build.modules.custom.dir = build.dist.dir.modules.custom
+dist.build.modules.features.dir = build.dist.dir.modules.features
+dist.build.source.dir = build.dist.dir.source
+dist.build.themes.dir = build.dist.dir.themes
+dist.build.composer.json = build.dist.composer.json
+dist.build.composer.lock = build.dist.composer.lock
 
-platform.rebuild.auto =
-platform.rebuild.backup.destination =
-platform.rebuild.backup.folders =
-platform.rebuild.backup.files =
+platform.rebuild.auto = rebuild.auto
+platform.rebuild.backup.destination = rebuild.backup.destination
+platform.rebuild.backup.folders = rebuild.backup.folder
+platform.rebuild.backup.files = rebuild.backup.files
 
-behat.bin =
-behat.dir =
-behat.yml.template =
-behat.yml.path =
-behat.base_url =
-behat.subcontexts.path =
-behat.formatter.name =
-behat.options.strict =
-behat.options.verbosity =
-behat.src.dir =
+behat.bin = behat.bin
+behat.dir = behat.dir
+behat.yml.template = behat.yml.template
+behat.yml.path = behat.yml.path
+behat.base_url = behat.base_url
+behat.subcontexts.path = behat.subcontexts.path
+behat.formatter.name = behat.formatter.name
+behat.options.strict = behat.options.strict
+behat.options.verbosity = behat.options.verbosity
+behat.src.dir = behat.dir
 
-phpcs.extensions =
-phpcs.config =
-phpcs.standards =
-phpcs.files =
-phpcs.ignore =
-phpcs.passwarnings =
-phpcs.report =
-phpcs.sniffcodes =
-phpcs.progress =
-phpcs.global.config =
-phpcs.prepush.enable =
-phpcs.prepush.source =
-phpcs.prepush.destination =
+phpcs.extensions = phpcs.extensions
+phpcs.config = phpcs.config
+phpcs.standards = phpcs.standards
+phpcs.files = phpcs.files
+phpcs.ignore = phpcs.ignore
+phpcs.passwarnings = phpcs.passwarnings
+phpcs.report = phpcs.reports
+phpcs.sniffcodes = phpcs.sniffcodes
+phpcs.progress = phpcs.progress
+phpcs.global.config = phpcs.global.config
+phpcs.prepush.enable = phpcs.prepush.enable
+phpcs.prepush.source = phpcs.prepush.source
+phpcs.prepush.destination = phpcs.prepush.destination
 
-qa.check.ssk =
+qa.check.toolkit =
 
-project.docroot =
+project.docroot = project.docroot
 
-drush.verbose =
+drush.verbose = drush.verbose
 
-phpcs.verbose =
+phpcs.verbose = phpcs.verbose
 
 aws.region =
 

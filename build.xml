@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="starterkit" default="help">
+<project name="core" default="help">
 
-    <property name="toolkit.dir" value="${phing.dir.starterkit}" />
+    <property name="toolkit.dir" value="${phing.dir.core}" />
     <import file="${toolkit.dir}/includes/phing/build.xml" />
 
 </project>

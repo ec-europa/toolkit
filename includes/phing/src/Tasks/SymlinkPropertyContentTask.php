@@ -12,7 +12,7 @@
  * @link     https://github.com/ec-europa/toolkit/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
  */
 
-namespace Phing\Ssk\Tasks;
+namespace Phing\Toolkit\Tasks;
 
 require_once 'phing/Task.php';
 
@@ -301,14 +301,14 @@ class SymlinkPropertyContentTask extends RelativeSymlinkTask
      *
      * @param string $targetPath Target of symlink
      * @param string $link       Symlink
+     * @param bool   $logShort   Log short
      *
      * @return void
      */
-    protected function symlink($targetPath, $link)
+    protected function symlink($targetPath, $link, $logShort = false)
     {
-        parent::symlink($targetPath, $link);
+        parent::symlink($targetPath, $link, $logShort);
     }//end symlink()
-
 
     /**
      * Create a directory

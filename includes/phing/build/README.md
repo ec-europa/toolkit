@@ -23,7 +23,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>build-clone</td>
-            <td width="80%">install-project-clone</td>
+            <td width="80%">install-clone</td>
         </tr>
         <tr>
             <td nowrap>
@@ -31,7 +31,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>build-dev</td>
-            <td width="80%">build-subsite-dev</td>
+            <td width="80%">build-dev</td>
         </tr>
         <tr>
             <td nowrap>
@@ -39,7 +39,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>build-dist</td>
-            <td width="80%">build-subsite-dist</td>
+            <td width="80%">build-dist</td>
         </tr>
         <tr>
             <td nowrap>
@@ -47,7 +47,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>install</td>
-            <td width="80%">install-project-clean</td>
+            <td width="80%">install-clean</td>
         </tr>
         <tr>
             <td nowrap>
@@ -55,7 +55,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>install-dev</td>
-            <td width="80%">install-project-clean</td>
+            <td width="80%">install-clean</td>
         </tr>
         <tr>
             <td nowrap>
@@ -95,7 +95,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>regenerate-settings</td>
-            <td width="80%">drush-generate-settings</td>
+            <td width="80%">drush-settings-generate</td>
         </tr>
         <tr>
             <td nowrap>
@@ -143,7 +143,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>copy-dist-resources</td>
-            <td width="80%">build-subsite-copy-resources</td>
+            <td width="80%">subsite-resources-copy</td>
         </tr>
         <tr>
             <td nowrap>
@@ -151,7 +151,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>copy-folder</td>
-            <td width="80%">build-subsite-copy-resources</td>
+            <td width="80%">subsite-resources-copy</td>
         </tr>
         <tr>
             <td nowrap>
@@ -183,7 +183,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>download-platform</td>
-            <td width="80%">project-build-platform</td>
+            <td width="80%">build-platform</td>
         </tr>
         <tr>
             <td nowrap>
@@ -207,7 +207,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>enable-modules</td>
-            <td width="80%">drush-enable-modules</td>
+            <td width="80%">drush-modules-enable</td>
         </tr>
         <tr>
             <td nowrap>
@@ -247,7 +247,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>link-dev-resources</td>
-            <td width="80%">build-subsite-link-resources</td>
+            <td width="80%">subsite-resources-link</td>
         </tr>
         <tr>
             <td nowrap>
@@ -255,7 +255,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>make-dev</td>
-            <td width="80%">build-subsite-make-site</td>
+            <td width="80%">subsite-make</td>
         </tr>
         <tr>
             <td nowrap>
@@ -263,7 +263,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>make-dist</td>
-            <td width="80%">build-subsite-make-site</td>
+            <td width="80%">subsite-make</td>
         </tr>
         <tr>
             <td nowrap>
@@ -279,7 +279,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>rebuild-node-access</td>
-            <td width="80%">drush-rebuild-node-access</td>
+            <td width="80%">drush-node-access-rebuild</td>
         </tr>
         <tr>
             <td nowrap>
@@ -311,7 +311,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png" align="left" alt="deprecated" />
             </td>
             <td nowrap>setup-files-directory</td>
-            <td width="80%">project-subsite-setup-files</td>
+            <td width="80%">project-subsite-files-setup</td>
         </tr>
         <tr>
             <td nowrap>
@@ -528,7 +528,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-generate-aliases</td>
+            <td nowrap>drush-aliases-generate</td>
             <td width="80%">Generate drush aliases for each subsite folder.</td>
         </tr>
         <tr>
@@ -536,7 +536,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-enable-modules</td>
+            <td nowrap>drush-modules-enable</td>
             <td width="80%">Enable a set of modules.</td>
         </tr>
         <tr>
@@ -544,7 +544,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-create-files-dirs</td>
+            <td nowrap>drush-files-dirs-create</td>
             <td width="80%">Create site files directories.</td>
         </tr>
         <tr>
@@ -584,7 +584,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-enable-solr</td>
+            <td nowrap>drush-solr-enable</td>
             <td width="80%">Enable the solr module.</td>
         </tr>
         <tr>
@@ -600,7 +600,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>drush-generate-settings</td>
+            <td nowrap>drush-settings-generate</td>
             <td width="80%">Generate the settings.php file.</td>
         </tr>
         <tr>
@@ -624,7 +624,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>drush-rebuild-node-access</td>
+            <td nowrap>drush-node-access-rebuild</td>
             <td width="80%">Rebuild the node access.</td>
         </tr>
     </tbody>
@@ -714,7 +714,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>toolkit-initialize</td>
+            <td nowrap>build-toolkit</td>
             <td width="80%">Initializes a project for use of the toolkit.</td>
         </tr>
         <tr>
@@ -722,7 +722,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>toolkit-link-binary</td>
+            <td nowrap>toolkit-binary-link</td>
             <td width="80%">Provide project with toolkit binary at root level.</td>
         </tr>
         <tr>
@@ -730,7 +730,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>toolkit-generate-structure</td>
+            <td nowrap>toolkit-structure-generate</td>
             <td width="80%">Create the lib directory structure.</td>
         </tr>
         <tr>
@@ -738,7 +738,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>toolkit-generate-docs</td>
+            <td nowrap>toolkit-markdown-generate</td>
             <td width="80%">Generate documentation md files for toolkit.</td>
         </tr>
         <tr>
@@ -746,7 +746,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>toolkit-copy-templates</td>
+            <td nowrap>toolkit-templates-copy</td>
             <td width="80%">Copies template files to your project for toolkit integration.</td>
         </tr>
         <tr>
@@ -754,7 +754,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>toolkit-upgrade-starterkit</td>
+            <td nowrap>toolkit-starterkit-upgrade</td>
             <td width="80%">Perform upgrade tasks for upgrading from 2.x to 3.x.</td>
         </tr>
         <tr>
@@ -762,7 +762,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>toolkit-composer-hook-phingcalls</td>
+            <td nowrap>toolkit-hooks-composer</td>
             <td width="80%">Echo the composer hook phing targets for use in bash script.</td>
         </tr>
         <tr>
@@ -770,7 +770,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png" align="left" alt="hidden" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>toolkit-git-hook-phingcalls</td>
+            <td nowrap>toolkit-hooks-git</td>
             <td width="80%">Echo the git hook phing targets for use in bash script.</td>
         </tr>
     </tbody>
@@ -792,7 +792,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>project-build-platform</td>
+            <td nowrap>build-platform</td>
             <td width="80%">Build NextEuropa Platform code without version control.</td>
         </tr>
         <tr>
@@ -800,7 +800,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>project-build-subsite</td>
+            <td nowrap>build-subsite</td>
             <td width="80%">Build NextEuropa Subsite code without version control (non-functional).</td>
         </tr>
         <tr>
@@ -808,7 +808,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>project-build-theme</td>
+            <td nowrap>build-theme</td>
             <td width="80%">Build EC Europa theme without version control.</td>
         </tr>
         <tr>
@@ -816,7 +816,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>install-project-clone</td>
+            <td nowrap>install-clone</td>
             <td width="80%">Install NextEuropa site with sanitized production data.</td>
         </tr>
         <tr>
@@ -896,7 +896,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>project-subsite-setup-files</td>
+            <td nowrap>project-subsite-files-setup</td>
             <td width="80%">Create files directories for subsite.</td>
         </tr>
         <tr>
@@ -936,7 +936,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>install-project-clean</td>
+            <td nowrap>install-clean</td>
             <td width="80%">Install NextEuropa site from scratch.</td>
         </tr>
         <tr>
@@ -1016,7 +1016,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>project-validate-properties</td>
+            <td nowrap>project-properties-validate</td>
             <td width="80%">Validate the build properties file.</td>
         </tr>
         <tr>
@@ -1106,7 +1106,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-platform-dev</td>
+            <td nowrap>build-dev</td>
             <td width="80%">Build a local development version with a single platform profile.</td>
         </tr>
         <tr>
@@ -1114,7 +1114,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-platform-dev-all</td>
+            <td nowrap>build-dev-all</td>
             <td width="80%">Build a local development version with all platform profiles.</td>
         </tr>
         <tr>
@@ -1122,7 +1122,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-platform-dist</td>
+            <td nowrap>build-dist</td>
             <td width="80%">Build a single platform profile intended as a release package.</td>
         </tr>
         <tr>
@@ -1130,7 +1130,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-platform-dist-all</td>
+            <td nowrap>build-dist-all</td>
             <td width="80%">Build all platform profiles intended as a release package.</td>
         </tr>
         <tr>
@@ -1138,7 +1138,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>build-platform-test</td>
+            <td nowrap>build-test</td>
             <td width="80%">Build a platform test package to test this reslease.</td>
         </tr>
         <tr>
@@ -1146,7 +1146,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-delete</td>
+            <td nowrap>build-delete</td>
             <td width="80%">Build a platform test package to test this reslease.</td>
         </tr>
         <tr>
@@ -1154,7 +1154,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-type-dev</td>
+            <td nowrap>build-type-dev</td>
             <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
         <tr>
@@ -1162,7 +1162,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-type-dist</td>
+            <td nowrap>build-type-dist</td>
             <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
         <tr>
@@ -1170,7 +1170,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-copy-profile</td>
+            <td nowrap>build-copy-profile</td>
             <td width="80%">Copies single profile for distribution.</td>
         </tr>
         <tr>
@@ -1178,7 +1178,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-copy-profiles</td>
+            <td nowrap>build-copy-profiles</td>
             <td width="80%">Copies all profiles for distirbution.</td>
         </tr>
         <tr>
@@ -1186,7 +1186,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-copy-resources</td>
+            <td nowrap>build-copy-resources</td>
             <td width="80%">Copies platform resources for distribution.</td>
         </tr>
         <tr>
@@ -1194,7 +1194,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-link-profiles</td>
+            <td nowrap>build-link-profiles</td>
             <td width="80%">Link platform profiles to lib folder for development.</td>
         </tr>
         <tr>
@@ -1202,7 +1202,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-link-resources</td>
+            <td nowrap>build-link-resources</td>
             <td width="80%">Link platform resources to lib folder for development.</td>
         </tr>
         <tr>
@@ -1210,7 +1210,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-make-drupal</td>
+            <td nowrap>build-make-drupal</td>
             <td width="80%">Build the Drupal core codebase.</td>
         </tr>
         <tr>
@@ -1218,7 +1218,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-make-profile</td>
+            <td nowrap>build-make-profile</td>
             <td width="80%">Makes single profile resources with drush.</td>
         </tr>
         <tr>
@@ -1226,7 +1226,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-platform-make-profiles</td>
+            <td nowrap>build-make-profiles</td>
             <td width="80%">Makes all profile resources with drush.</td>
         </tr>
     </tbody>
@@ -1247,7 +1247,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-subsite-dev</td>
+            <td nowrap>build-dev</td>
             <td width="80%">Build a local development version of the site.</td>
         </tr>
         <tr>
@@ -1255,7 +1255,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-subsite-dist</td>
+            <td nowrap>build-dist</td>
             <td width="80%">Build a site intended as a release package.</td>
         </tr>
         <tr>
@@ -1263,7 +1263,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png" align="left" alt="helper" />
             </td>
-            <td nowrap>build-subsite-test</td>
+            <td nowrap>subsite-test</td>
             <td width="80%">Build a subsite test package to test this reslease.</td>
         </tr>
         <tr>
@@ -1271,7 +1271,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-delete</td>
+            <td nowrap>subsite-delete</td>
             <td width="80%">Delete subsite build.</td>
         </tr>
         <tr>
@@ -1279,7 +1279,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-type-dev</td>
+            <td nowrap>subsite-type-dev</td>
             <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
         <tr>
@@ -1287,7 +1287,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-type-dist</td>
+            <td nowrap>subsite-type-dist</td>
             <td width="80%">Sets the type of build (dev or dist).</td>
         </tr>
         <tr>
@@ -1295,7 +1295,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-copy-resources</td>
+            <td nowrap>subsite-resources-copy</td>
             <td width="80%">Copy subsite resources for distribution.</td>
         </tr>
         <tr>
@@ -1303,7 +1303,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-link-resources</td>
+            <td nowrap>subsite-resources-link</td>
             <td width="80%">Link subsite resources to lib folder for development.</td>
         </tr>
         <tr>
@@ -1311,7 +1311,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png" align="left" alt="callback" />
             </td>
-            <td nowrap>build-subsite-make-site</td>
+            <td nowrap>subsite-make</td>
             <td width="80%">Makes the subsite resources with drush.</td>
         </tr>
         <tr>
@@ -1319,7 +1319,7 @@
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png" align="left" alt="visible" />
                 <img src="https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png" align="left" alt="playbook" />
             </td>
-            <td nowrap>build-subsite-release-package</td>
+            <td nowrap>subsite-release-package</td>
             <td width="80%">Build a subsite release package for deployment.</td>
         </tr>
     </tbody>

@@ -2,268 +2,216 @@
 
 <project name="deprecated" description="Contains a mapping of subsite-starterkit to toolkit targets." default="">
 
-    <!-- Target build-clone has been replaced by install-project-clone. -->
-    <target hidden="true" name="build-clone">
-        <replacedby target="install-project-clone" />
-    </target>
-
-    <!-- Target build-dev has been replaced by install-project-dev. -->
-    <target hidden="true" name="build-dev">
-        <replacedby target="build-subsite-dev" />
-    </target>
-
-    <!-- Target build-dist has been replaced by build-subsite-dist. -->
-    <target hidden="true" name="build-dist">
-        <replacedby target="build-subsite-dist" />
-    </target>
-
-    <!-- Target install has been replaced by install-project-clean. -->
-    <target hidden="true" name="install">
-        <replacedby target="install-project-clean" />
-    </target>
-
-    <!-- Target install-dev has been replaced by install-project-clean. -->
-    <target hidden="true" name="install-dev">
-        <replacedby target="install-project-clean" />
-    </target>
-
-    <!-- Target behat has been replaced by test-run-behat. -->
-    <target hidden="true" name="behat">
-        <replacedby target="test-run-behat" />
-    </target>
-
-    <!-- Target mjolnir has been replaced by test-run-qa. -->
-    <target hidden="true" name="mjolnir">
-        <replacedby target="test-run-qa" />
-    </target>
-
-    <!-- Target setup-php-codesniffer has been replaced by phpcs-setup. -->
-    <target hidden="true" name="setup-php-codesniffer">
-        <replacedby target="phpcs-setup" />
-    </target>
-
-    <!-- Target setup-phpcs-pre-push has been replaced by test-phpcs-setup-prepush. -->
-    <target hidden="true" name="setup-phpcs-pre-push">
-        <replacedby target="test-phpcs-setup-prepush" />
-    </target>
-
-    <!-- Target regenerate-settings has been replaced by drush-generate-settings. -->
-    <target hidden="true" name="regenerate-settings">
-        <replacedby target="drush-generate-settings" />
-    </target>
-
-    <!-- Target link-docroot has been replaced by project-platform-set-docroot. -->
-    <target hidden="true" name="link-docroot">
-        <replacedby target="project-platform-set-docroot" />
-    </target>
-
-    <!-- Target download-prod-db has been replaced by  project-database-download. -->
-    <target hidden="true" name="download-prod-db">
-        <replacedby target="project-database-download" />
-    </target>
-
-    <!-- Target import-prod-db has been replaced by project-database-import. -->
-    <target hidden="true" name="import-prod-db">
-        <replacedby target="project-database-import" />
-    </target>
-
-    <!-- Target backup-site has been replaced by project-subsite-backup. -->
     <target hidden="true" name="backup-site">
         <replacedby target="project-subsite-backup" />
     </target>
 
-    <!-- Target backup-site-item has been replaced by project-subsite-backup-item. -->
     <target hidden="true" name="backup-site-item">
         <replacedby target="project-subsite-backup-item" />
     </target>
 
-    <!-- Target copy-dist-resources has been replaced by build-subsite-copy-resources. -->
-    <target hidden="true" name="copy-dist-resources">
-        <replacedby target="build-subsite-copy-resources" />
+    <target hidden="true" name="behat">
+        <replacedby target="test-run-behat" />
     </target>
 
-    <!-- Target copy-folder has been replaced by build-subsite-copy-resources. -->
-    <target hidden="true" name="copy-folder">
-        <replacedby target="build-subsite-copy-resources" />
+    <target hidden="true" name="build-clone">
+        <replacedby target="install-clone" />
     </target>
 
-    <!-- Target delete-dev has been replaced by project-scratch-build. -->
-    <target hidden="true" name="delete-dev">
-        <replacedby target="project-scratch-build" />
-    </target>
-
-    <!-- Target delete-dist has been replaced by project-scratch-build. -->
-    <target hidden="true" name="delete-dist">
-        <replacedby target="project-scratch-build" />
-    </target>
-
-    <!-- Target download-development-modules has been replaced by project-modules-devel-dl. -->
-    <target hidden="true" name="download-development-modules">
-        <replacedby target="project-modules-devel-dl" />
-    </target>
-
-    <!-- Target download-platform has been replaced by build-project-platform. -->
-    <target hidden="true" name="download-platform">
-        <replacedby target="project-build-platform" />
-    </target>
-
-    <!-- Target enable-development-modules has been replaced by project-modules-devel-en. -->
-    <target hidden="true" name="enable-development-modules">
-        <replacedby target="project-modules-devel-en" />
-    </target>
-
-    <!-- Target enable-install-modules has been replaced by project-modules-install-en. -->
-    <target hidden="true" name="enable-install-modules">
-        <replacedby target="project-modules-install-en" />
-    </target>
-
-    <!-- Target enable-modules has been replaced by drush-enable-modules. -->
-    <target hidden="true" name="enable-modules">
-        <replacedby target="drush-enable-modules" />
-    </target>
-
-    <!-- Target generate-development-makefile has been replaced by project-modules-devel-mf. -->
-    <target hidden="true" name="generate-development-makefile">
-        <replacedby target="project-modules-devel-mf" />
-    </target>
-
-    <!-- Target install-build-dependencies has been replaced by project-subsite-composer-no-dev. -->
-    <target hidden="true" name="install-build-dependencies">
-        <replacedby target="project-subsite-composer-no-dev" />
-    </target>
-
-    <!-- Target install-dev-dependencies has been replaced by project-subsite-composer-dev. -->
-    <target hidden="true" name="install-dev-dependencies">
-        <replacedby target="project-subsite-composer-dev" />
-    </target>
-
-    <!-- Target link-behat has been replaced by test-behat-setup-link. -->
-    <target hidden="true" name="link-behat">
-        <replacedby target="test-behat-setup-link" />
-    </target>
-
-    <!-- Target link-dev-resources has been replaced by build-subsite-link-resources. -->
-    <target hidden="true" name="link-dev-resources">
-        <replacedby target="build-subsite-link-resources" />
-    </target>
-
-    <!-- Target make-dev has been replaced by build-subsite-make-site. -->
-    <target hidden="true" name="make-dev">
-        <replacedby target="build-subsite-make-site" />
-    </target>
-
-    <!-- Target make-dist has been replaced by build-subsite-make-site. -->
-    <target hidden="true" name="make-dist">
-        <replacedby target="build-subsite-make-site" />
-    </target>
-
-    <!-- Target quality-assurance has been replaced by test-qa-exec. -->
-    <target hidden="true" name="quality-assurance">
-        <replacedby target="test-qa-exec" />
-    </target>
-
-    <!-- Target rebuild-node-access has been replaced by drush-rebuild-node-access. -->
-    <target hidden="true" name="rebuild-node-access">
-        <replacedby target="drush-rebuild-node-access" />
-    </target>
-
-    <!-- Target restore-site has been replaced by project-subsite-restore. -->
-    <target hidden="true" name="restore-site">
-        <replacedby target="project-subsite-restore" />
-    </target>
-
-    <!-- Target restore-site-item has been replaced by project-subsite-restore-item. -->
-    <target hidden="true" name="restore-site-item">
-        <replacedby target="project-subsite-restore-item" />
-    </target>
-
-    <!-- Target setup-behat has been replaced by test-behat-setup. -->
-    <target hidden="true" name="setup-behat">
-        <replacedby target="test-behat-setup" />
-    </target>
-
-    <!-- Target setup-files-directory has been replaced by project-subsite-setup-files. -->
-    <target hidden="true" name="setup-files-directory">
-        <replacedby target="project-subsite-setup-files" />
-    </target>
-
-    <!-- Target unpack-platform has been replaced by project-platform-package-unpack. -->
-    <target hidden="true" name="unpack-platform">
-        <replacedby target="project-platform-package-unpack" />
-    </target>
-
-    <!-- Target update-htaccess has been replaced by project-platform-set-htaccess. -->
-    <target hidden="true" name="update-htaccess">
-        <replacedby target="project-platform-set-htaccess" />
-    </target>
-
-    <!-- Target wget-prod-db has been replaced by project-subsite-restore-item. -->
-    <target hidden="true" name="wget-prod-db">
-        <replacedby target="project-database-wget" />
-    </target>
-
-    <!-- Target build-custom has been removed. -->
     <target hidden="true" name="build-custom">
         <echo msg="The target build-custom is no longer available." />
     </target>
 
-    <!-- Target provision-stack has been removed. -->
-    <target hidden="true" name="provision-stack">
-        <echo msg="The target provision-stack is no longer available." />
+    <target hidden="true" name="build-dev">
+        <replacedby target="build-dev" />
     </target>
 
-    <!-- Target create-tmp-dirs has been removed. -->
-    <target hidden="true" name="create-tmp-dirs">
-        <echo msg="The target create-tmp-dirs is no longer available." />
+    <target hidden="true" name="build-dist">
+        <replacedby target="build-dist" />
     </target>
 
-    <!-- Target delete-deployment-group has been removed. -->
-    <target hidden="true" name="delete-deployment-group">
-        <echo msg="The target delete-deployment-group is no longer available." />
-    </target>
-
-    <!-- Target delete-stack has been removed. -->
-    <target hidden="true" name="delete-stack">
-        <echo msg="The target delete-stack is no longer available." />
-    </target>
-
-    <!-- Target install-dist-dependencies has been removed. -->
-    <target hidden="true" name="install-dist-dependencies">
-        <echo msg="The target install-dist-dependencies is no longer available." />
-    </target>
-
-    <!-- Target move-download-to-tmp-dir has been removed. -->
-    <target hidden="true" name="move-download-to-tmp-dir">
-        <echo msg="The target move-download-to-tmp-dir is no longer available." />
-    </target>
-
-    <!-- Target run-stack has been removed. -->
-    <target hidden="true" name="run-stack">
-        <echo msg="The target run-stack is no longer available." />
-    </target>
-
-    <!-- Target setup-aws has been removed. -->
-    <target hidden="true" name="setup-aws">
-        <echo msg="The target setup-aws is no longer available." />
-    </target>
-
-    <!-- Target setup-deployment-group has been removed. -->
-    <target hidden="true" name="setup-deployment-group">
-        <echo msg="The target setup-deployment-group is no longer available." />
-    </target>
-
-    <!-- Target check-for-default-settings-or-rebuild has been removed. -->
     <target hidden="true" name="check-for-default-settings-or-rebuild">
         <echo msg="The target check-for-default-settings-or-rebuild is no longer available." />
     </target>
 
-    <!-- Target check-starterkit has been removed. -->
     <target hidden="true" name="check-starterkit">
         <echo msg="The target check-starterkit is no longer available." />
     </target>
 
-    <!-- Target rebuild-dev has been moved to configuration. -->
+    <target hidden="true" name="create-tmp-dirs">
+        <echo msg="The target create-tmp-dirs is no longer available." />
+    </target>
+
+    <target hidden="true" name="copy-dist-resources">
+        <replacedby target="subsite-resources-copy" />
+    </target>
+
+    <target hidden="true" name="copy-folder">
+        <replacedby target="subsite-resources-copy" />
+    </target>
+
+    <target hidden="true" name="delete-dev">
+        <replacedby target="project-scratch-build" />
+    </target>
+
+    <target hidden="true" name="delete-deployment-group">
+        <echo msg="The target delete-deployment-group is no longer available." />
+    </target>
+
+    <target hidden="true" name="delete-dist">
+        <replacedby target="project-scratch-build" />
+    </target>
+
+    <target hidden="true" name="delete-stack">
+        <echo msg="The target delete-stack is no longer available." />
+    </target>
+
+    <target hidden="true" name="download-development-modules">
+        <replacedby target="project-modules-devel-dl" />
+    </target>
+
+    <target hidden="true" name="download-platform">
+        <replacedby target="build-platform" />
+    </target>
+
+    <target hidden="true" name="download-prod-db">
+        <replacedby target="project-database-download" />
+    </target>
+
+    <target hidden="true" name="enable-development-modules">
+        <replacedby target="project-modules-devel-en" />
+    </target>
+
+    <target hidden="true" name="enable-install-modules">
+        <replacedby target="project-modules-install-en" />
+    </target>
+
+    <target hidden="true" name="enable-modules">
+        <replacedby target="drush-modules-enable" />
+    </target>
+
+    <target hidden="true" name="generate-development-makefile">
+        <replacedby target="project-modules-devel-mf" />
+    </target>
+
+    <target hidden="true" name="import-prod-db">
+        <replacedby target="project-database-import" />
+    </target>
+
+    <target hidden="true" name="install">
+        <replacedby target="install-clean" />
+    </target>
+
+    <target hidden="true" name="install-build-dependencies">
+        <replacedby target="project-subsite-composer-no-dev" />
+    </target>
+
+    <target hidden="true" name="install-dev">
+        <replacedby target="install-clean" />
+    </target>
+
+    <target hidden="true" name="install-dev-dependencies">
+        <replacedby target="project-subsite-composer-dev" />
+    </target>
+
+    <target hidden="true" name="install-dist-dependencies">
+        <echo msg="The target install-dist-dependencies is no longer available." />
+    </target>
+
+    <target hidden="true" name="link-behat">
+        <replacedby target="test-behat-setup-link" />
+    </target>
+
+    <target hidden="true" name="link-dev-resources">
+        <replacedby target="subsite-resources-link" />
+    </target>
+
+    <target hidden="true" name="link-docroot">
+        <replacedby target="project-platform-set-docroot" />
+    </target>
+
+    <target hidden="true" name="make-dev">
+        <replacedby target="subsite-make" />
+    </target>
+
+    <target hidden="true" name="make-dist">
+        <replacedby target="subsite-make" />
+    </target>
+
+    <target hidden="true" name="mjolnir">
+        <replacedby target="test-run-qa" />
+    </target>
+
+    <target hidden="true" name="move-download-to-tmp-dir">
+        <echo msg="The target move-download-to-tmp-dir is no longer available." />
+    </target>
+
+    <target hidden="true" name="provision-stack">
+        <echo msg="The target provision-stack is no longer available." />
+    </target>
+
+    <target hidden="true" name="quality-assurance">
+        <replacedby target="test-qa-exec" />
+    </target>
+
     <target hidden="true" name="rebuild-dev">
         <echo msg="The target rebuild-dev moved to configuration." />
     </target>
+
+    <target hidden="true" name="rebuild-node-access">
+        <replacedby target="drush-node-access-rebuild" />
+    </target>
+
+    <target hidden="true" name="regenerate-settings">
+        <replacedby target="drush-settings-generate" />
+    </target>
+
+    <target hidden="true" name="restore-site">
+        <replacedby target="project-subsite-restore" />
+    </target>
+
+    <target hidden="true" name="restore-site-item">
+        <replacedby target="project-subsite-restore-item" />
+    </target>
+
+    <target hidden="true" name="run-stack">
+        <echo msg="The target run-stack is no longer available." />
+    </target>
+
+    <target hidden="true" name="setup-aws">
+        <echo msg="The target setup-aws is no longer available." />
+    </target>
+
+    <target hidden="true" name="setup-behat">
+        <replacedby target="test-behat-setup" />
+    </target>
+
+    <target hidden="true" name="setup-deployment-group">
+        <echo msg="The target setup-deployment-group is no longer available." />
+    </target>
+
+    <target hidden="true" name="setup-files-directory">
+        <replacedby target="project-subsite-files-setup" />
+    </target>
+
+    <target hidden="true" name="setup-php-codesniffer">
+        <replacedby target="phpcs-setup" />
+    </target>
+
+    <target hidden="true" name="setup-phpcs-pre-push">
+        <replacedby target="test-phpcs-setup-prepush" />
+    </target>
+
+    <target hidden="true" name="unpack-platform">
+        <replacedby target="project-platform-package-unpack" />
+    </target>
+
+    <target hidden="true" name="update-htaccess">
+        <replacedby target="project-platform-set-htaccess" />
+    </target>
+
+    <target hidden="true" name="wget-prod-db">
+        <replacedby target="project-database-wget" />
+    </target>
+
 </project>

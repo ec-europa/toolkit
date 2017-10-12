@@ -28,7 +28,7 @@ more information on how to install and use it.
 $ composer install
 ```
 
-### 3. Create a build.properties.local file
+### 3. Create a build.develop.props file
 
 This file contains the configuration which is unique to your local environment,
 i.e. your development machine. In here you specify your database credentials,
@@ -44,7 +44,7 @@ development version by setting `platform.package.reference` to `develop`.
 > Because these settings are personal they should not be shared with the rest of
 > the team. *Make sure you never commit this file!*
 
-Example `build.properties.local` file:
+Example `build.project.props.local` file:
 
 ```
 # Database settings.
@@ -112,7 +112,7 @@ $ ./bin/phing build-clone
 This will:
 
 * Re-generate the settings.php with addition of development variables.
-* Download a sanitized production database if provided in build.properties.
+* Download a sanitized production database if provided in build.project.props.
 * Drop the current database and import the downloaded one.
 * Rebuild the registry, run updates and clear caches.
 
@@ -190,7 +190,7 @@ $ ./bin/phing setup-php-codesniffer
 ```
 
 You can also prevent the pre-push hook from being activated on new builds by
-setting the following property to 0 in your `build.properties.local`:
+setting the following property to 0 in your `build.project.props.local`:
 
 ```
 phpcs.prepush.enable = 1

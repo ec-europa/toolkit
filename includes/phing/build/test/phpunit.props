@@ -1,5 +1,6 @@
-# PHPUnit configuration
-# -------------------
+# -----------------------------------------------------------------------------------
+# PHPUnit sprecific configuration
+# -----------------------------------------------------------------------------------
 
 # The location of the PHPUnit executable.
 phpunit.bin = ${tests.dir}/bin/phpunit
@@ -15,4 +16,5 @@ phpunit.xml.path = ${phpunit.dir}/phpunit.xml
 
 # The base URL to use in PHPUnit tests.
 phpunit.base_url = ${behat.base_url}
+
 

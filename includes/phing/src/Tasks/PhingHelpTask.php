@@ -12,7 +12,7 @@
  * @link     https://github.com/ec-europa/toolkit/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
  */
 
-namespace Phing\Ssk\Tasks;
+namespace Phing\Toolkit\Tasks;
 
 require_once 'phing/Task.php';
 
@@ -165,17 +165,19 @@ class PhingHelpTask extends \Task
             )
         );
         foreach ($targets as $file => $targets) {
-            $table->addRow(new TableSeparator());
-            $table->addRow(
-                array(
-                    new TableCell(
-                        $buildList[$file]['name'],
-                        array('colspan' => 3)
+            if ($buildList[$file]['name'] != "deprecated") {
+                $table->addRow(new TableSeparator());
+                $table->addRow(
+                    array(
+                        new TableCell(
+                            $buildList[$file]['name'],
+                            array('colspan' => 3)
+                        )
                     )
-                )
-            );
-            $table->addRow(new TableSeparator());
-            $table->addRows($targets);
+                );
+                $table->addRow(new TableSeparator());
+                $table->addRows($targets);
+            }
         }
 
         $table->render();

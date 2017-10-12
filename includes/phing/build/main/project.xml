@@ -2,11 +2,33 @@
 
 <project name="project" description="Targets shared by differenct project types." default="">
 
-    <target name="install-project-clean" description="Install NextEuropa site from scratch.">
-        <phingcall target="project-subsite-setup-files" />
+    <target name="build-platform" description="Build NextEuropa Platform code without version control."
+        depends="
+            project-subsite-backup,
+            project-platform-delete,
+            project-platform-set-version,
+            project-platform-package-unpack,
+            project-modules-devops-dl,
+            project-platform-set-htaccess,
+            project-subsite-restore" />
+
+    <target name="build-subsite" description="Build NextEuropa Subsite code without version control."
+        depends="
+            project-subsite-backup,
+            project-subsite-restore">
+        <echo msg="TODO: subsite builds not yet developed." />
+    </target>
+
+    <target name="build-theme" description="Build EC Europa theme without version control."
+        depends="
+            theme-europa-download-extract,
+            theme-europa-create-symlinks" />
+
+    <target name="install-clean" description="Install NextEuropa site from scratch.">
+        <phingcall target="project-subsite-files-setup" />
         <exec command="chmod 775 ${build.platform.dir.settings}" />
 
-        <phingcall target="drush-generate-aliases" />
+        <phingcall target="drush-aliases-generate" />
         <phingcall target="drush-sql-create" />
 
         <if>
@@ -15,7 +37,7 @@
                 <available file="${share.path.platform}/databases/platform-dev-${platform.package.version.current}/platform-dev-${platform.package.version.current}.sql" type="file" />
             </and>
             <then>
-                <phingcall target="drush-generate-settings" />
+                <phingcall target="drush-settings-generate" />
                 <exec command="${toolkit.dir.bin.drush} --root=${build.platform.dir} status bootstrap | grep -q Successful" returnProperty="drush-status-bootstrap" />
                 <if>
                     <not>
@@ -43,38 +65,16 @@
 
         <phingcall target="project-modules-install-en" />
 
-        <phingcall target="drush-rebuild-node-access" />
+        <phingcall target="drush-node-access-rebuild" />
     </target>
 
-    <target name="install-project-clone" description="Install NextEuropa site with sanitized production data."
+    <target name="install-clone" description="Install NextEuropa site with sanitized production data."
         depends="
             project-database-download,
-            drush-generate-aliases,
-            drush-generate-settings,
+            drush-aliases-generate,
+            drush-settings-generate,
             project-database-import,
             project-modules-devel-en" />
-
-    <target name="project-build-platform" description="Build NextEuropa Platform code without version control."
-        depends="
-            project-subsite-backup,
-            project-platform-delete,
-            project-platform-set-version,
-            project-platform-package-unpack,
-            project-platform-devops-unpack,
-            project-platform-set-htaccess,
-            project-subsite-restore" />
-
-    <target name="project-build-subsite" description="Build NextEuropa Subsite code without version control (non-functional)."
-        depends="
-            project-subsite-backup,
-            project-subsite-restore">
-        <echo msg="TODO: subsite builds not yet developed." />
-    </target>
-
-    <target name="project-build-theme" description="Build EC Europa theme without version control."
-        depends="
-            theme-europa-download-extract,
-            theme-europa-create-symlinks" />
 
     <target name="project-composer-install" description="Runs composer install."
         hidden="true">
@@ -131,26 +131,9 @@
         </phingcall>
     </target>
 
-    <target name="project-modules-devel-en" description="Enable development modules with drush.">
-        <phingcall target="drush-enable-modules">
-            <property name="project.drupal.modules" value="${devel.mdls.en}" />
-        </phingcall>
-    </target>
-
     <target name="project-platform-delete" description="Remove previous platform build..">
         <phingcall target="project-scratch-build">
             <property name="dir-build" value="${build.platform.dir}" override="true" />
-        </phingcall>
-    </target>
-
-    <target name="project-platform-devops-unpack" description="Download and unpack fpfis resource package.">
-        <mkdir dir="${share.path.platform.packages.deploy}" />
-        <phingcall target="package-download-unpack">
-            <property name="package-name" value="${platform.package.version.major}.${platform.package.version.minor}.tar.gz" />
-            <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
-            <property name="package-download-location" value="https://github.com/ec-europa/platform-deploy/archive/fpfis-conf" />
-            <property name="package-extract-location" value="${build.platform.dir}" />
-            <property name="package-extract-options" value="--strip=1" />
         </phingcall>
     </target>
 
@@ -168,8 +151,15 @@
         <if>
             <istrue value="${build.platform.htaccess.append.text}" />
             <then>
-                <echo msg="Appended text to htaccess." />
-                <append destfile="${build.platform.dir}/.htaccess" text="${build.platform.htaccess.append.text}" />
+                <if>
+                    <available file="${build.platform.htaccess.append.text}" />
+                    <then>
+                        <append file="${build.platform.htaccess.append.text}" destFile="${build.platform.dir}/.htaccess" />
+                    </then>
+                    <else>
+                        <append text="${build.platform.htaccess.append.text}" destFile="${build.platform.dir}/.htaccess" />
+                    </else>
+                </if>
             </then>
             <else>
                 <echo msg="Appended no text to htaccess." />
@@ -189,9 +179,9 @@
                     <isset property="platform.package.version.minor" />
                     <then>
                         <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.${platform.package.version.minor}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.current" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.${platform.upgrade}\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.next" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | grep -oP 'href=&quot;platform-dev-\K${platform.package.version.major}\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.latest" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | egrep -o 'platform-dev-${platform.package.version.major}\.${platform.package.version.minor}\.[0-9]+' | sed -e 's/^platform-dev-//' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.current" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | egrep -o 'platform-dev-${platform.package.version.major}\.${platform.upgrade}\.[0-9]+' | sed -e 's/^platform-dev-//' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.next" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | egrep -o 'platform-dev-${platform.package.version.major}\.[0-9]+\.[0-9]+' | sed -e 's/^platform-dev-//' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.latest" />
                     </then>
                 </if>
             </then>
@@ -219,7 +209,7 @@
                 <echo msg="Please upgrade your platform version to ${platform.package.version.major}.${platform.upgrade}." level="warning" />
             </then>
         </if>
-        <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.properties.version" />
+        <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.version.props" />
     </target>
 
     <target name="project-scratch-build" description="Delete previous build to start over clean.">
@@ -410,7 +400,7 @@
         </if>
     </target>
 
-    <target name="project-subsite-setup-files" description="Create files directories for subsite.">
+    <target name="project-subsite-files-setup" description="Create files directories for subsite.">
         <if>
             <istrue value="${build.subsite.dir.files}" />
             <then>
@@ -431,8 +421,25 @@
         </phingcall>
     </target>
 
+    <target name="project-modules-devel-en" description="Enable development modules with drush.">
+        <phingcall target="drush-modules-enable">
+            <property name="project.drupal.modules" value="${devel.mdls.en}" />
+        </phingcall>
+    </target>
+
+    <target name="project-modules-devops-dl" description="Download and unpack fpfis resource package.">
+        <mkdir dir="${share.path.platform.packages.deploy}" />
+        <phingcall target="package-download-unpack">
+            <property name="package-name" value="${platform.package.version.major}.${platform.package.version.minor}.tar.gz" />
+            <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
+            <property name="package-download-location" value="https://github.com/ec-europa/platform-deploy/archive/fpfis-conf" />
+            <property name="package-extract-location" value="${build.platform.dir}" />
+            <property name="package-extract-options" value="--strip=1" />
+        </phingcall>
+    </target>
+
     <target name="project-modules-install-en" description="Install list of modules to enable by default.">
-        <phingcall target="drush-enable-modules">
+        <phingcall target="drush-modules-enable">
             <property name="project.drupal.modules" value="${project.install.modules}" />
         </phingcall>
     </target>
@@ -497,10 +504,6 @@
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.subsite.dir}" />
         </phingcall>
-    </target>
-
-    <target name="project-validate-properties" description="Validate the build properties file.">
-        <propval source="build.properties" required="${toolkit.dir.incl.phing.props}/required.props" haltonerror="${build.haltonerror.props.validate}" logoutput="${logoutput}"/>
     </target>
 
 </project>

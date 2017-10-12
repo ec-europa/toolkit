@@ -12,7 +12,7 @@
  * @link     https://github.com/ec-europa/toolkit/blob/master/includes/phing/src/Tasks/DocGeneratorTask.php
  */
 
-namespace Phing\Ssk\Tasks;
+namespace Phing\Toolkit\Tasks;
 
 use Project;
 use Symfony\Component\Finder\Finder;
@@ -85,6 +85,10 @@ class DrushGenerateAliasTask extends \Task
         $aliases = array(
             'default' => array(
                 'uri'  => 'default',
+                'root' => $this->_siteRoot,
+            ),
+            'docker' => array(
+                'uri'  => 'http://web:8080',
                 'root' => $this->_siteRoot,
             ),
         );

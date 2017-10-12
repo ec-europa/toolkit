@@ -5,6 +5,7 @@
 # be copied when there are git hooks defined.
 HOOK=$(basename $0)
 HOOK_DIR="resources/git/hooks/$HOOK"
+
 if [ -d $HOOK_DIR ] ; then
   for SCRIPT in $HOOK_DIR/*
   do

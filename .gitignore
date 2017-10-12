@@ -7,8 +7,8 @@ nbproject/
 
 # Ignore local configuration.
 # ---------------------------
-/build.properties.local
-/build.properties.dist
+/build.develop.props
+/build.default.props
 /build.project.xml
 /phpcs-ruleset.xml
 /phpcs.xml
@@ -17,7 +17,7 @@ nbproject/
 # Ignore build artifacts.
 # -----------------------
 /bin/
-/ssk
+/toolkit
 /docker-*
 /build/
 /dist/
@@ -29,4 +29,4 @@ nbproject/
 /vendor/
 /resources/git/hooks/pre-push/phpcs
 lib-backup/
-ssk
+toolkit

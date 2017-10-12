@@ -1,12 +1,12 @@
 workspace:
   base: /test
-  path: ssk
+  path: toolkit
 
 services:
   web:
     image: fpfis/php56-dev
     environment:
-     - DOCUMENT_ROOT=/test/ssk/build
+     - DOCUMENT_ROOT=/test/toolkit/build
   mysql:
     image: fpfis/mysql56
   selenium:
@@ -20,28 +20,28 @@ pipeline:
   toolkit:
     image: fpfis/php56-dev
     commands:
-      - PROJECT=$(pwd) composer ssk-install
+      - PROJECT=$(pwd) composer toolkit-install
     volumes:
       - /cache:/cache
 
   build:
     image: fpfis/php56-dev
     commands:
-      - ./ssk/phing project-build-platform
-      - ./ssk/phing build-subsite-dev
+      - ./toolkit/phing build-platform
+      - ./toolkit/phing build-subsite-dev
     volumes:
       - /cache:/cache
 
   install:
     image: fpfis/php56-dev
     commands:
-      - ./ssk/phing install-project-clean
+      - ./toolkit/phing install-clean
     volumes:
       - /cache:/cache
 
   test:
     image: fpfis/php56-dev
     commands:
-      - ./ssk/phing test-run-behat
+      - ./toolkit/phing test-run-behat
     volumes:
       - /cache:/cache

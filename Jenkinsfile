@@ -15,7 +15,7 @@ def createWorkflow() {
         def buildName = "${env.JOB_NAME}".replaceAll('ec-europa/','').replaceAll('-reference/','').replaceAll('/','_').replaceAll('-','_').trim()
         def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
 
-        withEnv(["COMPOSE_PROJECT_NAME=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}","PATH+SSK=${env.WORKSPACE}/ssk"]) {
+        withEnv(["COMPOSE_PROJECT_NAME=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}","PATH+toolkit=${env.WORKSPACE}/toolkit"]) {
 
             stage('Init') {
                 setBuildStatus("Build started.", "PENDING");
@@ -33,7 +33,7 @@ def createWorkflow() {
                 }
 
                 stage('Test') {
-                    shellExecute('docker', 'phing', "install-project-clean -D'drupal.db.name'='${env.COMPOSE_PROJECT_NAME}'")
+                    shellExecute('docker', 'phing', "install-clean -D'drupal.db.name'='${env.COMPOSE_PROJECT_NAME}'")
                     timeout(time: 2, unit: 'HOURS') {
                         shellExecute('docker', 'phing', 'test-run-behat')
                     }
@@ -65,7 +65,7 @@ def shellExecute(String environment, String executable, String command) {
             prefix = ""
             break
         case "docker":
-            prefix = "./ssk-${env.COMPOSE_PROJECT_NAME} exec -T --user web web"
+            prefix = "./toolkit-${env.COMPOSE_PROJECT_NAME} exec -T --user web web"
             break
     }
 

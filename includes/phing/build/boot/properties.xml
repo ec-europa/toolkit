@@ -7,20 +7,26 @@
 
     <!-- Load build properties. -->
     <if>
-        <available file="${project.basedir}/build.properties.local" type="file" />
+        <available file="${project.basedir}/build.develop.props" type="file" />
         <then>
-            <property file="${project.basedir}/build.properties.local" logoutput="${logoutput}" />
+            <property file="${project.basedir}/build.develop.props" logoutput="${logoutput}" />
         </then>
     </if>
     <if>
-        <available file="${project.basedir}/build.properties" type="file" />
+        <available file="/.dockerenv" />
         <then>
-            <property file="${project.basedir}/build.properties" logoutput="${logoutput}" />
+            <property file="${toolkit.dir.incl.phing.props}/docker.props" logoutput="${logoutput}" />
+        </then>
+    </if>
+    <if>
+        <available file="${project.basedir}/build.project.props" type="file" />
+        <then>
+            <property file="${project.basedir}/build.project.props" logoutput="${logoutput}" />
         </then>
         <elseif>
             <equals arg1="${project.basedir}" arg2="${toolkit.dir}" />
             <then>
-                <fail msg="${project.basedir} ---- ${toolkit.dir} Without a build.properties" />
+                <fail msg="${project.basedir} ---- ${toolkit.dir} Without a build.project.props" />
             </then>
         </elseif>
     </if>
@@ -33,9 +39,9 @@
 
     <!-- Load version properties if available. -->
     <if>
-        <available file="${project.tmp.dir}/build.properties.version" />
+        <available file="${project.tmp.dir}/build.version.props" />
         <then>
-            <property file="${project.tmp.dir}/build.properties.version" logoutput="${logoutput}" />
+            <property file="${project.tmp.dir}/build.version.props" logoutput="${logoutput}" />
         </then>
         <else>
             <mkdir dir="${project.tmp.dir}" />

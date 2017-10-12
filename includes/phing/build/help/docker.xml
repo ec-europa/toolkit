@@ -2,32 +2,12 @@
 
 <project name="docker" description="Contains phing targets to manage docker containers. (experimental!)." default="">
 
-    <!-- Start an environment with docker. -->
-    <target name="docker-compose-up" description="Start docker project." hidden="true">
-        <echo msg="Starting containers for ${docker.project.id}" />
-        <mkdir dir="${build.platform.dir}" />
-        <mkdir dir="${share.path.platform.packages.database}/platform-dev-${platform.package.version}" />
-        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${share.path.platform.packages.database}/platform-dev-${platform.package.version} docker-compose -p ${docker.project.id} -f ${ssk.incl}/docker/docker-compose.yml up -d" />
-        <relsym link="${project.basedir}/docker${docker.project.id}" target="${ssk.incl}/docker/dbash" overwrite="true" />
-        <exec command="${project.basedir}/docker${docker.project.id} ps" passthru="true" />
+    <target name="docker-check-mysql" description="Check if mysql container exists." hidden="true">
+        <echo msg="Checking if mysql container exists" />
+        <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${toolkit.dir.incl.docker}/dbash ps mysql | grep -q 'Up\|Exit'" passthru="true" logoutput="false" returnproperty="docker-check-mysql" />
+        <echo msg="${docker-check-mysql}" />
     </target>
 
-    <!-- Stop docker environment. -->
-    <target name="docker-compose-stop" description="Stop docker project." hidden="true">
-        <echo msg="Stopping containers for ${docker.project.id}" />
-        <exec command="docker-compose -p ${docker.project.id} -f ${toolkit.dir.incl.docker}/docker-compose.yml stop mysql" passthru="true" />
-        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${share.path.subsites.packages.database} docker-compose -p ${docker.project.id} -f ${toolkit.dir.incl.docker}/docker-compose.yml -f ${toolkit.dir.incl.docker}/backup-restore.yml run backup" passthru="true" />
-        <exec command="${project.basedir}/docker${docker.project.id} ps" passthru="true" />
-    </target>
-
-    <!-- Remove docker environment. -->
-    <target name="docker-compose-down" description="Trash docker project." hidden="true">
-        <echo msg="Removing containers and volumes for ${docker.project.id}" />
-        <exec command="docker-compose -p ${docker.project.id} -f ${toolkit.dir.incl.docker}/docker-compose.yml down --volumes" />
-        <delete file="${project.basedir}/docker${docker.project.id}" />
-    </target>
-
-    <!-- Backup database. -->
     <target name="docker-compose-backup" description="Backup database." hidden="true">
         <if>
             <isset property="backup-location" />
@@ -43,7 +23,12 @@
         <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${toolkit.dir.incl.docker}/dbash backup ${backup-location}/${backup-filename}" passthru="true" logoutput="false" />
     </target>
 
-    <!-- Restore database. -->
+    <target name="docker-compose-down" description="Trash docker project." hidden="true">
+        <echo msg="Removing containers and volumes for ${docker.project.id}" />
+        <exec command="docker-compose -p ${docker.project.id} -f ${toolkit.dir.incl.docker}/docker-compose.yml down --volumes" />
+        <delete file="${project.basedir}/docker${docker.project.id}" />
+    </target>
+
     <target name="docker-compose-restore" description="Restore database." hidden="true">
         <if>
             <not>
@@ -61,7 +46,7 @@
             <available file="${backup-location}/${backup-filename}" />
             <then>
                 <echo msg="Restoring database for ${docker.project.id}" />
-                <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${ssk.incl}/docker/dbash restore ${backup-location}/${backup-filename}" passthru="true" logoutput="false" />
+                <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${toolkit.dir.incl.docker}/dbash restore ${backup-location}/${backup-filename}" passthru="true" logoutput="false" />
             </then>
             <else>
                 <echo msg="File ${backup-location}/${backup-filename} does not exist." level="error" />
@@ -69,11 +54,20 @@
         </if>
     </target>
 
-    <!-- Check for mysql container. -->
-    <target name="docker-check-mysql" description="Check if mysql container exists." hidden="true">
-        <echo msg="Checking if mysql container exists" />
-        <exec command="WORKSPACE=${project.basedir} COMPOSE_PROJECT_NAME=${docker.project.id} ${toolkit.dir.incl.docker}/dbash ps mysql | grep -q 'Up\|Exit'" passthru="true" logoutput="false" returnproperty="docker-check-mysql" />
-        <echo msg="${docker-check-mysql}" />
+    <target name="docker-compose-stop" description="Stop docker project." hidden="true">
+        <echo msg="Stopping containers for ${docker.project.id}" />
+        <exec command="docker-compose -p ${docker.project.id} -f ${toolkit.dir.incl.docker}/docker-compose.yml stop mysql" passthru="true" />
+        <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${share.path.subsites.packages.database} docker-compose -p ${docker.project.id} -f ${toolkit.dir.incl.docker}/docker-compose.yml -f ${toolkit.dir.incl.docker}/backup-restore.yml run backup" passthru="true" />
+        <exec command="${project.basedir}/docker${docker.project.id} ps" passthru="true" />
+    </target>
+
+    <target name="docker-compose-up" description="Start docker project." hidden="true">
+        <echo msg="Starting containers for ${docker.project.id}" />
+        <mkdir dir="${build.platform.dir}" />
+        <mkdir dir="${share.path.platform.packages.database}/platform-dev-${platform.package.version}" />
+        <exec command="WORKSPACE=${project.basedir} docker-compose -p ${docker.project.id} -f ${toolkit.dir.incl.docker}/docker-compose.yml up -d" />
+        <relsym link="${project.basedir}/docker-${docker.project.id}" target="${toolkit.dir.incl.docker}/dbash" overwrite="true" />
+        <exec command="${project.basedir}/docker-${docker.project.id} ps" passthru="true" />
     </target>
 
 </project>

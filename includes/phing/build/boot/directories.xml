@@ -12,7 +12,6 @@
             <trycatch>
                 <try>
                     <exec command="mkdir -p ${share.path.global}" checkreturn="true" />
-                    <echoproperties prefix="share.path." destfile="${project.tmp.dir}/build.properties.share" />
                 </try>
                 <catch>
                     <echo msg="Unable to create global share directory." level="warning" />
