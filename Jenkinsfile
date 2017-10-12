@@ -29,7 +29,7 @@ def createWorkflow() {
                 }
 
                 stage('Build') {
-                    shellExecute('docker', 'phing', "build-platform-dev)
+                    shellExecute('docker', 'phing', 'build-platform build-subsite-dev')
                 }
 
                 stage('Test') {
