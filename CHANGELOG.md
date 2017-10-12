@@ -3,7 +3,7 @@
 ## Version 3.0.0 (from subsite-starterkit 2.2.5)
 
 ### Improvements
-  * [MULTISITE-17744] - Toolkit is re-architectured into a seperated composer package
+  * [MULTISITE-17744] - Toolkit is re-architectured into a separated composer package
   * [MULTISITE-17744] - Toolkit is re-architectured to support both platform and subsites
   * [MULTISITE-17365] - Toolkit is re-architectured to categorize build files into a better structure
   * [MULTISITE-18484] - Development modules are moved to resources/devel.make
@@ -21,11 +21,16 @@
   * [MULTISITE-18096] - Github helper target has been introduced to upload release packages to the repository
   * [MULTISITE-18349] - Subsite starterkit 2.x targets have been deprecated and mapped to new ones
   * [MULTISITE-18340] - Drush generates aliases on installation process to improve multisite support
-  * [MULTISITE-18196] - EC Europa theme build has been added in a seperate build file
+  * [MULTISITE-18196] - EC Europa theme build has been added in a separate build file
   * [MULTISITE-17744] - Installation process support created for composer create-project command
   * [MULTISITE-18096] - Test folder has been made independent to allow test package releases
   * [MULTISITE-18490] - Composer hooks now run phing targets defined in the build properties
+  * [MULTISITE-18494] - General fixes for CI integration
   * [MULTISITE-18489] - Temporary files folder has been renamed from ./tmp to ./.tmp to decrease visibility
+  * [MULTISITE-18520] - Improved user guide
+  * [MULTISITE-18525] - Integration with Git hooks system
+  * [MULTISITE-18563] - Integration with PHPUnit tests
+  * [MULTISITE-18579] - Integration with Drone CI pipeline
   * [MULTISITE-17096] - Build dist now uses new symlink system. Lib folder structure will match dist folder structure
   * [MULTISITE-17624] - New build property introduced to select a solr module and accompanied core
   * [MULTISITE-18248] - Docker environment has been introduced, still experimental!
@@ -55,7 +60,12 @@
 [MULTISITE-17744]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-17744
 [MULTISITE-18096]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18096
 [MULTISITE-18490]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18490
+[MULTISITE-18494]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18494
 [MULTISITE-18489]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18489
+[MULTISITE-18520]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18520
+[MULTISITE-18525]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18525
+[MULTISITE-18563]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18563
+[MULTISITE-18579]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18579
 [MULTISITE-17096]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-17096
 [MULTISITE-17624]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-17624
 [MULTISITE-18248]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18248
