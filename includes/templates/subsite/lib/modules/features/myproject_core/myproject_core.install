@@ -10,8 +10,7 @@
  */
 
 /**
- * All non hook functions required during the install or update phase should be
- * delivered in a separate file.
+ * All non hook functions should be delivered in a separate file.
  */
 include_once 'myproject_core.install.inc';
 
