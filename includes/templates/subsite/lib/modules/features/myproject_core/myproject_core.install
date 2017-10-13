@@ -91,7 +91,7 @@ function myproject_core_install() {
  */
 function myproject_core_update_7001() {
   $modules = [
-      'example_module',
+    'example_module',
   ];
   module_enable($modules);
 }
