@@ -31,11 +31,11 @@ def createWorkflow() {
                             sh './toolkit/phing toolkit-starterkit-upgrade -logger phing.listener.AnsiColorLogger'
                         }
                         stage('Check') {
-                            sh './toolkit/phing test-run-phpcs -logger phing.listener.AnsiColorLogger'
+                            //sh './toolkit/phing test-run-phpcs -logger phing.listener.AnsiColorLogger'
                         }
 
                         stage('Build') {
-                            sh '.:toolkit/phing build-platform build-subsite-dev -logger phing.listener.AnsiColorLogger'
+                            sh './toolkit/phing build-platform build-subsite-dev -logger phing.listener.AnsiColorLogger'
                         }
 
                         stage('Test') {
