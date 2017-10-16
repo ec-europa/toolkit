@@ -19,7 +19,7 @@ def createWorkflow() {
 
             docker.image('fpfis/mysql56').withRun("--expose 3306") { c ->
                 sh 'sleep 10'
-                docker.image('fpfis/php56-dev').inside("--expose 8080 -v ${WORKSPACE}:${WORKSPACE} -v /tmp/toolkit:/tmp/toolkit -v /var/cache/composer:/var/cache/composer -e COMPOSER_CACHE_DIR=/var/cache/composer -e DOCUMENT_ROOT=${WORKSPACE}/build --link ${c.id}:mysql") {
+                docker.image('fpfis/php56-dev').inside("--name web --expose 8080 -v ${WORKSPACE}:${WORKSPACE} -v /tmp/toolkit:/tmp/toolkit -v /var/cache/composer:/var/cache/composer -e COMPOSER_CACHE_DIR=/var/cache/composer -e DOCUMENT_ROOT=${WORKSPACE}/build --link ${c.id}:mysql") {
 
                     stage('Init') {
                         setBuildStatus("Build started.", "PENDING");
@@ -43,7 +43,7 @@ def createWorkflow() {
                                 sh "./toolkit/phing install-clone -Ddrupal.db.name=${env.COMPOSE_PROJECT_NAME} -Ddb.dl.username=$ASDA_USER -Ddb.dl.password=$ASDA_PASS -logger phing.listener.AnsiColorLogger"
                             }
                             timeout(time: 2, unit: 'HOURS') {
-                                sh './toolkit/phing test-run-behat -Dbehat.base_url=http://localhost:8080 -logger phing.listener.AnsiColorLogger'
+                                sh './toolkit/phing test-run-behat -logger phing.listener.AnsiColorLogger'
                             }
                         }
                     } catch(err) {
