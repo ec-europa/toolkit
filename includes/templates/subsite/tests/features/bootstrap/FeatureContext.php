@@ -12,6 +12,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 
 /**
  * Contains generic step definitions.
@@ -168,4 +169,124 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
   }
 
+  /**
+   * @Given /^the page contents are correct$/
+   */
+  public function thePageContentsAreCorrect()
+  {
+    $pages = $this->getPages();
+    $message = '';
+    foreach ($pages as $page) {
+      echo $page . "\n";
+      try {
+        $this->visitPath($page);
+        $message .= "\n" . $page;
+      } catch (Exception $e) {
+        throw new LogicException(sprintf('The page "%s" does not exist.', $page));
+      }
+    }
+  }
+
+  /**
+   * @return array
+   */
+  private function getPages()
+  {
+    $paths = [
+        '/',
+      ];
+
+    $paths = $this->getContentTypes($paths);
+    $paths = $this->getTaxonomies($paths);
+    $paths = $this->getSearch($paths);
+    $paths = $this->getViews($paths);
+
+    return $paths;
+  }
+
+  /**
+   * @return array
+   */
+  private function getContentTypes($paths)
+  {
+    $node_types = db_select('node_type', 'nt')
+      ->fields('nt',['type', 'name'])
+      ->condition('nt.disabled', '0', '=')
+      ->execute()
+      ->fetchAll();
+
+    if (!empty($node_types)) {
+      foreach ($node_types as $node_type) {
+        $types[] = $node_type->type;
+        $paths[] = '/node/add/' . $node_type->type;
+      }
+    }
+
+    // Look for content in database.
+    $nodes = db_select('node', 'n')
+      ->fields('n', array('nid', 'type'))
+      ->condition('n.type', $types, 'IN')
+      ->groupBy('n.type')
+      ->execute()
+      ->fetchAll();
+
+    if (!empty($nodes)) {
+      foreach ($nodes as $node) {
+        $paths[] = '/node/' . $node->nid;
+        $paths[] = '/node/' . $node->nid . '/edit';
+      }
+    }
+
+    return $paths;
+  }
+
+  /**
+   * @return array
+   */
+  private function getTaxonomies($paths)
+  {
+    if (module_exists('taxonomy')) {
+      $taxonomies = db_select('taxonomy_term_data', 'd')
+        ->fields('d', array('tid'))
+        ->execute()
+        ->fetchAll();
+
+      if (!empty($taxonomies)) {
+        foreach ($taxonomies as $taxonomy) {
+          $paths[] = '/taxonomy/term/' . $taxonomy->tid;
+        }
+      }
+    }
+
+    return $paths;
+  }
+
+  /**
+   * @return array
+   */
+  private function getSearch($paths)
+  {
+    if (module_exists('search')) {
+      $paths[] = '/search';
+    }
+    return $paths;
+  }
+
+  /**
+   * @return array
+   */
+  private function getViews($paths)
+  {
+    if (module_exists('views')){
+      $all_views = views_get_all_views();
+      foreach ($all_views as $view) {
+        foreach ($view->display as $display) {
+          if ($display->display_plugin == 'page') {
+            $paths[] = "/" . $display->display_options['path'];
+          }
+        }
+      }
+    }
+    return $paths;
+  }
 }
