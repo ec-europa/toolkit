@@ -43,7 +43,7 @@ def createWorkflow() {
                                 sh "./toolkit/phing install-clone -Ddrupal.db.name=${env.COMPOSE_PROJECT_NAME} -Ddb.dl.username=$ASDA_USER -Ddb.dl.password=$ASDA_PASS -logger phing.listener.AnsiColorLogger"
                             }
                             timeout(time: 2, unit: 'HOURS') {
-                                sh './toolkit/phing test-run-behat -Dbehat.base_url=http://localhost -logger phing.listener.AnsiColorLogger'
+                                sh './toolkit/phing test-run-behat -Dbehat.base_url=http://127.0.0.1 -logger phing.listener.AnsiColorLogger'
                             }
                         }
                     } catch(err) {
