@@ -39,9 +39,11 @@ def createWorkflow() {
                         }
 
                         stage('Test') {
-                            sh "./toolkit/phing install-clean -D'drupal.db.name'='${env.COMPOSE_PROJECT_NAME}' -logger phing.listener.AnsiColorLogger"
+                            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'ASDA', usernameVariable: 'ASDA_USER', passwordVariable: 'ASDA_PASS']]) {
+                                sh "./toolkit/phing install-clone -Ddrupal.db.name=${env.COMPOSE_PROJECT_NAME} -Ddb.dl.username=$ASDA_USER -Ddb.dl.password=$ASDA_PASS -logger phing.listener.AnsiColorLogger"
+                            }
                             timeout(time: 2, unit: 'HOURS') {
-                                sh './toolkit/phing test-run-behat -logger phing.listener.AnsiColorLogger'
+                                sh './toolkit/phing test-run-behat -Dbehat.base_url=http://localhost:8080 -logger phing.listener.AnsiColorLogger'
                             }
                         }
                     } catch(err) {
