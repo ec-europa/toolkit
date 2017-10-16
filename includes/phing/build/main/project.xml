@@ -101,7 +101,7 @@
     </target>
 
     <target name="project-database-download" description="Download sanitized production database from archive.">
-        <exec command='find ${project.tmp.dir} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
+        <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
         <if>
             <available file="${db-dl-file}" type="file" />
             <then>
@@ -112,10 +112,10 @@
                 <echo msg="Download the production database." />
                 <phingcall target="package-download">
                     <property name="package-name" value="${db.dl.filename}" />
-                    <property name="package-cache-location" value="${project.tmp.dir}" />
+                    <property name="package-cache-location" value="${share.path.subsites.packages.database}/${project.id}" />
                     <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
                 </phingcall>
-                <exec command="gunzip ${project.tmp.dir}/${db.dl.filename}" checkreturn="true" passthru="false" logoutput="true" />
+                <exec command="gunzip ${share.path.subsites.packages.database}/${project.id}/${db.dl.filename}" checkreturn="true" passthru="false" logoutput="true" />
             </else>
         </if>
     </target>
@@ -123,7 +123,7 @@
     <target name="project-database-import" description="Import database for project with drush."
         depends="project-database-download">
         <echo msg="Import production database." />
-        <exec command='find ${project.tmp.dir} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
+        <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
         <phingcall target="drush-sql-drop" />
         <phingcall target="drush-sql-create" />
         <phingcall target="drush-sql-import">
