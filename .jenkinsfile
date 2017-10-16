@@ -1,0 +1,68 @@
+def createWorkflow() {
+
+        properties([
+            parameters([
+                choice(
+                    choices: "2.3.48\n2.2.175\n2.1.84",
+                    description: 'Select a platform package reference.',
+                    name: 'platformPackageReference')
+                ]),
+            pipelineTriggers([])
+        ])
+
+        // Set some variables.
+        def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
+        def buildName = "${env.JOB_NAME}".replaceAll('ec-europa/','').replaceAll('-reference/','').replaceAll('/','_').replaceAll('-','_').trim()
+        def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
+
+        withEnv(["COMPOSE_PROJECT_NAME=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}","PATH+toolkit=${env.WORKSPACE}/vendor/ec-europa/toolkit/bin"]) {
+
+            docker.image('fpfis/mysql56').withRun("--expose 3306") { c ->
+                sh 'sleep 10'
+                docker.image('fpfis/php56-dev').inside("--expose 8080 -v ${WORKSPACE}:${WORKSPACE} -e DOCUMENT_ROOT=${WORKSPACE}/platform --link ${c.id}:mysql") {
+
+                    stage('Init') {
+                        setBuildStatus("Build started.", "PENDING");
+                        slackSend color: "good", message: "Subsite build ${buildLink} started."
+                     }
+
+                    try {
+                        stage('Upgrade') {
+                            sh './toolkit/phing toolkit-starterkit-upgrade -logger phing.listener.AnsiColorLogger'
+                        }
+                        stage('Check') {
+                            sh './toolkit/phing test-run-phpcs -logger phing.listener.AnsiColorLogger'
+                        }
+
+                        stage('Build') {
+                            sh '.:toolkit/phing build-platform build-subsite-dev -logger phing.listener.AnsiColorLogger'
+                        }
+
+                        stage('Test') {
+                            sh "./toolkit/phing install-clean -D'drupal.db.name'='${env.COMPOSE_PROJECT_NAME}' -logger phing.listener.AnsiColorLogger"
+                            timeout(time: 2, unit: 'HOURS') {
+                                sh './toolkit/phing test-run-behat -logger phing.listener.AnsiColorLogger'
+                            }
+                        }
+                    } catch(err) {
+                        setBuildStatus("Build failed.", "FAILURE");
+                        slackSend color: "danger", message: "Subsite build ${buildLink} failed."
+                        throw(err)
+                    } finally {
+                        sh 'echo "Finished."'
+                    }
+                }
+            }
+        }
+}
+
+void setBuildStatus(String message, String state) {
+    step([
+        $class: "GitHubCommitStatusSetter",
+        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "${env.BUILD_CONTEXT}"],
+        errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+        statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]]]
+    ]);
+}
+
+return this;
