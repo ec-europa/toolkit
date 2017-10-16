@@ -19,7 +19,7 @@ def createWorkflow() {
 
             docker.image('fpfis/mysql56').withRun("--expose 3306") { c ->
                 sh 'sleep 10'
-                docker.image('fpfis/php56-dev').inside("--expose 8080 -v ${WORKSPACE}:${WORKSPACE} -e DOCUMENT_ROOT=${WORKSPACE}/platform --link ${c.id}:mysql") {
+                docker.image('fpfis/php56-dev').inside("--expose 8080 -v ${WORKSPACE}:${WORKSPACE} -v /tmp/toolkit:/tmp/toolkit -v /var/cache/composer:/var/cache/composer -e COMPOSER_CACHE_DIR=/var/cache/composer -e DOCUMENT_ROOT=${WORKSPACE}/build --link ${c.id}:mysql") {
 
                     stage('Init') {
                         setBuildStatus("Build started.", "PENDING");
