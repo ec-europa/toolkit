@@ -21,12 +21,11 @@ def createWorkflow() {
             setBuildStatus("Build started.", "PENDING");
             slackSend color: "good", message: "Subsite build ${buildLink} started."
             shellExecute('jenkins', 'phing', "docker-compose-up -D'docker.project.id'='${env.COMPOSE_PROJECT_NAME}'")
+            shellExecute('docker', 'phing', 'toolkit-starterkit-upgrade')
+
          }
 
         try {
-            stage('Upgrade') {
-                shellExecute('docker', 'phing', 'toolkit-starterkit-upgrade')
-            }
             stage('Check') {
                 //shellExecute('docker', 'phing', 'test-run-phpcs')
             }
@@ -34,11 +33,12 @@ def createWorkflow() {
             stage('Build') {
                 shellExecute('docker', 'phing', 'build-platform build-subsite-dev')
             }
-
-            stage('Test') {
+            stage('Install') {
                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'ASDA', usernameVariable: 'ASDA_USER', passwordVariable: 'ASDA_PASS']]) {
                     shellExecute('docker', 'phing', "install-clone -Ddrupal.db.name=${env.COMPOSE_PROJECT_NAME} -Ddb.dl.username=$ASDA_USER -Ddb.dl.password=$ASDA_PASS")
                 }
+            }
+            stage('Test') {
                 timeout(time: 2, unit: 'HOURS') {
                     shellExecute('docker', 'phing', 'test-run-behat')
                 }
