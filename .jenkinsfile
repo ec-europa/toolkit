@@ -1,61 +1,57 @@
 def createWorkflow() {
 
-        properties([
-            parameters([
-                choice(
-                    choices: "2.3.48\n2.2.175\n2.1.84",
-                    description: 'Select a platform package reference.',
-                    name: 'platformPackageReference')
-                ]),
-            pipelineTriggers([])
-        ])
+    properties([
+        parameters([
+            choice(
+                choices: "2.3.48\n2.2.175\n2.1.84",
+                description: 'Select a platform package reference.',
+                name: 'platformPackageReference')
+            ]),
+        pipelineTriggers([])
+    ])
 
-        // Set some variables.
-        def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
-        def buildName = "${env.JOB_NAME}".replaceAll('ec-europa/','').replaceAll('-reference/','').replaceAll('/','_').replaceAll('-','_').trim()
-        def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
+    // Set some variables.
+    def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
+    def buildName = "${env.JOB_NAME}".replaceAll('ec-europa/','').replaceAll('-reference/','').replaceAll('/','_').replaceAll('-','_').trim()
+    def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
 
-        withEnv(["COMPOSE_PROJECT_NAME=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}","PATH+toolkit=${env.WORKSPACE}/vendor/ec-europa/toolkit/bin"]) {
+    withEnv(["COMPOSE_PROJECT_NAME=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}","PATH+toolkit=${env.WORKSPACE}/vendor/ec-europa/toolkit/bin"]) {
 
-            docker.image('fpfis/mysql56').withRun("--expose 3306") { c ->
-                sh 'sleep 10'
-                docker.image('fpfis/php56-dev').inside("--name web --expose 8080 -v ${WORKSPACE}:${WORKSPACE} -v /tmp/toolkit:/tmp/toolkit -v /var/cache/composer:/var/cache/composer -e COMPOSER_CACHE_DIR=/var/cache/composer -e DOCUMENT_ROOT=${WORKSPACE}/build --link ${c.id}:mysql") {
+        stage('Init') {
+            setBuildStatus("Build started.", "PENDING");
+            slackSend color: "good", message: "Subsite build ${buildLink} started."
+            shellExecute('jenkins', 'phing', "docker-compose-up -D'docker.project.id'='${env.COMPOSE_PROJECT_NAME}'")
+         }
 
-                    stage('Init') {
-                        setBuildStatus("Build started.", "PENDING");
-                        slackSend color: "good", message: "Subsite build ${buildLink} started."
-                     }
+        try {
+            stage('Upgrade') {
+                shellExecute('docker', 'phing', 'toolkit-starterkit-upgrade')
+            }
+            stage('Check') {
+                //shellExecute('docker', 'phing', 'test-run-phpcs')
+            }
 
-                    try {
-                        stage('Upgrade') {
-                            sh './toolkit/phing toolkit-starterkit-upgrade -logger phing.listener.AnsiColorLogger'
-                        }
-                        stage('Check') {
-                            //sh './toolkit/phing test-run-phpcs -logger phing.listener.AnsiColorLogger'
-                        }
+            stage('Build') {
+                shellExecute('docker', 'phing', 'build-platform build-subsite-dev')
+            }
 
-                        stage('Build') {
-                            sh './toolkit/phing build-platform build-subsite-dev -logger phing.listener.AnsiColorLogger'
-                        }
-
-                        stage('Test') {
-                            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'ASDA', usernameVariable: 'ASDA_USER', passwordVariable: 'ASDA_PASS']]) {
-                                sh "./toolkit/phing install-clone -Ddrupal.db.name=${env.COMPOSE_PROJECT_NAME} -Ddb.dl.username=$ASDA_USER -Ddb.dl.password=$ASDA_PASS -logger phing.listener.AnsiColorLogger"
-                            }
-                            timeout(time: 2, unit: 'HOURS') {
-                                sh './toolkit/phing test-run-behat -Dbehat.base_url=http://127.0.0.1 -logger phing.listener.AnsiColorLogger'
-                            }
-                        }
-                    } catch(err) {
-                        setBuildStatus("Build failed.", "FAILURE");
-                        slackSend color: "danger", message: "Subsite build ${buildLink} failed."
-                        throw(err)
-                    } finally {
-                        sh 'echo "Finished."'
-                    }
+            stage('Test') {
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'ASDA', usernameVariable: 'ASDA_USER', passwordVariable: 'ASDA_PASS']]) {
+                    shellExecute('docker', 'phing', "install-clone -Ddrupal.db.name=${env.COMPOSE_PROJECT_NAME} -Ddb.dl.username=$ASDA_USER -Ddb.dl.password=$ASDA_PASS")
+                }
+                timeout(time: 2, unit: 'HOURS') {
+                    shellExecute('docker', 'phing', 'test-run-behat')
                 }
             }
+        } catch(err) {
+            setBuildStatus("Build failed.", "FAILURE");
+            slackSend color: "danger", message: "Subsite build ${buildLink} failed."
+            throw(err)
+        } finally {
+            shellExecute('jenkins', 'phing', "docker-compose-stop -D'docker.project.id'='${env.COMPOSE_PROJECT_NAME}'")
+            shellExecute('jenkins', 'phing', "docker-compose-down -D'docker.project.id'='${env.COMPOSE_PROJECT_NAME}'")
         }
+    }
 }
 
 void setBuildStatus(String message, String state) {
@@ -65,6 +61,32 @@ void setBuildStatus(String message, String state) {
         errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
         statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]]]
     ]);
+}
+
+def shellExecute(String environment, String executable, String command) {
+
+    switch("${environment}") {
+        case "jenkins":
+            prefix = ""
+            break
+        case "docker":
+            prefix = "./docker-${env.COMPOSE_PROJECT_NAME} exec -T --user web web ./toolkit/"
+            break
+    }
+
+    switch("${executable}") {
+        case "phing":
+            color = "-logger phing.listener.AnsiColorLogger"
+            break
+        case "composer":
+            color = "--ansi"
+            break
+        default:
+            color = ""
+            break
+    }
+
+    sh "${prefix}${executable} ${command} ${color}"
 }
 
 return this;
