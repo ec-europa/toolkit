@@ -19,14 +19,18 @@ use Behat\Behat\Hook\Scope\BeforeFeatureScope;
  */
 class GenericContext extends RawDrupalContext implements SnippetAcceptingContext {
 
+  const LOG_MODULE = 'dblog';
+  static $handleLogModule = false;
+
   /**
    * Enable database logging before any testing.
    *
    * @BeforeSuite
    */
   public static function prepare() {
-    if (!module_exists(LOG_MODULE)) {
-      module_enable([LOG_MODULE], FALSE);
+    if (!module_exists(self::LOG_MODULE)) {
+      module_enable([self::LOG_MODULE], FALSE);
+      self::$handleLogModule = true;
     }
   }
 
@@ -36,8 +40,8 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
    * @AfterSuite
    */
   public static function cleanup() {
-    if (module_exists(LOG_MODULE)) {
-      module_disable([LOG_MODULE], FALSE);
+    if (module_exists(self::LOG_MODULE) && self::$handleLogModule) {
+      module_disable([self::LOG_MODULE], FALSE);
     }
   }
 
