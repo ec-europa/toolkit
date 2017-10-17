@@ -88,6 +88,9 @@ phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpc
 # Browser name for selenium.
 behat.browser.name = firefox
 
+# Behat API driver.
+behat.api.driver = drupal
+
 # The location of the Behat tests.
 behat.dir = ${project.basedir}/tests
 
