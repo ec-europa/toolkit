@@ -109,7 +109,14 @@
                 <echo msg="Proceeding to import." />
             </then>
             <else>
-                <echo msg="Download the production database." />
+                <if>
+                    <isfalse value="${db.dl.filename}" />
+                    <then>
+                        <!-- TODO: Replace with curl. -->
+                        <exec command='wget -qO - https://${db.dl.username}:${db.dl.password}@${db.dl.url}|egrep "li.*sql.gz"|head -1|cut -d\" -f2' outputProperty="db.dl.filename" checkreturn="true" />
+                    </then>
+                </if>
+                <echo msg="Download the production database ${db.dl.filename}." />
                 <phingcall target="package-download">
                     <property name="package-name" value="${db.dl.filename}" />
                     <property name="package-cache-location" value="${share.path.subsites.packages.database}/${project.id}" />
