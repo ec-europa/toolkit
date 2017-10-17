@@ -128,7 +128,7 @@ tests.dir = ${project.basedir}/tests
 # --------------
 build.dev = build
 build.dist = dist
-build.site = all
+build.site = default
 #build.site = ${project.id}
 
 # Build halts.
