@@ -12,7 +12,6 @@ use Behat\Mink\Exception\ExpectationException;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 
 /**
  * Contains generic step definitions.
@@ -20,7 +19,7 @@ use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 class GenericContext extends RawDrupalContext implements SnippetAcceptingContext {
 
   const LOG_MODULE = 'dblog';
-  static $handleLogModule = false;
+  static private $handleLogModule = FALSE;
 
   /**
    * Enable database logging before any testing.
@@ -30,7 +29,7 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
   public static function prepare() {
     if (!module_exists(self::LOG_MODULE)) {
       module_enable([self::LOG_MODULE], FALSE);
-      self::$handleLogModule = true;
+      self::$handleLogModule = TRUE;
     }
   }
 
@@ -152,6 +151,7 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
     // Clear out the watchdog table at the beginning of each test scenario.
     db_truncate('watchdog')->execute();
   }
+
   /**
    * Check for PHP errors log.
    *
@@ -196,10 +196,11 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Build a list of dynamic URLS based in the database and test the HTTP code.
+   *
    * @Given /^the page contents are correct$/
    */
-  public function thePageContentsAreCorrect()
-  {
+  public function thePageContentsAreCorrect() {
     $pages = $this->generateUrls();
     $message = '';
     foreach ($pages as $page) {
@@ -207,17 +208,20 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
       try {
         $this->visitPath($page);
         $message .= "\n" . $page;
-      } catch (Exception $e) {
+      }
+      catch (Exception $e) {
         throw new LogicException(sprintf('The page "%s" does not exist.', $page));
       }
     }
   }
 
   /**
+   * Generate the list of URL's to be used.
+   *
    * @return array
+   *   List of URL's to test.
    */
-  private function generateUrls()
-  {
+  private function generateUrls() {
     $paths = [
       '/',
     ];
@@ -232,12 +236,14 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Generate the list of URL's based in the Content-types configuration.
+   *
    * @return array
+   *   List of URL's to test.
    */
-  private function generateUrlsByContentTypes($paths)
-  {
+  private function generateUrlsByContentTypes($paths) {
     $node_types = db_select('node_type', 'nt')
-      ->fields('nt',['type', 'name'])
+      ->fields('nt', ['type', 'name'])
       ->condition('nt.disabled', '0', '=')
       ->execute()
       ->fetchAll();
@@ -254,7 +260,7 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
       ->fields('n', array('nid', 'type'))
       ->condition('n.type', $types, 'IN')
       ->groupBy('n.type')
-      ->condition('status', 0,'>')
+      ->condition('status', 0, '>')
       ->execute()
       ->fetchAll();
 
@@ -269,10 +275,12 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Generate the list of URL's based in the Taxonomy configuration.
+   *
    * @return array
+   *   List of URL's to test.
    */
-  private function generateUrlsByTaxonomies($paths)
-  {
+  private function generateUrlsByTaxonomies($paths) {
     if (module_exists('taxonomy')) {
       $taxonomies = db_select('taxonomy_term_data', 'ttd')
         ->fields('ttd', array('tid'))
@@ -291,10 +299,12 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Generate the list of URL's based in the Search module.
+   *
    * @return array
+   *   List of URL's to test.
    */
-  private function generateUrlsBySearch($paths)
-  {
+  private function generateUrlsBySearch($paths) {
     if (module_exists('search')) {
       $paths[] = 'search';
     }
@@ -302,11 +312,13 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Generate the list of URL's based in the Views configuration.
+   *
    * @return array
+   *   List of URL's to test.
    */
-  private function generateUrlsByViews($paths)
-  {
-    if (module_exists('views')){
+  private function generateUrlsByViews($paths) {
+    if (module_exists('views')) {
       $all_views = views_get_all_views();
       foreach ($all_views as $view) {
         foreach ($view->display as $display) {
@@ -320,11 +332,13 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Generate the list of URL's based in the Page Manager configuration.
+   *
    * @return array
+   *   List of URL's to test.
    */
-  private function generateUrlsByPageManager($paths)
-  {
-    if (module_exists('page_manager')){
+  private function generateUrlsByPageManager($paths) {
+    if (module_exists('page_manager')) {
       $pages = db_select('page_manager_pages', 'pmp')
         ->fields('pmp', array('path'))
         ->execute()
