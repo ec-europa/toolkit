@@ -21,8 +21,9 @@ def createWorkflow() {
             setBuildStatus("Build started.", "PENDING");
             slackSend color: "good", message: "Subsite build ${buildLink} started."
             shellExecute('jenkins', 'phing', "docker-compose-up -D'docker.project.id'='${env.COMPOSE_PROJECT_NAME}'")
+            sh './resources/composer/scripts/post-install-cmd/install-reps-platform || true'
+            sh './resources/composer/scripts/post-install-cmd/install-nems-platform || true'
             shellExecute('docker', 'phing', 'toolkit-starterkit-upgrade')
-
          }
 
         try {
