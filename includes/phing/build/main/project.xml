@@ -70,7 +70,6 @@
 
     <target name="install-clone" description="Install NextEuropa site with sanitized production data."
         depends="
-            project-database-download,
             drush-aliases-generate,
             drush-settings-generate,
             project-database-import,
@@ -101,7 +100,6 @@
     </target>
 
     <target name="project-database-download" description="Download sanitized production database from archive.">
-        <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
         <if>
             <available file="${db-dl-file}" type="file" />
             <then>
@@ -126,10 +124,23 @@
         </if>
     </target>
 
+    <target name="project-database-file" description="Check if database file is available.">
+        <if>
+            <available file="${project.db.file}" type="file" />
+            <then>
+                <property name="db-dl-file" value="${project.db.file}" />
+            </then>
+            <else>
+                <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
+            </else>
+        </if>
+    </target>
+
     <target name="project-database-import" description="Import database for project with drush."
-        depends="project-database-download">
+        depends="
+            project-database-file,
+            project-database-download">
         <echo msg="Import production database." />
-        <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
         <phingcall target="drush-sql-drop" />
         <phingcall target="drush-sql-create" />
         <phingcall target="drush-sql-import">
