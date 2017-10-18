@@ -4,6 +4,6 @@ Feature: Generic
 
   @api
   Scenario: Multiple dynamic visits
-    Given I am logged in as a user with the "authenticated user" role
+    Given I am logged in as a user with the "administrator" role
     Given the page contents are correct
     Then the response status code should be 200
