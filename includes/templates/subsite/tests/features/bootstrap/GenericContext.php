@@ -204,7 +204,6 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
     $pages = $this->generateUrls();
     $message = '';
     foreach ($pages as $page) {
-      echo $page . "\n";
       try {
         $this->visitPath($page);
         $statusCode = 200;
