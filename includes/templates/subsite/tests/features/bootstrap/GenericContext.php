@@ -207,7 +207,9 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
       echo $page . "\n";
       try {
         $this->visitPath($page);
-        $message .= "\n" . $page;
+        $statusCode = 200;
+        $this->assertSession()->statusCodeEquals($statusCode);
+        echo "(" . $statusCode . ")\t" . $page . " \n";
       }
       catch (Exception $e) {
         throw new LogicException(sprintf('The page "%s" does not exist.', $page));
