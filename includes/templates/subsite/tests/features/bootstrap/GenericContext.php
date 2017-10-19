@@ -198,9 +198,9 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Build a list of dynamic URLS based in the database and test the HTTP code.
    *
-   * @Given /^the page contents are correct$/
+   * @Given the page contents have the correct code
    */
-  public function thePageContentsAreCorrect() {
+  public function thePageContentsHaveTheCorrectCode() {
     $pages = $this->generateUrls();
     $message = '';
     foreach ($pages as $page) {
