@@ -323,7 +323,10 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
       foreach ($all_views as $view) {
         foreach ($view->display as $display) {
           if ($display->display_plugin == 'page') {
-            $paths[] = $display->display_options['path'];
+            $isDisabled = $view->disabled;
+            if (!$isDisabled) {
+              $paths[] = $display->display_options['path'];
+            }
           }
         }
       }
