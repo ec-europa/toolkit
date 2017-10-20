@@ -50,6 +50,7 @@
                     <token key="behat.base_url" value="${behat.base_url}" />
                     <token key="behat.wd_host.url" value="${behat.wd_host.url}" />
                     <token key="behat.browser.name" value="${behat.browser.name}" />
+                    <token key="behat.api.driver" value="${behat.api.driver}" />
                     <token key="build.platform.dir" value="${build.platform.dir}" />
                     <token key="behat.drush.alias" value="${behat.drush.alias}" />
                     <token key="behat.subcontexts.path" value="${behat.subcontexts.path}" />

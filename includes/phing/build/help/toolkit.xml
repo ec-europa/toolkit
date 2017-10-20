@@ -144,6 +144,10 @@
                         <include name="composer.json" />
                         <include name="composer.lock" />
                         <include name="behat.yml.dist" />
+                        <include name="features/GenericFeatures/*" />
+                        <include name="features/SecurityFeatures/*" />
+                        <include name="features/bootstrap/GenericContext.php" />
+                        <include name="features/bootstrap/SecurityContext.php" />
                     </fileset>
                 </copy>
 
