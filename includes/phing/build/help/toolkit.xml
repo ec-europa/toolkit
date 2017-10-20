@@ -99,6 +99,13 @@
         <docgen buildfile="${project.basedir}/build.xml" />
     </target>
 
+    <target name="toolkit-clean" description="Remove example code from /lib folder.">
+        <delete dir="${lib.dir.modules.custom}/example_module" includeemptydirs="true" failonerror="false" />
+        <delete dir="${lib.dir.modules.features}/myproject_core" includeemptydirs="true" failonerror="false" />
+        <delete dir="${lib.dir.source}/MyGroup" includeemptydirs="true" failonerror="false" />
+        <delete dir="${lib.dir.themes}/example_theme" includeemptydirs="true" failonerror="false" />
+    </target>
+
     <target name="toolkit-starterkit-upgrade" description="Perform upgrade tasks for upgrading from 2.x to 3.x.">
         <if>
             <available file="${project.basedir}/build.package.xml" type="file" />

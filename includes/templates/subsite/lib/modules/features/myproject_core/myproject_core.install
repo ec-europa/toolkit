@@ -3,45 +3,110 @@
 /**
  * @file
  * Install file that takes care of project installation and updates.
+ *
+ * This file intends to help new developers with some practical examples about
+ * how to setup properly a basic project by code. You can find additional
+ * information in the wiki.
  */
+
+/**
+ * All non hook functions should be delivered in a separate file.
+ */
+include_once 'myproject_core.install.inc';
 
 /**
  * Implements hook_install().
  *
- * This hook effectively is an aggregation of the full installation process. Whenever
- * an update is delivered you will add needed code to this hook as well. It is not
- * allowed to directly call the hook_update_N() functions to build your project. The
- * hook needs to represent an easily readable installation process.
+ * This hook effectively is an aggregation of the full installation process.
+ * Whenever an update is delivered you will add needed code to this hook as
+ * well. It is not allowed to directly call the hook_update_N() functions to
+ * build your project. The hook needs to represent an easily readable
+ * installation process.
  */
 function myproject_core_install() {
+  // Set site name and classification.
+  variable_set('site_name', 'My Project');
+  variable_set('classification', '01000');
+  variable_set('meta_configuration', '01000');
 
-  // Enable your project active themes and set the default theme.
-  $themes = array(
+  // Enable the theme "example_theme" and set it as default.
+  $themes = [
     'example_theme',
-  );
+  ];
   theme_enable($themes);
   variable_set('theme_default', $themes[0]);
 
   // List of modules the project needs to enable on install. By using the core
-  // feature architecture new projects will most likely define one single feature or
-  // module in the build.project.props file for the subsite.install.modules property.
-  $modules = array(
+  // feature architecture new projects will most likely define one single
+  // feature or module in the build.project.props file for the
+  // subsite.install.modules property.
+  $modules = [
     'example_module',
-  );
+  ];
   module_enable($modules);
+
+  // Enabling all European languages.
+  if (module_exists('locale')) {
+    include_once DRUPAL_ROOT . '/includes/locale.inc';
+    $languages = [
+      'bg',
+      'cs',
+      'da',
+      'de',
+      'el',
+      'es',
+      'et',
+      'fi',
+      'fr',
+      'hr',
+      'hu',
+      'it',
+      'lt',
+      'lv',
+      'mt',
+      'nl',
+      'pl',
+      'pt',
+      'ro',
+      'sk',
+      'sl',
+      'sv',
+    ];
+    foreach ($languages as $lang) {
+      locale_add_language($lang);
+    }
+  }
+
+  // Create demo page.
+  _myproject_example_function();
 }
 
 /**
  * Enable newly delivered module.
+ *
+ * If a new module is delivered it needs to be enabled by a hook_update_N().
+ * The module also needs to be added to the array of modules to enable in the
+ * hook_install of the core feature.
  */
 function myproject_core_update_7001() {
-
-  // If a new module is delivered it needs to be enabled by a hook_update_N(). The
-  // module also needs to be added to the array of modules to enable in the
-  // hook_install of the core feature.
-  $modules = array(
+  $modules = [
     'example_module',
-  );
+  ];
   module_enable($modules);
 }
 
+/**
+ * Updating search api node index.
+ *
+ * Example about how to revert a single item of your feature.
+ */
+function myproject_core_update_7002() {
+  features_revert(array('myproject_core' => array('facetapi', 'dependencies')));
+}
+
+/**
+ * Update permissions.
+ */
+function myproject_core_update_7003() {
+  _myproject_example_function();
+}
