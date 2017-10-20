@@ -464,7 +464,7 @@
     </target>
 
      <target name="project-properties-validate" description="Validate the build properties file." >
-        <propval source="build.project.props" required="${toolkit.dir.incl.phing.props}/required.props" haltonerror="${build.haltonerror.props.validate}" logoutput="${logoutput}" />
+        <propval source="build.project.props" required="${toolkit.dir.incl.phing.props}/required.props" haltonerror="${build.haltonerror.props.validate}" logoutput="true" />
     </target >
 
     <target name="project-rebuild-check" description="Rebuild project if needed. (needs work)"
