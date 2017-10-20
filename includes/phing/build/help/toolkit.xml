@@ -99,6 +99,27 @@
         <docgen buildfile="${project.basedir}/build.xml" />
     </target>
 
+    <target name="toolkit-clean" description="Remove example code from /lib folder.">
+        <property name="files"
+                  value="${lib.dir.modules.custom}/example_module,
+                         ${lib.dir.modules.features}/myproject_core,
+                         ${lib.dir.source}/MyGroup,
+                         ${lib.dir.themes}/example_theme" />
+
+        <foreach list="${files}" param="dir" target="toolkit-clean-dir" delimiter="," />
+
+    </target>
+
+    <target name="toolkit-clean-dir" description="Delete specified dir." hidden="true">
+        <if>
+            <available file="${dir}" type="dir" />
+            <then>
+                <exec command="rm -r ${dir}" />
+                <echo msg="Directory ${dir} removed." level="warning" />
+            </then>
+        </if>
+    </target>
+
     <target name="toolkit-starterkit-upgrade" description="Perform upgrade tasks for upgrading from 2.x to 3.x.">
         <if>
             <available file="${project.basedir}/build.package.xml" type="file" />
