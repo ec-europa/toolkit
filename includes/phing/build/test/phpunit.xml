@@ -4,6 +4,15 @@
 
     <property file="${phing.dir.phpunit}/phpunit.props" logoutput="false" />
 
+    <!-- Execute PHPUnit tests. -->
+    <target name="test-phpunit-exec">
+        <exec
+            command="${phpunit.bin} -c ${tests.dir}/phpunit.xml"
+            passthru="true"
+            checkreturn="true"
+        />
+    </target>
+
     <!-- Set up PHPUnit. -->
     <target name="test-phpunit-setup">
         <copy todir="${phpunit.dir}" overwrite="true">
@@ -12,6 +21,8 @@
             </fileset>
             <filterchain>
                 <replacetokens begintoken="{{ " endtoken=" }}">
+                    <token key="build.platform.dir" value="${build.platform.dir}" />
+                    <token key="profile" value="${profile}" />
                     <token key="phpunit.base_url" value="${phpunit.base_url}" />
                     <token key="lib.dir" value="${lib.dir}" />
                     <token key="phpunit.dir" value="${phpunit.dir}" />
@@ -19,15 +30,6 @@
             </filterchain>
             <mapper type="glob" from="*.xml.dist" to="*.xml" />
         </copy>
-        <symlink link="${build.dev}" overwrite="true">
-            <fileset dir="${phpunit.dir}" casesensitive="yes">
-                <include name="*.yml" />
-            </fileset>
-        </symlink>
-        <symlink link="${build.dev}/tests" target="../tests" />
-        <!-- Not needed anymore...
-        <symlink link="bin/phpunit" target="../${build.dev}/vendor/bin/phpunit" overwrite="true"/>
-        -->
     </target>
 
 </project>

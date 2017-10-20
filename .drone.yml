@@ -32,7 +32,7 @@ pipeline:
   build:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing build-project-platform ${PHING_OPTS}
+      - ./toolkit/phing build-platform ${PHING_OPTS}
       - ./toolkit/phing build-subsite-dev ${PHING_OPTS}
     volumes:
       - /cache:/cache
@@ -41,7 +41,7 @@ pipeline:
   install:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing install-project-clean ${PHING_OPTS}
+      - ./toolkit/phing install-clean ${PHING_OPTS}
     volumes:
       - /cache:/cache
       - /cache/share:/tmp/toolkit

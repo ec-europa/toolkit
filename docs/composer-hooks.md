@@ -1,5 +1,7 @@
 # Using Composer hooks
 
+<big><table><thead><tr><th nowrap> [Testing the project](./testing-project.md#testing-the-project) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Using Git hooks](./git-hooks.md#using-git-hooks) </th></tr></thead></table>
+
 The toolkit allows you to hook into composer with Phing to run tasks
 before, during or after installation of the project.
 

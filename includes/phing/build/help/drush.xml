@@ -153,7 +153,6 @@
         <drush command="cc" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}">
             <param>drush</param>
         </drush>
-        <drush command="status" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" />
     </target>
 
     <target name="drush-site-install" description="Install a site.">

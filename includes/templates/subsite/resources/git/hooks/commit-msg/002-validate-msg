@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# This is an example script to validate the presenca of an issue identifier
+# in the commit message.
+
+commit_regex='([A-Z]-[0-9]+|merge+|#[0-9])'
+error_msg="Aborting commit. Your commit message is missing an issue identifier('ABCD-123'), #123 or 'Merge'"
+
+if ! grep -iqE "$commit_regex" "$1"; then
+    echo "$error_msg" >&2
+    exit 1
+fi

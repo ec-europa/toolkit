@@ -1,8 +1,12 @@
-# Behat configuration
-# -------------------
+# -----------------------------------------------------------------------------------
+# Behat sprecific configuration
+# -----------------------------------------------------------------------------------
 
 # Browser name for selenium.
 behat.browser.name = firefox
+
+# Behat API driver.
+behat.api.driver = drush
 
 # The location of the Behat tests.
 behat.dir = ${project.basedir}/tests
@@ -17,13 +21,13 @@ behat.yml.template = ${behat.dir}/behat.yml.dist
 behat.yml.path = ${behat.dir}/behat.yml
 
 # The base URL to use in Behat tests.
-behat.base_url = http://web:8080
+behat.base_url = http://localhost
 
 # A drush alias to run behat on.
 behat.drush.alias = docker
 
 # The URL of the Behat webdriver host.
-behat.wd_host.url = http://selenium:4444/wd/hub
+behat.wd_host.url = http://localhost:4444/wd/hub
 
 # The location to search for Behat subcontexts.
 behat.subcontexts.path = ${build.platform.dir.profile}/modules
@@ -47,3 +51,5 @@ behat.load_balancer.containers = 5
 behat.load_balancer.root = ${behat.dir}
 behat.load_balancer.destination = ${behat.dir}/balancer
 behat.load_balancer.import = ${behat.yml.path}
+
+
