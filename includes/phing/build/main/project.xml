@@ -2,15 +2,40 @@
 
 <project name="project" description="Targets shared by differenct project types." default="">
 
-    <target name="build-platform" description="Build NextEuropa Platform code without version control."
-        depends="
-            project-subsite-backup,
-            project-platform-delete,
-            project-platform-set-version,
-            project-platform-package-unpack,
-            project-modules-devops-dl,
-            project-platform-set-htaccess,
-            project-subsite-restore" />
+    <target name="build-platform" description="Build NextEuropa Platform code without version control.">
+        <phingcall target="project-subsite-backup" />
+        <phingcall target="project-platform-delete" />
+
+        <if>
+            <contains string="${profile}" substring="multisite" />
+            <then>
+                <phingcall target="project-platform-set-version" />
+                <phingcall target="project-platform-package-unpack" />
+                <phingcall target="project-modules-devops-dl" />
+                <phingcall target="project-platform-set-htaccess" />
+                <phingcall target="project-subsite-restore" />
+            </then>
+            <else>
+                <echo msg="I want drupal ${profile.core} with this profile: ${profile} in this folder ${build.platform.dir} ." />
+                <phingcall target="project-profile-build" />
+            </else>
+        </if>
+
+    </target>
+
+    <target name="project-profile-build" description="Build Drupal profile.">
+        <drush command="dl" assume="yes">
+            <param>"drupal-7.56"</param>
+            <option name="destination">${project.tmp.dir}</option>
+            <option name="strict">0</option>
+        </drush>
+
+        <copy todir="${build.platform.dir}">
+            <fileset dir="${project.tmp.dir}/drupal-7.56">
+                <include name="**"></include>
+            </fileset>
+        </copy>
+    </target>
 
     <target name="build-subsite" description="Build NextEuropa Subsite code without version control."
         depends="
