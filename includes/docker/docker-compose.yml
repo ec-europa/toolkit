@@ -11,7 +11,7 @@ services:
       - 8080
     volumes:
       - ${WORKSPACE}:${WORKSPACE}
-      - /tmp/toolkit:/tmp/toolkit
+      - /cache:/cache
       - /var/cache/composer:/var/cache/composer
       - /usr/bin/docker:/usr/bin/docker
       - /usr/bin/docker-compose:/usr/bin/docker-compose
