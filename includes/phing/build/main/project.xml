@@ -30,7 +30,6 @@
         </drush>
 
         <exec command="ls |grep ${profile}-" dir="${project.tmp.dir}" outputProperty="profile.name" />
-
         <copy todir="${build.platform.dir}">
             <fileset dir="${project.tmp.dir}/${profile.name}">
                 <include name="**"></include>
@@ -38,7 +37,6 @@
         </copy>
 
         <delete dir="${project.tmp.dir}/${profile.name}" includeemptydirs="true" verbose="false" failonerror="true" />
-
     </target>
 
     <target name="build-subsite" description="Build NextEuropa Subsite code without version control."
