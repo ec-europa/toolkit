@@ -24,17 +24,23 @@
     </target>
 
     <target name="project-profile-build" description="Build Drupal profile.">
+
         <drush command="dl" assume="yes">
-            <param>"drupal-7.56"</param>
+            <param>"${profile}-${profile.core}"</param>
             <option name="destination">${project.tmp.dir}</option>
             <option name="strict">0</option>
         </drush>
 
+        <exec command="ls |grep ${profile}-" dir="${project.tmp.dir}" outputProperty="profile.name" />
+
         <copy todir="${build.platform.dir}">
-            <fileset dir="${project.tmp.dir}/drupal-7.56">
+            <fileset dir="${project.tmp.dir}/${profile.name}">
                 <include name="**"></include>
             </fileset>
         </copy>
+
+        <delete dir="${project.tmp.dir}/${profile.name}" includeemptydirs="true" verbose="true" failonerror="true" />
+
     </target>
 
     <target name="build-subsite" description="Build NextEuropa Subsite code without version control."
