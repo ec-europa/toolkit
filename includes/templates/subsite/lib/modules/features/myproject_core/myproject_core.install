@@ -96,8 +96,6 @@ function myproject_core_update_7001() {
 }
 
 /**
- * Updating search api node index.
- *
  * Example about how to revert a single item of your feature.
  */
 function myproject_core_update_7002() {
