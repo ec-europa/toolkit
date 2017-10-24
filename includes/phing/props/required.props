@@ -14,11 +14,11 @@ project.url.production =
 
 # Solr configuration.
 # -------------------
-solr.type = d7_apachesolr
+project.solr.type = d7_apachesolr
 
 # Admin configuration.
 # --------------------
-admin.email = ${admin.username}@example.com
+project.admin.email = ${admin.username}@example.com
 
 # Platform configuration.
 # -----------------------

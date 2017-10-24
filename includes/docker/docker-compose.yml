@@ -8,7 +8,7 @@ services:
       COMPOSER_CACHE_DIR: /var/cache/composer
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
     ports:
-      - 8081:8080
+      - 8080
     volumes:
       - ${WORKSPACE}:${WORKSPACE}
       - /cache:/cache
@@ -23,17 +23,7 @@ services:
     expose:
       - '8080'
   mysql:
-    image: mysql:5.6
-    environment:
-      MYSQL_ROOT_PASSWORD: ''
-      MYSQL_DATABASE: ${COMPOSE_PROJECT_NAME}
-      MYSQL_USER: root
-      MYSQL_PASSWORD: ''
-      MYSQL_ROOT_HOST: '%'
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-    command: mysqld --max_allowed_packet=32M
-    expose:
-      - '3306'
+    image: fpfis/mysql56
   #redis:
   #  image: fpfis/redis
   #varnish:

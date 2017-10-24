@@ -2,6 +2,10 @@ workspace:
   base: /test
   path: toolkit
 
+matrix:
+  PHING_OPTS:
+    - -logger phing.listener.AnsiColorLogger
+
 services:
   web:
     image: fpfis/php56-dev
@@ -21,27 +25,30 @@ pipeline:
     image: fpfis/php56-dev
     commands:
       - PROJECT=$(pwd) composer toolkit-install
+      - ./toolkit/phing project-properties-validate ${PHING_OPTS}
     volumes:
       - /cache:/cache
 
   build:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing build-platform
-      - ./toolkit/phing build-subsite-dev
+      - ./toolkit/phing build-platform ${PHING_OPTS}
+      - ./toolkit/phing build-subsite-dev ${PHING_OPTS}
     volumes:
       - /cache:/cache
+      - /cache/share:/tmp/toolkit
 
   install:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing install-clean
+      - ./toolkit/phing install-clean ${PHING_OPTS}
     volumes:
       - /cache:/cache
+      - /cache/share:/tmp/toolkit
 
   test:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing test-run-behat
+      - ./toolkit/phing test-run-behat ${PHING_OPTS}
     volumes:
       - /cache:/cache

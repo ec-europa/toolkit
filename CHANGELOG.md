@@ -1,6 +1,28 @@
 # Toolkit change log
 
-## Version 3.0.0 (from subsite-starterkit 2.2.5)
+## Version 3.0.0-beta2
+
+### Features
+  * [MULTISITE-18628] - Fix Jenkins file
+  * [MULTISITE-18318] - Validate properties task
+  * [MULTISITE-17623] - Generic behat tests generation.
+  * [MULTISITE-18571] - Allow other profiles to be built than standard and communities
+
+### Improvements
+  * [MULTISITE-18674] - Create target to remove example code
+  * [MULTISITE-17373] -  Documentation on project_core feature
+  * [MULTISITE-18609] - Project pages and requesting a new project
+  * [MULTISITE-18629] - Fix cache mount
+  * [MULTISITE-17187] - Include proxy configuration in settings.
+  * [MULTISITE-18096] - Phing upload deploy and/or test package
+  * [MULTISITE-18423] - Enforce project id naming convention retroactively
+  * [MULTISITE-18649] - Make ASDA download find filename if not provided
+  * [MULTISITE-18651] - Split behat context
+  * [MULTISITE-18652] - Behat API driver
+  * [MULTISITE-18653] - Make dblog available during testing
+  * [MULTISITE-18672] - Fix regression with git hooks examples
+
+## Version 3.0.0-beta1 (from subsite-starterkit 2.2.5)
 
 ### Improvements
   * [MULTISITE-17744] - Toolkit is re-architectured into a separated composer package
@@ -69,5 +91,20 @@
 [MULTISITE-17096]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-17096
 [MULTISITE-17624]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-17624
 [MULTISITE-18248]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18248
+[MULTISITE-18628]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18628
+[MULTISITE-18318]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18318
+[MULTISITE-17623]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-17623
+[MULTISITE-18571]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18571
+[MULTISITE-18674]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18674
+[MULTISITE-17373]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-17373
+[MULTISITE-18609]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18609
+[MULTISITE-18629]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18629
+[MULTISITE-17187]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-17187
+[MULTISITE-18096]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18096
+[MULTISITE-18423]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18423
+[MULTISITE-18649]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18649
+[MULTISITE-18651]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18651
+[MULTISITE-18652]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18652
+[MULTISITE-18653]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18653
+[MULTISITE-18672]: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-18672
 [NESTF-31]: https://webgate.ec.europa.eu/CITnet/jira/browse/NESTF-31
-

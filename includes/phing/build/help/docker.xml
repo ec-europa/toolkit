@@ -26,7 +26,7 @@
     <target name="docker-compose-down" description="Trash docker project." hidden="true">
         <echo msg="Removing containers and volumes for ${docker.project.id}" />
         <exec command="docker-compose -p ${docker.project.id} -f ${toolkit.dir.incl.docker}/docker-compose.yml down --volumes" />
-        <delete file="${project.basedir}/docker${docker.project.id}" />
+        <delete file="${project.basedir}/docker-${docker.project.id}" />
     </target>
 
     <target name="docker-compose-restore" description="Restore database." hidden="true">
@@ -58,7 +58,7 @@
         <echo msg="Stopping containers for ${docker.project.id}" />
         <exec command="docker-compose -p ${docker.project.id} -f ${toolkit.dir.incl.docker}/docker-compose.yml stop mysql" passthru="true" />
         <exec command="WORKSPACE=${project.basedir} DB_LOCATION_DIR=${share.path.subsites.packages.database} docker-compose -p ${docker.project.id} -f ${toolkit.dir.incl.docker}/docker-compose.yml -f ${toolkit.dir.incl.docker}/backup-restore.yml run backup" passthru="true" />
-        <exec command="${project.basedir}/docker${docker.project.id} ps" passthru="true" />
+        <exec command="${project.basedir}/docker-${docker.project.id} ps" passthru="true" />
     </target>
 
     <target name="docker-compose-up" description="Start docker project." hidden="true">

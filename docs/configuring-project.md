@@ -101,11 +101,14 @@ phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpc
 
 # Toolkit location: ./includes/phing/build/test/behat.props
 # -----------------------------------------------------------------------------------
-# Behat sprecific configuration
+# Behat specific configuration
 # -----------------------------------------------------------------------------------
 
 # Browser name for selenium.
 behat.browser.name = firefox
+
+# Behat API driver.
+behat.api.driver = drush
 
 # The location of the Behat tests.
 behat.dir = ${project.basedir}/tests
