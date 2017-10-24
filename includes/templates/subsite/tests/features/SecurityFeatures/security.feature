@@ -22,3 +22,4 @@ Feature: User authentication
       | path            |
       | admin/config    |
       | admin/structure |
+
