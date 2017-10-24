@@ -1,7 +1,7 @@
 {
     "name": "ec-europa/toolkit",
     "description": "NextEuropa Toolkit packaged for composer",
-    "version": "3.0.0",
+    "version": "3.0.0-beta2",
     "scripts": {
         "toolkit-install": "PROJECT=${PROJECT} composer install --working-dir=includes/composer --ignore-platform-reqs --no-suggest --ansi",
         "toolkit-update": "PROJECT=${PROJECT} composer update --working-dir=includes/composer  --ignore-platform-reqs --no-suggest --ansi",
