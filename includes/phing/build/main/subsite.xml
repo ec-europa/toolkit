@@ -5,23 +5,23 @@
     <target name="build-subsite-dev" description="Build a local development version of the site."
         depends="
             subsite-type-dev,
-            subsite-delete,
+            subsite-delete-dev,
             subsite-resources-link,
+            project-subsite-composer-dev,
             subsite-make,
-            project-modules-devel-make,
-            project-subsite-composer-dev">
+            project-modules-devel-make">
         <echo msg="Playbook for build-subsite-dev ended." />
     </target>
 
     <target name="build-subsite-dist" description="Build a site intended as a release package."
         depends="
-            subsite-type-dev,
+            subsite-delete-dist,
+            subsite-type-tmp,
             subsite-resources-link,
+            project-subsite-composer-no-dev,
             subsite-make,
             subsite-type-dist,
-            subsite-delete,
-            subsite-resources-copy,
-            subsite-package">
+            subsite-resources-copy">
         <echo msg="Playbook for build-subsite-dist ended." />
     </target>
 
@@ -32,18 +32,24 @@
         </phingcall>
     </target>
 
-    <target name="subsite-delete" description="Delete subsite build.">
+    <target name="subsite-delete-dev" description="Delete subsite dev build.">
         <phingcall target="project-scratch-build">
             <property name="dir-build" value="${build.${build-type}.dir}" override="true" />
         </phingcall>
+    </target>
+
+    <target name="subsite-delete-dist" description="Delete subsite dist build.">
+        <delete dir="${build.tmp.dir}" includeemptydirs="true" />
+        <delete dir="${build.dist.dir}" includeemptydirs="true" />
+        <mkdir dir="${build.tmp.dir}" />
     </target>
 
     <target name="subsite-make" description="Makes the subsite resources with drush.">
         <echo msg="Make the subsite." />
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${resources.dir.site.make}" />
-            <property name="make-folder" value="${build.platform.dir.sites}" />
-            <property name="make-destination" value="${build.site}" />
+            <property name="make-folder" value="${build.${build-type}.dir}" />
+            <property name="make-destination" value="" />
         </phingcall>
     </target>
 
@@ -71,19 +77,7 @@
         <echo msg="Copy custom resources." />
 
         <copy todir="${build.${build-type}.dir}">
-            <fileset dir="${build.subsite.dir}" expandsymboliclinks="true">
-                <include name="libraries/**" />
-                <include name="modules/**" />
-                <include name="src/**" />
-                <include name="themes/**" />
-            </fileset>
-        </copy>
-
-        <copy todir="${build.${build-type}.dir}">
-            <fileset dir="${resources.dir}" expandsymboliclinks="true">
-                <include name="composer.json" />
-                <include name="composer.lock" />
-            </fileset>
+            <fileset dir="${build.tmp.dir}" expandsymboliclinks="true" />
         </copy>
     </target>
 
@@ -107,6 +101,10 @@
 
     <target name="subsite-type-dist" description="Sets the type of build (dev or dist).">
         <property name="build-type" value="dist" override="true" />
+    </target>
+
+    <target name="subsite-type-tmp" description="Sets the type of build to tmp.">
+        <property name="build-type" value="tmp" override="true" />
     </target>
 
 </project>
