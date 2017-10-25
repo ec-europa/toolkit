@@ -177,6 +177,10 @@ build.dist.dir.profiles = ${build.dist.dir}/profiles
 build.dist.dir.source = ${build.dist.dir}/src
 build.dist.dir.themes = ${build.dist.dir}/themes
 
+# Temporary build files and directories.
+# -----------------------------------------
+build.tmp.dir = ${project.tmp.dir}/sites/${build.site}
+
 # Rebuild configuration.
 # ----------------------
 rebuild.auto = 1
