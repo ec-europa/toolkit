@@ -202,13 +202,17 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function thePageContentsHaveTheCorrectCode() {
     $pages = $this->generateUrls();
-    $message = '';
     foreach ($pages as $page) {
       try {
-        $this->visitPath($page);
-        $statusCode = 200;
-        $this->assertSession()->statusCodeEquals($statusCode);
-        echo "(" . $statusCode . ")\t" . $page . " \n";
+        if (strpos($page, '%') !== false) {
+          // Skip all path that contains arguments.
+        }
+        else {
+          $this->visitPath($page);
+          $statusCode = 200;
+          $this->assertSession()->statusCodeEquals($statusCode);
+          echo "(" . $statusCode . ")\t" . $page . " \n";
+        }
       }
       catch (Exception $e) {
         throw new LogicException(sprintf('The page "%s" does not exist.', $page));
