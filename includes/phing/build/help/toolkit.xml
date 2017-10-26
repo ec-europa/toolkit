@@ -129,6 +129,9 @@
                 <phingcall target="folder-delete">
                     <property name="folder.to.delete" value="${resources.dir}/composer" />
                 </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${tests.dir}" />
+                </phingcall>
                 <!-- Delete starterkit files. -->
                 <delete quiet="true">
                     <fileset dir="${project.basedir}">
@@ -148,13 +151,7 @@
                 <!-- Copy the tests over theirs. -->
                 <copy todir="${tests.dir}" overwrite="true" haltonerror="false">
                     <fileset dir="${toolkit.dir.incl.templates}/subsite/tests">
-                        <include name="composer.json" />
-                        <include name="composer.lock" />
-                        <include name="behat.yml.dist" />
-                        <include name="features/GenericFeatures/*" />
-                        <include name="features/SecurityFeatures/*" />
-                        <include name="features/bootstrap/GenericContext.php" />
-                        <include name="features/bootstrap/SecurityContext.php" />
+                        <include name="**" />
                     </fileset>
                 </copy>
 
