@@ -229,7 +229,6 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
 
     $paths = $this->generateUrlsByContentTypes($paths);
     $paths = $this->generateUrlsByTaxonomies($paths);
-    $paths = $this->generateUrlsBySearch($paths);
     $paths = $this->generateUrlsByViews($paths);
     $paths = $this->generateUrlsByPageManager($paths);
 
