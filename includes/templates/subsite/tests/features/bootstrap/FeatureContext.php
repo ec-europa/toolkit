@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \SecurityContext.
+ * Contains \FeatureContext.
  */
 
 use Behat\Behat\Context\Context;

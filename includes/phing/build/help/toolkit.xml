@@ -147,15 +147,7 @@
 
                 <!-- Copy the tests over theirs. -->
                 <copy todir="${tests.dir}" overwrite="true" haltonerror="false">
-                    <fileset dir="${toolkit.dir.incl.templates}/subsite/tests">
-                        <include name="composer.json" />
-                        <include name="composer.lock" />
-                        <include name="behat.yml.dist" />
-                        <include name="features/GenericFeatures/*" />
-                        <include name="features/SecurityFeatures/*" />
-                        <include name="features/bootstrap/GenericContext.php" />
-                        <include name="features/bootstrap/SecurityContext.php" />
-                    </fileset>
+                    <fileset dir="${toolkit.dir.incl.templates}/subsite/tests" />
                 </copy>
 
                 <exec command="curl -L -o ${project.tmp.dir}/composer.json https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/composer.json" />
