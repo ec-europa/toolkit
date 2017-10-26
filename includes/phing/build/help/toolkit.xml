@@ -129,6 +129,9 @@
                 <phingcall target="folder-delete">
                     <property name="folder.to.delete" value="${resources.dir}/composer" />
                 </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${tests.dir}" />
+                </phingcall>
                 <!-- Delete starterkit files. -->
                 <delete quiet="true">
                     <fileset dir="${project.basedir}">
