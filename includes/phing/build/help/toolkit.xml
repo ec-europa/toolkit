@@ -150,7 +150,9 @@
 
                 <!-- Copy the tests over theirs. -->
                 <copy todir="${tests.dir}" overwrite="true" haltonerror="false">
-                    <fileset dir="${toolkit.dir.incl.templates}/subsite/tests" />
+                    <fileset dir="${toolkit.dir.incl.templates}/subsite/tests">
+                        <include name="**" />
+                    </fileset>
                 </copy>
 
                 <exec command="curl -L -o ${project.tmp.dir}/composer.json https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/composer.json" />
