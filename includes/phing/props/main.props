@@ -139,7 +139,7 @@ build.haltonerror.props.validate = false
 # Platform build resources.
 # -------------------------
 build.platform.dir = ${project.basedir}/${build.dev}
-build.platform.dir.settings = ${build.platform.dir.sites}/default
+build.platform.dir.settings = ${build.platform.dir.sites}/all
 build.platform.dir.sites = ${build.platform.dir}/sites
 build.platform.dir.profile = ${build.platform.dir.profiles}/${profile}
 build.platform.dir.profile.themes = ${build.platform.dir.profile}/themes

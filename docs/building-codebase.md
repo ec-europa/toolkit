@@ -65,7 +65,7 @@ the `./toolkit/phing build-platform` command.
 <details><p><summary>execute <code>./toolkit/phing build-subsite</code></summary></p>
 
 This build downloads and unpacks the latest released subsite deploy package and
-unpacks it to the `build/sites/default` folder. This build will be mainly used
+unpacks it to the `build/sites/all` folder. This build will be mainly used
 by platform who need to test subsite configurations on their codebase.
 
 This build will download the latest release package of the version you define in
@@ -94,7 +94,7 @@ properties. After succesful download it will unpack the package into the
 <details><p><summary>execute <code>./toolkit/phing build-subsite-dev</code></summary>
 
 Builds all resources and symlinks the individual modules, themes and libraries
-to their location in the lib/ folder. The `build/sites/default` folder effectively becomes a
+to their location in the lib/ folder. The `build/sites/all` folder effectively becomes a
 mirror of `lib/`.
 </p></details>
 
