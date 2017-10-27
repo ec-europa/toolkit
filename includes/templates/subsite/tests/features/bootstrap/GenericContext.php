@@ -209,13 +209,12 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
         }
         else {
           $this->visitPath($page);
-          $statusCode = 200;
-          $this->assertSession()->statusCodeEquals($statusCode);
-          echo "(" . $statusCode . ")\t" . $page . " \n";
+          $this->assertSession()->statusCodeEquals(200);
+          echo "\033[0;32m(200)\t" . $page . "\033[0m\n";
         }
       }
       catch (Exception $e) {
-        throw new LogicException(sprintf('The page "%s" does not exist.', $page));
+        echo "\033[0;33m(404)\t" . $page . "\033[0m\n";
       }
     }
   }
@@ -255,7 +254,7 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!empty($node_types)) {
       foreach ($node_types as $node_type) {
         $types[] = $node_type->type;
-        $paths[] = 'node/add/' . $node_type->type;
+        $paths[] = 'node/add/' . str_ireplace('_', '-', $node_type->type);
       }
     }
 
