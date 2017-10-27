@@ -31,7 +31,7 @@ phpcs.passwarnings = 0
 
 # The report format. For example 'full', 'summary', 'diff', 'xml', 'json'.
 # Delimited by space, comma or semicolon.
-phpcs.reports = summary
+phpcs.reports = full
 
 # Whether or not to show sniff codes in the report.
 phpcs.sniffcodes = 0
