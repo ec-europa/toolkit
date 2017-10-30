@@ -148,6 +148,7 @@
                     <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
                 </phingcall>
                 <exec command="gunzip ${share.path.subsites.packages.database}/${project.id}/${db.dl.filename}" checkreturn="true" passthru="false" logoutput="true" />
+                <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
             </else>
         </if>
     </target>
