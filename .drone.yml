@@ -24,7 +24,6 @@ pipeline:
   toolkit:
     image: fpfis/php56-dev
     commands:
-      - composer clear-cache
       - PROJECT=$(pwd) composer toolkit-install
       - ./toolkit/phing project-properties-validate ${PHING_OPTS}
     volumes:
