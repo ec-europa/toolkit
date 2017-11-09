@@ -255,6 +255,12 @@ platform.package.provider.token = # TODO: Github API limit.
 platform.package.repository = ec-europa/platform-dev
 platform.package.version = 2.4
 
+# Github configuration.
+# -----------------------
+project.collaborators =
+project.repository.name =
+project.repository.team =
+
 # Theme configuration (deploy props?)
 # --------------------
 theme.ecl.version = v0.10.0

@@ -73,4 +73,34 @@
         <input message="Enter your GitHub username."  propertyName="github.user" />
     </target>
 
+    <target name="github-collaborators" description="List collaborators of the github repository">
+        <repository-contributors
+            projectId="${project.id}"
+            reference="${project.repository.name}"
+            maintainers="${project.collaborators}"
+            />
+    </target>
+
+    <target name="github-collaborators-add" description="Add maintainer to github repository">
+        <repository-contributors
+            projectId="${project.id}"
+            reference="${project.repository.name}"
+            maintainers="${project.collaborators}"
+            operation="add"
+        />
+    </target>
+
+    <target name="github-collaborators-remove" description="Remove maintainer from github repository">
+        <repository-contributors
+            projectId="${project.id}"
+            reference="${project.repository.name}"
+            maintainers="${project.collaborators}"
+            operation="remove"
+            />
+    </target>
+
+    <target name="github-teams" description="List all currents teams">
+        <repository-team operation="list" />
+    </target>
+
 </project>
