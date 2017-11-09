@@ -12,6 +12,7 @@ services:
     volumes:
       - ${WORKSPACE}:${WORKSPACE}
       - ${WORKSPACE_CACHE:-/data/cache}:/tmp/toolkit
+      - ${WORKSPACE_CACHE:-/data/cache}:/cache
       - /var/cache/composer:/var/cache/composer
       - /usr/bin/docker:/usr/bin/docker
       - /usr/bin/docker-compose:/usr/bin/docker-compose
