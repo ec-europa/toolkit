@@ -1,7 +1,7 @@
 # Docker integration
 # ------------------
-share.path = /tmp
-share.name = cache
+share.path = /cache
+share.name = share
 db.host = mysql
 solr.host = solr
 behat.base_url = http://web:8080
