@@ -14,8 +14,8 @@ def createWorkflow() {
     def repoName = sh(returnStdout: true, script: 'git config remote.origin.url').trim().replaceAll('https://github.com/', '').replaceAll('-reference\\.git', '')
     def branchName = "${env.BRANCH_NAME}"
     def repoUrl = sh(returnStdout: true, script: 'git config remote.origin.url').trim().replaceAll('\\.git', '')
-    def buildLink = "<${env.BUILD_URL}consoleFull|build #${env.BUILD_NUMBER}> for <${repoUrl}|${repoName} on ${branchName}>"
-    def buildName = "${repoName}-${branchName}-${env.BUILD_NUMBER}"
+    def buildLink = "<${env.BUILD_URL}consoleFull|build #${env.BUILD_NUMBER}> for <${repoUrl}|${repoName}> on ${branchName}"
+    def buildName = "${repoName}-${branchName}-${env.BUILD_NUMBER}".replaceAll('/', '-')
 
 
     withEnv(["COMPOSE_PROJECT_NAME=${buildName}","WORKSPACE=${env.WORKSPACE}","PATH+toolkit=${env.WORKSPACE}/vendor/ec-europa/toolkit/bin"]) {
