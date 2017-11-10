@@ -50,6 +50,7 @@ def createWorkflow() {
         } finally {
             shellExecute('jenkins', 'phing', "docker-compose-stop -D'docker.project.id'='${env.COMPOSE_PROJECT_NAME}'")
             shellExecute('jenkins', 'phing', "docker-compose-down -D'docker.project.id'='${env.COMPOSE_PROJECT_NAME}'")
+            slackSend color: "good", message: "Subsite build ${buildLink} ended succesfully."
         }
     }
 }
