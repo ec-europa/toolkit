@@ -11,12 +11,14 @@ def createWorkflow() {
     ])
 
     // Set some variables.
-    def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
-    def buildName = "${env.BUILD_NUMBER}".replaceAll('ec-europa/','').replaceAll('-reference/','').replaceAll('/','_').replaceAll('-','_').trim()
-    def repoName = "${env.GIT_URL}".replaceAll('https://github.com/', '').replaceAll('-reference.git', '').trim()
-    def buildLink = "<${env.BUILD_URL}consoleFull|build #${env.BUILD_NUMBER}> for ${repoName} on ${env.GIT_BRANCH}"
+    def repoName = sh(returnStdout: true, script: 'git config remote.origin.url').trim().replaceAll('https://github.com/', '').replaceAll('-reference\\.git', '')
+    def branchName = "${env.BRANCH_NAME}"
+    def repoUrl = sh(returnStdout: true, script: 'git config remote.origin.url').trim().replaceAll('\\.git', '')
+    def buildLink = "<${env.BUILD_URL}consoleFull|build #${env.BUILD_NUMBER}> for <${repoUrl}|${repoName} on ${branchName}>"
+    def buildName = "${repoName}-${branchName}-${env.BUILD_NUMBER}"
 
-    withEnv(["COMPOSE_PROJECT_NAME=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}","PATH+toolkit=${env.WORKSPACE}/vendor/ec-europa/toolkit/bin"]) {
+
+    withEnv(["COMPOSE_PROJECT_NAME=${buildName}","WORKSPACE=${env.WORKSPACE}","PATH+toolkit=${env.WORKSPACE}/vendor/ec-europa/toolkit/bin"]) {
 
         stage('Init') {
             setBuildStatus("Build started.", "PENDING");
