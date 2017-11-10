@@ -13,7 +13,7 @@ def createWorkflow() {
     // Set some variables.
     def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
     def buildName = "${env.BUILD_NUMBER}".replaceAll('ec-europa/','').replaceAll('-reference/','').replaceAll('/','_').replaceAll('-','_').trim()
-    def repoName = sh(returnStdout: true, script: 'basename ${env.GIT_URL} .git').trim()
+    def repoName = "${env.GIT_URL}".tokenize('/')[3].split("\\.")[0]
     def buildLink = "<${env.BUILD_URL}consoleFull|build #${env.BUILD_NUMBER}> for ${repoName} on ${env.GIT_BRANCH}"
 
     withEnv(["COMPOSE_PROJECT_NAME=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}","PATH+toolkit=${env.WORKSPACE}/vendor/ec-europa/toolkit/bin"]) {
