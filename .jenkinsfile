@@ -12,31 +12,31 @@ def createWorkflow() {
 
     // Set some variables.
     def buildId = sh(returnStdout: true, script: 'date |  md5sum | head -c 5').trim()
-    def buildName = "${env.JOB_NAME}".replaceAll('ec-europa/','').replaceAll('-reference/','').replaceAll('/','_').replaceAll('-','_').trim()
-    def buildLink = "<${env.BUILD_URL}consoleFull|${buildName} #${env.BUILD_NUMBER}>"
+    def buildName = "${env.BUILD_NUMBER}".replaceAll('ec-europa/','').replaceAll('-reference/','').replaceAll('/','_').replaceAll('-','_').trim()
+    def repoName = sh(returnStdout: true, script: 'basename ${env.GIT_URL} .git').trim()
+    def buildLink = "<${env.BUILD_URL}consoleFull|build #${env.BUILD_NUMBER}> for ${repoName} on ${env.GIT_BRANCH}"
 
     withEnv(["COMPOSE_PROJECT_NAME=${buildName}_${buildId}","WORKSPACE=${env.WORKSPACE}","PATH+toolkit=${env.WORKSPACE}/vendor/ec-europa/toolkit/bin"]) {
 
         stage('Init') {
             setBuildStatus("Build started.", "PENDING");
-            slackSend color: "good", message: "Subsite build ${buildLink} started."
+            slackSend color: "good", message: "Subsite ${buildLink} started."
             shellExecute('jenkins', 'phing', "docker-compose-up -D'docker.project.id'='${env.COMPOSE_PROJECT_NAME}'")
          }
 
         try {
-            stage('Check') {
-                //shellExecute('docker', 'phing', 'test-run-phpcs')
+            stage('Phpcs') {
+                shellExecute('docker', 'phing', 'test-run-phpcs')
             }
-
             stage('Build') {
                 shellExecute('docker', 'phing', 'build-platform build-subsite-dev')
             }
-            stage('Install') {
+            stage('Clone') {
                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'ASDA', usernameVariable: 'ASDA_USER', passwordVariable: 'ASDA_PASS']]) {
                     shellExecute('docker', 'phing', "install-clone -Ddrupal.db.name=${env.COMPOSE_PROJECT_NAME} -Ddb.dl.username=$ASDA_USER -Ddb.dl.password=$ASDA_PASS")
                 }
             }
-            stage('Test') {
+            stage('Behat') {
                 timeout(time: 2, unit: 'HOURS') {
                     shellExecute('docker', 'phing', 'test-run-behat')
                 }
