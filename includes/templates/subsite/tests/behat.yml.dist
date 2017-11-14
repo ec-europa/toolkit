@@ -1,16 +1,68 @@
 default:
   suites:
     default:
+      paths:
+        - '{{ behat.dir }}/features/DefaultFeatures'
       contexts:
         - FeatureContext
-        - GenericContext
-        - SecurityContext
+        - Drupal\nexteuropa\Context\Custom\CustomContext
+        - Drupal\nexteuropa\Context\Generic\GenericContext
+        - Drupal\nexteuropa\Context\Platform\PlatformContext
+        - Drupal\nexteuropa\Context\Security\SecurityContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\nexteuropa\Context\DrupalContext
+        - Drupal\nexteuropa\Context\MinkContext
+      filters:
+        tags: "~@wip"  
+    custom:
+      paths:
+        - '{{ behat.dir }}/features/CustomFeatures'  
+      contexts:
+        - FeatureContext
+        - Drupal\nexteuropa\Context\Custom\CustomContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\nexteuropa\Context\DrupalContext
+        - Drupal\nexteuropa\Context\MinkContext
+      filters:
+        tags: "~@wip"  
+    generic:
+      paths:
+        - '{{ behat.dir }}/features/GenericFeatures'    
+      contexts:
+        - FeatureContext
+        - Drupal\nexteuropa\Context\Generic\GenericContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\nexteuropa\Context\DrupalContext
         - Drupal\nexteuropa\Context\MinkContext
       filters:
         tags: "~@wip"
+    platform:
+      paths:
+        - '{{ behat.dir }}/features/PlatformFeatures'    
+      contexts:
+        - FeatureContext
+        - Drupal\nexteuropa\Context\Platform\PlatformContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\nexteuropa\Context\DrupalContext
+        - Drupal\nexteuropa\Context\MinkContext
+      filters:
+        tags: "~@wip"
+    security:
+      paths:
+        - '{{ behat.dir }}/features/SecurityFeatures'    
+      contexts:
+        - FeatureContext
+        - Drupal\nexteuropa\Context\Security\SecurityContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\nexteuropa\Context\DrupalContext
+        - Drupal\nexteuropa\Context\MinkContext
+      filters:
+        tags: "~@wip"           
   extensions:
     Behat\MinkExtension:
       browser_name: '{{ behat.browser.name }}'

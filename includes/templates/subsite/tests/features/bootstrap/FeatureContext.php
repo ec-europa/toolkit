@@ -20,6 +20,7 @@ class FeatureContext implements Context {
    * context constructor through behat.yml.
    */
   public function __construct() {
+    // Some code here.
   }
 
 }
