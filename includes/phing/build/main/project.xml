@@ -388,7 +388,6 @@
                         <available file="${site-item-backup-dir}" type="dir" />
                     </not>
                     <then>
-                        <echo msg="Creating ${site-item-backup-dir}!" level="warning" />
                         <if>
                             <equals arg1="${site-item-type}" arg2="file" />
                             <then>
@@ -410,7 +409,6 @@
                         </phingcall>
                     </then>
                     <else>
-                        <echo msg="Moving ${site-item} to dir ${site-item-backup-dir}/ !!!!" level="warning" />
                         <copy file="${site-item}" tofile="${site-item-backup-dir}" />
                     </else>
                 </if>
@@ -475,21 +473,22 @@
                 </replaceregexp>
             </filterchain>
         </property>
-        <echo msg="Moving ${site-item-backup} to ${site-item}" level="warning"/>
+        
         <if>
             <available file="${site-item-backup}" type="${site-item-type}" />
             <then>
-                <php expression='dirname("${site-item}")' returnProperty="site-item-dir" />
                 <if>
-                    <not>
-                        <available file="${site-item-dir}" type="dir" />
-                    </not>
+                    <equals arg1="${site-item-type}" arg2="file" />
                     <then>
-                        <mkdir dir="${site-item-dir}" />
+                        <php expression='dirname("${site-item-dir}")' returnProperty="site-item-dir-file" />
+                         <mkdir dir="${site-item-dir-file}" />
                     </then>
+                    <else>
+                        <mkdir dir="${site-item-dir}" />
+                    </else>
                 </if>
                 <if>
-                    <equals arg1="{site-item-type}" arg2="dir"/>
+                    <equals arg1="${site-item-type}" arg2="dir"/>
                     <then>
                         <phingcall target="folder-copy">
                             <property name="copy.destination.path" value="${site-item}" />
@@ -497,7 +496,7 @@
                         </phingcall>
                     </then>
                     <else>
-                        <copy file="${site-item-backup}" tofile="${site-item-dir}" overwrite="true"/>
+                        <copy file="${site-item-backup}" tofile="${site-item}" overwrite="true"/>
                     </else>
                 </if>
             </then>
