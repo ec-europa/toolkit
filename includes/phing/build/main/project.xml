@@ -394,9 +394,6 @@
                                 <php expression='dirname("${site-item-backup-dir}")' returnProperty="site-item-backup-dir-file" />
                                  <mkdir dir="${site-item-backup-dir-file}" />
                             </then>
-                            <else>
-                                <mkdir dir="${site-item-backup-dir}" />
-                            </else>
                         </if>
                     </then>
                 </if>
