@@ -266,6 +266,18 @@
                 <move file="${build.platform.dir.settings}/default.settings.php" tofile="${project.tmp.dir}/default.settings.php" overwrite="true" />
             </then>
         </if>
+        <if>
+            <available file="${build.platform.dir.settings}/settings.php" />
+            <then>
+                <move file="${build.platform.dir.settings}/settings.php" tofile="${project.tmp.dir}/settings.php" overwrite="true" />
+            </then>
+        </if>
+        <if>
+            <available file="${build.platform.dir.settings}/settings.local.php" />
+            <then>
+                <move file="${build.platform.dir.settings}/settings.local.php" tofile="${project.tmp.dir}/settings.local.php" overwrite="true" />
+            </then>
+        </if>
         <phingcall target="folder-unprotect">
             <property name="folder.to.unprotect" value="${dir-build}" />
         </phingcall>
@@ -281,6 +293,20 @@
                 <move file="${project.tmp.dir}/default.settings.php" tofile="${build.platform.dir.settings}/default.settings.php" />
             </then>
         </if>
+        <if>
+            <available file="${project.tmp.dir}/settings.php" />
+            <then>
+                <mkdir dir="${build.platform.dir.settings}" />
+                <move file="${project.tmp.dir}/settings.php" tofile="${build.platform.dir.settings}/settings.php" />
+            </then>
+        </if>
+        <if>
+            <available file="${project.tmp.dir}/settings.local.php" />
+            <then>
+                <mkdir dir="${build.platform.dir.settings}" />
+                <move file="${project.tmp.dir}/settings.local.php" tofile="${build.platform.dir.settings}/settings.local.php" />
+            </then>
+        </if>        
     </target>
 
     <target name="project-subsite-backup" description="Backup site defined files from properties.">
