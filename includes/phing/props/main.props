@@ -187,7 +187,7 @@ build.tmp.dir = ${project.tmp.dir}/sites/${build.site}
 rebuild.auto = 1
 rebuild.backup.destination = ${project.tmp.dir}/backup-site
 rebuild.backup.files = ${build.subsite.dir}/settings.php;${build.subsite.dir}/settings.local.php
-rebuild.backup.folders = ${build.subsite.dir.files};${build.subsite.dir.tmp}
+rebuild.backup.folders = ${build.subsite.dir}
 
 # Shared paths.
 # -------------
