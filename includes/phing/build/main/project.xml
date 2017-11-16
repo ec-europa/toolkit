@@ -373,7 +373,7 @@
     <target name="project-subsite-backup-item" description="Backup site item from configuraton list."
        hidden="true">
         <php expression='dirname("${site-item}")' returnProperty="site-item-dir" />
-        <property name="site-item-backup-dir" value="${site-item-dir}">
+        <property name="site-item-backup-dir" value="${site-item}">
             <filterchain>
                 <replaceregexp>
                     <regexp pattern="${build.platform.dir}" replace="${rebuild.backup.destination}" ignoreCase="false" />
@@ -388,10 +388,32 @@
                         <available file="${site-item-backup-dir}" type="dir" />
                     </not>
                     <then>
-                        <mkdir dir="${site-item-backup-dir}" />
+                        <echo msg="Creating ${site-item-backup-dir}!" level="warning" />
+                        <if>
+                            <equals arg1="${site-item-type}" arg2="file" />
+                            <then>
+                                <php expression='dirname("${site-item-backup-dir}")' returnProperty="site-item-backup-dir-file" />
+                                 <mkdir dir="${site-item-backup-dir-file}" />
+                            </then>
+                            <else>
+                                <mkdir dir="${site-item-backup-dir}" />
+                            </else>
+                        </if>
                     </then>
                 </if>
-                <move file="${site-item}" todir="${site-item-backup-dir}" includeemptydirs="true" />
+                <if>
+                    <equals arg1="${site-item-type}" arg2="dir" />
+                    <then>
+                        <phingcall target="folder-copy">
+                            <property name="copy.destination.path" value="${site-item-backup-dir}" />
+                            <property name="copy.source.path" value="${site-item}" />
+                        </phingcall>
+                    </then>
+                    <else>
+                        <echo msg="Moving ${site-item} to dir ${site-item-backup-dir}/ !!!!" level="warning" />
+                        <copy file="${site-item}" tofile="${site-item-backup-dir}" />
+                    </else>
+                </if>
             </then>
             <else>
                 <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized" />
@@ -453,6 +475,7 @@
                 </replaceregexp>
             </filterchain>
         </property>
+        <echo msg="Moving ${site-item-backup} to ${site-item}" level="warning"/>
         <if>
             <available file="${site-item-backup}" type="${site-item-type}" />
             <then>
@@ -465,7 +488,18 @@
                         <mkdir dir="${site-item-dir}" />
                     </then>
                 </if>
-                <move file="${site-item-backup}" todir="${site-item-dir}" includeemptydirs="true" />
+                <if>
+                    <equals arg1="{site-item-type}" arg2="dir"/>
+                    <then>
+                        <phingcall target="folder-copy">
+                            <property name="copy.destination.path" value="${site-item}" />
+                            <property name="copy.source.path" value="${site-item-backup}" />
+                        </phingcall>
+                    </then>
+                    <else>
+                        <copy file="${site-item-backup}" tofile="${site-item-dir}" overwrite="true"/>
+                    </else>
+                </if>
             </then>
             <else>
                 <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized" />
