@@ -45,10 +45,9 @@
             theme-europa-create-symlinks" />
 
     <target name="install-clean" description="Install NextEuropa site from scratch.">
-        <phingcall target="project-subsite-files-setup" />
         <exec command="chmod 775 ${build.platform.dir.settings}" />
 
-        <phingcall target="drush-aliases-generate" />
+
         <phingcall target="drush-sql-create" />
 
         <if>
@@ -98,10 +97,10 @@
 
     <target name="install-clone" description="Install NextEuropa site with sanitized production data."
         depends="
-            drush-aliases-generate,
             drush-settings-generate,
             project-database-import,
-            project-modules-devel-en" />
+            project-modules-devel-en,
+            drush-cache-reset" />
 
     <target name="project-composer-install" description="Runs composer install."
         hidden="true">
@@ -306,7 +305,10 @@
                 <mkdir dir="${build.platform.dir.settings}" />
                 <move file="${project.tmp.dir}/settings.local.php" tofile="${build.platform.dir.settings}/settings.local.php" />
             </then>
-        </if>        
+        </if> 
+        
+        <phingcall target="project-subsite-files-setup" />
+        <phingcall target="drush-aliases-generate" />
     </target>
 
     <target name="project-subsite-backup" description="Backup site defined files from properties.">
