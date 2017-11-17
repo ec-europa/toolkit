@@ -3,7 +3,7 @@
 <project name="project" description="Targets shared by differenct project types." default="">
 
     <target name="build-platform" description="Build NextEuropa Platform code without version control.">
-        <phingcall target="project-subsite-backup" />
+        <phingcall target="project-platform-backup" />
         <phingcall target="project-platform-delete" />
 
         <if>
@@ -19,7 +19,7 @@
         </if>
 
        <phingcall target="project-platform-set-htaccess" />
-       <phingcall target="project-subsite-restore" />
+       <phingcall target="project-platform-restore" />
 
     </target>
 
@@ -370,6 +370,65 @@
         </if>
     </target>
 
+    <target name="project-platform-backup" description="Backup site defined files from properties.">
+        <if>
+            <available file="${build.subsite.dir}/settings.php" type="file" />
+            <then>
+                <property name="site-detected" value="1" />
+            </then>
+            <else>
+                <echo msg="No site installation detected. Skipping backup." />
+            </else>
+        </if>
+
+        <if>
+            <and>
+                <equals arg1="${rebuild.auto}" arg2="0" />
+                <equals arg1="${site-detected}" arg2="1" />
+            </and>
+            <then>
+                <echo msg="Installed site detected." level="warning" />
+                <propertyprompt propertyName="project-subsite-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
+                <if>
+                    <equals arg1="${project-subsite-backup-activated}" arg2="y" />
+                    <then>
+                        <property name="rebuild.auto" value="1" override="true" />
+                    </then>
+                </if>
+            </then>
+        </if>
+        <if>
+            <and>
+                <equals arg1="${rebuild.auto}" arg2="1" />
+                <equals arg1="${site-detected}" arg2="1" />
+            </and>
+            <then>
+                <if>
+                    <available file="${rebuild.backup.destination}" type="dir" />
+                    <then>
+                        <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
+                    </then>
+                </if>
+                <mkdir dir="${rebuild.backup.destination}" />
+                <phingcall target="folder-unprotect">
+                    <property name="folder.to.unprotect" value="${build.platform.dir.sites}" />
+                </phingcall>
+                <foreach list="${rebuild.backup.site}" param="site-item" target="project-subsite-backup-item" delimiter=";">
+                    <property name="site-item-type" value="dir" />
+                </foreach>
+                <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-backup-item" delimiter=";">
+                    <property name="site-item-type" value="file" />
+                </foreach>
+            </then>
+        </if>
+        <if>
+            <equals arg1="${project-subsite-backup-activated}" arg2="y" />
+            <then>
+                <property name="rebuild.auto" value="0" override="true" />
+            </then>
+        </if>
+    </target>
+
     <target name="project-subsite-backup-item" description="Backup site item from configuraton list."
        hidden="true">
         <php expression='dirname("${site-item}")' returnProperty="site-item-dir" />
@@ -461,6 +520,50 @@
         </if>
     </target>
 
+    <target name="project-platform-restore" description="Restore site defined files from properties.">
+        <if>
+            <available file="${rebuild.backup.destination}" type="dir" />
+            <then>
+                <property name="backup-detected" value="1" />
+            </then>
+            <else>
+                <echo msg="No site backup detected. Skipping restore." />
+            </else>
+        </if>
+        <if>
+            <and>
+                <equals arg1="${rebuild.auto}" arg2="0" />
+                <equals arg1="${backup-detected}" arg2="1" />
+            </and>
+            <then>
+                <echo msg="Site backup detected." level="warning" />
+                <propertyprompt propertyName="project-subsite-restore-activated" promptText="Do you wish to restore site for this build? (y/n)" />
+                <if>
+                    <equals arg1="${project-subsite-restore-activated}" arg2="y" />
+                    <then>
+                        <property name="rebuild.auto" value="1" override="true" />
+                    </then>
+                </if>
+            </then>
+        </if>
+        <if>
+            <and>
+                <equals arg1="${rebuild.auto}" arg2="1" />
+                <equals arg1="${backup-detected}" arg2="1" />
+            </and>
+            <then>
+                <echo msg="Restoring site files and folders from ${rebuild.backup.destination}" />
+                <foreach list="${rebuild.backup.site}" param="site-item" target="project-subsite-restore-item" delimiter=";">
+                    <property name="site-item-type" value="dir" />
+                </foreach>
+                <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-restore-item" delimiter=";">
+                    <property name="site-item-type" value="file" />
+                </foreach>
+                <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
+            </then>
+        </if>
+    </target>
+
     <target name="project-subsite-restore-item" description="Restore site item from configuration list."
         hidden="true">
         <property name="site-item-backup" value="${site-item}">
@@ -477,11 +580,11 @@
                 <if>
                     <equals arg1="${site-item-type}" arg2="file" />
                     <then>
-                        <php expression='dirname("${site-item-dir}")' returnProperty="site-item-dir-file" />
-                         <mkdir dir="${site-item-dir-file}" />
+                        <php expression='dirname("${site-item-backup}")' returnProperty="site-item-backup-file" />
+                         <mkdir dir="${site-item-backup-file}" />
                     </then>
                     <else>
-                        <mkdir dir="${site-item-dir}" />
+                        <mkdir dir="${site-item-backup}" />
                     </else>
                 </if>
                 <if>
