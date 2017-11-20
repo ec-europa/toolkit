@@ -197,6 +197,7 @@
                 <move file="build.properties" tofile="build.project.props" overwrite="true" haltonerror="false" />
                 <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true" haltonerror="false" />
                 <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true" haltonerror="false" />
+                <copy file="${toolkit.dir.incl.templates}/subsite/.jenkinsfile" tofile="${project.basedir}/.jenkinsfile" />
                 <copy file="${toolkit.dir.incl.templates}/subsite/resources/devel.make" tofile="${resources.dir.devel.make}" />
 
                 <!-- Copy cause move can not handle symlinks -->
