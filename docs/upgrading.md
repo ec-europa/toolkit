@@ -80,7 +80,7 @@ subsite-starterkit so you might have to rename some properties. View a list
 of old property names mapped to new property names here:
 [deprecated.props](../includes/phing/build/help/deprecated.props).
 
-#### PHPCS
+#### Phpcs
 
 After you completed the upgrade you also need to make sure your codebase is in
 compliance with the new version of coder. To run PHPCS you can use a Phing
