@@ -20,6 +20,31 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
  */
 class GenericContext extends RawDrupalContext implements SnippetAcceptingContext {
 
+  const LOG_MODULE = 'dblog';
+  static private $handleLogModule = FALSE;
+
+  /**
+   * Enable database logging before any testing.
+   *
+   * @BeforeSuite
+   */
+  public static function prepare() {
+    if (!module_exists(self::LOG_MODULE)) {
+      module_enable([self::LOG_MODULE], FALSE);
+      self::$handleLogModule = TRUE;
+    }
+  }
+
+  /**
+   * Proceed with cleanup after testing.
+   *
+   * @AfterSuite
+   */
+  public static function cleanup() {
+    if (module_exists(self::LOG_MODULE) && self::$handleLogModule) {
+      module_disable([self::LOG_MODULE], FALSE);
+    }
+  }
   /**
    * Build a list of dynamic URLS based in the database and test the HTTP code.
    *
