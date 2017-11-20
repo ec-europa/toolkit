@@ -6,12 +6,14 @@ alt="Upgrade screencast" width="50%" align="left" /></a>
 
 This screencast explains how to upgrade a subsite-starterkit based project to
 the composer package based toolkit. To complete the upgrade you need to execute
-the 5 steps listed below. After the upgrade you might have to fix some files
-that can be altered by the upgrade. It is best to use a dedicated branch for the
-upgrade so your master branch stays unaffected until the pull request has been
-merged into the master of reference.
+the 5 steps listed below in the upgrade steps. After the upgrade you might have
+to fix some files that may have been altered by the upgrade script. It is best
+to use a dedicated branch for the upgrade so your master branch stays unaffected
+until the pull request has been merged into the master of reference. If your
+project has no real customizations to Phing targets or the subsite-starterkit
+provided composer files you should not encounter any problems.
 
----
+### Upgrade guide
 
 #### Up-to-date branch
 
