@@ -47,6 +47,7 @@
             </fileset>
             <filterchain>
                 <replacetokens begintoken="{{ " endtoken=" }}">
+                    <token key="behat.dir" value="${behat.dir}" />
                     <token key="behat.base_url" value="${behat.base_url}" />
                     <token key="behat.wd_host.url" value="${behat.wd_host.url}" />
                     <token key="behat.browser.name" value="${behat.browser.name}" />

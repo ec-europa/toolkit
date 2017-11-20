@@ -2,15 +2,17 @@
 
 /**
  * @file
- * Contains \SecurityContext.
+ * Contains \PlatformContext.
  */
+
+namespace Drupal\nexteuropa\Context\Platform;
 
 use Behat\Behat\Context\Context;
 
 /**
  * Defines application features from the specific context.
  */
-class SecurityContext implements Context {
+class PlatformContext implements Context {
 
   /**
    * Initializes context.
