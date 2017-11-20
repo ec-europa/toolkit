@@ -59,7 +59,6 @@ class GenericContext extends RawDrupalContext implements SnippetAcceptingContext
         }
         else {
           $this->visitPath($page);
-          $this->assertSession()->statusCodeEquals(200);
           echo "\033[0;32m(200)\t" . $page . "\033[0m\n";
         }
       }
