@@ -4,14 +4,16 @@
 " target="_blank"><img src="http://img.youtube.com/vi/cwGZilB3BjQ/0.jpg" 
 alt="Upgrade screencast" width="50%" align="left" /></a>
 
-This screencast explains how to upgrade a project that is making use of a
-subsite-starterkit based project to the composer package based toolkit. To
-complete the upgrade you need to execute the 5 steps listed below. After the
-upgrade you might have to fix some files that can be altered by the upgrade. It
-is best to use a dedicated branch for the upgrade so your master branch stays
-unaffected until the pull request has been merged into the master of reference.
+This screencast explains how to upgrade a subsite-starterkit based project to
+the composer package based toolkit. To complete the upgrade you need to execute
+the 5 steps listed below. After the upgrade you might have to fix some files
+that can be altered by the upgrade. It is best to use a dedicated branch for the
+upgrade so your master branch stays unaffected until the pull request has been
+merged into the master of reference.
 
-### Upgrade steps
+---
+
+#### Up-to-date branch
 
 Check out new dedicated branch and make sure it is up to date with master of the
 reference repository.
@@ -23,6 +25,8 @@ reference repository.
 > git merge reference/master
 >```
 
+#### Upgrade steps
+
 These are the 5 steps needed to complete the upgrade.
 
 >```bash
@@ -32,6 +36,8 @@ These are the 5 steps needed to complete the upgrade.
 > composer install
 > ./toolkit/phing toolkit-upgrade-starterkit
 >```
+
+#### Gitignore
 
 After the upgrade is complete you should check what files have changed and that
 your gitignore file does not allow to commit new files placed by the toolkit. If
@@ -44,16 +50,21 @@ the toolkit subsite templates folder.
 > git status
 >```
 
+#### Files renamed
+
 Good to know is that there have been some files renamed. Here is a list of the
 most important ones.
+
+|subsite-starterkit|toolkit|Description|
+|:---|:---|:---|
+|./resources/phpcs-custom.xml|./phpcs-ruleset.xml|The phpcs exclusion rules defined by the project.| 
+|./resources/build.custom.xml|./build.project.xml|Custom Phing build targets defined by the project.|
 
 |subsite-starterkit|toolkit|Description|
 |:---|:---|:---|
 |./build.properties|./build.project.props|Properties defined by the project.|
 |./build.properties.dist|./build.default.props|List of all available properties.|
 |./build.properties.local|./build.develop.props|Local properties for credentials and developer settings.|
-|./resources/phpcs-custom.xml|./phpcs-ruleset.xml|The phpcs exclusion rules defined by the project.| 
-|./resources/build.custom.xml|./build.project.xml|Custom Phing build targets defined by the project.|
 
 During the upgrade your build.properties file will be renamed to
 build.project.props. In toolkit this file is required for CI purposes and you
@@ -64,3 +75,31 @@ The toolkit is not backwards compatible with
 subsite-starterkit so you might have to rename some properties. View a list
 of old property names mapped to new property names here:
 [deprecated.props](../includes/phing/build/help/deprecated.props).
+
+#### PHPCS
+
+After you completed the upgrade you also need to make sure your codebase is in
+compliance with the new version of coder. To run PHPCS you can use a Phing
+target:
+
+>```bash
+> ./toolkit/phing test-run-phpcs
+> ./toolkit/phpcbf
+> ./toolkit/phing test-run-phpcs
+>```
+
+#### Behat
+
+Your ./tests folder is overridden by the `./toolkit/phing toolkit-starterkit-upgrade`
+target. The new ./tests folder contains a couple of generic tests that we will
+be using on CI tools. If you do not wish to use the generic tests and you have
+provided your own you can checkout your own tests again.
+
+>```bash
+> rm -rf ./tests
+> git checkout master ./tests
+>```
+
+After you have made sure all is working correctly you can commit and push your
+upgrade. When it's ready for review create a pull request to the reference
+repository and a MULTISITE ticket so it can be QA'ed.
