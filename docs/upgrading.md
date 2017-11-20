@@ -1,4 +1,4 @@
-## Upgrade from subsite-starterkit to toolkit
+## Upgrade subsite-starterkit to toolkit
    
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=cwGZilB3BjQ
 " target="_blank"><img src="http://img.youtube.com/vi/cwGZilB3BjQ/0.jpg" 
@@ -10,6 +10,7 @@ complete the upgrade you need to execute the 5 steps listed below. After the
 upgrade you might have to fix some files that can be altered by the upgrade. It
 is best to use a dedicated branch for the upgrade so your master branch stays
 unaffected until the pull request has been merged into the master of reference.
+<br />
 
 ### Upgrade steps
 
@@ -56,7 +57,11 @@ most important ones.
 |./resources/build.custom.xml|./build.project.xml|Custom Phing build targets defined by the project.|
 
 During the upgrade your build.properties file will be renamed to
-build.project.props. The toolkit is not backwards compatible with
+build.project.props. In toolkit this file is required for CI purposes and you
+need a minimum of properties defined there:
+[required.props](../includes/phing/props/required.props)
+
+The toolkit is not backwards compatible with
 subsite-starterkit so you might have to rename some properties. View a list
 of old property names mapped to new property names here:
 [deprecated.props](../includes/phing/build/help/deprecated.props).
