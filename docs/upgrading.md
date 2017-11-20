@@ -2,7 +2,7 @@
    
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=cwGZilB3BjQ
 " target="_blank"><img src="http://img.youtube.com/vi/cwGZilB3BjQ/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" align="left" /></a>
+alt="Upgrade screencast" width="50%" align="left" /></a>
 
 This screencast explains how to upgrade a project that is making use of a
 subsite-starterkit based project to the composer package based toolkit. To
@@ -10,7 +10,6 @@ complete the upgrade you need to execute the 5 steps listed below. After the
 upgrade you might have to fix some files that can be altered by the upgrade. It
 is best to use a dedicated branch for the upgrade so your master branch stays
 unaffected until the pull request has been merged into the master of reference.
-<br />
 
 ### Upgrade steps
 
