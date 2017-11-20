@@ -14,6 +14,7 @@ default:
         tags: "~@wip"  
     toolkit:
       paths:
+        - '{{ behat.dir }}/features/GenericFeatures'
         - '{{ behat.dir }}/features/ToolkitFeatures'
         - '{{ behat.dir }}/features/PlatformFeatures'
         - '{{ behat.dir }}/features/SecurityFeatures'
