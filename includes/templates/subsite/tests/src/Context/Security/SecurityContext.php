@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \GenericContext.
+ * Contains \SecurityContext.
  */
 
 namespace Drupal\nexteuropa\Context\Security;
