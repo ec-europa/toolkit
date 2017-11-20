@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \FeatureContext.
+ * Contains \PlatformContext.
  */
 
 namespace Drupal\nexteuropa\Context\Platform;
