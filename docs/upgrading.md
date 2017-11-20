@@ -63,12 +63,11 @@ most important ones.
 |:---|:---|:---|
 |./resources/phpcs-custom.xml|./phpcs-ruleset.xml|The phpcs exclusion rules defined by the project.| 
 |./resources/build.custom.xml|./build.project.xml|Custom Phing build targets defined by the project.|
-
-|subsite-starterkit|toolkit|Description|
-|:---|:---|:---|
 |./build.properties|./build.project.props|Properties defined by the project.|
 |./build.properties.dist|./build.default.props|List of all available properties.|
 |./build.properties.local|./build.develop.props|Local properties for credentials and developer settings.|
+
+#### Build properties
 
 During the upgrade your build.properties file will be renamed to
 build.project.props. In toolkit this file is required for CI purposes and you
