@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \FeatureContext.
+ * Contains \SiteContext.
  */
 
 namespace Drupal\nexteuropa\Context\Site;
