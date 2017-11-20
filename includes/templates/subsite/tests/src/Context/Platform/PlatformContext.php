@@ -5,12 +5,14 @@
  * Contains \FeatureContext.
  */
 
+namespace Drupal\nexteuropa\Context\Platform;
+
 use Behat\Behat\Context\Context;
 
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements Context {
+class PlatformContext implements Context {
 
   /**
    * Initializes context.
@@ -20,7 +22,6 @@ class FeatureContext implements Context {
    * context constructor through behat.yml.
    */
   public function __construct() {
-    // Some code here.
   }
 
 }

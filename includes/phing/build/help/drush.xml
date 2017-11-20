@@ -14,6 +14,39 @@
         </drush>
     </target>
 
+    <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
+        <drush
+            command="vset"
+            assume="yes"
+            root="${build.platform.dir}"
+            alias="@${build.site}"
+            bin="${toolkit.dir.bin.drush}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>preprocess_css 0</param>
+        </drush>
+        <drush
+            command="vset"
+            assume="yes"
+            root="${build.platform.dir}"
+            alias="@${build.site}"
+            bin="${toolkit.dir.bin.drush}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>preprocess_js 0</param>
+        </drush>
+        <drush
+            command="cc"
+            assume="yes"
+            root="${build.platform.dir}"
+            alias="@${build.site}"
+            bin="${toolkit.dir.bin.drush}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>all</param>
+        </drush>        
+    </target>
+
     <target name="drush-files-dirs-htaccess" description="Ensure the presence of htaccess files.">
         <drush
             command="php-eval"
@@ -163,7 +196,7 @@
             <option name="account-name" value="${admin.username}" />
             <option name="account-pass" value="${admin.password}" />
             <option name="account-mail" value="${admin.email}" />
-            <param>${profile}</param>
+            <param>${profile.name}</param>
             <param>install_configure_form.update_status_module='array(FALSE,FALSE)'
             </param>
         </drush>

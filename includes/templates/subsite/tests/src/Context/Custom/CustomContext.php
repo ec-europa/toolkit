@@ -2,15 +2,17 @@
 
 /**
  * @file
- * Contains \SecurityContext.
+ * Contains \FeatureContext.
  */
+
+namespace Drupal\nexteuropa\Context\Custom;
 
 use Behat\Behat\Context\Context;
 
 /**
  * Defines application features from the specific context.
  */
-class SecurityContext implements Context {
+class CustomContext implements Context {
 
   /**
    * Initializes context.

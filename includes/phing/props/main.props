@@ -84,6 +84,7 @@ admin.username = admin
 # Platform configuration.
 # -----------------------
 profile = multisite_drupal_standard
+profile.name = ${profile}
 profile.core = 7.x
 profile.core.make = ${resources.dir}/drupal-core.make
 profile.make = ${resources.dir}/${profile}.make
@@ -186,7 +187,8 @@ build.tmp.dir = ${project.tmp.dir}/sites/${build.site}
 rebuild.auto = 1
 rebuild.backup.destination = ${project.tmp.dir}/backup-site
 rebuild.backup.files = ${build.subsite.dir}/settings.php;${build.subsite.dir}/settings.local.php
-rebuild.backup.folders = ${build.subsite.dir.files};${build.subsite.dir.tmp}
+rebuild.backup.folders = ${build.subsite.dir.files}
+rebuild.backup.site = ${build.subsite.dir}
 
 # Shared paths.
 # -------------
