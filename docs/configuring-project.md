@@ -14,7 +14,7 @@ of your project.
 This file is never loaded into active configuration and purely acts as an
 overview of all build properties that are available to you.
 
-<details><summary>Example of the <code>build.default.project</code> file</summary><p>
+<details><summary>Example of the <code>build.default.props</code> file</summary><p>
 
 ```yaml
 # Toolkit location: ./includes/phing/build/boot.props

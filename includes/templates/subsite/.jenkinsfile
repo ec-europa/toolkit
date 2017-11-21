@@ -5,7 +5,7 @@ node {
     deleteDir()
     checkout scm
     sh "composer update --no-interaction --no-suggest"
-    extcode = load "vendor/ec-europa/toolkit/Jenkinsfile"
+    extcode = load "vendor/ec-europa/toolkit/.jenkinsfile"
     extcode.createWorkflow()
   }
 }

@@ -1,10 +1,28 @@
 default:
   suites:
-    default:
+    subsite:
+      paths:
+        - '{{ behat.dir }}/features/SiteFeatures'
       contexts:
         - FeatureContext
-        - GenericContext
-        - SecurityContext
+        - Drupal\nexteuropa\Context\Site\SiteContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\nexteuropa\Context\DrupalContext
+        - Drupal\nexteuropa\Context\MinkContext
+      filters:
+        tags: "~@wip"  
+    toolkit:
+      paths:
+        - '{{ behat.dir }}/features/GenericFeatures'
+        - '{{ behat.dir }}/features/ToolkitFeatures'
+        - '{{ behat.dir }}/features/PlatformFeatures'
+        - '{{ behat.dir }}/features/SecurityFeatures'
+      contexts:
+        - FeatureContext
+        - Drupal\nexteuropa\Context\Generic\GenericContext
+        - Drupal\nexteuropa\Context\Platform\PlatformContext
+        - Drupal\nexteuropa\Context\Security\SecurityContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\nexteuropa\Context\DrupalContext

@@ -5,7 +5,9 @@
     <target name="build-subsite-dev" description="Build a local development version of the site."
         depends="
             subsite-type-dev,
+            project-subsite-backup,
             subsite-delete-dev,
+            project-subsite-restore,
             subsite-resources-link,
             project-subsite-composer-dev,
             subsite-make,
@@ -50,6 +52,7 @@
             <property name="make-file" value="${resources.dir.site.make}" />
             <property name="make-folder" value="${build.${build-type}.dir}" />
             <property name="make-destination" value="" />
+            <property name="overwrite" value="" />
         </phingcall>
     </target>
 

@@ -2,15 +2,17 @@
 
 /**
  * @file
- * Contains \FeatureContext.
+ * Contains \SiteContext.
  */
+
+namespace Drupal\nexteuropa\Context\Site;
 
 use Behat\Behat\Context\Context;
 
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements Context {
+class SiteContext implements Context {
 
   /**
    * Initializes context.
@@ -20,7 +22,6 @@ class FeatureContext implements Context {
    * context constructor through behat.yml.
    */
   public function __construct() {
-    // Some code here.
   }
 
 }
