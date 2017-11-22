@@ -80,4 +80,14 @@
         </then>
     </if>
 
+    <!-- And lastly import the project locked properties if we're building on CI -->
+    <if>
+        <and>
+            <isset property="env.CI" />
+            <available file="${project.basedir}/build.properties.lock" />
+        </and>
+        <then>
+            <property file="${project.basedir}/build.properties.lock" logoutput="${logoutput}" />
+        </then>
+    </if>
 </project>
