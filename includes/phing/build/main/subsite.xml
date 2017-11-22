@@ -80,7 +80,11 @@
         <echo msg="Copy custom resources." />
 
         <copy todir="${build.${build-type}.dir}">
-            <fileset dir="${build.tmp.dir}" expandsymboliclinks="true" />
+            <fileset dir="${build.tmp.dir}" expandsymboliclinks="true">
+                <include name="**"/>
+                <exclude name="**/.git/*"/>
+                <exclude name="**/.svn/*"/>
+            </fileset>
         </copy>
     </target>
 
