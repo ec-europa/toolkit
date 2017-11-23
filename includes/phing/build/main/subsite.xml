@@ -80,9 +80,7 @@
         <echo msg="Copy custom resources." />
 
         <copy todir="${build.${build-type}.dir}">
-            <fileset dir="${build.tmp.dir}" expandsymboliclinks="true" defaultexcludes="true">
-                <include name="**"/>
-            </fileset>
+            <fileset dir="${build.tmp.dir}" expandsymboliclinks="true" defaultexcludes="true" />
         </copy>
     </target>
 
