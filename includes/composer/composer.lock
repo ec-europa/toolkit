@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "39b166957f3fffa85382ac58e005021a",
+    "content-hash": "295b800264b4e0d0bdd5b6009aa2254e",
     "packages": [
         {
             "name": "cpliakas/git-wrapper",
@@ -396,6 +396,41 @@
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
             "time": "2016-03-08T21:00:41+00:00"
+        },
+        {
+            "name": "ec-europa/backtrac-php-client",
+            "version": "0.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ec-europa/backtrac-php-client.git",
+                "reference": "a795ba7b535749835c8c7e93bd2314e9d65d3e34"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/backtrac-php-client/zipball/a795ba7b535749835c8c7e93bd2314e9d65d3e34",
+                "reference": "a795ba7b535749835c8c7e93bd2314e9d65d3e34",
+                "shasum": ""
+            },
+            "require": {
+                "tcdent/php-restclient": "^0.1.6"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EC\\Utils\\Backtrac\\": "src/"
+                },
+                "psr-0": {
+                    "BacktracTasks\\": "phing/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "EUPL"
+            ],
+            "time": "2017-11-23T08:11:27+00:00"
         },
         {
             "name": "guzzle/guzzle",
@@ -1997,6 +2032,58 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2017-11-10T18:26:04+00:00"
+        },
+        {
+            "name": "tcdent/php-restclient",
+            "version": "0.1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tcdent/php-restclient.git",
+                "reference": "4522e8518eaef770d715977fcb45f187f8ad7499"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tcdent/php-restclient/zipball/4522e8518eaef770d715977fcb45f187f8ad7499",
+                "reference": "4522e8518eaef770d715977fcb45f187f8ad7499",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "php": ">=5.5.7",
+                "phpunit/phpunit": ">=4.5"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "restclient.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Travis Dent",
+                    "email": "tcdent@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A generic REST API client for PHP",
+            "homepage": "http://github.com/tcdent/php-restclient",
+            "keywords": [
+                "api",
+                "client",
+                "curl",
+                "json",
+                "rest",
+                "xml"
+            ],
+            "time": "2017-09-07T20:44:36+00:00"
         },
         {
             "name": "wimg/php-compatibility",
