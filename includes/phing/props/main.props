@@ -233,4 +233,7 @@ varnish.server.port = 8888
 # ----------------------------
 drush.db.dump = ${build.platform.dir}/dump.sql
 
-
+# Drush aliases configuration.
+# ----------------------------
+drush.alias.default = ${build.site}
+drush.alias.docker = docker
