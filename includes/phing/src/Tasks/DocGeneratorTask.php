@@ -14,14 +14,14 @@
 
 namespace Phing\Toolkit\Tasks;
 
-use Phing\Toolkit\Tasks\PhingHelpTask;
+// use Phing\Toolkit\Tasks\PhingHelpTask;
 use Project;
 use Symfony\Component\Finder\Finder;
 
 require_once 'phing/Task.php';
 
 /**
- * A Phing task to generate an aliases.drushrc.php file.
+ * Generate documentation about custom targets provided by toolkit.
  *
  * @category BuildSystem
  * @package  DrupalToolkit
@@ -31,39 +31,248 @@ require_once 'phing/Task.php';
  */
 class DocGeneratorTask extends \Task
 {
+    private $_buildFile      = '';
+    protected $targets       = [];
+    protected $buildList     = [];
+    protected $stickyTargets = [
+      'build-platform',
+      'build-subsite-dev',
+      'install-clean',
+      'install-clone',
+      'test-run-phpcs',
+      'test-run-behat',
+    ];
+
+    public $markup = 'No results found.';
 
     /**
-     * The location of the build file to generate docs for.
-     *
-     * @var string
-     */
-    private $_buildfile = '';
-
-    /**
-     * Generates an aliases.drushrc.php file.
-     *
-     * Either generates a file for:
-     *  - all sites in the sites directory.
-     *  - a single site to be added to the aliases file (appending).
+     * Inherits documentation.
      *
      * @return void
      */
     public function main()
     {
+        $this->checkRequirements();
+        $this->getBuildList($this->_buildFile);
+        $this->parseTargets();
+        $this->buildMarkup();
+        $this->buildMarkupFull();
+    }//end main()
 
-        ini_set('xdebug.var_display_max_depth', 10);
+    /**
+    * Checks target requirements.
+    *
+    * @throws \BuildException
+    *   Thrown when a required property is not present.
+    *
+    * @return void
+    */
+    protected function checkRequirements()
+    {
+        $required_properties = array('_buildFile');
+        foreach ($required_properties as $required_property) {
+            if (empty($this->$required_property)) {
+                throw new \BuildException(
+                    "Missing required property '" . $required_property . "'."
+                );
+            }
+        }
+    }
 
-        // $this->checkRequirements();
-        $project   = $this->getProject();
-        $buildList = PhingHelpTask::getBuildList($this->_buildFile);
+    /**
+     * Sets the Phing file to generate docs for.
+     *
+     * @param string $buildfile The Phing directory to generate docs for.
+     *
+     * @return void
+     */
+    public function setBuildFile($buildfile)
+    {
+        $this->_buildFile = $buildfile;
+    }
 
+    /**
+     * Generate markup.
+     *
+     * @return void
+     */
+    protected function buildMarkup()
+    {
+        $output = "# Toolkit Phing Targets\n";
+        $output .= "This is the list of targets provided by toolkit, please note that this is a auto-generated/partial list, you can check the full list [here](targets-list.md).\n\n";
+
+        $targetsCount = 0;
+        foreach ($this->targets as $target) {
+            if  (
+                isset($target['description'])
+                && count(explode(" ", $target['description'])) > 1
+                && $target['type'] == 'build'
+            ) {
+
+                $detail = $target['description'] ."\n";
+
+                $detail .= "\n##### Example:\n";
+                $detail .= "`toolkit\phing " . $target['name'] . "`\n";
+
+                if (isset($target['properties']) && count($target['properties']) > 0) {
+                    $detail .= "\n##### Properties:\n";
+                    foreach ($target['properties'] as $property) {
+                        $detail .= "* " . $property['name'] . "\n";
+                    }
+                }
+
+                if (isset($target['dependencies']) && count($target['dependencies']) > 0) {
+                    $detail .= "\n##### Dependencies: \n";
+                    foreach ($target['dependencies'] as $callback) {
+                        $detail .= "* " . $callback . "\n";
+                    }
+                }
+
+                $output .= "\n\n<details><p><summary>" . $target['name'] . "</summary></p>\n";
+                if (isset($detail)) {
+                  $output .= "\n" . $detail;
+                }
+                $output .= "\n</details>";
+
+                $targetsCount++;
+            }
+        }
+
+        $output .= "\n\nThis is a partial list, please check the full list [here](targets-list.md).";
+
+        $this->markup = $output;
+        $this->exportMarkup('targets.md');
+        echo "Generated documentation for " . $targetsCount . " targets in the main list.\n";
+    }
+
+    /**
+     * Generate full list markup.
+     *
+     * @return void
+     */
+    protected function buildMarkupFull()
+    {
+        $output = "# Toolkit Phing Targets\n";
+        $output .= "This is the list of targets provided by toolkit, please note that this is a auto-generated list.\n\n";
+
+        $targetsCount = 0;
+        foreach ($this->targets as $target) {
+
+            $detail = $target['description'] ."\n";
+
+            $detail .= "\n##### Example:\n";
+            $detail .= "`toolkit\phing " . $target['name'] . "'\n'";
+
+            if (isset($target['properties']) && count($target['properties']) > 0) {
+                $detail .= "\n##### Properties:\n";
+                foreach ($target['properties'] as $property) {
+                  $detail .= "* " . $property['name'] . "\n";
+                }
+            }
+            if (isset($target['dependencies']) && count($target['dependencies']) > 0) {
+                $detail .= "\n##### Dependencies: \n";
+                foreach ($target['dependencies'] as $callback) {
+                  $detail .= "* " . $callback . "\n";
+                }
+            }
+
+            $output .= "<details><p><summary>" . $target['name'] . "</summary></p>\n";
+            if (isset($detail)) {
+              $output .= $detail;
+            }
+            $output .= "\n</details>\n";
+
+            $targetsCount++;
+        }
+
+        $this->markup = $output;
+        $this->exportMarkup('targets-list.md');
+        echo "Generated documentation for " . $targetsCount . " targets in the full list.\n";
+    }
+
+    /**
+     * Export results to .md file inside docs folder.
+     *
+     * @param string $filename Name of the file to store information.
+     *
+     * @return void
+     */
+    protected function exportMarkup($filename)
+    {
+        $file = $this->getProject()->getProperty('project.basedir') . "/docs/" . $filename;
+        file_put_contents($file, $this->markup);
+    }
+
+    /**
+    * Helper function to get the full list of files through imports.
+    *
+    * @param string $buildFile Build file
+    * @param int    $level     Level
+    * @param string $parent    Parent
+    * @param array  $buildList Build list
+    *
+    * @return array
+    *
+    * @todo: use the one provided by helper class.
+    */
+    protected function getBuildList($buildFile, $level = 0, $parent = '', &$buildList = array()
+    ) {
+
+        if (is_file($buildFile)) {
+            $buildFileXml = simplexml_load_file($buildFile);
+            if ($buildFileName = $buildFileXml->xpath('//project/@name')[0]) {
+                $buildList[$buildFile] = array(
+                    'level'       => $level,
+                    'parent'      => $parent,
+                    'name'        => (string) $buildFileName,
+                    'description' => (string) $buildFileXml->xpath(
+                        '//project/@description'
+                    )[0],
+                );
+
+                foreach ($buildFileXml->xpath('//import[@file]') as $import) {
+                    $importFile = (string) $import->attributes()->file;
+
+                    // Replace tokens.
+                    if (preg_match_all('/\$\{(.*?)\}/s', $importFile, $matches)) {
+                        foreach ($matches[0] as $key => $match) {
+                            if (is_object($this->getProject())) {
+                                $tokenText  = $this->getProject()->getProperty(
+                                    $matches[1][$key]
+                                );
+                                $importFile = str_replace(
+                                    $match,
+                                    $tokenText,
+                                    $importFile
+                                );
+                            }
+                        }
+                    }
+
+                    $this->getBuildList($importFile, ($level + 1), $buildFile, $buildList);
+                }
+            }//end if
+
+            $this->buildList = $buildList;
+        }//end if
+
+    }//end getBuildList()
+
+    /**
+    * Parse .xml files and build target array.
+    *
+    * @return void
+    */
+    protected function parseTargets()
+    {
         $targetsArray      = array();
         $wrapperTargets    = array();
-        $buildTargets   = array();
+        $buildTargets      = array();
         $callbackTargets   = array();
         $deprecatedTargets = array();
         $helperTargets     = array();
 
+        $buildList = $this->buildList;
         foreach ($buildList as $buildFile => $info) {
             $xml = simplexml_load_file($buildFile);
 
@@ -80,25 +289,27 @@ class DocGeneratorTask extends \Task
                 );
 
                 if (strpos($targetName, "build-") === 0) {
-                        $targetDependenciesString = (string) $target->xpath(
-                            './@depends'
-                        )[0];
-                        $targetDependencies       = explode(
-                            ',',
-                            str_replace(
-                                ' ',
-                                '',
-                                $targetDependenciesString
-                            )
-                        );
-                        $callbackTargets = array_merge(
-                            $callbackTargets,
-                            $targetDependencies
-                        );
-                        $targetArray += array(
-                             'dependencies' => $targetDependencies,
-                             'type'         => 'build',
-                        );
+                    $targetDependenciesString = (string) $target->xpath(
+                        './@depends'
+                    )[0];
+                    $targetDependencies       = explode(
+                        ',',
+                        str_replace(
+                            ' ',
+                            '',
+                            $targetDependenciesString
+                        )
+                    );
+                    $targetDependencies = array_filter($targetDependencies);
+                    sort($targetDependencies);
+                    $callbackTargets = array_merge(
+                        $callbackTargets,
+                        array_values($targetDependencies)
+                    );
+                    $targetArray += array(
+                        'dependencies' => $targetDependencies,
+                        'type'         => 'build',
+                    );
                     if (count($targetDependencies) > 1) {
                         $targetArray['type'] = 'build';
                         $buildTargets[]   = $targetName;
@@ -106,17 +317,17 @@ class DocGeneratorTask extends \Task
                 }
 
                 if (count($target->xpath('./replacedby')) == 1) {
-                          $replacedBy = (string) $target->xpath(
-                              './replacedby[1]/@target'
-                          )[0];
-                          $deprecatedTargets[] = $targetName;
-                          $targetArray         = array_merge(
-                              $targetArray,
-                              array(
-                                  'type'        => 'deprecated',
-                                  'description' => $replacedBy,
-                              )
-                          );
+                    $replacedBy = (string) $target->xpath(
+                        './replacedby[1]/@target'
+                    )[0];
+                    $deprecatedTargets[] = $targetName;
+                    $targetArray         = array_merge(
+                        $targetArray,
+                        array(
+                            'type'        => 'deprecated',
+                            'description' => $replacedBy,
+                        )
+                    );
                 }
 
                 $callbackTargets = array_unique($callbackTargets);
@@ -125,208 +336,16 @@ class DocGeneratorTask extends \Task
         }//end foreach
 
         foreach ($targetsArray as $key => $targetArray) {
-            if (in_array($targetArray['name'], $callbackTargets) && !in_array(
-                $targetArray['name'],
-                $buildTargets
-            )
+            if (in_array($targetArray['name'], $callbackTargets)
+                && !in_array($targetArray['name'], $buildTargets)
             ) {
                 $targetsArray[$key]['type'] = 'callback';
             } elseif (!isset($targetArray['type'])) {
                 $targetsArray[$key]['type'] = 'helper';
             }
         }
-
-        $targetTable = $this->wrapperTargetTable(
-            $wrapperTargets,
-            $buildTargets,
-            $callbackTargets
-        );
-
-        file_put_contents(
-            $project->getProperty('build.dir') . "/docs/target-list.md",
-            $targetTable
-        );
-
-        foreach ($buildList as $buildFile => $info) {
-            $depth = ($info['level'] + 1);
-            $projectName = $info['name'];
-            if (is_file($buildFile) && $info['name'] != "deprecated") {
-                $xml     = simplexml_load_file($buildFile);
-                $targets = array_filter(
-                    $targetsArray,
-                    function ($v, $k) use ($buildFile) {
-                        return $v['buildfile'] === $buildFile;
-                    },
-                    ARRAY_FILTER_USE_BOTH
-                );
-                if (!empty($projectName) && count($targets) > 1) {
-                    $output .= str_repeat('#', $depth).' '.$projectName."\n";
-                    $output .= "<table>\n";
-                        $output .= "    <thead>\n";
-                        $output .= "        <tr align=\"left\">\n";
-                        $output .= "            <th nowrap>Target type</th>\n";
-                        $output .= "            <th nowrap>Name</th>\n";
-                        $output .= "            <th nowrap>Description</th>\n";
-                        $output .= "        </tr>\n";
-                        $output .= "    </thead>\n";
-                        $output .= "    <tbody>\n";
-                    foreach ($targets as $targetName => $target) {
-                        $output .= "        <tr>\n";
-                        $output .= "            <td nowrap>\n";
-                        if ($target['visibility'] === 'visible') {
-                            $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/eye-16.png\" align=\"left\" alt=\"visible\" />\n";
-                        } else {
-                              $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/gist-secret-20.png\" align=\"left\" alt=\"hidden\" />\n";
-                        }
-
-                            switch ($target['type']) {
-                        case 'wrapper':
-                            $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/star-20.png\" align=\"left\" alt=\"wrapper\" />\n";
-                            break;
-                        case 'build':
-                            $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/three-bars-20.png\" align=\"left\" alt=\"build\" />\n";
-                            break;
-                        case 'deprecated':
-                            $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/trashcan-20.png\" align=\"left\" alt=\"deprecated\" />\n";
-                            break;
-                        case 'helper':
-                            $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/tools-16.png\" align=\"left\" alt=\"helper\" />\n";
-                            break;
-                        case 'callback':
-                            $output .= "                <img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/zap-20.png\" align=\"left\" alt=\"callback\" />\n";
-                            break;
-                            }
-
-                            $output .= "            </td>\n";
-                            $output .= "            <td nowrap>".$target['name']."</td>\n";
-                            $output .= "            <td width=\"80%\">".$target['description']."</td>\n";
-                            $output .= "        </tr>\n";
-                    }//end foreach
-
-                        $output .= "    </tbody>\n";
-                        $output .= "</table>\n\n";
-                }//end if
-            }//end if
-        }//end foreach
-
-        echo $output;
-
-    }//end main()
-
-
-    /**
-     * Wrapper documentation inside a table.
-     *
-     * @param mixed $wrapperTargets  Array with Wrapper targets.
-     * @param array $buildTargets    Build targets list.
-     * @param array $callbackTargets Callback target list.
-     *
-     * @return void
-     */
-    protected function wrapperTargetTable($wrapperTargets, $buildTargets, $callbackTargets)
-    {
-        $output = '';
-        foreach ($wrapperTargets as $targetName => $wrapperTarget) {
-            $output .= "### ".$targetName."\n";
-            $output .= "<table>\n";
-            $output .= "    <thead>\n";
-            $output .= "        <tr align=\"left\">\n";
-            $output .= "            <th>Description</th>\n";
-            $output .= "            <th width=\"100%\">".$wrapperTarget['description']."<img src=\"https://cdn0.iconfinder.com/data/icons/octicons/1024/checklist-20.png\" align=\"right\" /></th>\n";
-            $output .= "        </tr>\n";
-            $output .= "    </thead>\n";
-            $output .= "    <tbody>\n";
-            $output .= "        <tr>\n";
-            $output .= "            <td colspan=\"2\">\n";
-            $output .= "                <details><summary>Properties</summary>\n";
-            $output .= "                <table width=\"100%\">\n";
-            $output .= "                    <thead>\n";
-            $output .= "                        <tr align=\"left\">\n";
-            $output .= "                            <th nowrap>Property</th>\n";
-            $output .= "                            <th nowrap>Value</th>\n";
-            $output .= "                            <th width='\100%\"'>Description</th>\n";
-            $output .= "                        </tr>\n";
-            $output .= "                    </thead>\n";
-            $output .= "                    <tbody>\n";
-            foreach ($wrapperTarget['properties'] as $property) {
-                $output .= "                        <tr>\n";
-                $output .= "                            <td nowrap>".$property['name']."</td>\n";
-                $output .= "                            <td nowrap>".$property['value']."</td>\n";
-                $output .= "                            <td>".$property['description']."</td>\n";
-                $output .= "                        </tr>\n";
-            }
-
-            $output .= "                    </tbody>\n";
-            $output .= "                </table>\n";
-            $output .= "                </details>\n";
-            $output .= "            </td>\n";
-            $output .= "        </tr>\n";
-            $output .= "        <tr>\n";
-            $output .= "            <td colspan=\"2\">\n";
-            $output .= "                <details><summary>Playbook</summary>\n";
-            $output .= "                <table width=\"100%\">\n";
-            $output .= "                    <thead>\n";
-            $output .= "                        <tr align=\"left\">\n";
-            $output .= "                            <th>Callback target</th>\n";
-            $output .= "                            <th>Buildfile</th>\n";
-            $output .= "                            <th width=\"100%\">Description</th>\n";
-            $output .= "                        </tr>\n";
-            $output .= "                    </thead>\n";
-            $output .= "                    <tbody>\n";
-            foreach ($buildTargets[$targetName.'-build']['dependencies'] as $callback) {
-                $output .= "                        <tr>\n";
-                $output .= "                            <td nowrap>".$callback."</td>\n";
-                $output .= "                            <td nowrap>".str_replace('build/', './', $callbackTargets[$callback]['buildfile'])."</td>\n";
-                $output .= "                            <td>".$callbackTargets[$callback]['description']."</td>\n";
-                $output .= "                        </tr>\n";
-            }
-
-            $output .= "                    </tbody>\n";
-            $output .= "                </table>\n";
-            $output .= "                </details>\n";
-            $output .= "            </td>\n";
-            $output .= "        </tr>\n";
-            $output .= "    </tbody>\n";
-            $output .= "</table>\n\n";
-        }//end foreach
-
-        return $output;
-
-    }//end wrapperTargetTable()
-
-    /**
-     * Checks if all properties required for generating the aliases file are
-     * present.
-     *
-     * @throws \BuildException
-     *   Thrown when a required property is not present.
-     *
-     * @return void
-     */
-    protected function checkRequirements()
-    {
-        $required_properties = array('phingDir');
-        foreach ($required_properties as $required_property) {
-            if (empty($this->$required_property)) {
-                throw new \BuildException(
-                    "Missing required property '$required_property'."
-                );
-            }
-        }
-
-    }//end checkRequirements()
-
-    /**
-     * Sets the Phing file to generate docs for.
-     *
-     * @param string $buildfile The Phing directory to generate docs for.
-     *
-     * @return void
-     */
-    public function setBuildFile($buildfile)
-    {
-        $this->_buildFile = $buildfile;
-    }//end setBuildFile()
-
+        sort($targetsArray);
+        $this->targets = $targetsArray;
+    }
 
 }//end class
