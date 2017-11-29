@@ -143,7 +143,7 @@
             </catch>
             <finally>
                 <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${build.site}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
-                    <param>--no-cache-clear</param>
+                    <param>--fire-bazooka</param>
                 </drush>
             </finally>
         </trycatch>
