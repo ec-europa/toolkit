@@ -23,7 +23,8 @@
             project-subsite-composer-no-dev,
             subsite-make,
             subsite-type-dist,
-            subsite-resources-copy">
+            subsite-resources-copy,
+            package-version-set">
         <echo msg="Playbook for build-subsite-dist ended." />
     </target>
 

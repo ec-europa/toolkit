@@ -96,6 +96,25 @@
         <echo msg="Package ${package-name} successfully unpacked." />
     </target>
 
+    <target name="package-version-set" description="Set version file hash in the build folder." hidden="true">
+        <exec command="git rev-parse --is-inside-work-tree" outputproperty="is.repository" />
+        <if>
+            <equals arg1="${is.repository}" arg2="true" />
+            <then>
+                <property name="version.file" value="${build.${build-type}.dir}/.commit" override="true" />
+
+                <exec command="git rev-parse --verify HEAD" outputproperty="package.version" />
+                <touch file="${version.file}" />
+                <echo file="${version.file}" append="false">${package.version}</echo>
+
+                <echo msg="Package version is set to ${package.version}." level="info"/>
+            </then>
+            <else>
+                <echo msg="Package version is not set. Please set up your git repository." level="warning"/>
+            </else>
+        </if>
+    </target>
+
     <target name="package-unpack" description="Unpack package with tar zxf." hidden="true">
         <if>
             <not>
