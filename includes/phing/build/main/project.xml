@@ -230,7 +230,7 @@
                     </then>
                 </if>
                 <if>
-                    <isset property="platform.package.version.reference" />
+                    <istrue property="platform.package.version.reference" />
                     <then>
                         <property name="platform.package.version.current" value="${platform.package.version}" override="true" />
                     </then>
