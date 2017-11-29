@@ -183,6 +183,7 @@
     </target>
 
     <target name="project-platform-package-unpack" description="Download and unpack platform deploy package.">
+        <property file="${project.tmp.dir}/build.version.props" logoutput="${logoutput}" override="true" />
         <mkdir dir="${share.path.platform.packages.deploy}" />
         <phingcall target="package-download-unpack">
             <property name="package-name" value="platform-dev-${platform.package.version.current}.tar.gz" />
@@ -217,11 +218,11 @@
         <if>
             <matches string="${platform.package.version}" pattern="^[1-9]+\." />
             <then>
-                <propertyregex property="platform.package.version.major" subject="${platform.package.version}" pattern="^([1-9]+)\." match="$1" override="true" />
-                <propertyregex property="platform.package.version.minor" subject="${platform.package.version}" pattern="^[1-9]+\.([1-9]+)" match="$1" override="true" />
-                <propertyregex property="platform.package.version.reference" subject="${platform.package.version}" pattern="^[1-9]+\.[1-9]+\.([1-9]+)" match="$1" override="true" />
+                <propertyregex property="platform.package.version.major" subject="${platform.package.version}" pattern="^([0-9]+)\." match="$1" override="true" />
+                <propertyregex property="platform.package.version.minor" subject="${platform.package.version}" pattern="^[0-9]+\.([0-9]+)" match="$1" override="true" />
+                <propertyregex property="platform.package.version.reference" subject="${platform.package.version}" pattern="^[0-9]+\.[0-9]+\.([0-9]+)" match="$1" override="true" />
                 <if>
-                    <isset property="platform.package.version.minor" />
+                    <matches string="${platform.package.version.minor}" pattern="[0-9]+" />
                     <then>
                         <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
                         <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | egrep -o 'platform-dev-${platform.package.version.major}\.${platform.package.version.minor}\.[0-9]+' | sed -e 's/^platform-dev-//' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.current" />
@@ -230,25 +231,16 @@
                     </then>
                 </if>
                 <if>
-                    <istrue property="platform.package.version.reference" />
+                    <matches string="${platform.package.version}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
                     <then>
                         <property name="platform.package.version.current" value="${platform.package.version}" override="true" />
                     </then>
                 </if>
             </then>
         </if>
-        <if>
-            <and>
-                <matches string="${platform.package.version.current}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
-                <versioncompare version="${platform.package.version.current}" desiredVersion="${platform.package.version}" operator="gt" />
-            </and>
-            <then>
-                <echo msg="The platform package version is set to ${platform.package.version}." />
-                <echo msg="The build will be performed with version ${platform.package.version.current}." />
-                <propertyregex property="platform.package.version.reference" subject="${platform.package.version.current}" pattern="^[1-9]+\.[1-9]+\.([1-9]+)" match="$1" override="true" />
-                <property name="platform.package.version" value="${platform.package.version.current}" override="true" />
-            </then>
-        </if>
+        <echo msg="The platform package version is set to ${platform.package.version}." />
+        <echo msg="The build will be performed with version ${platform.package.version.current}." />
+        <propertyregex property="platform.package.version.reference" subject="${platform.package.version.current}" pattern="^[0-9]+\.[0-9]+\.([0-9]+)" match="$1" override="true" />
         <if>
             <and>
                 <matches string="${platform.package.version.next}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
