@@ -5,19 +5,35 @@
     <!-- Highest priority to env variables. -->
     <property environment="env" />
 
-    <!-- Load build properties. -->
+    <!-- Load environment build properties. -->
+    <if>
+        <and>
+            <isset property="env.TOOLKIT_ENV_PROPS" />
+            <available file="${env.TOOLKIT_ENV_PROPS}" />
+        </and>
+        <then>
+            <property file="${env.TOOLKIT_ENV_PROPS}" logoutput="${logoutput}" />
+        </then>
+    </if>
+    <!-- Load continuous integration properties. Is excluded on .gitignore
+         but can be force committed. -->
+    <if>
+        <and>
+            <isset property="env.CI" />
+            <available file="${project.basedir}/build.lock.props" />
+        </and>
+        <then>
+            <property file="${project.basedir}/build.lock.props" logoutput="${logoutput}" />
+        </then>
+    </if>
+    <!-- Load developer properties. Also in .gitignore, should never be committed. -->
     <if>
         <available file="${project.basedir}/build.develop.props" type="file" />
         <then>
             <property file="${project.basedir}/build.develop.props" logoutput="${logoutput}" />
         </then>
     </if>
-    <if>
-        <available file="/.dockerenv" />
-        <then>
-            <property file="${toolkit.dir.incl.phing.props}/docker.props" logoutput="${logoutput}" />
-        </then>
-    </if>
+    <!-- Load project properties. Should always be committed. -->
     <if>
         <available file="${project.basedir}/build.project.props" type="file" />
         <then>
@@ -30,13 +46,13 @@
             </then>
         </elseif>
     </if>
+    <!-- Load Toolkit main properties, default values. -->
     <if>
         <available file="${toolkit.dir.incl.phing.props}/main.props" type="file" />
         <then>
             <property file="${toolkit.dir.incl.phing.props}/main.props" logoutput="false" />
         </then>
     </if>
-
     <!-- Load version properties if available. -->
     <if>
         <available file="${project.tmp.dir}/build.version.props" />
