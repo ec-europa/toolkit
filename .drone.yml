@@ -10,8 +10,8 @@ services:
   web:
     image: fpfis/php56-dev
     environment:
-     - DOCUMENT_ROOT=/test/toolkit/build
-     - TOOLKIT_ENV_PROPS=/test/toolkit/includes/phing/props/docker.props
+      - DOCUMENT_ROOT=/test/toolkit/build
+      - TOOLKIT_ENV_PROPS=/test/toolkit/includes/phing/props/docker.props
   mysql:
     image: fpfis/mysql56
   selenium:
@@ -41,6 +41,8 @@ pipeline:
 
   install:
     image: fpfis/php56-dev
+    environment:
+      - TOOLKIT_ENV_PROPS=/test/toolkit/includes/phing/props/docker.props
     commands:
       - ./toolkit/phing install-clean ${PHING_OPTS}
     volumes:
@@ -49,6 +51,8 @@ pipeline:
 
   test:
     image: fpfis/php56-dev
+    environment:
+      - TOOLKIT_ENV_PROPS=/test/toolkit/includes/phing/props/docker.props
     commands:
       - ./toolkit/phing test-run-behat ${PHING_OPTS}
     volumes:
