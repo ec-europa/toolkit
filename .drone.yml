@@ -11,6 +11,7 @@ services:
     image: fpfis/php56-dev
     environment:
      - DOCUMENT_ROOT=/test/toolkit/build
+     - TOOLKIT_ENV_PROPS=/test/toolkit/includes/phing/props/docker.props
   mysql:
     image: fpfis/mysql56
   selenium:
