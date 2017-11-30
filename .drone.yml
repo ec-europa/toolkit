@@ -5,13 +5,13 @@ workspace:
 matrix:
   PHING_OPTS:
     - -logger phing.listener.AnsiColorLogger
-
+  DOCKER_PROPS:
+    - /test/toolkit/includes/phing/props/docker.props
 services:
   web:
     image: fpfis/php56-dev
     environment:
       - DOCUMENT_ROOT=/test/toolkit/build
-      - TOOLKIT_ENV_PROPS=/test/toolkit/includes/phing/props/docker.props
   mysql:
     image: fpfis/mysql56
   selenium:
@@ -24,6 +24,8 @@ services:
 pipeline:
   toolkit:
     image: fpfis/php56-dev
+    environment:
+      - TOOLKIT_ENV_PROPS=${DOCKER_PROPS}
     commands:
       - PROJECT=$(pwd) composer toolkit-install
       - ./toolkit/phing project-properties-validate ${PHING_OPTS}
@@ -32,6 +34,8 @@ pipeline:
 
   build:
     image: fpfis/php56-dev
+    environment:
+      - TOOLKIT_ENV_PROPS=${DOCKER_PROPS}
     commands:
       - ./toolkit/phing build-platform ${PHING_OPTS}
       - ./toolkit/phing build-subsite-dev ${PHING_OPTS}
@@ -42,7 +46,7 @@ pipeline:
   install:
     image: fpfis/php56-dev
     environment:
-      - TOOLKIT_ENV_PROPS=/test/toolkit/includes/phing/props/docker.props
+      - TOOLKIT_ENV_PROPS=${DOCKER_PROPS}
     commands:
       - ./toolkit/phing install-clean ${PHING_OPTS}
     volumes:
@@ -52,7 +56,7 @@ pipeline:
   test:
     image: fpfis/php56-dev
     environment:
-      - TOOLKIT_ENV_PROPS=/test/toolkit/includes/phing/props/docker.props
+      - TOOLKIT_ENV_PROPS=${DOCKER_PROPS}
     commands:
       - ./toolkit/phing test-run-behat ${PHING_OPTS}
     volumes:
