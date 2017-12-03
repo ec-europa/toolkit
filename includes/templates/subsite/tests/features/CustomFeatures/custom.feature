@@ -1,9 +1,6 @@
-Feature: Website is available
+Feature: Custom tests
+  We keep this folder clean, please add your custom tests here.
 
-  Scenario Outline: Anonymous can see the homepage
-    Given I am not logged in
-    When I go to "<path>"
-
-    Examples:
-      | path            |
-      | /    |
+  @api @javascript
+  Scenario: Homepage is available
+    Given I am on homepage
