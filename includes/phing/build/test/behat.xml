@@ -42,7 +42,7 @@
             </then>
         </if>
 
-        <property name="source.dir" value="${project.basedir}/vendor/jonhy81/toolkit-behat-generic" />
+        <property name="source.dir" value="${project.basedir}/vendor/jonhy81/toolkit-behat" />
         <exec command="if [ -d '${source.dir}' ]; then echo 'true'; else echo 'false'; fi;" outputProperty="output.IS_DIRECTORY_EXISTS" />
         <if>
             <equals arg1="${output.IS_DIRECTORY_EXISTS}" arg2="true" />
