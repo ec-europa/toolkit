@@ -14,11 +14,6 @@
     "phing/phing": "~2.10",
     "phpunit/phpunit": "^5.0"
   },
-  "autoload": {
-    "psr-4": {
-      "Drupal\\nexteuropa\\": "src"
-    }
-  },
   "config": {
     "bin-dir": "bin"
   }

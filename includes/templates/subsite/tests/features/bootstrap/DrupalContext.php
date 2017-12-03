@@ -1,7 +1,5 @@
 <?php
 
-namespace Drupal\nexteuropa\Context;
-
 use Drupal\DrupalExtension\Context\DrupalContext as DrupalExtensionDrupalContext;
 
 /**
