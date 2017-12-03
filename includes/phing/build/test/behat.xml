@@ -41,6 +41,25 @@
                 <property name="flickr.secret" value="${env.FLICKR_SECRET}" override="true" />
             </then>
         </if>
+
+        <property name="source.dir" value="${project.basedir}/vendor/jonhy81/toolkit-behat-generic" />
+        <exec command="if [ -d '${source.dir}' ]; then echo 'true'; else echo 'false'; fi;" outputProperty="output.IS_DIRECTORY_EXISTS" />
+        <if>
+            <equals arg1="${output.IS_DIRECTORY_EXISTS}" arg2="true" />
+            <then>
+                <copy todir="${behat.dir}" overwrite="true">
+                    <fileset dir="${source.dir}" casesensitive="yes">
+                        <include name="*.yml.dist" />
+                    </fileset>
+                </copy>
+                <copy todir="${behat.dir}/features" overwrite="true">
+                    <fileset dir="${source.dir}/features" casesensitive="yes">
+                        <include name="**" />
+                    </fileset>
+                </copy>
+            </then>
+        </if>
+
         <copy todir="${behat.dir}" overwrite="true">
             <fileset dir="${behat.dir}" casesensitive="yes">
                 <include name="*.yml.dist" />
