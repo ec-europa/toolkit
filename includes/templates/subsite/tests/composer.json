@@ -4,6 +4,7 @@
   },
   "require-dev": {
     "behat/behat": "~3.1.0@rc",
+    "behat/mink-extension": "2.2.*",
     "bex/behat-screenshot": "~1.2.5",
     "drupal/drupal-extension": "~3.1.0",
     "drupol/phingbehattask": "^1.0",
