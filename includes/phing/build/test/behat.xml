@@ -10,15 +10,21 @@
         description="Refresh configuration and run behat scenarios."
         depends="
             test-behat-setup,
-            test-composer-install,
-            test-behat-exec" />
+            test-composer-install">
+        <echo msg="Starting testing..." level="info" />
+        <foreach param="dirname" absparam="absname" target="test-behat-exec">
+            <fileset dir="${behat.dir}">
+                <include name="**.yml"/>
+            </fileset>
+        </foreach>
+    </target>
 
 
     <!-- Run Behat tests. -->
     <target name="test-behat-exec">
         <behat
             executable="${behat.bin}"
-            config="${behat.yml.path}"
+            config="${absname}"
             strict="${behat.options.strict}"
             verbose="${behat.options.verbosity}"
             passthru="${behat.options.passthru}"
@@ -42,11 +48,11 @@
             </then>
         </if>
 
-        <property name="source.dir" value="${project.basedir}/vendor/jonhy81/toolkit-behat" />
-        <exec command="if [ -d '${source.dir}' ]; then echo 'true'; else echo 'false'; fi;" outputProperty="output.IS_DIRECTORY_EXISTS" />
+        <exec command="composer info |grep toolkit-behat |wc -l |sed -e 's/^[ \t]*//'" dir="${project.basedir}" outputProperty="package.is.installed" />
         <if>
-            <equals arg1="${output.IS_DIRECTORY_EXISTS}" arg2="true" />
+            <equals arg1="${package.is.installed}" arg2="1" />
             <then>
+                <property name="source.dir" value="${project.basedir}/vendor/jonhy81/toolkit-behat" />
                 <copy todir="${behat.dir}" overwrite="true">
                     <fileset dir="${source.dir}" casesensitive="yes">
                         <include name="*.yml.dist" />
