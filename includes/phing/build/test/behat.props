@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------------
 
 # Browser name for selenium.
-behat.browser.name = firefox
+behat.browser.name = chrome
 
 # Behat API driver.
 behat.api.driver = drush

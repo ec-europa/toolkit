@@ -19,7 +19,7 @@ default:
         wd_host: '{{ behat.wd_host.url }}'
         browser: '{{ behat.browser.name }}'
         capabilities:
-          {{ behat.browser.name }}:
+          chrome:
             switches:
               - "--headless"
               - "--disable-gpu"
