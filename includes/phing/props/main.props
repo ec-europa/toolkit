@@ -65,7 +65,7 @@ db.password =
 db.host = 127.0.0.1
 db.port = 3306
 db.url = ${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db.name}
-db.prefix = 
+db.prefix =
 
 # Solr configuration.
 # -------------------
@@ -238,3 +238,8 @@ drush.db.dump = ${build.platform.dir}/dump.sql
 # ----------------------------
 drush.alias.default = ${build.site}
 drush.alias.docker = docker
+
+# Drupal installation settings.
+# ----------------------------
+drupal.update.free.access = false
+drupal.hash.salt =

@@ -178,6 +178,8 @@
                     <token key="file_public_path" value="${build.subsite.dir.files}" />
                     <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
                     <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
+                    <token key="update_free_access" value="${drupal.update.free.access}" />
+                    <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
                 </replacetokens>
             </filterchain>
         </copy>
