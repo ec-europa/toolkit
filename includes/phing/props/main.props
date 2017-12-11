@@ -65,6 +65,7 @@ db.password =
 db.host = 127.0.0.1
 db.port = 3306
 db.url = ${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db.name}
+db.prefix = 
 
 # Solr configuration.
 # -------------------

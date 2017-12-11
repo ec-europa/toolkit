@@ -166,6 +166,7 @@
                     <token key="db.password" value="${db.password}" />
                     <token key="db.host" value="${db.host}" />
                     <token key="db.port" value="${db.port}" />
+                    <token key="db.prefix" value="${db.prefix}" />
                     <token key="base_url" value="${project.url.base}" />
                     <token key="error_level" value="${devel.vars.error_level}" />
                     <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />

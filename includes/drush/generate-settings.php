@@ -21,7 +21,7 @@ $settings['databases'] = array(
         'password' => '%%db.password%%',
         'host' => '%%db.host%%',
         'port' => '%%db.port%%',
-        'prefix' => '',
+        'prefix' => '%%db.prefix %%',
       ),
     ),
   ),
