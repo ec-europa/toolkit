@@ -68,6 +68,7 @@ locally and can be used in CI tools like Jenkins, Drone or Travis.
 - [Using Composer hooks](/docs/composer-hooks.md#using-composer-hooks)
 - [Using Git hooks](/docs/git-hooks.md#using-git-hooks)
 - [Using Docker environment](/docs/docker-environment.md#using-docker-environment)
+- [Supported profiles](/docs/profiles.md)
 
 ## Maintainers
 
