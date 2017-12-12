@@ -450,6 +450,7 @@ db.dl.password = mypassword
 
 # Database connection settings.
 # -----------------------------
+db.name = ${project.id}
 db.user = root
 db.password = mypassword
 db.host = localhost
