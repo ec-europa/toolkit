@@ -233,8 +233,8 @@ db.dl.filename =
 db.dl.dir = fpfis/files-for/automate_dumps
 db.dl.host = webgate.ec.europa.eu
 db.dl.url = ${db.dl.host}/${db.dl.dir}/${project.id}/
-db.dl.password =
 db.dl.username =
+db.dl.password =
 
 # Database connection settings.
 # -----------------------------
@@ -444,8 +444,9 @@ devel.vars.views_ui_show_sql_query = 1
 
 # Database download settings.
 # ---------------------------
-db.dl.password = mypassword
 db.dl.username = myusername
+db.dl.password = mypassword
+
 
 # Database connection settings.
 # -----------------------------
