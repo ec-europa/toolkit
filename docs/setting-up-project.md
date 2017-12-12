@@ -4,7 +4,7 @@
 
 ## Getting the sourcecode
 
-Before attempting to get the source code of a project please make sure you arre
+Before attempting to get the source code of a project please make sure you are
 familiar with the composer create-project command:
 https://getcomposer.org/doc/03-cli.md#create-project
 
