@@ -97,7 +97,7 @@
         </composer>
 
         <echo msg="Moving new tests to ${behat.dir} directory." />
-        <property name="source.dir" value="${project.basedir}/vendor/${behat.generic.package}" />
+        <property name="source.dir" value="${behat.dir}/vendor/${behat.generic.package}" />
         <copy todir="${behat.dir}" overwrite="true">
             <fileset dir="${source.dir}" casesensitive="yes">
                 <include name="*.yml.dist" />
