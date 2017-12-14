@@ -48,21 +48,10 @@
             </then>
         </if>
 
-        <exec command="composer info |grep toolkit-behat |wc -l |sed -e 's/^[ \t]*//'" dir="${project.basedir}" outputProperty="package.is.installed" />
         <if>
-            <equals arg1="${package.is.installed}" arg2="1" />
+            <equals arg1="${behat.generic.package.enable}" arg2="1" />
             <then>
-                <property name="source.dir" value="${project.basedir}/vendor/jonhy81/toolkit-behat" />
-                <copy todir="${behat.dir}" overwrite="true">
-                    <fileset dir="${source.dir}" casesensitive="yes">
-                        <include name="*.yml.dist" />
-                    </fileset>
-                </copy>
-                <copy todir="${behat.dir}/features" overwrite="true">
-                    <fileset dir="${source.dir}/features" casesensitive="yes">
-                        <include name="**" />
-                    </fileset>
-                </copy>
+                <phingcall target="test-behat-setup-generic" />
             </then>
         </if>
 
@@ -93,6 +82,32 @@
         </copy>
         <!-- Workaround for Drone. -->
         <exec command="chown 1000:1000  ${build.subsite.dir.tmp}" />
+    </target>
+
+    <!-- Download and put in place generic/smoke test. -->
+    <target name="test-behat-setup-generic">
+        <echo msg="Installing ${behat.generic.package} package." />
+        <composer command="require" composer="${project.bin.composer}">
+            <arg value="${behat.generic.package}" />
+            <arg value="--working-dir=${behat.dir}" />
+            <arg value="--no-interaction" />
+            <arg value="--no-suggest" />
+            <arg value="--ansi" />
+            <arg value="--no-scripts" />
+        </composer>
+
+        <echo msg="Moving new tests to ${behat.dir} directory." />
+        <property name="source.dir" value="${behat.dir}/vendor/${behat.generic.package}" />
+        <copy todir="${behat.dir}" overwrite="true">
+            <fileset dir="${source.dir}" casesensitive="yes">
+                <include name="*.yml.dist" />
+            </fileset>
+        </copy>
+        <copy todir="${behat.dir}/features" overwrite="true">
+            <fileset dir="${source.dir}/features" casesensitive="yes">
+                <include name="**" />
+            </fileset>
+        </copy>
     </target>
 
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
