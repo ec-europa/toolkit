@@ -21,10 +21,22 @@ $settings['databases'] = array(
         'password' => '%%db.password%%',
         'host' => '%%db.host%%',
         'port' => '%%db.port%%',
-        'prefix' => '',
+        'prefix' => '%%db.prefix%%',
       ),
     ),
   ),
+);
+
+// Set update free access.
+$settings['update_free_access'] = array(
+    'required' => TRUE,
+    'value' => '%%update_free_access%%',
+);
+
+// Set drupal hash salt.
+$settings['drupal_hash_salt'] = array(
+    'required' => TRUE,
+    'value' => '%%drupal_hash_salt%%',
 );
 
 // Build variables array.
