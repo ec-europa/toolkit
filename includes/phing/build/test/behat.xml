@@ -88,7 +88,7 @@
     <target name="test-behat-setup-generic">
         <echo msg="Installing ${behat.generic.package} package." />
         <composer command="require" composer="${project.bin.composer}">
-            <arg value="${behat.generic.package}" />
+            <arg value="${tests.dir}" />
             <arg value="--working-dir=${project.basedir}" />
             <arg value="--no-interaction" />
             <arg value="--no-suggest" />
@@ -97,7 +97,7 @@
         </composer>
 
         <echo msg="Moving new tests to ${tests.dir} directory." />
-        <property name="source.dir" value="${project.basedir}/vendor/${behat.generic.package}" />
+        <property name="source.dir" value="${tests.dir}/vendor/${behat.generic.package}" />
         <copy todir="${behat.dir}" overwrite="true">
             <fileset dir="${source.dir}" casesensitive="yes">
                 <include name="*.yml.dist" />
