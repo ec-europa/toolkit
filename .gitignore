@@ -4,6 +4,7 @@
 *.sublime-workspace
 .idea/
 nbproject/
+.DS_Store
 
 # Ignore local configuration.
 # ---------------------------
