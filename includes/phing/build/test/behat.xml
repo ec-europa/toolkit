@@ -87,13 +87,11 @@
     <!-- Download and put in place generic/smoke test. -->
     <target name="test-behat-setup-generic">
         <echo msg="Installing ${behat.generic.package} package." />
-        <composer command="require" composer="${project.bin.composer}">
-            <arg value="${behat.generic.package}" />
-            <arg value="--working-dir=${project.basedir}" />
-            <arg value="--no-interaction" />
-            <arg value="--no-suggest" />
-            <arg value="--ansi" />
-        </composer>
+        <exec
+            command="${project.bin.composer} require --working-dir=${project.basedir} --no-interaction --no-suggest --ansi"
+            passthru="true"
+            checkreturn="true"
+        />
 
         <echo msg="Moving new tests to ${tests.dir} directory." />
         <property name="source.dir" value="${project.basedir}/vendor/${behat.generic.package}" />
