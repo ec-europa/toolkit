@@ -35,5 +35,4 @@ services:
     # - http://127.0.0.1:8983/solr/d7_apachesolr
     image: fpfis/solr5
   selenium:
-    image: selenium/standalone-firefox
-    build: ./docker-sel
+    image: selenium/standalone-chrome

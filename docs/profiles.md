@@ -14,7 +14,7 @@ profile = multisite_drupal_standard
 
 ## Other profiles
 In order to use toolkit with a 3rd part profile you should
-modify your `build.project.prop` and define the following props:
+modify your `build.project.props` and define the following props:
 
 Example:
 ```
