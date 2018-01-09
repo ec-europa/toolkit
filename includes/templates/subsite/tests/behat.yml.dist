@@ -35,9 +35,6 @@ default:
         message_selector: '.messages'
         error_message_selector: '.messages.error'
         success_message_selector: '.messages.status'
-      subcontexts:
-        paths:
-          - '{{ behat.subcontexts.path }}'
       drush:
         alias: '{{ behat.drush.alias }}'
         binary: '{{ toolkit.dir.bin.drush }}'
