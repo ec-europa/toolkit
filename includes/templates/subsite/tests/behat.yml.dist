@@ -38,5 +38,8 @@ default:
       drush:
         alias: '{{ behat.drush.alias }}'
         binary: '{{ toolkit.dir.bin.drush }}'
+      subcontexts:
+        paths:
+          - '{{ behat.subcontexts.path }}'
   formatters:
     {{ behat.formatter.name }}: ~
