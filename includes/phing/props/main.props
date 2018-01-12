@@ -52,7 +52,7 @@ docker.project.id = environment
 db.dl.filename =
 db.dl.dir = fpfis/files-for/automate_dumps
 db.dl.host = webgate.ec.europa.eu
-db.dl.url = ${db.dl.host}/${db.dl.dir}/${project.id}/
+db.dl.url = ${db.dl.host}/${db.dl.dir}/${project.id}
 db.dl.password =
 db.dl.username =
 
