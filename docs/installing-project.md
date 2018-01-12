@@ -70,8 +70,8 @@ db.port = 3306
 
 # Database download settings.
 # ---------------------------
-db.dl.password =
 db.dl.username =
+db.dl.password =
 ```
 </p></details>
 <details><summary>execute <code>./toolkit/phing install-clone</code></summary><p>
