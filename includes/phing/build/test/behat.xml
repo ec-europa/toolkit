@@ -69,6 +69,7 @@
                     <token key="build.platform.dir" value="${build.platform.dir}" />
                     <token key="behat.drush.alias" value="${behat.drush.alias}" />
                     <token key="behat.subcontexts.path" value="${behat.subcontexts.path}" />
+                    <token key="behat.tags" value="${behat.tags}" />
                     <token key="flickr.key" value="${flickr.key}" />
                     <token key="flickr.secret" value="${flickr.secret}" />
                     <token key="toolkit.dir.bin.drush" value="${toolkit.dir.bin.drush}" />
