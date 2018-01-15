@@ -55,3 +55,6 @@ behat.load_balancer.import = ${behat.yml.path}
 # Generic behat generic testing configuration
 behat.generic.package.enable = 1
 behat.generic.package = jonhy81/toolkit-behat
+
+# Specify the tags of the tests you want run.
+behat.tags = ~@wip

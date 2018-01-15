@@ -10,7 +10,7 @@ default:
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
       filters:
-        tags: "~@wip"
+        tags: "{{ behat.tags }}"
   extensions:
     Behat\MinkExtension:
       browser_name: '{{ behat.browser.name }}'
