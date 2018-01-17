@@ -98,10 +98,10 @@ platform.package.version = 2.4
 
 # Theme configuration (deploy props?)
 # --------------------
-theme.ecl.version = v0.10.0
-theme.ec_europa.version = 0.0.3
+theme.ecl.version = v0.18.0
+theme.ec_europa.version = 0.0.6
 theme.atomium.repo.url = https://github.com/ec-europa/atomium.git
-theme.atomium.repo.branch = 7.x-1.x
+theme.atomium.repo.branch = 7.x-2.x
 theme.europa.repo.url = https://github.com/ec-europa/ec_europa.git
 theme.europa.repo.branch = master
 
