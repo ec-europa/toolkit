@@ -10,15 +10,21 @@
         description="Refresh configuration and run behat scenarios."
         depends="
             test-behat-setup,
-            test-composer-install,
-            test-behat-exec" />
+            test-composer-install">
+        <echo msg="Starting testing..." level="info" />
+        <foreach param="dirname" absparam="absname" target="test-behat-exec">
+            <fileset dir="${behat.dir}">
+                <include name="**.yml"/>
+            </fileset>
+        </foreach>
+    </target>
 
 
     <!-- Run Behat tests. -->
     <target name="test-behat-exec">
         <behat
             executable="${behat.bin}"
-            config="${behat.yml.path}"
+            config="${absname}"
             strict="${behat.options.strict}"
             verbose="${behat.options.verbosity}"
             passthru="${behat.options.passthru}"
@@ -41,6 +47,14 @@
                 <property name="flickr.secret" value="${env.FLICKR_SECRET}" override="true" />
             </then>
         </if>
+
+        <if>
+            <equals arg1="${behat.generic.package.enable}" arg2="1" />
+            <then>
+                <phingcall target="test-behat-setup-generic" />
+            </then>
+        </if>
+
         <copy todir="${behat.dir}" overwrite="true">
             <fileset dir="${behat.dir}" casesensitive="yes">
                 <include name="*.yml.dist" />
@@ -55,6 +69,7 @@
                     <token key="build.platform.dir" value="${build.platform.dir}" />
                     <token key="behat.drush.alias" value="${behat.drush.alias}" />
                     <token key="behat.subcontexts.path" value="${behat.subcontexts.path}" />
+                    <token key="behat.tags" value="${behat.tags}" />
                     <token key="flickr.key" value="${flickr.key}" />
                     <token key="flickr.secret" value="${flickr.secret}" />
                     <token key="toolkit.dir.bin.drush" value="${toolkit.dir.bin.drush}" />
@@ -68,6 +83,32 @@
         </copy>
         <!-- Workaround for Drone. -->
         <exec command="chown 1000:1000  ${build.subsite.dir.tmp}" />
+    </target>
+
+    <!-- Download and put in place generic/smoke test. -->
+    <target name="test-behat-setup-generic">
+        <echo msg="Installing ${behat.generic.package} package." />
+        <composer command="require" composer="${project.bin.composer}">
+            <arg value="${behat.generic.package}" />
+            <arg value="--working-dir=${behat.dir}" />
+            <arg value="--no-interaction" />
+            <arg value="--no-suggest" />
+            <arg value="--ansi" />
+            <arg value="--no-scripts" />
+        </composer>
+
+        <echo msg="Moving new tests to ${behat.dir} directory." />
+        <property name="source.dir" value="${behat.dir}/vendor/${behat.generic.package}" />
+        <copy todir="${behat.dir}" overwrite="true">
+            <fileset dir="${source.dir}" casesensitive="yes">
+                <include name="*.yml.dist" />
+            </fileset>
+        </copy>
+        <copy todir="${behat.dir}/features" overwrite="true">
+            <fileset dir="${source.dir}/features" casesensitive="yes">
+                <include name="**" />
+            </fileset>
+        </copy>
     </target>
 
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->

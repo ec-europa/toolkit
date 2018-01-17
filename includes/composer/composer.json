@@ -1,11 +1,11 @@
 {
   "_comment_git_wrapper": "Master branch of git-wrapper has a fix for backwards compatibility with older versions of git. Revert to stable when 1.7.1 is released.",
   "require": {
-    "cpliakas/git-wrapper": "dev-master as 1.7.1",
+    "cpliakas/git-wrapper": "^1.7",
     "cweagans/composer-patches": "dev-checkpatched",
     "drupal/phingdrushtask": "^1.1",
     "drupol/phingbehattask": "^1.0",
-    "drush/drush": "8.0.5",
+    "drush/drush": "8.1.15",
     "ec-europa/backtrac-php-client": "~0.1.3",
     "ext-json": "*",
     "ext-phar": "*",
@@ -13,16 +13,16 @@
     "ext-xml": "*",
     "guzzlehttp/guzzle": "^6.2.1",
     "kasperg/phing-github": "dev-feature/import",
-    "pear/archive_tar": "^1.4@dev",
+    "pear/archive_tar": "^1.4.3",
     "pear/versioncontrol_git": "dev-master",
     "pfrenssen/phpcs-pre-push": "1.0",
-    "phing/phing": "~2.10",
+    "phing/phing": "~2.16.0",
     "php": ">=5.4.0",
     "wimg/php-compatibility": "~7.0.7"
   },
   "require-dev": {
-    "behat/behat": "~3.1.0@rc",
-    "drupal/drupal-extension": "~3.1.0",
+    "behat/behat":  "~3.4.3",
+    "drupal/drupal-extension": "~v4.0.0alpha2",
     "ec-europa/qa-automation": "~3.0.5"
   },
   "_comment_minimum_stability": "Remove the 'minimum-stability' and 'prefer-stable' directives once new releases of Coder and PHP CodeSniffer are available.",

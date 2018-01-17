@@ -2,39 +2,27 @@ default:
   suites:
     subsite:
       paths:
-        - '{{ behat.dir }}/features/SiteFeatures'
+        - '{{ behat.dir }}/features/CustomFeatures'
       contexts:
         - FeatureContext
-        - Drupal\nexteuropa\Context\Site\SiteContext
+        - DrupalContext
+        - Drupal\DrupalExtension\Context\MinkContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MessageContext
-        - Drupal\nexteuropa\Context\DrupalContext
-        - Drupal\nexteuropa\Context\MinkContext
       filters:
-        tags: "~@wip"  
-    toolkit:
-      paths:
-        - '{{ behat.dir }}/features/GenericFeatures'
-        - '{{ behat.dir }}/features/ToolkitFeatures'
-        - '{{ behat.dir }}/features/PlatformFeatures'
-        - '{{ behat.dir }}/features/SecurityFeatures'
-      contexts:
-        - FeatureContext
-        - Drupal\nexteuropa\Context\Generic\GenericContext
-        - Drupal\nexteuropa\Context\Platform\PlatformContext
-        - Drupal\nexteuropa\Context\Security\SecurityContext
-        - Drupal\DrupalExtension\Context\DrushContext
-        - Drupal\DrupalExtension\Context\MessageContext
-        - Drupal\nexteuropa\Context\DrupalContext
-        - Drupal\nexteuropa\Context\MinkContext
-      filters:
-        tags: "~@wip"
+        tags: "{{ behat.tags }}"
   extensions:
     Behat\MinkExtension:
       browser_name: '{{ behat.browser.name }}'
       goutte: ~
       selenium2:
         wd_host: '{{ behat.wd_host.url }}'
+        browser: '{{ behat.browser.name }}'
+        capabilities:
+          chrome:
+            switches:
+              - "--headless"
+              - "--disable-gpu"
       javascript_session: 'selenium2'
       base-url: '{{ behat.base_url }}'
       files_path: '{{ build.platform.dir }}'
@@ -47,11 +35,11 @@ default:
         message_selector: '.messages'
         error_message_selector: '.messages.error'
         success_message_selector: '.messages.status'
-      subcontexts:
-        paths:
-          - '{{ behat.subcontexts.path }}'
       drush:
         alias: '{{ behat.drush.alias }}'
         binary: '{{ toolkit.dir.bin.drush }}'
+      subcontexts:
+        paths:
+          - '{{ behat.subcontexts.path }}'
   formatters:
     {{ behat.formatter.name }}: ~

@@ -53,8 +53,8 @@ db.dl.filename =
 db.dl.dir = fpfis/files-for/automate_dumps
 db.dl.host = webgate.ec.europa.eu
 db.dl.url = ${db.dl.host}/${db.dl.dir}/${project.id}/
-db.dl.password =
 db.dl.username =
+db.dl.password =
 
 # Database connection settings.
 # -----------------------------
@@ -65,6 +65,7 @@ db.password =
 db.host = 127.0.0.1
 db.port = 3306
 db.url = ${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db.name}
+db.prefix =
 
 # Solr configuration.
 # -------------------
@@ -97,10 +98,10 @@ platform.package.version = 2.4
 
 # Theme configuration (deploy props?)
 # --------------------
-theme.ecl.version = v0.10.0
-theme.ec_europa.version = 0.0.3
+theme.ecl.version = v0.18.0
+theme.ec_europa.version = 0.0.6
 theme.atomium.repo.url = https://github.com/ec-europa/atomium.git
-theme.atomium.repo.branch = 7.x-1.x
+theme.atomium.repo.branch = 7.x-2.x
 theme.europa.repo.url = https://github.com/ec-europa/ec_europa.git
 theme.europa.repo.branch = master
 
@@ -233,4 +234,12 @@ varnish.server.port = 8888
 # ----------------------------
 drush.db.dump = ${build.platform.dir}/dump.sql
 
+# Drush aliases configuration.
+# ----------------------------
+drush.alias.default = ${build.site}
+drush.alias.docker = docker
 
+# Drupal installation settings.
+# ----------------------------
+drupal.update.free.access = false
+drupal.hash.salt =
