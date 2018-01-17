@@ -42,7 +42,6 @@ function myproject_core_install() {
   // subsite.install.modules property.
   $modules = [
     'example_module',
-    'nexteuropa_ecl_migrate',
     'nexteuropa_formatters',
     'nexteuropa_formatters_views',
     'nexteuropa_formatters_fields',
