@@ -42,6 +42,11 @@ function myproject_core_install() {
   // subsite.install.modules property.
   $modules = [
     'example_module',
+    'nexteuropa_ecl_migrate',
+    'nexteuropa_formatters',
+    'nexteuropa_formatters_views',
+    'nexteuropa_formatters_fields',
+    'splash_screen',
   ];
   module_enable($modules);
 
@@ -78,7 +83,7 @@ function myproject_core_install() {
   }
 
   // Create demo page.
-  _myproject_example_function();
+  _myproject_core_blocks();
 }
 
 /**

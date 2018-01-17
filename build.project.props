@@ -1,7 +1,7 @@
 # Subsite configuration.
 # ----------------------
 project.id = toolkit
-project.install.modules = example_module
+project.install.modules = myproject_core
 project.name = Toolkit
 project.url.production =
 
@@ -16,4 +16,4 @@ project.admin.email = ${project.admin.username}@example.com
 # Platform configuration.
 # -----------------------
 profile = multisite_drupal_standard
-platform.package.version = 2.3
+platform.package.version = 2.4

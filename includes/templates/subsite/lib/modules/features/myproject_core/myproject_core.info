@@ -4,4 +4,4 @@ core = 7.x
 
 features[features_api][] = api:2
 
-dependencies[] = example_module
+dependencies[] = multisite_drupal_toolbox

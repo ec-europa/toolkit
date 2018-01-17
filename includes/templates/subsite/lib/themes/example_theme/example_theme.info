@@ -1,25 +1,23 @@
-name = Example Theme
-description = An example theme for the Subsite Starterkit.
+name = Example theme
+description = Example OpenEuropa sub theme.
+base theme = ec_europa
 core = 7.x
-base theme = bartik
+php = 5.6.0
 
+; ========================================
+; Regions
+; ========================================
+regions[navigation] = Navigation
+regions[header_top] = Header top
 regions[header] = Header
-regions[help] = Help
-regions[page_top] = Page top
-regions[page_bottom] = Page bottom
+regions[header_bottom] = Header bottom
+regions[utility] = Utility
 regions[highlighted] = Highlighted
-
-regions[featured] = Featured
+regions[help] = Help
+regions[content_top] = Content top
 regions[content] = Content
+regions[content_bottom] = Content bottom
 regions[sidebar_first] = Sidebar first
 regions[sidebar_second] = Sidebar second
-
-regions[triptych_first] = Triptych first
-regions[triptych_middle] = Triptych middle
-regions[triptych_last] = Triptych last
-
-regions[footer_firstcolumn] = Footer first column
-regions[footer_secondcolumn] = Footer second column
-regions[footer_thirdcolumn] = Footer third column
-regions[footer_fourthcolumn] = Footer fourth column
-regions[footer] = Footer
+regions[footer_middle] = Footer middle
+regions[footer_right] = Footer right
