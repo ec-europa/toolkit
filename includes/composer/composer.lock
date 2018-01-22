@@ -2397,7 +2397,7 @@
         },
         {
             "name": "wimg/php-compatibility",
-            "version": "7.1.5",
+            "version": "8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wimg/PHPCompatibility.git",
