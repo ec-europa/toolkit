@@ -18,7 +18,7 @@
     "pfrenssen/phpcs-pre-push": "1.0",
     "phing/phing": "~2.16.0",
     "php": ">=5.4.0",
-    "wimg/php-compatibility": "8.1.0"
+    "wimg/php-compatibility": "^8.1"
   },
   "require-dev": {
     "behat/behat":  "~3.4.3",
@@ -88,8 +88,8 @@
   "scripts": {
     "pre-install-cmd": "scripts/phingcalls.sh pre-install,",
     "pre-update-cmd": "scripts/phingcalls.sh pre-update",
-    "post-install-cmd": "scripts/phingcalls.sh post-install,\"vendor/bin/phpcs\" --config-set installed_paths vendor/wimg/php-compatibility",
-    "post-update-cmd": "scripts/phingcalls.sh post-update,\"vendor/bin/phpcs\" --config-set installed_paths vendor/wimg/php-compatibility"
+    "post-install-cmd": "scripts/phingcalls.sh post-install",
+    "post-update-cmd": "scripts/phingcalls.sh post-update"
   },
   "config": {
     "bin-dir": "../../bin",
