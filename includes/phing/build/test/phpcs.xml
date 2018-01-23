@@ -18,16 +18,15 @@
         
         <exec command="pwd"  outputProperty="pwd.path"/>
         <echo msg="${toolkit.dir}/vendor/wimg/php-compatibility/PHPCompatibility" />
-        
-        <fileset dir="${toolkit.dir}/vendor/wimg/php-compatibility/PHPCompatibility" id="PHPCompatibilityFiles" />
-          
-        <copy todir="${toolkit.dir}/vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/PHPCompatibility">
-            <fileset refid="PHPCompatibilityFiles" />
-        </copy>
-        
-        <echo msg="${toolkit.dir.bin}/phpcs --standard=PHPCompatibility --runtime-set testVersion ${phpcs.php.version}" />
+
         <exec
-            command="${toolkit.dir.bin}/phpcs --standard=PHPCompatibility --runtime-set testVersion ${phpcs.php.version}"
+            command="${toolkit.dir.bin}/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer,../../drupal/wimg/php-compatibility"
+            passthru="true"
+            checkreturn="true"
+        />
+
+        <exec
+            command="${toolkit.dir.bin}/phpcs --standard=PHPCompatibility --runtime-set testVersion ${phpcs.php.version} ${lib.dir}"
             passthru="true"
             checkreturn="true"
         />
