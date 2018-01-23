@@ -15,7 +15,7 @@
     
     <!-- Test compatibility checks. -->
     <target name="test-phpcs-compatibility">
-        <exec command="${toolkit.dir.bin}/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer,../../drupal/wimg/php-compatibility"
+        <exec command="${toolkit.dir.bin}/phpcs --config-set installed_paths '${toolkit.dir.vendor}/drupal/coder/coder_sniffer,${toolkit.dir.vendor}/wimg/php-compatibility'"
             passthru="true"
             checkreturn="true" />
 
