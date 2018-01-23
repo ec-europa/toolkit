@@ -9,9 +9,6 @@ phpcs.extensions = php inc module install info test profile theme css js
 # The default configuration file to generate.
 phpcs.config = ${project.basedir}/phpcs.xml
 
-# The locations for installed standards, delimited by comma.
-phpcs.installed.paths = ${toolkit.dir.vendor}/ec-europa/qa-automation/phpcs/SubStandards
-
 # The coding standards to enforce.
 # Delimited by space, comma or semicolon..
 phpcs.standards = Subsite;${project.basedir}/phpcs-ruleset.xml

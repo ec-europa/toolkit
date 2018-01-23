@@ -101,14 +101,6 @@ class PhpCodeSnifferConfigurationTask extends \Task
     private $_standards = array();
 
     /**
-     * The install paths of standards.
-     *
-     * @var string
-     */
-    private $_installedPaths = '';
-
-
-    /**
      * Configures PHP CodeSniffer.
      *
      * @return void
@@ -133,26 +125,6 @@ class PhpCodeSnifferConfigurationTask extends \Task
         );
         $root_element->appendChild($element);
 
-        // Add the coding standards.
-        foreach ($this->_standards as $standard) {
-            $installedPaths = explode(',', $this->_installedPaths);
-            if (substr($standard, -4) === '.xml') {
-                if (file_exists($standard)) {
-                    $element = $document->createElement('rule');
-                    $element->setAttribute('ref', $standard);
-                    $root_element->appendChild($element);
-                }
-            } else {
-                foreach ($installedPaths as $installedPath) {
-                    $ruleset = $installedPath."/".$standard."/ruleset.xml";
-                    if (file_exists($ruleset)) {
-                        $element = $document->createElement('rule');
-                        $element->setAttribute('ref', $ruleset);
-                        $root_element->appendChild($element);
-                    }
-                }
-            }
-        }
 
         // Add the files to check.
         foreach ($this->_files as $file) {
@@ -210,49 +182,6 @@ class PhpCodeSnifferConfigurationTask extends \Task
             $document->saveXML()
         );
 
-        // If a global configuration file is passed, update this too.
-        if (!empty($this->_globalConfig)) {
-            $ignore_warnings_on_exit = $this->_passWarnings ? 1 : 0;
-            $global_config           = <<<PHP
-<?php
- \$phpCodeSnifferConfig = array (
-  'default_standard' => '$this->_configFile',
-  'ignore_warnings_on_exit' => '$ignore_warnings_on_exit',
-);
-PHP;
-            $globalConfigSaved = file_put_contents(
-                $this->_globalConfig,
-                $global_config
-            );
-
-            if ($configSaved || $globalConfigSaved) {
-                if ($configSaved) {
-                    $this->setTaskName("config");
-                    $this->log(
-                        "Updating: ".$this->_configFile,
-                        Project::MSG_INFO
-                    );
-                } else {
-                    throw new BuildException(
-                        "Was unable to update: ".$this->_configFile,
-                        $this->getLocation()
-                    );
-                }
-
-                if ($globalConfigSaved) {
-                    $this->setTaskName("config");
-                    $this->log(
-                        "Updating: ".$this->_globalConfig,
-                        Project::MSG_INFO
-                    );
-                } else {
-                    throw new BuildException(
-                        "Was unable to update .".$this->_configFile,
-                        $this->getLocation()
-                    );
-                }
-            }
-        }//end if
 
     }//end main()
 
@@ -389,21 +318,6 @@ PHP;
         $this->_globalConfig = $globalConfig;
 
     }//end setGlobalConfig()
-
-
-    /**
-     * Sets the installed_paths configuration..
-     *
-     * @param string $installedPaths The paths in which the standards
-     *                               are installed.
-     *
-     * @return void
-     */
-    public function setInstalledPaths($installedPaths)
-    {
-        $this->_installedPaths = $installedPaths;
-
-    }//end setInstalledPaths()
 
 
     /**

@@ -15,11 +15,7 @@
     
     <!-- Test compatibility checks. -->
     <target name="test-phpcs-compatibility">
-        <exec command="${toolkit.dir.bin}/phpcs --config-set installed_paths '${toolkit.dir.vendor}/drupal/coder/coder_sniffer,${toolkit.dir.vendor}/wimg/php-compatibility'"
-            passthru="true"
-            checkreturn="true" />
-
-        <exec command="${toolkit.dir.bin}/phpcs --standard=PHPCompatibility --runtime-set testVersion ${phpcs.php.version} ${lib.dir}"
+        <exec command="${toolkit.dir.bin}/phpcs --standard=Subsite,PHPCompatibility --runtime-set testVersion ${phpcs.php.version} ${lib.dir}"
             passthru="true"
             checkreturn="true" />
     </target>
@@ -39,7 +35,6 @@
             showProgress="${phpcs.progress}"
             showSniffCodes="${phpcs.sniffcodes}"
             standards="${phpcs.standards}"
-            installedPaths="${phpcs.installed.paths}"
         />
     </target>
 
