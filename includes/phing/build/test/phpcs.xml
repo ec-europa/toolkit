@@ -12,6 +12,13 @@
             checkreturn="true"
         />
     </target>
+    
+    <!-- Test compatibility checks. -->
+    <target name="test-phpcs-compatibility">
+        <exec command="${toolkit.dir.bin}/phpcs --standard=Subsite,PHPCompatibility --runtime-set testVersion ${phpcs.php.version} ${lib.dir}"
+            passthru="true"
+            checkreturn="true" />
+    </target>
 
     <!-- Set up PHP CodeSniffer. -->
     <target name="test-phpcs-setup" depends="test-phpcs-setup-prepush">
@@ -28,7 +35,6 @@
             showProgress="${phpcs.progress}"
             showSniffCodes="${phpcs.sniffcodes}"
             standards="${phpcs.standards}"
-            installedPaths="${phpcs.installed.paths}"
         />
     </target>
 

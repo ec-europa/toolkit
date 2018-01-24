@@ -9,9 +9,6 @@ phpcs.extensions = php inc module install info test profile theme css js
 # The default configuration file to generate.
 phpcs.config = ${project.basedir}/phpcs.xml
 
-# The locations for installed standards, delimited by comma.
-phpcs.installed.paths = ${toolkit.dir.vendor}/ec-europa/qa-automation/phpcs/SubStandards
-
 # The coding standards to enforce.
 # Delimited by space, comma or semicolon..
 phpcs.standards = Subsite;${project.basedir}/phpcs-ruleset.xml
@@ -50,4 +47,5 @@ phpcs.prepush.enable = 1
 phpcs.prepush.source = ${toolkit.dir.vendor}/pfrenssen/phpcs-pre-push/pre-push
 phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpcs
 
-
+# PHP version to test compatibility.
+phpcs.php.version = 7.0
