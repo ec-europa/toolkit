@@ -17,6 +17,18 @@
                 <include name="**.yml"/>
             </fileset>
         </foreach>
+
+        <!-- Run all provided behat configuration tests -->
+        <if>
+            <equals arg1="${behat.generic.package.enable}" arg2="1" />
+            <then>
+                <foreach param="dirname" absparam="absname" target="test-behat-exec">
+                    <fileset dir="${behat.dir}/vendor/${behat.generic.package}">
+                        <include name="**.yml"/>
+                    </fileset>
+                </foreach>
+            </then>
+        </if>
     </target>
 
 
@@ -69,6 +81,7 @@
                     <token key="build.platform.dir" value="${build.platform.dir}" />
                     <token key="behat.drush.alias" value="${behat.drush.alias}" />
                     <token key="behat.subcontexts.path" value="${behat.subcontexts.path}" />
+                    <token key="behat.generic.package" value="${behat.generic.package}" />
                     <token key="behat.tags" value="${behat.tags}" />
                     <token key="flickr.key" value="${flickr.key}" />
                     <token key="flickr.secret" value="${flickr.secret}" />
@@ -97,18 +110,40 @@
             <arg value="--no-scripts" />
         </composer>
 
-        <echo msg="Moving new tests to ${behat.dir} directory." />
+        <!-- Generating settings file inside vendor folder. -->
         <property name="source.dir" value="${behat.dir}/vendor/${behat.generic.package}" />
-        <copy todir="${behat.dir}" overwrite="true">
+        <copy todir="${source.dir}" overwrite="true">
             <fileset dir="${source.dir}" casesensitive="yes">
                 <include name="*.yml.dist" />
             </fileset>
+            <filterchain>
+                <replacetokens begintoken="{{ " endtoken=" }}">
+                    <token key="behat.dir" value="${behat.dir}" />
+                    <token key="behat.base_url" value="${behat.base_url}" />
+                    <token key="behat.wd_host.url" value="${behat.wd_host.url}" />
+                    <token key="behat.browser.name" value="${behat.browser.name}" />
+                    <token key="behat.api.driver" value="${behat.api.driver}" />
+                    <token key="build.platform.dir" value="${build.platform.dir}" />
+                    <token key="behat.drush.alias" value="${behat.drush.alias}" />
+                    <token key="behat.subcontexts.path" value="${behat.subcontexts.path}" />
+                    <token key="behat.generic.package" value="${behat.generic.package}" />
+                    <token key="behat.tags" value="${behat.tags}" />
+                    <token key="flickr.key" value="${flickr.key}" />
+                    <token key="flickr.secret" value="${flickr.secret}" />
+                    <token key="toolkit.dir.bin.drush" value="${toolkit.dir.bin.drush}" />
+                    <token key="drush.db.dump" value="${drush.db.dump}" />
+                    <token key="behat.formatter.name" value="${behat.formatter.name}" />
+                    <token key="integration.server.port" value="${integration.server.port}" />
+                    <token key="varnish.server.port" value="${varnish.server.port}" />
+                </replacetokens>
+            </filterchain>
+            <mapper type="glob" from="*.yml.dist" to="*.yml" />
         </copy>
-        <copy todir="${behat.dir}/features" overwrite="true">
-            <fileset dir="${source.dir}/features" casesensitive="yes">
-                <include name="**" />
-            </fileset>
-        </copy>
+        <!--<copy todir="${behat.dir}/features" overwrite="true">-->
+            <!--<fileset dir="${source.dir}/features" casesensitive="yes">-->
+                <!--<include name="**" />-->
+            <!--</fileset>-->
+        <!--</copy>-->
     </target>
 
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
