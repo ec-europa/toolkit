@@ -5,7 +5,7 @@
     "cweagans/composer-patches": "dev-checkpatched",
     "drupal/phingdrushtask": "^1.1",
     "drupol/phingbehattask": "^1.0",
-    "drush/drush": "8.1.15",
+    "drush/drush": "^8.0",
     "ec-europa/backtrac-php-client": "~0.1.3",
     "ext-json": "*",
     "ext-phar": "*",
@@ -17,13 +17,12 @@
     "pear/versioncontrol_git": "dev-master",
     "pfrenssen/phpcs-pre-push": "1.0",
     "phing/phing": "~2.16.0",
-    "php": ">=5.4.0",
-    "wimg/php-compatibility": "~7.0.7"
+    "php": ">=5.4.0"
   },
   "require-dev": {
     "behat/behat":  "~3.4.3",
     "drupal/drupal-extension": "~v4.0.0alpha2",
-    "ec-europa/qa-automation": "~3.0.5"
+    "ec-europa/qa-automation": "dev-feature/MULTISITE-19240"
   },
   "_comment_minimum_stability": "Remove the 'minimum-stability' and 'prefer-stable' directives once new releases of Coder and PHP CodeSniffer are available.",
   "minimum-stability": "dev",
@@ -88,8 +87,14 @@
   "scripts": {
     "pre-install-cmd": "scripts/phingcalls.sh pre-install",
     "pre-update-cmd": "scripts/phingcalls.sh pre-update",
-    "post-install-cmd": "scripts/phingcalls.sh post-install",
-    "post-update-cmd": "scripts/phingcalls.sh post-update"
+    "post-install-cmd": [
+      "scripts/phingcalls.sh post-install",
+      "COMPOSER=vendor/ec-europa/qa-automation/composer.json composer run-script post-install-cmd --working-dir=../../"
+    ],
+    "post-update-cmd": [
+      "scripts/phingcalls.sh post-update",
+      "COMPOSER=vendor/ec-europa/qa-automation/composer.json composer run-script post-update-cmd --working-dir=../../"
+    ]
   },
   "config": {
     "bin-dir": "../../bin",

@@ -16,19 +16,20 @@
     <!-- Set up PHP CodeSniffer. -->
     <target name="test-phpcs-setup" depends="test-phpcs-setup-prepush">
         <delete file="${phpcs.config}" failonerror="false" />
-        <delete file="${phpcs.global.config}" failonerror="false" />
         <phpcsconf
             configFile="${phpcs.config}"
             extensions="${phpcs.extensions}"
             files="${phpcs.files}"
-            globalConfig="${phpcs.global.config}"
             ignorePatterns="${phpcs.ignore}"
-            passWarnings="${phpcs.passwarnings}"
             reports="${phpcs.reports}"
             showProgress="${phpcs.progress}"
             showSniffCodes="${phpcs.sniffcodes}"
             standards="${phpcs.standards}"
-            installedPaths="${phpcs.installed.paths}"
+        />
+        <exec
+            command="${toolkit.dir.bin}/phpcs --config-set ignore_warnins_on_exit ${phpcs.passwarnings} >/dev/null"
+            passthru="true"
+            checkreturn="true"
         />
     </target>
 

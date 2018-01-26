@@ -13,7 +13,7 @@
             platform-resources-link,
             build-theme-dev,
             project-platform-composer-no-dev,
-            project-modules-devel-dl,
+            project-modules-devel-make,
             project-platform-set-htaccess,
             project-subsite-restore,
             project-subsite-files-setup" />
@@ -61,6 +61,7 @@
     </target>
 
     <target name="platform-drupal-make" description="Build the Drupal core codebase.">
+        <delete dir="${build.${build-type}.dir}" includeemptydirs="true" failonerror="true" quiet="true" />
         <echo msg="Make Drupal core." />
         <drush command="make" assume="yes" bin="${toolkit.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" root="${build.${build-type}.dir}">
             <param>${profile.core.make}</param>
