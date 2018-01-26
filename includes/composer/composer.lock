@@ -3115,11 +3115,11 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "3.0.5",
+            "version": "3.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "fa837a10abc14344c1baea4967ce6f3516ffdd4e"
+                "reference": "be1ca44ba9aa522ddf62d6b93755582738b397de"
             },
             "dist": {
                 "type": "zip",
