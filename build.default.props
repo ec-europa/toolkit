@@ -352,8 +352,7 @@ share.name = share
 share.path.global = ${share.path}/${share.name}
 share.path.composer = ${share.path.global}/composer
 share.path.platform = ${share.path.global}/platform
-share.path.subsites = ${share.path.global}/subsites
-share.path.composer.packages = ${share.path.composer}/packages
+share.path.subsites = ${share.path.global}/subsitesshare.path.composer.packages = ${share.path.composer}/packages
 share.path.composer.packages.shared = ${share.path.composer.packages}/shared
 share.path.platform.packages = ${share.path.platform}/packages
 share.path.platform.packages.database = ${share.path.platform.packages}/database
@@ -400,5 +399,3 @@ varnish.server.port = 8888
 # Drush Context configuration.
 # ----------------------------
 drush.db.dump = ${build.platform.dir}/dump.sql
-
-
