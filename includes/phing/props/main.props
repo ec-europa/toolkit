@@ -1,4 +1,3 @@
-# -----------------------------------------------------------------------------------
 # The main properties of the toolkit. Most of them are build and development related.
 # -----------------------------------------------------------------------------------
 
@@ -21,7 +20,7 @@ project.name = My Project
 project.theme.default = ec_resp
 project.type = subsite
 project.url.base = http://web:8080
-project.url.production =
+project.url.production = https://ec.europa.eu/${project.id}
 
 # Development modules.
 # --------------------
@@ -32,7 +31,7 @@ devel.mdls.en = devel context field_ui maillog simpletest stage_file_proxy views
 # ----------------------
 devel.vars.error_level = 2
 devel.vars.stage_file_proxy_hotlink = 1
-devel.vars.stage_file_proxy_origin = https://ec.europa.eu/${project.id}
+devel.vars.stage_file_proxy_origin = ${project.url.production}
 devel.vars.stage_file_proxy_origin_dir = sites/${project.id}/files
 devel.vars.views_show_additional_queries = 1
 devel.vars.views_ui_show_performance_statistics = 1

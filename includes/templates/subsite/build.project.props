@@ -1,4 +1,4 @@
-# Subsite configuration.
+4# Subsite configuration.
 # ----------------------
 project.id = toolkit
 project.install.modules =
@@ -16,4 +16,4 @@ project.admin.email = ${project.admin.username}@example.com
 # Platform configuration.
 # -----------------------
 profile = multisite_drupal_standard
-platform.package.version = 2.3
+platform.package.version = 2.4

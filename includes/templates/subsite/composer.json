@@ -1,7 +1,7 @@
 {
     "name": "ec-europa/subsite",
     "require": {
-        "ec-europa/toolkit": "3.0.*@beta"
+        "ec-europa/toolkit": "3.*"
     },
     "scripts": {
         "post-install-cmd": "@toolkit-install",
