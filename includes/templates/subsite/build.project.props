@@ -1,4 +1,4 @@
-4# Subsite configuration.
+# Subsite configuration.
 # ----------------------
 project.id = toolkit
 project.install.modules =
