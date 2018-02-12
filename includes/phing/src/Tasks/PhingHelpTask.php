@@ -167,13 +167,7 @@ class PhingHelpTask extends \Task
 
         foreach ($targets as $file => $target) {
             $hiddenTargets = [
-              // 'help',
-              // 'github',
-              // 'deprecated',
-              // 'docker',
-              // 'root',
-              // 'platform',
-              // 'theme',
+              'deprecated',
             ];
             if (!in_array($buildList[$file]['name'], $hiddenTargets)) {
 
