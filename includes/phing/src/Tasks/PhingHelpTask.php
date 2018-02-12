@@ -164,19 +164,39 @@ class PhingHelpTask extends \Task
                 )
             )
         );
-        foreach ($targets as $file => $targets) {
-            if ($buildList[$file]['name'] != "deprecated") {
-                $table->addRow(new TableSeparator());
-                $table->addRow(
-                    array(
-                        new TableCell(
-                            $buildList[$file]['name'],
-                            array('colspan' => 3)
-                        )
-                    )
-                );
-                $table->addRow(new TableSeparator());
-                $table->addRows($targets);
+
+        foreach ($targets as $file => $target) {
+            $hiddenTargets = [
+              // 'help',
+              // 'github',
+              // 'deprecated',
+              // 'docker',
+              // 'root',
+              // 'platform',
+              // 'theme',
+            ];
+            if (!in_array($buildList[$file]['name'], $hiddenTargets)) {
+
+                // Clean up target list.
+                foreach ($target as $key => $value) {
+                  if ($value['visibility'] == 'hidden') {
+                    unset($target[$key]);
+                  }
+                }
+
+                if (count($target) > 0) {
+                  $table->addRow(new TableSeparator());
+                  $table->addRow(
+                      array(
+                          new TableCell(
+                              $buildList[$file]['name'],
+                              array('colspan' => 3)
+                          )
+                      )
+                  );
+                  $table->addRow(new TableSeparator());
+                  $table->addRows($target);
+                }
             }
         }
 
