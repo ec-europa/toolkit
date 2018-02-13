@@ -15,10 +15,6 @@
     <import file="${phing.dir.help}/main/platform.xml" />
     <import file="${phing.dir.help}/main/theme.xml" />
 
-    <import file="${phing.dir.help}/test/behat.xml" />
-    <import file="${phing.dir.help}/test/phpcs.xml" />
-    <import file="${phing.dir.help}/test/phpunit.xml" />
-
     <!-- Check if site exists. -->
     <if>
         <available file="${build.settings.dir}/settings.php" type="file" />
