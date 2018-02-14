@@ -233,9 +233,9 @@ solr.enable = 1
 solr.scheme = http
 solr.host = localhost
 solr.port = 8983
-solr.path = solr
+solr.path = /solr
 solr.type = d7_apachesolr
-solr.url = ${solr.scheme}://${solr.host}:${solr.port}/${solr.path}/${solr.type}
+solr.url = ${solr.scheme}://${solr.host}:${solr.port}${solr.path}/${solr.type}
 
 # Admin configuration.
 # --------------------

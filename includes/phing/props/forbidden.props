@@ -32,7 +32,7 @@ db.url = ${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db.name}
 
 # Solr configuration.
 # -------------------
-solr.url = ${solr.schem}://${solr.host}:${solr.port}/${solr.path}/${solr.type}
+solr.url = ${solr.schem}://${solr.host}:${solr.port}${solr.path}/${solr.type}
 
 # Local resources.
 # ----------------
