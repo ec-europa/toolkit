@@ -230,11 +230,12 @@ db.url = ${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db.name}
 # Solr configuration.
 # -------------------
 solr.enable = 1
-solr.host = solr
-solr.port = 8983
-solr.type = d7_apachesolr
 solr.scheme = http
-solr.url = ${solr.scheme}://${solr.host}:${solr.port}/solr/${solr.type}
+solr.host = localhost
+solr.port = 8983
+solr.path = solr
+solr.type = d7_apachesolr
+solr.url = ${solr.scheme}://${solr.host}:${solr.port}/${solr.path}/${solr.type}
 
 # Admin configuration.
 # --------------------
