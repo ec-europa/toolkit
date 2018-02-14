@@ -2,7 +2,7 @@
 
 <project name="drush" description="Contains drush helper targets that help manage your Drupal installation." default="">
 
-    <target name="drush-aliases-generate" description="Generate drush aliases for each subsite folder.">
+    <target name="drush-aliases-generate" hidden="true" description="Generate drush aliases for each subsite folder.">
         <mkdir dir="${build.platform.dir.sites}/all/drush" />
         <drushgal siteRoot="${build.platform.dir}" />
     </target>
@@ -44,10 +44,10 @@
             verbose="${drush.verbose}"
             color="${drush.color}">
             <param>all</param>
-        </drush>        
+        </drush>
     </target>
 
-    <target name="drush-files-dirs-htaccess" description="Ensure the presence of htaccess files.">
+    <target name="drush-files-dirs-htaccess" hidden="true" description="Ensure the presence of htaccess files.">
         <drush
             command="php-eval"
             assume="yes"
@@ -94,11 +94,11 @@
         </if>
     </target>
 
-    <target name="drush-make-secure" description="Check make file for insecure modules.">
+    <target name="drush-make-secure" hidden="true" description="Check make file for insecure modules.">
         <drushms makefile="${makefile-path}" failon="revoked" />
     </target>
 
-    <target name="drush-make-secure-all" description="Check all make files for insecure modules.">
+    <target name="drush-make-secure-all" hidden="true" description="Check all make files for insecure modules.">
         <echo msg="Checking make files for projects not covered by Drupal's security advisory." />
         <foreach param="makefile" absparam="makefile-path" target="drush-make-secure">
             <fileset dir="${resources.dir}">
@@ -120,7 +120,7 @@
         </drush>
     </target>
 
-    <target name="drush-node-access-rebuild" description="Rebuild the node access.">
+    <target name="drush-node-access-rebuild" hidden="true" description="Rebuild the node access.">
         <drush
             command="php-eval"
             assume="yes"
@@ -133,7 +133,7 @@
         </drush>
     </target>
 
-    <target name="drush-registry-rebuild" description="Perform a registry rebuild.">
+    <target name="drush-registry-rebuild" hidden="true" description="Perform a registry rebuild.">
         <trycatch>
             <try>
                 <exec command="${toolkit.dir.bin.drush} rr --help" checkreturn="true" />
@@ -149,7 +149,7 @@
         </trycatch>
     </target>
 
-    <target name="drush-registry-rebuild-dl" description="Download drush registry-rebuild.">
+    <target name="drush-registry-rebuild-dl" hidden="true" description="Download drush registry-rebuild.">
         <echo message="Installing registry rebuild on user account." />
         <exec command="${toolkit.dir.bin.drush} pm-download registry_rebuild-7 -n >/dev/null" />
         <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
@@ -191,7 +191,7 @@
         </drush>
     </target>
 
-    <target name="drush-site-install" description="Install a site.">
+    <target name="drush-site-install" hidden="true" description="Install a site.">
         <echo message="Installing site ${project.name}." />
         <drush command="site-install" assume="yes" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${drush.alias.default}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
@@ -206,7 +206,7 @@
         <phingcall target="drush-settings-generate" />
     </target>
 
-    <target name="drush-solr-enable" description="Enable the solr module.">
+    <target name="drush-solr-enable" hidden="true" description="Enable the solr module.">
         <if>
             <equals arg1="${solr.enable}" arg2="1" />
             <then>
@@ -222,14 +222,14 @@
         </if>
     </target>
 
-    <target name="drush-sql-create" description="Create a database.">
+    <target name="drush-sql-create" hidden="true" description="Create a database.">
         <echo message="Creating database ${db.name}." />
         <drush command="sql-create" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
         </drush>
     </target>
 
-    <target name="drush-sql-import" description="Import a database.">
+    <target name="drush-sql-import" hidden="true" description="Import a database.">
         <echo message="Importing database." />
         <phingcall target="drush-files-dirs-create" />
         <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
@@ -244,14 +244,14 @@
         </drush>
     </target>
 
-    <target name="drush-sql-drop" description="Drop a database.">
+    <target name="drush-sql-drop" hidden="true" description="Drop a database.">
         <echo message="Dropping database ${db.name}." />
         <drush command="sql-drop" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
         </drush>
     </target>
 
-    <target name="drush-sql-dump" description="Make a dump of database.">
+    <target name="drush-sql-dump" hidden="true" description="Make a dump of database.">
         <echo message="Backing up database ${db.name} to ${database-file}." />
         <dirname property="database-cachedir" file="${database-file}" />
         <mkdir dir="${database-cachedir}" />

@@ -23,7 +23,7 @@
 
     </target>
 
-    <target name="project-profile-build" description="Build Drupal profile.">
+    <target name="project-profile-build" hidden="true" description="Build Drupal profile.">
         <drush command="dl" assume="yes">
             <param>"${profile}-${profile.core}"</param>
             <option name="destination">${project.basedir}</option>
@@ -32,14 +32,14 @@
         </drush>
     </target>
 
-    <target name="build-subsite" description="Build NextEuropa Subsite code without version control."
+    <target name="build-subsite" hidden="true" description="Build NextEuropa Subsite code without version control."
         depends="
             project-subsite-backup,
             project-subsite-restore">
         <echo msg="TODO: subsite builds not yet developed." />
     </target>
 
-    <target name="build-theme" description="Build EC Europa theme without version control."
+    <target name="build-theme" hidden="true" description="Build EC Europa theme without version control."
         depends="
             theme-europa-download-extract,
             theme-europa-create-symlinks" />
@@ -126,7 +126,7 @@
         </if>
     </target>
 
-    <target name="project-database-download" description="Download sanitized production database from archive.">
+    <target name="project-database-download" hidden="true" description="Download sanitized production database from archive.">
         <if>
             <available file="${db-dl-file}" type="file" />
             <then>
@@ -152,7 +152,7 @@
         </if>
     </target>
 
-    <target name="project-database-file" description="Check if database file is available.">
+    <target name="project-database-file" hidden="true" description="Check if database file is available.">
         <if>
             <available file="${project.db.file}" type="file" />
             <then>
@@ -164,7 +164,7 @@
         </if>
     </target>
 
-    <target name="project-database-import" description="Import database for project with drush."
+    <target name="project-database-import" hidden="true" description="Import database for project with drush."
         depends="
             project-database-file,
             project-database-download">
@@ -176,13 +176,13 @@
         </phingcall>
     </target>
 
-    <target name="project-platform-delete" description="Remove previous platform build..">
+    <target name="project-platform-delete" hidden="true" description="Remove previous platform build..">
         <phingcall target="project-scratch-build">
             <property name="dir-build" value="${build.platform.dir}" override="true" />
         </phingcall>
     </target>
 
-    <target name="project-platform-package-unpack" description="Download and unpack platform deploy package.">
+    <target name="project-platform-package-unpack" hidden="true" description="Download and unpack platform deploy package.">
         <property file="${project.tmp.dir}/build.version.props" logoutput="${logoutput}" override="true" />
         <mkdir dir="${share.path.platform.packages.deploy}" />
         <phingcall target="package-download-unpack">
@@ -193,7 +193,7 @@
         </phingcall>
     </target>
 
-    <target name="project-platform-set-htaccess" description="Append htaccess config to root .htaccess.">
+    <target name="project-platform-set-htaccess" hidden="true" description="Append htaccess config to root .htaccess.">
         <if>
             <istrue value="${build.platform.htaccess.append.text}" />
             <then>
@@ -255,7 +255,7 @@
         <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.version.props" />
     </target>
 
-    <target name="project-scratch-build" description="Delete previous build to start over clean.">
+    <target name="project-scratch-build" hidden="true" description="Delete previous build to start over clean.">
         <echo msg="Delete previous build." />
         <if>
             <available file="${build.platform.dir.settings}/default.settings.php" />
@@ -303,13 +303,13 @@
                 <mkdir dir="${build.platform.dir.settings}" />
                 <move file="${project.tmp.dir}/settings.local.php" tofile="${build.platform.dir.settings}/settings.local.php" />
             </then>
-        </if> 
-        
+        </if>
+
         <phingcall target="project-subsite-files-setup" />
         <phingcall target="drush-aliases-generate" />
     </target>
 
-    <target name="project-subsite-backup" description="Backup site defined files from properties.">
+    <target name="project-subsite-backup" hidden="true"  description="Backup site defined files from properties.">
         <if>
             <available file="${build.subsite.dir}/settings.php" type="file" />
             <then>
@@ -368,7 +368,7 @@
         </if>
     </target>
 
-    <target name="project-platform-backup" description="Backup site defined files from properties.">
+    <target name="project-platform-backup" hidden="true" description="Backup site defined files from properties.">
         <if>
             <available file="${build.subsite.dir}/settings.php" type="file" />
             <then>
@@ -474,7 +474,7 @@
         </if>
     </target>
 
-    <target name="project-subsite-restore" description="Restore site defined files from properties.">
+    <target name="project-subsite-restore" hidden="true" description="Restore site defined files from properties.">
         <if>
             <available file="${rebuild.backup.destination}" type="dir" />
             <then>
@@ -518,7 +518,7 @@
         </if>
     </target>
 
-    <target name="project-platform-restore" description="Restore site defined files from properties.">
+    <target name="project-platform-restore" hidden="true" description="Restore site defined files from properties.">
         <if>
             <available file="${rebuild.backup.destination}" type="dir" />
             <then>
@@ -571,7 +571,7 @@
                 </replaceregexp>
             </filterchain>
         </property>
-        
+
         <if>
             <available file="${site-item-backup}" type="${site-item-type}" />
             <then>
@@ -605,7 +605,7 @@
         </if>
     </target>
 
-    <target name="project-subsite-files-setup" description="Create files directories for subsite.">
+    <target name="project-subsite-files-setup" hidden="true" description="Create files directories for subsite.">
         <if>
             <istrue value="${build.subsite.dir.files}" />
             <then>
@@ -617,7 +617,7 @@
         </if>
     </target>
 
-    <target name="project-modules-devel-make" description="Makes the development resources with drush.">
+    <target name="project-modules-devel-make" hidden="true" description="Makes the development resources with drush.">
         <echo msg="Make the development resources." />
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${resources.dir.devel.make}" />
@@ -626,13 +626,13 @@
         </phingcall>
     </target>
 
-    <target name="project-modules-devel-en" description="Enable development modules with drush.">
+    <target name="project-modules-devel-en" hidden="true" description="Enable development modules with drush.">
         <phingcall target="drush-modules-enable">
             <property name="project.drupal.modules" value="${devel.mdls.en}" />
         </phingcall>
     </target>
 
-    <target name="project-modules-devops-dl" description="Download and unpack fpfis resource package.">
+    <target name="project-modules-devops-dl" hidden="true" description="Download and unpack fpfis resource package.">
         <mkdir dir="${share.path.platform.packages.deploy}" />
         <phingcall target="package-download-unpack">
             <property name="package-name" value="${platform.package.version.major}.${platform.package.version.minor}.tar.gz" />
@@ -643,20 +643,20 @@
         </phingcall>
     </target>
 
-    <target name="project-modules-install-en" description="Install list of modules to enable by default.">
+    <target name="project-modules-install-en" hidden="true" description="Install list of modules to enable by default.">
         <phingcall target="drush-modules-enable">
             <property name="project.drupal.modules" value="${project.install.modules}" />
         </phingcall>
     </target>
 
-    <target name="project-platform-composer-dev" description="Run composer install with dev on platform.">
+    <target name="project-platform-composer-dev" hidden="true" description="Run composer install with dev on platform.">
         <echo msg="Run 'composer install' in platform root." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
         </phingcall>
     </target>
 
-    <target name="project-platform-composer-no-dev" description="Run composer install without dev on platform.">
+    <target name="project-platform-composer-no-dev" hidden="true" description="Run composer install without dev on platform.">
         <echo msg="Run 'composer install' in platform root." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.platform.dir}" override="true" />
@@ -664,11 +664,11 @@
         </phingcall>
     </target>
 
-    <target name="project-platform-set-docroot" description="Link the platform root to your docroot.">
+    <target name="project-platform-set-docroot" hidden="true" description="Link the platform root to your docroot.">
         <relsym link="${project.docroot}" target="${build.platform.dir}" overwrite="true" />
     </target>
 
-     <target name="project-properties-validate" description="Validate the build properties file." >
+     <target name="project-properties-validate" hidden="true" description="Validate the build properties file." >
         <propval source="build.project.props" required="${toolkit.dir.incl.phing.props}/required.props" haltonerror="${build.haltonerror.props.validate}" logoutput="true" />
     </target >
 
@@ -700,7 +700,7 @@
         <phingcall target="project-modules-devel-en" />
     </target>
 
-    <target name="project-subsite-composer-no-dev" description="Run composer install without dev on subsite.">
+    <target name="project-subsite-composer-no-dev" hidden="true" description="Run composer install without dev on subsite.">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.tmp.dir}" override="true" />
@@ -708,7 +708,7 @@
         </phingcall>
     </target>
 
-    <target name="project-subsite-composer-dev" description="Run composer install with dev on subsite.">
+    <target name="project-subsite-composer-dev" hidden="true" description="Run composer install with dev on subsite.">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.subsite.dir}" />

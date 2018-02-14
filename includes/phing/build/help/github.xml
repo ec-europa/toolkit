@@ -2,7 +2,7 @@
 
 <project name="github" description="Contains phing targets for github." default="">
 
-    <target name="github-auth" description="Authenticate on GitHub.">
+    <target name="github-auth" hidden="true" description="Authenticate on GitHub.">
         <if>
             <or>
                 <equals arg1="${github.auth}" arg2="http-toekn" />
@@ -22,7 +22,7 @@
         </if>
     </target>
 
-    <target name="github-create-release" description="Create release on GitHub."
+    <target name="github-create-release" hidden="true" description="Create release on GitHub."
         depends="
             github-auth,
             github-init">
@@ -32,7 +32,7 @@
             releaseId="release" />
     </target>
 
-    <target name="github-create-release-assets" description="Upload release assets to github."
+    <target name="github-create-release-assets" hidden="true" description="Upload release assets to github."
         depends="
             github-auth,
             github-init,
@@ -44,7 +44,7 @@
         </gh-create-assets>
     </target>
 
-    <target name="github-init" description="Initialize credentials and target."
+    <target name="github-init" hidden="true" description="Initialize credentials and target."
         depends="
             github-init-owner,
             github-init-repo" />

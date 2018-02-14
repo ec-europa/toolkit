@@ -9,7 +9,7 @@
         <echo msg="Finished clearing all caches." />
     </target>
 
-    <target name="cache-clear-global" description="Delete all files stored in global cache.">
+    <target name="cache-clear-global" hidden="true" description="Delete all files stored in global cache.">
         <if>
             <available file="${share.path.global}" type="dir" />
             <then>
@@ -20,7 +20,7 @@
         </if>
     </target>
 
-    <target name="cache-clear-local" description="Delete all files stored in local cache.">
+    <target name="cache-clear-local" hidden="true" description="Delete all files stored in local cache.">
         <if>
             <available file="${project.tmp.dir}" type="dir" />
             <then>

@@ -179,21 +179,20 @@ class PhingHelpTask extends \Task
                 }
 
                 if (count($target) > 0) {
-                  $table->addRow(new TableSeparator());
-                  $table->addRow(
-                      array(
-                          new TableCell(
-                              $buildList[$file]['name'],
-                              array('colspan' => 3)
-                          )
-                      )
-                  );
-                  $table->addRow(new TableSeparator());
                   $table->addRows($target);
                 }
             }
         }
 
+        $table->addRow(new TableSeparator());
+        $table->addRow(
+            array(
+                new TableCell(
+                    "Note: to consult the full list please type toolkit/phing -l.",
+                    array('colspan' => 3)
+                )
+            )
+        );
         $table->render();
 
     }//end printBuildTargets()
