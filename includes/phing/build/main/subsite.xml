@@ -28,26 +28,26 @@
         <echo msg="Playbook for build-subsite-dist ended." />
     </target>
 
-    <target name="build-subsite-test" description="Build a subsite test package to test this release.">
+    <target name="build-subsite-test" hidden="true" description="Build a subsite test package to test this release.">
         <echo msg="Build a subsite test package to test this reslease." />
         <phingcall target="build-project-test">
             <property name="dir-build" value="${tests.dir}" override="true" />
         </phingcall>
     </target>
 
-    <target name="subsite-delete-dev" description="Delete subsite dev build.">
+    <target name="subsite-delete-dev" hidden="true" description="Delete subsite dev build.">
         <phingcall target="project-scratch-build">
             <property name="dir-build" value="${build.${build-type}.dir}" override="true" />
         </phingcall>
     </target>
 
-    <target name="subsite-delete-dist" description="Delete subsite dist build.">
+    <target name="subsite-delete-dist" hidden="true" description="Delete subsite dist build.">
         <delete dir="${build.tmp.dir}" includeemptydirs="true" />
         <delete dir="${build.dist.dir}" includeemptydirs="true" />
         <mkdir dir="${build.tmp.dir}" />
     </target>
 
-    <target name="subsite-make" description="Makes the subsite resources with drush.">
+    <target name="subsite-make" hidden="true" description="Makes the subsite resources with drush.">
         <echo msg="Make the subsite." />
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${resources.dir.site.make}" />
@@ -57,7 +57,7 @@
         </phingcall>
     </target>
 
-    <target name="subsite-package" description="Build a subsite package in the releases folder.">
+    <target name="subsite-package" hidden="true" description="Build a subsite package in the releases folder.">
         <echo msg="Build a subsite package in releases folder." />
         <tar destfile="${project.id}.tar.gz" compression="gzip">
             <fileset dir="${build.${build-type}.dir}">
@@ -69,7 +69,7 @@
         </tar>
     </target>
 
-    <target name="subsite-release" description="Uploads the distribution package as release to github.">
+    <target name="subsite-release" hidden="true" description="Uploads the distribution package as release to github.">
         <php expression="'test-' . rand();" returnProperty="random"/>
         <phingcall target="github-create-release-assets">
             <property name="github-tag-name" value="${random}" override="true" />
@@ -77,7 +77,7 @@
         </phingcall>
     </target>
 
-    <target name="subsite-resources-copy" description="Copy subsite resources for distribution.">
+    <target name="subsite-resources-copy" hidden="true" description="Copy subsite resources for distribution.">
         <echo msg="Copy custom resources." />
 
         <copy todir="${build.${build-type}.dir}">
@@ -85,29 +85,29 @@
         </copy>
     </target>
 
-    <target name="subsite-resources-link" description="Link subsite resources to lib folder for development.">
+    <target name="subsite-resources-link" hidden="true" description="Link subsite resources to lib folder for development.">
         <symlink-property-contents prefix="lib.dir." origindir="${lib.dir}" targetdir="${build.${build-type}.dir}" overwrite="true" />
         <symlink-property-contents prefix="resources.dir.composer." origindir="${resources.dir}" targetdir="${build.${build-type}.dir}" overwrite="true" />
         <relsym link="${build.${build-type}.dir}/composer.json" target="${resources.dir.composer.json}" />
         <relsym link="${build.${build-type}.dir}/composer.lock" target="${resources.dir.composer.lock}" />
     </target>
 
-    <target name="subsite-release-package" description="Build a subsite release package for deployment."
+    <target name="subsite-release-package" hidden="true" description="Build a subsite release package for deployment."
         depends="
             build-subsite-dist">
         <mkdir dir="${project.release.path}" />
         <exec command="tar -czf ${project.release.path}/${project.release.name}.tar.gz ${build.dist}" />
     </target>
 
-    <target name="subsite-type-dev" description="Sets the type of build (dev or dist).">
+    <target name="subsite-type-dev" hidden="true" description="Sets the type of build (dev or dist).">
         <property name="build-type" value="subsite" override="true" />
     </target>
 
-    <target name="subsite-type-dist" description="Sets the type of build (dev or dist).">
+    <target name="subsite-type-dist" hidden="true" description="Sets the type of build (dev or dist).">
         <property name="build-type" value="dist" override="true" />
     </target>
 
-    <target name="subsite-type-tmp" description="Sets the type of build to tmp.">
+    <target name="subsite-type-tmp" hidden="true" description="Sets the type of build to tmp.">
         <property name="build-type" value="tmp" override="true" />
     </target>
 

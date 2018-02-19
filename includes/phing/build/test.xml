@@ -12,8 +12,35 @@
         </fileset>
     </import>
 
+    <!-- Run full functional testing with behat. -->
+    <target
+        name="test-run-behat"
+        description="Refresh configuration and run behat scenarios."
+        depends="
+            test-behat-setup,
+            test-composer-install">
+        <echo msg="Starting testing..." level="info" />
+        <foreach param="dirname" absparam="absname" target="test-behat-exec">
+            <fileset dir="${behat.dir}">
+                <include name="**.yml"/>
+            </fileset>
+        </foreach>
+
+        <!-- Run all provided behat configuration tests -->
+        <if>
+            <equals arg1="${behat.generic.package.enable}" arg2="1" />
+            <then>
+                <foreach param="dirname" absparam="absname" target="test-behat-exec">
+                    <fileset dir="${behat.dir}/vendor/${behat.generic.package}">
+                        <include name="**.yml"/>
+                    </fileset>
+                </foreach>
+            </then>
+        </if>
+    </target>
+
     <!-- Compare current install against production. -->
-    <target name="test-run-backtrac" description="Compare current install against production.">
+    <target name="test-run-backtrac" hidden="true" description="Compare current install against production.">
         <backtrac-set-url environment="dev" url="${project.url.base}" project_id="${project.backtrac.id}" auth_token="${backtrac.token}" />
         <backtrac-compare compare_mode="compare_prod_dev" project_id="${project.backtrac.id}" auth_token="${backtrac.token}" />
     </target>
@@ -38,6 +65,7 @@
     <!-- Run a full static analysis qa console. -->
     <target
         name="test-run-qa"
+        hidden="true"
         description="Refresh configuration and run qa review."
         depends="
             test-phpcs-setup,
@@ -97,7 +125,7 @@
     </target>
 
     <!-- Do quality assurance checks. -->
-    <target name="test-qa-exec">
+    <target name="test-qa-exec" hidden="true">
         <exec
             command="${toolkit.dir.bin}/qa \
                 review:full \

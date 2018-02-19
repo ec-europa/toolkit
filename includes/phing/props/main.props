@@ -69,11 +69,12 @@ db.prefix =
 # Solr configuration.
 # -------------------
 solr.enable = 1
+solr.scheme = http
 solr.host = 127.0.0.1
 solr.port = 8983
+solr.path = /solr
 solr.type = d7_apachesolr
-solr.scheme = http
-solr.url = ${solr.scheme}://${solr.host}:${solr.port}/solr/${solr.type}
+solr.url = ${solr.scheme}://${solr.host}:${solr.port}${solr.path}/${solr.type}
 
 # Admin configuration.
 # --------------------
@@ -240,5 +241,5 @@ drush.alias.docker = docker
 
 # Drupal installation settings.
 # ----------------------------
-drupal.update.free.access = false
+drupal.update.free.access = FALSE
 drupal.hash.salt =
