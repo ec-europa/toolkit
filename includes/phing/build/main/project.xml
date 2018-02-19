@@ -91,7 +91,7 @@
         </if>
 
         <phingcall target="project-modules-install-en" />
-
+        <phingcall target="reset-filesystem-permissions" />
         <phingcall target="drush-node-access-rebuild" />
     </target>
 
@@ -100,6 +100,7 @@
             drush-settings-generate,
             project-database-import,
             project-modules-devel-en,
+            reset-filesystem-permissions,
             drush-cache-reset" />
 
     <target name="project-composer-install" description="Runs composer install."
