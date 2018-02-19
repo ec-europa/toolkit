@@ -158,8 +158,8 @@ class PhpCodeSnifferConfigurationTask extends \Task
 
         // Add the shorthand options.
         $shorthand_options = array(
-            'p' => 'showProgress',
-            's' => 'showSniffCodes',
+            'p' => '_showProgress',
+            's' => '_showSniffCodes',
         );
 
         $options = array_filter(
