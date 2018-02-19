@@ -4,34 +4,6 @@
 
     <property file="${phing.dir.behat}/behat.props" logoutput="false" />
 
-    <!-- Run full functional testing with behat. -->
-    <target
-        name="test-run-behat"
-        description="Refresh configuration and run behat scenarios."
-        depends="
-            test-behat-setup,
-            test-composer-install">
-        <echo msg="Starting testing..." level="info" />
-        <foreach param="dirname" absparam="absname" target="test-behat-exec">
-            <fileset dir="${behat.dir}">
-                <include name="**.yml"/>
-            </fileset>
-        </foreach>
-
-        <!-- Run all provided behat configuration tests -->
-        <if>
-            <equals arg1="${behat.generic.package.enable}" arg2="1" />
-            <then>
-                <foreach param="dirname" absparam="absname" target="test-behat-exec">
-                    <fileset dir="${behat.dir}/vendor/${behat.generic.package}">
-                        <include name="**.yml"/>
-                    </fileset>
-                </foreach>
-            </then>
-        </if>
-    </target>
-
-
     <!-- Run Behat tests. -->
     <target name="test-behat-exec">
         <behat
