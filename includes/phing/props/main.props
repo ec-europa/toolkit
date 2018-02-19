@@ -240,5 +240,5 @@ drush.alias.docker = docker
 
 # Drupal installation settings.
 # ----------------------------
-drupal.update.free.access = false
+drupal.update.free.access = FALSE
 drupal.hash.salt =
