@@ -184,15 +184,6 @@ class PhingHelpTask extends \Task
             }
         }
 
-        $table->addRow(new TableSeparator());
-        $table->addRow(
-            array(
-                new TableCell(
-                    "Note: to consult the full list please type toolkit/phing -l.",
-                    array('colspan' => 3)
-                )
-            )
-        );
         $table->render();
 
     }//end printBuildTargets()
