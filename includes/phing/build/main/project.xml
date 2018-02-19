@@ -91,6 +91,7 @@
         </if>
 
         <phingcall target="project-modules-install-en" />
+        <phingcall target="project-modules-devel-en" />
         <phingcall target="reset-filesystem-permissions" />
         <phingcall target="drush-node-access-rebuild" />
     </target>
@@ -698,7 +699,6 @@
                 <echo msg="Proceeding with re-generation of the settings.php." />
             </else>
         </if>
-        <phingcall target="project-modules-devel-en" />
     </target>
 
     <target name="project-subsite-composer-no-dev" hidden="true" description="Run composer install without dev on subsite.">
