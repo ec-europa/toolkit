@@ -16,6 +16,16 @@
             checkreturn="true"
         />
     </target>
+    
+        <!-- Set up Behat balancer. -->
+    <target name="test-behat-split">
+        <behat:balancer
+            containers="${behat.load_balancer.containers}"
+            root="${behat.load_balancer.root}"
+            destination="${behat.load_balancer.destination}"
+            import="${behat.load_balancer.import}"
+        />
+    </target>
 
     <!-- Set up Behat. -->
     <target name="test-behat-setup">
