@@ -224,7 +224,7 @@
 
     <target name="drush-sql-create" hidden="true" description="Create a database.">
         <echo message="Creating database ${db.name}." />
-        <drush command="sql-create" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+        <drush command="sql-create" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
         </drush>
     </target>
@@ -232,7 +232,7 @@
     <target name="drush-sql-import" hidden="true" description="Import a database.">
         <echo message="Importing database." />
         <phingcall target="drush-files-dirs-create" />
-        <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+        <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
         <phingcall target="drush-registry-rebuild" />
@@ -246,7 +246,7 @@
 
     <target name="drush-sql-drop" hidden="true" description="Drop a database.">
         <echo message="Dropping database ${db.name}." />
-        <drush command="sql-drop" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+        <drush command="sql-drop" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
         </drush>
     </target>
@@ -255,7 +255,7 @@
         <echo message="Backing up database ${db.name} to ${database-file}." />
         <dirname property="database-cachedir" file="${database-file}" />
         <mkdir dir="${database-cachedir}" />
-        <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+        <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="result-file" value="${database-file}" />
         </drush>
     </target>
