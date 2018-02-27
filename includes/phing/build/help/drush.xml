@@ -210,10 +210,9 @@
         <if>
             <equals arg1="${solr.enable}" arg2="1" />
             <then>
-                <propertyregex property="solr.module" subject="${solr.type}" pattern="d7_(.*)" match="$1" casesensitive="true" defaultvalue="apachesolr"/>
-                <echo message="Enabling ${solr.module} for ${db.name}." />
+                <echo message="Enable apachesolr for ${db.name}." />
                 <phingcall target="drush-modules-enable">
-                    <property name="project.drupal.modules" value="${solr.module}" />
+                    <property name="project.drupal.modules" value="apachesolr" />
                 </phingcall>
                 <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
                 <drush command="solr-set-env-url" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
@@ -262,3 +261,4 @@
     </target>
 
 </project>
+
