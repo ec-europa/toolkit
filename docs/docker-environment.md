@@ -2,8 +2,16 @@
 
 <big><table><thead><tr><th nowrap> [Using Git hooks](./git-hooks.md#using-git-hooks) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [NextEuropa Toolkit](../README.md#nexteuropa-toolkit) </th></tr></thead></table>
 
-The toolkit allows comes with a docker environment that can help you set up an
-environment much faster. This feature is still experimental and in progress.
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=cwGZilB3BjQ
+" target="_blank"><img src="http://img.youtube.com/vi/cwGZilB3BjQ/0.jpg" 
+alt="Upgrade screencast" width="240" height="135" align="left" /></a>
+
+The toolkit comes with a docker environment that can help you set up your project
+much faster. This feature is still experimental and in progress. You can watch a
+very short screencast on how to use this docker environment. It makes use of a
+docker-compose.yml with custom FPFIS images. If
+[the provided docker-compose.yml](../includes/docker/docker-compose.yml)
+does meet your needs we advise you to customize it.
 
 ## How it works
 
