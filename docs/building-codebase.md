@@ -62,6 +62,12 @@ the `./toolkit/phing build-platform` command.
 
 ## Subsite builds
 
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=xmiqSKByduE
+" target="_blank"><img src="http://img.youtube.com/vi/xmiqSKByduE/0.jpg" 
+alt="Upgrade screencast" width="240" height="135" align="left" /></a>
+
+Short screencast video on how to set up a subsite codebase.
+
 <details><p><summary>execute <code>./toolkit/phing build-subsite</code></summary></p>
 
 This build downloads and unpacks the latest released subsite deploy package and
