@@ -98,6 +98,7 @@
 
     <target name="install-clone" description="Install NextEuropa site with sanitized production data."
         depends="
+            drush-aliases-generate,
             drush-settings-generate,
             project-database-import,
             project-modules-devel-en,
