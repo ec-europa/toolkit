@@ -142,9 +142,16 @@
                 <phingcall target="drush-registry-rebuild-dl" />
             </catch>
             <finally>
-                <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
-                    <param>${drush.rr.options}</param>
-                </drush>
+                <try>
+                    <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+                        <param>--fire-bazooka</param>
+                    </drush>
+                </try>
+                <catch>
+                    <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+                        <param>--fire-bazooka</param>
+                    </drush>
+                </catch>
             </finally>
         </trycatch>
     </target>
@@ -261,4 +268,3 @@
     </target>
 
 </project>
-
