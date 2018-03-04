@@ -145,12 +145,12 @@
                 <trycatch>
                     <try>
                         <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
-                            <param>--fire-bazooka</param>
+                            <param>${drush.rr.options}</param>
                         </drush>
                     </try>
                     <catch>
                         <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
-                            <param>--fire-bazooka</param>
+                            <param>${drush.rr.options}</param>
                         </drush>
                     </catch>
                 </trycatch>
