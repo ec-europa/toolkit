@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7b6216dfbbb3f4d98fa743e0f495891",
+    "content-hash": "7ce4ac60ce62298de8cc29119c4b0235",
     "packages": [
         {
             "name": "consolidation/annotated-command",
@@ -511,16 +511,16 @@
         },
         {
             "name": "ec-europa/backtrac-php-client",
-            "version": "0.1.7",
+            "version": "0.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/backtrac-php-client.git",
-                "reference": "ff208765a3ad73edd56d44ae92b224a0b82f014e"
+                "reference": "772bae8213697b81c65b8c18fc370dbb7e1c73be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/backtrac-php-client/zipball/ff208765a3ad73edd56d44ae92b224a0b82f014e",
-                "reference": "ff208765a3ad73edd56d44ae92b224a0b82f014e",
+                "url": "https://api.github.com/repos/ec-europa/backtrac-php-client/zipball/772bae8213697b81c65b8c18fc370dbb7e1c73be",
+                "reference": "772bae8213697b81c65b8c18fc370dbb7e1c73be",
                 "shasum": ""
             },
             "require": {
@@ -544,7 +544,7 @@
             "license": [
                 "EUPL-1.1"
             ],
-            "time": "2018-03-05T05:04:38+00:00"
+            "time": "2018-03-05T05:27:34+00:00"
         },
         {
             "name": "guzzle/guzzle",
