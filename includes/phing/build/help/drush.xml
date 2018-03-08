@@ -142,9 +142,18 @@
                 <phingcall target="drush-registry-rebuild-dl" />
             </catch>
             <finally>
-                <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
-                    <param>--fire-bazooka</param>
-                </drush>
+                <trycatch>
+                    <try>
+                        <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+                            <param>${drush.rr.options}</param>
+                        </drush>
+                    </try>
+                    <catch>
+                        <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+                            <param>${drush.rr.options}</param>
+                        </drush>
+                    </catch>
+                </trycatch>
             </finally>
         </trycatch>
     </target>
@@ -188,6 +197,13 @@
         </drush>
         <drush command="cc" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
             <param>drush</param>
+        </drush>
+    </target>
+
+    <target name="drush-uris-generate" description="Generate list of uris.">
+        <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>${toolkit.dir.incl.drush}/generate-uris.php</param>
+            <param>${backtrac.file}</param>
         </drush>
     </target>
 

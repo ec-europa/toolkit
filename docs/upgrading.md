@@ -2,7 +2,7 @@
    
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=cwGZilB3BjQ
 " target="_blank"><img src="http://img.youtube.com/vi/cwGZilB3BjQ/0.jpg" 
-alt="Upgrade screencast" width="50%" align="left" /></a>
+alt="Upgrade screencast" width="240" height="135" align="left" /></a>
 
 This screencast explains how to upgrade a subsite-starterkit based project to
 the composer package based toolkit. To complete the upgrade you need to execute

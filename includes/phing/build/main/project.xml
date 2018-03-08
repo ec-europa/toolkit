@@ -47,7 +47,7 @@
     <target name="install-clean" description="Install NextEuropa site from scratch.">
         <exec command="chmod 775 ${build.platform.dir.settings}" />
 
-
+        <phingcall target="drush-aliases-generate" />
         <phingcall target="drush-sql-create" />
 
         <if>
@@ -98,6 +98,7 @@
 
     <target name="install-clone" description="Install NextEuropa site with sanitized production data."
         depends="
+            drush-aliases-generate,
             drush-settings-generate,
             project-database-import,
             project-modules-devel-en,
