@@ -200,6 +200,13 @@
         </drush>
     </target>
 
+    <target name="drush-uris-generate" description="Generate list of uris.">
+        <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>${toolkit.dir.incl.drush}/generate-uris.php</param>
+            <param>${backtrac.file}</param>
+        </drush>
+    </target>
+
     <target name="drush-site-install" hidden="true" description="Install a site.">
         <echo message="Installing site ${project.name}." />
         <drush command="site-install" assume="yes" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${drush.alias.default}" verbose="${drush.verbose}" color="${drush.color}">

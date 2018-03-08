@@ -6,12 +6,10 @@
         depends="
             project-subsite-backup,
             platform-type-dev,
-            platform-delete,
             platform-drupal-make,
             platform-profiles-link,
             platform-profiles-make,
             platform-resources-link,
-            build-theme-dev,
             project-platform-composer-no-dev,
             project-modules-devel-make,
             project-platform-set-htaccess,
@@ -21,7 +19,6 @@
     <target name="build-platform-dev-all" hidden="true" description="Build a local development version with all platform profiles."
         depends="
             platform-type-dev,
-            platform-delete,
             platform-drupal-make,
             platform-profiles-copy,
             platform-profiles-make,
@@ -31,7 +28,6 @@
     <target name="build-platform-dist" hidden="true" description="Build a single platform profile intended as a release package."
         depends="
             platform-type-dist,
-            platform-delete,
             platform-drupal-make,
             platform-profile-copy,
             platform-profile-make,
@@ -41,7 +37,6 @@
     <target name="build-platform-dist-all" hidden="true" description="Build all platform profiles intended as a release package."
         depends="
             platform-type-dist,
-            platform-delete,
             platform-drupal-make,
             platform-profiles-copy,
             platform-profiles-make,
