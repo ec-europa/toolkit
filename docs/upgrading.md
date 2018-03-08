@@ -103,6 +103,10 @@ provided your own you can checkout your own tests again.
 > git checkout master ./tests
 >```
 
+If you wish to use your previous tests on the toolkit you must make sure all property
+names match the ones of toolkit. And change the token style from:
+e.g. `${platform.build.dir} => {{ build.platform.dir }}`
+
 After you have made sure all is working correctly you can commit and push your
 upgrade. When it's ready for review create a pull request to the reference
 repository and a MULTISITE ticket so it can be QA'ed.
