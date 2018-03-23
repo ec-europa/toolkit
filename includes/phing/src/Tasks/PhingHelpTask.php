@@ -21,6 +21,7 @@ use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Target;
+use Project;
 
 /**
  * A Phing help.

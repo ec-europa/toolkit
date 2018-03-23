@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="PHPCS" default="test-run-phpcs">
+<project name="PHPCS" description="Contains all PHPCS testing targets."  default="test-run-phpcs">
 
     <property file="${phing.dir.phpcs}/phpcs.props" logoutput="false" />
 
+
+    <!-- Run a full static analysis with phpcs. -->
+    <target
+        name="test-run-phpcs"
+        description="Refresh configuration and run phpcs review."
+        depends="
+            test-phpcs-setup,
+            test-phpcs-exec" />
+
     <!-- Do quality assurance checks. -->
-    <target name="test-phpcs-exec">
+    <target name="test-phpcs-exec" hidden="true">
         <exec
             command="${toolkit.dir.bin}/phpcs"
             passthru="true"
@@ -14,7 +23,7 @@
     </target>
 
     <!-- Set up PHP CodeSniffer. -->
-    <target name="test-phpcs-setup" depends="test-phpcs-setup-prepush">
+    <target name="test-phpcs-setup" depends="test-phpcs-setup-prepush" hidden="true">
         <delete file="${phpcs.config}" failonerror="false" />
         <phpcsconf
             configFile="${phpcs.config}"
@@ -34,7 +43,7 @@
     </target>
 
     <!-- Setup the PHP CodeSniffer pre-push hook. -->
-    <target name="test-phpcs-setup-prepush">
+    <target name="test-phpcs-setup-prepush" hidden="true">
         <if>
             <equals arg1="${phpcs.prepush.enable}" arg2="1" />
             <then>

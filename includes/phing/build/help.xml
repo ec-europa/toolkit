@@ -10,11 +10,6 @@
     <import file="${phing.dir.help}/help/github.xml" />
     <import file="${phing.dir.help}/help/toolkit.xml" />
 
-    <import file="${phing.dir.help}/main/subsite.xml" />
-    <import file="${phing.dir.help}/main/project.xml" />
-    <import file="${phing.dir.help}/main/platform.xml" />
-    <import file="${phing.dir.help}/main/theme.xml" />
-
     <!-- Check if site exists. -->
     <if>
         <available file="${build.settings.dir}/settings.php" type="file" />
