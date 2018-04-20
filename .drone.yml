@@ -5,59 +5,94 @@ workspace:
 matrix:
   PHING_OPTS:
     - -logger phing.listener.AnsiColorLogger
-  DOCKER_PROPS:
-    - TOOLKIT_ENV_PROPS=/test/toolkit/includes/phing/props/docker.props
+
 services:
   web:
     image: fpfis/php56-dev
     environment:
       - DOCUMENT_ROOT=/test/toolkit/build
-  mysql:
-    image: fpfis/mysql56
-  selenium:
-    image: selenium/standalone-chrome
-    environment:
-      - SE_OPTS=-log /tmp/selenium.log
-  solr:
-    image: fpfis/solr5
 
 pipeline:
-  toolkit:
+
+  # Install toolkit and load drone props.
+  setup:
     image: fpfis/php56-dev
-    environment:
-      - ${DOCKER_PROPS}
+    group: setup
     commands:
       - PROJECT=$(pwd) composer toolkit-install
+      - cp ./includes/phing/props/drone.props build.develop.props
       - ./toolkit/phing project-properties-validate ${PHING_OPTS}
     volumes:
-      - /cache:/cache
+      - /cache/${DRONE_REPO_NAME}:/cache
 
+  # Start tunnel for easy access to build.
+  tunnel:
+    image: fpfis/drone-frpc-plugin:latest
+    group: setup
+    detach: true
+    secrets: [ frpc_token, frpc_server ]
+    environment:
+      - PLUGIN_ENDPOINT=web:8080
+      - PLUGIN_GEN_AUTH=yes
+      - PLUGIN_DOMAIN=${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}.ci.fpfis.tech.ec.europa.eu
+      - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
+
+  # Build platform and subsite.
   build:
     image: fpfis/php56-dev
-    environment:
-      - ${DOCKER_PROPS}
+    group: build
     commands:
-      - ./toolkit/phing build-platform ${PHING_OPTS}
-      - ./toolkit/phing build-subsite-dev ${PHING_OPTS}
+      - ./toolkit/phing build-platform build-subsite-dev ${PHING_OPTS}
     volumes:
-      - /cache:/cache
-      - /cache/share:/tmp/toolkit
+      - /cache/${DRONE_REPO_NAME}:/cache
 
+  # Start solr in detached mode in preperation for install.
+  mysql:
+    image: fpfis/mysql56
+    group: build
+    detach: true
+
+  # Start solr in detached mode in preperation for install.
+  solr:
+    image: fpfis/solr5
+    group: build
+    detach: true
+
+  # Start clean installation of subsite.
   install:
     image: fpfis/php56-dev
-    environment:
-      - ${DOCKER_PROPS}
+    group: install
     commands:
       - ./toolkit/phing install-clean ${PHING_OPTS}
     volumes:
-      - /cache:/cache
-      - /cache/share:/tmp/toolkit
+      - /cache/${DRONE_REPO_NAME}:/cache
 
-  test:
+  # Start selenium in detached mode for behat usage.
+  selenium:
+    image: selenium/standalone-chrome
+    group: install
+    detach: true
+
+  # Run default behat tests.
+  behat:
     image: fpfis/php56-dev
-    environment:
-      - ${DOCKER_PROPS}
     commands:
       - ./toolkit/phing test-run-behat ${PHING_OPTS}
     volumes:
-      - /cache:/cache
+      - /cache/${DRONE_REPO_NAME}:/cache
+
+  # Send notification to slack.
+  slack:
+    image: plugins/slack
+    channel: ci
+    username: Subsite-QA
+    icon_url: https://www.drupal.org/files/examples_meatwad256.png
+    secrets: [ slack_webhook ]
+    when:
+      status: [ success, failure ]
+    template: >
+      {{#success build.status}}
+        {{repo.name}}@{{build.branch}} <{{build.link}}|passed> all subsite tests.
+      {{else}}
+        {{repo.name}}@{{build.branch}} <{{build.link}}|failed> subsite tests.
+      {{/success}}
