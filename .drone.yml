@@ -77,7 +77,7 @@ pipeline:
     image: fpfis/php56-build
     secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
     commands:
-      - ./toolkit/phing test-run-backtrac -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='snapshot' ${PHING_OPTS}
+      - ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='snapshot' ${PHING_OPTS}
 
   # Start clone installation of subsite.
   install-clone:
@@ -95,7 +95,7 @@ pipeline:
     group: prebehat
     secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
     commands:
-      - ./toolkit/phing test-run-backtrac -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='compare_itself' ${PHING_OPTS}
+      - ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='compare_itself' ${PHING_OPTS}
 
   # Start selenium in detached mode for behat usage.
   selenium:
