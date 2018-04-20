@@ -24,6 +24,7 @@ pipeline:
     group: setup
     commands:
       - PROJECT=$(pwd) composer toolkit-install
+      - rm -rf ./.tmp/ ./build
       - cp ./includes/phing/props/drone.props build.develop.props
       - ./toolkit/phing project-properties-validate ${PHING_OPTS}
     volumes:
