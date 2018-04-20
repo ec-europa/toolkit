@@ -9,8 +9,8 @@
 
     <!-- Compare current install against production. -->
     <target name="test-run-backtrac" hidden="true" description="Compare current install against production.">
-        <backtrac-set-url environment="${backtrac.env}" url="${project.url.base}" project_id="${project.backtrac.id}" auth_token="${backtrac.token}" />
-        <backtrac-compare compare_mode="compare_prod_dev" project_id="${project.backtrac.id}" auth_token="${backtrac.token}" />
+        <backtrac-set-url secure="${backtrac.secure}" environment="${backtrac.env}" url="${project.url.base}" project_id="${project.backtrac.id}" auth_token="${backtrac.token}" />
+        <backtrac-compare secure="${backtrac.secure}" compare_mode="compare_prod_dev" project_id="${project.backtrac.id}" auth_token="${backtrac.token}" />
     </target>
 
     <!-- Run a full static analysis qa console. -->
