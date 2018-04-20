@@ -64,11 +64,20 @@ pipeline:
     detach: true
 
   # Start clean installation of subsite.
-  install:
+  install-clean:
+    image: fpfis/php56-dev
+    commands:
+      - ./toolkit/phing install-clean ${PHING_OPTS}
+      - ./toolkit/phing drush-sql-dump -D'database-file'='${project.db.file}' ${PHING_OPTS}
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+
+  # Start clean installation of subsite.
+  install-clone:
     image: fpfis/php56-dev
     group: install
     commands:
-      - ./toolkit/phing install-clean ${PHING_OPTS}
+      - ./toolkit/phing install-clone ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
