@@ -251,5 +251,6 @@ drupal.hash.salt =
 # Bactrack configuration
 # ----------------------------
 backtrac.file = ${project.tmp.dir}/bactrack.json
+backtrac.compare.mode = compare_itself
 
 
