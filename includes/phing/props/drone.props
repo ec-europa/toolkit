@@ -1,8 +1,8 @@
-# Drone integration
-# -----------------
+# ------------------------------------------------------------------------------
 # Default properties for toolkit pipeline on Drone:
 # https://github.com/ec-europa/ne-pipelines/blob/master/drone/toolkit.yml
-# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 db.host = mysql
 solr.host = solr
 behat.base_url = http://web:8080

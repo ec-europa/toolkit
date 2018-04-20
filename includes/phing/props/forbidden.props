@@ -1,3 +1,7 @@
+# ------------------------------------------------------------------------------
+# Properties not to be altered. Doing so may have unintended consequences.
+# ------------------------------------------------------------------------------
+
 # Starterkit directories.
 # -----------------------
 toolkit.dir = ${phing.dir.starterkit}

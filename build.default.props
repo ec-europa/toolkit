@@ -1,8 +1,8 @@
 # Toolkit location: ./includes/phing/build/boot.props
-# -----------------------------------------------------------------------------------
-# These are the toolkit paths that should not be altered. Altering paths here have a
-# good chance of breaking things.
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# These are the toolkit paths that should not be altered. Altering paths here 
+# have a good chance of breaking things.
+# ------------------------------------------------------------------------------
 
 # Toolkit directories.
 # -----------------------
@@ -29,9 +29,9 @@ toolkit.dir.bin.phing = ${toolkit.dir.bin}/phing
 
 
 # Toolkit location: ./includes/phing/build/test/phpunit.props
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # PHPUnit sprecific configuration
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # The location of the PHPUnit executable.
 phpunit.bin = ${tests.dir}/bin/phpunit
@@ -50,9 +50,9 @@ phpunit.base_url = ${behat.base_url}
 
 
 # Toolkit location: ./includes/phing/build/test/phpcs.props
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # PHPCS sprecific configuration
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # The file extensions to test.
 # Delimited by space, comma or semicolon.
@@ -98,9 +98,9 @@ phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpc
 
 
 # Toolkit location: ./includes/phing/build/test/behat.props
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Behat sprecific configuration
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # Browser name for selenium.
 behat.browser.name = chrome
@@ -159,15 +159,18 @@ behat.generic.package = jonhy81/toolkit-behat
 # Specify a tags for the behat scenarios to run.
 behat.tags = ~@wip
 # Toolkit location: ./includes/phing/props/docker.props
-# Docker integration
-# ------------------
+# ------------------------------------------------------------------------------
+# Default docker (fpfis) properties.
+# ------------------------------------------------------------------------------
+
 db.host = mysql
 solr.host = solr
 behat.base_url = http://web:8080
 behat.wd_host.url = http://selenium:4444/wd/hub
 # Toolkit location: ./includes/phing/props/main.props
-# The main properties of the toolkit. Most of them are build and development related.
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Main properties of Toolkit. Most of these are build and development related.
+# ------------------------------------------------------------------------------
 
 # Binaries.
 # ---------
@@ -419,11 +422,11 @@ drupal.hash.salt =
 # ----------------------------
 backtrac.file = ${project.tmp.dir}/bactrack.json
 # Toolkit location: ./includes/phing/props/drone.props
-# Drone integration
-# -----------------
+# ------------------------------------------------------------------------------
 # Default properties for toolkit pipeline on Drone:
 # https://github.com/ec-europa/ne-pipelines/blob/master/drone/toolkit.yml
-# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 db.host = mysql
 solr.host = solr
 behat.base_url = http://web:8080
