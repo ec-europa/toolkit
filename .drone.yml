@@ -73,7 +73,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   # Run backtrac snapshot of build.
-  visreg:
+  visreg-before:
     image: fpfis/php56-build
     secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
     commands:
