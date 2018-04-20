@@ -95,6 +95,16 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
+  # Run backtrac diff vs production
+  visreg:
+    image: fpfis/php56-build
+    secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
+    commands:
+      - ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -logger phing.listener.AnsiColorLogger
+    when:
+      status: [ success ]
+      event: [ push ]
+
   # Send notification to slack.
   slack:
     image: plugins/slack
