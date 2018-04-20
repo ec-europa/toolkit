@@ -144,8 +144,14 @@
             <finally>
                 <trycatch>
                     <try>
+                        <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                            <param>"update system set status=0 where name IN (${drush.rr.disable});"</param>
+                        </drush>
                         <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
                             <param>${drush.rr.options}</param>
+                        </drush>
+                        <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                            <param>"update system set status=1 where name IN (${drush.rr.disable});"</param>
                         </drush>
                     </try>
                     <catch>
@@ -251,13 +257,23 @@
         <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
-        <phingcall target="drush-registry-rebuild" />
+        <if>
+            <not>
+                <equals arg1="${build.site}" arg2="${project.id}" />
+            </not>
+            <then>
+                <relsym link="${build.platform.dir}/sites/${project.id}" target="${build.subsite.dir}" />
+            </then>
+        </if>
+        <if>
+            <equals arg1="${drush.rr.enabled}" arg2="1" />
+            <then>
+                <phingcall target="drush-registry-rebuild" />
+            </then>
+        </if>
         <phingcall target="drush-files-dirs-htaccess" />
         <phingcall target="drush-solr-enable" />
         <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}"></drush>
-        <drush command="cc" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
-            <param>all</param>
-        </drush>
     </target>
 
     <target name="drush-sql-drop" hidden="true" description="Drop a database.">
