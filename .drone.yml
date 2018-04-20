@@ -5,6 +5,10 @@ workspace:
 matrix:
   PHING_OPTS:
     - -logger phing.listener.AnsiColorLogger
+  PLATFORM_DEV:
+    - 2.3
+    - 2.4
+    - 2.5
 
 services:
   web:
@@ -42,7 +46,7 @@ pipeline:
     image: fpfis/php56-dev
     group: build
     commands:
-      - ./toolkit/phing build-platform build-subsite-dev ${PHING_OPTS}
+      - ./toolkit/phing build-platform build-subsite-dev -D'platform.package.version'='$PLATFORM_DEV' ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
