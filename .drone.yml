@@ -67,43 +67,49 @@ pipeline:
   install-clean:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing install-clean ${PHING_OPTS}
+      - ./toolkit/phing install-clean -D'project.url.base'="$(cat /test/toolkit/.frpc)" ${PHING_OPTS}
       - ./toolkit/phing drush-sql-dump -D'database-file'='/test/toolkit/dump.sql' ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  # Start clean installation of subsite.
+  # Run backtrac snapshot of build.
+  visreg:
+    image: fpfis/php56-build
+    secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
+    commands:
+      - ./toolkit/phing test-run-backtrac -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='snapshot' ${PHING_OPTS}
+
+  # Start clone installation of subsite.
   install-clone:
     image: fpfis/php56-dev
-    group: install
     commands:
       - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql' ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
+  # Run backtrac self compare of build (may not be accurate):
+  # Possible that it starts comparing against another build.
+  # TODO: solve with better thing.
+  visreg-after:
+    image: fpfis/php56-build
+    group: prebehat
+    secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
+    commands:
+      - ./toolkit/phing test-run-backtrac -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='compare_itself' ${PHING_OPTS}
+
   # Start selenium in detached mode for behat usage.
   selenium:
     image: selenium/standalone-chrome
-    group: install
+    group: prebehat
     detach: true
 
   # Run default behat tests.
   behat:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing test-run-behat ${PHING_OPTS}
+      - ./toolkit/phing drush-settings-generate test-run-behat -D'project.url.base'="$${behat.base_url}"  ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
-
-  # Run backtrac diff vs production
-  visreg:
-    image: fpfis/php56-build
-    secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
-    commands:
-      - ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -logger phing.listener.AnsiColorLogger
-    when:
-      status: [ success ]
-      event: [ push ]
 
   # Send notification to slack.
   slack:
