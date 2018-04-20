@@ -158,6 +158,8 @@ behat.generic.package = jonhy81/toolkit-behat
 
 # Specify a tags for the behat scenarios to run.
 behat.tags = ~@wip
+
+
 # Toolkit location: ./includes/phing/props/docker.props
 # ------------------------------------------------------------------------------
 # Default docker (fpfis) properties.
@@ -167,6 +169,8 @@ db.host = mysql
 solr.host = solr
 behat.base_url = http://web:8080
 behat.wd_host.url = http://selenium:4444/wd/hub
+
+
 # Toolkit location: ./includes/phing/props/main.props
 # ------------------------------------------------------------------------------
 # Main properties of Toolkit. Most of these are build and development related.
@@ -421,6 +425,8 @@ drupal.hash.salt =
 # Bactrack configuration
 # ----------------------------
 backtrac.file = ${project.tmp.dir}/bactrack.json
+
+
 # Toolkit location: ./includes/phing/props/drone.props
 # ------------------------------------------------------------------------------
 # Default properties for toolkit pipeline on Drone:
@@ -433,3 +439,5 @@ behat.base_url = http://web:8080
 behat.wd_host.url = http://selenium:4444/wd/hub
 share.path = /cache
 project.db.file = ./dump.sql
+
+
