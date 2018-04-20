@@ -16,3 +16,9 @@ build
 .tmp
 toolkit
 vendor
+bin
+build.project.xml
+lib/
+phpcs-ruleset.xml
+resources/
+tests/
