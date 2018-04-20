@@ -41,7 +41,9 @@ devel.vars.views_ui_show_sql_query = 1
 # ------------------------
 drush.color = 1
 drush.verbose = FALSE
-drush.rr.options = --fire-bazooka
+drush.rr.enabled = 1
+drush.rr.options = --fire-bazooka --no-cache-clear
+drush.rr.disable = '', ''
 
 # Docker. (TODO)
 # ------------------------
