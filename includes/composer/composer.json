@@ -6,7 +6,7 @@
     "drupal/phingdrushtask": "^1.1",
     "drupol/phingbehattask": "^1.0",
     "drush/drush": "^8.0",
-    "ec-europa/backtrac-php-client": "dev-feature/MULTISITE-19639 as 0.1.8",
+    "ec-europa/backtrac-php-client": "~0.1.9",
     "ext-json": "*",
     "ext-phar": "*",
     "ext-tidy": "^2.0",

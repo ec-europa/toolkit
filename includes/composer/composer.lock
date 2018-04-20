@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f85f0e50cd172c90d168c5514f531755",
+    "content-hash": "fe325c891de3082331bceb6b1c6b3ab1",
     "packages": [
         {
             "name": "consolidation/annotated-command",
@@ -517,16 +517,16 @@
         },
         {
             "name": "ec-europa/backtrac-php-client",
-            "version": "dev-feature/MULTISITE-19639",
+            "version": "0.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/backtrac-php-client.git",
-                "reference": "8585c21d2307a8d2863c4fab94ca009ac9096945"
+                "reference": "bd19753f95dc8da36be313d7b9f872b0491d492c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/backtrac-php-client/zipball/8585c21d2307a8d2863c4fab94ca009ac9096945",
-                "reference": "8585c21d2307a8d2863c4fab94ca009ac9096945",
+                "url": "https://api.github.com/repos/ec-europa/backtrac-php-client/zipball/bd19753f95dc8da36be313d7b9f872b0491d492c",
+                "reference": "bd19753f95dc8da36be313d7b9f872b0491d492c",
                 "shasum": ""
             },
             "require": {
@@ -550,7 +550,7 @@
             "license": [
                 "EUPL-1.1"
             ],
-            "time": "2018-04-20T13:44:32+00:00"
+            "time": "2018-04-20T17:45:10+00:00"
         },
         {
             "name": "guzzle/guzzle",
@@ -3873,18 +3873,10 @@
             "time": "2017-12-27T21:58:38+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1.8",
-            "alias_normalized": "0.1.8.0",
-            "version": "dev-feature/MULTISITE-19639",
-            "package": "ec-europa/backtrac-php-client"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "cweagans/composer-patches": 20,
-        "ec-europa/backtrac-php-client": 20,
         "kasperg/phing-github": 20,
         "pear/versioncontrol_git": 20
     },
