@@ -7,7 +7,6 @@
 # Toolkit directories.
 # -----------------------
 
-toolkit.dir = ${phing.dir.starterkit}
 toolkit.dir.incl = ${toolkit.dir}/includes
 toolkit.dir.incl.composer = ${toolkit.dir.incl}/composer
 toolkit.dir.incl.docker = ${toolkit.dir.incl}/docker
@@ -121,10 +120,10 @@ behat.yml.template = ${behat.dir}/behat.yml.dist
 behat.yml.path = ${behat.dir}/behat.yml
 
 # The base URL to use in Behat tests.
-behat.base_url = ${project.url.base}
+behat.base_url = http://localhost
 
 # A drush alias to run behat on.
-behat.drush.alias = docker
+behat.drush.alias = default
 
 # The URL of the Behat webdriver host.
 behat.wd_host.url = http://localhost:4444/wd/hub
@@ -142,9 +141,9 @@ behat.options.strict = true
 # Proceed the build even after error.
 behat.options.haltonerror = true
 
-# Set verbosity for Behat tests. 0 is completely silent, 1 is normal output, 2
-# shows exception backtraces, 3 shows debugging information.
-behat.options.verbosity = 2
+# Currently only true or false possible until this is solved:
+# https://github.com/drupol/phingbehattask/issues/5
+behat.options.verbosity = false
 
 # Load balancer Phing task configuration.
 behat.load_balancer.containers = 2
@@ -153,7 +152,7 @@ behat.load_balancer.destination = ${behat.dir}/balancer
 behat.load_balancer.import = ${behat.yml.path}
 
 # Generic behat generic testing configuration
-behat.generic.package.enable = 1
+behat.generic.package.enable = 0
 behat.generic.package = jonhy81/toolkit-behat
 
 # Specify a tags for the behat scenarios to run.
@@ -425,6 +424,7 @@ drupal.hash.salt =
 # Bactrack configuration
 # ----------------------------
 backtrac.file = ${project.tmp.dir}/bactrack.json
+backtrac.compare.mode = compare_itself
 
 
 # Toolkit location: ./includes/phing/props/drone.props
