@@ -14,7 +14,7 @@ project.url.production =
 
 # Solr configuration.
 # -------------------
-project.solr.type = d7_apachesolr
+solr.type = d7_apachesolr
 
 # Admin configuration.
 # --------------------
@@ -23,6 +23,6 @@ project.admin.email = ${admin.username}@example.com
 # Platform configuration.
 # -----------------------
 profile = multisite_drupal_standard
-platform.package.version = 2.3
+platform.package.version = 2.4
 
 

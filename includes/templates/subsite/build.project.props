@@ -7,7 +7,7 @@ project.url.production =
 
 # Solr configuration.
 # -------------------
-project.solr.type = d7_apachesolr
+solr.type = d7_apachesolr
 
 # Admin configuration.
 # --------------------
