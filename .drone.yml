@@ -1,7 +1,13 @@
+# ==============================================================================
+# Workspace location.
+# ==============================================================================
 workspace:
   base: /test
   path: toolkit
 
+# ==============================================================================
+# Matrix section
+# ==============================================================================
 matrix:
   PHING_OPTS:
     - -logger phing.listener.AnsiColorLogger
@@ -10,15 +16,27 @@ matrix:
     - 2.4
     - 2.5
 
+# ==============================================================================
+# Main services
+# ==============================================================================
 services:
   web:
-    image: fpfis/php56-dev
+    image: fpfis/php56-build
     environment:
       - DOCUMENT_ROOT=/test/toolkit/build
+  mysql:
+    image: percona/percona-server:5.6
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
 
+# ==============================================================================
+# Pipelines
+# ==============================================================================
 pipeline:
 
-  # Install toolkit and load drone props.
+  # ============================================================================
+  # Setup section:
+  # ============================================================================
   setup:
     image: fpfis/php56-dev
     group: setup
@@ -30,7 +48,6 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  # Start tunnel for easy access to build.
   tunnel:
     image: fpfis/drone-frpc-plugin:latest
     group: setup
@@ -42,7 +59,9 @@ pipeline:
       - PLUGIN_DOMAIN=${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}.ci.fpfis.tech.ec.europa.eu
       - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
 
-  # Build platform and subsite.
+  # ============================================================================
+  # Build section:
+  # ============================================================================
   build:
     image: fpfis/php56-dev
     group: build
@@ -51,13 +70,14 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  # Start solr in detached mode in preperation for install.
   solr:
     image: fpfis/solr5
     group: build
     detach: true
 
-  # Start clean installation of subsite.
+  # ============================================================================
+  # Install section:
+  # ============================================================================
   install-clean:
     image: fpfis/php56-dev
     commands:
@@ -66,14 +86,15 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  # Run backtrac snapshot of build (always green)
   visreg-before:
     image: fpfis/php56-build
     secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
     commands:
       - ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='snapshot' ${PHING_OPTS} || return 0
 
-  # Start clone installation of subsite.
+  # ============================================================================
+  # Clone section:
+  # ============================================================================
   install-clone:
     image: fpfis/php56-dev
     commands:
@@ -91,13 +112,14 @@ pipeline:
     commands:
       - ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='compare_itself' ${PHING_OPTS} || return 0
 
-  # Start selenium in detached mode for behat usage.
   selenium:
     image: selenium/standalone-chrome
     group: prebehat
     detach: true
 
-  # Run default behat tests.
+  # ============================================================================
+  # Test section:
+  # ============================================================================
   behat:
     image: fpfis/php56-dev
     commands:
@@ -105,7 +127,9 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  # Send notification to slack.
+  # ============================================================================
+  # Notify section:
+  # ============================================================================
   slack:
     image: plugins/slack
     channel: ci
