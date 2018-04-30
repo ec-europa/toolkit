@@ -52,12 +52,6 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   # Start solr in detached mode in preperation for install.
-  mysql:
-    image: fpfis/mysql56
-    group: build
-    detach: true
-
-  # Start solr in detached mode in preperation for install.
   solr:
     image: fpfis/solr5
     group: build
