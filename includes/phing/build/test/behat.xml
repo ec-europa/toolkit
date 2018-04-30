@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="Behat" default="test-run-behat">
+<project name="Behat"  description="Contains all behat testing targets." default="test-run-behat">
 
     <property file="${phing.dir.behat}/behat.props" logoutput="false" />
 
+    <!-- Run full functional testing with behat. -->
+    <target
+        name="test-run-behat"
+        description="Refresh configuration and run behat scenarios."
+        depends="
+            test-behat-setup,
+            test-composer-install">
+        <echo msg="Starting testing..." level="info" />
+        <foreach param="dirname" absparam="absname" target="test-behat-exec">
+            <fileset dir="${behat.dir}">
+                <include name="**.yml"/>
+            </fileset>
+        </foreach>
+
+        <!-- Run all provided behat configuration tests -->
+        <if>
+            <equals arg1="${behat.generic.package.enable}" arg2="1" />
+            <then>
+                <foreach param="dirname" absparam="absname" target="test-behat-exec">
+                    <fileset dir="${behat.dir}/vendor/${behat.generic.package}">
+                        <include name="**.yml"/>
+                    </fileset>
+                </foreach>
+            </then>
+        </if>
+    </target>
+
     <!-- Run Behat tests. -->
-    <target name="test-behat-exec">
+    <target name="test-behat-exec" hidden="true">
         <behat
             executable="${behat.bin}"
             config="${absname}"
@@ -16,19 +43,9 @@
             checkreturn="true"
         />
     </target>
-    
-        <!-- Set up Behat balancer. -->
-    <target name="test-behat-split">
-        <behat:balancer
-            containers="${behat.load_balancer.containers}"
-            root="${behat.load_balancer.root}"
-            destination="${behat.load_balancer.destination}"
-            import="${behat.load_balancer.import}"
-        />
-    </target>
 
     <!-- Set up Behat. -->
-    <target name="test-behat-setup">
+    <target name="test-behat-setup" hidden="true">
         <if>
             <isset property="env.FLICKR_KEY" />
             <then>
@@ -81,7 +98,7 @@
     </target>
 
     <!-- Download and put in place generic/smoke test. -->
-    <target name="test-behat-setup-generic">
+    <target name="test-behat-setup-generic" hidden="true">
         <echo msg="Installing ${behat.generic.package} package." />
         <composer command="require" composer="${project.bin.composer}">
             <arg value="${behat.generic.package}" />
@@ -129,7 +146,7 @@
     </target>
 
     <!-- Symlink the Behat bin and test directory in the subsite folder. -->
-    <target name="test-behat-setup-link">
+    <target name="test-behat-setup-link" hidden="true">
         <property name="behat-test-location" value="${build.platform.dir}" />
         <property name="behat-test-binary" value="${build.platform.dir}/vendor/behat/behat/bin/behat" />
         <relsym link="platform" overwrite="true">
@@ -143,7 +160,7 @@
     </target>
 
     <!-- Install Composer dependencies without development dependencies. -->
-    <target name="test-composer-install">
+    <target name="test-composer-install" hidden="true">
         <echo msg="Run 'composer install' in best folder." />
         <composer command="install" composer="${project.bin.composer}">
             <arg value="--working-dir=${tests.dir}" />

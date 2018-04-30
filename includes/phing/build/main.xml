@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="main" default="">
+<project name="main" description="Contains the main file imports." default="">
 
-    <import file="${phing.dir.main}/main/project.xml" />
-    <import file="${phing.dir.main}/main/theme.xml" />
+    <import file="${phing.dir.help}/main/subsite.xml" />
+    <import file="${phing.dir.help}/main/project.xml" />
+    <import file="${phing.dir.help}/main/platform.xml" />
+    <import file="${phing.dir.help}/main/theme.xml" />
 
     <!-- Check type of project and import it's build file. -->
     <if>

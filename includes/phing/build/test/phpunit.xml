@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="PHPUnit" default="test-run-phpunit">
+<project name="PHPUnit" description="Contains all PHPUnit testing targets."  default="test-run-phpunit">
 
     <property file="${phing.dir.phpunit}/phpunit.props" logoutput="false" />
 
+    <!-- Run a full static analysis with phpcs. -->
+    <target
+        name="test-run-phpunit"
+        description="Refresh configuration and run phpunit tests."
+        depends="
+            test-phpunit-setup,
+            test-composer-install,
+            test-phpunit-exec" />
+
+
     <!-- Execute PHPUnit tests. -->
-    <target name="test-phpunit-exec">
+    <target name="test-phpunit-exec" hidden="true">
         <exec
             command="${phpunit.bin} -c ${tests.dir}/phpunit.xml"
             passthru="true"
@@ -14,7 +24,7 @@
     </target>
 
     <!-- Set up PHPUnit. -->
-    <target name="test-phpunit-setup">
+    <target name="test-phpunit-setup" hidden="true">
         <copy todir="${phpunit.dir}" overwrite="true">
             <fileset dir="${phpunit.dir}" casesensitive="yes">
                 <include name="*.xml.dist" />

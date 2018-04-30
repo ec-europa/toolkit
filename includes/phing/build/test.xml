@@ -3,64 +3,15 @@
 <project name="test" description="The test file contains different targets to ease the testing of your project." default="">
 
     <!-- Import test build files. -->
-    <import>
-        <fileset dir="${phing.dir.test}">
-            <!-- When in full project mode. -->
-            <include name="test/*.xml" />
-            <!-- Wen in test package mode. -->
-            <include name="phing/*.xml" />
-        </fileset>
-    </import>
-
-    <!-- Run full functional testing with behat. -->
-    <target
-        name="test-run-behat"
-        description="Refresh configuration and run behat scenarios."
-        depends="
-            test-behat-setup,
-            test-composer-install">
-        <echo msg="Starting testing..." level="info" />
-        <foreach param="dirname" absparam="absname" target="test-behat-exec">
-            <fileset dir="${behat.dir}">
-                <include name="**.yml"/>
-            </fileset>
-        </foreach>
-
-        <!-- Run all provided behat configuration tests -->
-        <if>
-            <equals arg1="${behat.generic.package.enable}" arg2="1" />
-            <then>
-                <foreach param="dirname" absparam="absname" target="test-behat-exec">
-                    <fileset dir="${behat.dir}/vendor/${behat.generic.package}">
-                        <include name="**.yml"/>
-                    </fileset>
-                </foreach>
-            </then>
-        </if>
-    </target>
+    <import file="${phing.dir.test}/test/behat.xml" />
+    <import file="${phing.dir.test}/test/phpcs.xml" />
+    <import file="${phing.dir.test}/test/phpunit.xml" />
 
     <!-- Compare current install against production. -->
     <target name="test-run-backtrac" hidden="true" description="Compare current install against production.">
-        <backtrac-set-url environment="${backtrac.env}" url="${project.url.base}" project_id="${project.backtrac.id}" auth_token="${backtrac.token}" />
-        <backtrac-compare compare_mode="compare_prod_dev" project_id="${project.backtrac.id}" auth_token="${backtrac.token}" />
+        <backtrac-set-url secure="${backtrac.secure}" environment="${backtrac.env}" url="${project.url.base}" project_id="${project.backtrac.id}" auth_token="${backtrac.token}" />
+        <backtrac-compare secure="${backtrac.secure}" compare_mode="${backtrac.compare.mode}"  environment="${backtrac.env}" project_id="${project.backtrac.id}" auth_token="${backtrac.token}" />
     </target>
-
-    <!-- Run a full static analysis with phpcs. -->
-    <target
-        name="test-run-phpcs"
-        description="Refresh configuration and run phpcs review."
-        depends="
-            test-phpcs-setup,
-            test-phpcs-exec" />
-
-    <!-- Run a full static analysis with phpcs. -->
-    <target
-        name="test-run-phpunit"
-        description="Refresh configuration and run phpunit tests."
-        depends="
-            test-phpunit-setup,
-            test-composer-install,
-            test-phpunit-exec" />
 
     <!-- Run a full static analysis qa console. -->
     <target

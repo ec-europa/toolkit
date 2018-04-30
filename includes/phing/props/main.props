@@ -1,5 +1,6 @@
-# The main properties of the toolkit. Most of them are build and development related.
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Main properties of Toolkit. Most of these are build and development related.
+# ------------------------------------------------------------------------------
 
 # Binaries.
 # ---------
@@ -41,7 +42,9 @@ devel.vars.views_ui_show_sql_query = 1
 # ------------------------
 drush.color = 1
 drush.verbose = FALSE
-drush.rr.options = --fire-bazooka
+drush.rr.enabled = 1
+drush.rr.options = --fire-bazooka --no-cache-clear
+drush.rr.disable = '', ''
 
 # Docker. (TODO)
 # ------------------------
@@ -157,7 +160,7 @@ build.platform.htaccess.append.text =
 build.subsite.composer.json = ${build.subsite.dir}/composer.json
 build.subsite.composer.lock = ${build.subsite.dir}/composer.lock
 build.subsite.dir = ${build.platform.dir.sites}/${build.site}
-build.subsite.dir.files = ${build.subsite.dir}/files
+build.subsite.dir.files = sites/${build.site}/files
 build.subsite.dir.libraries = ${build.subsite.dir}/libraries
 build.subsite.dir.modules = ${build.subsite.dir}/modules
 build.subsite.dir.modules.contrib = ${build.subsite.dir.modules}/contrib
@@ -244,3 +247,10 @@ drush.alias.docker = docker
 # ----------------------------
 drupal.update.free.access = FALSE
 drupal.hash.salt =
+
+# Bactrack configuration
+# ----------------------------
+backtrac.file = ${project.tmp.dir}/bactrack.json
+backtrac.compare.mode = compare_itself
+
+

@@ -1,3 +1,7 @@
+# ------------------------------------------------------------------------------
+# Property mappings of old subsite-starterkit to toolkit property names.
+# ------------------------------------------------------------------------------
+
 project.name = project.name
 subsite.make = resources.dir.site.make
 subsite.install.modules = project.install.modules
@@ -151,4 +155,5 @@ starterkit.branch =
 starterkit.remote =
 
 copy.path.haltonerror =
+
 
