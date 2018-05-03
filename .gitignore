@@ -18,7 +18,11 @@ toolkit
 vendor
 bin
 build.project.xml
-lib/
+lib/modules/custom/example_module
+lib/modules/features
+lib/themes
+lib/src
+lib/README.md
 phpcs-ruleset.xml
 resources/
 tests/
