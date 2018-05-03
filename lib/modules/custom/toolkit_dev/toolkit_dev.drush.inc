@@ -46,10 +46,11 @@ function drush_toolkit_dev_features_revert_site() {
   
   $features_to_revert = array();
   
-  $result = db_query('SELECT s.name FROM {system} s WHERE s.status = 1 AND s.filename LIKE :sitepath AND CAST( s.info AS CHAR(10000) CHARACTER SET utf8) LIKE :featurepath', array(':sitepath' => db_like('sites/') . '%', ':featurepath' => '%' . db_like('\"features\"') . '%') );
+  $result = db_query('SELECT s.name FROM {system} s WHERE s.status = 1 AND s.filename LIKE :sitepath AND CAST( s.info AS CHAR(10000) CHARACTER SET utf8) LIKE :featureapi', array(':sitepath' => db_like('sites/') . '%', ':featureapi' => '%' . db_like('"features_api"') . '%') );
   foreach ($result as $feature) {
     $features_to_revert[] = $feature->name;
   }
+  var_dump($features_to_revert);
 
   if (!empty($features_to_revert)) {
     $dt_args = ['!modules' => implode(', ', $features_to_revert)];
