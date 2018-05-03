@@ -11,14 +11,14 @@ tests/behat.yml
 tests/phpunit.xml
 
 # Ignore build artifacts.
-build
+/build
 /composer.lock
-.tmp
-toolkit
-vendor
-bin
-build.project.xml
-lib/
-phpcs-ruleset.xml
-resources/
-tests/
+/.tmp
+/toolkit
+/vendor
+/bin
+/build.project.xml
+/lib/
+/phpcs-ruleset.xml
+/resources/
+/tests/

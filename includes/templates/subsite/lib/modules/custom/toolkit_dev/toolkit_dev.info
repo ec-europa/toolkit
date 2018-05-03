@@ -1,0 +1,7 @@
+name = toolkit_dev
+description = Helper tools for toolkit.
+core = 7.x
+
+php = 5.6
+
+dependencies[] = features
