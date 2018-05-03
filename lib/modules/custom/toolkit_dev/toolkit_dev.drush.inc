@@ -44,13 +44,14 @@ function drush_toolkit_dev_features_revert_site() {
   // Load required files.
   module_load_include('inc', 'features', 'features.export');
   
+  $features = features_get_info('feature');
   $features_to_revert = array();
   
-  $result = db_query('SELECT s.name FROM {system} s WHERE s.status = 1 AND s.filename LIKE :sitepath AND CAST( s.info AS CHAR(10000) CHARACTER SET utf8) LIKE :featureapi', array(':sitepath' => db_like('sites/') . '%', ':featureapi' => '%' . db_like('"features_api"') . '%') );
-  foreach ($result as $feature) {
-    $features_to_revert[] = $feature->name;
+  foreach ($features as $feature) {
+    if ($feature->status == 1 && (substr($feature->filename, 0, 6) === "sites/")) {
+      $features_to_revert[] = $feature->name;
+    }
   }
-  var_dump($features_to_revert);
 
   if (!empty($features_to_revert)) {
     $dt_args = ['!modules' => implode(', ', $features_to_revert)];
