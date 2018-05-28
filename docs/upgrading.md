@@ -1,5 +1,18 @@
 ## Upgrade subsite-starterkit to toolkit
-   
+
+### Important information for site owners/developers:
+
+**Before upgrading your project to Toolkit, make sure to contact the Toolkit
+upgrade coordinator, [Alessia Di Micco](mailto:alessia.di.micco@everis.com).
+DIGIT provides a dedicated support team that is in charge of managing the
+Toolkit code deliveries.**
+
+**Thank you for your collaboration.**
+
+**Alessia Di Micco: alessia.di.micco@everis.com**
+
+---
+
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=cwGZilB3BjQ
 " target="_blank"><img src="http://img.youtube.com/vi/cwGZilB3BjQ/0.jpg" 
 alt="Upgrade screencast" width="240" height="135" align="left" /></a>
