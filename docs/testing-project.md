@@ -305,11 +305,9 @@ Total time: 4 minutes 6.64 seconds
 ### Manual or custom behat testing:
 
 If you wish to manually execute behat after editing the behat.yml for example
-you could execute:
+you could:
 
-```shell
-tests/vendor/behat/behat/bin/behat --config="tests/behat.yml" --strict
-```
+<details><p><summary>execute <code>tests/vendor/behat/behat/bin/behat --config="tests/behat.yml" --strict</code></summary></p>
 
 If you project needs a custom version of behat or other packages you should add
 these to the require-dev section of your main composer.json file. Then you can
@@ -337,6 +335,10 @@ behat.bin = ${project.basedir}/vendor/behat/behat/bin/behat
     }
 }
 ```
+</p></details>
+
+Click for command above for more information on how to use your own packages for
+testing.
 
 ## PHPCS testing
 To run behat tests you can make use of the `test-run-phpcs` command. This will
