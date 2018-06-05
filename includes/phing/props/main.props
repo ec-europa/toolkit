@@ -120,6 +120,7 @@ lib.dir.profiles = ${lib.dir}/profiles
 lib.dir.profiles.profile = ${lib.dir.profiles}/${profile}
 lib.dir.source = ${lib.dir}/src
 lib.dir.themes = ${lib.dir}/themes
+lib.dir.translations = ${lib.dir}/translations
 
 resources.dir = ${project.basedir}/resources
 resources.dir.composer.json = ${resources.dir}/composer.json
