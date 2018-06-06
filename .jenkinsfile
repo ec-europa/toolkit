@@ -23,6 +23,7 @@ def createWorkflow() {
         stage('Init') {
             setBuildStatus("Build started.", "PENDING");
             slackSend color: "good", message: "Subsite ${buildLink} started."
+            sh 'cp vendor/ec-europa/toolkit/includes/phing/props/docker.props build.develop.props'
             shellExecute('jenkins', 'phing', "docker-compose-up -D'docker.project.id'='${env.COMPOSE_PROJECT_NAME}'")
          }
 
