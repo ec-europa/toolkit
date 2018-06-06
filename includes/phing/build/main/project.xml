@@ -637,8 +637,9 @@
 
     <target name="project-modules-devops-dl" hidden="true" description="Download and unpack fpfis resource package.">
         <mkdir dir="${share.path.platform.packages.deploy}" />
+        <propertyregex property="drupal-core-version" subject="${profile.core}" pattern="([1-9])\.x" match="$1" casesensitive="false" defaultvalue="7"/>
         <phingcall target="package-download-unpack">
-            <property name="package-name" value="${platform.package.version.major}.${platform.package.version.minor}.tar.gz" />
+            <property name="package-name" value="d${drupal-core-version}.tar.gz" />
             <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
             <property name="package-download-location" value="https://github.com/ec-europa/platform-deploy/archive/fpfis-conf" />
             <property name="package-extract-location" value="${build.platform.dir}" />
