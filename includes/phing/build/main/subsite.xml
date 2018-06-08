@@ -79,10 +79,7 @@
 
     <target name="subsite-resources-copy" hidden="true" description="Copy subsite resources for distribution.">
         <echo msg="Copy custom resources." />
-
-        <copy todir="${build.${build-type}.dir}">
-            <fileset dir="${build.tmp.dir}" expandsymboliclinks="true" defaultexcludes="true" />
-        </copy>
+        <exec command="rsync -Lvr ${build.tmp.dir}/ ${build.${build-type}.dir}/" />
     </target>
 
     <target name="subsite-resources-link" hidden="true" description="Link subsite resources to lib folder for development.">
