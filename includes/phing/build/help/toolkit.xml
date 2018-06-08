@@ -328,10 +328,42 @@
     <target name="toolkit-templates-copy" description="Copies template files to your project for toolkit integration." hidden="true">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
         <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
-        <copy todir="${project.basedir}">
-            <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
-        </copy>
-        <echo msg="Project structure for ${project-type} created." />
+        <exec command="basename -s .git `git config --get remote.origin.url`" outputProperty="project-id" />
+        <exec command="grep ${project-id} ${toolkit.dir.incl.templates}/project/inventory.csv | head -1" outputProperty="project-details" />
+        <if>
+            <not>
+                <equals arg1="${project-details}" arg2="" />
+            </not>
+            <then>
+                <exec command="echo ${project-details} | cut -d',' -f1" outputProperty="project.id" />
+                <exec command="echo ${project-details} | cut -d',' -f2" outputProperty="project.name" />
+                <exec command="echo ${project-details} | cut -d',' -f3" outputProperty="project.url.repository" />
+                <exec command="echo ${project-details} | cut -d',' -f4" outputProperty="backtrac.id.static" />
+                <exec command="echo ${project-details} | cut -d',' -f5" outputProperty="backtrac.id.dynamic" />
+                <exec command="echo ${project-details} | cut -d',' -f6" outputProperty="project.url.production" />
+                <exec command="echo ${project-details} | cut -d',' -f7" outputProperty="project.url.playground" />
+                <copy todir="${project.basedir}">
+                    <fileset dir="${toolkit.dir.incl.templates}/subsite" />
+                    <filterchain>
+                        <replacetokens begintoken="${" endtoken="}">
+                            <token key="PROJECT_ID" value="${project.id}" />
+                            <token key="PROJECT_DESCRIPTION" value="${project.name}" />
+                            <token key="PRODUCTION_URL" value="${project.url.production}" />
+                            <token key="REPOSITORY_URL" value="${project.url.repository}" />
+                            <token key="BACKTRAC_ID_STATIC" value="${backtrac.id.static}" />
+                            <token key="BACKTRAC_ID_DYNAMIC" value="${backtrac.id.dynamic}" />
+                        </replacetokens>
+                    </filterchain>
+                </copy>
+                <echo msg="Project structure for ${project.id} created." />
+            </then>
+            <else>
+                <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
+                <copy todir="${project.basedir}">
+                    <fileset dir="${toolkit.dir.incl.templates}/subsite" />
+                </copy>
+            </else>
+        </if>
     </target>
 
 </project>
