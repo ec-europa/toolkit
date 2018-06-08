@@ -334,7 +334,7 @@
         <echo msg="Project structure for ${project-type} created." />
     </target>
 
-    <target name="toolkit-inventory-generate" description="Copies template files to your project for toolkit integration with inventory details." hidden="true">
+    <target name="toolkit-generate-project-info" description="Copies template files to your project for toolkit integration with inventory details." hidden="true">
         <exec command="basename -s .git `git config --get remote.origin.url`" outputProperty="project-id" />
         <exec command="grep ${project-id} ${toolkit.dir.incl.templates}/project/inventory.csv | head -1" outputProperty="project-details" />
         <if>
