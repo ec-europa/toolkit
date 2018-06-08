@@ -1,5 +1,4 @@
 PROJECT ID,PROJECT DESCRIPTION,REPOSITORY URL,BT STATIC ID,BT DYNAMIC ID,PRODUCTION URL,PLAYGROUND URL
-dm-trainet,European Disaster Management Training Network,https://github.com/ec-europa/toolkit-reference,82533,82532,https://webgate.ec.europa.eu/dm-training-network,https://webgate.ec.europa.eu/playground-multisite/dm-trainet
 agm,AGM Portal,https://github.com/ec-europa/agm-reference,82485,82484,https://ec.europa.eu/tools/agm,https://webgate.ec.europa.eu/playground-multisite/agm
 agri-eip,EIP-AGRI Agriculture & innovation,https://github.com/ec-europa/agri-eip-reference,82487,82486,https://ec.europa.eu/eip/agriculture,https://webgate.ec.europa.eu/playground-multisite/agri-eip
 amr,EU Action on Antimicrobial Resistance,https://github.com/ec-europa/amr-reference,82489,82488,https://ec.europa.eu/health/amr,https://webgate.ec.europa.eu/playground-multisite/amr
