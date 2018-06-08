@@ -12,7 +12,6 @@
 
 * https://github.com/ec-europa/toolkit
 * https://github.com/ec-europa/platform-dev
-* https://github.com/ec-europa/ec-reps-platform
 
 ### 1.2 Delivery procedures
 
