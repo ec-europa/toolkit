@@ -366,7 +366,7 @@
                         </replacetokens>
                     </filterchain>
                 </copy>
-                <echo msg="Inventory settings generated." />
+                <echo msg="Project information generated in README.md, composer.json and build.project.props." />
             </then>
         </if>
     </target>
