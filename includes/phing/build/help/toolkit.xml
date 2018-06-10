@@ -359,6 +359,7 @@
                         <replacetokens begintoken="${" endtoken="}">
                             <token key="PROJECT_ID" value="${project.id}" />
                             <token key="PROJECT_DESCRIPTION" value="${project.name}" />
+                            <token key="PROJECT_INSTALL_MODULES" value="${project.install.modules}" />
                             <token key="PRODUCTION_URL" value="${project.url.production}" />
                             <token key="REPOSITORY_URL" value="${project.url.repository}" />
                             <token key="BACKTRAC_ID_STATIC" value="${backtrac.id.static}" />
