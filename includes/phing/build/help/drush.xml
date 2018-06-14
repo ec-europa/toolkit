@@ -63,37 +63,6 @@
         </drush>
     </target>
 
-    <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
-        <phingcall target="drush-variable-set">
-            <property name="variable-name" value="preprocess_css" />
-            <property name="variable-value" value="0" />
-        </phingcall>
-        <phingcall target="drush-variable-set">
-            <property name="variable-string" value="preprocess_js" />
-            <property name="variable-value" value="0" />
-        </phingcall>
-        <drush
-            command="vset"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>preprocess_js 0</param>
-        </drush>
-        <drush
-            command="cc"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>all</param>
-        </drush>
-    </target>
-
     <target name="drush-files-dirs-htaccess" hidden="true" description="Ensure the presence of htaccess files.">
         <drush
             command="php-eval"
