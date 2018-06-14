@@ -47,7 +47,7 @@ reference repository.
 These are the 5 steps needed to complete the upgrade.
 
 >```bash
-> curl https://github.com/ec-europa/toolkit/blob/235236730dc7469066d23e298d665355af8ab15a/includes/templates/subsite/composer.json > composer.json
+> curl https://raw.githubusercontent.com/ec-europa/toolkit/235236730dc7469066d23e298d665355af8ab15a/includes/templates/subsite/composer.json > composer.json
 > curl https://raw.githubusercontent.com/ec-europa/toolkit/master/includes/templates/subsite/build.xml > build.xml
 > rm -rf ./vendor ./bin ./composer.lock
 > composer install
