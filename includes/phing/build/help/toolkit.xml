@@ -295,6 +295,7 @@
             </then>
         </if>
         <delete dir="lib-backup" />
+        <phingcall target="toolkit-generate-project-info" />
     </target>
 
     <target name="toolkit-structure-generate" description="Create the lib directory structure." hidden="true">
