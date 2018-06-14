@@ -14,7 +14,33 @@
         </drush>
     </target>
 
-    <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
+    <target name="drush-variable-set-string" description="Use a string to set variable with drush" hidden="true">
+        <exec command="echo ${variable-string} | sed -e 's/devel\.vars\.\(.*\)=\(.*\)$/\1/'" outputProperty="variable-name" />
+        <exec command="echo ${variable-string} | cut -d'=' -f2" outputProperty="variable-value" />
+        <if>
+            <not>
+                <and>
+                    <equals arg1="${variable-name}" arg2="" />
+                    <equals arg1="${variable-value}" arg2="" />
+                </and>
+            </not>
+            <then>
+                <drush
+                    command="vset"
+                    assume="yes"
+                    root="${build.platform.dir}"
+                    alias="@${drush.alias.default}"
+                    bin="${toolkit.dir.bin.drush}"
+                    verbose="${drush.verbose}"
+                    color="${drush.color}">
+                    <param>${variable-name}</param>
+                    <param>${variable-value}</param>
+                </drush>
+            </then>
+        </if>
+    </target>
+
+    <target name="drush-variable-set" description="Set a variable with drush" hidden="true">
         <drush
             command="vset"
             assume="yes"
@@ -23,8 +49,20 @@
             bin="${toolkit.dir.bin.drush}"
             verbose="${drush.verbose}"
             color="${drush.color}">
-            <param>preprocess_css 0</param>
+            <param>${variable-name}</param>
+            <param>${variable-value}</param>
         </drush>
+    </target>
+
+    <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
+        <phingcall target="drush-variable-set">
+            <property name="variable-name" value="preprocess_css" />
+            <property name="variable-value" value="0" />
+        </phingcall>
+        <phingcall target="drush-variable-set">
+            <property name="variable-string" value="preprocess_js" />
+            <property name="variable-value" value="0" />
+        </phingcall>
         <drush
             command="vset"
             assume="yes"
@@ -183,16 +221,6 @@
                     <token key="db.port" value="${db.port}" />
                     <token key="db.prefix" value="${db.prefix}" />
                     <token key="base_url" value="${project.url.base}" />
-                    <token key="error_level" value="${devel.vars.error_level}" />
-                    <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
-                    <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />
-                    <token key="views_show_additional_queries" value="${devel.vars.views_show_additional_queries}" />
-                    <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
-                    <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
-                    <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
-                    <token key="file_public_path" value="${build.subsite.dir.files}" />
-                    <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
-                    <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
                     <token key="update_free_access" value="${drupal.update.free.access}" />
                     <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
                 </replacetokens>

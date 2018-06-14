@@ -100,6 +100,7 @@
         depends="
             drush-aliases-generate,
             drush-settings-generate,
+            project-subsite-files-setup,
             project-database-import,
             project-modules-devel-en,
             reset-filesystem-permissions,
@@ -308,8 +309,8 @@
             </then>
         </if>
 
-        <phingcall target="project-subsite-files-setup" />
         <phingcall target="drush-aliases-generate" />
+        <phingcall target="project-subsite-files-setup" />
     </target>
 
     <target name="project-subsite-backup" hidden="true"  description="Backup site defined files from properties.">
@@ -609,6 +610,15 @@
     </target>
 
     <target name="project-subsite-files-setup" hidden="true" description="Create files directories for subsite.">
+        <drush command="vset" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>file_public_path ${build.subsite.dir.files}</param>
+        </drush>
+        <drush command="vset" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>file_private_path ${build.subsite.dir.files}/private_files</param>
+        </drush>
+        <drush command="vset" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>file_temporary_path ${build.subsite.dir.tmp}</param>
+        </drush>
         <if>
             <istrue value="${build.subsite.dir.files}" />
             <then>
@@ -630,9 +640,12 @@
     </target>
 
     <target name="project-modules-devel-en" hidden="true" description="Enable development modules with drush.">
-        <phingcall target="drush-modules-enable">
-            <property name="project.drupal.modules" value="${devel.mdls.en}" />
-        </phingcall>
+        <echoproperties prefix="devel.vars." destfile="${project.tmp.dir}/build.devel.vars.props" />
+        <exec command="cat ${project.tmp.dir}/build.devel.vars.props | sed '/devel/,$!d'" outputProperty="variable-strings" />
+        <foreach list="${variable-strings}" delimiter="${line.separator}" param="variable-string" target="drush-variable-set-string" />
+        <!--<phingcall target="drush-modules-enable">-->
+        <!--    <property name="project.drupal.modules" value="${devel.mdls.en}" />-->
+        <!--</phingcall>-->
     </target>
 
     <target name="project-modules-devops-dl" hidden="true" description="Download and unpack fpfis resource package.">
