@@ -632,9 +632,9 @@
         <echoproperties prefix="devel.vars." destfile="${project.tmp.dir}/build.devel.vars.props" />
         <exec command="cat ${project.tmp.dir}/build.devel.vars.props | sed '/devel/,$!d'" outputProperty="variable-strings" />
         <foreach list="${variable-strings}" delimiter="${line.separator}" param="variable-string" target="drush-variable-set-string" />
-        <!--<phingcall target="drush-modules-enable">-->
-        <!--    <property name="project.drupal.modules" value="${devel.mdls.en}" />-->
-        <!--</phingcall>-->
+        <phingcall target="drush-modules-enable">
+            <property name="project.drupal.modules" value="${devel.mdls.en}" />
+        </phingcall>
     </target>
 
     <target name="project-modules-devops-dl" hidden="true" description="Download and unpack fpfis resource package.">
