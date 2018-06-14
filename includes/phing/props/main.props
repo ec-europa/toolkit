@@ -31,6 +31,7 @@ devel.mdls.en = devel context field_ui maillog simpletest stage_file_proxy views
 # Development variables.
 # ----------------------
 devel.vars.error_level = 2
+devel.vars.maillog_send = 0
 devel.vars.preprocess_css = 0
 devel.vars.preprocess_js = 0
 devel.vars.stage_file_proxy_hotlink = 1
