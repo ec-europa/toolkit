@@ -19,10 +19,10 @@
         <exec command="echo ${variable-string} | cut -d'=' -f2" outputProperty="variable-value" />
         <if>
             <not>
-                <and>
+                <or>
                     <equals arg1="${variable-name}" arg2="" />
                     <equals arg1="${variable-value}" arg2="" />
-                </and>
+                </or>
             </not>
             <then>
                 <drush

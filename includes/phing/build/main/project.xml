@@ -310,6 +310,7 @@
         </if>
 
         <phingcall target="drush-aliases-generate" />
+        <phingcall target="project-subsite-files-setup" />
     </target>
 
     <target name="project-subsite-backup" hidden="true"  description="Backup site defined files from properties.">
