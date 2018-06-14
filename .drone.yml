@@ -84,7 +84,7 @@ pipeline:
       - ./toolkit/phing install-clean -D'project.url.base'="$(cat /test/toolkit/.frpc)" ${PHING_OPTS}
       - ./toolkit/phing drush-sql-dump -D'database-file'='/test/toolkit/dump.sql' ${PHING_OPTS}
       - ./toolkit/drush -r build features-revert-site
-      - ./toolkit/drush -r build workbench-moderation-patch-update-status-sumulatio
+      - ./toolkit/drush -r build workbench-moderation-patch-update-status-sumulation
       - ./toolkit/drush -r build workbench-moderation-patch-update-status smoketest-watchdog
       - ./toolkit/drush -r build smoketest-watchdog
 
