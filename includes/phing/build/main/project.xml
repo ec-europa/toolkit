@@ -89,7 +89,7 @@
                 <phingcall target="drush-site-install" />
             </else>
         </if>
-
+        <phingcall target="project-subsite-files-setup" />
         <phingcall target="project-modules-install-en" />
         <phingcall target="project-modules-devel-en" />
         <phingcall target="reset-filesystem-permissions" />
@@ -310,7 +310,6 @@
         </if>
 
         <phingcall target="drush-aliases-generate" />
-        <phingcall target="project-subsite-files-setup" />
     </target>
 
     <target name="project-subsite-backup" hidden="true"  description="Backup site defined files from properties.">
