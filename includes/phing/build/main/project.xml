@@ -101,7 +101,6 @@
             drush-aliases-generate,
             drush-settings-generate,
             project-database-import,
-            drush-files-dirs-create,
             project-modules-devel-en,
             reset-filesystem-permissions,
             drush-cache-reset" />

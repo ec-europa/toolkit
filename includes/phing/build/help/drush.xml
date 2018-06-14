@@ -290,7 +290,6 @@
 
     <target name="drush-sql-import" hidden="true" description="Import a database.">
         <echo message="Importing database." />
-        <phingcall target="drush-files-dirs-create" />
         <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
@@ -308,6 +307,7 @@
                 <phingcall target="drush-registry-rebuild" />
             </then>
         </if>
+        <phingcall target="drush-files-dirs-create" />
         <phingcall target="drush-files-dirs-htaccess" />
         <phingcall target="drush-solr-enable" />
         <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}"></drush>
