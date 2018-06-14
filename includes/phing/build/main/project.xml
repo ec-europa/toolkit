@@ -89,7 +89,7 @@
                 <phingcall target="drush-site-install" />
             </else>
         </if>
-        <phingcall target="project-subsite-files-setup" />
+        <phingcall target="drush-files-dirs-create" />
         <phingcall target="project-modules-install-en" />
         <phingcall target="project-modules-devel-en" />
         <phingcall target="reset-filesystem-permissions" />
@@ -100,8 +100,8 @@
         depends="
             drush-aliases-generate,
             drush-settings-generate,
-            project-subsite-files-setup,
             project-database-import,
+            drush-files-dirs-create,
             project-modules-devel-en,
             reset-filesystem-permissions,
             drush-cache-reset" />
@@ -309,8 +309,8 @@
             </then>
         </if>
 
-        <phingcall target="drush-aliases-generate" />
         <phingcall target="project-subsite-files-setup" />
+        <phingcall target="drush-aliases-generate" />
     </target>
 
     <target name="project-subsite-backup" hidden="true"  description="Backup site defined files from properties.">
@@ -610,15 +610,6 @@
     </target>
 
     <target name="project-subsite-files-setup" hidden="true" description="Create files directories for subsite.">
-        <drush command="vset" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>file_public_path ${build.subsite.dir.files}</param>
-        </drush>
-        <drush command="vset" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>file_private_path ${build.subsite.dir.files}/private_files</param>
-        </drush>
-        <drush command="vset" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>file_temporary_path ${build.subsite.dir.tmp}</param>
-        </drush>
         <if>
             <istrue value="${build.subsite.dir.files}" />
             <then>

@@ -9,6 +9,15 @@
 
     <target name="drush-files-dirs-create" description="Create site files directories." hidden="true">
         <echo message="Creating files directories for ${db.name}." />
+        <drush command="vset" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>file_public_path ${build.subsite.dir.files}</param>
+        </drush>
+        <drush command="vset" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>file_private_path ${build.subsite.dir.files}/private_files</param>
+        </drush>
+        <drush command="vset" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>file_temporary_path ${build.subsite.dir.tmp}</param>
+        </drush>
         <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${toolkit.dir.incl.drush}/generate-directories.php</param>
         </drush>
