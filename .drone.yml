@@ -90,7 +90,7 @@ pipeline:
     image: fpfis/php56-build
     secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
     commands:
-      - timeout 5m ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='snapshot' ${PHING_OPTS} || return 0
+      - timeout 5m ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='snapshot' ${PHING_OPTS} || echo "Continue"
 
   # ============================================================================
   # Clone section:
@@ -110,7 +110,7 @@ pipeline:
     group: prebehat
     secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
     commands:
-      - timout 5m ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='compare_itself' ${PHING_OPTS} || return 0
+      - timout 5m ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='compare_itself' ${PHING_OPTS} || echo "Continue"
 
   selenium:
     image: selenium/standalone-chrome
