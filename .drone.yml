@@ -101,7 +101,7 @@ pipeline:
       - ./toolkit/drush -r build en dblog -y
       - ./toolkit/drush -r build wd-del all -y
       - ./toolkit/drush -r build wd-smoke
-      - ./toolkit/drush -r build wd-show --count=1000
+      - ./toolkit/drush -r build ws --fields=wid,date,type,severity,location,message --count=1000
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
@@ -124,7 +124,7 @@ pipeline:
       - ./toolkit/drush -r build en dblog -y
       - ./toolkit/drush -r build wd-del all -y
       - ./toolkit/drush -r build wd-smoke
-      - ./toolkit/drush -r build wd-show --count=1000
+      - ./toolkit/drush -r build ws --fields=wid,date,type,severity,location,message --count=1000
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
