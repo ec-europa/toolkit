@@ -292,4 +292,12 @@
         </drush>
     </target>
 
+    <target name="drush-watchdog-smoketest" hidden="true" description="Make a dump of database.">
+        <echo message="Starting watchdog smoketest." />
+        <drush command="pm-enable" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>dblog</param>
+        </drush>
+        <drush command="watchdog-smoketest" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}" />
+    </target>
+
 </project>
