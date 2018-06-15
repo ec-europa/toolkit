@@ -96,13 +96,9 @@ pipeline:
       # - ./toolkit/phing install-clean -D'project.url.base'="$(cat /test/toolkit/.frpc)" ${PHING_OPTS}
       - ./toolkit/phing install-clean ${PHING_OPTS}
       - ./toolkit/phing drush-sql-dump -D'database-file'='/test/toolkit/dump.sql' ${PHING_OPTS}
-      - ./toolkit/drush -r build features-revert-site
+      - ./toolkit/phing drush-watchdog-smoketest
       # - ./toolkit/drush -r build workbench-moderation-patch-update-status-simulation
       # - ./toolkit/drush -r build workbench-moderation-patch-update-status
-      - ./toolkit/drush -r build en dblog -y
-      - ./toolkit/drush -r build wd-del all -y
-      - ./toolkit/drush -r build wd-smoke
-      - ./toolkit/drush -r build ws --fields=type,severity,location,message --count=1000
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
@@ -120,13 +116,9 @@ pipeline:
     commands:
       - export COLUMNS=201
       - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql' ${PHING_OPTS}
-      - ./toolkit/drush -r build features-revert-site
+      - ./toolkit/phing drush-watchdog-smoketest
       # - ./toolkit/drush -r build workbench-moderation-patch-update-status-simulation
       # - ./toolkit/drush -r build workbench-moderation-patch-update-status
-      - ./toolkit/drush -r build en dblog -y
-      - ./toolkit/drush -r build wd-del all -y
-      - ./toolkit/drush -r build wd-smoke
-      - ./toolkit/drush -r build ws --fields=type,severity,location,message --count=1000
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
