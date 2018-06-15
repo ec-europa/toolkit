@@ -1,8 +1,8 @@
 # Subsite configuration.
 # ----------------------
 project.id = ${PROJECT_ID}
-project.install.modules = 
 project.name = ${PROJECT_DESCRIPTION}
+project.install.modules = ${PROJECT_INSTALL_MODULES}
 project.url.production = ${PRODUCTION_URL}
 
 # Solr configuration.
