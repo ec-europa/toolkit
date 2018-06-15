@@ -4,3 +4,8 @@
  * @file
  * Hic sunt dracones.
  */
+
+// To be removed. Just a test to show that watchdog_smoketest is able to pick them up.
+function example_module_init() {
+  watchdog('test', 'Message');
+}
