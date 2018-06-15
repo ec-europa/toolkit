@@ -95,7 +95,7 @@ pipeline:
       # - ./toolkit/phing install-clean -D'project.url.base'="$(cat /test/toolkit/.frpc)" ${PHING_OPTS}
       - ./toolkit/phing install-clean ${PHING_OPTS}
       - ./toolkit/phing drush-sql-dump -D'database-file'='/test/toolkit/dump.sql' ${PHING_OPTS}
-      - ./toolkit/phing drush-watchdog-smoketest
+      - ./toolkit/phing drush-watchdog-smoketest ${PHING_OPTS}
       # - ./toolkit/drush -r build workbench-moderation-patch-update-status-simulation
       # - ./toolkit/drush -r build workbench-moderation-patch-update-status
     volumes:
@@ -115,7 +115,7 @@ pipeline:
     commands:
       - export COLUMNS=201
       - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql' ${PHING_OPTS}
-      - ./toolkit/phing drush-watchdog-smoketest
+      - ./toolkit/phing drush-watchdog-smoketest ${PHING_OPTS}
       # - ./toolkit/drush -r build workbench-moderation-patch-update-status-simulation
       # - ./toolkit/drush -r build workbench-moderation-patch-update-status
     volumes:
