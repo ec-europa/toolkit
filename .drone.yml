@@ -92,6 +92,7 @@ pipeline:
   install-clean:
     image: fpfis/php56-dev
     commands:
+      - export COLUMNS=201
       # - ./toolkit/phing install-clean -D'project.url.base'="$(cat /test/toolkit/.frpc)" ${PHING_OPTS}
       - ./toolkit/phing install-clean ${PHING_OPTS}
       - ./toolkit/phing drush-sql-dump -D'database-file'='/test/toolkit/dump.sql' ${PHING_OPTS}
@@ -101,7 +102,7 @@ pipeline:
       - ./toolkit/drush -r build en dblog -y
       - ./toolkit/drush -r build wd-del all -y
       - ./toolkit/drush -r build wd-smoke
-      - ./toolkit/drush -r build ws --fields=wid,date,type,severity,location,message --format=json --count=1000
+      - ./toolkit/drush -r build ws --fields=type,severity,location,message --count=1000
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
@@ -117,6 +118,7 @@ pipeline:
   install-clone:
     image: fpfis/php56-dev
     commands:
+      - export COLUMNS=201
       - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql' ${PHING_OPTS}
       - ./toolkit/drush -r build features-revert-site
       # - ./toolkit/drush -r build workbench-moderation-patch-update-status-simulation
@@ -124,7 +126,7 @@ pipeline:
       - ./toolkit/drush -r build en dblog -y
       - ./toolkit/drush -r build wd-del all -y
       - ./toolkit/drush -r build wd-smoke
-      - ./toolkit/drush -r build ws --fields=wid,date,type,severity,location,message --format=json --count=1000
+      - ./toolkit/drush -r build ws --fields=type,severity,location,message --count=1000
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
