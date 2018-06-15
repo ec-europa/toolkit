@@ -87,7 +87,7 @@ pipeline:
       # - ./toolkit/drush -r build workbench-moderation-patch-update-status-simulation
       # - ./toolkit/drush -r build workbench-moderation-patch-update-status
       - ./toolkit/drush -r build en dblog -y
-      - ./toolkit/drush -r build wd-del all
+      - ./toolkit/drush -r build wd-del all -y
       - ./toolkit/drush -r build wd-smoke
       - ./toolkit/drush -r build wd-show --count=1000
     volumes:
