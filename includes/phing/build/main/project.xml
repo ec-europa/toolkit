@@ -707,17 +707,33 @@
 
     <target name="project-subsite-composer-no-dev" hidden="true" description="Run composer install without dev on subsite.">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
-        <phingcall target="project-composer-install">
-            <property name="composer-working-dir" value="${build.tmp.dir}" override="true" />
-            <property name="composer-no-dev" value="true" override="true" />
-        </phingcall>
+        <if>
+            <available file="${build.tmp.dir}/composer.json" type="file" />
+            <then>
+                <phingcall target="project-composer-install">
+                    <property name="composer-working-dir" value="${build.tmp.dir}" override="true" />
+                    <property name="composer-no-dev" value="true" override="true" />
+                </phingcall>
+            </then>
+            <else>
+                <echo msg="Skipping, no composer.json found at ${build.tmp.dir}." />
+            </else>
+        </if>
     </target>
 
     <target name="project-subsite-composer-dev" hidden="true" description="Run composer install with dev on subsite.">
         <echo msg="Run 'composer install' in the subsite folder for development purposes." />
-        <phingcall target="project-composer-install">
-            <property name="composer-working-dir" value="${build.subsite.dir}" />
-        </phingcall>
+        <if>
+            <available file="${build.subsite.dir}/composer.json" type="file" />
+            <then>
+                <phingcall target="project-composer-install">
+                    <property name="composer-working-dir" value="${build.subsite.dir}" />
+                </phingcall>
+            </then>
+            <else>
+                <echo msg="Skipping, no composer.json found at ${build.subsite.dir}." />
+            </else>
+        </if>
     </target>
 
 </project>
