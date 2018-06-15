@@ -89,7 +89,7 @@
                 <phingcall target="drush-site-install" />
             </else>
         </if>
-
+        <phingcall target="drush-files-dirs-create" />
         <phingcall target="project-modules-install-en" />
         <phingcall target="project-modules-devel-en" />
         <phingcall target="reset-filesystem-permissions" />
@@ -102,8 +102,7 @@
             drush-settings-generate,
             project-database-import,
             project-modules-devel-en,
-            reset-filesystem-permissions,
-            drush-cache-reset" />
+            reset-filesystem-permissions" />
 
     <target name="project-composer-install" description="Runs composer install."
         hidden="true">
@@ -630,6 +629,9 @@
     </target>
 
     <target name="project-modules-devel-en" hidden="true" description="Enable development modules with drush.">
+        <echoproperties prefix="devel.vars." destfile="${project.tmp.dir}/build.devel.vars.props" />
+        <exec command="cat ${project.tmp.dir}/build.devel.vars.props | sed '/devel/,$!d'" outputProperty="variable-strings" />
+        <foreach list="${variable-strings}" delimiter="${line.separator}" param="variable-string" target="drush-variable-set-string" />
         <phingcall target="drush-modules-enable">
             <property name="project.drupal.modules" value="${devel.mdls.en}" />
         </phingcall>
