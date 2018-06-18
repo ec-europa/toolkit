@@ -2,52 +2,68 @@
 
 <project name="drush" description="Contains drush helper targets that help manage your Drupal installation." default="">
 
-    <target name="drush-aliases-generate" description="Generate drush aliases for each subsite folder.">
+    <target name="drush-aliases-generate" hidden="true" description="Generate drush aliases for each subsite folder.">
         <mkdir dir="${build.platform.dir.sites}/all/drush" />
         <drushgal siteRoot="${build.platform.dir}" />
     </target>
 
     <target name="drush-files-dirs-create" description="Create site files directories." hidden="true">
         <echo message="Creating files directories for ${db.name}." />
+        <drush command="vset" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>file_public_path ${build.subsite.dir.files}</param>
+        </drush>
+        <drush command="vset" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>file_private_path ${build.subsite.dir.files}/private_files</param>
+        </drush>
+        <drush command="vset" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>file_temporary_path ${build.subsite.dir.tmp}</param>
+        </drush>
         <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${toolkit.dir.incl.drush}/generate-directories.php</param>
         </drush>
     </target>
 
-    <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
-        <drush
-            command="vset"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>preprocess_css 0</param>
-        </drush>
-        <drush
-            command="vset"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>preprocess_js 0</param>
-        </drush>
-        <drush
-            command="cc"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>all</param>
-        </drush>        
+    <target name="drush-variable-set-string" description="Use a string to set variable with drush" hidden="true">
+        <exec command="echo ${variable-string} | sed -e 's/devel\.vars\.\(.*\)=\(.*\)$/\1/'" outputProperty="variable-name" />
+        <exec command="echo ${variable-string} | cut -d'=' -f2" outputProperty="variable-value" />
+        <if>
+            <not>
+                <or>
+                    <equals arg1="${variable-name}" arg2="" />
+                    <equals arg1="${variable-value}" arg2="" />
+                </or>
+            </not>
+            <then>
+                <drush
+                    command="vset"
+                    assume="yes"
+                    root="${build.platform.dir}"
+                    alias="@${drush.alias.default}"
+                    bin="${toolkit.dir.bin.drush}"
+                    verbose="${drush.verbose}"
+                    color="${drush.color}">
+                    <param>${variable-name}</param>
+                    <param>${variable-value}</param>
+                </drush>
+            </then>
+        </if>
     </target>
 
-    <target name="drush-files-dirs-htaccess" description="Ensure the presence of htaccess files.">
+    <target name="drush-variable-set" description="Set a variable with drush" hidden="true">
+        <drush
+            command="vset"
+            assume="yes"
+            root="${build.platform.dir}"
+            alias="@${drush.alias.default}"
+            bin="${toolkit.dir.bin.drush}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>${variable-name}</param>
+            <param>${variable-value}</param>
+        </drush>
+    </target>
+
+    <target name="drush-files-dirs-htaccess" hidden="true" description="Ensure the presence of htaccess files.">
         <drush
             command="php-eval"
             assume="yes"
@@ -94,11 +110,11 @@
         </if>
     </target>
 
-    <target name="drush-make-secure" description="Check make file for insecure modules.">
+    <target name="drush-make-secure" hidden="true" description="Check make file for insecure modules.">
         <drushms makefile="${makefile-path}" failon="revoked" />
     </target>
 
-    <target name="drush-make-secure-all" description="Check all make files for insecure modules.">
+    <target name="drush-make-secure-all" hidden="true" description="Check all make files for insecure modules.">
         <echo msg="Checking make files for projects not covered by Drupal's security advisory." />
         <foreach param="makefile" absparam="makefile-path" target="drush-make-secure">
             <fileset dir="${resources.dir}">
@@ -120,7 +136,7 @@
         </drush>
     </target>
 
-    <target name="drush-node-access-rebuild" description="Rebuild the node access.">
+    <target name="drush-node-access-rebuild" hidden="true" description="Rebuild the node access.">
         <drush
             command="php-eval"
             assume="yes"
@@ -133,7 +149,7 @@
         </drush>
     </target>
 
-    <target name="drush-registry-rebuild" description="Perform a registry rebuild.">
+    <target name="drush-registry-rebuild" hidden="true" description="Perform a registry rebuild.">
         <trycatch>
             <try>
                 <exec command="${toolkit.dir.bin.drush} rr --help" checkreturn="true" />
@@ -142,14 +158,29 @@
                 <phingcall target="drush-registry-rebuild-dl" />
             </catch>
             <finally>
-                <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
-                    <param>--no-cache-clear</param>
-                </drush>
+                <trycatch>
+                    <try>
+                        <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                            <param>"update system set status=0 where name IN (${drush.rr.disable});"</param>
+                        </drush>
+                        <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+                            <param>${drush.rr.options}</param>
+                        </drush>
+                        <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                            <param>"update system set status=1 where name IN (${drush.rr.disable});"</param>
+                        </drush>
+                    </try>
+                    <catch>
+                        <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+                            <param>${drush.rr.options}</param>
+                        </drush>
+                    </catch>
+                </trycatch>
             </finally>
         </trycatch>
     </target>
 
-    <target name="drush-registry-rebuild-dl" description="Download drush registry-rebuild.">
+    <target name="drush-registry-rebuild-dl" hidden="true" description="Download drush registry-rebuild.">
         <echo message="Installing registry rebuild on user account." />
         <exec command="${toolkit.dir.bin.drush} pm-download registry_rebuild-7 -n >/dev/null" />
         <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
@@ -168,16 +199,6 @@
                     <token key="db.port" value="${db.port}" />
                     <token key="db.prefix" value="${db.prefix}" />
                     <token key="base_url" value="${project.url.base}" />
-                    <token key="error_level" value="${devel.vars.error_level}" />
-                    <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
-                    <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />
-                    <token key="views_show_additional_queries" value="${devel.vars.views_show_additional_queries}" />
-                    <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
-                    <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
-                    <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
-                    <token key="file_public_path" value="${build.subsite.dir.files}" />
-                    <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
-                    <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
                     <token key="update_free_access" value="${drupal.update.free.access}" />
                     <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
                 </replacetokens>
@@ -191,7 +212,14 @@
         </drush>
     </target>
 
-    <target name="drush-site-install" description="Install a site.">
+    <target name="drush-uris-generate" description="Generate list of uris.">
+        <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>${toolkit.dir.incl.drush}/generate-uris.php</param>
+            <param>${backtrac.file}</param>
+        </drush>
+    </target>
+
+    <target name="drush-site-install" hidden="true" description="Install a site.">
         <echo message="Installing site ${project.name}." />
         <drush command="site-install" assume="yes" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${drush.alias.default}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
@@ -206,7 +234,7 @@
         <phingcall target="drush-settings-generate" />
     </target>
 
-    <target name="drush-solr-enable" description="Enable the solr module.">
+    <target name="drush-solr-enable" hidden="true" description="Enable the solr module.">
         <if>
             <equals arg1="${solr.enable}" arg2="1" />
             <then>
@@ -222,36 +250,46 @@
         </if>
     </target>
 
-    <target name="drush-sql-create" description="Create a database.">
+    <target name="drush-sql-create" hidden="true" description="Create a database.">
         <echo message="Creating database ${db.name}." />
         <drush command="sql-create" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
         </drush>
     </target>
 
-    <target name="drush-sql-import" description="Import a database.">
+    <target name="drush-sql-import" hidden="true" description="Import a database.">
         <echo message="Importing database." />
-        <phingcall target="drush-files-dirs-create" />
         <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
-        <phingcall target="drush-registry-rebuild" />
+        <if>
+            <not>
+                <equals arg1="${build.site}" arg2="${project.id}" />
+            </not>
+            <then>
+                <relsym link="${build.platform.dir}/sites/${project.id}" target="${build.subsite.dir}" />
+            </then>
+        </if>
+        <if>
+            <equals arg1="${drush.rr.enabled}" arg2="1" />
+            <then>
+                <phingcall target="drush-registry-rebuild" />
+            </then>
+        </if>
+        <phingcall target="drush-files-dirs-create" />
         <phingcall target="drush-files-dirs-htaccess" />
         <phingcall target="drush-solr-enable" />
         <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}"></drush>
-        <drush command="cc" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
-            <param>all</param>
-        </drush>
     </target>
 
-    <target name="drush-sql-drop" description="Drop a database.">
+    <target name="drush-sql-drop" hidden="true" description="Drop a database.">
         <echo message="Dropping database ${db.name}." />
         <drush command="sql-drop" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
         </drush>
     </target>
 
-    <target name="drush-sql-dump" description="Make a dump of database.">
+    <target name="drush-sql-dump" hidden="true" description="Make a dump of database.">
         <echo message="Backing up database ${db.name} to ${database-file}." />
         <dirname property="database-cachedir" file="${database-file}" />
         <mkdir dir="${database-cachedir}" />

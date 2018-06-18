@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="toolkit" default="help">
+<project name="toolkit" description="Contains all Toolkit helper targets."  default="">
 
     <target name="build-toolkit" description="Initializes toolkit and project directories."
+        hidden="true"
         depends="
             toolkit-binary-link,
             toolkit-structure-generate">
         <echo msg="Toolkit successfully initialized." />
     </target>
 
-    <target name="toolkit-append-props" description="Append the contents of a properties file to build.default.props.">
+    <target name="toolkit-append-props" description="Append the contents of a properties file to build.default.props." hidden="true">
         <php expression='str_replace("${project.basedir}", ".", "${props-file-path}");' returnProperty="props-file-path-relative" />
         <append destFile="${project.basedir}/build.default.props" text="# Toolkit location: ${props-file-path-relative}${line.separator}" />
         <append destFile="${project.basedir}/build.default.props" file="${props-file-path}" />
@@ -20,7 +21,7 @@
         <relsym link="${project.basedir}/toolkit" target="${toolkit.dir.bin}" overwrite="true" />
     </target>
 
-    <target name="toolkit-default-props" description="Provide project with an overview of all default build properties.">
+    <target name="toolkit-default-props" description="Provide project with an overview of all default build properties." hidden="true">
         <echo msg="Providing project with a build.default.props file." />
         <exec command="> ${project.basedir}/build.default.props" />
         <foreach param="props-file-name" absparam="props-file-path" target="toolkit-append-props">
@@ -37,7 +38,7 @@
         <echoproperties prefix="composer.hook." />
     </target>
 
-    <target name="toolkit-hooks-git-delete" description="Delete all git hooks.">
+    <target name="toolkit-hooks-git-delete" description="Delete all git hooks." hidden="true">
         <if>
             <available file="${project.basedir}/.git/hooks" type="dir" />
             <then>
@@ -95,18 +96,18 @@
         </if>
     </target>
 
-    <target name="toolkit-markdown-generate" description="Generate documentation md files for toolkit.">
+    <target name="toolkit-markdown-generate" description="Generate documentation md files for toolkit." hidden="true">
         <docgen buildfile="${project.basedir}/build.xml" />
     </target>
 
-    <target name="toolkit-clean" description="Remove example code from /lib folder.">
+    <target name="toolkit-clean" description="Remove example code from /lib folder." hidden="true">
         <delete dir="${lib.dir.modules.custom}/example_module" includeemptydirs="true" failonerror="false" />
         <delete dir="${lib.dir.modules.features}/myproject_core" includeemptydirs="true" failonerror="false" />
         <delete dir="${lib.dir.source}/MyGroup" includeemptydirs="true" failonerror="false" />
         <delete dir="${lib.dir.themes}/example_theme" includeemptydirs="true" failonerror="false" />
     </target>
 
-    <target name="toolkit-starterkit-upgrade" description="Perform upgrade tasks for upgrading from 2.x to 3.x.">
+    <target name="toolkit-starterkit-upgrade" hidden="true" description="Perform upgrade tasks for upgrading from 2.x to 3.x.">
         <if>
             <available file="${project.basedir}/build.package.xml" type="file" />
             <then>
@@ -294,9 +295,10 @@
             </then>
         </if>
         <delete dir="lib-backup" />
+        <phingcall target="toolkit-generate-project-info" />
     </target>
 
-    <target name="toolkit-structure-generate" description="Create the lib directory structure.">
+    <target name="toolkit-structure-generate" description="Create the lib directory structure." hidden="true">
         <if>
             <and>
                 <not>
@@ -324,13 +326,51 @@
         </if>
     </target>
 
-    <target name="toolkit-templates-copy" description="Copies template files to your project for toolkit integration.">
+    <target name="toolkit-templates-copy" description="Copies template files to your project for toolkit integration." hidden="true">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
         <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
         <copy todir="${project.basedir}">
             <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
         </copy>
         <echo msg="Project structure for ${project-type} created." />
+    </target>
+
+    <target name="toolkit-generate-project-info" description="Copies template files to your project for toolkit integration with inventory details." hidden="true">
+        <exec command="basename -s .git `git config --get remote.origin.url`" outputProperty="project-id" />
+        <exec command="grep ${project-id} ${toolkit.dir.incl.templates}/project/inventory.csv | head -1" outputProperty="project-details" />
+        <if>
+            <not>
+                <equals arg1="${project-details}" arg2="" />
+            </not>
+            <then>
+                <exec command="echo ${project-details} | cut -d',' -f1" outputProperty="project.id" />
+                <exec command="echo ${project-details} | cut -d',' -f2" outputProperty="project.name" />
+                <exec command="echo ${project-details} | cut -d',' -f3" outputProperty="project.url.repository" />
+                <exec command="echo ${project-details} | cut -d',' -f4" outputProperty="backtrac.id.static" />
+                <exec command="echo ${project-details} | cut -d',' -f5" outputProperty="backtrac.id.dynamic" />
+                <exec command="echo ${project-details} | cut -d',' -f6" outputProperty="project.url.production" />
+                <exec command="echo ${project-details} | cut -d',' -f7" outputProperty="project.url.playground" />
+                <copy todir="${project.basedir}" overwrite="true">
+                    <fileset dir="${toolkit.dir.incl.templates}/subsite">
+                        <include name="README.md" />
+                        <include name="composer.json" />
+                        <include name="build.project.props" />
+                    </fileset>
+                    <filterchain>
+                        <replacetokens begintoken="${" endtoken="}">
+                            <token key="PROJECT_ID" value="${project.id}" />
+                            <token key="PROJECT_DESCRIPTION" value="${project.name}" />
+                            <token key="PROJECT_INSTALL_MODULES" value="${project.install.modules}" />
+                            <token key="PRODUCTION_URL" value="${project.url.production}" />
+                            <token key="REPOSITORY_URL" value="${project.url.repository}" />
+                            <token key="BACKTRAC_ID_STATIC" value="${backtrac.id.static}" />
+                            <token key="BACKTRAC_ID_DYNAMIC" value="${backtrac.id.dynamic}" />
+                        </replacetokens>
+                    </filterchain>
+                </copy>
+                <echo msg="Project information generated in README.md, composer.json and build.project.props." />
+            </then>
+        </if>
     </target>
 
 </project>

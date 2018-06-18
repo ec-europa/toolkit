@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<project name="projectname" default="">
+<project name="projectname" description="Custom targets." default="">
 
     <!-- This file is allowed to override targets within the toolkit.
 

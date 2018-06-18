@@ -9,7 +9,7 @@
         <echo msg="Finished clearing all caches." />
     </target>
 
-    <target name="cache-clear-global" description="Delete all files stored in global cache.">
+    <target name="cache-clear-global" hidden="true" description="Delete all files stored in global cache.">
         <if>
             <available file="${share.path.global}" type="dir" />
             <then>
@@ -20,7 +20,7 @@
         </if>
     </target>
 
-    <target name="cache-clear-local" description="Delete all files stored in local cache.">
+    <target name="cache-clear-local" hidden="true" description="Delete all files stored in local cache.">
         <if>
             <available file="${project.tmp.dir}" type="dir" />
             <then>
@@ -152,41 +152,18 @@
         </trycatch>
     </target>
 
-    <target name="reset-filesystem-permissions" description="Reset filesystem permissions." hidden="true">
+    <target name="reset-filesystem-permissions" description="Reset filesystem permissions for local/ephemeral use." hidden="true">
         <if>
-            <available file="${target-dir}" type="dir" />
+            <available file="${build.subsite.dir}" type="dir" />
             <then>
-                <chmod mode="0750" failonerror="true" verbose="false" quiet="true">
-                    <fileset dir="${target-dir}" excludes="**/sites/*/files">
-                        <type type="dir" />
-                    </fileset>
-                </chmod>
-                <chmod mode="0640" failonerror="true" verbose="false" quiet="true">
-                    <fileset dir="${target-dir}" excludes="**/sites/*/files">
-                        <type type="file" />
-                    </fileset>
-                </chmod>
-                <if>
-                    <not>
-                        <and>
-                            <contains string="${target-dir}" substring="${lib.dir}" />
-                            <contains string="${target-dir}" substring="${build.dist.dir}" />
-                        </and>
-                    </not>
-                    <then>
-                        <chmod mode="0770" failonerror="true" verbose="false" quiet="true">
-                            <fileset dir="${target-dir}" includes="**/sites/*/files">
-                                <type type="dir" />
-                            </fileset>
-                        </chmod>
-                        <chmod mode="0660" failonerror="true" verbose="false" quiet="true">
-                            <fileset dir="${target-dir}" includes="**/sites/*/files">
-                                <type type="file" />
-                            </fileset>
-                        </chmod>
-                    </then>
-                </if>
+                <echo msg="${build.subsite.dir} folder found, enforce folder permission reset." />
+                <exec command="chmod -R 777 ${build.subsite.dir}" />
+                <exec command="chmod 755 ${build.subsite.dir}" />
+                <exec command="chmod 444 ${build.subsite.dir}/settings.php" />
             </then>
+            <else>
+                <echo msg="${build.platform.dir} folder not found, skipping permission reset." />
+            </else>
         </if>
     </target>
 

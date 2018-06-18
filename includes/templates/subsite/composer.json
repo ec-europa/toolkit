@@ -1,7 +1,15 @@
 {
-    "name": "ec-europa/subsite",
+    "name": "ec-europa/${PROJECT_ID}",
+    "description": "${PROJECT_DESCRIPTION}",
+    "type": "project",
+    "keywords": ["fpfis", "nexteuropa", "subsite"],
+    "homepage": "${PRODUCTION_URL}",
     "require": {
-        "ec-europa/toolkit": "3.0.*@beta"
+        "ec-europa/toolkit": "3.*"
+    },
+    "support": {
+        "email": "Europamanagement@ec.europa.eu",
+        "source": "${REPOSITORY_URL}"
     },
     "scripts": {
         "post-install-cmd": "@toolkit-install",

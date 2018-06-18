@@ -1,13 +1,13 @@
 # Subsite configuration.
 # ----------------------
-project.id = toolkit
-project.install.modules =
-project.name = Subsite Starterkit
-project.url.production =
+project.id = ${PROJECT_ID}
+project.name = ${PROJECT_DESCRIPTION}
+project.install.modules = ${PROJECT_INSTALL_MODULES}
+project.url.production = ${PRODUCTION_URL}
 
 # Solr configuration.
 # -------------------
-project.solr.type = d7_apachesolr
+solr.type = d7_apachesolr
 
 # Admin configuration.
 # --------------------
@@ -16,4 +16,9 @@ project.admin.email = ${project.admin.username}@example.com
 # Platform configuration.
 # -----------------------
 profile = multisite_drupal_standard
-platform.package.version = 2.3
+platform.package.version = 2.4
+
+# Backtrac project IDs.
+# =====================
+backtrac.id.static = ${BACKTRAC_ID_STATIC}
+backtrac.id.dynamic = ${BACKTRAC_ID_DYNAMIC}

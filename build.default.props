@@ -1,8 +1,8 @@
 # Toolkit location: ./includes/phing/build/boot.props
-# -----------------------------------------------------------------------------------
-# These are the toolkit paths that should not be altered. Altering paths here have a
-# good chance of breaking things.
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# These are the toolkit paths that should not be altered. Altering paths here 
+# have a good chance of breaking things.
+# ------------------------------------------------------------------------------
 
 # Toolkit directories.
 # -----------------------
@@ -12,6 +12,8 @@ toolkit.dir.incl = ${toolkit.dir}/includes
 toolkit.dir.incl.composer = ${toolkit.dir.incl}/composer
 toolkit.dir.incl.docker = ${toolkit.dir.incl}/docker
 toolkit.dir.incl.drush = ${toolkit.dir.incl}/drush
+toolkit.dir.incl.git = ${toolkit.dir.incl}/git
+toolkit.dir.incl.git.hooks = ${toolkit.dir.incl.git}/hooks
 toolkit.dir.incl.phing = ${toolkit.dir.incl}/phing
 toolkit.dir.incl.phing.build = ${toolkit.dir.incl.phing}/build
 toolkit.dir.incl.phing.props = ${toolkit.dir.incl.phing}/props
@@ -26,10 +28,31 @@ toolkit.dir.bin.drush = ${toolkit.dir.bin}/drush
 toolkit.dir.bin.phing = ${toolkit.dir.bin}/phing
 
 
+# Toolkit location: ./includes/phing/build/test/phpunit.props
+# ------------------------------------------------------------------------------
+# PHPUnit sprecific configuration
+# ------------------------------------------------------------------------------
+
+# The location of the PHPUnit executable.
+phpunit.bin = ${tests.dir}/bin/phpunit
+
+# The location of the PHPUnit configuration files.
+phpunit.dir = ${tests.dir}
+
+# The location of the PHPUnit configuration template.
+phpunit.xml.template = ${phpunit.dir}/phpunit.xml.dist
+
+# The location of the generated Behat configuration file.
+phpunit.xml.path = ${phpunit.dir}/phpunit.xml
+
+# The base URL to use in PHPUnit tests.
+phpunit.base_url = ${behat.base_url}
+
+
 # Toolkit location: ./includes/phing/build/test/phpcs.props
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # PHPCS sprecific configuration
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # The file extensions to test.
 # Delimited by space, comma or semicolon.
@@ -37,9 +60,6 @@ phpcs.extensions = php inc module install info test profile theme css js
 
 # The default configuration file to generate.
 phpcs.config = ${project.basedir}/phpcs.xml
-
-# The locations for installed standards, delimited by comma.
-phpcs.installed.paths = ${toolkit.dir.vendor}/ec-europa/qa-automation/phpcs/SubStandards
 
 # The coding standards to enforce.
 # Delimited by space, comma or semicolon..
@@ -68,9 +88,6 @@ phpcs.sniffcodes = 0
 # Whether or not to show the progress of the run.
 phpcs.progress = 1
 
-# The location of the file containing the global configuration options.
-phpcs.global.config = ${toolkit.dir.vendor}/squizlabs/php_codesniffer/CodeSniffer.conf
-
 # Whether or not to run a coding standards check before doing a git push. Note
 # that this will abort the push if the coding standards check fails.
 phpcs.prepush.enable = 1
@@ -81,9 +98,9 @@ phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpc
 
 
 # Toolkit location: ./includes/phing/build/test/behat.props
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Behat sprecific configuration
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # Browser name for selenium.
 behat.browser.name = chrome
@@ -104,16 +121,16 @@ behat.yml.template = ${behat.dir}/behat.yml.dist
 behat.yml.path = ${behat.dir}/behat.yml
 
 # The base URL to use in Behat tests.
-behat.base_url = http://web:8080
+behat.base_url = http://localhost
 
 # A drush alias to run behat on.
-behat.drush.alias = docker
+behat.drush.alias = default
 
 # The URL of the Behat webdriver host.
-behat.wd_host.url = http://selenium:4444/wd/hub
+behat.wd_host.url = http://localhost:4444/wd/hub
 
 # The location to search for Behat subcontexts.
-behat.subcontexts.path = ${build.platform.dir.profile}/modules
+behat.subcontexts.path = ${build.subsite.dir}
 
 # The output format to use for Behat tests, either 'progress' or 'pretty'.
 behat.formatter.name = progress
@@ -125,42 +142,39 @@ behat.options.strict = true
 # Proceed the build even after error.
 behat.options.haltonerror = true
 
-# Set verbosity for Behat tests. 0 is completely silent, 1 is normal output, 2
-# shows exception backtraces, 3 shows debugging information.
-behat.options.verbosity = 2
+# Currently only true or false possible until this is solved:
+# https://github.com/drupol/phingbehattask/issues/5
+behat.options.verbosity = false
 
 # Load balancer Phing task configuration.
-behat.load_balancer.containers = 5
-behat.load_balancer.root = ${behat.dir}
+behat.load_balancer.containers = 2
+behat.load_balancer.root = ${behat.dir}/features
 behat.load_balancer.destination = ${behat.dir}/balancer
 behat.load_balancer.import = ${behat.yml.path}
 
+# Generic behat generic testing configuration
+behat.generic.package.enable = 0
+behat.generic.package = jonhy81/toolkit-behat
 
-# Toolkit location: ./includes/phing/build/test/phpunit.props
-# -----------------------------------------------------------------------------------
-# PHPUnit sprecific configuration
-# -----------------------------------------------------------------------------------
+# Specify a tags for the behat scenarios to run.
+behat.tags = ~@wip
 
-# The location of the PHPUnit executable.
-phpunit.bin = ${tests.dir}/bin/phpunit
 
-# The location of the PHPUnit configuration files.
-phpunit.dir = ${tests.dir}
+# Toolkit location: ./includes/phing/props/docker.props
+# ------------------------------------------------------------------------------
+# Default docker (fpfis) properties.
+# ------------------------------------------------------------------------------
 
-# The location of the PHPUnit configuration template.
-phpunit.xml.template = ${phpunit.dir}/phpunit.xml.dist
-
-# The location of the generated Behat configuration file.
-phpunit.xml.path = ${phpunit.dir}/phpunit.xml
-
-# The base URL to use in PHPUnit tests.
-phpunit.base_url = ${behat.base_url}
+db.host = mysql
+solr.host = solr
+behat.base_url = http://web:8080
+behat.wd_host.url = http://selenium:4444/wd/hub
 
 
 # Toolkit location: ./includes/phing/props/main.props
-# -----------------------------------------------------------------------------------
-# The main properties of the toolkit. Most of them are build and development related.
-# -----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Main properties of Toolkit. Most of these are build and development related.
+# ------------------------------------------------------------------------------
 
 # Binaries.
 # ---------
@@ -181,19 +195,20 @@ project.name = My Project
 project.theme.default = ec_resp
 project.type = subsite
 project.url.base = http://web:8080
-project.url.production =
+project.url.production = https://ec.europa.eu/${project.id}
 
 # Development modules.
 # --------------------
 devel.mdls.dir = devel
-devel.mdls.dl = devel maillog stage_file_proxy
 devel.mdls.en = devel context field_ui maillog simpletest stage_file_proxy views_ui
 
 # Development variables.
 # ----------------------
 devel.vars.error_level = 2
+devel.vars.preprocess_css = 0
+devel.vars.preprocess_js = 0
 devel.vars.stage_file_proxy_hotlink = 1
-devel.vars.stage_file_proxy_origin = https://ec.europa.eu/${project.id}
+devel.vars.stage_file_proxy_origin = ${project.url.production}
 devel.vars.stage_file_proxy_origin_dir = sites/${project.id}/files
 devel.vars.views_show_additional_queries = 1
 devel.vars.views_ui_show_performance_statistics = 1
@@ -203,9 +218,12 @@ devel.vars.views_ui_show_sql_query = 1
 # ------------------------
 drush.color = 1
 drush.verbose = FALSE
+drush.rr.enabled = 1
+drush.rr.options = --fire-bazooka --no-cache-clear
+drush.rr.disable = '', ''
 
 # Docker. (TODO)
-# -------
+# ------------------------
 docker.project.id = environment
 
 # Database download settings.
@@ -223,18 +241,20 @@ db.type = mysql
 db.name = ${project.id}
 db.user = root
 db.password =
-db.host = mysql
+db.host = 127.0.0.1
 db.port = 3306
 db.url = ${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db.name}
+db.prefix =
 
 # Solr configuration.
 # -------------------
 solr.enable = 1
-solr.host = solr
-solr.port = 8983
-solr.type = d7_apachesolr
 solr.scheme = http
-solr.url = ${solr.scheme}://${solr.host}:${solr.port}/solr/${solr.type}
+solr.host = 127.0.0.1
+solr.port = 8983
+solr.path = /solr
+solr.type = d7_apachesolr
+solr.url = ${solr.scheme}://${solr.host}:${solr.port}${solr.path}/${solr.type}
 
 # Admin configuration.
 # --------------------
@@ -242,9 +262,10 @@ admin.email = ${admin.username}@example.com
 admin.password = pass
 admin.username = admin
 
-# Platform configuration. (deploy props?)
+# Platform configuration.
 # -----------------------
 profile = multisite_drupal_standard
+profile.name = ${profile}
 profile.core = 7.x
 profile.core.make = ${resources.dir}/drupal-core.make
 profile.make = ${resources.dir}/${profile}.make
@@ -257,10 +278,10 @@ platform.package.version = 2.4
 
 # Theme configuration (deploy props?)
 # --------------------
-theme.ecl.version = v0.10.0
-theme.ec_europa.version = 0.0.3
+theme.ecl.version = v0.18.0
+theme.ec_europa.version = 0.0.6
 theme.atomium.repo.url = https://github.com/ec-europa/atomium.git
-theme.atomium.repo.branch = 7.x-1.x
+theme.atomium.repo.branch = 7.x-2.x
 theme.europa.repo.url = https://github.com/ec-europa/ec_europa.git
 theme.europa.repo.branch = master
 
@@ -275,6 +296,7 @@ lib.dir.profiles = ${lib.dir}/profiles
 lib.dir.profiles.profile = ${lib.dir.profiles}/${profile}
 lib.dir.source = ${lib.dir}/src
 lib.dir.themes = ${lib.dir}/themes
+lib.dir.translations = ${lib.dir}/translations
 
 resources.dir = ${project.basedir}/resources
 resources.dir.composer.json = ${resources.dir}/composer.json
@@ -292,7 +314,7 @@ build.dist = dist
 build.site = default
 #build.site = ${project.id}
 
-Build halts.
+# Build halts.
 # ----------
 build.haltonerror.dir.copy = true
 build.haltonerror.props.validate = false
@@ -315,7 +337,7 @@ build.platform.htaccess.append.text =
 build.subsite.composer.json = ${build.subsite.dir}/composer.json
 build.subsite.composer.lock = ${build.subsite.dir}/composer.lock
 build.subsite.dir = ${build.platform.dir.sites}/${build.site}
-build.subsite.dir.files = ${build.subsite.dir}/files
+build.subsite.dir.files = sites/${build.site}/files
 build.subsite.dir.libraries = ${build.subsite.dir}/libraries
 build.subsite.dir.modules = ${build.subsite.dir}/modules
 build.subsite.dir.modules.contrib = ${build.subsite.dir.modules}/contrib
@@ -338,17 +360,22 @@ build.dist.dir.profiles = ${build.dist.dir}/profiles
 build.dist.dir.source = ${build.dist.dir}/src
 build.dist.dir.themes = ${build.dist.dir}/themes
 
+# Temporary build files and directories.
+# -----------------------------------------
+build.tmp.dir = ${project.tmp.dir}/sites/${build.site}
+
 # Rebuild configuration.
 # ----------------------
 rebuild.auto = 1
 rebuild.backup.destination = ${project.tmp.dir}/backup-site
 rebuild.backup.files = ${build.subsite.dir}/settings.php;${build.subsite.dir}/settings.local.php
-rebuild.backup.folders = ${build.subsite.dir.files};${build.subsite.dir.tmp}
+rebuild.backup.folders = ${build.subsite.dir.files}
+rebuild.backup.site = ${build.subsite.dir}
 
 # Shared paths.
 # -------------
-share.path = /cache
-share.name = share
+share.path = /tmp
+share.name = toolkit
 share.path.global = ${share.path}/${share.name}
 share.path.composer = ${share.path.global}/composer
 share.path.platform = ${share.path.global}/platform
@@ -371,19 +398,6 @@ composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =
 
-# Git hook phingcall target lists. Space separated only.
-# -----------------------------------------------------------
-git.hook.applypatch.msg =
-git.hook.post.update =
-git.hook.pre.commit =
-git.hook.pre.push =
-git.hook.pre.receive =
-git.hook.commit.msg
-git.hook.pre.applypatch =
-git.hook.prepare.commit.msg =
-git.hook.pre.rebase =
-git.hook.update =
-
 # Flickr configuration.
 # ---------------------
 flickr.key = foobar
@@ -400,5 +414,34 @@ varnish.server.port = 8888
 # Drush Context configuration.
 # ----------------------------
 drush.db.dump = ${build.platform.dir}/dump.sql
+
+# Drush aliases configuration.
+# ----------------------------
+drush.alias.default = ${build.site}
+drush.alias.docker = docker
+
+# Drupal installation settings.
+# ----------------------------
+drupal.update.free.access = FALSE
+drupal.hash.salt =
+
+# Bactrack configuration
+# ----------------------------
+backtrac.file = ${project.tmp.dir}/bactrack.json
+backtrac.compare.mode = compare_itself
+
+
+# Toolkit location: ./includes/phing/props/drone.props
+# ------------------------------------------------------------------------------
+# Default properties for toolkit pipeline on Drone:
+# https://github.com/ec-europa/ne-pipelines/blob/master/drone/toolkit.yml
+# ------------------------------------------------------------------------------
+
+db.host = mysql
+solr.host = solr
+behat.base_url = http://web:8080
+behat.wd_host.url = http://selenium:4444/wd/hub
+share.path = /cache
+project.db.file = ./dump.sql
 
 

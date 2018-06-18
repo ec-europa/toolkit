@@ -302,6 +302,44 @@ Total time: 4 minutes 6.64 seconds
 ```
 </p></details>
 
+### Manual or custom behat testing:
+
+If you wish to manually execute behat after editing the behat.yml for example
+you could:
+
+<details><p><summary>execute <code>tests/vendor/behat/behat/bin/behat --config="tests/behat.yml" --strict</code></summary></p>
+
+If you project needs a custom version of behat or other packages you should add
+these to the require-dev section of your main composer.json file. Then you can
+use any package you need to perform your tests by executing your own binary or
+by changing the build property of the behat.bin to your own location:
+
+```shell
+behat.bin = ${project.basedir}/vendor/behat/behat/bin/behat
+```
+
+```javascript
+{
+    "name": "ec-europa/subsite",
+    "require": {
+        "ec-europa/toolkit": "3.*"
+    },
+    "require-dev": {
+        "behat/behat": "~3.1.0@rc",
+        "drupal/drupal-extension": "~3.1.0"
+    }
+    "scripts": {
+        "post-install-cmd": "@toolkit-install",
+        "post-update-cmd": "@toolkit-install",
+        "toolkit-install": "PROJECT=$(pwd) composer run-script toolkit-install -d ./vendor/ec-europa/toolkit"
+    }
+}
+```
+</p></details>
+
+Click for command above for more information on how to use your own packages for
+testing.
+
 ## PHPCS testing
 To run behat tests you can make use of the `test-run-phpcs` command. This will
 re-generate your phpcs configuration int `./phpcs.xml` and run it on your

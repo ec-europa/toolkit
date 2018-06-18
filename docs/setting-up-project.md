@@ -4,9 +4,16 @@
 
 ## Getting the sourcecode
 
-Before attempting to get the source code of a project please make sure you are
-familiar with the composer create-project command:
-https://getcomposer.org/doc/03-cli.md#create-project
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=REr4nGSAzco
+" target="_blank"><img src="http://img.youtube.com/vi/REr4nGSAzco/0.jpg" 
+alt="Upgrade screencast" width="240" height="135" align="left" /></a>
+
+You can watch a screencast on how get the source code of your project and install
+the toolkit or do both at the same time. Before attempting to composer only to get
+the source code for a project please make sure you are familiar with the
+[composer create-project command](https://getcomposer.org/doc/03-cli.md#create-project).
+Below we explain the difference between setting up a new project and setting up
+an existing project:
 
 ### New project
 To instatiate a new project that will be running as a subsite on the NextEuropa

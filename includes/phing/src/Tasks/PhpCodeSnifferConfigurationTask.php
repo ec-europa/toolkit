@@ -52,25 +52,11 @@ class PhpCodeSnifferConfigurationTask extends \Task
     private $_files = array();
 
     /**
-     * The path to the global configuration file to generate.
-     *
-     * @var string
-     */
-    private $_globalConfig = '';
-
-    /**
      * The list of patterns to ignore.
      *
      * @var array
      */
     private $_ignorePatterns = array();
-
-    /**
-     * Whether or not to pass with warnings.
-     *
-     * @var bool
-     */
-    private $_passWarnings = false;
 
     /**
      * The reports format to return.
@@ -101,14 +87,6 @@ class PhpCodeSnifferConfigurationTask extends \Task
     private $_standards = array();
 
     /**
-     * The install paths of standards.
-     *
-     * @var string
-     */
-    private $_installedPaths = '';
-
-
-    /**
      * Configures PHP CodeSniffer.
      *
      * @return void
@@ -135,22 +113,17 @@ class PhpCodeSnifferConfigurationTask extends \Task
 
         // Add the coding standards.
         foreach ($this->_standards as $standard) {
-            $installedPaths = explode(',', $this->_installedPaths);
             if (substr($standard, -4) === '.xml') {
                 if (file_exists($standard)) {
                     $element = $document->createElement('rule');
                     $element->setAttribute('ref', $standard);
                     $root_element->appendChild($element);
                 }
-            } else {
-                foreach ($installedPaths as $installedPath) {
-                    $ruleset = $installedPath."/".$standard."/ruleset.xml";
-                    if (file_exists($ruleset)) {
-                        $element = $document->createElement('rule');
-                        $element->setAttribute('ref', $ruleset);
-                        $root_element->appendChild($element);
-                    }
-                }
+            }
+            else {
+                $element = $document->createElement('rule');
+                $element->setAttribute('ref', $standard);
+                $root_element->appendChild($element);
             }
         }
 
@@ -185,8 +158,8 @@ class PhpCodeSnifferConfigurationTask extends \Task
 
         // Add the shorthand options.
         $shorthand_options = array(
-            'p' => 'showProgress',
-            's' => 'showSniffCodes',
+            'p' => '_showProgress',
+            's' => '_showSniffCodes',
         );
 
         $options = array_filter(
@@ -209,50 +182,6 @@ class PhpCodeSnifferConfigurationTask extends \Task
             $this->_configFile,
             $document->saveXML()
         );
-
-        // If a global configuration file is passed, update this too.
-        if (!empty($this->_globalConfig)) {
-            $ignore_warnings_on_exit = $this->_passWarnings ? 1 : 0;
-            $global_config           = <<<PHP
-<?php
- \$phpCodeSnifferConfig = array (
-  'default_standard' => '$this->_configFile',
-  'ignore_warnings_on_exit' => '$ignore_warnings_on_exit',
-);
-PHP;
-            $globalConfigSaved = file_put_contents(
-                $this->_globalConfig,
-                $global_config
-            );
-
-            if ($configSaved || $globalConfigSaved) {
-                if ($configSaved) {
-                    $this->setTaskName("config");
-                    $this->log(
-                        "Updating: ".$this->_configFile,
-                        Project::MSG_INFO
-                    );
-                } else {
-                    throw new BuildException(
-                        "Was unable to update: ".$this->_configFile,
-                        $this->getLocation()
-                    );
-                }
-
-                if ($globalConfigSaved) {
-                    $this->setTaskName("config");
-                    $this->log(
-                        "Updating: ".$this->_globalConfig,
-                        Project::MSG_INFO
-                    );
-                } else {
-                    throw new BuildException(
-                        "Was unable to update .".$this->_configFile,
-                        $this->getLocation()
-                    );
-                }
-            }
-        }//end if
 
     }//end main()
 
@@ -377,36 +306,6 @@ PHP;
 
 
     /**
-     * Sets the path to the global configuration file to generate.
-     *
-     * @param string $globalConfig The path to the global configuration file
-     *                             to generate.
-     *
-     * @return void
-     */
-    public function setGlobalConfig($globalConfig)
-    {
-        $this->_globalConfig = $globalConfig;
-
-    }//end setGlobalConfig()
-
-
-    /**
-     * Sets the installed_paths configuration..
-     *
-     * @param string $installedPaths The paths in which the standards
-     *                               are installed.
-     *
-     * @return void
-     */
-    public function setInstalledPaths($installedPaths)
-    {
-        $this->_installedPaths = $installedPaths;
-
-    }//end setInstalledPaths()
-
-
-    /**
      * Sets the list of patterns to ignore.
      *
      * @param string $ignorePatterns The list of patterns, delimited by spaces,
@@ -426,20 +325,6 @@ PHP;
         }
 
     }//end setIgnorePatterns()
-
-
-    /**
-     * Sets whether or not to pass with warnings.
-     *
-     * @param bool $passWarnings Whether or not to pass with warnings.
-     *
-     * @return void
-     */
-    public function setPassWarnings($passWarnings)
-    {
-        $this->_passWarnings = (bool) $passWarnings;
-
-    }//end setPassWarnings()
 
 
     /**

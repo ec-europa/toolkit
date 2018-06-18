@@ -1,8 +1,21 @@
 ## Upgrade subsite-starterkit to toolkit
-   
+
+### Important information for site owners/developers:
+
+**Before upgrading your project to Toolkit, make sure to contact the Toolkit
+upgrade coordinator, [Alessia Di Micco](mailto:alessia.di.micco@everis.com).
+DIGIT provides a dedicated support team that is in charge of managing the
+Toolkit code deliveries.**
+
+**Thank you for your collaboration.**
+
+**Alessia Di Micco: alessia.di.micco@everis.com**
+
+---
+
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=cwGZilB3BjQ
 " target="_blank"><img src="http://img.youtube.com/vi/cwGZilB3BjQ/0.jpg" 
-alt="Upgrade screencast" width="50%" align="left" /></a>
+alt="Upgrade screencast" width="240" height="135" align="left" /></a>
 
 This screencast explains how to upgrade a subsite-starterkit based project to
 the composer package based toolkit. To complete the upgrade you need to execute
@@ -34,7 +47,7 @@ reference repository.
 These are the 5 steps needed to complete the upgrade.
 
 >```bash
-> curl https://raw.githubusercontent.com/ec-europa/toolkit/master/includes/templates/subsite/composer.json > composer.json
+> curl https://raw.githubusercontent.com/ec-europa/toolkit/235236730dc7469066d23e298d665355af8ab15a/includes/templates/subsite/composer.json > composer.json
 > curl https://raw.githubusercontent.com/ec-europa/toolkit/master/includes/templates/subsite/build.xml > build.xml
 > rm -rf ./vendor ./bin ./composer.lock
 > composer install
@@ -102,6 +115,10 @@ provided your own you can checkout your own tests again.
 > rm -rf ./tests
 > git checkout master ./tests
 >```
+
+If you wish to use your previous tests on the toolkit you must make sure all property
+names match the ones of toolkit. And change the token style from:
+e.g. `${platform.build.dir} => {{ build.platform.dir }}`
 
 After you have made sure all is working correctly you can commit and push your
 upgrade. When it's ready for review create a pull request to the reference

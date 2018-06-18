@@ -1,5 +1,4 @@
-# Ignore editor and IDE metadata.
-# -------------------------------
+# Ignore metadata from common editors and IDEs.
 *.sublime-project
 *.sublime-workspace
 .idea/
@@ -7,27 +6,19 @@ nbproject/
 .DS_Store
 
 # Ignore local configuration.
-# ---------------------------
-/build.develop.props
-/build.default.props
-/build.project.xml
-/phpcs-ruleset.xml
-/phpcs.xml
-/tests/behat.yml
+build.develop.props
+tests/behat.yml
+tests/phpunit.xml
 
 # Ignore build artifacts.
-# -----------------------
-/bin/
-/toolkit
-/docker-*
-/build/
-/dist/
-/lib
-/resources
-/tests
-/platform/
-/.tmp/
-/vendor/
-/resources/git/hooks/pre-push/phpcs
-lib-backup/
+build
+/composer.lock
+.tmp
 toolkit
+vendor
+bin
+build.project.xml
+lib/
+phpcs-ruleset.xml
+resources/
+tests/

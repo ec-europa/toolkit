@@ -21,6 +21,7 @@ use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Target;
+use Project;
 
 /**
  * A Phing help.
@@ -110,12 +111,12 @@ class PhingHelpTask extends \Task
     public function main()
     {
         $buildFileRoot = $this->getProject()->getProperty('phing.file');
-        $buildFile     = $this->_buildFile;
+        $buildFile     = isset($this->_buildFile) ? $this->_buildFile : $buildFileRoot;
         $buildList     = $this->getBuildList($buildFileRoot);
         $parents       = array();
         $targets       = array();
 
-        if (is_file($this->_buildFile)
+        if (isset($this->_buildFile) && is_file($this->_buildFile)
             && !empty($this->getOwningTarget()->getName())
         ) {
             foreach ($buildList as $buildFile => $buildInfo) {
@@ -164,19 +165,23 @@ class PhingHelpTask extends \Task
                 )
             )
         );
-        foreach ($targets as $file => $targets) {
-            if ($buildList[$file]['name'] != "deprecated") {
-                $table->addRow(new TableSeparator());
-                $table->addRow(
-                    array(
-                        new TableCell(
-                            $buildList[$file]['name'],
-                            array('colspan' => 3)
-                        )
-                    )
-                );
-                $table->addRow(new TableSeparator());
-                $table->addRows($targets);
+
+        foreach ($targets as $file => $target) {
+            $hiddenTargets = [
+              'deprecated',
+            ];
+            if (!in_array($buildList[$file]['name'], $hiddenTargets)) {
+
+                // Clean up target list.
+                foreach ($target as $key => $value) {
+                  if ($value['visibility'] == 'hidden') {
+                    unset($target[$key]);
+                  }
+                }
+
+                if (count($target) > 0) {
+                  $table->addRows($target);
+                }
             }
         }
 
@@ -245,14 +250,15 @@ class PhingHelpTask extends \Task
 
         if (is_file($buildFile)) {
             $buildFileXml = simplexml_load_file($buildFile);
-            if ($buildFileName = $buildFileXml->xpath('//project/@name')[0]) {
+            $buildFileName = $buildFileXml->xpath('//project/@name');
+            $buildFileDescription = $buildFileXml->xpath('//project/@description');
+
+            if (isset($buildFileName[0]) && isset($buildFileDescription[0])) {
                 $buildList[$buildFile] = array(
                     'level'       => $level,
                     'parent'      => $parent,
-                    'name'        => (string) $buildFileName,
-                    'description' => (string) $buildFileXml->xpath(
-                        '//project/@description'
-                    )[0],
+                    'name'        => (string) $buildFileName[0],
+                    'description' => (string) $buildFileDescription[0],
                 );
 
                 foreach ($buildFileXml->xpath('//import[@file]') as $import) {
@@ -261,14 +267,16 @@ class PhingHelpTask extends \Task
                     // Replace tokens.
                     if (preg_match_all('/\$\{(.*?)\}/s', $importFile, $matches)) {
                         foreach ($matches[0] as $key => $match) {
-                            $tokenText  = $this->getProject()->getProperty(
-                                $matches[1][$key]
-                            );
-                            $importFile = str_replace(
-                                $match,
-                                $tokenText,
-                                $importFile
-                            );
+                            if (is_object($this->getProject())) {
+                                $tokenText  = $this->getProject()->getProperty(
+                                    $matches[1][$key]
+                                );
+                                $importFile = str_replace(
+                                    $match,
+                                    $tokenText,
+                                    $importFile
+                                );
+                            }
                         }
                     }
 
