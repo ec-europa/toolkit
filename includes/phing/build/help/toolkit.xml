@@ -329,10 +329,17 @@
     <target name="toolkit-templates-copy" description="Copies template files to your project for toolkit integration." hidden="true">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
         <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
-        <copy todir="${project.basedir}">
+        <exec command="basename -s .git `git config --get remote.origin.url` | sed -e 's,-,_,g' | sed -e 's,_reference,,g'" outputProperty="project-id" />
+        <copy todir="${project.basedir}/lib-test" overwrite="true">
             <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="myproject" replace="${project-id}"/>
+                </replaceregexp>
+            </filterchain>
         </copy>
-        <echo msg="Project structure for ${project-type} created." />
+        <exec command="find ${project.basedir}/lib -name myproject* | sed -e 'p;s/myproject/${project-id}/' | xargs -n2 mv" />
+        <echo msg="Project example structure for ${project-type} created." />
     </target>
 
     <target name="toolkit-generate-project-info" description="Copies template files to your project for toolkit integration with inventory details." hidden="true">

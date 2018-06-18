@@ -31,7 +31,7 @@ function myproject_core_install() {
 
   // Enable the theme "example_theme" and set it as default.
   $themes = [
-    'example_theme',
+    'myproject_theme',
   ];
   theme_enable($themes);
   variable_set('theme_default', $themes[0]);
@@ -41,7 +41,6 @@ function myproject_core_install() {
   // feature or module in the build.project.props file for the
   // subsite.install.modules property.
   $modules = [
-    'example_module',
     'nexteuropa_formatters',
     'nexteuropa_formatters_views',
     'nexteuropa_formatters_fields',
@@ -86,29 +85,14 @@ function myproject_core_install() {
 }
 
 /**
- * Enable newly delivered module.
- *
- * If a new module is delivered it needs to be enabled by a hook_update_N().
- * The module also needs to be added to the array of modules to enable in the
- * hook_install of the core feature.
+ * Enable modules update example.
  */
 function myproject_core_update_7001() {
   $modules = [
-    'example_module',
+    'nexteuropa_formatters',
+    'nexteuropa_formatters_views',
+    'nexteuropa_formatters_fields',
+    'splash_screen',
   ];
   module_enable($modules);
-}
-
-/**
- * Example about how to revert a single item of your feature.
- */
-function myproject_core_update_7002() {
-  features_revert(array('myproject_core' => array('facetapi', 'dependencies')));
-}
-
-/**
- * Update permissions.
- */
-function myproject_core_update_7003() {
-  _myproject_example_function();
 }
