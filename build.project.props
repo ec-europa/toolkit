@@ -1,7 +1,7 @@
 # Subsite configuration.
 # ----------------------
 project.id = toolkit
-project.install.modules = myproject_core
+project.install.modules = toolkit_core
 project.name = Toolkit
 project.url.production =
 
