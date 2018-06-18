@@ -339,7 +339,7 @@
             </filterchain>
         </copy>
         <exec command="find ${project.basedir}/lib -name myproject* | sed -e 'p;s/myproject/${project-id}/' | xargs -n2 mv" />
-        <echo msg="Project example structure for ${project-type} created." />
+        <echo msg="Project example structure for ${project-type} ${project-id} created." />
     </target>
 
     <target name="toolkit-generate-project-info" description="Copies template files to your project for toolkit integration with inventory details." hidden="true">
