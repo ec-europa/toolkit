@@ -302,7 +302,7 @@
         <if>
             <and>
                 <not>
-                    <available file="${lib.dir}" type="dir" />
+                    <available file="${lib.dir}/qlskjdfh" type="dir" />
                 </not>
             </and>
             <then>
@@ -352,7 +352,8 @@
                 </copy>
             </else>
         </if>
-        <exec command="find ${project.basedir}/lib -name myproject* | sed -e 'p;s/myproject/${project-id}/' | xargs -n2 mv" />
+        <exec command="find lib/ -type d | sed -e 'p;s/myproject/${project-id}/g' | xargs -n2 mv" />
+        <exec command="find lib/ -type f | sed -e 'p;s/myproject/${project-id}/g' | xargs -n2 mv"/>
         <echo msg="Project example structure for ${project-type} ${project-id} created." />
     </target>
 
