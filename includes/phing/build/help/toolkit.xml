@@ -304,7 +304,6 @@
                 <not>
                     <available file="${lib.dir}" type="dir" />
                 </not>
-                <!-- <equals arg1="${project.basedir}" arg2="${toolkit.dir}" /> -->
             </and>
             <then>
                 <phingcall target="toolkit-templates-copy">
@@ -330,14 +329,29 @@
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
         <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
         <exec command="basename `git config --get remote.origin.url` | sed -e 's,-,_,g' | sed -e 's,_reference,,g' | sed -e 's/\.git$//'" outputProperty="project-id" />
-        <copy todir="${project.basedir}" overwrite="true">
-            <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
-            <filterchain>
-                <replaceregexp>
-                    <regexp pattern="myproject" replace="${project-id}"/>
-                </replaceregexp>
-            </filterchain>
-        </copy>
+        <if>
+            <equals arg1="${project-id}" arg2="toolkit" />
+            <then>
+                <copy todir="${project.basedir}" overwrite="true">
+                    <fileset dir="${toolkit.dir.incl.templates}/${project-type}" excludes=".jenkinsfile, README.md, build.default.props, build.project.props, build.xml, composer.json" />
+                    <filterchain>
+                        <replaceregexp>
+                            <regexp pattern="myproject" replace="${project-id}"/>
+                        </replaceregexp>
+                    </filterchain>
+                </copy>
+            </then>
+            <else>
+                <copy todir="${project.basedir}" overwrite="true">
+                    <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
+                    <filterchain>
+                        <replaceregexp>
+                            <regexp pattern="myproject" replace="${project-id}"/>
+                        </replaceregexp>
+                    </filterchain>
+                </copy>
+            </else>
+        </if>
         <exec command="find ${project.basedir}/lib -name myproject* | sed -e 'p;s/myproject/${project-id}/' | xargs -n2 mv" />
         <echo msg="Project example structure for ${project-type} ${project-id} created." />
     </target>
