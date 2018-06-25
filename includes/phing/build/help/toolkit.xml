@@ -330,7 +330,7 @@
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
         <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
         <exec command="basename -s .git `git config --get remote.origin.url` | sed -e 's,-,_,g' | sed -e 's,_reference,,g'" outputProperty="project-id" />
-        <copy todir="${project.basedir}/lib-test" overwrite="true">
+        <copy todir="${project.basedir}/lib" overwrite="true">
             <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
             <filterchain>
                 <replaceregexp>
