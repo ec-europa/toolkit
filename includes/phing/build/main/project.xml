@@ -107,7 +107,7 @@
     <target name="project-composer-install" description="Runs composer install."
         hidden="true">
         <if>
-            <available file="${project.db.file}" type="file" />
+            <available file="${composer-working-dir}/composer.json" type="file" />
             <then>
                 <if>
                     <isset property="composer-no-dev" />
