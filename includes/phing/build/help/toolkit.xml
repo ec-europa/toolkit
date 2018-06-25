@@ -329,7 +329,7 @@
     <target name="toolkit-templates-copy" description="Copies template files to your project for toolkit integration." hidden="true">
         <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
         <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
-        <exec command="basename --suffix=.git `git config --get remote.origin.url` | sed -e 's,-,_,g' | sed -e 's,_reference,,g'" outputProperty="project-id" />
+        <exec command="basename `git config --get remote.origin.url` | sed -e 's,-,_,g' | sed -e 's,_reference,,g' | sed -e 's/\.git$//'" outputProperty="project-id" />
         <copy todir="${project.basedir}/lib" overwrite="true">
             <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
             <filterchain>
