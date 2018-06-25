@@ -107,24 +107,29 @@
     <target name="project-composer-install" description="Runs composer install."
         hidden="true">
         <if>
-            <isset property="composer-no-dev" />
+            <available file="${project.db.file}" type="file" />
             <then>
-                <composer command="install" composer="${project.bin.composer}">
-                    <arg value="--working-dir=${composer-working-dir}" />
-                    <arg value="--no-interaction" />
-                    <arg value="--no-suggest" />
-                    <arg value="--no-dev" />
-                    <arg value="--ansi" />
-                </composer>
+                <if>
+                    <isset property="composer-no-dev" />
+                    <then>
+                        <composer command="install" composer="${project.bin.composer}">
+                            <arg value="--working-dir=${composer-working-dir}" />
+                            <arg value="--no-interaction" />
+                            <arg value="--no-suggest" />
+                            <arg value="--no-dev" />
+                            <arg value="--ansi" />
+                        </composer>
+                    </then>
+                    <else>
+                        <composer command="install" composer="${project.bin.composer}">
+                            <arg value="--working-dir=${composer-working-dir}" />
+                            <arg value="--no-interaction" />
+                            <arg value="--no-suggest" />
+                            <arg value="--ansi" />
+                        </composer>
+                    </else>
+                </if>
             </then>
-            <else>
-                <composer command="install" composer="${project.bin.composer}">
-                    <arg value="--working-dir=${composer-working-dir}" />
-                    <arg value="--no-interaction" />
-                    <arg value="--no-suggest" />
-                    <arg value="--ansi" />
-                </composer>
-            </else>
         </if>
     </target>
 
