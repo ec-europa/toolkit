@@ -87,10 +87,11 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   visreg-before:
-    image: fpfis/php56-build
-    secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
+    image: backstopjs/backstopjs
     commands:
-      - timeout 5m ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='snapshot' ${PHING_OPTS} || echo "Continue"
+      - reference
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
 
   # ============================================================================
   # Clone section:
@@ -105,12 +106,12 @@ pipeline:
   # Run backtrac self compare of build (may not be accurate):
   # Possible that it starts comparing against another build.
   # TODO: solve with better thing. (always green)
-  visreg-after:
-    image: fpfis/php56-build
-    group: prebehat
-    secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
+  visreg-before:
+    image: backstopjs/backstopjs
     commands:
-      - timeout 5m ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='compare_itself' ${PHING_OPTS} || echo "Continue"
+      - test
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
 
   selenium:
     image: selenium/standalone-chrome
