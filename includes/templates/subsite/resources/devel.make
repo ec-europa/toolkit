@@ -5,6 +5,9 @@ core = 7.x
 ; Contributed modules
 ; ===================
 
+projects[checklistapi][subdir] = "devel"
+projects[checklistapi][version] = "1.2"
+
 projects[devel][subdir] = "devel"
 projects[devel][version] = "1.5"
 
