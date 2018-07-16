@@ -89,7 +89,7 @@ pipeline:
   visreg-before:
     image: backstopjs/backstopjs
     commands:
-      - backstopjs reference
+      - backstop reference
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
@@ -106,7 +106,7 @@ pipeline:
   visreg-after:
     image: backstopjs/backstopjs
     commands:
-      - backstopjs test
+      - backstop test
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
