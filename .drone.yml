@@ -89,7 +89,7 @@ pipeline:
   visreg-before:
     image: backstopjs/backstopjs
     commands:
-      - reference
+      - backstopjs reference
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
@@ -103,13 +103,10 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  # Run backtrac self compare of build (may not be accurate):
-  # Possible that it starts comparing against another build.
-  # TODO: solve with better thing. (always green)
-  visreg-before:
+  visreg-after:
     image: backstopjs/backstopjs
     commands:
-      - test
+      - backstopjs test
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
