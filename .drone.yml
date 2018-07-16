@@ -94,6 +94,7 @@ pipeline:
       - ./toolkit/drush -r build vset gdpr_dump_table_map '{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}' --format=json --exact -y
       - ./toolkit/drush -r build gdpr-sql-dump --result-file=/test/toolkit/dump.sql
       - ./toolkit/phing docker-backstop-generate
+      - cat backstop.json
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
