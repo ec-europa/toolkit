@@ -110,12 +110,6 @@ function drush_custom_watchdog_smoketest() {
   $paths = [
     '/admin/config',
   ];
-  
-  $backstop = array(
-    'cookie_domain' => str_replace('http://', '.', $base_url),
-    'cookie_name' => $session_name,
-    'cookie_value' => $session_id,
-  );
 
   // Gather secondary urls.
   $paths = generateUrlsByContentTypes($paths);
@@ -176,7 +170,7 @@ function drush_custom_watchdog_smoketest() {
             );
         }
         $backstop_settings['scenarios'] = $backstop_scenarios;
-        file_put_contents('backstop.json', json_encode($backstop_settings, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
+        file_put_contents('../backstop.json', json_encode($backstop_settings, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
     }
     
     if ($visit == true) {
