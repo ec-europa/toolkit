@@ -81,7 +81,7 @@ pipeline:
   install-clean:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing install-clean -D'project.url.base'="$(cat /test/toolkit/.frpc)" ${PHING_OPTS}
+      - ./toolkit/phing install-clean ${PHING_OPTS}
       - ./toolkit/phing drush-sql-dump -D'database-file'='/test/toolkit/dump.sql' ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
