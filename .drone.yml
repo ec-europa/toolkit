@@ -82,7 +82,8 @@ pipeline:
     image: fpfis/php56-dev
     commands:
       - ./toolkit/phing install-clean ${PHING_OPTS}
-      - ./toolkit/phing drush-sql-dump -D'database-file'='/test/toolkit/dump.sql' ${PHING_OPTS}
+      - ./toolkit/drush -r build vset gdpr_dump_table_map '{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}' --format=json
+      - ./toolkit/drush -r build gdpr-sql-dump =/test/toolkit/dump.sql
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 

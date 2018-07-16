@@ -26,11 +26,12 @@ project.url.production = https://ec.europa.eu/${project.id}
 # Development modules.
 # --------------------
 devel.mdls.dir = devel
-devel.mdls.en = devel context field_ui maillog simpletest stage_file_proxy views_ui
+devel.mdls.en = devel gdpr_dump context field_ui maillog simpletest stage_file_proxy views_ui
 
 # Development variables.
 # ----------------------
 devel.vars.error_level = 2
+devel.vars.gdpr_dump_table_map = {"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}
 devel.vars.maillog_send = 0
 devel.vars.preprocess_css = 0
 devel.vars.preprocess_js = 0
