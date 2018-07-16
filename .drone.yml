@@ -81,16 +81,20 @@ pipeline:
   install-clean:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing install-clean -D'project.url.base'="$(cat /test/toolkit/.frpc)" ${PHING_OPTS}
-      - ./toolkit/phing drush-sql-dump -D'database-file'='/test/toolkit/dump.sql' ${PHING_OPTS}
+      - ./toolkit/phing install-clean ${PHING_OPTS}
+      - ./toolkit/drush -r build dl gdpr checklistapi -y
+      - ./toolkit/drush -r build en gdpr_dump -y
+      - ./toolkit/drush -r build vset gdpr_dump_table_map '{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}' --format=json --exact -y
+      - ./toolkit/drush -r build gdpr-sql-dump --result-file=/test/toolkit/dump.sql
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   visreg-before:
-    image: fpfis/php56-build
-    secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
+    image: backstopjs/backstopjs
     commands:
-      - timeout 5m ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='snapshot' ${PHING_OPTS} || echo "Continue"
+      - backstop reference
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
 
   # ============================================================================
   # Clone section:
@@ -102,15 +106,12 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  # Run backtrac self compare of build (may not be accurate):
-  # Possible that it starts comparing against another build.
-  # TODO: solve with better thing. (always green)
   visreg-after:
-    image: fpfis/php56-build
-    group: prebehat
-    secrets: [ BACKTRAC_TOKEN, BACKTRAC_DYNAMIC_PROJECT_ID ]
+    image: backstopjs/backstopjs
     commands:
-      - timeout 5m ./toolkit/phing drush-settings-generate test-run-backtrac -D'project.url.base'="$(cat /test/toolkit/.frpc)" -D'backtrac.secure'='false' -D'backtrac.token'=$${BACKTRAC_TOKEN} -D'project.backtrac.id'=$${BACKTRAC_DYNAMIC_PROJECT_ID} -D'backtrac.env'='development' -D'backtrac.compare.mode'='compare_itself' ${PHING_OPTS} || echo "Continue"
+      - backstop test
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
 
   selenium:
     image: selenium/standalone-chrome

@@ -27,6 +27,20 @@ $settings['databases'] = array(
   ),
 );
 
+// Build variables array.
+$variables = array(
+  'file_public_path' => '%%file_public_path%%',
+  'file_private_path' => '%%file_private_path%%',
+  'file_temporary_path' => '%%file_temporary_path%%',
+);
+// Setup individual development variables.
+foreach ($variables as $key => $value) {
+  $settings['conf[\'' . $key . '\']'] = array(
+    'required' => TRUE,
+    'value' => is_numeric($value) ? (int) $value : $value,
+  );
+}
+
 // Set update free access.
 $settings['update_free_access'] = array(
     'required' => TRUE,
