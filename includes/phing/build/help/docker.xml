@@ -71,10 +71,9 @@
     </target>
 
     <target name="docker-backstop-generate" description="Generate the backstop files.">
-        <copy file="${toolkit.dir.incl.docker}/backstop.json" tofile="${project.basedir}/backstop.json" overwrite="true" />
-        <drush command="watchdog-smoketest" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
-            <param>drush</param>
-        </drush>
+        <copy file="${toolkit.dir.incl.docker}/docker-backstopjs/backstop.json" tofile="${project.basedir}/backstop.json" overwrite="true" />
+        <exec command="sed -e '/console\.log/ s/^  \/*/\/\//' -i backstop_data/engine_scripts/puppet/loadCookies.js" />
+        <drush command="watchdog-smoketest" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" />
     </target>
 
 </project>

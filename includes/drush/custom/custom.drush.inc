@@ -123,7 +123,7 @@ function drush_custom_watchdog_smoketest() {
   $paths = generateUrlsByViews($paths);
   $paths = generateUrlsByPageManager($paths);
 
-  $backstop_json = file_get_contents('../includes/docker/backstop.json');
+  $backstop_json = file_get_contents('../includes/docker/docker-backstopjs/backstop.json');
   $backstop_settings = json_decode($backstop_json, true);
   $backstop_cookies = array(
     array(
@@ -176,7 +176,7 @@ function drush_custom_watchdog_smoketest() {
             );
         }
         $backstop_settings['scenarios'] = $backstop_scenarios;
-        file_put_contents('../backstop.json', json_encode($backstop_settings, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
+        file_put_contents('backstop.json', json_encode($backstop_settings, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
     }
     
     if ($visit == true) {
