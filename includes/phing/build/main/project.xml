@@ -89,7 +89,6 @@
                 <phingcall target="drush-site-install" />
             </else>
         </if>
-        <phingcall target="drush-files-dirs-create" />
         <phingcall target="project-modules-install-en" />
         <phingcall target="project-modules-devel-en" />
         <phingcall target="reset-filesystem-permissions" />
@@ -107,24 +106,29 @@
     <target name="project-composer-install" description="Runs composer install."
         hidden="true">
         <if>
-            <isset property="composer-no-dev" />
+            <available file="${composer-working-dir}/composer.json" type="file" />
             <then>
-                <composer command="install" composer="${project.bin.composer}">
-                    <arg value="--working-dir=${composer-working-dir}" />
-                    <arg value="--no-interaction" />
-                    <arg value="--no-suggest" />
-                    <arg value="--no-dev" />
-                    <arg value="--ansi" />
-                </composer>
+                <if>
+                    <isset property="composer-no-dev" />
+                    <then>
+                        <composer command="install" composer="${project.bin.composer}">
+                            <arg value="--working-dir=${composer-working-dir}" />
+                            <arg value="--no-interaction" />
+                            <arg value="--no-suggest" />
+                            <arg value="--no-dev" />
+                            <arg value="--ansi" />
+                        </composer>
+                    </then>
+                    <else>
+                        <composer command="install" composer="${project.bin.composer}">
+                            <arg value="--working-dir=${composer-working-dir}" />
+                            <arg value="--no-interaction" />
+                            <arg value="--no-suggest" />
+                            <arg value="--ansi" />
+                        </composer>
+                    </else>
+                </if>
             </then>
-            <else>
-                <composer command="install" composer="${project.bin.composer}">
-                    <arg value="--working-dir=${composer-working-dir}" />
-                    <arg value="--no-interaction" />
-                    <arg value="--no-suggest" />
-                    <arg value="--ansi" />
-                </composer>
-            </else>
         </if>
     </target>
 
