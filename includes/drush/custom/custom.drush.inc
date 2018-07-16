@@ -139,7 +139,7 @@ function drush_custom_watchdog_smoketest() {
         'sameSite' => 'no_restriction'
     ),
   );
-  file_put_contents('../.tmp/backstop_data/engine_scripts/cookies.json', json_encode($backstop_cookies, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
+  file_put_contents('../backstop_data/engine_scripts/cookies.json', json_encode($backstop_cookies, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
 
   $count_paths = count($paths);
   if ($count_paths >= 1) {
@@ -159,7 +159,7 @@ function drush_custom_watchdog_smoketest() {
             $backstop_scenarios[] = array(
               'url' => $url,
               'label' => $title,
-              'cookiePath' => '.tmp/backstop_data/engine_scripts/cookies.json',
+              'cookiePath' => 'backstop_data/engine_scripts/cookies.json',
               'readyEvent' => '',
               'readySelector' => '',
               'delay' => 0,

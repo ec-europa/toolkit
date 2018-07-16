@@ -78,6 +78,13 @@ pipeline:
   # ============================================================================
   # Install section:
   # ============================================================================
+  visreg-init:
+    image: backstopjs/backstopjs
+    commands:
+      - backstop init
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+
   install-clean:
     image: fpfis/php56-dev
     commands:
@@ -86,6 +93,7 @@ pipeline:
       - ./toolkit/drush -r build en gdpr_dump -y
       - ./toolkit/drush -r build vset gdpr_dump_table_map '{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}' --format=json --exact -y
       - ./toolkit/drush -r build gdpr-sql-dump --result-file=/test/toolkit/dump.sql
+      - ./toolkit/drush -r build watchdog-smoketest
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
