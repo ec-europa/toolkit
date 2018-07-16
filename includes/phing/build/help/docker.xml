@@ -70,4 +70,11 @@
         <exec command="${project.basedir}/docker-${docker.project.id} ps" passthru="true" />
     </target>
 
+    <target name="docker-backstop-generate" description="Generate the backstop files.">
+        <copy file="${toolkit.dir.incl.docker}/backstop.json" tofile="${project.basedir}/backstop.json" overwrite="true" />
+        <drush command="watchdog-smoketest" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
+            <param>drush</param>
+        </drush>
+    </target>
+
 </project>

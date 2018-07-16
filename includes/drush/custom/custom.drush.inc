@@ -95,13 +95,14 @@ function drush_custom_watchdog_smoketest() {
   global $base_url;
   $user = user_load(1);
   $session_id = session_id();
+  $session_name = session_name();
   // Did not find other way to login through cli
   // $uli = user_pass_reset_url($user);
   // $request = drupal_http_request($uli);
   _drupal_session_write($session_id, '');
   $options = [
     'headers' => [
-      'Cookie' => session_name() . '=' . $session_id,
+      'Cookie' => $session_name . '=' . $session_id,
     ],
   ];
 
@@ -109,6 +110,12 @@ function drush_custom_watchdog_smoketest() {
   $paths = [
     '/admin/config',
   ];
+  
+  $backstop = array(
+    'cookie_domain' => str_replace('http://', '.', $base_url),
+    'cookie_name' => $session_name,
+    'cookie_value' => $session_id,
+  );
 
   // Gather secondary urls.
   $paths = generateUrlsByContentTypes($paths);
@@ -116,37 +123,95 @@ function drush_custom_watchdog_smoketest() {
   $paths = generateUrlsByViews($paths);
   $paths = generateUrlsByPageManager($paths);
 
+  $backstop_json = file_get_contents('../includes/docker/backstop.json');
+  $backstop_settings = json_decode($backstop_json, true);
+  $backstop_cookies = array(
+    array(
+        'domain' => str_replace(array('http://', 'https://', ':8080'), '', $base_url),
+        'path' => '/',
+        'name' => $session_name,
+        'value' => $session_id,
+        'expirationDate' => 1798790400,
+        'hostOnly' => false,
+        'httpOnly' => false,
+        'secure' => false,
+        'session' => false,
+        'sameSite' => 'no_restriction'
+    ),
+  );
+  file_put_contents('../.tmp/backstop_data/engine_scripts/cookies.json', json_encode($backstop_cookies, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
+
   $count_paths = count($paths);
   if ($count_paths >= 1) {
-    $last_wid = db_query('SELECT MAX(wid) FROM {watchdog}')->fetchField();
-    drush_log(dt('Visiting !count_paths paths as admin to check for watchdog messages.', array('!count_paths' => $count_paths)), 'ok');
-    foreach($paths as $path) {
-      $url = url($path,  array('absolute' => TRUE));
-      $visit = drupal_http_request($url, $options);
+    $generate = true;
+    $visit = false;
+    if ($generate == true) {
+        $backstop_scenarios = array();
+        foreach($paths as $path) {
+            $normal_path = ltrim(drupal_get_normal_path($path), '/');
+            $item = menu_get_item($normal_path);
+            $url = url($path,  array('absolute' => TRUE));
+            if(isset($item['title']) && !empty($item['title'])){
+                $title = $item['title'];
+            } else {
+                $title = empty($item['tab_root']) ? $path : $item['tab_root'];
+            }
+            $backstop_scenarios[] = array(
+              'url' => $url,
+              'label' => $title,
+              'cookiePath' => '.tmp/backstop_data/engine_scripts/cookies.json',
+              'readyEvent' => '',
+              'readySelector' => '',
+              'delay' => 0,
+              'hideSelectors' => array (),
+              'removeSelectors' => array (),
+              'hoverSelector' => '',
+              'clickSelector' => '',
+              'postInteractionWait' => 0,
+              'selectors' => array (),
+              'selectorExpansion' => true,
+              'expect' => 0,
+              'misMatchThreshold' => 0.1000000000000000055511151231257827021181583404541015625,
+              'requireSameDimensions' => true,
+            );
+        }
+        $backstop_settings['scenarios'] = $backstop_scenarios;
+        file_put_contents('../backstop.json', json_encode($backstop_settings, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
+    }
+    
+    if ($visit == true) {
+        $last_wid = db_query('SELECT MAX(wid) FROM {watchdog}')->fetchField();
+        drush_log(dt('Visiting !count_paths paths as admin to check for watchdog messages.', array('!count_paths' => $count_paths)), 'ok');
+        foreach($paths as $path) {
+            $url = url($path,  array('absolute' => TRUE));
+            $visit = drupal_http_request($url, $options);
+        }
     }
   }
 
-  _drupal_session_destroy($session_id);
-  $watchdog_messages = db_select('watchdog', 'wd')
-    ->fields('wd')
-    ->condition('wid', $last_wid, '>')
-    ->condition('severity', 5, '<')
-    ->execute()
-    ->fetchAllAssoc('wid');
-
-  $table = array();
-  foreach ($watchdog_messages as $result) {
-    $row = core_watchdog_format_result($result, TRUE);
-    $table[$row->wid] = $row;
-  }
-
-  $count_watchdog = count($watchdog_messages);
-  if ($count_watchdog >= 1) {
-    drush_log(dt('Generated !count_watchdog watchdog entries of severity less than 5.', array('!count_watchdog' => $count_watchdog)), 'warning');
-    return $table;
-  }
-  else {
-    drush_log(dt('Generated !count_watchdog watchdog entries.', array('!count_watchdog' => $count_watchdog)), 'ok');
+  if ($visit == true) {
+      _drupal_session_destroy($session_id);
+      $watchdog_messages = db_select('watchdog', 'wd')
+        ->fields('wd')
+        ->condition('wid', $last_wid, '>')
+        ->condition('severity', 5, '<')
+        ->execute()
+        ->fetchAllAssoc('wid');
+    
+      $table = array();
+      foreach ($watchdog_messages as $result) {
+        $row = core_watchdog_format_result($result, TRUE);
+        $table[$row->wid] = $row;
+      }
+    
+      $count_watchdog = count($watchdog_messages);
+      if ($count_watchdog >= 1) {
+        drush_log(dt('Generated !count_watchdog watchdog entries of severity less than 5.', array('!count_watchdog' => $count_watchdog)), 'warning');
+        return $table;
+      }
+      else {
+        drush_log(dt('Generated !count_watchdog watchdog entries.', array('!count_watchdog' => $count_watchdog)), 'ok');
+      }
   }
 }
 
