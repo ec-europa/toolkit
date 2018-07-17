@@ -148,7 +148,8 @@ function drush_custom_watchdog_smoketest() {
             if(isset($item['title']) && !empty($item['title'])){
                 $title = $item['title'];
             } else {
-                $title = empty($item['tab_root']) ? $path : $item['tab_root'];
+                $path_title = ltrim(strstr(str_replace(array('-', '/'), ' ', $path), '_', true));
+                $title = ucwords($path_title);
             }
             $backstop_scenarios[] = array(
               'url' => $url,
