@@ -86,6 +86,7 @@ pipeline:
   visreg-init:
     image: backstopjs/backstopjs
     commands:
+      - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
       - export TERM=xterm; backstop init
 
   install-clean:
@@ -100,7 +101,7 @@ pipeline:
   visreg-before:
     image: backstopjs/backstopjs
     commands:
-      - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js && export TERM=xterm; backstop reference
+      - export TERM=xterm; backstop reference
 
   # ============================================================================
   # Clone section:
@@ -115,7 +116,7 @@ pipeline:
   visreg-after:
     image: backstopjs/backstopjs
     commands:
-      - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js && export TERM=xterm; backstop test
+      - export TERM=xterm; backstop test
 
   selenium:
     image: selenium/standalone-chrome
