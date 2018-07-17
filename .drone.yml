@@ -87,18 +87,15 @@ pipeline:
     image: fpfis/php56-dev
     commands:
       - ./toolkit/phing install-clean ${PHING_OPTS}
-      - ./toolkit/drush -r build dl gdpr checklistapi -y
-      - ./toolkit/drush -r build en gdpr_dump dblog -y
-      - ./toolkit/drush -r build vset gdpr_dump_table_map '{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}' --format=json --exact -y
-      - ./toolkit/drush -r build gdpr-sql-dump --result-file=/test/toolkit/dump.sql
+      - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql'
       - ./toolkit/phing docker-backstop-generate
-      - cat backstop.json
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   visreg-before:
     image: backstopjs/backstopjs
     commands:
+      - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
       - backstop reference
     volumes:
       - /test/toolkit/includes/docker/docker-backstopjs/runPuppet.js:/usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
@@ -116,6 +113,7 @@ pipeline:
   visreg-after:
     image: backstopjs/backstopjs
     commands:
+      - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
       - backstop test
     volumes:
       - /test/toolkit/includes/docker/docker-backstopjs/runPuppet.js:/usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
