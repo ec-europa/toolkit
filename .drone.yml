@@ -30,6 +30,7 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
   visreg:
     image: backstopjs/backstopjs
+    entrypoint: [ "/bin/bash" ]
     environment:
       - TERM=xterm
       
@@ -84,6 +85,7 @@ pipeline:
   # ============================================================================
   visreg-init:
     image: backstopjs/backstopjs
+    entrypoint: [ "bash" ]
     commands:
       - backstop init
 
