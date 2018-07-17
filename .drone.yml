@@ -82,8 +82,6 @@ pipeline:
     image: backstopjs/backstopjs
     commands:
       - backstop init
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
 
   install-clean:
     image: fpfis/php56-dev
@@ -103,7 +101,7 @@ pipeline:
     commands:
       - backstop reference
     volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+      - ./includes/docker/docker-backstopjs/runPuppet.js:/usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
 
   # ============================================================================
   # Clone section:
@@ -120,7 +118,7 @@ pipeline:
     commands:
       - backstop test
     volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+      - ./includes/docker/docker-backstopjs/runPuppet.js:/usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
 
   selenium:
     image: selenium/standalone-chrome
