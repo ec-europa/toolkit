@@ -31,8 +31,6 @@ services:
   visreg:
     image: backstopjs/backstopjs
     entrypoint: [ "/bin/bash" ]
-    environment:
-      - TERM=xterm
       
 # ==============================================================================
 # Pipelines
@@ -86,8 +84,7 @@ pipeline:
   visreg-init:
     image: backstopjs/backstopjs
     commands:
-      - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
-      - export TERM=xterm; backstop init
+      - backstop init
 
   install-clean:
     image: fpfis/php56-dev
@@ -101,7 +98,7 @@ pipeline:
   visreg-before:
     image: backstopjs/backstopjs
     commands:
-      - export TERM=xterm; backstop reference
+      - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js && backstop reference
 
   # ============================================================================
   # Clone section:
@@ -116,7 +113,7 @@ pipeline:
   visreg-after:
     image: backstopjs/backstopjs
     commands:
-      - export TERM=xterm; backstop test
+      - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js && backstop test
 
   selenium:
     image: selenium/standalone-chrome
