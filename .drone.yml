@@ -85,7 +85,6 @@ pipeline:
   # ============================================================================
   visreg-init:
     image: backstopjs/backstopjs
-    entrypoint: [ "bash" ]
     commands:
       - backstop init
 
