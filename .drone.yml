@@ -28,7 +28,11 @@ services:
     image: percona/percona-server:5.6
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-
+  visreg:
+    image: backstopjs/backstopjs
+    environment:
+      - TERM=xterm
+      
 # ==============================================================================
 # Pipelines
 # ==============================================================================
@@ -80,13 +84,11 @@ pipeline:
   # ============================================================================
   visreg-init:
     image: backstopjs/backstopjs
-    group: install
     commands:
-      - TERM=xterm backstop init
+      - backstop init
 
   install-clean:
     image: fpfis/php56-dev
-    group: install
     commands:
       - ./toolkit/phing install-clean ${PHING_OPTS}
       - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql' ${PHING_OPTS}
@@ -97,7 +99,7 @@ pipeline:
   visreg-before:
     image: backstopjs/backstopjs
     commands:
-      - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js && TERM=xterm backstop reference
+      - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js && backstop reference
 
   # ============================================================================
   # Clone section:
@@ -112,7 +114,7 @@ pipeline:
   visreg-after:
     image: backstopjs/backstopjs
     commands:
-      - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js && TERM=xterm backstop test
+      - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js && backstop test
 
   selenium:
     image: selenium/standalone-chrome
