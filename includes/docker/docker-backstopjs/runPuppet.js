@@ -67,7 +67,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
 
   if (isReference) {
-    console.log(chalk.blue('CREATING NEW REFERENCE FILE'));
+    //console.log(chalk.blue('CREATING NEW REFERENCE FILE'));
   }
 
   // --- set up console output and ready event ---

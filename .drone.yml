@@ -80,6 +80,8 @@ pipeline:
   # ============================================================================
   visreg-init:
     image: backstopjs/backstopjs
+    environment:
+      - TERM=xterm
     commands:
       - backstop init
 
@@ -94,6 +96,8 @@ pipeline:
 
   visreg-before:
     image: backstopjs/backstopjs
+    environment:
+      - TERM=xterm
     commands:
       - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js && backstop reference
 
@@ -109,6 +113,8 @@ pipeline:
 
   visreg-after:
     image: backstopjs/backstopjs
+    environment:
+      - TERM=xterm
     commands:
       - cp -f includes/docker/docker-backstopjs/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js && backstop test
 
