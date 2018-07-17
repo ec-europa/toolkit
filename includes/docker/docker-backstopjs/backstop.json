@@ -33,7 +33,7 @@
   "engineOptions": {
     "args": ["--no-sandbox"]
   },
-  "fileNameTemplate": "{configId}_{scenarioIndex}_{selectorLabel}_{selectorIndex}_{viewportLabel}_{viewportIndex}",
+  "fileNameTemplate": "{configId}_{selectorLabel}_{scenarioIndex}_{viewportIndex}",
   "asyncCaptureLimit": 3,
   "asyncCompareLimit": 50,
   "debug": false,
