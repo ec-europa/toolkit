@@ -101,7 +101,7 @@ pipeline:
     commands:
       - backstop reference
     volumes:
-      - ./includes/docker/docker-backstopjs/runPuppet.js:/usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
+      - /test/toolkit/includes/docker/docker-backstopjs/runPuppet.js:/usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
 
   # ============================================================================
   # Clone section:
@@ -118,7 +118,7 @@ pipeline:
     commands:
       - backstop test
     volumes:
-      - ./includes/docker/docker-backstopjs/runPuppet.js:/usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
+      - /test/toolkit/includes/docker/docker-backstopjs/runPuppet.js:/usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
 
   selenium:
     image: selenium/standalone-chrome
