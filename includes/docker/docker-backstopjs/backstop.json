@@ -1,5 +1,5 @@
 {
-  "id": "smoketest",
+  "id": "bs_smoke",
   "name": "Smoketest",
   "viewports": [
     {
@@ -33,7 +33,7 @@
   "engineOptions": {
     "args": ["--no-sandbox"]
   },
-  "fileNameTemplate": "{configId}_{scenarioIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}",
+  "fileNameTemplate": "{configId}_{scenarioLabel}_{scenarioIndex}_{viewportLabel}"
   "asyncCaptureLimit": 3,
   "asyncCompareLimit": 50,
   "debug": false,
