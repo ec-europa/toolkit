@@ -122,6 +122,7 @@ pipeline:
   smoketest:
     image: fpfis/php56-dev
     commands:
+      - chmod -R 777 build/sites/default/files
       - ./toolkit/phing drush-run-smoketest ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
