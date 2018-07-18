@@ -246,8 +246,9 @@
 
     <target name="project-subsite-files-setup" hidden="true" description="Create files directories for subsite.">
         <if>
-            <istrue value="${build.tmp.dir.files}" />
+            <istrue value="${build.tmp.dir}" />
             <then>
+                <move file="${build.subsite.dir}/default.settings.php" tofile="${build.tmp.dir}/default.settings.php" />
                 <mkdir dir="${build.tmp.dir.files}/private_files" />
                 <mkdir dir="${build.tmp.dir.files}/tmp" />
                 <mkdir dir="${build.tmp.dir.files}/css_injector" />

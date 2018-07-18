@@ -83,7 +83,8 @@
                 <relsym link="${build.platform.dir.sites}/all/drush/custom" target="${toolkit.dir.incl.drush}/custom" />
             </then>
         </if>
-        <relsym link="${build.subsite.dir.files}" target="${build.tmp.dir}/files" />
+        <relsym link="${build.subsite.dir}/default.settings.php" target="${build.tmp.dir}/default.settings.php" />
+        <relsym link="${build.subsite.dir.files}" target="${build.tmp.dir.files}" />
         <relsym link="${build.${build-type}.dir}/composer.json" target="${resources.dir.composer.json}" />
         <relsym link="${build.${build-type}.dir}/composer.lock" target="${resources.dir.composer.lock}" />
     </target>
