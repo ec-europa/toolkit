@@ -148,8 +148,7 @@ function drush_custom_watchdog_smoketest() {
             if(isset($item['title']) && !empty($item['title'])){
                 $title = $item['title'];
             } else {
-                $path_title = ltrim(strstr(str_replace(array('-', '/'), ' ', $path), '_', true));
-                $title = ucwords($path_title);
+                $title = empty($item['tab_root']) ? $path : $item['tab_root'];
             }
             $backstop_scenarios[] = array(
               'url' => $url,
@@ -166,7 +165,7 @@ function drush_custom_watchdog_smoketest() {
               'selectors' => array (),
               'selectorExpansion' => true,
               'expect' => 0,
-              'misMatchThreshold' => 0.1000000000000000055511151231257827021181583404541015625,
+              'misMatchThreshold' => 1,
               'requireSameDimensions' => true,
             );
         }
