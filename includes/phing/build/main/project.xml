@@ -17,10 +17,9 @@
                 <phingcall target="project-profile-build" />
             </else>
         </if>
-
-       <phingcall target="project-platform-set-htaccess" />
-       <phingcall target="project-platform-restore" />
-
+        <phingcall target="project-subsite-files-setup" />
+        <phingcall target="project-platform-set-htaccess" />
+        <phingcall target="project-platform-restore" />
     </target>
 
     <target name="project-profile-build" hidden="true" description="Build Drupal profile.">
@@ -310,8 +309,6 @@
                 <move file="${project.tmp.dir}/settings.local.php" tofile="${build.platform.dir.settings}/settings.local.php" />
             </then>
         </if>
-
-        <phingcall target="project-subsite-files-setup" />
         <phingcall target="drush-aliases-generate" />
     </target>
 
