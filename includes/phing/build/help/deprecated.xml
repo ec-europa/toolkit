@@ -50,16 +50,8 @@
         <replacedby target="subsite-resources-copy" />
     </target>
 
-    <target hidden="true" name="delete-dev">
-        <replacedby target="project-scratch-build" />
-    </target>
-
     <target hidden="true" name="delete-deployment-group">
         <echo msg="The target delete-deployment-group is no longer available." />
-    </target>
-
-    <target hidden="true" name="delete-dist">
-        <replacedby target="project-scratch-build" />
     </target>
 
     <target hidden="true" name="delete-stack">

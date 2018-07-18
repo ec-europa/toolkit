@@ -5,9 +5,7 @@
     <target name="build-subsite-dev" description="Build a local development version of the site."
         depends="
             subsite-type-dev,
-            project-subsite-backup,
-            subsite-delete-dev,
-            project-subsite-restore,
+            subsite-delete,
             subsite-resources-link,
             project-subsite-composer-dev,
             subsite-make,
@@ -17,8 +15,8 @@
 
     <target name="build-subsite-dist" description="Build a site intended as a release package."
         depends="
-            subsite-delete-dist,
             subsite-type-tmp,
+            subsite-delete,
             subsite-resources-link,
             project-subsite-composer-no-dev,
             subsite-make,
@@ -32,12 +30,6 @@
         <echo msg="Build a subsite test package to test this reslease." />
         <phingcall target="build-project-test">
             <property name="dir-build" value="${tests.dir}" override="true" />
-        </phingcall>
-    </target>
-
-    <target name="subsite-delete-dev" hidden="true" description="Delete subsite dev build.">
-        <phingcall target="project-scratch-build">
-            <property name="dir-build" value="${build.${build-type}.dir}" override="true" />
         </phingcall>
     </target>
 
@@ -91,7 +83,7 @@
                 <relsym link="${build.platform.dir.sites}/all/drush/custom" target="${toolkit.dir.incl.drush}/custom" />
             </then>
         </if>
-        
+        <relsym link="${build.subsite.dir.files}" target="${build.tmp.dir}/files" />
         <relsym link="${build.${build-type}.dir}/composer.json" target="${resources.dir.composer.json}" />
         <relsym link="${build.${build-type}.dir}/composer.lock" target="${resources.dir.composer.lock}" />
     </target>
@@ -113,6 +105,10 @@
 
     <target name="subsite-type-tmp" hidden="true" description="Sets the type of build to tmp.">
         <property name="build-type" value="tmp" override="true" />
+    </target>
+
+    <target name="subsite-delete" hidden="true" description="Delete build directory.">
+        <delete dir="${build.${build-type}.dir}" includeemptydirs="true" />
     </target>
 
 </project>
