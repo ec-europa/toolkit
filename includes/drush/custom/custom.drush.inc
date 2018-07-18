@@ -22,7 +22,7 @@ function custom_drush_command() {
 
   $items['watchdog-smoketest'] = [
     'description' => 'Crawl site and report watchdog errors and notifications back to user.',
-    'drupal dependencies' => ['dblog'],
+    //'drupal dependencies' => ['dblog'],
     'aliases' => ['wd-smoke', 'wdsm'],
     'options' => ['type' => "'Either 'drush', 'backstop' or 'report'. Default is 'drush'."],
     'outputformat' => [
