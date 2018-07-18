@@ -119,6 +119,13 @@ pipeline:
       - cp -f includes/docker/docker-backstopjs/core/util/compare/index.js /usr/local/lib/node_modules/backstopjs/core/util/compare/index.js
       - backstop test || echo 'Proceed ...'
 
+  smoketest:
+    image: fpfis/php56-dev
+    commands:
+      - ./toolkit/phing drush-run-smoketest ${PHING_OPTS}
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+
   selenium:
     image: selenium/standalone-chrome
     group: prebehat
