@@ -24,6 +24,7 @@ function custom_drush_command() {
     'description' => 'Crawl site and report watchdog errors and notifications back to user.',
     'drupal dependencies' => ['dblog'],
     'aliases' => ['wd-smoke', 'wdsm'],
+    'options' => ['type' => "'Either 'drush', 'backstop' or 'report'. Default is 'drush'."],
     'outputformat' => [
       'default' => 'table',
       'pipe-format' => 'var_export',
@@ -90,6 +91,8 @@ function drush_custom_features_revert_site() {
  * Revert all enabled features to their definitions in code.
  */
 function drush_custom_watchdog_smoketest() {
+  $type = drush_get_option('type', 'drush');
+
   // Get cookie for root user.
   global $user;
   global $base_url;
@@ -117,10 +120,12 @@ function drush_custom_watchdog_smoketest() {
   $paths = generateUrlsByViews($paths);
   $paths = generateUrlsByPageManager($paths);
 
-  $backstop_json = file_get_contents('../includes/docker/docker-backstopjs/backstop.json');
-  $backstop_settings = json_decode($backstop_json, true);
-  $backstop_cookies = array(
-    array(
+  // Generate cookie for backstop usage.
+  if ($type == 'backstop') {
+    $backstop_json = file_get_contents('../includes/docker/docker-backstopjs/backstop.json');
+    $backstop_settings = json_decode($backstop_json, true);
+    $backstop_cookies = array(
+      array(
         'domain' => str_replace(array('http://', 'https://', ':8080'), '', $base_url),
         'path' => '/',
         'name' => $session_name,
@@ -131,15 +136,14 @@ function drush_custom_watchdog_smoketest() {
         'secure' => false,
         'session' => false,
         'sameSite' => 'no_restriction'
-    ),
-  );
-  file_put_contents('../backstop_data/engine_scripts/cookies.json', json_encode($backstop_cookies, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
+      ),
+    );
+    file_put_contents('../backstop_data/engine_scripts/cookies.json', json_encode($backstop_cookies, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
+  }
 
   $count_paths = count($paths);
   if ($count_paths >= 1) {
-    $generate = true;
-    $visit = false;
-    if ($generate == true) {
+    if ($type == 'backstop') {
         $backstop_scenarios = array();
         foreach($paths as $path) {
             $normal_path = ltrim(drupal_get_normal_path($path), '/');
@@ -148,7 +152,8 @@ function drush_custom_watchdog_smoketest() {
             if(isset($item['title']) && !empty($item['title'])){
                 $title = $item['title'];
             } else {
-                $title = empty($item['tab_root']) ? $path : $item['tab_root'];
+                $path_title = ltrim(strstr(str_replace(array('-', '/'), ' ', $path), '_', true));
+                $title = ucwords($path_title);
             }
             $backstop_scenarios[] = array(
               'url' => $url,
@@ -172,8 +177,8 @@ function drush_custom_watchdog_smoketest() {
         $backstop_settings['scenarios'] = $backstop_scenarios;
         file_put_contents('../backstop.json', json_encode($backstop_settings, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
     }
-    
-    if ($visit == true) {
+
+    if ($type == 'drush') {
         $last_wid = db_query('SELECT MAX(wid) FROM {watchdog}')->fetchField();
         drush_log(dt('Visiting !count_paths paths as admin to check for watchdog messages.', array('!count_paths' => $count_paths)), 'ok');
         foreach($paths as $path) {
@@ -183,7 +188,7 @@ function drush_custom_watchdog_smoketest() {
     }
   }
 
-  if ($visit == true) {
+  if (in_array($type, array('drush', 'report'))) {
       _drupal_session_destroy($session_id);
       $watchdog_messages = db_select('watchdog', 'wd')
         ->fields('wd')
@@ -191,13 +196,13 @@ function drush_custom_watchdog_smoketest() {
         ->condition('severity', 5, '<')
         ->execute()
         ->fetchAllAssoc('wid');
-    
+
       $table = array();
       foreach ($watchdog_messages as $result) {
         $row = core_watchdog_format_result($result, TRUE);
         $table[$row->wid] = $row;
       }
-    
+
       $count_watchdog = count($watchdog_messages);
       if ($count_watchdog >= 1) {
         drush_log(dt('Generated !count_watchdog watchdog entries of severity less than 5.', array('!count_watchdog' => $count_watchdog)), 'warning');
@@ -208,6 +213,7 @@ function drush_custom_watchdog_smoketest() {
       }
   }
 }
+
 
 /**
  * Generate the list of URL's based in the Content-types configuration.
