@@ -26,12 +26,12 @@ function custom_drush_command() {
     'aliases' => ['wd-smoke', 'wdsm'],
     'options' => ['type' => "'Either 'drush', 'backstop' or 'report'. Default is 'drush'."],
     'outputformat' => [
-      'default' => 'table',
+      'default' => 'json',
       'pipe-format' => 'var_export',
       'field-labels' => array('wid' => 'ID', 'type' => 'Type', 'message' => 'Message', 'severity' => 'Severity', 'location' => 'Location', 'hostname' => 'Hostname', 'date' => 'Date', 'username' => 'Username'),
       'fields-default' => array('type', 'severity', 'location', 'message'),
       'column-widths' => array('type' => 8, 'severity' => 8),
-      'output-data-type' => 'format-table',
+      'output-data-type' => 'format-json',
     ],
   ];
 
