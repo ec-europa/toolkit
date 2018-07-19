@@ -1,27 +1,6 @@
 # Toolkit Phing Targets
 This is the list of targets provided by toolkit, please note that this is a auto-generated list.
 
-<details><p><summary>backup-site</summary></p>
-project-subsite-backup
-
-##### Example:
-`toolkit\phing backup-site'
-'
-</details>
-<details><p><summary>backup-site-item</summary></p>
-project-subsite-backup-item
-
-##### Example:
-`toolkit\phing backup-site-item'
-'
-</details>
-<details><p><summary>behat</summary></p>
-test-run-behat
-
-##### Example:
-`toolkit\phing behat'
-'
-</details>
 <details><p><summary>cache-clear-all</summary></p>
 Delete all files stored in cache.
 
@@ -43,67 +22,11 @@ Delete all files stored in local cache.
 `toolkit\phing cache-clear-local'
 '
 </details>
-<details><p><summary>check-for-default-settings-or-rebuild</summary></p>
-
-
-##### Example:
-`toolkit\phing check-for-default-settings-or-rebuild'
-'
-</details>
-<details><p><summary>check-starterkit</summary></p>
-
+<details><p><summary>docker-backstop-generate</summary></p>
+Generate the backstop files.
 
 ##### Example:
-`toolkit\phing check-starterkit'
-'
-</details>
-<details><p><summary>copy-dist-resources</summary></p>
-subsite-resources-copy
-
-##### Example:
-`toolkit\phing copy-dist-resources'
-'
-</details>
-<details><p><summary>copy-folder</summary></p>
-subsite-resources-copy
-
-##### Example:
-`toolkit\phing copy-folder'
-'
-</details>
-<details><p><summary>create-tmp-dirs</summary></p>
-
-
-##### Example:
-`toolkit\phing create-tmp-dirs'
-'
-</details>
-<details><p><summary>delete-deployment-group</summary></p>
-
-
-##### Example:
-`toolkit\phing delete-deployment-group'
-'
-</details>
-<details><p><summary>delete-dev</summary></p>
-project-scratch-build
-
-##### Example:
-`toolkit\phing delete-dev'
-'
-</details>
-<details><p><summary>delete-dist</summary></p>
-project-scratch-build
-
-##### Example:
-`toolkit\phing delete-dist'
-'
-</details>
-<details><p><summary>delete-stack</summary></p>
-
-
-##### Example:
-`toolkit\phing delete-stack'
+`toolkit\phing docker-backstop-generate'
 '
 </details>
 <details><p><summary>docker-check-mysql</summary></p>
@@ -148,39 +71,11 @@ Start docker project.
 `toolkit\phing docker-compose-up'
 '
 </details>
-<details><p><summary>download-development-modules</summary></p>
-project-modules-devel-dl
-
-##### Example:
-`toolkit\phing download-development-modules'
-'
-</details>
-<details><p><summary>download-platform</summary></p>
-build-platform
-
-##### Example:
-`toolkit\phing download-platform'
-'
-</details>
-<details><p><summary>download-prod-db</summary></p>
-project-database-download
-
-##### Example:
-`toolkit\phing download-prod-db'
-'
-</details>
 <details><p><summary>drush-aliases-generate</summary></p>
 Generate drush aliases for each subsite folder.
 
 ##### Example:
 `toolkit\phing drush-aliases-generate'
-'
-</details>
-<details><p><summary>drush-cache-reset</summary></p>
-Disable and clean cache.
-
-##### Example:
-`toolkit\phing drush-cache-reset'
 '
 </details>
 <details><p><summary>drush-files-dirs-create</summary></p>
@@ -195,6 +90,13 @@ Ensure the presence of htaccess files.
 
 ##### Example:
 `toolkit\phing drush-files-dirs-htaccess'
+'
+</details>
+<details><p><summary>drush-gdpr-dump</summary></p>
+Make a sanitized dump of database.
+
+##### Example:
+`toolkit\phing drush-gdpr-dump'
 '
 </details>
 <details><p><summary>drush-make-no-core</summary></p>
@@ -246,6 +148,13 @@ Download drush registry-rebuild.
 `toolkit\phing drush-registry-rebuild-dl'
 '
 </details>
+<details><p><summary>drush-run-smoketest</summary></p>
+Visit pages and check for watchog messages.
+
+##### Example:
+`toolkit\phing drush-run-smoketest'
+'
+</details>
 <details><p><summary>drush-settings-generate</summary></p>
 Generate the settings.php file.
 
@@ -295,25 +204,25 @@ Import a database.
 `toolkit\phing drush-sql-import'
 '
 </details>
-<details><p><summary>enable-development-modules</summary></p>
-project-modules-devel-en
+<details><p><summary>drush-uris-generate</summary></p>
+Generate list of uris.
 
 ##### Example:
-`toolkit\phing enable-development-modules'
+`toolkit\phing drush-uris-generate'
 '
 </details>
-<details><p><summary>enable-install-modules</summary></p>
-project-modules-install-en
+<details><p><summary>drush-variable-set</summary></p>
+Set a variable with drush
 
 ##### Example:
-`toolkit\phing enable-install-modules'
+`toolkit\phing drush-variable-set'
 '
 </details>
-<details><p><summary>enable-modules</summary></p>
-drush-modules-enable
+<details><p><summary>drush-variable-set-string</summary></p>
+Use a string to set variable with drush
 
 ##### Example:
-`toolkit\phing enable-modules'
+`toolkit\phing drush-variable-set-string'
 '
 </details>
 <details><p><summary>folder-copy</summary></p>
@@ -335,13 +244,6 @@ Open up filesystem permissions on folder.
 
 ##### Example:
 `toolkit\phing folder-unprotect'
-'
-</details>
-<details><p><summary>generate-development-makefile</summary></p>
-project-modules-devel-mf
-
-##### Example:
-`toolkit\phing generate-development-makefile'
 '
 </details>
 <details><p><summary>github-auth</summary></p>
@@ -414,27 +316,6 @@ Ask for username if not set.
 `toolkit\phing github-init-user'
 '
 </details>
-<details><p><summary>import-prod-db</summary></p>
-project-database-import
-
-##### Example:
-`toolkit\phing import-prod-db'
-'
-</details>
-<details><p><summary>install</summary></p>
-install-clean
-
-##### Example:
-`toolkit\phing install'
-'
-</details>
-<details><p><summary>install-build-dependencies</summary></p>
-project-subsite-composer-no-dev
-
-##### Example:
-`toolkit\phing install-build-dependencies'
-'
-</details>
 <details><p><summary>install-clean</summary></p>
 Install NextEuropa site from scratch.
 
@@ -447,76 +328,6 @@ Install NextEuropa site with sanitized production data.
 
 ##### Example:
 `toolkit\phing install-clone'
-'
-</details>
-<details><p><summary>install-dev</summary></p>
-install-clean
-
-##### Example:
-`toolkit\phing install-dev'
-'
-</details>
-<details><p><summary>install-dev-dependencies</summary></p>
-project-subsite-composer-dev
-
-##### Example:
-`toolkit\phing install-dev-dependencies'
-'
-</details>
-<details><p><summary>install-dist-dependencies</summary></p>
-
-
-##### Example:
-`toolkit\phing install-dist-dependencies'
-'
-</details>
-<details><p><summary>link-behat</summary></p>
-test-behat-setup-link
-
-##### Example:
-`toolkit\phing link-behat'
-'
-</details>
-<details><p><summary>link-dev-resources</summary></p>
-subsite-resources-link
-
-##### Example:
-`toolkit\phing link-dev-resources'
-'
-</details>
-<details><p><summary>link-docroot</summary></p>
-project-platform-set-docroot
-
-##### Example:
-`toolkit\phing link-docroot'
-'
-</details>
-<details><p><summary>make-dev</summary></p>
-subsite-make
-
-##### Example:
-`toolkit\phing make-dev'
-'
-</details>
-<details><p><summary>make-dist</summary></p>
-subsite-make
-
-##### Example:
-`toolkit\phing make-dist'
-'
-</details>
-<details><p><summary>mjolnir</summary></p>
-test-run-qa
-
-##### Example:
-`toolkit\phing mjolnir'
-'
-</details>
-<details><p><summary>move-download-to-tmp-dir</summary></p>
-
-
-##### Example:
-`toolkit\phing move-download-to-tmp-dir'
 '
 </details>
 <details><p><summary>package-download</summary></p>
@@ -540,11 +351,11 @@ Unpack package with tar zxf.
 `toolkit\phing package-unpack'
 '
 </details>
-<details><p><summary>platform-delete</summary></p>
-Build a platform test package to test this release.
+<details><p><summary>package-version-set</summary></p>
+Set version file hash in the build folder.
 
 ##### Example:
-`toolkit\phing platform-delete'
+`toolkit\phing package-version-set'
 '
 </details>
 <details><p><summary>platform-drupal-make</summary></p>
@@ -673,13 +484,6 @@ Install list of modules to enable by default.
 `toolkit\phing project-modules-install-en'
 '
 </details>
-<details><p><summary>project-platform-backup</summary></p>
-Backup site defined files from properties.
-
-##### Example:
-`toolkit\phing project-platform-backup'
-'
-</details>
 <details><p><summary>project-platform-composer-dev</summary></p>
 Run composer install with dev on platform.
 
@@ -694,25 +498,11 @@ Run composer install without dev on platform.
 `toolkit\phing project-platform-composer-no-dev'
 '
 </details>
-<details><p><summary>project-platform-delete</summary></p>
-Remove previous platform build..
-
-##### Example:
-`toolkit\phing project-platform-delete'
-'
-</details>
 <details><p><summary>project-platform-package-unpack</summary></p>
 Download and unpack platform deploy package.
 
 ##### Example:
 `toolkit\phing project-platform-package-unpack'
-'
-</details>
-<details><p><summary>project-platform-restore</summary></p>
-Restore site defined files from properties.
-
-##### Example:
-`toolkit\phing project-platform-restore'
 '
 </details>
 <details><p><summary>project-platform-set-docroot</summary></p>
@@ -750,34 +540,6 @@ Validate the build properties file.
 `toolkit\phing project-properties-validate'
 '
 </details>
-<details><p><summary>project-rebuild-check</summary></p>
-Rebuild project if needed. (needs work)
-
-##### Example:
-`toolkit\phing project-rebuild-check'
-'
-</details>
-<details><p><summary>project-scratch-build</summary></p>
-Delete previous build to start over clean.
-
-##### Example:
-`toolkit\phing project-scratch-build'
-'
-</details>
-<details><p><summary>project-subsite-backup</summary></p>
-Backup site defined files from properties.
-
-##### Example:
-`toolkit\phing project-subsite-backup'
-'
-</details>
-<details><p><summary>project-subsite-backup-item</summary></p>
-Backup site item from configuraton list.
-
-##### Example:
-`toolkit\phing project-subsite-backup-item'
-'
-</details>
 <details><p><summary>project-subsite-composer-dev</summary></p>
 Run composer install with dev on subsite.
 
@@ -799,130 +561,18 @@ Create files directories for subsite.
 `toolkit\phing project-subsite-files-setup'
 '
 </details>
-<details><p><summary>project-subsite-restore</summary></p>
-Restore site defined files from properties.
-
-##### Example:
-`toolkit\phing project-subsite-restore'
-'
-</details>
-<details><p><summary>project-subsite-restore-item</summary></p>
-Restore site item from configuration list.
-
-##### Example:
-`toolkit\phing project-subsite-restore-item'
-'
-</details>
-<details><p><summary>provision-stack</summary></p>
-
-
-##### Example:
-`toolkit\phing provision-stack'
-'
-</details>
-<details><p><summary>quality-assurance</summary></p>
-test-qa-exec
-
-##### Example:
-`toolkit\phing quality-assurance'
-'
-</details>
-<details><p><summary>rebuild-dev</summary></p>
-
-
-##### Example:
-`toolkit\phing rebuild-dev'
-'
-</details>
-<details><p><summary>rebuild-node-access</summary></p>
-drush-node-access-rebuild
-
-##### Example:
-`toolkit\phing rebuild-node-access'
-'
-</details>
-<details><p><summary>regenerate-settings</summary></p>
-drush-settings-generate
-
-##### Example:
-`toolkit\phing regenerate-settings'
-'
-</details>
 <details><p><summary>reset-filesystem-permissions</summary></p>
-Reset filesystem permissions.
+Reset filesystem permissions for local/ephemeral use.
 
 ##### Example:
 `toolkit\phing reset-filesystem-permissions'
 '
 </details>
-<details><p><summary>restore-site</summary></p>
-project-subsite-restore
+<details><p><summary>subsite-delete</summary></p>
+Delete build directory.
 
 ##### Example:
-`toolkit\phing restore-site'
-'
-</details>
-<details><p><summary>restore-site-item</summary></p>
-project-subsite-restore-item
-
-##### Example:
-`toolkit\phing restore-site-item'
-'
-</details>
-<details><p><summary>run-stack</summary></p>
-
-
-##### Example:
-`toolkit\phing run-stack'
-'
-</details>
-<details><p><summary>setup-aws</summary></p>
-
-
-##### Example:
-`toolkit\phing setup-aws'
-'
-</details>
-<details><p><summary>setup-behat</summary></p>
-test-behat-setup
-
-##### Example:
-`toolkit\phing setup-behat'
-'
-</details>
-<details><p><summary>setup-deployment-group</summary></p>
-
-
-##### Example:
-`toolkit\phing setup-deployment-group'
-'
-</details>
-<details><p><summary>setup-files-directory</summary></p>
-project-subsite-files-setup
-
-##### Example:
-`toolkit\phing setup-files-directory'
-'
-</details>
-<details><p><summary>setup-php-codesniffer</summary></p>
-phpcs-setup
-
-##### Example:
-`toolkit\phing setup-php-codesniffer'
-'
-</details>
-<details><p><summary>setup-phpcs-pre-push</summary></p>
-test-phpcs-setup-prepush
-
-##### Example:
-`toolkit\phing setup-phpcs-pre-push'
-'
-</details>
-<details><p><summary>subsite-delete-dev</summary></p>
-Delete subsite dev build.
-
-##### Example:
-`toolkit\phing subsite-delete-dev'
+`toolkit\phing subsite-delete'
 '
 </details>
 <details><p><summary>subsite-delete-dist</summary></p>
@@ -995,6 +645,76 @@ Sets the type of build to tmp.
 `toolkit\phing subsite-type-tmp'
 '
 </details>
+<details><p><summary>test-behat-exec</summary></p>
+
+
+##### Example:
+`toolkit\phing test-behat-exec'
+'
+</details>
+<details><p><summary>test-behat-setup</summary></p>
+
+
+##### Example:
+`toolkit\phing test-behat-setup'
+'
+</details>
+<details><p><summary>test-behat-setup-generic</summary></p>
+
+
+##### Example:
+`toolkit\phing test-behat-setup-generic'
+'
+</details>
+<details><p><summary>test-behat-setup-link</summary></p>
+
+
+##### Example:
+`toolkit\phing test-behat-setup-link'
+'
+</details>
+<details><p><summary>test-composer-install</summary></p>
+
+
+##### Example:
+`toolkit\phing test-composer-install'
+'
+</details>
+<details><p><summary>test-phpcs-exec</summary></p>
+
+
+##### Example:
+`toolkit\phing test-phpcs-exec'
+'
+</details>
+<details><p><summary>test-phpcs-setup</summary></p>
+
+
+##### Example:
+`toolkit\phing test-phpcs-setup'
+'
+</details>
+<details><p><summary>test-phpcs-setup-prepush</summary></p>
+
+
+##### Example:
+`toolkit\phing test-phpcs-setup-prepush'
+'
+</details>
+<details><p><summary>test-phpunit-exec</summary></p>
+
+
+##### Example:
+`toolkit\phing test-phpunit-exec'
+'
+</details>
+<details><p><summary>test-phpunit-setup</summary></p>
+
+
+##### Example:
+`toolkit\phing test-phpunit-setup'
+'
+</details>
 <details><p><summary>test-qa-exec</summary></p>
 
 
@@ -1007,6 +727,13 @@ Compare current install against production.
 
 ##### Example:
 `toolkit\phing test-run-backtrac'
+'
+</details>
+<details><p><summary>test-run-behat</summary></p>
+Refresh configuration and run behat scenarios.
+
+##### Example:
+`toolkit\phing test-run-behat'
 '
 </details>
 <details><p><summary>test-run-phpcs</summary></p>
@@ -1093,6 +820,13 @@ Provide project with an overview of all default build properties.
 `toolkit\phing toolkit-default-props'
 '
 </details>
+<details><p><summary>toolkit-generate-project-info</summary></p>
+Copies template files to your project for toolkit integration with inventory details.
+
+##### Example:
+`toolkit\phing toolkit-generate-project-info'
+'
+</details>
 <details><p><summary>toolkit-hooks-composer</summary></p>
 Echo the composer hook phing targets for use in bash script.
 
@@ -1156,55 +890,6 @@ Copies template files to your project for toolkit integration.
 `toolkit\phing toolkit-templates-copy'
 '
 </details>
-<details><p><summary>unpack-platform</summary></p>
-project-platform-package-unpack
-
-##### Example:
-`toolkit\phing unpack-platform'
-'
-</details>
-<details><p><summary>update-htaccess</summary></p>
-project-platform-set-htaccess
-
-##### Example:
-`toolkit\phing update-htaccess'
-'
-</details>
-<details><p><summary>wget-prod-db</summary></p>
-project-database-wget
-
-##### Example:
-`toolkit\phing wget-prod-db'
-'
-</details>
-<details><p><summary>build-clone</summary></p>
-install-clone
-
-##### Example:
-`toolkit\phing build-clone'
-'
-</details>
-<details><p><summary>build-custom</summary></p>
-
-
-##### Example:
-`toolkit\phing build-custom'
-'
-</details>
-<details><p><summary>build-dev</summary></p>
-build-dev
-
-##### Example:
-`toolkit\phing build-dev'
-'
-</details>
-<details><p><summary>build-dist</summary></p>
-build-dist
-
-##### Example:
-`toolkit\phing build-dist'
-'
-</details>
 <details><p><summary>build-platform</summary></p>
 Build NextEuropa Platform code without version control.
 
@@ -1219,19 +904,15 @@ Build a local development version with a single platform profile.
 `toolkit\phing build-platform-dev'
 '
 ##### Dependencies: 
-* build-theme-dev
-* platform-delete
 * platform-drupal-make
 * platform-profiles-link
 * platform-profiles-make
 * platform-resources-link
 * platform-type-dev
-* project-modules-devel-dl
+* project-modules-devel-make
 * project-platform-composer-no-dev
 * project-platform-set-htaccess
-* project-subsite-backup
 * project-subsite-files-setup
-* project-subsite-restore
 
 </details>
 <details><p><summary>build-platform-dev-all</summary></p>
@@ -1241,7 +922,6 @@ Build a local development version with all platform profiles.
 `toolkit\phing build-platform-dev-all'
 '
 ##### Dependencies: 
-* platform-delete
 * platform-drupal-make
 * platform-profiles-copy
 * platform-profiles-make
@@ -1257,7 +937,6 @@ Build a single platform profile intended as a release package.
 `toolkit\phing build-platform-dist'
 '
 ##### Dependencies: 
-* platform-delete
 * platform-drupal-make
 * platform-profile-copy
 * platform-profile-make
@@ -1273,7 +952,6 @@ Build all platform profiles intended as a release package.
 `toolkit\phing build-platform-dist-all'
 '
 ##### Dependencies: 
-* platform-delete
 * platform-drupal-make
 * platform-profiles-copy
 * platform-profiles-make
@@ -1296,17 +974,6 @@ Build a platform test package to test this release.
 `toolkit\phing build-project-test'
 '
 </details>
-<details><p><summary>build-subsite</summary></p>
-Build NextEuropa Subsite code without version control.
-
-##### Example:
-`toolkit\phing build-subsite'
-'
-##### Dependencies: 
-* project-subsite-backup
-* project-subsite-restore
-
-</details>
 <details><p><summary>build-subsite-dev</summary></p>
 Build a local development version of the site.
 
@@ -1315,10 +982,8 @@ Build a local development version of the site.
 '
 ##### Dependencies: 
 * project-modules-devel-make
-* project-subsite-backup
 * project-subsite-composer-dev
-* project-subsite-restore
-* subsite-delete-dev
+* subsite-delete
 * subsite-make
 * subsite-resources-link
 * subsite-type-dev
@@ -1331,8 +996,9 @@ Build a site intended as a release package.
 `toolkit\phing build-subsite-dist'
 '
 ##### Dependencies: 
+* package-version-set
 * project-subsite-composer-no-dev
-* subsite-delete-dist
+* subsite-delete
 * subsite-make
 * subsite-resources-copy
 * subsite-resources-link

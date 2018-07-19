@@ -20,19 +20,15 @@ Build a local development version with a single platform profile.
 `toolkit\phing build-platform-dev`
 
 ##### Dependencies: 
-* build-theme-dev
-* platform-delete
 * platform-drupal-make
 * platform-profiles-link
 * platform-profiles-make
 * platform-resources-link
 * platform-type-dev
-* project-modules-devel-dl
+* project-modules-devel-make
 * project-platform-composer-no-dev
 * project-platform-set-htaccess
-* project-subsite-backup
 * project-subsite-files-setup
-* project-subsite-restore
 
 </details>
 
@@ -44,7 +40,6 @@ Build a local development version with all platform profiles.
 `toolkit\phing build-platform-dev-all`
 
 ##### Dependencies: 
-* platform-delete
 * platform-drupal-make
 * platform-profiles-copy
 * platform-profiles-make
@@ -62,7 +57,6 @@ Build a single platform profile intended as a release package.
 `toolkit\phing build-platform-dist`
 
 ##### Dependencies: 
-* platform-delete
 * platform-drupal-make
 * platform-profile-copy
 * platform-profile-make
@@ -80,7 +74,6 @@ Build all platform profiles intended as a release package.
 `toolkit\phing build-platform-dist-all`
 
 ##### Dependencies: 
-* platform-delete
 * platform-drupal-make
 * platform-profiles-copy
 * platform-profiles-make
@@ -99,19 +92,6 @@ Build a platform test package to test this release.
 
 </details>
 
-<details><p><summary>build-subsite</summary></p>
-
-Build NextEuropa Subsite code without version control.
-
-##### Example:
-`toolkit\phing build-subsite`
-
-##### Dependencies: 
-* project-subsite-backup
-* project-subsite-restore
-
-</details>
-
 <details><p><summary>build-subsite-dev</summary></p>
 
 Build a local development version of the site.
@@ -121,10 +101,8 @@ Build a local development version of the site.
 
 ##### Dependencies: 
 * project-modules-devel-make
-* project-subsite-backup
 * project-subsite-composer-dev
-* project-subsite-restore
-* subsite-delete-dev
+* subsite-delete
 * subsite-make
 * subsite-resources-link
 * subsite-type-dev
@@ -139,8 +117,9 @@ Build a site intended as a release package.
 `toolkit\phing build-subsite-dist`
 
 ##### Dependencies: 
+* package-version-set
 * project-subsite-composer-no-dev
-* subsite-delete-dist
+* subsite-delete
 * subsite-make
 * subsite-resources-copy
 * subsite-resources-link
