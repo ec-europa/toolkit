@@ -70,7 +70,7 @@ pipeline:
     group: build
     commands:
       - ./toolkit/phing build-platform build-subsite-dev -D'platform.package.version'='${PLATFORM_DEV}' ${PHING_OPTS}
-      - mkdir -p build/sites/default/tmp build/sites/default/files/private_files && chmod -R 777 build/sites/default/tmp build/sites/default/files
+      - chmod -R 775 .tmp/sites/default/files
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
