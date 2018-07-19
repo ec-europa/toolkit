@@ -157,7 +157,7 @@
             <available file="${build.subsite.dir}" type="dir" />
             <then>
                 <echo msg="${build.subsite.dir} folder found, enforce folder permission reset." />
-                <exec command="chmod -R 777 ${build.subsite.dir}" />
+                <exec command="chmod -R 777 ${build.subsite.dir}/files" />
                 <exec command="chmod 755 ${build.subsite.dir}" />
                 <exec command="chmod 444 ${build.subsite.dir}/settings.php" />
             </then>
