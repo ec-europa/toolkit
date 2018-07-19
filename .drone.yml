@@ -152,7 +152,7 @@ pipeline:
     image: fpfis/drone-frpc-plugin:latest
     detach: true
     when:
-      environment:
+      matrix:
         - DRONE_PREV_BUILD_STATUS=success
     secrets: [ frpc_token, frpc_server ]
     environment:
