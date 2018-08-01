@@ -17,7 +17,7 @@ matrix:
 # ==============================================================================
 services:
   web:
-    image: fpfis/php56-build
+    image: fpfis/php71-build
     environment:
       - DOCUMENT_ROOT=/test/toolkit/resources/templates/drupal7/web
   mysql:
@@ -34,7 +34,7 @@ pipeline:
   # Setup section:
   # ============================================================================
   setup:
-    image: fpfis/php56-build
+    image: fpfis/php71-build
     commands:
       - composer install
       - ./vendor/bin/run project:test-drupal7
