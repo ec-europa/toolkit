@@ -1,7 +1,0 @@
-name = MyProject Core
-description = Core feature of the MyProject site.
-core = 7.x
-
-features[features_api][] = api:2
-
-dependencies[] = example_module
