@@ -13,7 +13,7 @@
         "drupal-composer/preserve-paths": "^0.1.4",
         "drupal/composer_autoloader": "^1.0",
         "drupal/drupal": "^7.0",
-        "drush/drush": "^9.3"
+        "drush/drush": "^8.0"
     },
     "require-dev": {
         "behat/mink-zombie-driver": "^1.2",
