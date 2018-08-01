@@ -10,6 +10,8 @@ default:
         tags: "@d7"
   extensions:
     Behat\MinkExtension:
+      browser_name: "chrome"
+      goutte: ~
       selenium2:
         wd_host: "http://selenium:4444/wd/hub"
         browser: "chrome"
