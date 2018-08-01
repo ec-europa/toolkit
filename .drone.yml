@@ -49,6 +49,15 @@ pipeline:
     image: fpfis/php71-build
     commands:
       - composer install --ansi --no-suggest
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+
+  # ============================================================================
+  # Test D7 section:
+  # ============================================================================
+  test-drupal7:
+    image: fpfis/php71-build
+    commands:
       - ./vendor/bin/run project:test-drupal7 --ansi
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
