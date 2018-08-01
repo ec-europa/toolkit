@@ -61,3 +61,13 @@ pipeline:
       - ./vendor/bin/run project:test-drupal7 --ansi
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
+
+  # ============================================================================
+  # Test D8 section:
+  # ============================================================================
+  test-drupal8:
+    image: fpfis/php71-build
+    commands:
+      - ./vendor/bin/run project:test-drupal8 --ansi
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
