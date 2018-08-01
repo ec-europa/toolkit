@@ -1,8 +1,16 @@
-imports:
-  - { resource: vendor/openeuropa/code-review/dist/drupal-conventions.yml }
 parameters:
   git_dir: .
   bin_dir: vendor/bin
-  tasks.git_commit_message.matchers: ['/\.*/']
-  tasks.phpcs.whitelist_patterns:
-    - web/
+  process_timeout: 300
+  tasks:
+    git_commit_message:
+      matchers: ['/\.*/']
+    phpcs:
+      standard: ./vendor/drupal/coder/coder_sniffer/Drupal
+      triggered_by:
+        - php
+        - module
+        - inc
+        - theme
+      whitelist_patterns:
+        - web/sites/all/*/custom
