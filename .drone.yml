@@ -38,8 +38,9 @@ pipeline:
     commands:
       - composer install --ansi
       - rm -rf /var/www/html
-      - mkdir -p /test/toolkit/resources/templates/drupal7/web-
+      - mkdir -p /test/toolkit/resources/templates/drupal7/web
       - ln -s /test/toolkit/resources/templates/drupal7/web /var/www/html
+      - ls -la /var/www
       - ./vendor/bin/run project:test-drupal7
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
