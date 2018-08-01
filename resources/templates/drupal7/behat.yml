@@ -29,3 +29,5 @@ default:
       region_map:
         left sidebar: "#sidebar-first"
         content: "#content"
+  formatters:
+    progress: ~

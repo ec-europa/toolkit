@@ -33,3 +33,5 @@ default:
         content: "#content"
       selectors:
         error_message_selector: '.messages--error'
+  formatters:
+    progress: ~
