@@ -70,7 +70,7 @@ commands:
     - ln -sf ${PWD}/${drupal.drupal8_template}/vendor/drupal/drupal-extension/fixtures/drupal8/modules/behat_test ${PWD}/${drupal.drupal8_template}/web/modules/contrib/behat_test
     - cd ${drupal.drupal8_template} && ./vendor/bin/grumphp run
     - while ! mysqladmin ping --user=root -h mysql --password="" --silent; do echo Waiting for mysql; sleep 3; done
-    - cd ${drupal.drupal8_template} && ./vendor/bin/drush -r web si --db-url=mysql://root:@mysql:3306/drupal standard -y
+    - cd ${drupal.drupal8_template} && ./vendor/bin/drush -r web si --db-url=mysql://root:@mysql:3306/drupal standard -y -v
     - cd ${drupal.drupal8_template} && ./vendor/bin/drush -r web en behat_test -y
     - cd ${drupal.drupal8_template} && cp behat.yml ./vendor/drupal/drupal-extension/behat.yml
     - cd ${drupal.drupal8_template} && ./vendor/bin/behat -c vendor/drupal/drupal-extension/behat.yml --colors
