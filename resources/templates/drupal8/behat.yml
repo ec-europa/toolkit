@@ -34,4 +34,4 @@ default:
       selectors:
         error_message_selector: '.messages--error'
   formatters:
-    progress: ~
+    pretty: ~

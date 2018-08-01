@@ -30,4 +30,4 @@ default:
         left sidebar: "#sidebar-first"
         content: "#content"
   formatters:
-    progress: ~
+    pretty: ~
