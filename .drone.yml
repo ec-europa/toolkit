@@ -38,3 +38,5 @@ pipeline:
     commands:
       - composer install
       - ./vendor/bin/run project:test-drupal7
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
