@@ -54,4 +54,4 @@ commands:
     - cd ${drupal.drupal7_template} && composer install --ansi && git init
     - cd ${drupal.drupal7_template} && ./vendor/bin/grumphp run
     - cd ${drupal.drupal7_template} && ./vendor/bin/drush -r web si --db-url=mysql://root:@mysql:3306/drupal standard -y
-    - cd ${drupal.drupal7_template} && ./vendor/bin/behat
+    - cd ${drupal.drupal7_template} && ./vendor/bin/behat --suite=drupal7 vendor/drupal/drupal-extension/features/
