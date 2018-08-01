@@ -5,4 +5,4 @@ parameters:
   bin_dir: vendor/bin
   tasks.git_commit_message.matchers: ['/\.*/']
   tasks.phpcs.whitelist_patterns:
-    - lib/
+    - web/
