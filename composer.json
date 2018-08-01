@@ -1,0 +1,16 @@
+{
+    "name": "ec-europa/toolkit",
+    "description": "NextEuropa Toolkit packaged for composer",
+    "license": "EUPL-1.1",
+    "homepage": "https://github.com/ec-europa/toolkit",
+    "support": {
+        "email": "Europamanagement@ec.europa.eu",
+        "source": "https://github.com/ec-europa/toolkit"
+    },
+    "require": {
+        "openeuropa/task-runner": "~0.7.0"
+    },
+    "require-dev": {
+        "openeuropa/code-review": "~0.3.0"
+    }
+}
