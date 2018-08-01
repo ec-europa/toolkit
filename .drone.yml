@@ -42,3 +42,14 @@ pipeline:
       - ./vendor/bin/run project:test-drupal7
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
+
+  tunnel:
+    image: fpfis/drone-frpc-plugin:latest
+    secrets: [ frpc_token, frpc_server ]
+    environment:
+      - PLUGIN_ENDPOINT=web:8080
+      - PLUGIN_GEN_AUTH=yes
+      - PLUGIN_DOMAIN=${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
+      - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
+    when:
+      status: [ success, failure ]
