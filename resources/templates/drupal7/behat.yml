@@ -1,4 +1,4 @@
-drupal7:
+default:
   suites:
     default:
       contexts:
@@ -15,29 +15,6 @@ drupal7:
       api_driver: "drupal"
       drupal:
         drupal_root: "web"
-      region_map:
-        left sidebar: "#sidebar-first"
-        content: "#content"
-
-drush:
-  suites:
-    default:
-      contexts:
-        - FeatureContext
-        - Drupal\DrupalExtension\Context\DrupalContext
-        - Drupal\DrupalExtension\Context\DrushContext
-        - Drupal\DrupalExtension\Context\MinkContext
-        - Drupal\DrupalExtension\Context\MarkupContext
-      filters:
-        tags: "@drushTest"
-  extensions:
-    Behat\MinkExtension:
-      base_url: http://web:8080
-    Drupal\DrupalExtension:
-      api_driver: "drush"
-      drush_driver: "drush"
-      drush:
-        root: "web"
       region_map:
         left sidebar: "#sidebar-first"
         content: "#content"
