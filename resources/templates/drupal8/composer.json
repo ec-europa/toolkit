@@ -30,6 +30,14 @@
             }
         }
     },
+    "scripts": {
+        "post-install-cmd": [
+            "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+        ],
+        "post-update-cmd": [
+            "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+        ]
+    },
     "repositories": [
         {"type": "composer", "url": "https://packages.drupal.org/8"}
     ]
