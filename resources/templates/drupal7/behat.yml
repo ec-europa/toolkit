@@ -9,7 +9,6 @@ default:
       filters:
         tags: "@d7"
   extensions:
-    DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
     Behat\MinkExtension:
       browser_name: "chrome"
       goutte: ~
