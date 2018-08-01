@@ -36,6 +36,8 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
   selenium:
     image: selenium/standalone-chrome
+    environment:
+      - CHROMEDRIVER_WHITELISTED_IPS=""
 
 # ==============================================================================
 # Pipelines
