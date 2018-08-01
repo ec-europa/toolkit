@@ -9,6 +9,7 @@ default:
       filters:
         tags: "@d7"
   extensions:
+    DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
     Behat\MinkExtension:
       browser_name: "chrome"
       goutte: ~
@@ -18,7 +19,10 @@ default:
         capabilities:
           chrome:
             switches:
+              - "--headless"
+              - "--disable-gpu"
               - "--start-maximized"
+              - "--whitelisted-ips=''"
       javascript_session: "selenium2"
       base_url: "http://web:8080"
     Drupal\DrupalExtension:
