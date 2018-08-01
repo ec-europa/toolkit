@@ -10,17 +10,6 @@ default:
         tags: "@d7"
   extensions:
     Behat\MinkExtension:
-      browser_name: "chrome"
-      goutte: ~
-      selenium2:
-        wd_host: "http://selenium:4444/wd/hub"
-        browser: "chrome"
-        capabilities:
-          chrome:
-            switches:
-              - "--headless"
-              - "--disable-gpu"
-      javascript_session: "selenium2"
       base_url: "http://web:8080"
     Drupal\DrupalExtension:
       api_driver: "drupal"
