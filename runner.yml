@@ -51,7 +51,9 @@ drupal:
 # -----------------------------------------------------------------------------
 commands:
   project:test-drupal7:
+    - rm -rf build/
     - cd ${drupal.drupal7_template} && composer install --ansi && git init
+    - ln -sf ${PWD}/${drupal.drupal7_template}/web ${PWD}/build
     - cd ${drupal.drupal7_template} && ./vendor/bin/grumphp run
     - while ! mysqladmin ping --user=root -h mysql --password="" --silent; do echo Waiting for mysql; sleep 3; done
     - cd ${drupal.drupal7_template} && ./vendor/bin/drush -r web si --db-url=mysql://root:@mysql:3306/drupal standard -y
