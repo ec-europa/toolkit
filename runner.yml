@@ -62,7 +62,7 @@ commands:
     - cd ${drupal.drupal7_template} && cp behat.yml ./vendor/drupal/drupal-extension/behat.yml
     - cd ${drupal.drupal7_template} && ./vendor/bin/behat -c vendor/drupal/drupal-extension/behat.yml --colors
   project:test-drupal8:
-    - rm -rf build/
+    - rm -rf build
     - composer install --working-dir=${drupal.drupal8_template} --ansi --no-suggest
     - git --git-dir=${drupal.drupal8_template}/.git init
     - ln -sf ${PWD}/${drupal.drupal8_template}/web ${PWD}/build && ls -la
