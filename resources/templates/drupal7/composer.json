@@ -16,7 +16,6 @@
         "drush/drush": "^8.0"
     },
     "require-dev": {
-        "behat/mink-zombie-driver": "^1.2",
         "drupal/devel": "^1.6",
         "drupal/drupal-extension": "^3.4",
         "openeuropa/code-review": "^0.3.0"

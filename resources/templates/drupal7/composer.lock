@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "70b85478d55401b69b780631a1f734b2",
+    "content-hash": "776844bb17ec316068b352bb67dbe249",
     "packages": [
         {
             "name": "composer/installers",
@@ -1951,68 +1951,6 @@
                 "webdriver"
             ],
             "time": "2016-03-05T09:10:18+00:00"
-        },
-        {
-            "name": "behat/mink-zombie-driver",
-            "version": "v1.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/minkphp/MinkZombieDriver.git",
-                "reference": "e98cd02630976cf5ad9db2a17bb4f4ff7bd546d0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/minkphp/MinkZombieDriver/zipball/e98cd02630976cf5ad9db2a17bb4f4ff7bd546d0",
-                "reference": "e98cd02630976cf5ad9db2a17bb4f4ff7bd546d0",
-                "shasum": ""
-            },
-            "require": {
-                "behat/mink": "~1.7@dev",
-                "ext-sockets": "*",
-                "php": ">=5.3.1",
-                "symfony/process": "~2.1|~3.0"
-            },
-            "require-dev": {
-                "symfony/phpunit-bridge": "~2.7|~3.0"
-            },
-            "type": "mink-driver",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.4.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Behat\\Mink\\Driver\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Konstantin Kudryashov",
-                    "email": "ever.zet@gmail.com",
-                    "homepage": "http://everzet.com"
-                },
-                {
-                    "name": "Pascal Cremer",
-                    "email": "b00gizm@gmail.com",
-                    "homepage": "http://github.com/b00gizm"
-                }
-            ],
-            "description": "Zombie.js driver for Mink framework",
-            "homepage": "http://mink.behat.org/",
-            "keywords": [
-                "ajax",
-                "browser",
-                "headless",
-                "javascript",
-                "testing",
-                "zombie"
-            ],
-            "time": "2016-03-05T13:14:04+00:00"
         },
         {
             "name": "behat/transliterator",
