@@ -1,6 +1,7 @@
 parameters:
   git_dir: .
   bin_dir: vendor/bin
+  process_timeout: 300
   tasks:
     git_commit_message:
       matchers: ['/\.*/']
@@ -11,5 +12,5 @@ parameters:
         - module
         - inc
         - theme
-      phpcs.whitelist_patterns:
-        - web/
+      whitelist_patterns:
+        - web/sites/all/*/custom
