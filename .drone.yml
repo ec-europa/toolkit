@@ -19,8 +19,6 @@ workspace:
 # Matrix section
 # ==============================================================================
 matrix:
-  ROBO_OPTIONS_PROGRESS_DELAY:
-    - 300
   COMPOSER_TEMPLATE:
     - drupal7
     - drupal8
@@ -31,6 +29,8 @@ matrix:
   include:
     - COMPOSER_TEMPLATE: drupal7
       PHP_VERSION: 71
+  RUNNER_OPTS:
+    - "--ansi --progress-delay=300"
 
 # ==============================================================================
 # Main services
@@ -65,13 +65,13 @@ pipeline:
   install:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run project:install --ansi
+      - ./vendor/bin/run project:install ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   test:
     image: fpfis/php71-build
     commands:
-      - ./vendor/bin/run project:test --ansi
+      - ./vendor/bin/run project:test ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
