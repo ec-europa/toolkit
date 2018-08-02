@@ -19,6 +19,8 @@ workspace:
 # Matrix section
 # ==============================================================================
 matrix:
+  ROBO_OPTIONS_PROGRESS_DELAY:
+    - 300
   COMPOSER_TEMPLATE:
     - drupal7
     - drupal8
