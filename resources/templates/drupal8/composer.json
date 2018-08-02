@@ -28,9 +28,6 @@
                 ".editorconfig": "../.editorconfig",
                 ".gitattributes": "../.gitattributes"
             }
-        },
-        "patches": {
-            "drupal/drupal-extension": ["../../patches/wait-5-seconds-on-only-javascript-step.patch"]
         }
     },
     "scripts": {
