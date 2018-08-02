@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9aa1ebd3211c2c49961132b6641704c4",
+    "content-hash": "4218ff34d6d28959d66ee4ede8f87288",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1644,6 +1644,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "8.0.x-dev"
+                },
+                "patches_applied": {
+                    "https://github.com/drush-ops/drush/pull/2215": "../../patches/drush-force-color.patch"
                 }
             },
             "autoload": {

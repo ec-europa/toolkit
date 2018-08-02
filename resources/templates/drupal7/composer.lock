@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "776844bb17ec316068b352bb67dbe249",
+    "content-hash": "b8afaed6f4f1293242cd3e865140f39f",
     "packages": [
         {
             "name": "composer/installers",
@@ -574,6 +574,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "8.0.x-dev"
+                },
+                "patches_applied": {
+                    "https://github.com/drush-ops/drush/pull/2215": "../../patches/drush-force-color.patch"
                 }
             },
             "autoload": {

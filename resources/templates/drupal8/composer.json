@@ -28,6 +28,11 @@
                 ".editorconfig": "../.editorconfig",
                 ".gitattributes": "../.gitattributes"
             }
+        },
+        "patches": {
+            "drush/drush": {
+                "https://github.com/drush-ops/drush/pull/2215": "../../patches/drush-force-color.patch"
+            }
         }
     },
     "scripts": {
