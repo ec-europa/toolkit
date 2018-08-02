@@ -53,7 +53,7 @@ drupal:
 commands:
   project:install:
     - cd ${drupal.template_path} && composer install --ansi --no-suggest && git init
-    - mkdir -p ${PWD}/${drupal.template_path}/web/modules/contrib
+    - mkdir -p ${PWD}/${drupal.template_path}/web/sites/all/modules/contrib
     - ln -sf ${PWD}/${drupal.template_path}/vendor/drupal/drupal-extension/fixtures/${drupal.template}/modules/behat_test ${PWD}/${drupal.template_path}/web/sites/all/modules/contrib/behat_test
     - while ! mysqladmin ping --user=root -h mysql --password="" --silent; do echo Waiting for mysql; sleep 3; done
     - cd ${drupal.template_path} && /usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`" ./vendor/bin/drush -r web si --db-url=mysql://root:@mysql:3306/drupal standard -y
