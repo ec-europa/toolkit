@@ -22,13 +22,16 @@ matrix:
   COMPOSER_TEMPLATE:
     - drupal7
     - drupal8
+  PHP_VERSION:
+    - 56
+    - 71
 
 # ==============================================================================
 # Main services
 # ==============================================================================
 services:
   web:
-    image: fpfis/php71-build
+    image: fpfis/php${PHP_VERSION}-build
     environment:
       - DOCUMENT_ROOT=/test/toolkit/build
   mysql:
@@ -47,14 +50,14 @@ pipeline:
   # Setup section:
   # ============================================================================
   setup:
-    image: fpfis/php71-build
+    image: fpfis/php${PHP_VERSION}-build
     commands:
       - composer install --ansi --no-suggest
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   install:
-    image: fpfis/php71-build
+    image: fpfis/php${PHP_VERSION}-build
     commands:
       - ./vendor/bin/run project:install --ansi
     volumes:
