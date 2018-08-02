@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "702b4fac92b994533500a1c2f4936e1b",
+    "content-hash": "09c2f0d4b13c14b6d43f680afa7a2de2",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -4858,7 +4858,7 @@
         },
         {
             "name": "behat/mink-extension",
-            "version": "dev-master",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/MinkExtension.git",
@@ -6396,9 +6396,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "behat/mink-extension": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
