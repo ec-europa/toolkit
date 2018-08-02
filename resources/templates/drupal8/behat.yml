@@ -9,7 +9,7 @@ default:
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
       filters:
-        tags: "@d8&&~@d8wip"
+        tags: "@d8&&@javascript&&~@d8wip"
   extensions:
     Behat\MinkExtension:
       browser_name: "chrome"

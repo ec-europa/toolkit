@@ -19,8 +19,9 @@ workspace:
 # Matrix section
 # ==============================================================================
 matrix:
-  PHING_OPTS:
-    - -logger phing.listener.AnsiColorLogger
+  COMPOSER_TEMPLATE:
+    - drupal7
+    - drupal8
 
 # ==============================================================================
 # Main services
@@ -52,22 +53,16 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  # ============================================================================
-  # Test D7 section:
-  # ============================================================================
-  test-drupal7:
+  install:
     image: fpfis/php71-build
     commands:
-      - ./vendor/bin/run project:test-drupal7 --ansi
+      - ./vendor/bin/run project:install-${COMPOSER_TEMPLATE} --ansi
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  # ============================================================================
-  # Test D8 section:
-  # ============================================================================
-  test-drupal8:
+  test:
     image: fpfis/php71-build
     commands:
-      - ./vendor/bin/run project:test-drupal8 --ansi
+      - ./vendor/bin/run project:test-${COMPOSER_TEMPLATE} --ansi
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
