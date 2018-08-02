@@ -6,5 +6,5 @@ index 802bbd7..0d5e136 100644
      When I fill in "a fake user" for "Username"
      And I fill in "a fake password" for "Password"
      When I press "Log in"
-+    And I wait for 5 seconds
++    And I wait for 10 seconds
      Then I should see the error message "Unrecognized username or password"
