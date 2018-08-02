@@ -63,4 +63,4 @@ commands:
     - ln -sf ${PWD}/${drupal.template_path}/web ${PWD}/build
     - cd ${drupal.template_path} && ./vendor/bin/grumphp run --ansi
     - cd ${drupal.template_path} && cp behat.yml ./vendor/drupal/drupal-extension/behat.yml
-    - cd ${drupal.template_path} && ./vendor/bin/behat -c vendor/drupal/drupal-extension/behat.yml --colors
+    - cd ${drupal.template_path} && ./vendor/bin/behat -c vendor/drupal/drupal-extension/behat.yml --colors -v
