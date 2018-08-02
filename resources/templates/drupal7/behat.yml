@@ -20,7 +20,6 @@ default:
             switches:
               - "--headless"
               - "--disable-gpu"
-              - "--start-maximized"
       javascript_session: "selenium2"
       base_url: "http://web:8080"
     Drupal\DrupalExtension:
