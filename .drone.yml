@@ -25,6 +25,10 @@ matrix:
   PHP_VERSION:
     - 56
     - 71
+  # Temporarily added to skip builds.
+  include:
+    - COMPOSER_TEMPLATE: drupal7
+      PHP_VERSION: 71
 
 # ==============================================================================
 # Main services
