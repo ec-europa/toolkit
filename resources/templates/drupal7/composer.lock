@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b8afaed6f4f1293242cd3e865140f39f",
+    "content-hash": "c3f7d6053ff734328c295691a4562059",
     "packages": [
         {
             "name": "composer/installers",
@@ -442,7 +442,10 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
-                }
+                },
+                "patches_applied": [
+                    "https://www.drupal.org/files/issues/2018-05-06/support-proto-header-2970929-2.patch"
+                ]
             },
             "notification-url": "https://packages.drupal.org/7/downloads",
             "license": [
@@ -575,9 +578,9 @@
                 "branch-alias": {
                     "dev-master": "8.0.x-dev"
                 },
-                "patches_applied": {
-                    "https://github.com/drush-ops/drush/pull/2215": "../../patches/drush-force-color.patch"
-                }
+                "patches_applied": [
+                    "../../patches/drush-force-color.patch"
+                ]
             },
             "autoload": {
                 "psr-0": {

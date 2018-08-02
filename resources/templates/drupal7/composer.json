@@ -33,12 +33,15 @@
             "web/sites/all/themes/contrib/{$name}/": ["type:drupal-theme"]
         },
         "patches": {
-            "cweagans/composer-patches": {
-                "Call the preserve paths hooks" : "https://github.com/SebCorbin/composer-patches/commit/1cb9bacba51f8bba0c5f3f322c3bb61e4ceae974.patch"
-            },
-            "drush/drush": {
-                "https://github.com/drush-ops/drush/pull/2215": "../../patches/drush-force-color.patch"
-            }
+            "cweagans/composer-patches": [
+                "https://github.com/SebCorbin/composer-patches/commit/1cb9bacba51f8bba0c5f3f322c3bb61e4ceae974.patch"
+            ],
+            "drupal/drupal": [
+                "https://www.drupal.org/files/issues/2018-05-06/support-proto-header-2970929-2.patch"
+            ],
+            "drush/drush": [
+                "../../patches/drush-force-color.patch"
+            ]
         },
         "preserve-paths": [
             "web/sites/default/settings.php"
