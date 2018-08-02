@@ -56,13 +56,13 @@ pipeline:
   install:
     image: fpfis/php71-build
     commands:
-      - ./vendor/bin/run project:install-${COMPOSER_TEMPLATE} --ansi
+      - ./vendor/bin/run project:install --ansi
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   test:
     image: fpfis/php71-build
     commands:
-      - ./vendor/bin/run project:test-${COMPOSER_TEMPLATE} --ansi
+      - ./vendor/bin/run project:test --ansi
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
