@@ -156,6 +156,15 @@
         </if>
     </target>
 
+    <target name="project-database-link" hidden="true" description="Symlink database to dump.sql in project basedir." depends="project-database-file">
+        <if>
+            <available file="${db-dl-file}" type="file" />
+            <then>
+                <relsym link="${db-dl-file}" target="${project.basedir}/dump.sql" overwrite="true" />
+            </then>
+        </if>
+    </target>
+
     <target name="project-database-import" hidden="true" description="Import database for project with drush."
         depends="
             project-database-file,
