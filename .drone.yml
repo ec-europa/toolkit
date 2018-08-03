@@ -51,17 +51,6 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  tunnel:
-    image: fpfis/drone-frpc-plugin:latest
-    group: setup
-    detach: true
-    secrets: [ frpc_token, frpc_server ]
-    environment:
-      - PLUGIN_ENDPOINT=web:8080
-      - PLUGIN_GEN_AUTH=yes
-      - PLUGIN_DOMAIN=${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
-      - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
-
   # ============================================================================
   # Build section:
   # ============================================================================
@@ -70,7 +59,6 @@ pipeline:
     group: build
     commands:
       - ./toolkit/phing build-platform build-subsite-dev -D'platform.package.version'='${PLATFORM_DEV}' ${PHING_OPTS}
-      - mkdir -p build/sites/default/tmp build/sites/default/files/private_files && chmod -R 777 build/sites/default/tmp build/sites/default/files
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
@@ -159,3 +147,16 @@ pipeline:
       {{else}}
         {{repo.name}}@{{build.branch}} <{{build.link}}|failed> subsite tests.
       {{/success}}
+  
+  demo:
+    image: fpfis/drone-frpc-plugin:latest
+    detach: true
+    when:
+      matrix:
+        - DRONE_PREV_BUILD_STATUS=success
+    secrets: [ frpc_token, frpc_server ]
+    environment:
+      - PLUGIN_ENDPOINT=web:8080
+      - PLUGIN_GEN_AUTH=yes
+      - PLUGIN_DOMAIN=${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
+      - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
