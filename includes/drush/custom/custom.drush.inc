@@ -122,7 +122,7 @@ function drush_custom_watchdog_smoketest() {
 
   // Generate cookie for backstop usage.
   if ($type == 'backstop') {
-    $backstop_json = file_get_contents('../includes/docker/docker-backstopjs/backstop.json');
+    $backstop_json = file_get_contents('../backstop.json');
     $backstop_settings = json_decode($backstop_json, true);
     $backstop_cookies = array(
       array(
