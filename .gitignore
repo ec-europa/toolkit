@@ -22,5 +22,5 @@ lib/
 phpcs-ruleset.xml
 resources/
 tests/
-backstop_data/
-backstop.json
+/backstop_data/
+/backstop.json
