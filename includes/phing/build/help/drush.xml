@@ -189,6 +189,9 @@
                     <token key="db.host" value="${db.host}" />
                     <token key="db.port" value="${db.port}" />
                     <token key="db.prefix" value="${db.prefix}" />
+                    <token key="file_public_path" value="${build.subsite.dir.files}" />
+                    <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
+                    <token key="file_temporary_path" value="${build.subsite.dir.files}/tmp" />
                     <token key="base_url" value="${project.url.base}" />
                     <token key="update_free_access" value="${drupal.update.free.access}" />
                     <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
@@ -284,6 +287,44 @@
         <dirname property="database-cachedir" file="${database-file}" />
         <mkdir dir="${database-cachedir}" />
         <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="result-file" value="${database-file}" />
+        </drush>
+    </target>
+
+    <target name="drush-run-smoketest" hidden="true" description="Visit pages and check for watchog messages.">
+        <exec command="${toolkit.dir.bin.drush} -r ${build.platform.dir} sqlq &apos;select status from system where name=&quot;dblog&quot;;&apos;" outputProperty="dblog-status" />
+        <if>
+            <equals arg1="${dblog-status}" arg2="0" />
+            <then>
+                <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>dblog</param>
+                </drush>
+            </then>
+        </if>
+        <drush command="watchdog-smoketest" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}" />
+    </target>
+
+    <target name="drush-gdpr-dump" hidden="true" description="Make a sanitized dump of database.">
+        <echo message="Backing up database ${db.name} to ${database-file}." />
+        <trycatch>
+            <try>
+                <exec command="${toolkit.dir.bin.drush} -r ${build.platform.dir} gdpr-sql-dump --help" checkreturn="true" />
+            </try>
+            <catch>
+                <drush command="dl" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>gdpr checklistapi</param>
+                </drush>
+            </catch>
+            <finally>
+                <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>gdpr_dump</param>
+                </drush>
+                <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} vset gdpr_dump_table_map &apos;{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}&apos; --format=json --exact -y >/dev/null' escape="false" />
+            </finally>
+        </trycatch>
+        <dirname property="database-cachedir" file="${database-file}" />
+        <mkdir dir="${database-cachedir}" />
+        <drush command="gdpr-sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="result-file" value="${database-file}" />
         </drush>
     </target>

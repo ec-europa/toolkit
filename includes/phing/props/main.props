@@ -164,7 +164,7 @@ build.platform.htaccess.append.text =
 build.subsite.composer.json = ${build.subsite.dir}/composer.json
 build.subsite.composer.lock = ${build.subsite.dir}/composer.lock
 build.subsite.dir = ${build.platform.dir.sites}/${build.site}
-build.subsite.dir.files = sites/${build.site}/files
+build.subsite.dir.files =  ${build.subsite.dir}/files
 build.subsite.dir.libraries = ${build.subsite.dir}/libraries
 build.subsite.dir.modules = ${build.subsite.dir}/modules
 build.subsite.dir.modules.contrib = ${build.subsite.dir.modules}/contrib
@@ -190,14 +190,7 @@ build.dist.dir.themes = ${build.dist.dir}/themes
 # Temporary build files and directories.
 # -----------------------------------------
 build.tmp.dir = ${project.tmp.dir}/sites/${build.site}
-
-# Rebuild configuration.
-# ----------------------
-rebuild.auto = 1
-rebuild.backup.destination = ${project.tmp.dir}/backup-site
-rebuild.backup.files = ${build.subsite.dir}/settings.php;${build.subsite.dir}/settings.local.php
-rebuild.backup.folders = ${build.subsite.dir.files}
-rebuild.backup.site = ${build.subsite.dir}
+build.tmp.dir.files = ${build.tmp.dir}/files
 
 # Shared paths.
 # -------------

@@ -28,7 +28,10 @@ services:
     image: percona/percona-server:5.6
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-
+  visreg:
+    image: backstopjs/backstopjs
+    entrypoint: [ "/bin/bash" ]
+      
 # ==============================================================================
 # Pipelines
 # ==============================================================================
@@ -47,17 +50,6 @@ pipeline:
       - ./toolkit/phing project-properties-validate ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
-
-  tunnel:
-    image: fpfis/drone-frpc-plugin:latest
-    group: setup
-    detach: true
-    secrets: [ frpc_token, frpc_server ]
-    environment:
-      - PLUGIN_ENDPOINT=web:8080
-      - PLUGIN_GEN_AUTH=yes
-      - PLUGIN_DOMAIN=${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
-      - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
 
   # ============================================================================
   # Build section:
@@ -78,23 +70,26 @@ pipeline:
   # ============================================================================
   # Install section:
   # ============================================================================
+  visreg-init:
+    image: backstopjs/backstopjs
+    commands:
+      - backstop init
+
   install-clean:
     image: fpfis/php56-dev
     commands:
       - ./toolkit/phing install-clean ${PHING_OPTS}
-      - ./toolkit/drush -r build dl gdpr checklistapi -y
-      - ./toolkit/drush -r build en gdpr_dump -y
-      - ./toolkit/drush -r build vset gdpr_dump_table_map '{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}' --format=json --exact -y
-      - ./toolkit/drush -r build gdpr-sql-dump --result-file=/test/toolkit/dump.sql
+      - ./toolkit/phing docker-backstop-generate ${PHING_OPTS}
+      - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql' ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   visreg-before:
     image: backstopjs/backstopjs
     commands:
+      - cp -f includes/docker/docker-backstopjs/core/util/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
+      - cp -f includes/docker/docker-backstopjs/core/util/compare/index.js /usr/local/lib/node_modules/backstopjs/core/util/compare/index.js
       - backstop reference
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
 
   # ============================================================================
   # Clone section:
@@ -109,7 +104,14 @@ pipeline:
   visreg-after:
     image: backstopjs/backstopjs
     commands:
-      - backstop test
+      - cp -f includes/docker/docker-backstopjs/core/util/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
+      - cp -f includes/docker/docker-backstopjs/core/util/compare/index.js /usr/local/lib/node_modules/backstopjs/core/util/compare/index.js
+      - backstop test || echo 'Proceed ...'
+
+  smoketest:
+    image: fpfis/php56-dev
+    commands:
+      - ./toolkit/phing drush-run-smoketest ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
