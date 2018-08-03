@@ -147,16 +147,3 @@ pipeline:
       {{else}}
         {{repo.name}}@{{build.branch}} <{{build.link}}|failed> subsite tests.
       {{/success}}
-  
-  demo:
-    image: fpfis/drone-frpc-plugin:latest
-    detach: true
-    when:
-      matrix:
-        - DRONE_PREV_BUILD_STATUS=success
-    secrets: [ frpc_token, frpc_server ]
-    environment:
-      - PLUGIN_ENDPOINT=web:8080
-      - PLUGIN_GEN_AUTH=yes
-      - PLUGIN_DOMAIN=${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
-      - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
