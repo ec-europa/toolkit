@@ -160,7 +160,7 @@
         <if>
             <available file="${db-dl-file}" type="file" />
             <then>
-                <relsym link="${db-dl-file}" target="${project.basedir}/dump.sql" overwrite="true" />
+                <relsym link="${project.basedir}/dump.sql" target="${db-dl-file}" overwrite="true" />
             </then>
         </if>
     </target>
