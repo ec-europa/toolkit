@@ -19,7 +19,7 @@ drupal:
   root: "web"
   root_absolute: ~
   base_url: "http://google.verbruggenlex"
-  version: 8
+  version: 7
 
   # Basic Drupal site information.
   site:

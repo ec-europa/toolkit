@@ -83,7 +83,7 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  phpcs:
+  behat:
     image: fpfis/php71-build
     commands:
       - ./vendor/bin/run project:behat --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} ${RUNNER_OPTS}
