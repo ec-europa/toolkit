@@ -8,9 +8,15 @@
         "source": "https://github.com/ec-europa/toolkit"
     },
     "require": {
-        "openeuropa/task-runner": "~0.7.0"
+        "openeuropa/task-runner": "~0.7.0",
+        "ec-europa/drush-m2c": "dev-master as 1.0.0"
     },
     "require-dev": {
         "openeuropa/code-review": "~0.3.0"
+    },
+    "extra": {
+        "installer-paths": {
+            "vendor/drush/drush/commands/{$name}/": ["type:drupal-drush"]
+        }
     }
 }
