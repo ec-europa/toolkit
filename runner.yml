@@ -106,7 +106,7 @@ commands:
     - ./vendor/bin/drush -r web en behat_test -y --color=1
     - cp behat.yml ./vendor/drupal/drupal-extension/behat.yml
     - ./vendor/bin/behat -c vendor/drupal/drupal-extension/behat.yml --colors -v
-  project:smoketest:
+  project:smoke:
     - ${runner.bin_dir}/drush -r ${drupal.root} en $(${runner.bin_dir}/drush -r ${drupal.root} sqlq \"select GROUP_CONCAT(name) from system where status=0 and name not like '%_test%'\") -y
     - ${runner.bin_dir}/drush -r ${drupal.root} dis overlay toolbar -y
     - ${runner.bin_dir}/drush -r ${drupal.root} cron
