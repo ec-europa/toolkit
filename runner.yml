@@ -95,6 +95,7 @@ commands:
     - composer install --ansi --no-suggest && git init
     - cp web/sites/default/default.settings.php web/sites/default/settings.php
     - cp resources/settings.local.php web/sites/default/settings.local.php
+    - mkdir -p web/sites/default/files/private_files
     - while ! mysqladmin ping --user=root -h mysql --password="" --silent; do echo Waiting for mysql; sleep 3; done
     - /usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`" ./vendor/bin/drush -r web si --db-url=mysql://root:@mysql:3306/drupal ${drupal.site.profile} -y --color=1
   project:phpcs:
