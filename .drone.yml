@@ -22,12 +22,18 @@ matrix:
   COMPOSER_TEMPLATE:
     - drupal7
     - drupal8
+    - platform
   PHP_VERSION:
     - 56
     - 71
+  DRUPAL_PROFILE:
+    - standard
+    - multisite_drupal_standard
+    - multisite_drupal_communities
   # Temporarily added to skip builds.
   include:
     - COMPOSER_TEMPLATE: drupal7
+      DRUPAL_PROFILE: multisite_drupal_standard
       PHP_VERSION: 71
   RUNNER_OPTS:
     - "--ansi --progress-delay=300"
@@ -59,19 +65,20 @@ pipeline:
     image: fpfis/php${PHP_VERSION}-build
     commands:
       - composer install --ansi --no-suggest
+      - ln -sf runner.yml $(pwd)/resources/drupal/${COMPOSER_TEMPLATE}/runner.yml
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   install:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run project:install ${RUNNER_OPTS}
+      - ./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} project:install ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   test:
     image: fpfis/php71-build
     commands:
-      - ./vendor/bin/run project:test ${RUNNER_OPTS}
+      - ./vendor/bin/run project:test --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache

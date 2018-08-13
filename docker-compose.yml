@@ -1,0 +1,19 @@
+version: '2'
+services:
+  web:
+    image: fpfis/php56-dev
+    environment:
+      - DOCUMENT_ROOT=${PWD}/build
+    ports:
+      - 8080:8080
+      - 443:8080
+    working_dir: ${PWD}
+    volumes:
+      - ${PWD}:${PWD}
+  mysql:
+    image: percona/percona-server:5.7
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=drupal
+  selenium:
+    image: selenium/standalone-chrome

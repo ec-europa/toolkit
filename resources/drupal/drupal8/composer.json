@@ -5,7 +5,8 @@
         "drupal-composer/drupal-scaffold": "^2.5",
         "drupal/console": "^1.0.2",
         "drupal/core": "~8.5.3",
-        "drush/drush": "^8.0"
+        "drush/drush": "^8.0",
+        "openeuropa/task-runner": "~0.7.0"
     },
     "require-dev": {
         "drupal/drupal-extension": "^3.4",
@@ -31,7 +32,7 @@
         },
         "patches": {
             "drush/drush": {
-                "https://github.com/drush-ops/drush/pull/2215": "../../patches/drush-force-color.patch"
+                "https://github.com/drush-ops/drush/pull/2215": "../../drush/drush8/patches/drush-force-color.patch"
             }
         }
     },

@@ -1,0 +1,16 @@
+diff --git a/sites/default/default.settings.php b/sites/default/default.settings.php
+index bf32712..f61ce45 100644
+--- a/sites/default/default.settings.php
++++ b/sites/default/default.settings.php
+@@ -654,3 +654,11 @@ $conf['404_fast_html'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
+  * @see drupal_clean_css_identifier()
+  */
+ # $conf['allow_css_double_underscores'] = TRUE;
++
++/**
++ * Include a local settings file if it exists.
++ */
++$local_settings = dirname(__FILE__) . '/settings.local.php';
++if (file_exists($local_settings)) {
++  include $local_settings;
++}
