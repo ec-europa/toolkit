@@ -65,7 +65,7 @@ pipeline:
     image: fpfis/php${PHP_VERSION}-build
     commands:
       - composer install --ansi --no-suggest
-      - ln -sf runner.yml $(pwd)/resources/drupal/${COMPOSER_TEMPLATE}/runner.yml
+      - ln -sf $(pwd)/runner.yml $(pwd)/resources/drupal/${COMPOSER_TEMPLATE}/runner.yml
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
