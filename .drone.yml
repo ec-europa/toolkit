@@ -66,6 +66,7 @@ pipeline:
     commands:
       - composer install --ansi --no-suggest
       - ln -sf $(pwd)/runner.yml $(pwd)/resources/drupal/${COMPOSER_TEMPLATE}/runner.yml
+      - ln -sf $(pwd)/resources/drupal/${COMPOSER_TEMPLATE}/web build
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
