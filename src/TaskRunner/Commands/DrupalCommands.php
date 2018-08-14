@@ -93,16 +93,24 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $enabled = array_keys(json_decode($this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' pm-list --format=json --status=enabled --color=1')->printOutput(false)->run()->getMessage(), true));
         $disabled = array_diff($systemList, $enabled);
 
-        $enableModules = implode(',', array_diff($disabled, $enableallExclude));
-        $disableModules = implode(',', $enableallExclude);
+        $enableModules = array_diff($disabled, $enableallExclude);
+        $disableModules = $enableallExclude;
+        $taskCollection = array();
 
-        $taskCollection = array(
-            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-enable $enableModules -y --color=1"),
-        );
+        if (in_array('apachesolr', $enabled)) {
+            $taskCollection[] = $this->taskExec("vendor/bin/drush -r $drupalRoot solr-set-env-url  http://solr:8983/solr/d7_apachesolr -y --color=1");
+        }
+        elseif(in_array('apachesolr', $enableModules)) {
+            $taskCollection[] = $this->taskExec("vendor/bin/drush -r $drupalRoot en apachesolr -y --color=1");
+            $taskCollection[] = $this->taskExec("vendor/bin/drush -r $drupalRoot solr-set-env-url  http://solr:8983/solr/d7_apachesolr -y --color=1");
+            $enableModules = array_diff($enableModules, array('apachesolr'));
+        }
+
+        $taskCollection[] = $this->taskExec("vendor/bin/drush -r $drupalRoot pm-enable " . implode(',', $enableModules) . " -y --color=1");
         
         $taskCollection[] = $drupalVersion == 7 ?
-            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-disable $disableModules -y --color=1") :
-            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-uninstall $disableModules -y --color=1");
+            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-disable " . implode(',', $disableModules) . " -y --color=1") :
+            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-uninstall " . implode(',', $disableModules) . " -y --color=1");
 
         return $this->collectionBuilder()->addTaskList($taskCollection);
     }
