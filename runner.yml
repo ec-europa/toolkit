@@ -53,6 +53,8 @@ templates:
         - e_library_og
         - events_og
         - links_og
+        - migrate_example
+        - migrate_example_baseball
         - migrate_example_oracle
         - multisite_drupal_language_negociation
         - multisite_notifications_og
