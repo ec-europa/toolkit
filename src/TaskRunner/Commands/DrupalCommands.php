@@ -132,17 +132,23 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     public function drupalCoreBehat()
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
+        $drupalProfile = $this->getConfig()->get('drupal.profile');
         $drupalVersion = $this->getConfig()->get('drupal.version');
         $drupalSite = $this->getConfig()->get('drupal.site.sites_subdir');
         $sitePath = $drupalRoot . '/sites/' . $drupalSite;
 
-        $this->taskFilesystemStack()->stopOnFail()
-            ->mkdir('web/sites/all/modules/contrib')
-            ->symlink(getcwd() . '/vendor/drupal/drupal-extension/fixtures/drupal' . $drupalVersion . '/modules/behat_test', getcwd() . '/web/sites/all/modules/contrib/behat_test')
-            ->copy('behat.yml', 'vendor/drupal/drupal-extension/behat.yml', true)
-            ->run();
-        if ($this->taskExec("vendor/bin/drush -r web en locale behat_test -y --color=1")->run()) {
-            return $this->taskExec('./vendor/bin/behat -c vendor/drupal/drupal-extension/behat.yml --colors -v')->run();
+        if ($drupalProfile == 'standard') {
+            $this->taskFilesystemStack()->stopOnFail()
+                ->mkdir('web/sites/all/modules/contrib')
+                ->symlink(getcwd() . '/vendor/drupal/drupal-extension/fixtures/drupal' . $drupalVersion . '/modules/behat_test', getcwd() . '/web/sites/all/modules/contrib/behat_test')
+                ->copy('behat.yml', 'vendor/drupal/drupal-extension/behat.yml', true)
+                ->run();
+            if ($this->taskExec("vendor/bin/drush -r web en locale behat_test -y --color=1")->run()) {
+                return $this->taskExec('./vendor/bin/behat -c vendor/drupal/drupal-extension/behat.yml --colors -v')->run();
+            }
+        }
+        else {
+            $this->say("Skipping Drupal Core Behat tests. Only available on 'standard' profile.");
         }
     }
 }

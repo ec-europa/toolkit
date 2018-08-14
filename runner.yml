@@ -51,6 +51,7 @@ templates:
       enable_all_exclude:
         - communities
         - e_library_og
+        - events_og
         - links_og
         - migrate_example_oracle
         - multisite_drupal_language_negociation

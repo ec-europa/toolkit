@@ -90,9 +90,6 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
       status: [ failure, success ]
-      # Temporarily disable behat on platform.
-      matrix:
-        TEMPLATE: [ drupal7, drupal8 ]
 
   enable:
     image: fpfis/php${PHP_VERSION}-build
