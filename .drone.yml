@@ -30,6 +30,8 @@ matrix:
     - standard
     - multisite_drupal_standard
     - multisite_drupal_communities
+  RUNNER_OPTS:
+    - "--ansi --progress-delay=300"
   # Temporarily added to skip builds.
   include:
     - COMPOSER_TEMPLATE: drupal7
@@ -41,8 +43,6 @@ matrix:
     - COMPOSER_TEMPLATE: platform
       DRUPAL_PROFILE: multisite_drupal_standard
       PHP_VERSION: 71
-  RUNNER_OPTS:
-    - "--ansi --progress-delay=300"
 
 # ==============================================================================
 # Main services
@@ -86,13 +86,13 @@ pipeline:
   phpcs:
     image: fpfis/php71-build
     commands:
-      - ./vendor/bin/run project:phpcs --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} ${RUNNER_OPTS}
+      - ./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} project:phpcs ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   smoke:
     image: fpfis/php71-build
     commands:
-      - ./vendor/bin/run project:smoke --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} ${RUNNER_OPTS}
+      - ./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE}  project:smoke ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
