@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e263dd7ae4bade7c8b72842490874c10",
+    "content-hash": "bbe7b8028055b09250cea5037c773824",
     "packages": [
         {
             "name": "composer/installers",
@@ -690,6 +690,117 @@
             }
         },
         {
+            "name": "drupal/drupal",
+            "version": "7.59.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/drupal",
+                "reference": "7.59"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/drupal-7.59.zip",
+                "reference": "7.59",
+                "shasum": "6f9c6ec087c3e76b880d28b59d7f2afb4587e095"
+            },
+            "type": "drupal-core",
+            "extra": {
+                "branch-alias": {
+                    "dev-7.x": "7.x-dev"
+                },
+                "drupal": {
+                    "version": "7.59",
+                    "datestamp": "1524805044",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "patches_applied": [
+                    "https://www.drupal.org/files/issues/2018-05-06/support-proto-header-2970929-2.patch",
+                    "resources/patches/add-settings-local.patch"
+                ]
+            },
+            "notification-url": "https://packages.drupal.org/7/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "David_Rothstein",
+                    "homepage": "https://www.drupal.org/user/124982"
+                },
+                {
+                    "name": "Dries",
+                    "homepage": "https://www.drupal.org/user/1"
+                },
+                {
+                    "name": "Drupal",
+                    "homepage": "https://www.drupal.org/user/3"
+                },
+                {
+                    "name": "Fabianx",
+                    "homepage": "https://www.drupal.org/user/693738"
+                },
+                {
+                    "name": "Gábor Hojtsy",
+                    "homepage": "https://www.drupal.org/user/4166"
+                },
+                {
+                    "name": "alexpott",
+                    "homepage": "https://www.drupal.org/user/157725"
+                },
+                {
+                    "name": "catch",
+                    "homepage": "https://www.drupal.org/user/35733"
+                },
+                {
+                    "name": "cilefen",
+                    "homepage": "https://www.drupal.org/user/1850070"
+                },
+                {
+                    "name": "drumm",
+                    "homepage": "https://www.drupal.org/user/3064"
+                },
+                {
+                    "name": "effulgentsia",
+                    "homepage": "https://www.drupal.org/user/78040"
+                },
+                {
+                    "name": "larowlan",
+                    "homepage": "https://www.drupal.org/user/395439"
+                },
+                {
+                    "name": "lauriii",
+                    "homepage": "https://www.drupal.org/user/1078742"
+                },
+                {
+                    "name": "plach",
+                    "homepage": "https://www.drupal.org/user/183211"
+                },
+                {
+                    "name": "stefan.r",
+                    "homepage": "https://www.drupal.org/user/551886"
+                },
+                {
+                    "name": "webchick",
+                    "homepage": "https://www.drupal.org/user/24967"
+                },
+                {
+                    "name": "xjm",
+                    "homepage": "https://www.drupal.org/user/65776"
+                },
+                {
+                    "name": "yoroy",
+                    "homepage": "https://www.drupal.org/user/41502"
+                }
+            ],
+            "homepage": "https://www.drupal.org/project/drupal",
+            "support": {
+                "source": "http://cgit.drupalcode.org/drupal"
+            }
+        },
+        {
             "name": "drush/drush",
             "version": "8.1.17",
             "source": {
@@ -800,24 +911,6 @@
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
             "time": "2018-05-23T16:58:54+00:00"
-        },
-        {
-            "name": "ec-europa/platform-deploy",
-            "version": "2.5.64",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ec-europa/platform-deploy.git",
-                "reference": "1fe9ab9d1c5ac0e4eacec86cb3a74d9b6f06ceee"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/platform-deploy/zipball/1fe9ab9d1c5ac0e4eacec86cb3a74d9b6f06ceee",
-                "reference": "1fe9ab9d1c5ac0e4eacec86cb3a74d9b6f06ceee",
-                "shasum": ""
-            },
-            "type": "drupal-core",
-            "notification-url": "https://packagist.org/downloads/",
-            "time": "2018-08-08T09:20:05+00:00"
         },
         {
             "name": "gitonomy/gitlib",
