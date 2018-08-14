@@ -26,25 +26,10 @@ matrix:
   PHP_VERSION:
     - 56
     - 71
-  DRUPAL_PROFILE:
-    - standard
-    - multisite_drupal_standard
-    - multisite_drupal_communities
   RUNNER_OPTS:
     - "--ansi --progress-delay=300"
-  TEMPLATE_RUNNER_OPTS:
-    - "--working-dir=/test/toolkit/template --ansi --progress-delay=300"
-  # Temporarily added to skip builds.
-  include:
-    - TEMPLATE: drupal7
-      DRUPAL_PROFILE: standard
-      PHP_VERSION: 71
-    - TEMPLATE: drupal8
-      DRUPAL_PROFILE: standard
-      PHP_VERSION: 71
-    - TEMPLATE: platform
-      DRUPAL_PROFILE: multisite_drupal_standard
-      PHP_VERSION: 71
+  TEMPLATE_WORKDIR:
+    - "--working-dir=/test/toolkit/template"
 
 # ==============================================================================
 # Main services
@@ -77,14 +62,14 @@ pipeline:
   template:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run toolkit:setup-template --template=${TEMPLATE} $RUNNER_OPTS
+      - ./vendor/bin/run toolkit:setup-template --template=${TEMPLATE} ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   install:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:install $TEMPLATE_RUNNER_OPTS
+      - ./vendor/bin/run drupal:install ${TEMPLATE_WORKDIR} ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -93,7 +78,7 @@ pipeline:
   phpcs:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:phpcs $TEMPLATE_RUNNER_OPTS
+      - ./vendor/bin/run drupal:phpcs ${TEMPLATE_WORKDIR} ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -102,7 +87,7 @@ pipeline:
   behat:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:core-behat $TEMPLATE_RUNNER_OPTS
+      - ./vendor/bin/run drupal:core-behat ${TEMPLATE_WORKDIR} ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -111,7 +96,7 @@ pipeline:
   enable:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:enable-all $TEMPLATE_RUNNER_OPTS
+      - ./vendor/bin/run drupal:enable-all ${TEMPLATE_WORKDIR} ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -120,7 +105,7 @@ pipeline:
   data:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:generate-data $TEMPLATE_RUNNER_OPTS
+      - ./vendor/bin/run drupal:generate-data ${TEMPLATE_WORKDIR} ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
