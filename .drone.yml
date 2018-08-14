@@ -92,7 +92,7 @@ pipeline:
       status: [ failure, success ]
       # Temporarily disable behat on platform.
       matrix:
-        exclude: [ platform ]
+        TEMPLATE: [ drupal7, drupal8 ]
 
   enable:
     image: fpfis/php${PHP_VERSION}-build
