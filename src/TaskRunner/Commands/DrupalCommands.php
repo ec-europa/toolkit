@@ -79,8 +79,11 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
         $drupalVersion = $this->getConfig()->get('drupal.version');
+        $drupalProfile = $this->getConfig()->get('drupal.site.profile');
         $enableallExclude = !empty($options['exclude']) ? explode(',', $options['exclude']) : explode(',', $this->getConfig()->get('drupal.site.enable_all_exclude'));
-        $systemList = array_keys(json_decode($this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' pm-list --format=json --color=1')->printOutput(false)->run()->getMessage(), true));
+        $systemList = substr($drupalProfile, 0, 9 ) === "multisite" ?
+            explode(',', $this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' eval "echo implode(\',\', array_keys(feature_set_get_featuresets(NULL)));"')->printOutput(false)->run()->getMessage()) :
+            array_keys(json_decode($this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' pm-list --format=json --color=1')->printOutput(false)->run()->getMessage(), true));
         $enabled = array_keys(json_decode($this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' pm-list --format=json --status=enabled --color=1')->printOutput(false)->run()->getMessage(), true));
         $disabled = array_diff($systemList, $enabled);
 

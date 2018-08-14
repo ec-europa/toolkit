@@ -49,30 +49,4 @@ templates:
     profile:
       name: multisite_drupal_standard
       enable_all_exclude:
-        - communities
-        - e_library_og
-        - events_og
-        - links_og
-        - migrate_example
-        - migrate_example_baseball
-        - migrate_example_oracle
-        - multisite_drupal_language_negociation
-        - multisite_notifications_og
-        - multisite_registration
-        - ne_dgt_rules
-        - ne_tmgmt_dgt_ftt_translator
-        - news_og
-        - nexteuropa_dgt_connector
         - nexteuropa_varnish
-        - services_oauth
-        - simplenews_statistics_ga
-        - survey_og
-        - tmgmt_dgt_connector
-        - tmgmt_dgt_connector_cart
-        - tmgmt_dgt_html
-        - tmgmt_og
-        - tmgmt_poetry
-        - tmgmt_workbench
-        - uuid_services_example
-        - wiki_og
-        - xml_field_test_assets
