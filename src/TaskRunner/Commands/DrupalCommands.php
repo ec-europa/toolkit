@@ -40,8 +40,8 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $drupalProfile = $this->getConfig()->get('drupal.site.profile');
         $sitePath = $drupalRoot . '/sites/' . $drupalSite;
 
-        $this->taskComposerInstall()->ansi()->run();
-        $this->taskGitStack()->stopOnFail()->exec('init');
+        $this->taskComposerInstall()->ansi()->option('no-suggest')->run();
+        $this->taskGitStack()->stopOnFail()->exec('init')->run();
         $this->taskFilesystemStack()
             ->copy($sitePath . '/default.settings.php', $sitePath . '/settings.php', true)
             ->copy('resources/settings.local.php', $sitePath . '/settings.local.php', true)
