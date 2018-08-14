@@ -37,12 +37,12 @@ matrix:
     - TEMPLATE: drupal7
       DRUPAL_PROFILE: standard
       PHP_VERSION: 71
-    - TEMPLATE: drupal8
-      DRUPAL_PROFILE: standard
-      PHP_VERSION: 71
-    - TEMPLATE: platform
-      DRUPAL_PROFILE: multisite_drupal_standard
-      PHP_VERSION: 71
+    # - TEMPLATE: drupal8
+    #   DRUPAL_PROFILE: standard
+    #   PHP_VERSION: 71
+    # - TEMPLATE: platform
+    #   DRUPAL_PROFILE: multisite_drupal_standard
+    #   PHP_VERSION: 71
 
 # ==============================================================================
 # Main services
@@ -86,6 +86,8 @@ pipeline:
     environment:
       WORKDIR: /test/toolkit/resources/drupal/${TEMPLATE}
     commands:
+      - echo ${PWD}
+      - ls -la
       - ./vendor/bin/run drupal:install ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
