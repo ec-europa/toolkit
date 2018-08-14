@@ -84,6 +84,12 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $systemList = substr($drupalProfile, 0, 9 ) === "multisite" ?
             explode(',', $this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' eval "echo implode(\',\', array_keys(feature_set_get_featuresets(NULL)));"')->printOutput(false)->run()->getMessage()) :
             array_keys(json_decode($this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' pm-list --format=json --color=1')->printOutput(false)->run()->getMessage(), true));
+        // Remove example modules from list.
+        foreach($systemList as $key => $value) {
+            if(strpos($value, '_example') !== false) {
+                unset($systemList[$key]);
+            }
+        }
         $enabled = array_keys(json_decode($this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' pm-list --format=json --status=enabled --color=1')->printOutput(false)->run()->getMessage(), true));
         $disabled = array_diff($systemList, $enabled);
 
