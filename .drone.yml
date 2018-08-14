@@ -33,6 +33,8 @@ matrix:
 services:
   web:
     image: fpfis/php${PHP_VERSION}-build
+    environment:
+      - DOCROOT=/test/toolkit/build
   mysql:
     image: percona/percona-server:5.7
     environment:
@@ -58,9 +60,7 @@ pipeline:
   template:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - rm -rf /var/www/html
       - ./vendor/bin/run toolkit:setup-template --template=${TEMPLATE} --ansi --progress-delay=300
-      - ls -la /var/www
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
