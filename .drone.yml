@@ -67,7 +67,7 @@ pipeline:
   install:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:site-install --working-dir=/test/toolkit/template --ansi --progress-delay=300
+      - /usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`" ./vendor/bin/run drupal:site-install --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
