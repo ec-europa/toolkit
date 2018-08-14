@@ -50,8 +50,6 @@ matrix:
 services:
   web:
     image: fpfis/php${PHP_VERSION}-build
-    environment:
-      - DOCUMENT_ROOT=/test/toolkit/build
   mysql:
     image: percona/percona-server:5.7
     environment:
@@ -83,12 +81,8 @@ pipeline:
 
   install:
     image: fpfis/php${PHP_VERSION}-build
-    environment:
-      - WORKDIR=/test/toolkit/resources/drupal/${TEMPLATE}
     commands:
-      - echo $${WORKDIR}
-      - ls -la
-      - ./vendor/bin/run drupal:install ${RUNNER_OPTS}
+      - ./vendor/bin/run --working-dir=${PWD}/template drupal:install ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -96,10 +90,8 @@ pipeline:
 
   phpcs:
     image: fpfis/php${PHP_VERSION}-build
-    environment:
-      - WORKDIR=/test/toolkit/resources/drupal/${TEMPLATE}
     commands:
-      - ./vendor/bin/run drupal:phpcs ${RUNNER_OPTS}
+      - ./vendor/bin/run --working-dir=${PWD}/template drupal:phpcs ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -107,10 +99,8 @@ pipeline:
 
   behat:
     image: fpfis/php${PHP_VERSION}-build
-    environment:
-      - WORKDIR=/test/toolkit/resources/drupal/${TEMPLATE}
     commands:
-      - ./vendor/bin/run drupal:core-behat ${RUNNER_OPTS}
+      - ./vendor/bin/run --working-dir=${PWD}/template drupal:core-behat ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -118,10 +108,8 @@ pipeline:
 
   enable:
     image: fpfis/php${PHP_VERSION}-build
-    environment:
-      - WORKDIR=/test/toolkit/resources/drupal/${TEMPLATE}
     commands:
-      - ./vendor/bin/run drupal:enable-all ${RUNNER_OPTS}
+      - ./vendor/bin/run --working-dir=${PWD}/template drupal:enable-all ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -129,10 +117,8 @@ pipeline:
 
   data:
     image: fpfis/php${PHP_VERSION}-build
-    environment:
-      - WORKDIR=/test/toolkit/resources/drupal/${TEMPLATE}
     commands:
-      - ./vendor/bin/run drupal:generate-data ${RUNNER_OPTS}
+      - ./vendor/bin/run --working-dir=${PWD}/template drupal:generate-data ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:

@@ -48,8 +48,10 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
             ->run();
         $this->taskFilesystemStack()
             ->stopOnFail()
-            ->remove(getcwd() . '/build')
-            ->symlink(getcwd() . '/' . $workingDir . '/web', getcwd() . '/build')
+            ->remove('/var/www/html')
+            ->remove(getcwd() . '/template')
+            ->symlink(getcwd() . '/' . $workingDir, getcwd( . '/template'))
+            ->symlink(getcwd() . '/' . $workingDir . '/web', '/var/www/html')
             ->symlink(getcwd() . '/runner.yml', getcwd() . '/' . $workingDir . '/runner.yml')
             ->run();
     }
