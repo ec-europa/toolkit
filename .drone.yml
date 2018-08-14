@@ -89,10 +89,32 @@ pipeline:
       - "./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} project:phpcs ${RUNNER_OPTS}"
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status:  [ failure, success ]
 
-  smoke:
+  behat:
     image: fpfis/php71-build
     commands:
-      - "./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} project:smoke ${RUNNER_OPTS}"
+      - "./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} drupal:core-behat ${RUNNER_OPTS}"
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status:  [ failure, success ]
+
+  enable:
+    image: fpfis/php71-build
+    commands:
+      - "./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} drupal:enable-all ${RUNNER_OPTS}"
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status:  [ failure, success ]
+
+  data:
+    image: fpfis/php71-build
+    commands:
+      - "./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} drupal:generate-data ${RUNNER_OPTS}"
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status:  [ failure, success ]

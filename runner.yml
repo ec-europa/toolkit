@@ -93,18 +93,3 @@ release:
 commands:
   project:phpcs:
     - ./vendor/bin/grumphp run --ansi
-  project:behat:
-    - mkdir -p web/sites/all/modules/contrib
-    - ln -sf ${PWD}/vendor/drupal/drupal-extension/fixtures/drupal${drupal.version}/modules/behat_test ${PWD}/web/sites/all/modules/contrib/behat_test
-    - ./vendor/bin/drush -r web en behat_test -y --color=1
-    - cp behat.yml ./vendor/drupal/drupal-extension/behat.yml
-    - ./vendor/bin/behat -c vendor/drupal/drupal-extension/behat.yml --colors -v
-  project:smoke:
-    - ${runner.bin_dir}/drush -r ${drupal.root} en $(${runner.bin_dir}/drush -r ${drupal.root} sqlq "select GROUP_CONCAT(name) from system where status=0 and name not like '%_test%';") -y --color=1
-    - ${runner.bin_dir}/drush -r ${drupal.root} dis overlay toolbar -y --color=1
-    - ${runner.bin_dir}/drush -r ${drupal.root} cron --color=1
-    - ${runner.bin_dir}/drush -r ${drupal.root} generate-users 50 --kill --pass=password --color=1
-    - ${runner.bin_dir}/drush -r ${drupal.root} generate-vocabs 1 --kill --color=1
-    - ${runner.bin_dir}/drush -r ${drupal.root} generate-terms $(${runner.bin_dir}/drush -r ${drupal.root} sqlq "select name from taxonomy_vocabulary limit 1;") 50 --kill --color=1
-    - ${runner.bin_dir}/drush -r ${drupal.root} generate-content 50 3 --kill --types=$(${runner.bin_dir}/drush -r ${drupal.root} sqlq "select GROUP_CONCAT(type) from node_type where name <> 'poll';") --kill --color=1
-    - ${runner.bin_dir}/drush -r ${drupal.root} generate-menus 2 50 --kill --color=1
