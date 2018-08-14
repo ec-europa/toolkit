@@ -6,7 +6,7 @@
         "drupal/console": "^1.0.2",
         "drupal/core": "~8.5.3",
         "drush/drush": "^8.0",
-        "openeuropa/task-runner": "~0.7.0"
+        "ec-europa/toolkit": "dev-release/4.x as 4.0.0"
     },
     "require-dev": {
         "drupal/drupal-extension": "^3.4",

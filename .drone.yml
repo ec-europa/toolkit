@@ -84,54 +84,54 @@ pipeline:
   install:
     image: fpfis/php${PHP_VERSION}-build
     environment:
-      TEMPLATE_RUNNER_OPTS: --working-dir=${PWD}/resources/drupal/${TEMPLATE} ${RUNNER_OPTS}
+      WORKDIR: /test/toolkit/resources/drupal/${TEMPLATE}
     commands:
-      - ./vendor/bin/run drupal:install $${TEMPLATE_RUNNER_OPTS}
+      - ./vendor/bin/run drupal:install ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
-      status:  [ failure, success ]
+      status: [ failure, success ]
 
   phpcs:
     image: fpfis/php${PHP_VERSION}-build
     environment:
-      TEMPLATE_RUNNER_OPTS: --working-dir=${PWD}/resources/drupal/${TEMPLATE} ${RUNNER_OPTS}
+      WORKDIR: /test/toolkit/resources/drupal/${TEMPLATE}
     commands:
-      - ./vendor/bin/run drupal:phpcs $${TEMPLATE_RUNNER_OPTS}
+      - ./vendor/bin/run drupal:phpcs ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
-      status:  [ failure, success ]
+      status: [ failure, success ]
 
   behat:
     image: fpfis/php${PHP_VERSION}-build
     environment:
-      TEMPLATE_RUNNER_OPTS: --working-dir=${PWD}/resources/drupal/${TEMPLATE} ${RUNNER_OPTS}
+      WORKDIR: /test/toolkit/resources/drupal/${TEMPLATE}
     commands:
-      - ./vendor/bin/run drupal:core-behat $${TEMPLATE_RUNNER_OPTS}
+      - ./vendor/bin/run drupal:core-behat ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
-      status:  [ failure, success ]
+      status: [ failure, success ]
 
   enable:
     image: fpfis/php${PHP_VERSION}-build
     environment:
-      TEMPLATE_RUNNER_OPTS: --working-dir=${PWD}/resources/drupal/${TEMPLATE} ${RUNNER_OPTS}
+      WORKDIR: /test/toolkit/resources/drupal/${TEMPLATE}
     commands:
-      - ./vendor/bin/run drupal:enable-all $${TEMPLATE_RUNNER_OPTS}
+      - ./vendor/bin/run drupal:enable-all ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
-      status:  [ failure, success ]
+      status: [ failure, success ]
 
   data:
     image: fpfis/php${PHP_VERSION}-build
     environment:
-      TEMPLATE_RUNNER_OPTS: --working-dir=${PWD}/resources/drupal/${TEMPLATE} ${RUNNER_OPTS}
+      WORKDIR: /test/toolkit/resources/drupal/${TEMPLATE}
     commands:
-      - ./vendor/bin/run drupal:generate-data $${TEMPLATE_RUNNER_OPTS}
+      - ./vendor/bin/run drupal:generate-data ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
-      status:  [ failure, success ]
+      status: [ failure, success ]

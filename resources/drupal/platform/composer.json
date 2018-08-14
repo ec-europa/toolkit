@@ -14,7 +14,7 @@
         "drupal-composer/preserve-paths": "^0.1.4",
         "drupal/composer_autoloader": "^1.0",
         "drush/drush": "^8.0",
-        "openeuropa/task-runner": "~0.7.0"
+        "ec-europa/toolkit": "dev-release/4.x as 4.0.0"
     },
     "require-dev": {
         "drupal/devel": "^1.6",
