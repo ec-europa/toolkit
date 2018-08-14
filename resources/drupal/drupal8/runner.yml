@@ -19,17 +19,17 @@ drupal:
   root: "web"
   root_absolute: ~
   base_url: "http://google.verbruggenlex"
-  version: {version}
+  version: 8
 
   # Basic Drupal site information.
   site:
     name: "Representation in Portugal"
     mail: "info@example.org"
-    profile: "{profile}"
+    profile: "standard"
     update: "false"
     locale: "en"
     sites_subdir: "default"
-    enable_all_exclude: "{enable_all_exclude}"
+    enable_all_exclude: ""
 
   # Administrator account information.
   account:

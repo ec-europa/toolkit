@@ -38,7 +38,8 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $template = $options['template'];
         $workingDir = 'resources/drupal/' . $template;
         $drupalVersion = $this->getConfig()->get("templates.$template.version");
-        $drupalProfile = $this->getConfig()->get("templates.$template.profile");
+        $drupalProfile = $this->getConfig()->get("templates.$template.profile.name");
+        $enableAllExclude = implode(',', $this->getConfig()->get("templates.$template.profile.enable_all_exclude"));
 
         $taskCollection = array(
             $this->taskComposerInstall()
@@ -58,32 +59,9 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
             $this->taskWriteToFile('resources/drupal/' . $template . '/runner.yml')
                 ->textFromFile('resources/drupal/runner.yml')
                 ->place('version', $drupalVersion)
-                ->place('profile', $drupalProfile),
+                ->place('profile', $drupalProfile)
+                ->place('enable_all_exclude', $enableAllExclude),
         );
-
-        return $this->collectionBuilder()->addTaskList($taskCollection);
-    }
-
-    /**
-     * @command drupal:install
-     */
-    public function drupalInstall()
-    {
-        $drupalRoot = $this->getConfig()->get('drupal.root');
-        $drupalSite = $this->getConfig()->get('drupal.site.sites_subdir');
-        $drupalProfile = $this->getConfig()->get('drupal.site.profile');
-        $sitePath = $drupalRoot . '/sites/' . $drupalSite;
-
-        $taskCollection = array(
-            $this->taskFilesystemStack()->stopOnFail()
-                ->copy($sitePath . '/default.settings.php', $sitePath . '/settings.php', true)
-                ->copy('resources/settings.local.php', $sitePath . '/settings.local.php', true)
-                ->mkdir($sitePath . '/files/private_files'),
-            $this->taskExecStack()->stopOnFail()
-                ->exec('while ! mysqladmin ping --user=root -h mysql --password="" --silent; do echo Waiting for mysql; sleep 3; done')
-                ->exec('/usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`" ./vendor/bin/drush -r web si --db-url=mysql://root:@mysql:3306/drupal ' . $drupalProfile . ' -y --color=1')
-                ->exec("vendor/bin/drush -r web cron")
-            );
 
         return $this->collectionBuilder()->addTaskList($taskCollection);
     }
@@ -96,26 +74,26 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
      * @param array $options
      */
     public function drupalEnableAll(array $options = [
-      'disable' => InputOption::VALUE_OPTIONAL,
+      'exclude' => InputOption::VALUE_OPTIONAL,
     ])
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
         $drupalVersion = $this->getConfig()->get('drupal.version');
-        $disable = explode(',', $options['disable']);
-        $systemList = array_keys(json_decode($this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' pm-list --format=json')->printOutput(false)->run()->getMessage(), true));
-        $enabled = array_keys(json_decode($this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' pm-list --format=json --status=enabled')->printOutput(false)->run()->getMessage(), true));
+        $enableallExclude = !empty($options['exclude']) ? explode(',', $options['exclude']) : explode(',', $this->getConfig()->get('drupal.site.enable_all_exclude'));
+        $systemList = array_keys(json_decode($this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' pm-list --format=json --color=1')->printOutput(false)->run()->getMessage(), true));
+        $enabled = array_keys(json_decode($this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' pm-list --format=json --status=enabled --color=1')->printOutput(false)->run()->getMessage(), true));
         $disabled = array_diff($systemList, $enabled);
 
-        $enableModules = implode(',', array_diff($disabled, $disable));
-        $disableModules = implode(',', $disable);
+        $enableModules = implode(',', array_diff($disabled, $enableallExclude));
+        $disableModules = implode(',', $enableallExclude);
 
         $taskCollection = array(
-            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-enable $enableModules -y"),
+            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-enable $enableModules -y --color=1"),
         );
         
         $taskCollection[] = $drupalVersion == 7 ?
-            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-disable $disableModules -y") :
-            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-uninstall $disableModules -y");
+            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-disable $disableModules -y --color=1") :
+            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-uninstall $disableModules -y --color=1");
 
         return $this->collectionBuilder()->addTaskList($taskCollection);
     }

@@ -19,17 +19,17 @@ drupal:
   root: "web"
   root_absolute: ~
   base_url: "http://google.verbruggenlex"
-  version: {version}
+  version: 7
 
   # Basic Drupal site information.
   site:
     name: "Representation in Portugal"
     mail: "info@example.org"
-    profile: "{profile}"
+    profile: "multisite_drupal_standard"
     update: "false"
     locale: "en"
     sites_subdir: "default"
-    enable_all_exclude: "{enable_all_exclude}"
+    enable_all_exclude: "communities,e_library_og,links_og,migrate_example_oracle,multisite_drupal_language_negociation,multisite_notifications_og,ne_dgt_rules,ne_tmgmt_dgt_ftt_translator,news_og,nexteuropa_dgt_connector,nexteuropa_varnish,services_oauth,simplenews_statistics_ga,survey_og,tmgmt_dgt_connector,tmgmt_dgt_connector_cart,tmgmt_dgt_html,tmgmt_og,tmgmt_poetry,tmgmt_workbench,wiki_og,xml_field_test_assets"
 
   # Administrator account information.
   account:
