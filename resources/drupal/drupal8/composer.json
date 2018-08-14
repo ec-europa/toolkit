@@ -10,7 +10,8 @@
     },
     "require-dev": {
         "drupal/drupal-extension": "^3.4",
-        "openeuropa/code-review": "^0.3.0"
+        "openeuropa/code-review": "^0.3.0",
+        "drupal/devel": "^1.2"
     },
     "conflict": {
         "drupal/drupal": "*"

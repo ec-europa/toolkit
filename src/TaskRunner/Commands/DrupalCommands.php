@@ -40,28 +40,28 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $drupalVersion = $this->getConfig()->get("templates.$template.version");
         $drupalProfile = $this->getConfig()->get("templates.$template.profile");
 
-        $this->taskComposerInstall()
-            ->workingDir($workingDir)
-            ->option('no-suggest')
-            ->ansi()
-            ->run();
-        $this->taskGitStack()
-            ->stopOnFail()
-            ->dir($workingDir)
-            ->exec('init')
-            ->run();
-        $this->taskFilesystemStack()
-            ->stopOnFail()
-            ->remove(getcwd() . '/template')
-            ->remove(getcwd() . '/build')
-            ->symlink(getcwd() . '/' . $workingDir . '/web', 'build')
-            ->symlink(getcwd() . '/' . $workingDir, 'template')
-            ->run();
-        $this->taskWriteToFile('resources/drupal/' . $template . '/runner.yml')
-            ->textFromFile('resources/drupal/runner.yml')
-            ->place('version', $drupalVersion)
-            ->place('profile', $drupalProfile)
-            ->run();
+        $taskCollection = array(
+            $this->taskComposerInstall()
+                ->workingDir($workingDir)
+                ->option('no-suggest')
+                ->ansi(),
+            $this->taskGitStack()
+                ->stopOnFail()
+                ->dir($workingDir)
+                ->exec('init'),
+            $this->taskFilesystemStack()
+                ->stopOnFail()
+                ->remove(getcwd() . '/template')
+                ->remove(getcwd() . '/build')
+                ->symlink(getcwd() . '/' . $workingDir . '/web', 'build')
+                ->symlink(getcwd() . '/' . $workingDir, 'template'),
+            $this->taskWriteToFile('resources/drupal/' . $template . '/runner.yml')
+                ->textFromFile('resources/drupal/runner.yml')
+                ->place('version', $drupalVersion)
+                ->place('profile', $drupalProfile),
+        );
+
+        return $this->collectionBuilder()->addTaskList($taskCollection);
     }
 
     /**
@@ -74,15 +74,18 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $drupalProfile = $this->getConfig()->get('drupal.site.profile');
         $sitePath = $drupalRoot . '/sites/' . $drupalSite;
 
-        $this->taskFilesystemStack()->stopOnFail()
-            ->copy($sitePath . '/default.settings.php', $sitePath . '/settings.php', true)
-            ->copy('resources/settings.local.php', $sitePath . '/settings.local.php', true)
-            ->mkdir($sitePath . '/files/private_files')
-            ->run();
-        $this->taskExecStack()->stopOnFail()
-            ->exec('while ! mysqladmin ping --user=root -h mysql --password="" --silent; do echo Waiting for mysql; sleep 3; done')
-            ->exec('/usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`" ./vendor/bin/drush -r web si --db-url=mysql://root:@mysql:3306/drupal ' . $drupalProfile . ' -y --color=1')
-            ->exec("vendor/bin/drush -r web cron")->run();
+        $taskCollection = array(
+            $this->taskFilesystemStack()->stopOnFail()
+                ->copy($sitePath . '/default.settings.php', $sitePath . '/settings.php', true)
+                ->copy('resources/settings.local.php', $sitePath . '/settings.local.php', true)
+                ->mkdir($sitePath . '/files/private_files'),
+            $this->taskExecStack()->stopOnFail()
+                ->exec('while ! mysqladmin ping --user=root -h mysql --password="" --silent; do echo Waiting for mysql; sleep 3; done')
+                ->exec('/usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`" ./vendor/bin/drush -r web si --db-url=mysql://root:@mysql:3306/drupal ' . $drupalProfile . ' -y --color=1')
+                ->exec("vendor/bin/drush -r web cron")
+            );
+
+        return $this->collectionBuilder()->addTaskList($taskCollection);
     }
 
     /**
@@ -102,8 +105,12 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $enableModules = implode(',', array_diff($enabled, $disabled));
         $disableModules = implode(',', array_diff($disabled, $enabled));
 
-        $this->taskExec("vendor/bin/drush -r $drupalRoot en $enableModules -y")->run();
-        $this->taskExec("vendor/bin/drush -r $drupalRoot dis $disableModules -y")->run();
+        $taskCollection = array(
+            $this->taskExec("vendor/bin/drush -r $drupalRoot en $enableModules -y"),
+            $this->taskExec("vendor/bin/drush -r $drupalRoot dis $disableModules -y"),
+        );
+
+        return $this->collectionBuilder()->addTaskList($taskCollection);
     }
 
     /**
@@ -113,15 +120,18 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
         $contentTypes =$this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' sqlq "select GROUP_CONCAT(type) from node_type where name <> \'poll\';"')->printOutput(false)->run()->getMessage();
+        $vocabularyName = $this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' sqlq "select name from taxonomy_vocabulary limit 1;"')->printOutput(false)->run()->getMessage();
 
 
         if ($this->taskExec("vendor/bin/drush -r $drupalRoot en devel_generate -y --color=1")->run()) {
-            $this->taskExec("vendor/bin/drush -r $drupalRoot generate-users 50 --kill --pass=password --color=1")->run();
-            $this->taskExec("vendor/bin/drush -r $drupalRoot generate-vocabs 1 --kill --color=1")->run();
-            $vocabularyName =$this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' sqlq "select name from taxonomy_vocabulary limit 1;"')->printOutput(false)->run()->getMessage();
-            $this->taskExec("vendor/bin/drush -r $drupalRoot generate-terms $vocabularyName 50 --kill --color=1")->run();
-            $this->taskExec("vendor/bin/drush -r $drupalRoot generate-content 50 3 --kill --types=$contentTypes --kill --color=1")->run();
-            $this->taskExec("vendor/bin/drush -r $drupalRoot generate-menus 2 50 --kill --color=1")->run();
+            $taskCollection = array(
+                $this->taskExec("vendor/bin/drush -r $drupalRoot generate-users 50 --kill --pass=password --color=1"),
+                $this->taskExec("vendor/bin/drush -r $drupalRoot generate-vocabs 1 --color=1"),
+                $this->taskExec("vendor/bin/drush -r $drupalRoot generate-terms $vocabularyName 50 --kill --color=1"),
+                $this->taskExec("vendor/bin/drush -r $drupalRoot generate-content 50 3 --kill --types=$contentTypes --kill --color=1"),
+                $this->taskExec("vendor/bin/drush -r $drupalRoot generate-menus 2 50 --kill --color=1")
+            );
+            return $this->collectionBuilder()->addTaskList($taskCollection);
         }
     }
 
