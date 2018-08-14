@@ -80,6 +80,7 @@ pipeline:
     image: fpfis/php${PHP_VERSION}-build
     commands:
       - cd resources/drupal/${COMPOSER_TEMPLATE}
+      - composer install --ansi --no-suggest
       - ./vendor/bin/run project:install ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
