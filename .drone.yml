@@ -24,7 +24,7 @@ matrix:
     - drupal8
     - platform
   PHP_VERSION:
-    - 56
+#    - 56
     - 71
   RUNNER_OPTS:
     - "--ansi --progress-delay=300"

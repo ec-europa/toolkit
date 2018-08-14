@@ -35,7 +35,11 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
       'template' => InputOption::VALUE_REQUIRED,
     ])
     {
-        $workingDir = 'resources/drupal/' . $options['template'];
+        $template = $options['template'];
+        $workingDir = 'resources/drupal/' . $template;
+        $drupalVersion = $this->getConfig()->get("templates.$template.version");
+        $drupalProfile = $this->getConfig()->get("templates.$template.profile");
+
         $this->taskComposerInstall()
             ->workingDir($workingDir)
             ->option('no-suggest')
@@ -52,7 +56,11 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
             ->remove(getcwd() . '/template')
             ->symlink(getcwd() . '/' . $workingDir, getcwd() . '/template')
             ->symlink(getcwd() . '/' . $workingDir . '/web', '/var/www/html')
-            ->symlink(getcwd() . '/runner.yml', getcwd() . '/' . $workingDir . '/runner.yml')
+            ->run();
+        $this->taskWriteToFile('resources/drupal/' . $template . '/runner.yml')
+            ->textFromFile('resources/drupal/runner.yml')
+            ->place('version', $drupalVersion)
+            ->place('profile', $drupalProfile)
             ->run();
     }
 
