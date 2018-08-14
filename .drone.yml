@@ -34,7 +34,7 @@ services:
   web:
     image: fpfis/php${PHP_VERSION}-build
     environment:
-      - DOCROOT=/test/toolkit/build
+      - DOCUMENT_ROOT=/test/toolkit/build
   mysql:
     image: percona/percona-server:5.7
     environment:
