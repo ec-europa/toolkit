@@ -84,9 +84,9 @@ pipeline:
   install:
     image: fpfis/php${PHP_VERSION}-build
     environment:
-      WORKDIR: /test/toolkit/resources/drupal/${TEMPLATE}
+      - WORKDIR=/test/toolkit/resources/drupal/${TEMPLATE}
     commands:
-      - echo ${PWD}
+      - echo $${WORKDIR}
       - ls -la
       - ./vendor/bin/run drupal:install ${RUNNER_OPTS}
     volumes:
@@ -97,7 +97,7 @@ pipeline:
   phpcs:
     image: fpfis/php${PHP_VERSION}-build
     environment:
-      WORKDIR: /test/toolkit/resources/drupal/${TEMPLATE}
+      - WORKDIR=/test/toolkit/resources/drupal/${TEMPLATE}
     commands:
       - ./vendor/bin/run drupal:phpcs ${RUNNER_OPTS}
     volumes:
@@ -108,7 +108,7 @@ pipeline:
   behat:
     image: fpfis/php${PHP_VERSION}-build
     environment:
-      WORKDIR: /test/toolkit/resources/drupal/${TEMPLATE}
+      - WORKDIR=/test/toolkit/resources/drupal/${TEMPLATE}
     commands:
       - ./vendor/bin/run drupal:core-behat ${RUNNER_OPTS}
     volumes:
@@ -119,7 +119,7 @@ pipeline:
   enable:
     image: fpfis/php${PHP_VERSION}-build
     environment:
-      WORKDIR: /test/toolkit/resources/drupal/${TEMPLATE}
+      - WORKDIR=/test/toolkit/resources/drupal/${TEMPLATE}
     commands:
       - ./vendor/bin/run drupal:enable-all ${RUNNER_OPTS}
     volumes:
@@ -130,7 +130,7 @@ pipeline:
   data:
     image: fpfis/php${PHP_VERSION}-build
     environment:
-      WORKDIR: /test/toolkit/resources/drupal/${TEMPLATE}
+      - WORKDIR=/test/toolkit/resources/drupal/${TEMPLATE}
     commands:
       - ./vendor/bin/run drupal:generate-data ${RUNNER_OPTS}
     volumes:
