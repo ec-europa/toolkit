@@ -11,7 +11,8 @@
     "require-dev": {
         "drupal/drupal-extension": "^3.4",
         "openeuropa/code-review": "^0.3.0",
-        "drupal/devel": "^1.2"
+        "drupal/devel": "^1.2",
+        "phpunit/phpunit": "^5.7"
     },
     "conflict": {
         "drupal/drupal": "*"

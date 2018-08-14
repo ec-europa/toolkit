@@ -126,15 +126,17 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     public function drupalGenerateData()
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
-        $contentTypes =$this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' sqlq "select GROUP_CONCAT(type) from node_type where name <> \'poll\';"')->printOutput(false)->run()->getMessage();
-        $vocabularyName = $this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' sqlq "select name from taxonomy_vocabulary limit 1;"')->printOutput(false)->run()->getMessage();
-
-
+        $drupalVersion = $this->getConfig()->get('drupal.version');
         if ($this->taskExec("vendor/bin/drush -r $drupalRoot en devel_generate -y --color=1")->run()) {
             // Generate a vocabulary if needed.
-            if (!empty($vocabularyName) || $this->taskExec("vendor/bin/drush -r $drupalRoot generate-vocabs 1 --color=1")->run()) {
-                $vocabularyName = $this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' sqlq "select name from taxonomy_vocabulary limit 1;"')->printOutput(false)->run()->getMessage();
+            if ($this->taskExec("vendor/bin/drush -r $drupalRoot generate-vocabs 1 --color=1")->run()) {
+                $vocabularyName = $drupalVersion == 7 ?
+                    $this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' sqlq "select name from taxonomy_vocabulary limit 1;"')->printOutput(false)->run()->getMessage() :
+                    $this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' eval "echo array_keys(\Drupal\taxonomy\Entity\Vocabulary::loadMultiple())[0];"')->printOutput(false)->run()->getMessage();
             }
+            $contentTypes = $drupalVersion == 7 ?
+                $this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' sqlq "select GROUP_CONCAT(type) from node_type where name <> \'poll\';"')->printOutput(false)->run()->getMessage() :
+                $this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' eval "echo implode(\',\', array_keys(\Drupal\node\Entity\NodeType::loadMultiple()));"')->printOutput(false)->run()->getMessage();
             // Generate other data.
             $taskCollection = array(
                 $this->taskExec("vendor/bin/drush -r $drupalRoot generate-users 50 --kill --pass=password --color=1"),
