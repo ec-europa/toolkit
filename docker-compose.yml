@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   web:
     image: fpfis/php71-dev
@@ -17,3 +17,5 @@ services:
       - MYSQL_DATABASE=drupal
   selenium:
     image: selenium/standalone-chrome
+  solr:
+    image: fpfis/solr5

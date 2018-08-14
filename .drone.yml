@@ -26,6 +26,10 @@ matrix:
   PHP_VERSION:
     - 56
     - 71
+  # Temporarily run only 1.
+  include:
+    - TEMPLATE: platform
+      PHP_VERSION: 71
 
 # ==============================================================================
 # Main services
