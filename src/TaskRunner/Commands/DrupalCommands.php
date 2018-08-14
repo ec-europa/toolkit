@@ -25,23 +25,45 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     use NuvoleWebTasks\Config\loadTasks;
 
     /**
-     * @command project:install
+     * @command toolkit:setup-template
      *
      * @option template Template id.
      *
      * @param array $options
      */
-    public function projectInstall(array $options = [
+    public function toolkitSetupTemplate(array $options = [
       'template' => InputOption::VALUE_REQUIRED,
     ])
+    {
+        $workingDir = 'resources/drupal/' . $options['template'];
+        $this->taskComposerInstall()
+            ->workingDir($workingDir)
+            ->option('no-suggest')
+            ->ansi()
+            ->run();
+        $this->taskGitStack()
+            ->stopOnFail()
+            ->dir($workingDir)
+            ->exec('init')
+            ->run();
+        $this->taskFilesystemStack()
+            ->stopOnFail()
+            ->remove(getcwd() . '/build')
+            ->symlink(getcwd() . '/' . $workingDir . '/web', getcwd() . '/build')
+            ->symlink(getcwd() . '/runner.yml', getcwd() . '/' . $workingDir . '/runner.yml')
+            ->run();
+    }
+
+    /**
+     * @command drupal:install
+     */
+    public function drupalInstall()
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
         $drupalSite = $this->getConfig()->get('drupal.site.sites_subdir');
         $drupalProfile = $this->getConfig()->get('drupal.site.profile');
         $sitePath = $drupalRoot . '/sites/' . $drupalSite;
 
-        $this->taskComposerInstall()->ansi()->option('no-suggest')->run();
-        $this->taskGitStack()->stopOnFail()->exec('init')->run();
         $this->taskFilesystemStack()->stopOnFail()
             ->copy($sitePath . '/default.settings.php', $sitePath . '/settings.php', true)
             ->copy('resources/settings.local.php', $sitePath . '/settings.local.php', true)
@@ -76,14 +98,8 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
 
     /**
      * @command drupal:generate-data
-     *
-     * @option disabled Comma seperated list of modules to disable.
-     *
-     * @param array $options
      */
-    public function drupalGenerateData(array $options = [
-      'disabled' => InputOption::VALUE_OPTIONAL,
-    ])
+    public function drupalGenerateData()
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
         $contentTypes =$this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' sqlq "select GROUP_CONCAT(type) from node_type where name <> \'poll\';"')->printOutput(false)->run()->getMessage();
@@ -101,14 +117,8 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
 
     /**
      * @command drupal:core-behat
-     *
-     * @option disabled Comma seperated list of modules to disable.
-     *
-     * @param array $options
      */
-    public function drupalCoreBehat(array $options = [
-      'disabled' => InputOption::VALUE_OPTIONAL,
-    ])
+    public function drupalCoreBehat()
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
         $drupalVersion = $this->getConfig()->get('drupal.version');

@@ -91,5 +91,5 @@ release:
 # List of dynamically-defined commands.
 # -----------------------------------------------------------------------------
 commands:
-  project:phpcs:
+  drupal:phpcs:
     - ./vendor/bin/grumphp run --ansi

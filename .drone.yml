@@ -19,7 +19,7 @@ workspace:
 # Matrix section
 # ==============================================================================
 matrix:
-  COMPOSER_TEMPLATE:
+  TEMPLATE:
     - drupal7
     - drupal8
     - platform
@@ -34,15 +34,15 @@ matrix:
     - "--ansi --progress-delay=300"
   # Temporarily added to skip builds.
   include:
-    - COMPOSER_TEMPLATE: drupal7
+    - TEMPLATE: drupal7
       DRUPAL_PROFILE: standard
       PHP_VERSION: 71
-    # - COMPOSER_TEMPLATE: drupal8
-    #   DRUPAL_PROFILE: standard
-    #   PHP_VERSION: 71
-    # - COMPOSER_TEMPLATE: platform
-    #   DRUPAL_PROFILE: multisite_drupal_standard
-    #   PHP_VERSION: 71
+    - TEMPLATE: drupal8
+      DRUPAL_PROFILE: standard
+      PHP_VERSION: 71
+    - TEMPLATE: platform
+      DRUPAL_PROFILE: multisite_drupal_standard
+      PHP_VERSION: 71
 
 # ==============================================================================
 # Main services
@@ -67,59 +67,70 @@ pipeline:
   # ============================================================================
   # Setup section:
   # ============================================================================
-  setup:
+  setup-toolkit:
     image: fpfis/php${PHP_VERSION}-build
     commands:
       - composer install --ansi --no-suggest
-      - ln -sf $(pwd)/runner.yml $(pwd)/resources/drupal/${COMPOSER_TEMPLATE}/runner.yml
-      - rm -rf build && ln -sf $(pwd)/resources/drupal/${COMPOSER_TEMPLATE}/web build
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  install:
+  setup-template:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - cd resources/drupal/${COMPOSER_TEMPLATE}
-      - composer install --ansi --no-suggest
-      - ./vendor/bin/run project:install ${RUNNER_OPTS}
+      - ./vendor/bin/run toolkit:setup-template --template=${TEMPLATE} ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
+
+  project-install:
+    image: fpfis/php${PHP_VERSION}-build
+    environment:
+      TEMPLATE_RUNNER_OPTS: --working-dir=resources/drupal/${TEMPLATE} ${RUNNER_OPTS}
+    commands:
+      - ./vendor/bin/run drupal:install $${TEMPLATE_RUNNER_OPTS}
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status:  [ failure, success ]
 
   phpcs:
-    image: fpfis/php71-build
+    image: fpfis/php${PHP_VERSION}-build
+    environment:
+      TEMPLATE_RUNNER_OPTS: --working-dir=resources/drupal/${TEMPLATE} ${RUNNER_OPTS}
     commands:
-      - cd resources/drupal/${COMPOSER_TEMPLATE}
-      - ./vendor/bin/run project:phpcs ${RUNNER_OPTS}
+      - ./vendor/bin/run drupal:phpcs $${TEMPLATE_RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
       status:  [ failure, success ]
 
   behat:
-    image: fpfis/php71-build
+    image: fpfis/php${PHP_VERSION}-build
+    environment:
+      TEMPLATE_RUNNER_OPTS: --working-dir=resources/drupal/${TEMPLATE} ${RUNNER_OPTS}
     commands:
-      - cd resources/drupal/${COMPOSER_TEMPLATE}
-      - ./vendor/bin/run drupal:core-behat ${RUNNER_OPTS}
+      - ./vendor/bin/run drupal:core-behat $${TEMPLATE_RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
       status:  [ failure, success ]
 
   enable:
-    image: fpfis/php71-build
+    image: fpfis/php${PHP_VERSION}-build
+    environment:
+      TEMPLATE_RUNNER_OPTS: --working-dir=resources/drupal/${TEMPLATE} ${RUNNER_OPTS}
     commands:
-      - cd resources/drupal/${COMPOSER_TEMPLATE}
-      - ./vendor/bin/run drupal:enable-all ${RUNNER_OPTS}
+      - ./vendor/bin/run drupal:enable-all $${TEMPLATE_RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
       status:  [ failure, success ]
 
   data:
-    image: fpfis/php71-build
+    image: fpfis/php${PHP_VERSION}-build
+    environment:
+      TEMPLATE_RUNNER_OPTS: --working-dir=resources/drupal/${TEMPLATE} ${RUNNER_OPTS}
     commands:
-      - cd resources/drupal/${COMPOSER_TEMPLATE}
-      - ./vendor/bin/run project:generate-data ${RUNNER_OPTS}
+      - ./vendor/bin/run drupal:generate-data $${TEMPLATE_RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
