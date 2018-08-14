@@ -131,9 +131,13 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
 
 
         if ($this->taskExec("vendor/bin/drush -r $drupalRoot en devel_generate -y --color=1")->run()) {
+            // Generate a vocabulary if needed.
+            if (!empty($vocabularyName) || $this->taskExec("vendor/bin/drush -r $drupalRoot generate-vocabs 1 --color=1")->run()) {
+                $vocabularyName = $this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' sqlq "select name from taxonomy_vocabulary limit 1;"')->printOutput(false)->run()->getMessage();
+            }
+            // Generate other data.
             $taskCollection = array(
                 $this->taskExec("vendor/bin/drush -r $drupalRoot generate-users 50 --kill --pass=password --color=1"),
-                $this->taskExec("vendor/bin/drush -r $drupalRoot generate-vocabs 1 --color=1"),
                 $this->taskExec("vendor/bin/drush -r $drupalRoot generate-terms $vocabularyName 50 --kill --color=1"),
                 $this->taskExec("vendor/bin/drush -r $drupalRoot generate-content 50 3 --kill --types=$contentTypes --kill --color=1"),
                 $this->taskExec("vendor/bin/drush -r $drupalRoot generate-menus 2 50 --kill --color=1")
