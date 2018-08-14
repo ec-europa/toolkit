@@ -58,6 +58,7 @@ templates:
         - migrate_example_oracle
         - multisite_drupal_language_negociation
         - multisite_notifications_og
+        - multisite_registration
         - ne_dgt_rules
         - ne_tmgmt_dgt_ftt_translator
         - news_og
