@@ -54,8 +54,8 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
             ->stopOnFail()
             ->remove(getcwd() . '/template')
             ->remove(getcwd() . '/build')
-            ->symlink(getcwd() . '/' . $workingDir . '/web', getcwd() . '/build')
-            ->symlink(getcwd() . '/' . $workingDir, getcwd() . '/template')
+            ->symlink(getcwd() . '/' . $workingDir . '/web', 'build')
+            ->symlink(getcwd() . '/' . $workingDir, 'template')
             ->run();
         $this->taskWriteToFile('resources/drupal/' . $template . '/runner.yml')
             ->textFromFile('resources/drupal/runner.yml')
