@@ -96,7 +96,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $enableModules = array_diff($disabled, $enableallExclude);
         $disableModules = $enableallExclude;
         $taskCollection = array();
-        $solrModules = array('apachesolr', 'wiki_core');
+        $solrModules = array('apachesolr', 'wiki_core', 'wiki_standard');
 
         if (!empty(array_intersect($solrModules, $enabled))) {
             $taskCollection[] = $this->taskExec("vendor/bin/drush -r $drupalRoot solr-set-env-url  http://solr:8983/solr/d7_apachesolr -y --color=1");
