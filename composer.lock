@@ -1108,27 +1108,27 @@
         },
         {
             "name": "openeuropa/task-runner",
-            "version": "0.7.0",
+            "version": "0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/task-runner.git",
-                "reference": "1a31c93de9690abc6586fc03eef6929c027f2e57"
+                "reference": "f4253ad9900abe83bd06f50a2e4152da60ee125c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/task-runner/zipball/1a31c93de9690abc6586fc03eef6929c027f2e57",
-                "reference": "1a31c93de9690abc6586fc03eef6929c027f2e57",
+                "url": "https://api.github.com/repos/openeuropa/task-runner/zipball/f4253ad9900abe83bd06f50a2e4152da60ee125c",
+                "reference": "f4253ad9900abe83bd06f50a2e4152da60ee125c",
                 "shasum": ""
             },
             "require": {
-                "consolidation/robo": "^1.2",
+                "consolidation/robo": "^1.2.2",
                 "gitonomy/gitlib": "~1",
                 "jakeasmith/http_build_url": "^1.0",
                 "nuvoleweb/robo-config": "~0.2"
             },
             "require-dev": {
-                "openeuropa/code-review": "^0.2",
-                "phpunit/phpunit": "^5"
+                "openeuropa/code-review": "~0.3",
+                "phpunit/phpunit": "^5||^6.0"
             },
             "bin": [
                 "bin/run"
@@ -1141,9 +1141,9 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "EUPL-1.1"
+                "EUPL-1.2"
             ],
-            "time": "2018-06-25T11:03:10+00:00"
+            "time": "2018-08-13T11:47:34+00:00"
         },
         {
             "name": "pear/console_table",
