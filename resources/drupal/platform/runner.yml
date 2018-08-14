@@ -29,7 +29,7 @@ drupal:
     update: "false"
     locale: "en"
     sites_subdir: "default"
-    enable_all_exclude: "communities,e_library_og,links_og,migrate_example_oracle,multisite_drupal_language_negociation,multisite_notifications_og,ne_dgt_rules,ne_tmgmt_dgt_ftt_translator,news_og,nexteuropa_dgt_connector,nexteuropa_varnish,services_oauth,simplenews_statistics_ga,survey_og,tmgmt_dgt_connector,tmgmt_dgt_connector_cart,tmgmt_dgt_html,tmgmt_og,tmgmt_poetry,tmgmt_workbench,wiki_og,xml_field_test_assets"
+    enable_all_exclude: "nexteuropa_varnish,multisite_translations,nexteuropa_dgt_connector"
 
   # Administrator account information.
   account:
@@ -60,6 +60,7 @@ drupal:
     - mkdir -p ${drupal.root}/sites/${drupal.site.sites_subdir}/files/private_files
     - cp -f resources/settings.local.php ${drupal.root}/sites/${drupal.site.sites_subdir}/settings.local.php
   post_install:
+    - ${runner.bin_dir}/drush -r ${drupal.root} solr-set-env-url http://solr:8983/solr/d7_apachesolr || echo "No solr detected"
     - ${runner.bin_dir}/drush -r ${drupal.root} cron
 
 # -----------------------------------------------------------------------------

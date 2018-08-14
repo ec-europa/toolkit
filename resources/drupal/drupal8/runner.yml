@@ -60,6 +60,7 @@ drupal:
     - mkdir -p ${drupal.root}/sites/${drupal.site.sites_subdir}/files/private_files
     - cp -f resources/settings.local.php ${drupal.root}/sites/${drupal.site.sites_subdir}/settings.local.php
   post_install:
+    - ${runner.bin_dir}/drush -r ${drupal.root} solr-set-env-url http://solr:8983/solr/d7_apachesolr || echo "No solr detected"
     - ${runner.bin_dir}/drush -r ${drupal.root} cron
 
 # -----------------------------------------------------------------------------
