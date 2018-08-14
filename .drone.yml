@@ -37,12 +37,12 @@ matrix:
     - COMPOSER_TEMPLATE: drupal7
       DRUPAL_PROFILE: standard
       PHP_VERSION: 71
-    - COMPOSER_TEMPLATE: drupal8
-      DRUPAL_PROFILE: standard
-      PHP_VERSION: 71
-    - COMPOSER_TEMPLATE: platform
-      DRUPAL_PROFILE: multisite_drupal_standard
-      PHP_VERSION: 71
+    # - COMPOSER_TEMPLATE: drupal8
+    #   DRUPAL_PROFILE: standard
+    #   PHP_VERSION: 71
+    # - COMPOSER_TEMPLATE: platform
+    #   DRUPAL_PROFILE: multisite_drupal_standard
+    #   PHP_VERSION: 71
 
 # ==============================================================================
 # Main services
@@ -72,21 +72,23 @@ pipeline:
     commands:
       - composer install --ansi --no-suggest
       - ln -sf $(pwd)/runner.yml $(pwd)/resources/drupal/${COMPOSER_TEMPLATE}/runner.yml
+      - rm -rf build && ln -sf $(pwd)/resources/drupal/${COMPOSER_TEMPLATE}/web build
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   install:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - "./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} project:install -o 'drupal.site.profile: ${DRUPAL_PROFILE}' ${RUNNER_OPTS}"
-      - "rm -rf build && ln -sf $(pwd)/resources/drupal/${COMPOSER_TEMPLATE}/web build"
+      - cd resources/drupal/${COMPOSER_TEMPLATE}
+      - ./vendor/bin/run project:install ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   phpcs:
     image: fpfis/php71-build
     commands:
-      - "./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} project:phpcs ${RUNNER_OPTS}"
+      - cd resources/drupal/${COMPOSER_TEMPLATE}
+      - ./vendor/bin/run project:phpcs ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -95,7 +97,8 @@ pipeline:
   behat:
     image: fpfis/php71-build
     commands:
-      - "./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} drupal:core-behat ${RUNNER_OPTS}"
+      - cd resources/drupal/${COMPOSER_TEMPLATE}
+      - ./vendor/bin/run drupal:core-behat ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -104,7 +107,8 @@ pipeline:
   enable:
     image: fpfis/php71-build
     commands:
-      - "./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} drupal:enable-all ${RUNNER_OPTS}"
+      - cd resources/drupal/${COMPOSER_TEMPLATE}
+      - ./vendor/bin/run drupal:enable-all ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -113,7 +117,8 @@ pipeline:
   data:
     image: fpfis/php71-build
     commands:
-      - "./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} drupal:generate-data ${RUNNER_OPTS}"
+      - cd resources/drupal/${COMPOSER_TEMPLATE}
+      - ./vendor/bin/run project:generate-data ${RUNNER_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
