@@ -78,7 +78,7 @@ pipeline:
   install:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} project:install -o drupal.site.profile: ${DRUPAL_PROFILE} ${RUNNER_OPTS}
+      - "./vendor/bin/run --working-dir=$(pwd)/resources/drupal/${COMPOSER_TEMPLATE} project:install -o 'drupal.site.profile: ${DRUPAL_PROFILE}' ${RUNNER_OPTS}""
       - rm -rf build && ln -sf $(pwd)/resources/drupal/${COMPOSER_TEMPLATE}/web build
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
