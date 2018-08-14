@@ -69,5 +69,6 @@ templates:
         - tmgmt_og
         - tmgmt_poetry
         - tmgmt_workbench
+        - uuid_services_example
         - wiki_og
         - xml_field_test_assets
