@@ -132,7 +132,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     public function drupalCoreBehat()
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
-        $drupalProfile = $this->getConfig()->get('drupal.profile');
+        $drupalProfile = $this->getConfig()->get('drupal.site.profile');
         $drupalVersion = $this->getConfig()->get('drupal.version');
         $drupalSite = $this->getConfig()->get('drupal.site.sites_subdir');
         $sitePath = $drupalRoot . '/sites/' . $drupalSite;
