@@ -111,16 +111,17 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     ])
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
+        $drupalVersion = $this->getConfig()->get('drupal.version');
         $drupalSite = $this->getConfig()->get('drupal.site.sites_subdir');
         $sitePath = $drupalRoot . '/sites/' . $drupalSite;
 
         $this->taskFilesystemStack()->stopOnFail()
             ->mkdir('web/sites/all/modules/contrib')
-            ->symlink(getcwd() . '/vendor/drupal/drupal-extension/fixtures/drupal7/modules/behat_test', getcwd() . '/web/sites/all/modules/contrib/behat_test')
+            ->symlink(getcwd() . '/vendor/drupal/drupal-extension/fixtures/drupal' . $drupalVersion . '/modules/behat_test', getcwd() . '/web/sites/all/modules/contrib/behat_test')
             ->copy('behat.yml', 'vendor/drupal/drupal-extension/behat.yml', true)
             ->run();
         if ($this->taskExec("vendor/bin/drush -r web en locale behat_test -y --color=1")->run()) {
-            $this->taskExec('./vendor/bin/behat -c vendor/drupal/drupal-extension/behat.yml --colors -v')->run();
+            return $this->taskExec('./vendor/bin/behat -c vendor/drupal/drupal-extension/behat.yml --colors -v')->run();
         }
     }
 }
