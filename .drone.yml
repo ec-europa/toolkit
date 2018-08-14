@@ -26,10 +26,6 @@ matrix:
   PHP_VERSION:
 #    - 56
     - 71
-  RUNNER_OPTS:
-    - "--ansi --progress-delay=300"
-  TEMPLATE_WORKDIR:
-    - "--working-dir=/test/toolkit/template"
 
 # ==============================================================================
 # Main services
@@ -62,14 +58,16 @@ pipeline:
   template:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run toolkit:setup-template --template=${TEMPLATE} ${RUNNER_OPTS}
+      - rm -rf /var/www/html
+      - ./vendor/bin/run toolkit:setup-template --template=${TEMPLATE} --ansi --progress-delay=300
+      - ls -la /var/www
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   install:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:install ${TEMPLATE_WORKDIR} ${RUNNER_OPTS}
+      - ./vendor/bin/run drupal:install --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -78,7 +76,7 @@ pipeline:
   phpcs:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:phpcs ${TEMPLATE_WORKDIR} ${RUNNER_OPTS}
+      - ./vendor/bin/run drupal:phpcs --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -87,7 +85,7 @@ pipeline:
   behat:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:core-behat ${TEMPLATE_WORKDIR} ${RUNNER_OPTS}
+      - ./vendor/bin/run drupal:core-behat --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -96,7 +94,7 @@ pipeline:
   enable:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:enable-all ${TEMPLATE_WORKDIR} ${RUNNER_OPTS}
+      - ./vendor/bin/run drupal:enable-all --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -105,7 +103,7 @@ pipeline:
   data:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:generate-data ${TEMPLATE_WORKDIR} ${RUNNER_OPTS}
+      - ./vendor/bin/run drupal:generate-data --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
