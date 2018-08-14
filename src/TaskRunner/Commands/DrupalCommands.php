@@ -91,24 +91,31 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     /**
      * @command drupal:enable-all
      *
-     * @option disabled Comma seperated list of modules to disable.
+     * @option disable  Comma seperated list of modules to disable.
      *
      * @param array $options
      */
     public function drupalEnableAll(array $options = [
-      'disabled' => InputOption::VALUE_OPTIONAL,
+      'disable' => InputOption::VALUE_OPTIONAL,
     ])
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
-        $enabled = explode(PHP_EOL, $this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' sqlq "select name from system where status=0 and name not like \'%_test%\';"')->printOutput(false)->run()->getMessage());
-        $disabled = explode(',', $options['disabled']);
-        $enableModules = implode(',', array_diff($enabled, $disabled));
-        $disableModules = implode(',', array_diff($disabled, $enabled));
+        $drupalVersion = $this->getConfig()->get('drupal.version');
+        $disable = explode(',', $options['disable']);
+        $systemList = array_keys(json_decode($this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' pm-list --format=json')->printOutput(false)->run()->getMessage(), true));
+        $enabled = array_keys(json_decode($this->taskExec('./vendor/bin/drush -r ' . $drupalRoot . ' pm-list --format=json --status=enabled')->printOutput(false)->run()->getMessage(), true));
+        $disabled = array_diff($systemList, $enabled);
+
+        $enableModules = implode(',', array_diff($disabled, $disable));
+        $disableModules = implode(',', $disable);
 
         $taskCollection = array(
-            $this->taskExec("vendor/bin/drush -r $drupalRoot en $enableModules -y"),
-            $this->taskExec("vendor/bin/drush -r $drupalRoot dis $disableModules -y"),
+            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-enable $enableModules -y"),
         );
+        
+        $taskCollection[] = $drupalVersion == 7 ?
+            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-disable $disableModules -y") :
+            $this->taskExec("vendor/bin/drush -r $drupalRoot pm-uninstall $disableModules -y");
 
         return $this->collectionBuilder()->addTaskList($taskCollection);
     }
