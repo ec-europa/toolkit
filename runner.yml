@@ -50,3 +50,4 @@ templates:
       name: multisite_drupal_standard
       enable_all_exclude:
         - nexteuropa_varnish
+        - multisite_translations
