@@ -39,8 +39,6 @@ services:
     image: percona/percona-server:5.7
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-  selenium:
-    image: selenium/standalone-chrome
 
 # ==============================================================================
 # Pipelines
@@ -50,8 +48,14 @@ pipeline:
   # ============================================================================
   # Setup section:
   # ============================================================================
+  solr:
+    image: fpfis/solr5
+    group: setup
+    detach: true
+
   toolkit:
     image: fpfis/php${PHP_VERSION}-build
+    group: setup
     commands:
       - composer install --ansi --no-suggest
     volumes:
@@ -64,15 +68,6 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  install:
-    image: fpfis/php${PHP_VERSION}-build
-    commands:
-      - /usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`" ./vendor/bin/run drupal:site-install --working-dir=/test/toolkit/template --ansi --progress-delay=300
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-    when:
-      status: [ failure, success ]
-
   phpcs:
     image: fpfis/php${PHP_VERSION}-build
     commands:
@@ -81,6 +76,21 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
       status: [ failure, success ]
+
+  install:
+    image: fpfis/php${PHP_VERSION}-build
+    group: install
+    commands:
+      - /usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`" ./vendor/bin/run drupal:site-install --working-dir=/test/toolkit/template --ansi --progress-delay=300
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status: [ failure, success ]
+
+  selenium:
+    image: selenium/standalone-chrome
+    group: install
+    detach: true
 
   behat:
     image: fpfis/php${PHP_VERSION}-build
