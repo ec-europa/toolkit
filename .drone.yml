@@ -77,14 +77,14 @@ pipeline:
   template:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run toolkit:setup-template --template=${TEMPLATE} $${RUNNER_OPTS}
+      - ./vendor/bin/run toolkit:setup-template --template=${TEMPLATE} $RUNNER_OPTS
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   install:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:install $${TEMPLATE_RUNNER_OPTS}
+      - ./vendor/bin/run drupal:install $TEMPLATE_RUNNER_OPTS
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -93,7 +93,7 @@ pipeline:
   phpcs:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:phpcs $${TEMPLATE_RUNNER_OPTS}
+      - ./vendor/bin/run drupal:phpcs $TEMPLATE_RUNNER_OPTS
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -102,7 +102,7 @@ pipeline:
   behat:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:core-behat $${TEMPLATE_RUNNER_OPTS}
+      - ./vendor/bin/run drupal:core-behat $TEMPLATE_RUNNER_OPTS
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -111,7 +111,7 @@ pipeline:
   enable:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:enable-all $${TEMPLATE_RUNNER_OPTS}
+      - ./vendor/bin/run drupal:enable-all $TEMPLATE_RUNNER_OPTS
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
@@ -120,7 +120,7 @@ pipeline:
   data:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:generate-data $${TEMPLATE_RUNNER_OPTS}
+      - ./vendor/bin/run drupal:generate-data $TEMPLATE_RUNNER_OPTS
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
