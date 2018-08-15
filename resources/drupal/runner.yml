@@ -61,7 +61,7 @@ drupal:
     - cp -f resources/settings.local.php ${drupal.root}/sites/${drupal.site.sites_subdir}/settings.local.php
   post_install:
     - chown -R root:root ${drupal.root}
-    - chown -R 775 ${drupal.root}/sites/${drupal.site.sites_subdir}/files
+    - chmod -R 775 ${drupal.root}/sites/${drupal.site.sites_subdir}/files
     - find ${drupal.root}/sites/${drupal.site.sites_subdir}/files -type f -exec chmod 664 {} +
     - ${runner.bin_dir}/drush -r ${drupal.root} cron
 
