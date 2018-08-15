@@ -18,7 +18,7 @@ runner:
 drupal:
   root: "web"
   root_absolute: ~
-  base_url: "http://google.verbruggenlex"
+  base_url: "http://web:8080"
   version: 7
 
   # Basic Drupal site information.

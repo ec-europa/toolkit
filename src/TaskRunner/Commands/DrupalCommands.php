@@ -42,25 +42,34 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $enableAllExclude = implode(',', $this->getConfig()->get("templates.$template.profile.enable_all_exclude"));
 
         $taskCollection = array(
+            // Run composer install.
             $this->taskComposerInstall()
                 ->workingDir($workingDir)
                 ->option('no-suggest')
                 ->ansi(),
+            // Initialize git for grumphp.
             $this->taskGitStack()
                 ->stopOnFail()
                 ->dir($workingDir)
                 ->exec('init'),
-            $this->taskFilesystemStack()
-                ->stopOnFail()
-                ->remove(getcwd() . '/template')
-                ->remove(getcwd() . '/build')
-                ->symlink(getcwd() . '/' . $workingDir . '/web', 'build')
-                ->symlink(getcwd() . '/' . $workingDir, 'template'),
+            // Generate runner.yml for template.
             $this->taskWriteToFile('resources/drupal/' . $template . '/runner.yml')
                 ->textFromFile('resources/drupal/runner.yml')
                 ->place('version', $drupalVersion)
                 ->place('profile', $drupalProfile)
                 ->place('enable_all_exclude', $enableAllExclude),
+            // Setup drush base url.
+            $this->taskExec('./vendor/bin/run')
+                ->dir(getcwd() . '/' . $workingDir)
+                ->arg('drupal:drush-setup'),
+            // Symlink resources and build dirs.
+            $this->taskFilesystemStack()
+                ->stopOnFail()
+                ->remove(getcwd() . '/template')
+                ->remove(getcwd() . '/build')
+                ->symlink(getcwd() . '/resources/drush/drush8/commands', getcwd() . '/' . $workingDir . '/web/drush/commands')
+                ->symlink(getcwd() . '/' . $workingDir . '/web', 'build')
+                ->symlink(getcwd() . '/' . $workingDir, 'template'),
         );
 
         return $this->collectionBuilder()->addTaskList($taskCollection);
@@ -167,6 +176,24 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         }
         else {
             $this->say("Skipping Drupal Core Behat tests. Only available on 'standard' profile.");
+        }
+    }
+
+    /**
+     * @command drupal:drush-smoke
+     */
+    public function drupalDrushSmoke()
+    {
+        $drupalRoot = $this->getConfig()->get('drupal.root');
+        $drupalVersion = $this->getConfig()->get('drupal.version');
+        $drupalSite = $this->getConfig()->get('drupal.site.sites_subdir');
+        $sitePath = $drupalRoot . '/sites/' . $drupalSite;
+
+        if ($drupalVersion == 7) {
+            return $this->taskExec("vendor/bin/drush -r $drupalRoot watchdog-smoketest --color=1");
+        }
+        else {
+            $this->say("Skipping Drupal Drush Smoke tests. Only available for Drupal 7 at the moment.");
         }
     }
 }

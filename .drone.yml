@@ -24,8 +24,8 @@ matrix:
     - drupal8
     - platform
   PHP_VERSION:
-    - 56
     - 71
+    - 56
   # Temporarily run only 1.
   include:
     - TEMPLATE: platform
@@ -118,6 +118,15 @@ pipeline:
     image: fpfis/php${PHP_VERSION}-build
     commands:
       - ./vendor/bin/run drupal:generate-data --working-dir=/test/toolkit/template --ansi --progress-delay=300
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status: [ failure, success ]
+
+  smoke:
+    image: fpfis/php${PHP_VERSION}-build
+    commands:
+      - ./vendor/bin/run drupal:drush-smoke --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:
