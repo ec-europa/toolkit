@@ -39,7 +39,7 @@ services:
     image: fpfis/httpd-php-dev:${PHP_VERSION}
     environment:
       - DOCUMENT_ROOT=/test/toolkit/build
-      _ DAEMON_USER=root
+      - DAEMON_USER=root
   mysql:
     image: percona/percona-server:5.7
     environment:
