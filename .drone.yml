@@ -7,6 +7,8 @@
 clone:
   git:
     image: plugins/git:next
+    environment:
+      - CI=drone
 
 # ==============================================================================
 # Workspace location.
@@ -37,7 +39,6 @@ matrix:
 services:
   web:
     image: fpfis/php${PHP_VERSION}-build
-    entrypoint: [ "chown -R 1000:1000 ./", "/run.sh" ]
     environment:
       - DOCUMENT_ROOT=/test/toolkit/build
   mysql:
@@ -62,6 +63,7 @@ pipeline:
     image: fpfis/php${PHP_VERSION}-build
     group: setup
     commands:
+      - ls -la
       - composer install --ansi --no-suggest
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
