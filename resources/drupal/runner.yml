@@ -61,7 +61,7 @@ drupal:
     - mkdir -p ${drupal.root}/sites/${drupal.site.sites_subdir}/files/xmlsitemap
     - mkdir -p ${drupal.root}/sites/${drupal.site.sites_subdir}/files/print_pdf/print_pdf_mpdf/tmp
     - mkdir -p ${drupal.root}/sites/${drupal.site.sites_subdir}/files/print_pdf/print_pdf_mpdf/ttfontdata
-    - chmod -R 777 ${drupal.root}/sites/${drupal.site.sites_subdir}/files
+    - chown -R 1000:1000 ${drupal.root}
     - cp -f resources/settings.local.php ${drupal.root}/sites/${drupal.site.sites_subdir}/settings.local.php
   post_install:
     - ${runner.bin_dir}/drush -r ${drupal.root} cron
