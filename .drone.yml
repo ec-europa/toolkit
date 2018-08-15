@@ -26,10 +26,10 @@ matrix:
   PHP_VERSION:
     - 71
     - 56
-  # Temporarily run only 1.
-  include:
-    - TEMPLATE: platform
-      PHP_VERSION: 71
+  # # Temporarily run only 1.
+  # include:
+  #   - TEMPLATE: platform
+  #     PHP_VERSION: 71
 
 # ==============================================================================
 # Main services
@@ -114,7 +114,7 @@ pipeline:
     when:
       status: [ failure, success ]
 
-  data:
+  content:
     image: fpfis/php${PHP_VERSION}-build
     commands:
       - ./vendor/bin/run drupal:generate-data --working-dir=/test/toolkit/template --ansi --progress-delay=300

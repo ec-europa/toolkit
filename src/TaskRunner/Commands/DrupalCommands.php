@@ -189,11 +189,11 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $drupalSite = $this->getConfig()->get('drupal.site.sites_subdir');
         $sitePath = $drupalRoot . '/sites/' . $drupalSite;
 
-        if ($drupalVersion == 7) {
+        if ($drupalVersion == 7 && $this->taskExec("vendor/bin/drush -r $drupalRoot en dblog -y --color=1")->run()) {
             return $this->taskExec("vendor/bin/drush -r $drupalRoot watchdog-smoketest --color=1");
         }
         else {
-            $this->say("Skipping Drupal Drush Smoke tests. Only available for Drupal 7 at the moment.");
+            return $this->say("Skipping Drupal Drush Smoke tests. Only available for Drupal 7 at the moment.");
         }
     }
 }
