@@ -63,8 +63,10 @@ drupal:
     - mkdir -p ${drupal.root}/sites/${drupal.site.sites_subdir}/files/print_pdf/print_pdf_mpdf/ttfontdata
     - chmod -R 775 ${drupal.root}/sites/${drupal.site.sites_subdir}/files
     - find ${drupal.root}/sites/${drupal.site.sites_subdir}/files -type f -exec chmod 664 {} +
+    - ls -la ${drupal.root}/sites/${drupal.site.sites_subdir}/files
     - cp -f resources/settings.local.php ${drupal.root}/sites/${drupal.site.sites_subdir}/settings.local.php
   post_install:
+    - ls -la ${drupal.root}/sites/${drupal.site.sites_subdir}/files
     - ${runner.bin_dir}/drush -r ${drupal.root} cron
 
 # -----------------------------------------------------------------------------
