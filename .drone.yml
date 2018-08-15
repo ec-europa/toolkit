@@ -26,10 +26,10 @@ matrix:
   PHP_VERSION:
     - 71
     - 56
-  # # Temporarily run only 1.
-  # include:
-  #   - TEMPLATE: platform
-  #     PHP_VERSION: 71
+  # Temporarily run only 1.
+  include:
+    - TEMPLATE: platform
+      PHP_VERSION: 71
 
 # ==============================================================================
 # Main services
@@ -65,7 +65,7 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  template:
+  project:
     image: fpfis/php${PHP_VERSION}-build
     commands:
       - ./vendor/bin/run toolkit:setup-template --template=${TEMPLATE} --ansi --progress-delay=300
