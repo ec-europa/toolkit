@@ -37,7 +37,7 @@ matrix:
 services:
   web:
     image: fpfis/php${PHP_VERSION}-build
-    entrypoint: [ "chown -R 1000:1000 ./", "/run.sh" ]
+    entrypoint: [ "chown", "-R", "1000:1000", "./", "&&", "/run.sh" ]
     environment:
       - DOCUMENT_ROOT=/test/toolkit/build
   mysql:
