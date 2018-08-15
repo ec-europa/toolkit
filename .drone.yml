@@ -39,6 +39,7 @@ matrix:
 services:
   web:
     image: fpfis/php${PHP_VERSION}-build
+    entrypoint: [ "/run.sh", "/bin/bash" ]
     environment:
       - DOCUMENT_ROOT=/test/toolkit/build
   mysql:
