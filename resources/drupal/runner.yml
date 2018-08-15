@@ -58,7 +58,8 @@ drupal:
   # Configuration token replacement is supported too.
   pre_install:
     - mkdir -p ${drupal.root}/sites/${drupal.site.sites_subdir}/files/private_files
-    - mkdir -p ${drupal.root}/sites/${drupal.site.sites_subdir}/files/print_pdf/print_pdf_mpdf
+    - mkdir -p ${drupal.root}/sites/${drupal.site.sites_subdir}/files/print_pdf/print_pdf_mpdf/tmp
+    - mkdir -p ${drupal.root}/sites/${drupal.site.sites_subdir}/files/print_pdf/print_pdf_mpdf/ttfontdata
     - cp -f resources/settings.local.php ${drupal.root}/sites/${drupal.site.sites_subdir}/settings.local.php
   post_install:
     - ${runner.bin_dir}/drush -r ${drupal.root} cron

@@ -205,7 +205,7 @@ function drush_custom_watchdog_smoketest() {
 
       $count_watchdog = count($watchdog_messages);
       if ($count_watchdog >= 1) {
-        drush_log(dt('Generated !count_watchdog watchdog entries of severity less than 5.', array('!count_watchdog' => $count_watchdog)), 'warning');
+        drush_log(dt('Generated !count_watchdog watchdog entries of severity less than 5.', array('!count_watchdog' => $count_watchdog)), 'error');
         return $table;
       }
       else {
