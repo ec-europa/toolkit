@@ -58,7 +58,7 @@ drupal:
   # Configuration token replacement is supported too.
   pre_install:
     - mkdir -p ${drupal.root}/sites/${drupal.site.sites_subdir}/files/private_files
-    - chown -R web:web ${drupal.root}
+    - chown -R 1000:1000 ${drupal.root}
   post_install:
     - ls -la ${drupal.root}/sites/${drupal.site.sites_subdir}/files
     - ${runner.bin_dir}/drush -r ${drupal.root} cron
