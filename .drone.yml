@@ -7,8 +7,6 @@
 clone:
   git:
     image: plugins/git:next
-    environment:
-      - CI=drone
 
 # ==============================================================================
 # Workspace location.
@@ -26,20 +24,19 @@ matrix:
     - drupal8
     - platform
   PHP_VERSION:
-    - 71
-    - 56
+    - 7.1
+    - 5.6
   # Temporarily run only 1.
   include:
     - TEMPLATE: platform
-      PHP_VERSION: 71
+      PHP_VERSION: 7.1
 
 # ==============================================================================
 # Main services
 # ==============================================================================
 services:
   web:
-    image: fpfis/php${PHP_VERSION}-build
-    entrypoint: [ "/run.sh", "/bin/bash" ]
+    image: fpfis/httpd-php:${PHP_VERSION}
     environment:
       - DOCUMENT_ROOT=/test/toolkit/build
   mysql:
@@ -61,7 +58,7 @@ pipeline:
     detach: true
 
   toolkit:
-    image: fpfis/php${PHP_VERSION}-build
+    image: fpfis/httpd-php:${PHP_VERSION}
     group: setup
     commands:
       - composer install --ansi --no-suggest
@@ -69,14 +66,14 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   project:
-    image: fpfis/php${PHP_VERSION}-build
+    image: fpfis/httpd-php:${PHP_VERSION}
     commands:
       - ./vendor/bin/run toolkit:setup-template --template=${TEMPLATE} --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   phpcs:
-    image: fpfis/php${PHP_VERSION}-build
+    image: fpfis/httpd-php:${PHP_VERSION}
     commands:
       - ./vendor/bin/run drupal:phpcs --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
@@ -85,7 +82,7 @@ pipeline:
       status: [ failure, success ]
 
   install:
-    image: fpfis/php${PHP_VERSION}-build
+    image: fpfis/httpd-php:${PHP_VERSION}
     group: install
     commands:
       - /usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`" ./vendor/bin/run drupal:site-install --working-dir=/test/toolkit/template --ansi --progress-delay=300
@@ -100,7 +97,7 @@ pipeline:
     detach: true
 
   behat:
-    image: fpfis/php${PHP_VERSION}-build
+    image: fpfis/httpd-php:${PHP_VERSION}
     commands:
       - ./vendor/bin/run drupal:core-behat --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
@@ -109,7 +106,7 @@ pipeline:
       status: [ failure, success ]
 
   enable:
-    image: fpfis/php${PHP_VERSION}-build
+    image: fpfis/httpd-php:${PHP_VERSION}
     commands:
       - ./vendor/bin/run drupal:enable-all --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
@@ -118,7 +115,7 @@ pipeline:
       status: [ failure, success ]
 
   content:
-    image: fpfis/php${PHP_VERSION}-build
+    image: fpfis/httpd-php:${PHP_VERSION}
     commands:
       - ./vendor/bin/run drupal:generate-data --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
@@ -127,7 +124,7 @@ pipeline:
       status: [ failure, success ]
 
   smoke:
-    image: fpfis/php${PHP_VERSION}-build
+    image: fpfis/httpd-php:${PHP_VERSION}
     commands:
       - ./vendor/bin/run drupal:drush-smoke --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
