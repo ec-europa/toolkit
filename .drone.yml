@@ -28,10 +28,10 @@ matrix:
   PHP_VERSION:
     - 71
     - 56
-  # Temporarily run only 1.
-  include:
-    - TEMPLATE: platform
-      PHP_VERSION: 71
+  # # Temporarily run only 1.
+  # include:
+  #   - TEMPLATE: platform
+  #     PHP_VERSION: 71
 
 # ==============================================================================
 # Main services
@@ -135,13 +135,13 @@ pipeline:
     when:
       status: [ failure, success ]
 
-  debug:
-    image: fpfis/drone-frpc-plugin:latest
-    secrets: [ frpc_token, frpc_server ]
-    environment:
-      - PLUGIN_ENDPOINT=web:8080
-      - PLUGIN_GEN_AUTH=yes
-      - PLUGIN_DOMAIN=${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
-      - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
-    when:
-      status: [ failure, success ]
+  # debug:
+  #   image: fpfis/drone-frpc-plugin:latest
+  #   secrets: [ frpc_token, frpc_server ]
+  #   environment:
+  #     - PLUGIN_ENDPOINT=web:8080
+  #     - PLUGIN_GEN_AUTH=yes
+  #     - PLUGIN_DOMAIN=${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
+  #     - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
+  #   when:
+  #     status: [ failure, success ]
