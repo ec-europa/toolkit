@@ -91,7 +91,7 @@ composer:
           drupal/core: "8.*"
         extra:
           installer-paths:
-            web/: ["type:drupal-core"]
+            web/: ["drupal/drupal"]
             web/profiles/{$name}/: ["type:drupal-profile"]
             web/sites/all/drush/{$name}/: ["type:drupal-drush"]
             web/sites/all/libraries/{$name}/: ["type:drupal-library"]
@@ -153,3 +153,9 @@ composer:
           ec-europa/platform-deploy: "^2.5"
         replace:
           drupal/drupal: "*"
+        extra:
+          installer-paths:
+            vendor/drupal/drupal/: ["ec-europa/platform-deploy"]
+        scripts:
+          post-install-cmd: [ "./vendor/bin/run drupal:platform-rsync" ]
+          post-update-cmd: [ "./vendor/bin/run drupal:platform-rsync" ]

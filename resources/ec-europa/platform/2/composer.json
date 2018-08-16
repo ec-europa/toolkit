@@ -26,7 +26,7 @@
     "extra": {
         "installer-paths": {
             "web/": [
-                "type:drupal-core"
+                "drupal/drupal"
             ],
             "web/profiles/{$name}/": [
                 "type:drupal-profile"
@@ -42,6 +42,9 @@
             ],
             "web/sites/all/themes/contrib/{$name}/": [
                 "type:drupal-theme"
+            ],
+            "vendor/drupal/drupal/": [
+                "ec-europa/platform-deploy"
             ]
         },
         "patches": {
@@ -68,5 +71,13 @@
     ],
     "replace": {
         "drupal/drupal": "*"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "./vendor/bin/run drupal:platform-rsync"
+        ],
+        "post-update-cmd": [
+            "./vendor/bin/run drupal:platform-rsync"
+        ]
     }
 }

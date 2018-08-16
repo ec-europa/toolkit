@@ -31,15 +31,16 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     {
         $workingDir = 'template';
         $taskCollection = array(
+            // Symlink runner binary.
+            $this->taskFilesystemStack()
+                ->stopOnFail()
+                ->mkdir(getcwd() . '/' . $workingDir . '/vendor/bin')
+                ->symlink(getcwd() . '/vendor/bin/run', getcwd() . '/' . $workingDir . '/vendor/bin/run'),
             // Run composer install.
             $this->taskComposerInstall()
                 ->workingDir($workingDir)
                 ->option('no-suggest')
                 ->ansi(),
-            // Symlink runner binary.
-            $this->taskFilesystemStack()
-                ->stopOnFail()
-                ->symlink(getcwd() . '/vendor/bin/run', getcwd() . '/' . $workingDir . '/vendor/bin/run'),
             // Initialize git for grumphp.
             $this->taskGitStack()
                 ->stopOnFail()
@@ -243,5 +244,18 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     {
         // Run grumphp.
         return $this->taskExec("./vendor/bin/grumphp run")->run();
+    }
+
+    /**
+     * @command drupal:platform-rsync
+     */
+    public function drupalPlatformRsync()
+    {
+        // Rsync platform to root.
+        $drupalRoot = $this->getConfig()->get('drupal.root');
+        $composer = json_decode(file_get_contents('composer.json'), true);
+        if (isset($composer['extra']['installer-paths']['vendor/drupal/drupal/'])) {
+            return $this->taskRsync()->fromPath('vendor/drupal/drupal/')->toPath("$drupalRoot/")->recursive()->option('copy-links')->run();
+        }
     }
 }
