@@ -28,10 +28,10 @@ matrix:
   PHP_VERSION:
     - 71
     - 56
-  # # Temporarily run only 1.
-  # include:
-  #   - TEMPLATE: platform
-  #     PHP_VERSION: 71
+  # Temporarily run only 1.
+  include:
+    - TEMPLATE: drupal.drupal.7
+      PHP_VERSION: 71
 
 # ==============================================================================
 # Main services
@@ -64,85 +64,85 @@ pipeline:
     group: setup
     commands:
       - composer install --ansi --no-suggest
-      - ./vendor/bin/run toolkit:build-template --template=${TEMPLATE} --ansi
+      - ./vendor/bin/run toolkit:build-template --template=${TEMPLATE} --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   project:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run toolkit:install-template --ansi
+      - ./vendor/bin/run toolkit:install-template --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  # phpcs:
-  #   image: fpfis/php${PHP_VERSION}-build
-  #   commands:
-  #     - ./vendor/bin/run drupal:phpcs --working-dir=/test/toolkit/template --ansi --progress-delay=300
-  #   volumes:
-  #     - /cache/${DRONE_REPO_NAME}:/cache
-  #   when:
-  #     status: [ failure, success ]
+  phpcs:
+    image: fpfis/php${PHP_VERSION}-build
+    commands:
+      - ./vendor/bin/run drupal:phpcs --working-dir=/test/toolkit/template --ansi --progress-delay=300
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status: [ failure, success ]
 
-  # install:
-  #   image: fpfis/php${PHP_VERSION}-build
-  #   group: install
-  #   commands:
-  #     - /usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`" ./vendor/bin/run drupal:site-install --working-dir=/test/toolkit/template --ansi --progress-delay=300
-  #     - chown -R 1000:1000 ./
-  #   volumes:
-  #     - /cache/${DRONE_REPO_NAME}:/cache
-  #   when:
-  #     status: [ failure, success ]
+  install:
+    image: fpfis/php${PHP_VERSION}-build
+    group: install
+    commands:
+      - /usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`" ./vendor/bin/run drupal:site-install --working-dir=/test/toolkit/template --ansi --progress-delay=300
+      - chown -R 1000:1000 ./
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status: [ failure, success ]
 
-  # selenium:
-  #   image: selenium/standalone-chrome
-  #   group: install
-  #   detach: true
+  selenium:
+    image: selenium/standalone-chrome
+    group: install
+    detach: true
 
-  # behat:
-  #   image: fpfis/php${PHP_VERSION}-build
-  #   commands:
-  #     - ./vendor/bin/run drupal:core-behat --working-dir=/test/toolkit/template --ansi --progress-delay=300
-  #   volumes:
-  #     - /cache/${DRONE_REPO_NAME}:/cache
-  #   when:
-  #     status: [ failure, success ]
+  behat:
+    image: fpfis/php${PHP_VERSION}-build
+    commands:
+      - ./vendor/bin/run drupal:core-behat --working-dir=/test/toolkit/template --ansi --progress-delay=300
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status: [ failure, success ]
 
-  # enable:
-  #   image: fpfis/php${PHP_VERSION}-build
-  #   commands:
-  #     - ./vendor/bin/run drupal:enable-all --working-dir=/test/toolkit/template --ansi --progress-delay=300
-  #   volumes:
-  #     - /cache/${DRONE_REPO_NAME}:/cache
-  #   when:
-  #     status: [ failure, success ]
+  enable:
+    image: fpfis/php${PHP_VERSION}-build
+    commands:
+      - ./vendor/bin/run drupal:enable-all --working-dir=/test/toolkit/template --ansi --progress-delay=300
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status: [ failure, success ]
 
-  # content:
-  #   image: fpfis/php${PHP_VERSION}-build
-  #   commands:
-  #     - ./vendor/bin/run drupal:generate-data --working-dir=/test/toolkit/template --ansi --progress-delay=300
-  #   volumes:
-  #     - /cache/${DRONE_REPO_NAME}:/cache
-  #   when:
-  #     status: [ failure, success ]
+  content:
+    image: fpfis/php${PHP_VERSION}-build
+    commands:
+      - ./vendor/bin/run drupal:generate-data --working-dir=/test/toolkit/template --ansi --progress-delay=300
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status: [ failure, success ]
 
-  # smoke:
-  #   image: fpfis/php${PHP_VERSION}-build
-  #   commands:
-  #     - ./vendor/bin/run drupal:drush-smoke --working-dir=/test/toolkit/template --ansi --progress-delay=300
-  #   volumes:
-  #     - /cache/${DRONE_REPO_NAME}:/cache
-  #   when:
-  #     status: [ failure, success ]
+  smoke:
+    image: fpfis/php${PHP_VERSION}-build
+    commands:
+      - ./vendor/bin/run drupal:drush-smoke --working-dir=/test/toolkit/template --ansi --progress-delay=300
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
+    when:
+      status: [ failure, success ]
 
-  # debug:
-  #   image: fpfis/drone-frpc-plugin:latest
-  #   secrets: [ frpc_token, frpc_server ]
-  #   environment:
-  #     - PLUGIN_ENDPOINT=web:8080
-  #     - PLUGIN_GEN_AUTH=yes
-  #     - PLUGIN_DOMAIN=${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
-  #     - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
-  #   when:
-  #     status: [ failure, success ]
+  debug:
+    image: fpfis/drone-frpc-plugin:latest
+    secrets: [ frpc_token, frpc_server ]
+    environment:
+      - PLUGIN_ENDPOINT=web:8080
+      - PLUGIN_GEN_AUTH=yes
+      - PLUGIN_DOMAIN=${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
+      - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
+    when:
+      status: [ failure, success ]
