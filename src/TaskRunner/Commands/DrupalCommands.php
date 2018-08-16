@@ -36,13 +36,17 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
                 ->workingDir($workingDir)
                 ->option('no-suggest')
                 ->ansi(),
+            // Symlink runner binary.
+            $this->taskFilesystemStack()
+                ->stopOnFail()
+                ->symlink(getcwd() . '/vendor/bin/run', getcwd() . '/' . $workingDir . '/vendor/bin/run'),
             // Initialize git for grumphp.
             $this->taskGitStack()
                 ->stopOnFail()
                 ->dir($workingDir)
                 ->exec('init'),
             // Setup drush base url.
-            $this->taskExec('../vendor/bin/run')
+            $this->taskExec('vendor/bin/run')
                 ->dir(getcwd() . '/' . $workingDir)
                 ->arg('drupal:drush-setup'),
         );
