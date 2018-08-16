@@ -40,6 +40,11 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
             $this->taskFilesystemStack()
                 ->stopOnFail()
                 ->symlink(getcwd() . '/vendor/bin/run', getcwd() . '/' . $workingDir . '/vendor/bin/run'),
+            // Initialize git for grumphp.
+            $this->taskGitStack()
+                ->stopOnFail()
+                ->dir($workingDir)
+                ->exec('init'),
             // Setup drush base url.
             $this->taskExec('vendor/bin/run')
                 ->dir(getcwd() . '/' . $workingDir)
@@ -236,11 +241,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
      */
     public function drupalGrumphp()
     {
-        // Initialize git for grumphp.
-        if (!file_exists('.git')) {
-            $this->taskGitStack()->exec('init')->run();
-        }
         // Run grumphp.
-        return $this->taskExec("./vendor/bin/grumphp run --ansi")->run();
+        return $this->taskExec("./vendor/bin/grumphp run")->run();
     }
 }
