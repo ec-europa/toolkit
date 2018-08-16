@@ -75,10 +75,10 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  phpcs:
+  grumphp:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run drupal:phpcs --working-dir=/test/toolkit/template --ansi --progress-delay=300
+      - ./vendor/bin/run drupal:grumphp --working-dir=/test/toolkit/template --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     when:

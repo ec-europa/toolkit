@@ -29,7 +29,7 @@ drupal:
     update: "false"
     locale: "en"
     sites_subdir: "default"
-    enable_all_exclude: [ "nexteuropa_varnish", "multisite_translations", "nexteuropa_dgt_connector" ]
+    enable_all_exclude: [  "nexteuropa_varnish", "multisite_translations", "nexteuropa_dgt_connector"  ]
 
   # Administrator account information.
   account:
