@@ -23,13 +23,13 @@ drupal:
 
   # Basic Drupal site information.
   site:
-    name: "Representation in Portugal"
+    name: "Drupal 7 Standard"
     mail: "info@example.org"
     profile: "standard"
     update: "false"
     locale: "en"
     sites_subdir: "default"
-    enable_all_exclude: ""
+    enable_all_exclude: []
 
   # Administrator account information.
   account:

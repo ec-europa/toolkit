@@ -37,19 +37,25 @@ templates:
   drupal:
     drupal:
       7:
-        profile: 
-          name: standard
+        version: 7
+        site:
+          name: "Drupal 7 Standard"
+          profile: standard
           enable_all_exclude: []
       8:
-        profile:
-          name: standard
+        version: 8
+        site:
+          name: "Drupal 8 Standard"
+          profile: standard
           enable_all_exclude: []
   ec-europa:
     platform:
       2:
         composer: drupal.drupal.7
-        profile:
-          name: multisite_drupal_standard
+        version: 7
+        site:
+          name: "Multisite Drupal Standard"
+          profile: multisite_drupal_standard
           enable_all_exclude:
             - nexteuropa_varnish
             - multisite_translations

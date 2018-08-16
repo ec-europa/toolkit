@@ -193,20 +193,9 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     {
         $this->taskCleanDir(['template'])->run();
         $templateName = $options['template'];
+        $taskCollection = array();
         $templateLocation = str_replace('.', '/', $templateName);
-        $version = explode('.', $templateName)[2];
         $templateProjectLocation = substr($templateLocation, 0, strrpos($templateLocation, '/'));
-        $profile = $this->getConfig()->get("templates.$templateName.profile.name");
-        $enableAllExclude = implode(',', $this->getConfig()->get("templates.$templateName.profile.enable_all_exclude"));
-
-        $taskCollection = array(
-            // Generate runner.yml for template.
-            $this->taskWriteToFile("resources/$templateLocation/runner.yml")
-                ->textFromFile("resources/$templateProjectLocation/runner.yml")
-                ->place('version', $version)
-                ->place('profile', $profile)
-                ->place('enable_all_exclude', $enableAllExclude),
-        );
 
         $template = $this->getConfig()->get("templates.$templateName");
         $composer = $this->getConfig()->get("composer.$templateName");
@@ -227,6 +216,21 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         }
         $composerJson = json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         $taskCollection[] = $this->taskWriteToFile("resources/$templateLocation/composer.json")->text($composerJson);
+
+        // Generate runner.yml for template.
+        preg_match_all('/[^\$]\{(.*?)\}/', file_get_contents("resources/$templateProjectLocation/runner.yml"), $matches);
+        $tokens = $matches[1];
+        $runner = $this->taskWriteToFile("resources/$templateLocation/runner.yml")
+            ->textFromFile("resources/$templateProjectLocation/runner.yml");
+        foreach($tokens as $token) {
+            $value = $this->getConfig()->get("templates.$templateName.$token");
+            if (is_array($value)) {
+                $value = !empty($value) ? ' "' . implode('", "', $value) . '" ' : '';
+            }
+            $runner->place($token, $value);
+        }
+        $taskCollection[] = $runner;
+        
         $taskCollection[] = $this->taskRsync()->fromPath("resources/$templateLocation/")->toPath('template/')->recursive()->option('copy-links');
 
         return $this->collectionBuilder()->addTaskList($taskCollection);
