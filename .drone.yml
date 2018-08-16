@@ -59,18 +59,19 @@ pipeline:
     group: setup
     detach: true
 
-  toolkit:
+  setup:
     image: fpfis/php${PHP_VERSION}-build
     group: setup
     commands:
       - composer install --ansi --no-suggest
+      - ./vendor/bin/run toolkit:build-template --template=${TEMPLATE} --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   project:
     image: fpfis/php${PHP_VERSION}-build
     commands:
-      - ./vendor/bin/run toolkit:build-template --template=${TEMPLATE} --ansi --progress-delay=300
+      - ./vendor/bin/run toolkit:install-template --ansi --progress-delay=300
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
