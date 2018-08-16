@@ -28,10 +28,10 @@ matrix:
   PHP_VERSION:
     - 71
     - 56
-  # # Temporarily run only 1.
-  # include:
-  #   - TEMPLATE: drupal.drupal.7
-  #     PHP_VERSION: 71
+  # Temporarily run only 1.
+  include:
+    - TEMPLATE: ec-europa.platform.2
+      PHP_VERSION: 71
 
 # ==============================================================================
 # Main services

@@ -237,10 +237,10 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     public function drupalGrumphp()
     {
         // Initialize git for grumphp.
-        if (!file_exists('.git/')) {
+        if (!file_exists('.git')) {
             $this->taskGitStack()->exec('init')->run();
         }
         // Run grumphp.
-        return $this->taskExec("./vendor/bin/grumphp run")->run();
+        return $this->taskExec("./vendor/bin/grumphp run --ansi")->run();
     }
 }
