@@ -25,22 +25,11 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     use NuvoleWebTasks\Config\loadTasks;
 
     /**
-     * @command toolkit:setup-template
-     *
-     * @option template Template id.
-     *
-     * @param array $options
+     * @command toolkit:install-template
      */
-    public function toolkitSetupTemplate(array $options = [
-      'template' => InputOption::VALUE_REQUIRED,
-    ])
+    public function toolkitInstallTemplate()
     {
-        $template = $options['template'];
-        $workingDir = 'resources/drupal/' . $template;
-        $drupalVersion = $this->getConfig()->get("templates.$template.version");
-        $drupalProfile = $this->getConfig()->get("templates.$template.profile.name");
-        $enableAllExclude = implode(',', $this->getConfig()->get("templates.$template.profile.enable_all_exclude"));
-
+        $workingDir = 'template';
         $taskCollection = array(
             // Run composer install.
             $this->taskComposerInstall()
@@ -52,24 +41,10 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
                 ->stopOnFail()
                 ->dir($workingDir)
                 ->exec('init'),
-            // Generate runner.yml for template.
-            $this->taskWriteToFile('resources/drupal/' . $template . '/runner.yml')
-                ->textFromFile('resources/drupal/runner.yml')
-                ->place('version', $drupalVersion)
-                ->place('profile', $drupalProfile)
-                ->place('enable_all_exclude', $enableAllExclude),
             // Setup drush base url.
             $this->taskExec('./vendor/bin/run')
                 ->dir(getcwd() . '/' . $workingDir)
                 ->arg('drupal:drush-setup'),
-            // Symlink resources and build dirs.
-            $this->taskFilesystemStack()
-                ->stopOnFail()
-                ->remove(getcwd() . '/template')
-                ->remove(getcwd() . '/build')
-                ->symlink(getcwd() . '/resources/drush/drush8/commands', getcwd() . '/' . $workingDir . '/web/drush/commands')
-                ->symlink(getcwd() . '/' . $workingDir . '/web', 'build')
-                ->symlink(getcwd() . '/' . $workingDir, 'template'),
         );
 
         return $this->collectionBuilder()->addTaskList($taskCollection);
@@ -195,5 +170,57 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         else {
             return $this->say("Skipping Drupal Drush Smoke tests. Only available for Drupal 7 at the moment.");
         }
+    }
+
+    /**
+     * @command toolkit:build-template
+     * 
+     * @option template     Template name in format of 'vendor.project.version';
+     *
+     * @param array $options
+     */
+    public function toolkitBuildTemplate(array $options = [
+      'template' => InputOption::VALUE_REQUIRED,
+    ])
+    {
+        $this->taskCleanDir(['template'])->run();
+        $templateName = $options['template'];
+        $templateLocation = str_replace('.', '/', $templateName);
+        $version = explode('.', $templateName)[2];
+        $templateProjectLocation = substr($templateLocation, 0, strrpos($templateLocation, '/'));
+        $profile = $this->getConfig()->get("templates.$templateName.profile.name");
+        $enableAllExclude = implode(',', $this->getConfig()->get("templates.$templateName.profile.enable_all_exclude"));
+
+        $taskCollection = array(
+            // Generate runner.yml for template.
+            $this->taskWriteToFile("resources/$templateLocation/runner.yml")
+                ->textFromFile("resources/$templateProjectLocation/runner.yml")
+                ->place('version', $version)
+                ->place('profile', $profile)
+                ->place('enable_all_exclude', $enableAllExclude),
+        );
+
+        $template = $this->getConfig()->get("templates.$templateName");
+        $composer = $this->getConfig()->get("composer.$templateName");
+        // Eventually will need to be made recursive.
+        if (isset($template['composer'])) {
+            $composer = array_merge_recursive($this->getConfig()->get('composer.' . $template['composer']), $composer);
+        }
+        // Make sure replacements are removed.
+        if (isset($composer['replace'])) {
+            foreach ($composer['replace'] as $replacement => $replacement_version) {
+                if (isset($composer['require'][$replacement])) {
+                    unset($composer['require'][$replacement]);
+                }
+                if (isset($composer['require-dev'][$replacement])) {
+                    unset($composer['require-dev'][$replacement]);
+                }
+            }
+        }
+        $composerJson = json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $taskCollection[] = $this->taskWriteToFile("resources/$templateLocation/composer.json")->text($composerJson);
+        $taskCollection[] = $this->taskRsync()->fromPath("resources/$templateLocation/")->toPath('template/')->recursive()->option('copy-links');
+
+        return $this->collectionBuilder()->addTaskList($taskCollection);
     }
 }

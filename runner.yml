@@ -34,21 +34,116 @@ release:
 # Templates configuration.
 # -----------------------------------------------------------------------------
 templates:
-  drupal7:
-    version: 7
-    profile: 
-      name: standard
-      enable_all_exclude: []
-  drupal8:
-    version: 8
-    profile:
-      name: standard
-      enable_all_exclude: []
-  platform:
-    version: 7
-    profile:
-      name: multisite_drupal_standard
-      enable_all_exclude:
-        - nexteuropa_varnish
-        - multisite_translations
-        - nexteuropa_dgt_connector
+  drupal:
+    drupal:
+      7:
+        profile: 
+          name: standard
+          enable_all_exclude: []
+      8:
+        profile:
+          name: standard
+          enable_all_exclude: []
+  ec-europa:
+    platform:
+      2:
+        composer: drupal.drupal.7
+        profile:
+          name: multisite_drupal_standard
+          enable_all_exclude:
+            - nexteuropa_varnish
+            - multisite_translations
+            - nexteuropa_dgt_connector
+
+# -----------------------------------------------------------------------------
+# Composer configuration.
+# -----------------------------------------------------------------------------
+composer:
+  drupal:
+    drupal:
+      7:
+        require:
+          php: ">=5.2.5"
+          ext-curl: "*"
+          ext-gd: "*"
+          ext-json: "*"
+          ext-openssl: "*"
+          ext-pdo: "*"
+          ext-pdo_mysql: "*"
+          ext-xml: "*"
+          composer/installers: "^1.5"
+          cweagans/composer-patches: "^1.6"
+          drupal-composer/preserve-paths: "^0.1.4"
+          drupal/composer_autoloader: "^1.0"
+          drupal/drupal: "^7.0"
+          drush/drush: "^8.0"
+        require-dev:
+          drupal/devel: "^1.6"
+          drupal/drupal-extension: "^3.4"
+          openeuropa/code-review: "^0.3.0"
+        conflict:
+          drupal/core: "8.*"
+        extra:
+          installer-paths:
+            web/: ["type:drupal-core"]
+            web/profiles/{$name}/: ["type:drupal-profile"]
+            web/sites/all/drush/{$name}/: ["type:drupal-drush"]
+            web/sites/all/libraries/{$name}/: ["type:drupal-library"]
+            web/sites/all/modules/contrib/{$name}/: ["type:drupal-module"]
+            web/sites/all/themes/contrib/{$name}/: ["type:drupal-theme"]
+          patches:
+              cweagans/composer-patches:
+                - "https://github.com/SebCorbin/composer-patches/commit/1cb9bacba51f8bba0c5f3f322c3bb61e4ceae974.patch"
+              drupal/drupal:
+                - "https://www.drupal.org/files/issues/2018-05-06/support-proto-header-2970929-2.patch"
+                - "resources/patches/add-settings-local.patch"
+              drush/drush:
+                - "resources/patches/drush-force-color.patch"
+          preserve-paths:
+            - "web/sites/default/settings.php"
+        repositories:
+           - type: "composer"
+             url: "https://packages.drupal.org/7"
+      8:
+        require:
+          composer/installers: "^1.2"
+          cweagans/composer-patches: "^1.6"
+          drupal-composer/drupal-scaffold: "^2.5"
+          drupal/console: "^1.0.2"
+          drupal/core: "~8.5.3"
+          drush/drush: "^8.0"
+        require-dev:
+          drupal/drupal-extension: "^3.4"
+          openeuropa/code-review: "^0.3.0"
+          drupal/devel: "^1.2"
+          phpunit/phpunit: "^5.7"
+        conflict:
+          drupal/drupal: "*"
+        extra:
+          installer-paths:
+              web/core: ["type:drupal-core"]
+              web/libraries/{$name}: ["type:drupal-library"]
+              web/modules/contrib/{$name}: ["type:drupal-module"]
+              web/profiles/contrib/{$name}: ["type:drupal-profile"]
+              web/themes/contrib/{$name}: ["type:drupal-theme"]
+              drush/Commands/{$name}: ["type:drupal-drush"]
+          drupal-scaffold:
+              initial:
+                .editorconfig: "../.editorconfig"
+                .gitattributes: "../.gitattributes"
+          patches:
+              drush/drush:
+                 - "resources/patches/drush-force-color.patch"
+        scripts:
+          post-install-cmd: [ "DrupalComposer\\DrupalScaffold\\Plugin::scaffold" ]
+          post-update-cmd: [ "DrupalComposer\\DrupalScaffold\\Plugin::scaffold" ]
+        repositories:
+           - type: "composer"
+             url: "https://packages.drupal.org/8"
+  ec-europa:
+    platform:
+      2:
+        require:
+          ec-europa/platform-deploy: "^2.5"
+        replace:
+          drupal/drupal: "*"

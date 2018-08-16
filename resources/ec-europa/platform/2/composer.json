@@ -8,13 +8,12 @@
         "ext-pdo": "*",
         "ext-pdo_mysql": "*",
         "ext-xml": "*",
-        "ec-europa/platform-deploy": "2.5.64",
         "composer/installers": "^1.5",
         "cweagans/composer-patches": "^1.6",
         "drupal-composer/preserve-paths": "^0.1.4",
         "drupal/composer_autoloader": "^1.0",
         "drush/drush": "^8.0",
-        "ec-europa/toolkit": "dev-release/4.x as 4.0.0"
+        "ec-europa/platform-deploy": "^2.5"
     },
     "require-dev": {
         "drupal/devel": "^1.6",
@@ -24,27 +23,37 @@
     "conflict": {
         "drupal/core": "8.*"
     },
-    "replace": {
-        "drupal/drupal": "7.*"
-    },
     "extra": {
         "installer-paths": {
-            "web/": ["type:drupal-core"],
-            "web/profiles/{$name}/": ["type:drupal-profile"],
-            "web/sites/all/drush/{$name}/": ["type:drupal-drush"],
-            "web/sites/all/libraries/{$name}/": ["type:drupal-library"],
-            "web/sites/all/modules/contrib/{$name}/": ["type:drupal-module"],
-            "web/sites/all/themes/contrib/{$name}/": ["type:drupal-theme"]
+            "web/": [
+                "type:drupal-core"
+            ],
+            "web/profiles/{$name}/": [
+                "type:drupal-profile"
+            ],
+            "web/sites/all/drush/{$name}/": [
+                "type:drupal-drush"
+            ],
+            "web/sites/all/libraries/{$name}/": [
+                "type:drupal-library"
+            ],
+            "web/sites/all/modules/contrib/{$name}/": [
+                "type:drupal-module"
+            ],
+            "web/sites/all/themes/contrib/{$name}/": [
+                "type:drupal-theme"
+            ]
         },
         "patches": {
             "cweagans/composer-patches": [
                 "https://github.com/SebCorbin/composer-patches/commit/1cb9bacba51f8bba0c5f3f322c3bb61e4ceae974.patch"
             ],
-            "ec-europa/platform-deploy": [
-                "https://www.drupal.org/files/issues/2018-05-06/support-proto-header-2970929-2.patch"
+            "drupal/drupal": [
+                "https://www.drupal.org/files/issues/2018-05-06/support-proto-header-2970929-2.patch",
+                "resources/patches/add-settings-local.patch"
             ],
             "drush/drush": [
-                "../../drush/drush8/patches/drush-force-color.patch"
+                "resources/patches/drush-force-color.patch"
             ]
         },
         "preserve-paths": [
@@ -52,6 +61,12 @@
         ]
     },
     "repositories": [
-        {"type": "composer", "url": "https://packages.drupal.org/7"}
-    ]
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/7"
+        }
+    ],
+    "replace": {
+        "drupal/drupal": "*"
+    }
 }

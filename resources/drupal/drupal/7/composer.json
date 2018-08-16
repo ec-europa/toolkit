@@ -13,8 +13,7 @@
         "drupal-composer/preserve-paths": "^0.1.4",
         "drupal/composer_autoloader": "^1.0",
         "drupal/drupal": "^7.0",
-        "drush/drush": "^8.0",
-        "ec-europa/toolkit": "dev-release/4.x as 4.0.0"
+        "drush/drush": "^8.0"
     },
     "require-dev": {
         "drupal/devel": "^1.6",
@@ -26,12 +25,24 @@
     },
     "extra": {
         "installer-paths": {
-            "web/": ["type:drupal-core"],
-            "web/profiles/{$name}/": ["type:drupal-profile"],
-            "web/sites/all/drush/{$name}/": ["type:drupal-drush"],
-            "web/sites/all/libraries/{$name}/": ["type:drupal-library"],
-            "web/sites/all/modules/contrib/{$name}/": ["type:drupal-module"],
-            "web/sites/all/themes/contrib/{$name}/": ["type:drupal-theme"]
+            "web/": [
+                "type:drupal-core"
+            ],
+            "web/profiles/{$name}/": [
+                "type:drupal-profile"
+            ],
+            "web/sites/all/drush/{$name}/": [
+                "type:drupal-drush"
+            ],
+            "web/sites/all/libraries/{$name}/": [
+                "type:drupal-library"
+            ],
+            "web/sites/all/modules/contrib/{$name}/": [
+                "type:drupal-module"
+            ],
+            "web/sites/all/themes/contrib/{$name}/": [
+                "type:drupal-theme"
+            ]
         },
         "patches": {
             "cweagans/composer-patches": [
@@ -42,7 +53,7 @@
                 "resources/patches/add-settings-local.patch"
             ],
             "drush/drush": [
-                "../../drush/drush8/patches/drush-force-color.patch"
+                "resources/patches/drush-force-color.patch"
             ]
         },
         "preserve-paths": [
@@ -50,6 +61,9 @@
         ]
     },
     "repositories": [
-        {"type": "composer", "url": "https://packages.drupal.org/7"}
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/7"
+        }
     ]
 }
