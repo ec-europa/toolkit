@@ -49,6 +49,10 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
             $this->taskExec('vendor/bin/run')
                 ->dir(getcwd() . '/' . $workingDir)
                 ->arg('drupal:drush-setup'),
+            // TEMP HACK.
+            $this->taskFilesystemStack()
+                ->stopOnFail()
+                ->symlink(getcwd() . '/resources/drush/drush/8/commands', getcwd() . '/' . $workingDir . '/web/drush/commands'),
         );
 
         return $this->collectionBuilder()->addTaskList($taskCollection);
