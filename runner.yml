@@ -156,6 +156,9 @@ composer:
         extra:
           installer-paths:
             vendor/drupal/drupal/: ["ec-europa/platform-deploy"]
+          patches:
+              ec-europa/platform-deploy:
+                - "https://www.drupal.org/files/issues/2018-05-06/support-proto-header-2970929-2.patch"
         scripts:
           post-install-cmd: [ "./vendor/bin/run drupal:platform-rsync" ]
           post-update-cmd: [ "./vendor/bin/run drupal:platform-rsync" ]
