@@ -42,7 +42,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
                 ->dir($workingDir)
                 ->exec('init'),
             // Setup drush base url.
-            $this->taskExec('./vendor/bin/run')
+            $this->taskExec('../vendor/bin/run')
                 ->dir(getcwd() . '/' . $workingDir)
                 ->arg('drupal:drush-setup'),
         );
