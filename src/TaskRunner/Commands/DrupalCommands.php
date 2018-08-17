@@ -222,7 +222,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $taskCollection[] = $this->taskWriteToFile("template/composer.json")->text($composerJson);
 
         // Generate runner.yml for template.
-        preg_match_all('/[^\$]\{(.*?)\}/', file_get_contents("template/runner.yml"), $matches);
+        preg_match_all('/[^\$]\{(.*?)\}/', file_get_contents("resources/$templateProjectLocation/runner.yml"), $matches);
         $tokens = $matches[1];
         $runner = $this->taskWriteToFile("resources/$templateLocation/runner.yml")
             ->textFromFile("resources/$templateProjectLocation/runner.yml");
