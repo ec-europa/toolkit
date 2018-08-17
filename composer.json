@@ -19,6 +19,14 @@
             "vendor/drush/drush/commands/{$name}/": ["type:drupal-drush"]
         }
     },
+    "scripts": {
+        "post-install-cmd": [
+            "mkdir -p vendor/ec-europa/toolkit && ln -sf $(pwd)/resources $(pwd)/vendor/ec-europa/toolkit/resources"
+        ],
+        "post-update-cmd": [
+            "mkdir -p vendor/ec-europa/toolkit && ln -sf $(pwd)/resources $(pwd)/vendor/ec-europa/toolkit/resources"
+        ]
+    },
     "autoload": {
         "psr-4": {
             "Eceuropa\\Toolkit\\": "./src/"

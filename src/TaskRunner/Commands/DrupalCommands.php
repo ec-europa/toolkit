@@ -222,9 +222,9 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $taskCollection[] = $this->taskWriteToFile("template/composer.json")->text($composerJson);
 
         // Generate runner.yml for template.
-        preg_match_all('/[^\$]\{(.*?)\}/', file_get_contents("resources/$templateProjectLocation/runner.yml"), $matches);
+        preg_match_all('/[^\$]\{(.*?)\}/', file_get_contents("vendor/ec-europa/toolkit/resources/$templateProjectLocation/runner.yml"), $matches);
         $tokens = $matches[1];
-        $runner = $this->taskWriteToFile("resources/$templateLocation/runner.yml")
+        $runner = $this->taskWriteToFile("vendor/ec-europa/toolkit/resources/$templateLocation/runner.yml")
             ->textFromFile("resources/$templateProjectLocation/runner.yml");
         foreach($tokens as $token) {
             $value = $this->getConfig()->get("templates.$templateName.$token");
@@ -235,7 +235,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         }
         $taskCollection[] = $runner;
         
-        $taskCollection[] = $this->taskRsync()->fromPath("resources/$templateLocation/")->toPath('template/')->recursive()->option('copy-links');
+        $taskCollection[] = $this->taskRsync()->fromPath("vendor/ec-europa/toolkit/resources/$templateLocation/")->toPath('template/')->recursive()->option('copy-links');
 
         return $this->collectionBuilder()->addTaskList($taskCollection);
     }
