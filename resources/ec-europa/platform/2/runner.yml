@@ -19,17 +19,17 @@ drupal:
   root: "web"
   root_absolute: ~
   base_url: "http://web:8080"
-  version: 7
+  version: {version}
 
   # Basic Drupal site information.
   site:
-    name: "Multisite Drupal Standard"
+    name: "{site.name}"
     mail: "info@example.org"
-    profile: "multisite_drupal_standard"
+    profile: "{site.profile}"
     update: "false"
     locale: "en"
     sites_subdir: "default"
-    enable_all_exclude: [  "nexteuropa_varnish", "multisite_translations", "nexteuropa_dgt_connector"  ]
+    enable_all_exclude: [ {site.enable_all_exclude} ]
 
   # Administrator account information.
   account:

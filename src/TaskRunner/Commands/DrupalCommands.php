@@ -219,10 +219,10 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
             }
         }
         $composerJson = json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        $taskCollection[] = $this->taskWriteToFile("resources/$templateLocation/composer.json")->text($composerJson);
+        $taskCollection[] = $this->taskWriteToFile("template/composer.json")->text($composerJson);
 
         // Generate runner.yml for template.
-        preg_match_all('/[^\$]\{(.*?)\}/', file_get_contents("resources/$templateProjectLocation/runner.yml"), $matches);
+        preg_match_all('/[^\$]\{(.*?)\}/', file_get_contents("template/runner.yml"), $matches);
         $tokens = $matches[1];
         $runner = $this->taskWriteToFile("resources/$templateLocation/runner.yml")
             ->textFromFile("resources/$templateProjectLocation/runner.yml");
@@ -260,5 +260,26 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         if (isset($composer['extra']['installer-paths']['vendor/drupal/drupal/'])) {
             return $this->taskRsync()->fromPath('vendor/drupal/drupal/')->toPath("$drupalRoot/")->recursive()->option('copy-links')->run();
         }
+    }
+
+    /**
+     * @command drupal:make-to-composer
+     * 
+     * @option make-file    Location of make file to merge into template.
+     *
+     * @param array $options
+     */
+    public function drupalMakeToComposer(array $options = [
+      'make-file' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        $makeFile = !empty($options['make-file']) ? $options['make-file'] : 'resources/site.make';
+        $composerFile = file_get_contents('template/composer.json');
+        $composerMake = json_decode($this->taskExec('./vendor/bin/drush m2c ' . $makeFile)->printOutput(false)->run()->getMessage(), true);
+        $composerMain = json_decode($composerFile, true);
+        var_dump($composerFile);
+        $newComposer = array_merge_recursive($composerMain, $composerMake);
+        $newComposerJson = json_encode($newComposer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $this->taskWriteToFile("template/composer.json")->text($newComposerJson)->run();
     }
 }

@@ -11,7 +11,8 @@
         "openeuropa/task-runner": "~0.7.0"
     },
     "require-dev": {
-        "openeuropa/code-review": "~0.3.0"
+        "openeuropa/code-review": "~0.3.0",
+        "ec-europa/drush-m2c": "dev-master"
     },
     "extra": {
         "installer-paths": {
