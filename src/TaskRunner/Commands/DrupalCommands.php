@@ -277,7 +277,6 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         $composerFile = file_get_contents('template/composer.json');
         $composerMake = json_decode($this->taskExec('./vendor/bin/drush m2c ' . $makeFile)->printOutput(false)->run()->getMessage(), true);
         $composerMain = json_decode($composerFile, true);
-        var_dump($composerFile);
         $newComposer = array_merge_recursive($composerMain, $composerMake);
         $newComposerJson = json_encode($newComposer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         $this->taskWriteToFile("template/composer.json")->text($newComposerJson)->run();

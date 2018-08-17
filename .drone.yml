@@ -65,7 +65,6 @@ pipeline:
     commands:
       - composer install --ansi --no-suggest
       - ./vendor/bin/run toolkit:build-template --template=${TEMPLATE} --ansi --progress-delay=300
-      - ./vendor/bin/run drupal:make-to-composer --make-file=resources/site.make
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
