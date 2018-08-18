@@ -274,11 +274,17 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     ])
     {
         $makeFile = !empty($options['make-file']) ? $options['make-file'] : 'resources/site.make';
-        $composerFile = file_get_contents('template/composer.json');
-        $composerMake = json_decode($this->taskExec('./vendor/bin/drush m2c ' . $makeFile)->printOutput(false)->run()->getMessage(), true);
-        $composerMain = json_decode($composerFile, true);
-        $newComposer = array_merge_recursive($composerMain, $composerMake);
-        $newComposerJson = json_encode($newComposer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        $this->taskWriteToFile("template/composer.json")->text($newComposerJson)->run();
+        $composerFile = 'template/composer.json';
+        if (file_exists($makeFile) && file_exists($composerFile)) {
+
+            $composer = file_get_contents($composerFile);
+            $this->taskExec("./vendor/bin/drush cc drush")->run();
+            $composerMake = json_decode($this->taskExec('./vendor/bin/drush m2c ' . $makeFile)->printOutput(false)->run()->getMessage(), true);
+            $composerMain = json_decode($composer, true);
+            $newComposer = array_merge_recursive($composerMain, $composerMake);
+            $newComposerJson = json_encode($newComposer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+
+            return $this->taskWriteToFile("template/composer.json")->text($newComposerJson)->run();
+        }
     }
 }
