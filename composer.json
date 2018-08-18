@@ -8,23 +8,23 @@
         "source": "https://github.com/ec-europa/toolkit"
     },
     "require": {
-        "ec-europa/drush-m2c": "dev-master",
         "openeuropa/task-runner": "~0.7.0"
     },
     "require-dev": {
         "openeuropa/code-review": "~0.3.0"
     },
-    "extra": {
-        "installer-paths": {
-            "vendor/drush/drush/commands/{$name}/": ["type:drupal-drush"]
-        }
-    },
     "scripts": {
         "post-install-cmd": [
-            "mkdir -p vendor/ec-europa/toolkit && ln -sf $(pwd)/resources/ $(pwd)/vendor/ec-europa/toolkit/resources"
+            "mkdir -p vendor/ec-europa/toolkit",
+            "ln -sf $(pwd)/resources/ $(pwd)/vendor/ec-europa/toolkit/resources",
+            "mkdir -p vendor/drush/drush/commands",
+            "ln -sf $(pwd)/resources/drush/drush/8/commands/*/ $(pwd)/vendor/drush/drush/commands"
         ],
         "post-update-cmd": [
-            "mkdir -p vendor/ec-europa/toolkit && ln -sf $(pwd)/resources/ $(pwd)/vendor/ec-europa/toolkit/resources"
+            "mkdir -p vendor/ec-europa/toolkit",
+            "ln -sf $(pwd)/resources/ $(pwd)/vendor/ec-europa/toolkit/resources",
+            "mkdir -p vendor/drush/drush/commands",
+            "ln -sf $(pwd)/resources/drush/drush/8/commands/*/ $(pwd)/vendor/drush/drush/commands"
         ]
     },
     "autoload": {
