@@ -39,6 +39,7 @@
         <delete dir="${build.tmp.dir}" includeemptydirs="true" />
         <delete dir="${build.dist.dir}" includeemptydirs="true" />
         <mkdir dir="${build.tmp.dir}" />
+        <mkdir dir="${build.dist.dir}" />
     </target>
 
     <target name="subsite-make" hidden="true" description="Makes the subsite resources with drush.">
