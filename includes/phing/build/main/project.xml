@@ -95,7 +95,7 @@
             <available file="${composer-working-dir}/composer.json" type="file" />
             <then>
                 <if>
-                    <isset property="composer-no-dev" />
+                    <ispropertytrue property="composer-no-dev" />
                     <then>
                         <composer command="install" composer="${project.bin.composer}">
                             <arg value="--working-dir=${composer-working-dir}" />
@@ -324,10 +324,10 @@
     </target >
 
     <target name="project-subsite-composer-no-dev" hidden="true" description="Run composer install without dev on subsite.">
-        <echo msg="Run 'composer install' in the subsite folder for development purposes." />
+        <echo msg="Run 'composer install' in the distribution folder for development purposes." />
         <phingcall target="project-composer-install">
-            <property name="composer-working-dir" value="${build.tmp.dir}" override="true" />
-            <property name="composer-no-dev" value="true" override="true" />
+            <property name="composer-working-dir" value="${build.dist.dir}" override="true" />
+            <property name="composer-no-dev" value="false" override="true" />
         </phingcall>
     </target>
 

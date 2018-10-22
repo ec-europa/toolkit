@@ -20,11 +20,11 @@
             subsite-type-tmp,
             subsite-delete,
             subsite-resources-link,
-            project-subsite-composer-no-dev,
             subsite-make,
             subsite-type-dist,
             subsite-resources-copy,
-            package-version-set">
+            package-version-set,
+            project-subsite-composer-no-dev">
         <echo msg="Playbook for build-subsite-dist ended." />
     </target>
 
