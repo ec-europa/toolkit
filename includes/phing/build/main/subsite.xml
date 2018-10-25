@@ -11,7 +11,8 @@
             subsite-make,
             project-modules-devel-make,
             drush-aliases-generate,
-            drush-settings-generate">
+            drush-settings-generate,
+            project-platform-enable-multisite">
         <echo msg="Playbook for build-subsite-dev ended." />
     </target>
 
@@ -112,6 +113,7 @@
     </target>
 
     <target name="subsite-delete" hidden="true" description="Delete build directory.">
+        <chmod file="${build.${build-type}.dir}" mode="0777" />
         <delete dir="${build.${build-type}.dir}" includeemptydirs="true" />
     </target>
 

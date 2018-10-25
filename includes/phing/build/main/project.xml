@@ -17,7 +17,6 @@
         </if>
         <phingcall target="project-subsite-files-setup" />
         <phingcall target="project-platform-set-htaccess" />
-        <phingcall target="project-platform-enable-multisite" />
     </target>
 
     <target name="project-platform-enable-multisite" hidden="true" description="Enable multisite mode.">
@@ -26,9 +25,9 @@
                 <equals arg1="${platform.multisite.mode}" arg2="1" />
             </and>
             <then>
-                <echo msg="Reached my multisite mode, let build it site.php with ${project.id} and ${project.url.base}."/>
+                <echo msg="Reached my multisite mode, let build it site.php with ${project.id} and ${project.url.base} in  ${build.platform.dir.sites}."/>
                 <!--<move file="${build.subsite.dir}/default.sites.php" tofile="${build.tmp.dir}/sites.php" />-->
-                <append destFile="${build.tmp.dir}/sites.php"
+                <append destFile="${build.platform.dir.sites}/sites.php"
                         text="$sites['${project.url.base}'] = '${build.site}';" />
                 <!--
                 build.site = ${project.id}
@@ -276,7 +275,7 @@
         <if>
             <istrue value="${build.tmp.dir}" />
             <then>
-                <move file="${build.subsite.dir}/default.settings.php" tofile="${build.tmp.dir}/default.settings.php" />
+                <move file="${build.platform.dir.sites}/default/default.settings.php" tofile="${build.tmp.dir}/default.settings.php" />
                 <mkdir dir="${build.platform.dir.sites}/all/drush" />
                 <mkdir dir="${build.tmp.dir.files}/private_files" />
                 <mkdir dir="${build.tmp.dir.files}/tmp" />
