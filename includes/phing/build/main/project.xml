@@ -272,6 +272,7 @@
             <then>
                 <move file="${build.platform.dir.sites}/default/default.settings.php" tofile="${build.tmp.dir}/default.settings.php" />
                 <mkdir dir="${build.platform.dir.sites}/all/drush" />
+                <mkdir dir="${build.platform.dir.sites}/${project.id}" />
                 <mkdir dir="${build.tmp.dir.files}/private_files" />
                 <mkdir dir="${build.tmp.dir.files}/tmp" />
                 <mkdir dir="${build.tmp.dir.files}/css_injector" />

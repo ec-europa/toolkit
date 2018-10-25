@@ -238,7 +238,7 @@ drush.db.dump = ${build.platform.dir}/dump.sql
 
 # Drush aliases configuration.
 # ----------------------------
-drush.alias.default = ${build.site}
+drush.alias.default = ${project.id}
 drush.alias.docker = docker
 
 # Drupal installation settings.
