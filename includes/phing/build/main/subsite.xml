@@ -87,6 +87,7 @@
                 <relsym link="${build.platform.dir.sites}/all/drush/custom" target="${toolkit.dir.incl.drush}/custom" />
             </then>
         </if>
+        <relsym link="${build.platform.dir.sites}/default/default.settings.php" target="${build.tmp.dir}/default.settings.php" />
         <relsym link="${build.subsite.dir}/default.settings.php" target="${build.tmp.dir}/default.settings.php" />
         <relsym link="${build.subsite.dir.files}" target="${build.tmp.dir.files}" />
         <relsym link="${build.${build-type}.dir}/composer.json" target="${resources.dir.composer.json}" />
@@ -113,8 +114,14 @@
     </target>
 
     <target name="subsite-delete" hidden="true" description="Delete build directory.">
-        <chmod file="${build.${build-type}.dir}" mode="0777" />
-        <delete dir="${build.${build-type}.dir}" includeemptydirs="true" />
+        <if>
+            <available file="${build.${build-type}.dir}" type="dir" />
+            <then>
+                <echo msg="Ensaio aqui..." />
+                <chmod file="${build.${build-type}.dir}" mode="0777" />
+                <delete dir="${build.${build-type}.dir}" includeemptydirs="true" />
+            </then>
+        </if>
     </target>
 
 </project>

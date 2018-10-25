@@ -102,7 +102,7 @@ platform.package.provider = git-hub
 platform.package.provider.token = # TODO: Github API limit.
 platform.package.repository = ec-europa/platform-dev
 platform.package.version = 2.5
-platform.multisite.mode = 0
+platform.multisite.mode = 1
 
 # Theme configuration (deploy props?)
 # --------------------
