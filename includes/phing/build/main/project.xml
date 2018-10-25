@@ -17,6 +17,28 @@
         </if>
         <phingcall target="project-subsite-files-setup" />
         <phingcall target="project-platform-set-htaccess" />
+        <phingcall target="project-platform-enable-multisite" />
+    </target>
+
+    <target name="project-platform-enable-multisite" hidden="true" description="Enable multisite mode.">
+        <if>
+            <and>
+                <equals arg1="${platform.multisite.mode}" arg2="1" />
+            </and>
+            <then>
+                <echo msg="Reached my multisite mode, let build it site.php with ${project.id} and ${project.url.base}."/>
+                <!--<move file="${build.subsite.dir}/default.sites.php" tofile="${build.tmp.dir}/sites.php" />-->
+                <append destFile="${build.tmp.dir}/sites.php"
+                        text="$sites['${project.url.base}'] = '${build.site}';" />
+                <!--
+                build.site = ${project.id}
+                project.url.base
+                -->
+            </then>
+            <else>
+                <echo msg="Reached my multisite mode, let build normal stuff for ${project.url.base}."/>
+            </else>
+        </if>
     </target>
 
     <target name="project-profile-build" hidden="true" description="Build Drupal profile.">

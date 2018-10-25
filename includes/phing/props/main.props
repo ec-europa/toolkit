@@ -101,7 +101,8 @@ platform.package.db.cache = 1
 platform.package.provider = git-hub
 platform.package.provider.token = # TODO: Github API limit.
 platform.package.repository = ec-europa/platform-dev
-platform.package.version = 2.4
+platform.package.version = 2.5
+platform.multisite.mode = 0
 
 # Theme configuration (deploy props?)
 # --------------------
