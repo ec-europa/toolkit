@@ -1,4 +1,22 @@
 # Toolkit change log
+## Version 3.0.10
+
+  * Composer.json example to subsites.
+  * Fix compatibility with NE Platform autoloading
+  * New phing target to set variable with drush by use of ${variable-name} and ${variable-value} properties.
+  * New phing target to loop over all phing properties starting with devel.vars. and set them accordingly with another new target
+  * Removes all variables from settings.php
+  * Removes cache-reset-target since it is obsolete with this functionality
+  * Include maillog_send to the dev variables to avoid sending emails
+  * Bug fix to project info target
+  * update upgrade documentation step to use a previous composer.json that does not include the URL tokens which impede on the upgrade process
+  * run the toolkit-generate-project-info step inside of the toolkit-starterkit-upgrade target at the end
+  * override the files if generating project info
+  * added project.install.modules for usage on existing toolkit projects
+  * build.dist new default value to match with project.id
+
+## Version 3.0.9
+  * Several improvements and stable version.
 
 ## Version 3.0.0-beta2
 

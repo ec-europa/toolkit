@@ -24,7 +24,7 @@ behat.yml.path = ${behat.dir}/behat.yml
 behat.base_url = http://localhost
 
 # A drush alias to run behat on.
-behat.drush.alias = default
+behat.drush.alias = ${project.id}
 
 # The URL of the Behat webdriver host.
 behat.wd_host.url = http://localhost:4444/wd/hub
