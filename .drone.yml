@@ -11,11 +11,30 @@ workspace:
 matrix:
   PHING_OPTS:
     - -logger phing.listener.AnsiColorLogger
-  PLATFORM_DEV:
+  VERSION:
     - 2.3
     - 2.4
     - 2.5
-
+    - 2.5
+    - 2.5
+  PROFILE:
+    - multisite_drupal_standard
+    - multisite_drupal_standard
+    - multisite_drupal_standard
+    - drupal
+    - drupal
+  PROFILE_CORE:
+    - 7.*
+    - 7.*
+    - 7.*
+    - 7.*
+    - 8.*
+  PROFILE_NAME:
+    - MULTISITE_STANDARD_DRUPAL
+    - MULTISITE_STANDARD_DRUPAL
+    - minimal
+    - minimal
+    - minimal
 # ==============================================================================
 # Main services
 # ==============================================================================
@@ -58,7 +77,7 @@ pipeline:
     image: fpfis/php56-dev
     group: build
     commands:
-      - ./toolkit/phing build-platform build-subsite-dev -D'platform.package.version'='${PLATFORM_DEV}' ${PHING_OPTS}
+      - ./toolkit/phing build-platform build-subsite-dev -D'platform.package.version'='${VERSION}' -D'profile'='${PROFILE}' -D'profile.name'='${PROFILE_NAME}' -D'profile.core'='${PROFILE_CORE}' ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
@@ -111,6 +130,7 @@ pipeline:
   smoketest:
     image: fpfis/php56-dev
     commands:
+      - ./toolkit/phing drush en -y dblog ${PHING_OPTS}
       - ./toolkit/phing drush-run-smoketest ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
