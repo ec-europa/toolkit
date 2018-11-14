@@ -18,26 +18,32 @@
         <exec command="echo ${variable-string} | sed -e 's/devel\.vars\.\(.*\)=\(.*\)$/\1/'" outputProperty="variable-name" />
         <exec command="echo ${variable-string} | cut -d'=' -f2" outputProperty="variable-value" />
         <if>
-            <not>
-                <or>
-                    <equals arg1="${variable-name}" arg2="" />
-                    <equals arg1="${variable-value}" arg2="" />
-                </or>
-            </not>
+            <equals arg1="${profile.core" arg2="7.*"/>
             <then>
-                <drush
-                    command="vset"
-                    assume="yes"
-                    root="${build.platform.dir}"
-                    alias="@${drush.alias.default}"
-                    bin="${toolkit.dir.bin.drush}"
-                    verbose="${drush.verbose}"
-                    color="${drush.color}">
-                    <param>${variable-name}</param>
-                    <param>${variable-value}</param>
-                </drush>
+                <if>
+                    <not>
+                        <or>
+                            <equals arg1="${variable-name}" arg2="" />
+                            <equals arg1="${variable-value}" arg2="" />
+                        </or>
+                    </not>
+                    <then>
+                        <drush
+                                command="vset"
+                                assume="yes"
+                                root="${build.platform.dir}"
+                                alias="@${drush.alias.default}"
+                                bin="${toolkit.dir.bin.drush}"
+                                verbose="${drush.verbose}"
+                                color="${drush.color}">
+                            <param>${variable-name}</param>
+                            <param>${variable-value}</param>
+                        </drush>
+                    </then>
+                </if>
             </then>
         </if>
+
     </target>
 
     <target name="drush-variable-set" description="Set a variable with drush" hidden="true">
@@ -198,12 +204,17 @@
                 </replacetokens>
             </filterchain>
         </copy>
-        <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>${project.tmp.dir}/generate-settings.php</param>
-        </drush>
-        <drush command="cc" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
-            <param>drush</param>
-        </drush>
+        <if>
+            <equals arg1="${profile.core}" arg2="7.*"/>
+            <then>
+            <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                <param>${project.tmp.dir}/generate-settings.php</param>
+            </drush>
+            <drush command="cc" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
+                <param>drush</param>
+            </drush>
+            </then>
+        </if>
     </target>
 
     <target name="drush-uris-generate" description="Generate list of uris.">

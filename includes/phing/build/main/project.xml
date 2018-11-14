@@ -26,6 +26,7 @@
             </and>
             <then>
                 <exec command="echo ${project.url.base} |cut -c 8-" outputProperty="multisite_url" />
+                <exec command="cp ${build.platform.dir.sites}/example.sites.php ${build.platform.dir.sites}/sites.php"/>
                 <append destFile="${build.platform.dir.sites}/sites.php"
                         text="$sites['${multisite_url}'] = '${build.site}';" />
             </then>
@@ -291,9 +292,14 @@
     </target>
 
     <target name="project-modules-devel-en" hidden="true" description="Enable development modules with drush.">
-        <echoproperties prefix="devel.vars." destfile="${project.tmp.dir}/build.devel.vars.props" />
-        <exec command="cat ${project.tmp.dir}/build.devel.vars.props | sed '/devel/,$!d'" outputProperty="variable-strings" />
-        <foreach list="${variable-strings}" delimiter="${line.separator}" param="variable-string" target="drush-variable-set-string" />
+        <if>
+            <equals arg1="${profile.core}" arg2="7.*"/>
+            <then>
+                <echoproperties prefix="devel.vars." destfile="${project.tmp.dir}/build.devel.vars.props" />
+                <exec command="cat ${project.tmp.dir}/build.devel.vars.props | sed '/devel/,$!d'" outputProperty="variable-strings" />
+                <foreach list="${variable-strings}" delimiter="${line.separator}" param="variable-string" target="drush-variable-set-string" />
+            </then>
+        </if>
         <phingcall target="drush-modules-enable">
             <property name="project.drupal.modules" value="${devel.mdls.en}" />
         </phingcall>

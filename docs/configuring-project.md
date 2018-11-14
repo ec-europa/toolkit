@@ -206,7 +206,7 @@ project.url.production =
 # --------------------
 devel.mdls.dir = devel
 devel.mdls.dl = devel maillog stage_file_proxy
-devel.mdls.en = devel context field_ui maillog simpletest stage_file_proxy views_ui
+devel.mdls.en = devel context field_ui maillog stage_file_proxy views_ui
 
 # Development variables.
 # ----------------------
