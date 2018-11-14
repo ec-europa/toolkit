@@ -21,7 +21,7 @@ behat.yml.template = ${behat.dir}/behat.yml.dist
 behat.yml.path = ${behat.dir}/behat.yml
 
 # The base URL to use in Behat tests.
-behat.base_url = http://localhost
+behat.base_url = ${project.url.base}
 
 # A drush alias to run behat on.
 behat.drush.alias = ${project.id}
