@@ -15,8 +15,8 @@ matrix:
     - -D'platform.package.version'='2.3' -D'profile'='multisite_drupal_standard'
     - -D'platform.package.version'='2.4' -D'profile'='multisite_drupal_standard'
     - -D'platform.package.version'='2.5' -D'profile'='multisite_drupal_standard'
-    - -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.*'
-    - -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='8.*'
+    - -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.x'
+    - -D'profile'='drupal' -D'profile.name'='standard' -D'profile.core'='8.6.x'
 
 # ==============================================================================
 # Main services
