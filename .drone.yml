@@ -11,30 +11,13 @@ workspace:
 matrix:
   PHING_OPTS:
     - -logger phing.listener.AnsiColorLogger
-  VERSION:
-    - 2.3
-    - 2.4
-    - 2.5
-    - 2.5
-    - 2.5
-  PROFILE:
-    - multisite_drupal_standard
-    - multisite_drupal_standard
-    - multisite_drupal_standard
-    - drupal
-    - drupal
-  PROFILE_CORE:
-    - 7.*
-    - 7.*
-    - 7.*
-    - 7.*
-    - 8.*
-  PROFILE_NAME:
-    - MULTISITE_STANDARD_DRUPAL
-    - MULTISITE_STANDARD_DRUPAL
-    - minimal
-    - minimal
-    - minimal
+  BUILD_OPTIONS:
+    - -D'platform.package.version'='2.3' -D'profile'='multisite_drupal_standard'
+    - -D'platform.package.version'='2.4' -D'profile'='multisite_drupal_standard'
+    - -D'platform.package.version'='2.5' -D'profile'='multisite_drupal_standard'
+    - -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.*'
+    - -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='8.*'
+
 # ==============================================================================
 # Main services
 # ==============================================================================
@@ -77,7 +60,7 @@ pipeline:
     image: fpfis/php56-dev
     group: build
     commands:
-      - ./toolkit/phing build-platform build-subsite-dev -D'platform.package.version'='${VERSION}' -D'profile'='${PROFILE}' -D'profile.name'='${PROFILE_NAME}' -D'profile.core'='${PROFILE_CORE}' ${PHING_OPTS}
+      - ./toolkit/phing build-platform build-subsite-dev ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
