@@ -1,7 +1,5 @@
 # Toolkit change log
 ## Version 3.0.10
-
-  * Composer.json example to subsites.
   * New phing target to set variable with drush by use of ${variable-name} and ${variable-value} properties.
   * New phing target to loop over all phing properties starting with devel.vars. and set them accordingly with another new target
   * Removes all variables from settings.php
@@ -73,7 +71,7 @@
   * [MULTISITE-17096] - Build dist now uses new symlink system. Lib folder structure will match dist folder structure
   * [MULTISITE-17624] - New build property introduced to select a solr module and accompanied core
   * [MULTISITE-18248] - Docker environment has been introduced, still experimental!
-  
+
 ### Security
   * [NESTF-31] - New phing task introduced to validate the make files according to Drupal's security advisory
 
