@@ -339,9 +339,20 @@
         </trycatch>
         <dirname property="database-cachedir" file="${database-file}" />
         <mkdir dir="${database-cachedir}" />
-        <drush command="gdpr-sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="result-file" value="${database-file}" />
-        </drush>
+        <if>
+          <equals arg1="${profile.core}" arg2="7.x" />
+          <then>
+            <drush command="gdpr-sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                <option name="result-file" value="${database-file}" />
+            </drush>
+          </then>
+          <else>
+            <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                <option name="result-file" value="${database-file}" />
+            </drush>
+          </else>
+        </if>
+
     </target>
 
 </project>
