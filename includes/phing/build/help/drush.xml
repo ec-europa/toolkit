@@ -334,7 +334,12 @@
         <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>dblog</param>
         </drush>
-        <drush command="watchdog-smoketest" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}" />
+        <if>
+          <equals arg1="${profile.core}" arg2="7.x" />
+          <then>
+            <drush command="watchdog-smoketest" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}" />
+          </then>
+        </if>
     </target>
 
     <target name="drush-gdpr-dump" hidden="true" description="Make a sanitized dump of database.">
