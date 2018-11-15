@@ -121,16 +121,33 @@
     </target>
 
     <target name="drush-modules-enable" description="Enable a set of modules." hidden="true">
-        <drush
-            command="pm-enable"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>${project.drupal.modules}</param>
-        </drush>
+        <if>
+            <equals arg1="${profile}" arg2="multisite_drupal_standard"/>
+        </if>
+        <then>
+            <drush
+                command="pm-enable"
+                assume="yes"
+                root="${build.platform.dir}"
+                alias="@${drush.alias.default}"
+                bin="${toolkit.dir.bin.drush}"
+                verbose="${drush.verbose}"
+                color="${drush.color}">
+                <param>${project.drupal.modules}</param>
+            </drush>
+        </then>
+        <else>
+            <drush
+                command="pm-enable"
+                assume="yes"
+                root="${build.platform.dir}"
+                alias="@${drush.alias.default}"
+                bin="${toolkit.dir.bin.drush}"
+                verbose="${drush.verbose}"
+                color="${drush.color}">
+                <param>${devel.mdls.core.en}</param>
+            </drush>
+        </else>
     </target>
 
     <target name="drush-node-access-rebuild" hidden="true" description="Rebuild the node access.">
