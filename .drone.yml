@@ -128,7 +128,7 @@ pipeline:
   behat:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing drush-settings-generate test-run-behat -D'project.url.base'='${behat.base_url}' ${BUILD_OPTIONS} ${PHING_OPTS}
+      - ./toolkit/phing test-run-behat ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
