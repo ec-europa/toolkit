@@ -2,7 +2,6 @@
 ## Version 3.0.10
 
   * Composer.json example to subsites.
-  * Fix compatibility with NE Platform autoloading
   * New phing target to set variable with drush by use of ${variable-name} and ${variable-value} properties.
   * New phing target to loop over all phing properties starting with devel.vars. and set them accordingly with another new target
   * Removes all variables from settings.php
