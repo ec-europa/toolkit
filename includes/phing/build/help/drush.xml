@@ -177,7 +177,6 @@
                           </then>
                           <else>
                             <drush command="cr" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
-                                <param>${drush.rr.options}</param>
                             </drush>
                           </else>
                         </if>
@@ -192,7 +191,6 @@
                         </then>
                         <else>
                           <drush command="cr" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
-                              <param>${drush.rr.options}</param>
                           </drush>
                         </else>
                       </if>
