@@ -33,7 +33,7 @@ services:
   visreg:
     image: backstopjs/backstopjs
     entrypoint: [ "/bin/bash" ]
-      
+
 # ==============================================================================
 # Pipelines
 # ==============================================================================
@@ -61,6 +61,7 @@ pipeline:
     group: build
     commands:
       - ./toolkit/phing build-platform build-subsite-dev ${BUILD_OPTIONS} ${PHING_OPTS}
+      - echo "<?php \$sites['web:8080'] = 'toolkit'" > /test/toolkit/build/sites/sites.php;
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
