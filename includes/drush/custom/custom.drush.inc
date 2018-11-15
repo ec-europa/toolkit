@@ -233,22 +233,26 @@ function generateUrlsByContentTypes($paths)
       $types[] = $node_type->type;
     }
   }
+
   // Look for content in database.
-  $nodes = db_select('node', 'n')
-    ->fields('n', array('nid', 'type'))
-    ->condition('n.type', $types, 'IN')
-    ->groupBy('n.type')
-    ->condition('status', 0, '>')
-    ->execute()
-    ->fetchAll();
-  if (!empty($nodes)) {
-    foreach ($nodes as $node) {
-      $path = 'node/' . $node->nid;
-      if (drupal_valid_path($path)) {
-        $paths[] = url($path);
+  if (is_array($types) && count($types) > 0) {
+    $nodes = db_select('node', 'n')
+      ->fields('n', array('nid', 'type'))
+      ->condition('n.type', $types, 'IN')
+      ->groupBy('n.type')
+      ->condition('status', 0, '>')
+      ->execute()
+      ->fetchAll();
+    if (!empty($nodes)) {
+      foreach ($nodes as $node) {
+        $path = 'node/' . $node->nid;
+        if (drupal_valid_path($path)) {
+          $paths[] = url($path);
+        }
       }
     }
   }
+
   return $paths;
 }
 /**
