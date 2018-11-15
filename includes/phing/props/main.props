@@ -139,7 +139,7 @@ tests.dir = ${project.basedir}/tests
 # --------------
 build.dev = build
 build.dist = dist
-build.site = ${project.id}
+build.site = default
 
 # Build halts.
 # ----------
@@ -237,7 +237,7 @@ drush.db.dump = ${build.platform.dir}/dump.sql
 
 # Drush aliases configuration.
 # ----------------------------
-drush.alias.default = ${project.id}
+drush.alias.default = ${build.site}
 drush.alias.docker = docker
 
 # Drupal installation settings.

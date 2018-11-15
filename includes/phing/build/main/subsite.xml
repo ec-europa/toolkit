@@ -11,8 +11,7 @@
             subsite-make,
             project-modules-devel-make,
             drush-aliases-generate,
-            drush-settings-generate,
-            project-platform-enable-multisite">
+            drush-settings-generate">
         <echo msg="Playbook for build-subsite-dev ended." />
     </target>
 
