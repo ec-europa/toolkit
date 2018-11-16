@@ -57,6 +57,15 @@
     <target name="install-clean" description="Install NextEuropa site from scratch.">
         <exec command="chmod 775 ${build.platform.dir.settings}" />
 
+        <if>
+          <not>
+            <available file="${build.platform.dir.sites}/default/default.settings.php" type="file" />
+          </not>
+          <then>
+            <copy file="${build.tmp.dir}/default.settings.php" tofile="${build.platform.dir.sites}/default/default.settings.php"/>
+          </then>
+        </if>
+
         <phingcall target="drush-sql-create" />
         <phingcall target="drush-site-install" />
         <phingcall target="project-modules-install-en" />
