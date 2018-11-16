@@ -4,7 +4,7 @@
 
     <target name="drush-aliases-generate" hidden="true" description="Generate drush aliases for each subsite folder.">
         <mkdir dir="${build.platform.dir.sites}/all/drush" />
-        <drushgal siteRoot="${build.platform.dir}" />
+        <drushgal siteRoot="${build.platform.dir}" siteUrl="${project.url.base}" />
     </target>
 
     <target name="drush-files-dirs-create" description="Create site files directories." hidden="true">

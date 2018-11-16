@@ -59,6 +59,13 @@ class DrushGenerateAliasTask extends \Task
      */
     private $_drushDir = '/sites/all/drush';
 
+    /**
+     * The URL of the website.
+     *
+     * @var string
+     */
+    private $_siteUrl = '';
+
 
     /**
      * Generates an aliases.drushrc.php file.
@@ -84,11 +91,11 @@ class DrushGenerateAliasTask extends \Task
 
         $aliases = array(
             'default' => array(
-                'uri'  => 'default',
+                'uri'  => $this->_siteUrl,
                 'root' => $this->_siteRoot,
             ),
             'docker' => array(
-                'uri'  => 'http://web:8080',
+                'uri'  => $this->_siteUrl,
                 'root' => $this->_siteRoot,
             ),
         );
@@ -110,7 +117,7 @@ class DrushGenerateAliasTask extends \Task
         } else {
             $aliases += $this->loadAliases($aliasesFile);
             $aliases[$this->_aliasName] = array(
-                'uri'  => $this->_aliasName,
+                'uri'  => $this->_siteUrl,
                 'root' => $aliases['default']['root'],
             );
         }//end if
