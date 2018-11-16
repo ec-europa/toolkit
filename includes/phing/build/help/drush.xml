@@ -288,6 +288,7 @@
     <target name="drush-sql-import" hidden="true" description="Import a database.">
         <echo message="Importing database." />
         <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${db.url}" />
             <param>&lt; ${database-file}</param>
         </drush>
         <if>
