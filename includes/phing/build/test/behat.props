@@ -6,7 +6,7 @@
 behat.browser.name = chrome
 
 # Behat API driver.
-behat.api.driver = drush
+behat.api.driver = drupal
 
 # The location of the Behat tests.
 behat.dir = ${project.basedir}/tests
