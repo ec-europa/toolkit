@@ -148,7 +148,7 @@ class DrushGenerateAliasTask extends \Task
      */
     protected function checkRequirements()
     {
-        $required_properties = array('_siteRoot');
+        $required_properties = array('_siteRoot', '_siteUrl');
         foreach ($required_properties as $required_property) {
             if (empty($this->$required_property)) {
                 throw new \BuildException(
@@ -224,5 +224,17 @@ class DrushGenerateAliasTask extends \Task
     {
         $this->_drushDir = $drushDir;
     }//end setDrushDir()
+
+    /**
+     * Sets the site URL to place the aliases in.
+     *
+     * @param string $siteUrl The Site URL to place the aliases in
+     *
+     * @return void
+     */
+    public function setSiteUrl($siteUrl)
+    {
+        $this->_siteUrl = $siteUrl;
+    }//end setSiteUrl()
 
 }//end class
