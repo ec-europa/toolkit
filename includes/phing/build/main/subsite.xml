@@ -98,7 +98,12 @@
               <relsym link="${build.subsite.dir}/default.settings.php" target="${build.tmp.dir}/default.settings.php" />
             </then>
         </if>
-        <relsym link="${build.subsite.dir.files}" target="${build.tmp.dir.files}" />
+        <if>
+            <available file="${build.subsite.dir.files}" />
+            <then>
+              <relsym link="${build.subsite.dir.files}" target="${build.tmp.dir.files}" />
+            </then>
+        </if>
         <relsym link="${build.${build-type}.dir}/composer.json" target="${resources.dir.composer.json}" />
         <relsym link="${build.${build-type}.dir}/composer.lock" target="${resources.dir.composer.lock}" />
     </target>
