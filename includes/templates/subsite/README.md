@@ -28,7 +28,7 @@
 
 ### 2.2 Clean installation
 
-<details><summary>Edit file: <code>build.develop.props</code></summary><p>
+<details><summary>Create file: <code>build.develop.props</code></summary><p>
 Depending on your environment you need to set the following properties.
 Connection settings or secrets should never be committed or pushed to GitHub!
 
@@ -43,7 +43,7 @@ mysql.host = 127.0.0.1
 
 ### 2.3 Clone installation
 
-<details><summary>Edit file: <code>build.develop.props</code></summary><p>
+<details><summary>Create file: <code>build.develop.props</code></summary><p>
 Depending on your environment you need to set the following properties.
 Connection settings or secrets should never be committed or pushed to GitHub!
 
