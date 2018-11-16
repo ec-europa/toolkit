@@ -5,26 +5,26 @@
     <target name="build-subsite-dev" description="Build a local development version of the site."
         depends="
             subsite-type-dev,
-            project-subsite-backup,
-            subsite-delete-dev,
-            project-subsite-restore,
+            subsite-delete,
             subsite-resources-link,
             project-subsite-composer-dev,
             subsite-make,
-            project-modules-devel-make">
+            project-modules-devel-make,
+            drush-aliases-generate,
+            drush-settings-generate">
         <echo msg="Playbook for build-subsite-dev ended." />
     </target>
 
     <target name="build-subsite-dist" description="Build a site intended as a release package."
         depends="
-            subsite-delete-dist,
             subsite-type-tmp,
+            subsite-delete,
             subsite-resources-link,
-            project-subsite-composer-no-dev,
             subsite-make,
             subsite-type-dist,
             subsite-resources-copy,
-            package-version-set">
+            package-version-set,
+            project-subsite-composer-no-dev">
         <echo msg="Playbook for build-subsite-dist ended." />
     </target>
 
@@ -35,16 +35,11 @@
         </phingcall>
     </target>
 
-    <target name="subsite-delete-dev" hidden="true" description="Delete subsite dev build.">
-        <phingcall target="project-scratch-build">
-            <property name="dir-build" value="${build.${build-type}.dir}" override="true" />
-        </phingcall>
-    </target>
-
     <target name="subsite-delete-dist" hidden="true" description="Delete subsite dist build.">
         <delete dir="${build.tmp.dir}" includeemptydirs="true" />
         <delete dir="${build.dist.dir}" includeemptydirs="true" />
         <mkdir dir="${build.tmp.dir}" />
+        <mkdir dir="${build.dist.dir}" />
     </target>
 
     <target name="subsite-make" hidden="true" description="Makes the subsite resources with drush.">
@@ -85,6 +80,15 @@
     <target name="subsite-resources-link" hidden="true" description="Link subsite resources to lib folder for development.">
         <symlink-property-contents prefix="lib.dir." origindir="${lib.dir}" targetdir="${build.${build-type}.dir}" overwrite="true" />
         <symlink-property-contents prefix="resources.dir.composer." origindir="${resources.dir}" targetdir="${build.${build-type}.dir}" overwrite="true" />
+        <if>
+            <available file="${build.platform.dir.sites}/all/drush" />
+            <then>
+                <relsym link="${build.platform.dir.sites}/all/drush/custom" target="${toolkit.dir.incl.drush}/custom" />
+            </then>
+        </if>
+        <relsym link="${build.platform.dir.sites}/default/default.settings.php" target="${build.tmp.dir}/default.settings.php" />
+        <relsym link="${build.subsite.dir}/default.settings.php" target="${build.tmp.dir}/default.settings.php" />
+        <relsym link="${build.subsite.dir.files}" target="${build.tmp.dir.files}" />
         <relsym link="${build.${build-type}.dir}/composer.json" target="${resources.dir.composer.json}" />
         <relsym link="${build.${build-type}.dir}/composer.lock" target="${resources.dir.composer.lock}" />
     </target>
@@ -106,6 +110,17 @@
 
     <target name="subsite-type-tmp" hidden="true" description="Sets the type of build to tmp.">
         <property name="build-type" value="tmp" override="true" />
+    </target>
+
+    <target name="subsite-delete" hidden="true" description="Delete build directory.">
+        <if>
+            <available file="${build.${build-type}.dir}" type="dir" />
+            <then>
+                <echo msg="Ensaio aqui..." />
+                <chmod file="${build.${build-type}.dir}" mode="0777" />
+                <delete dir="${build.${build-type}.dir}" includeemptydirs="true" />
+            </then>
+        </if>
     </target>
 
 </project>

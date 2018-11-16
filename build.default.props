@@ -7,6 +7,7 @@
 # Toolkit directories.
 # -----------------------
 
+toolkit.dir = ${phing.dir.starterkit}
 toolkit.dir.incl = ${toolkit.dir}/includes
 toolkit.dir.incl.composer = ${toolkit.dir.incl}/composer
 toolkit.dir.incl.docker = ${toolkit.dir.incl}/docker
@@ -105,7 +106,7 @@ phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpc
 behat.browser.name = chrome
 
 # Behat API driver.
-behat.api.driver = drush
+behat.api.driver = drupal
 
 # The location of the Behat tests.
 behat.dir = ${project.basedir}/tests
@@ -120,10 +121,10 @@ behat.yml.template = ${behat.dir}/behat.yml.dist
 behat.yml.path = ${behat.dir}/behat.yml
 
 # The base URL to use in Behat tests.
-behat.base_url = http://localhost
+behat.base_url = ${project.url.base}
 
 # A drush alias to run behat on.
-behat.drush.alias = default
+behat.drush.alias = ${build.site}
 
 # The URL of the Behat webdriver host.
 behat.wd_host.url = http://localhost:4444/wd/hub
@@ -199,11 +200,15 @@ project.url.production = https://ec.europa.eu/${project.id}
 # Development modules.
 # --------------------
 devel.mdls.dir = devel
-devel.mdls.en = devel context field_ui maillog simpletest stage_file_proxy views_ui
+devel.mdls.en = devel context field_ui maillog stage_file_proxy views_ui
+devel.mdls.core.en = 
 
 # Development variables.
 # ----------------------
 devel.vars.error_level = 2
+devel.vars.maillog_send = 0
+devel.vars.preprocess_css = 0
+devel.vars.preprocess_js = 0
 devel.vars.stage_file_proxy_hotlink = 1
 devel.vars.stage_file_proxy_origin = ${project.url.production}
 devel.vars.stage_file_proxy_origin_dir = sites/${project.id}/files
@@ -293,6 +298,7 @@ lib.dir.profiles = ${lib.dir}/profiles
 lib.dir.profiles.profile = ${lib.dir.profiles}/${profile}
 lib.dir.source = ${lib.dir}/src
 lib.dir.themes = ${lib.dir}/themes
+lib.dir.translations = ${lib.dir}/translations
 
 resources.dir = ${project.basedir}/resources
 resources.dir.composer.json = ${resources.dir}/composer.json
@@ -308,7 +314,6 @@ tests.dir = ${project.basedir}/tests
 build.dev = build
 build.dist = dist
 build.site = default
-#build.site = ${project.id}
 
 # Build halts.
 # ----------
@@ -333,7 +338,7 @@ build.platform.htaccess.append.text =
 build.subsite.composer.json = ${build.subsite.dir}/composer.json
 build.subsite.composer.lock = ${build.subsite.dir}/composer.lock
 build.subsite.dir = ${build.platform.dir.sites}/${build.site}
-build.subsite.dir.files = sites/${build.site}/files
+build.subsite.dir.files =  ${build.subsite.dir}/files
 build.subsite.dir.libraries = ${build.subsite.dir}/libraries
 build.subsite.dir.modules = ${build.subsite.dir}/modules
 build.subsite.dir.modules.contrib = ${build.subsite.dir.modules}/contrib
@@ -359,14 +364,7 @@ build.dist.dir.themes = ${build.dist.dir}/themes
 # Temporary build files and directories.
 # -----------------------------------------
 build.tmp.dir = ${project.tmp.dir}/sites/${build.site}
-
-# Rebuild configuration.
-# ----------------------
-rebuild.auto = 1
-rebuild.backup.destination = ${project.tmp.dir}/backup-site
-rebuild.backup.files = ${build.subsite.dir}/settings.php;${build.subsite.dir}/settings.local.php
-rebuild.backup.folders = ${build.subsite.dir.files}
-rebuild.backup.site = ${build.subsite.dir}
+build.tmp.dir.files = ${build.tmp.dir}/files
 
 # Shared paths.
 # -------------

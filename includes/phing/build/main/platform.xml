@@ -4,7 +4,6 @@
 
     <target name="build-platform-dev" hidden="true" description="Build a local development version with a single platform profile."
         depends="
-            project-subsite-backup,
             platform-type-dev,
             platform-drupal-make,
             platform-profiles-link,
@@ -13,7 +12,6 @@
             project-platform-composer-no-dev,
             project-modules-devel-make,
             project-platform-set-htaccess,
-            project-subsite-restore,
             project-subsite-files-setup" />
 
     <target name="build-platform-dev-all" hidden="true" description="Build a local development version with all platform profiles."
@@ -46,12 +44,6 @@
     <target name="build-platform-test" hidden="true" description="Build a platform test package to test this release.">
         <phingcall target="build-project-test">
             <property name="dir-build" value="${tests.dir}" override="true" />
-        </phingcall>
-    </target>
-
-    <target name="platform-delete" hidden="true" description="Build a platform test package to test this release.">
-        <phingcall target="project-scratch-build">
-            <property name="dir-build" value="${build.${build-type}.dir}" override="true" />
         </phingcall>
     </target>
 

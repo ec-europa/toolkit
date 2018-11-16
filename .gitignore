@@ -11,7 +11,7 @@ tests/behat.yml
 tests/phpunit.xml
 
 # Ignore build artifacts.
-build
+/build/
 /composer.lock
 .tmp
 toolkit
@@ -22,3 +22,5 @@ lib/
 phpcs-ruleset.xml
 resources/
 tests/
+/backstop_data/
+/backstop.json

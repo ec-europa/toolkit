@@ -14,7 +14,39 @@
         </drush>
     </target>
 
-    <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
+    <target name="drush-variable-set-string" description="Use a string to set variable with drush" hidden="true">
+        <exec command="echo ${variable-string} | sed -e 's/devel\.vars\.\(.*\)=\(.*\)$/\1/'" outputProperty="variable-name" />
+        <exec command="echo ${variable-string} | cut -d'=' -f2" outputProperty="variable-value" />
+        <if>
+            <equals arg1="${profile.core" arg2="7.*"/>
+            <then>
+                <if>
+                    <not>
+                        <or>
+                            <equals arg1="${variable-name}" arg2="" />
+                            <equals arg1="${variable-value}" arg2="" />
+                        </or>
+                    </not>
+                    <then>
+                        <drush
+                                command="vset"
+                                assume="yes"
+                                root="${build.platform.dir}"
+                                alias="@${drush.alias.default}"
+                                bin="${toolkit.dir.bin.drush}"
+                                verbose="${drush.verbose}"
+                                color="${drush.color}">
+                            <param>${variable-name}</param>
+                            <param>${variable-value}</param>
+                        </drush>
+                    </then>
+                </if>
+            </then>
+        </if>
+
+    </target>
+
+    <target name="drush-variable-set" description="Set a variable with drush" hidden="true">
         <drush
             command="vset"
             assume="yes"
@@ -23,27 +55,8 @@
             bin="${toolkit.dir.bin.drush}"
             verbose="${drush.verbose}"
             color="${drush.color}">
-            <param>preprocess_css 0</param>
-        </drush>
-        <drush
-            command="vset"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>preprocess_js 0</param>
-        </drush>
-        <drush
-            command="cc"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>all</param>
+            <param>${variable-name}</param>
+            <param>${variable-value}</param>
         </drush>
     </target>
 
@@ -108,16 +121,21 @@
     </target>
 
     <target name="drush-modules-enable" description="Enable a set of modules." hidden="true">
-        <drush
-            command="pm-enable"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>${project.drupal.modules}</param>
-        </drush>
+        <if>
+            <equals arg1="${profile}" arg2="multisite_drupal_standard"/>
+            <then>
+                <drush
+                    command="pm-enable"
+                    assume="yes"
+                    root="${build.platform.dir}"
+                    alias="@${drush.alias.default}"
+                    bin="${toolkit.dir.bin.drush}"
+                    verbose="${drush.verbose}"
+                    color="${drush.color}">
+                    <param>${project.drupal.modules}</param>
+                </drush>
+            </then>
+        </if>
     </target>
 
     <target name="drush-node-access-rebuild" hidden="true" description="Rebuild the node access.">
@@ -144,20 +162,38 @@
             <finally>
                 <trycatch>
                     <try>
-                        <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                            <param>"update system set status=0 where name IN (${drush.rr.disable});"</param>
-                        </drush>
-                        <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
-                            <param>${drush.rr.options}</param>
-                        </drush>
-                        <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                            <param>"update system set status=1 where name IN (${drush.rr.disable});"</param>
-                        </drush>
+                        <if>
+                          <equals arg1="${profile.core}" arg2="7.x" />
+                          <then>
+                            <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                                <param>"update system set status=0 where name IN (${drush.rr.disable});"</param>
+                            </drush>
+                            <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+                                <param>${drush.rr.options}</param>
+                            </drush>
+                            <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                                <param>"update system set status=1 where name IN (${drush.rr.disable});"</param>
+                            </drush>
+                          </then>
+                          <else>
+                            <drush command="cr" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+                            </drush>
+                          </else>
+                        </if>
                     </try>
                     <catch>
-                        <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
-                            <param>${drush.rr.options}</param>
-                        </drush>
+                      <if>
+                        <equals arg1="${profile.core}" arg2="7.x" />
+                        <then>
+                          <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+                              <param>${drush.rr.options}</param>
+                          </drush>
+                        </then>
+                        <else>
+                          <drush command="cr" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
+                          </drush>
+                        </else>
+                      </if>
                     </catch>
                 </trycatch>
             </finally>
@@ -182,28 +218,26 @@
                     <token key="db.host" value="${db.host}" />
                     <token key="db.port" value="${db.port}" />
                     <token key="db.prefix" value="${db.prefix}" />
-                    <token key="base_url" value="${project.url.base}" />
-                    <token key="error_level" value="${devel.vars.error_level}" />
-                    <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
-                    <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />
-                    <token key="views_show_additional_queries" value="${devel.vars.views_show_additional_queries}" />
-                    <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
-                    <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
-                    <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
                     <token key="file_public_path" value="${build.subsite.dir.files}" />
                     <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
-                    <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
+                    <token key="file_temporary_path" value="${build.subsite.dir.files}/tmp" />
+                    <token key="base_url" value="${project.url.base}" />
                     <token key="update_free_access" value="${drupal.update.free.access}" />
                     <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
                 </replacetokens>
             </filterchain>
         </copy>
-        <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>${project.tmp.dir}/generate-settings.php</param>
-        </drush>
-        <drush command="cc" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
-            <param>drush</param>
-        </drush>
+        <if>
+            <equals arg1="${profile.core}" arg2="7.*"/>
+            <then>
+            <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                <param>${project.tmp.dir}/generate-settings.php</param>
+            </drush>
+            <drush command="cc" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
+                <param>drush</param>
+            </drush>
+            </then>
+        </if>
     </target>
 
     <target name="drush-uris-generate" description="Generate list of uris.">
@@ -253,7 +287,6 @@
 
     <target name="drush-sql-import" hidden="true" description="Import a database.">
         <echo message="Importing database." />
-        <phingcall target="drush-files-dirs-create" />
         <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>&lt; ${database-file}</param>
         </drush>
@@ -272,7 +305,12 @@
             </then>
         </if>
         <phingcall target="drush-files-dirs-htaccess" />
-        <phingcall target="drush-solr-enable" />
+        <if>
+            <equals arg1="${profile}" arg2="multisite_drupal_standard" />
+            <then>
+                <phingcall target="drush-solr-enable" />
+            </then>
+        </if>
         <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}"></drush>
     </target>
 
@@ -290,6 +328,57 @@
         <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="result-file" value="${database-file}" />
         </drush>
+    </target>
+
+    <target name="drush-run-smoketest" hidden="true" description="Visit pages and check for watchog messages.">
+       <if>
+         <equals arg1="${profile.core}" arg2="7.x" />
+         <then>
+           <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+              <param>dblog</param>
+           </drush>
+           <drush command="watchdog-smoketest" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}" />
+         </then>
+         <else>
+           <echo msg="Smoketest disabled for D8 project." />
+         </else>
+       </if>
+    </target>
+
+    <target name="drush-gdpr-dump" hidden="true" description="Make a sanitized dump of database.">
+        <echo message="Backing up database ${db.name} to ${database-file}." />
+        <trycatch>
+            <try>
+                <exec command="${toolkit.dir.bin.drush} -r ${build.platform.dir} gdpr-sql-dump --help" checkreturn="true" />
+            </try>
+            <catch>
+                <drush command="dl" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>gdpr checklistapi</param>
+                </drush>
+            </catch>
+            <finally>
+                <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>gdpr_dump</param>
+                </drush>
+                <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} vset gdpr_dump_table_map &apos;{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}&apos; --format=json --exact -y >/dev/null' escape="false" />
+            </finally>
+        </trycatch>
+        <dirname property="database-cachedir" file="${database-file}" />
+        <mkdir dir="${database-cachedir}" />
+        <if>
+          <equals arg1="${profile.core}" arg2="7.x" />
+          <then>
+            <drush command="gdpr-sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                <option name="result-file" value="${database-file}" />
+            </drush>
+          </then>
+          <else>
+            <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                <option name="result-file" value="${database-file}" />
+            </drush>
+          </else>
+        </if>
+
     </target>
 
 </project>

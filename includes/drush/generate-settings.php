@@ -27,6 +27,20 @@ $settings['databases'] = array(
   ),
 );
 
+// Build variables array.
+$variables = array(
+  'file_public_path' => '%%file_public_path%%',
+  'file_private_path' => '%%file_private_path%%',
+  'file_temporary_path' => '%%file_temporary_path%%',
+);
+// Setup individual development variables.
+foreach ($variables as $key => $value) {
+  $settings['conf[\'' . $key . '\']'] = array(
+    'required' => TRUE,
+    'value' => is_numeric($value) ? (int) $value : $value,
+  );
+}
+
 // Set update free access.
 $settings['update_free_access'] = array(
     'required' => TRUE,
@@ -38,28 +52,6 @@ $settings['drupal_hash_salt'] = array(
     'required' => TRUE,
     'value' => '%%drupal_hash_salt%%',
 );
-
-// Build variables array.
-$variables = array(
-  'error_level' => '%%error_level%%',
-  'views_ui_show_sql_query' => '%%views_ui_show_sql_query%%',
-  'views_ui_show_performance_statistics' => '%%views_ui_show_performance_statistics%%',
-  'views_show_additional_queries' => '%%views_show_additional_queries%%',
-  'stage_file_proxy_origin' => '%%stage_file_proxy_origin%%',
-  'stage_file_proxy_origin_dir' => '%%stage_file_proxy_origin_dir%%',
-  'stage_file_proxy_hotlink' => '%%stage_file_proxy_hotlink%%',
-  'file_public_path' => '%%file_public_path%%',
-  'file_private_path' => '%%file_private_path%%',
-  'file_temporary_path' => '%%file_temporary_path%%',
-);
-
-// Setup individual development variables.
-foreach ($variables as $key => $value) {
-  $settings['conf[\'' . $key . '\']'] = array(
-    'required' => TRUE,
-    'value' => is_numeric($value) ? (int) $value : $value,
-  );
-}
 
 // Set base url.
 $settings['base_url'] = array(

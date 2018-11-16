@@ -3,9 +3,7 @@
 <project name="project" description="Targets shared by differenct project types." default="">
 
     <target name="build-platform" description="Build NextEuropa Platform code without version control.">
-        <phingcall target="project-platform-backup" />
-        <phingcall target="project-platform-delete" />
-
+        <delete dir="${build.platform.dir}" includeemptydirs="true" failonerror="true" quiet="true" />
         <if>
             <contains string="${profile}" substring="multisite" />
             <then>
@@ -17,10 +15,29 @@
                 <phingcall target="project-profile-build" />
             </else>
         </if>
+        <phingcall target="project-subsite-files-setup" />
+        <phingcall target="project-platform-set-htaccess" />
+    </target>
 
-       <phingcall target="project-platform-set-htaccess" />
-       <phingcall target="project-platform-restore" />
+    <target name="project-platform-enable-multisite" hidden="true" description="Enable multisite mode.">
+        <if>
+            <and>
+                <equals arg1="${platform.multisite.mode}" arg2="1" />
+            </and>
+            <then>
+                <exec command="echo ${project.url.base} |cut -c 8-" outputProperty="multisite_url" />
+                <exec command="cp ${build.platform.dir.sites}/example.sites.php ${build.platform.dir.sites}/sites.php"/>
+                <echo msg="cp ${build.platform.dir.sites}/example.sites.php ${build.platform.dir.sites}/sites.php" />
+                <append destFile="${build.platform.dir.sites}/sites.php"
+                        text="$sites['${multisite_url}'] = '${build.site}';" />
 
+                <exec command="${build.platform.dir.sites}/sites.php" outputProperty="temporary_file" />
+                <echo msg="FILE: ${temporary_file}" />
+            </then>
+            <else>
+                <echo msg="Reached my multisite mode, let build normal stuff for ${project.url.base}."/>
+            </else>
+        </if>
     </target>
 
     <target name="project-profile-build" hidden="true" description="Build Drupal profile.">
@@ -32,13 +49,6 @@
         </drush>
     </target>
 
-    <target name="build-subsite" hidden="true" description="Build NextEuropa Subsite code without version control."
-        depends="
-            project-subsite-backup,
-            project-subsite-restore">
-        <echo msg="TODO: subsite builds not yet developed." />
-    </target>
-
     <target name="build-theme" hidden="true" description="Build EC Europa theme without version control."
         depends="
             theme-europa-download-extract,
@@ -47,7 +57,6 @@
     <target name="install-clean" description="Install NextEuropa site from scratch.">
         <exec command="chmod 775 ${build.platform.dir.settings}" />
 
-        <phingcall target="drush-aliases-generate" />
         <phingcall target="drush-sql-create" />
 
         <if>
@@ -89,7 +98,6 @@
                 <phingcall target="drush-site-install" />
             </else>
         </if>
-
         <phingcall target="project-modules-install-en" />
         <phingcall target="project-modules-devel-en" />
         <phingcall target="reset-filesystem-permissions" />
@@ -98,34 +106,36 @@
 
     <target name="install-clone" description="Install NextEuropa site with sanitized production data."
         depends="
-            drush-aliases-generate,
-            drush-settings-generate,
             project-database-import,
             project-modules-devel-en,
-            reset-filesystem-permissions,
-            drush-cache-reset" />
+            reset-filesystem-permissions" />
 
     <target name="project-composer-install" description="Runs composer install."
         hidden="true">
         <if>
-            <isset property="composer-no-dev" />
+            <available file="${composer-working-dir}/composer.json" type="file" />
             <then>
-                <composer command="install" composer="${project.bin.composer}">
-                    <arg value="--working-dir=${composer-working-dir}" />
-                    <arg value="--no-interaction" />
-                    <arg value="--no-suggest" />
-                    <arg value="--no-dev" />
-                    <arg value="--ansi" />
-                </composer>
+                <if>
+                    <ispropertytrue property="composer-no-dev" />
+                    <then>
+                        <composer command="install" composer="${project.bin.composer}">
+                            <arg value="--working-dir=${composer-working-dir}" />
+                            <arg value="--no-interaction" />
+                            <arg value="--no-suggest" />
+                            <arg value="--no-dev" />
+                            <arg value="--ansi" />
+                        </composer>
+                    </then>
+                    <else>
+                        <composer command="install" composer="${project.bin.composer}">
+                            <arg value="--working-dir=${composer-working-dir}" />
+                            <arg value="--no-interaction" />
+                            <arg value="--no-suggest" />
+                            <arg value="--ansi" />
+                        </composer>
+                    </else>
+                </if>
             </then>
-            <else>
-                <composer command="install" composer="${project.bin.composer}">
-                    <arg value="--working-dir=${composer-working-dir}" />
-                    <arg value="--no-interaction" />
-                    <arg value="--no-suggest" />
-                    <arg value="--ansi" />
-                </composer>
-            </else>
         </if>
     </target>
 
@@ -167,6 +177,15 @@
         </if>
     </target>
 
+    <target name="project-database-link" hidden="true" description="Symlink database to dump.sql in project basedir." depends="project-database-file">
+        <if>
+            <available file="${db-dl-file}" type="file" />
+            <then>
+                <relsym link="${project.basedir}/dump.sql" target="${db-dl-file}" overwrite="true" />
+            </then>
+        </if>
+    </target>
+
     <target name="project-database-import" hidden="true" description="Import database for project with drush."
         depends="
             project-database-file,
@@ -176,12 +195,6 @@
         <phingcall target="drush-sql-create" />
         <phingcall target="drush-sql-import">
             <property name="database-file" value="${db-dl-file}" />
-        </phingcall>
-    </target>
-
-    <target name="project-platform-delete" hidden="true" description="Remove previous platform build..">
-        <phingcall target="project-scratch-build">
-            <property name="dir-build" value="${build.platform.dir}" override="true" />
         </phingcall>
     </target>
 
@@ -219,7 +232,7 @@
     <target name="project-platform-set-version" description="Save the platform version used for builds."
         hidden="true">
         <if>
-            <matches string="${platform.package.version}" pattern="^[1-9]+\." />
+            <matches string="${platform.package.version}" pattern="^[0-9]+\." />
             <then>
                 <propertyregex property="platform.package.version.major" subject="${platform.package.version}" pattern="^([0-9]+)\." match="$1" override="true" />
                 <propertyregex property="platform.package.version.minor" subject="${platform.package.version}" pattern="^[0-9]+\.([0-9]+)" match="$1" override="true" />
@@ -234,7 +247,7 @@
                     </then>
                 </if>
                 <if>
-                    <matches string="${platform.package.version}" pattern="^[1-9]+\.[1-9]+\.[1-9]+$" />
+                    <matches string="${platform.package.version}" pattern="^[0-9]+\.[0-9]+\.[0-9]+$" />
                     <then>
                         <property name="platform.package.version.current" value="${platform.package.version}" override="true" />
                     </then>
@@ -258,364 +271,17 @@
         <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.version.props" />
     </target>
 
-    <target name="project-scratch-build" hidden="true" description="Delete previous build to start over clean.">
-        <echo msg="Delete previous build." />
-        <if>
-            <available file="${build.platform.dir.settings}/default.settings.php" />
-            <then>
-                <move file="${build.platform.dir.settings}/default.settings.php" tofile="${project.tmp.dir}/default.settings.php" overwrite="true" />
-            </then>
-        </if>
-        <if>
-            <available file="${build.platform.dir.settings}/settings.php" />
-            <then>
-                <move file="${build.platform.dir.settings}/settings.php" tofile="${project.tmp.dir}/settings.php" overwrite="true" />
-            </then>
-        </if>
-        <if>
-            <available file="${build.platform.dir.settings}/settings.local.php" />
-            <then>
-                <move file="${build.platform.dir.settings}/settings.local.php" tofile="${project.tmp.dir}/settings.local.php" overwrite="true" />
-            </then>
-        </if>
-        <phingcall target="folder-unprotect">
-            <property name="folder.to.unprotect" value="${dir-build}" />
-        </phingcall>
-
-        <echo msg="Unprotecting folder." />
-        <phingcall target="folder-delete">
-            <property name="folder.to.delete" value="${dir-build}" />
-        </phingcall>
-        <if>
-            <available file="${project.tmp.dir}/default.settings.php" />
-            <then>
-                <mkdir dir="${build.platform.dir.settings}" />
-                <move file="${project.tmp.dir}/default.settings.php" tofile="${build.platform.dir.settings}/default.settings.php" />
-            </then>
-        </if>
-        <if>
-            <available file="${project.tmp.dir}/settings.php" />
-            <then>
-                <mkdir dir="${build.platform.dir.settings}" />
-                <move file="${project.tmp.dir}/settings.php" tofile="${build.platform.dir.settings}/settings.php" />
-            </then>
-        </if>
-        <if>
-            <available file="${project.tmp.dir}/settings.local.php" />
-            <then>
-                <mkdir dir="${build.platform.dir.settings}" />
-                <move file="${project.tmp.dir}/settings.local.php" tofile="${build.platform.dir.settings}/settings.local.php" />
-            </then>
-        </if>
-
-        <phingcall target="project-subsite-files-setup" />
-        <phingcall target="drush-aliases-generate" />
-    </target>
-
-    <target name="project-subsite-backup" hidden="true"  description="Backup site defined files from properties.">
-        <if>
-            <available file="${build.subsite.dir}/settings.php" type="file" />
-            <then>
-                <property name="site-detected" value="1" />
-            </then>
-            <else>
-                <echo msg="No site installation detected. Skipping backup." />
-            </else>
-        </if>
-
-        <if>
-            <and>
-                <equals arg1="${rebuild.auto}" arg2="0" />
-                <equals arg1="${site-detected}" arg2="1" />
-            </and>
-            <then>
-                <echo msg="Installed site detected." level="warning" />
-                <propertyprompt propertyName="project-subsite-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
-                <if>
-                    <equals arg1="${project-subsite-backup-activated}" arg2="y" />
-                    <then>
-                        <property name="rebuild.auto" value="1" override="true" />
-                    </then>
-                </if>
-            </then>
-        </if>
-        <if>
-            <and>
-                <equals arg1="${rebuild.auto}" arg2="1" />
-                <equals arg1="${site-detected}" arg2="1" />
-            </and>
-            <then>
-                <if>
-                    <available file="${rebuild.backup.destination}" type="dir" />
-                    <then>
-                        <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
-                    </then>
-                </if>
-                <mkdir dir="${rebuild.backup.destination}" />
-                <phingcall target="folder-unprotect">
-                    <property name="folder.to.unprotect" value="${build.platform.dir.sites}" />
-                </phingcall>
-                <foreach list="${rebuild.backup.folders}" param="site-item" target="project-subsite-backup-item" delimiter=";">
-                    <property name="site-item-type" value="dir" />
-                </foreach>
-                <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-backup-item" delimiter=";">
-                    <property name="site-item-type" value="file" />
-                </foreach>
-            </then>
-        </if>
-        <if>
-            <equals arg1="${project-subsite-backup-activated}" arg2="y" />
-            <then>
-                <property name="rebuild.auto" value="0" override="true" />
-            </then>
-        </if>
-    </target>
-
-    <target name="project-platform-backup" hidden="true" description="Backup site defined files from properties.">
-        <if>
-            <available file="${build.subsite.dir}/settings.php" type="file" />
-            <then>
-                <property name="site-detected" value="1" />
-            </then>
-            <else>
-                <echo msg="No site installation detected. Skipping backup." />
-            </else>
-        </if>
-
-        <if>
-            <and>
-                <equals arg1="${rebuild.auto}" arg2="0" />
-                <equals arg1="${site-detected}" arg2="1" />
-            </and>
-            <then>
-                <echo msg="Installed site detected." level="warning" />
-                <propertyprompt propertyName="project-subsite-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
-                <if>
-                    <equals arg1="${project-subsite-backup-activated}" arg2="y" />
-                    <then>
-                        <property name="rebuild.auto" value="1" override="true" />
-                    </then>
-                </if>
-            </then>
-        </if>
-        <if>
-            <and>
-                <equals arg1="${rebuild.auto}" arg2="1" />
-                <equals arg1="${site-detected}" arg2="1" />
-            </and>
-            <then>
-                <if>
-                    <available file="${rebuild.backup.destination}" type="dir" />
-                    <then>
-                        <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
-                    </then>
-                </if>
-                <mkdir dir="${rebuild.backup.destination}" />
-                <phingcall target="folder-unprotect">
-                    <property name="folder.to.unprotect" value="${build.platform.dir.sites}" />
-                </phingcall>
-                <foreach list="${rebuild.backup.site}" param="site-item" target="project-subsite-backup-item" delimiter=";">
-                    <property name="site-item-type" value="dir" />
-                </foreach>
-                <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-backup-item" delimiter=";">
-                    <property name="site-item-type" value="file" />
-                </foreach>
-            </then>
-        </if>
-        <if>
-            <equals arg1="${project-subsite-backup-activated}" arg2="y" />
-            <then>
-                <property name="rebuild.auto" value="0" override="true" />
-            </then>
-        </if>
-    </target>
-
-    <target name="project-subsite-backup-item" description="Backup site item from configuraton list."
-       hidden="true">
-        <php expression='dirname("${site-item}")' returnProperty="site-item-dir" />
-        <property name="site-item-backup-dir" value="${site-item}">
-            <filterchain>
-                <replaceregexp>
-                    <regexp pattern="${build.platform.dir}" replace="${rebuild.backup.destination}" ignoreCase="false" />
-                </replaceregexp>
-            </filterchain>
-        </property>
-        <if>
-            <available file="${site-item}" type="${site-item-type}" />
-            <then>
-                <if>
-                    <not>
-                        <available file="${site-item-backup-dir}" type="dir" />
-                    </not>
-                    <then>
-                        <if>
-                            <equals arg1="${site-item-type}" arg2="file" />
-                            <then>
-                                <php expression='dirname("${site-item-backup-dir}")' returnProperty="site-item-backup-dir-file" />
-                                 <mkdir dir="${site-item-backup-dir-file}" />
-                            </then>
-                        </if>
-                    </then>
-                </if>
-                <if>
-                    <equals arg1="${site-item-type}" arg2="dir" />
-                    <then>
-                        <phingcall target="folder-copy">
-                            <property name="copy.destination.path" value="${site-item-backup-dir}" />
-                            <property name="copy.source.path" value="${site-item}" />
-                        </phingcall>
-                    </then>
-                    <else>
-                        <copy file="${site-item}" tofile="${site-item-backup-dir}" />
-                    </else>
-                </if>
-            </then>
-            <else>
-                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized" />
-                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning" />
-            </else>
-        </if>
-    </target>
-
-    <target name="project-subsite-restore" hidden="true" description="Restore site defined files from properties.">
-        <if>
-            <available file="${rebuild.backup.destination}" type="dir" />
-            <then>
-                <property name="backup-detected" value="1" />
-            </then>
-            <else>
-                <echo msg="No site backup detected. Skipping restore." />
-            </else>
-        </if>
-        <if>
-            <and>
-                <equals arg1="${rebuild.auto}" arg2="0" />
-                <equals arg1="${backup-detected}" arg2="1" />
-            </and>
-            <then>
-                <echo msg="Site backup detected." level="warning" />
-                <propertyprompt propertyName="project-subsite-restore-activated" promptText="Do you wish to restore site for this build? (y/n)" />
-                <if>
-                    <equals arg1="${project-subsite-restore-activated}" arg2="y" />
-                    <then>
-                        <property name="rebuild.auto" value="1" override="true" />
-                    </then>
-                </if>
-            </then>
-        </if>
-        <if>
-            <and>
-                <equals arg1="${rebuild.auto}" arg2="1" />
-                <equals arg1="${backup-detected}" arg2="1" />
-            </and>
-            <then>
-                <echo msg="Restoring site files and folders from ${rebuild.backup.destination}" />
-                <foreach list="${rebuild.backup.folders}" param="site-item" target="project-subsite-restore-item" delimiter=";">
-                    <property name="site-item-type" value="dir" />
-                </foreach>
-                <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-restore-item" delimiter=";">
-                    <property name="site-item-type" value="file" />
-                </foreach>
-                <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
-            </then>
-        </if>
-    </target>
-
-    <target name="project-platform-restore" hidden="true" description="Restore site defined files from properties.">
-        <if>
-            <available file="${rebuild.backup.destination}" type="dir" />
-            <then>
-                <property name="backup-detected" value="1" />
-            </then>
-            <else>
-                <echo msg="No site backup detected. Skipping restore." />
-            </else>
-        </if>
-        <if>
-            <and>
-                <equals arg1="${rebuild.auto}" arg2="0" />
-                <equals arg1="${backup-detected}" arg2="1" />
-            </and>
-            <then>
-                <echo msg="Site backup detected." level="warning" />
-                <propertyprompt propertyName="project-subsite-restore-activated" promptText="Do you wish to restore site for this build? (y/n)" />
-                <if>
-                    <equals arg1="${project-subsite-restore-activated}" arg2="y" />
-                    <then>
-                        <property name="rebuild.auto" value="1" override="true" />
-                    </then>
-                </if>
-            </then>
-        </if>
-        <if>
-            <and>
-                <equals arg1="${rebuild.auto}" arg2="1" />
-                <equals arg1="${backup-detected}" arg2="1" />
-            </and>
-            <then>
-                <echo msg="Restoring site files and folders from ${rebuild.backup.destination}" />
-                <foreach list="${rebuild.backup.site}" param="site-item" target="project-subsite-restore-item" delimiter=";">
-                    <property name="site-item-type" value="dir" />
-                </foreach>
-                <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-restore-item" delimiter=";">
-                    <property name="site-item-type" value="file" />
-                </foreach>
-                <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
-            </then>
-        </if>
-    </target>
-
-    <target name="project-subsite-restore-item" description="Restore site item from configuration list."
-        hidden="true">
-        <property name="site-item-backup" value="${site-item}">
-            <filterchain>
-                <replaceregexp>
-                    <regexp pattern="${build.platform.dir}" replace="${rebuild.backup.destination}" ignoreCase="false" />
-                </replaceregexp>
-            </filterchain>
-        </property>
-
-        <if>
-            <available file="${site-item-backup}" type="${site-item-type}" />
-            <then>
-                <if>
-                    <equals arg1="${site-item-type}" arg2="file" />
-                    <then>
-                        <php expression='dirname("${site-item-backup}")' returnProperty="site-item-backup-file" />
-                         <mkdir dir="${site-item-backup-file}" />
-                    </then>
-                    <else>
-                        <mkdir dir="${site-item-backup}" />
-                    </else>
-                </if>
-                <if>
-                    <equals arg1="${site-item-type}" arg2="dir"/>
-                    <then>
-                        <phingcall target="folder-copy">
-                            <property name="copy.destination.path" value="${site-item}" />
-                            <property name="copy.source.path" value="${site-item-backup}" />
-                        </phingcall>
-                    </then>
-                    <else>
-                        <copy file="${site-item-backup}" tofile="${site-item}" overwrite="true"/>
-                    </else>
-                </if>
-            </then>
-            <else>
-                <php expression='ucwords("${site-item-type}")' returnProperty="site-item-type-capitalized" />
-                <echo msg="Skipping ${site-item}. ${site-item-type-capitalized} not found." level="warning" />
-            </else>
-        </if>
-    </target>
-
     <target name="project-subsite-files-setup" hidden="true" description="Create files directories for subsite.">
         <if>
-            <istrue value="${build.subsite.dir.files}" />
+            <istrue value="${build.tmp.dir}" />
             <then>
-                <mkdir dir="${build.subsite.dir.files}/private_files" />
-                <mkdir dir="${build.subsite.dir.tmp}" />
-                <mkdir dir="${build.subsite.dir.files}/css_injector" />
-                <mkdir dir="${build.subsite.dir.files}/js_injector" />
+                <move file="${build.platform.dir.sites}/default/default.settings.php" tofile="${build.tmp.dir}/default.settings.php" />
+                <mkdir dir="${build.platform.dir.sites}/all/drush" />
+                <mkdir dir="${build.platform.dir.sites}/${project.id}" />
+                <mkdir dir="${build.tmp.dir.files}/private_files" />
+                <mkdir dir="${build.tmp.dir.files}/tmp" />
+                <mkdir dir="${build.tmp.dir.files}/css_injector" />
+                <mkdir dir="${build.tmp.dir.files}/js_injector" />
             </then>
         </if>
     </target>
@@ -630,6 +296,14 @@
     </target>
 
     <target name="project-modules-devel-en" hidden="true" description="Enable development modules with drush.">
+        <if>
+            <equals arg1="${profile.core}" arg2="7.*"/>
+            <then>
+                <echoproperties prefix="devel.vars." destfile="${project.tmp.dir}/build.devel.vars.props" />
+                <exec command="cat ${project.tmp.dir}/build.devel.vars.props | sed '/devel/,$!d'" outputProperty="variable-strings" />
+                <foreach list="${variable-strings}" delimiter="${line.separator}" param="variable-string" target="drush-variable-set-string" />
+            </then>
+        </if>
         <phingcall target="drush-modules-enable">
             <property name="project.drupal.modules" value="${devel.mdls.en}" />
         </phingcall>
@@ -676,38 +350,11 @@
         <propval source="build.project.props" required="${toolkit.dir.incl.phing.props}/required.props" haltonerror="${build.haltonerror.props.validate}" logoutput="true" />
     </target >
 
-    <target name="project-rebuild-check" description="Rebuild project if needed. (needs work)"
-        hidden="true">
-        <if>
-            <not>
-                <available file="${build.platform.dir.settings}/default.settings.php" type="file" property="build.settings.dir.default.settings" />
-            </not>
-            <then>
-                <echo msg="No default settings detected at ${build.platform.dir.settings}/default.settings.php." level="warning" />
-                <propertyprompt propertyName="platform-rebuild" defaultValue="no" promptText="Do you wish to rebuild? (y/n)" />
-                <if>
-                    <equals arg1="${platform-rebuild}" arg2="y" />
-                    <then>
-                        <phingcall target="build-dev" />
-                    </then>
-                    <else>
-                        <echo msg="Can not re-generate settings, canceling clone task." level="error" />
-                        <fail />
-                    </else>
-                </if>
-            </then>
-            <else>
-                <echo msg="Default settings found at ${build.platform.dir.settings}/default.settings.php." />
-                <echo msg="Proceeding with re-generation of the settings.php." />
-            </else>
-        </if>
-    </target>
-
     <target name="project-subsite-composer-no-dev" hidden="true" description="Run composer install without dev on subsite.">
-        <echo msg="Run 'composer install' in the subsite folder for development purposes." />
+        <echo msg="Run 'composer install' in the distribution folder for development purposes." />
         <phingcall target="project-composer-install">
-            <property name="composer-working-dir" value="${build.tmp.dir}" override="true" />
-            <property name="composer-no-dev" value="true" override="true" />
+            <property name="composer-working-dir" value="${build.dist.dir}" override="true" />
+            <property name="composer-no-dev" value="false" override="true" />
         </phingcall>
     </target>
 

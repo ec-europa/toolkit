@@ -6,7 +6,7 @@
 # Toolkit directories.
 # -----------------------
 
-toolkit.dir = ${phing.dir.starterkit}
+toolkit.dir = ${phing.dir.core}
 toolkit.dir.incl = ${toolkit.dir}/includes
 toolkit.dir.incl.composer = ${toolkit.dir.incl}/composer
 toolkit.dir.incl.docker = ${toolkit.dir.incl}/docker
