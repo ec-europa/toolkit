@@ -110,7 +110,7 @@ class DrushGenerateAliasTask extends \Task
 
             foreach ($sites as $site) {
                 $aliases[$site->getBasename()] = array(
-                   'uri'  => $site->getBasename(),
+                   'uri'  => $this->_siteUrl,
                    'root' => $aliases['default']['root'],
                 );
             }
