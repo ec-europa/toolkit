@@ -331,15 +331,18 @@
     </target>
 
     <target name="drush-run-smoketest" hidden="true" description="Visit pages and check for watchog messages.">
-        <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>dblog</param>
-        </drush>
-        <if>
-          <equals arg1="${profile.core}" arg2="7.x" />
-          <then>
-            <drush command="watchdog-smoketest" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}" />
-          </then>
-        </if>
+       <if>
+         <equals arg1="${profile.core}" arg2="7.x" />
+         <then>
+           <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+              <param>dblog</param>
+           </drush>
+           <drush command="watchdog-smoketest" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}" />
+         </then>
+         <else>
+           <echo msg="Smoketest disabled for D8 project." />
+         </else>
+       </if>
     </target>
 
     <target name="drush-gdpr-dump" hidden="true" description="Make a sanitized dump of database.">
