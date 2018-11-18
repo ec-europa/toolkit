@@ -261,36 +261,44 @@
     </target>
 
     <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
-        <drush
-            command="vset"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>preprocess_css 0</param>
-        </drush>
-        <drush
-            command="vset"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>preprocess_js 0</param>
-        </drush>
-        <drush
-            command="cc"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>all</param>
-        </drush>
+      <if>
+          <equals arg1="${profile.core" arg2="7.*"/>
+          <then>
+            <drush
+                command="vset"
+                assume="yes"
+                root="${build.platform.dir}"
+                alias="@${drush.alias.default}"
+                bin="${toolkit.dir.bin.drush}"
+                verbose="${drush.verbose}"
+                color="${drush.color}">
+                <param>preprocess_css 0</param>
+            </drush>
+            <drush
+                command="vset"
+                assume="yes"
+                root="${build.platform.dir}"
+                alias="@${drush.alias.default}"
+                bin="${toolkit.dir.bin.drush}"
+                verbose="${drush.verbose}"
+                color="${drush.color}">
+                <param>preprocess_js 0</param>
+            </drush>
+            <drush
+                command="cc"
+                assume="yes"
+                root="${build.platform.dir}"
+                alias="@${drush.alias.default}"
+                bin="${toolkit.dir.bin.drush}"
+                verbose="${drush.verbose}"
+                color="${drush.color}">
+                <param>all</param>
+            </drush>
+          </then>
+          <else>
+            <echo msg="Variable set is not supported in Drupal 8. Need refactor." />
+          </else>
+        </if>
     </target>
 
     <target name="drush-site-install" hidden="true" description="Install a site.">
