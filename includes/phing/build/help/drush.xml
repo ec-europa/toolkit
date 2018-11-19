@@ -4,7 +4,7 @@
 
     <target name="drush-aliases-generate" hidden="true" description="Generate drush aliases for each subsite folder.">
         <mkdir dir="${build.platform.dir.sites}/all/drush" />
-        <drushgal siteRoot="${build.platform.dir}" />
+        <drushgal siteRoot="${build.platform.dir}" siteUrl="${project.url.base}" />
     </target>
 
     <target name="drush-files-dirs-create" description="Create site files directories." hidden="true">
@@ -166,12 +166,14 @@
                           <equals arg1="${profile.core}" arg2="7.x" />
                           <then>
                             <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                                <option name="db-url" value="${db.url}" />
                                 <param>"update system set status=0 where name IN (${drush.rr.disable});"</param>
                             </drush>
                             <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
                                 <param>${drush.rr.options}</param>
                             </drush>
                             <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                                <option name="db-url" value="${db.url}" />
                                 <param>"update system set status=1 where name IN (${drush.rr.disable});"</param>
                             </drush>
                           </then>
@@ -207,44 +209,96 @@
     </target>
 
     <target name="drush-settings-generate" description="Generate the settings.php file.">
-        <exec command="chmod 775 ${build.subsite.dir}/settings.php" />
-        <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="${project.tmp.dir}/generate-settings.php" overwrite="true">
-            <filterchain>
-                <replacetokens begintoken="%%" endtoken="%%">
-                    <token key="db.type" value="${db.type}" />
-                    <token key="db.name" value="${db.name}" />
-                    <token key="db.user" value="${db.user}" />
-                    <token key="db.password" value="${db.password}" />
-                    <token key="db.host" value="${db.host}" />
-                    <token key="db.port" value="${db.port}" />
-                    <token key="db.prefix" value="${db.prefix}" />
-                    <token key="file_public_path" value="${build.subsite.dir.files}" />
-                    <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
-                    <token key="file_temporary_path" value="${build.subsite.dir.files}/tmp" />
-                    <token key="base_url" value="${project.url.base}" />
-                    <token key="update_free_access" value="${drupal.update.free.access}" />
-                    <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
-                </replacetokens>
-            </filterchain>
-        </copy>
-        <if>
-            <equals arg1="${profile.core}" arg2="7.*"/>
+          <exec command="chmod 775 ${build.subsite.dir}/settings.php" />
+          <if>
+            <equals arg1="${profile.core}" arg2="7.x" />
             <then>
-            <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                <param>${project.tmp.dir}/generate-settings.php</param>
-            </drush>
-            <drush command="cc" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
-                <param>drush</param>
-            </drush>
+              <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="${project.tmp.dir}/generate-settings.php" overwrite="true">
+                  <filterchain>
+                      <replacetokens begintoken="%%" endtoken="%%">
+                          <token key="db.type" value="${db.type}" />
+                          <token key="db.name" value="${db.name}" />
+                          <token key="db.user" value="${db.user}" />
+                          <token key="db.password" value="${db.password}" />
+                          <token key="db.host" value="${db.host}" />
+                          <token key="db.port" value="${db.port}" />
+                          <token key="db.prefix" value="${db.prefix}" />
+                          <token key="base_url" value="${project.url.base}" />
+                          <token key="error_level" value="${devel.vars.error_level}" />
+                          <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
+                          <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />
+                          <token key="views_show_additional_queries" value="${devel.vars.views_show_additional_queries}" />
+                          <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
+                          <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
+                          <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
+                          <token key="file_public_path" value="${build.subsite.dir.files}" />
+                          <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
+                          <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
+                          <token key="update_free_access" value="${drupal.update.free.access}" />
+                          <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
+                      </replacetokens>
+                  </filterchain>
+              </copy>
+              <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                  <param>${project.tmp.dir}/generate-settings.php</param>
+              </drush>
+              <drush command="cc" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
+                  <param>drush</param>
+              </drush>
             </then>
-        </if>
-    </target>
+            <else>
+              <echo msg="Drupal 8 detected, is not possible to generate settings using the current script." />
+            </else>
+          </if>
+      </target>
+
 
     <target name="drush-uris-generate" description="Generate list of uris.">
         <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${toolkit.dir.incl.drush}/generate-uris.php</param>
             <param>${backtrac.file}</param>
         </drush>
+    </target>
+
+    <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
+      <if>
+          <equals arg1="${profile.core" arg2="7.*"/>
+          <then>
+            <drush
+                command="vset"
+                assume="yes"
+                root="${build.platform.dir}"
+                alias="@${drush.alias.default}"
+                bin="${toolkit.dir.bin.drush}"
+                verbose="${drush.verbose}"
+                color="${drush.color}">
+                <param>preprocess_css 0</param>
+            </drush>
+            <drush
+                command="vset"
+                assume="yes"
+                root="${build.platform.dir}"
+                alias="@${drush.alias.default}"
+                bin="${toolkit.dir.bin.drush}"
+                verbose="${drush.verbose}"
+                color="${drush.color}">
+                <param>preprocess_js 0</param>
+            </drush>
+            <drush
+                command="cc"
+                assume="yes"
+                root="${build.platform.dir}"
+                alias="@${drush.alias.default}"
+                bin="${toolkit.dir.bin.drush}"
+                verbose="${drush.verbose}"
+                color="${drush.color}">
+                <param>all</param>
+            </drush>
+          </then>
+          <else>
+            <echo msg="Variable set is not supported in Drupal 8. Need refactor." />
+          </else>
+        </if>
     </target>
 
     <target name="drush-site-install" hidden="true" description="Install a site.">
@@ -288,6 +342,7 @@
     <target name="drush-sql-import" hidden="true" description="Import a database.">
         <echo message="Importing database." />
         <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <option name="db-url" value="${db.url}" />
             <param>&lt; ${database-file}</param>
         </drush>
         <if>

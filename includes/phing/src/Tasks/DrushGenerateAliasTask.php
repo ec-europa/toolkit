@@ -59,6 +59,13 @@ class DrushGenerateAliasTask extends \Task
      */
     private $_drushDir = '/sites/all/drush';
 
+    /**
+     * The URL of the website.
+     *
+     * @var string
+     */
+    private $_siteUrl = '';
+
 
     /**
      * Generates an aliases.drushrc.php file.
@@ -84,11 +91,11 @@ class DrushGenerateAliasTask extends \Task
 
         $aliases = array(
             'default' => array(
-                'uri'  => 'default',
+                'uri'  => $this->_siteUrl,
                 'root' => $this->_siteRoot,
             ),
             'docker' => array(
-                'uri'  => 'http://web:8080',
+                'uri'  => $this->_siteUrl,
                 'root' => $this->_siteRoot,
             ),
         );
@@ -103,14 +110,14 @@ class DrushGenerateAliasTask extends \Task
 
             foreach ($sites as $site) {
                 $aliases[$site->getBasename()] = array(
-                   'uri'  => $site->getBasename(),
+                   'uri'  => $this->_siteUrl,
                    'root' => $aliases['default']['root'],
                 );
             }
         } else {
             $aliases += $this->loadAliases($aliasesFile);
             $aliases[$this->_aliasName] = array(
-                'uri'  => $this->_aliasName,
+                'uri'  => $this->_siteUrl,
                 'root' => $aliases['default']['root'],
             );
         }//end if
@@ -141,7 +148,7 @@ class DrushGenerateAliasTask extends \Task
      */
     protected function checkRequirements()
     {
-        $required_properties = array('_siteRoot');
+        $required_properties = array('_siteRoot', '_siteUrl');
         foreach ($required_properties as $required_property) {
             if (empty($this->$required_property)) {
                 throw new \BuildException(
@@ -217,5 +224,17 @@ class DrushGenerateAliasTask extends \Task
     {
         $this->_drushDir = $drushDir;
     }//end setDrushDir()
+
+    /**
+     * Sets the site URL to place the aliases in.
+     *
+     * @param string $siteUrl The Site URL to place the aliases in
+     *
+     * @return void
+     */
+    public function setSiteUrl($siteUrl)
+    {
+        $this->_siteUrl = $siteUrl;
+    }//end setSiteUrl()
 
 }//end class

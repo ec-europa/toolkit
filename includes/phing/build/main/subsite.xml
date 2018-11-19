@@ -2,18 +2,24 @@
 
 <project name="subsite" description="Builds subsites within the platform." default="">
 
-    <target name="build-subsite-dev" description="Build a local development version of the site."
-        depends="
-            subsite-type-dev,
-            subsite-delete,
-            subsite-resources-link,
-            project-subsite-composer-dev,
-            subsite-make,
-            project-modules-devel-make,
-            drush-aliases-generate,
-            drush-settings-generate">
-        <echo msg="Playbook for build-subsite-dev ended." />
-    </target>
+  <target name="build-subsite-dev" description="Build a local development version of the site."
+      depends="
+          subsite-type-dev,
+          project-subsite-backup,
+          subsite-delete-dev,
+          project-subsite-restore,
+          subsite-resources-link,
+          project-subsite-composer-dev,
+          subsite-make,
+          project-modules-devel-make">
+      <echo msg="Playbook for build-subsite-dev ended." />
+  </target>
+
+  <target name="subsite-delete-dev" hidden="true" description="Delete subsite dev build.">
+      <phingcall target="project-scratch-build">
+          <property name="dir-build" value="${build.${build-type}.dir}" override="true" />
+      </phingcall>
+  </target>
 
     <target name="build-subsite-dist" description="Build a site intended as a release package."
         depends="
@@ -86,9 +92,24 @@
                 <relsym link="${build.platform.dir.sites}/all/drush/custom" target="${toolkit.dir.incl.drush}/custom" />
             </then>
         </if>
-        <relsym link="${build.platform.dir.sites}/default/default.settings.php" target="${build.tmp.dir}/default.settings.php" />
-        <relsym link="${build.subsite.dir}/default.settings.php" target="${build.tmp.dir}/default.settings.php" />
-        <relsym link="${build.subsite.dir.files}" target="${build.tmp.dir.files}" />
+        <if>
+            <available file="${build.platform.dir.sites}/default/default.settings.php" />
+            <then>
+              <relsym link="${build.platform.dir.sites}/default/default.settings.php" target="${build.tmp.dir}/default.settings.php" />
+            </then>
+        </if>
+        <if>
+            <available file="${build.subsite.dir}/default.settings.php" />
+            <then>
+              <relsym link="${build.subsite.dir}/default.settings.php" target="${build.tmp.dir}/default.settings.php" />
+            </then>
+        </if>
+        <if>
+            <available file="${build.subsite.dir.files}" />
+            <then>
+              <relsym link="${build.subsite.dir.files}" target="${build.tmp.dir.files}" />
+            </then>
+        </if>
         <relsym link="${build.${build-type}.dir}/composer.json" target="${resources.dir.composer.json}" />
         <relsym link="${build.${build-type}.dir}/composer.lock" target="${resources.dir.composer.lock}" />
     </target>
