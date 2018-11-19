@@ -5,6 +5,7 @@
     "require": {
       "ec-europa/php-docker-infra": "dev-master"
     },
+    "minimum-stability": "dev",
     "scripts": {
         "toolkit-install": "PROJECT=${PROJECT} composer install --working-dir=includes/composer --ignore-platform-reqs --no-suggest --ansi",
         "toolkit-update": "PROJECT=${PROJECT} composer update --working-dir=includes/composer  --ignore-platform-reqs --no-suggest --ansi",
