@@ -18,7 +18,7 @@
         <exec command="echo ${variable-string} | sed -e 's/devel\.vars\.\(.*\)=\(.*\)$/\1/'" outputProperty="variable-name" />
         <exec command="echo ${variable-string} | cut -d'=' -f2" outputProperty="variable-value" />
         <if>
-            <equals arg1="${profile.core" arg2="7.*"/>
+            <equals arg1="${profile.core" arg2="7.x"/>
             <then>
                 <if>
                     <not>
@@ -268,7 +268,7 @@
 
     <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
       <if>
-          <equals arg1="${profile.core" arg2="7.*"/>
+          <equals arg1="${profile.core" arg2="7.x"/>
           <then>
             <drush
                 command="vset"
