@@ -242,6 +242,12 @@
               <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
                   <param>${project.tmp.dir}/generate-settings.php</param>
               </drush>
+              
+              <!-- Append EU Login specific information. -->
+              <append destFile="${build.subsite.dir}/settings.php" text="${line.separator}define('FPFIS_ECAS_URL', 'ecas.ec.europa.eu');" />
+              <append destFile="${build.subsite.dir}/settings.php" text="${line.separator}define('FPFIS_ECAS_PORT', 443);" />
+              <append destFile="${build.subsite.dir}/settings.php" text="${line.separator}define('FPFIS_ECAS_URI', '/cas');" />
+              
               <drush command="cc" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
                   <param>drush</param>
               </drush>
