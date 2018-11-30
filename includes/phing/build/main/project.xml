@@ -357,7 +357,18 @@
             project-database-import,
             project-modules-devel-en,
             reset-filesystem-permissions,
-            drush-cache-reset" />
+            drush-cache-reset">
+        <drush
+            command="vset"
+            assume="yes"
+            root="${build.platform.dir}"
+            alias="@${drush.alias.default}"
+            bin="${toolkit.dir.bin.drush}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param>ecas_use_shared_fpfis 0</param>
+        </drush>
+    </target>
 
     <target name="project-composer-install" description="Runs composer install."
         hidden="true">
