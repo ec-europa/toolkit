@@ -360,7 +360,7 @@
             drush-cache-reset">
         
         <if>
-            <equals arg1="${profile.core}" arg2="7.x"/>
+            <contains string="${profile.core}" substring="7." />
             <then>
             <drush
                 command="vset"
@@ -560,7 +560,7 @@
 
     <target name="project-modules-devel-en" hidden="true" description="Enable development modules with drush.">
         <if>
-            <equals arg1="${profile.core}" arg2="7.x"/>
+            <contains string="${profile.core}" substring="7." />
             <then>
                 <echoproperties prefix="devel.vars." destfile="${project.tmp.dir}/build.devel.vars.props" />
                 <exec command="cat ${project.tmp.dir}/build.devel.vars.props | sed '/devel/,$!d'" outputProperty="variable-strings" />

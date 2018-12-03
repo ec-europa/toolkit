@@ -18,7 +18,7 @@
         <exec command="echo ${variable-string} | sed -e 's/devel\.vars\.\(.*\)=\(.*\)$/\1/'" outputProperty="variable-name" />
         <exec command="echo ${variable-string} | cut -d'=' -f2" outputProperty="variable-value" />
         <if>
-            <equals arg1="${profile.core" arg2="7.x"/>
+            <contains string="${profile.core}" substring="7." />
             <then>
                 <if>
                     <not>
@@ -163,7 +163,7 @@
                 <trycatch>
                     <try>
                         <if>
-                          <equals arg1="${profile.core}" arg2="7.x" />
+                          <contains string="${profile.core}" substring="7." />
                           <then>
                             <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
                                 <option name="db-url" value="${db.url}" />
@@ -185,7 +185,7 @@
                     </try>
                     <catch>
                       <if>
-                        <equals arg1="${profile.core}" arg2="7.x" />
+                        <contains string="${profile.core}" substring="7." />
                         <then>
                           <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
                               <param>${drush.rr.options}</param>
@@ -211,7 +211,7 @@
     <target name="drush-settings-generate" description="Generate the settings.php file.">
           <exec command="chmod 775 ${build.subsite.dir}/settings.php" />
           <if>
-            <equals arg1="${profile.core}" arg2="7.x" />
+            <contains string="${profile.core}" substring="7." />
             <then>
               <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="${project.tmp.dir}/generate-settings.php" overwrite="true">
                   <filterchain>
@@ -268,7 +268,7 @@
 
     <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
       <if>
-          <equals arg1="${profile.core" arg2="7.x"/>
+          <contains string="${profile.core}" substring="7." />
           <then>
             <drush
                 command="vset"
@@ -393,7 +393,7 @@
 
     <target name="drush-run-smoketest" hidden="true" description="Visit pages and check for watchog messages.">
        <if>
-         <equals arg1="${profile.core}" arg2="7.x" />
+         <contains string="${profile.core}" substring="7." />
          <then>
            <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
               <param>dblog</param>
@@ -427,7 +427,7 @@
         <dirname property="database-cachedir" file="${database-file}" />
         <mkdir dir="${database-cachedir}" />
         <if>
-          <equals arg1="${profile.core}" arg2="7.x" />
+          <contains string="${profile.core}" substring="7." />
           <then>
             <drush command="gdpr-sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
                 <option name="result-file" value="${database-file}" />
