@@ -79,8 +79,9 @@
       <copy file="${toolkit.dir.incl.docker}/docker-backstopjs/backstop.json" tofile="${project.basedir}/backstop.json" overwrite="true" />
       <exec command="sed -i -e 's/https:\/\//http:\/\//g' -i backstop_data/engine_scripts/puppet/loadCookies.js" escape="false" />
       <exec command="sed -i -e 's/  console\.log/  \/\/ console\.log/g' -i backstop_data/engine_scripts/puppet/loadCookies.js" escape="false" />
+      <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
       <if>
-        <equals arg1="${profile.core}" arg2="7.x" />
+        <equals arg1="${profile.core.major}" arg2="7" />
         <then>
           <drush command="watchdog-smoketest" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
               <option name="type" value="backstop" />
