@@ -70,7 +70,7 @@
         <exec command="${project.basedir}/docker-${docker.project.id} ps" passthru="true" />
     </target>
 
-    <target name="docker-backstop-generate" description="Generate the backstop files.">
+    <target name="docker-backstop-generate" description="Generate the backstop files." hidden="true">
       <copy todir="${project.basedir}" >
         <fileset dir="${toolkit.dir.incl.docker}/docker-backstopjs">
           <include name="backstop_data/**" />
