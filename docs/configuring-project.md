@@ -273,7 +273,7 @@ platform.package.db.cache = 1
 platform.package.provider = git-hub
 platform.package.provider.token = # TODO: Github API limit.
 platform.package.repository = ec-europa/platform-dev
-platform.package.version = 2.4
+platform.package.version = 2.5
 
 # Theme configuration (deploy props?)
 # --------------------
@@ -479,7 +479,7 @@ project.url.production = https://myproject.com
 # Platform configuration.
 # -----------------------
 profile = multisite_drupal_standard
-platform.package.version = 2.4
+platform.package.version = 2.5
 ```
 </p></details>
 
