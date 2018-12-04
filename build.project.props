@@ -16,6 +16,6 @@ project.admin.email = ${project.admin.username}@example.com
 # Platform configuration.
 # -----------------------
 profile = multisite_drupal_standard
-platform.package.version = 2.4
+platform.package.version = 2.5
 
 behat.generic.package.enable = 0
