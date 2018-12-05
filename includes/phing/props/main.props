@@ -165,7 +165,7 @@ build.platform.htaccess.append.text =
 build.subsite.composer.json = ${build.subsite.dir}/composer.json
 build.subsite.composer.lock = ${build.subsite.dir}/composer.lock
 build.subsite.dir = ${build.platform.dir.sites}/${build.site}
-build.subsite.dir.files =  ${build.subsite.dir}/files
+build.subsite.dir.files = sites/${build.site}/files
 build.subsite.dir.libraries = ${build.subsite.dir}/libraries
 build.subsite.dir.modules = ${build.subsite.dir}/modules
 build.subsite.dir.modules.contrib = ${build.subsite.dir.modules}/contrib
@@ -173,7 +173,7 @@ build.subsite.dir.modules.custom = ${build.subsite.dir.modules}/custom
 build.subsite.dir.modules.features = ${build.subsite.dir.modules}/features
 build.subsite.dir.source = ${build.subsite.dir}/src
 build.subsite.dir.themes = ${build.subsite.dir}/themes
-build.subsite.dir.tmp = ${build.subsite.dir}/tmp
+build.subsite.dir.tmp = sites/${build.site}/tmp
 
 # platform build files and directories.
 # -----------------------------------------

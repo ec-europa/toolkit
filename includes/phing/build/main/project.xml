@@ -542,10 +542,10 @@
         <if>
             <istrue value="${build.subsite.dir.files}" />
             <then>
-                <mkdir dir="${build.subsite.dir.files}/private_files" />
-                <mkdir dir="${build.subsite.dir.tmp}" />
-                <mkdir dir="${build.subsite.dir.files}/css_injector" />
-                <mkdir dir="${build.subsite.dir.files}/js_injector" />
+                <mkdir dir="${build.dev}/${build.subsite.dir.files}/private_files" />
+                <mkdir dir="${build.dev}/${build.subsite.dir.tmp}" />
+                <mkdir dir="${build.dev}/${build.subsite.dir.files}/css_injector" />
+                <mkdir dir="${build.dev}/${build.subsite.dir.files}/js_injector" />
             </then>
         </if>
     </target>
