@@ -137,7 +137,6 @@
         <if>
             <available file="${build.${build-type}.dir}" type="dir" />
             <then>
-                <echo msg="Ensaio aqui..." />
                 <chmod file="${build.${build-type}.dir}" mode="0777" />
                 <delete dir="${build.${build-type}.dir}" includeemptydirs="true" />
             </then>
