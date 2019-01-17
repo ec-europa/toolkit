@@ -560,6 +560,13 @@
     </target>
 
     <target name="project-modules-devel-en" hidden="true" description="Enable development modules with drush.">
+        <phingcall target="project-generate-devel-vars" />
+        <phingcall target="drush-modules-enable">
+            <property name="project.drupal.modules" value="${devel.mdls.en}" />
+        </phingcall>
+    </target>
+  
+    <target name="project-generate-devel-vars" hidden="true" description="Update database with devel variables.">
         <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
         <if>
             <equals arg1="${profile.core.major}" arg2="7" />
@@ -569,9 +576,6 @@
                 <foreach list="${variable-strings}" delimiter="${line.separator}" param="variable-string" target="drush-variable-set-string" />
             </then>
         </if>
-        <phingcall target="drush-modules-enable">
-            <property name="project.drupal.modules" value="${devel.mdls.en}" />
-        </phingcall>
     </target>
 
     <target name="project-modules-devops-dl" hidden="true" description="Download and unpack fpfis resource package.">
