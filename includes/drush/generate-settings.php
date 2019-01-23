@@ -56,11 +56,5 @@ $settings['drupal_hash_salt'] = array(
     'value' => '%%drupal_hash_salt%%',
 );
 
-// Set base url.
-$settings['base_url'] = array(
-  'required' => TRUE,
-  'value' => '%%base_url%%',
-);
-
 // Rewrite the settings.php file with our array.
 drupal_rewrite_settings($settings);
