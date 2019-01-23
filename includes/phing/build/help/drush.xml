@@ -356,7 +356,6 @@
             <param>install_configure_form.update_status_module='array(FALSE,FALSE)'
             </param>
         </drush>
-        <phingcall target="drush-settings-generate" />
     </target>
 
     <target name="drush-solr-enable" hidden="true" description="Enable the solr module.">
