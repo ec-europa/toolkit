@@ -217,32 +217,64 @@
           <if>
             <equals arg1="${profile.core.major}" arg2="7" />
             <then>
-              <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="${project.tmp.dir}/generate-settings.php" overwrite="true">
-                  <filterchain>
-                      <replacetokens begintoken="%%" endtoken="%%">
-                          <token key="db.type" value="${db.type}" />
-                          <token key="db.name" value="${db.name}" />
-                          <token key="db.user" value="${db.user}" />
-                          <token key="db.password" value="${db.password}" />
-                          <token key="db.host" value="${db.host}" />
-                          <token key="db.port" value="${db.port}" />
-                          <token key="db.prefix" value="${db.prefix}" />
-                          <token key="base_url" value="${project.url.base}" />
-                          <token key="error_level" value="${devel.vars.error_level}" />
-                          <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
-                          <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />
-                          <token key="views_show_additional_queries" value="${devel.vars.views_show_additional_queries}" />
-                          <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
-                          <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
-                          <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
-                          <token key="file_public_path" value="${build.subsite.dir.files}" />
-                          <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
-                          <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
-                          <token key="update_free_access" value="${drupal.update.free.access}" />
-                          <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
-                      </replacetokens>
-                  </filterchain>
-              </copy>
+                <if>
+                    <equals arg1="${project.url.base}" arg2="" />
+                    <then>
+                        <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="${project.tmp.dir}/generate-settings.php" overwrite="true">
+                            <filterchain>
+                                <replacetokens begintoken="%%" endtoken="%%">
+                                    <token key="db.type" value="${db.type}" />
+                                    <token key="db.name" value="${db.name}" />
+                                    <token key="db.user" value="${db.user}" />
+                                    <token key="db.password" value="${db.password}" />
+                                    <token key="db.host" value="${db.host}" />
+                                    <token key="db.port" value="${db.port}" />
+                                    <token key="db.prefix" value="${db.prefix}" />
+                                    <token key="error_level" value="${devel.vars.error_level}" />
+                                    <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
+                                    <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />
+                                    <token key="views_show_additional_queries" value="${devel.vars.views_show_additional_queries}" />
+                                    <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
+                                    <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
+                                    <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
+                                    <token key="file_public_path" value="${build.subsite.dir.files}" />
+                                    <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
+                                    <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
+                                    <token key="update_free_access" value="${drupal.update.free.access}" />
+                                    <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
+                                </replacetokens>
+                            </filterchain>
+                        </copy>
+                    </then>
+                    <else>
+                        <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="${project.tmp.dir}/generate-settings.php" overwrite="true">
+                            <filterchain>
+                                <replacetokens begintoken="%%" endtoken="%%">
+                                    <token key="db.type" value="${db.type}" />
+                                    <token key="db.name" value="${db.name}" />
+                                    <token key="db.user" value="${db.user}" />
+                                    <token key="db.password" value="${db.password}" />
+                                    <token key="db.host" value="${db.host}" />
+                                    <token key="db.port" value="${db.port}" />
+                                    <token key="db.prefix" value="${db.prefix}" />
+                                    <token key="base_url" value="${project.url.base}" />
+                                    <token key="error_level" value="${devel.vars.error_level}" />
+                                    <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
+                                    <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />
+                                    <token key="views_show_additional_queries" value="${devel.vars.views_show_additional_queries}" />
+                                    <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
+                                    <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
+                                    <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
+                                    <token key="file_public_path" value="${build.subsite.dir.files}" />
+                                    <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
+                                    <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
+                                    <token key="update_free_access" value="${drupal.update.free.access}" />
+                                    <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
+                                </replacetokens>
+                            </filterchain>
+                        </copy>
+                    </else>
+              </if>
               <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
                   <param>${project.tmp.dir}/generate-settings.php</param>
               </drush>
