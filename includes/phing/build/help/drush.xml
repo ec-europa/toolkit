@@ -419,7 +419,7 @@
             </try>
             <catch>
                 <drush command="dl" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                    <param>gdpr checklistapi</param>
+                    <param>gdpr-1.0-alpha11 checklistapi-1.2</param>
                 </drush>
             </catch>
             <finally>
