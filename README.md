@@ -1,88 +1,42 @@
-[![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/toolkit/status.svg)](https://drone.ne-dev.eu/ec-europa/toolkit) [![License](https://img.shields.io/badge/License-EUPL%201.1-blue.svg)](LICENSE)
+# Using Git hooks
 
-# NextEuropa Toolkit
-<img align="left" width="50%" src="https://ec.europa.eu/info/sites/info/themes/europa/images/svg/logo/logo--en.svg" />
+<big><table><thead><tr><th nowrap> [Using Composer hooks](./composer-hooks.md#using-composer-hooks) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Using Docker](./docker-environment.md#using-docker-environment) </th></tr></thead></table>
 
-<p>The NextEuropa Toolkit is a composer package designed to speed up the
-development of Drupal websites in the NextEuropa project. Its main component is
-the Phing build system that builds your development environments, deploy
-and test packages.</p>
+The toolkit allows you to hook into git events. This is useful for
+example if you want to apply standards to commit messages or need to
+perform coding standards before pushing your code.
 
-## Requirements
-There are three separate ways of using the NextEuropa project. Either you use an
-environment with Docker installed, an environment without, or a mix of both.
-  
-<details><summary><b>Docker Solo</b></summary>
+## How it works
 
-This requirement for docker only needs to have docker in docker support. The
-configuration to accomplish this is complex and if implemented incorrectly can
-give you problems. We recommend this approach only for seasoned docker users.
-<br>*Required components*:
-[Docker](https://docs.docker.com/engine/installation/linux/docker-ce/centos/)
-</details>
-<details><summary><b>Docker Plus</b></summary>
+The toolkit provides two targets with which you can control the status
+of your git hook scripts.
 
-Instead of having the absolute minimal requirement you can install the host
-level components Composer and Phing on the non-docker environment. Then this can
-spin up the docker containers for you without having to configure a complicated
-docker installation.<br>*Required components*:
-[Composer](https://getcomposer.org/),
-[Phing](https://packagist.org/packages/phing/phing),
-[Docker](https://docs.docker.com/engine/installation/linux/docker-ce/centos/)
-</details>
-<details><summary><b>Docker Zero</b></summary>
+### 1. git-hook-enable
+The execution of this target can be automatically triggered after toolkit
+installation. The target will look for scripts in a folder inside of
+`resources/git/hooks` that is named with the name of the git hook you wish to
+use.
 
-If you are not interested in the advantages that the toolkit can give you with
-the provided docker images you can keep a normal host only setup. But it is very
-much recommended to use docker as it will give you everything you need.
-<br>*Required components*:
-[Composer](https://getcomposer.org/),
-[LAMP Stack](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-centos-7)
-</details>
+If any scripts are found in these locations the toolkit will simlink the scripts
+into  `.git/hooks` location with the chosen hook name. If
+no scripts are found in the folder it will remove any previous execution
+script. Here is an example
+of a script being placed in the `resources/git/hooks/pre-push` folder:
 
-## User guide
+```
+resources/
+├── composer.json
+├── composer.lock
+├── devel.make
+├── git
+│   └── hooks
+│       └── pre-push-script
+│       └── prepare-commit-msg
+└── site.make
+```
 
-The toolkit contains different components that help you during the development, the main
-component is the Phing build system that let's you easily set up the project
-locally and can be used in CI tools like Jenkins, Drone or Travis.
+> Note: the script itself should be made executable to work.
 
-- [Setting up a project](/docs/setting-up-project.md#setting-up-a-project)
-    - [Getting the source code](/docs/setting-up-project.md#getting-the-source-code)
-        - [New project](/docs/setting-up-project.md#new-project)
-        - [Existing project](/docs/setting-up-project.md#existing-project)
-- [Configuring a project](/docs/configuring-project.md#configuring-a-project)
-    - [Build properties](docs/configuring-project.md#build-properties)
-    - [Build files](docs/configuring-project.md#build-files)
-    - [Cache system](docs/configuring-project.md#cache-system)
-- [Building the codebase](docs/building-codebase.md#building-the-codebase)
-    - [Platform builds](docs/building-codebase.md#platform-builds)
-    - [Subsite builds](docs/building-codebase.md#subsite-builds)
-    - [Theme builds](docs/building-codebase.md#theme-builds)
-- [Installing the project](/docs/installing-project.md#installing-project)
-    - [Clean installation](/docs/installing-project.md#clean-installation)
-    - [Clone installation](/docs/installing-project.md#clone-installation)
-- [Testing the project](/docs/testing-project.md/#testing-project)
-    - [PHPCS testing](docs/testing-project.md#phpcs-testing)
-    - [Behat testing](docs/testing-project.md#behat-testing)
-    - [PHPUnit testing](docs/testing-project.md#phpunit-testing)
-- [Using Composer hooks](/docs/composer-hooks.md#using-composer-hooks)
-- [Using Git hooks](/docs/git-hooks.md#using-git-hooks)
-- [Using Docker environment](/docs/docker-environment.md#using-docker-environment)
-- [Supported profiles](/docs/profiles.md)
-
-## Maintainers
-
-This project is maintained by members of the Quality Assurance team who review
-incoming pull requests for the NextEuropa project. The board on which they
-operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
-
-<details><summary><b>Contact list</b></summary>
-
-- [Alex Verbruggen](https://github.com/verbruggenalex): Maintainer - Quality Assurance
-- [Joao Santos](https://github.com/jonhy81): Maintainer - Quality Assurance
-</details>
-
-[https://webgate.ec.europa.eu/CITnet/jira]: https://webgate.ec.europa.eu/CITnet/jira/secure/RapidBoard.jspa?rapidView=581
-[verbruggenalex]: https://github.com/verbruggenalex
-[jonhy81]: https://github.com/jonhy81
-
+### 2. git-hook-disable
+This target will disable the execution scripts so no more git hooks will
+be invoked.
