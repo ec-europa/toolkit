@@ -4,7 +4,6 @@
 # and append it to begining of your commit. Also scan the current commit message
 # to avoid duplicates.
 
-
 branchPath=$(git symbolic-ref -q HEAD) #Somthing like refs/heads/myBranchName
 branchName=${branchPath##*/}      #Get text behind the last / of the branch path
 
