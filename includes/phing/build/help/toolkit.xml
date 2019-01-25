@@ -38,7 +38,7 @@
         <echoproperties prefix="composer.hook." />
     </target>
 
-    <target name="toolkit-hooks-git-delete" description="Delete all git hooks." hidden="true">
+    <target name="git-hook-disable" description="Delete all git hooks." hidden="true">
         <if>
             <available file="${project.basedir}/.git/hooks" type="dir" />
             <then>
@@ -56,7 +56,7 @@
         </if>
     </target>
 
-    <target name="toolkit-hooks-git-delete-hook" description="Delete a single git hook." hidden="true">
+    <target name="git-hook-enable" description="Delete a single git hook." hidden="true">
         <if>
             <available file="${project.basedir}/.git/hooks" type="dir" />
             <then>
@@ -72,13 +72,11 @@
             <then>
                 <foreach param="hook-name" absparam="abshook-name" target="toolkit-hooks-git-update-hook">
                     <fileset dir="${project.basedir}/resources/git/hooks">
-                        <include name="applypatch-msg, commit-msg, post-applypatch, post-checkout, post-commit, post-merge, post-receive, post-rewrite, post-update, pre-applypatch, pre-auto-gc, pre-commit, prepare-commit-msg, pre-push, pre-rebase, pre-receive, push-to-checkout, rebase, sendemail-validate, update" />
-                        <include name="*/*" />
+                        <include name="*" />
                         <type type="file" />
-                        <depth max="2" />
-                        <depth min="1" />
+                        <depth max="1" />
+                        <depth min="0" />
                     </fileset>
-                    <mapper type="regexp" from="(.*?)/(.*?)" to="\1"/>
                 </foreach>
             </then>
         </if>
@@ -88,10 +86,10 @@
         <if>
             <available file="${project.basedir}/.git/hooks" type="dir" />
             <then>
-                <exec command="ls -Am -I .gitkeep ${project.basedir}/resources/git/hooks/${hook-name}" outputproperty="hook-directory-contents" error="/dev/null" />
+                <!-- <exec command="ls -Am -I .gitkeep ${project.basedir}/resources/git/hooks/${hook-name}" outputproperty="hook-directory-contents" error="/dev/null" /> -->
                 <exec command="rm ${project.basedir}/.git/hooks/${hook-name}" />
-                <exec command="ln -s ${toolkit.dir.incl.git}/execute.sh ${project.basedir}/.git/hooks/${hook-name}"  />
-                <echo msg="Git hook ${hook-name} is active for: ${hook-directory-contents}." level="warning" />
+                <exec command="ln -s ${project.basedir}/resources/git/hooks/${hook-name} ${project.basedir}/.git/hooks/${hook-name}"  />
+                <echo msg="Git hook ${hook-name} is active." level="warning" />
             </then>
         </if>
     </target>
@@ -304,7 +302,6 @@
                 <not>
                     <available file="${lib.dir}" type="dir" />
                 </not>
-                <!-- <equals arg1="${project.basedir}" arg2="${toolkit.dir}" /> -->
             </and>
             <then>
                 <phingcall target="toolkit-templates-copy">
