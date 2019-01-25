@@ -23,7 +23,7 @@
     </target>
 
     <!-- Set up PHP CodeSniffer. -->
-    <target name="test-phpcs-setup" depends="test-phpcs-setup-prepush" hidden="true">
+    <target name="test-phpcs-setup" hidden="true">
         <delete file="${phpcs.config}" failonerror="false" />
         <phpcsconf
             configFile="${phpcs.config}"
@@ -40,22 +40,6 @@
             passthru="true"
             checkreturn="true"
         />
-    </target>
-
-    <!-- Setup the PHP CodeSniffer pre-push hook. -->
-    <target name="test-phpcs-setup-prepush" hidden="true">
-        <if>
-            <equals arg1="${phpcs.prepush.enable}" arg2="1" />
-            <then>
-                <echo message="Enabling git pre-push hook." />
-                <mkdir dir="${project.basedir}/resources/git/hooks/pre-push" />
-                <relsym link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
-            </then>
-            <else>
-                <echo message="Disabling git pre-push hook." />
-                <delete file="${phpcs.prepush.destination}" failonerror="false" quiet="true" />
-            </else>
-        </if>
     </target>
 
 </project>
