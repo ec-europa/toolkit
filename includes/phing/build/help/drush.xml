@@ -247,7 +247,7 @@
                 <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
                   <param>${project.tmp.dir}/generate-settings.php</param>
                 </drush>
-                
+
                 <if>
                     <and>
                         <not><isfalse value="${project.url.base}" /></not>
@@ -263,7 +263,7 @@
               <append destFile="${build.subsite.dir}/settings.php" text="${line.separator}define('FPFIS_ECAS_URL', 'ecas.ec.europa.eu');" />
               <append destFile="${build.subsite.dir}/settings.php" text="${line.separator}define('FPFIS_ECAS_PORT', 443);" />
               <append destFile="${build.subsite.dir}/settings.php" text="${line.separator}define('FPFIS_ECAS_URI', '/cas');" />
-              
+
               <drush command="cc" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
                   <param>drush</param>
               </drush>
@@ -344,7 +344,7 @@
             <then>
                 <echo message="Enable apachesolr for ${db.name}." />
                 <phingcall target="drush-modules-enable">
-                    <property name="project.drupal.modules" value="apachesolr" />
+                    <property name="project.drupal.modules" value="${solr.module}" />
                 </phingcall>
                 <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
                 <drush command="solr-set-env-url" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
