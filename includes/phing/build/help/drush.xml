@@ -339,19 +339,36 @@
     </target>
 
     <target name="drush-solr-enable" hidden="true" description="Enable the solr module.">
-        <if>
-            <equals arg1="${solr.enable}" arg2="1" />
+      <if>
+        <equals arg1="${solr.enable}" arg2="1" />
+        <then>
+          <echo message="Enable apachesolr for ${db.name}." />
+          <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
+
+          <phingcall target="drush-modules-enable">
+            <property name="project.drupal.modules" value="${solr.module}" />
+          </phingcall>
+
+          <if>
+            <equals arg1="${solr.module}" arg2="apachesolr" />
             <then>
-                <echo message="Enable apachesolr for ${db.name}." />
-                <phingcall target="drush-modules-enable">
-                    <property name="project.drupal.modules" value="${solr.module}" />
-                </phingcall>
-                <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
-                <drush command="solr-set-env-url" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                    <param>${solr.url}</param>
-                </drush>
+              <drush command="solr-set-env-url" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                <param>${solr.url}</param>
+              </drush>
             </then>
-        </if>
+            <else>
+              <drush command="toolkit-search-ssurl" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                <param>${solr.servername}</param>
+                <param>${solr.scheme}</param>
+                <param>${solr.host}</param>
+                <param>${solr.port}</param>
+                <param>${solr.path}</param>
+              </drush>
+            </else>
+          </if>
+
+        </then>
+      </if>
     </target>
 
     <target name="drush-sql-create" hidden="true" description="Create a database.">
