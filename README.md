@@ -1,4 +1,4 @@
-TESTING
+TESTING COMMIT
 
 [![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/toolkit/status.svg)](https://drone.ne-dev.eu/ec-europa/toolkit) [![License](https://img.shields.io/badge/License-EUPL%201.1-blue.svg)](LICENSE)
 
