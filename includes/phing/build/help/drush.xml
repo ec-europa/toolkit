@@ -414,48 +414,45 @@
 
     <target name="drush-gdpr-dump" hidden="true" description="Make a sanitized dump of database.">
         <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
-        <echo message="Backing up database ${db.name} to ${database-file}." />
-        <trycatch>
-            <try>
-                <exec command="${toolkit.dir.bin.drush} -r ${build.platform.dir} gdpr-sql-dump --help" checkreturn="true" />
-            </try>
-            <catch>
-                <if>
-                    <equals arg1="${profile.core.major}" arg2="7" />
-                    <then>
-                        <drush command="dl" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                            <param>gdpr-7.x-1.0-alpha11 checklistapi-7.x-1.1</param>
-                        </drush>
-                    </then>
-                    <else>
-                        <drush command="dl" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                            <param>8.x-1.0-alpha11 8.x-1.2</param>
-                        </drush> 
-                    </else>
-                </if>
-            </catch>
-            <finally>
-                <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                    <param>gdpr_dump</param>
-                </drush>
-                <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} vset gdpr_dump_table_map &apos;{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}&apos; --format=json --exact -y >/dev/null' escape="false" />
-            </finally>
-        </trycatch>
         <dirname property="database-cachedir" file="${database-file}" />
         <mkdir dir="${database-cachedir}" />
         
+        <echo message="Backing up database ${db.name} to ${database-file}." />
+        
         <if>
-          <equals arg1="${profile.core.major}" arg2="7" />
-          <then>
-            <drush command="gdpr-sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                <option name="result-file" value="${database-file}" />
-            </drush>
-          </then>
-          <else>
-            <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                <option name="result-file" value="${database-file}" />
-            </drush>
-          </else>
+            <equals arg1="${profile.core.major}" arg2="7" />
+            <then>
+                <trycatch>
+                    <try>
+                        <exec command="${toolkit.dir.bin.drush} -r ${build.platform.dir} gdpr-sql-dump --help" checkreturn="true" />
+                    </try>
+                    <catch>
+                        <if>
+                            <equals arg1="${profile.core.major}" arg2="7" />
+                            <then>
+                                <drush command="dl" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                                <param>gdpr-7.x-1.0-alpha11 checklistapi-7.x-1.1</param>
+                                </drush>
+                            </then>
+                        </if>
+                    </catch>
+                    <finally>
+                        <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                            <param>gdpr_dump</param>
+                        </drush>
+                        <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} vset gdpr_dump_table_map &apos;{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}&apos; --format=json --exact -y >/dev/null' escape="false" />
+                    </finally>
+                </trycatch>
+                
+                <drush command="gdpr-sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <option name="result-file" value="${database-file}" />
+                </drush>
+            </then>
+            <else>
+                <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <option name="result-file" value="${database-file}" />
+                </drush>
+            </else>
         </if>
     </target>
 </project>
