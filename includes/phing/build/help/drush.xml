@@ -420,12 +420,12 @@
             </try>
             <catch>
                 <drush command="dl" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                    <param>gdpr-7.x-1.0-alpha1 checklistapi-7.x-1.1</param>
+                    <param>gdpr-7.x-1.0-alpha11 checklistapi-7.x-1.1</param>
                 </drush>
             </catch>
             <finally>
                 <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                    <param>gdpr_dump1</param>
+                    <param>gdpr_dump</param>
                 </drush>
                 <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} vset gdpr_dump_table_map &apos;{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}&apos; --format=json --exact -y >/dev/null' escape="false" />
             </finally>
