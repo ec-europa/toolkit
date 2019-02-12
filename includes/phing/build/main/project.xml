@@ -495,7 +495,6 @@
             </else>
         </if>
     </target>
-
      <target name="project-platform-set-version" description="Save the platform version used for builds."
         hidden="true">
         <if>
@@ -534,7 +533,7 @@
         <propertyregex property="platform.package.version.reference" subject="${platform.package.version.current}" pattern="^[0-9]+\.[0-9]+\.([0-9]+)" match="$1" override="true" />
         <propertyregex property="platform.package.version.patch" subject="${platform.package.version.current}" pattern="^[0-9]+\.[0-9]\.[0-9]+\.([0-9]+)" match="$1" override="true" />
         <if>
-            <versioncompare version="${platform.package.version.latest}" desiredVersion="${platform.package.current}" operator="ge" />
+            <not><versioncompare version="${platform.package.version.latest}" desiredVersion="${platform.package.version.current}" operator="==" /></not>
             <then>
                 <echo msg="Last released deploy package is at ${platform.package.version.latest}." level="warning" />
                 <echo msg="Please upgrade your platform version to the last version." level="warning" />
