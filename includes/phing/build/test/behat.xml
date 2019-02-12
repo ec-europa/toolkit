@@ -107,6 +107,7 @@
             <arg value="--no-suggest" />
             <arg value="--ansi" />
             <arg value="--no-scripts" />
+            <arg value="--no-progress" />
         </composer>
 
         <!-- Generating settings file inside vendor folder. -->
@@ -161,12 +162,13 @@
 
     <!-- Install Composer dependencies without development dependencies. -->
     <target name="test-composer-install" hidden="true">
-        <echo msg="Run 'composer install' in best folder." />
+        <echo msg="Run 'composer install' in test folder." />
         <composer command="install" composer="${project.bin.composer}">
             <arg value="--working-dir=${tests.dir}" />
             <arg value="--no-interaction" />
             <arg value="--no-suggest" />
             <arg value="--ansi" />
+            <arg value="--no-progress" />
         </composer>
     </target>
 

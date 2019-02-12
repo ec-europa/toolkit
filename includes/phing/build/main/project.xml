@@ -391,6 +391,7 @@
                             <arg value="--no-suggest" />
                             <arg value="--no-dev" />
                             <arg value="--ansi" />
+                            <arg value="--no-progress" />
                         </composer>
                     </then>
                     <else>
@@ -399,6 +400,7 @@
                             <arg value="--no-interaction" />
                             <arg value="--no-suggest" />
                             <arg value="--ansi" />
+                            <arg value="--no-progress" />
                         </composer>
                     </else>
                 </if>
