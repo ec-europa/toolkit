@@ -500,7 +500,7 @@
      <target name="project-platform-set-version" description="Save the platform version used for builds."
         hidden="true">
         <if>
-            <matches string="${platform.package.version}" pattern="^[1-9]+\." />
+            <matches string="${platform.package.version}" pattern="^[0-9]+\." />
             <then>
                 <propertyregex property="platform.package.version.major" subject="${platform.package.version}" pattern="^([0-9]+)\." match="$1" override="true" />
                 <propertyregex property="platform.package.version.minor" subject="${platform.package.version}" pattern="^[0-9]+\.([0-9]+)" match="$1" override="true" />
