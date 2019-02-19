@@ -515,14 +515,8 @@
                 </if>
                 <if>
                     <or>
-                        <and>
-                            <matches string="${platform.package.version}" pattern="^[0-9]+\.[0-9]+\.[0-9]+$" />
-                            <matches string="${platform.package.version.current}" pattern="^[0-9]+\.[0-9]+\.[0-9]+$" />
-                        </and>
-                         <and>
-                            <matches string="${platform.package.version}" pattern="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$" />
-                            <matches string="${platform.package.version.current}" pattern="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$" />
-                        </and>
+                        <matches string="${platform.package.version}" pattern="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$" />
+                        <matches string="${platform.package.version}" pattern="^[0-9]+\.[0-9]+\.[0-9]+$" />
                     </or>
                     <then>
                         <property name="platform.package.version.current" value="${platform.package.version}" override="true" />
