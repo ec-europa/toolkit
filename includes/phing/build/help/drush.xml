@@ -441,7 +441,8 @@
     </target>
 
     <target name="drush-gdpr-dump" hidden="true" description="Make a sanitized dump of database.">
-<<<<<<< HEAD
+        <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
+
         <echo message="Backing up database ${db.name} to ${database-file}." />
         <trycatch>
             <try>
@@ -459,9 +460,7 @@
                 <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} vset gdpr_dump_table_map &apos;{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}&apos; --format=json --exact -y >/dev/null' escape="false" />
             </finally>
         </trycatch>
-=======
-        <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
->>>>>>> origin/master
+
         <dirname property="database-cachedir" file="${database-file}" />
         <mkdir dir="${database-cachedir}" />
         
