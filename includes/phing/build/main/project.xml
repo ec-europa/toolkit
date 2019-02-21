@@ -392,6 +392,7 @@
                             <arg value="--no-suggest" />
                             <arg value="--no-dev" />
                             <arg value="--ansi" />
+                            <arg value="--no-progress" />
                         </composer>
                     </then>
                     <else>
@@ -400,6 +401,7 @@
                             <arg value="--no-interaction" />
                             <arg value="--no-suggest" />
                             <arg value="--ansi" />
+                            <arg value="--no-progress" />
                         </composer>
                     </else>
                 </if>
@@ -553,26 +555,27 @@
             </else>
         </if>
     </target>
-
-    <target name="project-platform-set-version" description="Save the platform version used for builds."
+     <target name="project-platform-set-version" description="Save the platform version used for builds."
         hidden="true">
         <if>
             <matches string="${platform.package.version}" pattern="^[0-9]+\." />
             <then>
                 <propertyregex property="platform.package.version.major" subject="${platform.package.version}" pattern="^([0-9]+)\." match="$1" override="true" />
                 <propertyregex property="platform.package.version.minor" subject="${platform.package.version}" pattern="^[0-9]+\.([0-9]+)" match="$1" override="true" />
-                <propertyregex property="platform.package.version.reference" subject="${platform.package.version}" pattern="^[0-9]+\.[0-9]+\.([0-9]+)" match="$1" override="true" />
+                <propertyregex property="platform.package.version.reference" subject="${platform.package.version}" pattern="^[0-9]+\.[0-9]\.([0-9]+)" match="$1" override="true" />
+                <propertyregex property="platform.package.version.patch" subject="${platform.package.version}" pattern="^[0-9]+\.[0-9]\.[0-9]+\.([0-9]+)" match="$1" override="true" />
                 <if>
                     <matches string="${platform.package.version.minor}" pattern="[0-9]+" />
                     <then>
-                        <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | egrep -o 'platform-dev-${platform.package.version.major}\.${platform.package.version.minor}\.[0-9]+' | sed -e 's/^platform-dev-//' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.current" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | egrep -o 'platform-dev-${platform.package.version.major}\.${platform.upgrade}\.[0-9]+' | sed -e 's/^platform-dev-//' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.next" />
-                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | egrep -o 'platform-dev-${platform.package.version.major}\.[0-9]+\.[0-9]+' | sed -e 's/^platform-dev-//' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.latest" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | egrep -o 'platform-dev-${platform.package.version.major}\.${platform.package.version.minor}(\.[0-9]+){1,2}' | sed -e 's/^platform-dev-//' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.current" />
+                        <exec command="echo $(curl -s 'https://platform-ci.ne-dev.eu/releases/' | egrep -o 'platform-dev-${platform.package.version.major}(\.[0-9]+){1,3}' | sed -e 's/^platform-dev-//' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)" outputproperty="platform.package.version.latest" />
                     </then>
                 </if>
                 <if>
-                    <matches string="${platform.package.version}" pattern="^[0-9]+\.[0-9]+\.[0-9]+$" />
+                    <or>
+                        <matches string="${platform.package.version}" pattern="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$" />
+                        <matches string="${platform.package.version}" pattern="^[0-9]+\.[0-9]+\.[0-9]+$" />
+                    </or>
                     <then>
                         <property name="platform.package.version.current" value="${platform.package.version}" override="true" />
                     </then>
@@ -582,15 +585,12 @@
         <echo msg="The platform package version is set to ${platform.package.version}." />
         <echo msg="The build will be performed with version ${platform.package.version.current}." />
         <propertyregex property="platform.package.version.reference" subject="${platform.package.version.current}" pattern="^[0-9]+\.[0-9]+\.([0-9]+)" match="$1" override="true" />
+        <propertyregex property="platform.package.version.patch" subject="${platform.package.version.current}" pattern="^[0-9]+\.[0-9]\.[0-9]+\.([0-9]+)" match="$1" override="true" />
         <if>
-            <and>
-                <matches string="${platform.package.version.next}" pattern="^[0-9]+\.[0-9]+\.[0-9]+$" />
-                <versioncompare version="${platform.package.version.next}" desiredVersion="${platform.package.version}" operator="gt" />
-            </and>
+            <not><versioncompare version="${platform.package.version.latest}" desiredVersion="${platform.package.version.current}" operator="==" /></not>
             <then>
-                <php expression="${platform.package.version.minor} + 1" returnProperty="platform.upgrade" level="debug" />
                 <echo msg="Last released deploy package is at ${platform.package.version.latest}." level="warning" />
-                <echo msg="Please upgrade your platform version to ${platform.package.version.major}.${platform.upgrade}." level="warning" />
+                <echo msg="Please upgrade your platform version to the last version." level="warning" />
             </then>
         </if>
         <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.version.props" />
