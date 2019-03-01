@@ -1,1 +1,84 @@
-../../../../../drush/drush/8/patches/drush-force-color.patch
+diff --git a/includes/drush.inc b/includes/drush.inc
+index e40b4f4..248564e 100644
+--- a/includes/drush.inc
++++ b/includes/drush.inc
+@@ -296,6 +296,7 @@ function drush_get_global_options($brief = FALSE) {
+     $options['ignored-modules']     = array('description' => "Exclude some modules from consideration when searching for drush command files.", 'example-value' => 'token,views');
+     $options['no-label']            = array('description' => "Remove the site label that drush includes in multi-site command output (e.g. `drush @site1,@site2 status`).");
+     $options['label-separator']     = array('description' => "Specify the separator to use in multi-site command output (e.g. `drush @sites pm-list --label-separator=',' --format=csv`).");
++    $options['color']               = array('context' => 'DRUSH_NOCOLOR', 'propagate-cli-value' => TRUE, 'description' => "Force color highlighting on log messages.");
+     $options['nocolor']             = array('context' => 'DRUSH_NOCOLOR', 'propagate-cli-value' => TRUE, 'description' => "Suppress color highlighting on log messages.");
+     $options['show-passwords']      = array('description' => "Show database passwords in commands that display connection information.");
+     $options['show-invoke']         = array('description' => "Show all function names which could have been called for the current command. See drush_invoke().");
+diff --git a/includes/preflight.inc b/includes/preflight.inc
+index 767c926..dbc0d5b 100644
+--- a/includes/preflight.inc
++++ b/includes/preflight.inc
+@@ -370,15 +370,21 @@ function _drush_preflight_global_options() {
+   drush_set_context('DRUSH_QUIET', drush_get_option(array('quiet', 'pipe')));
+   drush_set_context('DRUSH_PIPE', drush_get_option('pipe'));
+ 
+-  // Suppress colored logging if --nocolor option is explicitly given or if
+-  // terminal does not support it.
+-  $nocolor = (drush_get_option('nocolor', FALSE));
+-  if (!$nocolor) {
+-    // Check for colorless terminal.  If there is no terminal, then
+-    // 'tput colors 2>&1' will return "tput: No value for $TERM and no -T specified",
+-    // which is not numeric and therefore will put us in no-color mode.
+-    $colors = exec('tput colors 2>&1');
+-    $nocolor = !($colors === FALSE || (is_numeric($colors) && $colors >= 3));
++  // Force color output is the --color option is given.
++  if (drush_get_option('color', FALSE)) {
++    $nocolor = FALSE;
++  }
++  else {
++    // Suppress colored logging if --nocolor option is explicitly given or if
++    // terminal does not support it.
++    $nocolor = (drush_get_option('nocolor', FALSE));
++    if (!$nocolor) {
++      // Check for colorless terminal.  If there is no terminal, then
++      // 'tput colors 2>&1' will return "tput: No value for $TERM and no -T specified",
++      // which is not numeric and therefore will put us in no-color mode.
++      $colors = exec('tput colors 2>&1');
++      $nocolor = !($colors === FALSE || (is_numeric($colors) && $colors >= 3));
++    }
+   }
+   drush_set_context('DRUSH_NOCOLOR', $nocolor);
+ }
+diff --git a/lib/Drush/Log/Logger.php b/lib/Drush/Log/Logger.php
+index ff2680f..863a78b 100644
+--- a/lib/Drush/Log/Logger.php
++++ b/lib/Drush/Log/Logger.php
+@@ -52,9 +52,9 @@ class Logger extends AbstractLogger {
+         $green = "[%s]";
+       }
+       else {
+-        $red = "\033[31;40m\033[1m[%s]\033[0m";
+-        $yellow = "\033[1;33;40m\033[1m[%s]\033[0m";
+-        $green = "\033[1;32;40m\033[1m[%s]\033[0m";
++        $red = "\033[31m[%s]\033[0m";
++        $yellow = "\033[33m[%s]\033[0m";
++        $green = "\033[32m[%s]\033[0m";
+       }
+ 
+       $verbose = drush_get_context('DRUSH_VERBOSE');
+@@ -128,14 +128,15 @@ class Logger extends AbstractLogger {
+ 
+       $width[0] = ($columns - 11);
+ 
+-      $format = sprintf("%%-%ds%%%ds", $width[0], $width[1]);
++      /* $format = sprintf("%%-%ds%%%ds", $width[0], $width[1]);
+ 
+       // Place the status message right aligned with the top line of the error message.
+       $message = wordwrap($entry['message'], $width[0]);
+       $lines = explode("\n", $message);
+-      $lines[0] = sprintf($format, $lines[0], $type_msg);
+-      $message = implode("\n", $lines);
+-      drush_print($message, 0, STDERR);
++      $lines[0] = str_pad("$type_msg ", self::LEFT_COLUMN_SIZE, " ", STR_PAD_LEFT) . $format . $lines[0];
++      $message = implode("\n", $lines); */
++      $message =  sprintf('%s %s', str_pad("$type_msg", (12 + 8), " ", STR_PAD_LEFT), $message);
++      drush_print("$message", 0, STDERR);
+ 
+     }
+ 

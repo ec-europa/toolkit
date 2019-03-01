@@ -13,21 +13,6 @@
         "openeuropa/code-review": "1.0.0-beta1",
         "consolidation/robo": "1.4.6"
     },
-    "scripts": {
-        "toolkit-install": [
-            "mkdir -p vendor/ec-europa/toolkit/resources",
-            "ln -sf $(pwd)/resources/*/ $(pwd)/vendor/ec-europa/toolkit/resources",
-            "mkdir -p vendor/drush/drush/commands",
-            "ln -sf $(pwd)/resources/drush/drush/8/commands/*/ $(pwd)/vendor/drush/drush/commands",
-            "../../bin/run toolkit:setup"
-        ],
-        "post-install-cmd":  [
-            "ln -s $(pwd)/vendor/bin $(pwd)/toolkit"
-        ],
-        "post-update-cmd":  [
-            "ln -s $(pwd)/vendor/bin $(pwd)/toolkit"
-        ]
-    },
     "autoload": {
         "psr-4": {
             "Eceuropa\\Toolkit\\": "./src/"
