@@ -9,8 +9,7 @@
         "source": "https://github.com/ec-europa/toolkit"
     },
     "require": {
-        "openeuropa/task-runner": "~0.7.0",
-        "openeuropa/drupal-site-template": "dev-master"
+        "openeuropa/task-runner": "~0.7.0"
     },
     "require-dev": {
         "openeuropa/code-review": "~0.3.0"
