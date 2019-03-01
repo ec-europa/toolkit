@@ -14,17 +14,14 @@
         "openeuropa/code-review": "~0.3.0"
     },
     "scripts": {
-        "post-install-cmd": [
+        "toolkit-install": [
             "mkdir -p vendor/ec-europa/toolkit/resources",
             "ln -sf $(pwd)/resources/*/ $(pwd)/vendor/ec-europa/toolkit/resources",
             "mkdir -p vendor/drush/drush/commands",
             "ln -sf $(pwd)/resources/drush/drush/8/commands/*/ $(pwd)/vendor/drush/drush/commands"
         ],
-        "post-update-cmd": [
-            "mkdir -p vendor/ec-europa/toolkit/resources",
-            "ln -sf $(pwd)/resources/*/ $(pwd)/vendor/ec-europa/toolkit/resources",
-            "mkdir -p vendor/drush/drush/commands",
-            "ln -sf $(pwd)/resources/drush/drush/8/commands/*/ $(pwd)/vendor/drush/drush/commands"        ]
+        "post-install-cmd": "@toolkit-install",
+        "post-update-cmd": "@toolkit-install"
     },
     "autoload": {
         "psr-4": {
