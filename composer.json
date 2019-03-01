@@ -8,10 +8,11 @@
         "source": "https://github.com/ec-europa/toolkit"
     },
     "require": {
-        "openeuropa/task-runner": "~0.7.0"
+        "openeuropa/task-runner": "~1.0.0",
+        "openeuropa/drupal-site-template": "dev-master"
     },
     "require-dev": {
-        "openeuropa/code-review": "~0.3.0"
+        "openeuropa/code-review": "~1.0.0"
     },
     "scripts": {
         "toolkit-install": [
@@ -20,8 +21,12 @@
             "mkdir -p vendor/drush/drush/commands",
             "ln -sf $(pwd)/resources/drush/drush/8/commands/*/ $(pwd)/vendor/drush/drush/commands"
         ],
-        "post-install-cmd": "@toolkit-install",
-        "post-update-cmd": "@toolkit-install"
+        "post-install-cmd":  [
+            "ln -s $(pwd)/vendor/bin $(pwd)/toolkit"
+        ],
+        "post-update-cmd":  [
+            "ln -s $(pwd)/vendor/bin $(pwd)/toolkit"
+        ]
     },
     "autoload": {
         "psr-4": {
