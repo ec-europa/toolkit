@@ -3,6 +3,7 @@
     "description": "NextEuropa Toolkit packaged for composer",
     "license": "EUPL-1.1",
     "homepage": "https://github.com/ec-europa/toolkit",
+    "minimum-stability": "dev",
     "support": {
         "email": "Europamanagement@ec.europa.eu",
         "source": "https://github.com/ec-europa/toolkit"
