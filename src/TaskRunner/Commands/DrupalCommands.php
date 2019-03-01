@@ -59,6 +59,36 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         return $this->collectionBuilder()->addTaskList($taskCollection);
     }
 
+
+    /**
+     * @command toolkit:reset-template
+     */
+    public function toolkitResetTemplate()
+    {
+
+    }
+
+    /**
+     * @command toolkit:install-clone
+     */
+    public function toolkitInstallClone()
+    {
+    }
+
+    /**
+     * @command toolkit:test-run-phpcs
+     */
+    public function toolkitTestRunPhpcs()
+    {
+    }
+
+    /**
+     * @command toolkit:test-run-behat
+     */
+    public function toolkitTestRunBehat()
+    {
+    }
+
     /**
      * @command drupal:enable-all
      *
@@ -66,7 +96,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
      *
      * @param array $options
      */
-    public function drupalEnableAll(array $options = [
+    private function drupalEnableAll(array $options = [
       'exclude' => InputOption::VALUE_OPTIONAL,
     ])
     {
@@ -112,7 +142,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     /**
      * @command drupal:generate-data
      */
-    public function drupalGenerateData()
+    private function drupalGenerateData()
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
         $drupalVersion = $this->getConfig()->get('drupal.version');
@@ -166,7 +196,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     /**
      * @command drupal:drush-smoke
      */
-    public function drupalDrushSmoke()
+    private function drupalDrushSmoke()
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
         $drupalVersion = $this->getConfig()->get('drupal.version');
@@ -252,7 +282,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     /**
      * @command drupal:platform-rsync
      */
-    public function drupalPlatformRsync()
+    private function drupalPlatformRsync()
     {
         // Rsync platform to root.
         $drupalRoot = $this->getConfig()->get('drupal.root');
@@ -269,7 +299,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
      *
      * @param array $options
      */
-    public function drupalMakeToComposer(array $options = [
+    private function drupalMakeToComposer(array $options = [
       'make-file' => InputOption::VALUE_OPTIONAL,
     ])
     {
