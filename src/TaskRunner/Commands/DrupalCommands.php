@@ -59,7 +59,15 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         return $this->collectionBuilder()->addTaskList($taskCollection);
     }
 
-
+    /**
+     * @command toolkit:setup
+     */
+    public function toolkitSetup()
+    {
+        $templatePath = getcwd() . "/resources/drupal/drupal/8/";
+        $this->_copyDir($templatePath, '../../../');
+    }
+ 
     /**
      * @command toolkit:reset-template
      */
