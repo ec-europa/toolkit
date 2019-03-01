@@ -64,7 +64,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
      */
     public function toolkitSetup()
     {
-        $templatePath = getcwd() . "/resources/drupal/drupal/8/";
+        $templatePath = getcwd() . "/resources/drupal-template/";
         $this->_copyDir($templatePath, '../../../');
     }
  

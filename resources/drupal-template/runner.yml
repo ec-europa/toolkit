@@ -19,17 +19,17 @@ drupal:
   root: "web"
   root_absolute: ~
   base_url: "http://web:8080"
-  version: {version}
+  version: 8
 
   # Basic Drupal site information.
   site:
-    name: "{site.name}"
+    name: "Drupal 8 Standard"
     mail: "info@example.org"
-    profile: "{site.profile}"
+    profile: "standard"
     update: "false"
     locale: "en"
     sites_subdir: "default"
-    enable_all_exclude: [ {site.enable_all_exclude} ]
+    enable_all_exclude: []
 
   # Administrator account information.
   account:
@@ -94,5 +94,5 @@ release:
 # List of dynamically-defined commands.
 # -----------------------------------------------------------------------------
 commands:
-  drupal:phpcs:
+  drupal:custom-template:
     - ./vendor/bin/grumphp run --ansi
