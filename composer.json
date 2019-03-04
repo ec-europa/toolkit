@@ -9,13 +9,9 @@
         "source": "https://github.com/ec-europa/toolkit"
     },
     "require": {
-        "composer/installers": "^1.2",
-        "consolidation/robo": "1.4.6",
-        "cweagans/composer-patches": "^1.6",
-        "drupal/console": "^1.0.2",
-        "drush/drush": "^8.0",
+        "openeuropa/task-runner": "1.0.0-beta4",
         "openeuropa/code-review": "1.0.0-beta1",
-        "openeuropa/task-runner": "1.0.0-beta4"
+        "consolidation/robo": "1.4.6"
     },
     "autoload": {
         "psr-4": {
