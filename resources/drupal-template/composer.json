@@ -1,31 +1,37 @@
 {
     "require": {
+        "composer/installers": "^1.2",
+        "cweagans/composer-patches": "^1.6",
         "drupal-composer/drupal-scaffold": "^2.5",
+        "drupal/console": "^1.0.2",
         "drupal/core": "~8.5.3",
+        "drush/drush": "^8.0",
         "ec-europa/toolkit": "dev-release/4.x"
     },
     "require-dev": {
         "drupal/drupal-extension": "^3.4",
-        "drupal/devel": "^1.2"
+        "openeuropa/code-review": "^0.3.0",
+        "drupal/devel": "^1.2",
+        "phpunit/phpunit": "^5.7"
     },
     "conflict": {
         "drupal/drupal": "*"
     },
     "extra": {
         "installer-paths": {
-            "build/core": [
+            "web/core": [
                 "type:drupal-core"
             ],
-            "build/libraries/{$name}": [
+            "web/libraries/{$name}": [
                 "type:drupal-library"
             ],
-            "build/modules/contrib/{$name}": [
+            "web/modules/contrib/{$name}": [
                 "type:drupal-module"
             ],
-            "build/profiles/contrib/{$name}": [
+            "web/profiles/contrib/{$name}": [
                 "type:drupal-profile"
             ],
-            "build/themes/contrib/{$name}": [
+            "web/themes/contrib/{$name}": [
                 "type:drupal-theme"
             ],
             "drush/Commands/{$name}": [
