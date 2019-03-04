@@ -8,11 +8,6 @@
         "email": "Europamanagement@ec.europa.eu",
         "source": "https://github.com/ec-europa/toolkit"
     },
-    "require": {
-        "openeuropa/task-runner": "1.0.0-beta4",
-        "openeuropa/code-review": "1.0.0-beta1",
-        "consolidation/robo": "1.4.6"
-    },
     "autoload": {
         "psr-4": {
             "Eceuropa\\Toolkit\\": "./src/"

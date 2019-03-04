@@ -10,9 +10,10 @@
     },
     "require-dev": {
         "drupal/drupal-extension": "^3.4",
-        "openeuropa/code-review": "^0.3.0",
         "drupal/devel": "^1.2",
-        "phpunit/phpunit": "^5.7"
+        "openeuropa/task-runner": "1.0.0-beta4",
+        "openeuropa/code-review": "1.0.0-beta1",
+        "consolidation/robo": "1.4.6"
     },
     "conflict": {
         "drupal/drupal": "*"
