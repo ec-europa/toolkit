@@ -12,8 +12,6 @@
     "bovigo/assert": "^1.7",
     "rych/random": "v0.1.0",
     "bex/behat-screenshot-image-driver-img42": "^1.0",
-    "phing/phing": "~2.10",
-    "phpunit/phpunit": "^5.0",
     "lstrojny/hmmmath": "0.5.0"
   },
   "autoload": {
