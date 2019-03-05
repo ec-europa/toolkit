@@ -41,10 +41,11 @@ class ToolkitCommands extends AbstractCommands implements FilesystemAwareInterfa
       // Get updated dump if the case.
       $this->toolkitDatabaseDownload();
 
-      // Dump database into location.
-      $databaseConfig = $this->config->get('database');
-
-      $this->taskExec('vendor/bin/drush --uri=web sqlc < .tmp/sanitized_daily_multisite_youth_production.sql')
+      // Unzip and dump database file.
+      $this->taskExecStack()
+        ->stopOnFail()
+        ->exec('gunzip .tmp/dump.sql.gz')
+        ->exec('vendor/bin/drush --uri=web sqlc < .tmp/dump.sql')
         ->run();
     }
 
@@ -85,7 +86,7 @@ class ToolkitCommands extends AbstractCommands implements FilesystemAwareInterfa
       if (!is_file('.tmp/' . $this->dumpFilename)) {
         // Download database.
         if ($this->dumpFilename) {
-          $requestOptions += ['sink' => '.tmp/' . $this->dumpFilename];
+          $requestOptions += ['sink' => '.tmp/dump.sql.gz'];
           $client->request('GET', $requestUrl . $this->dumpFilename, $requestOptions);
         }
       }
