@@ -10,7 +10,15 @@
     },
     "require": {
         "openeuropa/task-runner": "1.0.0-beta4",
-        "openeuropa/code-review": "1.0.0-beta1"
+        "openeuropa/code-review": "1.0.0-beta1",
+        "guzzlehttp/guzzle": "6.3.3",
+        "consolidation/robo": "1.4.6",
+        "drupal/console-core": "1.8.0",
+        "drush/drush": "9.5.2",
+        "drupal/drupal-extension": "v3.4.1",
+        "openeuropa/composer-artifacts": "0.1.3",
+        "cweagans/composer-patches": "1.6.5",
+        "composer/installers": "v1.6.0"
     },
     "autoload": {
         "psr-4": {
