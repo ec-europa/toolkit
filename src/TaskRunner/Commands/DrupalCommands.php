@@ -11,6 +11,7 @@ use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
+use GuzzleHttp\Client;
 
 /**
  * Class DrupalCommands
@@ -19,6 +20,10 @@ use Symfony\Component\Yaml\Yaml;
  */
 class DrupalCommands extends AbstractCommands implements FilesystemAwareInterface
 {
+    const ASDA_URL = 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps/';
+
+    public $dumpFilename = '';
+
     use TaskRunnerTraits\ConfigurationTokensTrait;
     use TaskRunnerTraits\FilesystemAwareTrait;
     use TaskRunnerTasks\CollectionFactory\loadTasks;
@@ -27,7 +32,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     /**
      * @command toolkit:install-template
      */
-    public function toolkitInstallTemplate()
+    private function toolkitInstallTemplate()
     {
         $workingDir = 'template';
         $taskCollection = array(
@@ -58,35 +63,6 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
 
         return $this->collectionBuilder()->addTaskList($taskCollection);
     }
- 
-    /**
-     * @command toolkit:reset-template
-     */
-    public function toolkitResetTemplate()
-    {
-
-    }
-
-    /**
-     * @command toolkit:install-clone
-     */
-    public function toolkitInstallClone()
-    {
-    }
-
-    /**
-     * @command toolkit:test-run-phpcs
-     */
-    public function toolkitTestRunPhpcs()
-    {
-    }
-
-    /**
-     * @command toolkit:test-run-behat
-     */
-    public function toolkitTestRunBehat()
-    {
-    }
 
     /**
      * @command drupal:enable-all
@@ -95,7 +71,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
      *
      * @param array $options
      */
-    private function drupalEnableAll(array $options = [
+    public function drupalEnableAll(array $options = [
       'exclude' => InputOption::VALUE_OPTIONAL,
     ])
     {
@@ -130,7 +106,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
         }
 
         $taskCollection[] = $this->taskExec("vendor/bin/drush -r $drupalRoot pm-enable " . implode(',', $enableModules) . " -y --color=1");
-        
+
         $taskCollection[] = $drupalVersion == 7 ?
             $this->taskExec("vendor/bin/drush -r $drupalRoot pm-disable " . implode(',', $disableModules) . " -y --color=1") :
             $this->taskExec("vendor/bin/drush -r $drupalRoot pm-uninstall " . implode(',', $disableModules) . " -y --color=1");
@@ -141,7 +117,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     /**
      * @command drupal:generate-data
      */
-    private function drupalGenerateData()
+    public function drupalGenerateData()
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
         $drupalVersion = $this->getConfig()->get('drupal.version');
@@ -195,7 +171,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     /**
      * @command drupal:drush-smoke
      */
-    private function drupalDrushSmoke()
+    public function drupalDrushSmoke()
     {
         $drupalRoot = $this->getConfig()->get('drupal.root');
         $drupalVersion = $this->getConfig()->get('drupal.version');
@@ -212,12 +188,12 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
 
     /**
      * @command toolkit:build-template
-     * 
+     *
      * @option template     Template name in format of 'vendor.project.version';
      *
      * @param array $options
      */
-    public function toolkitBuildTemplate(array $options = [
+    private function toolkitBuildTemplate(array $options = [
       'template' => InputOption::VALUE_REQUIRED,
     ])
     {
@@ -263,7 +239,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
             $runner->place($token, $value);
         }
         $taskCollection[] = $runner;
-        
+
         $taskCollection[] = $this->taskRsync()->fromPath("vendor/ec-europa/toolkit/resources/$templateLocation/")->toPath('template/')->recursive()->option('copy-links');
 
         return $this->collectionBuilder()->addTaskList($taskCollection);
@@ -272,7 +248,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
     /**
      * @command drupal:grumphp
      */
-    public function drupalGrumphp()
+    private function drupalGrumphp()
     {
         // Run grumphp.
         return $this->taskExec("./vendor/bin/grumphp run")->run();
@@ -293,7 +269,7 @@ class DrupalCommands extends AbstractCommands implements FilesystemAwareInterfac
 
     /**
      * @command drupal:make-to-composer
-     * 
+     *
      * @option make-file    Location of make file to merge into template.
      *
      * @param array $options
