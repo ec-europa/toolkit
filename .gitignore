@@ -2,3 +2,4 @@
 /resources/drupal/*/composer.lock
 /resources/ec-europa
 /toolkit
+/composer.lock

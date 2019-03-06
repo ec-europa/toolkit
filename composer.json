@@ -9,16 +9,16 @@
         "source": "https://github.com/ec-europa/toolkit"
     },
     "require": {
-        "openeuropa/task-runner": "1.0.0-beta4",
-        "openeuropa/code-review": "1.0.0-beta1",
-        "guzzlehttp/guzzle": "6.3.3",
-        "consolidation/robo": "1.4.6",
-        "drupal/console-core": "1.8.0",
-        "drush/drush": "9.5.2",
-        "drupal/drupal-extension": "v3.4.1",
-        "openeuropa/composer-artifacts": "0.1.3",
-        "cweagans/composer-patches": "1.6.5",
-        "composer/installers": "v1.6.0"
+        "openeuropa/task-runner": "^1.0",
+        "openeuropa/code-review": "^1.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "consolidation/robo": "^1.4",
+        "drupal/console-core": "^1.8",
+        "drush/drush": "^9.5",
+        "drupal/drupal-extension": "^3.4 || ^4.0",
+        "openeuropa/composer-artifacts": "^0.1",
+        "cweagans/composer-patches": "^1.6",
+        "composer/installers": "^1.6"
     },
     "autoload": {
         "psr-4": {
