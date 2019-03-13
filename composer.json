@@ -2,23 +2,36 @@
     "name": "ec-europa/toolkit",
     "description": "Toolkit packaged for Drupal 8.",
     "license": "EUPL-1.1",
+    "type": "library",
     "homepage": "https://github.com/ec-europa/toolkit",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "support": {
         "email": "europamanagement@ec.europa.eu",
         "source": "https://github.com/ec-europa/toolkit"
     },
     "require": {
-        "openeuropa/task-runner": "^1.0",
-        "openeuropa/code-review": "^1.0",
+        "php": "^7.1",
         "guzzlehttp/guzzle": "^6.3",
         "drupal/console-core": "^1.8",
+        "drupal/drupal-extension": "^3.4 || ^4.0",
         "drush/drush": "^9.5",
-        "drupal/drupal-extension": "^3.4 || ^4.0"
+        "openeuropa/task-runner": "~1.0.0-beta5",
+        "openeuropa/code-review": "~1.0.0-beta1"
     },
     "autoload": {
         "psr-4": {
-            "Eceuropa\\Toolkit\\": "./src/"
+            "EcEuropa\\Toolkit\\": "./src/"
+        }
+    },
+    "extra": {
+        "enable-patching": true,
+        "composer-exit-on-patch-failure": true
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "7.1.9"
         }
     }
 }
