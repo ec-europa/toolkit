@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 /**
  * Drupal commands to setup and install a Drupal 8 site.
  */
-class ToolkitDrupalCommands extends Drupal8Commands
+class DrupalCommands extends Drupal8Commands
 {
 
     /**
