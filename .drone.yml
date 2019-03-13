@@ -1,0 +1,49 @@
+workspace:
+  base: /test
+  path: toolkit
+
+services:
+  web:
+    image: ${IMAGE_PHP=fpfis/httpd-php-dev:5.6}
+    environment:
+    - DOCUMENT_ROOT=/test/toolkit
+
+pipeline:
+  composer-install-lowest:
+    group: prepare
+    image: ${IMAGE_PHP=fpfis/httpd-php-dev:5.6}
+    volumes:
+    - /cache:/cache
+    commands:
+    # @todo remove "composer install" step once the following issue is fixed.
+    # @link https://webgate.ec.europa.eu/CITnet/jira/browse/OPENEUROPA-1234
+    - composer install --ansi --no-suggest --no-progress
+    - composer update --prefer-lowest --ansi --no-suggest --no-progress
+    when:
+      matrix:
+        COMPOSER_BOUNDARY: lowest
+
+  composer-install-highest:
+    group: prepare
+    image: ${IMAGE_PHP=fpfis/httpd-php-dev:5.6}
+    volumes:
+    - /cache:/cache
+    commands:
+    - composer install --ansi --no-suggest --no-progress
+    when:
+      matrix:
+        COMPOSER_BOUNDARY: highest
+
+  grumphp:
+    group: test
+    image: ${IMAGE_PHP=fpfis/httpd-php-dev:5.6}
+    commands:
+    - ./vendor/bin/grumphp run
+
+matrix:
+  IMAGE_PHP:
+  - fpfis/httpd-php-dev:5.6
+  - fpfis/httpd-php-dev:7.1
+  COMPOSER_BOUNDARY:
+  - lowest
+  - highest
