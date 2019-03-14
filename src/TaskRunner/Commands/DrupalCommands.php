@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use OpenEuropa\TaskRunner\Commands\Drupal8Commands;
@@ -10,20 +12,19 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class DrupalCommands extends Drupal8Commands
 {
-
-    /**
-     * Comment starting the Toolkit settings block.
-     *
-     * @var string
-     */
-    protected $blockStart = "// Start Toolkit settings block.";
-
     /**
      * Comment ending the Toolkit settings block.
      *
      * @var string
      */
     protected $blockEnd = '// End Toolkit settings block.';
+
+    /**
+     * Comment starting the Toolkit settings block.
+     *
+     * @var string
+     */
+    protected $blockStart = '// Start Toolkit settings block.';
 
     /**
      * Setup Drupal settings.php file in compliance with Toolkit conventions.
@@ -112,7 +113,7 @@ class DrupalCommands extends Drupal8Commands
      */
     protected function getSettingsBlockRegex()
     {
-        return '/^\n' . preg_quote($this->blockStart, '/') . ".*?" . preg_quote($this->blockEnd, '/') . '\n/sm';
+        return '/^\n' . preg_quote($this->blockStart, '/') . '.*?' . preg_quote($this->blockEnd, '/') . '\n/sm';
     }
 
     /**
@@ -122,6 +123,7 @@ class DrupalCommands extends Drupal8Commands
     {
         $additionalSettings = $this->getConfig()->get('drupal.additional_settings', '');
         $additionalSettings = trim($additionalSettings);
+
         return <<< EOF
 
 {$this->blockStart}

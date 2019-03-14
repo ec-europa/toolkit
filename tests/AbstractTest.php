@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace EcEuropa\Toolkit\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -12,7 +14,7 @@ use Symfony\Component\Yaml\Yaml;
 abstract class AbstractTest extends TestCase
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -22,44 +24,6 @@ abstract class AbstractTest extends TestCase
         $filesystem = new Filesystem();
         $filesystem->chmod($this->getSandboxRoot(), 0777, umask(), true);
         $filesystem->remove(glob($this->getSandboxRoot() . '/*'));
-    }
-
-    /**
-     * @return \Composer\Autoload\ClassLoader
-     */
-    protected function getClassLoader()
-    {
-        return require __DIR__.'/../vendor/autoload.php';
-    }
-
-    /**
-     * @param $filepath
-     *
-     * @return mixed
-     */
-    protected function getFixtureContent($filepath)
-    {
-        return Yaml::parse(file_get_contents(__DIR__."/fixtures/{$filepath}"));
-    }
-
-    /**
-     * @param $name
-     *
-     * @return string
-     */
-    protected function getSandboxFilepath($name)
-    {
-        return $this->getSandboxRoot().'/'.$name;
-    }
-
-    /**
-     * @param $name
-     *
-     * @return string
-     */
-    protected function getSandboxRoot()
-    {
-        return __DIR__."/sandbox";
     }
 
     /**
@@ -77,5 +41,43 @@ abstract class AbstractTest extends TestCase
         if (!empty($expected['not_contains'])) {
             $this->assertNotContains($expected['not_contains'], $content);
         }
+    }
+
+    /**
+     * @return \Composer\Autoload\ClassLoader
+     */
+    protected function getClassLoader()
+    {
+        return require __DIR__ . '/../vendor/autoload.php';
+    }
+
+    /**
+     * @param $filepath
+     *
+     * @return mixed
+     */
+    protected function getFixtureContent($filepath)
+    {
+        return Yaml::parse(file_get_contents(__DIR__ . "/fixtures/{$filepath}"));
+    }
+
+    /**
+     * @param $name
+     *
+     * @return string
+     */
+    protected function getSandboxFilepath($name)
+    {
+        return $this->getSandboxRoot() . '/' . $name;
+    }
+
+    /**
+     * @param $name
+     *
+     * @return string
+     */
+    protected function getSandboxRoot()
+    {
+        return __DIR__ . '/sandbox';
     }
 }

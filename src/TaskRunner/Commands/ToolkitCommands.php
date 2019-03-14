@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
@@ -10,20 +12,17 @@ use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
 use GuzzleHttp\Client;
 
 /**
- * Class ToolkitCommands
- *
- * @package Eceuropa\Toolkit\TaskRunner\Commands
+ * Class ToolkitCommands.
  */
 class ToolkitCommands extends AbstractCommands implements FilesystemAwareInterface
 {
+    use NuvoleWebTasks\Config\loadTasks;
+    use TaskRunnerTasks\CollectionFactory\loadTasks;
+    use TaskRunnerTraits\ConfigurationTokensTrait;
+    use TaskRunnerTraits\FilesystemAwareTrait;
     const ASDA_URL = 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps/';
 
     public $dumpFilename = '';
-
-    use TaskRunnerTraits\ConfigurationTokensTrait;
-    use TaskRunnerTraits\FilesystemAwareTrait;
-    use TaskRunnerTasks\CollectionFactory\loadTasks;
-    use NuvoleWebTasks\Config\loadTasks;
 
     /**
      * Install clone from production snapshot.
@@ -54,7 +53,6 @@ class ToolkitCommands extends AbstractCommands implements FilesystemAwareInterfa
      */
     public function toolkitDatabaseDownload()
     {
-
         // Create folder if non-existent.
         if (!is_dir('.tmp')) {
             $this->taskExec('mkdir -p .tmp')->run();
@@ -66,7 +64,7 @@ class ToolkitCommands extends AbstractCommands implements FilesystemAwareInterfa
             'auth' => [
                 $this->config->get('asda.user'),
                 $this->config->get('asda.password'),
-            ]
+            ],
         ];
 
         // Get current filename.
@@ -89,13 +87,14 @@ class ToolkitCommands extends AbstractCommands implements FilesystemAwareInterfa
     }
 
     /**
-     * Run PHP code review
+     * Run PHP code review.
+     *
      * @command toolkit:test-phpcs
      *
      * @aliases ttp
      */
     public function toolkitTestPhpcs()
     {
-        return $this->taskExec("./vendor/bin/grumphp run")->run();
+        return $this->taskExec('./vendor/bin/grumphp run')->run();
     }
 }

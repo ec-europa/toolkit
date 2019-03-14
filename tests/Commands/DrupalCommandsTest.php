@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace EcEuropa\Toolkit\Tests\Commands;
 
 use EcEuropa\Toolkit\Tests\AbstractTest;
@@ -10,9 +12,19 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Test Toolkit Drupal commands.
+ *
+ * @internal
+ * @coversNothing
  */
 class DrupalCommandsTest extends AbstractTest
 {
+    /**
+     * @return array
+     */
+    public function drupalSettingsSetupDataProvider()
+    {
+        return $this->getFixtureContent('commands/drupal-settings-setup.yml');
+    }
 
     /**
      * Test Toolkit very own "drupal:settings-setup" command.
@@ -21,6 +33,7 @@ class DrupalCommandsTest extends AbstractTest
      * @param $initial_default_settings
      * @param $settings_already_exists
      * @param array $expected
+     * @param mixed $initial_settings
      *
      * @dataProvider drupalSettingsSetupDataProvider
      */
@@ -53,13 +66,5 @@ class DrupalCommandsTest extends AbstractTest
             $content = file_get_contents($this->getSandboxFilepath($row['file']));
             $this->assertContainsNotContains($content, $row);
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function drupalSettingsSetupDataProvider()
-    {
-        return $this->getFixtureContent('commands/drupal-settings-setup.yml');
     }
 }
