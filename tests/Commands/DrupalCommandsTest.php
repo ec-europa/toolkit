@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenEuropa\TaskRunner\Tests\Commands;
+namespace EcEuropa\Toolkit\Tests\Commands;
 
 use EcEuropa\Toolkit\Tests\AbstractTest;
 use OpenEuropa\TaskRunner\TaskRunner;
