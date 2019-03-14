@@ -31,9 +31,8 @@ class DrupalCommandsTest extends AbstractTest
      *
      * @param array $config
      * @param $initial_default_settings
-     * @param $settings_already_exists
+     * @param $initial_settings
      * @param array $expected
-     * @param mixed $initial_settings
      *
      * @dataProvider drupalSettingsSetupDataProvider
      */

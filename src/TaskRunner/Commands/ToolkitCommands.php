@@ -72,7 +72,7 @@ class ToolkitCommands extends AbstractCommands implements FilesystemAwareInterfa
         $body = (string) $response->getBody();
 
         foreach (preg_split("/((\r?\n)|(\r\n?))/", trim(strip_tags($body))) as $key => $line) {
-            $hashFilename = (strpos($line, '.sh')) ? trim($line) : 'latest.sh1';
+            // $hashFilename = (strpos($line, '.sh')) ? trim($line) : 'latest.sh1';
             $this->dumpFilename = (strpos($line, '.sql.gz')) ? trim($line) : '';
         }
 
