@@ -19,9 +19,17 @@
         "openeuropa/task-runner": "~1.0.0-beta5",
         "openeuropa/code-review": "~1.0.0-beta1"
     },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0"
+    },
     "autoload": {
         "psr-4": {
             "EcEuropa\\Toolkit\\": "./src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EcEuropa\\Toolkit\\Tests\\": "./tests/"
         }
     },
     "extra": {

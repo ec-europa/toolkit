@@ -77,9 +77,11 @@ class DrupalCommands extends Drupal8Commands
 
         $collection = [];
 
-        // Copy default.settings.php on settings.php, if the latter does not exists. Unless forced.
-        $collection[] = $this->taskFilesystemStack()
-            ->copy($settings_default_path, $settings_path, $options['force']);
+        // Copy default.settings.php on settings.php, if the latter does not exists.
+        if (!file_exists($settings_path)) {
+            $collection[] = $this->taskFilesystemStack()
+                ->copy($settings_default_path, $settings_path);
+        }
 
         // Remove Toolkit settings block, if any.
         $collection[] = $this->taskReplaceInFile($settings_path)
@@ -119,6 +121,7 @@ class DrupalCommands extends Drupal8Commands
     protected function getToolkitSettingsBlock()
     {
         $additionalSettings = $this->getConfig()->get('drupal.additional_settings', '');
+        $additionalSettings = trim($additionalSettings);
         return <<< EOF
 
 {$this->blockStart}

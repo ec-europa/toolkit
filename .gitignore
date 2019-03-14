@@ -1,5 +1,8 @@
 /vendor/
-/build/
-/composer.lock
+/tests/sandbox
+composer.lock
+/.idea/
+runner.yml
+phpunit.xml
 grumphp.yml
 docker-compose.*.yml
