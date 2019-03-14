@@ -4,14 +4,14 @@ workspace:
 
 services:
   web:
-    image: ${IMAGE_PHP=fpfis/httpd-php-dev:7.1}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
     environment:
     - DOCUMENT_ROOT=/test/toolkit
 
 pipeline:
   composer-install:
     group: prepare
-    image: ${IMAGE_PHP=fpfis/httpd-php-dev:7.1}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
     volumes:
     - /cache:/cache
     commands:
@@ -19,16 +19,17 @@ pipeline:
 
   grumphp:
     group: test
-    image: ${IMAGE_PHP=fpfis/httpd-php-dev:7.1}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
     commands:
     - ./vendor/bin/grumphp run
   
   phpunit:
     group: test
-    image: ${IMAGE_PHP=fpfis/httpd-php-dev:7.1}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
     commands:
     - ./vendor/bin/phpunit
 
 matrix:
-  IMAGE_PHP:
-  - fpfis/httpd-php-dev:7.1
+  PHP_VERSION:
+  - 7.1
+  - 7.2
