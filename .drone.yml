@@ -1,148 +1,35 @@
-# ==============================================================================
-# Pull request clone ===========================================================
-# ==============================================================================
-# Use plugin to checkout pull requests for caching issue:
-# https://github.com/drone/drone/issues/2390
-# ==============================================================================
-clone:
-  git:
-    image: plugins/git:next
-    environment:
-      - CI=drone
-
-# ==============================================================================
-# Workspace location.
-# ==============================================================================
 workspace:
   base: /test
   path: toolkit
 
-# ==============================================================================
-# Matrix section
-# ==============================================================================
-matrix:
-  TEMPLATE:
-    - drupal.drupal.7
-    - drupal.drupal.8
-    - ec-europa.platform.2
-  PHP_VERSION:
-    - 71
-    - 56
-  # Temporarily run only 1.
-  include:
-    - TEMPLATE: ec-europa.platform.2
-      PHP_VERSION: 71
-
-# ==============================================================================
-# Main services
-# ==============================================================================
 services:
   web:
-    image: fpfis/php${PHP_VERSION}-build
+    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
     environment:
-      - DOCUMENT_ROOT=/test/toolkit/build
-  mysql:
-    image: percona/percona-server:5.7
-    environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    - DOCUMENT_ROOT=/test/toolkit
 
-# ==============================================================================
-# Pipelines
-# ==============================================================================
 pipeline:
-
-  # ============================================================================
-  # Setup section:
-  # ============================================================================
-  solr:
-    image: fpfis/solr5
-    group: setup
-    detach: true
-
-  setup:
-    image: fpfis/php${PHP_VERSION}-build
-    group: setup
-    commands:
-      - composer install --ansi --no-suggest
-      - ./vendor/bin/run toolkit:build-template --template=${TEMPLATE} --ansi --progress-delay=300
+  composer-install:
+    group: prepare
+    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
     volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-
-  project:
-    image: fpfis/php${PHP_VERSION}-build
+    - /cache:/cache
     commands:
-      - ./vendor/bin/run toolkit:install-template --ansi --progress-delay=300
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+    - composer install --ansi --no-suggest --no-progress
 
   grumphp:
-    image: fpfis/php${PHP_VERSION}-build
+    group: test
+    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
     commands:
-      - ./vendor/bin/run drupal:grumphp --working-dir=/test/toolkit/template --ansi --progress-delay=300
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-    when:
-      status: [ failure, success ]
-
-  install:
-    image: fpfis/php${PHP_VERSION}-build
-    group: install
+    - ./vendor/bin/grumphp run
+  
+  phpunit:
+    group: test
+    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
     commands:
-      - /usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`" ./vendor/bin/run drupal:site-install --working-dir=/test/toolkit/template --ansi --progress-delay=300
-      - chown -R 1000:1000 ./
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-    when:
-      status: [ failure, success ]
+    - ./vendor/bin/phpunit
 
-  selenium:
-    image: selenium/standalone-chrome
-    group: install
-    detach: true
-
-  behat:
-    image: fpfis/php${PHP_VERSION}-build
-    commands:
-      - ./vendor/bin/run drupal:core-behat --working-dir=/test/toolkit/template --ansi --progress-delay=300
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-    when:
-      status: [ failure, success ]
-
-  enable:
-    image: fpfis/php${PHP_VERSION}-build
-    commands:
-      - ./vendor/bin/run drupal:enable-all --working-dir=/test/toolkit/template --ansi --progress-delay=300
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-    when:
-      status: [ failure, success ]
-
-  content:
-    image: fpfis/php${PHP_VERSION}-build
-    commands:
-      - ./vendor/bin/run drupal:generate-data --working-dir=/test/toolkit/template --ansi --progress-delay=300
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-    when:
-      status: [ failure, success ]
-
-  smoke:
-    image: fpfis/php${PHP_VERSION}-build
-    commands:
-      - ./vendor/bin/run drupal:drush-smoke --working-dir=/test/toolkit/template --ansi --progress-delay=300
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-    when:
-      status: [ failure, success ]
-
-  # debug:
-  #   image: fpfis/drone-frpc-plugin:latest
-  #   secrets: [ frpc_token, frpc_server ]
-  #   environment:
-  #     - PLUGIN_ENDPOINT=web:8080
-  #     - PLUGIN_GEN_AUTH=yes
-  #     - PLUGIN_DOMAIN=${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
-  #     - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
-  #   when:
-  #     status: [ failure, success ]
+matrix:
+  PHP_VERSION:
+  - 7.1
+  - 7.2

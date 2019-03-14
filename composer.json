@@ -1,28 +1,45 @@
 {
     "name": "ec-europa/toolkit",
-    "description": "NextEuropa Toolkit packaged for composer",
+    "description": "Toolkit packaged for Drupal 8.",
     "license": "EUPL-1.1",
+    "type": "library",
     "homepage": "https://github.com/ec-europa/toolkit",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "support": {
-        "email": "Europamanagement@ec.europa.eu",
+        "email": "europamanagement@ec.europa.eu",
         "source": "https://github.com/ec-europa/toolkit"
     },
     "require": {
-        "openeuropa/task-runner": "^1.0",
-        "openeuropa/code-review": "^1.0",
+        "php": "^7.1",
         "guzzlehttp/guzzle": "^6.3",
-        "consolidation/robo": "^1.4",
         "drupal/console-core": "^1.8",
-        "drush/drush": "^9.5",
         "drupal/drupal-extension": "^3.4 || ^4.0",
-        "openeuropa/composer-artifacts": "^0.1",
-        "cweagans/composer-patches": "^1.6",
-        "composer/installers": "^1.6"
+        "drush/drush": "^9.5",
+        "openeuropa/task-runner": "~1.0.0-beta5",
+        "openeuropa/code-review": "~1.0.0-beta1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0"
     },
     "autoload": {
         "psr-4": {
-            "Eceuropa\\Toolkit\\": "./src/"
+            "EcEuropa\\Toolkit\\": "./src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EcEuropa\\Toolkit\\Tests\\": "./tests/"
+        }
+    },
+    "extra": {
+        "enable-patching": true,
+        "composer-exit-on-patch-failure": true
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "7.1.9"
         }
     }
 }

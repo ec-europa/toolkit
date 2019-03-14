@@ -1,5 +1,8 @@
 /vendor/
-/resources/drupal/*/composer.lock
-/resources/ec-europa
-/toolkit
+/tests/sandbox
 /composer.lock
+/.idea/
+/runner.yml
+/phpunit.xml
+/grumphp.yml
+/docker-compose.*.yml

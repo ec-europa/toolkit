@@ -1,0 +1,7 @@
+imports:
+- { resource: vendor/openeuropa/code-review/dist/library-conventions.yml }
+parameters:
+  tasks.phpcs.ignore_patterns:
+  - vendor/
+  tasks.phpmd.exclude:
+  - vendor/
