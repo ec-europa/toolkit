@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * ./vendor/bin/run toolkit:install
+ * ./vendor/bin/run toolkit:clone       DONE
+ * ./vendor/bin/run toolkit:build-dist  DONE
+ */
+
 declare(strict_types = 1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
@@ -14,7 +20,7 @@ use GuzzleHttp\Client;
 /**
  * Class ToolkitCommands.
  */
-class ToolkitCommands extends AbstractCommands implements FilesystemAwareInterface
+class ToolkitBuildCommands extends AbstractCommands implements FilesystemAwareInterface
 {
     use NuvoleWebTasks\Config\loadTasks;
     use TaskRunnerTasks\CollectionFactory\loadTasks;
@@ -26,6 +32,14 @@ class ToolkitCommands extends AbstractCommands implements FilesystemAwareInterfa
 
     /**
      * Install clone from production snapshot.
+     * 
+     * This will download the database if none local then proceed to dump and sync
+     * the configuration in the following order:
+     * - Verify if .tmp/dump.sql or dump.sql exists, if not download it in .tmp/dump.sql
+     * - Import dump.sql in the current installation
+     * - Execute cache-rebuild
+     * - Check current status of configuration
+     * - Import configuration from datastore into activestore
      *
      * @command toolkit:clone
      *
@@ -33,14 +47,23 @@ class ToolkitCommands extends AbstractCommands implements FilesystemAwareInterfa
      */
     public function toolkitClone()
     {
-        // Get updated dump if the case.
-        $this->toolkitDatabaseDownload();
+        // Create folder if non-existent.
+        if (
+            !is_file('./.tmp/dump.sql') ||
+            !is_file('./dump.sql')
+            ) {
+            // Get updated dump if the case.
+            $this->toolkitDatabaseDownload();        }
+        }
 
         // Unzip and dump database file.
         $this->taskExecStack()
             ->stopOnFail()
             ->exec('gunzip .tmp/dump.sql.gz')
             ->exec('vendor/bin/drush --uri=web sqlc < .tmp/dump.sql')
+            ->exec('vendor/bin/drush --uri=web cr')
+            ->exec('vendor/bin/drush --uri=web cst')
+            ->exec('vendor/bin/drush --uri=web cim -y')
             ->run();
     }
 
@@ -87,14 +110,37 @@ class ToolkitCommands extends AbstractCommands implements FilesystemAwareInterfa
     }
 
     /**
-     * Run PHP code review.
+     * Build the distribution package.
      *
-     * @command toolkit:test-phpcs
+     * This will create the distribution package intended to be deployed.
+     * The folder structure should match the following:
+     * - /dist
+     * - /dist/composer.json
+     * - /dist/composer.lock
+     * - /dist/web
+     * - /dist/vendor
+     * - /dist/config
      *
-     * @aliases ttp
+     * @command toolkit:build-dist
+     *
+     * @aliases tbd
      */
-    public function toolkitTestPhpcs()
+    public function toolkitBuildDist()
     {
-        return $this->taskExec('./vendor/bin/grumphp run')->run();
+      // Reset dist folder and copy required files.
+      $this
+        ->taskFilesystemStack()
+        ->remove('./dist')
+        ->mkdir('./dist')
+        ->copy('composer.json', './dist/composer.json')
+        ->copy('composer.lock', './dist/composer.lock')
+        ->run();
+      
+      // Copy configuration and install packages.
+      $this
+        ->taskCopyDir(['config' => 'dist/config'])
+        ->exec('composer install --no-dev --optimize-autoloader --working-dir=dist')
+        ->copy('dist/${drupal.root}/sites/default/default.settings.php', 'dist/${drupal.root}/sites/default/settings.php')   
+        ->run();
     }
 }
