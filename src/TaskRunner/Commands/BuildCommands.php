@@ -43,8 +43,6 @@ class BuildCommands extends AbstractCommands {
    *
    * @command toolkit:build-dist
    *
-   * @aliases tbd
-   *
    * @option root Drupal root.
    */
   public function buildDist(array $options = [
@@ -89,8 +87,6 @@ class BuildCommands extends AbstractCommands {
    *
    * @command toolkit:build-dev
    *
-   * @aliases tbd
-   *
    * @option root Drupal root.
    */
   public function buildDev(array $options = [
@@ -104,7 +100,7 @@ class BuildCommands extends AbstractCommands {
       ->exec('./vendor/bin/run drupal:settings-setup --root=' . $options['root']);
 
     // Collect and execute list of commands set on local runner.yml.
-    $commands = $this->getConfig()->get("toolkit.build.dist.commands");
+    $commands = $this->getConfig()->get("toolkit.build.dev.commands");
     if (!empty($commands)) {
       $tasks[] = $this->taskCollectionFactory($commands);
     }

@@ -18,27 +18,28 @@ class BuildCommandsTest extends AbstractTest
     /**
      * @return array
      */
-    public function buildDistDataProvider()
+    public function buildDataProvider()
     {
         return $this->getFixtureContent('commands/build.yml');
     }
 
     /**
-     * Test "toolkit:build-dist" command.
+     * Test "toolkit:build-*" commands.
      *
+     * @param $command
      * @param array $config
      * @param array $expected
      *
-     * @dataProvider buildDistDataProvider
+     * @dataProvider buildDataProvider
      */
-    public function testBuildDist(array $config, array $expected)
+    public function testBuild($command, array $config, array $expected)
     {
         // Setup test Task Runner configuration file.
         $configFile = $this->getSandboxFilepath('runner.yml');
         file_put_contents($configFile, Yaml::dump($config));
 
         // Run command.
-        $input = new StringInput('toolkit:build-dist --simulate --working-dir=' . $this->getSandboxRoot());
+        $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
         $output = new BufferedOutput();
         $runner = new TaskRunner($input, $output, $this->getClassLoader());
         $runner->run();

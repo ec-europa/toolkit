@@ -1,5 +1,6 @@
 
-- configuration: []
+- command: 'toolkit:build-dist'
+  configuration: []
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
@@ -15,7 +16,8 @@
             ->exec('composer install --no-dev --optimize-autoloader --working-dir=dist')
             ->exec('./vendor/bin/run drupal:settings-setup --root=build')
 
-- configuration:
+- command: 'toolkit:build-dist'
+  configuration:
     drupal:
       root: web
   expectations:
@@ -33,7 +35,8 @@
           ->exec('composer install --no-dev --optimize-autoloader --working-dir=dist')
           ->exec('./vendor/bin/run drupal:settings-setup --root=web')
 
-- configuration:
+- command: 'toolkit:build-dist'
+  configuration:
     drupal:
       root: web
     toolkit:
@@ -55,6 +58,36 @@
        [Simulator] Simulating ExecStack()
           ->stopOnFail()
           ->exec('composer install --no-dev --optimize-autoloader --working-dir=dist')
+          ->exec('./vendor/bin/run drupal:settings-setup --root=web')
+       [Simulator] Simulating OpenEuropa\TaskRunner\Tasks\CollectionFactory\CollectionFactory(array (
+        0 => 'command-one',
+        1 => 'command-two',
+      ))
+
+- command: 'toolkit:build-dev'
+  configuration:
+    drupal:
+      root: web
+  expectations:
+  - contains: |
+      [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('./vendor/bin/run drupal:settings-setup --root=web')
+
+- command: 'toolkit:build-dev'
+  configuration:
+    drupal:
+      root: web
+    toolkit:
+      build:
+        dev:
+          commands:
+          - "command-one"
+          - "command-two"
+  expectations:
+  - contains: |
+      [Simulator] Simulating ExecStack()
+          ->stopOnFail()
           ->exec('./vendor/bin/run drupal:settings-setup --root=web')
        [Simulator] Simulating OpenEuropa\TaskRunner\Tasks\CollectionFactory\CollectionFactory(array (
         0 => 'command-one',
