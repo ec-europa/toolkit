@@ -97,38 +97,4 @@ class ToolkitBuildCommands extends AbstractCommands implements FilesystemAwareIn
     }
   }
 
-  /**
-   * Build the distribution package.
-   *
-   * This will create the distribution package intended to be deployed.
-   * The folder structure should match the following:
-   * - /dist
-   * - /dist/composer.json
-   * - /dist/composer.lock
-   * - /dist/web
-   * - /dist/vendor
-   * - /dist/config.
-   *
-   * @command toolkit:build-dist
-   *
-   * @aliases tbd
-   */
-  public function toolkitBuildDist() {
-    // Reset dist folder and copy required files.
-    $this
-      ->taskFilesystemStack()
-      ->remove('./dist')
-      ->mkdir('./dist')
-      ->copy('composer.json', './dist/composer.json')
-      ->copy('composer.lock', './dist/composer.lock')
-      ->run();
-
-    // Copy configuration and install packages.
-    $this
-      ->taskCopyDir(['config' => 'dist/config'])
-      ->exec('composer install --no-dev --optimize-autoloader --working-dir=dist')
-      ->copy('dist/${drupal.root}/sites/default/default.settings.php', 'dist/${drupal.root}/sites/default/settings.php')
-      ->run();
-  }
-
 }

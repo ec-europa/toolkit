@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
  * Drupal commands to setup and install a Drupal 8 site.
  */
 class DrupalCommands extends Drupal8Commands {
+
   /**
    * Comment ending the Toolkit settings block.
    *
@@ -59,10 +60,10 @@ class DrupalCommands extends Drupal8Commands {
    * "drupal.site.settings_override_file" property will have no effect.
    *
    * @param array $options
-   *   Parameters for installation.
+   *   Command options.
    *
    * @return \Robo\Collection\CollectionBuilder
-   *   Standard colletion.
+   *   Collection builder.
    *
    * @command drupal:settings-setup
    *
