@@ -12,9 +12,6 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Test Toolkit Drupal commands.
- *
- * @internal
- * @coversNothing
  */
 class DrupalCommandsTest extends AbstractTest
 {

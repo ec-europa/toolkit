@@ -70,7 +70,9 @@ class BuildCommands extends AbstractCommands {
 
     // Collect and execute list of commands set on local runner.yml.
     $commands = $this->getConfig()->get("toolkit.build.dist.commands");
-    $tasks[] = $this->taskCollectionFactory($commands);
+    if (!empty($commands)) {
+      $tasks[] = $this->taskCollectionFactory($commands);
+    }
 
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);
@@ -102,8 +104,10 @@ class BuildCommands extends AbstractCommands {
       ->exec('./vendor/bin/run drupal:settings-setup --root=' . $options['root']);
 
     // Collect and execute list of commands set on local runner.yml.
-    $commands = $this->getConfig()->get("toolkit.build.dev.commands");
-    $tasks[] = $this->taskCollectionFactory($commands);
+    $commands = $this->getConfig()->get("toolkit.build.dist.commands");
+    if (!empty($commands)) {
+      $tasks[] = $this->taskCollectionFactory($commands);
+    }
 
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);
