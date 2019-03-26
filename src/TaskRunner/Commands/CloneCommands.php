@@ -41,7 +41,7 @@ class CloneCommands extends AbstractCommands implements FilesystemAwareInterface
    */
   public function clone() {
     // Create folder if non-existent.
-    if (!is_file('./.tmp/dump.sql') || !is_file('./dump.sql')) {
+    if (!is_file('./.tmp/dump.sql')) {
       // Get updated dump if the case.
       $this->databaseDownload();
     }
@@ -50,7 +50,7 @@ class CloneCommands extends AbstractCommands implements FilesystemAwareInterface
     $this->taskExecStack()
       ->stopOnFail()
       ->exec('gunzip .tmp/dump.sql.gz')
-      ->exec('vendor/bin/drush --uri=web sqlc < .tmp/dump.sql')
+      ->exec('vendor/bin/drush --uri=web sqlc < ./.tmp/dump.sql')
       ->exec('vendor/bin/drush --uri=web cr')
       ->exec('vendor/bin/drush --uri=web cst')
       ->exec('vendor/bin/drush --uri=web cim -y')
