@@ -35,12 +35,25 @@ abstract class AbstractTest extends TestCase
     protected function assertContainsNotContains($content, array $expected)
     {
         if (!empty($expected['contains'])) {
-            $this->assertContains($expected['contains'], $content);
-            $this->assertEquals(substr_count($content, $expected['contains']), 1, 'String found more than once.');
+            $this->assertContains($this->trimEachLine($expected['contains']), $this->trimEachLine($content));
+            $this->assertEquals(substr_count($this->trimEachLine($content), $this->trimEachLine($expected['contains'])), 1, 'String found more than once.');
         }
         if (!empty($expected['not_contains'])) {
-            $this->assertNotContains($expected['not_contains'], $content);
+            $this->assertNotContains($this->trimEachLine($expected['not_contains']), $this->trimEachLine($content));
         }
+    }
+
+    /**
+     * Trim each line of a blob of text, useful when asserting on multiline strings.
+     *
+     * @param string $text
+     *    Untrimmed text.
+     *
+     * @return string
+     *    Trimmed text.
+     */
+    protected function trimEachLine($text) {
+      return implode(PHP_EOL, array_map('trim', explode(PHP_EOL, $text)));
     }
 
     /**

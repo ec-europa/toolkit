@@ -8,12 +8,15 @@
             ->mkdir('./dist')
             ->copy('./composer.json', './dist/composer.json')
             ->copy('./composer.lock', './dist/composer.lock')
-         [Simulator] Simulating Filesystem\CopyDir(array (
-          './config' => './dist/config',
+        [Simulator] Simulating Filesystem\CopyDir(array (
+            './config' => './dist/config',
         ))
-         [Simulator] Simulating ExecStack()
+        [Simulator] Simulating Composer\Install('composer')
+            ->workingDir('./dist')
+            ->optimizeAutoloader()
+            ->noDev()
+        [Simulator] Simulating ExecStack()
             ->stopOnFail()
-            ->exec('composer install --no-dev --optimize-autoloader --working-dir=dist')
             ->exec('./vendor/bin/run drupal:settings-setup --root=build')
 
 - command: 'toolkit:build-dist'
@@ -27,12 +30,15 @@
           ->mkdir('./dist')
           ->copy('./composer.json', './dist/composer.json')
           ->copy('./composer.lock', './dist/composer.lock')
-       [Simulator] Simulating Filesystem\CopyDir(array (
-        './config' => './dist/config',
+      [Simulator] Simulating Filesystem\CopyDir(array (
+          './config' => './dist/config',
       ))
-       [Simulator] Simulating ExecStack()
+      [Simulator] Simulating Composer\Install('composer')
+          ->workingDir('./dist')
+          ->optimizeAutoloader()
+          ->noDev()
+      [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('composer install --no-dev --optimize-autoloader --working-dir=dist')
           ->exec('./vendor/bin/run drupal:settings-setup --root=web')
 
 - command: 'toolkit:build-dist'
@@ -52,16 +58,19 @@
           ->mkdir('./dist')
           ->copy('./composer.json', './dist/composer.json')
           ->copy('./composer.lock', './dist/composer.lock')
-       [Simulator] Simulating Filesystem\CopyDir(array (
-        './config' => './dist/config',
+      [Simulator] Simulating Filesystem\CopyDir(array (
+          './config' => './dist/config',
       ))
-       [Simulator] Simulating ExecStack()
+      [Simulator] Simulating Composer\Install('composer')
+          ->workingDir('./dist')
+          ->optimizeAutoloader()
+          ->noDev()
+      [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('composer install --no-dev --optimize-autoloader --working-dir=dist')
           ->exec('./vendor/bin/run drupal:settings-setup --root=web')
-       [Simulator] Simulating OpenEuropa\TaskRunner\Tasks\CollectionFactory\CollectionFactory(array (
-        0 => 'command-one',
-        1 => 'command-two',
+      [Simulator] Simulating OpenEuropa\TaskRunner\Tasks\CollectionFactory\CollectionFactory(array (
+          0 => 'command-one',
+          1 => 'command-two',
       ))
 
 - command: 'toolkit:build-dev'
@@ -89,7 +98,7 @@
       [Simulator] Simulating ExecStack()
           ->stopOnFail()
           ->exec('./vendor/bin/run drupal:settings-setup --root=web')
-       [Simulator] Simulating OpenEuropa\TaskRunner\Tasks\CollectionFactory\CollectionFactory(array (
-        0 => 'command-one',
-        1 => 'command-two',
+      [Simulator] Simulating OpenEuropa\TaskRunner\Tasks\CollectionFactory\CollectionFactory(array (
+          0 => 'command-one',
+          1 => 'command-two',
       ))

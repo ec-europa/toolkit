@@ -60,10 +60,15 @@ class BuildCommands extends AbstractCommands {
     // Copy site configuration.
     $tasks[] = $this->taskCopyDir(['./config' => './dist/config']);
 
-    // Run production-friendly "composer install" packages and setup the site.
+    // Run production-friendly "composer install" packages.
+    $tasks[] = $this->taskComposerInstall('composer')
+      ->workingDir('./dist')
+      ->optimizeAutoloader()
+      ->noDev();
+
+    // Setup the site.
     $tasks[] = $this->taskExecStack()
       ->stopOnFail()
-      ->exec('composer install --no-dev --optimize-autoloader --working-dir=dist')
       ->exec('./vendor/bin/run drupal:settings-setup --root=' . $options['root']);
 
     // Collect and execute list of commands set on local runner.yml.
