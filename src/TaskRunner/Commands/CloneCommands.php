@@ -14,7 +14,7 @@ use GuzzleHttp\Client;
 /**
  * Class ToolkitCommands.
  */
-class ToolkitBuildCommands extends AbstractCommands implements FilesystemAwareInterface {
+class CloneCommands extends AbstractCommands implements FilesystemAwareInterface {
   use NuvoleWebTasks\Config\loadTasks;
   use TaskRunnerTasks\CollectionFactory\loadTasks;
   use TaskRunnerTraits\ConfigurationTokensTrait;
@@ -39,7 +39,7 @@ class ToolkitBuildCommands extends AbstractCommands implements FilesystemAwareIn
    *
    * @aliases tc
    */
-  public function toolkitClone() {
+  public function clone() {
     // Create folder if non-existent.
     if (!is_file('./.tmp/dump.sql') || !is_file('./dump.sql')) {
       // Get updated dump if the case.
@@ -64,7 +64,7 @@ class ToolkitBuildCommands extends AbstractCommands implements FilesystemAwareIn
    *
    * @aliases tdd
    */
-  public function toolkitDatabaseDownload() {
+  public function databaseDownload() {
     // Create folder if non-existent.
     if (!is_dir('.tmp')) {
       $this->taskExec('mkdir -p .tmp')->run();
