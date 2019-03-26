@@ -1,0 +1,17 @@
+toolkit:
+  build:
+    dist:
+      root: 'dist'
+      commands: []
+    dev:
+      commands: []
+
+command:
+  toolkit:
+    build-dist:
+      options:
+        root: ${drupal.root}
+        dist-root: ${toolkit.build.dist.root}
+    build-dev:
+      options:
+        root: ${drupal.root}
