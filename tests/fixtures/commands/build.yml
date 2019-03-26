@@ -4,15 +4,15 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-            ->remove('./dist')
-            ->mkdir('./dist')
-            ->copy('./composer.json', './dist/composer.json')
-            ->copy('./composer.lock', './dist/composer.lock')
+            ->remove('dist')
+            ->mkdir('dist')
+            ->copy('./composer.json', 'dist/composer.json')
+            ->copy('./composer.lock', 'dist/composer.lock')
         [Simulator] Simulating Filesystem\CopyDir(array (
-            './config' => './dist/config',
+            './config' => 'dist/config',
         ))
         [Simulator] Simulating Composer\Install('composer')
-            ->workingDir('./dist')
+            ->workingDir('dist')
             ->optimizeAutoloader()
             ->noDev()
         [Simulator] Simulating ExecStack()
@@ -26,15 +26,15 @@
   expectations:
   - contains: |
       [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('./dist')
-          ->mkdir('./dist')
-          ->copy('./composer.json', './dist/composer.json')
-          ->copy('./composer.lock', './dist/composer.lock')
+          ->remove('dist')
+          ->mkdir('dist')
+          ->copy('./composer.json', 'dist/composer.json')
+          ->copy('./composer.lock', 'dist/composer.lock')
       [Simulator] Simulating Filesystem\CopyDir(array (
-          './config' => './dist/config',
+          './config' => 'dist/config',
       ))
       [Simulator] Simulating Composer\Install('composer')
-          ->workingDir('./dist')
+          ->workingDir('dist')
           ->optimizeAutoloader()
           ->noDev()
       [Simulator] Simulating ExecStack()
@@ -54,15 +54,15 @@
   expectations:
   - contains: |
       [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('./dist')
-          ->mkdir('./dist')
-          ->copy('./composer.json', './dist/composer.json')
-          ->copy('./composer.lock', './dist/composer.lock')
+          ->remove('dist')
+          ->mkdir('dist')
+          ->copy('./composer.json', 'dist/composer.json')
+          ->copy('./composer.lock', 'dist/composer.lock')
       [Simulator] Simulating Filesystem\CopyDir(array (
-          './config' => './dist/config',
+          './config' => 'dist/config',
       ))
       [Simulator] Simulating Composer\Install('composer')
-          ->workingDir('./dist')
+          ->workingDir('dist')
           ->optimizeAutoloader()
           ->noDev()
       [Simulator] Simulating ExecStack()

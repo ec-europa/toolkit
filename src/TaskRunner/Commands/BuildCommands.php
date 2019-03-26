@@ -28,12 +28,12 @@ class BuildCommands extends AbstractCommands {
    * This will create the distribution package intended to be deployed.
    * The folder structure will match the following:
    *
-   * - /dist
-   * - /dist/composer.json
-   * - /dist/composer.lock
-   * - /dist/web
-   * - /dist/vendor
-   * - /dist/config
+   * - ./dist
+   * - ./dist/composer.json
+   * - ./dist/composer.lock
+   * - ./dist/web
+   * - ./dist/vendor
+   * - ./dist/config
    *
    * @param array $options
    *   Command options.
@@ -43,26 +43,28 @@ class BuildCommands extends AbstractCommands {
    *
    * @command toolkit:build-dist
    *
-   * @option root Drupal root.
+   * @option root      Drupal root.
+   * @option dist-root Distribution package root.
    */
   public function buildDist(array $options = [
     'root' => InputOption::VALUE_REQUIRED,
+    'dist-root' => InputOption::VALUE_REQUIRED,
   ]) {
     $tasks = [];
 
     // Reset dist folder and copy required files.
     $tasks[] = $this->taskFilesystemStack()
-      ->remove('./dist')
-      ->mkdir('./dist')
-      ->copy('./composer.json', './dist/composer.json')
-      ->copy('./composer.lock', './dist/composer.lock');
+      ->remove($options['dist-root'])
+      ->mkdir($options['dist-root'])
+      ->copy('./composer.json', $options['dist-root'] . '/composer.json')
+      ->copy('./composer.lock', $options['dist-root'] . '/composer.lock');
 
     // Copy site configuration.
-    $tasks[] = $this->taskCopyDir(['./config' => './dist/config']);
+    $tasks[] = $this->taskCopyDir(['./config' => $options['dist-root'] . '/config']);
 
     // Run production-friendly "composer install" packages.
     $tasks[] = $this->taskComposerInstall('composer')
-      ->workingDir('./dist')
+      ->workingDir($options['dist-root'])
       ->optimizeAutoloader()
       ->noDev();
 
