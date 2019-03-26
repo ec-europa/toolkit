@@ -43,7 +43,7 @@ class CloneCommands extends AbstractCommands implements FilesystemAwareInterface
     // Create folder if non-existent.
     if (!is_file('./.tmp/dump.sql') || !is_file('./dump.sql')) {
       // Get updated dump if the case.
-      $this->toolkitDatabaseDownload();
+      $this->databaseDownload();
     }
 
     // Unzip and dump database file.
