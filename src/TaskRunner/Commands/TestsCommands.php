@@ -11,9 +11,9 @@ use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
 
 /**
- * Class ToolkitCommands.
+ * Class TestsCommands.
  */
-class ToolkitTestsCommands extends AbstractCommands implements FilesystemAwareInterface {
+class TestsCommands extends AbstractCommands implements FilesystemAwareInterface {
   use NuvoleWebTasks\Config\loadTasks;
   use TaskRunnerTasks\CollectionFactory\loadTasks;
   use TaskRunnerTraits\ConfigurationTokensTrait;
@@ -22,7 +22,7 @@ class ToolkitTestsCommands extends AbstractCommands implements FilesystemAwareIn
   /**
    * Run PHP code review.
    *
-   * @command toolkit:phpcs
+   * @command toolkit:test-phpcs
    *
    * @aliases tp
    */
@@ -33,7 +33,7 @@ class ToolkitTestsCommands extends AbstractCommands implements FilesystemAwareIn
   /**
    * Run Behat tests.
    *
-   * @command toolkit:behat
+   * @command toolkit:test-behat
    *
    * @aliases tb
    */

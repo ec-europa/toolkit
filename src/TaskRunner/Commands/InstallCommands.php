@@ -14,7 +14,7 @@ use GuzzleHttp\Client;
 /**
  * Class ToolkitCommands.
  */
-class CloneCommands extends AbstractCommands implements FilesystemAwareInterface {
+class InstallCommands extends AbstractCommands implements FilesystemAwareInterface {
   use NuvoleWebTasks\Config\loadTasks;
   use TaskRunnerTasks\CollectionFactory\loadTasks;
   use TaskRunnerTraits\ConfigurationTokensTrait;
@@ -35,9 +35,7 @@ class CloneCommands extends AbstractCommands implements FilesystemAwareInterface
    * - Check current status of configuration
    * - Import configuration from datastore into activestore.
    *
-   * @command toolkit:clone
-   *
-   * @aliases tc
+   * @command toolkit:install-clone
    */
   public function clone() {
     // Create folder if non-existent.
@@ -58,13 +56,35 @@ class CloneCommands extends AbstractCommands implements FilesystemAwareInterface
   }
 
   /**
+   * Install clean website.
+   *
+   * This will download the database if none local then proceed to dump and sync
+   * the configuration in the following order:
+   * - Verify if .tmp/dump.sql or dump.sql exists, if not download it
+   *   in .tmp/dump.sql
+   * - Import dump.sql in the current installation
+   * - Execute cache-rebuild
+   * - Check current status of configuration
+   * - Import configuration from datastore into activestore.
+   *
+   * @command toolkit:install-clean
+   */
+  public function clean() {
+    $this->taskExecStack()
+      ->stopOnFail()
+      ->exec('./vendor/bin/run toolkit:build-dev')
+      ->exec('./vendor/bin/run drupal:site-install')
+      ->run();
+  }
+
+  /**
    * Download production snapshot.
    *
    * @command toolkit:database-download
    *
    * @aliases tdd
    */
-  public function databaseDownload() {
+  private function databaseDownload() {
     // Create folder if non-existent.
     if (!is_dir('.tmp')) {
       $this->taskExec('mkdir -p .tmp')->run();
