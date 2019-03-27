@@ -53,6 +53,8 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
       ->exec('vendor/bin/drush --uri=web cst')
       ->exec('vendor/bin/drush --uri=web cim -y')
       ->run();
+
+    $this->disableDrupalCache();
   }
 
   /**
@@ -75,14 +77,14 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
       ->exec('./vendor/bin/run toolkit:build-dev')
       ->exec('./vendor/bin/run drupal:site-install')
       ->run();
+
+    $this->disableDrupalCache();
   }
 
   /**
    * Download production snapshot.
    *
    * @command toolkit:database-download
-   *
-   * @aliases tdd
    */
   private function databaseDownload() {
     // Create folder if non-existent.
@@ -117,4 +119,17 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
     }
   }
 
+  /**
+   * Disable agregation and clear cache.
+   *
+   * @command toolkit:disable-drupal-cache
+   */
+  private function disableDrupalCache() {
+    $this->taskExecStack()
+      ->stopOnFail()
+      ->exec('./vendor/bin/drush -y config-set system.performance css.preprocess 0')
+      ->exec('./vendor/bin/drush -y config-set system.performance js.preprocess 0')
+      ->exec('./vendor/bin/drush cr')
+      ->run();    
+  }
 }
