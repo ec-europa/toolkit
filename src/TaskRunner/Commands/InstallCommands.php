@@ -130,6 +130,7 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
       ->exec('./vendor/bin/drush -y config-set system.performance css.preprocess 0')
       ->exec('./vendor/bin/drush -y config-set system.performance js.preprocess 0')
       ->exec('./vendor/bin/drush cr')
-      ->run();    
+      ->run();
   }
+
 }
