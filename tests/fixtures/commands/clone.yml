@@ -1,0 +1,24 @@
+
+- command: 'toolkit:clone-site'
+  configuration: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating ExecStack()
+            ->stopOnFail()
+            ->exec('vendor/bin/drush --uri=build sql-drop')
+            ->exec('vendor/bin/drush --uri=build sqlc < dump.sql')
+            ->exec('vendor/bin/drush --uri=build cim')
+            ->exec('vendor/bin/drush --uri=build cr')
+
+- command: 'toolkit:clone-site'
+  configuration:
+    drupal:
+      root: web
+  expectations:
+    - contains: |
+        [Simulator] Simulating ExecStack()
+            ->stopOnFail()
+            ->exec('vendor/bin/drush --uri=web sql-drop')
+            ->exec('vendor/bin/drush --uri=web sqlc < dump.sql')
+            ->exec('vendor/bin/drush --uri=web cim')
+            ->exec('vendor/bin/drush --uri=web cr')
