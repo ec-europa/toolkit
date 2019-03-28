@@ -38,10 +38,18 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
    * @command toolkit:install-clone
    */
   public function clone() {
-    // Create folder if non-existent.
+    // Check is dump is already download. @todo
     if (!is_file('./.tmp/dump.sql')) {
-      // Get updated dump if the case.
-      $this->databaseDownload();
+      if (is_file('./dump.sql')) {
+        if (!is_dir('.tmp')) {
+          $this->taskExec('mkdir -p .tmp')->run();
+        }
+        $this->taskExec('mv ./dump.sql  .tmp/')->run();
+      }
+      else {
+        // Get updated dump if the case.
+        $this->databaseDownload();
+      }
     }
 
     // Unzip and dump database file.
