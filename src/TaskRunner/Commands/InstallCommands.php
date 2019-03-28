@@ -79,13 +79,18 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
    * @command toolkit:install-clean
    */
   public function clean() {
-    $this->taskExecStack()
+    $this
+      ->taskExecStack()
       ->stopOnFail()
       ->exec('./vendor/bin/run toolkit:build-dev')
       ->exec('./vendor/bin/run drupal:site-install')
       ->run();
 
     $this->disableDrupalCache();
+
+    $this
+      ->taskExec('./vendor/bin/run drupal:setup-test')
+      ->run();
   }
 
   /**

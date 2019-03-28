@@ -41,7 +41,6 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
    */
   public function toolkitBehat() {
     return $this
-      ->taskExec('./vendor/bin/run drupal:setup-test')
       ->taskExec('./vendor/bin/behat --strict')
       ->run();
   }
