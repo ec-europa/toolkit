@@ -47,7 +47,7 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
     // Unzip and dump database file.
     $this->taskExecStack()
       ->stopOnFail()
-      ->exec('gunzip .tmp/dump.sql.gz')
+      ->exec('gunzip ./.tmp/dump.sql.gz')
       ->exec('vendor/bin/drush --uri=web sqlc < ./.tmp/dump.sql')
       ->exec('vendor/bin/drush --uri=web cr')
       ->exec('vendor/bin/drush --uri=web cst')
@@ -84,6 +84,10 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
   /**
    * Download production snapshot.
    *
+   * In order to make use of this functionality you must add your
+   * ASDA credentials to your environment like. If the credentials
+   * are not there you will be prompted to insert them.
+   *
    * @command toolkit:database-download
    */
   private function databaseDownload() {
@@ -92,12 +96,23 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
       $this->taskExec('mkdir -p .tmp')->run();
     }
 
+    // Check credentials.
+    if (getenv('ASDA_USER')) {
+      $toolkitAsdaUser = getenv('ASDA_USER');
+      $toolkitAsdaPass = getenv('ASDA_PASS');
+    }
+    else {
+      $this->say("The credentials for access ASDA are not found in your env.");
+      $toolkitAsdaUser = $this->ask("Please insert your user name!");
+      $toolkitAsdaUser = $this->ask("Please insert your password!");
+    }
+
     $client = new Client();
     $requestUrl = self::ASDA_URL . $this->config->get('project.id') . '/';
     $requestOptions = [
       'auth' => [
-        $this->config->get('asda.user'),
-        $this->config->get('asda.password'),
+        $toolkitAsdaUser,
+        $toolkitAsdaPass,
       ],
     ];
 
