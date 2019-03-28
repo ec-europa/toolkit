@@ -27,7 +27,10 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
    * @aliases tp
    */
   public function toolkitPhpcs() {
-    return $this->taskExec('./vendor/bin/grumphp run')->run();
+    return $this
+      ->taskExec('.vendor/bin/run drupal:site-setup')
+      ->taskExec('./vendor/bin/grumphp run')
+      ->run();
   }
 
   /**
