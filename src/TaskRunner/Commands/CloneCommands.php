@@ -52,7 +52,7 @@ class CloneCommands extends AbstractCommands {
     // Unzip and dump database file.
     $tasks[] = $this->taskExecStack()
       ->stopOnFail()
-      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' sql-drop')
+      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' sql-drop -y')
       ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' sqlc < ' . $options['dumpfile'])
       ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' cim')
       ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' cr');

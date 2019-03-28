@@ -5,7 +5,7 @@
     - contains: |
         [Simulator] Simulating ExecStack()
             ->stopOnFail()
-            ->exec('vendor/bin/drush --uri=build sql-drop')
+            ->exec('vendor/bin/drush --uri=build sql-drop -y')
             ->exec('vendor/bin/drush --uri=build sqlc < dump.sql')
             ->exec('vendor/bin/drush --uri=build cim')
             ->exec('vendor/bin/drush --uri=build cr')
@@ -18,7 +18,7 @@
     - contains: |
         [Simulator] Simulating ExecStack()
             ->stopOnFail()
-            ->exec('vendor/bin/drush --uri=web sql-drop')
+            ->exec('vendor/bin/drush --uri=web sql-drop -y')
             ->exec('vendor/bin/drush --uri=web sqlc < dump.sql')
             ->exec('vendor/bin/drush --uri=web cim')
             ->exec('vendor/bin/drush --uri=web cr')
