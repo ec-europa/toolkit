@@ -28,7 +28,6 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
    */
   public function toolkitPhpcs() {
     return $this
-      ->taskExec('./vendor/bin/run drupal:site-setup')
       ->taskExec('./vendor/bin/grumphp run')
       ->run();
   }
@@ -41,7 +40,10 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
    * @aliases tb
    */
   public function toolkitBehat() {
-    return $this->taskExec('./vendor/bin/behat --strict');
+    return $this
+      ->taskExec('./vendor/bin/run drupal:site-setup')
+      ->taskExec('./vendor/bin/behat --strict')
+      ->run();
   }
 
 }
