@@ -47,7 +47,6 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
     // Unzip and dump database file.
     $this->taskExecStack()
       ->stopOnFail()
-      ->exec('gunzip ./.tmp/dump.sql.gz')
       ->exec('vendor/bin/drush --uri=web sqlc < ./.tmp/dump.sql')
       ->exec('vendor/bin/drush --uri=web cr')
       ->exec('vendor/bin/drush --uri=web cst')
@@ -136,6 +135,13 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
           $client->request('GET', $requestUrl . $this->dumpFilename, $requestOptions);
         }
       }
+
+      // Unzip results.
+      $this->taskExecStack()
+        ->stopOnFail()
+        ->exec('gunzip ./.tmp/dump.sql.gz')
+        ->run();
+
     }
     else {
       $this->say('Download fails, please check your configuration.');
