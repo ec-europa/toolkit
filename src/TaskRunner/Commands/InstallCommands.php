@@ -96,7 +96,7 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
       $this->taskExec('mkdir -p .tmp')->run();
     }
 
-    // Check credentials.
+    // Check existence of credentials.
     if (getenv('ASDA_USER')) {
       $toolkitAsdaUser = getenv('ASDA_USER');
       $toolkitAsdaPass = getenv('ASDA_PASS');
@@ -104,7 +104,7 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
     else {
       $this->say("The credentials for access ASDA are not found in your env.");
       $toolkitAsdaUser = $this->ask("Please insert your user name!");
-      $toolkitAsdaUser = $this->ask("Please insert your password!");
+      $toolkitAsdaPass = $this->ask("Please insert your password!");
     }
 
     $client = new Client();
