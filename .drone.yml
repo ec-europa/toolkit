@@ -4,32 +4,47 @@ workspace:
 
 services:
   web:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
+    image: fpfis/httpd-php-full:${PHP_VERSION=7.2}
     environment:
-    - DOCUMENT_ROOT=/test/toolkit
+      - DOCUMENT_ROOT=/test/toolkit
 
 pipeline:
   composer-install:
     group: prepare
-    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
+    image: fpfis/httpd-php-full:${PHP_VERSION=7.2}
     volumes:
-    - /cache:/cache
+      - /cache:/cache
     commands:
-    - composer install --ansi --no-suggest --no-progress
+      - composer install --ansi --no-suggest --no-progress
+
+  composer-update-lowest:
+    group: post-prepare
+    image: fpfis/httpd-php-full:${PHP_VERSION=7.2}
+    volumes:
+      - /cache:/cache
+    commands:
+      - composer update --prefer-lowest --prefer-stable --ansi --no-suggest --no-progress
+    when:
+      matrix:
+        COMPOSER_BOUNDARY: lowest
 
   grumphp:
     group: test
-    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
+    image: fpfis/httpd-php-full:${PHP_VERSION=7.2}
     commands:
-    - ./vendor/bin/grumphp run
-  
+      - ./vendor/bin/grumphp run
+
   phpunit:
     group: test
-    image: fpfis/httpd-php-dev:${PHP_VERSION=7.1}
+    image: fpfis/httpd-php-full:${PHP_VERSION=7.2}
     commands:
-    - ./vendor/bin/phpunit
+      - ./vendor/bin/phpunit
 
 matrix:
   PHP_VERSION:
-  - 7.1
-  - 7.2
+    - 7.1
+    - 7.2
+    - 7.3
+  COMPOSER_BOUNDARY:
+    - lowest
+    - highest
