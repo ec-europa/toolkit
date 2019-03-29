@@ -4,21 +4,72 @@
   expectations:
     - contains: |
         [Simulator] Simulating ExecStack()
-            ->stopOnFail()
-            ->exec('vendor/bin/drush --uri=build sql-drop -y')
-            ->exec('vendor/bin/drush --uri=build sqlc < dump.sql')
-            ->exec('vendor/bin/drush --uri=build cim')
-            ->exec('vendor/bin/drush --uri=build cr')
+          ->stopOnFail()
+          ->exec('vendor/bin/drush --uri=build sql-drop -y')
+          ->exec('vendor/bin/drush --uri=build sqlc < dump.sql')
+          ->exec('vendor/bin/drush --uri=build cim')
+          ->exec('vendor/bin/drush --uri=build cr')
+    - notContains: |
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('./vendor/bin/run toolkit:download-dump --dumpfile=dump.sql')
 
 - command: 'toolkit:clone-site'
   configuration:
     drupal:
-      root: web
+      root: 'web'
   expectations:
     - contains: |
         [Simulator] Simulating ExecStack()
-            ->stopOnFail()
-            ->exec('vendor/bin/drush --uri=web sql-drop -y')
-            ->exec('vendor/bin/drush --uri=web sqlc < dump.sql')
-            ->exec('vendor/bin/drush --uri=web cim')
-            ->exec('vendor/bin/drush --uri=web cr')
+          ->stopOnFail()
+          ->exec('vendor/bin/drush --uri=web sql-drop -y')
+          ->exec('vendor/bin/drush --uri=web sqlc < dump.sql')
+          ->exec('vendor/bin/drush --uri=web cim')
+          ->exec('vendor/bin/drush --uri=web cr')
+
+- command: 'toolkit:clone-site'
+  configuration:
+    toolkit:
+      clone:
+        dumpfile: 'new-dump.sql'
+  expectations:
+    - contains: |
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('./vendor/bin/run toolkit:download-dump --dumpfile=new-dump.sql')
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('vendor/bin/drush --uri=build sql-drop -y')
+          ->exec('vendor/bin/drush --uri=build sqlc < new-dump.sql')
+          ->exec('vendor/bin/drush --uri=build cim')
+          ->exec('vendor/bin/drush --uri=build cr')
+
+- command: 'toolkit:download-dump'
+  configuration: []
+  expectations:
+    - contains: |
+        >  The credentials for access ASDA are not found in your env.
+
+- command: 'toolkit:download-dump'
+  configuration:
+    env:
+      ASDA_USER: 'user-asda'
+      ASDA_PASSWORD: 'user-password'
+  expectations:
+    - contains: |
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('wget --http-user user-asda --http-password user-passwo ... project-id/*.sql.gz')
+          ->exec('gunzip dump.sql.gz')
+
+- command: 'toolkit:download-dump'
+  configuration:
+    env:
+      ASDA_USER: 'user-asda'
+      ASDA_PASSWORD: 'user-password'
+  expectations:
+    - contains: |
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('wget --http-user user-asda --http-password user-password -O dump.sql.gz https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps/project-id/*.sql.gz')
+          ->exec('gunzip dump.sql.gz')

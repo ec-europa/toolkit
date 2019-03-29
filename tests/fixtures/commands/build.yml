@@ -23,18 +23,22 @@
   configuration:
     drupal:
       root: web
+    toolkit:
+      build:
+        dist:
+          root: 'other'
   expectations:
   - contains: |
       [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('dist')
-          ->mkdir('dist')
-          ->copy('./composer.json', 'dist/composer.json')
-          ->copy('./composer.lock', 'dist/composer.lock')
+          ->remove('other')
+          ->mkdir('other')
+          ->copy('./composer.json', 'other/composer.json')
+          ->copy('./composer.lock', 'other/composer.lock')
       [Simulator] Simulating Filesystem\CopyDir(array (
-          './config' => 'dist/config',
+          './config' => 'other/config',
       ))
       [Simulator] Simulating Composer\Install('composer')
-          ->workingDir('dist')
+          ->workingDir('other')
           ->optimizeAutoloader()
           ->noDev()
       [Simulator] Simulating ExecStack()
