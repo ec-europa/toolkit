@@ -1,6 +1,7 @@
 toolkit:
+  project_id: project-id
   clone:
-    asda_url: 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps/'
+    asda_url: 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps'
     dumpfile: 'dump.sql'
 
 command:
@@ -9,3 +10,10 @@ command:
       options:
         uri: ${drupal.root}
         dumpfile: ${toolkit.clone.dumpfile}
+    download-dump:
+      options:
+        asda_url: ${toolkit.clone.asda_url}
+        asda_user: ${env.ASDA_USER}
+        asda_password: ${env.ASDA_PASSWORD}
+        dumpfile: ${toolkit.clone.dumpfile}
+        project_id: ${toolkit.project_id}

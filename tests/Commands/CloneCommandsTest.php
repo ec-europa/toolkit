@@ -45,6 +45,7 @@ class CloneCommandsTest extends AbstractTest {
     // Run command.
     $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
     $output = new BufferedOutput();
+
     $runner = new TaskRunner($input, $output, $this->getClassLoader());
     $runner->run();
 

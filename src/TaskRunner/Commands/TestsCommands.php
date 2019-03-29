@@ -38,7 +38,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
    * @aliases tb
    */
   public function toolkitBehat() {
-    return $this->taskExec('./vendor/bin/behat --strict');
+    return $this->taskBehat(__DIR__ . '/../../../');
   }
 
 }

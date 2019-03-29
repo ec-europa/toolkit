@@ -23,6 +23,7 @@ abstract class AbstractTest extends TestCase {
     $filesystem = new Filesystem();
     $filesystem->chmod($this->getSandboxRoot(), 0777, umask(), TRUE);
     $filesystem->remove(glob($this->getSandboxRoot() . '/*'));
+    $filesystem->copy($this->getFixtureFilepath('/samples/sample-dump.sql'), $this->getSandboxFilepath('dump.sql'));
   }
 
   /**
@@ -38,6 +39,7 @@ abstract class AbstractTest extends TestCase {
       $this->assertContains($this->trimEachLine($expected['contains']), $this->trimEachLine($content));
       $this->assertEquals(substr_count($this->trimEachLine($content), $this->trimEachLine($expected['contains'])), 1, 'String found more than once.');
     }
+
     if (!empty($expected['not_contains'])) {
       $this->assertNotContains($this->trimEachLine($expected['not_contains']), $this->trimEachLine($content));
     }
@@ -67,6 +69,29 @@ abstract class AbstractTest extends TestCase {
   }
 
   /**
+   * Get fixture root.
+   *
+   * @return mixed
+   *   A set of test data.
+   */
+  protected function getFixtureRoot() {
+    return __DIR__ . '/fixtures';
+  }
+
+  /**
+   * Get fixture filepath.
+   *
+   * @param string $name
+   *   A name of Sandbox.
+   *
+   * @return string
+   *   The filepath of the sandbox.
+   */
+  protected function getFixtureFilepath($name) {
+    return $this->getFixtureRoot() . '/' . $name;
+  }
+
+  /**
    * Get fixture content.
    *
    * @param string $filepath
@@ -76,7 +101,7 @@ abstract class AbstractTest extends TestCase {
    *   A set of test data.
    */
   protected function getFixtureContent($filepath) {
-    return Yaml::parse(file_get_contents(__DIR__ . "/fixtures/{$filepath}"));
+    return Yaml::parse(file_get_contents($this->getFixtureFilepath($filepath)));
   }
 
   /**
