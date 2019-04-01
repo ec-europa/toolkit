@@ -444,7 +444,9 @@
                 </if>
             </then>
             <else>
-                <phingcall name="project-database-file-item" />
+                <phingcall target="project-database-file-item" >
+                    <property name="database-file" value="${db-dl-file}" />
+                </phingcall>
             </else>
         </if>
     </target>
