@@ -148,7 +148,7 @@ pipeline:
   git-hooks:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing ${BUILD_OPTIONS} ${PHING_OPTS}
+      - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing git-hook-disable ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
