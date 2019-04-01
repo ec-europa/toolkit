@@ -496,6 +496,14 @@
 
     <target name="project-database-file" hidden="true" description="Check if database file is available.">
         <if>
+            <not>
+                <available file="${share.path.subsites.packages.database}/${project.id}" type="dir" />
+            </not>
+            <then>
+                <exec command='mkdir -p ${share.path.subsites.packages.database}/${project.id}' />
+            </then>
+        </if>
+        <if>
             <available file="${project.db.file}" type="file" />
             <then>
                 <property name="db-dl-file" value="${project.db.file}" />
@@ -520,6 +528,16 @@
             project-database-file,
             project-database-download">
         <echo msg="Import production database." />
+
+        <if>
+            <not>
+                <available file="${db-dl-file}" type="file" />
+            </not>
+            <then>
+                <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
+            </then>
+        </if>
+
         <phingcall target="drush-sql-drop" />
         <phingcall target="drush-sql-create" />
         <phingcall target="drush-sql-import">
