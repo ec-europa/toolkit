@@ -38,7 +38,7 @@
         <echoproperties prefix="composer.hook." />
     </target>
 
-    <target name="git-hook-disable" description="Delete all git hooks." hidden="true">
+    <target name="git-hook-disable" description="Delete all git hooks.">
         <if>
             <available file="${project.basedir}/.git/hooks" type="dir" />
             <then>
@@ -56,7 +56,7 @@
         </if>
     </target>
 
-    <target name="git-hook-enable" description="Delete a single git hook." hidden="true">
+    <target name="git-hook-enable" description="Delete a single git hook.">
         <if>
             <available file="${project.basedir}/.git/hooks" type="dir" />
             <then>
@@ -66,7 +66,7 @@
         </if>
     </target>
 
-    <target name="toolkit-hooks-git-update" description="Update all git hooks.">
+    <target name="toolkit-hooks-git-update" description="Update all git hooks."  hidden="true">
         <if>
             <available file="${project.basedir}/.git/hooks" type="dir" />
             <then>
