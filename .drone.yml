@@ -60,6 +60,7 @@ pipeline:
       - rm -rf ./.tmp/ ./build
       - cp ./includes/phing/props/drone.props build.develop.props
       - ./toolkit/phing project-properties-validate ${PHING_OPTS}
+      - ./toolkit/phing
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
@@ -142,6 +143,17 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
+  # ============================================================================
+  # Git hook integration section:
+  # ============================================================================
+  git-hooks:
+    image: fpfis/php56-dev
+    commands:
+      - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
+      - ./toolkit/phing git-hook-disable ${BUILD_OPTIONS} ${PHING_OPTS}
+      - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
   # ============================================================================
   # Notify section:
   # ============================================================================

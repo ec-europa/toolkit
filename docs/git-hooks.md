@@ -30,7 +30,7 @@ resources/
 ├── devel.make
 ├── git
 │   └── hooks
-│       └── pre-push-script
+│       └── pre-push
 │       └── prepare-commit-msg
 └── site.make
 ```
