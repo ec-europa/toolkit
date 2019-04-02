@@ -1,0 +1,13 @@
+command:
+  toolkit:
+    clone-site:
+      options:
+        uri: ${drupal.root}
+        dumpfile: ${toolkit.clone.dumpfile}
+    download-dump:
+      options:
+        asda_url: ${toolkit.clone.asda_url}
+        asda_user: ${env.ASDA_USER}
+        asda_password: ${env.ASDA_PASSWORD}
+        dumpfile: ${toolkit.clone.dumpfile}
+        project_id: ${toolkit.project_id}
