@@ -57,19 +57,12 @@
       ASDA_PASSWORD: 'user-password'
   expectations:
     - contains: |
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('wget --http-user user-asda --http-password user-passwo ... project-id/*.sql.gz')
-          ->exec('gunzip dump.sql.gz')
-
-- command: 'toolkit:download-dump'
-  configuration:
-    env:
-      ASDA_USER: 'user-asda'
-      ASDA_PASSWORD: 'user-password'
-  expectations:
-    - contains: |
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('wget --http-user user-asda --http-password user-password -O dump.sql.gz https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps/project-id/*.sql.gz')
-          ->exec('gunzip dump.sql.gz')
+        [Simulator] Simulating Exec('wget')
+        ->option('--http-user', 'user-asda')
+        ->option('--http-password', 'user-password')
+        ->option('-O', 'dump.sql.gz')
+        ->arg('https://webgate.ec.europa.eu/fpfis/files-for/automate_ ... project-id/*.sql.gz')
+        [Simulator] Running wget --http-user user-asda --http-password user-password -O dump.sql.gz 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps/project-id/*.sql.gz'
+        [Simulator] Simulating Exec('gunzip')
+        ->arg('dump.sql.gz')
+        [Simulator] Running gunzip dump.sql.gz

@@ -100,11 +100,16 @@ class CloneCommands extends AbstractCommands {
 
     $requestUrl = $options['asda_url'] . '/' . $options['project_id'];
 
-    // Download the file and unzip it.
-    $tasks[] = $this->taskExecStack()
-      ->stopOnFail()
-      ->exec('wget --http-user ' . $options['asda_user'] . ' --http-password ' . $options['asda_password'] . ' -O ' . $options['dumpfile'] . '.gz ' . $requestUrl . '/*.sql.gz')
-      ->exec('gunzip ' . $options['dumpfile'] . '.gz');
+    // Download the file.
+    $tasks[] = $this->taskExec('wget')
+      ->option('--http-user', $options['asda_user'])
+      ->option('--http-password', $options['asda_password'])
+      ->option('-O', $options['dumpfile'] . '.gz')
+      ->arg($requestUrl . '/*.sql.gz');
+
+    // Unzip the file.
+    $tasks[] = $this->taskExec('gunzip')
+      ->arg($options['dumpfile'] . '.gz');
 
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);

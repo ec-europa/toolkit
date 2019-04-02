@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use Consolidation\Config\Loader\ConfigProcessor;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use Robo\Robo;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 
 /**
  * Default configuration loader.
@@ -19,18 +20,32 @@ use Robo\Robo;
 class LoadDefaultConfigCommands extends AbstractCommands {
 
   /**
+   * Path to YAML configuration file containing command defaults.
+   *
+   * Command classes should implement this method.
+   *
+   * @return string
+   *   The path of the default configuration file.
+   */
+  public function getDefaultConfigurationFile() {
+    return __DIR__ . '/../../../config/default.yml';
+  }
+
+  /**
    * Load default Toolkit configuration.
    *
    * The Task Runner does not allow to provide default configuration for
    * commands. In this hook we load Toolkit default configuration and re-apply
    * it to the Task Runner one.
    *
+   * @param Symfony\Component\Console\Event\ConsoleCommandEvent\ConsoleCommandEvent $event
+   *   Event of the console command event.
+   *
    * @hook pre-command-event *
    */
-  public function loadDefaultConfig() {
+  public function loadDefaultConfig(ConsoleCommandEvent $event) {
     // Load Toolkit default configuration.
-    $path = __DIR__ . '/../../../config/default.yml';
-    $default_config = Robo::createConfiguration([$path]);
+    $default_config = Robo::createConfiguration([$this->getDefaultConfigurationFile()]);
 
     // Get Task Runner configuration.
     $config = $this->getConfig();
