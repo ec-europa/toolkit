@@ -1,0 +1,11 @@
+toolkit:
+  project_id: project-id
+  clone:
+    asda_url: 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps'
+    dumpfile: 'dump.sql'
+  build:
+    dist:
+      root: 'dist'
+      commands: []
+    dev:
+      commands: []
