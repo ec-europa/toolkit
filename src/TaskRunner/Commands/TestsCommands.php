@@ -27,7 +27,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
    * @aliases tp
    */
   public function toolkitPhpcs() {
-    return $this->taskExec('./vendor/bin/grumphp run')->run();
+    $tasks = [];
+
+    $tasks[] = $this->taskExec('./vendor/bin/grumphp run');
+
+    return $this->collectionBuilder()->addTaskList($tasks);
   }
 
   /**
@@ -38,7 +42,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
    * @aliases tb
    */
   public function toolkitBehat() {
-    return $this->taskBehat(__DIR__ . '/../../../');
+    $tasks = [];
+
+    $tasks[] = $this->taskExec('./vendor/bin/behat --strict');
+
+    return $this->collectionBuilder()->addTaskList($tasks);
   }
 
 }
