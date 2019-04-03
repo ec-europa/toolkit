@@ -38,21 +38,21 @@ class CloneCommands extends AbstractCommands {
    * @return \Robo\Collection\CollectionBuilder
    *   Collection builder.
    *
-   * @command toolkit:clone-site
+   * @command toolkit:install-dump
    *
    * @option uri Drupal uri.
    * @option dumpfile Drupal uri.
    */
-  public function cloneSite(array $options = [
+  public function installDump(array $options = [
     'uri' => InputOption::VALUE_REQUIRED,
     'dumpfile' => InputOption::VALUE_REQUIRED,
   ]) {
     $tasks = [];
 
     if (!file_exists($options['dumpfile'])) {
-      $tasks[] = $this->taskExecStack()
-        ->stopOnFail()
-        ->exec('./vendor/bin/run toolkit:download-dump --dumpfile=' . $options['dumpfile']);
+      $this->say('The dump file ' . $options['dumpfile'] . ' does not exist.');
+
+      return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     // Unzip and dump database file.
@@ -60,8 +60,10 @@ class CloneCommands extends AbstractCommands {
       ->stopOnFail()
       ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' sql-drop -y')
       ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' sqlc < ' . $options['dumpfile'])
-      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' cim')
-      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' cr');
+      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' updatedb -y')
+      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' cache:rebuild')
+      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' config:import -y')
+      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' cache:rebuild');
 
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);
@@ -93,7 +95,7 @@ class CloneCommands extends AbstractCommands {
 
     // Check credentials.
     if ($options['asda_user'] === '${env.ASDA_USER}' || $options['asda_password'] === '${env.ASDA_PASSWORD}') {
-      $this->say("The credentials for access ASDA are not found in your env.");
+      $this->say('The credentials for access ASDA are not found in your env.');
 
       return $this->collectionBuilder()->addTaskList($tasks);
     }

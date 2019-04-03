@@ -1,5 +1,5 @@
 
-- command: 'toolkit:clone-site'
+- command: 'toolkit:install-dump'
   configuration: []
   expectations:
     - contains: |
@@ -7,14 +7,14 @@
           ->stopOnFail()
           ->exec('vendor/bin/drush --uri=build sql-drop -y')
           ->exec('vendor/bin/drush --uri=build sqlc < dump.sql')
-          ->exec('vendor/bin/drush --uri=build cim')
-          ->exec('vendor/bin/drush --uri=build cr')
+          ->exec('vendor/bin/drush --uri=build updatedb -y')
+          ->exec('vendor/bin/drush --uri=build cache:rebuild')
+          ->exec('vendor/bin/drush --uri=build config:import -y')
+          ->exec('vendor/bin/drush --uri=build cache:rebuild')
     - notContains: |
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('./vendor/bin/run toolkit:download-dump --dumpfile=dump.sql')
+        >  The dump file dump.sql does not exist.
 
-- command: 'toolkit:clone-site'
+- command: 'toolkit:install-dump'
   configuration:
     drupal:
       root: 'web'
@@ -24,31 +24,19 @@
           ->stopOnFail()
           ->exec('vendor/bin/drush --uri=web sql-drop -y')
           ->exec('vendor/bin/drush --uri=web sqlc < dump.sql')
-          ->exec('vendor/bin/drush --uri=web cim')
-          ->exec('vendor/bin/drush --uri=web cr')
+          ->exec('vendor/bin/drush --uri=web updatedb -y')
+          ->exec('vendor/bin/drush --uri=web cache:rebuild')
+          ->exec('vendor/bin/drush --uri=web config:import -y')
+          ->exec('vendor/bin/drush --uri=web cache:rebuild')
 
-- command: 'toolkit:clone-site'
+- command: 'toolkit:install-dump'
   configuration:
     toolkit:
       clone:
         dumpfile: 'new-dump.sql'
   expectations:
     - contains: |
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('./vendor/bin/run toolkit:download-dump --dumpfile=new-dump.sql')
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('vendor/bin/drush --uri=build sql-drop -y')
-          ->exec('vendor/bin/drush --uri=build sqlc < new-dump.sql')
-          ->exec('vendor/bin/drush --uri=build cim')
-          ->exec('vendor/bin/drush --uri=build cr')
-
-- command: 'toolkit:download-dump'
-  configuration: []
-  expectations:
-    - contains: |
-        >  The credentials for access ASDA are not found in your env.
+        >  The dump file new-dump.sql does not exist.
 
 - command: 'toolkit:download-dump'
   configuration:
@@ -66,3 +54,9 @@
         [Simulator] Simulating Exec('gunzip')
         ->arg('dump.sql.gz')
         [Simulator] Running gunzip dump.sql.gz
+
+- command: 'toolkit:download-dump'
+  configuration: []
+  expectations:
+    - contains: |
+        >  The credentials for access ASDA are not found in your env.
