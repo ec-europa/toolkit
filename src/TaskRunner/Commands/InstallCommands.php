@@ -79,7 +79,7 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
    *
    * @command toolkit:disable-drupal-cache
    */
-  private function disableDrupalCache() {
+  public function disableDrupalCache() {
     $this->taskExecStack()
       ->stopOnFail()
       ->exec('./vendor/bin/drush -y config-set system.performance css.preprocess 0')
