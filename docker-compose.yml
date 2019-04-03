@@ -10,7 +10,7 @@ services:
     # - nfsmount:/var/www/html # Mac Users with the nfsmount volume.
     environment:
       # ASDA CREDENTIALS
-      # the local env variables for ASDA are sharing with the container.
+      # By leaving these variables empty Docker Compose will set them to their host values.
       ASDA_USER:
       ASDA_PASSWORD:
       # XDEBUG CONFIGURATION

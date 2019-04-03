@@ -36,7 +36,7 @@
         dumpfile: 'new-dump.sql'
   expectations:
     - contains: |
-        >  The dump file new-dump.sql does not exist.
+        >  "new-dump.sql" file not found, use the command "toolkit:download-dump --dumpfile new-dump.sql".
 
 - command: 'toolkit:download-dump'
   configuration:
@@ -59,4 +59,4 @@
   configuration: []
   expectations:
     - contains: |
-        >  The credentials for access ASDA are not found in your env.
+        >  ASDA credentials not found, set them as the following environment variables: ASDA_USER, ASDA_PASSWORD.
