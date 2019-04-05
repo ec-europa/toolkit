@@ -68,11 +68,10 @@ class CloneCommands extends AbstractCommands {
   }
 
   /**
-   * Download production snapshot.
+   * Download ASDA snapshot.
    *
    * In order to make use of this functionality you must add your
-   * ASDA credentials to your environment like. If the credentials
-   * are not there you will be prompted to insert them.
+   * ASDA credentials to your environment like.
    *
    * @param array $options
    *   Command options.
