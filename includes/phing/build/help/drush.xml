@@ -217,41 +217,53 @@
           <if>
             <equals arg1="${profile.core.major}" arg2="7" />
             <then>
-              <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="${project.tmp.dir}/generate-settings.php" overwrite="true">
-                  <filterchain>
-                      <replacetokens begintoken="%%" endtoken="%%">
-                          <token key="db.type" value="${db.type}" />
-                          <token key="db.name" value="${db.name}" />
-                          <token key="db.user" value="${db.user}" />
-                          <token key="db.password" value="${db.password}" />
-                          <token key="db.host" value="${db.host}" />
-                          <token key="db.port" value="${db.port}" />
-                          <token key="db.prefix" value="${db.prefix}" />
-                          <token key="base_url" value="${project.url.base}" />
-                          <token key="error_level" value="${devel.vars.error_level}" />
-                          <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
-                          <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />
-                          <token key="views_show_additional_queries" value="${devel.vars.views_show_additional_queries}" />
-                          <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
-                          <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
-                          <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
-                          <token key="file_public_path" value="${build.subsite.dir.files}" />
-                          <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
-                          <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
-                          <token key="update_free_access" value="${drupal.update.free.access}" />
-                          <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
-                      </replacetokens>
-                  </filterchain>
-              </copy>
-              <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                <copy file="${toolkit.dir.incl.drush}/generate-settings.php" tofile="${project.tmp.dir}/generate-settings.php" overwrite="true">
+                    <filterchain>
+                        <replacetokens begintoken="%%" endtoken="%%">
+                            <token key="db.type" value="${db.type}" />
+                            <token key="db.name" value="${db.name}" />
+                            <token key="db.user" value="${db.user}" />
+                            <token key="db.password" value="${db.password}" />
+                            <token key="db.host" value="${db.host}" />
+                            <token key="db.port" value="${db.port}" />
+                            <token key="db.prefix" value="${db.prefix}" />
+                            <token key="error_level" value="${devel.vars.error_level}" />
+                            <token key="views_ui_show_sql_query" value="${devel.vars.views_ui_show_sql_query}" />
+                            <token key="views_ui_show_performance_statistics" value="${devel.vars.views_ui_show_performance_statistics}" />
+                            <token key="views_show_additional_queries" value="${devel.vars.views_show_additional_queries}" />
+                            <token key="stage_file_proxy_origin" value="${devel.vars.stage_file_proxy_origin}" />
+                            <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
+                            <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
+                            <token key="file_public_path" value="${build.subsite.dir.files}" />
+                            <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
+                            <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
+                            <token key="update_free_access" value="${drupal.update.free.access}" />
+                            <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
+                        </replacetokens>
+                    </filterchain>
+                </copy>
+
+
+                <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
                   <param>${project.tmp.dir}/generate-settings.php</param>
-              </drush>
-              
+                </drush>
+
+                <if>
+                    <and>
+                        <not><isfalse value="${project.url.base}" /></not>
+                        <not><equals arg1="${project.url.base}" arg2='""' /></not>
+                    </and>
+                    <then>
+                        <!-- Append specific base_urlk information. -->
+                        <append destFile="${build.subsite.dir}/settings.php" text="${line.separator}$base_url = '${project.url.base}';" />
+                    </then>
+                </if>
+
               <!-- Append EU Login specific information. -->
               <append destFile="${build.subsite.dir}/settings.php" text="${line.separator}define('FPFIS_ECAS_URL', 'ecas.ec.europa.eu');" />
               <append destFile="${build.subsite.dir}/settings.php" text="${line.separator}define('FPFIS_ECAS_PORT', 443);" />
               <append destFile="${build.subsite.dir}/settings.php" text="${line.separator}define('FPFIS_ECAS_URI', '/cas');" />
-              
+
               <drush command="cc" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}">
                   <param>drush</param>
               </drush>
@@ -324,23 +336,39 @@
             <param>install_configure_form.update_status_module='array(FALSE,FALSE)'
             </param>
         </drush>
-        <phingcall target="drush-settings-generate" />
     </target>
 
     <target name="drush-solr-enable" hidden="true" description="Enable the solr module.">
-        <if>
-            <equals arg1="${solr.enable}" arg2="1" />
+      <if>
+        <equals arg1="${solr.enable}" arg2="1" />
+        <then>
+          <echo message="Enable apachesolr for ${db.name}." />
+          <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
+
+          <phingcall target="drush-modules-enable">
+            <property name="project.drupal.modules" value="${solr.module}" />
+          </phingcall>
+
+          <if>
+            <equals arg1="${solr.module}" arg2="apachesolr" />
             <then>
-                <echo message="Enable apachesolr for ${db.name}." />
-                <phingcall target="drush-modules-enable">
-                    <property name="project.drupal.modules" value="apachesolr" />
-                </phingcall>
-                <exec command="${toolkit.dir.bin.drush} cc drush >/dev/null" />
-                <drush command="solr-set-env-url" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-                    <param>${solr.url}</param>
-                </drush>
+              <drush command="solr-set-env-url" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                <param>${solr.url}</param>
+              </drush>
             </then>
-        </if>
+            <else>
+              <drush command="toolkit-search-ssurl" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                <param>${solr.servername}</param>
+                <param>${solr.scheme}</param>
+                <param>${solr.host}</param>
+                <param>${solr.port}</param>
+                <param>${solr.path}</param>
+              </drush>
+            </else>
+          </if>
+
+        </then>
+      </if>
     </target>
 
     <target name="drush-sql-create" hidden="true" description="Create a database.">
@@ -414,6 +442,25 @@
 
     <target name="drush-gdpr-dump" hidden="true" description="Make a sanitized dump of database.">
         <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
+
+        <echo message="Backing up database ${db.name} to ${database-file}." />
+        <trycatch>
+            <try>
+                <exec command="${toolkit.dir.bin.drush} -r ${build.platform.dir} gdpr-sql-dump --help" checkreturn="true" />
+            </try>
+            <catch>
+                <drush command="dl" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>gdpr-1.0-alpha11 checklistapi-1.2</param>
+                </drush>
+            </catch>
+            <finally>
+                <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>gdpr_dump</param>
+                </drush>
+                <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} vset gdpr_dump_table_map &apos;{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}&apos; --format=json --exact -y >/dev/null' escape="false" />
+            </finally>
+        </trycatch>
+
         <dirname property="database-cachedir" file="${database-file}" />
         <mkdir dir="${database-cachedir}" />
         

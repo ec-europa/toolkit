@@ -238,6 +238,7 @@
           </then>
         </if>
 
+        <phingcall target="drush-settings-generate" />
         <phingcall target="drush-sql-create" />
         <phingcall target="drush-site-install" />
         <phingcall target="project-modules-install-en" />
@@ -412,29 +413,96 @@
         <if>
             <available file="${db-dl-file}" type="file" />
             <then>
-                <echo msg="File ${db-dl-file} already downloaded." />
-                <echo msg="Proceeding to import." />
+                <if>
+                    <and>
+                        <available file="${share.path.subsites.packages.database}/${project.id}/dump.date" type="file" />
+                        <not><equals arg1="${platform.package.db.cache.ttl}" arg2="-1"/></not>
+                    </and>
+                    <then>
+                        <echo msg="File ${db-dl-file} already downloaded." />
+                        <echo msg="Check cache date."/>
+                        <exec command="cat ${share.path.subsites.packages.database}/${project.id}/dump.date" checkreturn="true" passthru="false" logoutput="false" outputproperty="dump.date"/>
+                        <exec command="date +%s" checkreturn="true" passthru="false" logoutput="false" outputproperty="current.date"/>
+                        <exec command="echo $(($((24 * 60 * 60 * ${platform.package.db.cache.ttl})) - $((${current.date} - ${dump.date}))))" checkreturn="true" passthru="false" logoutput="false" outputproperty="date.diff" />
+                        <exec command="echo $((120 + ${date.diff}))" checkreturn="true" passthru="false" logoutput="false" outputproperty="date.diff.tolerance" />
+                        <exec command="echo $(( ${date.diff.tolerance} > 0 ))" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.cache.ttl.isValid" />
+                        <if>
+                            <not><istrue value="${db.cache.ttl.isValid}" /></not>
+                            <then>
+                                <echo msg="Detected old dump, refreshing database cache." />
+                                <exec command="rm -rf ${share.path.subsites.packages.database}/${project.id}/" checkreturn="true" passthru="false" logoutput="true" />
+                                <phingcall name="project-database-file-item" />
+                            </then>
+                            <else>
+                                <echo msg="Proceeding to import." />
+                            </else>
+                        </if>
+                    </then>
+                    <else>
+                        <echo msg="Proceeding to import, no cache date available." />
+                    </else>
+                </if>
             </then>
             <else>
-                <if>
-                    <isfalse value="${db.dl.filename}" />
-                    <then>
-                        <exec command='curl -s https://${db.dl.username}:${db.dl.password}@${db.dl.url}|egrep "li.*sql.gz"|head -1|cut -d\" -f2' outputProperty="db.dl.filename" checkreturn="true" />
-                    </then>
-                </if>
-                <echo msg="Download the production database ${db.dl.filename}." />
-                <phingcall target="package-download">
-                    <property name="package-name" value="${db.dl.filename}" />
-                    <property name="package-cache-location" value="${share.path.subsites.packages.database}/${project.id}" />
-                    <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
+                <phingcall target="project-database-file-item" >
+                    <property name="database-file" value="${db-dl-file}" />
                 </phingcall>
+            </else>
+        </if>
+    </target>
+
+    <target name="project-database-file-item" hidden="true" description="Check if database file is available and download it.">
+        <if>
+            <isfalse value="${db.dl.filename}" />
+            <then>
+                <exec command='curl -s https://${db.dl.username}:${db.dl.password}@${db.dl.url}|egrep "li.*sql.gz"|head -1|cut -d\" -f2' outputProperty="db.dl.filename" checkreturn="true" />
+                <exec command='curl -s https://${db.dl.username}:${db.dl.password}@${db.dl.url}|egrep "li.*sh1"|head -1|cut -d\" -f2' outputProperty="db.dl.filename.hash" checkreturn="true" />
+            </then>
+        </if>
+
+        <echo msg="Download the production database ${db.dl.filename}." />
+        <phingcall target="package-download">
+            <property name="package-name" value="${db.dl.filename}" />
+            <property name="package-cache-location" value="${share.path.subsites.packages.database}/${project.id}" />
+            <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
+        </phingcall>
+
+        <echo msg="Download the production database hash ${db.dl.filename.hash}." />
+        <phingcall target="package-download">
+            <property name="package-name" value="${db.dl.filename.hash}" />
+            <property name="package-cache-location" value="${share.path.subsites.packages.database}/${project.id}" />
+            <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
+        </phingcall>
+
+        <exec command="(cd ${share.path.subsites.packages.database}/${project.id}/ ; sha1sum ${db.dl.filename} ; ) > ${share.path.subsites.packages.database}/${project.id}/local.sh1" checkreturn="true" passthru="false" logoutput="false"/>
+        <exec command="cat ${share.path.subsites.packages.database}/${project.id}//local.sh1" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename.hash.local"/>
+        <exec command="cat ${share.path.subsites.packages.database}/${project.id}/${db.dl.filename.hash}" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename.hash.latest"/>
+
+        <if>
+            <equals arg1="${db.dl.filename.hash.latest}" arg2="${db.dl.filename.hash.local}" />
+            <then>
+                <echo msg="Database properly downloaded." />
                 <exec command="gunzip ${share.path.subsites.packages.database}/${project.id}/${db.dl.filename}" checkreturn="true" passthru="false" logoutput="true" />
                 <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
+                <exec command="date +%s > ${share.path.subsites.packages.database}/${project.id}/dump.date" checkreturn="true" passthru="false" logoutput="false"/>
+            </then>
+            <else>
+                <echo level="error" msg="Cleaning temporary folder, fail on download." />
+                <exec command="rm -rf ${share.path.subsites.packages.database}/${project.id}/" checkreturn="true" passthru="false" logoutput="true" />
+                <fail message="Database is not properly downloaded, canceling import operation." />
             </else>
         </if>
     </target>
 
     <target name="project-database-file" hidden="true" description="Check if database file is available.">
+        <if>
+            <not>
+                <available file="${share.path.subsites.packages.database}/${project.id}" type="dir" />
+            </not>
+            <then>
+                <exec command='mkdir -p ${share.path.subsites.packages.database}/${project.id}' />
+            </then>
+        </if>
         <if>
             <available file="${project.db.file}" type="file" />
             <then>
@@ -460,6 +528,16 @@
             project-database-file,
             project-database-download">
         <echo msg="Import production database." />
+
+        <if>
+            <not>
+                <available file="${db-dl-file}" type="file" />
+            </not>
+            <then>
+                <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
+            </then>
+        </if>
+
         <phingcall target="drush-sql-drop" />
         <phingcall target="drush-sql-create" />
         <phingcall target="drush-sql-import">
@@ -560,6 +638,13 @@
     </target>
 
     <target name="project-modules-devel-en" hidden="true" description="Enable development modules with drush.">
+        <phingcall target="project-generate-devel-vars" />
+        <phingcall target="drush-modules-enable">
+            <property name="project.drupal.modules" value="${devel.mdls.en}" />
+        </phingcall>
+    </target>
+  
+    <target name="project-generate-devel-vars" hidden="true" description="Update database with devel variables.">
         <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
         <if>
             <equals arg1="${profile.core.major}" arg2="7" />
@@ -569,9 +654,6 @@
                 <foreach list="${variable-strings}" delimiter="${line.separator}" param="variable-string" target="drush-variable-set-string" />
             </then>
         </if>
-        <phingcall target="drush-modules-enable">
-            <property name="project.drupal.modules" value="${devel.mdls.en}" />
-        </phingcall>
     </target>
 
     <target name="project-modules-devops-dl" hidden="true" description="Download and unpack fpfis resource package.">

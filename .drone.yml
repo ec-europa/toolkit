@@ -26,7 +26,7 @@ matrix:
     - -D'platform.package.version'='2.4' -D'profile'='multisite_drupal_standard'
     - -D'platform.package.version'='2.5' -D'profile'='multisite_drupal_standard'
     - -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.x'
-    - -D'profile'='drupal' -D'profile.name'='standard' -D'profile.core'='8.7.x'
+    # - -D'profile'='drupal' -D'profile.name'='standard' -D'profile.core'='8.7.x'
 
 # ==============================================================================
 # Main services
@@ -142,6 +142,17 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
+  # ============================================================================
+  # Git hook integration section:
+  # ============================================================================
+  git-hooks:
+    image: fpfis/php56-dev
+    commands:
+      - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
+      - ./toolkit/phing git-hook-disable ${BUILD_OPTIONS} ${PHING_OPTS}
+      - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
   # ============================================================================
   # Notify section:
   # ============================================================================

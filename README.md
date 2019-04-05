@@ -11,7 +11,7 @@ and test packages.</p>
 ## Requirements
 There are three separate ways of using the NextEuropa project. Either you use an
 environment with Docker installed, an environment without, or a mix of both.
-  
+
 <details><summary><b>Docker Solo</b></summary>
 
 This requirement for docker only needs to have docker in docker support. The
@@ -85,4 +85,3 @@ operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
 [https://webgate.ec.europa.eu/CITnet/jira]: https://webgate.ec.europa.eu/CITnet/jira/secure/RapidBoard.jspa?rapidView=581
 [verbruggenalex]: https://github.com/verbruggenalex
 [jonhy81]: https://github.com/jonhy81
-

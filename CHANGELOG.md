@@ -1,4 +1,39 @@
 # Toolkit change log
+## Version 3.0.20
+  * Improve default .gitignore file
+  * Include --no-progress option in to main composer.json execution
+  * Improve git hooks integration: new targets git-hook-enable and git-hook-disable
+  * Apply patch to Coder to fix false positive with t() call in the install files (@zarabatana)
+  * Apply patch to Coder to fix false positive with #options element (@zarabatana)
+  * Make toolkit compatible with Search API, include new drush command toolkit-search-ssl (@msnassar)
+  * Include new prop solr.module with default value apachesolr
+  * Make base_url optional in settings.php script to improve Cloud9 compatibility
+  * Include hash verification in the ASDA database download (@gervasek)
+  * Include cache lifetime to database dump cache, default to 30 days (@gervasek)
+  * Improvements to way how devel module are enabled
+  * Remove target test-phpcs-setup-prepush
+  * Move pre-push script into toolkit codebase
+  * Include example for prepare-commit-msg to append JIRA number to commits
+  * Include --start-mazimized in the default behat configuration (@msnassar)
+
+## Version 3.0.19
+  * Make toolkit compatible with new platform release cycle (major.minor.release.patch)
+  * Fix GDPR module version to alpha11, Alpha12 removed php 5.6 support
+  * Improve composer log output by including --no-progress option
+
+## Version 3.0.17
+  * Include Stage File Proxy settings into settings.php file.
+
+## Version 3.0.16
+  * Fix temporary folder permissions
+
+## Version 3.0.15
+  * Fix settings.php values to use relative path for drupal files folders
+  * Fix folder creation to use ${build.dev} prop
+
+## Version 3.0.14
+  * Set default NE Platform version t0 2.5
+
 ## Version 3.0.10
   * New phing target to set variable with drush by use of ${variable-name} and ${variable-value} properties.
   * New phing target to loop over all phing properties starting with devel.vars. and set them accordingly with another new target

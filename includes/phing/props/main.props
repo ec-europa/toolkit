@@ -27,7 +27,7 @@ project.url.production = https://ec.europa.eu/${project.id}
 # --------------------
 devel.mdls.dir = devel
 devel.mdls.en = devel context field_ui maillog stage_file_proxy views_ui
-devel.mdls.core.en = 
+devel.mdls.core.en =
 
 # Development variables.
 # ----------------------
@@ -77,6 +77,7 @@ db.prefix =
 # Solr configuration.
 # -------------------
 solr.enable = 1
+solr.module = apachesolr
 solr.scheme = http
 solr.host = 127.0.0.1
 solr.port = 8983
@@ -99,6 +100,7 @@ profile.core.make = ${resources.dir}/drupal-core.make
 profile.make = ${resources.dir}/${profile}.make
 platform.package = deploy-package-${platform.package.reference}.tar.gz
 platform.package.db.cache = 1
+platform.package.db.cache.ttl = 30
 platform.package.provider = git-hub
 platform.package.provider.token = # TODO: Github API limit.
 platform.package.repository = ec-europa/platform-dev
@@ -250,5 +252,3 @@ drupal.hash.salt =
 # ----------------------------
 backtrac.file = ${project.tmp.dir}/bactrack.json
 backtrac.compare.mode = compare_itself
-
-

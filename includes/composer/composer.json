@@ -79,6 +79,10 @@
         "Support xterm autocolor": "patches/phing-xterm-support.patch",
         "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch",
         "https://github.com/phingofficial/phing/issues/553": "patches/phing-hidden-input.patch"
+      },
+      "drupal/coder": {
+        "https://www.drupal.org/project/coder/issues/3031056": "https://www.drupal.org/files/issues/2019-02-06/skip_missing_t_install_files-3031056-1.patch",
+        "https://www.drupal.org/project/coder/issues/3034698": "https://www.drupal.org/files/issues/2019-02-21/false_positive_options_element-3034698-05.patch"
       }
     }
   },

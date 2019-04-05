@@ -7,20 +7,20 @@ nbproject/
 
 # Ignore local configuration.
 build.develop.props
-tests/behat.yml
-tests/phpunit.xml
+/tests/behat.yml
+/tests/phpunit.xml
 
 # Ignore build artifacts.
 /build/
 /composer.lock
 .tmp
-toolkit
-vendor
-bin
-build.project.xml
-lib/
-phpcs-ruleset.xml
-resources/
-tests/
+/toolkit
+/vendor
+/bin
+/build.project.xml
+/lib/
+/phpcs-ruleset.xml
+/resources/
+/tests/
 /backstop_data/
 /backstop.json
