@@ -9,6 +9,11 @@ services:
     - .:/var/www/html # Non Mac users.
     # - nfsmount:/var/www/html # Mac Users with the nfsmount volume.
     environment:
+      # ASDA CREDENTIALS
+      # By leaving these variables empty Docker Compose will set them to their host values.
+      ASDA_USER:
+      ASDA_PASSWORD:
+      # XDEBUG CONFIGURATION
       XDEBUG_CONFIG: "remote_enable=1 remote_host=10.254.254.254 remote_port=9000 idekey=PHPSTORM remote_autostart=1"
       PHP_IDE_CONFIG: "serverName=Docker"
       # For Xdebug setup, run this command in the terminal:
