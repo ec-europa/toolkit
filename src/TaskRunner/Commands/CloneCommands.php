@@ -82,27 +82,27 @@ class CloneCommands extends AbstractCommands {
    *   Collection builder.
    */
   public function downloadDump(array $options = [
-    'asda_url' => InputOption::VALUE_REQUIRED,
-    'asda_user' => InputOption::VALUE_REQUIRED,
-    'asda_password' => InputOption::VALUE_REQUIRED,
+    'asda-url' => InputOption::VALUE_REQUIRED,
+    'asda-user' => InputOption::VALUE_REQUIRED,
+    'asda-password' => InputOption::VALUE_REQUIRED,
     'dumpfile' => InputOption::VALUE_REQUIRED,
-    'project_id' => InputOption::VALUE_REQUIRED,
+    'project-id' => InputOption::VALUE_REQUIRED,
   ]) {
     $tasks = [];
 
     // Check credentials.
-    if ($options['asda_user'] === '${env.ASDA_USER}' || $options['asda_password'] === '${env.ASDA_PASSWORD}') {
+    if ($options['asda-user'] === '${env.ASDA_USER}' || $options['asda-password'] === '${env.ASDA_PASSWORD}') {
       $this->say('ASDA credentials not found, set them as the following environment variables: ASDA_USER, ASDA_PASSWORD.');
 
       return $this->collectionBuilder()->addTaskList($tasks);
     }
 
-    $requestUrl = $options['asda_url'] . '/' . $options['project_id'];
+    $requestUrl = $options['asda-url'] . '/' . $options['project-id'];
 
     // Download the file.
     $tasks[] = $this->taskExec('wget')
-      ->option('--http-user', $options['asda_user'])
-      ->option('--http-password', $options['asda_password'])
+      ->option('--http-user', $options['asda-user'])
+      ->option('--http-password', $options['asda-password'])
       ->option('-O', $options['dumpfile'] . '.gz')
       ->arg($requestUrl . '/*.sql.gz');
 
