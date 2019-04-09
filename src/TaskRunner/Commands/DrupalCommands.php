@@ -128,6 +128,7 @@ class DrupalCommands extends Drupal8Commands {
   protected function getToolkitSettingsBlock() {
     $additionalSettings = $this->getConfig()->get('drupal.additional_settings', '');
     $additionalSettings = trim($additionalSettings);
+    $hashSalt = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(random_bytes(55)));
 
     return <<< EOF
 
@@ -140,10 +141,12 @@ class DrupalCommands extends Drupal8Commands {
   'prefix' => getenv('DRUPAL_DATABASE_PREFIX'),
   'host' => getenv('DRUPAL_DATABASE_HOST'),
   'port' => getenv('DRUPAL_DATABASE_PORT'),
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+  'namespace' => 'Drupal\\\\Core\\\\Database\\\\Driver\\\\mysql',
   'driver' => 'mysql',
 );
 {$additionalSettings}
+\$settings['hash_salt'] = '{$hashSalt}';
+
 // Location of the site configuration files, relative to the site root.
 \$config_directories['sync'] = '../config/sync';
 
