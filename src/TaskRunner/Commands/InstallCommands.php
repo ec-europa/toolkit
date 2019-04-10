@@ -5,20 +5,15 @@ declare(strict_types = 1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use NuvoleWeb\Robo\Task as NuvoleWebTasks;
-use OpenEuropa\TaskRunner\Contract\FilesystemAwareInterface;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
-use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Class ToolkitCommands.
  */
-class InstallCommands extends AbstractCommands implements FilesystemAwareInterface {
-  use NuvoleWebTasks\Config\loadTasks;
-  use TaskRunnerTasks\CollectionFactory\loadTasks;
-  use TaskRunnerTraits\ConfigurationTokensTrait;
-  use TaskRunnerTraits\FilesystemAwareTrait;
+class InstallCommands extends AbstractCommands {
+
+  use TaskRunnerTasks\Drush\loadTasks;
 
   /**
    * {@inheritdoc}
@@ -106,20 +101,41 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
     $has_dump = file_exists($options['dumpfile']);
     $has_config = file_exists($options['config-file']);
 
+    // If ASDA snapshot is available then we will restore it.
     if ($has_dump) {
       $tasks[] = $this->taskExec('./vendor/bin/run toolkit:install-dump');
 
+      // If also configuration is present then we will import it.
       if ($has_config) {
-        $tasks[] = $this->taskExecStack()
-          ->stopOnFail()
-          ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' config:import -y')
-          ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' cache:rebuild');
+        $tasks[] = $this->taskExec('./vendor/bin/run toolkit:import-config');
       }
     }
+    // If no ASDA snapshot is present then we will install a fresh copy.
     else {
+      // Install site from existing configuration, if available.
       $params = $has_config ? ' --existing-config' : '';
       $tasks[] = $this->taskExec('./vendor/bin/run drupal:site-install' . $params);
     }
+
+    // Build and return task collection.
+    return $this->collectionBuilder()->addTaskList($tasks);
+  }
+
+  /**
+   * Import config.
+   *
+   * @command toolkit:import-config
+   *
+   * @return \Robo\Collection\CollectionBuilder
+   *   Collection builder.
+   */
+  public function importConfig() {
+    $tasks = [];
+
+    $tasks[] = $this->taskExecStack()
+      ->stopOnFail()
+      ->exec('./vendor/bin/drush config:import -y')
+      ->exec('./vendor/bin/drush cache:rebuild');
 
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);

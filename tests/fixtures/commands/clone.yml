@@ -5,25 +5,12 @@
     - contains: |
         [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('vendor/bin/drush --uri=build sql-drop -y')
-          ->exec('vendor/bin/drush --uri=build sqlc < dump.sql')
-          ->exec('vendor/bin/drush --uri=build updatedb -y')
-          ->exec('vendor/bin/drush --uri=build cache:rebuild')
+          ->exec('./vendor/bin/drush sql-drop -y')
+          ->exec('./vendor/bin/drush sqlc < dump.sql')
+          ->exec('./vendor/bin/drush updatedb -y')
+          ->exec('./vendor/bin/drush cache:rebuild')
     - notContains: |
         >  The dump file dump.sql does not exist.
-
-- command: 'toolkit:install-dump'
-  configuration:
-    drupal:
-      root: 'web'
-  expectations:
-    - contains: |
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('vendor/bin/drush --uri=web sql-drop -y')
-          ->exec('vendor/bin/drush --uri=web sqlc < dump.sql')
-          ->exec('vendor/bin/drush --uri=web updatedb -y')
-          ->exec('vendor/bin/drush --uri=web cache:rebuild')
 
 - command: 'toolkit:install-dump'
   configuration:

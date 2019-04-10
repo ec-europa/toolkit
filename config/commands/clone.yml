@@ -2,7 +2,6 @@ command:
   toolkit:
     install-dump:
       options:
-        uri: ${drupal.root}
         dumpfile: ${toolkit.clone.dumpfile}
     download-dump:
       options:

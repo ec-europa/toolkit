@@ -2,6 +2,5 @@ command:
   toolkit:
     install-ci:
       options:
-        uri: ${drupal.root}
         dumpfile: ${toolkit.clone.dumpfile}
         config-file: ${toolkit.clone.config_file}

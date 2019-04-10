@@ -29,10 +29,8 @@
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/run toolkit:install-dump')
         [Simulator] Running ./vendor/bin/run toolkit:install-dump
-        [Simulator] Simulating ExecStack()
-            ->stopOnFail()
-            ->exec('vendor/bin/drush --uri=build config:import -y')
-            ->exec('vendor/bin/drush --uri=build cache:rebuild')
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:import-config')
+        [Simulator] Running ./vendor/bin/run toolkit:import-config
 
 # with dump and without config.
 - command: 'toolkit:install-ci'
