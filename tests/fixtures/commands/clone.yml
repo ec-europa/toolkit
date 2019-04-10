@@ -9,8 +9,6 @@
           ->exec('vendor/bin/drush --uri=build sqlc < dump.sql')
           ->exec('vendor/bin/drush --uri=build updatedb -y')
           ->exec('vendor/bin/drush --uri=build cache:rebuild')
-          ->exec('vendor/bin/drush --uri=build config:import -y')
-          ->exec('vendor/bin/drush --uri=build cache:rebuild')
     - notContains: |
         >  The dump file dump.sql does not exist.
 
@@ -25,8 +23,6 @@
           ->exec('vendor/bin/drush --uri=web sql-drop -y')
           ->exec('vendor/bin/drush --uri=web sqlc < dump.sql')
           ->exec('vendor/bin/drush --uri=web updatedb -y')
-          ->exec('vendor/bin/drush --uri=web cache:rebuild')
-          ->exec('vendor/bin/drush --uri=web config:import -y')
           ->exec('vendor/bin/drush --uri=web cache:rebuild')
 
 - command: 'toolkit:install-dump'

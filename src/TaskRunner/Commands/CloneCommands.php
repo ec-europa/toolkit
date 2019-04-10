@@ -59,8 +59,6 @@ class CloneCommands extends AbstractCommands {
       ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' sql-drop -y')
       ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' sqlc < ' . $options['dumpfile'])
       ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' updatedb -y')
-      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' cache:rebuild')
-      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' config:import -y')
       ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' cache:rebuild');
 
     // Build and return task collection.

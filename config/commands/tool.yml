@@ -1,0 +1,5 @@
+command:
+  toolkit:
+    disable-drupal-cache:
+      options:
+        uri: ${drupal.root}
