@@ -3,6 +3,7 @@ toolkit:
   clone:
     asda_url: 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps'
     dumpfile: 'dump.sql'
+    config_file: 'config/sync/core.extension.yml'
   build:
     dist:
       root: 'dist'

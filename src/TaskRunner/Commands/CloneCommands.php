@@ -38,11 +38,9 @@ class CloneCommands extends AbstractCommands {
    *
    * @command toolkit:install-dump
    *
-   * @option uri Drupal uri.
    * @option dumpfile Drupal uri.
    */
   public function installDump(array $options = [
-    'uri' => InputOption::VALUE_REQUIRED,
     'dumpfile' => InputOption::VALUE_REQUIRED,
   ]) {
     $tasks = [];
@@ -56,12 +54,10 @@ class CloneCommands extends AbstractCommands {
     // Unzip and dump database file.
     $tasks[] = $this->taskExecStack()
       ->stopOnFail()
-      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' sql-drop -y')
-      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' sqlc < ' . $options['dumpfile'])
-      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' updatedb -y')
-      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' cache:rebuild')
-      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' config:import -y')
-      ->exec('vendor/bin/drush --uri=' . $options['uri'] . ' cache:rebuild');
+      ->exec('./vendor/bin/drush sql-drop -y')
+      ->exec('./vendor/bin/drush sqlc < ' . $options['dumpfile'])
+      ->exec('./vendor/bin/drush updatedb -y')
+      ->exec('./vendor/bin/drush cache:rebuild');
 
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);

@@ -1,0 +1,6 @@
+command:
+  toolkit:
+    install-clone:
+      options:
+        dumpfile: ${toolkit.clone.dumpfile}
+        config-file: ${toolkit.clone.config_file}

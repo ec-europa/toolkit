@@ -17,7 +17,7 @@
             ->noDev()
         [Simulator] Simulating ExecStack()
             ->stopOnFail()
-            ->exec('./vendor/bin/run drupal:settings-setup --root=build')
+            ->exec('./vendor/bin/run drupal:settings-setup --root=dist/build')
 
 - command: 'toolkit:build-dist'
   configuration:
@@ -43,7 +43,7 @@
           ->noDev()
       [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('./vendor/bin/run drupal:settings-setup --root=web')
+          ->exec('./vendor/bin/run drupal:settings-setup --root=other/web')
 
 - command: 'toolkit:build-dist'
   configuration:
@@ -71,7 +71,7 @@
           ->noDev()
       [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('./vendor/bin/run drupal:settings-setup --root=web')
+          ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
       [Simulator] Simulating OpenEuropa\TaskRunner\Tasks\CollectionFactory\CollectionFactory(array (
           0 => 'command-one',
           1 => 'command-two',

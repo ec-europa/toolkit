@@ -1,0 +1,60 @@
+
+- command: 'toolkit:install-clean'
+  configuration: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating ExecStack()
+            ->stopOnFail()
+            ->exec('./vendor/bin/run toolkit:build-dev')
+            ->exec('./vendor/bin/run drupal:site-install')
+            ->exec('./vendor/bin/run drupal:setup-test')
+
+# with dump and config.
+- command: 'toolkit:install-clone'
+  configuration:
+    toolkit:
+      clone:
+        dumpfile: 'dump.sql'
+        config_file: 'config.yml'
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:install-dump')
+        [Simulator] Running ./vendor/bin/run toolkit:install-dump
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:import-config')
+        [Simulator] Running ./vendor/bin/run toolkit:import-config
+
+# with dump and without config.
+- command: 'toolkit:install-clone'
+  configuration:
+    toolkit:
+      clone:
+        dumpfile: 'dump.sql'
+        config_file: 'no-config.yml'
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:install-dump')
+        [Simulator] Running ./vendor/bin/run toolkit:install-dump
+
+# without dump and with config.
+- command: 'toolkit:install-clone'
+  configuration:
+    toolkit:
+      clone:
+        dumpfile: 'no-dump.sql'
+        config_file: 'config.yml'
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run drupal:site-install --existing-config')
+        [Simulator] Running ./vendor/bin/run drupal:site-install --existing-config
+
+# without dump and without config.
+- command: 'toolkit:install-clone'
+  configuration:
+    toolkit:
+      clone:
+        dumpfile: 'no-dump.sql'
+        config_file: 'no-config.yml'
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run drupal:site-install')
+        [Simulator] Running ./vendor/bin/run drupal:site-install

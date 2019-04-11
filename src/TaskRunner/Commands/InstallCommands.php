@@ -5,19 +5,22 @@ declare(strict_types = 1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use NuvoleWeb\Robo\Task as NuvoleWebTasks;
-use OpenEuropa\TaskRunner\Contract\FilesystemAwareInterface;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
-use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Class ToolkitCommands.
  */
-class InstallCommands extends AbstractCommands implements FilesystemAwareInterface {
-  use NuvoleWebTasks\Config\loadTasks;
-  use TaskRunnerTasks\CollectionFactory\loadTasks;
-  use TaskRunnerTraits\ConfigurationTokensTrait;
-  use TaskRunnerTraits\FilesystemAwareTrait;
+class InstallCommands extends AbstractCommands {
+
+  use TaskRunnerTasks\Drush\loadTasks;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfigurationFile() {
+    return __DIR__ . '/../../../config/commands/install.yml';
+  }
 
   /**
    * Install a clean website.
@@ -28,6 +31,9 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
    * - Setup files for tests.
    *
    * @command toolkit:install-clean
+   *
+   * @return \Robo\Collection\CollectionBuilder
+   *   Collection builder.
    */
   public function installClean() {
     $tasks = [];
@@ -51,34 +57,61 @@ class InstallCommands extends AbstractCommands implements FilesystemAwareInterfa
    * - Setup files for tests
    * - Install a dump database.
    *
+   * @param array $options
+   *   Command options.
+   *
    * @command toolkit:install-clone
+   *
+   * @return \Robo\Collection\CollectionBuilder
+   *   Collection builder.
    */
-  public function installClone() {
+  public function installClone(array $options = [
+    'dumpfile' => InputOption::VALUE_REQUIRED,
+    'config-file' => InputOption::VALUE_REQUIRED,
+  ]) {
     $tasks = [];
 
-    $tasks[] = $this->taskExecStack()
-      ->stopOnFail()
-      ->exec('./vendor/bin/run toolkit:build-dev')
-      ->exec('./vendor/bin/run drupal:site-install')
-      ->exec('./vendor/bin/run drupal:setup-test')
-      ->exec('./vendor/bin/run toolkit:install-dump');
+    $has_dump = file_exists($options['dumpfile']);
+    $has_config = file_exists($options['config-file']);
+
+    // If ASDA snapshot is available then we will restore it.
+    if ($has_dump) {
+      $tasks[] = $this->taskExec('./vendor/bin/run toolkit:install-dump');
+
+      // If also configuration is present then we will import it.
+      if ($has_config) {
+        $tasks[] = $this->taskExec('./vendor/bin/run toolkit:import-config');
+      }
+    }
+    // If no ASDA snapshot is present then we will install a fresh copy.
+    else {
+      // Install site from existing configuration, if available.
+      $params = $has_config ? ' --existing-config' : '';
+      $tasks[] = $this->taskExec('./vendor/bin/run drupal:site-install' . $params);
+    }
 
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);
   }
 
   /**
-   * Disable aggregation and clear cache.
+   * Import config.
    *
-   * @command toolkit:disable-drupal-cache
+   * @command toolkit:import-config
+   *
+   * @return \Robo\Collection\CollectionBuilder
+   *   Collection builder.
    */
-  public function disableDrupalCache() {
-    $this->taskExecStack()
+  public function importConfig() {
+    $tasks = [];
+
+    $tasks[] = $this->taskExecStack()
       ->stopOnFail()
-      ->exec('./vendor/bin/drush -y config-set system.performance css.preprocess 0')
-      ->exec('./vendor/bin/drush -y config-set system.performance js.preprocess 0')
-      ->exec('./vendor/bin/drush -y cache:rebuild')
-      ->run();
+      ->exec('./vendor/bin/drush config:import -y')
+      ->exec('./vendor/bin/drush cache:rebuild');
+
+    // Build and return task collection.
+    return $this->collectionBuilder()->addTaskList($tasks);
   }
 
 }
