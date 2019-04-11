@@ -57,42 +57,15 @@ class InstallCommands extends AbstractCommands {
    * - Setup files for tests
    * - Install a dump database.
    *
+   * @param array $options
+   *   Command options.
+   *
    * @command toolkit:install-clone
    *
    * @return \Robo\Collection\CollectionBuilder
    *   Collection builder.
    */
-  public function installClone() {
-    $tasks = [];
-
-    $tasks[] = $this->taskExecStack()
-      ->stopOnFail()
-      ->exec('./vendor/bin/run toolkit:install-clean')
-      ->exec('./vendor/bin/run toolkit:install-dump');
-
-    // Build and return task collection.
-    return $this->collectionBuilder()->addTaskList($tasks);
-  }
-
-  /**
-   * Install a clone website.
-   *
-   * The installation in the following order:
-   * - Prepare the installation
-   * - Install the site
-   * - Setup files for tests
-   * - Install a dump database.
-   *
-   * @param array $options
-   *   Command options.
-   *
-   * @command toolkit:install-ci
-   *
-   * @return \Robo\Collection\CollectionBuilder
-   *   Collection builder.
-   */
-  public function installContinuousIntegration(array $options = [
-    'uri' => InputOption::VALUE_REQUIRED,
+  public function installClone(array $options = [
     'dumpfile' => InputOption::VALUE_REQUIRED,
     'config-file' => InputOption::VALUE_REQUIRED,
   ]) {

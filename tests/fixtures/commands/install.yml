@@ -9,17 +9,8 @@
             ->exec('./vendor/bin/run drupal:site-install')
             ->exec('./vendor/bin/run drupal:setup-test')
 
-- command: 'toolkit:install-clone'
-  configuration: []
-  expectations:
-    - contains: |
-        [Simulator] Simulating ExecStack()
-            ->stopOnFail()
-            ->exec('./vendor/bin/run toolkit:install-clean')
-            ->exec('./vendor/bin/run toolkit:install-dump')
-
 # with dump and config.
-- command: 'toolkit:install-ci'
+- command: 'toolkit:install-clone'
   configuration:
     toolkit:
       clone:
@@ -33,7 +24,7 @@
         [Simulator] Running ./vendor/bin/run toolkit:import-config
 
 # with dump and without config.
-- command: 'toolkit:install-ci'
+- command: 'toolkit:install-clone'
   configuration:
     toolkit:
       clone:
@@ -45,7 +36,7 @@
         [Simulator] Running ./vendor/bin/run toolkit:install-dump
 
 # without dump and with config.
-- command: 'toolkit:install-ci'
+- command: 'toolkit:install-clone'
   configuration:
     toolkit:
       clone:
@@ -57,7 +48,7 @@
         [Simulator] Running ./vendor/bin/run drupal:site-install --existing-config
 
 # without dump and without config.
-- command: 'toolkit:install-ci'
+- command: 'toolkit:install-clone'
   configuration:
     toolkit:
       clone:
