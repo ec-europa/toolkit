@@ -107,6 +107,8 @@ platform.package.repository = ec-europa/platform-dev
 platform.package.version = 2.5
 platform.multisite.mode = 1
 
+multisite.toolbox.cs.whitelist = array('*.europa.eu')
+
 # Theme configuration (deploy props?)
 # --------------------
 theme.ecl.version = v0.18.0

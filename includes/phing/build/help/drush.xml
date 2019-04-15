@@ -239,6 +239,7 @@
                             <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
                             <token key="update_free_access" value="${drupal.update.free.access}" />
                             <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
+                            <token key="multisite_toolbox_cs_whitelist" value="${multisite.toolbox.cs.whitelist}" />
                         </replacetokens>
                     </filterchain>
                 </copy>

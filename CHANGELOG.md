@@ -1,4 +1,9 @@
 # Toolkit change log
+## Version 3.0.21
+ * MULTISITE-21227: Force delete of dist folder during distribution rebuild.
+ * MULTISITE-21234: Create phing task to handle NE Platform versions.
+ * MULTISITE-21046: Set CSP during settings generation for install-clean and install-clone.
+
 ## Version 3.0.20
   * Improve default .gitignore file
   * Include --no-progress option in to main composer.json execution

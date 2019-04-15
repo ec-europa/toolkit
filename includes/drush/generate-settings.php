@@ -35,6 +35,7 @@ $variables = array(
   'stage_file_proxy_origin' => '%%stage_file_proxy_origin%%',
   'stage_file_proxy_origin_dir' => '%%stage_file_proxy_origin_dir%%',
   'stage_file_proxy_hotlink' => '%%stage_file_proxy_hotlink%%',
+  'multisite_toolbox_cs_whitelist' => '%%multisite_toolbox_cs_whitelist%%'
 );
 // Setup individual development variables.
 foreach ($variables as $key => $value) {
