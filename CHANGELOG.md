@@ -8,6 +8,7 @@
  * Improve documentation for Supported profiles.
  * MULTISITE-21025: Improvements to default behat configuration.
  * MULTISITE-21260: Automatic recover uid:1 if table users is empty.
+ * MULTISITE-20750: Set default value for drush.color as 0.
 
 ## Version 3.0.20
   * Improve default .gitignore file
