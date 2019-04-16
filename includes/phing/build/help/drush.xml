@@ -330,6 +330,35 @@
         </if>
     </target>
 
+    <target name="drush-check-users" hidden="true" description="Recover user table for ASDA dumps.">
+        <drush returnProperty="count.users"
+            command="sqlq"
+            assume="yes"
+            root="${build.platform.dir}"
+            alias="@${drush.alias.default}"
+            bin="${toolkit.dir.bin.drush}"
+            verbose="${drush.verbose}"
+            color="${drush.color}">
+            <param escape="no" quote="yes">SELECT count(uid) FROM users WHERE 1</param>
+        </drush>
+        <if>
+            <equals arg1="${count.users}" arg2="0" />
+            <then>
+                <echo msg="Your user table is empty, recovering uid 1." />
+                <drush returnProperty="count.users"
+                    command="sqlq"
+                    assume="yes"
+                    root="${build.platform.dir}"
+                    alias="@${drush.alias.default}"
+                    bin="${toolkit.dir.bin.drush}"
+                    verbose="${drush.verbose}"
+                    color="${drush.color}">
+                    <param escape="no" quote="yes">INSERT INTO users (uid, name, pass, mail, status) VALUES ('1', '${admin.username}', md5('${admin.password}'), '${admin.email}', 1);</param>
+                </drush>
+            </then>
+        </if>
+    </target>
+
     <target name="drush-site-install" hidden="true" description="Install a site.">
         <echo message="Installing site ${project.name}." />
         <drush command="site-install" assume="yes" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${drush.alias.default}" verbose="${drush.verbose}" color="${drush.color}">

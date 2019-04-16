@@ -358,7 +358,8 @@
             project-database-import,
             project-modules-devel-en,
             reset-filesystem-permissions,
-            drush-cache-reset">
+            drush-cache-reset,
+            drush-check-users">
         
         <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
         <if>

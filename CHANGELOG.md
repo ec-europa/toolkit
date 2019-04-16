@@ -7,6 +7,7 @@
  * MULTISITE-21001: Prevent toolkit create broken simlinks.
  * Improve documentation for Supported profiles.
  * MULTISITE-21025: Improvements to default behat configuration.
+ * MULTISITE-21260: Automatic recover uid:1 if table users is empty.
 
 ## Version 3.0.20
   * Improve default .gitignore file
