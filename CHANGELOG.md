@@ -5,6 +5,8 @@
  * MULTISITE-21046: Set CSP during settings generation for install-clean and install-clone.
  * MULTISITE-21121: Bugfix, SOLR environment now set for communities profile.
  * MULTISITE-21001: Prevent toolkit create broken simlinks.
+ * Improve documentation for Supported profiles.
+ * MULTISITE-21025: Improvements to default behat configuration.
 
 ## Version 3.0.20
   * Improve default .gitignore file
