@@ -123,7 +123,10 @@
 
     <target name="drush-modules-enable" description="Enable a set of modules." hidden="true">
         <if>
-            <equals arg1="${profile}" arg2="multisite_drupal_standard"/>
+            <or>
+                <equals arg1="${profile}" arg2="multisite_drupal_standard"/>
+                <equals arg1="${profile}" arg2="multisite_drupal_communities"/>
+            </or>
             <then>
                 <drush
                     command="pm-enable"
@@ -403,7 +406,10 @@
         </if>
         <phingcall target="drush-files-dirs-htaccess" />
         <if>
-            <equals arg1="${profile}" arg2="multisite_drupal_standard" />
+            <or>
+                <equals arg1="${profile}" arg2="multisite_drupal_standard"/>
+                <equals arg1="${profile}" arg2="multisite_drupal_communities"/>
+            </or>
             <then>
                 <phingcall target="drush-solr-enable" />
             </then>
