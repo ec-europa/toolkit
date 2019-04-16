@@ -220,7 +220,7 @@ devel.vars.views_ui_show_sql_query = 1
 
 # Debugging configuration.
 # ------------------------
-drush.color = 1
+drush.color = 0
 drush.verbose = FALSE
 
 # Docker. (TODO)
