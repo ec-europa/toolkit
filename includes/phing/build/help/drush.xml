@@ -239,7 +239,6 @@
                             <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
                             <token key="update_free_access" value="${drupal.update.free.access}" />
                             <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
-                            <token key="multisite_toolbox_cs_whitelist" value="${multisite.toolbox.cs.whitelist}" />
                         </replacetokens>
                     </filterchain>
                 </copy>
@@ -249,13 +248,16 @@
                   <param>${project.tmp.dir}/generate-settings.php</param>
                 </drush>
 
+                <!-- Append specific CSP header information. -->
+                <append destFile="${build.subsite.dir}/settings.php" text="$conf['multisite_toolbox_cs_whitelist'] = array('*.europa.eu');" />
+
                 <if>
                     <and>
                         <not><isfalse value="${project.url.base}" /></not>
                         <not><equals arg1="${project.url.base}" arg2='""' /></not>
                     </and>
                     <then>
-                        <!-- Append specific base_urlk information. -->
+                        <!-- Append specific base_url information. -->
                         <append destFile="${build.subsite.dir}/settings.php" text="${line.separator}$base_url = '${project.url.base}';" />
                     </then>
                 </if>
