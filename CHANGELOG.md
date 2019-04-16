@@ -4,6 +4,7 @@
  * MULTISITE-21234: Create phing task to handle NE Platform versions.
  * MULTISITE-21046: Set CSP during settings generation for install-clean and install-clone.
  * MULTISITE-21121: Bugfix, SOLR environment now set for communities profile.
+ * MULTISITE-21001: Prevent toolkit create broken simlinks.
 
 ## Version 3.0.20
   * Improve default .gitignore file
