@@ -549,6 +549,7 @@
     <target name="project-platform-package-unpack" hidden="true" description="Download and unpack platform deploy package.">
         <property file="${project.tmp.dir}/build.version.props" logoutput="${logoutput}" override="true" />
         <mkdir dir="${share.path.platform.packages.deploy}" />
+       <echo msg="Version to use ${platform.package.version.current}" />
         <phingcall target="package-download-unpack">
             <property name="package-name" value="platform-dev-${platform.package.version.current}.tar.gz" />
             <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
@@ -579,10 +580,7 @@
      <target name="project-platform-set-version" description="Save the platform version used for builds."
         hidden="true">
 
-        <platformversions 
-            packageVersion="${platform.package.version}"
-            versionprop="${platform.package.version.current}"
-            latestprop="${platform.package.version.latest}"/>
+        <platformversions packageVersion="${platform.package.version}" />
 
         <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.version.props" />
     </target>

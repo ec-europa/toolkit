@@ -119,6 +119,8 @@ class PlatformVersionsTask extends \Task
             );
         }
 
+        $this->getProject()->setNewProperty('platform.package.version.latest', $latest_version);
+        $this->getProject()->setNewProperty('platform.package.version.current', $this->versionprop);
 
     }//end main()
 
