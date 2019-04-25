@@ -50,14 +50,14 @@ class PlatformVersionsTask extends \Task
      *
      * @var string
      */
-    private $versionprop;
+    private $versionprop = '';
 
     /**
      * The latest version available for this package.
      *
      * @var string
      */
-    private $latestprop;
+    private $latestprop = '';
  
     /**
      * Check github repository and retrieve all latest major versions.
@@ -91,12 +91,7 @@ class PlatformVersionsTask extends \Task
         // Check if end-user is providing the exact version, if not just get the latest
         // for the major provided.
         if (in_array($this->_packageVersion, $versions)) {
-            $this->project->setProperty($this->versionprop, $this->_packageVersion);
-
-            $this->log(
-                "The build will be performed with version " . $this->_packageVersion . ".",
-                Project::MSG_INFO
-            );
+            $this->setVersionProp($this->_packageVersion);
         }
         else {
             foreach($versions as $version) {
@@ -107,15 +102,16 @@ class PlatformVersionsTask extends \Task
                 $majors[substr($version, 0, 3)] = $version;
             }
 
-            $this->project->setProperty($this->versionprop, $majors[$this->_majorVersion]);
-            $this->log(
-                "The build will be performed with version " . $majors[$this->_majorVersion] . ".",
-                Project::MSG_INFO
-            );
+            $this->setVersionProp($majors[$this->_majorVersion]);
         }
 
+        $this->log(
+            "The build will be performed with version " . $this->versionprop . ".",
+            Project::MSG_INFO
+        );
+
         // Check if the project is using the latest version, if not let user know.
-        $this->project->setProperty($this->latestprop, $latest_version);
+        $this->setLatestProp($latest_version);
         if ($this->versionprop != $latest_version) {
             $this->log(
                 "Please upgrade your project recommended version " . $latest_version  . ".",

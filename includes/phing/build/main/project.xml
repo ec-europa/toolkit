@@ -552,7 +552,7 @@
         <phingcall target="package-download-unpack">
             <property name="package-name" value="platform-dev-${platform.package.version.current}.tar.gz" />
             <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
-            <property name="package-download-location" value="https://platform-ci.ne-dev.eu/releases" />
+            <property name="package-download-location" value="${platform.package.download.location}" />
             <property name="package-extract-location" value="${build.platform.dir}" />
         </phingcall>
     </target>
@@ -581,8 +581,8 @@
 
         <platformversions 
             packageVersion="${platform.package.version}"
-            versionprop="platform.package.version.current"
-            latestprop="platform.package.version.latest"/>
+            versionprop="${platform.package.version.current}"
+            latestprop="${platform.package.version.latest}"/>
 
         <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.version.props" />
     </target>
