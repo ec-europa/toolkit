@@ -331,20 +331,11 @@
     </target>
 
     <target name="drush-check-users" hidden="true" description="Recover user table for ASDA dumps.">
-        <drush returnProperty="count.users"
-            command="sqlq"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param escape="no" quote="yes">SELECT count(uid) FROM users WHERE 1</param>
-        </drush>
+        <exec command='drush -r ${build.dev} sqlq "SELECT count(uid) FROM users WHERE 1"' outputProperty="count.users" checkreturn="true" />
         <if>
             <equals arg1="${count.users}" arg2="0" />
             <then>
-                <echo msg="Your user table is empty, recovering uid 1." />
+                <echo msg="Cannot found any user in your database, recovering admin account (uid:1)." />
                 <drush returnProperty="count.users"
                     command="sqlq"
                     assume="yes"
@@ -356,6 +347,9 @@
                     <param escape="no" quote="yes">INSERT INTO users (uid, name, pass, mail, status) VALUES ('1', '${admin.username}', md5('${admin.password}'), '${admin.email}', 1);</param>
                 </drush>
             </then>
+            <else>
+                <echo msg="We found ${count.users} users in your database skipping recreation." />
+            </else>
         </if>
     </target>
 
