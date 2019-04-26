@@ -178,7 +178,6 @@ behat.wd_host.url = http://selenium:4444/wd/hub
 
 # Binaries.
 # ---------
-project.bin.composer = composer.phar
 project.bin.git = git
 
 # Temporary folders and resources.
