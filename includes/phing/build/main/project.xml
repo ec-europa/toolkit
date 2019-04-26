@@ -483,8 +483,7 @@
             <equals arg1="${db.dl.filename.hash.latest}" arg2="${db.dl.filename.hash.local}" />
             <then>
                 <echo msg="Database properly downloaded." />
-                <exec command="gunzip ${share.path.subsites.packages.database}/${project.id}/${db.dl.filename}" checkreturn="true" passthru="false" logoutput="true" />
-                <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
+                <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql.gz" -type f | head -1' outputproperty="db-dl-file" />
                 <exec command="date +%s > ${share.path.subsites.packages.database}/${project.id}/dump.date" checkreturn="true" passthru="false" logoutput="false"/>
             </then>
             <else>
@@ -535,7 +534,7 @@
                 <available file="${db-dl-file}" type="file" />
             </not>
             <then>
-                <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql" -type f | head -1' outputproperty="db-dl-file" />
+                <exec command='find ${share.path.subsites.packages.database}/${project.id} -maxdepth 1 -name "*.sql.gz" -type f | head -1' outputproperty="db-dl-file" />
             </then>
         </if>
 
