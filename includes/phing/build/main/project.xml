@@ -514,11 +514,11 @@
         </if>
     </target>
 
-    <target name="project-database-link" hidden="true" description="Symlink database to dump.sql in project basedir." depends="project-database-file">
+    <target name="project-database-link" hidden="true" description="Symlink database to dump.sql.gz in project basedir." depends="project-database-file">
         <if>
             <available file="${db-dl-file}" type="file" />
             <then>
-                <relsym link="${project.basedir}/dump.sql" target="${db-dl-file}" overwrite="true" />
+                <relsym link="${project.basedir}/dump.sql.gz" target="${db-dl-file}" overwrite="true" />
             </then>
         </if>
     </target>
