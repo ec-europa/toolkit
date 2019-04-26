@@ -92,7 +92,7 @@ pipeline:
     commands:
       - ./toolkit/phing install-clean ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing docker-backstop-generate ${BUILD_OPTIONS} ${PHING_OPTS}
-      - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql' --gzip ${BUILD_OPTIONS} ${PHING_OPTS}
+      - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
