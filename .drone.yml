@@ -92,7 +92,7 @@ pipeline:
     commands:
       - ./toolkit/phing install-clean ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing docker-backstop-generate ${BUILD_OPTIONS} ${PHING_OPTS}
-      - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql' ${BUILD_OPTIONS} ${PHING_OPTS}
+      - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql' --gzip ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
@@ -109,7 +109,7 @@ pipeline:
   install-clone:
     image: fpfis/php56-dev
     commands:
-      - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql' ${BUILD_OPTIONS} ${PHING_OPTS}
+      - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql.gz' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 

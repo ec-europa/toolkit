@@ -418,7 +418,7 @@ varnish.server.port = 8888
 
 # Drush Context configuration.
 # ----------------------------
-drush.db.dump = ${build.platform.dir}/dump.sql
+drush.db.dump = ${build.platform.dir}/dump.sql.gz
 ```
 </p></details>
 
