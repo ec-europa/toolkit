@@ -150,7 +150,7 @@ pipeline:
     group: coding-standards
     commands:
       - ./toolkit/phing test-phpcs-setup ${BUILD_OPTIONS} ${PHING_OPTS}
-      - ./toolkit/phpcs -s ./lib ${BUILD_OPTIONS} ${PHING_OPTS}
+      - ./toolkit/phpcs -s ./lib
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
@@ -159,7 +159,10 @@ pipeline:
     group: coding-standards
     commands:
       - ./toolkit/phing test-phpcs-setup -D'phpcs.files'='$${build.dist.dir}' -D'phpcs.standards'='PHPCompatibility' -D'phpcs.extensions'='php inc module install test profile theme' -logger phing.listener.AnsiColorLogger
-      - ./toolkit/phpcs --runtime-set testVersion 7.0- ./lib|| echo "PHPCompatibility failed..."
+      - ./toolkit/phpcs --runtime-set testVersion 7.0- ./lib || echo "PHPCompatibility failed..."
+      - ./toolkit/phpcs --runtime-set testVersion 7.0- ./vendor/ec-europa/toolkit/includes/drush || echo "PHPCompatibility failed..."
+      - ./toolkit/phpcs --runtime-set testVersion 7.0- ./vendor/ec-europa/toolkit/includes/phing || echo "PHPCompatibility failed..."
+      - ./toolkit/phpcs --runtime-set testVersion 7.0- ./vendor/ec-europa/toolkit/includes || echo "PHPCompatibility failed..."
 
   # ============================================================================
   # Git hook integration section:
