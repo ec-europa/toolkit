@@ -1,5 +1,6 @@
 # Toolkit change log
 ## Version 3.0.21
+ * MULTISITE-21073: Make toolkit compatible with PHP 7.1.
  * MULTISITE-21052: Store database dump in compress format (.gz).
  * MULTISITE-21121: Bugfix, SOLR environment now set for communities profile.
  * MULTISITE-21046: Set CSP during settings generation for install-clean and install-clone.
