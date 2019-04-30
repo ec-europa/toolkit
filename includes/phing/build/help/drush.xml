@@ -526,6 +526,7 @@
                 </trycatch>
                 
                 <drush command="gdpr-sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>--gzip</param>
                     <option name="result-file" value="${database-file}" />
                 </drush>
             </then>
