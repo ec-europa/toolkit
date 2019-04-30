@@ -159,8 +159,6 @@ pipeline:
     commands:
       - ./toolkit/phing test-phpcs-setup -D'phpcs.files'='$${build.dist.dir}' -D'phpcs.standards'='PHPCompatibility' -D'phpcs.extensions'='php inc module install test profile theme' -logger phing.listener.AnsiColorLogger
       - ./toolkit/phpcs --runtime-set testVersion 7.0- ./lib || echo "PHPCompatibility failed..."
-      # - ./toolkit/phpcs --runtime-set testVersion 7.0- .includes/drush || echo "PHPCompatibility failed..."
-      # - ./toolkit/phpcs --runtime-set testVersion 7.0- ./vendor/ec-europa/toolkit/includes/phing || echo "PHPCompatibility failed..."
       - ./toolkit/phpcs --runtime-set testVersion 7.0- ./includes || echo "PHPCompatibility failed..."
 
   # ============================================================================
