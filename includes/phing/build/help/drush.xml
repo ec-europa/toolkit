@@ -4,7 +4,18 @@
 
     <target name="drush-aliases-generate" hidden="true" description="Generate drush aliases for each subsite folder.">
         <mkdir dir="${build.platform.dir.sites}/all/drush" />
-        <drushgal siteRoot="${build.platform.dir}" siteUrl="${project.url.base}" />
+
+        <if>
+            <equals arg1="${project.url.base}" arg2="" />
+            <then>
+                <property name="drush.project.url.base" value="http://web:8080" />
+            </then>
+            <else>
+                <property name="drush.project.url.base" value="${project.url.base}" />
+            </else>
+        </if>
+
+        <drushgal siteRoot="${build.platform.dir}" siteUrl="${drush.project.url.base}" />
     </target>
 
     <target name="drush-files-dirs-create" description="Create site files directories." hidden="true">
