@@ -15,6 +15,7 @@ use Drush\Log\LogLevel;
  * @see drush_parse_command()
  */
 function toolkit_check_contrib_drush_command() {
+
   $items = array();
 
   $items['toolkit-contrib-authorised-security'] = array(
@@ -34,8 +35,10 @@ function toolkit_check_contrib_drush_command() {
  * modules with a version lower then the minimum version authorised, or
  * modules with an existing security update.
  */
-function drush_toolkit_check_contrib_toolkit_contrib_authorised_security() {
-  
+function drush_toolkit_check_contrib_toolkit_contrib_authorised_security($project_id = NULL) {
+  if ($project_id !== NULL) {
+    variable_set('project_id', $project_id);
+  }
   // Check update module status.
   $updateStatus = system_get_info('module', 'update');
   // Enable 'Update Manager' module if it's disabled.
@@ -50,12 +53,29 @@ function drush_toolkit_check_contrib_toolkit_contrib_authorised_security() {
 
   // Get list of all modules in the project.
   $modules = checkProjectModules();
-  // Get list authorised modules.
-  $d7ApprovedModules = getListAuthorisedModules();
+  // Get the module reviews list.
+  $d7ModulesList = getModulesList();
 
-  foreach ($d7ApprovedModules as $module) {
-    $modulesName[] = $module['name'];
-    $modulesArray[] = $module;
+  foreach ($d7ModulesList as $module) {
+    // Get list of modules authorised for all projects.
+    if ($module['restricted_us'] == '0') {
+      $modulesName[] = $module['name'];
+      $modulesArray[] = $module;
+    }
+    // Get list of restricted modules.
+    if ($module['restricted_us'] != '0' && $module['restricted_us'] != '1') {
+      $restrictedByProject = explode(',', $module['restricted_us']);
+
+      foreach ($restrictedByProject as $project) {
+
+        // Check the project Id and add the restricted modules by project (if is
+        // the case) to the list of authorised modules.
+        if ($project_id !== NULL && $project_id == $project) {
+          array_push($modulesName, $module['name']);
+          array_push($modulesArray, $module);
+        }
+      }
+    }
   }
 
   foreach ($modules as $module => $moduleId) {
@@ -67,7 +87,7 @@ function drush_toolkit_check_contrib_toolkit_contrib_authorised_security() {
       !empty($moduleInfo['version']) && $moduleInfo['project'] == $moduleId) {
 
       if (!in_array($moduleId, $modulesName)) {
-        drush_log('The module ' . $moduleId . ' is not approved by the QA team to be used.', LogLevel::ERROR);
+        drush_log('The use of the module ' . $moduleId . ' is not approved by the QA team.', LogLevel::ERROR);
       }
 
       // Check for security updates.
@@ -86,19 +106,42 @@ function drush_toolkit_check_contrib_toolkit_contrib_authorised_security() {
     $updateModule = array('update');
     module_disable($updateModule, FALSE);
     unset($status);
-  } 
+  }
+  // Delete variable 'project_id'.
+  // $project_id = variable_get('project_id');
+  if ($project_id !== NULL) {
+    variable_del('project_id');
+  }
 }
 
-function drush_toolkit_check_contrib_toolkit_contrib_update() {
-
+function drush_toolkit_check_contrib_toolkit_contrib_update($project_id = NULL) {
+  if ($project_id !== NULL) {
+    variable_set('project_id', $project_id);
+  }
   // Get list of all modules in the project.
   $modules = checkProjectModules();
-  // Get list authorised modules.  
-  $d7ApprovedModules = getListAuthorisedModules();
+  // Get the module reviews list.
+  $d7ModulesList = getModulesList();
+  // Get list of modules authorised for all projects.
+  foreach ($d7ModulesList as $module) {
+    if ($module['restricted_us'] == '0') {
+      $modulesName[] = $module['name'];
+      $modulesArray[] = $module;
+    }
+  }
+  // Get list of restricted modules.
+  if ($module['restricted_us'] != '0' && $module['restricted_us'] != '1') {
+    $restrictedByProject = explode(',', $module['restricted_us']);
 
-  foreach ($d7ApprovedModules as $module) {
-    $modulesName[] = $module['name'];
-    $modulesArray[] = $module;
+    foreach ($restrictedByProject as $project) {
+
+      // Check the project Id and add the restricted modules by project (if is
+      // the case) to the list of authorised modules.
+      if ($project_id !== NULL && $project_id == $project) {
+        array_push($modulesName, $module['name']);
+        array_push($modulesArray, $module);
+      }
+    }
   }
 
   foreach ($modules as $module => $moduleId) {
@@ -118,6 +161,11 @@ function drush_toolkit_check_contrib_toolkit_contrib_update() {
       }
     }
   }
+  // Delete variable 'project_id'.
+  // $project_id = variable_get('project_id');
+  if ($project_id !== NULL) {
+    variable_del('project_id');
+  }
 }
 
 // Helper function to get the minimum accepted module version.
@@ -130,7 +178,7 @@ function searchForVersion($moduleName, $modulesArray) {
 }
 
 // Helper function to get the list of authorised modules.
-function getListAuthorisedModules() {
+function getModulesList() {
   // Get list of authorised modules.
   $url = 'https://raw.githubusercontent.com/ec-europa/qa-tests/components/module_list.json';
 
@@ -148,10 +196,10 @@ function getListAuthorisedModules() {
     // Request was ok? check response code.
     $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     if ($statusCode == 200) {
-      $d7ApprovedModules = json_decode($result, true);
+      $d7ModulesList = json_decode($result, true);
     }
   }
-  return $d7ApprovedModules;
+  return $d7ModulesList;
 }
 
 // Helper function to discover all existing modules in project,
