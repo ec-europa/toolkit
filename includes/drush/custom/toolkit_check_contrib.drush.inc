@@ -87,7 +87,7 @@ function drush_toolkit_check_contrib_toolkit_contrib_authorised_security($projec
       !empty($moduleInfo['version']) && $moduleInfo['project'] == $moduleId) {
 
       if (!in_array($moduleId, $modulesName)) {
-        drush_log('The use of the module ' . $moduleId . ' is not approved by the QA team.', LogLevel::ERROR);
+        drush_log('The use of the module ' . $moduleId . ' is not authorised by the QA team.', LogLevel::ERROR);
       }
 
       // Check for security updates.
@@ -108,7 +108,6 @@ function drush_toolkit_check_contrib_toolkit_contrib_authorised_security($projec
     unset($status);
   }
   // Delete variable 'project_id'.
-  // $project_id = variable_get('project_id');
   if ($project_id !== NULL) {
     variable_del('project_id');
   }
@@ -128,18 +127,18 @@ function drush_toolkit_check_contrib_toolkit_contrib_update($project_id = NULL) 
       $modulesName[] = $module['name'];
       $modulesArray[] = $module;
     }
-  }
-  // Get list of restricted modules.
-  if ($module['restricted_us'] != '0' && $module['restricted_us'] != '1') {
-    $restrictedByProject = explode(',', $module['restricted_us']);
+    // Get list of restricted modules.
+    if ($module['restricted_us'] != '0' && $module['restricted_us'] != '1') {
+      $restrictedByProject = explode(',', $module['restricted_us']);
 
-    foreach ($restrictedByProject as $project) {
+      foreach ($restrictedByProject as $project) {
 
-      // Check the project Id and add the restricted modules by project (if is
-      // the case) to the list of authorised modules.
-      if ($project_id !== NULL && $project_id == $project) {
-        array_push($modulesName, $module['name']);
-        array_push($modulesArray, $module);
+        // Check the project Id and add the restricted modules by project (if is
+        // the case) to the list of authorised modules.
+        if ($project_id !== NULL && $project_id == $project) {
+          array_push($modulesName, $module['name']);
+          array_push($modulesArray, $module);
+        }
       }
     }
   }
@@ -162,7 +161,6 @@ function drush_toolkit_check_contrib_toolkit_contrib_update($project_id = NULL) 
     }
   }
   // Delete variable 'project_id'.
-  // $project_id = variable_get('project_id');
   if ($project_id !== NULL) {
     variable_del('project_id');
   }
