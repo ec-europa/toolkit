@@ -549,4 +549,19 @@
             </else>
         </if>
     </target>
+
+    <target name="check-contrib-aut-secur" description="Checks for non-authorised contributed modules or/and with security updates.">
+        <echo message="Checking non-authorised modules and security updates for ${db.name}." />
+        <drush command="tk-contrib-as" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>${project.id}</param>
+        </drush>
+    </target>
+
+    <target name="check-contrib-update" description="Checks for contributed modules using a lower version then the recommended one.">
+        <echo message="Checking contributed modules updates for ${db.name}." />
+        <drush command="tk-contrib-up" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>${project.id}</param>
+        </drush>
+    </target>
+
 </project>

@@ -32,7 +32,6 @@ function toolkit_check_contrib_drush_command() {
 
 /**
  * Function to return the list of modules not approved, or
- * modules with a version lower then the minimum version authorised, or
  * modules with an existing security update.
  */
 function drush_toolkit_check_contrib_toolkit_contrib_authorised_security($project_id = NULL) {
@@ -113,6 +112,10 @@ function drush_toolkit_check_contrib_toolkit_contrib_authorised_security($projec
   }
 }
 
+/**
+ * Function to return the list of modules with a version lower then
+ * the minimum version authorised.
+ */
 function drush_toolkit_check_contrib_toolkit_contrib_update($project_id = NULL) {
   if ($project_id !== NULL) {
     variable_set('project_id', $project_id);
