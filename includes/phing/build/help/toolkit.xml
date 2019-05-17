@@ -162,24 +162,10 @@
                     </catch>
                 </trycatch>
 
-                <!-- Copy new .gitignore if it matches starterkit 2.x master. -->
-                <exec command="curl -L -o ${project.tmp.dir}/.gitignore https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/.gitignore" />
-
-                <trycatch>
-                    <try>
-                        <exec command="diff ${project.basedir}/.gitignore ${project.tmp.dir}/.gitignore" passthru="true" checkreturn="true" />
-                        <copy file="${toolkit.dir.incl.templates}/subsite/resources/.gitignore" tofile="${project.basedir}/.gitignore" />
-                    </try>
-                    <catch>
-                        <echo msg="Custom .gitignore file detected. Not overwriting with toolkit 3.x version." level="warning" />
-                    </catch>
-                </trycatch>
-
                 <!-- Move subsite resources to new location. -->
                 <move file="build.properties" tofile="build.project.props" overwrite="true" haltonerror="false" />
                 <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true" haltonerror="false" />
                 <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true" haltonerror="false" />
-                <copy file="${toolkit.dir.incl.templates}/subsite/.jenkinsfile" tofile="${project.basedir}/.jenkinsfile" />
                 <copy file="${toolkit.dir.incl.templates}/subsite/resources/devel.make" tofile="${resources.dir.devel.make}" />
 
                 <!-- Copy cause move can not handle symlinks -->
