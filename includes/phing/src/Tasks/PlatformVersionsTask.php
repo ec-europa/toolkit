@@ -82,7 +82,8 @@ class PlatformVersionsTask extends \Task
         // Get latest version of NE Platform.
         $resp=$this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases');
         foreach($resp as $object) {
-            if ($object->draft == false) {
+            // Skip drafts and prereleases.
+            if ($object->draft == false && $object->prerelease == false) {
                 $versions[$object->published_at] = $object->tag_name;
             }
         }
