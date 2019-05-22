@@ -668,7 +668,7 @@
         <echo msg="Run 'composer install' in the distribution folder for development purposes." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.dist.dir}" override="true" />
-            <property name="composer-no-dev" value="false" override="true" />
+            <property name="composer-no-dev" value="true" override="true" />
         </phingcall>
     </target>
 
