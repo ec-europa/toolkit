@@ -144,6 +144,7 @@ pipeline:
       - ./toolkit/phing test-run-behat ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
+
   phpcs:	
     image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}	
     group: coding-standards	
