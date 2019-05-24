@@ -18,7 +18,7 @@
 
     <target name="toolkit-binary-link" description="Provide project with toolkit binary at root level.">
         <echo msg="Provide project with starterkit binary at root level." />
-        <relsym link="${project.basedir}/toolkit" target="${toolkit.dir.bin}" overwrite="true" />
+        <symlink link="${project.basedir}/toolkit" target="${toolkit.dir.bin}" overwrite="true" />
     </target>
 
     <target name="toolkit-default-props" description="Provide project with an overview of all default build properties." hidden="true">
