@@ -313,11 +313,13 @@
             <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
         </copy>
         <echo msg="Project structure for ${project-type} created." />
-        <!-- Delete a specific file -->
-        <delete file=".jenkinsfile" />
-        <delete file=".gitignore" />
-        <delete file=".drone.yml" />
-        <delete file="build.properties" />
+
+        <!-- Delete config files -->
+        <echo msg="Deleting config files ('.jenkinsfile', '.gitignore', '.drone.yml' and 'build.properties'." />
+        <delete file=".jenkinsfile" quiet="true"/>
+        <delete file=".gitignore" quiet="true"/>
+        <delete file=".drone.yml" quiet="true"/>
+        <delete file="build.properties" quiet="true"/>
     </target>
 
     <target name="toolkit-generate-project-info" description="Copies template files to your project for toolkit integration with inventory details." hidden="true">
