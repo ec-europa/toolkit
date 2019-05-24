@@ -3,25 +3,24 @@
 *.sublime-workspace
 .idea/
 nbproject/
+.DS_Store
 
-# Ignore profiles for subsites.
-lib/profiles/
-
-# Ignore local configuration overrides.
-build.properties.local
-phpcs.xml
-tests/balancer/*.yml
-tests/behat*.yml
-tests/*/behat*.yml
-tests/phpunit.xml
+# Ignore local configuration.
+build.develop.props
+/tests/behat.yml
+/tests/phpunit.xml
 
 # Ignore build artifacts.
-bin/
-toolkit
-toolkit-*
-build/
-dist/
-.tmp/
-vendor/
-resources/git/hooks/pre-push/phpcs
-composer.lock
+/build/
+/composer.lock
+.tmp
+/toolkit
+/vendor
+/bin
+/build.project.xml
+/lib/
+/phpcs-ruleset.xml
+/resources/
+/tests/
+/backstop_data/
+/backstop.json
