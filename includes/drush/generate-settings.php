@@ -34,7 +34,7 @@ $variables = array(
   'file_temporary_path' => '%%file_temporary_path%%',
   'stage_file_proxy_origin' => '%%stage_file_proxy_origin%%',
   'stage_file_proxy_origin_dir' => '%%stage_file_proxy_origin_dir%%',
-  'stage_file_proxy_hotlink' => '%%stage_file_proxy_hotlink%%',
+  'stage_file_proxy_hotlink' => '%%stage_file_proxy_hotlink%%'
 );
 // Setup individual development variables.
 foreach ($variables as $key => $value) {

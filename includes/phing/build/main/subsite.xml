@@ -23,6 +23,7 @@
 
     <target name="build-subsite-dist" description="Build a site intended as a release package."
         depends="
+            subsite-delete-dist,
             subsite-type-tmp,
             subsite-delete,
             subsite-resources-link,

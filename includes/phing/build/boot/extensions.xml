@@ -11,6 +11,7 @@
     <!-- Custom task definititons. -->
     <taskdef name="docgen" classname="Phing\Toolkit\Tasks\DocGeneratorTask" />
     <taskdef name="drushgal" classname="Phing\Toolkit\Tasks\DrushGenerateAliasTask" />
+    <taskdef name="platformversions" classname="Phing\Toolkit\Tasks\PlatformVersionsTask" />
     <taskdef name="drushmf" classname="Phing\Toolkit\Tasks\DrushMakeFileTask" />
     <taskdef name="drushms" classname="Phing\Toolkit\Tasks\DrushMakeSecureTask" />
     <taskdef name="gitigmerge" classname="Phing\Toolkit\Tasks\GitignoreMergerTask" />

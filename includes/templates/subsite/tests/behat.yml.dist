@@ -25,8 +25,9 @@ default:
               - "--disable-gpu"
               - "--start-maximized"
       javascript_session: 'selenium2'
-      base-url: '{{ behat.base_url }}'
+      base_url: '{{ behat.base_url }}'
       files_path: '{{ build.platform.dir }}'
+      show_cmd: '{{ behat.show_cmd }}'
     Drupal\DrupalExtension:
       api_driver: '{{ behat.api.driver }}'
       blackbox: ~
@@ -36,6 +37,7 @@ default:
         message_selector: '.messages'
         error_message_selector: '.messages.error'
         success_message_selector: '.messages.status'
+        warning_message_selector: '.messages.warning'
       drush:
         alias: '{{ behat.drush.alias }}'
         binary: '{{ toolkit.dir.bin.drush }}'

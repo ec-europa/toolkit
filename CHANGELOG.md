@@ -1,4 +1,18 @@
 # Toolkit change log
+## Version 3.0.21
+  * MULTISITE-20750: Set default value for drush.color as 0.
+  * MULTISITE-21001: Improve target platform-resource-link to check if files exists before creation.
+  * MULTISITE-21025: Improvements to default behat configuration.
+  * MULTIISTE-21027: Fix install-clean for multisite_drupal_communities profile.
+  * MULTISITE-21046: Set CSP during settings generation for install-clean and install-clone.
+  * MULTISITE-21052: Store database dump in compress format (.gz).
+  * MULTISITE-21073: Make toolkit compatible with PHP 7.1.
+  * MULTISITE-21121: Bugfix, SOLR environment now set for communities profile.
+  * MULTISITE-21227: Force delete of dist folder during distribution rebuild.
+  * MULTISITE-21234: Remove dependency on RELEASE endpoint, platform fetched from GitHub.
+  * MULTISITE-21260: Automatic recover uid:1 if table users is empty.
+  * OTHERS: Improve documentation for Supported profiles.
+
 ## Version 3.0.20
   * Improve default .gitignore file
   * Include --no-progress option in to main composer.json execution

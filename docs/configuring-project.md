@@ -183,7 +183,6 @@ phpunit.base_url = ${behat.base_url}
 
 # Binaries.
 # ---------
-project.bin.composer = composer.phar
 project.bin.git = git
 
 # Temporary folders and resources.
@@ -220,7 +219,7 @@ devel.vars.views_ui_show_sql_query = 1
 
 # Debugging configuration.
 # ------------------------
-drush.color = 1
+drush.color = 0
 drush.verbose = FALSE
 
 # Docker. (TODO)
@@ -419,7 +418,7 @@ varnish.server.port = 8888
 
 # Drush Context configuration.
 # ----------------------------
-drush.db.dump = ${build.platform.dir}/dump.sql
+drush.db.dump = ${build.platform.dir}/dump.sql.gz
 ```
 </p></details>
 

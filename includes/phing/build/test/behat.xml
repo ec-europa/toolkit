@@ -89,6 +89,7 @@
                     <token key="behat.formatter.name" value="${behat.formatter.name}" />
                     <token key="integration.server.port" value="${integration.server.port}" />
                     <token key="varnish.server.port" value="${varnish.server.port}" />
+                    <token key="behat.show_cmd" value="${behat.show_cmd}" />
                 </replacetokens>
             </filterchain>
             <mapper type="glob" from="*.yml.dist" to="*.yml" />
@@ -100,7 +101,7 @@
     <!-- Download and put in place generic/smoke test. -->
     <target name="test-behat-setup-generic" hidden="true">
         <echo msg="Installing ${behat.generic.package} package." />
-        <composer command="require" composer="${project.bin.composer}">
+        <composer command="require">
             <arg value="${behat.generic.package}" />
             <arg value="--working-dir=${behat.dir}" />
             <arg value="--no-interaction" />
@@ -163,7 +164,7 @@
     <!-- Install Composer dependencies without development dependencies. -->
     <target name="test-composer-install" hidden="true">
         <echo msg="Run 'composer install' in test folder." />
-        <composer command="install" composer="${project.bin.composer}">
+        <composer command="install">
             <arg value="--working-dir=${tests.dir}" />
             <arg value="--no-interaction" />
             <arg value="--no-suggest" />
