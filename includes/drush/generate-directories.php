@@ -14,8 +14,6 @@ if (!function_exists('drupal_mkdir')) {
 $directories = array(
   variable_get('file_temporary_path', conf_path() . '/files/tmp'),
   variable_get('file_private_path', conf_path() . '/files/private_files'),
-  variable_get('file_public_path', conf_path() . '/files') . '/css_injector',
-  variable_get('file_public_path', conf_path() . '/files') . '/js_injector',
   variable_get('file_public_path', conf_path() . '/files'),
 );
 
