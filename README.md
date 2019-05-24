@@ -9,36 +9,10 @@ the Phing build system that builds your development environments, deploy
 and test packages.</p>
 
 ## Requirements
-There are three separate ways of using the NextEuropa project. Either you use an
-environment with Docker installed, an environment without, or a mix of both.
 
-<details><summary><b>Docker Solo</b></summary>
+- [Composer](https://getcomposer.org/),
+- [LAMP Stack](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-centos-7)
 
-This requirement for docker only needs to have docker in docker support. The
-configuration to accomplish this is complex and if implemented incorrectly can
-give you problems. We recommend this approach only for seasoned docker users.
-<br>*Required components*:
-[Docker](https://docs.docker.com/engine/installation/linux/docker-ce/centos/)
-</details>
-<details><summary><b>Docker Plus</b></summary>
-
-Instead of having the absolute minimal requirement you can install the host
-level components Composer and Phing on the non-docker environment. Then this can
-spin up the docker containers for you without having to configure a complicated
-docker installation.<br>*Required components*:
-[Composer](https://getcomposer.org/),
-[Phing](https://packagist.org/packages/phing/phing),
-[Docker](https://docs.docker.com/engine/installation/linux/docker-ce/centos/)
-</details>
-<details><summary><b>Docker Zero</b></summary>
-
-If you are not interested in the advantages that the toolkit can give you with
-the provided docker images you can keep a normal host only setup. But it is very
-much recommended to use docker as it will give you everything you need.
-<br>*Required components*:
-[Composer](https://getcomposer.org/),
-[LAMP Stack](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-centos-7)
-</details>
 
 ## User guide
 
@@ -54,10 +28,6 @@ locally and can be used in CI tools like Jenkins, Drone or Travis.
     - [Build properties](docs/configuring-project.md#build-properties)
     - [Build files](docs/configuring-project.md#build-files)
     - [Cache system](docs/configuring-project.md#cache-system)
-- [Building the codebase](docs/building-codebase.md#building-the-codebase)
-    - [Platform builds](docs/building-codebase.md#platform-builds)
-    - [Subsite builds](docs/building-codebase.md#subsite-builds)
-    - [Theme builds](docs/building-codebase.md#theme-builds)
 - [Installing the project](/docs/installing-project.md#installing-project)
     - [Clean installation](/docs/installing-project.md#clean-installation)
     - [Clone installation](/docs/installing-project.md#clone-installation)
