@@ -116,12 +116,12 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  visreg-after:
-    image: backstopjs/backstopjs
-    commands:
-      - cp -f includes/docker/docker-backstopjs/core/util/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
-      - cp -f includes/docker/docker-backstopjs/core/util/compare/index.js /usr/local/lib/node_modules/backstopjs/core/util/compare/index.js
-      - backstop test || echo 'Proceed ...'
+  # visreg-after:
+  #   image: backstopjs/backstopjs
+  #   commands:
+  #     - cp -f includes/docker/docker-backstopjs/core/util/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
+  #     - cp -f includes/docker/docker-backstopjs/core/util/compare/index.js /usr/local/lib/node_modules/backstopjs/core/util/compare/index.js
+  #     - backstop test || echo 'Proceed ...'
 
   smoketest:
     image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
