@@ -173,6 +173,7 @@ pipeline:
       - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
+
   # ============================================================================
   # Notify section:
   # ============================================================================
