@@ -313,6 +313,8 @@
             <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
         </copy>
         <echo msg="Project structure for ${project-type} created." />
+        <!-- Delete a specific file -->
+        <delete file=".jenkinsfile" />
     </target>
 
     <target name="toolkit-generate-project-info" description="Copies template files to your project for toolkit integration with inventory details." hidden="true">
