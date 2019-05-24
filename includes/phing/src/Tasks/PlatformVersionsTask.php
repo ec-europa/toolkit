@@ -83,7 +83,7 @@ class PlatformVersionsTask extends \Task
         $resp=$this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases');
         foreach($resp as $object) {
             // Skip drafts and prereleases.
-            if ($object->draft == false && $object->prerelease == false) {
+            if ($object->draft == true || $object->prerelease == false) {
                 $versions[$object->published_at] = $object->tag_name;
             }
         }
