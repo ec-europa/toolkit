@@ -1,0 +1,27 @@
+# Ignore metadata from common editors and IDEs.
+*.sublime-project
+*.sublime-workspace
+.idea/
+nbproject/
+
+# Ignore profiles for subsites.
+lib/profiles/
+
+# Ignore local configuration overrides.
+build.properties.local
+phpcs.xml
+tests/balancer/*.yml
+tests/behat*.yml
+tests/*/behat*.yml
+tests/phpunit.xml
+
+# Ignore build artifacts.
+bin/
+toolkit
+toolkit-*
+build/
+dist/
+.tmp/
+vendor/
+resources/git/hooks/pre-push/phpcs
+composer.lock

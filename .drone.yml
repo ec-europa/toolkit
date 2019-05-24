@@ -1,0 +1,70 @@
+workspace:
+  base: /test
+  path: toolkit
+
+services:
+  web:
+    image: fpfis/php56-dev
+    environment:
+     - DOCUMENT_ROOT=/test/toolkit/build
+  mysql:
+    image: fpfis/mysql56
+#  ecas:
+#    image: fpfis-acpcloud622hotmail.azurecr.io/ecas
+  selenium:
+    image: selenium/standalone-firefox
+    environment:
+      - SE_OPTS=-log /tmp/selenium.log
+  solr:
+    image: fpfis/solr5
+
+pipeline:
+
+  toolkit:
+    image: fpfis/php56-dev
+    commands:
+      - composer update
+    volumes:
+      - /cache:/cache
+
+  build:
+    image: fpfis/php56-dev
+    commands:
+      - ./toolkit/phing project-build-platform
+      - ./toolkit/phing build-subsite-dev
+    volumes:
+      - /cache:/cache
+
+  install:
+    image: fpfis/php56-dev
+    commands:
+      - ./toolkit/phing install-project-clean
+    volumes:
+      - /cache:/cache
+
+  test:
+    image: fpfis/php56-dev
+    commands:
+      - ./toolkit/phing test-run-behat
+    volumes:
+      - /cache:/cache
+
+  build-dist:
+    image: fpfis/php56-dev
+    commands:
+      - ./toolkit/phing build-platform-dist
+      - tar -czf ${DRONE_REPO_NAME}-${DRONE_TAG}.tar.gz -C build .
+    when:
+      event: tag
+
+  github_release:
+    image: plugins/github-release
+    files:
+      - ${DRONE_REPO_NAME}-${DRONE_TAG}.tar.gz
+    checksum:
+      - sha1
+      - sha256
+      - sha512
+    secrets: [ GITHUB_RELEASE_API_KEY ]
+    when:
+      event: tag
