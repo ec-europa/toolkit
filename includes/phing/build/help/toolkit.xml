@@ -315,6 +315,9 @@
         <echo msg="Project structure for ${project-type} created." />
         <!-- Delete a specific file -->
         <delete file=".jenkinsfile" />
+        <delete file=".gitignore" />
+        <delete file=".drone.yml" />
+        <delete file="build.properties" />
     </target>
 
     <target name="toolkit-generate-project-info" description="Copies template files to your project for toolkit integration with inventory details." hidden="true">
