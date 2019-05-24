@@ -19,7 +19,7 @@ workspace:
 # Matrix section
 # ==============================================================================
 matrix:
-  PHP_VERSION:	
+  PHP_VERSION:
     - 5.6
     - 7.1
   PHING_OPTS:
@@ -29,7 +29,6 @@ matrix:
     - -D'platform.package.version'='2.4' -D'profile'='multisite_drupal_standard'
     - -D'platform.package.version'='2.5' -D'profile'='multisite_drupal_standard'
     - -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.x'
-    # - -D'profile'='drupal' -D'profile.name'='standard' -D'profile.core'='8.7.x'
 
 # ==============================================================================
 # Main services
@@ -112,7 +111,7 @@ pipeline:
   install-clone:
     image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
     commands:
-      - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql' ${BUILD_OPTIONS} ${PHING_OPTS}
+      - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql.gz' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
@@ -153,7 +152,7 @@ pipeline:
     volumes:	
       - /cache/${DRONE_REPO_NAME}:/cache	
 
-   php7-comp:	
+  php7-comp:	
     image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}	
     group: coding-standards	
     commands:	
