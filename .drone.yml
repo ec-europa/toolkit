@@ -85,10 +85,10 @@ pipeline:
   # ============================================================================
   # Install section:
   # ============================================================================
-  visreg-init:
-    image: backstopjs/backstopjs
-    commands:
-      - backstop init
+  # visreg-init:
+  #   image: backstopjs/backstopjs
+  #   commands:
+  #     - backstop init
 
   install-clean:
     image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
@@ -99,12 +99,12 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  visreg-before:
-    image: backstopjs/backstopjs
-    commands:
-      - cp -f includes/docker/docker-backstopjs/core/util/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
-      - cp -f includes/docker/docker-backstopjs/core/util/compare/index.js /usr/local/lib/node_modules/backstopjs/core/util/compare/index.js
-      - backstop reference
+  # visreg-before:
+  #   image: backstopjs/backstopjs
+  #   commands:
+  #     - cp -f includes/docker/docker-backstopjs/core/util/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
+  #     - cp -f includes/docker/docker-backstopjs/core/util/compare/index.js /usr/local/lib/node_modules/backstopjs/core/util/compare/index.js
+  #     - backstop reference
 
   # ============================================================================
   # Clone section:
