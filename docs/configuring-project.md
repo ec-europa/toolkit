@@ -183,6 +183,7 @@ phpunit.base_url = ${behat.base_url}
 
 # Binaries.
 # ---------
+project.bin.composer = composer.phar
 project.bin.git = git
 
 # Temporary folders and resources.

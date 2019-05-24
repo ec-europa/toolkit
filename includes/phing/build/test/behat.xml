@@ -101,7 +101,7 @@
     <!-- Download and put in place generic/smoke test. -->
     <target name="test-behat-setup-generic" hidden="true">
         <echo msg="Installing ${behat.generic.package} package." />
-        <composer command="require">
+        <composer command="require" composer="${project.bin.composer}">
             <arg value="${behat.generic.package}" />
             <arg value="--working-dir=${behat.dir}" />
             <arg value="--no-interaction" />
@@ -164,7 +164,7 @@
     <!-- Install Composer dependencies without development dependencies. -->
     <target name="test-composer-install" hidden="true">
         <echo msg="Run 'composer install' in test folder." />
-        <composer command="install">
+        <composer command="install" composer="${project.bin.composer}">
             <arg value="--working-dir=${tests.dir}" />
             <arg value="--no-interaction" />
             <arg value="--no-suggest" />
