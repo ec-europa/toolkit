@@ -145,19 +145,19 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  phpcs:	
-    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}	
-    group: coding-standards	
-    commands:	
-      - ./toolkit/phing test-run-phpcs ${BUILD_OPTIONS} ${PHING_OPTS}	
-    volumes:	
-      - /cache/${DRONE_REPO_NAME}:/cache	
+  phpcs:
+    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
+    group: coding-standards
+    commands:
+      - ./toolkit/phing test-run-phpcs ${BUILD_OPTIONS} ${PHING_OPTS}
+    volumes:
+      - /cache/${DRONE_REPO_NAME}:/cache
 
-  php7-comp:	
-    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}	
-    group: coding-standards	
-    commands:	
-      - ./toolkit/phing test-phpcs-setup -D'phpcs.files'='$${build.dist.dir}' -D'phpcs.standards'='PHPCompatibility' -D'phpcs.extensions'='php inc module install test profile theme' -logger phing.listener.AnsiColorLogger	
+  php7-comp:
+    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
+    group: coding-standards
+    commands:
+      - ./toolkit/phing test-phpcs-setup -D'phpcs.files'='$${build.dist.dir}' -D'phpcs.standards'='PHPCompatibility' -D'phpcs.extensions'='php inc module install test profile theme' -logger phing.listener.AnsiColorLogger
       - ./toolkit/phpcs --runtime-set testVersion 7.0- ./lib || echo "PHPCompatibility failed..."
       - ./toolkit/phpcs --runtime-set testVersion 7.0- ./includes || echo "PHPCompatibility failed..."
 
