@@ -73,7 +73,6 @@ pipeline:
     group: build
     commands:
       - ./toolkit/phing build-platform build-subsite-dev ${BUILD_OPTIONS} ${PHING_OPTS}
-      - curl https://api.github.com/rate_limit 
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
