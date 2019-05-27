@@ -187,11 +187,18 @@ class PlatformVersionsTask extends \Task
     {
         // Get latest version of NE Platform.
         $curl = curl_init();
+        $github_api_token = getenv('GITHUB_API_TOKEN');
         curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_URL => $url,
             CURLOPT_USERAGENT => 'EC Toolkit request'
         ]);
+        if (!empty($github_api_token)) {
+            $request_headers = array(
+                'Authorization: token ' . $github_api_token
+            );
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $request_headers);
+        }
         $resp = json_decode(curl_exec($curl));
         curl_close($curl);
 

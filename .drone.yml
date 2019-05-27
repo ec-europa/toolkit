@@ -35,16 +35,13 @@ matrix:
 # ==============================================================================
 services:
   web:
-    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     environment:
       - DOCUMENT_ROOT=/test/toolkit/build
   mysql:
     image: percona/percona-server:5.6
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-  visreg:
-    image: backstopjs/backstopjs
-    entrypoint: [ "/bin/bash" ]
 
 # ==============================================================================
 # Pipelines
@@ -55,7 +52,7 @@ pipeline:
   # Setup section:
   # ============================================================================
   setup:
-    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     group: setup
     commands:
       - PROJECT=$(pwd) composer toolkit-install
@@ -69,7 +66,7 @@ pipeline:
   # Build section:
   # ============================================================================
   build:
-    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     group: build
     commands:
       - ./toolkit/phing build-platform build-subsite-dev ${BUILD_OPTIONS} ${PHING_OPTS}
@@ -84,46 +81,26 @@ pipeline:
   # ============================================================================
   # Install section:
   # ============================================================================
-  visreg-init:
-    image: backstopjs/backstopjs
-    commands:
-      - backstop init
-
   install-clean:
-    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     commands:
       - ./toolkit/phing install-clean ${BUILD_OPTIONS} ${PHING_OPTS}
-      - ./toolkit/phing docker-backstop-generate ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
-
-  visreg-before:
-    image: backstopjs/backstopjs
-    commands:
-      - cp -f includes/docker/docker-backstopjs/core/util/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
-      - cp -f includes/docker/docker-backstopjs/core/util/compare/index.js /usr/local/lib/node_modules/backstopjs/core/util/compare/index.js
-      - backstop reference
 
   # ============================================================================
   # Clone section:
   # ============================================================================
   install-clone:
-    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     commands:
       - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql.gz' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  visreg-after:
-    image: backstopjs/backstopjs
-    commands:
-      - cp -f includes/docker/docker-backstopjs/core/util/runPuppet.js /usr/local/lib/node_modules/backstopjs/core/util/runPuppet.js
-      - cp -f includes/docker/docker-backstopjs/core/util/compare/index.js /usr/local/lib/node_modules/backstopjs/core/util/compare/index.js
-      - backstop test || echo 'Proceed ...'
-
   smoketest:
-    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     commands:
       - ./toolkit/phing drush-run-smoketest ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
@@ -138,7 +115,7 @@ pipeline:
   # Test section:
   # ============================================================================
   behat:
-    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     group: coding-standards
     commands:
       - ./toolkit/phing test-run-behat ${BUILD_OPTIONS} ${PHING_OPTS}
@@ -146,7 +123,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   phpcs:
-    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     group: coding-standards
     commands:
       - ./toolkit/phing test-run-phpcs ${BUILD_OPTIONS} ${PHING_OPTS}
@@ -154,7 +131,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
 
   php7-comp:
-    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     group: coding-standards
     commands:
       - ./toolkit/phing test-phpcs-setup -D'phpcs.files'='$${build.dist.dir}' -D'phpcs.standards'='PHPCompatibility' -D'phpcs.extensions'='php inc module install test profile theme' -logger phing.listener.AnsiColorLogger
@@ -165,13 +142,14 @@ pipeline:
   # Git hook integration section:
   # ============================================================================
   git-hooks:
-    image: fpfis/httpd-php-ci:${PHP_VERSION=5.6}
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     commands:
       - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing git-hook-disable ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
+
   # ============================================================================
   # Notify section:
   # ============================================================================

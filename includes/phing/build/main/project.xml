@@ -387,7 +387,7 @@
                 <if>
                     <ispropertytrue property="composer-no-dev" />
                     <then>
-                        <composer command="install">
+                        <composer command="install" composer="${project.bin.composer}">
                             <arg value="--working-dir=${composer-working-dir}" />
                             <arg value="--no-interaction" />
                             <arg value="--no-suggest" />
@@ -397,7 +397,7 @@
                         </composer>
                     </then>
                     <else>
-                        <composer command="install">
+                        <composer command="install" composer="${project.bin.composer}">
                             <arg value="--working-dir=${composer-working-dir}" />
                             <arg value="--no-interaction" />
                             <arg value="--no-suggest" />
