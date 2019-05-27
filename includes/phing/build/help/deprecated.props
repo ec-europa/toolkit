@@ -57,6 +57,7 @@ platform.package.destination =
 platform.package = platform.package.version
 platform.package.provider.token = platform.package.provider.token
 
+composer.bin = project.bin.composer
 drush.bin = toolkit.dir.bin.drush
 git.bin = project.bin.git
 phing.bin = toolkit.dir.bin.phing

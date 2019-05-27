@@ -1,6 +1,6 @@
 # Configuring a project
 
-<big><table><thead><tr><th nowrap> [Setting up a project](./setting-up-project.md#setting-up-a-project) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Building the codebase](./building-codebase.md#building-the-codebase) </th></tr></thead></table>
+<big><table><thead><tr><th nowrap> [Setting up a project](./setting-up-project.md#setting-up-a-project) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Configuring a project](./configuring-project.md#configuring-a-project) </th></tr></thead></table>
 
 ## Build properties
 
@@ -183,6 +183,7 @@ phpunit.base_url = ${behat.base_url}
 
 # Binaries.
 # ---------
+project.bin.composer = composer.phar
 project.bin.git = git
 
 # Temporary folders and resources.
