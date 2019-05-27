@@ -326,8 +326,6 @@
                 <exec command="echo ${project-details} | cut -d',' -f1" outputProperty="project.id" />
                 <exec command="echo ${project-details} | cut -d',' -f2" outputProperty="project.name" />
                 <exec command="echo ${project-details} | cut -d',' -f3" outputProperty="project.url.repository" />
-                <exec command="echo ${project-details} | cut -d',' -f4" outputProperty="backtrac.id.static" />
-                <exec command="echo ${project-details} | cut -d',' -f5" outputProperty="backtrac.id.dynamic" />
                 <exec command="echo ${project-details} | cut -d',' -f6" outputProperty="project.url.production" />
                 <exec command="echo ${project-details} | cut -d',' -f7" outputProperty="project.url.playground" />
                 <copy todir="${project.basedir}" overwrite="true">
@@ -343,8 +341,6 @@
                             <token key="PROJECT_INSTALL_MODULES" value="${project.install.modules}" />
                             <token key="PRODUCTION_URL" value="${project.url.production}" />
                             <token key="REPOSITORY_URL" value="${project.url.repository}" />
-                            <token key="BACKTRAC_ID_STATIC" value="${backtrac.id.static}" />
-                            <token key="BACKTRAC_ID_DYNAMIC" value="${backtrac.id.dynamic}" />
                         </replacetokens>
                     </filterchain>
                 </copy>

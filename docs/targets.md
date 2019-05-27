@@ -101,8 +101,10 @@ Build a local development version of the site.
 
 ##### Dependencies: 
 * project-modules-devel-make
+* project-subsite-backup
 * project-subsite-composer-dev
-* subsite-delete
+* project-subsite-restore
+* subsite-delete-dev
 * subsite-make
 * subsite-resources-link
 * subsite-type-dev
@@ -120,6 +122,7 @@ Build a site intended as a release package.
 * package-version-set
 * project-subsite-composer-no-dev
 * subsite-delete
+* subsite-delete-dist
 * subsite-make
 * subsite-resources-copy
 * subsite-resources-link
