@@ -1,6 +1,6 @@
 # Configuring a project
 
-<big><table><thead><tr><th nowrap> [Setting up a project](./setting-up-project.md#setting-up-a-project) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Building the codebase](./building-codebase.md#building-the-codebase) </th></tr></thead></table>
+<big><table><thead><tr><th nowrap> [Setting up a project](./setting-up-project.md#setting-up-a-project) </th><th width="100%" align="center"> [User guide](../README.md#user-guide) </th><th nowrap> [Configuring a project](./configuring-project.md#configuring-a-project) </th></tr></thead></table>
 
 ## Build properties
 
@@ -220,7 +220,7 @@ devel.vars.views_ui_show_sql_query = 1
 
 # Debugging configuration.
 # ------------------------
-drush.color = 1
+drush.color = 0
 drush.verbose = FALSE
 
 # Docker. (TODO)
@@ -419,7 +419,7 @@ varnish.server.port = 8888
 
 # Drush Context configuration.
 # ----------------------------
-drush.db.dump = ${build.platform.dir}/dump.sql
+drush.db.dump = ${build.platform.dir}/dump.sql.gz
 ```
 </p></details>
 

@@ -92,6 +92,12 @@ class RelativeSymlinkTask extends \SymlinkTask
     {
         $fs = FileSystem::getFileSystem();
 
+        // Check if target exists.
+        if (!file_exists($target)) {
+            $this->log(sprintf('Target "%s" do not exists, skiping.', $target), Project::MSG_WARN);
+            return true;
+        }
+
         // Convert target to relative path.
         $absolutePath = (new PhingFile($link))->getAbsolutePath();
         $link         = $absolutePath;

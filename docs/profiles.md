@@ -22,6 +22,6 @@ Example:
 # -----------------------
 profile = drupal
 profile.name = standard
-platform.package.version = 7.56
+profile.core = 7.65
 
 ```

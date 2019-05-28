@@ -4,7 +4,18 @@
 
     <target name="drush-aliases-generate" hidden="true" description="Generate drush aliases for each subsite folder.">
         <mkdir dir="${build.platform.dir.sites}/all/drush" />
-        <drushgal siteRoot="${build.platform.dir}" siteUrl="${project.url.base}" />
+
+        <if>
+            <equals arg1="${project.url.base}" arg2="" />
+            <then>
+                <property name="drush.project.url.base" value="http://web:8080" />
+            </then>
+            <else>
+                <property name="drush.project.url.base" value="${project.url.base}" />
+            </else>
+        </if>
+
+        <drushgal siteRoot="${build.platform.dir}" siteUrl="${drush.project.url.base}" />
     </target>
 
     <target name="drush-files-dirs-create" description="Create site files directories." hidden="true">
@@ -123,7 +134,10 @@
 
     <target name="drush-modules-enable" description="Enable a set of modules." hidden="true">
         <if>
-            <equals arg1="${profile}" arg2="multisite_drupal_standard"/>
+            <or>
+                <equals arg1="${profile}" arg2="multisite_drupal_standard"/>
+                <equals arg1="${profile}" arg2="multisite_drupal_communities"/>
+            </or>
             <then>
                 <drush
                     command="pm-enable"
@@ -248,13 +262,16 @@
                   <param>${project.tmp.dir}/generate-settings.php</param>
                 </drush>
 
+                <!-- Append specific CSP header information. -->
+                <append destFile="${build.subsite.dir}/settings.php" text="$conf['multisite_toolbox_cs_whitelist'] = array('*.europa.eu');" />
+
                 <if>
                     <and>
                         <not><isfalse value="${project.url.base}" /></not>
                         <not><equals arg1="${project.url.base}" arg2='""' /></not>
                     </and>
                     <then>
-                        <!-- Append specific base_urlk information. -->
+                        <!-- Append specific base_url information. -->
                         <append destFile="${build.subsite.dir}/settings.php" text="${line.separator}$base_url = '${project.url.base}';" />
                     </then>
                 </if>
@@ -324,6 +341,29 @@
         </if>
     </target>
 
+    <target name="drush-check-users" hidden="true" description="Recover user table for ASDA dumps.">
+        <exec command='drush -r ${build.dev} sqlq "SELECT count(uid) FROM users WHERE 1"' outputProperty="count.users" checkreturn="true" />
+        <if>
+            <equals arg1="${count.users}" arg2="0" />
+            <then>
+                <echo msg="Cannot found any user in your database, recovering admin account (uid:1)." />
+                <drush returnProperty="count.users"
+                    command="sqlq"
+                    assume="yes"
+                    root="${build.platform.dir}"
+                    alias="@${drush.alias.default}"
+                    bin="${toolkit.dir.bin.drush}"
+                    verbose="${drush.verbose}"
+                    color="${drush.color}">
+                    <param escape="no" quote="yes">INSERT INTO users (uid, name, pass, mail, status) VALUES ('1', '${admin.username}', md5('${admin.password}'), '${admin.email}', 1);</param>
+                </drush>
+            </then>
+            <else>
+                <echo msg="We found ${count.users} users in your database skipping recreation." />
+            </else>
+        </if>
+    </target>
+
     <target name="drush-site-install" hidden="true" description="Install a site.">
         <echo message="Installing site ${project.name}." />
         <drush command="site-install" assume="yes" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${drush.alias.default}" verbose="${drush.verbose}" color="${drush.color}">
@@ -379,11 +419,23 @@
     </target>
 
     <target name="drush-sql-import" hidden="true" description="Import a database.">
-        <echo message="Importing database." />
-        <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${db.url}" />
-            <param>&lt; ${database-file}</param>
-        </drush>
+        <if>
+            <contains string="${database-file}" substring=".gz" />
+            <then>
+                <exec command="zcat -q ${database-file} > ${project.tmp.dir}/dump.sql" />
+                <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <option name="db-url" value="${db.url}" />
+                    <param>&lt; ${project.tmp.dir}/dump.sql</param>
+                </drush>
+                <exec command="rm -rf ${project.tmp.dir}/dump.sql"/>
+            </then>
+            <else>
+                <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <option name="db-url" value="${db.url}" />
+                    <param>&lt; ${database-file}</param>
+                </drush>
+            </else>
+        </if>
         <if>
             <not>
                 <equals arg1="${build.site}" arg2="${project.id}" />
@@ -400,7 +452,10 @@
         </if>
         <phingcall target="drush-files-dirs-htaccess" />
         <if>
-            <equals arg1="${profile}" arg2="multisite_drupal_standard" />
+            <or>
+                <equals arg1="${profile}" arg2="multisite_drupal_standard"/>
+                <equals arg1="${profile}" arg2="multisite_drupal_communities"/>
+            </or>
             <then>
                 <phingcall target="drush-solr-enable" />
             </then>
@@ -456,6 +511,7 @@
             <finally>
                 <drush command="en" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
                     <param>gdpr_dump</param>
+                    <param>gdpr_dump</param>
                 </drush>
                 <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} vset gdpr_dump_table_map &apos;{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}&apos; --format=json --exact -y >/dev/null' escape="false" />
             </finally>
@@ -492,11 +548,13 @@
                 </trycatch>
                 
                 <drush command="gdpr-sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>--gzip</param>
                     <option name="result-file" value="${database-file}" />
                 </drush>
             </then>
             <else>
                 <drush command="sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <param>--gzip</param>
                     <option name="result-file" value="${database-file}" />
                 </drush>
             </else>

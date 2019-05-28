@@ -218,7 +218,7 @@ devel.vars.views_ui_show_sql_query = 1
 
 # Debugging configuration.
 # ------------------------
-drush.color = 1
+drush.color = 0
 drush.verbose = FALSE
 drush.rr.enabled = 1
 drush.rr.options = --fire-bazooka --no-cache-clear
@@ -409,7 +409,7 @@ varnish.server.port = 8888
 
 # Drush Context configuration.
 # ----------------------------
-drush.db.dump = ${build.platform.dir}/dump.sql
+drush.db.dump = ${build.platform.dir}/dump.sql.gz
 
 # Drush aliases configuration.
 # ----------------------------
@@ -438,4 +438,4 @@ solr.host = solr
 behat.base_url = http://web:8080
 behat.wd_host.url = http://selenium:4444/wd/hub
 share.path = /cache
-project.db.file = ./dump.sql
+project.db.file = ./dump.sql.gz

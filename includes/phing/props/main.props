@@ -44,7 +44,7 @@ devel.vars.views_ui_show_sql_query = 1
 
 # Debugging configuration.
 # ------------------------
-drush.color = 1
+drush.color = 0
 drush.verbose = FALSE
 drush.rr.enabled = 1
 drush.rr.options = --fire-bazooka --no-cache-clear
@@ -104,6 +104,7 @@ platform.package.db.cache.ttl = 30
 platform.package.provider = git-hub
 platform.package.provider.token = # TODO: Github API limit.
 platform.package.repository = ec-europa/platform-dev
+platform.package.download.location = https://github.com/${platform.package.repository}/releases/download/${platform.package.version.current}
 platform.package.version = 2.5
 platform.multisite.mode = 1
 
@@ -236,7 +237,7 @@ varnish.server.port = 8888
 
 # Drush Context configuration.
 # ----------------------------
-drush.db.dump = ${build.platform.dir}/dump.sql
+drush.db.dump = ${build.platform.dir}/dump.sql.gz
 
 # Drush aliases configuration.
 # ----------------------------
