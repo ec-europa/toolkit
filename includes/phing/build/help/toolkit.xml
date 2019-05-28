@@ -276,7 +276,6 @@
             </then>
         </if>
         <delete dir="lib-backup" />
-        <phingcall target="toolkit-generate-project-info" />
     </target>
 
     <target name="toolkit-structure-generate" description="Create the lib directory structure." hidden="true">
@@ -313,40 +312,6 @@
             <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
         </copy>
         <echo msg="Project structure for ${project-type} created." />
-    </target>
-
-    <target name="toolkit-generate-project-info" description="Copies template files to your project for toolkit integration with inventory details." hidden="true">
-        <exec command="basename -s .git `git config --get remote.origin.url`" outputProperty="project-id" />
-        <exec command="grep ${project-id} ${toolkit.dir.incl.templates}/project/inventory.csv | head -1" outputProperty="project-details" />
-        <if>
-            <not>
-                <equals arg1="${project-details}" arg2="" />
-            </not>
-            <then>
-                <exec command="echo ${project-details} | cut -d',' -f1" outputProperty="project.id" />
-                <exec command="echo ${project-details} | cut -d',' -f2" outputProperty="project.name" />
-                <exec command="echo ${project-details} | cut -d',' -f3" outputProperty="project.url.repository" />
-                <exec command="echo ${project-details} | cut -d',' -f6" outputProperty="project.url.production" />
-                <exec command="echo ${project-details} | cut -d',' -f7" outputProperty="project.url.playground" />
-                <copy todir="${project.basedir}" overwrite="true">
-                    <fileset dir="${toolkit.dir.incl.templates}/subsite">
-                        <include name="README.md" />
-                        <include name="composer.json" />
-                        <include name="build.project.props" />
-                    </fileset>
-                    <filterchain>
-                        <replacetokens begintoken="${" endtoken="}">
-                            <token key="PROJECT_ID" value="${project.id}" />
-                            <token key="PROJECT_DESCRIPTION" value="${project.name}" />
-                            <token key="PROJECT_INSTALL_MODULES" value="${project.install.modules}" />
-                            <token key="PRODUCTION_URL" value="${project.url.production}" />
-                            <token key="REPOSITORY_URL" value="${project.url.repository}" />
-                        </replacetokens>
-                    </filterchain>
-                </copy>
-                <echo msg="Project information generated in README.md, composer.json and build.project.props." />
-            </then>
-        </if>
     </target>
 
 </project>
