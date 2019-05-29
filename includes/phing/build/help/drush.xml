@@ -561,10 +561,9 @@
         </if>
     </target>
 
-    <target name="check-override-forbiden" description="Checks for modules overridden not allowed to.">
+    <target name="check-override-forbidden" description="Checks for modules overridden not allowed to.">
         <echo message="Checking modules that can't be overridden for ${db.name}." />
-        <drush command="tk-overridden-modules" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>${project.id}</param>
+        <drush command="overridden-modules" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
         </drush>
     </target>
 </project>

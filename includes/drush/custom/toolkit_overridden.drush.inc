@@ -2,9 +2,9 @@
 
 /**
  * @file
- * Drush integration to check modules can't be overriden.
+ * Drush integration to check modules can't be overridden.
  */
- 
+
  use Drush\Log\LogLevel;
 
 /**
@@ -14,12 +14,12 @@
  *
  * @see drush_parse_command()
  */
-function toolkit_overridden_drush_command() {
+function platform_overridden_drush_command() {
   $items = array();
 
-  $items['toolkit-overridden-modules'] = array(
+  $items['platform-overridden-modules'] = array(
     'description' => "Search for modules that can't be overridden.",
-    'aliases' => array('tk-overridden-modules'),
+    'aliases' => array('overridden-modules'),
   );
 
   return $items;
@@ -28,17 +28,18 @@ function toolkit_overridden_drush_command() {
 /**
  * Callback for searching for overridden modules.
  */
-function drush_toolkit_overridden_modules() {
+function drush_platform_overridden_modules() {
 
   // Array with list of the modules forbiden to be overridden.
-  $forbidenToOverride = array('chr');
+  $forbiddenToOverride = array('chr');
   // Get list of all modules on the project.
   $moduleList = drupal_system_listing("/\\.module\$/", "modules", 'name', 0);
   foreach ($moduleList as $module) {
     // Check if a module is in the list and not using the default version
     // provided.
-    if (in_array($module->name, $forbidenToOverride) &&
-      strpos($module->name, 'profiles/') !== false) {
+    if (in_array($module->name, $forbiddenToOverride) &&
+      (strpos($module->uri, 'profiles/multisite_drupal_standard') !== FALSE ||
+      strpos($module->uri, 'profiles/multisite_drupal_communities') !== FALSE)) {
       drush_log("The module " . $module->name . " is not allowed to be overridden.", LogLevel::ERROR);
     }
   }
