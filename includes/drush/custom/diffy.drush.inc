@@ -87,8 +87,6 @@ function drush_diffy_refresh_token() {
     curl_close($ch);
     
     drush_invoke_process('@self', 'variable-set', array('diffy_token', $token), array('exact' => TRUE), array('integrate' => FALSE));
-    
-    return $token;
   }
 }
 
@@ -149,7 +147,7 @@ function drush_diffy_project_compare($projectId = '') {
     $number = curl_exec($ch);
     curl_close($ch);
   
-    if (is_numeric($number)) {
+    if (!empty($number)) {
       drush_log(dt('Diff @number created for @environments.', array('@number' => $number, '@environments' => $environments)), 'ok');
     }
   }
@@ -188,7 +186,7 @@ function drush_diffy_project_diff($projectId = '') {
     $number = curl_exec($ch);
     curl_close($ch);
   
-    if (is_numeric($number)) {
+    if (!empty($number)) {
       drush_log(dt('Diff @number created.', array('@number' => $number)), 'ok');
     }
   }
