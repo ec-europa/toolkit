@@ -38,8 +38,7 @@ function drush_platform_overridden_modules() {
     // Check if a module is in the list and not using the default version
     // provided.
     if (in_array($module->name, $forbiddenToOverride) &&
-      (strpos($module->uri, 'profiles/multisite_drupal_standard') !== FALSE ||
-      strpos($module->uri, 'profiles/multisite_drupal_communities') !== FALSE)) {
+      strpos($module->uri, 'profiles/') === FALSE) {
       drush_log("The module " . $module->name . " is not allowed to be overridden.", LogLevel::ERROR);
     }
   }
