@@ -21,13 +21,13 @@ workspace:
 matrix:
   PHP_VERSION:
     - 5.6
-    - 7.1
+    # - 7.1
   PHING_OPTS:
     - -logger phing.listener.AnsiColorLogger
   BUILD_OPTIONS:
-    - -D'platform.package.version'='2.3' -D'profile'='multisite_drupal_standard'
-    - -D'platform.package.version'='2.4' -D'profile'='multisite_drupal_standard'
-    - -D'platform.package.version'='2.5' -D'profile'='multisite_drupal_standard'
+    # - -D'platform.package.version'='2.3' -D'profile'='multisite_drupal_standard'
+    # - -D'platform.package.version'='2.4' -D'profile'='multisite_drupal_standard'
+    # - -D'platform.package.version'='2.5' -D'profile'='multisite_drupal_standard'
     - -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.x'
 
 # ==============================================================================
@@ -90,81 +90,94 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  # ============================================================================
-  # Clone section:
-  # ============================================================================
-  install-clone:
+  drush-diffy:
     image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    secrets: [ diffy_api_key ]
     commands:
-      - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql.gz' ${BUILD_OPTIONS} ${PHING_OPTS}
+      - ./toolkit/drush -r build vset diffy-project-id 912
+      - ./toolkit/drush -r build diffy-refresh-token
+      - ./toolkit/drush -r build diffy-project-snapshot --environment=production
+      - ./toolkit/drush -r build diffy-project-baseline
+      - ./toolkit/drush -r build diffy-project-compare --environments=baseline-prod
+      - ./toolkit/drush -r build diffy-project-diff
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 
-  smoketest:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
-    commands:
-      - ./toolkit/phing drush-run-smoketest ${BUILD_OPTIONS} ${PHING_OPTS}
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+  # # ============================================================================
+  # # Clone section:
+  # # ============================================================================
+  # install-clone:
+  #   image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+  #   commands:
+  #     - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql.gz' ${BUILD_OPTIONS} ${PHING_OPTS}
+  #   volumes:
+  #     - /cache/${DRONE_REPO_NAME}:/cache
 
-  selenium:
-    image: selenium/standalone-chrome
-    group: prebehat
-    detach: true
+  # smoketest:
+  #   image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+  #   commands:
+  #     - ./toolkit/phing drush-run-smoketest ${BUILD_OPTIONS} ${PHING_OPTS}
+  #   volumes:
+  #     - /cache/${DRONE_REPO_NAME}:/cache
 
-  # ============================================================================
-  # Test section:
-  # ============================================================================
-  behat:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
-    group: coding-standards
-    commands:
-      - ./toolkit/phing test-run-behat ${BUILD_OPTIONS} ${PHING_OPTS}
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+  # selenium:
+  #   image: selenium/standalone-chrome
+  #   group: prebehat
+  #   detach: true
 
-  phpcs:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
-    group: coding-standards
-    commands:
-      - ./toolkit/phing test-run-phpcs ${BUILD_OPTIONS} ${PHING_OPTS}
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+  # # ============================================================================
+  # # Test section:
+  # # ============================================================================
+  # behat:
+  #   image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+  #   group: coding-standards
+  #   commands:
+  #     - ./toolkit/phing test-run-behat ${BUILD_OPTIONS} ${PHING_OPTS}
+  #   volumes:
+  #     - /cache/${DRONE_REPO_NAME}:/cache
 
-  php7-comp:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
-    group: coding-standards
-    commands:
-      - ./toolkit/phing test-phpcs-setup -D'phpcs.files'='$${build.dist.dir}' -D'phpcs.standards'='PHPCompatibility' -D'phpcs.extensions'='php inc module install test profile theme' -logger phing.listener.AnsiColorLogger
-      - ./toolkit/phpcs --runtime-set testVersion 7.0- ./lib || echo "PHPCompatibility failed..."
-      - ./toolkit/phpcs --runtime-set testVersion 7.0- ./includes || echo "PHPCompatibility failed..."
+  # phpcs:
+  #   image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+  #   group: coding-standards
+  #   commands:
+  #     - ./toolkit/phing test-run-phpcs ${BUILD_OPTIONS} ${PHING_OPTS}
+  #   volumes:
+  #     - /cache/${DRONE_REPO_NAME}:/cache
 
-  # ============================================================================
-  # Git hook integration section:
-  # ============================================================================
-  git-hooks:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
-    commands:
-      - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
-      - ./toolkit/phing git-hook-disable ${BUILD_OPTIONS} ${PHING_OPTS}
-      - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+  # php7-comp:
+  #   image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+  #   group: coding-standards
+  #   commands:
+  #     - ./toolkit/phing test-phpcs-setup -D'phpcs.files'='$${build.dist.dir}' -D'phpcs.standards'='PHPCompatibility' -D'phpcs.extensions'='php inc module install test profile theme' -logger phing.listener.AnsiColorLogger
+  #     - ./toolkit/phpcs --runtime-set testVersion 7.0- ./lib || echo "PHPCompatibility failed..."
+  #     - ./toolkit/phpcs --runtime-set testVersion 7.0- ./includes || echo "PHPCompatibility failed..."
 
-  # ============================================================================
-  # Notify section:
-  # ============================================================================
-  # slack:
-  #   image: plugins/slack
-  #   channel: ci
-  #   username: Subsite-QA
-  #   icon_url: https://www.drupal.org/files/examples_meatwad256.png
-  #   secrets: [ slack_webhook ]
-  #   when:
-  #     status: [ success, failure ]
-  #   template: >
-  #     {{#success build.status}}
-  #       {{repo.name}}@{{build.branch}} <{{build.link}}|passed> all subsite tests.
-  #     {{else}}
-  #       {{repo.name}}@{{build.branch}} <{{build.link}}|failed> subsite tests.
-  #     {{/success}}
+  # # ============================================================================
+  # # Git hook integration section:
+  # # ============================================================================
+  # git-hooks:
+  #   image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+  #   commands:
+  #     - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
+  #     - ./toolkit/phing git-hook-disable ${BUILD_OPTIONS} ${PHING_OPTS}
+  #     - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
+  #   volumes:
+  #     - /cache/${DRONE_REPO_NAME}:/cache
+
+  # # ============================================================================
+  # # Notify section:
+  # # ============================================================================
+  # # slack:
+  # #   image: plugins/slack
+  # #   channel: ci
+  # #   username: Subsite-QA
+  # #   icon_url: https://www.drupal.org/files/examples_meatwad256.png
+  # #   secrets: [ slack_webhook ]
+  # #   when:
+  # #     status: [ success, failure ]
+  # #   template: >
+  # #     {{#success build.status}}
+  # #       {{repo.name}}@{{build.branch}} <{{build.link}}|passed> all subsite tests.
+  # #     {{else}}
+  # #       {{repo.name}}@{{build.branch}} <{{build.link}}|failed> subsite tests.
+  # #     {{/success}}
