@@ -210,7 +210,7 @@ function drush_diffy_project_diff($projectId = '') {
     if ($result !== false) {
       $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
       if ($statusCode === 200) {
-        drush_log(dt('Diff @number created.', array('@number' => $result)), 'ok');
+        drush_log(dt('Diff created: @url.', array('@url' => 'https://app.diffy.website/#/diffs/' . $result)), 'ok');
       }
       else {
         drush_log(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)), 'error');
