@@ -51,11 +51,11 @@ are provided in the command's options it will check and see if the
 **diffy_last_snapshot** and **diffy_prev_snapshot** is available to take a diff
 for.
 
-`./vendor/bin/drush diffy-project-compare <project-id> --snapshot1=xxxx --snapshot2=xxxx`
+`./vendor/bin/drush diffy-project-diff <project-id> --snapshot1=xxxx --snapshot2=xxxx`
 
 or
 
-`./vendor/bin/drush diffy-project-compare`
+`./vendor/bin/drush diffy-project-diff`
 
 
 ### diffy-project-baseline
@@ -69,3 +69,28 @@ fetch the last snapshot within the Drupal **diffy_last_snapshot** variable.
 or
 
 `./vendor/bin/drush diffy-project-baseline`
+
+## Example usage
+
+### Before & after snapshots
+
+Take a snapshot before the deployment. Wait until all screenshots are ready.
+Deploy your site. Take a snapshot after the deployment. And request a diff
+between the last two snapshot requests.
+
+```
+./vendor/bin/drush diffy-project-snapshot --environment=production
+./vendor/bin/drush diffy-project-snapshot --environment=production
+./vendor/bin/drush diffy-project-diff
+```
+
+### Before baseline & after comparison.
+
+Take a snapshot before the deployment. Wait untill all screenshots are ready.
+Set the snapshot as the baseline set. Deploy your site. Request a comparison
+between your new baseline and production.
+```
+./vendor/bin/drush diffy-project-snapshot --environment=production
+./vendor/bin/drush diffy-project-baseline
+./vendor/bin/drush diffy-project-compare --environments=baseline-prod
+```
