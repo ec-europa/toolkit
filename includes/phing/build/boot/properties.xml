@@ -54,13 +54,10 @@
         </then>
     </if>
 
-    <!-- Macke sure project id for DB is valid with underscore instead of hyphen. -->
-    <php function="str_replace" returnProperty="db-name" level="debug">
-        <param value="-" />
-        <param value="_" />
-        <param value="${db.name}" />
+    <!-- Urlencode the db password in case there are breaking signs in it. -->
+    <php function="urlencode" returnProperty="db.dl.password" level="debug">
+      <param value="${db.dl.password}"/>
     </php>
-    <property name="db.url" value="${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db-name}" override="true" />
 
     <!-- Set compose project name if available. -->
     <if>

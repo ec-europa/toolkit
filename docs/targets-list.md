@@ -78,6 +78,20 @@ Generate drush aliases for each subsite folder.
 `toolkit\phing drush-aliases-generate'
 '
 </details>
+<details><p><summary>drush-cache-reset</summary></p>
+Disable and clean cache.
+
+##### Example:
+`toolkit\phing drush-cache-reset'
+'
+</details>
+<details><p><summary>drush-check-users</summary></p>
+Recover user table for ASDA dumps.
+
+##### Example:
+`toolkit\phing drush-check-users'
+'
+</details>
 <details><p><summary>drush-files-dirs-create</summary></p>
 Create site files directories.
 
@@ -204,13 +218,6 @@ Import a database.
 `toolkit\phing drush-sql-import'
 '
 </details>
-<details><p><summary>drush-uris-generate</summary></p>
-Generate list of uris.
-
-##### Example:
-`toolkit\phing drush-uris-generate'
-'
-</details>
 <details><p><summary>drush-variable-set</summary></p>
 Set a variable with drush
 
@@ -244,6 +251,20 @@ Open up filesystem permissions on folder.
 
 ##### Example:
 `toolkit\phing folder-unprotect'
+'
+</details>
+<details><p><summary>git-hook-disable</summary></p>
+Disable all provided git hooks.
+
+##### Example:
+`toolkit\phing git-hook-disable'
+'
+</details>
+<details><p><summary>git-hook-enable</summary></p>
+Enable all provided git hooks.
+
+##### Example:
+`toolkit\phing git-hook-enable'
 '
 </details>
 <details><p><summary>github-auth</summary></p>
@@ -449,11 +470,32 @@ Check if database file is available.
 `toolkit\phing project-database-file'
 '
 </details>
+<details><p><summary>project-database-file-item</summary></p>
+Check if database file is available and download it.
+
+##### Example:
+`toolkit\phing project-database-file-item'
+'
+</details>
 <details><p><summary>project-database-import</summary></p>
 Import database for project with drush.
 
 ##### Example:
 `toolkit\phing project-database-import'
+'
+</details>
+<details><p><summary>project-database-link</summary></p>
+Symlink database to dump.sql.gz in project basedir.
+
+##### Example:
+`toolkit\phing project-database-link'
+'
+</details>
+<details><p><summary>project-generate-devel-vars</summary></p>
+Update database with devel variables.
+
+##### Example:
+`toolkit\phing project-generate-devel-vars'
 '
 </details>
 <details><p><summary>project-modules-devel-en</summary></p>
@@ -484,6 +526,13 @@ Install list of modules to enable by default.
 `toolkit\phing project-modules-install-en'
 '
 </details>
+<details><p><summary>project-platform-backup</summary></p>
+Backup site defined files from properties.
+
+##### Example:
+`toolkit\phing project-platform-backup'
+'
+</details>
 <details><p><summary>project-platform-composer-dev</summary></p>
 Run composer install with dev on platform.
 
@@ -498,11 +547,32 @@ Run composer install without dev on platform.
 `toolkit\phing project-platform-composer-no-dev'
 '
 </details>
+<details><p><summary>project-platform-delete</summary></p>
+Remove previous platform build..
+
+##### Example:
+`toolkit\phing project-platform-delete'
+'
+</details>
+<details><p><summary>project-platform-enable-multisite</summary></p>
+Enable multisite mode.
+
+##### Example:
+`toolkit\phing project-platform-enable-multisite'
+'
+</details>
 <details><p><summary>project-platform-package-unpack</summary></p>
 Download and unpack platform deploy package.
 
 ##### Example:
 `toolkit\phing project-platform-package-unpack'
+'
+</details>
+<details><p><summary>project-platform-restore</summary></p>
+Restore site defined files from properties.
+
+##### Example:
+`toolkit\phing project-platform-restore'
 '
 </details>
 <details><p><summary>project-platform-set-docroot</summary></p>
@@ -540,6 +610,20 @@ Validate the build properties file.
 `toolkit\phing project-properties-validate'
 '
 </details>
+<details><p><summary>project-scratch-build</summary></p>
+Delete previous build to start over clean.
+
+##### Example:
+`toolkit\phing project-scratch-build'
+'
+</details>
+<details><p><summary>project-subsite-backup</summary></p>
+Backup site defined files from properties.
+
+##### Example:
+`toolkit\phing project-subsite-backup'
+'
+</details>
 <details><p><summary>project-subsite-composer-dev</summary></p>
 Run composer install with dev on subsite.
 
@@ -561,6 +645,13 @@ Create files directories for subsite.
 `toolkit\phing project-subsite-files-setup'
 '
 </details>
+<details><p><summary>project-subsite-restore</summary></p>
+Restore site defined files from properties.
+
+##### Example:
+`toolkit\phing project-subsite-restore'
+'
+</details>
 <details><p><summary>reset-filesystem-permissions</summary></p>
 Reset filesystem permissions for local/ephemeral use.
 
@@ -573,6 +664,13 @@ Delete build directory.
 
 ##### Example:
 `toolkit\phing subsite-delete'
+'
+</details>
+<details><p><summary>subsite-delete-dev</summary></p>
+Delete subsite dev build.
+
+##### Example:
+`toolkit\phing subsite-delete-dev'
 '
 </details>
 <details><p><summary>subsite-delete-dist</summary></p>
@@ -694,13 +792,6 @@ Sets the type of build to tmp.
 `toolkit\phing test-phpcs-setup'
 '
 </details>
-<details><p><summary>test-phpcs-setup-prepush</summary></p>
-
-
-##### Example:
-`toolkit\phing test-phpcs-setup-prepush'
-'
-</details>
 <details><p><summary>test-phpunit-exec</summary></p>
 
 
@@ -720,13 +811,6 @@ Sets the type of build to tmp.
 
 ##### Example:
 `toolkit\phing test-qa-exec'
-'
-</details>
-<details><p><summary>test-run-backtrac</summary></p>
-Compare current install against production.
-
-##### Example:
-`toolkit\phing test-run-backtrac'
 '
 </details>
 <details><p><summary>test-run-behat</summary></p>
@@ -832,27 +916,6 @@ Echo the composer hook phing targets for use in bash script.
 
 ##### Example:
 `toolkit\phing toolkit-hooks-composer'
-'
-</details>
-<details><p><summary>toolkit-hooks-git-delete</summary></p>
-Delete all git hooks.
-
-##### Example:
-`toolkit\phing toolkit-hooks-git-delete'
-'
-</details>
-<details><p><summary>toolkit-hooks-git-delete-hook</summary></p>
-Delete a single git hook.
-
-##### Example:
-`toolkit\phing toolkit-hooks-git-delete-hook'
-'
-</details>
-<details><p><summary>toolkit-hooks-git-update</summary></p>
-Update all git hooks.
-
-##### Example:
-`toolkit\phing toolkit-hooks-git-update'
 '
 </details>
 <details><p><summary>toolkit-hooks-git-update-hook</summary></p>
@@ -982,8 +1045,10 @@ Build a local development version of the site.
 '
 ##### Dependencies: 
 * project-modules-devel-make
+* project-subsite-backup
 * project-subsite-composer-dev
-* subsite-delete
+* project-subsite-restore
+* subsite-delete-dev
 * subsite-make
 * subsite-resources-link
 * subsite-type-dev
@@ -999,6 +1064,7 @@ Build a site intended as a release package.
 * package-version-set
 * project-subsite-composer-no-dev
 * subsite-delete
+* subsite-delete-dist
 * subsite-make
 * subsite-resources-copy
 * subsite-resources-link

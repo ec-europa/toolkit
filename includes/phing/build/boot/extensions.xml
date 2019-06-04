@@ -5,7 +5,6 @@
     <!-- External tasks that are a composer dependency. -->
     <import file="${toolkit.dir.vendor}/drupal/phingdrushtask/import.xml" />
     <import file="${toolkit.dir.vendor}/drupol/phingbehattask/import.xml" />
-    <import file="${toolkit.dir.vendor}/ec-europa/backtrac-php-client/phing/import.xml" />
     <import file="${toolkit.dir.vendor}/kasperg/phing-github/import.xml" />
 
     <!-- Custom task definititons. -->

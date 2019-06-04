@@ -291,14 +291,6 @@
           </if>
       </target>
 
-
-    <target name="drush-uris-generate" description="Generate list of uris.">
-        <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>${toolkit.dir.incl.drush}/generate-uris.php</param>
-            <param>${backtrac.file}</param>
-        </drush>
-    </target>
-
     <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
       <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
       <if>
@@ -419,12 +411,23 @@
     </target>
 
     <target name="drush-sql-import" hidden="true" description="Import a database.">
-        <exec command="zcat -q ${database-file} > ${project.tmp.dir}/dump.sql" />
-        <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <option name="db-url" value="${db.url}" />
-            <param>&lt; ${project.tmp.dir}/dump.sql</param>
-        </drush>
-        <exec command="rm -rf ${project.tmp.dir}/dump.sql"/>
+        <if>
+            <contains string="${database-file}" substring=".gz" />
+            <then>
+                <exec command="zcat -q ${database-file} > ${project.tmp.dir}/dump.sql" />
+                <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <option name="db-url" value="${db.url}" />
+                    <param>&lt; ${project.tmp.dir}/dump.sql</param>
+                </drush>
+                <exec command="rm -rf ${project.tmp.dir}/dump.sql"/>
+            </then>
+            <else>
+                <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+                    <option name="db-url" value="${db.url}" />
+                    <param>&lt; ${database-file}</param>
+                </drush>
+            </else>
+        </if>
         <if>
             <not>
                 <equals arg1="${build.site}" arg2="${project.id}" />
@@ -550,6 +553,11 @@
         </if>
     </target>
 
+    <target name="check-override-forbidden" description="Checks for modules overridden not allowed to.">
+        <echo message="Checking modules that can't be overridden for ${db.name}." />
+        <drush command="overridden-modules" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        </drush>
+    </target>
     <target name="check-contrib-aut-secur" description="Checks for non-authorised contributed modules or/and with security updates.">
         <echo message="Checking non-authorised modules and security updates for ${db.name}." />
         <drush command="tk-contrib-as" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">

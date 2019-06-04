@@ -387,7 +387,7 @@
                 <if>
                     <ispropertytrue property="composer-no-dev" />
                     <then>
-                        <composer command="install">
+                        <composer command="install" composer="${project.bin.composer}">
                             <arg value="--working-dir=${composer-working-dir}" />
                             <arg value="--no-interaction" />
                             <arg value="--no-suggest" />
@@ -397,7 +397,7 @@
                         </composer>
                     </then>
                     <else>
-                        <composer command="install">
+                        <composer command="install" composer="${project.bin.composer}">
                             <arg value="--working-dir=${composer-working-dir}" />
                             <arg value="--no-interaction" />
                             <arg value="--no-suggest" />
@@ -589,8 +589,6 @@
             <then>
                 <mkdir dir="${build.dev}/${build.subsite.dir.files}/private_files" />
                 <mkdir dir="${build.dev}/${build.subsite.dir.tmp}" />
-                <mkdir dir="${build.dev}/${build.subsite.dir.files}/css_injector" />
-                <mkdir dir="${build.dev}/${build.subsite.dir.files}/js_injector" />
             </then>
         </if>
     </target>
@@ -668,7 +666,7 @@
         <echo msg="Run 'composer install' in the distribution folder for development purposes." />
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.dist.dir}" override="true" />
-            <property name="composer-no-dev" value="false" override="true" />
+            <property name="composer-no-dev" value="true" override="true" />
         </phingcall>
     </target>
 

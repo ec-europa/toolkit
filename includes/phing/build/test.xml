@@ -7,12 +7,6 @@
     <import file="${phing.dir.test}/test/phpcs.xml" />
     <import file="${phing.dir.test}/test/phpunit.xml" />
 
-    <!-- Compare current install against production. -->
-    <target name="test-run-backtrac" hidden="true" description="Compare current install against production.">
-        <backtrac-set-url secure="${backtrac.secure}" environment="${backtrac.env}" url="${project.url.base}" project_id="${project.backtrac.id}" auth_token="${backtrac.token}" />
-        <backtrac-compare secure="${backtrac.secure}" compare_mode="${backtrac.compare.mode}"  environment="${backtrac.env}" project_id="${project.backtrac.id}" auth_token="${backtrac.token}" />
-    </target>
-
     <!-- Run a full static analysis qa console. -->
     <target
         name="test-run-qa"
