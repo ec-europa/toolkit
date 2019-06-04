@@ -199,6 +199,10 @@ function getModulesList() {
     if ($statusCode == 200) {
       $d7ModulesList = json_decode($result, true);
     }
+    else {
+      $error_message = curl_error($curl);
+      drush_print($error_message);
+    }
   }
   return $d7ModulesList;
 }
