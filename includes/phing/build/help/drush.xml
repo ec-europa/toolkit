@@ -291,14 +291,6 @@
           </if>
       </target>
 
-
-    <target name="drush-uris-generate" description="Generate list of uris.">
-        <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>${toolkit.dir.incl.drush}/generate-uris.php</param>
-            <param>${backtrac.file}</param>
-        </drush>
-    </target>
-
     <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
       <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
       <if>
