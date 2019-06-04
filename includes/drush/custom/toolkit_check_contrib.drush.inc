@@ -184,7 +184,7 @@ function getModulesList() {
   $url = 'https://raw.githubusercontent.com/ec-europa/qa-tests/components/module_list.json';
 
   $request_headers = array(
-    'Authorization: token ' . getenv('EC_GITHUB_TOKEN')
+    'Authorization: token ' . getenv('GITHUB_API_TOKEN')
   );
 
   $curl = curl_init($url);
