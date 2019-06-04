@@ -97,9 +97,10 @@ pipeline:
       - ./toolkit/drush -r build vset diffy_project_id 912
       - ./toolkit/drush -r build diffy-refresh-token
       - ./toolkit/drush -r build diffy-project-snapshot --environment=production
+      - ./toolkit/drush -r build diffy-project-snapshot --environment=staging
+      - ./toolkit/drush -r build diffy-project-diff
       - ./toolkit/drush -r build diffy-project-baseline
       - ./toolkit/drush -r build diffy-project-compare --environments=baseline-prod
-      - ./toolkit/drush -r build diffy-project-diff
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
 

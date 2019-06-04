@@ -83,10 +83,20 @@ function drush_diffy_refresh_token() {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $token = json_decode(curl_exec($ch))->token;
-    curl_close($ch);
+    $result = curl_exec($ch);
+    $token = json_decode($result)->token;
     
-    drush_invoke_process('@self', 'variable-set', array('diffy_token', $token), array('exact' => TRUE), array('integrate' => FALSE));
+    if ($result !== false) {
+      $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      if ($statusCode === 200) {
+        drush_invoke_process('@self', 'variable-set', array('diffy_token', $token), array('exact' => TRUE), array('integrate' => FALSE));
+        drush_log(dt('Diffy token refreshed.'), 'ok');
+      }
+      else {
+        drush_log(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)), 'error');
+      }
+    }
+    curl_close($ch);
   }
 }
 
@@ -113,16 +123,22 @@ function drush_diffy_project_snapshot($projectId = '') {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Authorization: Bearer ' . $token));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $lastSnapshot = curl_exec($ch);
-    curl_close($ch);
-    
-    if (is_numeric($lastSnapshot)) {
-      $diffyPreviousSnapshot = drush_invoke_process('@self', 'variable-get', array('diffy_last_snapshot'), array(), array('integrate' => FALSE));
-      $previousSnapshot = $diffyPreviousSnapshot['object']['diffy_last_snapshot'];
-      drush_invoke_process('@self', 'variable-set', array('diffy_prev_snapshot', $previousSnapshot), array('exact' => TRUE), array('integrate' => FALSE));
-      drush_invoke_process('@self', 'variable-set', array('diffy_last_snapshot', $lastSnapshot), array('exact' => TRUE), array('integrate' => FALSE));
-      drush_log(dt('Snapshot @number created for @environment.', array('@number' => $lastSnapshot, '@environment' => $environment)), 'ok');
+    $result = curl_exec($ch);
+
+    if ($result !== false) {
+      $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      if ($statusCode === 200) {
+        $diffyPreviousSnapshot = drush_invoke_process('@self', 'variable-get', array('diffy_last_snapshot'), array(), array('integrate' => FALSE));
+        $previousSnapshot = $diffyPreviousSnapshot['object']['diffy_last_snapshot'];
+        drush_invoke_process('@self', 'variable-set', array('diffy_prev_snapshot', $previousSnapshot), array('exact' => TRUE), array('integrate' => FALSE));
+        drush_invoke_process('@self', 'variable-set', array('diffy_last_snapshot', $result), array('exact' => TRUE), array('integrate' => FALSE));
+        drush_log(dt('Snapshot created: @url.', array('@url' => 'https://app.diffy.website/#/snapshots/' . $result)), 'ok');
+      }
+      else {
+        drush_log(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)), 'error');
+      }
     }
+    curl_close($ch);
   }
 }
 
@@ -144,12 +160,18 @@ function drush_diffy_project_compare($projectId = '') {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Authorization: Bearer ' . $token));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $number = curl_exec($ch);
-    curl_close($ch);
-  
-    if (!empty($number)) {
-      drush_log(dt('Diff @number created for @environments.', array('@number' => $number, '@environments' => $environments)), 'ok');
+    $result = curl_exec($ch);
+
+    if ($result !== false) {
+      $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      if ($statusCode === 200) {
+        drush_log(dt('Diff @number created for @environments.', array('@number' => $result, '@environments' => $environments)), 'ok');
+      }
+      else {
+        drush_log(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)), 'error');
+      }
     }
+    curl_close($ch);
   }
 }
 
@@ -183,12 +205,18 @@ function drush_diffy_project_diff($projectId = '') {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Authorization: Bearer ' . $token));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $number = curl_exec($ch);
-    curl_close($ch);
-  
-    if (!empty($number)) {
-      drush_log(dt('Diff @number created.', array('@number' => $number)), 'ok');
+    $result = curl_exec($ch);
+
+    if ($result !== false) {
+      $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      if ($statusCode === 200) {
+        drush_log(dt('Diff @number created.', array('@number' => $result)), 'ok');
+      }
+      else {
+        drush_log(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)), 'error');
+      }
     }
+    curl_close($ch);
   }
 }
 
@@ -209,11 +237,17 @@ function drush_diffy_project_baseline($projectId = '', $snapshotId = '') {
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Authorization: Bearer ' . $token));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $result = curl_exec($ch);
-    curl_close($ch);
-    
-    if ($result === '{}') {
-      drush_log(dt('Snapshot @number set as baseline.', array('@number' => $snapshotId)), 'ok');
+
+    if ($result !== false) {
+      $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      if ($statusCode === 200) {
+        drush_log(dt('Snapshot @number set as baseline.', array('@number' => $snapshotId)), 'ok');
+      }
+      else {
+        drush_log(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)), 'error');
+      }
     }
+    curl_close($ch);
   }
 }
 
