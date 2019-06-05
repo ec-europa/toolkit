@@ -25,7 +25,8 @@ function diffy_drush_command() {
     ],
     'options' => [
       'environment' => "The environment for which to take screenshots.",
-      'baseUrl' => "The base url of the website for which to take screenshots."
+      'baseUrl' => "The base url of the website for which to take screenshots.",
+      'wait' => "The time to wait between ping for snapshot results. Defaults to 30. Set to 0 to skip wait."
     ],
     'aliases' => ['diffy-ps'],
   ];
@@ -110,6 +111,7 @@ function drush_diffy_project_snapshot($projectId = '') {
     $token = variable_get('diffy_token');
     $environment = drush_get_option('environment');
     $baseUrl = drush_get_option('baseUrl');
+    $wait = drush_get_option('wait') ? drush_get_option('wait') : 30;
     $payload = [];
     if (isset($environment)) {
       $payload['environment'] = $environment;
@@ -131,6 +133,7 @@ function drush_diffy_project_snapshot($projectId = '') {
         variable_set('diffy_prev_snapshot', $previousSnapshot);
         variable_set('diffy_last_snapshot', $result);
         drush_log(dt('Snapshot created: @url.', array('@url' => 'https://app.diffy.website/#/snapshots/' . $result)), 'ok');
+        _wait_for_snapshot($result, $wait);
       }
       else {
         drush_log(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)), 'error');
@@ -243,4 +246,23 @@ function _get_diffy_project_id($projectId) {
   }
   
   return $projectId;
+}
+
+function _wait_for_snapshot($snapshotId, $wait) {
+  if ($wait > 0) {
+    $token = variable_get('diffy_token');
+    $ch = curl_init("https://app.diffy.website/api/snapshots/$snapshotId");
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Authorization: Bearer ' . $token));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $result = json_decode(curl_exec($ch));
+  
+    if ($result->state < 2) {
+      drush_log(dt('Screenshots in progress: @results of @items.', array('@results' => $result->status->results, '@items' => $result->status->items)), 'ok');
+      sleep($wait);
+      _wait_for_snapshot($snapshotId, $wait);
+    }
+    else {
+      drush_log(dt('Screenshots finished: @results of @items.', array('@results' => $result->status->results, '@items' => $result->status->items)), 'ok');
+    }
+  }
 }
