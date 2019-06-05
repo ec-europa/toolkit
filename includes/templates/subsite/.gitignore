@@ -23,3 +23,6 @@ nbproject/
 /resources/git/hooks/pre-push/phpcs
 lib-backup/
 toolkit
+/dist
+/tests/bin
+/tests/vendor
