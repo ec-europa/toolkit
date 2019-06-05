@@ -2,12 +2,11 @@
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
-use Gitonomy\Git\Repository;
+use EcEuropa\Toolkit as Toolkit;
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
-use Robo\ResultData;
 
 /**
  * Configuration snapshot commands.
@@ -16,6 +15,7 @@ class ConfigSnapshotCommands extends AbstractCommands implements ContainerAwareI
 
   use TaskRunnerTasks\CollectionFactory\loadTasks;
   use ContainerAwareTrait;
+  use Toolkit\Task\Git\loadTasks;
 
   /**
    * {@inheritdoc}
@@ -47,32 +47,18 @@ class ConfigSnapshotCommands extends AbstractCommands implements ContainerAwareI
    *   Fail command if branch does not have a remote counterpart.
    */
   public function takeConfigSnapshot($branch, array $options = [
+    'remote' => 'origin',
     'strict' => FALSE,
   ]) {
-    $collection = $this->collectionBuilder();
+    $tasks = [];
 
-    $repository = new Repository($options['working-dir'], [
-      'debug'  => TRUE,
-    ]);
-    $repository->setLogger($this->getContainer()->get('logger'));
-
-    // Fail commands ran in strict mode if remote branch does not exist.
-    if ($options['strict'] && !$repository->getReferences()->hasRemoteBranch('origin/' . $branch)) {
-      $this->io()->error("Remote branch '$branch' does not exists.");
-      return new ResultData(ResultData::EXITCODE_ERROR);
-    }
-
-    $collection->addCode(function () use ($repository, $branch) {
-      $arguments = [];
-      if (!$repository->getReferences()->hasBranch($branch)) {
-        $arguments[] = '-b';
-      }
-      $arguments[] = $branch;
-      $repository->run('checkout', $arguments);
-    });
+    $tasks[] = $this->taskEnsureBranch($branch)
+      ->workingDir($options['working-dir'])
+      ->remote($options['remote'])
+      ->strict($options['strict']);
 
     // Build and return task collection.
-    return $collection;
+    return $this->collectionBuilder()->addTaskList($tasks);
   }
 
 }
