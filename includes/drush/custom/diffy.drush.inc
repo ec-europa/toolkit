@@ -76,7 +76,7 @@ function drush_diffy_refresh_token() {
   $key = getenv("DIFFY_API_KEY");
   
   if (empty($key)) {
-    drush_log(dt('No key provided, can not request token.'), 'error');
+    return drush_set_error(dt('No key provided, can not request token.'));
   }
   else {
     $ch = curl_init('https://app.diffy.website/api/auth/key');
@@ -94,7 +94,7 @@ function drush_diffy_refresh_token() {
         drush_log(dt('Diffy token refreshed.'), 'ok');
       }
       else {
-        drush_log(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)), 'error');
+        return drush_set_error(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)));
       }
     }
     curl_close($ch);
@@ -136,7 +136,7 @@ function drush_diffy_project_snapshot($projectId = '') {
         _wait_for_snapshot($result, $wait);
       }
       else {
-        drush_log(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)), 'error');
+        return drush_set_error(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)));
       }
     }
     curl_close($ch);
@@ -168,7 +168,7 @@ function drush_diffy_project_compare($projectId = '') {
         drush_log(dt('Diff created: @url.', array('@url' => 'https://app.diffy.website/#/diffs/' . $result)), 'ok');
       }
       else {
-        drush_log(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)), 'error');
+        return drush_set_error(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)));
       }
     }
     curl_close($ch);
@@ -200,7 +200,7 @@ function drush_diffy_project_diff($projectId = '') {
         drush_log(dt('Diff created: @url.', array('@url' => 'https://app.diffy.website/#/diffs/' . $result)), 'ok');
       }
       else {
-        drush_log(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)), 'error');
+        return drush_set_error(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)));
       }
     }
     curl_close($ch);
@@ -229,7 +229,7 @@ function drush_diffy_project_baseline($projectId = '', $snapshotId = '') {
         drush_log(dt('Snapshot @number set as baseline.', array('@number' => $snapshotId)), 'ok');
       }
       else {
-        drush_log(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)), 'error');
+        return drush_set_error(dt('Curl request failed with statuscode @statuscode.', array('@statuscode' => $statusCode)));
       }
     }
     curl_close($ch);
@@ -242,7 +242,7 @@ function _get_diffy_project_id($projectId) {
     $projectId = !empty($diffyProjectId) ? $diffyProjectId : '';
   }
   if (empty($projectId)) {
-    drush_log(dt('No project id provided, can not make API callback.'), 'error');
+    return drush_set_error(dt('No project id provided, can not make API callback.'));
   }
   
   return $projectId;
@@ -257,12 +257,12 @@ function _wait_for_snapshot($snapshotId, $wait) {
     $result = json_decode(curl_exec($ch));
   
     if ($result->state < 2) {
-      drush_log(dt('Screenshots in progress: @results of @items.', array('@results' => $result->status->results, '@items' => $result->status->items)), 'ok');
+      drush_log(dt('Snapshot in progress: @results of @items.', array('@results' => $result->status->results, '@items' => $result->status->items)), 'ok');
       sleep($wait);
       _wait_for_snapshot($snapshotId, $wait);
     }
     else {
-      drush_log(dt('Screenshots finished: @results of @items.', array('@results' => $result->status->results, '@items' => $result->status->items)), 'ok');
+      drush_log(dt('Snapshot is finished: @results of @items.', array('@results' => $result->status->results, '@items' => $result->status->items)), 'ok');
     }
   }
 }
