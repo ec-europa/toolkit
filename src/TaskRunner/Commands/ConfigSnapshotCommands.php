@@ -6,14 +6,12 @@ use EcEuropa\Toolkit as Toolkit;
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 
 /**
  * Configuration snapshot commands.
  */
 class ConfigSnapshotCommands extends AbstractCommands implements ContainerAwareInterface {
 
-  use TaskRunnerTasks\CollectionFactory\loadTasks;
   use ContainerAwareTrait;
   use Toolkit\Task\Git\loadTasks;
 
@@ -38,24 +36,55 @@ class ConfigSnapshotCommands extends AbstractCommands implements ContainerAwareI
    * @param array $options
    *   Command options.
    *
-   * @return \Robo\Collection\CollectionBuilder|ResultData
+   * @return \Robo\Collection\CollectionBuilder
    *   Collection builder.
    *
-   * @command toolkit:take-config-snapshot
+   * @command toolkit:config-snapshot
    *
+   * @option remote
+   *   Git remote name.
    * @option strict
    *   Fail command if branch does not have a remote counterpart.
+   * @option directory
+   *   Configuration directory to be exported.
+   * @option message
+   *   Commit message.
    */
-  public function takeConfigSnapshot($branch, array $options = [
+  public function configSnapshot($branch, array $options = [
     'remote' => 'origin',
     'strict' => FALSE,
+    'directory' => './config/sync',
+    'message' => '!date: configuration export.',
   ]) {
     $tasks = [];
 
+    // Ensure branch.
     $tasks[] = $this->taskEnsureBranch($branch)
       ->workingDir($options['working-dir'])
       ->remote($options['remote'])
       ->strict($options['strict']);
+
+    // Export configuration.
+    $tasks[] = $this->taskExec('drush')
+      ->arg('config:export')
+      ->option('-y');
+
+    // Prepare Git user name, email and commit message.
+    $userName = $this->getConfig()->get('toolkit.git.user_name');
+    $userEmail = $this->getConfig()->get('toolkit.git.user_email');
+    $message = str_replace('!date', date('Y-m-d H:i:s'), $options['message']);
+
+    // Commit exported configuration without running Git hooks.
+    $tasks[] = $this->taskGitStack()
+      ->stopOnFail()
+      ->silent(TRUE)
+      ->env('GIT_AUTHOR_NAME', $userName)
+      ->env('GIT_COMMITTER_NAME', $userName)
+      ->env('GIT_AUTHOR_EMAIL', $userEmail)
+      ->env('GIT_COMMITTER_EMAIL', $userEmail)
+      ->dir($options['working-dir'])
+      ->add($options['directory'])
+      ->commit($message, '-n');
 
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);

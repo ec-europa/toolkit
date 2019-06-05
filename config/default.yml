@@ -10,3 +10,6 @@ toolkit:
       commands: []
     dev:
       commands: []
+  git:
+    user_name: 'Toolkit'
+    user_email: 'digit-core@ec.europa.eu'

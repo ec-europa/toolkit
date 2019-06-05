@@ -71,15 +71,17 @@ class EnsureBranch extends BaseTask implements BuilderAwareInterface {
       return new ResultData(ResultData::EXITCODE_ERROR, $message);
     }
 
-    $command = [
-      '--work-tree', $this->workingDir,
-      'checkout', '-b', $this->branchName,
-    ];
+    $command = ['checkout', '-b', $this->branchName];
     if ($this->hasRemoteBranch()) {
+      $this->printTaskDebug("Tracking remote branch: $this->remote/$this->branchName.");
       $command += ['--track', "$this->remote/$this->branchName"];
     }
 
-    $tasks[] = $this->taskGitStack()->exec($command);
+    $tasks[] = $this->taskGitStack()
+      ->stopOnFail()
+      ->silent(TRUE)
+      ->dir($this->workingDir)
+      ->exec($command);
 
     return $this->collectionBuilder()->addTaskList($tasks)->run();
   }

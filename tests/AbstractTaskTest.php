@@ -31,7 +31,7 @@ abstract class AbstractTaskTest extends AbstractTest implements ContainerAwareIn
    */
   public function setUp() {
     $this->output = new BufferedOutput();
-    $runner = new TaskRunner(new StringInput(''), $this->output, $this->getClassLoader());
+    $runner = new TaskRunner(new StringInput('--working-dir=' . $this->getSandboxRoot()), $this->output, $this->getClassLoader());
     $this->setContainer($runner->getContainer());
 
     parent::setUp();

@@ -13,7 +13,7 @@ trait loadTasks {
    * @param string $branchName
    *   Name of the branch.
    *
-   * @return \Robo\Collection\CollectionBuilder
+   * @return \EcEuropa\Toolkit\Task\Git\EnsureBranch
    *   Task instance.
    */
   protected function taskEnsureBranch($branchName) {
