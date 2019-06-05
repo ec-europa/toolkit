@@ -475,9 +475,17 @@
             <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
         </phingcall>
 
-        <exec command="(cd ${share.path.subsites.packages.database}/${project.id}/ ; sha1sum ${db.dl.filename} ; ) > ${share.path.subsites.packages.database}/${project.id}/local.sh1" checkreturn="true" passthru="false" logoutput="false"/>
-        <exec command="cat ${share.path.subsites.packages.database}/${project.id}//local.sh1" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename.hash.local"/>
-        <exec command="cat ${share.path.subsites.packages.database}/${project.id}/${db.dl.filename.hash}" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename.hash.latest"/>
+        <trycatch>
+            <try>
+                <exec command="(cd ${share.path.subsites.packages.database}/${project.id}/ ; sha1sum ${db.dl.filename} ; ) > ${share.path.subsites.packages.database}/${project.id}/local.sh1" checkreturn="true" passthru="false" logoutput="false"/>
+                <exec command="cat ${share.path.subsites.packages.database}/${project.id}//local.sh1" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename.hash.local"/>
+                <exec command="cat ${share.path.subsites.packages.database}/${project.id}/${db.dl.filename.hash}" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename.hash.latest"/>
+            </try>
+            <catch>
+                <property name="db.dl.filename.hash.latest" value="1" />
+                <property name="db.dl.filename.hash.local" value="1" />
+            </catch>
+        </trycatch>
 
         <if>
             <equals arg1="${db.dl.filename.hash.latest}" arg2="${db.dl.filename.hash.local}" />
