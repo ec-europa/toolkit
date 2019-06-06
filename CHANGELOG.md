@@ -1,4 +1,17 @@
 # Toolkit change log
+
+## Version 3.0.22
+  * MULTISITE-21187	New target to check modules that cannot be overriden
+  * MULTISITE-21181	Automate modules verification during build (drush command)
+  * MULTISITE-20940	Encode credentials in run time.
+  * MULTISITE-21434	Remove Backtrac integration
+  * MULTISITE-19429	Fix incorrect symlink for "toolkit" - VPS
+  * MULTISITE-21342	Remove toolkit outdated configs
+  * MULTISITE-21396	Possibility to configure file_private_path in build.project.props
+  * MULTISITE-21398	Missing composer.lock file following Starterkit -> Toolkit upgrade guide
+  * MULTISITE-21393	Missing paths in Toolkit .gitignore template
+  * MULTISITE-21439	Fix "install-clone" target when sha1sum is not installed
+
 ## Version 3.0.21
   * MULTISITE-20750: Set default value for drush.color as 0.
   * MULTISITE-21001: Improve target platform-resource-link to check if files exists before creation.
