@@ -90,7 +90,7 @@ function drush_diffy_refresh_token() {
     if ($result !== false) {
       $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
       if ($statusCode === 200) {
-        variable_set('diffy_token', $token);
+        drush_invoke_process('@self', 'variable-set', array('diffy_token', $token), array('exact' => TRUE), array('integrate' => FALSE));
         drush_log(dt('Diffy token refreshed.'), 'ok');
       }
       else {
@@ -108,7 +108,8 @@ function drush_diffy_project_snapshot($projectId = '') {
   
   $projectId = _get_diffy_project_id($projectId);
   if (!empty($projectId)) {
-    $token = variable_get('diffy_token');
+    $diffy_token = drush_invoke_process('@self', 'variable-get', array('diffy_token'), array(), array('integrate' => FALSE));
+    $token = $diffy_token['object']['diffy_token'];
     $environment = drush_get_option('environment');
     $baseUrl = drush_get_option('baseUrl');
     $wait = drush_get_option('wait') ? drush_get_option('wait') : 30;
@@ -129,9 +130,10 @@ function drush_diffy_project_snapshot($projectId = '') {
     if ($result !== false) {
       $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
       if ($statusCode === 200) {
-        $previousSnapshot = variable_get('diffy_last_snapshot');
-        variable_set('diffy_prev_snapshot', $previousSnapshot);
-        variable_set('diffy_last_snapshot', $result);
+        $diffyPreviousSnapshot = drush_invoke_process('@self', 'variable-get', array('diffy_last_snapshot'), array(), array('integrate' => FALSE));
+        $previousSnapshot = $diffyPreviousSnapshot['object']['diffy_last_snapshot'];
+        drush_invoke_process('@self', 'variable-set', array('diffy_prev_snapshot', $previousSnapshot), array('exact' => TRUE), array('integrate' => FALSE));
+        drush_invoke_process('@self', 'variable-set', array('diffy_last_snapshot', $result), array('exact' => TRUE), array('integrate' => FALSE));
         drush_log(dt('Snapshot created: @url.', array('@url' => 'https://app.diffy.website/#/snapshots/' . $result)), 'ok');
         _wait_for_snapshot($result, $wait);
       }
@@ -149,7 +151,8 @@ function drush_diffy_project_snapshot($projectId = '') {
 function drush_diffy_project_compare($projectId = '') {
   $projectId = _get_diffy_project_id($projectId);
   if (!empty($projectId)) {
-    $token = variable_get('diffy_token');
+    $diffy_token = drush_invoke_process('@self', 'variable-get', array('diffy_token'), array(), array('integrate' => FALSE));
+    $token = $diffy_token['object']['diffy_token'];
     $environments = drush_get_option('environments');
     $payload = [];
     if (isset($environments)) {
@@ -181,12 +184,25 @@ function drush_diffy_project_compare($projectId = '') {
 function drush_diffy_project_diff($projectId = '') {
   $projectId = _get_diffy_project_id($projectId);
   if (!empty($projectId)) {
-    $token = variable_get('diffy_token');
+    $diffy_token = drush_invoke_process('@self', 'variable-get', array('diffy_token'), array(), array('integrate' => FALSE));
+    $token = $diffy_token['object']['diffy_token'];
     $snapshot1 = drush_get_option('snapshot1');
     $snapshot2 = drush_get_option('snapshot2');
     $payload = [];
-    $payload['snapshot1'] = !empty($snapshot1) ? $snapshot1: variable_get('diffy_prev_snapshot');
-    $payload['snapshot2'] = !empty($snapshot2) ? $snapshot2: variable_get('diffy_last_snapshot');
+    if (!empty($snapshot1)) {
+      $payload['snapshot1'] = $snapshot1;
+    }
+    else {
+      $diffyPreviousSnapshot = drush_invoke_process('@self', 'variable-get', array('diffy_prev_snapshot'), array(), array('integrate' => FALSE));
+      $payload['snapshot1'] = isset($diffyPreviousSnapshot['object']['diffy_prev_snapshot']) ? $diffyPreviousSnapshot['object']['diffy_prev_snapshot'] : '';
+    }
+    if (!empty($snapshot2)) {
+      $payload['snapshot2'] = $snapshot2;
+    }
+    else {
+      $diffyLastSnapshot = drush_invoke_process('@self', 'variable-get', array('diffy_last_snapshot'), array(), array('integrate' => FALSE));
+      $payload['snapshot2'] = isset($diffyLastSnapshot['object']['diffy_last_snapshot']) ? $diffyLastSnapshot['object']['diffy_last_snapshot'] : '';
+    }
     $ch = curl_init("https://app.diffy.website/api/projects/$projectId/diffs");
     $payload = json_encode($payload);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
@@ -213,9 +229,11 @@ function drush_diffy_project_diff($projectId = '') {
 function drush_diffy_project_baseline($projectId = '', $snapshotId = '') {
   $projectId = _get_diffy_project_id($projectId);
   if (!empty($projectId)) {
-    $token = variable_get('diffy_token');
+    $diffy_token = drush_invoke_process('@self', 'variable-get', array('diffy_token'), array(), array('integrate' => FALSE));
+    $token = $diffy_token['object']['diffy_token'];
     if (empty($snapshotId)) {
-      $snapshotId = variable_get('diffy_last_snapshot');
+      $diffyLastSnapshot = drush_invoke_process('@self', 'variable-get', array('diffy_last_snapshot'), array(), array('integrate' => FALSE));
+      $snapshotId = isset($diffyLastSnapshot['object']['diffy_last_snapshot']) ? $diffyLastSnapshot['object']['diffy_last_snapshot'] : '';
     }
     $ch = curl_init("https://app.diffy.website/api/projects/$projectId/set-base-line-set/$snapshotId");
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
@@ -238,8 +256,8 @@ function drush_diffy_project_baseline($projectId = '', $snapshotId = '') {
 
 function _get_diffy_project_id($projectId) {
   if (empty($projectId)) {
-    $diffyProjectId = variable_get('diffy_project_id');
-    $projectId = !empty($diffyProjectId) ? $diffyProjectId : '';
+    $diffyProjectId = drush_invoke_process('@self', 'variable-get', array('diffy_project_id'), array(), array('integrate' => FALSE));
+    $projectId = isset($diffyProjectId['object']['diffy_project_id']) ? $diffyProjectId['object']['diffy_project_id'] : '';
   }
   if (empty($projectId)) {
     return drush_set_error(dt('No project id provided, can not make API callback.'));
@@ -250,7 +268,8 @@ function _get_diffy_project_id($projectId) {
 
 function _wait_for_snapshot($snapshotId, $wait) {
   if ($wait > 0) {
-    $token = variable_get('diffy_token');
+    $diffy_token = drush_invoke_process('@self', 'variable-get', array('diffy_token'), array(), array('integrate' => FALSE));
+    $token = $diffy_token['object']['diffy_token'];
     $ch = curl_init("https://app.diffy.website/api/snapshots/$snapshotId");
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Authorization: Bearer ' . $token));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
