@@ -3,8 +3,6 @@ services:
   web:
     image: fpfis/httpd-php-dev:7.1
     working_dir: /var/www/html
-    ports:
-    - 8080:8080
     volumes:
     - .:/var/www/html # Non Mac users.
     # - nfsmount:/var/www/html # Mac Users with the nfsmount volume.
