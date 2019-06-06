@@ -9,9 +9,9 @@ use Robo\Task\BaseTask;
 use Robo\TaskAccessor;
 
 /**
- * Task that creates a given branch locally and sets related tracking remote.
+ * Checkout local branch tracking its remote counterpart, if any.
  */
-class EnsureBranch extends BaseTask implements BuilderAwareInterface {
+class CheckoutBranch extends BaseTask implements BuilderAwareInterface {
 
   use \Robo\Task\Vcs\loadTasks;
   use TaskAccessor;
@@ -45,7 +45,7 @@ class EnsureBranch extends BaseTask implements BuilderAwareInterface {
   protected $strict = FALSE;
 
   /**
-   * EnsureBranch constructor.
+   * CheckoutBranch constructor.
    *
    * @param string $branchName
    *   Branch name.
@@ -79,7 +79,8 @@ class EnsureBranch extends BaseTask implements BuilderAwareInterface {
 
     $tasks[] = $this->taskGitStack()
       ->stopOnFail()
-      ->silent(TRUE)
+      ->printOutput(FALSE)
+      ->printMetadata(TRUE)
       ->dir($this->workingDir)
       ->exec($command);
 
@@ -92,10 +93,10 @@ class EnsureBranch extends BaseTask implements BuilderAwareInterface {
    * @param string $remote
    *   Remote name.
    *
-   * @return EnsureBranch
+   * @return CheckoutBranch
    *   Current task object.
    */
-  public function remote(string $remote): EnsureBranch {
+  public function remote(string $remote): CheckoutBranch {
     $this->remote = $remote;
     return $this;
   }
@@ -106,10 +107,10 @@ class EnsureBranch extends BaseTask implements BuilderAwareInterface {
    * @param string $workingDir
    *   Working directory.
    *
-   * @return EnsureBranch
+   * @return CheckoutBranch
    *   Current task object.
    */
-  public function workingDir(string $workingDir): EnsureBranch {
+  public function workingDir(string $workingDir): CheckoutBranch {
     $this->workingDir = $workingDir;
     return $this;
   }
@@ -120,10 +121,10 @@ class EnsureBranch extends BaseTask implements BuilderAwareInterface {
    * @param bool $strict
    *   Strict mode.
    *
-   * @return \EcEuropa\Toolkit\Task\Git\EnsureBranch
+   * @return \EcEuropa\Toolkit\Task\Git\CheckoutBranch
    *   Current task object.
    */
-  public function strict(bool $strict): EnsureBranch {
+  public function strict(bool $strict): CheckoutBranch {
     $this->strict = $strict;
     return $this;
   }

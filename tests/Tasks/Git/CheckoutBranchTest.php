@@ -6,11 +6,11 @@ use EcEuropa\Toolkit\Task\Git\loadTasks;
 use EcEuropa\Toolkit\Tests\AbstractTaskTest;
 
 /**
- * Test EnsureBranch task.
+ * Test CheckoutBranch task.
  *
- * @covers \EcEuropa\Toolkit\Task\Git\EnsureBranch
+ * @covers \EcEuropa\Toolkit\Task\Git\CheckoutBranch
  */
-class EnsureBranchTest extends AbstractTaskTest {
+class CheckoutBranchTest extends AbstractTaskTest {
 
   use loadTasks;
   use \Robo\Task\Filesystem\loadTasks;
@@ -18,12 +18,12 @@ class EnsureBranchTest extends AbstractTaskTest {
   use \Robo\Task\Vcs\loadTasks;
 
   /**
-   * Test EnsureBranch task.
+   * Test task.
    */
-  public function testEnsureBranch() {
+  public function testCheckoutBranch() {
     $this->setupRepository('repo')->run();
 
-    $this->taskEnsureBranch('production')
+    $this->taskCheckoutBranch('production')
       ->workingDir($this->getSandboxRoot() . '/repo')
       ->run();
 
