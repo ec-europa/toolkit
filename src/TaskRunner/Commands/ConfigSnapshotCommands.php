@@ -58,14 +58,16 @@ class ConfigSnapshotCommands extends AbstractCommands implements ContainerAwareI
   ]) {
     $tasks = [];
 
-    // Ensure branch.
-    $tasks[] = $this->taskEnsureBranch($branch)
+    // Checkout local branch tracking its remote counterpart, if any.
+    $tasks[] = $this->taskCheckoutBranch($branch)
       ->workingDir($options['working-dir'])
       ->remote($options['remote'])
       ->strict($options['strict']);
 
     // Export configuration.
     $tasks[] = $this->taskExec('drush')
+      ->printOutput(FALSE)
+      ->printMetadata(TRUE)
       ->arg('config:export')
       ->option('-y');
 
@@ -77,7 +79,8 @@ class ConfigSnapshotCommands extends AbstractCommands implements ContainerAwareI
     // Commit exported configuration without running Git hooks.
     $tasks[] = $this->taskGitStack()
       ->stopOnFail()
-      ->silent(TRUE)
+      ->printOutput(FALSE)
+      ->printMetadata(TRUE)
       ->env('GIT_AUTHOR_NAME', $userName)
       ->env('GIT_COMMITTER_NAME', $userName)
       ->env('GIT_AUTHOR_EMAIL', $userEmail)

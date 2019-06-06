@@ -8,16 +8,16 @@ namespace EcEuropa\Toolkit\Task\Git;
 trait loadTasks {
 
   /**
-   * Build and return ensure branch task.
+   * Build and return CheckoutBranch task.
    *
    * @param string $branchName
    *   Name of the branch.
    *
-   * @return \EcEuropa\Toolkit\Task\Git\EnsureBranch
+   * @return \EcEuropa\Toolkit\Task\Git\CheckoutBranch
    *   Task instance.
    */
-  protected function taskEnsureBranch($branchName) {
-    return $this->task(EnsureBranch::class, $branchName);
+  protected function taskCheckoutBranch($branchName) {
+    return $this->task(CheckoutBranch::class, $branchName);
   }
 
 }
