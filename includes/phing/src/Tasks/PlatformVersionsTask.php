@@ -211,7 +211,7 @@ class PlatformVersionsTask extends \Task
                 // Send user a message that callbacks are limited to 60 an hour
                 // without GITHUB_API_TOKEN environment variable defined.
                 $this->log(
-                    "Please set your GITHUB_API_TOKEN variable. This will increase your callback limit.",
+                    "Please set your GITHUB_API_TOKEN environment variable. This will increase your callback limit.",
                     Project::MSG_WARN
                 );
             }
