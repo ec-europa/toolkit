@@ -49,6 +49,7 @@ drush.verbose = FALSE
 drush.rr.enabled = 1
 drush.rr.options = --fire-bazooka --no-cache-clear
 drush.rr.disable = '', ''
+drush.project.url.base = ${project.url.base}
 
 # Docker. (TODO)
 # ------------------------
