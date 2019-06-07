@@ -76,11 +76,11 @@ class PlatformVersionsTask extends \Task
         );
 
         // Get latest version of Platform.
-        $resp=$this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases/latest');
+        $resp = $this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases/latest');
         $latest_version = $resp->tag_name;
 
         // Get latest version of NE Platform.
-        $resp=$this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases');
+        $resp = $this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases');
         foreach($resp as $object) {
             // Skip drafts and prereleases.
             if ($object->draft == false && $object->prerelease == false) {
@@ -200,7 +200,25 @@ class PlatformVersionsTask extends \Task
             curl_setopt($curl, CURLOPT_HTTPHEADER, $request_headers);
         }
         $resp = json_decode(curl_exec($curl));
+        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
+        if ($http_code !== 200) {
+            $this->log(
+                $resp->message,
+                Project::MSG_WARN
+            );
+            if (empty($github_api_token)) {
+                // Send user a message that callbacks are limited to 60 an hour
+                // without GITHUB_API_TOKEN environment variable defined.
+                $this->log(
+                    "Please set your GITHUB_API_TOKEN variable. This will increase your callback limit.",
+                    Project::MSG_WARN
+                );
+            }
+            throw new \BuildException(
+                "Failed to retrieve versions from GitHub API."
+            );
+        }
 
         return $resp;
     }
