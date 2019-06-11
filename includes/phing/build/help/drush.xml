@@ -342,7 +342,7 @@
     </target>
 
     <target name="drush-check-users" hidden="true" description="Recover user table for ASDA dumps.">
-        <exec command='drush -r ${build.dev} sqlq "SELECT count(uid) FROM users WHERE 1"' outputProperty="count.users" checkreturn="true" />
+        <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} sqlq "SELECT count(uid) FROM users WHERE 1"' outputProperty="count.users" checkreturn="true" />
         <if>
             <equals arg1="${count.users}" arg2="0" />
             <then>
