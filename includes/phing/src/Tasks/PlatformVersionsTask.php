@@ -79,31 +79,37 @@ class PlatformVersionsTask extends \Task
         $resp = $this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases/latest');
         $latest_version = $resp->tag_name;
 
-        // Get latest version of NE Platform.
-        $resp = $this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases');
-        foreach($resp as $object) {
-            // Skip drafts and prereleases.
-            if ($object->draft == false && $object->prerelease == false) {
-                $versions[$object->published_at] = $object->tag_name;
-            }
-        }
-        ksort($versions);
-
-        // Check if end-user is providing the exact version, if not just get the latest
-        // for the major provided.
-        if (in_array($this->_packageVersion, $versions)) {
-            $this->setVersionProp($this->_packageVersion);
+        // Check if user has provided the latest version.
+        if ($latest_version === $this->_packageVersion) {
+            $this->setVersionProp($latest_version);
         }
         else {
-            foreach($versions as $version) {
-                $temporaryGroups[substr_compare($version, $this->_majorVersion, 0, 3)] = $version;
+            // Get latest version of NE Platform.
+            $resp = $this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases');
+            foreach($resp as $object) {
+                // Skip drafts and prereleases.
+                if ($object->draft == false && $object->prerelease == false) {
+                    $versions[$object->published_at] = $object->tag_name;
+                }
             }
+            ksort($versions);
 
-            foreach($temporaryGroups as $version) {
-                $majors[substr($version, 0, 3)] = $version;
+            // Check if end-user is providing the exact version, if not just get the latest
+            // for the major provided.
+            if (in_array($this->_packageVersion, $versions)) {
+                $this->setVersionProp($this->_packageVersion);
             }
+            else {
+                foreach($versions as $version) {
+                    $temporaryGroups[substr_compare($version, $this->_majorVersion, 0, 3)] = $version;
+                }
 
-            $this->setVersionProp($majors[$this->_majorVersion]);
+                foreach($temporaryGroups as $version) {
+                    $majors[substr($version, 0, 3)] = $version;
+                }
+
+                $this->setVersionProp($majors[$this->_majorVersion]);
+            }
         }
 
         $this->log(
