@@ -169,6 +169,7 @@ build.subsite.composer.json = ${build.subsite.dir}/composer.json
 build.subsite.composer.lock = ${build.subsite.dir}/composer.lock
 build.subsite.dir = ${build.platform.dir.sites}/${build.site}
 build.subsite.dir.files = sites/${build.site}/files
+build.subsite.dir.private_files = ${build.subsite.dir.files}/private_files
 build.subsite.dir.libraries = ${build.subsite.dir}/libraries
 build.subsite.dir.modules = ${build.subsite.dir}/modules
 build.subsite.dir.modules.contrib = ${build.subsite.dir.modules}/contrib

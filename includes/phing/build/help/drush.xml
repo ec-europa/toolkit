@@ -249,7 +249,7 @@
                             <token key="stage_file_proxy_origin_dir" value="${devel.vars.stage_file_proxy_origin_dir}" />
                             <token key="stage_file_proxy_hotlink" value="${devel.vars.stage_file_proxy_hotlink}" />
                             <token key="file_public_path" value="${build.subsite.dir.files}" />
-                            <token key="file_private_path" value="${build.subsite.dir.files}/private_files" />
+                            <token key="file_private_path" value="${build.subsite.dir.private_files}" />
                             <token key="file_temporary_path" value="${build.subsite.dir.tmp}" />
                             <token key="update_free_access" value="${drupal.update.free.access}" />
                             <token key="drupal_hash_salt" value="${drupal.hash.salt}" />
@@ -334,7 +334,7 @@
     </target>
 
     <target name="drush-check-users" hidden="true" description="Recover user table for ASDA dumps.">
-        <exec command='drush -r ${build.dev} sqlq "SELECT count(uid) FROM users WHERE 1"' outputProperty="count.users" checkreturn="true" />
+        <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} sqlq "SELECT count(uid) FROM users WHERE 1"' outputProperty="count.users" checkreturn="true" />
         <if>
             <equals arg1="${count.users}" arg2="0" />
             <then>
