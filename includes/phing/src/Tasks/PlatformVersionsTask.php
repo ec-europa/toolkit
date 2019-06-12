@@ -76,34 +76,40 @@ class PlatformVersionsTask extends \Task
         );
 
         // Get latest version of Platform.
-        $resp=$this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases/latest');
+        $resp = $this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases/latest');
         $latest_version = $resp->tag_name;
 
-        // Get latest version of NE Platform.
-        $resp=$this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases');
-        foreach($resp as $object) {
-            // Skip drafts and prereleases.
-            if ($object->draft == false && $object->prerelease == false) {
-                $versions[$object->published_at] = $object->tag_name;
-            }
-        }
-        ksort($versions);
-
-        // Check if end-user is providing the exact version, if not just get the latest
-        // for the major provided.
-        if (in_array($this->_packageVersion, $versions)) {
-            $this->setVersionProp($this->_packageVersion);
+        // Check if user has provided the latest version.
+        if ($latest_version === $this->_packageVersion) {
+            $this->setVersionProp($latest_version);
         }
         else {
-            foreach($versions as $version) {
-                $temporaryGroups[substr_compare($version, $this->_majorVersion, 0, 3)] = $version;
+            // Get latest version of NE Platform.
+            $resp = $this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases');
+            foreach($resp as $object) {
+                // Skip drafts and prereleases.
+                if ($object->draft == false && $object->prerelease == false) {
+                    $versions[$object->published_at] = $object->tag_name;
+                }
             }
+            ksort($versions);
 
-            foreach($temporaryGroups as $version) {
-                $majors[substr($version, 0, 3)] = $version;
+            // Check if end-user is providing the exact version, if not just get the latest
+            // for the major provided.
+            if (in_array($this->_packageVersion, $versions)) {
+                $this->setVersionProp($this->_packageVersion);
             }
+            else {
+                foreach($versions as $version) {
+                    $temporaryGroups[substr_compare($version, $this->_majorVersion, 0, 3)] = $version;
+                }
 
-            $this->setVersionProp($majors[$this->_majorVersion]);
+                foreach($temporaryGroups as $version) {
+                    $majors[substr($version, 0, 3)] = $version;
+                }
+
+                $this->setVersionProp($majors[$this->_majorVersion]);
+            }
         }
 
         $this->log(
@@ -200,7 +206,25 @@ class PlatformVersionsTask extends \Task
             curl_setopt($curl, CURLOPT_HTTPHEADER, $request_headers);
         }
         $resp = json_decode(curl_exec($curl));
+        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
+        if ($http_code !== 200) {
+            $this->log(
+                $resp->message,
+                Project::MSG_WARN
+            );
+            if (empty($github_api_token)) {
+                // Send user a message that callbacks are limited to 60 an hour
+                // without GITHUB_API_TOKEN environment variable defined.
+                $this->log(
+                    "Please set your GITHUB_API_TOKEN environment variable. This will increase your callback limit.",
+                    Project::MSG_WARN
+                );
+            }
+            throw new \BuildException(
+                "Failed to retrieve versions from GitHub API."
+            );
+        }
 
         return $resp;
     }
