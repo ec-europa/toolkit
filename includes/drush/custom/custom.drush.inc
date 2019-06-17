@@ -20,6 +20,15 @@ function custom_drush_command() {
     'aliases' => ['fr-site', 'frsi'],
   ];
 
+  $items['check-unused-modules'] = [
+    'description' => 'Checks for non-used modules in certain path crossreferenced with a makefile.',
+    'args' => [
+      'path' => 'The path in which the module lives, "sites" by default',
+      'make' => 'The make file which to cross reference against the disabled modules, relative to drupal root. By default ../resources/site.make.',
+    ],
+    'aliases' => ['ch-unmo', 'chun'],
+  ];
+
   $items['watchdog-smoketest'] = [
     'description' => 'Crawl site and report watchdog errors and notifications back to user.',
     //'drupal dependencies' => ['dblog'],
@@ -83,6 +92,36 @@ function drush_custom_features_revert_site() {
   }
   else {
     drush_log(dt('Current state already matches defaults, aborting.'), 'ok');
+  }
+}
+
+/**
+ * Checks for non-used modules in certain path crossreferenced with a makefile.
+ */
+function drush_custom_check_unused_modules($path = 'sites', $make = '../resources/site.make') {
+  // If referenced make file does not exist, trow a warning.
+  if (!file_exists($make)) {
+    drush_log(dt('Make file @make does not exist. Showing all disabled modules in @path.', array('@make' => $make, '@path' => $path)), 'warning');
+  }
+  else {
+    $make_file = drupal_parse_info_file($make);
+  }
+
+  // Get all modules.
+  $modules = drupal_system_listing("/\\.module\$/", $path, 'name', 0);
+  system_get_files_database($modules, 'module');
+
+  foreach ($modules as $module) {
+    // If no make file was provided or empty, show all disabled modules in path.
+    if ($module->status === '0' && empty($make_file)) {
+      drush_log(dt('Module @name is not enabled.', array('@name' => $module->name)), 'warning');
+    }
+    // Otherwise show only disabled modules that are present in the make file.
+    elseif ($module->status === '0' && !empty($make_file['projects'])) {
+      if (in_array($module->name, array_keys($make_file['projects']))) {
+        drush_log(dt('Module @name is not enabled.', array('@name' => $module->name)), 'warning');
+      }
+    }
   }
 }
 
