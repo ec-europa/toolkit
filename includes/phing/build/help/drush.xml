@@ -103,6 +103,7 @@
                         <echo msg="Empty make file found. Skipping... ${not.empty}" />
                     </then>
                     <else>
+                        <phingcall target="check-contrib-check-download" />
                         <echo message="Running make file ${make-file} into folder ${make-folder}." />
                         <mkdir dir="${project.tmp.dir}/make" />
                         <drush command="make" assume="yes" bin="${toolkit.dir.bin.drush}" pipe="yes" verbose="${drush.verbose}" color="${drush.color}">
@@ -558,10 +559,18 @@
         <drush command="overridden-modules" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
         </drush>
     </target>
+
     <target name="check-contrib-aut-secur" description="Checks for non-authorised contributed modules or/and with security updates.">
         <echo message="Checking non-authorised modules and security updates for ${db.name}." />
         <drush command="tk-contrib-as" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${project.id}</param>
+        </drush>
+    </target>
+
+    <target name="check-contrib-check-download" description="Checks for incorrect usage of download attributes..">
+        <echo message="Checking ${resources.dir.site.make}." />
+        <drush command="tk-contrib-cd" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>${resources.dir.site.make}</param>
         </drush>
     </target>
 
