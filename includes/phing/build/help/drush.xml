@@ -569,7 +569,7 @@
 
     <target name="check-contrib-check-download" description="Checks for incorrect usage of download attributes..">
         <echo message="Checking ${resources.dir.site.make}." />
-        <drush command="tk-contrib-cd" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        <drush command="tk-contrib-cd" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${resources.dir.site.make}</param>
         </drush>
     </target>
