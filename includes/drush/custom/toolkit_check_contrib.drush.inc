@@ -22,6 +22,13 @@ function toolkit_check_contrib_drush_command() {
     'description' => "Gives a list of non authorised modules and/or security updates.",
     'aliases' => array('tk-contrib-as'),
   );
+  $items['toolkit-contrib-check-download'] = array(
+    'description' => "Checks a make file for incorrect download tag, revision, branch or refspec.",
+    'aliases' => array('tk-contrib-cd'),
+    'args' => array(
+      'make' => 'The make file to validate.'
+    ),
+  );
   $items['toolkit-contrib-update'] = array(
     'description' => "Gives a list of modules no complying with the minimum version allowed.",
     'aliases' => array('tk-contrib-up'),
@@ -109,6 +116,45 @@ function drush_toolkit_check_contrib_toolkit_contrib_authorised_security($projec
   // Delete variable 'project_id'.
   if ($project_id !== NULL) {
     variable_del('project_id');
+  }
+}
+
+/**
+ * Function to validate a make files download attributes. Incorrect usage of the
+ * download attribute has proven to download incorrect versions.
+ */
+function drush_toolkit_check_contrib_toolkit_contrib_check_download($make = '../resources/site.make') {
+  if (!file_exists($make)) {
+    drush_log(dt('Make file @make does not exist. Skipping download attributes check.', array('@make' => $make)), 'warning');
+  }
+  else {
+    $make_file = drupal_parse_info_file($make);
+    $attributes = array(
+      'tag',
+      'revision',
+      'branch',
+      'refspec'
+    );
+  
+    // Check projects for incorrect attributes.
+    if (isset($make_file['projects'])) {
+      foreach ($make_file['projects'] as $name => $project) {
+        $attributes_at_wrong_level = array_intersect(array_keys($project), $attributes);
+        if (!empty($attributes_at_wrong_level)) {
+          drush_set_error(dt('Attribute @attributes defined on "project" level for @name. This should be at "download" level.', array('@attributes' => implode(', ', $attributes_at_wrong_level), '@name' => $name)));
+        }
+      }
+    }
+
+    // Check libraries for incorrect attributes.
+    if (isset($make_file['libraries'])) {
+      foreach ($make_file['libraries'] as $name => $project) {
+        $attributes_at_wrong_level = array_intersect(array_keys($project), $attributes);
+        if (!empty($attributes_at_wrong_level)) {
+          drush_set_error(dt('Attribute @attributes defined on "library" level for @name. This should be at "download" level.', array('@attributes' => implode(', ', $attributes_at_wrong_level), '@name' => $name)));
+        }
+      }
+    }
   }
 }
 
