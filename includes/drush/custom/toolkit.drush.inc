@@ -14,25 +14,37 @@ use Drush\Log\LogLevel;
  *
  * @see drush_parse_command()
  */
-function toolkit_check_contrib_drush_command() {
+function toolkit_drush_command() {
 
   $items = array();
 
-  $items['toolkit-contrib-authorised-security'] = array(
+  $items['toolkit-check-modules-authorized-security'] = array(
     'description' => "Gives a list of non authorised modules and/or security updates.",
-    'aliases' => array('tk-contrib-as'),
+    'aliases' => array('tk-cmas'),
   );
-  $items['toolkit-contrib-check-download'] = array(
+  $items['toolkit-check-modules-download-attribute'] = array(
     'description' => "Checks a make file for incorrect download tag, revision, branch or refspec.",
-    'aliases' => array('tk-contrib-cd'),
+    'aliases' => array('tk-cmda'),
     'args' => array(
       'make' => 'The make file to validate.'
     ),
   );
-  $items['toolkit-contrib-update'] = array(
+  $items['toolkit-check-modules-minimum-version'] = array(
     'description' => "Gives a list of modules no complying with the minimum version allowed.",
-    'aliases' => array('tk-contrib-up'),
+    'aliases' => array('tk-cmmv'),
   );
+  $items['toolkit-check-modules-restricted'] = array(
+    'description' => "Search for modules that can't be overridden.",
+    'aliases' => array('tk-cmr'),
+  );
+  $items['toolkit-check-modules-unused'] = [
+    'description' => 'Checks for non-used modules in certain path crossreferenced with a makefile.',
+    'args' => [
+      'path' => 'The path in which the module lives, "sites" by default',
+      'make' => 'The make file which to cross reference against the disabled modules, relative to drupal root. By default ../resources/site.make.',
+    ],
+    'aliases' => ['tk-cmu'],
+  ];
 
   return $items;
 }
@@ -41,7 +53,7 @@ function toolkit_check_contrib_drush_command() {
  * Function to return the list of modules not approved, or
  * modules with an existing security update.
  */
-function drush_toolkit_check_contrib_toolkit_contrib_authorised_security($project_id = NULL) {
+function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
   // Get list of all modules in the project.
   $modules = checkProjectModules();
   // Get the module reviews list.
@@ -128,7 +140,7 @@ function drush_toolkit_check_contrib_toolkit_contrib_authorised_security($projec
  * Function to validate a make files download attributes. Incorrect usage of the
  * download attribute has proven to download incorrect versions.
  */
-function drush_toolkit_check_contrib_toolkit_contrib_check_download($make = '../resources/site.make') {
+function drush_toolkit_check_modules_download_attribute($make = '../resources/site.make') {
   if (!file_exists($make)) {
     drush_log(dt('Make file @make does not exist. Skipping download attributes check.', array('@make' => $make)), 'warning');
   }
@@ -167,7 +179,7 @@ function drush_toolkit_check_contrib_toolkit_contrib_check_download($make = '../
  * Function to return the list of modules with a version lower then
  * the minimum version authorised.
  */
-function drush_toolkit_check_contrib_toolkit_contrib_update($project_id = NULL) {
+function drush_toolkit_check_modules_minimum_version($project_id = NULL) {
   // Get list of all modules in the project.
   $modules = checkProjectModules();
   // Get the module reviews list.
@@ -226,6 +238,56 @@ function drush_toolkit_check_contrib_toolkit_contrib_update($project_id = NULL) 
     }
   }
 }
+
+/**
+ * Callback for searching for overridden modules.
+ */
+function drush_toolkit_check_modules_restricted() {
+
+  // Array with list of the modules forbiden to be overridden.
+  $forbiddenToOverride = array('chr');
+  // Get list of all modules on the project.
+  $moduleList = drupal_system_listing("/\\.module\$/", "modules", 'name', 0);
+  foreach ($moduleList as $module) {
+    // Check if a module is in the list and not using the default version
+    // provided.
+    if (in_array($module->name, $forbiddenToOverride) &&
+      strpos($module->uri, 'profiles/') === FALSE) {
+      drush_log("The module " . $module->name . " is not allowed to be overridden.", LogLevel::ERROR);
+    }
+  }
+}
+
+/**
+ * Checks for non-used modules in certain path crossreferenced with a makefile.
+ */
+function drush_toolkit_check_modules_unused($path = 'sites', $make = '../resources/site.make') {
+  // If referenced make file does not exist, trow a warning.
+  if (!file_exists($make)) {
+    drush_log(dt('Make file @make does not exist. Showing all disabled modules in @path.', array('@make' => $make, '@path' => $path)), 'warning');
+  }
+  else {
+    $make_file = drupal_parse_info_file($make);
+  }
+
+  // Get all modules.
+  $modules = drupal_system_listing("/\\.module\$/", $path, 'name', 0);
+  system_get_files_database($modules, 'module');
+
+  foreach ($modules as $module) {
+    // If no make file was provided or empty, show all disabled modules in path.
+    if ($module->status === '0' && empty($make_file)) {
+      drush_log(dt('Module @name is not enabled.', array('@name' => $module->name)), 'warning');
+    }
+    // Otherwise show only disabled modules that are present in the make file.
+    elseif ($module->status === '0' && !empty($make_file['projects'])) {
+      if (in_array($module->name, array_keys($make_file['projects']))) {
+        drush_log(dt('Module @name is not enabled.', array('@name' => $module->name)), 'warning');
+      }
+    }
+  }
+}
+
 
 // Helper function to get the minimum accepted module version.
 function searchForVersion($moduleName, $modulesArray) {
