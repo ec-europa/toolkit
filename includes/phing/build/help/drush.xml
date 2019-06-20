@@ -553,12 +553,6 @@
         </if>
     </target>
 
-    <target name="check-modules-restricted" description="Checks for modules overridden not allowed to.">
-        <echo message="Checking modules that can't be overridden for ${db.name}." />
-        <drush command="toolkit-check-modules-restricted" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-        </drush>
-    </target>
-
     <target name="check-modules-authorized-security" description="Checks for non-authorised contributed modules or/and with security updates.">
         <echo message="Checking non-authorised modules and security updates for ${db.name}." />
         <drush command="toolkit-check-modules-authorized-security" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
@@ -577,6 +571,18 @@
         <echo message="Checking contributed modules updates for ${db.name}." />
         <drush command="toolkit-check-modules-minimum-version" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${project.id}</param>
+        </drush>
+    </target>
+
+    <target name="check-modules-restricted" description="Checks for modules overridden not allowed to.">
+        <echo message="Checking modules that can't be overridden for ${db.name}." />
+        <drush command="toolkit-check-modules-restricted" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        </drush>
+    </target>
+
+    <target name="check-modules-unused" description="Checks for modules overridden not allowed to.">
+        <echo message="Checks for non-used modules in certain path crossreferenced with a makefile." />
+        <drush command="toolkit-check-modules-unused" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
         </drush>
     </target>
 
