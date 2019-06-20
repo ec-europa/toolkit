@@ -214,8 +214,7 @@ function getModulesList() {
         $d7ModulesList = json_decode($result, true);
       }
       else {
-        $error_message = curl_error($curl);
-        drush_print($error_message);
+        drush_set_error(dt('Curl request failed with error code @statusCode.', array('@statusCode' => $statusCode)));
       }
     }
     return $d7ModulesList;
