@@ -1,16 +1,24 @@
 # Toolkit change log
 
 ## Version 3.0.22
-  * MULTISITE-21187	New target to check modules that cannot be overriden
-  * MULTISITE-21181	Automate modules verification during build (drush command)
-  * MULTISITE-20940	Encode credentials in run time.
-  * MULTISITE-21434	Remove Backtrac integration
-  * MULTISITE-19429	Fix incorrect symlink for "toolkit" - VPS
-  * MULTISITE-21342	Remove toolkit outdated configs
-  * MULTISITE-21396	Possibility to configure file_private_path in build.project.props
-  * MULTISITE-21398	Missing composer.lock file following Starterkit -> Toolkit upgrade guide
-  * MULTISITE-21393	Missing paths in Toolkit .gitignore template
-  * MULTISITE-21439	Fix "install-clone" target when sha1sum is not installed
+  * MULTISITE-19306 Drush command to check for unused modules
+  * MULTISITE-19429 Fix incorrect symlink for "toolkit" - VPS
+  * MULTISITE-19749 Add site.make validatation for download attr.
+  * MULTISITE-20940 Encode credentials in run time.
+  * MULTISITE-21181 Automate modules verification during build (drush command)
+  * MULTISITE-21187 New target to check modules that cannot be overriden
+  * MULTISITE-21342 Remove toolkit outdated configs
+  * MULTISITE-21393 Missing paths in Toolkit .gitignore template
+  * MULTISITE-21396 Possibility to configure file_private_path in build.project.props
+  * MULTISITE-21398 Missing composer.lock file following Starterkit -> Toolkit upgrade guide
+  * MULTISITE-21434 Remove Backtrac integration
+  * MULTISITE-21439 Fix "install-clone" target when sha1sum is not installed
+  * MULTISITE-21440 Create drush commands to connect to diffy service
+  * MULTISITE-21456 Handle missing GITHUB_API_TOKEN
+  * MULTISITE-21481 "install-clone" step of a build fails on the "registry-rebuild" step
+  * MULTISITE-21492 Fix drush-check users to use toolkit provided drush
+  * MULTISITE-21563 Fix notices on toolkit-contrib-update and toolkit-contrib-authorised-security
+  * MULTISITE-21566 Align drush command names in toolkit
 
 ## Version 3.0.21
   * MULTISITE-20750: Set default value for drush.color as 0.
