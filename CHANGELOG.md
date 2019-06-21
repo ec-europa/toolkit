@@ -19,6 +19,7 @@
   * MULTISITE-21492 Fix drush-check users to use toolkit provided drush
   * MULTISITE-21563 Fix notices on toolkit-contrib-update and toolkit-contrib-authorised-security
   * MULTISITE-21566 Align drush command names in toolkit
+  * MULTISITE-21463 Upgrade qa-automation version to 3.0.11
 
 ## Version 3.0.21
   * MULTISITE-20750: Set default value for drush.color as 0.
