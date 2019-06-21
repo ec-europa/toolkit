@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db3ab1ff2ab0c563b1a963efb24c511a",
+    "content-hash": "7df1b563889e5c5fabf771b449d9cb4e",
     "packages": [
         {
             "name": "consolidation/annotated-command",
@@ -2527,7 +2527,7 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "dev-master",
+            "version": "3.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
@@ -2707,8 +2707,7 @@
     "stability-flags": {
         "cweagans/composer-patches": 20,
         "kasperg/phing-github": 20,
-        "pear/versioncontrol_git": 20,
-        "ec-europa/qa-automation": 20
+        "pear/versioncontrol_git": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
