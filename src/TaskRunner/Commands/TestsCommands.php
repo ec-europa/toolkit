@@ -29,7 +29,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
   public function toolkitPhpcs() {
     $tasks = [];
 
-    $tasks[] = $this->taskExec('./vendor/bin/grumphp run');
+    $tasks[] = $this->taskExec('./vendor/bin/grumphp run --config=./vendor/ec-europa/qa-automation/dist/qa-conventions.yml');
 
     return $this->collectionBuilder()->addTaskList($tasks);
   }
