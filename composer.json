@@ -12,12 +12,12 @@
     },
     "require": {
         "php": "^7.1",
-        "guzzlehttp/guzzle": "^6.3",
         "drupal/console-core": "^1.8",
         "drupal/drupal-extension": "^3.4 || ^4.0",
         "drush/drush": "^9.5",
-        "openeuropa/task-runner": "^1.0.0-beta5",
-        "openeuropa/code-review": "^1.0.0-beta2"
+        "ec-europa/qa-automation": "^4.0.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "openeuropa/task-runner": "^1.0.0-beta5"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0"
