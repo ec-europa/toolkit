@@ -59,6 +59,14 @@
       <param value="${db.dl.password}"/>
     </php>
 
+    <!-- Make sure project id for DB is valid with underscore instead of hyphen. -->
+    <php function="str_replace" returnProperty="db-name" level="debug">
+        <param value="-" />
+        <param value="_" />
+        <param value="${db.name}" />
+    </php>
+    <property name="db.url" value="${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db-name}" override="true" />
+
     <!-- Set compose project name if available. -->
     <if>
         <isset property="env.COMPOSE_PROJECT_NAME" />
