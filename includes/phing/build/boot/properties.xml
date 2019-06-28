@@ -54,7 +54,12 @@
         </then>
     </if>
 
-    <!-- Macke sure project id for DB is valid with underscore instead of hyphen. -->
+    <!-- Urlencode the db password in case there are breaking signs in it. -->
+    <php function="urlencode" returnProperty="db.dl.password" level="debug">
+      <param value="${db.dl.password}"/>
+    </php>
+
+    <!-- Make sure project id for DB is valid with underscore instead of hyphen. -->
     <php function="str_replace" returnProperty="db-name" level="debug">
         <param value="-" />
         <param value="_" />

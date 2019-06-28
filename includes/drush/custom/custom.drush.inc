@@ -5,6 +5,8 @@
  * Drush commands for the module.
  */
 
+use Drush\Log\LogLevel;
+
 /**
  * Implements hook_drush_command().
  */
@@ -85,7 +87,6 @@ function drush_custom_features_revert_site() {
     drush_log(dt('Current state already matches defaults, aborting.'), 'ok');
   }
 }
-
 
 /**
  * Revert all enabled features to their definitions in code.

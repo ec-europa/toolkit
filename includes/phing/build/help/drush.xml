@@ -280,14 +280,6 @@
           </if>
       </target>
 
-
-    <target name="drush-uris-generate" description="Generate list of uris.">
-        <drush command="php-script" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>${toolkit.dir.incl.drush}/generate-uris.php</param>
-            <param>${backtrac.file}</param>
-        </drush>
-    </target>
-
     <target name="drush-cache-reset" description="Disable and clean cache." hidden="true">
       <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
       <if>
@@ -331,7 +323,7 @@
     </target>
 
     <target name="drush-check-users" hidden="true" description="Recover user table for ASDA dumps.">
-        <exec command='drush -r ${build.dev} sqlq "SELECT count(uid) FROM users WHERE 1"' outputProperty="count.users" checkreturn="true" />
+        <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} sqlq "SELECT count(uid) FROM users WHERE 1"' outputProperty="count.users" checkreturn="true" />
         <if>
             <equals arg1="${count.users}" arg2="0" />
             <then>
@@ -549,4 +541,38 @@
             </else>
         </if>
     </target>
+
+    <target name="check-modules-authorized-security" description="Checks for non-authorised contributed modules or/and with security updates.">
+        <echo message="Checking non-authorised modules and security updates for ${db.name}." />
+        <drush command="toolkit-check-modules-authorized-security" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>${project.id}</param>
+        </drush>
+    </target>
+
+    <target name="check-modules-download-attribute" description="Checks for incorrect usage of download attributes..">
+        <echo message="Checking ${resources.dir.site.make}." />
+        <drush command="toolkit-check-modules-download-attribute" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>${resources.dir.site.make}</param>
+        </drush>
+    </target>
+
+    <target name="check-modules-minimum-version" description="Checks for contributed modules using a lower version then the recommended one.">
+        <echo message="Checking contributed modules updates for ${db.name}." />
+        <drush command="toolkit-check-modules-minimum-version" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+            <param>${project.id}</param>
+        </drush>
+    </target>
+
+    <target name="check-modules-restricted" description="Checks for modules overridden not allowed to.">
+        <echo message="Checking modules that can't be overridden for ${db.name}." />
+        <drush command="toolkit-check-modules-restricted" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        </drush>
+    </target>
+
+    <target name="check-modules-unused" description="Checks for modules overridden not allowed to.">
+        <echo message="Checks for non-used modules in certain path crossreferenced with a makefile." />
+        <drush command="toolkit-check-modules-unused" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
+        </drush>
+    </target>
+
 </project>

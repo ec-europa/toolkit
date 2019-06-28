@@ -1,13 +1,13 @@
 # Toolkit location: ./includes/phing/build/boot.props
 # ------------------------------------------------------------------------------
-# These are the toolkit paths that should not be altered. Altering paths here
+# These are the toolkit paths that should not be altered. Altering paths here 
 # have a good chance of breaking things.
 # ------------------------------------------------------------------------------
 
 # Toolkit directories.
 # -----------------------
 
-toolkit.dir = ${phing.dir.starterkit}
+toolkit.dir = ${phing.dir.core}
 toolkit.dir.incl = ${toolkit.dir}/includes
 toolkit.dir.incl.composer = ${toolkit.dir.incl}/composer
 toolkit.dir.incl.docker = ${toolkit.dir.incl}/docker
@@ -26,27 +26,6 @@ toolkit.dir.vendor = ${toolkit.dir}/vendor
 toolkit.dir.bin = ${toolkit.dir}/bin
 toolkit.dir.bin.drush = ${toolkit.dir.bin}/drush
 toolkit.dir.bin.phing = ${toolkit.dir.bin}/phing
-
-
-# Toolkit location: ./includes/phing/build/test/phpunit.props
-# ------------------------------------------------------------------------------
-# PHPUnit sprecific configuration
-# ------------------------------------------------------------------------------
-
-# The location of the PHPUnit executable.
-phpunit.bin = ${tests.dir}/bin/phpunit
-
-# The location of the PHPUnit configuration files.
-phpunit.dir = ${tests.dir}
-
-# The location of the PHPUnit configuration template.
-phpunit.xml.template = ${phpunit.dir}/phpunit.xml.dist
-
-# The location of the generated Behat configuration file.
-phpunit.xml.path = ${phpunit.dir}/phpunit.xml
-
-# The base URL to use in PHPUnit tests.
-phpunit.base_url = ${behat.base_url}
 
 
 # Toolkit location: ./includes/phing/build/test/phpcs.props
@@ -159,18 +138,42 @@ behat.generic.package = jonhy81/toolkit-behat
 # Specify a tags for the behat scenarios to run.
 behat.tags = ~@wip
 
+behat.show_cmd = 
 
-# Toolkit location: ./includes/phing/props/docker.props
+
+# Toolkit location: ./includes/phing/build/test/phpunit.props
 # ------------------------------------------------------------------------------
-# Default docker (fpfis) properties.
+# PHPUnit sprecific configuration
+# ------------------------------------------------------------------------------
+
+# The location of the PHPUnit executable.
+phpunit.bin = ${tests.dir}/bin/phpunit
+
+# The location of the PHPUnit configuration files.
+phpunit.dir = ${tests.dir}
+
+# The location of the PHPUnit configuration template.
+phpunit.xml.template = ${phpunit.dir}/phpunit.xml.dist
+
+# The location of the generated Behat configuration file.
+phpunit.xml.path = ${phpunit.dir}/phpunit.xml
+
+# The base URL to use in PHPUnit tests.
+phpunit.base_url = ${behat.base_url}
+
+
+# Toolkit location: ./includes/phing/props/drone.props
+# ------------------------------------------------------------------------------
+# Default properties for toolkit pipeline on Drone:
+# https://github.com/ec-europa/ne-pipelines/blob/master/drone/toolkit.yml
 # ------------------------------------------------------------------------------
 
 db.host = mysql
 solr.host = solr
-behat.base_url = http://web:8080
 behat.wd_host.url = http://selenium:4444/wd/hub
-
-
+share.path = /cache
+project.db.file = ./dump.sql
+project.url.base = http://web:8080
 # Toolkit location: ./includes/phing/props/main.props
 # ------------------------------------------------------------------------------
 # Main properties of Toolkit. Most of these are build and development related.
@@ -278,7 +281,9 @@ platform.package.db.cache.ttl = 30
 platform.package.provider = git-hub
 platform.package.provider.token = # TODO: Github API limit.
 platform.package.repository = ec-europa/platform-dev
+platform.package.download.location = https://github.com/${platform.package.repository}/releases/download/${platform.package.version.current}
 platform.package.version = 2.5
+platform.multisite.mode = 1
 
 # Theme configuration (deploy props?)
 # --------------------
@@ -340,7 +345,7 @@ build.platform.htaccess.append.text =
 build.subsite.composer.json = ${build.subsite.dir}/composer.json
 build.subsite.composer.lock = ${build.subsite.dir}/composer.lock
 build.subsite.dir = ${build.platform.dir.sites}/${build.site}
-build.subsite.dir.files =  ${build.subsite.dir}/files
+build.subsite.dir.files = sites/${build.site}/files
 build.subsite.dir.libraries = ${build.subsite.dir}/libraries
 build.subsite.dir.modules = ${build.subsite.dir}/modules
 build.subsite.dir.modules.contrib = ${build.subsite.dir.modules}/contrib
@@ -348,7 +353,7 @@ build.subsite.dir.modules.custom = ${build.subsite.dir.modules}/custom
 build.subsite.dir.modules.features = ${build.subsite.dir.modules}/features
 build.subsite.dir.source = ${build.subsite.dir}/src
 build.subsite.dir.themes = ${build.subsite.dir}/themes
-build.subsite.dir.tmp = ${build.subsite.dir}/tmp
+build.subsite.dir.tmp = sites/${build.site}/tmp
 
 # platform build files and directories.
 # -----------------------------------------
@@ -420,22 +425,12 @@ drush.alias.docker = docker
 # ----------------------------
 drupal.update.free.access = FALSE
 drupal.hash.salt =
-
-# Bactrack configuration
-# ----------------------------
-backtrac.file = ${project.tmp.dir}/bactrack.json
-backtrac.compare.mode = compare_itself
-
-
-# Toolkit location: ./includes/phing/props/drone.props
+# Toolkit location: ./includes/phing/props/docker.props
 # ------------------------------------------------------------------------------
-# Default properties for toolkit pipeline on Drone:
-# https://github.com/ec-europa/ne-pipelines/blob/master/drone/toolkit.yml
+# Default docker (fpfis) properties.
 # ------------------------------------------------------------------------------
 
 db.host = mysql
 solr.host = solr
 behat.base_url = http://web:8080
 behat.wd_host.url = http://selenium:4444/wd/hub
-share.path = /cache
-project.db.file = ./dump.sql.gz
