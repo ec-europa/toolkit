@@ -13,6 +13,42 @@
             test-phpcs-setup,
             test-phpcs-exec" />
 
+    <!-- Run a full static analysis with phpcs compatiblity. -->
+    <target
+        name="test-run-phpcs-compatibility"
+        description="Refresh configuration and run phpcs compatibility review.">
+        <if>
+            <isfalse value="${phpcs.compat.skip}"/>
+            <then>
+                <phingcall target="build-subsite-dist" />
+                <delete file="${phpcs.config}" failonerror="false" />
+                <phpcsconf
+                    configFile="${phpcs.config}"
+                    extensions="php inc module install test profile theme"
+                    files="${build.dist.dir}"
+                    ignorePatterns="${phpcs.ignore}"
+                    reports="${phpcs.reports}"
+                    showProgress="${phpcs.progress}"
+                    showSniffCodes="${phpcs.sniffcodes}"
+                    standards="PHPCompatibility"
+                />
+                <exec
+                    command="${toolkit.dir.bin}/phpcs --config-set ignore_warnins_on_exit ${phpcs.passwarnings} >/dev/null"
+                    passthru="true"
+                    checkreturn="true"
+                />
+                <exec
+                    command="${toolkit.dir.bin}/phpcs --runtime-set testVersion ${phpcs.compat.version}"
+                    passthru="true"
+                    checkreturn="${phpcs.compat.checkreturn}"
+                />
+            </then>
+            <else>
+                <echo msg="Skipping PHPCS Compatibility checks alltogether." />
+            </else>
+        </if>
+    </target>
+
     <!-- Do quality assurance checks. -->
     <target name="test-phpcs-exec" hidden="true">
         <exec
@@ -23,7 +59,7 @@
     </target>
 
     <!-- Set up PHP CodeSniffer. -->
-    <target name="test-phpcs-setup" hidden="true">
+    <target name="test-phpcs-setup" depends="test-phpcs-setup-prepush" hidden="true">
         <delete file="${phpcs.config}" failonerror="false" />
         <phpcsconf
             configFile="${phpcs.config}"
@@ -40,6 +76,22 @@
             passthru="true"
             checkreturn="true"
         />
+    </target>
+
+    <!-- Setup the PHP CodeSniffer pre-push hook. -->
+    <target name="test-phpcs-setup-prepush" hidden="true">
+        <if>
+            <equals arg1="${phpcs.prepush.enable}" arg2="1" />
+            <then>
+                <echo message="Enabling git pre-push hook." />
+                <mkdir dir="${project.basedir}/resources/git/hooks/pre-push" />
+                <relsym link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
+            </then>
+            <else>
+                <echo message="Disabling git pre-push hook." />
+                <delete file="${phpcs.prepush.destination}" failonerror="false" quiet="true" />
+            </else>
+        </if>
     </target>
 
 </project>
