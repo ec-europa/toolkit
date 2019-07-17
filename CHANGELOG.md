@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 3.0.22.1
+  * MULTISITE-21597: Include new target for PHP7 compatiblity check.
+  * MULTISITE-21777 Fix parameter order for toolkit-search-ssurl drush command.
+
 ## Version 3.0.22
   * MULTISITE-19306 Drush command to check for unused modules
   * MULTISITE-19429 Fix incorrect symlink for "toolkit" - VPS

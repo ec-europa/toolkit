@@ -13,6 +13,42 @@
             test-phpcs-setup,
             test-phpcs-exec" />
 
+    <!-- Run a full static analysis with phpcs compatiblity. -->
+    <target
+        name="test-run-phpcs-compatibility"
+        description="Refresh configuration and run phpcs compatibility review.">
+        <if>
+            <isfalse value="${phpcs.compat.skip}"/>
+            <then>
+                <phingcall target="build-subsite-dist" />
+                <delete file="${phpcs.config}" failonerror="false" />
+                <phpcsconf
+                    configFile="${phpcs.config}"
+                    extensions="php inc module install test profile theme"
+                    files="${build.dist.dir}"
+                    ignorePatterns="${phpcs.ignore}"
+                    reports="${phpcs.reports}"
+                    showProgress="${phpcs.progress}"
+                    showSniffCodes="${phpcs.sniffcodes}"
+                    standards="PHPCompatibility"
+                />
+                <exec
+                    command="${toolkit.dir.bin}/phpcs --config-set ignore_warnins_on_exit ${phpcs.passwarnings} >/dev/null"
+                    passthru="true"
+                    checkreturn="true"
+                />
+                <exec
+                    command="${toolkit.dir.bin}/phpcs --runtime-set testVersion ${phpcs.compat.version}"
+                    passthru="true"
+                    checkreturn="${phpcs.compat.checkreturn}"
+                />
+            </then>
+            <else>
+                <echo msg="Skipping PHPCS Compatibility checks alltogether." />
+            </else>
+        </if>
+    </target>
+
     <!-- Do quality assurance checks. -->
     <target name="test-phpcs-exec" hidden="true">
         <exec
