@@ -77,6 +77,18 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
     else {
       $status = TRUE;
     }
+
+    // If modules defined in devel.make add to authorised modules list.
+    $develMakeFile = '../resources/devel.make';
+    if (file_exists($develMakeFile)) {
+      $devel = drupal_parse_info_file($develMakeFile);
+      if (isset($devel['projects'])) {
+        $fpfisModules = array('gelf_log', 'redis', 'skippy_cookie');
+        $develModules = array_keys($devel['projects']);
+        $allowedModules = array_merge($develModules, $fpfisModules);
+        $modulesName += $allowedModules;
+      }
+    }
   
     foreach ($d7ModulesList as $module) {
       // Get list of modules authorised for all projects.
@@ -117,7 +129,7 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
         $availableUpdates = update_get_available(TRUE);
         $moduleAvailableUpdates = update_calculate_project_data($availableUpdates);
   
-        if (isset($moduleAvailableUpdates[$moduleId]['security updates'])) {
+        if (isset($moduleAvailableUpdates[$moduleId]['security updates']) && !in_array($moduleId, $allowedModules)) {
           $modulePath = drupal_get_path('module', $moduleAvailableUpdates[$moduleId]['name']);
           drush_log('The module ' . $moduleAvailableUpdates[$moduleId]['name'] . ' with version ' . $moduleAvailableUpdates[$moduleId]['existing_version'] . ' has a security update! Update to ' . $moduleAvailableUpdates[$moduleId]['recommended'], LogLevel::ERROR);
         }
@@ -302,6 +314,7 @@ function searchForVersion($moduleName, $modulesArray) {
 function getModulesList() {
   // Get list of authorised modules.
   $url = 'https://raw.githubusercontent.com/ec-europa/qa-tests/components/module_list.json';
+  $url = 'https://webgate.acceptance.ec.europa.eu/fpfis/qa/api/package-reviews';
   $github_api_token = getenv('GITHUB_API_TOKEN');
 
   if (!empty($github_api_token)) {
