@@ -59,6 +59,14 @@ class BuildCommands extends AbstractCommands {
       ->copy('./composer.json', $options['dist-root'] . '/composer.json')
       ->copy('./composer.lock', $options['dist-root'] . '/composer.lock');
 
+    // Symlink resources folder (use it for e.g. composer patches).
+    $resourcesDir = './resources';
+    $resourcesDirExists = is_dir($resourcesDir);
+    if ($resourcesDirExists) {
+      $tasks[] = $this->taskFilesystemStack()
+        ->symlink(realpath($resourcesDir), $options['dist-root'] . '/resources');
+    }
+
     // Copy site configuration.
     $tasks[] = $this->taskCopyDir(['./config' => $options['dist-root'] . '/config']);
 
@@ -77,6 +85,12 @@ class BuildCommands extends AbstractCommands {
     $commands = $this->getConfig()->get("toolkit.build.dist.commands");
     if (!empty($commands)) {
       $tasks[] = $this->taskCollectionFactory($commands);
+    }
+
+    // Remove resources symlink.
+    if ($resourcesDirExists) {
+      $tasks[] = $this->taskFilesystemStack()
+        ->remove($options['dist-root'] . '/resources');
     }
 
     // Build and return task collection.
