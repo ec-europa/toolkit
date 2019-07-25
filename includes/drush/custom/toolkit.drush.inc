@@ -80,15 +80,16 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
 
     // If modules defined in devel.make add to authorised modules list.
     $develMakeFile = '../resources/devel.make';
+    $fpfisModules = array('gelf_log', 'redis', 'skippy_cookie');
+    $develModules = array();
     if (file_exists($develMakeFile)) {
       $devel = drupal_parse_info_file($develMakeFile);
       if (isset($devel['projects'])) {
-        $fpfisModules = array('gelf_log', 'redis', 'skippy_cookie');
-        $develModules = array_keys($devel['projects']);
-        $allowedModules = array_merge($develModules, $fpfisModules);
-        $modulesName += $allowedModules;
+        $develModules += array_keys($devel['projects']);
       }
     }
+    $allowedModules = array_merge($develModules, $fpfisModules);
+    $modulesName += $allowedModules;
   
     foreach ($d7ModulesList as $module) {
       // Get list of modules authorised for all projects.
