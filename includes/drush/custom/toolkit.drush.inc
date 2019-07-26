@@ -93,13 +93,13 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
   
     foreach ($d7ModulesList as $module) {
       // Get list of modules authorised for all projects.
-      if ($module['restricted_us'] == '0') {
+      if ($module['restricted_use'] == '0') {
         $modulesName[] = $module['name'];
         $modulesArray[] = $module;
       }
       // Get list of restricted modules.
-      if ($module['restricted_us'] != '0' && $module['restricted_us'] != '1') {
-        $restrictedByProject = explode(',', $module['restricted_us']);
+      if ($module['restricted_use'] != '0' && $module['restricted_use'] != '1') {
+        $restrictedByProject = explode(',', $module['restricted_use']);
   
         foreach ($restrictedByProject as $project) {
   
@@ -208,13 +208,13 @@ function drush_toolkit_check_modules_minimum_version($project_id = NULL) {
   
     // Get list of modules authorised for all projects.
     foreach ($d7ModulesList as $module) {
-      if ($module['restricted_us'] == '0') {
+      if ($module['restricted_use'] == '0') {
         $modulesName[] = $module['name'];
         $modulesArray[] = $module;
       }
       // Get list of restricted modules.
-      if ($module['restricted_us'] != '0' && $module['restricted_us'] != '1') {
-        $restrictedByProject = explode(',', $module['restricted_us']);
+      if ($module['restricted_use'] != '0' && $module['restricted_use'] != '1') {
+        $restrictedByProject = explode(',', $module['restricted_use']);
   
         foreach ($restrictedByProject as $project) {
   
