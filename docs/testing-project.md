@@ -341,7 +341,7 @@ Click for command above for more information on how to use your own packages for
 testing.
 
 ## PHPCS testing
-To run behat tests you can make use of the `test-run-phpcs` command. This will
+To run phpcs tests you can make use of the `test-run-phpcs` command. This will
 re-generate your phpcs configuration int `./phpcs.xml` and run it on your
 current codebase.
 
@@ -391,6 +391,26 @@ Time: 256ms; Memory: 9.5Mb
 
 
 BUILD FAILED
+```
+</details>
+
+## PHPCS Compatibility testing
+To run phpcs compatibility tests you can make use of the `test-run-phpcs-compatibility`
+command. This will run build-dist, re-generate your phpcs configuration int `./phpcs.xml`
+and check if your build is compatible with PHP 7.
+
+You can control the way it's run with the following properties:
+```
+# Compatibility settings.
+phpcs.compat.version = 7.0-
+phpcs.compat.checkreturn = true
+phpcs.compat.skip = false
+```
+
+<details><p><summary>execute <code>./toolkit/phing test-run-phpcs-compatibility</code></summary></p>
+
+```
+
 ```
 </details>
 
