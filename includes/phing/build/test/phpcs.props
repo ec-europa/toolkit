@@ -46,7 +46,7 @@ phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpc
 
 # Compatibility settings.
 phpcs.compat.version = 7.0-
-phpcs.compat.checkreturn = false
+phpcs.compat.checkreturn = true
 phpcs.compat.skip = false
 
 
