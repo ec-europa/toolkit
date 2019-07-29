@@ -410,7 +410,112 @@ phpcs.compat.skip = false
 <details><p><summary>execute <code>./toolkit/phing test-run-phpcs-compatibility</code></summary></p>
 
 ```
+ ./toolkit/phing test-run-phpcs-compatibility
+Buildfile: /home/ec2-user/environment/ec-europa/toolkit/build.xml
+ [property] Loading /home/ec2-user/environment/ec-europa/toolkit/includes/phing/build/boot.props
+ [property] Loading /home/ec2-user/environment/ec-europa/toolkit/build.project.props
+     [echo] Global share directory /tmp/toolkit available.
+     [echo] Temporary directory /home/ec2-user/environment/ec-europa/toolkit/.tmp available.
 
+core > test-run-phpcs-compatibility:
+
+
+core > subsite-delete-dist:
+
+   [delete] Deleting directory /home/ec2-user/environment/ec-europa/toolkit/.tmp/sites/default
+   [delete] Deleting directory /home/ec2-user/environment/ec-europa/toolkit/dist
+    [mkdir] Created dir: /home/ec2-user/environment/ec-europa/toolkit/.tmp/sites/default
+    [mkdir] Created dir: /home/ec2-user/environment/ec-europa/toolkit/dist
+
+core > subsite-type-tmp:
+
+
+core > subsite-delete:
+
+    [chmod] Changed file mode on '/home/ec2-user/environment/ec-europa/toolkit/.tmp/sites/default' to 777
+   [delete] Deleting directory /home/ec2-user/environment/ec-europa/toolkit/.tmp/sites/default
+
+core > subsite-resources-link:
+
+      [spc] Created dir: ./.tmp/sites/default/modules/custom
+      [spc] Linking: /home/ec2-user/environment/ec-europa/toolkit/.tmp/sites/default/modules/custom/example_module to ../../../../../lib/modules/custom/example_module
+      [spc] Created dir: ./.tmp/sites/default/modules/features
+      [spc] Linking: /home/ec2-user/environment/ec-europa/toolkit/.tmp/sites/default/modules/features/myproject_core to ../../../../../lib/modules/features/myproject_core
+      [spc] Created dir: ./.tmp/sites/default/src
+      [spc] Linking: /home/ec2-user/environment/ec-europa/toolkit/.tmp/sites/default/src/MyGroup to ../../../../lib/src/MyGroup
+      [spc] Created dir: ./.tmp/sites/default/themes
+      [spc] Linking: /home/ec2-user/environment/ec-europa/toolkit/.tmp/sites/default/themes/example_theme to ../../../../lib/themes/example_theme
+      [spc] Directory exists: ./resources
+      [spc] Linking: /home/ec2-user/environment/ec-europa/toolkit/.tmp/sites/default/composer.json to ../../../resources/composer.json
+      [spc] Linking: /home/ec2-user/environment/ec-europa/toolkit/.tmp/sites/default/composer.lock to ../../../resources/composer.lock
+   [relsym] Link exists: /home/ec2-user/environment/ec-europa/toolkit/.tmp/sites/default/composer.json
+   [relsym] Link exists: /home/ec2-user/environment/ec-europa/toolkit/.tmp/sites/default/composer.lock
+
+core > subsite-make:
+
+     [echo] Make the subsite.
+
+core > drush-make-no-core:
+
+     [echo] Empty make file found. Skipping... empty
+
+core > subsite-type-dist:
+
+
+core > subsite-resources-copy:
+
+     [echo] Copy custom resources.
+
+core > package-version-set:
+
+    [touch] Creating /home/ec2-user/environment/ec-europa/toolkit/dist/.commit
+     [echo] Package version is set to 6baf9113dd70416b9b1a57666c796a3d936184c9.
+
+core > project-subsite-composer-no-dev:
+
+     [echo] Run 'composer install' in the distribution folder for development purposes.
+
+core > project-composer-install:
+
+ [composer] Composer binary not found at "composer.phar"
+ [composer] Composer binary found at "/usr/bin/composer", updating location
+ [composer] Executing /opt/remi/php71/root/usr/bin/php /usr/bin/composer install --working-dir=/home/ec2-user/environment/ec-europa/toolkit/dist --no-interaction --no-suggest --no-dev --ansi --no-progress
+Loading composer repositories with package information
+Installing dependencies from lock file
+Package operations: 4 installs, 0 updates, 0 removals
+  - Installing psr/http-message (1.0.1): Loading from cache
+  - Installing guzzlehttp/psr7 (1.4.2): Loading from cache
+  - Installing guzzlehttp/promises (v1.3.1): Loading from cache
+  - Installing guzzlehttp/guzzle (6.3.0): Loading from cache
+Generating autoload files
+
+core > build-subsite-dist:
+
+     [echo] Playbook for build-subsite-dist ended.
+   [delete] Deleting: /home/ec2-user/environment/ec-europa/toolkit/phpcs.xml
+...........W................................................ 60 / 94 (64%)
+..................................
+
+
+FILE: ...europa/toolkit/dist/vendor/guzzlehttp/promises/src/functions.php
+----------------------------------------------------------------------
+FOUND 0 ERRORS AND 3 WARNINGS AFFECTING 3 LINES
+----------------------------------------------------------------------
+ 222 | WARNING | Function each() is deprecated since PHP 7.2; Use a
+     |         | foreach loop instead
+ 257 | WARNING | Function each() is deprecated since PHP 7.2; Use a
+     |         | foreach loop instead
+ 313 | WARNING | Function each() is deprecated since PHP 7.2; Use a
+     |         | foreach loop instead
+----------------------------------------------------------------------
+
+Time: 20.03 secs; Memory: 18Mb
+
+
+BUILD FAILED
+/home/ec2-user/environment/ec-europa/toolkit/includes/phing/build/test/phpcs.xml:20:12: /home/ec2-user/environment/ec-europa/toolkit/includes/phing/build/test/phpcs.xml:44:1: Task exited with code 1
+
+Total time: 21.4297 seconds
 ```
 </details>
 
