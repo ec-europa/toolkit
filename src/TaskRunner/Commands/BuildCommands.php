@@ -43,13 +43,20 @@ class BuildCommands extends AbstractCommands {
    *
    * @command toolkit:build-dist
    *
+   * @option tag       Version tag for manifest.
    * @option root      Drupal root.
    * @option dist-root Distribution package root.
    */
   public function buildDist(array $options = [
+    'tag' => InputOption::VALUE_REQUIRED,
     'root' => InputOption::VALUE_REQUIRED,
     'dist-root' => InputOption::VALUE_REQUIRED,
   ]) {
+    if (empty($options['tag'])) {
+      $this->io()->error('Command needs --tag parameter.');
+      return $this->collectionBuilder();
+    }
+
     $tasks = [];
 
     // Reset dist folder and copy required files.
@@ -58,6 +65,12 @@ class BuildCommands extends AbstractCommands {
       ->mkdir($options['dist-root'])
       ->copy('./composer.json', $options['dist-root'] . '/composer.json')
       ->copy('./composer.lock', $options['dist-root'] . '/composer.lock');
+
+    // Write version tag in manifest.json and VERSION.txt.
+    $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')->text(
+      json_encode(['version' => $options['tag']], JSON_PRETTY_PRINT)
+    );
+    $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($options['tag']);
 
     // Copy site configuration.
     $tasks[] = $this->taskCopyDir(['./config' => $options['dist-root'] . '/config']);

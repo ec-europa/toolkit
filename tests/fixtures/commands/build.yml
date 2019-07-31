@@ -1,5 +1,5 @@
 
-- command: 'toolkit:build-dist'
+- command: 'toolkit:build-dist --tag=1.0.0'
   configuration: []
   expectations:
     - contains: |
@@ -8,6 +8,12 @@
             ->mkdir('dist')
             ->copy('./composer.json', 'dist/composer.json')
             ->copy('./composer.lock', 'dist/composer.lock')
+        [Simulator] Simulating File\Write('dist/manifest.json')
+            ->text('{
+                "version": "1.0.0"
+            }')
+        [Simulator] Simulating File\Write('dist/build/VERSION.txt')
+            ->text('1.0.0')
         [Simulator] Simulating Filesystem\CopyDir(array (
             './config' => 'dist/config',
         ))
@@ -19,7 +25,7 @@
             ->stopOnFail()
             ->exec('./vendor/bin/run drupal:settings-setup --root=dist/build')
 
-- command: 'toolkit:build-dist'
+- command: 'toolkit:build-dist --tag=1.0.0'
   configuration:
     drupal:
       root: web
@@ -34,6 +40,12 @@
           ->mkdir('other')
           ->copy('./composer.json', 'other/composer.json')
           ->copy('./composer.lock', 'other/composer.lock')
+      [Simulator] Simulating File\Write('other/manifest.json')
+          ->text('{
+              "version": "1.0.0"
+          }')
+      [Simulator] Simulating File\Write('other/web/VERSION.txt')
+          ->text('1.0.0')
       [Simulator] Simulating Filesystem\CopyDir(array (
           './config' => 'other/config',
       ))
@@ -45,7 +57,7 @@
           ->stopOnFail()
           ->exec('./vendor/bin/run drupal:settings-setup --root=other/web')
 
-- command: 'toolkit:build-dist'
+- command: 'toolkit:build-dist --tag=1.0.0'
   configuration:
     drupal:
       root: web
@@ -62,6 +74,12 @@
           ->mkdir('dist')
           ->copy('./composer.json', 'dist/composer.json')
           ->copy('./composer.lock', 'dist/composer.lock')
+      [Simulator] Simulating File\Write('dist/manifest.json')
+          ->text('{
+              "version": "1.0.0"
+          }')
+      [Simulator] Simulating File\Write('dist/web/VERSION.txt')
+          ->text('1.0.0')
       [Simulator] Simulating Filesystem\CopyDir(array (
           './config' => 'dist/config',
       ))
