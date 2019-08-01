@@ -62,11 +62,11 @@ class ToolkitNotificationTask extends \Task
                 if ($statusCode == 200) {
                     $data = json_decode($result, true);
                     foreach ($data as $notification) {
-                        $this->log($notification['notification'], Project::MSG_WARN);
+                        $this->log($notification['title'] . PHP_EOL . PHP_EOL . $notification['notification'] . PHP_EOL, Project::MSG_WARN);
                     }
                 }
                 else {
-                    $this->log(sprintf('Curl request failed with error code %d. Skipping notification fetching.', $statusCode), Project::MSG_ERR);
+                    $this->log(sprintf('Curl request failed with error code %d. Skipping notification fetching.', $statusCode), Project::MSG_WARN);
                 }
             }
             curl_close($ch);
