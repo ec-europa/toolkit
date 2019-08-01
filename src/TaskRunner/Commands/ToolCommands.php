@@ -43,7 +43,7 @@ class ToolCommands extends AbstractCommands {
   public function displayNotifications(array $options = [
     'endpoint-url' => InputOption::VALUE_OPTIONAL,
   ]) {
-    $endpointUrl = isset($options['endpoint-url']) ? $options['endpoint-url'] : 'https://webgate.acceptance.ec.europa.eu/fpfis/qa/api/v1/notifications';
+    $endpointUrl = isset($options['endpoint-url']) ? $options['endpoint-url'] : 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications';
 
     if (isset($endpointUrl)) {
       $ch = curl_init();
@@ -58,7 +58,7 @@ class ToolCommands extends AbstractCommands {
         if ($statusCode == 200) {
           $data = json_decode($result, TRUE);
           foreach ($data as $notification) {
-            $this->io()->warning($notification['notification']);
+            $this->io()->warning($notification['title'] . PHP_EOL . $notification['notification']);
           }
         }
         else {
