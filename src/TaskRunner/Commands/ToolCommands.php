@@ -38,8 +38,6 @@ class ToolCommands extends AbstractCommands {
    *
    * @command toolkit:notifications
    *
-   * @return \Robo\Collection\CollectionBuilder
-   *   Collection builder.
    * @option endpoint-url The endpoint for the notifications
    */
   public function displayNotifications(array $options = [
@@ -52,13 +50,13 @@ class ToolCommands extends AbstractCommands {
       curl_setopt($ch, CURLOPT_URL, $endpointUrl);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
       $result = curl_exec($ch);
-  
+
       // If request did not fail.
-      if ($result !== false) {
+      if ($result !== FALSE) {
         // Request was ok? check response code.
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($statusCode == 200) {
-          $data = json_decode($result, true);
+          $data = json_decode($result, TRUE);
           foreach ($data as $notification) {
             $this->io()->warning($notification['notification']);
           }
