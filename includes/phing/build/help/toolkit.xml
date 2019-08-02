@@ -321,8 +321,8 @@
         <delete file="build.properties" quiet="true"/>
     </target>
 
-    <target name="toolkit-notification" description="Display toolkit notification messages" hidden="true">
-        <toolkit-notification endpointUrl="https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications" />
+    <target name="toolkit-notifications" description="Display toolkit notification messages" hidden="true">
+        <toolkit-notifications endpointUrl="https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications" />
     </target>
 
 </project>

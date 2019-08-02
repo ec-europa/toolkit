@@ -28,7 +28,7 @@ require_once 'phing/Task.php';
  * @license  https://ec.europa.eu/info/european-union-public-licence_en EUPL
  * @link     https://github.com/ec-europa/toolkit/blob/master/includes/phing/src/Tasks/ToolkitNotificationTask.php
  */
-class ToolkitNotificationTask extends \Task
+class ToolkitNotificationsTask extends \Task
 {
 
     /**
