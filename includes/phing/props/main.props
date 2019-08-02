@@ -219,7 +219,7 @@ share.path.subsites.packages.test = ${share.path.subsites.packages}/test
 
 # Composer hook phingcall target lists. Space separated only.
 # -----------------------------------------------------------
-composer.hook.post.install = build-toolkit toolkit-notification
+composer.hook.post.install = build-toolkit toolkit-notifications
 composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =
