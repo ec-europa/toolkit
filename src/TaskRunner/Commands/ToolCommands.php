@@ -43,7 +43,7 @@ class ToolCommands extends AbstractCommands {
   public function displayNotifications(array $options = [
     'endpoint-url' => InputOption::VALUE_OPTIONAL,
   ]) {
-    $endpointUrl = isset($options['endpoint-url']) ? $options['endpoint-url'] : 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications';
+    $endpointUrl = isset($options['endpoint-url']) ? $options['endpoint-url'] : $this->getConfig()->get("toolkit.notifications_endpoint");
 
     if (isset($endpointUrl)) {
       $ch = curl_init();
