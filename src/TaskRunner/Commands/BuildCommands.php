@@ -63,7 +63,7 @@ class BuildCommands extends AbstractCommands {
     $tasks[] = $this->taskRsync()
       ->fromPath('./')
       ->toPath($prepDir)
-      ->exclude(['.tmp', 'vendor'])
+      ->exclude([$tmpDir, 'vendor'])
       ->excludeVcs()
       ->recursive();
 
@@ -79,21 +79,20 @@ class BuildCommands extends AbstractCommands {
       ->exec('./vendor/bin/run drupal:permissions-setup --root=' . $prepDir . '/' . $options['root'])
       ->exec('./vendor/bin/run drupal:settings-setup --root=' . $prepDir . '/' . $options['root']);
 
-    // Create temp folder to prepare dist build in.
+    // Create dist folder to rsyn prep folder into.
     $tasks[] = $this->taskFilesystemStack()
       ->remove($options['dist-root'])
       ->mkdir($options['dist-root']);
 
-    // Rsync the codebase to the tmp folder.
+    // Rsync the tmp folder to the dist folder.
     $tasks[] = $this->taskRsync()
       ->fromPath($prepDir . '/')
       ->toPath($options['dist-root'])
       ->includeFilter([
         'composer.*',
         'config/***',
-        'drush/***',
         'vendor/***',
-        'web/***',
+        $options['root'] . '/***',
       ])
       ->exclude('*')
       ->recursive()
