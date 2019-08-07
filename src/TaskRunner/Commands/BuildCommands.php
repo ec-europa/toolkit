@@ -51,7 +51,8 @@ class BuildCommands extends AbstractCommands {
     'dist-root' => InputOption::VALUE_REQUIRED,
   ]) {
     $tasks = [];
-    $prepDir = '.tmp/dist/prep';
+    $tmpDir = $this->getConfig()->get("toolkit.tmp_folder");
+    $prepDir = $tmpDir . '/dist/prep';
     
     // Create temp folder to prepare dist build in.
     $tasks[] = $this->taskFilesystemStack()

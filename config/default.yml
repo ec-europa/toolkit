@@ -1,5 +1,6 @@
 toolkit:
   project_id: 'PROJECTID'
+  tmp_folder: '.tmp'
   clone:
     asda_url: 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps'
     dumpfile: 'dump.sql'
