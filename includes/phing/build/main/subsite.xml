@@ -21,7 +21,7 @@
       </phingcall>
   </target>
 
-    <target name="build-subsite-dist-full" description="Build a site intended as a release package."
+    <target name="build-subsite-dist" description="Build a site intended as a release package."
         depends="
             subsite-delete-dist,
             subsite-type-tmp,
