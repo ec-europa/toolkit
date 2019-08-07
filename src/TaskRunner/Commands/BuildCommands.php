@@ -53,7 +53,7 @@ class BuildCommands extends AbstractCommands {
     $tasks = [];
     $tmpDir = $this->getConfig()->get("toolkit.tmp_folder");
     $prepDir = $tmpDir . '/dist/prep';
-    
+
     // Create temp folder to prepare dist build in.
     $tasks[] = $this->taskFilesystemStack()
       ->remove($prepDir)
@@ -73,10 +73,10 @@ class BuildCommands extends AbstractCommands {
       ->optimizeAutoloader()
       ->noDev();
 
-    // // Setup the site.
-    // $tasks[] = $this->taskExecStack()
-    //   ->stopOnFail()
-    //   ->exec('./vendor/bin/run drupal:settings-setup --root=' . $prepDir. '/' . $options['root']);
+    // Setup the site.
+    $tasks[] = $this->taskExecStack()
+      ->stopOnFail()
+      ->exec('./vendor/bin/run drupal:settings-setup --root=' . $prepDir . '/' . $options['root']);
 
     // Create temp folder to prepare dist build in.
     $tasks[] = $this->taskFilesystemStack()
@@ -87,7 +87,13 @@ class BuildCommands extends AbstractCommands {
     $tasks[] = $this->taskRsync()
       ->fromPath($prepDir . '/')
       ->toPath($options['dist-root'])
-      ->includeFilter(['composer.*', 'config/***', 'drush/***', 'vendor/***', 'web/***'])
+      ->includeFilter([
+        'composer.*',
+        'config/***',
+        'drush/***',
+        'vendor/***',
+        'web/***',
+      ])
       ->exclude('*')
       ->recursive()
       ->args('-aL');
