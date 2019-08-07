@@ -21,7 +21,7 @@
       </phingcall>
   </target>
 
-    <target name="build-subsite-dist" description="Build a site intended as a release package."
+    <target name="build-subsite-dist-full" description="Build a site intended as a release package."
         depends="
             subsite-delete-dist,
             subsite-type-tmp,
@@ -32,6 +32,16 @@
             subsite-resources-copy,
             package-version-set,
             project-subsite-composer-no-dev">
+        <if>
+            <equals arg1="${build.dist.type}" arg2="full" />
+            <then>
+                <delete dir="${build.platform.dir}" includeemptydirs="true" failonerror="false" />
+                <phingcall target="build-platform" />
+                <exec command="rsync -Lvr ${build.dist.dir}/ ${build.platform.dir}/sites/default/" />
+                <delete dir="${build.dist.dir}" includeemptydirs="true" failonerror="true" />
+                <exec command="mv ${build.platform.dir} ${build.dist.dir}" dir="/home" />
+            </then>
+        </if>
         <echo msg="Playbook for build-subsite-dist ended." />
     </target>
 
