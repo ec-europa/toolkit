@@ -76,6 +76,7 @@ class BuildCommands extends AbstractCommands {
     // Setup the site.
     $tasks[] = $this->taskExecStack()
       ->stopOnFail()
+      ->exec('./vendor/bin/run drupal:permissions-setup --root=' . $prepDir . '/' . $options['root'])
       ->exec('./vendor/bin/run drupal:settings-setup --root=' . $prepDir . '/' . $options['root']);
 
     // Create temp folder to prepare dist build in.
