@@ -28,15 +28,16 @@
       ASDA_PASSWORD: 'user-password'
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('wget')
-        ->option('--http-user', 'user-asda')
-        ->option('--http-password', 'user-password')
-        ->option('-O', 'dump.sql.gz')
-        ->arg('https://webgate.ec.europa.eu/fpfis/files-for/automate_ ... /PROJECTID/*.sql.gz')
-        [Simulator] Running wget --http-user user-asda --http-password user-password -O dump.sql.gz 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps/PROJECTID/*.sql.gz'
-        [Simulator] Simulating Exec('gunzip')
-        ->arg('dump.sql.gz')
-        [Simulator] Running gunzip dump.sql.gz
+       [Simulator] Simulating Exec('wget')
+          ->option('--http-user', 'user-asda')
+          ->option('--http-password', 'user-password')
+          ->option('-O', 'dump.sql.gz')
+          ->option('-nH', 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps/PROJECTID')
+          ->option('-A', 'sql.gz')
+       [Simulator] Running wget --http-user user-asda --http-password user-password -O dump.sql.gz -nH 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps/PROJECTID' -A sql.gz
+       [Simulator] Simulating Exec('gunzip')
+          ->arg('dump.sql.gz')
+       [Simulator] Running gunzip dump.sql.gz
 
 - command: 'toolkit:download-dump'
   configuration: []
