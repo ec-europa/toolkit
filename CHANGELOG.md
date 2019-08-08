@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 4.0.0-beta5
+  - Fix issue with toolkit:install-clone.
+  - Update documentation for project-id and env vars.
+
 ## Version 4.0.0-beta3
   - Force QA Automation conventions to be used.
 

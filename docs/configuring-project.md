@@ -47,6 +47,9 @@ drupal:
     name: ${env.DRUPAL_ACCOUNT_USERNAME}
     password: ${env.DRUPAL_ACCOUNT_PASSWORD}
 
+toolkit:
+  project_id: 'PROJECTID'
+
 selenium:
   host: "http://selenium"
   port: "4444"
@@ -59,6 +62,7 @@ Toolkit will load the credentials necessary to clone your subsite from your envi
 
 - ASDA_USER
 - ASDA_PASSWORD
+- GITHUB_API_TOKEN
 
 ### Others topics
 - [Setting up a project](/docs/setting-up-project.md)
