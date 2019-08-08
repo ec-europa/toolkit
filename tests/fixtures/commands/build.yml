@@ -34,6 +34,47 @@
             ->recursive()
             ->args('-aL')
 
+- command: 'toolkit:build-dist --tag=1.0.0'
+  configuration: []
+  expectations:
+    - contains: |
+       [Simulator] Simulating Filesystem\FilesystemStack()
+          ->remove('.tmp/dist/prep')
+          ->mkdir('.tmp/dist/prep')
+       [Simulator] Simulating Remote\Rsync()
+          ->fromPath('./')
+          ->toPath('.tmp/dist/prep')
+          ->exclude(array (
+            0 => '.tmp',
+            1 => 'vendor',
+          ))
+          ->excludeVcs()
+          ->recursive()
+       [Simulator] Simulating Composer\Install('composer')
+          ->workingDir('.tmp/dist/prep')
+          ->optimizeAutoloader()
+          ->noDev()
+       [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('./vendor/bin/run drupal:permissions-setup --root=.tmp/dist/prep/build')
+          ->exec('./vendor/bin/run drupal:settings-setup --root=.tmp/dist/prep/build')
+       [Simulator] Simulating Filesystem\FilesystemStack()
+          ->remove('dist')
+          ->mkdir('dist')
+       [Simulator] Simulating Remote\Rsync()
+          ->fromPath('.tmp/dist/prep/')
+          ->toPath('dist')
+          ->includeFilter(array ( ... ))
+          ->exclude('*')
+          ->recursive()
+          ->args('-aL')
+       [Simulator] Simulating File\Write('dist/manifest.json')
+          ->text('{
+          "version": "1.0.0"
+          }')
+       [Simulator] Simulating File\Write('dist/build/VERSION.txt')
+          ->text('1.0.0')
+
 - command: 'toolkit:build-dist'
   configuration:
     drupal:

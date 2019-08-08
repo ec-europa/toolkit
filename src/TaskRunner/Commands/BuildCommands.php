@@ -43,10 +43,12 @@ class BuildCommands extends AbstractCommands {
    *
    * @command toolkit:build-dist
    *
+   * @option tag       Version tag for manifest.
    * @option root      Drupal root.
    * @option dist-root Distribution package root.
    */
   public function buildDist(array $options = [
+    'tag' => InputOption::VALUE_OPTIONAL,
     'root' => InputOption::VALUE_REQUIRED,
     'dist-root' => InputOption::VALUE_REQUIRED,
   ]) {
@@ -97,6 +99,14 @@ class BuildCommands extends AbstractCommands {
       ->exclude('*')
       ->recursive()
       ->args('-aL');
+    
+    if (isset($options['tag'])) {
+      // Write version tag in manifest.json and VERSION.txt.
+      $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')->text(
+        json_encode(['version' => $options['tag']], JSON_PRETTY_PRINT)
+      );
+      $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($options['tag']);
+    }
 
     // Collect and execute list of commands set on local runner.yml.
     $commands = $this->getConfig()->get("toolkit.build.dist.commands");
