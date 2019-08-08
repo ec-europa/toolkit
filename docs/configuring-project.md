@@ -62,7 +62,6 @@ Toolkit will load the credentials necessary to clone your subsite from your envi
 
 - ASDA_USER
 - ASDA_PASSWORD
-- GITHUB_API_TOKEN
 
 ### Others topics
 - [Setting up a project](/docs/setting-up-project.md)

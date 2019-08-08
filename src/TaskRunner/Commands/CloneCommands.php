@@ -101,7 +101,7 @@ class CloneCommands extends AbstractCommands {
       ->option('--http-password', $options['asda-password'])
       ->option('-O', $options['dumpfile'] . '.gz')
       ->option('-nH', $requestUrl)
-      ->option('-A' . 'sql.gz');
+      ->option('-A', 'sql.gz');
 
     // Unzip the file.
     $tasks[] = $this->taskExec('gunzip')
