@@ -47,6 +47,9 @@ drupal:
     name: ${env.DRUPAL_ACCOUNT_USERNAME}
     password: ${env.DRUPAL_ACCOUNT_PASSWORD}
 
+toolkit:
+  project_id: 'PROJECTID'
+
 selenium:
   host: "http://selenium"
   port: "4444"
