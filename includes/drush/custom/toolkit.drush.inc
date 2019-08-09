@@ -301,35 +301,23 @@ function searchForVersion($moduleName, $modulesArray) {
 // Helper function to get the list of authorised modules.
 function getModulesList() {
   // Get list of authorised modules.
-  $url = 'https://raw.githubusercontent.com/ec-europa/qa-tests/components/module_list.json';
-  $github_api_token = getenv('GITHUB_API_TOKEN');
+  $url = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews';
+  $curl = curl_init($url);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  $result = curl_exec($curl);
 
-  if (!empty($github_api_token)) {
-    $request_headers = array(
-      'Authorization: token ' . $github_api_token
-    );
-  
-    $curl = curl_init($url);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $request_headers);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    $result = curl_exec($curl);
-  
-    // If request did not fail.
-    if ($result !== false) {
-      // Request was ok? check response code.
-      $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-      if ($statusCode == 200) {
-        $d7ModulesList = json_decode($result, true);
-      }
-      else {
-        drush_set_error(dt('Curl request failed with error code @statusCode.', array('@statusCode' => $statusCode)));
-      }
+  // If request did not fail.
+  if ($result !== false) {
+    // Request was ok? check response code.
+    $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    if ($statusCode == 200) {
+      $d7ModulesList = json_decode($result, true);
     }
-    return $d7ModulesList;
+    else {
+      drush_set_error(dt('Curl request failed with error code @statusCode.', array('@statusCode' => $statusCode)));
+    }
   }
-  else {
-    drush_log(dt('GITHUB_API_TOKEN not set. Not executing command.'), 'warning');
-  }
+  return $d7ModulesList;
 }
 
 // Helper function to discover all existing modules in project,
