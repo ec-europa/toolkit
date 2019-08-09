@@ -156,12 +156,6 @@
           ->exclude('*')
           ->recursive()
           ->args('-aL')
-      [Simulator] Simulating File\Write('dist/manifest.json')
-          ->text('{
-          "version": "latest"
-          }')
-      [Simulator] Simulating File\Write('dist/web/VERSION.txt')
-          ->text('latest')
       [Simulator] Simulating OpenEuropa\TaskRunner\Tasks\CollectionFactory\CollectionFactory(array (
         0 => 'command-one',
         1 => 'command-two',
