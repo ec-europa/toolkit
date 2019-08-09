@@ -1,5 +1,6 @@
 toolkit:
   project_id: 'PROJECTID'
+  notifications_endpoint: 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications'
   clone:
     asda_url: 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps'
     dumpfile: 'dump.sql'
