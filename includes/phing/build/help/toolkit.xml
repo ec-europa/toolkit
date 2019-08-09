@@ -316,7 +316,6 @@
         <!-- Delete config files -->
         <echo msg="Deleting config files: '.jenkinsfile', '.gitignore', '.drone.yml' and 'build.properties'." />
         <delete file=".jenkinsfile" quiet="true"/>
-        <delete file=".gitignore" quiet="true"/>
         <delete file=".drone.yml" quiet="true"/>
         <delete file="build.properties" quiet="true"/>
     </target>
