@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 4.0.0-beta7
+  - Create notitications target (tk3 and tk 4)
+
 ## Version 4.0.0-beta5
   - Fix issue with toolkit:install-clone.
   - Update documentation for project-id and env vars.
