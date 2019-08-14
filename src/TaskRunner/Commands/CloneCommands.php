@@ -96,19 +96,59 @@ class CloneCommands extends AbstractCommands {
     $requestUrl = $options['asda-url'] . '/' . $options['project-id'];
 
     // Download the file.
+    $this->downloadChecksumFile($options);
+    $fileContent = file_get_contents('latest.sh1');
+    $filename = trim(explode('  ', $fileContent)[1]);
+
+    // Download the file.
     $tasks[] = $this->taskExec('wget')
       ->option('--http-user', $options['asda-user'])
       ->option('--http-password', $options['asda-password'])
       ->option('-O', $options['dumpfile'] . '.gz')
-      ->option('-nH', $requestUrl)
-      ->option('-A', 'sql.gz');
+      ->option('-nH', $requestUrl . '/' . $filename)
+      ->option('-A', 'sql.gz')
+      ->option('-P', './');
 
     // Unzip the file.
     $tasks[] = $this->taskExec('gunzip')
       ->arg($options['dumpfile'] . '.gz');
 
+    // Remove checkum file.
+    $tasks[] = $this->taskExec('rm')
+      ->arg('latest.sh1');
+
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);
+  }
+
+  /**
+   * Download Checksum file.
+   *
+   * Make use checksum file in order to detect the proper file
+   * to download.
+   *
+   * @param array $options
+   *   Command options.
+   */
+  private function downloadChecksumFile(array $options = [
+    'asda-url' => InputOption::VALUE_REQUIRED,
+    'asda-user' => InputOption::VALUE_REQUIRED,
+    'asda-password' => InputOption::VALUE_REQUIRED,
+    'dumpfile' => InputOption::VALUE_REQUIRED,
+    'project-id' => InputOption::VALUE_REQUIRED,
+  ]) {
+
+    $requestUrl = $options['asda-url'] . '/' . $options['project-id'];
+
+    $this->taskExec('wget')
+      ->option('--http-user', $options['asda-user'])
+      ->option('--http-password', $options['asda-password'])
+      ->option('-O', 'latest.sh1')
+      ->option('-nH', $requestUrl . '/latest.sh1')
+      ->option('-A', '.sh1')
+      ->option('-P', './')
+      ->run();
+
   }
 
 }
