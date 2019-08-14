@@ -36,7 +36,7 @@
         </then>
     </if>
 
-    <!-- Macke sure project id for DB is valid with underscore instead of hyphen. -->
+    <!-- Make sure project id for DB is valid with underscore instead of hyphen. -->
     <php function="str_replace" returnProperty="db.name" level="debug">
         <param value="-" />
         <param value="_" />
