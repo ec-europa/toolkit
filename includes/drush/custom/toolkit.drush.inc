@@ -77,16 +77,29 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
     else {
       $status = TRUE;
     }
+
+    // If modules defined in devel.make add to authorised modules list.
+    $develMakeFile = '../resources/devel.make';
+    $fpfisModules = array('gelf_log', 'redis', 'skippy_cookie');
+    $develModules = array();
+    if (file_exists($develMakeFile)) {
+      $devel = drupal_parse_info_file($develMakeFile);
+      if (isset($devel['projects'])) {
+        $develModules += array_keys($devel['projects']);
+      }
+    }
+    $allowedModules = array_merge($develModules, $fpfisModules);
+    $modulesName += $allowedModules;
   
     foreach ($d7ModulesList as $module) {
       // Get list of modules authorised for all projects.
-      if ($module['restricted_us'] == '0') {
+      if ($module['restricted_use'] == '0') {
         $modulesName[] = $module['name'];
         $modulesArray[] = $module;
       }
       // Get list of restricted modules.
-      if ($module['restricted_us'] != '0' && $module['restricted_us'] != '1') {
-        $restrictedByProject = explode(',', $module['restricted_us']);
+      if ($module['restricted_use'] != '0' && $module['restricted_use'] != '1') {
+        $restrictedByProject = explode(',', $module['restricted_use']);
   
         foreach ($restrictedByProject as $project) {
   
@@ -117,7 +130,7 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
         $availableUpdates = update_get_available(TRUE);
         $moduleAvailableUpdates = update_calculate_project_data($availableUpdates);
   
-        if (isset($moduleAvailableUpdates[$moduleId]['security updates'])) {
+        if (isset($moduleAvailableUpdates[$moduleId]['security updates']) && !in_array($moduleId, $allowedModules)) {
           $modulePath = drupal_get_path('module', $moduleAvailableUpdates[$moduleId]['name']);
           drush_log('The module ' . $moduleAvailableUpdates[$moduleId]['name'] . ' with version ' . $moduleAvailableUpdates[$moduleId]['existing_version'] . ' has a security update! Update to ' . $moduleAvailableUpdates[$moduleId]['recommended'], LogLevel::ERROR);
         }
@@ -195,13 +208,13 @@ function drush_toolkit_check_modules_minimum_version($project_id = NULL) {
   
     // Get list of modules authorised for all projects.
     foreach ($d7ModulesList as $module) {
-      if ($module['restricted_us'] == '0') {
+      if ($module['restricted_use'] == '0') {
         $modulesName[] = $module['name'];
         $modulesArray[] = $module;
       }
       // Get list of restricted modules.
-      if ($module['restricted_us'] != '0' && $module['restricted_us'] != '1') {
-        $restrictedByProject = explode(',', $module['restricted_us']);
+      if ($module['restricted_use'] != '0' && $module['restricted_use'] != '1') {
+        $restrictedByProject = explode(',', $module['restricted_use']);
   
         foreach ($restrictedByProject as $project) {
   
