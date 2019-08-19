@@ -11,3 +11,7 @@ toolkit:
       commands: []
     dev:
       commands: []
+  test:
+    behat:
+      from: behat.yml.dist
+      to: behat.yml
