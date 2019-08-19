@@ -314,7 +314,7 @@ function searchForVersion($moduleName, $modulesArray) {
 // Helper function to get the list of authorised modules.
 function getModulesList() {
   // Get list of authorised modules.
-  $url = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews';
+  $url = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=7.x';
   $curl = curl_init($url);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   $result = curl_exec($curl);
