@@ -6,7 +6,7 @@ To list all available tasks, please run:
 15:12 $ docker-composer exec web ./vendor/bin/run 
 ```
 
-See bellow current list for version `4.0.0-beta2`.
+See bellow current list for version `4.0.0-beta8`.
 ```
 Available commands:
   help                          Displays help for a command
@@ -32,8 +32,10 @@ Available commands:
   toolkit:install-clean         Install a clean website.
   toolkit:install-clone         Install a clone website.
   toolkit:install-dump          Install clone from production snapshot.
+  toolkit:notifications         Display toolkit notifications.
   toolkit:test-behat            [tb] Run Behat tests.
   toolkit:test-phpcs            [tp] Run PHP code review.
+
 ```
 
 ### Other topics

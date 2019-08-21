@@ -38,6 +38,7 @@ To setup the site using clone mode run:
 
 ```
 docker-compose exec web ./vendor/bin/run toolkit:build-dev
+docker-compose exec web ./vendor/bin/run toolkit:download-dump
 docker-compose exec web ./vendor/bin/run toolkit:install-clone
 ```
 

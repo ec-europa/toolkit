@@ -1,16 +1,16 @@
 # Toolkit change log
 
 ## Version 4.0.0-beta8
-  - Improve ASDA download based in latest.sh1
-  - Regenerate file behat.yml for each execution
-  - Refactor build-dist to support local patches
-  - Introduce support to local packages
-  - Include manifest.json in the distribution
-  - Move dump.sql into temporary folder
-  - Move drupal/console to suggest section
+  - Fix issues with ASDA download, improve process.
+  - Regenerate file behat.yml within each execution.
+  - Refactor build-dist to support local patches.
+  - Introduce support to local packages.
+  - Include manifest.json in the distribution package.
+  - Move dump.sql into temporary folder.
+  - Move drupal/console to suggest section.
 
 ## Version 4.0.0-beta7
-  - Create notitications target (tk3 and tk 4)
+  - Create notitications target "toolkit:notifications".
 
 ## Version 4.0.0-beta5
   - Fix issue with toolkit:install-clone.
