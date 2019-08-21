@@ -23,7 +23,7 @@ abstract class AbstractTest extends TestCase {
     $filesystem = new Filesystem();
     $filesystem->chmod($this->getSandboxRoot(), 0777, umask(), TRUE);
     $filesystem->remove(glob($this->getSandboxRoot() . '/*'));
-    $filesystem->copy($this->getFixtureFilepath('samples/sample-dump.sql'), $this->getSandboxFilepath('dump.sql'));
+    $filesystem->copy($this->getFixtureFilepath('samples/sample-dump.sql'), $this->getSandboxFilepath('.tmp/dump.sql'));
     $filesystem->copy($this->getFixtureFilepath('samples/sample-config.yml'), $this->getSandboxFilepath('config.yml'));
   }
 

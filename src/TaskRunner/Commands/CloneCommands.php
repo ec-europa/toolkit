@@ -137,6 +137,12 @@ class CloneCommands extends AbstractCommands {
     'dumpfile' => InputOption::VALUE_REQUIRED,
     'project-id' => InputOption::VALUE_REQUIRED,
   ]) {
+    $tmpDir = $this->getConfig()->get("toolkit.tmp_folder");
+
+    // Create temp folder to prepare dist build in.
+    $tasks[] = $this->taskFilesystemStack()
+      ->mkdir($tmpDir)
+      ->run();
 
     $requestUrl = $options['asda-url'] . '/' . $options['project-id'];
 

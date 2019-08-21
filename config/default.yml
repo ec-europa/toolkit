@@ -4,7 +4,7 @@ toolkit:
   notifications_endpoint: 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications'
   clone:
     asda_url: 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps'
-    dumpfile: 'dump.sql'
+    dumpfile: '.tmp/dump.sql'
     config_file: 'config/sync/core.extension.yml'
   build:
     dist:
