@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use Symfony\Component\Console\Input\InputOption;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 
 /**
@@ -30,6 +31,42 @@ class ToolCommands extends AbstractCommands {
 
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);
+  }
+
+  /**
+   * Display toolkit notifications.
+   *
+   * @command toolkit:notifications
+   *
+   * @option endpoint-url The endpoint for the notifications
+   */
+  public function displayNotifications(array $options = [
+    'endpoint-url' => InputOption::VALUE_OPTIONAL,
+  ]) {
+    $endpointUrl = isset($options['endpoint-url']) ? $options['endpoint-url'] : $this->getConfig()->get("toolkit.notifications_endpoint");
+
+    if (isset($endpointUrl)) {
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, $endpointUrl);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      $result = curl_exec($ch);
+
+      // If request did not fail.
+      if ($result !== FALSE) {
+        // Request was ok? check response code.
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($statusCode == 200) {
+          $data = json_decode($result, TRUE);
+          foreach ($data as $notification) {
+            $this->io()->warning($notification['title'] . PHP_EOL . $notification['notification']);
+          }
+        }
+        else {
+          $this->io()->error(sprintf('Curl request failed with error code %d. Skipping notification fetching.', $statusCode));
+        }
+      }
+      curl_close($ch);
+    }//end if
   }
 
 }
