@@ -8,6 +8,7 @@
   - Include manifest.json in the distribution package.
   - Move dump.sql into temporary folder.
   - Move drupal/console to suggest section.
+  - Update task-runner for beta6.
 
 ## Version 4.0.0-beta7
   - Create notitications target "toolkit:notifications".
