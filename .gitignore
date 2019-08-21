@@ -1,7 +1,9 @@
 /vendor/
+/dist/
 /tests/sandbox
 /composer.lock
 /.idea/
+/.tmp/
 /runner.yml
 /phpunit.xml
 /grumphp.yml

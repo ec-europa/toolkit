@@ -4,20 +4,74 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-            ->remove('dist')
-            ->mkdir('dist')
-            ->copy('./composer.json', 'dist/composer.json')
-            ->copy('./composer.lock', 'dist/composer.lock')
-        [Simulator] Simulating Filesystem\CopyDir(array (
-            './config' => 'dist/config',
-        ))
+            ->remove('.tmp/dist/prep')
+            ->mkdir('.tmp/dist/prep')
+        [Simulator] Simulating Remote\Rsync()
+            ->fromPath('./')
+            ->toPath('.tmp/dist/prep')
+            ->exclude(array (
+            0 => '.tmp',
+            1 => 'vendor',
+            ))
+            ->excludeVcs()
+            ->recursive()
         [Simulator] Simulating Composer\Install('composer')
-            ->workingDir('dist')
+            ->workingDir('.tmp/dist/prep')
             ->optimizeAutoloader()
             ->noDev()
         [Simulator] Simulating ExecStack()
             ->stopOnFail()
-            ->exec('./vendor/bin/run drupal:settings-setup --root=dist/build')
+            ->exec('./vendor/bin/run drupal:permissions-setup --root=.tmp/dist/prep/build')
+            ->exec('./vendor/bin/run drupal:settings-setup --root=.tmp/dist/prep/build')
+        [Simulator] Simulating Filesystem\FilesystemStack()
+            ->remove('dist')
+            ->mkdir('dist')
+        [Simulator] Simulating Remote\Rsync()
+            ->fromPath('.tmp/dist/prep/')
+            ->toPath('dist')
+            ->includeFilter(array ( ... ))
+            ->exclude('*')
+            ->recursive()
+            ->args('-aL')
+
+- command: 'toolkit:build-dist --tag=1.0.0 --sha=29f223d5775f7f15f751cdebca140d7ed69980b7'
+  configuration: []
+  expectations:
+    - contains: |
+         [Simulator] Simulating Filesystem\FilesystemStack()
+            ->remove('.tmp/dist/prep')
+            ->mkdir('.tmp/dist/prep')
+         [Simulator] Simulating Remote\Rsync()
+            ->fromPath('./')
+            ->toPath('.tmp/dist/prep')
+            ->exclude(array (
+              0 => '.tmp',
+              1 => 'vendor',
+            ))
+            ->excludeVcs()
+            ->recursive()
+         [Simulator] Simulating Composer\Install('composer')
+            ->workingDir('.tmp/dist/prep')
+            ->optimizeAutoloader()
+            ->noDev()
+         [Simulator] Simulating ExecStack()
+            ->stopOnFail()
+            ->exec('./vendor/bin/run drupal:permissions-setup --root=.tmp/dist/prep/build')
+            ->exec('./vendor/bin/run drupal:settings-setup --root=.tmp/dist/prep/build')
+         [Simulator] Simulating Filesystem\FilesystemStack()
+            ->remove('dist')
+            ->mkdir('dist')
+         [Simulator] Simulating Remote\Rsync()
+            ->fromPath('.tmp/dist/prep/')
+            ->toPath('dist')
+            ->includeFilter(array ( ... ))
+            ->exclude('*')
+            ->recursive()
+            ->args('-aL')
+         [Simulator] Simulating File\Write('dist/manifest.json')
+            ->text('{ ... }')
+         [Simulator] Simulating File\Write('dist/build/VERSION.txt')
+            ->text('1.0.0')
 
 - command: 'toolkit:build-dist'
   configuration:
@@ -30,20 +84,35 @@
   expectations:
   - contains: |
       [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('other')
-          ->mkdir('other')
-          ->copy('./composer.json', 'other/composer.json')
-          ->copy('./composer.lock', 'other/composer.lock')
-      [Simulator] Simulating Filesystem\CopyDir(array (
-          './config' => 'other/config',
-      ))
+          ->remove('.tmp/dist/prep')
+          ->mkdir('.tmp/dist/prep')
+      [Simulator] Simulating Remote\Rsync()
+          ->fromPath('./')
+          ->toPath('.tmp/dist/prep')
+          ->exclude(array (
+          0 => '.tmp',
+          1 => 'vendor',
+          ))
+          ->excludeVcs()
+          ->recursive()
       [Simulator] Simulating Composer\Install('composer')
-          ->workingDir('other')
+          ->workingDir('.tmp/dist/prep')
           ->optimizeAutoloader()
           ->noDev()
       [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('./vendor/bin/run drupal:settings-setup --root=other/web')
+          ->exec('./vendor/bin/run drupal:permissions-setup --root=.tmp/dist/prep/web')
+          ->exec('./vendor/bin/run drupal:settings-setup --root=.tmp/dist/prep/web')
+      [Simulator] Simulating Filesystem\FilesystemStack()
+          ->remove('other')
+          ->mkdir('other')
+      [Simulator] Simulating Remote\Rsync()
+          ->fromPath('.tmp/dist/prep/')
+          ->toPath('other')
+          ->includeFilter(array ( ... ))
+          ->exclude('*')
+          ->recursive()
+          ->args('-aL')
 
 - command: 'toolkit:build-dist'
   configuration:
@@ -58,24 +127,41 @@
   expectations:
   - contains: |
       [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('dist')
-          ->mkdir('dist')
-          ->copy('./composer.json', 'dist/composer.json')
-          ->copy('./composer.lock', 'dist/composer.lock')
-      [Simulator] Simulating Filesystem\CopyDir(array (
-          './config' => 'dist/config',
-      ))
+          ->remove('.tmp/dist/prep')
+          ->mkdir('.tmp/dist/prep')
+      [Simulator] Simulating Remote\Rsync()
+          ->fromPath('./')
+          ->toPath('.tmp/dist/prep')
+          ->exclude(array (
+          0 => '.tmp',
+          1 => 'vendor',
+          ))
+          ->excludeVcs()
+          ->recursive()
       [Simulator] Simulating Composer\Install('composer')
-          ->workingDir('dist')
+          ->workingDir('.tmp/dist/prep')
           ->optimizeAutoloader()
           ->noDev()
       [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
+          ->exec('./vendor/bin/run drupal:permissions-setup --root=.tmp/dist/prep/web')
+          ->exec('./vendor/bin/run drupal:settings-setup --root=.tmp/dist/prep/web')
+      [Simulator] Simulating Filesystem\FilesystemStack()
+          ->remove('dist')
+          ->mkdir('dist')
+      [Simulator] Simulating Remote\Rsync()
+          ->fromPath('.tmp/dist/prep/')
+          ->toPath('dist')
+          ->includeFilter(array ( ... ))
+          ->exclude('*')
+          ->recursive()
+          ->args('-aL')
       [Simulator] Simulating OpenEuropa\TaskRunner\Tasks\CollectionFactory\CollectionFactory(array (
-          0 => 'command-one',
-          1 => 'command-two',
-      ))
+        0 => 'command-one',
+        1 => 'command-two',
+        ))
+      [Simulator] command-one
+      [Simulator] command-two
 
 - command: 'toolkit:build-dev'
   configuration:
