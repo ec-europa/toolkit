@@ -13,7 +13,6 @@
     "require": {
         "php": "^7.1",
         "cweagans/composer-patches": "^1.4",
-        "drupal/console-core": "^1.8",
         "drupal/drupal-extension": "^3.4 || ^4.0",
         "drush/drush": "^9.5",
         "ec-europa/qa-automation": "^4.0.0",
@@ -22,6 +21,9 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0"
+    },
+    "suggest": {
+        "drupal/console": "The Drupal CLI, tool to generate boilerplate code, interact with and debug Drupal."
     },
     "autoload": {
         "psr-4": {
