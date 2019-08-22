@@ -403,7 +403,7 @@
         <if>
             <contains string="${database-file}" substring=".gz" />
             <then>
-                <exec command="zcat -q ${database-file} > ${project.tmp.dir}/dump.sql" />
+                <exec command="gunzip -c ${database-file} > ${project.tmp.dir}/dump.sql" />
                 <drush command="sql-cli" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
                     <option name="db-url" value="${db.url}" />
                     <param>&lt; ${project.tmp.dir}/dump.sql</param>
