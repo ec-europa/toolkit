@@ -133,9 +133,9 @@
           ->fromPath('./')
           ->toPath('.tmp/dist/prep')
           ->exclude(array (
-          0 => '.tmp',
-          1 => 'vendor',
-          ))
+        0 => '.tmp',
+        1 => 'vendor',
+      ))
           ->excludeVcs()
           ->recursive()
       [Simulator] Simulating Composer\Install('composer')
@@ -156,6 +156,12 @@
           ->exclude('*')
           ->recursive()
           ->args('-aL')
+      [Simulator] Simulating File\Write('dist/manifest.json')
+          ->text('{
+          "version": "latest"
+      }')
+      [Simulator] Simulating File\Write('dist/web/VERSION.txt')
+          ->text('latest')
       [Simulator] Simulating OpenEuropa\TaskRunner\Tasks\CollectionFactory\CollectionFactory(array (
         0 => 'command-one',
         1 => 'command-two',
