@@ -14,7 +14,7 @@
   configuration:
     toolkit:
       clone:
-        dumpfile: '.tmp/dump.sql'
+        dumpfile: 'dump.sql'
         config_file: 'config.yml'
   expectations:
     - contains: |
@@ -28,7 +28,7 @@
   configuration:
     toolkit:
       clone:
-        dumpfile: '.tmp/dump.sql'
+        dumpfile: 'dump.sql'
         config_file: 'no-config.yml'
   expectations:
     - contains: |
