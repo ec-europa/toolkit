@@ -102,17 +102,15 @@ class BuildCommands extends AbstractCommands {
       ->recursive()
       ->args('-aL');
 
-    if (isset($options['tag']) || isset($options['sha'])) {
-      // Prepare sha and tag variables.
-      $sha = !empty($options['sha']) ? ['sha' => $options['sha']] : [];
-      $tag = !empty($options['tag']) ? ['version' => $options['tag']] : ['version' => 'latest'];
+    // Prepare sha and tag variables.
+    $sha = !empty($options['sha']) ? ['sha' => $options['sha']] : [];
+    $tag = !empty($options['tag']) ? ['version' => $options['tag']] : ['version' => 'latest'];
 
-      // Write version tag in manifest.json and VERSION.txt.
-      $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')->text(
-        json_encode(array_merge($tag, $sha), JSON_PRETTY_PRINT)
-      );
-      $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag['version']);
-    }
+    // Write version tag in manifest.json and VERSION.txt.
+    $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')->text(
+      json_encode(array_merge($tag, $sha), JSON_PRETTY_PRINT)
+    );
+    $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag['version']);
 
     // Collect and execute list of commands set on local runner.yml.
     $commands = $this->getConfig()->get("toolkit.build.dist.commands");

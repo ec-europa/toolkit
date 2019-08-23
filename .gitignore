@@ -8,3 +8,5 @@
 /phpunit.xml
 /grumphp.yml
 /docker-compose.*.yml
+
+*.sql

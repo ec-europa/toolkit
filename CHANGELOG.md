@@ -6,7 +6,6 @@
   - Refactor build-dist to support local patches.
   - Introduce support to local packages.
   - Include manifest.json in the distribution package.
-  - Move dump.sql into temporary folder.
   - Move drupal/console to suggest section.
   - Update task-runner for beta6.
 
