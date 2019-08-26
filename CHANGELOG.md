@@ -1,6 +1,7 @@
 # Toolkit change log
 
 ## Version 3.0.23
+  * MULTISITE-21923 Refactor build-subsite-dist to allow the full codebase to be built
   * MULTISITE-21857 Exclude devel.make entries from component checking
   * MULTISITE-21952	Merge missing branch into release/3.x
   * MULTISITE-21969	Fix D7 modules endpoint.
