@@ -36,7 +36,7 @@
   </target>
   
   <!-- Port hardcoded section of pipeline into toolkit target to enable override. -->
-  <target  name="cerate-distribution" description="Create a package to be released in a docker image.">
+  <target name="create-distribution" description="Create a package to be released in a docker image.">
       <!-- Delete any possible pre-existent folder. -->
       <delete dir="${build.platform.dir}" includeemptydirs="true" failonerror="false" />
 
