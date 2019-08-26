@@ -11,13 +11,13 @@
           <then>
               <phingcall target="project-platform-set-version" />
               <phingcall target="project-platform-package-unpack" />
-              <phingcall target="project-modules-devops-dl" />
           </then>
           <else>
               <phingcall target="project-profile-build" />
           </else>
       </if>
 
+     <phingcall target="project-modules-devops-dl" />
      <phingcall target="project-platform-set-htaccess" />
      <phingcall target="project-platform-restore" />
 
