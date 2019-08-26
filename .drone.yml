@@ -137,6 +137,12 @@ pipeline:
     commands:
       - ./toolkit/phing test-run-phpcs-compatibility -D'phpcs.compat.checkreturn'='false' ${BUILD_OPTIONS} ${PHING_OPTS}
 
+  create-distribution:
+    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    group: deploy
+    commands:
+      - ./toolkit/phing create-distribution ${BUILD_OPTIONS} ${PHING_OPTS}
+
   # ============================================================================
   # Git hook integration section:
   # ============================================================================
