@@ -45,7 +45,7 @@ phpcs.prepush.source = ${toolkit.dir.vendor}/pfrenssen/phpcs-pre-push/pre-push
 phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpcs
 
 # Compatibility settings.
-phpcs.compat.version = 7.0-
+phpcs.compat.version = 7.2
 phpcs.compat.checkreturn = true
 phpcs.compat.skip = false
 
