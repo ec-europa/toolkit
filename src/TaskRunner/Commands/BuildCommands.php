@@ -88,6 +88,17 @@ class BuildCommands extends AbstractCommands {
       ->remove($options['dist-root'])
       ->mkdir($options['dist-root']);
 
+    // Rsync the root with symlinks resolved.
+    $tasks[] = $this->taskRsync()
+      ->fromPath($prepDir . '/')
+      ->toPath($options['dist-root'])
+      ->includeFilter([
+        $options['root'] . '/***',
+      ])
+      ->exclude('*')
+      ->recursive()
+      ->args('-aL');
+
     // Rsync the tmp folder to the dist folder.
     $tasks[] = $this->taskRsync()
       ->fromPath($prepDir . '/')
@@ -96,11 +107,10 @@ class BuildCommands extends AbstractCommands {
         'composer.*',
         'config/***',
         'vendor/***',
-        $options['root'] . '/***',
       ])
       ->exclude('*')
       ->recursive()
-      ->args('-aL');
+      ->args('-a');
 
     // Prepare sha and tag variables.
     $sha = !empty($options['sha']) ? ['sha' => $options['sha']] : [];
