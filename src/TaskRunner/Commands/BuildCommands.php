@@ -55,52 +55,28 @@ class BuildCommands extends AbstractCommands {
     'dist-root' => InputOption::VALUE_REQUIRED,
   ]) {
     $tasks = [];
-    $tmpDir = $this->getConfig()->get("toolkit.tmp_folder");
-    $prepDir = $tmpDir . '/dist/prep';
 
-    // Create temp folder to prepare dist build in.
+
+    // Reset dist folder and copy required files.
     $tasks[] = $this->taskFilesystemStack()
-      ->remove($prepDir)
-      ->mkdir($prepDir);
+      ->remove($options['dist-root'])
+      ->mkdir($options['dist-root'])
+      ->copy('./composer.json', $options['dist-root'] . '/composer.json')
+      ->copy('./composer.lock', $options['dist-root'] . '/composer.lock');
 
-    // Rsync the codebase to the tmp folder.
-    $tasks[] = $this->taskRsync()
-      ->fromPath('./')
-      ->toPath($prepDir)
-      ->exclude([$tmpDir, 'vendor'])
-      ->excludeVcs()
-      ->recursive();
+    // Copy site configuration.
+    $tasks[] = $this->taskCopyDir(['./config' => $options['dist-root'] . '/config']);
 
     // Run production-friendly "composer install" packages.
     $tasks[] = $this->taskComposerInstall('composer')
-      ->workingDir($prepDir)
+      ->workingDir($options['dist-root'])
       ->optimizeAutoloader()
       ->noDev();
 
     // Setup the site.
     $tasks[] = $this->taskExecStack()
       ->stopOnFail()
-      ->exec('./vendor/bin/run drupal:permissions-setup --root=' . $prepDir . '/' . $options['root'])
-      ->exec('./vendor/bin/run drupal:settings-setup --root=' . $prepDir . '/' . $options['root']);
-
-    // Create dist folder to rsyn prep folder into.
-    $tasks[] = $this->taskFilesystemStack()
-      ->remove($options['dist-root'])
-      ->mkdir($options['dist-root']);
-
-    // Rsync the tmp folder to the dist folder.
-    $tasks[] = $this->taskRsync()
-      ->fromPath($prepDir . '/')
-      ->toPath($options['dist-root'])
-      ->includeFilter([
-        'composer.*',
-        'config/***',
-        'vendor/***',
-        $options['root'] . '/***',
-      ])
-      ->exclude('*')
-      ->recursive()
-      ->args('-aL');
+      ->exec('./vendor/bin/run drupal:settings-setup --root=' . $options['dist-root'] . '/' . $options['root']);
 
     // Prepare sha and tag variables.
     $sha = !empty($options['sha']) ? ['sha' => $options['sha']] : [];
