@@ -1,13 +1,13 @@
 # Toolkit change log
 
 ## Version 3.0.23
-  * MULTISITE-21923 Refactor build-subsite-dist to allow the full codebase to be built
-  * MULTISITE-21857 Exclude devel.make entries from component checking
-  * MULTISITE-21952	Merge missing branch into release/3.x
-  * MULTISITE-21969	Fix D7 modules endpoint.
-  * MULTISITE-21731	Fix zcat for macos
-  * MULTISITE-21981	Hotfix for chaning phpcs.compat.version from 7.0- to 7.2.
-  * MULTISITE-21984	Move project-modules-devops-dl to outside of platform build.
+  * MULTISITE-21923 Refactor build-subsite-dist to allow the full codebase to be built.
+  * MULTISITE-21857 Exclude devel.make entries from component checking.
+  * MULTISITE-21952 Merge missing branch into release/3.x.
+  * MULTISITE-21969 Fix D7 modules endpoint.
+  * MULTISITE-21731 Fix zcat for macos (replaced by gunzip).
+  * MULTISITE-21981 Hotfix for chaning phpcs.compat.version from 7.0- to 7.2.
+  * MULTISITE-21984 Move project-modules-devops-dl to outside of platform build.
 
 ## Version 3.0.22.4
   * MULTISITE-21780: Create notitications target (tk3 and tk 4).
