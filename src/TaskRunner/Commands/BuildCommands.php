@@ -56,7 +56,6 @@ class BuildCommands extends AbstractCommands {
   ]) {
     $tasks = [];
 
-
     // Reset dist folder and copy required files.
     $tasks[] = $this->taskFilesystemStack()
       ->remove($options['dist-root'])
