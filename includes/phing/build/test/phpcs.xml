@@ -33,7 +33,7 @@
                     standards="PHPCompatibility"
                 />
                 <exec
-                    command="${toolkit.dir.bin}/phpcs --config-set ignore_warnins_on_exit ${phpcs.passwarnings} >/dev/null"
+                    command="${toolkit.dir.bin}/phpcs --config-set ignore_warnings_on_exit ${phpcs.passwarnings} >/dev/null"
                     passthru="true"
                     checkreturn="true"
                 />
@@ -72,7 +72,7 @@
             standards="${phpcs.standards}"
         />
         <exec
-            command="${toolkit.dir.bin}/phpcs --config-set ignore_warnins_on_exit ${phpcs.passwarnings} >/dev/null"
+            command="${toolkit.dir.bin}/phpcs --config-set ignore_warnings_on_exit ${phpcs.passwarnings} >/dev/null"
             passthru="true"
             checkreturn="true"
         />
