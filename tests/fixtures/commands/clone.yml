@@ -6,6 +6,7 @@
         [Simulator] Simulating ExecStack()
           ->stopOnFail()
           ->exec('./vendor/bin/drush sql-drop -y')
+          ->exec('./vendor/bin/drush sql-create -y')
           ->exec('./vendor/bin/drush sqlc < dump.sql')
           ->exec('./vendor/bin/drush updatedb -y')
           ->exec('./vendor/bin/drush cache:rebuild')

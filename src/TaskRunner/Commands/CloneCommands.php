@@ -55,6 +55,7 @@ class CloneCommands extends AbstractCommands {
     $tasks[] = $this->taskExecStack()
       ->stopOnFail()
       ->exec('./vendor/bin/drush sql-drop -y')
+      ->exec('./vendor/bin/drush sql-create -y')
       ->exec('./vendor/bin/drush sqlc < ' . $options['dumpfile'])
       ->exec('./vendor/bin/drush updatedb -y')
       ->exec('./vendor/bin/drush cache:rebuild');
