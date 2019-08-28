@@ -1,5 +1,11 @@
 # Toolkit change log
 
+## Version 4.0.0-beta10
+  - Fix issues toolkit:install-dump
+
+## Version 4.0.0-beta9
+  - Fix issues with vendor/bin folder.
+
 ## Version 4.0.0-beta8
   - Fix issues with ASDA download, improve process.
   - Regenerate file behat.yml within each execution.
