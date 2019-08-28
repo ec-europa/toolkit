@@ -44,7 +44,7 @@
                 />
             </then>
             <else>
-                <echo msg="Skipping PHPCS Compatibility checks alltogether." />
+                <echo msg="Skipping PHPCS Compatibility checks altogether." />
             </else>
         </if>
     </target>
