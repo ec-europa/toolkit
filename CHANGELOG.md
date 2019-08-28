@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 3.0.24
+  * MULTISITE-21889 Small fixes to documentation and PHPCS.
+
 ## Version 3.0.23
   * MULTISITE-21923 Refactor build-subsite-dist to allow the full codebase to be built.
   * MULTISITE-21857 Exclude devel.make entries from component checking.
