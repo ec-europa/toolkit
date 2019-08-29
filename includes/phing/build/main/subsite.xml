@@ -123,6 +123,12 @@
               <relsym link="${build.subsite.dir.files}" target="${build.tmp.dir.files}" />
             </then>
         </if>
+        <if>
+            <available file="${resources.dir}/patches" type="dir" />
+            <then>
+              <relsym link="${build.${build-type}.dir}/patches" target="${resources.dir}/patches" />
+            </then>
+        </if>
         <relsym link="${build.${build-type}.dir}/composer.json" target="${resources.dir.composer.json}" />
         <relsym link="${build.${build-type}.dir}/composer.lock" target="${resources.dir.composer.lock}" />
     </target>
