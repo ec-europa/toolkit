@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7df1b563889e5c5fabf771b449d9cb4e",
+    "content-hash": "047ea7da0d5d6df3013205207ae4fea4",
     "packages": [
         {
             "name": "consolidation/annotated-command",
@@ -402,6 +402,46 @@
             "time": "2014-10-24T07:27:01+00:00"
         },
         {
+            "name": "drupal/coder",
+            "version": "8.2.12",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/coder.git",
+                "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f"
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.4.0",
+                "squizlabs/php_codesniffer": ">=2.8.1 <3.0",
+                "symfony/yaml": ">=2.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=3.7 <6"
+            },
+            "type": "phpcodesniffer-standard",
+            "extra": {
+                "patches_applied": {
+                    "https://www.drupal.org/project/coder/issues/3031056": "https://www.drupal.org/files/issues/2019-02-06/skip_missing_t_install_files-3031056-1.patch",
+                    "https://www.drupal.org/project/coder/issues/3034698": "https://www.drupal.org/files/issues/2019-02-21/false_positive_options_element-3034698-05.patch"
+                }
+            },
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Coder is a library to review Drupal code.",
+            "homepage": "https://www.drupal.org/project/coder",
+            "keywords": [
+                "code review",
+                "phpcs",
+                "standards"
+            ],
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/coder",
+                "source": "https://www.drupal.org/project/coder"
+            },
+            "time": "2017-03-18T10:28:49+00:00"
+        },
+        {
             "name": "drupal/phingdrushtask",
             "version": "1.1.1",
             "source": {
@@ -665,6 +705,46 @@
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
             "time": "2019-04-03T04:20:26+00:00"
+        },
+        {
+            "name": "ec-europa/qa-automation",
+            "version": "3.0.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ec-europa/qa-automation.git",
+                "reference": "77b50331ecc571a518e3137bb4b971ca069878c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/77b50331ecc571a518e3137bb4b971ca069878c0",
+                "reference": "77b50331ecc571a518e3137bb4b971ca069878c0",
+                "shasum": ""
+            },
+            "require": {
+                "cpliakas/git-wrapper": "^1.7",
+                "drupal/coder": "8.2.12",
+                "phing/phing": "~2.16.0",
+                "php": ">=5.2.0",
+                "phpcompatibility/php-compatibility": "^9.1",
+                "squizlabs/php_codesniffer": "2.9.0",
+                "symfony/console": "~2.3.10|^2.4.2|~3.0",
+                "symfony/finder": "^3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=3.7 <5.0"
+            },
+            "bin": [
+                "bin/qa"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "QualityAssurance\\Component\\Console\\": "src/Console"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
+            "time": "2019-08-20T14:13:27+00:00"
         },
         {
             "name": "guzzle/guzzle",
@@ -1605,6 +1685,64 @@
             "time": "2018-01-25T13:18:09+00:00"
         },
         {
+            "name": "phpcompatibility/php-compatibility",
+            "version": "9.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPCompatibility/PHPCompatibility.git",
+                "reference": "2b63c5d284ab8857f7b1d5c240ddb507a6b2293c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibility/zipball/2b63c5d284ab8857f7b1d5c240ddb507a6b2293c",
+                "reference": "2b63c5d284ab8857f7b1d5c240ddb507a6b2293c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3",
+                "squizlabs/php_codesniffer": "^2.3 || ^3.0.2"
+            },
+            "conflict": {
+                "squizlabs/php_codesniffer": "2.6.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.5 || ^5.0 || ^6.0 || ^7.0"
+            },
+            "suggest": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically.",
+                "roave/security-advisories": "dev-master || Helps prevent installing dependencies with known security issues."
+            },
+            "type": "phpcodesniffer-standard",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/PHPCompatibility/PHPCompatibility/graphs/contributors"
+                },
+                {
+                    "name": "Wim Godden",
+                    "homepage": "https://github.com/wimg",
+                    "role": "lead"
+                },
+                {
+                    "name": "Juliette Reinders Folmer",
+                    "homepage": "https://github.com/jrfnl",
+                    "role": "lead"
+                }
+            ],
+            "description": "A set of sniffs for PHP_CodeSniffer that checks for PHP cross-version compatibility.",
+            "homepage": "http://techblog.wimgodden.be/tag/codesniffer/",
+            "keywords": [
+                "compatibility",
+                "phpcs",
+                "standards"
+            ],
+            "time": "2018-12-30T23:16:27+00:00"
+        },
+        {
             "name": "psr/http-message",
             "version": "1.0.1",
             "source": {
@@ -1814,6 +1952,84 @@
             ],
             "description": "A polyfill for getallheaders.",
             "time": "2016-02-11T07:05:27+00:00"
+        },
+        {
+            "name": "squizlabs/php_codesniffer",
+            "version": "2.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "f7dfecbee89d68ab475a6c9e17d22bc9b69aed97"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/f7dfecbee89d68ab475a6c9e17d22bc9b69aed97",
+                "reference": "f7dfecbee89d68ab475a6c9e17d22bc9b69aed97",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.1.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "bin": [
+                "scripts/phpcs",
+                "scripts/phpcbf"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "CodeSniffer.php",
+                    "CodeSniffer/CLI.php",
+                    "CodeSniffer/Exception.php",
+                    "CodeSniffer/File.php",
+                    "CodeSniffer/Fixer.php",
+                    "CodeSniffer/Report.php",
+                    "CodeSniffer/Reporting.php",
+                    "CodeSniffer/Sniff.php",
+                    "CodeSniffer/Tokens.php",
+                    "CodeSniffer/Reports/",
+                    "CodeSniffer/Tokenizers/",
+                    "CodeSniffer/DocGenerators/",
+                    "CodeSniffer/Standards/AbstractPatternSniff.php",
+                    "CodeSniffer/Standards/AbstractScopeSniff.php",
+                    "CodeSniffer/Standards/AbstractVariableSniff.php",
+                    "CodeSniffer/Standards/IncorrectPatternException.php",
+                    "CodeSniffer/Standards/Generic/Sniffs/",
+                    "CodeSniffer/Standards/MySource/Sniffs/",
+                    "CodeSniffer/Standards/PEAR/Sniffs/",
+                    "CodeSniffer/Standards/PSR1/Sniffs/",
+                    "CodeSniffer/Standards/PSR2/Sniffs/",
+                    "CodeSniffer/Standards/Squiz/Sniffs/",
+                    "CodeSniffer/Standards/Zend/Sniffs/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Sherwood",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "homepage": "http://www.squizlabs.com/php-codesniffer",
+            "keywords": [
+                "phpcs",
+                "standards"
+            ],
+            "time": "2017-05-03T23:30:39+00:00"
         },
         {
             "name": "symfony/console",
@@ -2484,224 +2700,7 @@
             "time": "2015-12-17T08:42:14+00:00"
         }
     ],
-    "packages-dev": [
-        {
-            "name": "drupal/coder",
-            "version": "8.2.12",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/coder.git",
-                "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f"
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "php": ">=5.4.0",
-                "squizlabs/php_codesniffer": ">=2.8.1 <3.0",
-                "symfony/yaml": ">=2.0.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": ">=3.7 <6"
-            },
-            "type": "phpcodesniffer-standard",
-            "extra": {
-                "patches_applied": {
-                    "https://www.drupal.org/project/coder/issues/3031056": "https://www.drupal.org/files/issues/2019-02-06/skip_missing_t_install_files-3031056-1.patch",
-                    "https://www.drupal.org/project/coder/issues/3034698": "https://www.drupal.org/files/issues/2019-02-21/false_positive_options_element-3034698-05.patch"
-                }
-            },
-            "license": [
-                "GPL-2.0+"
-            ],
-            "description": "Coder is a library to review Drupal code.",
-            "homepage": "https://www.drupal.org/project/coder",
-            "keywords": [
-                "code review",
-                "phpcs",
-                "standards"
-            ],
-            "support": {
-                "issues": "https://www.drupal.org/project/issues/coder",
-                "source": "https://www.drupal.org/project/coder"
-            },
-            "time": "2017-03-18T10:28:49+00:00"
-        },
-        {
-            "name": "ec-europa/qa-automation",
-            "version": "3.0.11",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "c1deefa3fc4fd9582f7ad02b556b41ffa4341e05"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/c1deefa3fc4fd9582f7ad02b556b41ffa4341e05",
-                "reference": "c1deefa3fc4fd9582f7ad02b556b41ffa4341e05",
-                "shasum": ""
-            },
-            "require": {
-                "cpliakas/git-wrapper": "^1.7",
-                "drupal/coder": "8.2.12",
-                "phing/phing": "~2.16.0",
-                "php": ">=5.2.0",
-                "phpcompatibility/php-compatibility": "^9.1",
-                "squizlabs/php_codesniffer": "2.9.0",
-                "symfony/console": "~2.3.10|^2.4.2|~3.0",
-                "symfony/finder": "^3.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": ">=3.7 <5.0"
-            },
-            "bin": [
-                "bin/qa"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "QualityAssurance\\Component\\Console\\": "src/Console"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
-            "time": "2019-06-20T09:22:37+00:00"
-        },
-        {
-            "name": "phpcompatibility/php-compatibility",
-            "version": "9.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPCompatibility/PHPCompatibility.git",
-                "reference": "2b63c5d284ab8857f7b1d5c240ddb507a6b2293c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibility/zipball/2b63c5d284ab8857f7b1d5c240ddb507a6b2293c",
-                "reference": "2b63c5d284ab8857f7b1d5c240ddb507a6b2293c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3",
-                "squizlabs/php_codesniffer": "^2.3 || ^3.0.2"
-            },
-            "conflict": {
-                "squizlabs/php_codesniffer": "2.6.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.5 || ^5.0 || ^6.0 || ^7.0"
-            },
-            "suggest": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3 || This Composer plugin will sort out the PHPCS 'installed_paths' automatically.",
-                "roave/security-advisories": "dev-master || Helps prevent installing dependencies with known security issues."
-            },
-            "type": "phpcodesniffer-standard",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/PHPCompatibility/PHPCompatibility/graphs/contributors"
-                },
-                {
-                    "name": "Wim Godden",
-                    "homepage": "https://github.com/wimg",
-                    "role": "lead"
-                },
-                {
-                    "name": "Juliette Reinders Folmer",
-                    "homepage": "https://github.com/jrfnl",
-                    "role": "lead"
-                }
-            ],
-            "description": "A set of sniffs for PHP_CodeSniffer that checks for PHP cross-version compatibility.",
-            "homepage": "http://techblog.wimgodden.be/tag/codesniffer/",
-            "keywords": [
-                "compatibility",
-                "phpcs",
-                "standards"
-            ],
-            "time": "2018-12-30T23:16:27+00:00"
-        },
-        {
-            "name": "squizlabs/php_codesniffer",
-            "version": "2.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "f7dfecbee89d68ab475a6c9e17d22bc9b69aed97"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/f7dfecbee89d68ab475a6c9e17d22bc9b69aed97",
-                "reference": "f7dfecbee89d68ab475a6c9e17d22bc9b69aed97",
-                "shasum": ""
-            },
-            "require": {
-                "ext-simplexml": "*",
-                "ext-tokenizer": "*",
-                "ext-xmlwriter": "*",
-                "php": ">=5.1.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "bin": [
-                "scripts/phpcs",
-                "scripts/phpcbf"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "CodeSniffer.php",
-                    "CodeSniffer/CLI.php",
-                    "CodeSniffer/Exception.php",
-                    "CodeSniffer/File.php",
-                    "CodeSniffer/Fixer.php",
-                    "CodeSniffer/Report.php",
-                    "CodeSniffer/Reporting.php",
-                    "CodeSniffer/Sniff.php",
-                    "CodeSniffer/Tokens.php",
-                    "CodeSniffer/Reports/",
-                    "CodeSniffer/Tokenizers/",
-                    "CodeSniffer/DocGenerators/",
-                    "CodeSniffer/Standards/AbstractPatternSniff.php",
-                    "CodeSniffer/Standards/AbstractScopeSniff.php",
-                    "CodeSniffer/Standards/AbstractVariableSniff.php",
-                    "CodeSniffer/Standards/IncorrectPatternException.php",
-                    "CodeSniffer/Standards/Generic/Sniffs/",
-                    "CodeSniffer/Standards/MySource/Sniffs/",
-                    "CodeSniffer/Standards/PEAR/Sniffs/",
-                    "CodeSniffer/Standards/PSR1/Sniffs/",
-                    "CodeSniffer/Standards/PSR2/Sniffs/",
-                    "CodeSniffer/Standards/Squiz/Sniffs/",
-                    "CodeSniffer/Standards/Zend/Sniffs/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Greg Sherwood",
-                    "role": "lead"
-                }
-            ],
-            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
-            "homepage": "http://www.squizlabs.com/php-codesniffer",
-            "keywords": [
-                "phpcs",
-                "standards"
-            ],
-            "time": "2017-05-03T23:30:39+00:00"
-        }
-    ],
+    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
