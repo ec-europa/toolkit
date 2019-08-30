@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7df1b563889e5c5fabf771b449d9cb4e",
+    "content-hash": "4c758ac01982a779a8b91c12e6177b85",
     "packages": [
         {
             "name": "consolidation/annotated-command",
@@ -2527,16 +2527,16 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "3.0.11",
+            "version": "3.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "c1deefa3fc4fd9582f7ad02b556b41ffa4341e05"
+                "reference": "8dc24755921f07d620f529172d760885a6488754"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/c1deefa3fc4fd9582f7ad02b556b41ffa4341e05",
-                "reference": "c1deefa3fc4fd9582f7ad02b556b41ffa4341e05",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/8dc24755921f07d620f529172d760885a6488754",
+                "reference": "8dc24755921f07d620f529172d760885a6488754",
                 "shasum": ""
             },
             "require": {
@@ -2563,7 +2563,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
-            "time": "2019-06-20T09:22:37+00:00"
+            "time": "2019-08-30T08:38:13+00:00"
         },
         {
             "name": "phpcompatibility/php-compatibility",
