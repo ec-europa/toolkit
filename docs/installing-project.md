@@ -10,6 +10,11 @@ the following commands:
 * execute `./toolkit/phing build-platform`
 * execute `./toolkit/phing build-subsite-dev`
 
+## Before start
+In order to properly use all targets provided by toolkit, you should provide a `GITHUB_API_TOKEN` within your environment variabled, toolkit connect to Github API in order to get the latest version of NE Platform.
+
+By default the maximum number of request we can do to GitHub API is 50, providing the token the rate will increase to 5000 requests.
+
 ## Clean installation
 A clean installation means that you will run through the whole Drupal
 installation process. To get a good end result here, your project needs to be
