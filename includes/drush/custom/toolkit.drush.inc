@@ -171,7 +171,7 @@ function drush_toolkit_check_modules_download_attribute($make = '../resources/si
       foreach ($make_file['projects'] as $name => $project) {
         $attributes_at_wrong_level = array_intersect(array_keys($project), $attributes);
         if (!empty($attributes_at_wrong_level)) {
-          drush_set_error(dt('Attribute @attributes defined on "project" level for @name. This should be at "download" level.', array('@attributes' => implode(', ', $attributes_at_wrong_level), '@name' => $name)));
+          drush_set_error('SITE_MAKE_ERROR', dt('Attribute @attributes defined on "project" level for @name. This should be at "download" level.', array('@attributes' => implode(', ', $attributes_at_wrong_level), '@name' => $name)));
         }
       }
     }
@@ -181,7 +181,7 @@ function drush_toolkit_check_modules_download_attribute($make = '../resources/si
       foreach ($make_file['libraries'] as $name => $project) {
         $attributes_at_wrong_level = array_intersect(array_keys($project), $attributes);
         if (!empty($attributes_at_wrong_level)) {
-          drush_set_error(dt('Attribute @attributes defined on "library" level for @name. This should be at "download" level.', array('@attributes' => implode(', ', $attributes_at_wrong_level), '@name' => $name)));
+          drush_set_error('SITE_MAKE_ERROR', dt('Attribute @attributes defined on "library" level for @name. This should be at "download" level.', array('@attributes' => implode(', ', $attributes_at_wrong_level), '@name' => $name)));
         }
       }
     }
