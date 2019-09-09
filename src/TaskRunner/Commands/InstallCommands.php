@@ -25,24 +25,23 @@ class InstallCommands extends AbstractCommands {
   /**
    * Install a clean website.
    *
-   * The installation in the following order:
-   * - Prepare the installation
-   * - Install the site
-   * - Setup files for tests.
+   * @param array $options
+   *   Command options.
    *
    * @command toolkit:install-clean
    *
    * @return \Robo\Collection\CollectionBuilder
    *   Collection builder.
    */
-  public function installClean() {
+  public function installClean(array $options = [
+    'config-file' => InputOption::VALUE_REQUIRED,
+  ]) {
     $tasks = [];
 
-    $tasks[] = $this->taskExecStack()
-      ->stopOnFail()
-      ->exec('./vendor/bin/run toolkit:build-dev')
-      ->exec('./vendor/bin/run drupal:site-install')
-      ->exec('./vendor/bin/run drupal:setup-test');
+    // Install site from existing configuration, if available.
+    $has_config = file_exists($options['config-file']);
+    $params = $has_config ? ' --existing-config' : '';
+    $tasks[] = $this->taskExec('./vendor/bin/run drupal:site-install' . $params);
 
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);
@@ -50,12 +49,6 @@ class InstallCommands extends AbstractCommands {
 
   /**
    * Install a clone website.
-   *
-   * The installation in the following order:
-   * - Prepare the installation
-   * - Install the site
-   * - Setup files for tests
-   * - Install a dump database.
    *
    * @param array $options
    *   Command options.
