@@ -1,6 +1,6 @@
 command:
   toolkit:
-    install-clone:
+    install-clean:
       options:
         config-file: ${toolkit.clean.config_file}
     install-clone:
