@@ -2,5 +2,8 @@ command:
   toolkit:
     install-clone:
       options:
+        config-file: ${toolkit.clean.config_file}
+    install-clone:
+      options:
         dumpfile: ${toolkit.clone.dumpfile}
         config-file: ${toolkit.clone.config_file}
