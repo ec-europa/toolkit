@@ -77,7 +77,8 @@
         "Customize terminal colors": "patches/phing-customize-colors.patch",
         "Support xterm autocolor": "patches/phing-xterm-support.patch",
         "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch",
-        "https://github.com/phingofficial/phing/issues/553": "patches/phing-hidden-input.patch"
+        "https://github.com/phingofficial/phing/issues/553": "patches/phing-hidden-input.patch",
+        "https://github.com/phingofficial/phing/issues/1128": "patches/phing-issues-1128.patch"
       },
       "drupal/coder": {
         "https://www.drupal.org/project/coder/issues/3031056": "https://www.drupal.org/files/issues/2019-02-06/skip_missing_t_install_files-3031056-1.patch",
