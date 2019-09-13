@@ -1,7 +1,16 @@
 diff --git a/classes/phing/util/DirectoryScanner.php b/classes/phing/util/DirectoryScanner.php
-index 90512f05..dc72b577 100644
+index 90512f05..0f4dd5b4 100644
 --- a/classes/phing/util/DirectoryScanner.php
 +++ b/classes/phing/util/DirectoryScanner.php
+@@ -313,7 +313,7 @@ class DirectoryScanner implements SelectorScanner
+         if (empty($_includes) || is_null($_includes)) {
+             $this->includes = null;
+         } else {
+-            for ($i = 0; $i < count($_includes); $i++) {
++            for ($i = 0; $i < count((array)$_includes); $i++) {
+                 $pattern = null;
+                 $pattern = str_replace('\\', DIRECTORY_SEPARATOR, $_includes[$i]);
+                 $pattern = str_replace('/', DIRECTORY_SEPARATOR, $pattern);
 @@ -341,7 +341,7 @@ class DirectoryScanner implements SelectorScanner
          if (empty($_excludes) || is_null($_excludes)) {
              $this->excludes = null;
