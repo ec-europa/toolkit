@@ -349,7 +349,7 @@
         <echo message="Installing site ${project.name}." />
         <drush command="site-install" assume="yes" root="${build.platform.dir}" bin="${toolkit.dir.bin.drush}" alias="@${drush.alias.default}" verbose="${drush.verbose}" color="${drush.color}">
             <option name="db-url" value="${db.url}" />
-            <option name="site-name" value="'${project.name}'" />
+            <option name="site-name" value="${project.name}" />
             <option name="account-name" value="${admin.username}" />
             <option name="account-pass" value="${admin.password}" />
             <option name="account-mail" value="${admin.email}" />
