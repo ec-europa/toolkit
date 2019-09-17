@@ -41,7 +41,11 @@ class InstallCommands extends AbstractCommands {
     // Install site from existing configuration, if available.
     $has_config = file_exists($options['config-file']);
     $params = $has_config ? ' --existing-config' : '';
-    $tasks[] = $this->taskExec('./vendor/bin/run drupal:site-install' . $params);
+
+    $tasks[] = $this->taskExecStack()
+      ->stopOnFail()
+      ->exec('./vendor/bin/run toolkit:build-dev')
+      ->exec('./vendor/bin/run drupal:site-install' . $params);
 
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);
