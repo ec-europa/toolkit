@@ -1,14 +1,3 @@
-
-- command: 'toolkit:install-clean'
-  configuration: []
-  expectations:
-    - contains: |
-        [Simulator] Simulating ExecStack()
-            ->stopOnFail()
-            ->exec('./vendor/bin/run toolkit:build-dev')
-            ->exec('./vendor/bin/run drupal:site-install')
-            ->exec('./vendor/bin/run drupal:setup-test')
-
 # with dump and config.
 - command: 'toolkit:install-clone'
   configuration:

@@ -2,6 +2,8 @@ toolkit:
   project_id: 'PROJECTID'
   tmp_folder: '.tmp'
   notifications_endpoint: 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications'
+  clean:
+    config_file: 'config/sync/core.extension.yml'
   clone:
     asda_url: 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps'
     dumpfile: 'dump.sql'
