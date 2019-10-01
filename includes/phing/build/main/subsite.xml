@@ -47,21 +47,21 @@
       <exec command="rsync -Lvr ${build.dist}/ ${build.subsite.dir}/" />
 
       <!-- Remove non essential files. -->
-      <delete file="${build.platform.dir}/authorize.php" />
-      <delete file="${build.platform.dir}/INSTALL.mysql.txt" />
-      <delete file="${build.platform.dir}/INSTALL.pgsql.txt" />
-      <delete file="${build.platform.dir}/INSTALL.sqlite.txt" />
-      <delete file="${build.platform.dir}/LICENSE.txt" />
-      <delete file="${build.platform.dir}/update.php" />
-      <delete file="${build.platform.dir}/cron.php" />
-      <delete file="${build.platform.dir}/CHANGELOG.txt" />
-      <delete file="${build.platform.dir}/COPYRIGHT.txt" />
-      <delete file="${build.platform.dir}/install.php" />
-      <delete file="${build.platform.dir}/INSTALL.txt" />
-      <delete file="${build.platform.dir}/MAINTAINERS.txt" />
-      <delete file="${build.platform.dir}/README.txt" />
-      <delete file="${build.platform.dir}/UPGRADE.txt" />
-      <delete file="${build.platform.dir}/sites/example.sites.php" />
+      <delete file="${build.platform.dir}/authorize.php" failonerror="false" />
+      <delete file="${build.platform.dir}/INSTALL.mysql.txt" failonerror="false" />
+      <delete file="${build.platform.dir}/INSTALL.pgsql.txt" failonerror="false" />
+      <delete file="${build.platform.dir}/INSTALL.sqlite.txt" failonerror="false" />
+      <delete file="${build.platform.dir}/LICENSE.txt" failonerror="false" />
+      <delete file="${build.platform.dir}/update.php" failonerror="false" />
+      <delete file="${build.platform.dir}/cron.php" failonerror="false" />
+      <delete file="${build.platform.dir}/CHANGELOG.txt" failonerror="false" />
+      <delete file="${build.platform.dir}/COPYRIGHT.txt" failonerror="false" />
+      <delete file="${build.platform.dir}/install.php" failonerror="false" />
+      <delete file="${build.platform.dir}/INSTALL.txt" failonerror="false" />
+      <delete file="${build.platform.dir}/MAINTAINERS.txt" failonerror="false" />
+      <delete file="${build.platform.dir}/README.txt" failonerror="false" />
+      <delete file="${build.platform.dir}/UPGRADE.txt" failonerror="false" />
+      <delete file="${build.platform.dir}/sites/example.sites.php" failonerror="false" />
       <delete dir="${build.platform.dir}/sites/default/files" includeemptydirs="true" failonerror="false" />
   </target>
 
