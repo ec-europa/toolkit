@@ -137,6 +137,7 @@ resources.dir.composer.lock = ${resources.dir}/composer.lock
 resources.dir.favicon.ico = ${resources.dir}/favicon.ico
 resources.dir.devel.make = ${resources.dir}/devel.make
 resources.dir.site.make = ${resources.dir}/site.make
+resources.dir.patches = ${resources.dir}/patches
 
 tests.dir = ${project.basedir}/tests
 
