@@ -54,38 +54,16 @@ class InstallCommands extends AbstractCommands {
   /**
    * Install a clone website.
    *
-   * @param array $options
-   *   Command options.
-   *
    * @command toolkit:install-clone
    *
    * @return \Robo\Collection\CollectionBuilder
    *   Collection builder.
    */
-  public function installClone(array $options = [
-    'dumpfile' => InputOption::VALUE_REQUIRED,
-    'config-file' => InputOption::VALUE_REQUIRED,
-  ]) {
+  public function installClone() {
     $tasks = [];
 
-    $has_dump = file_exists($options['dumpfile']);
-    $has_config = file_exists($options['config-file']);
-
-    // If ASDA snapshot is available then we will restore it.
-    if ($has_dump) {
-      $tasks[] = $this->taskExec('./vendor/bin/run toolkit:install-dump');
-
-      // If also configuration is present then we will import it.
-      if ($has_config) {
-        $tasks[] = $this->taskExec('./vendor/bin/run toolkit:import-config');
-      }
-    }
-    // If no ASDA snapshot is present then we will install a fresh copy.
-    else {
-      // Install site from existing configuration, if available.
-      $params = $has_config ? ' --existing-config' : '';
-      $tasks[] = $this->taskExec('./vendor/bin/run drupal:site-install' . $params);
-    }
+    $tasks[] = $this->taskExec('./vendor/bin/run toolkit:install-dump');
+    $tasks[] = $this->taskExec('./vendor/bin/run toolkit:run-deploy');
 
     // Build and return task collection.
     return $this->collectionBuilder()->addTaskList($tasks);
