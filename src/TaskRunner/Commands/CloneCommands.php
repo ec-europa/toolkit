@@ -61,7 +61,7 @@ class CloneCommands extends AbstractCommands {
       $processor->extend($loader->load($options['sequence-file']));
       $config->import($processor->export());
       $sequence = $config->get($options['sequence-key']);
-      
+
       if (!empty($sequence)) {
         $this->say('Running custom deploy sequence "' . $options['sequence-key'] . '" from sequence file "' . $options['sequence-file'] . '".');
         foreach ($sequence as $command) {
@@ -77,14 +77,13 @@ class CloneCommands extends AbstractCommands {
       $this->say('Sequence file "' . $options['sequence-file'] . '" does not exist, running default set of deployment commands.');
     }
 
-
     // Default deployment sequence.
-    $tasks[] = $this->taskExec('./vendor/bin/drush drush state:set system.maintenance_mode 1 --input-format=integer -y');
+    $tasks[] = $this->taskExec('./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer -y');
     $tasks[] = $this->taskExec('./vendor/bin/drush updatedb -y');
     if ($has_config) {
       $tasks[] = $this->taskExec('./vendor/bin/run toolkit:import-config');
     }
-    $tasks[] = $this->taskExec('./vendor/bin/drush drush state:set system.maintenance_mode 0 --input-format=integer -y');
+    $tasks[] = $this->taskExec('./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y');
     $tasks[] = $this->taskExec('./vendor/bin/drush cache:rebuild');
 
     return $this->collectionBuilder()->addTaskList($tasks);
