@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 4.0.0
+  - Include config:import within toolkit:install-clean
+
 ## Version 4.0.0-beta10
   - Fix issues toolkit:install-dump
 
