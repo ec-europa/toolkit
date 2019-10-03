@@ -111,7 +111,7 @@
 
     <target name="subsite-resources-copy" hidden="true" description="Copy subsite resources for distribution.">
         <echo msg="Copy custom resources." />
-        <exec command="rsync -Lvr ${build.tmp.dir}/ ${build.${build-type}.dir}/" />
+        <exec command="rsync -Lvr --exclude 'patches' ${build.tmp.dir}/ ${build.${build-type}.dir}/" />
     </target>
 
     <target name="subsite-resources-link" hidden="true" description="Link subsite resources to lib folder for development.">
@@ -142,9 +142,9 @@
             </then>
         </if>
         <if>
-            <available file="${resources.dir}/patches" type="dir" />
+            <available file="${resources.dir.patches}" type="dir" />
             <then>
-              <relsym link="${build.${build-type}.dir}/patches" target="${resources.dir}/patches" />
+              <relsym link="${build.${build-type}.dir}/patches" target="${resources.dir.patches}" />
             </then>
         </if>
         <relsym link="${build.${build-type}.dir}/composer.json" target="${resources.dir.composer.json}" />
