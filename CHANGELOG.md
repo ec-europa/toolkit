@@ -1,5 +1,12 @@
 # Toolkit change log
 
+## Version 3.0.25
+  * MULTISITE-22040: Cleanup patches folder on build-subsite-dist.
+  * MULTISITE-22050: Wrong implementation of drush_set_error in toolkit-check-modules-download-attribute.
+  * MULTISITE-22082: Avoid wrong name for site-name.
+  * MULTISITE-22084: Errors on 7.2 regarding count().
+  * MULTISITE-22155: Delete files on distribution package.
+
 ## Version 3.0.24
   * MULTISITE-21889 Small fixes to documentation and PHPCS.
 
