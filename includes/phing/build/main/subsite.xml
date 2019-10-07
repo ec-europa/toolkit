@@ -111,7 +111,7 @@
 
     <target name="subsite-resources-copy" hidden="true" description="Copy subsite resources for distribution.">
         <echo msg="Copy custom resources." />
-        <exec command="rsync -Lvr --exclude 'patches' ${build.tmp.dir}/ ${build.${build-type}.dir}/" />
+        <exec command="rsync -Lvr ${build.tmp.dir}/ ${build.${build-type}.dir}/" />
     </target>
 
     <target name="subsite-resources-link" hidden="true" description="Link subsite resources to lib folder for development.">
