@@ -615,6 +615,9 @@
         <phingcall target="drush-modules-enable">
             <property name="project.drupal.modules" value="${devel.mdls.en}" />
         </phingcall>
+        <phingcall target="drush-modules-disable">
+            <property name="project.drupal.modules" value="${devel.mdls.dis}" />
+        </phingcall>
     </target>
   
     <target name="project-generate-devel-vars" hidden="true" description="Update database with devel variables.">

@@ -142,6 +142,27 @@
         </if>
     </target>
 
+    <target name="drush-modules-disable" description="Disable a set of modules." hidden="true">
+        <if>
+            <or>
+                <equals arg1="${profile}" arg2="multisite_drupal_standard"/>
+                <equals arg1="${profile}" arg2="multisite_drupal_communities"/>
+            </or>
+            <then>
+                <drush
+                    command="pm-disable"
+                    assume="yes"
+                    root="${build.platform.dir}"
+                    alias="@${drush.alias.default}"
+                    bin="${toolkit.dir.bin.drush}"
+                    verbose="${drush.verbose}"
+                    color="${drush.color}">
+                    <param>${project.drupal.modules}</param>
+                </drush>
+            </then>
+        </if>
+    </target>
+
     <target name="drush-node-access-rebuild" hidden="true" description="Rebuild the node access.">
         <drush
             command="php-eval"
