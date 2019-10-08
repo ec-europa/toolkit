@@ -14,55 +14,58 @@ use Symfony\Component\Console\Input\InputOption;
 /**
  * Class TestsCommands.
  */
-class TestsCommands extends AbstractCommands implements FilesystemAwareInterface {
-  use NuvoleWebTasks\Config\loadTasks;
-  use TaskRunnerTasks\CollectionFactory\loadTasks;
-  use TaskRunnerTraits\ConfigurationTokensTrait;
-  use TaskRunnerTraits\FilesystemAwareTrait;
-  use \OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
+class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
+{
+    use NuvoleWebTasks\Config\loadTasks;
+    use TaskRunnerTasks\CollectionFactory\loadTasks;
+    use TaskRunnerTraits\ConfigurationTokensTrait;
+    use TaskRunnerTraits\FilesystemAwareTrait;
+    use \OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getConfigurationFile() {
-    return __DIR__ . '/../../../config/commands/test.yml';
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFile()
+    {
+        return __DIR__ . '/../../../config/commands/test.yml';
+    }
 
-  /**
-   * Run PHP code review.
-   *
-   * @command toolkit:test-phpcs
-   *
-   * @aliases tp
-   */
-  public function toolkitPhpcs() {
-    $tasks = [];
+    /**
+     * Run PHP code review.
+     *
+     * @command toolkit:test-phpcs
+     *
+     * @aliases tp
+     */
+    public function toolkitPhpcs()
+    {
+        $tasks = [];
 
-    $tasks[] = $this->taskExec('./vendor/bin/grumphp run --config=./vendor/ec-europa/qa-automation/dist/qa-conventions.yml');
+        $tasks[] = $this->taskExec('./vendor/bin/grumphp run --config=./vendor/ec-europa/qa-automation/dist/qa-conventions.yml');
 
-    return $this->collectionBuilder()->addTaskList($tasks);
-  }
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
 
-  /**
-   * Run Behat tests.
-   *
-   * @command toolkit:test-behat
-   *
-   * @aliases tb
-   *
-   * @option from   From behat.yml.dist config file.
-   * @option to     To behat.yml config file.
-   */
-  public function toolkitBehat(array $options = [
-    'from' => InputOption::VALUE_OPTIONAL,
-    'to' => InputOption::VALUE_OPTIONAL,
-  ]) {
-    $tasks = [];
+    /**
+     * Run Behat tests.
+     *
+     * @command toolkit:test-behat
+     *
+     * @aliases tb
+     *
+     * @option from   From behat.yml.dist config file.
+     * @option to     To behat.yml config file.
+     */
+    public function toolkitBehat(array $options = [
+        'from' => InputOption::VALUE_OPTIONAL,
+        'to' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        $tasks = [];
 
-    $tasks[] = $this->taskProcessConfigFile($options['from'], $options['to']);
-    $tasks[] = $this->taskExec('./vendor/bin/behat --strict');
+        $tasks[] = $this->taskProcessConfigFile($options['from'], $options['to']);
+        $tasks[] = $this->taskExec('./vendor/bin/behat --strict');
 
-    return $this->collectionBuilder()->addTaskList($tasks);
-  }
-
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
 }
