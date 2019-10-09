@@ -676,6 +676,12 @@
             <property name="composer-working-dir" value="${build.dist.dir}" override="true" />
             <property name="composer-no-dev" value="true" override="true" />
         </phingcall>
+        <if>
+            <available file="${build.dist.dir}/patches" type="dir" />
+            <then>
+              <delete dir="${build.dist.dir}/patches" includeemptydirs="true" />
+            </then>
+        </if>
     </target>
 
     <target name="project-subsite-composer-dev" hidden="true" description="Run composer install with dev on subsite.">
