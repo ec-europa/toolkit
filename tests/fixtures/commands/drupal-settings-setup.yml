@@ -23,7 +23,7 @@
           'driver' => 'mysql',
         );
 
-        $settings['hash_salt'] = 'YWJj';
+        $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : 'YWJj';
 
         // Location of the site configuration files, relative to the site root.
         $config_directories['sync'] = '../config/sync';
@@ -66,7 +66,7 @@
         );
         $config['cas.settings']['server']['hostname'] = getenv('CAS_HOSTNAME');
         $config['cas.settings']['server']['port'] = getenv('CAS_PORT');
-        $settings['hash_salt'] = 'YWJj';
+        $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : 'YWJj';
 
         // Location of the site configuration files, relative to the site root.
         $config_directories['sync'] = '../config/sync';
@@ -106,7 +106,7 @@
           'driver' => 'mysql',
         );
 
-        $settings['hash_salt'] = 'YWJj';
+        $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : 'YWJj';
 
         // Location of the site configuration files, relative to the site root.
         $config_directories['sync'] = '../config/sync';

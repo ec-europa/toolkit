@@ -145,7 +145,7 @@ class DrupalCommands extends Drupal8Commands {
   'driver' => 'mysql',
 );
 {$additionalSettings}
-\$settings['hash_salt'] = '{$hashSalt}';
+\$settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : '{$hashSalt}';
 
 // Location of the site configuration files, relative to the site root.
 \$config_directories['sync'] = '../config/sync';
