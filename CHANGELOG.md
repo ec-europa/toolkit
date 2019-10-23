@@ -1,5 +1,10 @@
 # Toolkit change log
 
+## Version 3.0.26
+  * MULTISITE-21830: Allow disabling of modules on cloned install.
+  * MULTISITE-22216: Enable PHP 7.2 on toolkit pipeline and fix errors.
+  * MULTISITE-22040: Cleanup patches folder on build-subsite-dist.
+
 ## Version 3.0.25
   * MULTISITE-22040: Cleanup patches folder on build-subsite-dist.
   * MULTISITE-22050: Wrong implementation of drush_set_error in toolkit-check-modules-download-attribute.
