@@ -1,5 +1,10 @@
 # Toolkit change log
 
+## Version 4.0.1
+  - Provide update command for .opts.yml file in toolkit:install-clone.
+  - Allow hash_salt to read from environment variable.
+  - Change grumphp convention on toolkit.
+
 ## Version 4.0.0
   - Include config:import within toolkit:install-clean
 
