@@ -71,9 +71,9 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             ->run()
             ->getMessage();
 
-        $tasks[] = strpos(trim($result), 'No scenarios') === 0 ?
-        $this->taskExec('./vendor/bin/behat'):
-        $this->taskExec('./vendor/bin/behat --strict');
+        $tasks[] = strpos(trim($result), 'No scenarios') !== 0 ?
+        $this->taskExec('./vendor/bin/behat --strict') :
+        $this->taskExec('./vendor/bin/behat');
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
