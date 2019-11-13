@@ -14,14 +14,14 @@ workspace:
 
 services:
   web:
-    image: fpfis/httpd-php-full:${PHP_VERSION=7.2}
+    image: fpfis/httpd-php-ci:${PHP_VERSION=7.2}
     environment:
       - DOCUMENT_ROOT=/test/toolkit
 
 pipeline:
   composer-install:
     group: prepare
-    image: fpfis/httpd-php-full:${PHP_VERSION=7.2}
+    image: fpfis/httpd-php-ci:${PHP_VERSION=7.2}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -29,7 +29,7 @@ pipeline:
 
   composer-update-lowest:
     group: post-prepare
-    image: fpfis/httpd-php-full:${PHP_VERSION=7.2}
+    image: fpfis/httpd-php-ci:${PHP_VERSION=7.2}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -40,13 +40,13 @@ pipeline:
 
   grumphp:
     group: test
-    image: fpfis/httpd-php-full:${PHP_VERSION=7.2}
+    image: fpfis/httpd-php-ci:${PHP_VERSION=7.2}
     commands:
       - ./vendor/bin/grumphp run
 
   phpunit:
     group: test
-    image: fpfis/httpd-php-full:${PHP_VERSION=7.2}
+    image: fpfis/httpd-php-ci:${PHP_VERSION=7.2}
     commands:
       - ./vendor/bin/phpunit
 
