@@ -63,8 +63,17 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     {
         $tasks = [];
 
-        $tasks[] = $this->taskProcessConfigFile($options['from'], $options['to']);
-        $tasks[] = $this->taskExec('./vendor/bin/behat --strict');
+        $this->taskProcessConfigFile($options['from'], $options['to'])->run();
+
+        $result = $this->taskExec('./vendor/bin/behat --dry-run')
+            ->silent(true)
+            ->printOutput(false)
+            ->run()
+            ->getMessage();
+
+        $tasks[] = strpos(trim($result), 'No scenarios') === 0 ?
+        $this->taskExec('./vendor/bin/behat'):
+        $this->taskExec('./vendor/bin/behat --strict');
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
