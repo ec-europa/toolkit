@@ -193,14 +193,16 @@
                           <then>
                             <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
                                 <option name="db-url" value="${db.url}" />
-                                <param>"update system set status=0 where name IN (${drush.rr.disable});"</param>
+                                <param>--db-prefix</param>
+                                <param>"update ${db.prefix}system set status=0 where name IN (${drush.rr.disable});"</param>
                             </drush>
                             <drush command="registry-rebuild" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}">
                                 <param>${drush.rr.options}</param>
                             </drush>
                             <drush command="sqlq" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
                                 <option name="db-url" value="${db.url}" />
-                                <param>"update system set status=1 where name IN (${drush.rr.disable});"</param>
+                                <param>--db-prefix</param>
+                                <param>"update ${db.prefix}system set status=1 where name IN (${drush.rr.disable});"</param>
                             </drush>
                           </then>
                           <else>
