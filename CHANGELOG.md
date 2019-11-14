@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 3.0.27
+  * MULTISITE-22437: Prefix table is not taking into account in database query.
+
 ## Version 3.0.26
   * MULTISITE-21830: Allow disabling of modules on cloned install.
   * MULTISITE-22216: Enable PHP 7.2 on toolkit pipeline and fix errors.
