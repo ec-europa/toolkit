@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 4.0.2
+  - MULTISITE-22407: Step failing if no scenario is provided.
+
 ## Version 4.0.1
   - Provide update command for .opts.yml file in toolkit:install-clone.
   - Allow hash_salt to read from environment variable.
