@@ -64,7 +64,7 @@ class PlatformVersionsTask extends \Task
      *
      * @var bool
      */
-    private $_preRelease = TRUE;
+    private $_preRelease = FALSE;
  
     /**
      * Check github repository and retrieve all latest major versions.
