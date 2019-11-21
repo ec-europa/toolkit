@@ -587,7 +587,7 @@
         hidden="true">
         <!-- Delete of saved versions to force refresh -->
         <exec command='rm -rf ${project.tmp.dir}/build.version.props' outputProperty="log" checkreturn="true" />
-        <platformversions packageVersion="${platform.package.version}" />
+        <platformversions packageVersion="${platform.package.version}" preRelease="${platform.package.download.prerelease}" />
         <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.version.props" />
     </target>
 

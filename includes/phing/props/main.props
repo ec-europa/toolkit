@@ -106,6 +106,7 @@ platform.package.provider = git-hub
 platform.package.provider.token = # TODO: Github API limit.
 platform.package.repository = ec-europa/platform-dev
 platform.package.download.location = https://github.com/${platform.package.repository}/releases/download/${platform.package.version.current}
+platform.package.download.prerelease = false
 platform.package.version = 2.5
 platform.multisite.mode = 1
 
