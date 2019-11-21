@@ -64,7 +64,7 @@ class PlatformVersionsTask extends \Task
      *
      * @var bool
      */
-    private $_prerelease = TRUE;
+    private $_preRelease = TRUE;
  
     /**
      * Check github repository and retrieve all latest major versions.
@@ -73,7 +73,6 @@ class PlatformVersionsTask extends \Task
      */
     public function main()
     {
-        var_dump($this->_prerelease);
         // Check if all required data is present.
         $this->checkRequirements();
 
@@ -166,7 +165,7 @@ class PlatformVersionsTask extends \Task
     /**
      * Sets the current package version.
      *
-     * @param string $setPackageVersion The current project version.
+     * @param string $packageVersion The current project version.
      *
      * @return void
      */
@@ -203,13 +202,13 @@ class PlatformVersionsTask extends \Task
     /**
      * Sets the prerelease property.
      *
-     * @param bool $prerelease available for the project.
+     * @param bool $preRelease available for the project.
      *
      * @return bool
      */
-    public function setPreRelease($prerelease)
+    public function setPreRelease($preRelease)
     {
-        $this->_prerelease = $prerelease;
+        $this->_prerelease = $preRelease;
     }//end setPreRelease()
      
     private function callGithubReleases($url)
