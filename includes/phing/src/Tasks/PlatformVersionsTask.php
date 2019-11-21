@@ -58,6 +58,13 @@ class PlatformVersionsTask extends \Task
      * @var string
      */
     private $latestprop = '';
+
+    /**
+     * Wether or not to download prereleases.
+     *
+     * @var bool
+     */
+    private $_preRelease = FALSE;
  
     /**
      * Check github repository and retrieve all latest major versions.
@@ -89,6 +96,9 @@ class PlatformVersionsTask extends \Task
             foreach($resp as $object) {
                 // Skip drafts and prereleases.
                 if ($object->draft == false && $object->prerelease == false) {
+                    $versions[$object->published_at] = $object->tag_name;
+                }
+                if ($this->_prerelease == true && $object->prerelease == true) {
                     $versions[$object->published_at] = $object->tag_name;
                 }
             }
@@ -155,7 +165,7 @@ class PlatformVersionsTask extends \Task
     /**
      * Sets the current package version.
      *
-     * @param string $setPackageVersion The current project version.
+     * @param string $packageVersion The current project version.
      *
      * @return void
      */
@@ -188,6 +198,18 @@ class PlatformVersionsTask extends \Task
     {
         $this->latestprop = $latestprop;
     }//end setLatestProp()
+
+    /**
+     * Sets the prerelease property.
+     *
+     * @param bool $preRelease available for the project.
+     *
+     * @return bool
+     */
+    public function setPreRelease($preRelease)
+    {
+        $this->_prerelease = $preRelease;
+    }//end setPreRelease()
      
     private function callGithubReleases($url)
     {
