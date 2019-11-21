@@ -2,6 +2,7 @@
 
 ## Version 3.0.27
   * MULTISITE-22437: Prefix table is not taking into account in database query.
+  * MULTISITE-22516: Allow platform pre-releases to be downloaded.
 
 ## Version 3.0.26
   * MULTISITE-21830: Allow disabling of modules on cloned install.
