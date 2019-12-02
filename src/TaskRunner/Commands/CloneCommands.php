@@ -150,7 +150,6 @@ class CloneCommands extends AbstractCommands
         'asda-user' => InputOption::VALUE_REQUIRED,
         'asda-password' => InputOption::VALUE_REQUIRED,
         'dumpfile' => InputOption::VALUE_REQUIRED,
-        'project-id' => InputOption::VALUE_REQUIRED,
     ])
     {
         $tasks = [];
@@ -162,8 +161,6 @@ class CloneCommands extends AbstractCommands
             return $this->collectionBuilder()->addTaskList($tasks);
         }
 
-        $requestUrl = $options['asda-url'] . '/' . $options['project-id'];
-
         // Download the file.
         $this->downloadChecksumFile($options);
         $fileContent = file_get_contents('latest.sh1');
@@ -174,7 +171,7 @@ class CloneCommands extends AbstractCommands
             ->option('--http-user', $options['asda-user'])
             ->option('--http-password', $options['asda-password'])
             ->option('-O', $options['dumpfile'] . '.gz')
-            ->option('-nH', $requestUrl . '/' . $filename)
+            ->option('-nH', $options['asda-url'] . '/' . $filename)
             ->option('-A', 'sql.gz')
             ->option('-P', './');
 
@@ -204,7 +201,6 @@ class CloneCommands extends AbstractCommands
         'asda-user' => InputOption::VALUE_REQUIRED,
         'asda-password' => InputOption::VALUE_REQUIRED,
         'dumpfile' => InputOption::VALUE_REQUIRED,
-        'project-id' => InputOption::VALUE_REQUIRED,
     ])
     {
         $tmpDir = $this->getConfig()->get("toolkit.tmp_folder");
@@ -214,13 +210,11 @@ class CloneCommands extends AbstractCommands
             ->mkdir($tmpDir)
             ->run();
 
-        $requestUrl = $options['asda-url'] . '/' . $options['project-id'];
-
         $this->taskExec('wget')
             ->option('--http-user', $options['asda-user'])
             ->option('--http-password', $options['asda-password'])
             ->option('-O', 'latest.sh1')
-            ->option('-nH', $requestUrl . '/latest.sh1')
+            ->option('-nH', $options['asda-url'] . '/latest.sh1')
             ->option('-A', '.sh1')
             ->option('-P', './')
             ->run();
