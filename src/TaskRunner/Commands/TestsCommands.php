@@ -40,19 +40,20 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      */
     public function toolkitPhpcs()
     {
+        $tasks = [];
         $grumphpFile = './grumphp.yml.dist';
         $containsQaConventions = false;
+
         if (file_exists($grumphpFile)) {
             $grumphpArray = (array) Yaml::parse(file_get_contents($grumphpFile));
             if (isset($grumphpArray['imports'])) {
                 foreach ($grumphpArray['imports'] as $import) {
-                    if (isset($import['resource']) && $import['resource'] === 'vendor/openeuropa/code-review/dist/library-conventions.yml') {
+                    if (isset($import['resource']) && $import['resource'] === 'vendor/ec-europa/qa-automation/dist/qa-conventions.yml') {
                         $containsQaConventions = true;
                     }
                 }
             }
         }
-        $tasks = [];
         
         if ($containsQaConventions) {
             $tasks[] = $this->taskExec('./vendor/bin/grumphp run');
