@@ -41,6 +41,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      */
     public function toolkitPhpcs()
     {
+        $tasks = [];
         $grumphpFile = './grumphp.yml.dist';
         $containsQaConventions = false;
 
@@ -64,9 +65,9 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                 echo "\n\"grumphp\": {\n    \"config-default-path\": \"$configDefaultPath\"\n}\n\n";
             }
         }
-        
+
         if ($containsQaConventions) {
-            $this->taskExec('./vendor/bin/grumphp run')->run();
+            $tasks[] = $this->taskExec('./vendor/bin/grumphp run');
         } else {
             $this->say('All Drupal projects in the ec-europa namespace need to use Quality Assurance provided standards.');
             $this->say('Your configuration has to import the resource vendor/ec-europa/qa-automation/dist/qa-conventions.yml.');
@@ -74,6 +75,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             echo "\nimports:\n  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }\n\n";
             return new ResultData(1);
         }
+
+        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
