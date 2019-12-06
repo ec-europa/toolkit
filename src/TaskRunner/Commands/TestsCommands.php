@@ -74,8 +74,6 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             echo "\nimports:\n  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }\n\n";
             return new ResultData(1);
         }
-        
-        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
