@@ -82,7 +82,7 @@ class DrupalCommands extends Drupal8Commands
     ])
     {
         // Get default.settings.php and settings.php paths.
-        $settings_default_path = $options['root'] . '/sites/' . $options['sites-subdir'] . '/default.settings.php';
+        $settings_default_path = $options['root'] . '/sites/default/default.settings.php';
         $settings_path = $options['root'] . '/sites/' . $options['sites-subdir'] . '/settings.php';
 
         $collection = [];
