@@ -456,20 +456,17 @@
         <if>
             <isfalse value="${db.dl.filename}" />
             <then>
-                <!--<exec command='curl -s https://${db.dl.username}:${db.dl.password}@${db.dl.url}|egrep "li.*sql.gz"|head -1|cut -d\" -f2' outputProperty="db.dl.filename" checkreturn="true" />-->
                 <exec command='curl -s https://${db.dl.username}:${db.dl.password}@${db.dl.url}|egrep "li.*sh1"|head -1|cut -d\" -f2' outputProperty="db.dl.filename.hash" checkreturn="true" />
+                <echo msg="Download the production database hash ${db.dl.filename.hash}." />
+                <phingcall target="package-download">
+                    <property name="package-name" value="${db.dl.filename.hash}" />
+                    <property name="package-cache-location" value="${share.path.subsites.packages.database}/${project.id}" />
+                    <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
+                </phingcall>
+                <exec command="cat ${share.path.subsites.packages.database}/${project.id}/${db.dl.filename.hash} | tr -s ' ' | cut -d ' ' -f 2" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename"/>
             </then>
         </if>
-
-        <echo msg="Download the production database hash ${db.dl.filename.hash}." />
-        <phingcall target="package-download">
-            <property name="package-name" value="${db.dl.filename.hash}" />
-            <property name="package-cache-location" value="${share.path.subsites.packages.database}/${project.id}" />
-            <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
-        </phingcall>
         
-        <exec command="cat ${share.path.subsites.packages.database}/${project.id}/${db.dl.filename.hash} | tr -s ' ' | cut -d ' ' -f 2" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename"/>
-
         <echo msg="Download the production database ${db.dl.filename}." />
         <phingcall target="package-download">
             <property name="package-name" value="${db.dl.filename}" />
