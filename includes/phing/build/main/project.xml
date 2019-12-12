@@ -466,7 +466,7 @@
                 <exec command="cat ${share.path.subsites.packages.database}/${project.id}/${db.dl.filename.hash} | tr -s ' ' | cut -d ' ' -f 2" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename"/>
             </then>
         </if>
-        
+
         <echo msg="Download the production database ${db.dl.filename}." />
         <phingcall target="package-download">
             <property name="package-name" value="${db.dl.filename}" />
