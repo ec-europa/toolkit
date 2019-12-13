@@ -9,7 +9,9 @@ use NuvoleWeb\Robo\Task as NuvoleWebTasks;
 use OpenEuropa\TaskRunner\Contract\FilesystemAwareInterface;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
+use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class TestsCommands.
@@ -40,8 +42,39 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     public function toolkitPhpcs()
     {
         $tasks = [];
+        $grumphpFile = './grumphp.yml.dist';
+        $containsQaConventions = false;
 
-        $tasks[] = $this->taskExec('./vendor/bin/grumphp run --config=./vendor/ec-europa/qa-automation/dist/qa-conventions.yml');
+        if (file_exists($grumphpFile)) {
+            $grumphpArray = (array) Yaml::parse(file_get_contents($grumphpFile));
+            if (isset($grumphpArray['imports'])) {
+                foreach ($grumphpArray['imports'] as $import) {
+                    if (isset($import['resource']) && $import['resource'] === 'vendor/ec-europa/qa-automation/dist/qa-conventions.yml') {
+                        $containsQaConventions = true;
+                    }
+                }
+            }
+        }
+
+        $composerFile = './composer.json';
+        if (file_exists($composerFile)) {
+            $composerArray = json_decode(file_get_contents($composerFile), true);
+            if (isset($composerArray['extra']['grumphp']['config-default-path'])) {
+                $configDefaultPath = $composerArray['extra']['grumphp']['config-default-path'];
+                $this->say('You should remove the following from your composer.json extra array:');
+                echo "\n\"grumphp\": {\n    \"config-default-path\": \"$configDefaultPath\"\n}\n\n";
+            }
+        }
+
+        if ($containsQaConventions) {
+            $tasks[] = $this->taskExec('./vendor/bin/grumphp run');
+        } else {
+            $this->say('All Drupal projects in the ec-europa namespace need to use Quality Assurance provided standards.');
+            $this->say('Your configuration has to import the resource vendor/ec-europa/qa-automation/dist/qa-conventions.yml.');
+            $this->say('Add the following lines to your grumphp.yml.dist:');
+            echo "\nimports:\n  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }\n\n";
+            return new ResultData(1);
+        }
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
