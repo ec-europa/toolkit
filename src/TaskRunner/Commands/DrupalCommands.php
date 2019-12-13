@@ -153,7 +153,7 @@ class DrupalCommands extends Drupal8Commands
 \$config_directories['sync'] = '../config/sync';
 
 \$settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : '{$hashSalt}';
-\$settings['file_private_path'] = getenv('DRUPAL_PRIVATE_FILE_SYSTEM');
+\$settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
 
 {$additionalSettings}
 
