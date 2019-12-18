@@ -148,11 +148,14 @@ class DrupalCommands extends Drupal8Commands
   'namespace' => 'Drupal\\\\Core\\\\Database\\\\Driver\\\\mysql',
   'driver' => 'mysql',
 );
-{$additionalSettings}
-\$settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : '{$hashSalt}';
 
 // Location of the site configuration files, relative to the site root.
 \$config_directories['sync'] = '../config/sync';
+
+\$settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : '{$hashSalt}';
+\$settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
+
+{$additionalSettings}
 
 // Load environment development override configuration, if available.
 // Keep this code block at the end of this file to take full effect.
