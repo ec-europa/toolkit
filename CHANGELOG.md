@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 3.0.28
+  * MULTISITE-22534: Update composer.lock.
+  * MULTISITE-22669: Download most recent ASDA dump.
+
 ## Version 3.0.27
   * MULTISITE-22437: Prefix table is not taking into account in database query.
   * MULTISITE-22516: Allow platform pre-releases to be downloaded.
