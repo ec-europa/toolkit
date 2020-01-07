@@ -71,6 +71,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         } else {
             $this->say('All Drupal projects in the ec-europa namespace need to use Quality Assurance provided standards.');
             $this->say('Your configuration has to import the resource vendor/ec-europa/qa-automation/dist/qa-conventions.yml.');
+            $this->say('For more information visit: https://github.com/ec-europa/toolkit/blob/release/4.x/docs/testing-project.md#phpcs-testing');
             $this->say('Add the following lines to your grumphp.yml.dist:');
             echo "\nimports:\n  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }\n\n";
             return new ResultData(1);
