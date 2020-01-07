@@ -8,13 +8,42 @@ To run behat tests you can make use of the `toolkit:test-behat` command. This wi
 re-generate your behat configuration from `./behat.yml.dist` and run it on your
 current site installation.
 
+New tests should be stored in `./tests/features/` folder, then they will be executed
+automatically by toolkit task.
+
 To run the behat tests:
 ```
 docker-compose exec web ./vendor/bin/run toolkit:test-behat
 ```
 
-New tests should be stored in `./tests/tests/features/` folder, then they will be executed
-automatically by toolkit task.
+The default testing pipeline in Drone allows you to differentiate between behat
+tests that are supposed to run on a clean installation and behat tests that are
+supposed to run on a clone installation of the website. This is done through the
+usage of the @clone tag.
+
+Tests with the @clone tag are excluded for testing behat on a clean installation
+and are exclusively used for testing behat on a clone installation.
+
+The default configuration for this is to have the following defined in your
+`./behat.yml.dist` file:
+
+```yaml
+default:
+  suites:
+    default:
+      // Add the replacement for behat.tags to your config.
+      filters:
+        tags: "${behat.tags}"
+```
+
+And then you can control which tests you would like to run by changing the
+setting in your `./runner.yml.dist` file:
+
+```yaml
+// Excludes the @clone tags for your default behat testing.
+behat:
+  tags: "~@clone"
+```
 
 
 ## PHPCS testing
