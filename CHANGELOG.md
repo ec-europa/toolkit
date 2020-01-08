@@ -1,5 +1,11 @@
 # Toolkit change log
 
+## Version 4.0.3
+  - MULTISITE-22483: Document use of behat tags in toolkit 4.
+  - MULTISITE-22583: Remove hardcoded grumphp configuration.
+  - MULTISITE-22715: Add file_private_path to the toolkit settings.php block.
+  - MULTISITE-22585: ASDA url should be fully configurable.
+
 ## Version 4.0.2
   - MULTISITE-22407: Step failing if no scenario is provided.
 
