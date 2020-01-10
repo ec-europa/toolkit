@@ -7,3 +7,6 @@ command:
     build-dev:
       options:
         root: ${drupal.root}
+    build-dev-reset:
+      options:
+        root: ${drupal.root}
