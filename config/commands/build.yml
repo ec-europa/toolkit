@@ -10,7 +10,6 @@ command:
           - vendor
           - composer.json
           - composer.lock
-          
     build-dev:
       options:
         root: ${drupal.root}
