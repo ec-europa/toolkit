@@ -5,7 +5,6 @@ command:
         root: ${drupal.root}
         dist-root: ${toolkit.build.dist.root}
         keep:
-          - ${toolkit.build.dist.root}
           - ${drupal.root}
           - vendor
           - composer.json
