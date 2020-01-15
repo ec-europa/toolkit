@@ -71,6 +71,7 @@ class BuildCommands extends AbstractCommands
 
         // Run production-friendly "composer install" packages.
         $tasks[] = $this->taskComposerInstall('composer')
+            ->env('COMPOSER_MIRROR_PATH_REPOS', 1)
             ->workingDir($options['dist-root'])
             ->optimizeAutoloader()
             ->noDev();
