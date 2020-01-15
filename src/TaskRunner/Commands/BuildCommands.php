@@ -49,7 +49,7 @@ class BuildCommands extends AbstractCommands
      * @option hash      Commit hash for manifest.
      * @option root      Drupal root.
      * @option dist-root Distribution package root.
-     * @option keep      Files and folders to keep.
+     * @option keep      Comma separated list of files and folders to keep.
      */
     public function buildDist(array $options = [
         'tag' => InputOption::VALUE_OPTIONAL,
@@ -85,7 +85,7 @@ class BuildCommands extends AbstractCommands
             ->exec('./vendor/bin/run drupal:settings-setup --root=' . $options['dist-root'] . '/' . $options['root']);
 
         // Clean up non-required files.
-        $keep = '! -name "' . implode('" ! -name "', explode(',', $options['keep'])) . '"';
+        $keep = '! -name "' . $options['dist-root'] . '" ! -name "' . implode('" ! -name "', explode(',', $options['keep'])) . '"';
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
             ->exec('find ' . $options['dist-root'] . ' -maxdepth 1 ' . $keep . ' -exec rm -rf {} +');

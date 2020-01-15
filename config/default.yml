@@ -15,7 +15,6 @@ toolkit:
     dist:
       root: 'dist'
       keep:
-        - ${toolkit.build.dist.root}
         - ${drupal.root}
         - vendor
         - composer.lock
