@@ -82,6 +82,12 @@ class BuildCommands extends AbstractCommands
             ->exec('./vendor/bin/run drupal:permissions-setup --root=' . $options['dist-root'] . '/' . $options['root'])
             ->exec('./vendor/bin/run drupal:settings-setup --root=' . $options['dist-root'] . '/' . $options['root']);
 
+        // Clean up non-required files.
+        $keep = '! -name "' . implode('" ! -name "', $options['keep']) . '"';
+        $tasks[] = $this->taskExecStack()
+            ->stopOnFail()
+            ->exec('find ' . $options['dist-root'] . ' -maxdepth 1 ' . $keep . ' -exec rm -rf {} +');
+
         // Prepare sha and tag variables.
         $sha = !empty($options['sha']) ? ['sha' => $options['sha']] : [];
         $tag = !empty($options['tag']) ? ['version' => $options['tag']] : ['version' => 'latest'];
