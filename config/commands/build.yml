@@ -4,11 +4,7 @@ command:
       options:
         root: ${drupal.root}
         dist-root: ${toolkit.build.dist.root}
-        keep:
-          - ${drupal.root}
-          - vendor
-          - composer.json
-          - composer.lock
+        keep: ${toolkit.build.dist.keep}
     build-dev:
       options:
         root: ${drupal.root}
