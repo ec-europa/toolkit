@@ -168,4 +168,41 @@ class BuildCommands extends AbstractCommands
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
     }
+
+    /**
+     * Build site for local development from scratch with a clean git.
+     *
+     * @param array $options
+     *   Command options.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   Collection builder.
+     *
+     * @command toolkit:build-dev-reset
+     *
+     * @option root Drupal root.
+     */
+    public function buildDevReset(array $options = [
+        'root' => InputOption::VALUE_REQUIRED,
+    ])
+    {
+        $tasks = [];
+        
+        $question = 'Are you sure you want to proceed? This action cleans up your git repository of any tracked AND untracked files AND folders!';
+        if ($this->confirm($question, false)) {
+            // Clean git.
+            $tasks[] = $this->taskGitStack()
+                ->stopOnFail()
+                ->exec('clean -fdx --exclude=vendor/ec-europa/toolkit');
+            // Run composer install.
+            $tasks[] = $this->taskComposerInstall('composer');
+            // Run toolkit:build-dev.
+            $tasks[] = $this->taskExecStack()
+                ->stopOnFail()
+                ->exec('./vendor/bin/run toolkit:build-dev --root=' . $options['root']);
+        }
+
+        // Build and return task collection.
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
 }
