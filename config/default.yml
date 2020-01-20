@@ -14,6 +14,12 @@ toolkit:
   build:
     dist:
       root: 'dist'
+      keep:
+        - ${drupal.root}
+        - config
+        - vendor
+        - composer.lock
+        - composer.json
       commands: []
     dev:
       commands: []
