@@ -1,5 +1,4 @@
 toolkit:
-  project_id: 'PROJECTID'
   tmp_folder: '.tmp'
   notifications_endpoint: 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications'
   clean:
