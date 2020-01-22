@@ -5,7 +5,7 @@ command:
         dumpfile: ${toolkit.clone.dumpfile}
     download-dump:
       options:
-        asda-url: ${toolkit.clone.asda_url}/${toolkit.project_id}
+        asda-url: ${toolkit.clone.asda_url}
         asda-user: ${env.ASDA_USER}
         asda-password: ${env.ASDA_PASSWORD}
         dumpfile: ${toolkit.clone.dumpfile}
