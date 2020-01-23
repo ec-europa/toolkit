@@ -1,5 +1,13 @@
 # Toolkit change log
 
+## Version 4.0.4
+  - MULTISITE-22484: Create toolkit task to reset project.
+  - MULTISITE-22672: ENV Variable for setting the TMP path in drupal 8.
+  - MULTISITE-22694: Allow site to be installed in a different site folder.
+  - MULTISITE-22840: Replace rsync with git archive in toolkit:build-dist.
+  - MULTISITE-22878: Make ASDA url configurable through runner.yml.dist.
+  - MULTISITE-22354: Provide documentation in Toolkit regarding .opts.yml.
+
 ## Version 4.0.3
   - MULTISITE-22483: Document use of behat tags in toolkit 4.
   - MULTISITE-22583: Remove hardcoded grumphp configuration.
