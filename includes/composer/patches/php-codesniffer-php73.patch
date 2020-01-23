@@ -1,0 +1,22 @@
+diff --git a/CodeSniffer/File.php b/CodeSniffer/File.php
+index 62c39799f..17f155b67 100644
+--- a/CodeSniffer/File.php
++++ b/CodeSniffer/File.php
+@@ -1763,7 +1763,7 @@ class PHP_CodeSniffer_File
+                 }
+                 break;
+             default:
+-                continue;
++                continue 2;
+             }//end switch
+         }//end for
+ 
+@@ -2880,7 +2880,7 @@ class PHP_CodeSniffer_File
+                 // If it's null, then there must be no parameters for this
+                 // method.
+                 if ($currVar === null) {
+-                    continue;
++                    continue 2;
+                 }
+ 
+                 $vars[$paramCount]            = array();

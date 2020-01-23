@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c758ac01982a779a8b91c12e6177b85",
+    "content-hash": "505a3226eb0fe25ff1095b94e5079559",
     "packages": [
         {
             "name": "consolidation/annotated-command",
@@ -1569,7 +1569,8 @@
                     "Customize terminal colors": "patches/phing-customize-colors.patch",
                     "Support xterm autocolor": "patches/phing-xterm-support.patch",
                     "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch",
-                    "https://github.com/phingofficial/phing/issues/553": "patches/phing-hidden-input.patch"
+                    "https://github.com/phingofficial/phing/issues/553": "patches/phing-hidden-input.patch",
+                    "https://github.com/phingofficial/phing/issues/1128": "patches/phing-issues-1128.patch"
                 }
             },
             "autoload": {
