@@ -42,12 +42,24 @@ docker-compose exec web ./vendor/bin/run toolkit:download-dump
 docker-compose exec web ./vendor/bin/run toolkit:install-clone
 ```
 
-Toolkit will load the credentials necessary to clone your subsite from your environment, so make sure you have in your env the following variables:
+Toolkit will load the credentials necessary to download the sanitized database dump for your project, so make sure you have the following variables in your environment:
 
 ```
 - ASDA_USER
 - ASDA_PASSWORD
 ```
+
+When running the command toolkit:install-clone it will run the following sequence of commands after the database import:
+
+```
+./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer -y
+./vendor/bin/drush updatedb -y
+./vendor/bin/run toolkit:import-config
+./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
+./vendor/bin/drush cache:rebuild
+```
+
+These commands simulate the automated deployment that Drone provides through its pipeline. You can alter these commands by providing a file named **.opts.yml** in the root of your project folder. For more detailed information on the contents of this **.opts.yml** file please refer to this page: https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides .
 
 ### Other topics
 - [Setting up a project](/docs/setting-up-project.md)
