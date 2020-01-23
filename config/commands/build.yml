@@ -4,6 +4,10 @@ command:
       options:
         root: ${drupal.root}
         dist-root: ${toolkit.build.dist.root}
+        keep: ${toolkit.build.dist.keep}
     build-dev:
+      options:
+        root: ${drupal.root}
+    build-dev-reset:
       options:
         root: ${drupal.root}

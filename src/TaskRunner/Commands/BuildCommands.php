@@ -49,71 +49,46 @@ class BuildCommands extends AbstractCommands
      * @option hash      Commit hash for manifest.
      * @option root      Drupal root.
      * @option dist-root Distribution package root.
+     * @option keep      Comma separated list of files and folders to keep.
      */
     public function buildDist(array $options = [
         'tag' => InputOption::VALUE_OPTIONAL,
         'sha' => InputOption::VALUE_OPTIONAL,
         'root' => InputOption::VALUE_REQUIRED,
         'dist-root' => InputOption::VALUE_REQUIRED,
+        'keep' => InputOption::VALUE_REQUIRED,
     ])
     {
         $tasks = [];
-        $tmpDir = $this->getConfig()->get("toolkit.tmp_folder");
-        $prepDir = $tmpDir . '/dist/prep';
 
-        // Create temp folder to prepare dist build in.
+        // Delete and (re)create the dist folder.
         $tasks[] = $this->taskFilesystemStack()
-            ->remove($prepDir)
-            ->mkdir($prepDir);
+            ->remove($options['dist-root'])
+            ->mkdir($options['dist-root']);
 
-        // Rsync the codebase to the tmp folder.
-        $tasks[] = $this->taskRsync()
-            ->fromPath('./')
-            ->toPath($prepDir)
-            ->exclude([$tmpDir, 'vendor'])
-            ->excludeVcs()
-            ->recursive();
+        // Copy all (tracked) files to the dist folder.
+        $tasks[] = $this->taskExecStack()
+            ->stopOnFail()
+            ->exec('git archive HEAD | tar -x -C ' . $options['dist-root']);
 
         // Run production-friendly "composer install" packages.
         $tasks[] = $this->taskComposerInstall('composer')
-            ->workingDir($prepDir)
+            ->env('COMPOSER_MIRROR_PATH_REPOS', 1)
+            ->workingDir($options['dist-root'])
             ->optimizeAutoloader()
             ->noDev();
 
         // Setup the site.
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec('./vendor/bin/run drupal:permissions-setup --root=' . $prepDir . '/' . $options['root'])
-            ->exec('./vendor/bin/run drupal:settings-setup --root=' . $prepDir . '/' . $options['root']);
+            ->exec('./vendor/bin/run drupal:permissions-setup --root=' . $options['dist-root'] . '/' . $options['root'])
+            ->exec('./vendor/bin/run drupal:settings-setup --root=' . $options['dist-root'] . '/' . $options['root']);
 
-        // Create dist folder to rsyn prep folder into.
-        $tasks[] = $this->taskFilesystemStack()
-            ->remove($options['dist-root'])
-            ->mkdir($options['dist-root']);
-
-        // Rsync the root with symlinks resolved.
-        $tasks[] = $this->taskRsync()
-            ->fromPath($prepDir . '/')
-            ->toPath($options['dist-root'])
-            ->includeFilter([
-                $options['root'] . '/***',
-            ])
-            ->exclude('*')
-            ->recursive()
-            ->args('-aL');
-
-        // Rsync the tmp folder to the dist folder.
-        $tasks[] = $this->taskRsync()
-            ->fromPath($prepDir . '/')
-            ->toPath($options['dist-root'])
-            ->includeFilter([
-                'composer.*',
-                'config/***',
-                'vendor/***',
-            ])
-            ->exclude('*')
-            ->recursive()
-            ->args('-a');
+        // Clean up non-required files.
+        $keep = '! -name "' . $options['dist-root'] . '" ! -name "' . implode('" ! -name "', explode(',', $options['keep'])) . '"';
+        $tasks[] = $this->taskExecStack()
+            ->stopOnFail()
+            ->exec('find ' . $options['dist-root'] . ' -maxdepth 1 ' . $keep . ' -exec rm -rf {} +');
 
         // Prepare sha and tag variables.
         $sha = !empty($options['sha']) ? ['sha' => $options['sha']] : [];
@@ -163,6 +138,43 @@ class BuildCommands extends AbstractCommands
         $commands = $this->getConfig()->get("toolkit.build.dev.commands");
         if (!empty($commands)) {
             $tasks[] = $this->taskCollectionFactory($commands);
+        }
+
+        // Build and return task collection.
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Build site for local development from scratch with a clean git.
+     *
+     * @param array $options
+     *   Command options.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   Collection builder.
+     *
+     * @command toolkit:build-dev-reset
+     *
+     * @option root Drupal root.
+     */
+    public function buildDevReset(array $options = [
+        'root' => InputOption::VALUE_REQUIRED,
+    ])
+    {
+        $tasks = [];
+        
+        $question = 'Are you sure you want to proceed? This action cleans up your git repository of any tracked AND untracked files AND folders!';
+        if ($this->confirm($question, false)) {
+            // Clean git.
+            $tasks[] = $this->taskGitStack()
+                ->stopOnFail()
+                ->exec('clean -fdx --exclude=vendor/ec-europa/toolkit');
+            // Run composer install.
+            $tasks[] = $this->taskComposerInstall('composer');
+            // Run toolkit:build-dev.
+            $tasks[] = $this->taskExecStack()
+                ->stopOnFail()
+                ->exec('./vendor/bin/run toolkit:build-dev --root=' . $options['root']);
         }
 
         // Build and return task collection.

@@ -82,7 +82,7 @@ class DrupalCommands extends Drupal8Commands
     ])
     {
         // Get default.settings.php and settings.php paths.
-        $settings_default_path = $options['root'] . '/sites/' . $options['sites-subdir'] . '/default.settings.php';
+        $settings_default_path = $options['root'] . '/sites/default/default.settings.php';
         $settings_path = $options['root'] . '/sites/' . $options['sites-subdir'] . '/settings.php';
 
         $collection = [];
@@ -154,6 +154,7 @@ class DrupalCommands extends Drupal8Commands
 
 \$settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : '{$hashSalt}';
 \$settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
+\$settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') !== FALSE ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp';
 
 {$additionalSettings}
 
