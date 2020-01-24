@@ -1,5 +1,11 @@
 # Toolkit change log
 
+## Version 3.0.29
+  * MULTISITE-22580: Update devel.mdls.en
+  * MULTISITE-22834: PHPCS compatibility with PHP 7.3
+  * MULTISITE-22839: Support PHP 7.3
+  * MULTISITE-22865: Bug report with update module is disabled
+
 ## Version 3.0.28
   * MULTISITE-22534: Update composer.lock.
   * MULTISITE-22669: Download most recent ASDA dump.
