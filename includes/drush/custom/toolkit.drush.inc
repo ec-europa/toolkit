@@ -66,12 +66,9 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
     if ($project_id !== NULL) {
       variable_set('project_id', $project_id);
     }
-    // Check update module status.
-    $updateStatus = system_get_info('module', 'update');
     // Enable 'Update Manager' module if it's disabled.
-    if (empty($updateStatus)) {
-      $updateModule = array('update');
-      module_enable($updateModule, FALSE);
+    if (!module_exists('update')) {
+      module_enable(array('update'), FALSE);
       $status = FALSE;
     }
     else {
@@ -138,8 +135,7 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
     }
     // Turn off again 'Update Manager' module, in case was initially disabled.
     if ($status != TRUE) {
-      $updateModule = array('update');
-      module_disable($updateModule, FALSE);
+      module_disable(array('update'), FALSE);
       unset($status);
     }
     // Delete variable 'project_id'.
