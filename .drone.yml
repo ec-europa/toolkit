@@ -28,7 +28,10 @@ matrix:
       BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.x'
     - PHP_VERSION: 7.2
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
-      BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard'
+      BUILD_OPTIONS: -D'platform.package.version'='2.6.1' -D'profile'='multisite_drupal_standard'
+    - PHP_VERSION: 7.3
+      PHING_OPTS: -logger phing.listener.AnsiColorLogger
+      BUILD_OPTIONS: -D'platform.package.version'='2.6.4' -D'profile'='multisite_drupal_standard'      
     - PHP_VERSION: 7.2
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
       BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.x'
