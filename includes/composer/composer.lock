@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c758ac01982a779a8b91c12e6177b85",
+    "content-hash": "c725d4521d08aaf1db01c6ad6b75323d",
     "packages": [
         {
             "name": "consolidation/annotated-command",
@@ -1569,7 +1569,8 @@
                     "Customize terminal colors": "patches/phing-customize-colors.patch",
                     "Support xterm autocolor": "patches/phing-xterm-support.patch",
                     "https://github.com/phingofficial/phing/pull/701": "patches/phing-composer-task_automatic-path.patch",
-                    "https://github.com/phingofficial/phing/issues/553": "patches/phing-hidden-input.patch"
+                    "https://github.com/phingofficial/phing/issues/553": "patches/phing-hidden-input.patch",
+                    "https://github.com/phingofficial/phing/issues/1128": "patches/phing-issues-1128.patch"
                 }
             },
             "autoload": {
@@ -2503,12 +2504,6 @@
                 "phpunit/phpunit": ">=3.7 <6"
             },
             "type": "phpcodesniffer-standard",
-            "extra": {
-                "patches_applied": {
-                    "https://www.drupal.org/project/coder/issues/3031056": "https://www.drupal.org/files/issues/2019-02-06/skip_missing_t_install_files-3031056-1.patch",
-                    "https://www.drupal.org/project/coder/issues/3034698": "https://www.drupal.org/files/issues/2019-02-21/false_positive_options_element-3034698-05.patch"
-                }
-            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -2527,16 +2522,16 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "3.0.13",
+            "version": "3.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "8dc24755921f07d620f529172d760885a6488754"
+                "reference": "05621e3f3ea802e3c6385978dc9ed8d726891c11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/8dc24755921f07d620f529172d760885a6488754",
-                "reference": "8dc24755921f07d620f529172d760885a6488754",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/05621e3f3ea802e3c6385978dc9ed8d726891c11",
+                "reference": "05621e3f3ea802e3c6385978dc9ed8d726891c11",
                 "shasum": ""
             },
             "require": {
@@ -2545,7 +2540,7 @@
                 "phing/phing": "~2.16.0",
                 "php": ">=5.2.0",
                 "phpcompatibility/php-compatibility": "^9.1",
-                "squizlabs/php_codesniffer": "2.9.0",
+                "squizlabs/php_codesniffer": "2.9.2",
                 "symfony/console": "~2.3.10|^2.4.2|~3.0",
                 "symfony/finder": "^3.2"
             },
@@ -2563,7 +2558,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "description": "Performs automated QA checks and extra php codesniffs for the subsite starterkit.",
-            "time": "2019-08-30T08:38:13+00:00"
+            "time": "2020-01-23T13:04:03+00:00"
         },
         {
             "name": "phpcompatibility/php-compatibility",
@@ -2625,16 +2620,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.9.0",
+            "version": "2.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "f7dfecbee89d68ab475a6c9e17d22bc9b69aed97"
+                "reference": "2acf168de78487db620ab4bc524135a13cfe6745"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/f7dfecbee89d68ab475a6c9e17d22bc9b69aed97",
-                "reference": "f7dfecbee89d68ab475a6c9e17d22bc9b69aed97",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/2acf168de78487db620ab4bc524135a13cfe6745",
+                "reference": "2acf168de78487db620ab4bc524135a13cfe6745",
                 "shasum": ""
             },
             "require": {
@@ -2699,7 +2694,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-05-03T23:30:39+00:00"
+            "time": "2018-11-07T22:31:41+00:00"
         }
     ],
     "aliases": [],
