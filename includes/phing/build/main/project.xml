@@ -456,7 +456,7 @@
         <if>
             <isfalse value="${db.dl.filename}" />
             <then>
-                <exec command='curl -s https://${db.dl.username}:${db.dl.password}@${db.dl.url}|egrep "li.*sh1"|head -1|cut -d\" -f2' outputProperty="db.dl.filename.hash" checkreturn="true" />
+                <property name="db.dl.filename.hash" value="latest.sh1" override="true" />
                 <echo msg="Download the production database hash ${db.dl.filename.hash}." />
                 <phingcall target="package-download">
                     <property name="package-name" value="${db.dl.filename.hash}" />
