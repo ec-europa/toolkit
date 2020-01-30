@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 3.0.30
+  * MULTISITE-22669: Download most recent ASDA dump (hotfix)
+
 ## Version 3.0.29
   * MULTISITE-22580: Update devel.mdls.en
   * MULTISITE-22834: PHPCS compatibility with PHP 7.3
