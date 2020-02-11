@@ -595,6 +595,7 @@
             <istrue value="${build.subsite.dir.files}" />
             <then>
                 <mkdir dir="${build.dev}/${build.subsite.dir.private_files}" />
+                <mkdir dir="${build.dev}/${build.subsite.dir.translations}" />
                 <mkdir dir="${build.dev}/${build.subsite.dir.tmp}" />
             </then>
         </if>
