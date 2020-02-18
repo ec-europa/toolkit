@@ -312,7 +312,7 @@ function getModulesList() {
   $d7ModulesList = array();
   $url = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=7.x';
   $basicAuth = getenv('QA_API_BASIC_AUTH') !== FALSE ? getenv('QA_API_BASIC_AUTH') : '';
-  $content = $this->getQaEndpointContent($url, $basicAuth);
+  $content = getQaEndpointContent($url, $basicAuth);
   if ($content !== '') {
     $d7ModulesList = json_decode($content, true);
   }
