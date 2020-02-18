@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 3.0.30.1
+  * MULTISITE-22993: Fix drush commands that target QA website endpoints (hotfix)
+
 ## Version 3.0.30
   * MULTISITE-22669: Download most recent ASDA dump (hotfix)
 
