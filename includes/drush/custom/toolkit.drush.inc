@@ -351,6 +351,8 @@ function getQaEndpointContent($url, $basicAuth = '') {
 				if ($basicAuth === '') {
 					drush_set_error(dt('Curl request to endpoint @endpoint returned a @statusCode.', array('@endpoint' => $url, '@statusCode' => $statusCode)));
 				}
+				// If we tried with authentication, retry without.
+				$content = getQaEndpointContent($url);
 		}
 	}
 	if ($result === false) {
