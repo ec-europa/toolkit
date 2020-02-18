@@ -309,24 +309,59 @@ function searchForVersion($moduleName, $modulesArray) {
 
 // Helper function to get the list of authorised modules.
 function getModulesList() {
-  // Get list of authorised modules.
+  $d7ModulesList = array();
   $url = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=7.x';
-  $curl = curl_init($url);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  $result = curl_exec($curl);
-
-  // If request did not fail.
-  if ($result !== false) {
-    // Request was ok? check response code.
-    $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    if ($statusCode == 200) {
-      $d7ModulesList = json_decode($result, true);
-    }
-    else {
-      drush_set_error(dt('Curl request failed with error code @statusCode.', array('@statusCode' => $statusCode)));
-    }
+  $basicAuth = getenv('QA_API_BASIC_AUTH') !== FALSE ? getenv('QA_API_BASIC_AUTH') : '';
+  $content = $this->getQaEndpointContent($url, $basicAuth);
+  if ($content !== '') {
+    $d7ModulesList = json_decode($content, true);
   }
   return $d7ModulesList;
+}
+
+/**
+ * Curl function to access endpoint with or without authentication.
+ *
+ *
+ * @param string $url The QA endpoint url.
+ * @param string $basicAuth The basic auth.
+ *
+ * @return string
+ */
+function getQaEndpointContent($url, $basicAuth = '') {
+	$content = '';
+	$curl = curl_init();
+	curl_setopt($curl, CURLOPT_URL, $url);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+	if ($basicAuth !== '') {
+		$header = ['Authorization: Basic ' . $basicAuth];
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+	}
+	$result = curl_exec($curl);
+
+	if ($result !== false) {
+		$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		switch ($statusCode) {
+			// Upon success set the content to be returned.
+			case 200:
+				$content = $result;
+				break;
+			// Upon other status codes.
+			default:
+				if ($basicAuth === '') {
+					drush_set_error(dt('Curl request to endpoint @endpoint returned a @statusCode.', array('@endpoint' => $url, '@statusCode' => $statusCode)));
+				}
+				// If we tried with authentication, retry without.
+				$content = $this->getQaEndpointContent($url);
+		}
+	}
+	if ($result === false) {
+		throw new \Exception(sprintf('Curl request to endpoint "%s" failed.', $url));
+		drush_set_error(dt('Curl request to endpoint @endpoint failed.', array('@endpoint' => $url)));
+	}
+	curl_close($curl);
+
+	return $content;
 }
 
 // Helper function to discover all existing modules in project,
