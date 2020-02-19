@@ -349,15 +349,14 @@ function getQaEndpointContent($url, $basicAuth = '') {
 			// Upon other status codes.
 			default:
 				if ($basicAuth === '') {
-					drush_set_error(dt('Curl request to endpoint @endpoint returned a @statusCode.', array('@endpoint' => $url, '@statusCode' => $statusCode)));
+					return drush_set_error('QA_API_BASIC_AUTH', dt('Curl request to endpoint @endpoint returned a @statusCode.', array('@endpoint' => $url, '@statusCode' => $statusCode)));
 				}
 				// If we tried with authentication, retry without.
-				$content = $this->getQaEndpointContent($url);
+				$content = getQaEndpointContent($url);
 		}
 	}
 	if ($result === false) {
-		throw new \Exception(sprintf('Curl request to endpoint "%s" failed.', $url));
-		drush_set_error(dt('Curl request to endpoint @endpoint failed.', array('@endpoint' => $url)));
+		return drush_set_error('QA_API_BASIC_AUTH', dt('Curl request to endpoint @endpoint failed.', array('@endpoint' => $url)));
 	}
 	curl_close($curl);
 
