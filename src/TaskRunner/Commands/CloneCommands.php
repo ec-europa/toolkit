@@ -64,11 +64,22 @@ class CloneCommands extends AbstractCommands
             $processor->extend($loader->load($options['sequence-file']));
             $config->import($processor->export());
             $sequence = $config->get($options['sequence-key']);
+            // We drop the acceptance and production keys since Toolkit is only
+            // used in testing pipelines and not on real environments:
+            // @see: https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides
+            // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-23137
+            unset($sequence['acceptance']);
+            unset($sequence['production']);
 
             if (!empty($sequence)) {
                 $this->say('Running custom deploy sequence "' . $options['sequence-key'] . '" from sequence file "' . $options['sequence-file'] . '".');
                 foreach ($sequence as $command) {
-                    $tasks[] = $this->taskExec($command);
+                    // Only execute strings. Opts.yml also supports environment
+                    // arrays to append or override the main commands listed in
+                    // the upgrade_commands key.
+                    if (is_string($command)) {
+                        $tasks[] = $this->taskExec($command);
+                    }
                 }
                 return $this->collectionBuilder()->addTaskList($tasks);
             } else {
