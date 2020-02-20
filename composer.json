@@ -2,9 +2,6 @@
     "name": "ec-europa/toolkit",
     "description": "NextEuropa Toolkit packaged for composer",
     "license": "EUPL-1.1",
-    "require": {
-      "ec-europa/php-docker-infra": "~0.1"
-    },
     "scripts": {
         "toolkit-install": "PROJECT=${PROJECT} composer install --working-dir=includes/composer --ignore-platform-reqs --no-suggest --ansi --no-progress",
         "toolkit-update": "PROJECT=${PROJECT} composer update --working-dir=includes/composer  --ignore-platform-reqs --no-suggest --ansi --no-progress",
