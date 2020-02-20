@@ -66,9 +66,16 @@ class CloneCommands extends AbstractCommands
             $sequence = $config->get($options['sequence-key']);
 
             if (!empty($sequence)) {
+                $sequence = isset($sequence['default']) ? $sequence['default'] : $sequence;
                 $this->say('Running custom deploy sequence "' . $options['sequence-key'] . '" from sequence file "' . $options['sequence-file'] . '".');
                 foreach ($sequence as $command) {
-                    $tasks[] = $this->taskExec($command);
+                    // Only execute strings. Opts.yml also supports append and
+                    // default array to append or override the default commands.
+                    // @see: https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides
+                    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-23137
+                    if (is_string($command)) {
+                        $tasks[] = $this->taskExec($command);
+                    }
                 }
                 return $this->collectionBuilder()->addTaskList($tasks);
             } else {
