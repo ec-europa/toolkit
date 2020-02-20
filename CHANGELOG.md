@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 4.0.5
+  - MULTISITE-23137: Support new version for .opts.yml file.
+
 ## Version 4.0.4
   - MULTISITE-22484: Create toolkit task to reset project.
   - MULTISITE-22672: ENV Variable for setting the TMP path in drupal 8.
