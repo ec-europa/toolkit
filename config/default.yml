@@ -27,3 +27,9 @@ toolkit:
     behat:
       from: behat.yml.dist
       to: behat.yml
+  tool:
+    notifications:
+      endpoint: 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications'
+    whitelist-components:
+      endpoint: 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x'
+      blocker: true

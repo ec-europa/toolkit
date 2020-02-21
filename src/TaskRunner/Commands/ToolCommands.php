@@ -6,12 +6,21 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Symfony\Component\Console\Input\InputOption;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
+use Robo\Result;
 
 /**
  * Generic tools.
  */
 class ToolCommands extends AbstractCommands
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFile()
+    {
+        return __DIR__ . '/../../../config/commands/tool.yml';
+    }
 
     /**
      * Disable aggregation and clear cache.
@@ -40,13 +49,13 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:notifications
      *
-     * @option endpoint-url The endpoint for the notifications
+     * @option endpoint The endpoint for the notifications
      */
     public function displayNotifications(array $options = [
-        'endpoint-url' => InputOption::VALUE_OPTIONAL,
+        'endpoint' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        $endpointUrl = isset($options['endpoint-url']) ? $options['endpoint-url'] : $this->getConfig()->get("toolkit.notifications_endpoint");
+        $endpointUrl = $options['endpoint'];
 
         if (isset($endpointUrl)) {
             $result = $this->getQaEndpointContent($endpointUrl);
@@ -62,14 +71,18 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:whitelist-components
      *
-     * @option endpoint-url The endpoint for the notifications
+     * @option endpoint The endpoint for the components whitelist
+     * @option blocker  Whether or not the command should exit with errorstatus
      */
     public function whitelistComponents(array $options = [
-        'endpoint-url' => InputOption::VALUE_OPTIONAL,
+        'endpoint' => InputOption::VALUE_REQUIRED,
+        'blocker' => InputOption::VALUE_REQUIRED,
         'test-command' => false,
     ])
     {
-        $endpointUrl = isset($options['endpoint-url']) ? $options['endpoint-url'] : $this->getConfig()->get("toolkit.whitelistings_endpoint");
+        $this->failed = false;
+        $blocker = $options['blocker'];
+        $endpointUrl = $options['endpoint'];
         $basicAuth = getenv('QA_API_BASIC_AUTH') !== false ? getenv('QA_API_BASIC_AUTH') : '';
         $composerLock = file_get_contents('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
 
@@ -112,10 +125,31 @@ class ToolCommands extends AbstractCommands
                     $this->validateComponent($package, $modules);
                 }
             }
-            // TODO: Check for security updates.
-            // Only works on Drupal site codebases.
-            //$this->_exec('./vendor/bin/drush pm:security');
+
+            return $this->returnStatus($blocker);
         }//end if
+    }
+
+    /**
+     * Helper function to return the status code.
+     *
+     * @param bool $blocker Whether or not to exit 1.
+     *
+     * @return bool
+     */
+    protected function returnStatus($blocker)
+    {
+        // If the validation failed and we have a blocker, then return 1.
+        if ($this->failed && $blocker) {
+            $this->say('Failed the components whitelist check.');
+            return 1;
+        }
+
+        // If the validation failed and blocker was disabled, then return 0.
+        if ($this->failed && !$blocker) {
+            $this->say('"Failed the components whitelist check, but exit code 1 overridden.');
+            return 0;
+        }
     }
 
     /**
@@ -137,6 +171,7 @@ class ToolCommands extends AbstractCommands
         // If module was not reviewed yet.
         if (!$hasBeenQaEd) {
             $this->io()->warning('The package ' . $name . ' has not been approved by QA. Please request a review.');
+            $this->failed = true;
         }
 
         // If module was rejected.
@@ -146,6 +181,7 @@ class ToolCommands extends AbstractCommands
             // If module was not allowed in project.
             if (!$allowedInProject) {
                 $this->io()->warning('The package ' . $name . ' has been rejected by QA. Please remove the package or request an exception with QA.');
+                $this->failed = true;
             }
         }
 
@@ -154,6 +190,7 @@ class ToolCommands extends AbstractCommands
             $moduleVersion = str_replace('8.x-', '', $modules[$packageName]['version']);
             if ($this->versionCompare($package, $moduleVersion) === -1) {
                 $this->io()->warning('The minimum required version for package ' . $name . ' is ' . $moduleVersion . '. Please update your package.');
+                $this->failed = true;
             }
         }
     }
