@@ -70,17 +70,18 @@ class ToolCommands extends AbstractCommands
     {
         $endpointUrl = isset($options['endpoint-url']) ? $options['endpoint-url'] : $this->getConfig()->get("toolkit.whitelistings_endpoint");
         $basicAuth = getenv('QA_API_BASIC_AUTH') !== false ? getenv('QA_API_BASIC_AUTH') : '';
-        $composerJson = file_get_contents('composer.json') ? json_decode(file_get_contents('composer.json')) : false;
+        $composerLock = file_get_contents('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
 
-        if (isset($endpointUrl) && isset($composerJson->require)) {
+        if (isset($endpointUrl) && isset($composerLock['packages'])) {
             $result = $this->getQaEndpointContent($endpointUrl, $basicAuth);
             $data = json_decode($result, true);
             $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 
             // Loop over the require section.
-            foreach ($composerJson->require as $name => $version) {
+            foreach ($composerLock['packages'] as $package) {
                 // Check if it's a drupal package.
                 // NOTE: Currently only supports drupal pagackages :(.
+                $name = $package['name'];
                 if (substr($name, 0, 7) === 'drupal/') {
                     $moduleName = str_replace('drupal/', '', $name);
                     if (!in_array($name, $modules)) {
