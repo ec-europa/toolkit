@@ -79,7 +79,10 @@ class ToolCommands extends AbstractCommands
         'test-command' => false,
     ])
     {
-        $this->failed = false;
+        // Currently undocumented in this class. Because I don't know how to
+        // provide such a property to one single function other than naming the
+        // failed property exaclty for this function.
+        $this->whitelistComponentsFailed = false;
         $blocker = $options['blocker'];
         $endpointUrl = $options['endpoint'];
         $basicAuth = getenv('QA_API_BASIC_AUTH') !== false ? getenv('QA_API_BASIC_AUTH') : '';
@@ -139,13 +142,13 @@ class ToolCommands extends AbstractCommands
     protected function returnStatus($blocker)
     {
         // If the validation failed and we have a blocker, then return 1.
-        if ($this->failed && $blocker) {
+        if ($this->whitelistComponentsFailed && $blocker) {
             $this->say('Failed the components whitelist check.');
             return 1;
         }
 
         // If the validation failed and blocker was disabled, then return 0.
-        if ($this->failed && !$blocker) {
+        if ($this->whitelistComponentsFailed && !$blocker) {
             $this->say('"Failed the components whitelist check, but exit code 1 overridden.');
             return 0;
         }
@@ -170,7 +173,7 @@ class ToolCommands extends AbstractCommands
         // If module was not reviewed yet.
         if (!$hasBeenQaEd) {
             $this->io()->warning('The package ' . $name . ' has not been approved by QA. Please request a review.');
-            $this->failed = true;
+            $this->whitelistComponentsFailed = true;
         }
 
         // If module was rejected.
@@ -180,7 +183,7 @@ class ToolCommands extends AbstractCommands
             // If module was not allowed in project.
             if (!$allowedInProject) {
                 $this->io()->warning('The package ' . $name . ' has been rejected by QA. Please remove the package or request an exception with QA.');
-                $this->failed = true;
+                $this->whitelistComponentsFailed = true;
             }
         }
 
@@ -189,7 +192,7 @@ class ToolCommands extends AbstractCommands
             $moduleVersion = str_replace('8.x-', '', $modules[$packageName]['version']);
             if ($this->versionCompare($package, $moduleVersion) === -1) {
                 $this->io()->warning('The minimum required version for package ' . $name . ' is ' . $moduleVersion . '. Please update your package.');
-                $this->failed = true;
+                $this->whitelistComponentsFailed = true;
             }
         }
     }
