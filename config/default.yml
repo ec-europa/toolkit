@@ -1,6 +1,7 @@
 toolkit:
   tmp_folder: '.tmp'
   notifications_endpoint: 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications'
+  whitelistings_endpoint: 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews'
   clean:
     config_file: 'config/sync/core.extension.yml'
   clone:

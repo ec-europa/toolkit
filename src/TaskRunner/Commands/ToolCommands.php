@@ -97,33 +97,48 @@ class ToolCommands extends AbstractCommands
             foreach ($composerLock['packages'] as $package) {
                 // Check if it's a drupal package.
                 // NOTE: Currently only supports drupal pagackages :(.
-                $name = $package['name'];
-                if (substr($name, 0, 7) === 'drupal/') {
-                    $packageName = str_replace('drupal/', '', $name);
-                    $hasBeenQaEd = isset($modules[$packageName]);
-                    $wasRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
-                    $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
-                    // If module was not reviewed yet.
-                    if (!$hasBeenQaEd) {
-                        $this->io()->warning('The package ' . $name . ' has not been approved by QA. Please request a review.');
-                    }
-                    // If module was rejected.
-                    if ($hasBeenQaEd && $wasRejected) {
-                        // @TODO: Check if the project is allowed to use it.
-                        $this->io()->warning('The package ' . $name . ' has been rejected by QA. Please remove the package or request an exception with QA.');
-                    }
-                    // If module was approved check the minimum required version.
-                    if ($wasNotRejected) {
-                        $moduleVersion = str_replace('8.x-', '', $modules[$packageName]['version']);
-                        $versionCompare = version_compare($package['version'], $moduleVersion);
-                        if ($versionCompare === -1) {
-                            $this->io()->warning('The minimum required version for package ' . $name . ' is ' . $moduleVersion . '. Please update your package.');
-                        }
-                    }
-                    // TODO: Check for security updates.
+                if (substr($package['name'], 0, 7) === 'drupal/') {
+                    $this->validateComponent($package, $modules);
                 }
             }
+            // TODO: Check for security updates.
+            // Only works on Drupal site codebases.
+            //$this->_exec('./vendor/bin/drush pm:security');
         }//end if
+    }
+
+    /**
+     * Helper function to validate the component.
+     *
+     * @param array $package The package to validate.
+     * @param array $modules The modules list.
+     *
+     * @return void
+     */
+    protected function validateComponent($package, $modules)
+    {
+        $name = $package['name'];
+        $packageName = str_replace('drupal/', '', $name);
+        $hasBeenQaEd = isset($modules[$packageName]);
+        $wasRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
+        $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
+        // If module was not reviewed yet.
+        if (!$hasBeenQaEd) {
+            $this->io()->warning('The package ' . $name . ' has not been approved by QA. Please request a review.');
+        }
+        // If module was rejected.
+        if ($hasBeenQaEd && $wasRejected) {
+            // @TODO: Check if the project is allowed to use it.
+            $this->io()->warning('The package ' . $name . ' has been rejected by QA. Please remove the package or request an exception with QA.');
+        }
+        // If module was approved check the minimum required version.
+        if ($wasNotRejected) {
+            $moduleVersion = str_replace('8.x-', '', $modules[$packageName]['version']);
+            $versionCompare = version_compare($package['version'], $moduleVersion);
+            if ($versionCompare === -1) {
+                $this->io()->warning('The minimum required version for package ' . $name . ' is ' . $moduleVersion . '. Please update your package.');
+            }
+        }
     }
 
     /**
