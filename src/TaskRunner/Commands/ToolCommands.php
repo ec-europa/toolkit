@@ -77,18 +77,19 @@ class ToolCommands extends AbstractCommands
             $data = json_decode($result, true);
             $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 
-            // Testing package:
+            // Testing packages:
+            // To be moved into testing.
             $composerLock['packages'] = [];
+            $composerLock['packages'][] = [
+                'name' => 'drupal/not_reviewed_yet',
+                'version' => '1.0'
+            ];
             $composerLock['packages'][] = [
                 'name' => 'drupal/devel',
                 'version' => '1.0'
             ];
             $composerLock['packages'][] = [
                 'name' => 'drupal/allowed_formats',
-                'version' => '1.0'
-            ];
-            $composerLock['packages'][] = [
-                'name' => 'drupal/not_reviewed_yet',
                 'version' => '1.0'
             ];
 
@@ -104,7 +105,7 @@ class ToolCommands extends AbstractCommands
                     $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
                     // If module was not reviewed yet.
                     if (!$hasBeenQaEd) {
-                        $this->io()->warning('The package ' . $name . ' has not been approved by QA to be in your require section of composer.json. Please request a review.');
+                        $this->io()->warning('The package ' . $name . ' has not been approved by QA. Please request a review.');
                     }
                     // If module was rejected.
                     if ($hasBeenQaEd && $wasRejected) {
