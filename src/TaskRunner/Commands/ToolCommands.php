@@ -79,7 +79,7 @@ class ToolCommands extends AbstractCommands
             $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 
             // To test this command execute it with the --test-command option:
-            // ./vendor/bin/run toolkit:whitelist-components --test-command --endpoint-url="https://webgate.acceptance.ec.europa.eu/fpfis/qa/api/v1/package-reviews"
+            // ./vendor/bin/run toolkit:whitelist-components --test-command --endpoint-url="https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x"
             // Then we provide an array in the packages that fails on each type
             // of validation.
             if ($options['test-command']) {
