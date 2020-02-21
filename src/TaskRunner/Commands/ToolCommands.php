@@ -84,10 +84,23 @@ class ToolCommands extends AbstractCommands
             // of validation.
             if ($options['test-command']) {
                 $composerLock['packages'] = [
+                    // Lines below shoul trow a warning.
                     ['version' => '1.0', 'name' => 'drupal/not_reviewed_yet'],
                     ['version' => '1.0', 'name' => 'drupal/devel'],
                     ['version' => '1.0', 'name' => 'drupal/allowed_formats'],
+                    // Allowed for single project jrc-k4p, otherwise trows warning.
                     ['version' => '1.0', 'name' => 'drupal/active_facet_pills'],
+                    // Allowed dev version if the Drupal version is bigger than
+                    // the minimum required version.
+                    [
+                        'version' => 'dev-1.x',
+                        'name' => 'drupal/autologout',
+                        'extra' => [
+                            'drupal' => [
+                                'version' => '8.x-1.0+15-dev'
+                            ]
+                        ]
+                    ]
                 ];
             }
 
@@ -139,11 +152,20 @@ class ToolCommands extends AbstractCommands
         // If module was approved check the minimum required version.
         if ($wasNotRejected) {
             $moduleVersion = str_replace('8.x-', '', $modules[$packageName]['version']);
-            $versionCompare = version_compare($package['version'], $moduleVersion);
-            if ($versionCompare === -1) {
+            if ($this->versionCompare($package, $moduleVersion) === -1) {
                 $this->io()->warning('The minimum required version for package ' . $name . ' is ' . $moduleVersion . '. Please update your package.');
             }
         }
+    }
+
+    protected function versionCompare($package, $moduleVersion) {
+        // This also allows for dev versions to be used to be patched in the
+        // composer.json file. The Drupal version gives us that.
+        $packageVersion = isset($package['extra']['drupal']['version']) ?
+        str_replace('8.x-', '', $package['extra']['drupal']['version']) :
+        $package['version'];
+        
+        return version_compare($packageVersion, $moduleVersion);
     }
 
     /**
