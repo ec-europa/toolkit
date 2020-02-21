@@ -66,6 +66,7 @@ class ToolCommands extends AbstractCommands
      */
     public function whitelistComponents(array $options = [
         'endpoint-url' => InputOption::VALUE_OPTIONAL,
+        'test-command' => false,
     ])
     {
         $endpointUrl = isset($options['endpoint-url']) ? $options['endpoint-url'] : $this->getConfig()->get("toolkit.whitelistings_endpoint");
@@ -77,21 +78,18 @@ class ToolCommands extends AbstractCommands
             $data = json_decode($result, true);
             $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 
-            // Testing packages:
-            // To be moved into testing.
-            $composerLock['packages'] = [];
-            $composerLock['packages'][] = [
-                'name' => 'drupal/not_reviewed_yet',
-                'version' => '1.0'
-            ];
-            $composerLock['packages'][] = [
-                'name' => 'drupal/devel',
-                'version' => '1.0'
-            ];
-            $composerLock['packages'][] = [
-                'name' => 'drupal/allowed_formats',
-                'version' => '1.0'
-            ];
+            // To test this command execute it with the --test-command option:
+            // ./vendor/bin/run toolkit:whitelist-components --test-command --endpoint-url="https://webgate.acceptance.ec.europa.eu/fpfis/qa/api/v1/package-reviews"
+            // Then we provide an array in the packages that fails on each type
+            // of validation.
+            if ($options['test-command']) {
+                $composerLock['packages'] = [
+                    ['name' => 'drupal/not_reviewed_yet', 'version' => '1.0'],
+                    ['name' => 'drupal/devel', 'version' => '1.0'],
+                    ['name' => 'drupal/allowed_formats', 'version' => '1.0'],
+                    ['name' => 'drupal/active_facet_pills', 'version' => '1.0'],
+                ];
+            }
 
             // Loop over the require section.
             foreach ($composerLock['packages'] as $package) {
@@ -122,15 +120,22 @@ class ToolCommands extends AbstractCommands
         $hasBeenQaEd = isset($modules[$packageName]);
         $wasRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
         $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
+
         // If module was not reviewed yet.
         if (!$hasBeenQaEd) {
             $this->io()->warning('The package ' . $name . ' has not been approved by QA. Please request a review.');
         }
+
         // If module was rejected.
         if ($hasBeenQaEd && $wasRejected) {
-            // @TODO: Check if the project is allowed to use it.
-            $this->io()->warning('The package ' . $name . ' has been rejected by QA. Please remove the package or request an exception with QA.');
+            $projectId = $this->getConfig()->get("toolkit.project_id");
+            $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
+            // If module was not allowed in project.
+            if (!$allowedInProject) {
+                $this->io()->warning('The package ' . $name . ' has been rejected by QA. Please remove the package or request an exception with QA.');
+            }
         }
+
         // If module was approved check the minimum required version.
         if ($wasNotRejected) {
             $moduleVersion = str_replace('8.x-', '', $modules[$packageName]['version']);
