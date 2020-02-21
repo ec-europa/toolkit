@@ -6,7 +6,6 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Symfony\Component\Console\Input\InputOption;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use Robo\Result;
 
 /**
  * Generic tools.
