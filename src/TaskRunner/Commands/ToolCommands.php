@@ -84,10 +84,10 @@ class ToolCommands extends AbstractCommands
             // of validation.
             if ($options['test-command']) {
                 $composerLock['packages'] = [
-                    ['name' => 'drupal/not_reviewed_yet', 'version' => '1.0'],
-                    ['name' => 'drupal/devel', 'version' => '1.0'],
-                    ['name' => 'drupal/allowed_formats', 'version' => '1.0'],
-                    ['name' => 'drupal/active_facet_pills', 'version' => '1.0'],
+                    ['version' => '1.0', 'name' => 'drupal/not_reviewed_yet'],
+                    ['version' => '1.0', 'name' => 'drupal/devel'],
+                    ['version' => '1.0', 'name' => 'drupal/allowed_formats'],
+                    ['version' => '1.0', 'name' => 'drupal/active_facet_pills'],
                 ];
             }
 
