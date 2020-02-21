@@ -158,7 +158,16 @@ class ToolCommands extends AbstractCommands
         }
     }
 
-    protected function versionCompare($package, $moduleVersion) {
+    /**
+     * Helper function to compare versions.
+     *
+     * @param array $package The package to compare versions to.
+     * @param string $modulesVersion The minimum module version.
+     *
+     * @return int (-1 for too small)
+     */
+    protected function versionCompare($package, $moduleVersion)
+    {
         // This also allows for dev versions to be used to be patched in the
         // composer.json file. The Drupal version gives us that.
         $packageVersion = isset($package['extra']['drupal']['version']) ?
