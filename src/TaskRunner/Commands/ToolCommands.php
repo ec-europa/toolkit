@@ -77,16 +77,49 @@ class ToolCommands extends AbstractCommands
             $data = json_decode($result, true);
             $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 
+            // Testing package:
+            $composerLock['packages'] = [];
+            $composerLock['packages'][] = [
+                'name' => 'drupal/devel',
+                'version' => '1.0'
+            ];
+            $composerLock['packages'][] = [
+                'name' => 'drupal/allowed_formats',
+                'version' => '1.0'
+            ];
+            $composerLock['packages'][] = [
+                'name' => 'drupal/not_reviewed_yet',
+                'version' => '1.0'
+            ];
+
             // Loop over the require section.
             foreach ($composerLock['packages'] as $package) {
                 // Check if it's a drupal package.
                 // NOTE: Currently only supports drupal pagackages :(.
                 $name = $package['name'];
                 if (substr($name, 0, 7) === 'drupal/') {
-                    $moduleName = str_replace('drupal/', '', $name);
-                    if (!in_array($name, $modules)) {
-                        $this->io()->warning('The package ' . $name . ' has not been approved by QA to be in your require section of composer.json.');
+                    $packageName = str_replace('drupal/', '', $name);
+                    $hasBeenQaEd = isset($modules[$packageName]);
+                    $wasRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
+                    $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
+                    // If module was not reviewed yet.
+                    if (!$hasBeenQaEd) {
+                        $this->io()->warning('The package ' . $name . ' has not been approved by QA to be in your require section of composer.json. Please request a review.');
                     }
+                    // If module was rejected.
+                    if ($hasBeenQaEd && $wasRejected) {
+                        // @TODO: Check if the project is allowed to use it.
+                        $this->io()->warning('The package ' . $name . ' has been rejected by QA. Please remove the package or request an exception with QA.');
+                    }
+                    // If module was approved check the minimum required version.
+                    if ($wasNotRejected) {
+                        $moduleVersion = str_replace('8.x-', '', $modules[$packageName]['version']);
+                        $versionCompare = version_compare($package['version'], $moduleVersion);
+                        if ($versionCompare === -1) {
+                            $this->io()->warning('The minimum required version for package ' . $name . ' is ' . $moduleVersion . '. Please update your package.');
+                        }
+                    }
+                    // TODO: Check for security updates.
                 }
             }
         }//end if
