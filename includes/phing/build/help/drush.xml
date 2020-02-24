@@ -568,7 +568,7 @@
         <echo message="Checking non-authorised modules and security updates for ${db.name}." />
         <drush command="toolkit-check-modules-authorized-security" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${project.id}</param>
-            <param>--blocker=${drush.toolkit-check-modules-authorized-security.blocker}</param>
+            <param>--blocker=${drush.authorized-security.blocker}</param>
         </drush>
     </target>
 
@@ -576,7 +576,7 @@
         <echo message="Checking ${resources.dir.site.make}." />
         <drush command="toolkit-check-modules-download-attribute" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${resources.dir.site.make}</param>
-            <param>--blocker=${drush.toolkit-check-modules-download-attribute.blocker}</param>
+            <param>--blocker=${drush.download-attribute.blocker}</param>
         </drush>
     </target>
 
@@ -584,21 +584,21 @@
         <echo message="Checking contributed modules updates for ${db.name}." />
         <drush command="toolkit-check-modules-minimum-version" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${project.id}</param>
-            <param>--blocker=${drush.toolkit-check-modules-minimum-version.blocker}</param>
+            <param>--blocker=${drush.minimum-version.blocker}</param>
         </drush>
     </target>
 
     <target name="check-modules-restricted" description="Checks for modules overridden not allowed to.">
         <echo message="Checking modules that can't be overridden for ${db.name}." />
         <drush command="toolkit-check-modules-restricted" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>--blocker=${drush.toolkit-check-modules-restricted.blocker}</param>
+            <param>--blocker=${drush.restricted.blocker}</param>
         </drush>
     </target>
 
     <target name="check-modules-unused" description="Checks for modules overridden not allowed to.">
         <echo message="Checks for non-used modules in certain path crossreferenced with a makefile." />
         <drush command="toolkit-check-modules-unused" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
-            <param>--blocker=${drush.toolkit-check-modules-unused.blocker}</param>
+            <param>--blocker=${drush.unused.blocker}</param>
         </drush>
     </target>
 
