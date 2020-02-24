@@ -253,3 +253,12 @@ drush.alias.docker = docker
 # ----------------------------
 drupal.update.free.access = FALSE
 drupal.hash.salt =
+
+# Drush module checks blocker flags.
+# ----------------------------------
+drush.toolkit-check-modules.blocker = 1
+drush.toolkit-check-modules-authorized-security.blocker = ${drush.toolkit-check-modules.blocker}
+drush.toolkit-check-modules-download-attribute.blocker = ${drush.toolkit-check-modules.blocker}
+drush.toolkit-check-modules-minimum-version.blocker = ${drush.toolkit-check-modules.blocker}
+drush.toolkit-check-modules-restricted.blocker = ${drush.toolkit-check-modules.blocker}
+drush.toolkit-check-modules-unused.blocker = ${drush.toolkit-check-modules.blocker}
