@@ -1,0 +1,9 @@
+command:
+  toolkit:
+    notifications:
+      options:
+        endpoint: ${toolkit.tool.notifications.endpoint}
+    whitelist-components:
+      options:
+        endpoint: ${toolkit.tool.whitelist-components.endpoint}
+        blocker: ${toolkit.tool.whitelist-components.blocker}
