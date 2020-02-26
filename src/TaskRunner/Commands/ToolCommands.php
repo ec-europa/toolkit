@@ -100,15 +100,16 @@ class ToolCommands extends AbstractCommands
             if ($options['test-command']) {
                 $composerLock['packages'] = [
                     // Lines below shoul trow a warning.
-                    ['version' => '1.0', 'name' => 'drupal/not_reviewed_yet'],
-                    ['version' => '1.0', 'name' => 'drupal/devel'],
-                    ['version' => '1.0', 'name' => 'drupal/allowed_formats'],
+                    ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/unreviewed'],
+                    ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/devel'],
+                    ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/allowed_formats'],
                     // Allowed for single project jrc-k4p, otherwise trows warning.
-                    ['version' => '1.0', 'name' => 'drupal/active_facet_pills'],
+                    ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/active_facet_pills'],
                     // Allowed dev version if the Drupal version is bigger than
                     // the minimum required version.
                     [
                         'version' => 'dev-1.x',
+                        'type' => 'drupal-module',
                         'name' => 'drupal/autologout',
                         'extra' => [
                             'drupal' => [
@@ -143,13 +144,13 @@ class ToolCommands extends AbstractCommands
     {
         // If the validation failed and we have a blocker, then return 1.
         if ($this->whitelistComponentsFailed && $blocker) {
-            $this->say('Failed the components whitelist check.');
+            $this->io()->error('Failed the components whitelist check. Please contact the QA team.');
             return 1;
         }
 
         // If the validation failed and blocker was disabled, then return 0.
         if ($this->whitelistComponentsFailed && !$blocker) {
-            $this->say('"Failed the components whitelist check, but exit code 1 overridden.');
+            $this->io()->warning('Failed the components whitelist check. Please contact the QA team.');
             return 0;
         }
     }
@@ -160,6 +161,8 @@ class ToolCommands extends AbstractCommands
      * @param array $package The package to validate.
      * @param array $modules The modules list.
      *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
      * @return void
      */
     protected function validateComponent($package, $modules)
@@ -169,51 +172,36 @@ class ToolCommands extends AbstractCommands
         $hasBeenQaEd = isset($modules[$packageName]);
         $wasRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
         $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
+        $packageVersion = isset($package['extra']['drupal']['version']) ? str_replace('8.x-', '', $package['extra']['drupal']['version']) : $package['version'];
 
-        // If module was not reviewed yet.
-        if (!$hasBeenQaEd) {
-            $this->io()->warning('The package ' . $name . ' has not been approved by QA. Please request a review.');
-            $this->whitelistComponentsFailed = true;
-        }
-
-        // If module was rejected.
-        if ($hasBeenQaEd && $wasRejected) {
-            $projectId = $this->getConfig()->get("toolkit.project_id");
-            $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
-            // If module was not allowed in project.
-            if (!$allowedInProject) {
-                $this->io()->warning('The package ' . $name . ' has been rejected by QA. Please remove the package or request an exception with QA.');
+        // Only validate module components for this time.
+        if (isset($package['type']) && $package['type'] === 'drupal-module') {
+            // If module was not reviewed yet.
+            if (!$hasBeenQaEd) {
+                $this->say("Package $name:$packageVersion has not been reviewed by QA.");
                 $this->whitelistComponentsFailed = true;
             }
-        }
 
-        // If module was approved check the minimum required version.
-        if ($wasNotRejected) {
-            $moduleVersion = str_replace('8.x-', '', $modules[$packageName]['version']);
-            if ($this->versionCompare($package, $moduleVersion) === -1) {
-                $this->io()->warning('The minimum required version for package ' . $name . ' is ' . $moduleVersion . '. Please update your package.');
-                $this->whitelistComponentsFailed = true;
+            // If module was rejected.
+            if ($hasBeenQaEd && $wasRejected) {
+                $projectId = $this->getConfig()->get("toolkit.project_id");
+                $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
+                // If module was not allowed in project.
+                if (!$allowedInProject) {
+                    $this->say("Package $name:$packageVersion has been rejected by QA.");
+                    $this->whitelistComponentsFailed = true;
+                }
+            }
+
+            // If module was approved check the minimum required version.
+            if ($wasNotRejected) {
+                $moduleVersion = str_replace('8.x-', '', $modules[$packageName]['version']);
+                if (version_compare($packageVersion, $moduleVersion) === -1) {
+                    $this->say("Package $name:$packageVersion minimum allowed version is $moduleVersion.");
+                    $this->whitelistComponentsFailed = true;
+                }
             }
         }
-    }
-
-    /**
-     * Helper function to compare versions.
-     *
-     * @param array $package The package to compare versions to.
-     * @param string $modulesVersion The minimum module version.
-     *
-     * @return int (-1 for too small)
-     */
-    protected function versionCompare($package, $moduleVersion)
-    {
-        // This also allows for dev versions to be used to be patched in the
-        // composer.json file. The Drupal version gives us that.
-        $packageVersion = isset($package['extra']['drupal']['version']) ?
-        str_replace('8.x-', '', $package['extra']['drupal']['version']) :
-        $package['version'];
-        
-        return version_compare($packageVersion, $moduleVersion);
     }
 
     /**
