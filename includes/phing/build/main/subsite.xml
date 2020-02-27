@@ -11,7 +11,9 @@
           subsite-resources-link,
           project-subsite-composer-dev,
           subsite-make,
-          project-modules-devel-make">
+          project-modules-devel-make,
+          project-subsite-files-setup,
+          drush-aliases-generate">
       <echo msg="Playbook for build-subsite-dev ended." />
   </target>
 

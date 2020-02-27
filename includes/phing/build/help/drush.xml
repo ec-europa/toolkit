@@ -61,19 +61,6 @@
         </drush>
     </target>
 
-    <target name="drush-files-dirs-htaccess" hidden="true" description="Ensure the presence of htaccess files.">
-        <drush
-            command="php-eval"
-            assume="yes"
-            root="${build.platform.dir}"
-            alias="@${drush.alias.default}"
-            bin="${toolkit.dir.bin.drush}"
-            verbose="${drush.verbose}"
-            color="${drush.color}">
-            <param>"file_ensure_htaccess()"</param>
-        </drush>
-    </target>
-
     <target name="drush-make-no-core" description="Make a file without core." hidden="true">
         <if>
             <available file="${make-file}" type="file" />
@@ -453,7 +440,6 @@
                 <phingcall target="drush-registry-rebuild" />
             </then>
         </if>
-        <phingcall target="drush-files-dirs-htaccess" />
         <if>
             <or>
                 <equals arg1="${profile}" arg2="multisite_drupal_standard"/>
