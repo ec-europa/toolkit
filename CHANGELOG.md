@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 4.0.6
+  - MULTISITE-22612: Introduce component-whitelist check for NE-Pipelines
+  - MULTISITE-22957: Allow usage of Drush 10
+
 ## Version 4.0.5
   - MULTISITE-23137: Support new version for .opts.yml file.
 
