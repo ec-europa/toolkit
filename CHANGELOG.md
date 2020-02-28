@@ -1,5 +1,13 @@
 # Toolkit change log
 
+## Version 3.0.31
+  * MULTISITE-22993: Fix drush commands that target QA website endpoints.
+  * MULTISITE-23052: l10n_update temporary path.
+  * MULTISITE-23091: Remove ec-europa/php-docker-infra package from Toolkit.
+  * MULTISITE-23169: Configuration for database improvement.
+  * MULTISITE-22996: Make toolkit module checks configurable to be non-blocking.
+  * MULTISITE-23209: Target install-clone fails when updating database.
+
 ## Version 3.0.30.1
   * MULTISITE-22993: Fix drush commands that target QA website endpoints (hotfix)
 
