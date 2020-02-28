@@ -451,31 +451,36 @@
     </target>
 
     <target name="project-database-file-item" hidden="true" description="Check if database file is available and download it.">
+
+        <!-- First download the hash file regardless of wether we have a filename or not. -->
+        <echo msg="Download the production database hash ${db.dl.filename.hash}." />
+        <phingcall target="package-download">
+            <property name="package-name" value="${db.dl.filename.hash}" />
+            <property name="package-cache-location" value="${share.path.subsites.packages.database}/${project.id}" />
+            <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
+        </phingcall>
+
+        <!--> If we don't have a filename to download we grab the first filename from the hash file. -->
         <if>
             <isfalse value="${db.dl.filename}" />
             <then>
-                <property name="db.dl.filename.hash" value="latest.sh1" override="true" />
-                <echo msg="Download the production database hash ${db.dl.filename.hash}." />
-                <phingcall target="package-download">
-                    <property name="package-name" value="${db.dl.filename.hash}" />
-                    <property name="package-cache-location" value="${share.path.subsites.packages.database}/${project.id}" />
-                    <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
-                </phingcall>
                 <exec command="cat ${share.path.subsites.packages.database}/${project.id}/${db.dl.filename.hash} | tr -s ' ' | cut -d ' ' -f 2" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename"/>
             </then>
         </if>
 
-        <echo msg="Download the production database ${db.dl.filename}." />
+        <!-- Download the ASDA dump. -->
+        <echo msg="Download the ASDA database ${db.dl.filename}." />
         <phingcall target="package-download">
             <property name="package-name" value="${db.dl.filename}" />
             <property name="package-cache-location" value="${share.path.subsites.packages.database}/${project.id}" />
             <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
         </phingcall>
 
+        <!-- Generate the sha1sum of downloaded file and setup variables for comparison. -->
         <trycatch>
             <try>
                 <exec command="(cd ${share.path.subsites.packages.database}/${project.id}/ ; sha1sum ${db.dl.filename} ; ) > ${share.path.subsites.packages.database}/${project.id}/local.sh1" checkreturn="true" passthru="false" logoutput="false"/>
-                <exec command="cat ${share.path.subsites.packages.database}/${project.id}//local.sh1" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename.hash.local"/>
+                <exec command="cat ${share.path.subsites.packages.database}/${project.id}/local.sh1" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename.hash.local"/>
                 <exec command="cat ${share.path.subsites.packages.database}/${project.id}/${db.dl.filename.hash}" checkreturn="true" passthru="false" logoutput="false" outputproperty="db.dl.filename.hash.latest"/>
             </try>
             <catch>
@@ -484,6 +489,7 @@
             </catch>
         </trycatch>
 
+        <!-- Compare the generated sha1sum of downloaded file against the hash from latest. -->
         <if>
             <equals arg1="${db.dl.filename.hash.latest}" arg2="${db.dl.filename.hash.local}" />
             <then>
