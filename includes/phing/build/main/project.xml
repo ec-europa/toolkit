@@ -142,8 +142,6 @@
                   </then>
               </if>
 
-              <phingcall target="project-subsite-files-setup" />
-              <phingcall target="drush-aliases-generate" />
           </target>
 
 
@@ -594,9 +592,15 @@
         <if>
             <istrue value="${build.subsite.dir.files}" />
             <then>
+                <mkdir dir="${build.dev}/${build.subsite.dir.files}" />
                 <mkdir dir="${build.dev}/${build.subsite.dir.private_files}" />
                 <mkdir dir="${build.dev}/${build.subsite.dir.translations}" />
                 <mkdir dir="${build.dev}/${build.subsite.dir.tmp}" />
+                <!-- Create .htacess files. -->
+                <copy file="${toolkit.dir.incl.templates}/htaccess/.htaccess-public" tofile="${build.dev}/${build.subsite.dir.files}/.htaccess" overwrite="true"/>
+                <copy file="${toolkit.dir.incl.templates}/htaccess/.htaccess-private" tofile="${build.dev}/${build.subsite.dir.private_files}/.htaccess" overwrite="true"/>
+                <copy file="${toolkit.dir.incl.templates}/htaccess/.htaccess-public" tofile="${build.dev}/${build.subsite.dir.translations}/.htaccess" overwrite="true"/>
+                <copy file="${toolkit.dir.incl.templates}/htaccess/.htaccess-public" tofile="${build.dev}/${build.subsite.dir.tmp}/.htaccess" overwrite="true"/>
             </then>
         </if>
     </target>
