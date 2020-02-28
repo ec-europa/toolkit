@@ -119,12 +119,8 @@
     <target name="subsite-resources-link" hidden="true" description="Link subsite resources to lib folder for development.">
         <symlink-property-contents prefix="lib.dir." origindir="${lib.dir}" targetdir="${build.${build-type}.dir}" overwrite="true" />
         <symlink-property-contents prefix="resources.dir.composer." origindir="${resources.dir}" targetdir="${build.${build-type}.dir}" overwrite="true" />
-        <if>
-            <available file="${build.platform.dir.sites}/all/drush" />
-            <then>
-                <relsym link="${build.platform.dir.sites}/all/drush/custom" target="${toolkit.dir.incl.drush}/custom" />
-            </then>
-        </if>
+        <mkdir dir="${build.platform.dir.sites}/all/drush" />
+        <relsym link="${build.platform.dir.sites}/all/drush/custom" target="${toolkit.dir.incl.drush}/custom" />
         <if>
             <available file="${build.platform.dir.sites}/default/default.settings.php" />
             <then>
