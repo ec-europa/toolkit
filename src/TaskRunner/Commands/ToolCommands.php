@@ -57,7 +57,7 @@ class ToolCommands extends AbstractCommands
         $endpointUrl = $options['endpoint'];
 
         if (isset($endpointUrl)) {
-            $result = $this->getQaEndpointContent($endpointUrl);
+            $result = self::getQaEndpointContent($endpointUrl);
             $data = json_decode($result, true);
             foreach ($data as $notification) {
                 $this->io()->warning($notification['title'] . PHP_EOL . $notification['notification']);
@@ -89,7 +89,7 @@ class ToolCommands extends AbstractCommands
         $composerLock = file_get_contents('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
 
         if (isset($endpointUrl) && isset($composerLock['packages'])) {
-            $result = $this->getQaEndpointContent($endpointUrl, $basicAuth);
+            $result = self::getQaEndpointContent($endpointUrl, $basicAuth);
             $data = json_decode($result, true);
             $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 
@@ -207,6 +207,9 @@ class ToolCommands extends AbstractCommands
     /**
      * Curl function to access endpoint with or without authentication.
      *
+     * This function is made publicly available as a static function for other
+     * projects to call. Then we have to maintain less code.
+     *
      * @SuppressWarnings(PHPMD.MissingImport)
      *
      * @param string $url The QA endpoint url.
@@ -214,7 +217,7 @@ class ToolCommands extends AbstractCommands
      *
      * @return string
      */
-    public function getQaEndpointContent(string $url, string $basicAuth = ''): string
+    public static function getQaEndpointContent(string $url, string $basicAuth = ''): string
     {
         $content = '';
         $curl = curl_init();
@@ -239,7 +242,7 @@ class ToolCommands extends AbstractCommands
                         throw new \Exception(sprintf('Curl request to endpoint "%s" returned a %u.', $url, $statusCode));
                     }
                     // If we tried with authentication, retry without.
-                    $content = $this->getQaEndpointContent($url);
+                    $content = self::getQaEndpointContent($url);
             }
         }
         if ($result === false) {
