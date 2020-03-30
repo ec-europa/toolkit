@@ -345,7 +345,7 @@
                     bin="${toolkit.dir.bin.drush}"
                     verbose="${drush.verbose}"
                     color="${drush.color}">
-                    <param escape="no" quote="yes">INSERT INTO users (uid, name, pass, mail, status) VALUES ('1', '${admin.username}', md5('${admin.password}'), '${admin.email}', 1);</param>
+                    <param escape="no" quote="yes">"INSERT INTO ${db.prefix}users (uid, name, pass, mail, status) VALUES ('1', '${admin.username}', md5('${admin.password}'), '${admin.email}', 1);"</param>
                 </drush>
             </then>
             <else>
