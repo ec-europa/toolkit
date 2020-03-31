@@ -332,7 +332,7 @@
     </target>
 
     <target name="drush-check-users" hidden="true" description="Recover user table for ASDA dumps.">
-        <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} sqlq "SELECT count(uid) FROM users WHERE 1"' outputProperty="count.users" checkreturn="true" />
+        <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} sqlq "SELECT count(uid) FROM ${db.prefix}users WHERE 1"' outputProperty="count.users" checkreturn="true" />
         <if>
             <equals arg1="${count.users}" arg2="0" />
             <then>
@@ -345,7 +345,7 @@
                     bin="${toolkit.dir.bin.drush}"
                     verbose="${drush.verbose}"
                     color="${drush.color}">
-                    <param escape="no" quote="yes">INSERT INTO users (uid, name, pass, mail, status) VALUES ('1', '${admin.username}', md5('${admin.password}'), '${admin.email}', 1);</param>
+                    <param escape="no" quote="yes">"INSERT INTO ${db.prefix}users (uid, name, pass, mail, status) VALUES ('1', '${admin.username}', md5('${admin.password}'), '${admin.email}', 1);"</param>
                 </drush>
             </then>
             <else>
