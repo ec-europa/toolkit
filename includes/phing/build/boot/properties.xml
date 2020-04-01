@@ -67,14 +67,6 @@
     </php>
     <property name="db.url" value="${db.type}://${db.user}:${db.password}@${db.host}:${db.port}/${db-name}" override="true" />
 
-    <!-- Set compose project name if available. -->
-    <if>
-        <isset property="env.COMPOSE_PROJECT_NAME" />
-        <then>
-            <property name="docker.project.id" value="${env.COMPOSE_PROJECT_NAME}" override="true" />
-        </then>
-    </if>
-
     <!-- Check if site exists. -->
     <if>
         <available file="${build.settings.dir}/settings.php" type="file" />

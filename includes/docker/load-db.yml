@@ -1,5 +1,0 @@
-version: '2.1'
-services:
-  mysql:
-    volumes:
-      - ${DB_LOCATION_DIR}:/docker-entrypoint-initdb.d
