@@ -161,7 +161,7 @@ class DocGeneratorTask extends \Task
             $detail = $target['description'] ."\n";
 
             $detail .= "\n##### Example:\n";
-            $detail .= "`toolkit\phing " . $target['name'] . "'\n'";
+            $detail .= "`toolkit\phing " . $target['name'] . "`\n";
 
             if (isset($target['properties']) && count($target['properties']) > 0) {
                 $detail .= "\n##### Properties:\n";
