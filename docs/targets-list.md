@@ -22,53 +22,46 @@ Delete all files stored in local cache.
 `toolkit\phing cache-clear-local'
 '
 </details>
-<details><p><summary>docker-backstop-generate</summary></p>
-Generate the backstop files.
+<details><p><summary>check-modules-authorized-security</summary></p>
+Checks for non-authorised contributed modules or/and with security updates.
 
 ##### Example:
-`toolkit\phing docker-backstop-generate'
+`toolkit\phing check-modules-authorized-security'
 '
 </details>
-<details><p><summary>docker-check-mysql</summary></p>
-Check if mysql container exists.
+<details><p><summary>check-modules-download-attribute</summary></p>
+Checks for incorrect usage of download attributes..
 
 ##### Example:
-`toolkit\phing docker-check-mysql'
+`toolkit\phing check-modules-download-attribute'
 '
 </details>
-<details><p><summary>docker-compose-backup</summary></p>
-Backup database.
+<details><p><summary>check-modules-minimum-version</summary></p>
+Checks for contributed modules using a lower version then the recommended one.
 
 ##### Example:
-`toolkit\phing docker-compose-backup'
+`toolkit\phing check-modules-minimum-version'
 '
 </details>
-<details><p><summary>docker-compose-down</summary></p>
-Trash docker project.
+<details><p><summary>check-modules-restricted</summary></p>
+Checks for modules overridden not allowed to.
 
 ##### Example:
-`toolkit\phing docker-compose-down'
+`toolkit\phing check-modules-restricted'
 '
 </details>
-<details><p><summary>docker-compose-restore</summary></p>
-Restore database.
+<details><p><summary>check-modules-unused</summary></p>
+Checks for modules overridden not allowed to.
 
 ##### Example:
-`toolkit\phing docker-compose-restore'
+`toolkit\phing check-modules-unused'
 '
 </details>
-<details><p><summary>docker-compose-stop</summary></p>
-Stop docker project.
+<details><p><summary>create-distribution</summary></p>
+Create a package to be released in a docker image.
 
 ##### Example:
-`toolkit\phing docker-compose-stop'
-'
-</details>
-<details><p><summary>docker-compose-up</summary></p>
-Start docker project.
-
-##### Example:
-`toolkit\phing docker-compose-up'
+`toolkit\phing create-distribution'
 '
 </details>
 <details><p><summary>drush-aliases-generate</summary></p>
@@ -99,13 +92,6 @@ Create site files directories.
 `toolkit\phing drush-files-dirs-create'
 '
 </details>
-<details><p><summary>drush-files-dirs-htaccess</summary></p>
-Ensure the presence of htaccess files.
-
-##### Example:
-`toolkit\phing drush-files-dirs-htaccess'
-'
-</details>
 <details><p><summary>drush-gdpr-dump</summary></p>
 Make a sanitized dump of database.
 
@@ -132,6 +118,13 @@ Check all make files for insecure modules.
 
 ##### Example:
 `toolkit\phing drush-make-secure-all'
+'
+</details>
+<details><p><summary>drush-modules-disable</summary></p>
+Disable a set of modules.
+
+##### Example:
+`toolkit\phing drush-modules-disable'
 '
 </details>
 <details><p><summary>drush-modules-enable</summary></p>
@@ -827,6 +820,13 @@ Refresh configuration and run phpcs review.
 `toolkit\phing test-run-phpcs'
 '
 </details>
+<details><p><summary>test-run-phpcs-compatibility</summary></p>
+Refresh configuration and run phpcs compatibility review.
+
+##### Example:
+`toolkit\phing test-run-phpcs-compatibility'
+'
+</details>
 <details><p><summary>test-run-phpunit</summary></p>
 Refresh configuration and run phpunit tests.
 
@@ -904,13 +904,6 @@ Provide project with an overview of all default build properties.
 `toolkit\phing toolkit-default-props'
 '
 </details>
-<details><p><summary>toolkit-generate-project-info</summary></p>
-Copies template files to your project for toolkit integration with inventory details.
-
-##### Example:
-`toolkit\phing toolkit-generate-project-info'
-'
-</details>
 <details><p><summary>toolkit-hooks-composer</summary></p>
 Echo the composer hook phing targets for use in bash script.
 
@@ -930,6 +923,13 @@ Generate documentation md files for toolkit.
 
 ##### Example:
 `toolkit\phing toolkit-markdown-generate'
+'
+</details>
+<details><p><summary>toolkit-notifications</summary></p>
+Display toolkit notification messages
+
+##### Example:
+`toolkit\phing toolkit-notifications'
 '
 </details>
 <details><p><summary>toolkit-starterkit-upgrade</summary></p>
@@ -1044,9 +1044,11 @@ Build a local development version of the site.
 `toolkit\phing build-subsite-dev'
 '
 ##### Dependencies: 
+* drush-aliases-generate
 * project-modules-devel-make
 * project-subsite-backup
 * project-subsite-composer-dev
+* project-subsite-files-setup
 * project-subsite-restore
 * subsite-delete-dev
 * subsite-make
