@@ -5,6 +5,7 @@
  * Check contributed modules information.
  */
 
+use Composer\Semver\Semver;
 use Drush\Log\LogLevel;
 
 /**
@@ -270,11 +271,10 @@ function drush_toolkit_check_modules_minimum_version($project_id = NULL) {
         !empty($moduleInfo['version']) && $moduleProject == $moduleId) {
   
         // Compare actual module version with the minimum version authorised.
-        $getMinVersion = searchForVersion($moduleProject, $modulesArray);
-        $versionCompare = version_compare($moduleInfo['version'], $getMinVersion);
-  
-        if ($versionCompare == -1) {
-          drush_log('The module ' . $moduleId . ' needs to be updated from ' . $moduleInfo['version'] . ' to ' . $getMinVersion, LogLevel::WARNING);
+        $moduleConflict = getVersionConstraint('drupal/' . $moduleProject, $modulesArray);
+        $moduleVersion = str_replace('7.x-', '', $moduleInfo['version']);
+        if (!is_null($moduleConflict) && Semver::satisfies($moduleVersion, $moduleConflict)) {
+          drush_log('The module ' . $moduleId . ':' . $moduleVersion . ' does not meet the version constraint: ' . $moduleConflict, LogLevel::WARNING);
           $failed = true;
         }
       }
@@ -352,10 +352,10 @@ function drush_toolkit_check_modules_unused($path = 'sites', $make = '../resourc
 
 
 // Helper function to get the minimum accepted module version.
-function searchForVersion($moduleName, $modulesArray) {
+function getVersionConstraint($moduleName, $modulesArray) {
   foreach ($modulesArray as $module) {
     if ($module['name'] === $moduleName) {
-      return $module['version'];
+      return !empty($module['conflict']) ? $module['conflict'] : null;
     }
   }
 }
