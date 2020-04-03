@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use Composer\Semver\Semver;
 use Symfony\Component\Console\Input\InputOption;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 
