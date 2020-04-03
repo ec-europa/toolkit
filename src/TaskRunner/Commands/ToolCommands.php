@@ -194,15 +194,8 @@ class ToolCommands extends AbstractCommands
             }
 
             if ($wasNotRejected) {
-                # This check will be removed in the future as the endpoint will
-                # be replacing the 'version' key with the 'conflict' key.
-                $moduleVersion = !empty($modules[$packageName]['version']) ? str_replace('8.x-', '', $modules[$packageName]['version']) : null;
-                if (!is_null($moduleVersion) && version_compare($packageVersion, $moduleVersion) === -1) {
-                    $this->say("Package $packageName:$packageVersion minimum allowed version is $moduleVersion.");
-                    $this->whitelistComponentsFailed = true;
-                }
-                # This will be the permanent check used to block certain
-                # versions of a package.
+                # Once all projects are using Toolkit >=4.1.0, the 'version' key
+                # may be removed from the endpoint: /api/v1/package-reviews.
                 $moduleConflict = !empty($modules[$packageName]['conflict']) ? $modules[$packageName]['conflict'] : null;
                 if (!is_null($moduleConflict) && Semver::satisfies($packageVersion, $moduleConflict)) {
                     $this->say("Package $packageName:$packageVersion does not meet version constraint: $moduleConflict.");
