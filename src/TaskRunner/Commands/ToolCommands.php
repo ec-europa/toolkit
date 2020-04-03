@@ -162,13 +162,13 @@ class ToolCommands extends AbstractCommands
      * @param array $modules The modules list.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      *
      * @return void
      */
     protected function validateComponent($package, $modules)
     {
-        $name = $package['name'];
-        $packageName = str_replace('drupal/', '', $name);
+        $packageName = $package['name'];
         $hasBeenQaEd = isset($modules[$packageName]);
         $wasRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
         $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
@@ -188,16 +188,24 @@ class ToolCommands extends AbstractCommands
                 $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
                 // If module was not allowed in project.
                 if (!$allowedInProject) {
-                    $this->say("Package $name:$packageVersion has been rejected by QA.");
+                    $this->say("Package $packageName:$packageVersion has been rejected by QA.");
                     $this->whitelistComponentsFailed = true;
                 }
             }
 
-            // If module was approved check the minimum required version.
             if ($wasNotRejected) {
-                $moduleVersion = str_replace('8.x-', '', $modules[$packageName]['version']);
-                if (version_compare($packageVersion, $moduleVersion) === -1) {
-                    $this->say("Package $name:$packageVersion minimum allowed version is $moduleVersion.");
+                # This check will be removed in the future as the endpoint will
+                # be replacing the 'version' key with the 'conflict' key.
+                $moduleVersion = !empty($modules[$packageName]['version']) ? str_replace('8.x-', '', $modules[$packageName]['version']) : null;
+                if (!is_null($moduleVersion) && version_compare($packageVersion, $moduleVersion) === -1) {
+                    $this->say("Package $packageName:$packageVersion minimum allowed version is $moduleVersion.");
+                    $this->whitelistComponentsFailed = true;
+                }
+                # This will be the permanent check used to block certain
+                # versions of a package.
+                $moduleConflict = !empty($modules[$packageName]['conflict']) ? $modules[$packageName]['conflict'] : null;
+                if (!is_null($moduleConflict) && Semver::satisfies($packageVersion, $moduleConflict)) {
+                    $this->say("Package $packageName:$packageVersion does not meet version constraint: $moduleConflict.");
                     $this->whitelistComponentsFailed = true;
                 }
             }
