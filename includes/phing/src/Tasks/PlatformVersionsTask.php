@@ -141,7 +141,7 @@ class PlatformVersionsTask extends \Task
 
         if ($this->_prerelease == true) {
             $this->log(
-                "Please be aware that you are using a nonofficial release at your own risk, we recommend that you use a stable version instead.",
+                "Please be aware that you have enabled the downloading of pre-releases. Pre-releases are never deployed to production. So this feature should only be used for testing purposes.",
                 Project::MSG_WARN
             );
         }
