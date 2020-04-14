@@ -139,6 +139,13 @@ class PlatformVersionsTask extends \Task
         $this->getProject()->setNewProperty('platform.package.version.latest', $latest_version);
         $this->getProject()->setNewProperty('platform.package.version.current', $this->versionprop);
 
+        if ($this->_prerelease == true) {
+            $this->log(
+                "Please be aware that you are using a nonofficial release at your own risk, we recommend that you use a stable version instead.",
+                Project::MSG_WARN
+            );
+        }
+
     }//end main()
 
     /**
