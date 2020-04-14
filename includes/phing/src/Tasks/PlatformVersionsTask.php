@@ -147,6 +147,13 @@ class PlatformVersionsTask extends \Task
         $this->getProject()->setNewProperty('platform.package.version.latest', $latest_version);
         $this->getProject()->setNewProperty('platform.package.version.current', $this->versionprop);
 
+        if ($this->_prerelease == true) {
+            $this->log(
+                "Please be aware that you have enabled the downloading of pre-releases. Pre-releases are never deployed to production. So this feature should only be used for testing purposes.",
+                Project::MSG_WARN
+            );
+        }
+
     }//end main()
 
     /**
