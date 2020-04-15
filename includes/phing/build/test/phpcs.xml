@@ -17,36 +17,29 @@
     <target
         name="test-run-phpcs-compatibility"
         description="Refresh configuration and run phpcs compatibility review.">
-        <if>
-            <isfalse value="${phpcs.compat.skip}"/>
-            <then>
-                <phingcall target="build-subsite-dist" />
-                <delete file="${phpcs.config}" failonerror="false" />
-                <phpcsconf
-                    configFile="${phpcs.config}"
-                    extensions="php inc module install test profile theme"
-                    files="${build.dist.dir}"
-                    ignorePatterns="${phpcs.ignore}"
-                    reports="${phpcs.reports}"
-                    showProgress="${phpcs.progress}"
-                    showSniffCodes="${phpcs.sniffcodes}"
-                    standards="PHP7"
-                />
-                <exec
-                    command="${toolkit.dir.bin}/phpcs --config-set ignore_warnings_on_exit ${phpcs.passwarnings} >/dev/null"
-                    passthru="true"
-                    checkreturn="true"
-                />
-                <exec
-                    command="${toolkit.dir.bin}/phpcs --runtime-set testVersion ${phpcs.compat.version}"
-                    passthru="true"
-                    checkreturn="${phpcs.compat.checkreturn}"
-                />
-            </then>
-            <else>
-                <echo msg="Skipping PHPCS Compatibility checks altogether." />
-            </else>
-        </if>
+
+        <phingcall target="build-subsite-dist" />
+        <delete file="${phpcs.config}" failonerror="false" />
+        <phpcsconf
+            configFile="${phpcs.config}"
+            extensions="php inc module install test profile theme"
+            files="${build.dist.dir}"
+            ignorePatterns="${phpcs.ignore}"
+            reports="${phpcs.reports}"
+            showProgress="${phpcs.progress}"
+            showSniffCodes="${phpcs.sniffcodes}"
+            standards="PHP7"
+        />
+        <exec
+            command="${toolkit.dir.bin}/phpcs --config-set ignore_warnings_on_exit ${phpcs.passwarnings} >/dev/null"
+            passthru="true"
+            checkreturn="true"
+        />
+        <exec
+            command="${toolkit.dir.bin}/phpcs --runtime-set testVersion ${phpcs.compat.version}"
+            passthru="true"
+            checkreturn="true"
+        />
     </target>
 
     <!-- Do quality assurance checks. -->
