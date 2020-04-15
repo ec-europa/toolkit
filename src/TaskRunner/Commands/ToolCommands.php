@@ -103,18 +103,18 @@ class ToolCommands extends AbstractCommands
                     // Lines below shoul trow a warning.
                     ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/unreviewed'],
                     ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/devel'],
-                    ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/allowed_formats'],
+                    ['type' => 'drupal-module', 'version' => '1.0-alpha1', 'name' => 'drupal/xmlsitemap'],
                     // Allowed for single project jrc-k4p, otherwise trows warning.
                     ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/active_facet_pills'],
-                    // Allowed dev version if the Drupal version is bigger than
-                    // the minimum required version.
+                    // Allowed dev version if the Drupal version meets the
+                    // conflict version constraints.
                     [
                         'version' => 'dev-1.x',
                         'type' => 'drupal-module',
-                        'name' => 'drupal/autologout',
+                        'name' => 'drupal/views_bulk_operations',
                         'extra' => [
                             'drupal' => [
-                                'version' => '8.x-1.0+15-dev'
+                                'version' => '8.x-3.4+15-dev'
                             ]
                         ]
                     ]
@@ -179,7 +179,7 @@ class ToolCommands extends AbstractCommands
         if (isset($package['type']) && $package['type'] === 'drupal-module') {
             // If module was not reviewed yet.
             if (!$hasBeenQaEd) {
-                $this->say("Package $name:$packageVersion has not been reviewed by QA.");
+                $this->say("Package $packageName:$packageVersion has not been reviewed by QA.");
                 $this->whitelistComponentsFailed = true;
             }
 
