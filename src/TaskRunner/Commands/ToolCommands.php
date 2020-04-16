@@ -198,7 +198,7 @@ class ToolCommands extends AbstractCommands
                 # Once all projects are using Toolkit >=4.1.0, the 'version' key
                 # may be removed from the endpoint: /api/v1/package-reviews.
                 $constraints = [ 'whitelist' => false, 'blacklist' => true ];
-                foreach($constraints as $constraint => $result) {
+                foreach ($constraints as $constraint => $result) {
                     $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
 
                     if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
