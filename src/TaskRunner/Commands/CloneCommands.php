@@ -232,7 +232,8 @@ class CloneCommands extends AbstractCommands
     }
 
     /**
-     * Create file with full url to be dowloaded.
+     * Create file for usage in wget --input-file argument in the
+     * downloadDump() function.
      *
      * @param string $filename
      *   Name of filename to append to url.
