@@ -20,6 +20,11 @@ class CloneCommands extends AbstractCommands
     use TaskRunnerTasks\CollectionFactory\loadTasks;
 
     /**
+     * Path to file that hold the input information.
+     */
+    const TEMP_INPUTFILE = 'temporary_inputfile.txt';
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
@@ -169,16 +174,16 @@ class CloneCommands extends AbstractCommands
         }
 
         // Download the .sha file.
-        $this->buildDownloadLink('latest.sh1', $options);
+        $this->generateAsdaWgetInputFile('latest.sh1', $options);
         $this->downloadChecksumFile($options);
         $fileContent = file_get_contents('latest.sh1');
         $filename = trim(explode('  ', $fileContent)[1]);
 
         // Download the .sql file.
-        $this->buildDownloadLink($filename, $options);
+        $this->generateAsdaWgetInputFile($filename, $options);
         $tasks[] = $this->taskExec('wget')
             ->option('-O', $options['dumpfile'] . '.gz')
-            ->option('-i', 'downloadLink.txt')
+            ->option('-i', this::TEMP_INPUTFILE)
             ->option('-A', 'sql.gz')
             ->option('-P', './');
 
@@ -189,7 +194,7 @@ class CloneCommands extends AbstractCommands
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
             ->arg('latest.sh1')
-            ->arg('downloadLink.txt');
+            ->arg(this::TEMP_INPUTFILE);
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -219,7 +224,7 @@ class CloneCommands extends AbstractCommands
             ->run();
 
         $this->taskExec('wget')
-            ->option('-i', 'downloadLink.txt')
+            ->option('-i', this::TEMP_INPUTFILE)
             ->option('-O', 'latest.sh1')
             ->option('-A', '.sh1')
             ->option('-P', './')
@@ -229,20 +234,16 @@ class CloneCommands extends AbstractCommands
     /**
      * Create file with full url to be dowloaded.
      *
-     * Make use of --input file to make sure credentials are not
-     * exposed in the logs.
-     *
      * @param string $filename
      *   Name of filename to append to url.
      *
      * @param array $options
      *   Command options.
      */
-    private function buildDownloadLink($filename, array $options = [
+    private function generateAsdaWgetInputFile($filename, array $options = [
         'asda-url' => InputOption::VALUE_REQUIRED,
         'asda-user' => InputOption::VALUE_REQUIRED,
         'asda-password' => InputOption::VALUE_REQUIRED,
-        'dumpfile' => InputOption::VALUE_REQUIRED,
     ])
     {
 
@@ -256,7 +257,7 @@ class CloneCommands extends AbstractCommands
         $downloadLink = 'https://' . $options['asda-user'] . ':' . $options['asda-password'] . '@' . $url . '/' . $filename;
 
         $tasks[] = $this->taskFilesystemStack()
-            ->taskWriteToFile('downloadLink.txt')
+            ->taskWriteToFile(this::TEMP_INPUTFILE)
             ->line($downloadLink)
             ->run();
     }
