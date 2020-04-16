@@ -183,7 +183,7 @@ class CloneCommands extends AbstractCommands
         $this->generateAsdaWgetInputFile($filename, $options);
         $tasks[] = $this->taskExec('wget')
             ->option('-O', $options['dumpfile'] . '.gz')
-            ->option('-i', this::TEMP_INPUTFILE)
+            ->option('-i', self::TEMP_INPUTFILE)
             ->option('-A', 'sql.gz')
             ->option('-P', './');
 
@@ -194,7 +194,7 @@ class CloneCommands extends AbstractCommands
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
             ->arg('latest.sh1')
-            ->arg(this::TEMP_INPUTFILE);
+            ->arg(self::TEMP_INPUTFILE);
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -224,7 +224,7 @@ class CloneCommands extends AbstractCommands
             ->run();
 
         $this->taskExec('wget')
-            ->option('-i', this::TEMP_INPUTFILE)
+            ->option('-i', self::TEMP_INPUTFILE)
             ->option('-O', 'latest.sh1')
             ->option('-A', '.sh1')
             ->option('-P', './')
@@ -258,7 +258,7 @@ class CloneCommands extends AbstractCommands
         $downloadLink = 'https://' . $options['asda-user'] . ':' . $options['asda-password'] . '@' . $url . '/' . $filename;
 
         $tasks[] = $this->taskFilesystemStack()
-            ->taskWriteToFile(this::TEMP_INPUTFILE)
+            ->taskWriteToFile(self::TEMP_INPUTFILE)
             ->line($downloadLink)
             ->run();
     }
