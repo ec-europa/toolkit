@@ -173,7 +173,7 @@ class ToolCommands extends AbstractCommands
         $hasBeenQaEd = isset($modules[$packageName]);
         $wasRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
         $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
-        $packageVersion = isset($package['extra']['drupal']['version']) ? str_replace('8.x-', '', $package['extra']['drupal']['version']) : $package['version'];
+        $packageVersion = isset($package['extra']['drupal']['version']) ? explode('+', str_replace('8.x-', '', $package['extra']['drupal']['version']))[0] : $package['version'];
 
         // Only validate module components for this time.
         if (isset($package['type']) && $package['type'] === 'drupal-module') {
@@ -197,10 +197,14 @@ class ToolCommands extends AbstractCommands
             if ($wasNotRejected) {
                 # Once all projects are using Toolkit >=4.1.0, the 'version' key
                 # may be removed from the endpoint: /api/v1/package-reviews.
-                $moduleConflict = !empty($modules[$packageName]['conflict']) ? $modules[$packageName]['conflict'] : null;
-                if (!is_null($moduleConflict) && Semver::satisfies($packageVersion, $moduleConflict)) {
-                    $this->say("Package $packageName:$packageVersion does not meet version constraint: $moduleConflict.");
-                    $this->whitelistComponentsFailed = true;
+                $constraints = [ 'whitelist' => false, 'blacklist' => true ];
+                foreach($constraints as $constraint => $result) {
+                    $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
+
+                    if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
+                        $this->say("Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.");
+                        $this->whitelistComponentsFailed = true;
+                    }
                 }
             }
         }
