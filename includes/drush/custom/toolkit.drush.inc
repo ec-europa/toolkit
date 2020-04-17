@@ -270,7 +270,8 @@ function drush_toolkit_check_modules_minimum_version($project_id = NULL) {
       if (strpos($modulePath, 'sites/') !== false &&
         !empty($moduleInfo['version']) && $moduleProject == $moduleId) {
   
-        // Compare actual module version with the minimum version authorised.
+        // Check if the module version satisfies the whitelist/blacklist version
+        // constraints.
         $moduleConstraints = getVersionConstraints('drupal/' . $moduleProject, $modulesArray);
         $constraints = [ 'whitelist' => false, 'blacklist' => true ];
         $moduleVersion = explode('+', str_replace('7.x-', '', $moduleInfo['version']))[0];
@@ -355,7 +356,7 @@ function drush_toolkit_check_modules_unused($path = 'sites', $make = '../resourc
 }
 
 
-// Helper function to get the minimum accepted module version.
+// Helper function to get the whitelist and blacklist version constraints.
 function getVersionConstraints($moduleName, $modulesArray) {
   foreach ($modulesArray as $module) {
     if ($module['name'] === $moduleName) {
