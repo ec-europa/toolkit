@@ -67,14 +67,14 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Check composer.json for components that are not whitelisted.
+     * Check composer.json for components that are not whitelisted/blacklisted.
      *
-     * @command toolkit:whitelist-components
+     * @command toolkit:component-check
      *
-     * @option endpoint The endpoint for the components whitelist
+     * @option endpoint The endpoint for the components whitelist/blacklist
      * @option blocker  Whether or not the command should exit with errorstatus
      */
-    public function whitelistComponents(array $options = [
+    public function componentCheck(array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
         'blocker' => InputOption::VALUE_REQUIRED,
         'test-command' => false,
@@ -83,7 +83,7 @@ class ToolCommands extends AbstractCommands
         // Currently undocumented in this class. Because I don't know how to
         // provide such a property to one single function other than naming the
         // failed property exaclty for this function.
-        $this->whitelistComponentsFailed = false;
+        $this->componentCheckFailed = false;
         $blocker = $options['blocker'];
         $endpointUrl = $options['endpoint'];
         $basicAuth = getenv('QA_API_BASIC_AUTH') !== false ? getenv('QA_API_BASIC_AUTH') : '';
@@ -144,13 +144,13 @@ class ToolCommands extends AbstractCommands
     protected function returnStatus($blocker)
     {
         // If the validation failed and we have a blocker, then return 1.
-        if ($this->whitelistComponentsFailed && $blocker) {
+        if ($this->componentCheckFailed && $blocker) {
             $this->io()->error('Failed the components whitelist check. Please contact the QA team.');
             return 1;
         }
 
         // If the validation failed and blocker was disabled, then return 0.
-        if ($this->whitelistComponentsFailed && !$blocker) {
+        if ($this->componentCheckFailed && !$blocker) {
             $this->io()->warning('Failed the components whitelist check. Please contact the QA team.');
             return 0;
         }
@@ -180,7 +180,7 @@ class ToolCommands extends AbstractCommands
             // If module was not reviewed yet.
             if (!$hasBeenQaEd) {
                 $this->say("Package $packageName:$packageVersion has not been reviewed by QA.");
-                $this->whitelistComponentsFailed = true;
+                $this->componentCheckFailed = true;
             }
 
             // If module was rejected.
@@ -190,7 +190,7 @@ class ToolCommands extends AbstractCommands
                 // If module was not allowed in project.
                 if (!$allowedInProject) {
                     $this->say("Package $packageName:$packageVersion has been rejected by QA.");
-                    $this->whitelistComponentsFailed = true;
+                    $this->componentCheckFailed = true;
                 }
             }
 
@@ -203,7 +203,7 @@ class ToolCommands extends AbstractCommands
 
                     if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
                         $this->say("Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.");
-                        $this->whitelistComponentsFailed = true;
+                        $this->componentCheckFailed = true;
                     }
                 }
             }
