@@ -69,6 +69,12 @@ class InstallCommands extends AbstractCommands
         $tasks[] = $this->taskExec('./vendor/bin/run toolkit:install-dump');
         $tasks[] = $this->taskExec('./vendor/bin/run toolkit:run-deploy');
 
+        // Collect and execute list of commands set on local runner.yml.
+        $commands = $this->getConfig()->get("toolkit.install.clone.commands");
+        if (!empty($commands)) {
+            $tasks[] = $this->taskCollectionFactory($commands);
+        }
+
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
     }
