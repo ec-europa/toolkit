@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use Composer\Semver\Semver;
 use Symfony\Component\Console\Input\InputOption;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 
@@ -66,14 +67,14 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Check composer.json for components that are not whitelisted.
+     * Check composer.json for components that are not whitelisted/blacklisted.
      *
-     * @command toolkit:whitelist-components
+     * @command toolkit:component-check
      *
-     * @option endpoint The endpoint for the components whitelist
+     * @option endpoint The endpoint for the components whitelist/blacklist
      * @option blocker  Whether or not the command should exit with errorstatus
      */
-    public function whitelistComponents(array $options = [
+    public function componentCheck(array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
         'blocker' => InputOption::VALUE_REQUIRED,
         'test-command' => false,
@@ -82,7 +83,7 @@ class ToolCommands extends AbstractCommands
         // Currently undocumented in this class. Because I don't know how to
         // provide such a property to one single function other than naming the
         // failed property exaclty for this function.
-        $this->whitelistComponentsFailed = false;
+        $this->componentCheckFailed = false;
         $blocker = $options['blocker'];
         $endpointUrl = $options['endpoint'];
         $basicAuth = getenv('QA_API_BASIC_AUTH') !== false ? getenv('QA_API_BASIC_AUTH') : '';
@@ -102,18 +103,18 @@ class ToolCommands extends AbstractCommands
                     // Lines below shoul trow a warning.
                     ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/unreviewed'],
                     ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/devel'],
-                    ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/allowed_formats'],
+                    ['type' => 'drupal-module', 'version' => '1.0-alpha1', 'name' => 'drupal/xmlsitemap'],
                     // Allowed for single project jrc-k4p, otherwise trows warning.
                     ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/active_facet_pills'],
-                    // Allowed dev version if the Drupal version is bigger than
-                    // the minimum required version.
+                    // Allowed dev version if the Drupal version meets the
+                    // conflict version constraints.
                     [
                         'version' => 'dev-1.x',
                         'type' => 'drupal-module',
-                        'name' => 'drupal/autologout',
+                        'name' => 'drupal/views_bulk_operations',
                         'extra' => [
                             'drupal' => [
-                                'version' => '8.x-1.0+15-dev'
+                                'version' => '8.x-3.4+15-dev'
                             ]
                         ]
                     ]
@@ -143,13 +144,13 @@ class ToolCommands extends AbstractCommands
     protected function returnStatus($blocker)
     {
         // If the validation failed and we have a blocker, then return 1.
-        if ($this->whitelistComponentsFailed && $blocker) {
+        if ($this->componentCheckFailed && $blocker) {
             $this->io()->error('Failed the components whitelist check. Please contact the QA team.');
             return 1;
         }
 
         // If the validation failed and blocker was disabled, then return 0.
-        if ($this->whitelistComponentsFailed && !$blocker) {
+        if ($this->componentCheckFailed && !$blocker) {
             $this->io()->warning('Failed the components whitelist check. Please contact the QA team.');
             return 0;
         }
@@ -162,24 +163,24 @@ class ToolCommands extends AbstractCommands
      * @param array $modules The modules list.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      *
      * @return void
      */
     protected function validateComponent($package, $modules)
     {
-        $name = $package['name'];
-        $packageName = str_replace('drupal/', '', $name);
+        $packageName = $package['name'];
         $hasBeenQaEd = isset($modules[$packageName]);
         $wasRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
         $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
-        $packageVersion = isset($package['extra']['drupal']['version']) ? str_replace('8.x-', '', $package['extra']['drupal']['version']) : $package['version'];
+        $packageVersion = isset($package['extra']['drupal']['version']) ? explode('+', str_replace('8.x-', '', $package['extra']['drupal']['version']))[0] : $package['version'];
 
         // Only validate module components for this time.
         if (isset($package['type']) && $package['type'] === 'drupal-module') {
             // If module was not reviewed yet.
             if (!$hasBeenQaEd) {
-                $this->say("Package $name:$packageVersion has not been reviewed by QA.");
-                $this->whitelistComponentsFailed = true;
+                $this->say("Package $packageName:$packageVersion has not been reviewed by QA.");
+                $this->componentCheckFailed = true;
             }
 
             // If module was rejected.
@@ -188,17 +189,22 @@ class ToolCommands extends AbstractCommands
                 $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
                 // If module was not allowed in project.
                 if (!$allowedInProject) {
-                    $this->say("Package $name:$packageVersion has been rejected by QA.");
-                    $this->whitelistComponentsFailed = true;
+                    $this->say("Package $packageName:$packageVersion has been rejected by QA.");
+                    $this->componentCheckFailed = true;
                 }
             }
 
-            // If module was approved check the minimum required version.
             if ($wasNotRejected) {
-                $moduleVersion = str_replace('8.x-', '', $modules[$packageName]['version']);
-                if (version_compare($packageVersion, $moduleVersion) === -1) {
-                    $this->say("Package $name:$packageVersion minimum allowed version is $moduleVersion.");
-                    $this->whitelistComponentsFailed = true;
+                # Once all projects are using Toolkit >=4.1.0, the 'version' key
+                # may be removed from the endpoint: /api/v1/package-reviews.
+                $constraints = [ 'whitelist' => false, 'blacklist' => true ];
+                foreach ($constraints as $constraint => $result) {
+                    $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
+
+                    if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
+                        $this->say("Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.");
+                        $this->componentCheckFailed = true;
+                    }
                 }
             }
         }
