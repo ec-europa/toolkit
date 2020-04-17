@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputOption;
 class InstallCommands extends AbstractCommands
 {
 
+    use TaskRunnerTasks\CollectionFactory\loadTasks;
     use TaskRunnerTasks\Drush\loadTasks;
 
     /**
