@@ -271,11 +271,15 @@ function drush_toolkit_check_modules_minimum_version($project_id = NULL) {
         !empty($moduleInfo['version']) && $moduleProject == $moduleId) {
   
         // Compare actual module version with the minimum version authorised.
-        $moduleConflict = getVersionConstraint('drupal/' . $moduleProject, $modulesArray);
-        $moduleVersion = str_replace('7.x-', '', $moduleInfo['version']);
-        if (!is_null($moduleConflict) && Semver::satisfies($moduleVersion, $moduleConflict)) {
-          drush_log('The module ' . $moduleId . ':' . $moduleVersion . ' does not meet the version constraint: ' . $moduleConflict, LogLevel::WARNING);
-          $failed = true;
+        $moduleConstraints = getVersionConstraints('drupal/' . $moduleProject, $modulesArray);
+        $constraints = [ 'whitelist' => false, 'blacklist' => true ];
+        $moduleVersion = explode('+', str_replace('7.x-', '', $moduleInfo['version']))[0];
+        foreach ($constraints as $constraint => $result) {
+            $constraintValue = $moduleConstraints[$constraint];
+            if (!is_null($constraintValue) && Semver::satisfies($moduleVersion, $constraintValue) === $result) {
+                drush_log("The module $moduleId:$moduleVersion does not meet the $constraint version constraint: $constraintValue.", LogLevel::WARNING);
+                $failed = true;
+            }
         }
       }
     }
@@ -352,10 +356,13 @@ function drush_toolkit_check_modules_unused($path = 'sites', $make = '../resourc
 
 
 // Helper function to get the minimum accepted module version.
-function getVersionConstraint($moduleName, $modulesArray) {
+function getVersionConstraints($moduleName, $modulesArray) {
   foreach ($modulesArray as $module) {
     if ($module['name'] === $moduleName) {
-      return !empty($module['conflict']) ? $module['conflict'] : null;
+      return [
+        'blacklist' => !empty($module['blacklist']) ? $module['blacklist'] : null,
+        'whitelist' => !empty($module['whitelist']) ? $module['whitelist'] : null,
+      ];
     }
   }
 }
