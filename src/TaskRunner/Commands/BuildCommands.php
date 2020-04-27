@@ -145,13 +145,19 @@ class BuildCommands extends AbstractCommands
             'private_folder' => getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== false ? $options['root'] . '/' . getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : $options['root'] . '/sites/default/private_files',
             'temp_folder' => getenv('DRUPAL_FILE_TEMP_PATH') !== false ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp',
         ];
-        
+
         foreach ($folders as $folder) {
             if (!is_dir($folder)) {
                 $tasks[] = $this->taskFilesystemStack()
                     ->mkdir($folder);
             }
         }
+
+        // Update permissions of /files folder.
+        $tasks[] = $this->taskGitStack()
+            ->stopOnFail()
+            ->exec("find . -type d -path './sites/default/files' -exec chmod g+ws {} \;")
+            ->exec("find . -type f -path './sites/default/files/*' -exec chmod 664 {} \;");
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -175,7 +181,7 @@ class BuildCommands extends AbstractCommands
     ])
     {
         $tasks = [];
-        
+
         $question = 'Are you sure you want to proceed? This action cleans up your git repository of any tracked AND untracked files AND folders!';
         if ($this->confirm($question, false)) {
             // Clean git.
