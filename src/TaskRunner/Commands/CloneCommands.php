@@ -61,6 +61,7 @@ class CloneCommands extends AbstractCommands
             $config = new Config();
             $loader = new YamlConfigLoader();
             $processor = new ConfigProcessor();
+            $processor->add($this->getConfig()->export());
             $processor->extend($loader->load($options['sequence-file']));
             $config->import($processor->export());
             $sequence = $config->get($options['sequence-key']);
