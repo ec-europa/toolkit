@@ -156,8 +156,7 @@ class BuildCommands extends AbstractCommands
                 $tasks[] = $this->taskExecStack()
                     ->stopOnFail()
                     ->exec("mkdir -p $folder")
-                    ->exec("find $folder -type d -exec chmod ug=rwx,o= '{}' \;")
-                    ->exec("find $folder -type f -exec chmod ug=rw,o= '{}' \;");
+                    ->exec("chmod ug=rwx,o= $folder");
             }
         }
 
