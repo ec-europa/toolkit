@@ -151,14 +151,14 @@ class BuildCommands extends AbstractCommands
         foreach ($folders as $folder) {
             if (!is_dir($folder)) {
                 // Create folder and set permissions.
+                // Permissions for files folders taken from:
+                // https://www.drupal.org/node/244924#linux-servers
                 $tasks[] = $this->taskExecStack()
                     ->stopOnFail()
                     ->exec("mkdir -p $folder")
-                    // Permissions for files folders taken from:
-                    // https://www.drupal.org/node/244924#linux-servers
                     ->exec("find $folder -type d -exec chmod ug=rwx,o= '{}' \;")
                     ->exec("find $folder -type f -exec chmod ug=rw,o= '{}' \;");
-                }
+            }
         }
 
         // Build and return task collection.
