@@ -128,11 +128,12 @@ class BuildCommands extends AbstractCommands
     ])
     {
         $tasks = [];
+        $root = $options['root'];
 
         // Run site setup.
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec('./vendor/bin/run drupal:settings-setup --root=' . $options['root']);
+            ->exec('./vendor/bin/run drupal:settings-setup --root=' . $root);
 
         // Collect and execute list of commands set on local runner.yml.
         $commands = $this->getConfig()->get("toolkit.build.dev.commands");
@@ -142,22 +143,23 @@ class BuildCommands extends AbstractCommands
 
         // Double check presence of required folders.
         $folders = [
-            'private_folder' => getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== false ? $options['root'] . '/' . getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : $options['root'] . '/sites/default/private_files',
+            'public_folder' => $root . '/sites/default/files',
+            'private_folder' => getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== false ? $root . '/' . getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : $root . '/sites/default/private_files',
             'temp_folder' => getenv('DRUPAL_FILE_TEMP_PATH') !== false ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp',
         ];
 
         foreach ($folders as $folder) {
             if (!is_dir($folder)) {
-                $tasks[] = $this->taskFilesystemStack()
-                    ->mkdir($folder);
-            }
+                // Create folder and set permissions.
+                $tasks[] = $this->taskExecStack()
+                    ->stopOnFail()
+                    ->exec("mkdir -p $folder")
+                    // Permissions for files folders taken from:
+                    // https://www.drupal.org/node/244924#linux-servers
+                    ->exec("find $folder -type d -exec chmod ug=rwx,o= '{}' \;")
+                    ->exec("find $folder -type f -exec chmod ug=rw,o= '{}' \;");
+                }
         }
-
-        // Update permissions of /files folder.
-        $tasks[] = $this->taskGitStack()
-            ->stopOnFail()
-            ->exec("find . -type d -path './sites/default/files' -exec chmod g+ws {} \;")
-            ->exec("find . -type f -path './sites/default/files/*' -exec chmod 664 {} \;");
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
