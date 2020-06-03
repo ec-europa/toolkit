@@ -4,7 +4,7 @@
     <?php
     $foo = 'bar';
   initial_settings: ~
-  command_arguments: ''
+  command_options: ~
   expectations:
     - file: "build/sites/default/settings.php"
       contains: |
@@ -51,7 +51,7 @@
     <?php
     $foo = 'bar';
   initial_settings: ~
-  command_arguments: ''
+  command_options: ~
   expectations:
     - file: "build/sites/default/settings.php"
       contains: |
@@ -102,7 +102,7 @@
     <?php
     $foo = 'bar';
   initial_settings: ~
-  command_arguments: '--dev'
+  command_options: '--dev'
   expectations:
     - file: "build/sites/default/settings.php"
       contains: |
@@ -151,7 +151,7 @@
   initial_settings: |
     <?php
     $hash = '12345';
-  command_arguments: ''
+  command_options: ~
   expectations:
     - file: "build/sites/default/settings.php"
       contains: |

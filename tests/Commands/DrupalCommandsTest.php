@@ -35,14 +35,14 @@ namespace EcEuropa\Toolkit\Tests\Commands {
          *   A initial default settings.
          * @param mixed $initial_settings
          *   A initial settings.
-         * @param string $command_arguments
-         *   Additional command arguments.
+         * @param string|null $command_options
+         *   Additional command options.
          * @param array $expected
          *   Test assertions.
          *
          * @dataProvider dataProvider
          */
-        public function testDrupalSettingsSetup(array $config, $initial_default_settings, $initial_settings, string $command_arguments, array $expected)
+        public function testDrupalSettingsSetup(array $config, $initial_default_settings, $initial_settings, ?string $command_options, array $expected)
         {
             // Setup test Task Runner configuration file.
             $configFile = $this->getSandboxFilepath('runner.yml');
@@ -61,7 +61,8 @@ namespace EcEuropa\Toolkit\Tests\Commands {
             }
 
             // Run command.
-            $input = new StringInput('drupal:settings-setup --working-dir=' . $this->getSandboxRoot() . " $command_arguments");
+            $command_options = $command_options ? " {$command_options}" : '';
+            $input = new StringInput('drupal:settings-setup --working-dir=' . $this->getSandboxRoot() . $command_options);
             $runner = new TaskRunner($input, new BufferedOutput(), $this->getClassLoader());
             $runner->run();
 
