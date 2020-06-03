@@ -40,17 +40,27 @@ class DrupalCommands extends Drupal8Commands
      *   file
      *
      * You can specify additional settings.php portions in your local
-     * runner.yml.dist/runner.yml
-     * as shown below:
+     * runner.yml.dist/runner.yml  as shown below:
      *
      * > drupal:
      * >   additional_settings: |
-     * >   $config['cas.settings']['server']['hostname'] = getenv('CAS_HOSTNAME'),
-     * >   $config['cas.settings']['server']['port'] = getenv('CAS_PORT');
+     * >     $config['cas.settings']['server']['hostname'] = getenv('CAS_HOSTNAME');
+     * >     $config['cas.settings']['server']['port'] = getenv('CAS_PORT');
+     *
+     * Sometimes, during development and testing, some projects are using
+     * specific settings settings to help development or to mock services during
+     * testing. Additional development/testing settings can be added by setting
+     * a drupal.additional_dev_settings in your local runner.yml.dist/runner.yml
+     * as shown below. Note that the command should be called with the --dev
+     * option in order to add the development/testing settings additions:
+     *
+     * > drupal:
+     * >   additional_dev_settings: |
+     * >     $settings['extension_discovery_scan_tests'] = TRUE;
+     * >     $settings['skip_permissions_hardening'] = TRUE;
      *
      * You can specify additional service parameters in your local
-     * runner.yml.dist/runner.yml
-     * as shown below:
+     * runner.yml.dist/runner.yml as shown below:
      *
      * > drupal:
      * >   service_parameters:
@@ -73,12 +83,15 @@ class DrupalCommands extends Drupal8Commands
      * @option force                    Drupal force generation of a new
      *                                  settings.php.
      * @option skip-permissions-setup   Drupal skip permissions setup.
+     * @option dev                      Adds development environment specific
+     *                                  code in settings.php.
      */
     public function settingsSetup(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
         'sites-subdir' => InputOption::VALUE_REQUIRED,
         'force' => false,
         'skip-permissions-setup' => false,
+        'dev' => false,
     ])
     {
         // Get default.settings.php and settings.php paths.
@@ -101,7 +114,7 @@ class DrupalCommands extends Drupal8Commands
         // Append Toolkit settings block to settings.php file.
         $collection[] = $this->taskWriteToFile($settings_path)
             ->append()
-            ->text($this->getToolkitSettingsBlock());
+            ->text($this->getToolkitSettingsBlock($options['dev']));
 
         // Set necessary permissions on the default folder.
         if (!$options['skip-permissions-setup']) {
@@ -125,13 +138,23 @@ class DrupalCommands extends Drupal8Commands
     /**
      * Helper function to update settings.php file.
      *
+     * @param bool $dev_mode
+     *   If the settings block is build in development mode.
+     *
      * @return string
      *   Database configuration to be attached to Drupal settings.php.
      */
-    protected function getToolkitSettingsBlock()
+    protected function getToolkitSettingsBlock(bool $dev_mode = false): string
     {
         $additionalSettings = $this->getConfig()->get('drupal.additional_settings', '');
         $additionalSettings = trim($additionalSettings);
+
+        $additionalDevSettings = '';
+        if ($dev_mode && $this->getConfig()->has('drupal.additional_dev_settings')) {
+            $additionalDevSettings = $this->getConfig()->get('drupal.additional_dev_settings', '');
+            $additionalDevSettings = "\n\n" . trim($additionalDevSettings);
+        }
+
         $hashSalt = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(random_bytes(55)));
 
         return <<< EOF
@@ -156,7 +179,7 @@ class DrupalCommands extends Drupal8Commands
 \$settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
 \$settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') !== FALSE ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp';
 
-{$additionalSettings}
+{$additionalSettings}{$additionalDevSettings}
 
 // Load environment development override configuration, if available.
 // Keep this code block at the end of this file to take full effect.

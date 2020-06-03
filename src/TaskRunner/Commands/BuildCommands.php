@@ -132,7 +132,7 @@ class BuildCommands extends AbstractCommands
         // Run site setup.
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec('./vendor/bin/run drupal:settings-setup --root=' . $options['root']);
+            ->exec('./vendor/bin/run drupal:settings-setup --dev --root=' . $options['root']);
 
         // Collect and execute list of commands set on local runner.yml.
         $commands = $this->getConfig()->get("toolkit.build.dev.commands");

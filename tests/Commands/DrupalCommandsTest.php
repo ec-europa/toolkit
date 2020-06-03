@@ -35,19 +35,20 @@ namespace EcEuropa\Toolkit\Tests\Commands {
          *   A initial default settings.
          * @param mixed $initial_settings
          *   A initial settings.
+         * @param string $command_arguments
+         *   Additional command arguments.
          * @param array $expected
          *   Test assertions.
          *
          * @dataProvider dataProvider
          */
-        public function testDrupalSettingsSetup(array $config, $initial_default_settings, $initial_settings, array $expected)
+        public function testDrupalSettingsSetup(array $config, $initial_default_settings, $initial_settings, string $command_arguments, array $expected)
         {
             // Setup test Task Runner configuration file.
             $configFile = $this->getSandboxFilepath('runner.yml');
             file_put_contents($configFile, Yaml::dump($config));
 
             // Setup test directory.
-            $sites_subdir = isset($config['drupal']['site']['sites_subdir']) ? $config['drupal']['site']['sites_subdir'] : 'default';
             $settings_root = $this->getSandboxRoot() . '/build/sites/default';
             mkdir($settings_root, 0777, true);
 
@@ -60,7 +61,7 @@ namespace EcEuropa\Toolkit\Tests\Commands {
             }
 
             // Run command.
-            $input = new StringInput('drupal:settings-setup --working-dir=' . $this->getSandboxRoot());
+            $input = new StringInput('drupal:settings-setup --working-dir=' . $this->getSandboxRoot() . " $command_arguments");
             $runner = new TaskRunner($input, new BufferedOutput(), $this->getClassLoader());
             $runner->run();
 
