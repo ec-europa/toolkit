@@ -6,6 +6,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
+use Robo\Robo;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -45,20 +46,27 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-dist
      *
-     * @option tag       Version tag for manifest.
-     * @option hash      Commit hash for manifest.
      * @option root      Drupal root.
      * @option dist-root Distribution package root.
      * @option keep      Comma separated list of files and folders to keep.
+     * @option tag       (deprecated) Version tag for manifest.
+     * @option sha       (deprecated) Commit hash for manifest.
      */
     public function buildDist(array $options = [
-        'tag' => InputOption::VALUE_OPTIONAL,
-        'sha' => InputOption::VALUE_OPTIONAL,
         'root' => InputOption::VALUE_REQUIRED,
         'dist-root' => InputOption::VALUE_REQUIRED,
         'keep' => InputOption::VALUE_REQUIRED,
+        'tag' => InputOption::VALUE_OPTIONAL,
+        'sha' => InputOption::VALUE_OPTIONAL,
     ])
     {
+        if ($options['tag']) {
+            @trigger_error('Passing the --tag option is deprecated in ec-europa/toolkit:4.1.0 and is removed from ec-europa/toolkit:5.0.0. The tag is automatically computed.', E_USER_DEPRECATED);
+        }
+        if ($options['sha']) {
+            @trigger_error('Passing the --sha option is deprecated in ec-europa/toolkit:4.1.0 and is removed from ec-europa/toolkit:5.0.0. The commit SHA is automatically computed.', E_USER_DEPRECATED);
+        }
+
         $tasks = [];
 
         // Delete and (re)create the dist folder.
@@ -91,14 +99,14 @@ class BuildCommands extends AbstractCommands
             ->exec('find ' . $options['dist-root'] . ' -maxdepth 1 ' . $keep . ' -exec rm -rf {} +');
 
         // Prepare sha and tag variables.
-        $sha = !empty($options['sha']) ? ['sha' => $options['sha']] : [];
-        $tag = !empty($options['tag']) ? ['version' => $options['tag']] : ['version' => 'latest'];
+        $tag = $options['tag'] ?? $this->getGitTag();
+        $hash = $options['sha'] ?? $this->getGitCommitHash();
 
         // Write version tag in manifest.json and VERSION.txt.
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')->text(
-            json_encode(array_merge($tag, $sha), JSON_PRETTY_PRINT)
+            json_encode(['version' => $tag, 'sha' => $hash], JSON_PRETTY_PRINT)
         );
-        $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag['version']);
+        $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
 
         // Collect and execute list of commands set on local runner.yml.
         $commands = $this->getConfig()->get("toolkit.build.dist.commands");
@@ -162,7 +170,7 @@ class BuildCommands extends AbstractCommands
     ])
     {
         $tasks = [];
-        
+
         $question = 'Are you sure you want to proceed? This action cleans up your git repository of any tracked AND untracked files AND folders!';
         if ($this->confirm($question, false)) {
             // Clean git.
@@ -179,5 +187,27 @@ class BuildCommands extends AbstractCommands
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Returns the current Git tag.
+     *
+     * @return string
+     *   Current Git tag.
+     */
+    protected function getGitTag(): string
+    {
+        return trim(Robo::getContainer()->get('repository')->run('describe', ['--tags']));
+    }
+
+    /**
+     * Returns the current Git commit hash.
+     *
+     * @return string
+     *   Current Git hash.
+     */
+    protected function getGitCommitHash(): string
+    {
+        return Robo::getContainer()->get('repository')->getHead()->getCommitHash();
     }
 }
