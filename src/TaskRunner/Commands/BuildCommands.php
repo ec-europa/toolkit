@@ -79,10 +79,11 @@ class BuildCommands extends AbstractCommands
             ->noDev();
 
         // Setup the site.
+        $runner_bin = $this->getConfig()->get('runner.bin_dir') . '/run';
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec('./vendor/bin/run drupal:permissions-setup --root=' . $options['dist-root'] . '/' . $options['root'])
-            ->exec('./vendor/bin/run drupal:settings-setup --root=' . $options['dist-root'] . '/' . $options['root']);
+            ->exec($runner_bin . ' drupal:permissions-setup --root=' . $options['dist-root'] . '/' . $options['root'])
+            ->exec($runner_bin . ' drupal:settings-setup --root=' . $options['dist-root'] . '/' . $options['root']);
 
         // Clean up non-required files.
         $keep = '! -name "' . $options['dist-root'] . '" ! -name "' . implode('" ! -name "', explode(',', $options['keep'])) . '"';
@@ -130,9 +131,10 @@ class BuildCommands extends AbstractCommands
         $tasks = [];
 
         // Run site setup.
+        $runner_bin = $this->getConfig()->get('runner.bin_dir') . '/run';
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec('./vendor/bin/run drupal:settings-setup --root=' . $options['root']);
+            ->exec($runner_bin . ' drupal:settings-setup --root=' . $options['root']);
 
         // Collect and execute list of commands set on local runner.yml.
         $commands = $this->getConfig()->get("toolkit.build.dev.commands");
@@ -162,7 +164,7 @@ class BuildCommands extends AbstractCommands
     ])
     {
         $tasks = [];
-        
+
         $question = 'Are you sure you want to proceed? This action cleans up your git repository of any tracked AND untracked files AND folders!';
         if ($this->confirm($question, false)) {
             // Clean git.
@@ -172,9 +174,10 @@ class BuildCommands extends AbstractCommands
             // Run composer install.
             $tasks[] = $this->taskComposerInstall('composer');
             // Run toolkit:build-dev.
+            $runner_bin = $this->getConfig()->get('runner.bin_dir') . '/run';
             $tasks[] = $this->taskExecStack()
                 ->stopOnFail()
-                ->exec('./vendor/bin/run toolkit:build-dev --root=' . $options['root']);
+                ->exec($runner_bin . ' toolkit:build-dev --root=' . $options['root']);
         }
 
         // Build and return task collection.

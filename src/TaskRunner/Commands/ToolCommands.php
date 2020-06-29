@@ -33,11 +33,12 @@ class ToolCommands extends AbstractCommands
     {
         $tasks = [];
 
+        $drush_bin = $this->getConfig()->get('runner.bin_dir') . '/drush';
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec('./vendor/bin/drush -y config-set system.performance css.preprocess 0')
-            ->exec('./vendor/bin/drush -y config-set system.performance js.preprocess 0')
-            ->exec('./vendor/bin/drush cache:rebuild');
+            ->exec($drush_bin . ' -y config-set system.performance css.preprocess 0')
+            ->exec($drush_bin . ' -y config-set system.performance js.preprocess 0')
+            ->exec($drush_bin . ' cache:rebuild');
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
