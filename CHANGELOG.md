@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 3.0.32
+  * MULTISITE-23903: Raise minimum version allowed to qa-automation:3.1.0.
+
 ## Version 3.0.31
   * MULTISITE-22993: Fix drush commands that target QA website endpoints.
   * MULTISITE-23052: l10n_update temporary path.
