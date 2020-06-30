@@ -2522,7 +2522,7 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "3.0.14",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
