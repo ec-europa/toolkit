@@ -49,6 +49,17 @@ Toolkit will load the credentials necessary to download the sanitized database d
 - ASDA_PASSWORD
 ```
 
+If you want to run extra commands after the `toolkit:install-clone` command you
+can configure the following in your `runner.yml.dist` file:
+
+```yaml
+toolkit:
+  install:
+    clone:
+      commands:
+        - ./vendor/bin/drush status
+```
+
 When running the command toolkit:install-clone it will run the following sequence of commands after the database import:
 
 ```
