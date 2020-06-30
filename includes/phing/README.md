@@ -25,8 +25,6 @@ category. Current catgorized build files are:
 
 1. **deprecated.xml**: contains a mapping of subsite-starterkit to toolkit
 targets.
-2. **docker.xml**: contains phing targets to manage docker containers.
-(experimental!)
 3. **drush.xml**: contains drush helper targets that help manage your
 Drupal installation.
 4. **toolkit.xml**: targets related to setup and configuration of the

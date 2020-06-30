@@ -75,6 +75,9 @@ phpcs.prepush.enable = 1
 phpcs.prepush.source = ${toolkit.dir.vendor}/pfrenssen/phpcs-pre-push/pre-push
 phpcs.prepush.destination = ${project.basedir}/resources/git/hooks/pre-push/phpcs
 
+# Compatibility settings.
+phpcs.compat.version = 7.3
+
 
 # Toolkit location: ./includes/phing/build/test/behat.props
 # ------------------------------------------------------------------------------
@@ -204,7 +207,7 @@ project.url.production = https://ec.europa.eu/${project.id}
 # --------------------
 devel.mdls.dir = devel
 devel.mdls.en = devel maillog stage_file_proxy
-devel.mdls.core.en =
+devel.mdls.dis =
 
 # Development variables.
 # ----------------------
@@ -226,6 +229,7 @@ drush.verbose = FALSE
 drush.rr.enabled = 1
 drush.rr.options = --fire-bazooka --no-cache-clear
 drush.rr.disable = '', ''
+drush.project.url.base = ${project.url.base}
 
 # Docker. (TODO)
 # ------------------------
@@ -234,6 +238,7 @@ docker.project.id = environment
 # Database download settings.
 # ---------------------------
 db.dl.filename =
+db.dl.filename.hash = latest.sh1
 db.dl.dir = fpfis/files-for/automate_dumps
 db.dl.host = webgate.ec.europa.eu
 db.dl.url = ${db.dl.host}/${db.dl.dir}/${project.id}/
@@ -282,6 +287,7 @@ platform.package.provider = git-hub
 platform.package.provider.token = # TODO: Github API limit.
 platform.package.repository = ec-europa/platform-dev
 platform.package.download.location = https://github.com/${platform.package.repository}/releases/download/${platform.package.version.current}
+platform.package.download.prerelease = false
 platform.package.version = 2.5
 platform.multisite.mode = 1
 
@@ -313,6 +319,7 @@ resources.dir.composer.lock = ${resources.dir}/composer.lock
 resources.dir.favicon.ico = ${resources.dir}/favicon.ico
 resources.dir.devel.make = ${resources.dir}/devel.make
 resources.dir.site.make = ${resources.dir}/site.make
+resources.dir.patches = ${resources.dir}/patches
 
 tests.dir = ${project.basedir}/tests
 
@@ -346,6 +353,8 @@ build.subsite.composer.json = ${build.subsite.dir}/composer.json
 build.subsite.composer.lock = ${build.subsite.dir}/composer.lock
 build.subsite.dir = ${build.platform.dir.sites}/${build.site}
 build.subsite.dir.files = sites/${build.site}/files
+build.subsite.dir.translations = sites/${build.site}/translations
+build.subsite.dir.private_files = ${build.subsite.dir.files}/private_files
 build.subsite.dir.libraries = ${build.subsite.dir}/libraries
 build.subsite.dir.modules = ${build.subsite.dir}/modules
 build.subsite.dir.modules.contrib = ${build.subsite.dir.modules}/contrib
@@ -394,7 +403,7 @@ share.path.subsites.packages.test = ${share.path.subsites.packages}/test
 
 # Composer hook phingcall target lists. Space separated only.
 # -----------------------------------------------------------
-composer.hook.post.install = build-toolkit
+composer.hook.post.install = build-toolkit toolkit-notifications
 composer.hook.post.update =
 composer.hook.pre.install =
 composer.hook.pre.update =
@@ -425,6 +434,15 @@ drush.alias.docker = docker
 # ----------------------------
 drupal.update.free.access = FALSE
 drupal.hash.salt =
+
+# Drush module checks blocker flags.
+# ----------------------------------
+drush.toolkit-check-modules.blocker = 1
+drush.authorized-security.blocker = ${drush.toolkit-check-modules.blocker}
+drush.download-attribute.blocker = ${drush.toolkit-check-modules.blocker}
+drush.minimum-version.blocker = ${drush.toolkit-check-modules.blocker}
+drush.restricted.blocker = ${drush.toolkit-check-modules.blocker}
+drush.unused.blocker = ${drush.toolkit-check-modules.blocker}
 # Toolkit location: ./includes/phing/props/docker.props
 # ------------------------------------------------------------------------------
 # Default docker (fpfis) properties.
@@ -434,3 +452,5 @@ db.host = mysql
 solr.host = solr
 behat.base_url = http://web:8080
 behat.wd_host.url = http://selenium:4444/wd/hub
+
+

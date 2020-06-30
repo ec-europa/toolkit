@@ -3,7 +3,6 @@
 <project name="help" description="Contains all help file imports." default="">
 
     <!-- Finish import with starterkit build xml files. -->
-    <import file="${phing.dir.help}/help/docker.xml" />
     <import file="${phing.dir.help}/help/drush.xml" />
     <import file="${phing.dir.help}/help/general.xml" />
     <import file="${phing.dir.help}/help/github.xml" />

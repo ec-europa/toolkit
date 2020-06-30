@@ -100,9 +100,11 @@ Build a local development version of the site.
 `toolkit\phing build-subsite-dev`
 
 ##### Dependencies: 
+* drush-aliases-generate
 * project-modules-devel-make
 * project-subsite-backup
 * project-subsite-composer-dev
+* project-subsite-files-setup
 * project-subsite-restore
 * subsite-delete-dev
 * subsite-make

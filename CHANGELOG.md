@@ -1,5 +1,15 @@
 # Toolkit change log
 
+## Version 3.1.0
+  * MULTISITE-23074 Display pre-release project message
+  * MULTISITE-23072 Fix upgrade project message
+  * MULTISITE-23489 Alter PHP7 compatibility logic
+  * MULTISITE-23356 Add variables for poetry and varnish
+  * MULTISITE-23383 BBI - Build fails because of db tables prefixed
+  * MULTISITE-23379 Create docker-compose.yml for toolkit3
+  * MULTISITE-23441 Call to undefined function update_get_available()
+  * MULTISITE-23453 Refactor logic on minimum version checking to use version constraints
+
 ## Version 3.0.32
   * MULTISITE-23903: Raise minimum version allowed to qa-automation:3.1.0.
 

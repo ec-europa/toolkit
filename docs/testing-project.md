@@ -402,9 +402,7 @@ and check if your build is compatible with PHP 7.
 You can control the way it's run with the following properties:
 ```
 # Compatibility settings.
-phpcs.compat.version = 7.2
-phpcs.compat.checkreturn = true
-phpcs.compat.skip = false
+phpcs.compat.version = 7.3
 ```
 
 <details><p><summary>execute <code>./toolkit/phing test-run-phpcs-compatibility</code></summary></p>

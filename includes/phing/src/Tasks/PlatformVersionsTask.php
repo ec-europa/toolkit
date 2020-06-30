@@ -128,7 +128,15 @@ class PlatformVersionsTask extends \Task
         );
 
         // Check if the project is using the latest version, if not let user know.
+        $shortPackageVersionSet = substr($this->_packageVersion, 0, 3);
+        $shortPackageVersionLatest = substr($latest_version, 0, 3);
+
+        if ($shortPackageVersionSet != $shortPackageVersionLatest) {
+            $latest_version = $majors[$shortPackageVersionSet];
+        }
+
         $this->setLatestProp($latest_version);
+
         if ($this->versionprop != $latest_version) {
             $this->log(
                 "Please upgrade your project recommended version " . $latest_version  . ".",
@@ -138,6 +146,13 @@ class PlatformVersionsTask extends \Task
 
         $this->getProject()->setNewProperty('platform.package.version.latest', $latest_version);
         $this->getProject()->setNewProperty('platform.package.version.current', $this->versionprop);
+
+        if ($this->_prerelease == true) {
+            $this->log(
+                "Please be aware that you have enabled the downloading of pre-releases. Pre-releases are never deployed to production. So this feature should only be used for testing purposes.",
+                Project::MSG_WARN
+            );
+        }
 
     }//end main()
 
