@@ -2526,12 +2526,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "05621e3f3ea802e3c6385978dc9ed8d726891c11"
+                "reference": "d86df4d4eeb0e7ac2e35cbddca4950a39ac0ba5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/05621e3f3ea802e3c6385978dc9ed8d726891c11",
-                "reference": "05621e3f3ea802e3c6385978dc9ed8d726891c11",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/d86df4d4eeb0e7ac2e35cbddca4950a39ac0ba5e",
+                "reference": "d86df4d4eeb0e7ac2e35cbddca4950a39ac0ba5e",
                 "shasum": ""
             },
             "require": {
