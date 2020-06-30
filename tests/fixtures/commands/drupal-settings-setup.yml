@@ -24,7 +24,7 @@
         );
 
         // Location of the site configuration files, relative to the site root.
-        $config_directories['sync'] = '../config/sync';
+        $settings['config_sync_directory'] = '../config/sync';
 
         $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : 'YWJj';
         $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
@@ -53,12 +53,12 @@
   expectations:
     - file: "build/sites/default/settings.php"
       contains: |
-        <?php
-        $foo = 'bar';
+          <?php
+          $foo = 'bar';
 
-        // Start Toolkit settings block.
+          // Start Toolkit settings block.
 
-        $databases['default']['default'] = array (
+          $databases['default']['default'] = array (
           'database' => getenv('DRUPAL_DATABASE_NAME'),
           'username' => getenv('DRUPAL_DATABASE_USERNAME'),
           'password' => getenv('DRUPAL_DATABASE_PASSWORD'),
@@ -67,25 +67,25 @@
           'port' => getenv('DRUPAL_DATABASE_PORT'),
           'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
           'driver' => 'mysql',
-        );
+          );
 
-        // Location of the site configuration files, relative to the site root.
-        $config_directories['sync'] = '../config/sync';
+          // Location of the site configuration files, relative to the site root.
+          $settings['config_sync_directory'] = '../config/sync';
 
-        $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : 'YWJj';
-        $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
-        $settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') !== FALSE ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp';
+          $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : 'YWJj';
+          $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
+          $settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') !== FALSE ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp';
 
-        $config['cas.settings']['server']['hostname'] = getenv('CAS_HOSTNAME');
-        $config['cas.settings']['server']['port'] = getenv('CAS_PORT');
+          $config['cas.settings']['server']['hostname'] = getenv('CAS_HOSTNAME');
+          $config['cas.settings']['server']['port'] = getenv('CAS_PORT');
 
-        // Load environment development override configuration, if available.
-        // Keep this code block at the end of this file to take full effect.
-        if (file_exists($app_root . '/' . $site_path . '/settings.override.php')) {
+          // Load environment development override configuration, if available.
+          // Keep this code block at the end of this file to take full effect.
+          if (file_exists($app_root . '/' . $site_path . '/settings.override.php')) {
           include $app_root . '/' . $site_path . '/settings.override.php';
-        }
+          }
 
-        // End Toolkit settings block.
+          // End Toolkit settings block.
       not_contains: ~
 
 - configuration: []
@@ -115,7 +115,7 @@
         );
 
         // Location of the site configuration files, relative to the site root.
-        $config_directories['sync'] = '../config/sync';
+        $settings['config_sync_directory'] = '../config/sync';
 
         $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : 'YWJj';
         $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
