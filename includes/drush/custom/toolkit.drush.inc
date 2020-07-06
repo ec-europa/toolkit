@@ -114,7 +114,8 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
     foreach ($d7ModulesList as $module) {
       // Get list of modules authorised for all projects.
       if ($module['restricted_use'] == '0') {
-        $modulesName[] = $module['name'];
+        // Create array and remove 'drupal/' from name.
+        $modulesName[] = substr($module['name'], strlen('drupal/'));
         $modulesArray[] = $module;
       }
       // Get list of restricted modules.
