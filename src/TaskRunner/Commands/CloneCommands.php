@@ -91,13 +91,14 @@ class CloneCommands extends AbstractCommands
         }
 
         // Default deployment sequence.
-        $tasks[] = $this->taskExec('./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer -y');
-        $tasks[] = $this->taskExec('./vendor/bin/drush updatedb -y');
+        $bin_dir = $this->getConfig()->get('runner.bin_dir');
+        $tasks[] = $this->taskExec($bin_dir . '/drush state:set system.maintenance_mode 1 --input-format=integer -y');
+        $tasks[] = $this->taskExec($bin_dir . '/drush updatedb -y');
         if ($has_config) {
-            $tasks[] = $this->taskExec('./vendor/bin/run toolkit:import-config');
+            $tasks[] = $this->taskExec($bin_dir . '/run toolkit:import-config');
         }
-        $tasks[] = $this->taskExec('./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y');
-        $tasks[] = $this->taskExec('./vendor/bin/drush cache:rebuild');
+        $tasks[] = $this->taskExec($bin_dir . '/drush state:set system.maintenance_mode 0 --input-format=integer -y');
+        $tasks[] = $this->taskExec($bin_dir . '/drush cache:rebuild');
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
@@ -133,11 +134,12 @@ class CloneCommands extends AbstractCommands
         }
 
         // Unzip and dump database file.
+        $drush_bin = $this->getConfig()->get('runner.bin_dir') . '/drush';
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec('./vendor/bin/drush sql-drop -y')
-            ->exec('./vendor/bin/drush sql-create -y')
-            ->exec('./vendor/bin/drush sqlc < ' . $options['dumpfile']);
+            ->exec($drush_bin . ' sql-drop -y')
+            ->exec($drush_bin . ' sql-create -y')
+            ->exec($drush_bin . ' sqlc < ' . $options['dumpfile']);
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);

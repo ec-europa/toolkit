@@ -46,10 +46,11 @@ class InstallCommands extends AbstractCommands
         $has_config = file_exists($options['config-file']);
         $params = $has_config ? ' --existing-config' : '';
 
+        $runner_bin = $this->getConfig()->get('runner.bin_dir') . '/run';
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec('./vendor/bin/run toolkit:build-dev')
-            ->exec('./vendor/bin/run drupal:site-install' . $params);
+            ->exec($runner_bin . ' toolkit:build-dev')
+            ->exec($runner_bin . ' drupal:site-install' . $params);
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -67,8 +68,9 @@ class InstallCommands extends AbstractCommands
     {
         $tasks = [];
 
-        $tasks[] = $this->taskExec('./vendor/bin/run toolkit:install-dump');
-        $tasks[] = $this->taskExec('./vendor/bin/run toolkit:run-deploy');
+        $runner_bin = $this->getConfig()->get('runner.bin_dir') . '/run';
+        $tasks[] = $this->taskExec($runner_bin . ' toolkit:install-dump');
+        $tasks[] = $this->taskExec($runner_bin . ' toolkit:run-deploy');
 
         // Collect and execute list of commands set on local runner.yml.
         $commands = $this->getConfig()->get("toolkit.install.clone.commands");
@@ -92,10 +94,11 @@ class InstallCommands extends AbstractCommands
     {
         $tasks = [];
 
+        $drush_bin = $this->getConfig()->get('runner.bin_dir') . '/drush';
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec('./vendor/bin/drush config:import -y')
-            ->exec('./vendor/bin/drush cache:rebuild');
+            ->exec($drush_bin . ' config:import -y')
+            ->exec($drush_bin . ' cache:rebuild');
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
