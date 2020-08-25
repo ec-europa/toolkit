@@ -129,17 +129,37 @@ class BuildCommands extends AbstractCommands
     ])
     {
         $tasks = [];
+        $root = $options['root'];
 
         // Run site setup.
         $runner_bin = $this->getConfig()->get('runner.bin_dir') . '/run';
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec($runner_bin . ' drupal:settings-setup --root=' . $options['root']);
+            ->exec($runner_bin . ' drupal:settings-setup --root=' . $root);
 
         // Collect and execute list of commands set on local runner.yml.
         $commands = $this->getConfig()->get("toolkit.build.dev.commands");
         if (!empty($commands)) {
             $tasks[] = $this->taskCollectionFactory($commands);
+        }
+
+        // Double check presence of required folders.
+        $folders = [
+            'public_folder' => $root . '/sites/default/files',
+            'private_folder' => getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== false ? $root . '/' . getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : $root . '/sites/default/private_files',
+            'temp_folder' => getenv('DRUPAL_FILE_TEMP_PATH') !== false ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp',
+        ];
+
+        foreach ($folders as $folder) {
+            if (!is_dir($folder)) {
+                // Create folder and set permissions.
+                // Permissions for files folders taken from:
+                // https://www.drupal.org/node/244924#linux-servers
+                $tasks[] = $this->taskExecStack()
+                    ->stopOnFail()
+                    ->exec("mkdir -p $folder")
+                    ->exec("chmod ug=rwx,o= $folder");
+            }
         }
 
         // Build and return task collection.

@@ -20,6 +20,11 @@ class CloneCommands extends AbstractCommands
     use TaskRunnerTasks\CollectionFactory\loadTasks;
 
     /**
+     * Path to file that hold the input information.
+     */
+    const TEMP_INPUTFILE = 'temporary_inputfile.txt';
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
@@ -170,17 +175,17 @@ class CloneCommands extends AbstractCommands
             return $this->collectionBuilder()->addTaskList($tasks);
         }
 
-        // Download the file.
+        // Download the .sha file.
+        $this->generateAsdaWgetInputFile('latest.sh1', $options);
         $this->downloadChecksumFile($options);
         $fileContent = file_get_contents('latest.sh1');
         $filename = trim(explode('  ', $fileContent)[1]);
 
-        // Download the file.
+        // Download the .sql file.
+        $this->generateAsdaWgetInputFile($filename, $options);
         $tasks[] = $this->taskExec('wget')
-            ->option('--http-user', $options['asda-user'])
-            ->option('--http-password', $options['asda-password'])
             ->option('-O', $options['dumpfile'] . '.gz')
-            ->option('-nH', $options['asda-url'] . '/' . $filename)
+            ->option('-i', self::TEMP_INPUTFILE)
             ->option('-A', 'sql.gz')
             ->option('-P', './');
 
@@ -188,9 +193,10 @@ class CloneCommands extends AbstractCommands
         $tasks[] = $this->taskExec('gunzip')
             ->arg($options['dumpfile'] . '.gz');
 
-        // Remove checkum file.
+        // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
-            ->arg('latest.sh1');
+            ->arg('latest.sh1')
+            ->arg(self::TEMP_INPUTFILE);
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -220,12 +226,42 @@ class CloneCommands extends AbstractCommands
             ->run();
 
         $this->taskExec('wget')
-            ->option('--http-user', $options['asda-user'])
-            ->option('--http-password', $options['asda-password'])
+            ->option('-i', self::TEMP_INPUTFILE)
             ->option('-O', 'latest.sh1')
-            ->option('-nH', $options['asda-url'] . '/latest.sh1')
             ->option('-A', '.sh1')
             ->option('-P', './')
+            ->run();
+    }
+
+    /**
+     * Create file for usage in wget --input-file argument in the
+     * downloadDump() function.
+     *
+     * @param string $filename
+     *   Name of filename to append to url.
+     *
+     * @param array $options
+     *   Command options.
+     */
+    private function generateAsdaWgetInputFile($filename, array $options = [
+        'asda-url' => InputOption::VALUE_REQUIRED,
+        'asda-user' => InputOption::VALUE_REQUIRED,
+        'asda-password' => InputOption::VALUE_REQUIRED,
+    ])
+    {
+
+        $disallowed = array('http://', 'https://');
+        foreach ($disallowed as $d) {
+            if (strpos($options['asda-url'], $d) === 0) {
+                $url = str_replace($d, '', $options['asda-url']);
+            }
+        }
+
+        $downloadLink = 'https://' . $options['asda-user'] . ':' . $options['asda-password'] . '@' . $url . '/' . $filename;
+
+        $tasks[] = $this->taskFilesystemStack()
+            ->taskWriteToFile(self::TEMP_INPUTFILE)
+            ->line($downloadLink)
             ->run();
     }
 }

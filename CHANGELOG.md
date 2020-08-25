@@ -1,5 +1,13 @@
 # Toolkit change log
 
+## Version 4.1.0
+  - MULTISITE-22895 Do not print creds in toolkit:download-dump command.
+  - MULTISITE-22884 Command toolkit:build-dev should provide Drupal files folders
+  - MULTISITE-23016 Allow install-clone command to be extended by runner.yml.dist
+  - MULTISITE-23454 Refactor logic on minimum version checking to use version constraints
+  - MULTISITE-23618 Remove hard dependency on Guzzle
+  - MULTISITE-23745 Drupal 8.8 deprecated $config_directories['sync']
+
 ## Version 4.0.6
   - MULTISITE-22612: Introduce component-whitelist check for NE-Pipelines
   - MULTISITE-22957: Allow usage of Drush 10

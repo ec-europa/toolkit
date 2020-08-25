@@ -11,6 +11,12 @@ You need to have the following software installed on your local development envi
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
 ## User guide
+
+```
+Toolkit is a developer package, make sure you install this in the dev section of your composer.json.
+composer require --dev ec-europa/toolkit:^3.1.0
+```
+
 The toolkit contains different components that help you during the development, the main
 component is the Phing build system that let's you easily set up the project
 locally and can be used in CI tools like Jenkins, Drone or Travis.
