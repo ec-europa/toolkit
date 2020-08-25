@@ -1,5 +1,12 @@
 # Toolkit change log
 
+## Version 4.1.1
+  - MULTISITE-23846: Automatically get the Git tag & hash with toolkit:build-dist
+  - MULTISITE-23910: Update documentation
+  - MULTISITE-23940: Provide toolkit:test-phpcbf robo task
+  - MULTISITE-24169: Support DRUPAL_DATABASE_DRIVER environment variable
+  - ISAICP-5988: Retrieve the actual vendor/bin folder from config rather than hardcoding values
+
 ## Version 4.1.0
   - MULTISITE-22895 Do not print creds in toolkit:download-dump command.
   - MULTISITE-22884 Command toolkit:build-dev should provide Drupal files folders
