@@ -1,6 +1,6 @@
 # Testing the project
 
-This guide explains how to use the resources provided by toolkit to test your 
+This guide explains how to use the resources provided by toolkit to test your
 project. You can list all resources available with the following command:
 
 ## Behat testing
@@ -47,7 +47,7 @@ behat:
 
 
 ## PHPCS testing
-To run coding standard tests you can make use of the `toolkit:test-phpcs` 
+To run coding standard tests you can make use of the `toolkit:test-phpcs`
 command. This will validate your configuration from `./grumphp.yml.dist` and run
 it on your current codebase.
 
@@ -91,10 +91,16 @@ lines:
 }
 ```
 
+PHPCBF task is available, to automatic fix your issues please run the following
+command:
+```
+docker-compose exec web ./vendor/bin/run toolkit:run-phpcbf --file-path=<file-to-fix>
+```
+
 
 ## Testing in CI
 Toolkit is full integrated with oficial pipeline that currently requires minimum of 1 behat
-test and a clean report for phpcs check. 
+test and a clean report for phpcs check.
 
 Any customization done in your project will be respected in Drone build.
 
