@@ -119,6 +119,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:run-phpcbf
      *
+     * @SuppressWarnings(PHPMD)
+     *
      * @option test-path  directory or file path to be autofixed by phpcbf.
      *
      * @aliases tpb
@@ -150,7 +152,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             $qaConventionsArray = (array) Yaml::parse(file_get_contents($qaConventionsFile));
             if (isset($qaConventionsArray['parameters']['tasks.phpcs.standard'])) {
                 foreach ($qaConventionsArray['parameters']['tasks.phpcs.standard'] as $standard) {
-                    $standards[] = $standard_name;
+                    $standards[] = $standard;
                 }
                 $standards = implode(',', array_values($standards));
             }
