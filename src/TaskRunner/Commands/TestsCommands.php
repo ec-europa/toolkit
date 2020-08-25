@@ -115,7 +115,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     /**
      * Run PHP code autofixing.
      *
-     * @command toolkit:test-phpcbf
+     * @command toolkit:run-phpcbf
      *
      * @option test-path  directory or file path to be autofixed by phpcbf.
      *
