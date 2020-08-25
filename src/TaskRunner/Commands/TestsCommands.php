@@ -67,7 +67,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
 
         if ($containsQaConventions) {
-            $tasks[] = $this->taskExec('./vendor/bin/grumphp run');
+            $grumphp_bin = $this->getConfig()->get('runner.bin_dir') . '/grumphp';
+            $tasks[] = $this->taskExec($grumphp_bin . ' run');
         } else {
             $this->say('All Drupal projects in the ec-europa namespace need to use Quality Assurance provided standards.');
             $this->say('Your configuration has to import the resource vendor/ec-europa/qa-automation/dist/qa-conventions.yml.');
@@ -99,15 +100,16 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         $this->taskProcessConfigFile($options['from'], $options['to'])->run();
 
-        $result = $this->taskExec('./vendor/bin/behat --dry-run')
+        $behat_bin = $this->getConfig()->get('runner.bin_dir') . '/behat';
+        $result = $this->taskExec($behat_bin . ' --dry-run')
             ->silent(true)
             ->printOutput(false)
             ->run()
             ->getMessage();
 
-        $tasks[] = strpos(trim($result), 'No scenarios') !== 0 ?
-        $this->taskExec('./vendor/bin/behat --strict') :
-        $this->taskExec('./vendor/bin/behat');
+        $tasks[] = strpos(trim($result), 'No scenarios') !== 0
+        ? $this->taskExec($behat_bin . ' --strict')
+        : $this->taskExec($behat_bin);
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
