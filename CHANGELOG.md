@@ -1,6 +1,6 @@
 # Toolkit change log
 
-## Version 4.1.1
+## Version 4.2.0
   - MULTISITE-23846: Automatically get the Git tag & hash with toolkit:build-dist
   - MULTISITE-23910: Update documentation
   - MULTISITE-23940: Provide toolkit:test-phpcbf robo task
