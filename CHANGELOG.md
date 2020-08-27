@@ -3,7 +3,7 @@
 ## Version 4.2.0
   - MULTISITE-23846: Automatically get the Git tag & hash with toolkit:build-dist
   - MULTISITE-23910: Update documentation
-  - MULTISITE-23940: Provide toolkit:test-phpcbf robo task
+  - MULTISITE-23940: Provide toolkit:run-phpcbf robo task
   - MULTISITE-24169: Support DRUPAL_DATABASE_DRIVER environment variable
   - ISAICP-5988: Retrieve the actual vendor/bin folder from config rather than hardcoding values
 
