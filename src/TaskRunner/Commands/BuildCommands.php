@@ -233,4 +233,33 @@ class BuildCommands extends AbstractCommands
     {
         return Robo::getContainer()->get('repository')->getHead()->getCommitHash();
     }
+
+    /**
+     * Compile Css and Js.
+     *
+     * @param array $options
+     *   Additional options for the command.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The collection builder.
+     *
+     * @command toolkit:compile-css-js
+     */
+    public function compileCssJs(array $options = [
+      'theme-dir' => InputOption::VALUE_REQUIRED,
+    ]) {
+          $this->_deleteDir([$options['theme-dir'] . '/assets']);
+
+          $this->_copy('vendor/ec-europa/toolkit/src/gulp/gulpfile.js', $options['theme-dir'] . '/gulpfile.js');
+
+          $this->taskExecStack()
+            ->stopOnFail()
+            ->dir($options['theme-dir'])
+            ->exec('npm init -y')
+            ->exec('npm install gulp gulp-sass gulp-concat gulp-minify-css gulp-minify --save-dev')
+            ->exec('./node_modules/.bin/gulp minify-scss_to_css')
+            ->exec('./node_modules/.bin/gulp minify-js')
+            ->run();
+    }
+
 }

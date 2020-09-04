@@ -28,6 +28,8 @@ toolkit:
     behat:
       from: behat.yml.dist
       to: behat.yml
+  theme:
+    dir: 'lib/themes/digit_qa/'
   tool:
     notifications:
       endpoint: 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications'

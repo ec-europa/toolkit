@@ -11,3 +11,6 @@ command:
     build-dev-reset:
       options:
         root: ${drupal.root}
+    compile-css-js:
+      options:
+        theme-dir: ${toolkit.theme.dir}
