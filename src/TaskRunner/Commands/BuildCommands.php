@@ -256,9 +256,9 @@ class BuildCommands extends AbstractCommands
         $finder->directories()
             ->in('lib/themes')
             ->name($options['default-theme']);
-            foreach ($finder as $directory) {
-                $theme_dir = $directory->getRealPath();
-            }
+        foreach ($finder as $directory) {
+            $theme_dir = $directory->getRealPath();
+        }
         $this->_deleteDir([$theme_dir . '/assets']);
         $finder = new Finder();
         $finder->files()
