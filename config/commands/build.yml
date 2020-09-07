@@ -13,4 +13,6 @@ command:
         root: ${drupal.root}
     compile-css-js:
       options:
-        theme-dir: ${toolkit.theme.dir}
+        default-theme: ${drupal.site.default_theme}
+        build-npm-packages: ${toolkit.build.npm.packages}
+        build-npm-mode: ${toolkit.build.npm.mode}

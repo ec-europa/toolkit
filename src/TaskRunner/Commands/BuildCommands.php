@@ -8,6 +8,7 @@ use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 use Robo\Robo;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Provides commands to build a site for development and a production artifact.
@@ -246,20 +247,33 @@ class BuildCommands extends AbstractCommands
      * @command toolkit:compile-css-js
      */
     public function compileCssJs(array $options = [
-        'theme-dir' => InputOption::VALUE_REQUIRED,
+        'default-theme' => InputOption::VALUE_REQUIRED,
+        'build-npm-packages' => InputOption::VALUE_REQUIRED,
+        'build-npm-mode' => InputOption::VALUE_REQUIRED,
     ])
     {
-        $this->_deleteDir([$options['theme-dir'] . '/assets']);
-        
-        $this->_copy('vendor/ec-europa/toolkit/src/gulp/gulpfile.js', $options['theme-dir'] . '/gulpfile.js');
+        $finder = new Finder();
+        $finder->directories()
+            ->in('lib/themes')
+            ->name($options['default-theme']);
+            foreach ($finder as $directory) {
+                $theme_dir = $directory->getRealPath();
+            }
+        $this->_deleteDir([$theme_dir . '/assets']);
+        $finder = new Finder();
+        $finder->files()
+            ->in($theme_dir)
+            ->name('gulpfile.js');
+        if (empty($finder->hasResults())) {
+            $this->_copy('vendor/ec-europa/toolkit/src/gulp/gulpfile.js', $theme_dir . '/gulpfile.js');
+        }
         
         $this->taskExecStack()
             ->stopOnFail()
-            ->dir($options['theme-dir'])
-            ->exec('npm init -y')
-            ->exec('npm install gulp gulp-sass gulp-concat gulp-minify-css gulp-minify --save-dev')
-            ->exec('./node_modules/.bin/gulp minify-scss_to_css')
-            ->exec('./node_modules/.bin/gulp minify-js')
+            ->dir($theme_dir)
+            ->exec('npm init -y --scope')
+            ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
+            ->exec('./node_modules/.bin/gulp')
             ->run();
     }
 }

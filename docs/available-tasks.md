@@ -35,6 +35,7 @@ Available commands:
   toolkit:notifications         Display toolkit notifications.
   toolkit:test-behat            [tb] Run Behat tests.
   toolkit:test-phpcs            [tp] Run PHP code review.
+  toolkit:compile-css-js        Compiles Sass/Css and Js files into a '.min' file.
 
 ```
 
