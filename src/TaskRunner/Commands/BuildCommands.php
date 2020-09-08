@@ -236,7 +236,7 @@ class BuildCommands extends AbstractCommands
     }
 
     /**
-     * Compile Css and Js.
+     * Build theme assets (Css and Js).
      *
      * @param array $options
      *   Additional options for the command.
@@ -244,9 +244,13 @@ class BuildCommands extends AbstractCommands
      * @return \Robo\Collection\CollectionBuilder
      *   The collection builder.
      *
-     * @command toolkit:compile-css-js
+     * @command toolkit:build-assets
+     *
+     * @option default-theme  theme where to build asstes.
+     *
+     * @aliases tba
      */
-    public function compileCssJs(array $options = [
+    public function buildAssets(array $options = [
         'default-theme' => InputOption::VALUE_REQUIRED,
         'build-npm-packages' => InputOption::VALUE_REQUIRED,
         'build-npm-mode' => InputOption::VALUE_REQUIRED,
@@ -254,7 +258,7 @@ class BuildCommands extends AbstractCommands
     {
         $finder = new Finder();
         $finder->directories()
-            ->in('lib/themes')
+            ->in('lib')
             ->name($options['default-theme']);
         foreach ($finder as $directory) {
             $theme_dir = $directory->getRealPath();
