@@ -35,7 +35,7 @@ After the task is complete the generated 'theme_folder/assets' will look like th
 
 ### Declare 'default_theme'
 
-The default theme needs to be added in the file runner.yml.
+The default theme needs to be added in the file 'runner.yml'.
 
 ```
 drupal:
@@ -58,11 +58,15 @@ This will (re)generate the /assets folder.
 
 ## Extending functionality
 
+### Add a custom 'gulpfile.js' file
+
 It's possible to use a custom gulpfile on the theme root folder.
 If a gulpfile alredy exists on the root folder when running this command, the one provided by toolkit will be ignored.
 
-Also the npm packages can be extended.
-In order to do that add them in the file runner.yml like the example bellow:
+### Install additional npm packages
+
+Additional npm packages can be installed to extend the functionality.
+In order to do that add them in the file 'runner.yml' like the example bellow:
 
 ```
 toolkit:
@@ -71,6 +75,17 @@ toolkit:
       packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify
 ```
 
+#### npm install --save-dev
+
+By default the npm packages are installed with the option '--save-dev' and will appear in the devDependencies.
+To override this behavior add in the file 'runner.yml' the following property:
+
+```
+toolkit:
+  build:
+    npm:
+     mode: (leave empty or add '--save-prod')
+```
 
 ### Others topics
 - [Configuring a project](/docs/configuring-project.md)
