@@ -6,15 +6,21 @@ Toolkit provides a way to build theme assets with Gulp.js.
 
 By default a gulpfile is inclued and as well some npm packages in order to:
 
-- Look for Scss files inside and convert them into Css
+- Look for Scss files and convert them into Css
 - Minify Css and Js
 - Merge files into one minimized file
 
-It will look for files on the following specific folders and children:
+## How to use
+
+### Source files
+
+The folder structure for the source files should be aligned like this:
 
 - /theme_folder/css
 - /theme_folder/css
 - /theme_folder/js
+
+Note: It will search on all childern folders.
 
 After the task is complete the generated 'theme_folder/assets' will look like this:
 
@@ -26,8 +32,6 @@ After the task is complete the generated 'theme_folder/assets' will look like th
     /js
       script.min.js
 ```
-
-## How to use
 
 ### Declare 'default_theme'
 
