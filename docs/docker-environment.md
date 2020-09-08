@@ -58,5 +58,6 @@ selenium:
 - [Installing the project](/docs/installing-project.md)
 - [Testing the project](/docs/testing-project.md)
 - [Continuous integration](/docs/continuous-integration.md)
+- [Building assets](/docs/building-assets.md)
 - [Available tasks](/docs/available-tasks.md)
 - [Changelog](/CHANGELOG.md)

@@ -31,5 +31,6 @@ docker-compose exec web vendor/bin/run
 - [Testing the project](/docs/testing-project.md)
 - [Using Docker environment](/docs/docker-environment.md)
 - [Continuous integration](/docs/continuous-integration.md)
+- [Building assets](/docs/building-assets.md)
 - [Available tasks](/docs/available-tasks.md)
 - [Changelog](/CHANGELOG.md)
