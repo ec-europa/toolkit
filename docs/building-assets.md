@@ -10,37 +10,48 @@ By default a gulpfile is included and as well some npm packages in order to:
 - Minify Css and Js
 - Merge files into one minimized file
 
+Command to run:
+```
+docker-compose vendor/bin/run toolkit:build-assets
+```
+
 ## How to use
 
 ### Source files
 
 The folder structure for the source files should be aligned like this:
 
-- /theme_folder/css
-- /theme_folder/css
-- /theme_folder/js
+- {your-theme-folder}/src/scss
+- {your-theme-folder}/src/js
 
-Note: It will search on all childern folders.
 
-After the task is complete the generated 'theme_folder/assets' will look like this:
+After this task is complete the generated folder '{your-theme}/assets' will look like this:
 
 ```
-/theme_folder
+/your-theme
   /assests
     /css
       style.min.css
     /js
       script.min.js
 ```
+Note: The folder name 'assets' is the default value provided. It can be override on the 'gulpfile.js'.
 
-### Declare 'default_theme'
+### Get 'default_theme'
 
-The default theme needs to be added in the file 'runner.yml'.
+If no config files are present in the project, the default theme can be added in the file 'runner.yml'.
 
 ```
 drupal:
   site:
-    default_theme: "my-theme"
+    default_theme: "your-theme"
+```
+
+Otherwise toolkit will get the parameter from the file 'config/sync/system.theme.yml'.
+
+As alternative is also possible to use the parameter in the command line:
+```
+docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
 ```
 
 ### Build theme assets

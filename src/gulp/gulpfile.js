@@ -8,7 +8,7 @@ var minifyJs = require('gulp-minify');
 
 async function defaultTask() {
   // Gets all files with .scss extension inside 'scss' folder and childrens.
-  gulp.src('scss/**/*.scss')
+  gulp.src('src/scss/**/*.scss')
     .pipe(sass())
     .pipe(cleanCss({
         compatibility: 'ie8'
@@ -16,7 +16,7 @@ async function defaultTask() {
     .pipe(concat('style.min.css'))
     .pipe(gulp.dest('assets/css'));
   // Gets all files with .js extension inside 'js' folder and childrens.
-  gulp.src(['js/**/*.js'])
+  gulp.src(['src/js/**/*.js'])
     .pipe(minifyJs({
         // Do not include the source files.
         noSource: true

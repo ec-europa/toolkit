@@ -9,6 +9,7 @@ use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 use Robo\Robo;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Provides commands to build a site for development and a production artifact.
@@ -246,7 +247,7 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-assets
      *
-     * @option default-theme  theme where to build asstes.
+     * @option default-theme theme where to build asstes.
      *
      * @aliases tba
      */
@@ -256,6 +257,11 @@ class BuildCommands extends AbstractCommands
         'build-npm-mode' => InputOption::VALUE_OPTIONAL,
     ])
     {
+        if (file_exists('config/sync/system.theme.yml')) {
+            $parseSystemTheme = Yaml::parseFile('config/sync/system.theme.yml');
+            $options['default-theme'] = $parseSystemTheme['default'];
+        }
+
         $finder = new Finder();
         $finder->directories()
             ->in('lib')
