@@ -252,8 +252,8 @@ class BuildCommands extends AbstractCommands
      */
     public function buildAssets(array $options = [
         'default-theme' => InputOption::VALUE_REQUIRED,
-        'build-npm-packages' => InputOption::VALUE_REQUIRED,
-        'build-npm-mode' => InputOption::VALUE_REQUIRED,
+        'build-npm-packages' => InputOption::VALUE_OPTIONAL,
+        'build-npm-mode' => InputOption::VALUE_OPTIONAL,
     ])
     {
         $finder = new Finder();

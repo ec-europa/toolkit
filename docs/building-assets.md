@@ -4,7 +4,7 @@
 
 Toolkit provides a way to build theme assets with Gulp.js.
 
-By default a gulpfile is inclued and as well some npm packages in order to:
+By default a gulpfile is included and as well some npm packages in order to:
 
 - Look for Scss files and convert them into Css
 - Minify Css and Js
@@ -61,7 +61,7 @@ This will (re)generate the /assets folder.
 ### Add a custom 'gulpfile.js' file
 
 It's possible to use a custom gulpfile on the theme root folder.
-If a gulpfile alredy exists on the root folder when running this command, the one provided by toolkit will be ignored.
+If the file do not exists, toolkit will create one using the default template.
 
 ### Install additional npm packages
 
