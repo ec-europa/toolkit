@@ -110,4 +110,5 @@ Any customization done in your project will be respected in Drone build.
 - [Installing the project](/docs/installing-project.md)
 - [Using Docker environment](/docs/docker-environment.md)
 - [Continuous integration](/docs/continuous-integration.md)
+- [Building assets](/docs/building-assets.md)
 - [Changelog](/CHANGELOG.md)

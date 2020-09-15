@@ -24,6 +24,9 @@ toolkit:
       commands: []
     dev:
       commands: []
+    npm:
+      packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify
+      mode: --save-dev
   test:
     behat:
       from: behat.yml.dist

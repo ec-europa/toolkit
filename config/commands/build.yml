@@ -11,3 +11,8 @@ command:
     build-dev-reset:
       options:
         root: ${drupal.root}
+    build-assets:
+      options:
+        default-theme: ${drupal.site.default_theme}
+        build-npm-packages: ${toolkit.build.npm.packages}
+        build-npm-mode: ${toolkit.build.npm.mode}

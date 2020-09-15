@@ -8,6 +8,8 @@ use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 use Robo\Robo;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Provides commands to build a site for development and a production artifact.
@@ -232,5 +234,56 @@ class BuildCommands extends AbstractCommands
     protected function getGitCommitHash(): string
     {
         return Robo::getContainer()->get('repository')->getHead()->getCommitHash();
+    }
+
+    /**
+     * Build theme assets (Css and Js).
+     *
+     * @param array $options
+     *   Additional options for the command.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The collection builder.
+     *
+     * @command toolkit:build-assets
+     *
+     * @option default-theme theme where to build asstes.
+     *
+     * @aliases tba
+     */
+    public function buildAssets(array $options = [
+        'default-theme' => InputOption::VALUE_REQUIRED,
+        'build-npm-packages' => InputOption::VALUE_OPTIONAL,
+        'build-npm-mode' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        if (file_exists('config/sync/system.theme.yml')) {
+            $parseSystemTheme = Yaml::parseFile('config/sync/system.theme.yml');
+            $options['default-theme'] = $parseSystemTheme['default'];
+        }
+
+        $finder = new Finder();
+        $finder->directories()
+            ->in('lib')
+            ->name($options['default-theme']);
+        foreach ($finder as $directory) {
+            $theme_dir = $directory->getRealPath();
+        }
+        $this->_deleteDir([$theme_dir . '/assets']);
+        $finder = new Finder();
+        $finder->files()
+            ->in($theme_dir)
+            ->name('gulpfile.js');
+        if (empty($finder->hasResults())) {
+            $this->_copy('vendor/ec-europa/toolkit/src/gulp/gulpfile.js', $theme_dir . '/gulpfile.js');
+        }
+        
+        $this->taskExecStack()
+            ->stopOnFail()
+            ->dir($theme_dir)
+            ->exec('npm init -y --scope')
+            ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
+            ->exec('./node_modules/.bin/gulp')
+            ->run();
     }
 }
