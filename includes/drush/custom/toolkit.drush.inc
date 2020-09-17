@@ -7,7 +7,6 @@
 
 use Composer\Semver\Semver;
 use Drush\Log\LogLevel;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Implements hook_drush_command().
@@ -100,14 +99,9 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
     }
 
     // If modules defined in devel.make add to authorised modules list.
-    $finder = new Finder();
-    // Find all files in 'resources/' directory.
-    $finder->files()->in('../resources');
-    foreach ($finder as $file) {
-      if ($file->getFileName() == 'devel.make') {
-        $develMakeFile = '../resources/' . $file->getRelativePathname();
-      }
-    }
+    $buildProps = drupal_parse_info_file('../build.project.props');
+    $develMakeFile = '../' . $buildProps['resources.dir.devel.make'];
+
     $fpfisModules = array('gelf_log', 'redis', 'skippy_cookie');
     $develModules = array();
     if (file_exists($develMakeFile)) {
