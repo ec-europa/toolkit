@@ -257,33 +257,38 @@ class BuildCommands extends AbstractCommands
         'build-npm-mode' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        if (file_exists('config/sync/system.theme.yml')) {
+        if (empty($options['default-theme'] &&
+            $options['default-theme'] != '${drupal.site.default_theme}') &&
+            file_exists('config/sync/system.theme.yml')) {
             $parseSystemTheme = Yaml::parseFile('config/sync/system.theme.yml');
             $options['default-theme'] = $parseSystemTheme['default'];
         }
-
         $finder = new Finder();
         $finder->directories()
             ->in('lib')
             ->name($options['default-theme']);
-        foreach ($finder as $directory) {
-            $theme_dir = $directory->getRealPath();
+        if ($finder->hasResults()) {
+            foreach ($finder as $directory) {
+                $theme_dir = $directory->getRealPath();
+            }
+            $this->_deleteDir([$theme_dir . '/assets']);
+            $finder = new Finder();
+            $finder->files()
+                ->in($theme_dir)
+                ->name('gulpfile.js');
+            if (empty($finder->hasResults())) {
+                $this->_copy('vendor/ec-europa/toolkit/src/gulp/gulpfile.js', $theme_dir . '/gulpfile.js');
+            }
+            $this->taskExecStack()
+                ->stopOnFail()
+                ->dir($theme_dir)
+                ->exec('npm init -y --scope')
+                ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
+                ->exec('./node_modules/.bin/gulp')
+                ->run();
         }
-        $this->_deleteDir([$theme_dir . '/assets']);
-        $finder = new Finder();
-        $finder->files()
-            ->in($theme_dir)
-            ->name('gulpfile.js');
-        if (empty($finder->hasResults())) {
-            $this->_copy('vendor/ec-europa/toolkit/src/gulp/gulpfile.js', $theme_dir . '/gulpfile.js');
+        else {
+            $this->say("The default-theme couldn't be found on the lib/ folder.");
         }
-        
-        $this->taskExecStack()
-            ->stopOnFail()
-            ->dir($theme_dir)
-            ->exec('npm init -y --scope')
-            ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
-            ->exec('./node_modules/.bin/gulp')
-            ->run();
     }
 }
