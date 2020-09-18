@@ -286,8 +286,7 @@ class BuildCommands extends AbstractCommands
                 ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
                 ->exec('./node_modules/.bin/gulp')
                 ->run();
-        }
-        else {
+        } else {
             $this->say("The default-theme couldn't be found on the lib/ folder.");
         }
     }
