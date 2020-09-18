@@ -99,7 +99,9 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
     }
 
     // If modules defined in devel.make add to authorised modules list.
-    $develMakeFile = '../resources/devel.make';
+    $buildProps = drupal_parse_info_file('../build.project.props');
+    $develMakeFile = empty($buildProps['resources.dir.devel.make']) ? '../resources/devel.make' : '../' . $buildProps['resources.dir.devel.make'];
+
     $fpfisModules = array('gelf_log', 'redis', 'skippy_cookie');
     $develModules = array();
     if (file_exists($develMakeFile)) {
