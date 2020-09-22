@@ -260,7 +260,7 @@ class BuildCommands extends AbstractCommands
 
         $tasks = [];
 
-        if (!empty($options['default-theme']) {
+        if (!empty($options['default-theme'])) {
             // No parameter sent, check for configuraton.
             if (file_exists('config/sync/system.theme.yml')) {
                 $parseSystemTheme = Yaml::parseFile('config/sync/system.theme.yml');
