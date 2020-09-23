@@ -268,13 +268,13 @@ class BuildCommands extends AbstractCommands
             }
         }
 
-        // Theme no available/
+        // No theme available.
         if (empty($options['default-theme'])) {
             $this->say("The default-theme couldn't be found in the project. Skipping build.");
             return 0;
         }
 
-        // Search Theme
+        // Search Theme.
         $finder = new Finder();
         $finder->directories()
             ->in('lib')
@@ -285,30 +285,29 @@ class BuildCommands extends AbstractCommands
                 $theme_dir = $directory->getRealPath();
             }
 
-            $tasks[] = $this->taskGitStack()
-                ->stopOnFail()
-                ->_deleteDir([$theme_dir . '/assets']);
-
             $finder = new Finder();
             $finder->files()
                 ->in($theme_dir)
                 ->name('gulpfile.js');
 
+            // Build task collection.
+            $collection = $this->collectionBuilder();
+
             if (empty($finder->hasResults())) {
-                $tasks[] = $this->taskGitStack()
-                    ->stopOnFail()
-                    ->_copy('vendor/ec-europa/toolkit/src/gulp/gulpfile.js', $theme_dir . '/gulpfile.js');
+                $collection
+                    ->_copy('vendor/ec-europa/toolkit/src/gulp/gulpfile.js', $theme_dir . '/gulpfile.js')
+                    ->stopOnFail();
             }
-            $tasks[] = $this->taskGitStack()
-                ->stopOnFail()
+
+            $collection->taskExecStack()
                 ->dir($theme_dir)
                 ->exec('npm init -y --scope')
                 ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
                 ->exec('./node_modules/.bin/gulp')
-                ->run();
+                ->stopOnFail();
 
-            // Build and return task collection.
-            return $this->collectionBuilder()->addTaskList($tasks);
+            // Run and return task collection.
+            return $collection->run();
         } else {
             $this->say("The theme " . $options['default-theme'] . "  couldn't be found on the lib/ folder.");
             return 0;
