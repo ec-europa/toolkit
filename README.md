@@ -28,6 +28,7 @@ locally and can be used in CI tools like Jenkins, Drone or Travis.
 - [Using Docker environment](/docs/docker-environment.md)
 - [Continuous integration](/docs/continuous-integration.md)
 - [Available tasks](/docs/available-tasks.md)
+- [Building assets](/docs/building-assets.md)
 - [Changelog](/changelog.md)
 
 ## Contributing
