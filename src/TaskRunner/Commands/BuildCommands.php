@@ -257,33 +257,60 @@ class BuildCommands extends AbstractCommands
         'build-npm-mode' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        if (file_exists('config/sync/system.theme.yml')) {
-            $parseSystemTheme = Yaml::parseFile('config/sync/system.theme.yml');
-            $options['default-theme'] = $parseSystemTheme['default'];
+
+        $tasks = [];
+
+        if (!empty($options['default-theme'])) {
+            // No parameter sent, check for configuraton.
+            if (file_exists('config/sync/system.theme.yml')) {
+                $parseSystemTheme = Yaml::parseFile('config/sync/system.theme.yml');
+                $options['default-theme'] = $parseSystemTheme['default'];
+            }
         }
 
+        // No theme available.
+        if (empty($options['default-theme'])) {
+            $this->say("The default-theme couldn't be found in the project. Skipping build.");
+            return 0;
+        }
+
+        // Search Theme.
         $finder = new Finder();
         $finder->directories()
             ->in('lib')
             ->name($options['default-theme']);
-        foreach ($finder as $directory) {
-            $theme_dir = $directory->getRealPath();
+
+        if ($finder->hasResults()) {
+            foreach ($finder as $directory) {
+                $theme_dir = $directory->getRealPath();
+            }
+
+            $finder = new Finder();
+            $finder->files()
+                ->in($theme_dir)
+                ->name('gulpfile.js');
+
+            // Build task collection.
+            $collection = $this->collectionBuilder();
+
+            if (empty($finder->hasResults())) {
+                $collection
+                    ->_copy('vendor/ec-europa/toolkit/src/gulp/gulpfile.js', $theme_dir . '/gulpfile.js')
+                    ->stopOnFail();
+            }
+
+            $collection->taskExecStack()
+                ->dir($theme_dir)
+                ->exec('npm init -y --scope')
+                ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
+                ->exec('./node_modules/.bin/gulp')
+                ->stopOnFail();
+
+            // Run and return task collection.
+            return $collection->run();
+        } else {
+            $this->say("The theme " . $options['default-theme'] . "  couldn't be found on the lib/ folder.");
+            return 0;
         }
-        $this->_deleteDir([$theme_dir . '/assets']);
-        $finder = new Finder();
-        $finder->files()
-            ->in($theme_dir)
-            ->name('gulpfile.js');
-        if (empty($finder->hasResults())) {
-            $this->_copy('vendor/ec-europa/toolkit/src/gulp/gulpfile.js', $theme_dir . '/gulpfile.js');
-        }
-        
-        $this->taskExecStack()
-            ->stopOnFail()
-            ->dir($theme_dir)
-            ->exec('npm init -y --scope')
-            ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
-            ->exec('./node_modules/.bin/gulp')
-            ->run();
     }
 }
