@@ -39,17 +39,7 @@ Note: The folder name 'assets' is the default value provided. It can be override
 
 ### Get 'default_theme'
 
-If no config files are present in the project, the default theme can be added in the file 'runner.yml'.
-
-```
-drupal:
-  site:
-    default_theme: "your-theme"
-```
-
-Otherwise toolkit will get the parameter from the file 'config/sync/system.theme.yml'.
-
-As alternative is also possible to use the parameter in the command line:
+If no config files are present in the project, the default theme can be specified in a parameter the parameter in the task call:
 ```
 docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
 ```
@@ -66,6 +56,21 @@ docker-compose exec web ./vendor/bin/run tba
 
 This will (re)generate the /assets folder.
 
+## Enable build assets during CI
+To enable auto build of assets you should extend the tasks buidl-dev and build-dist. See example bellow.
+```
+toolkit:
+  project_id: "my-project"
+  build:
+    dev:
+      commands:
+      - ...
+      - ./vendor/bin/run toolkit:build-assets
+    dist:
+      commands:
+      - ...
+      - ./vendor/bin/run toolkit:build-assets
+```
 
 ## Extending functionality
 
