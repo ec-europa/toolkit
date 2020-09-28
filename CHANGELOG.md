@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 4.3.0
+  - MULTISITE-23084: Create toolkit command to compile SCSS
+
 ## Version 4.2.0
   - MULTISITE-23846: Automatically get the Git tag & hash with toolkit:build-dist
   - MULTISITE-23910: Update documentation
