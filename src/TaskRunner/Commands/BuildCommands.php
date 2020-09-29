@@ -294,8 +294,8 @@ class BuildCommands extends AbstractCommands
             $collection = $this->collectionBuilder();
 
             if (empty($finder->hasResults())) {
-                $collection
-                    ->_copy('vendor/ec-europa/toolkit/src/gulp/gulpfile.js', $theme_dir . '/gulpfile.js')
+                $collection->taskExecStack()
+                    ->exec('cp vendor/ec-europa/toolkit/src/gulp/gulpfile.js ' . $theme_dir . '/gulpfile.js')
                     ->stopOnFail();
             }
 
