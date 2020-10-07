@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use Composer\Semver\Semver;
 use Symfony\Component\Console\Input\InputOption;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Generic tools.
@@ -259,8 +260,11 @@ class ToolCommands extends AbstractCommands
 
         return $content;
     }
+
     /**
      * Check project compatibility for Drupal 9 upgrade.
+     * 
+     * Note: The project configuration should be updated.
      *
      * @command toolkit:d9-compatibility
      *
@@ -270,18 +274,39 @@ class ToolCommands extends AbstractCommands
         $collection = $this->collectionBuilder();
         // Check if 'upgrade_status' module is already on the project.
         $checkPackage = $this->taskExecStack()->exec('composer show drupal/upgrade_status -q')->stopOnFail()->run();
+        // The project already requires this package.
         if ($checkPackage->wasSuccessful()) {
-            // Project already exists.
             $this->say("The module 'upgrade_status' already makes part of the project.");
-        // Otherwise add it to the project and enable it.
+            if (file_exists('config/sync/core.extension.yml')) {
+                $parseConfigFile = Yaml::parseFile('config/sync/core.extension.yml');
+                // If it's not enable, enable, analise and remove.
+                if (!isset($parseConfigFile['module']['upgrade_status'])) {
+                    $collection->taskExecStack()->exec('drush en upgrade_status');
+                    // Analise all packages/projects (contrib and custom).
+                    $collection->taskExecStack()->exec('drush upgrade_status:analyze --all');
+                    // Uninstall module after analisys.
+                    $collection->taskExecStack()->exec('drush pm:uninstall upgrade_status');
+                }
+                // Module already installed - just perform analisys.
+                else {
+                    $collection->taskExecStack()->exec('drush upgrade_status:analyze --all');
+                }
+            }
+        // The project don't require this package (perform the following actions):
+        // Install and enable package.
+        // Analise.
+        // Uninstall and remove package.
         } else {
             $this->say("'Package drupal/upgrade_status not found' - Installing required package");
             $collection->taskComposerRequire()
-                ->dependency('drupal/upgrade_status', '^2.0');
+                ->dependency('drupal/upgrade_status', '^2.0')
+                ->dev();
             $collection->taskExecStack()->exec('drush en upgrade_status');
+            $collection->taskExecStack()->exec('drush upgrade_status:analyze --all');
+            $collection->taskExecStack()->exec('drush pm:uninstall upgrade_status');
+            $collection->taskComposerRemove()
+                ->dependency('drupal/upgrade_status');
         }
-        // Analise all projects (contrib and custom).
-        $collection->taskExecStack()->exec('drush upgrade_status:analyze --all');
         return $collection->run();
     }
 }
