@@ -293,11 +293,12 @@ class ToolCommands extends AbstractCommands
                     $collection->taskExecStack()->exec('drush upgrade_status:analyze --all');
                 }
             }
-        // The project don't require this package (perform the following actions):
-        // Install and enable package.
-        // Analise.
-        // Uninstall and remove package.
         } else {
+            // If the project don't require this package
+            // perform the following actions:
+            // Install and enable package.
+            // Analise.
+            // Uninstall and remove package.
             $this->say("'Package drupal/upgrade_status not found' - Installing required package");
             $collection->taskComposerRequire()
                 ->dependency('drupal/upgrade_status', '^2.0')
