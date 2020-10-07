@@ -259,4 +259,29 @@ class ToolCommands extends AbstractCommands
 
         return $content;
     }
+    /**
+     * Check project compatibility for Drupal 9 upgrade.
+     *
+     * @command toolkit:d9-compatibility
+     *
+     */
+    public function d9Compatibility() {
+        // Build task collection.
+        $collection = $this->collectionBuilder();
+        // Check if 'upgrade_status' module is already on the project.
+        $checkPackage = $this->taskExecStack()->exec('composer show drupal/upgrade_status -q')->stopOnFail()->run();
+        if ($checkPackage->wasSuccessful()) {
+            // Project already exists.
+            $this->say("The module 'upgrade_status' already makes part of the project.");
+        // Otherwise add it to the project and enable it.
+        } else {
+            $this->say("'Package drupal/upgrade_status not found' - Installing required package");
+            $collection->taskComposerRequire()
+                ->dependency('drupal/upgrade_status', '^2.0');
+            $collection->taskExecStack()->exec('drush en upgrade_status');
+        }
+        // Analise all projects (contrib and custom).
+        $collection->taskExecStack()->exec('drush upgrade_status:analyze --all');
+        return $collection->run();
+    }
 }
