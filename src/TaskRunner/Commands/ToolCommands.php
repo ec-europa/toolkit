@@ -276,6 +276,7 @@ class ToolCommands extends AbstractCommands
         // Check if 'upgrade_status' module is already on the project.
         $checkPackage = $this->taskExecStack()->exec('composer show drupal/upgrade_status -q')->stopOnFail()->run();
         // The project already requires this package.
+        $this->say("Note: The project configuration should be updated before runnig this command.");
         if ($checkPackage->wasSuccessful()) {
             $this->say("The module 'upgrade_status' already makes part of the project.");
             if (file_exists('config/sync/core.extension.yml')) {
