@@ -55,5 +55,4 @@ Available commands:
 - [Using Docker environment](/docs/docker-environment.md)
 - [Continuous integration](/docs/continuous-integration.md)
 - [Building assets](/docs/building-assets.md)
-- [Drupal9 compatibility](/docs/drupal9-compatibility.md)
 - [Changelog](/changelog.md)
