@@ -263,13 +263,14 @@ class ToolCommands extends AbstractCommands
 
     /**
      * Check project compatibility for Drupal 9 upgrade.
-     * 
+     *
      * Note: The project configuration should be updated.
      *
      * @command toolkit:d9-compatibility
      *
      */
-    public function d9Compatibility() {
+    public function d9Compatibility()
+    {
         // Build task collection.
         $collection = $this->collectionBuilder();
         // Check if 'upgrade_status' module is already on the project.
@@ -286,9 +287,8 @@ class ToolCommands extends AbstractCommands
                     $collection->taskExecStack()->exec('drush upgrade_status:analyze --all');
                     // Uninstall module after analisys.
                     $collection->taskExecStack()->exec('drush pm:uninstall upgrade_status');
-                }
-                // Module already installed - just perform analisys.
-                else {
+                } else {
+                    // Module already installed - just perform analisys.
                     $collection->taskExecStack()->exec('drush upgrade_status:analyze --all');
                 }
             }
