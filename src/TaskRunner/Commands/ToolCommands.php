@@ -278,8 +278,8 @@ class ToolCommands extends AbstractCommands
         $checkPackage = $this->taskExecStack()
             ->printOutput(false)
             ->exec('composer show drupal/upgrade_status -q')
-            ->stopOnFail()-
-            >run();
+            ->stopOnFail()
+            ->run();
         // The project already requires this package.
         $this->say("Note: The project configuration should be updated before runnig this command.");
 
