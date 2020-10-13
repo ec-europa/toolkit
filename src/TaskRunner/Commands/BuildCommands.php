@@ -110,6 +110,8 @@ class BuildCommands extends AbstractCommands
             json_encode(['version' => $tag, 'sha' => $hash], JSON_PRETTY_PRINT)
         );
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
+        // Remove 'install.php' from distribution.
+        $tasks[] = $this->taskFilesystemStack()->remove($options['dist-root'] . '/web/core/install.php');
 
         // Collect and execute list of commands set on local runner.yml.
         $commands = $this->getConfig()->get("toolkit.build.dist.commands");
