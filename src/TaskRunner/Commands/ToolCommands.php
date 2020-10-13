@@ -276,12 +276,12 @@ class ToolCommands extends AbstractCommands
 
         // Check if 'upgrade_status' module is already on the project.
         $checkPackage = $this->taskExecStack()
-            ->printOutput(false)
+            ->silent(true)
             ->exec('composer show drupal/upgrade_status -q')
             ->stopOnFail()
             ->run();
         // The project already requires this package.
-        $this->say("Note: The project configuration should be updated before runnig this command.");
+        $this->say("Note: The project configuration should be updated before running this command.");
 
         if ($checkPackage->wasSuccessful()) {
             $this->say("The module 'upgrade_status' already makes part of the project.");
@@ -291,12 +291,14 @@ class ToolCommands extends AbstractCommands
                 // If it's not enable, enable, analise and remove.
                 if (!isset($parseConfigFile['module']['upgrade_status'])) {
                     $collection->taskExecStack()
+                        ->silent(true)
                         ->exec('drush en upgrade_status');
                     // Analise all packages/projects (contrib and custom).
                     $collection->taskExecStack()
                         ->exec('drush upgrade_status:analyze --all');
                     // Uninstall module after analisys.
                     $collection->taskExecStack()
+                        ->silent(true)
                         ->exec('drush pm:uninstall upgrade_status');
                 } else {
                     // Module already installed - just perform analisys.
@@ -313,17 +315,19 @@ class ToolCommands extends AbstractCommands
             // Uninstall and remove package.
             $this->say("'Package drupal/upgrade_status not found' - Installing required package");
             $collection->taskComposerRequire()
+                ->silent(true)
                 ->dependency('drupal/upgrade_status', '^2.0')
-                ->printOutput(false)
                 ->dev();
             $collection->taskExecStack()
+                ->silent(true)
                 ->exec('drush en upgrade_status');
             $collection->taskExecStack()
                 ->exec('drush upgrade_status:analyze --all');
             $collection->taskExecStack()
+                ->silent(true)
                 ->exec('drush pm:uninstall upgrade_status');
             $collection->taskExecStack()
-                ->printOutput(false)
+                ->silent(true)
                 ->exec('composer remove drupal/upgrade_status --dev');
             $collection->run();
         }
