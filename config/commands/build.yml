@@ -5,6 +5,7 @@ command:
         root: ${drupal.root}
         dist-root: ${toolkit.build.dist.root}
         keep: ${toolkit.build.dist.keep}
+        remove: ${toolkit.build.dist.remove}
     build-dev:
       options:
         root: ${drupal.root}

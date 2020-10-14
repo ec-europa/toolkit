@@ -21,6 +21,17 @@ toolkit:
         - vendor
         - composer.lock
         - composer.json
+      remove:
+        - CHANGELOG.txt
+        - COPYRIGHT.txt
+        - INSTALL.mysql.txt
+        - INSTALL.pgsql.txt
+        - install.php
+        - INSTALL.sqlite.txt
+        - INSTALL.txt
+        - LICENSE.txt
+        - MAINTAINERS.txt
+        - UPDATE.txt
       commands: []
     dev:
       commands: []

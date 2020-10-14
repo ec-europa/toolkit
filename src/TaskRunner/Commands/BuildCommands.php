@@ -60,6 +60,7 @@ class BuildCommands extends AbstractCommands
         'keep' => InputOption::VALUE_REQUIRED,
         'tag' => InputOption::VALUE_OPTIONAL,
         'sha' => InputOption::VALUE_OPTIONAL,
+        'remove' => InputOption::VALUE_REQUIRED,
     ])
     {
         if ($options['tag']) {
@@ -116,6 +117,11 @@ class BuildCommands extends AbstractCommands
         if (!empty($commands)) {
             $tasks[] = $this->taskCollectionFactory($commands);
         }
+
+        // Remove 'unwanted' files from distribution.
+        $remove = '-name "' . implode('" -o -name "', explode(',', $options['remove'])) . '"';
+        $tasks[] = $this->taskExecStack()
+            ->exec('find dist -maxdepth 3  -type f \( ' . $remove . ' \)' . ' -exec rm -rf {} +');
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
