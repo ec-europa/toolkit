@@ -26,16 +26,17 @@ Available commands:
  toolkit
   toolkit:build-assets          [tba] Build theme assets (Css/Js).
   toolkit:build-dev             Build site for local development.
-  toolkit:build-dev-reset.      Build site for local development from scratch with a clean git.
+  toolkit:build-dev-reset       Build site for local development from scratch with a clean git.
   toolkit:build-dist            Build the distribution package.
-  toolkit:component-check.      Check composer.json for components that are not whitelisted/blacklisted.
+  toolkit:component-check       Check composer.json for components that are not whitelisted/blacklisted.
+  toolkit:d9-compatibility      Check project compatibility for Drupal 9 upgrade.
   toolkit:disable-drupal-cache  Disable aggregation and clear cache.
   toolkit:download-dump         Download ASDA snapshot.
   toolkit:import-config         Import config.
   toolkit:install-clean         Install a clean website.
-  toolkit:install-clean-dev.    Install a clean website in dev mode.
+  toolkit:install-clean-dev     Install a clean website in dev mode.
   toolkit:install-clone         Install a clone website.
-  toolkit:install-clone-dev.    Install a clone website in dev mode.
+  toolkit:install-clone-dev     Install a clone website in dev mode.
   toolkit:install-dump          Install clone from production snapshot.
   toolkit:notifications         Display toolkit notifications.
   toolkit:run-deploy            Run deployment sequence.
