@@ -1,5 +1,10 @@
 # Toolkit change log
 
+## Version 4.4.0
+  - MULTISITE-24397: Remove non necessary files from distribution (install.php)
+  - MULTISITE-24308: Create script to check if approved modules are Drupal 9 ready
+  - MULTISITE-24256: Apply patch for PHPCS no report issue
+
 ## Version 4.3.0
   - MULTISITE-23084: Create toolkit command to compile SCSS
 
