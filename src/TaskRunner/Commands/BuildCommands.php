@@ -261,6 +261,7 @@ class BuildCommands extends AbstractCommands
         'default-theme' => InputOption::VALUE_REQUIRED,
         'build-npm-packages' => InputOption::VALUE_OPTIONAL,
         'build-npm-mode' => InputOption::VALUE_OPTIONAL,
+        'validate' => InputOption::VALUE_OPTIONAL,
     ])
     {
 
@@ -291,10 +292,27 @@ class BuildCommands extends AbstractCommands
                 $theme_dir = $directory->getRealPath();
             }
 
-            $finder = new Finder();
-            $finder->files()
-                ->in($theme_dir)
-                ->name('gulpfile.js');
+            // Option to process validation test only.
+            if ($options['validate'] == 'yes') {
+
+            // Build task collection.
+            $collection = $this->collectionBuilder();
+
+            $collection->taskExecStack()
+                ->dir($theme_dir)
+                ->exec('npm init -y --scope')
+                ->exec('npm install sass-lint ' . $options['build-npm-mode'])
+                ->exec('./node_modules/.bin/sass-lint  -i "node_modules/**/*.scss, node_modules/**/*.sass" -v -q')
+                ->stopOnFail();
+
+            // Run and return task collection.
+            return $collection->run();
+            }
+            else {
+                $finder = new Finder();
+                $finder->files()
+                    ->in($theme_dir)
+                    ->name('gulpfile.js');
 
             // Build task collection.
             $collection = $this->collectionBuilder();
@@ -314,6 +332,7 @@ class BuildCommands extends AbstractCommands
 
             // Run and return task collection.
             return $collection->run();
+            }
         } else {
             $this->say("The theme " . $options['default-theme'] . "  couldn't be found on the lib/ folder.");
             return 0;

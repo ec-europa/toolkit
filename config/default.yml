@@ -38,6 +38,8 @@ toolkit:
     npm:
       packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify
       mode: --save-dev
+  scss:
+    validate: 'no'
   test:
     behat:
       from: behat.yml.dist
