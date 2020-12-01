@@ -39,7 +39,7 @@ toolkit:
       packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify
       mode: --save-dev
   scss:
-    validate: 'check'
+    validate: null
   test:
     behat:
       from: behat.yml.dist
