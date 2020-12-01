@@ -255,6 +255,8 @@ class BuildCommands extends AbstractCommands
      *
      * @option default-theme theme where to build asstes.
      *
+     * @option validate to 'check' or 'fix' scss files.
+     *
      * @aliases tba
      */
     public function buildAssets(array $options = [
@@ -292,21 +294,25 @@ class BuildCommands extends AbstractCommands
                 $theme_dir = $directory->getRealPath();
             }
 
-            // Option to process validation test only.
-            if ($options['validate'] == 'yes') {
-
             // Build task collection.
             $collection = $this->collectionBuilder();
 
-            $collection->taskExecStack()
-                ->dir($theme_dir)
-                ->exec('npm init -y --scope')
-                ->exec('npm install sass-lint ' . $options['build-npm-mode'])
-                ->exec('./node_modules/.bin/sass-lint  -i "node_modules/**/*.scss, node_modules/**/*.sass" -v -q')
-                ->stopOnFail();
-
-            // Run and return task collection.
-            return $collection->run();
+            // Option to process validation test only.
+            if (($options['validate'] == 'check')) {
+                $collection->taskExecStack()
+                    ->exec('npm i -D stylelint stylelint-config-sass-guidelines')
+                    ->exec('npx stylelint "' . $theme_dir .  '/**/*.scss" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                    ->stopOnFail();
+                 // Run and return task collection.
+                return $collection->run();
+            }
+            elseif ($options['validate'] == 'fix') {
+                $collection->taskExecStack()
+                    ->exec('npm i -D stylelint stylelint-config-sass-guidelines')
+                    ->exec('npx stylelint --fix "' . $theme_dir .  '/**/*.scss" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                    ->stopOnFail();
+                // Run and return task collection.
+                return $collection->run();
             }
             else {
                 $finder = new Finder();
