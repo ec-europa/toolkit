@@ -260,7 +260,6 @@ class CloneCommands extends AbstractCommands
         // Workaround to EWPP projects.
         $url = (getenv("ASDA_URL") !== false) ? getenv("ASDA_URL") : $url;
 
-
         $downloadLink = 'https://' . $options['asda-user'] . ':' . $options['asda-password'] . '@' . $url . '/' . $filename;
 
         $tasks[] = $this->taskFilesystemStack()
