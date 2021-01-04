@@ -255,7 +255,7 @@ class BuildCommands extends AbstractCommands
      *
      * @option default-theme theme where to build asstes.
      *
-     * @option validate to 'check' or 'fix' scss files.
+     * @option validate or validate=fix to check or fix scss files.
      *
      * @aliases tba
      */
