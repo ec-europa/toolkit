@@ -9,6 +9,7 @@ By default a gulpfile is included and as well some npm packages in order to:
 - Look for Scss files and convert them into Css
 - Minify Css and Js
 - Merge files into one minimized file
+- Validate and fix scss files
 
 Command to run:
 ```
@@ -101,6 +102,22 @@ toolkit:
   build:
     npm:
      mode: (leave empty or add '--save-prod')
+```
+
+## Validate and fix scss files
+
+### Check theme's scss files for issues
+
+```
+docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=check
+or
+docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate
+```
+
+### Automatically fix errors
+
+```
+docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix
 ```
 
 ### Others topics
