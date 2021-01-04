@@ -303,41 +303,39 @@ class BuildCommands extends AbstractCommands
                     ->exec('npm i -D stylelint stylelint-config-sass-guidelines')
                     ->exec('npx stylelint "' . $theme_dir .  '/**/*.scss" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
                     ->stopOnFail();
-                 // Run and return task collection.
+                // Run and return task collection.
                 return $collection->run();
-            }
-            elseif ($options['validate'] == 'fix') {
+            } elseif ($options['validate'] == 'fix') {
                 $collection->taskExecStack()
                     ->exec('npm i -D stylelint stylelint-config-sass-guidelines')
                     ->exec('npx stylelint --fix "' . $theme_dir .  '/**/*.scss" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
                     ->stopOnFail();
                 // Run and return task collection.
                 return $collection->run();
-            }
-            else {
+            } else {
                 $finder = new Finder();
                 $finder->files()
                     ->in($theme_dir)
                     ->name('gulpfile.js');
 
-            // Build task collection.
-            $collection = $this->collectionBuilder();
+                // Build task collection.
+                $collection = $this->collectionBuilder();
+    
+                if (empty($finder->hasResults())) {
+                    $collection->taskExecStack()
+                        ->exec('cp vendor/ec-europa/toolkit/src/gulp/gulpfile.js ' . $theme_dir . '/gulpfile.js')
+                        ->stopOnFail();
+                }
 
-            if (empty($finder->hasResults())) {
                 $collection->taskExecStack()
-                    ->exec('cp vendor/ec-europa/toolkit/src/gulp/gulpfile.js ' . $theme_dir . '/gulpfile.js')
+                    ->dir($theme_dir)
+                    ->exec('npm init -y --scope')
+                    ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
+                    ->exec('./node_modules/.bin/gulp')
                     ->stopOnFail();
-            }
-
-            $collection->taskExecStack()
-                ->dir($theme_dir)
-                ->exec('npm init -y --scope')
-                ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
-                ->exec('./node_modules/.bin/gulp')
-                ->stopOnFail();
-
-            // Run and return task collection.
-            return $collection->run();
+    
+                // Run and return task collection.
+                return $collection->run();
             }
         } else {
             $this->say("The theme " . $options['default-theme'] . "  couldn't be found on the lib/ folder.");
