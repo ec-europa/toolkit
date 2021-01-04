@@ -108,6 +108,8 @@ toolkit:
 
 ### Check theme's scss files for issues
 
+Provides a report of violations.
+
 ```
 docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=check
 or
@@ -115,6 +117,8 @@ docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate
 ```
 
 ### Automatically fix errors
+
+Automatically fix, where possible, violations reported.
 
 ```
 docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix
