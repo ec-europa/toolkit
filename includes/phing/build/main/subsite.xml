@@ -48,6 +48,9 @@
 
       <exec command="rsync -Lvr ${build.dist}/ ${build.subsite.dir}/" />
 
+      <!-- Copy drush configuration file. -->
+      <exec command="rsync -Lvr ${resources.dir}/drush/* ${build.platform.dir}/sites/default/" />
+
       <!-- Remove non essential files. -->
       <delete file="${build.platform.dir}/authorize.php" failonerror="false" />
       <delete file="${build.platform.dir}/INSTALL.mysql.txt" failonerror="false" />
