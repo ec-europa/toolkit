@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 3.3.0
+  * DQA-231: Add support to robots.txt file (within /resources).
+  * DQA-232: Include drush conf files (drushrc.php and aliases.drushrc.php).
+
 ## Version 3.2.0
   * MULTISITE-23468: Check modules authorized not taking in account custom .make
   * MULTISITE-22987: Hardcoded path, skip check on 'variable_get'.
