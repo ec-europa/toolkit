@@ -243,6 +243,7 @@
         <phingcall target="project-modules-devel-en" />
         <phingcall target="reset-filesystem-permissions" />
         <phingcall target="drush-node-access-rebuild" />
+        <phingcall target="project-robots-update" />
     </target>
 
     <target name="project-subsite-backup" hidden="true"  description="Backup site defined files from properties.">
@@ -357,8 +358,9 @@
             project-modules-devel-en,
             reset-filesystem-permissions,
             drush-cache-reset,
-            drush-check-users">
-        
+            drush-check-users,
+            project-robots-update">
+
         <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
         <if>
             <equals arg1="${profile.core.major}" arg2="7" />
@@ -629,7 +631,7 @@
             <property name="project.drupal.modules" value="${devel.mdls.dis}" />
         </phingcall>
     </target>
-  
+
     <target name="project-generate-devel-vars" hidden="true" description="Update database with devel variables.">
         <propertyregex property="profile.core.major" subject="${profile.core}" pattern="^([0-9]+)\." match="$1" override="true" />
         <if>

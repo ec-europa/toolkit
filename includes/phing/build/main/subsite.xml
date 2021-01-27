@@ -17,6 +17,17 @@
       <echo msg="Playbook for build-subsite-dev ended." />
   </target>
 
+  <target name="project-robots-update">
+    <property name="output.IS_FILE_EXISTS" value="false" />
+    <exec command="if [ -f '${resources.dir}/robots.txt' ]; then echo 'true'; else echo 'false'; fi;" outputProperty="output.IS_FILE_EXISTS" />
+    <if>
+        <equals arg1="${output.IS_FILE_EXISTS}" arg2="true" />
+        <then>
+            <copy file="${resources.dir}/robots.txt" tofile="${build.platform.dir}/robots.txt" overwrite="false"/>
+        </then>
+    </if>
+  </target>
+
   <target name="subsite-delete-dev" hidden="true" description="Delete subsite dev build.">
       <phingcall target="project-scratch-build">
           <property name="dir-build" value="${build.${build-type}.dir}" override="true" />
@@ -51,6 +62,16 @@
 
       <!-- Copy drush configuration file. -->
       <exec command="rsync -Lvr ${toolkit.dir}/includes/drush/config/* ${build.platform.dir.settings}/" />
+
+      <!-- Update robots.txt -->
+      <property name="output.IS_FILE_EXISTS" value="false" />
+      <exec command="if [ -f '${resources.dir}/robots.txt' ]; then echo 'true'; else echo 'false'; fi;" outputProperty="output.IS_FILE_EXISTS" />
+      <if>
+          <equals arg1="${output.IS_FILE_EXISTS}" arg2="true" />
+          <then>
+             <copy file="${resources.dir}/robots.txt" tofile="${build.platform.dir}/robots.txt" overwrite="false"/>
+          </then>
+      </if>
 
       <!-- Remove non essential files. -->
       <delete file="${build.platform.dir}/authorize.php" failonerror="false" />
