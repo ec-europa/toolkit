@@ -50,6 +50,7 @@
 
   <!-- Port hardcoded section of pipeline into toolkit target to enable override. -->
   <target name="create-distribution" description="Create a package to be released in a docker image.">
+
       <!-- Delete any possible pre-existent folder. -->
       <delete dir="${build.platform.dir}" includeemptydirs="true" failonerror="false" />
 
@@ -58,6 +59,9 @@
       <phingcall target="build-platform" />
 
       <exec command="rsync -Lvr ${build.dist}/ ${build.subsite.dir}/" />
+
+      <!-- Copy drush configuration file. -->
+      <exec command="rsync -Lvr ${toolkit.dir}/includes/drush/config/* ${build.platform.dir.settings}/" />
 
       <!-- Update robots.txt -->
       <property name="output.IS_FILE_EXISTS" value="false" />
