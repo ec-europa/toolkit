@@ -114,7 +114,16 @@
     <target name="subsite-resources-copy" hidden="true" description="Copy subsite resources for distribution.">
         <echo msg="Copy custom resources." />
         <exec command="rsync -Lvr ${build.tmp.dir}/ ${build.${build-type}.dir}/" />
-        <copy file="resources/robots.txt" tofile="dist/robots.txt" overwrite="false"/>
+
+        <property name="output.IS_FILE_EXISTS" value="false" />
+        <exec command="if [ -f 'resources/robots.txt' ]; then echo 'true'; else echo 'false'; fi;" outputProperty="output.IS_FILE_EXISTS" />
+        <if>
+            <equals arg1="${output.IS_FILE_EXISTS}" arg2="true" />
+            <then>
+                <copy file="resources/robots.txt" tofile="dist/robots.txt" overwrite="false"/>
+            </then>
+        </if>
+
     </target>
 
     <target name="subsite-resources-link" hidden="true" description="Link subsite resources to lib folder for development.">
