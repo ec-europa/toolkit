@@ -6,11 +6,14 @@
  */
 
 // Specify the base_url that should be used when generating links.
-if (isset(getenv('VIRTUAL_HOST'))) {
-  $options['l'] = end(explode(",", getenv('VIRTUAL_HOST')));
+$virtualHost = getenv('VIRTUAL_HOST');
+if (!empty($virtualHost)) {
+  $availableHosts = explode(",", $virtualHost);
+  $options['l'] = end($availableHosts);
 }
 
 // Specify your Drupal core base directory.
-if (isset(getenv('DOCUMENT_ROOT'))) {
+$documentRoot = getenv('DOCUMENT_ROOT');
+if (!empty($documentRoot)) {
   $options['r'] = getenv('DOCUMENT_ROOT');
 }
