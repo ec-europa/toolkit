@@ -112,19 +112,19 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
     }
     $allowedModules = array_merge($develModules, $fpfisModules);
     $modulesName += $allowedModules;
-  
+
     foreach ($d7ModulesList as $module) {
       // Get list of modules authorised for all projects.
       if ($module['restricted_use'] == '0') {
-        $modulesName[] = $module['name'];
+        $modulesName[] = $module['machine_name'];
         $modulesArray[] = $module;
       }
       // Get list of restricted modules.
       if ($module['restricted_use'] != '0' && $module['restricted_use'] != '1') {
         $restrictedByProject = explode(',', $module['restricted_use']);
-  
+
         foreach ($restrictedByProject as $project) {
-  
+
           // Check the project Id and add the restricted modules by project (if is
           // the case) to the list of authorised modules.
           if ($project_id !== NULL && $project_id == $project) {
@@ -134,25 +134,25 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
         }
       }
     }
-  
+
     foreach ($modules as $module => $moduleId) {
-  
+
       $modulePath = drupal_get_path('module', $moduleId);
       $moduleInfo = drupal_parse_info_file($modulePath . '/' . $moduleId . '.info');
-  
+
       if (strpos($modulePath, 'sites/') !== false &&
         !empty($moduleInfo['version']) && $moduleInfo['project'] == $moduleId) {
-  
+
         if (!in_array($moduleId, $modulesName)) {
           drush_log('The use of the module ' . $moduleId . ' is not authorised by the QA team.', LogLevel::ERROR);
           $failed = true;
         }
-  
+
         // Check for security updates.
         module_load_include('inc', 'update', 'update.report');
         $availableUpdates = update_get_available(TRUE);
         $moduleAvailableUpdates = update_calculate_project_data($availableUpdates);
-  
+
         if (isset($moduleAvailableUpdates[$moduleId]['security updates']) && !in_array($moduleId, $allowedModules)) {
           $modulePath = drupal_get_path('module', $moduleAvailableUpdates[$moduleId]['name']);
           drush_log('The module ' . $moduleAvailableUpdates[$moduleId]['name'] . ' with version ' . $moduleAvailableUpdates[$moduleId]['existing_version'] . ' has a security update! Update to ' . $moduleAvailableUpdates[$moduleId]['recommended'], LogLevel::ERROR);
@@ -194,7 +194,7 @@ function drush_toolkit_check_modules_download_attribute($make = '../resources/si
       'branch',
       'refspec'
     );
-  
+
     // Check projects for incorrect attributes.
     if (isset($make_file['projects'])) {
       foreach ($make_file['projects'] as $name => $project) {
@@ -241,7 +241,7 @@ function drush_toolkit_check_modules_minimum_version($project_id = NULL) {
     if ($project_id !== NULL) {
       variable_set('project_id', $project_id);
     }
-  
+
     // Get list of modules authorised for all projects.
     foreach ($d7ModulesList as $module) {
       if ($module['restricted_use'] == '0') {
@@ -251,9 +251,9 @@ function drush_toolkit_check_modules_minimum_version($project_id = NULL) {
       // Get list of restricted modules.
       if ($module['restricted_use'] != '0' && $module['restricted_use'] != '1') {
         $restrictedByProject = explode(',', $module['restricted_use']);
-  
+
         foreach ($restrictedByProject as $project) {
-  
+
           // Check the project Id and add the restricted modules by project (if is
           // the case) to the list of authorised modules.
           if ($project_id !== NULL && $project_id == $project) {
@@ -263,15 +263,15 @@ function drush_toolkit_check_modules_minimum_version($project_id = NULL) {
         }
       }
     }
-  
+
     foreach ($modules as $module => $moduleId) {
       $modulePath = drupal_get_path('module', $moduleId);
       $moduleInfo = drupal_parse_info_file($modulePath . '/' . $moduleId . '.info');
       $moduleProject = isset($moduleInfo['project']) ? $moduleInfo['project'] : '';
-  
+
       if (strpos($modulePath, 'sites/') !== false &&
         !empty($moduleInfo['version']) && $moduleProject == $moduleId) {
-  
+
         // Check if the module version satisfies the whitelist/blacklist version
         // constraints.
         $moduleConstraints = getVersionConstraints('drupal/' . $moduleProject, $modulesArray);
@@ -437,7 +437,7 @@ function checkProjectModules() {
   }
   // Exclude obsolete module file 'views_export.module' from the list.
   $modules = array_diff($modules, array('views_export'));
-  
+
   return $modules;
 }
 
