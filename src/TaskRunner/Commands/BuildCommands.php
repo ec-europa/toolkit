@@ -100,8 +100,7 @@ class BuildCommands extends AbstractCommands
         $keep = '! -name "' . $options['dist-root'] . '" ! -name "' . implode('" ! -name "', explode(',', $options['keep'])) . '"';
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec('find ' . $options['dist-root'] . ' -maxdepth 1 ' . $keep . ' -exec rm -rf {} +')
-            ->exec('find ' . $options['dist-root'] . ' -type f -name "README.txt" -delete');
+            ->exec('find ' . $options['dist-root'] . ' -maxdepth 1 ' . $keep . ' -exec rm -rf {} +');
 
         // Prepare sha and tag variables.
         $tag = $options['tag'] ?? $this->getGitTag();
