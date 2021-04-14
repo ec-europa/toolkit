@@ -32,6 +32,7 @@ toolkit:
         - LICENSE.txt
         - MAINTAINERS.txt
         - UPDATE.txt
+        - README.txt
       commands: []
     dev:
       commands: []
