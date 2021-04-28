@@ -249,16 +249,15 @@ class CloneCommands extends AbstractCommands
         'asda-password' => InputOption::VALUE_REQUIRED,
     ])
     {
+        // Workaround to EWPP projects.
+        $url = getenv('ASDA_URL') ?: $options['asda-url'];
 
         $disallowed = array('http://', 'https://');
         foreach ($disallowed as $d) {
-            if (strpos($options['asda-url'], $d) === 0) {
+            if (strpos($url, $d) === 0) {
                 $url = str_replace($d, '', $options['asda-url']);
             }
         }
-
-        // Workaround to EWPP projects.
-        $url = (getenv("ASDA_URL") !== false) ? getenv("ASDA_URL") : $url;
 
         $downloadLink = 'https://' . $options['asda-user'] . ':' . $options['asda-password'] . '@' . $url . '/' . $filename;
 
