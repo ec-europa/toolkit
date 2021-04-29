@@ -128,7 +128,7 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
           // Check the project Id and add the restricted modules by project (if is
           // the case) to the list of authorised modules.
           if ($project_id !== NULL && $project_id == $project) {
-            array_push($modulesName, $module['name']);
+            array_push($modulesName, $module['machine_name']);
             array_push($modulesArray, $module);
           }
         }
