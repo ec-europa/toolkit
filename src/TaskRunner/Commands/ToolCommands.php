@@ -177,6 +177,9 @@ class ToolCommands extends AbstractCommands
         $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
         $packageVersion = isset($package['extra']['drupal']['version']) ? explode('+', str_replace('8.x-', '', $package['extra']['drupal']['version']))[0] : $package['version'];
 
+        // Exclude invalid.
+        $packageVersion = in_array($packageVersion, $this->getConfig()->get("toolkit.invalid-versions")) ?  $package['version'] : $packageVersion;
+
         // Only validate module components for this time.
         if (isset($package['type']) && $package['type'] === 'drupal-module') {
             // If module was not reviewed yet.
