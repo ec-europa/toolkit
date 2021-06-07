@@ -1,11 +1,11 @@
 imports:
-  - { resource: vendor/openeuropa/code-review/dist/library-conventions.yml }
-parameters:
-  tasks.phpcs.ignore_patterns:
-    - vendor/
-    - tests/fixtures
-  tasks.phpcs.triggered_by:
-    - php
+  - { resource: vendor/ec-europa/qa-automation/dist/library-conventions.yml }
 
-  extensions:
-    - OpenEuropa\CodeReview\ExtraTasksExtension
+# grumphp.yml
+grumphp:
+    tasks:
+      phpcs:
+        ignore_patterns:
+          - vendor/
+          - tests/fixtures
+        triggered_by: [php]
