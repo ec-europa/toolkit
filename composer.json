@@ -15,7 +15,7 @@
         "ext-json": "*",
         "cweagans/composer-patches": "^1.4",
         "drush/drush": "^9.7.1 || ^10.0.0",
-        "ec-europa/qa-automation": "^5.0.2",
+        "ec-europa/qa-automation": "^5.0.7",
         "guzzlehttp/guzzle": "^6.3",
         "openeuropa/task-runner": "^1.0.0-beta6"
     },
@@ -45,10 +45,10 @@
     "scripts": {
         "toolkit-update-phpcs-config": "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs'",
         "post-install-cmd": [
-            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs'"
+            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs,../../ec-europa/qa-automation/phpcs'"
         ],
         "post-update-cmd" : [
-            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs'"
+            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs,../../ec-europa/qa-automation/phpcs'"
         ]
     }
 }
