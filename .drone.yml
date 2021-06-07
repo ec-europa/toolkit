@@ -25,7 +25,6 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
-      - composer clear-cache
       - composer install --ansi --no-suggest --no-progress
     when:
       matrix:
@@ -38,7 +37,6 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
       - composer self-update --2
-      - composer clear-cache
       - composer install --ansi --no-suggest --no-progress
     when:
       matrix:
@@ -50,7 +48,6 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
-      - composer clear-cache
       - composer update --prefer-lowest --prefer-stable --ansi --no-suggest --no-progress
     when:
       matrix:
@@ -64,7 +61,6 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
       - composer self-update --2
-      - composer clear-cache
       - composer update --prefer-lowest --prefer-stable --ansi --no-suggest --no-progress
     when:
       matrix:
