@@ -40,9 +40,6 @@
         "composer-exit-on-patch-failure": true
     },
     "config": {
-        "sort-packages": true,
-        "platform": {
-            "php": "7.1.9"
-        }
+        "sort-packages": true
     }
 }
