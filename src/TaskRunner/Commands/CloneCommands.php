@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
@@ -16,13 +16,12 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class CloneCommands extends AbstractCommands
 {
-
     use TaskRunnerTasks\CollectionFactory\loadTasks;
 
     /**
      * Path to file that hold the input information.
      */
-    const TEMP_INPUTFILE = 'temporary_inputfile.txt';
+    public const TEMP_INPUTFILE = 'temporary_inputfile.txt';
 
     /**
      * {@inheritdoc}

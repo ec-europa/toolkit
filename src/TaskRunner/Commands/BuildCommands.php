@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
@@ -16,7 +16,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class BuildCommands extends AbstractCommands
 {
-
     use TaskRunnerTasks\CollectionFactory\loadTasks;
 
     /**
@@ -320,7 +319,7 @@ class BuildCommands extends AbstractCommands
 
                 // Build task collection.
                 $collection = $this->collectionBuilder();
-    
+
                 if (empty($finder->hasResults())) {
                     $collection->taskExecStack()
                         ->exec('cp vendor/ec-europa/toolkit/src/gulp/gulpfile.js ' . $theme_dir . '/gulpfile.js')
@@ -333,7 +332,7 @@ class BuildCommands extends AbstractCommands
                     ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
                     ->exec('./node_modules/.bin/gulp')
                     ->stopOnFail();
-    
+
                 // Run and return task collection.
                 return $collection->run();
             }

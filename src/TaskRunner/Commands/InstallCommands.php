@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
@@ -13,7 +13,6 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class InstallCommands extends AbstractCommands
 {
-
     use TaskRunnerTasks\CollectionFactory\loadTasks;
     use TaskRunnerTasks\Drush\loadTasks;
 

@@ -1,11 +1,15 @@
 imports:
-  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }
+  - { resource: vendor/ec-europa/qa-automation/dist/library-conventions.yml }
 
 # grumphp.yml
 grumphp:
     tasks:
       phpcs:
+        standard: PSR12
         ignore_patterns:
           - vendor/
           - tests/fixtures
         triggered_by: [php]
+        exclude:
+          - Generic.Files.LineLength
+
