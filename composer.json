@@ -41,5 +41,14 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "toolkit-update-phpcs-config": "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs'",
+        "post-install-cmd": [
+            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs'"
+        ],
+        "post-update-cmd" : [
+            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs'"
+        ]
     }
 }

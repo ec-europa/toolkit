@@ -71,6 +71,7 @@ pipeline:
     group: test
     image: fpfis/httpd-php-ci:${PHP_VERSION=7.2}
     commands:
+      - ./vendor/bin/phpcs -i
       - ./vendor/bin/grumphp run
 
   phpunit:
