@@ -11,11 +11,11 @@
         "source": "https://github.com/ec-europa/toolkit"
     },
     "require": {
-        "php": "^7.1",
+        "php": "^7.3",
         "ext-json": "*",
         "cweagans/composer-patches": "^1.4",
         "drush/drush": "^9.7.1 || ^10.0.0",
-        "ec-europa/qa-automation": "^4.0.0",
+        "ec-europa/qa-automation": "^5.0",
         "guzzlehttp/guzzle": "^6.3",
         "openeuropa/task-runner": "^1.0.0-beta6"
     },
