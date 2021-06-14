@@ -11,6 +11,8 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
 
 /**
+ * @group clone
+ *
  * Test Toolkit build commands.
  */
 class CloneCommandsTest extends AbstractTest

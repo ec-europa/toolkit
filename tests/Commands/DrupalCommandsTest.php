@@ -10,6 +10,8 @@ namespace EcEuropa\Toolkit\Tests\Commands {
     use Symfony\Component\Yaml\Yaml;
 
     /**
+     * @group drupal
+     *
      * Test Toolkit Drupal commands.
      */
     class DrupalCommandsTest extends AbstractTest

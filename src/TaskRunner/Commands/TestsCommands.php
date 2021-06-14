@@ -9,6 +9,7 @@ use NuvoleWeb\Robo\Task as NuvoleWebTasks;
 use OpenEuropa\TaskRunner\Contract\FilesystemAwareInterface;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
@@ -134,7 +135,23 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $this->taskProcessConfigFile($options['from'], $options['to'])->run();
         $phpunit_bin = $this->getConfig()->get('runner.bin_dir') . '/phpunit';
 
-        $tasks[] = $this->taskExec($phpunit_bin . ' --testdox');
+        $result = $this->taskExec($phpunit_bin . ' --list-groups')
+            ->silent(true)
+            ->printOutput(false)
+            ->run()
+            ->getMessage();
+
+        $groups = preg_grep('/^( - [\w\-]+)/', explode("\n", $result));
+        sort($groups);
+
+        $parallel = $this->taskParallelExec();
+        foreach ($groups as $group) {
+            $group = str_replace('- ', '', trim($group));
+            if (strlen($group) > 2) {
+                $parallel->process($phpunit_bin . ' --group=' . $group);
+            }
+        }
+        $parallel->run();
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
