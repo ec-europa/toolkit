@@ -17,10 +17,8 @@
         "drush/drush": "^9.7.1 || ^10.0.0",
         "ec-europa/qa-automation": "^8.0",
         "guzzlehttp/guzzle": "^6.3",
-        "openeuropa/task-runner": "^1.0.0-beta6"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "~6.0"
+        "openeuropa/task-runner": "^1.0.0-beta6",
+        "phpunit/phpunit": "^9.5"
     },
     "suggest": {
         "drupal/console": "The Drupal CLI, tool to generate boilerplate code, interact with and debug Drupal."

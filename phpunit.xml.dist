@@ -8,11 +8,11 @@
     convertWarningsToExceptions = "true"
     processIsolation            = "true"
     stopOnFailure               = "false"
-    syntaxCheck                 = "false"
     bootstrap                   = "vendor/autoload.php">
     <testsuites>
-        <testsuite>
+        <testsuite name="default">
             <directory>tests/</directory>
         </testsuite>
     </testsuites>
 </phpunit>
+
