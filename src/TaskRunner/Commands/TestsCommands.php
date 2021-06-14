@@ -115,6 +115,31 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     }
 
     /**
+     * Run PHPUnit tests.
+     *
+     * @command toolkit:test-phpunit
+     *
+     * @aliases tp
+     *
+     * @option from   From phpunit.xml.dist config file.
+     * @option to     To phpunit.xml config file.
+     */
+    public function toolkitPhpUnit(array $options = [
+        'from' => InputOption::VALUE_OPTIONAL,
+        'to' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        $tasks = [];
+
+        $this->taskProcessConfigFile($options['from'], $options['to'])->run();
+        $phpunit_bin = $this->getConfig()->get('runner.bin_dir') . '/phpunit';
+
+        $tasks[] = $this->taskExec($phpunit_bin . ' --testdox');
+
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
      * Run PHP code autofixing.
      *
      * @command toolkit:run-phpcbf

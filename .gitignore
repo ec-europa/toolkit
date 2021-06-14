@@ -8,6 +8,7 @@
 /phpunit.xml
 /grumphp.yml
 /docker-compose.*.yml
+/phpunit.xml
 
 .phpunit.result.cache
 

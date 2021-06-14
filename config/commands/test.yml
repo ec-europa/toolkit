@@ -4,3 +4,7 @@ command:
       options:
         from: ${toolkit.test.behat.from}
         to: ${toolkit.test.behat.to}
+    test-phpunit:
+      options:
+        from: ${toolkit.test.phpunit.from}
+        to: ${toolkit.test.phpunit.to}
