@@ -145,11 +145,15 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         sort($groups);
 
         $parallel = $this->taskParallelExec();
-        foreach ($groups as $group) {
-            $group = str_replace('- ', '', trim($group));
-            if (strlen($group) > 2) {
-                $parallel->process($phpunit_bin . ' --group=' . $group);
+        if (count($groups) > 0) {
+            foreach ($groups as $group) {
+                $group = str_replace('- ', '', trim($group));
+                if (strlen($group) > 2) {
+                    $parallel->process($phpunit_bin . ' --group=' . $group);
+                }
             }
+        } else {
+            $parallel->process($phpunit_bin);
         }
         $parallel->run();
 
