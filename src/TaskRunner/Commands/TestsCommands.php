@@ -100,19 +100,24 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $tasks = [];
 
         $this->taskProcessConfigFile($options['from'], $options['to'])->run();
-
         $behat_bin = $this->getConfig()->get('runner.bin_dir') . '/behat';
-        $result = $this->taskExec($behat_bin . ' --dry-run')
-            ->silent(true)
-            ->printOutput(false)
-            ->run()
-            ->getMessage();
+        $execution_mode = $this->getConfig()->get('toolkit.test.behat.execution');
 
-        $tasks[] = strpos(trim($result), 'No scenarios') !== 0
-        ? $this->taskExec($behat_bin . ' --strict')
-        : $this->taskExec($behat_bin);
+        if ($execution_mode == 'parallel') {
+            $command = "find tests/features/ -iname '*.feature' | parallel --gnu '" . $behat_bin . " --strict {}' ";
+            $tasks[] =  $this->taskExec($command);
+        } else {
+            $behat_bin = $this->getConfig()->get('runner.bin_dir') . '/behat';
+            $result = $this->taskExec($behat_bin . ' --dry-run')
+                ->silent(true)
+                ->printOutput(false)
+                ->run()
+                ->getMessage();
 
-        return $this->collectionBuilder()->addTaskList($tasks);
+            $tasks[] = strpos(trim($result), 'No scenarios') !== 0
+            ? $this->taskExec($behat_bin . ' --strict')
+            : $this->taskExec($behat_bin);
+        }
     }
 
     /**
