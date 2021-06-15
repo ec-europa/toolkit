@@ -13,6 +13,7 @@
     "require": {
         "php": "^7.3",
         "ext-json": "*",
+        "behat/behat": "^3.8",
         "cweagans/composer-patches": "^1.4",
         "drush/drush": "^9.7.1 || ^10.0.0",
         "ec-europa/qa-automation": "^8.0",
