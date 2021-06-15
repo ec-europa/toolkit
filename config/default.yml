@@ -43,9 +43,11 @@ toolkit:
     validate: null
   test:
     behat:
+      execution: default
       from: behat.yml.dist
       to: behat.yml
     phpunit:
+      execution: parallel
       from: phpunit.xml.dist
       to: phpunit.xml
   tool:

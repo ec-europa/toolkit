@@ -138,25 +138,29 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
 
         $this->taskProcessConfigFile($options['from'], $options['to'])->run();
+
+        $execution_mode = $this->getConfig()->get('toolkit.test.phpunit.execution');
         $phpunit_bin = $this->getConfig()->get('runner.bin_dir') . '/phpunit';
 
-        $result = $this->taskExec($phpunit_bin . ' --list-groups')
-            ->silent(true)
-            ->printOutput(false)
-            ->run()
-            ->getMessage();
+        if ($execution_mode == 'parallel') {
+            $result = $this->taskExec($phpunit_bin . ' --list-suites')
+                ->silent(true)
+                ->printOutput(false)
+                ->run()
+                ->getMessage();
 
-        $groups = preg_grep('/^( - [\w\-]+)/', explode("\n", $result));
-        sort($groups);
+            $suites = preg_grep('/^( - [\w\-]+)/', explode("\n", $result));
 
-        $parallel = $this->taskParallelExec();
-        foreach ($groups as $group) {
-            $group = str_replace('- ', '', trim($group));
-            if (strlen($group) > 2) {
-                $parallel->process($phpunit_bin . ' --group=' . $group);
+            $tasks[] = $parallel = $this->taskParallelExec();
+            foreach ($suites as $suite) {
+                $suite = str_replace('- ', '', trim($suite));
+                if (strlen($suite) > 2) {
+                    $parallel->process($phpunit_bin . ' --testsuite=' . $suite);
+                }
             }
+        } else {
+            $tasks[] = $this->taskExec($phpunit_bin);
         }
-        $parallel->run();
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
