@@ -118,6 +118,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             ? $this->taskExec($behat_bin . ' --strict')
             : $this->taskExec($behat_bin);
         }
+
+        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
