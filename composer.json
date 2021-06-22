@@ -19,7 +19,7 @@
         "ec-europa/qa-automation": "^8.0",
         "guzzlehttp/guzzle": "^6.3",
         "openeuropa/task-runner": "^1.0.0-beta6",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^7.5 || ^9.5"
     },
     "suggest": {
         "drupal/console": "The Drupal CLI, tool to generate boilerplate code, interact with and debug Drupal."
