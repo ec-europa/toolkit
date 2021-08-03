@@ -347,6 +347,7 @@ class ToolCommands extends AbstractCommands
     {
         if (file_exists('.opts.yml')) {
             $parseOptsFile = Yaml::parseFile('.opts.yml');
+            // List of commands to prevent the use.
             $forbiddenCommands = [
                 'drush sql:conf',
                 'drush sql-conf',
@@ -417,6 +418,7 @@ class ToolCommands extends AbstractCommands
                 return 1;
             } else {
                 $this->say("Review 'opts.yml' file - Ok.");
+                // If the review is ok return '0'.
                 return 0;
             }
         }
