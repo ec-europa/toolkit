@@ -336,4 +336,22 @@ class ToolCommands extends AbstractCommands
         }
         return 0;
     }
+
+    /**
+     * Check if composer.lock exists on the project root folder.
+     *
+     * @command toolkit:complock-check
+     *
+     */
+    public function composerLockCheck()
+    {
+        if (!file_exists('composer.lock')) {
+                $this->io()->error("Failed to detect a 'composer.lock' file on root folder.");
+                return 1;
+        } else {
+            $this->say("Detected 'composer.lock' file - Ok.");
+            // If the check is ok return '0'.
+            return 0;
+        }
+    }
 }
