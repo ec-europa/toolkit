@@ -346,8 +346,8 @@ class ToolCommands extends AbstractCommands
     public function composerLockCheck()
     {
         if (!file_exists('composer.lock')) {
-                $this->io()->error("Failed to detect a 'composer.lock' file on root folder.");
-                return 1;
+            $this->io()->error("Failed to detect a 'composer.lock' file on root folder.");
+            return 1;
         } else {
             $this->say("Detected 'composer.lock' file - Ok.");
             // If the check is ok return '0'.
