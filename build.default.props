@@ -48,7 +48,7 @@ phpcs.standards = Subsite;${project.basedir}/phpcs-ruleset.xml
 phpcs.files = ${resources.dir};${lib.dir}
 
 # Exceptional files to check, delimited by semicolon.
-phpcs.extra_files = ${project.basedir}/composer.json
+phpcs.files.extra = ${project.basedir}/composer.json
 
 # Paths to ignore, delimited by semicolons.
 phpcs.ignore =
