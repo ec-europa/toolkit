@@ -10,11 +10,14 @@ phpcs.extensions = php inc module install info test profile theme css js
 phpcs.config = ${project.basedir}/phpcs.xml
 
 # The coding standards to enforce.
-# Delimited by space, comma or semicolon..
+# Delimited by space, comma or semicolon.
 phpcs.standards = Subsite;${project.basedir}/phpcs-ruleset.xml
 
-# Paths to check, delimited by semicolons.
+# Paths to check, delimited by semicolon.
 phpcs.files = ${resources.dir};${lib.dir}
+
+# Exceptional files to check, delimited by semicolon.
+phpcs.extra_files = ${project.basedir}/composer.json
 
 # Paths to ignore, delimited by semicolons.
 phpcs.ignore =

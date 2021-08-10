@@ -54,6 +54,15 @@
     <!-- Set up PHP CodeSniffer. -->
     <target name="test-phpcs-setup" hidden="true">
         <delete file="${phpcs.config}" failonerror="false" />
+        <if>
+            <and>
+                <isset property="phpcs.extra_files"/>
+                <matches string="${phpcs.extra_files}" pattern=".*\S.*"/>
+            </and>
+            <then>
+                <property name="phpcs.files" value="${phpcs.extra_files};${phpcs.files}" override="true"/>
+            </then>
+        </if>
         <phpcsconf
             configFile="${phpcs.config}"
             extensions="${phpcs.extensions}"
