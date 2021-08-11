@@ -61,11 +61,14 @@ phpcs.config = ${project.basedir}/phpcs.xml
 phpcs.installed.paths = ${toolkit.dir.vendor}/ec-europa/qa-automation/phpcs/SubStandards
 
 # The coding standards to enforce.
-# Delimited by space, comma or semicolon..
+# Delimited by space, comma or semicolon.
 phpcs.standards = Subsite;${project.basedir}/phpcs-ruleset.xml
 
-# Paths to check, delimited by semicolons.
+# Paths to check, delimited by semicolon.
 phpcs.files = ${resources.dir};${lib.dir}
+
+# Exceptional files to check, delimited by semicolon.
+phpcs.files.extra = ${project.basedir}/composer.json
 
 # Paths to ignore, delimited by semicolons.
 phpcs.ignore =
