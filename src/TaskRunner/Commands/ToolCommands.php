@@ -11,6 +11,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Generic tools.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class ToolCommands extends AbstractCommands
 {
@@ -422,16 +424,16 @@ class ToolCommands extends AbstractCommands
                 'drush upwd',
                 'drush user-password',
             ];
-            $reviewOk = TRUE;
+            $reviewOk = true;
             foreach ($parseOptsFile['upgrade_commands'] as $command) {
                 foreach ($forbiddenCommands as $forbiddenCommand) {
-                    if (strpos($command, $forbiddenCommand) !== FALSE) {
+                    if (strpos($command, $forbiddenCommand) !== false) {
                         $this->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
-                        $reviewOk = FALSE;
+                        $reviewOk = false;
                     }
                 }
             }
-            if ($reviewOk == FALSE) {
+            if ($reviewOk == false) {
                 $this->io()->error("Failed the '.opts.yml' file review. Please contact the QA team.");
                 return 1;
             } else {
