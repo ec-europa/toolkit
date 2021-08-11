@@ -66,6 +66,31 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             }
         }
 
+        // Check for extra files if any is defined on qa-conventions.yml.
+        $qaConventionsArray = (array) Yaml::parse(file_get_contents('vendor/ec-europa/qa-automation/dist/qa-conventions.yml'));
+        if (isset($qaConventionsArray['parameters']['tasks.phpcs.files.extra'])) {
+            $extra_files = $qaConventionsArray['parameters']['tasks.phpcs.files.extra'];
+
+            // Check for extra files in grumphp and override the default ones.
+            if (isset($grumphpArray['parameters']['tasks.phpcs.files.extra'])) {
+                $extra_files = $grumphpArray['parameters']['tasks.phpcs.files.extra'];
+            }
+
+            if (!empty($extra_files)) {
+                $error = false;
+                foreach ($extra_files as $extra_file) {
+                    if (!file_exists($extra_file)) {
+                        $this->say("The file '{$extra_file}' is required.");
+                        $error = true;
+                    }
+                }
+                if ($error) {
+                    echo "Please provide the file(s) and resume your task.\n";
+                    return new ResultData(1);
+                }
+            }
+        }
+
         if ($containsQaConventions) {
             $grumphp_bin = $this->getConfig()->get('runner.bin_dir') . '/grumphp';
             $tasks[] = $this->taskExec($grumphp_bin . ' run');
