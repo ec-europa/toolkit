@@ -115,6 +115,56 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     }
 
     /**
+     * Run PHPUnit tests.
+     *
+     * @command toolkit:test-phpunit
+     *
+     * @aliases tp
+     *
+     * @option from   From phpunit.xml.dist config file.
+     * @option to     To phpunit.xml config file.
+     */
+    public function toolkitPhpUnit(array $options = [
+        'from' => InputOption::VALUE_OPTIONAL,
+        'to' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        $tasks = [];
+
+        if (!file_exists($options['from'])) {
+            $this->say('PHUnit configuration not found, skipping.');
+            return $this->collectionBuilder()->addTaskList($tasks);
+        }
+
+        $this->taskProcessConfigFile($options['from'], $options['to'])->run();
+
+        $execution_mode = $this->getConfig()->get('toolkit.test.phpunit.execution');
+        $phpunit_bin = $this->getConfig()->get('runner.bin_dir') . '/phpunit';
+
+        if ($execution_mode == 'parallel') {
+            $result = $this->taskExec($phpunit_bin . ' --list-suites')
+                ->silent(true)
+                ->printOutput(false)
+                ->run()
+                ->getMessage();
+
+            $suites = preg_grep('/^( - [\w\-]+)/', explode("\n", $result));
+
+            $tasks[] = $parallel = $this->taskParallelExec();
+            foreach ($suites as $suite) {
+                $suite = str_replace('- ', '', trim($suite));
+                if (strlen($suite) > 2) {
+                    $parallel->process($phpunit_bin . ' --testsuite=' . $suite);
+                }
+            }
+        } else {
+            $tasks[] = $this->taskExec($phpunit_bin);
+        }
+
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
      * Run PHP code autofixing.
      *
      * @command toolkit:run-phpcbf
