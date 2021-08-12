@@ -43,13 +43,15 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     {
         $tasks = [];
         $grumphpFile = './grumphp.yml.dist';
-        $containsQaConventions = false;
+        $qaConventionsFile = 'vendor/ec-europa/qa-automation/dist/qa-conventions.yml';
+        $qaConventionsArray = (array) Yaml::parse(file_get_contents($qaConventionsFile));
+        $containsQaConventions = $required_files_error = $forbidden_files_error = false;
 
         if (file_exists($grumphpFile)) {
             $grumphpArray = (array) Yaml::parse(file_get_contents($grumphpFile));
             if (isset($grumphpArray['imports'])) {
                 foreach ($grumphpArray['imports'] as $import) {
-                    if (isset($import['resource']) && $import['resource'] === 'vendor/ec-europa/qa-automation/dist/qa-conventions.yml') {
+                    if (isset($import['resource']) && $import['resource'] === $qaConventionsFile) {
                         $containsQaConventions = true;
                     }
                 }
@@ -66,29 +68,52 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             }
         }
 
-        // Check for extra files if any is defined on qa-conventions.yml.
-        $qaConventionsArray = (array) Yaml::parse(file_get_contents('vendor/ec-europa/qa-automation/dist/qa-conventions.yml'));
-        if (isset($qaConventionsArray['parameters']['tasks.phpcs.files.extra'])) {
-            $extra_files = $qaConventionsArray['parameters']['tasks.phpcs.files.extra'];
+        // Check for required files.
+        if (isset($qaConventionsArray['parameters']['tasks.phpcs.files.required'])) {
+            $required_files = $qaConventionsArray['parameters']['tasks.phpcs.files.required'];
 
-            // Check for extra files in grumphp and override the default ones.
-            if (isset($grumphpArray['parameters']['tasks.phpcs.files.extra'])) {
-                $extra_files = $grumphpArray['parameters']['tasks.phpcs.files.extra'];
+            // Check for project level overrides.
+            if (isset($grumphpArray['parameters']['tasks.phpcs.files.required'])) {
+                $required_files = $grumphpArray['parameters']['tasks.phpcs.files.required'];
             }
 
-            if (!empty($extra_files)) {
-                $error = false;
-                foreach ($extra_files as $extra_file) {
-                    if (!file_exists($extra_file)) {
-                        $this->say("The file '{$extra_file}' is required.");
-                        $error = true;
+            if (!empty($required_files)) {
+                foreach ($required_files as $required_file) {
+                    if (!file_exists($required_file)) {
+                        $this->say("The file '{$required_file}' is required.");
+                        $required_files_error = true;
                     }
                 }
-                if ($error) {
+                if ($required_files_error) {
                     echo "Please provide the file(s) and resume your task.\n";
-                    return new ResultData(1);
                 }
             }
+        }
+
+        // Check for forbidden files.
+        if (isset($qaConventionsArray['parameters']['tasks.phpcs.files.forbidden'])) {
+            $forbidden_files = $qaConventionsArray['parameters']['tasks.phpcs.files.forbidden'];
+
+            // Check for project level overrides.
+            if (isset($grumphpArray['parameters']['tasks.phpcs.files.forbidden'])) {
+                $forbidden_files = $grumphpArray['parameters']['tasks.phpcs.files.forbidden'];
+            }
+
+            if (!empty($forbidden_files)) {
+                foreach ($forbidden_files as $required_file) {
+                    if (file_exists($required_file)) {
+                        $this->say("The file '{$required_file}' is forbidden.");
+                        $forbidden_files_error = true;
+                    }
+                }
+                if ($forbidden_files_error) {
+                    echo "Please remove the file(s) and resume your task.\n";
+                }
+            }
+        }
+
+        if ($required_files_error || $forbidden_files_error) {
+            return new ResultData(1);
         }
 
         if ($containsQaConventions) {
@@ -96,10 +121,10 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             $tasks[] = $this->taskExec($grumphp_bin . ' run');
         } else {
             $this->say('All Drupal projects in the ec-europa namespace need to use Quality Assurance provided standards.');
-            $this->say('Your configuration has to import the resource vendor/ec-europa/qa-automation/dist/qa-conventions.yml.');
+            $this->say("Your configuration has to import the resource {$qaConventionsFile}.");
             $this->say('For more information visit: https://github.com/ec-europa/toolkit/blob/release/4.x/docs/testing-project.md#phpcs-testing');
             $this->say('Add the following lines to your grumphp.yml.dist:');
-            echo "\nimports:\n  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }\n\n";
+            echo "\nimports:\n  - { resource: {$qaConventionsFile} }\n\n";
             return new ResultData(1);
         }
 
