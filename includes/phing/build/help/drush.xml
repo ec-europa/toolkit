@@ -554,6 +554,7 @@
         <echo message="Checking non-authorised modules and security updates for ${db.name}." />
         <drush command="toolkit-check-modules-authorized-security" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${project.id}</param>
+            <param>--devel=${resources.dir.devel.make}</param>
             <param>--blocker=${drush.authorized-security.blocker}</param>
         </drush>
     </target>

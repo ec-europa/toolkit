@@ -26,6 +26,7 @@ function toolkit_drush_command() {
       'project-id' => 'The project_id for which exceptions could have been made.',
     ],
     'options' => [
+      'devel' => 'The path to the devel.make file. Defaults to resources/devel.make.',
       'blocker' => 'Whether or not to block the project (0/1). Defaults to 1.',
     ],
   ];
@@ -85,6 +86,9 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
   $failed = FALSE;
   $blocker = (int) drush_get_option('blocker', 1);
 
+  // Devel make file path.
+  $develMakeFile = drush_get_option('devel', '../resources/devel.make');
+
   if (!empty($modules) && !empty($d7ModulesList)) {
     if ($project_id !== NULL) {
       variable_set('project_id', $project_id);
@@ -99,9 +103,6 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
     }
 
     // If modules defined in devel.make add to authorised modules list.
-    $buildProps = drupal_parse_info_file('../build.project.props');
-    $develMakeFile = empty($buildProps['resources.dir.devel.make']) ? '../resources/devel.make' : '../' . $buildProps['resources.dir.devel.make'];
-
     $fpfisModules = ['gelf_log', 'redis', 'skippy_cookie'];
     $develModules = [];
     if (file_exists($develMakeFile)) {
