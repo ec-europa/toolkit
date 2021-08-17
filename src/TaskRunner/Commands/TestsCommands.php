@@ -94,6 +94,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     public function toolkitBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
         'to' => InputOption::VALUE_OPTIONAL,
+        'suite' => 'default'
     ])
     {
         $tasks = [];
@@ -101,7 +102,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $this->taskProcessConfigFile($options['from'], $options['to'])->run();
 
         $behat_bin = $this->getConfig()->get('runner.bin_dir') . '/behat';
-        $result = $this->taskExec($behat_bin . ' --dry-run')
+        $result = $this->taskExec($behat_bin . ' --dry-run --suite=' . $options['suite'])
             ->silent(true)
             ->printOutput(false)
             ->run()
@@ -127,7 +128,6 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     public function toolkitPhpUnit(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
         'to' => InputOption::VALUE_OPTIONAL,
-        'suite' => 'default'
     ])
     {
         $tasks = [];
@@ -159,7 +159,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                 }
             }
         } else {
-            $tasks[] = $this->taskExec($phpunit_bin . ' --testsuite=' . $options['suite']);
+            $tasks[] = $this->taskExec($phpunit_bin);
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
