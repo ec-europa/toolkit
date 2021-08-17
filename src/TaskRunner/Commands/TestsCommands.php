@@ -95,6 +95,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     public function toolkitBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
         'to' => InputOption::VALUE_OPTIONAL,
+        'suite' => 'default',
     ])
     {
         $tasks = [];
@@ -104,11 +105,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $execution_mode = $this->getConfig()->get('toolkit.test.behat.execution');
 
         if ($execution_mode == 'parallel') {
-            $command = "find tests/features/ -iname '*.feature' | parallel --gnu '" . $behat_bin . " --strict {}' ";
+            $command = "find tests/features/ -iname '*.feature' | parallel --gnu '" . $behat_bin . " --suite=" . $option['suite'] . " --strict {}' ";
             $tasks[] =  $this->taskExec($command);
         } else {
             $behat_bin = $this->getConfig()->get('runner.bin_dir') . '/behat';
-            $result = $this->taskExec($behat_bin . ' --dry-run')
+            $result = $this->taskExec($behat_bin . ' --dry-run --suite=' . $option['suite'])
                 ->silent(true)
                 ->printOutput(false)
                 ->run()
