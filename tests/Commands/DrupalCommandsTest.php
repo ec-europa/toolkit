@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Commands {
     use EcEuropa\Toolkit\Tests\AbstractTest;
@@ -10,6 +10,8 @@ namespace EcEuropa\Toolkit\Tests\Commands {
     use Symfony\Component\Yaml\Yaml;
 
     /**
+     * @group drupal
+     *
      * Test Toolkit Drupal commands.
      */
     class DrupalCommandsTest extends AbstractTest

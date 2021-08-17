@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Commands;
 
@@ -11,6 +11,8 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
 
 /**
+ * @group clone
+ *
  * Test Toolkit build commands.
  */
 class CloneCommandsTest extends AbstractTest

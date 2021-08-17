@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Commands;
 
@@ -11,6 +11,8 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
 
 /**
+ * @group build
+ *
  * Test Toolkit build commands.
  */
 class BuildCommandsTest extends AbstractTest
@@ -46,7 +48,7 @@ class BuildCommandsTest extends AbstractTest
         file_put_contents($configFile, Yaml::dump($config));
 
         // Run command.
-        $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
+        $input = new StringInput($command . ' --simulate');
         $output = new BufferedOutput();
         $runner = new TaskRunner($input, $output, $this->getClassLoader());
         $runner->run();
