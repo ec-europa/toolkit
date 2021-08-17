@@ -127,6 +127,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     public function toolkitPhpUnit(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
         'to' => InputOption::VALUE_OPTIONAL,
+        'suite' => 'default'
     ])
     {
         $tasks = [];
@@ -158,7 +159,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                 }
             }
         } else {
-            $tasks[] = $this->taskExec($phpunit_bin);
+            $tasks[] = $this->taskExec($phpunit_bin . ' --testsuite=' . $options['suite']);
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);

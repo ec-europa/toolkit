@@ -4,3 +4,5 @@ command:
       options:
         from: ${toolkit.test.behat.from}
         to: ${toolkit.test.behat.to}
+      suite:
+        default: "default"
