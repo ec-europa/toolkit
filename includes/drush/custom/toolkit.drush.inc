@@ -17,42 +17,43 @@ use Drush\Log\LogLevel;
  */
 function toolkit_drush_command() {
 
-  $items = array();
+  $items = [];
 
-  $items['toolkit-check-modules-authorized-security'] = array(
+  $items['toolkit-check-modules-authorized-security'] = [
     'description' => "Gives a list of non authorised modules and/or security updates.",
-    'aliases' => array('tk-cmas'),
+    'aliases' => ['tk-cmas'],
     'arguments' => [
-       'project-id' => 'The project_id for which exceptions could have been made.',
-     ],
-     'options' => [
-       'blocker' => 'Whether or not to block the project (0/1). Defaults to 1.',
-     ],
-  );
-  $items['toolkit-check-modules-download-attribute'] = array(
+      'project-id' => 'The project_id for which exceptions could have been made.',
+    ],
+    'options' => [
+      'devel' => 'The path to the devel.make file. Defaults to resources/devel.make.',
+      'blocker' => 'Whether or not to block the project (0/1). Defaults to 1.',
+    ],
+  ];
+  $items['toolkit-check-modules-download-attribute'] = [
     'description' => "Checks a make file for incorrect download tag, revision, branch or refspec.",
-    'aliases' => array('tk-cmda'),
-    'arguments' => array(
-      'make' => 'The make file to validate.'
-    ),
+    'aliases' => ['tk-cmda'],
+    'arguments' => [
+      'make' => 'The make file to validate.',
+    ],
     'options' => [
       'blocker' => 'Whether or not to block the project (0/1). Defaults to 1.',
     ],
-  );
-  $items['toolkit-check-modules-minimum-version'] = array(
+  ];
+  $items['toolkit-check-modules-minimum-version'] = [
     'description' => "Gives a list of modules no complying with the minimum version allowed.",
-    'aliases' => array('tk-cmmv'),
+    'aliases' => ['tk-cmmv'],
     'options' => [
       'blocker' => 'Whether or not to block the project (0/1). Defaults to 1.',
     ],
-  );
-  $items['toolkit-check-modules-restricted'] = array(
+  ];
+  $items['toolkit-check-modules-restricted'] = [
     'description' => "Search for modules that can't be overridden.",
-    'aliases' => array('tk-cmr'),
+    'aliases' => ['tk-cmr'],
     'options' => [
       'blocker' => 'Whether or not to block the project (0/1). Defaults to 1.',
     ],
-  );
+  ];
   $items['toolkit-check-modules-unused'] = [
     'description' => 'Checks for non-used modules in certain path crossreferenced with a makefile.',
     'aliases' => ['tk-cmu'],
@@ -82,8 +83,11 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
   $modulesArray = [];
 
   // Blocking options.
-  $failed = false;
+  $failed = FALSE;
   $blocker = (int) drush_get_option('blocker', 1);
+
+  // Devel make file path.
+  $develMakeFile = drush_get_option('devel', '../resources/devel.make');
 
   if (!empty($modules) && !empty($d7ModulesList)) {
     if ($project_id !== NULL) {
@@ -91,7 +95,7 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
     }
     // Enable 'Update Manager' module if it's disabled.
     if (!module_exists('update')) {
-      module_enable(array('update'), FALSE);
+      module_enable(['update'], FALSE);
       $status = FALSE;
     }
     else {
@@ -99,11 +103,8 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
     }
 
     // If modules defined in devel.make add to authorised modules list.
-    $buildProps = drupal_parse_info_file('../build.project.props');
-    $develMakeFile = empty($buildProps['resources.dir.devel.make']) ? '../resources/devel.make' : '../' . $buildProps['resources.dir.devel.make'];
-
-    $fpfisModules = array('gelf_log', 'redis', 'skippy_cookie');
-    $develModules = array();
+    $fpfisModules = ['gelf_log', 'redis', 'skippy_cookie'];
+    $develModules = [];
     if (file_exists($develMakeFile)) {
       $devel = drupal_parse_info_file($develMakeFile);
       if (isset($devel['projects'])) {
@@ -140,12 +141,12 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
       $modulePath = drupal_get_path('module', $moduleId);
       $moduleInfo = drupal_parse_info_file($modulePath . '/' . $moduleId . '.info');
 
-      if (strpos($modulePath, 'sites/') !== false &&
+      if (strpos($modulePath, 'sites/') !== FALSE &&
         !empty($moduleInfo['version']) && $moduleInfo['project'] == $moduleId) {
 
         if (!in_array($moduleId, $modulesName)) {
           drush_log('The use of the module ' . $moduleId . ' is not authorised by the QA team.', LogLevel::ERROR);
-          $failed = true;
+          $failed = TRUE;
         }
 
         // Check for security updates.
@@ -156,13 +157,13 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
         if (isset($moduleAvailableUpdates[$moduleId]['security updates']) && !in_array($moduleId, $allowedModules)) {
           $modulePath = drupal_get_path('module', $moduleAvailableUpdates[$moduleId]['name']);
           drush_log('The module ' . $moduleAvailableUpdates[$moduleId]['name'] . ' with version ' . $moduleAvailableUpdates[$moduleId]['existing_version'] . ' has a security update! Update to ' . $moduleAvailableUpdates[$moduleId]['recommended'], LogLevel::ERROR);
-          $failed = true;
+          $failed = TRUE;
         }
       }
     }
     // Turn off again 'Update Manager' module, in case was initially disabled.
     if ($status != TRUE) {
-      module_disable(array('update'), FALSE);
+      module_disable(['update'], FALSE);
       unset($status);
     }
     // Delete variable 'project_id'.
@@ -180,28 +181,28 @@ function drush_toolkit_check_modules_authorized_security($project_id = NULL) {
 function drush_toolkit_check_modules_download_attribute($make = '../resources/site.make') {
 
   // Blocking options.
-  $failed = false;
+  $failed = FALSE;
   $blocker = (int) drush_get_option('blocker', 1);
 
   if (!file_exists($make)) {
-    drush_log(dt('Make file @make does not exist. Skipping download attributes check.', array('@make' => $make)), 'warning');
+    drush_log(dt('Make file @make does not exist. Skipping download attributes check.', ['@make' => $make]), 'warning');
   }
   else {
     $make_file = drupal_parse_info_file($make);
-    $attributes = array(
+    $attributes = [
       'tag',
       'revision',
       'branch',
-      'refspec'
-    );
+      'refspec',
+    ];
 
     // Check projects for incorrect attributes.
     if (isset($make_file['projects'])) {
       foreach ($make_file['projects'] as $name => $project) {
         $attributes_at_wrong_level = array_intersect(array_keys($project), $attributes);
         if (!empty($attributes_at_wrong_level)) {
-          drush_set_error('SITE_MAKE_ERROR', dt('Attribute @attributes defined on "project" level for @name. This should be at "download" level.', array('@attributes' => implode(', ', $attributes_at_wrong_level), '@name' => $name)));
-          $failed = true;
+          drush_set_error('SITE_MAKE_ERROR', dt('Attribute @attributes defined on "project" level for @name. This should be at "download" level.', ['@attributes' => implode(', ', $attributes_at_wrong_level), '@name' => $name]));
+          $failed = TRUE;
         }
       }
     }
@@ -211,8 +212,8 @@ function drush_toolkit_check_modules_download_attribute($make = '../resources/si
       foreach ($make_file['libraries'] as $name => $project) {
         $attributes_at_wrong_level = array_intersect(array_keys($project), $attributes);
         if (!empty($attributes_at_wrong_level)) {
-          drush_set_error('SITE_MAKE_ERROR', dt('Attribute @attributes defined on "library" level for @name. This should be at "download" level.', array('@attributes' => implode(', ', $attributes_at_wrong_level), '@name' => $name)));
-          $failed = true;
+          drush_set_error('SITE_MAKE_ERROR', dt('Attribute @attributes defined on "library" level for @name. This should be at "download" level.', ['@attributes' => implode(', ', $attributes_at_wrong_level), '@name' => $name]));
+          $failed = TRUE;
         }
       }
     }
@@ -234,7 +235,7 @@ function drush_toolkit_check_modules_minimum_version($project_id = NULL) {
   $modulesArray = [];
 
   // Blocking options.
-  $failed = false;
+  $failed = FALSE;
   $blocker = (int) drush_get_option('blocker', 1);
 
   if (!empty($modules) && !empty($d7ModulesList)) {
@@ -269,20 +270,20 @@ function drush_toolkit_check_modules_minimum_version($project_id = NULL) {
       $moduleInfo = drupal_parse_info_file($modulePath . '/' . $moduleId . '.info');
       $moduleProject = isset($moduleInfo['project']) ? $moduleInfo['project'] : '';
 
-      if (strpos($modulePath, 'sites/') !== false &&
+      if (strpos($modulePath, 'sites/') !== FALSE &&
         !empty($moduleInfo['version']) && $moduleProject == $moduleId) {
 
         // Check if the module version satisfies the whitelist/blacklist version
         // constraints.
         $moduleConstraints = getVersionConstraints('drupal/' . $moduleProject, $modulesArray);
-        $constraints = [ 'whitelist' => false, 'blacklist' => true ];
+        $constraints = ['whitelist' => FALSE, 'blacklist' => TRUE];
         $moduleVersion = explode('+', str_replace('7.x-', '', $moduleInfo['version']))[0];
         foreach ($constraints as $constraint => $result) {
-            $constraintValue = $moduleConstraints[$constraint];
-            if (!is_null($constraintValue) && Semver::satisfies($moduleVersion, $constraintValue) === $result) {
-                drush_log("The module $moduleId:$moduleVersion does not meet the $constraint version constraint: $constraintValue.", LogLevel::WARNING);
-                $failed = true;
-            }
+          $constraintValue = $moduleConstraints[$constraint];
+          if (!is_null($constraintValue) && Semver::satisfies($moduleVersion, $constraintValue) === $result) {
+            drush_log("The module $moduleId:$moduleVersion does not meet the $constraint version constraint: $constraintValue.", LogLevel::WARNING);
+            $failed = TRUE;
+          }
         }
       }
     }
@@ -300,11 +301,11 @@ function drush_toolkit_check_modules_minimum_version($project_id = NULL) {
 function drush_toolkit_check_modules_restricted() {
 
   // Blocking options.
-  $failed = false;
+  $failed = FALSE;
   $blocker = (int) drush_get_option('blocker', 1);
 
   // Array with list of the modules forbiden to be overridden.
-  $forbiddenToOverride = array('chr');
+  $forbiddenToOverride = ['chr'];
   // Get list of all modules on the project.
   $moduleList = drupal_system_listing("/\\.module\$/", "modules", 'name', 0);
   foreach ($moduleList as $module) {
@@ -313,7 +314,7 @@ function drush_toolkit_check_modules_restricted() {
     if (in_array($module->name, $forbiddenToOverride) &&
       strpos($module->uri, 'profiles/') === FALSE) {
       drush_log("The module " . $module->name . " is not allowed to be overridden.", LogLevel::ERROR);
-      $failed = true;
+      $failed = TRUE;
     }
   }
   drushExitWithStatus($failed, $blocker);
@@ -325,12 +326,12 @@ function drush_toolkit_check_modules_restricted() {
 function drush_toolkit_check_modules_unused($path = 'sites', $make = '../resources/site.make') {
 
   // Blocking options.
-  $failed = false;
+  $failed = FALSE;
   $blocker = (int) drush_get_option('blocker', 1);
 
   // If referenced make file does not exist, trow a warning.
   if (!file_exists($make)) {
-    drush_log(dt('Make file @make does not exist. Showing all disabled modules in @path.', array('@make' => $make, '@path' => $path)), 'warning');
+    drush_log(dt('Make file @make does not exist. Showing all disabled modules in @path.', ['@make' => $make, '@path' => $path]), 'warning');
   }
   else {
     $make_file = drupal_parse_info_file($make);
@@ -343,14 +344,14 @@ function drush_toolkit_check_modules_unused($path = 'sites', $make = '../resourc
   foreach ($modules as $module) {
     // If no make file was provided or empty, show all disabled modules in path.
     if ($module->status === '0' && empty($make_file)) {
-      drush_log(dt('Module @name is not enabled.', array('@name' => $module->name)), 'warning');
-      $failed = true;
+      drush_log(dt('Module @name is not enabled.', ['@name' => $module->name]), 'warning');
+      $failed = TRUE;
     }
     // Otherwise show only disabled modules that are present in the make file.
     elseif ($module->status === '0' && !empty($make_file['projects'])) {
       if (in_array($module->name, array_keys($make_file['projects']))) {
-        drush_log(dt('Module @name is not enabled.', array('@name' => $module->name)), 'warning');
-        $failed = true;
+        drush_log(dt('Module @name is not enabled.', ['@name' => $module->name]), 'warning');
+        $failed = TRUE;
       }
     }
   }
@@ -363,8 +364,8 @@ function getVersionConstraints($moduleName, $modulesArray) {
   foreach ($modulesArray as $module) {
     if ($module['name'] === $moduleName) {
       return [
-        'blacklist' => !empty($module['blacklist']) ? $module['blacklist'] : null,
-        'whitelist' => !empty($module['whitelist']) ? $module['whitelist'] : null,
+        'blacklist' => !empty($module['blacklist']) ? $module['blacklist'] : NULL,
+        'whitelist' => !empty($module['whitelist']) ? $module['whitelist'] : NULL,
       ];
     }
   }
@@ -372,12 +373,12 @@ function getVersionConstraints($moduleName, $modulesArray) {
 
 // Helper function to get the list of authorised modules.
 function getModulesList() {
-  $d7ModulesList = array();
+  $d7ModulesList = [];
   $url = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=7.x';
   $basicAuth = getenv('QA_API_BASIC_AUTH') !== FALSE ? getenv('QA_API_BASIC_AUTH') : '';
   $content = getQaEndpointContent($url, $basicAuth);
   if ($content !== '') {
-    $d7ModulesList = json_decode($content, true);
+    $d7ModulesList = json_decode($content, TRUE);
   }
   return $d7ModulesList;
 }
@@ -392,38 +393,38 @@ function getModulesList() {
  * @return string
  */
 function getQaEndpointContent($url, $basicAuth = '') {
-	$content = '';
-	$curl = curl_init();
-	curl_setopt($curl, CURLOPT_URL, $url);
-	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-	if ($basicAuth !== '') {
-		$header = ['Authorization: Basic ' . $basicAuth];
-		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-	}
-	$result = curl_exec($curl);
+  $content = '';
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_URL, $url);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  if ($basicAuth !== '') {
+    $header = ['Authorization: Basic ' . $basicAuth];
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+  }
+  $result = curl_exec($curl);
 
-	if ($result !== false) {
-		$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		switch ($statusCode) {
-			// Upon success set the content to be returned.
-			case 200:
-				$content = $result;
-				break;
-			// Upon other status codes.
-			default:
-				if ($basicAuth === '') {
-					return drush_set_error('QA_API_BASIC_AUTH', dt('Curl request to endpoint @endpoint returned a @statusCode.', array('@endpoint' => $url, '@statusCode' => $statusCode)));
-				}
-				// If we tried with authentication, retry without.
-				$content = getQaEndpointContent($url);
-		}
-	}
-	if ($result === false) {
-		return drush_set_error('QA_API_BASIC_AUTH', dt('Curl request to endpoint @endpoint failed.', array('@endpoint' => $url)));
-	}
-	curl_close($curl);
+  if ($result !== FALSE) {
+    $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    switch ($statusCode) {
+      // Upon success set the content to be returned.
+      case 200:
+        $content = $result;
+        break;
+      // Upon other status codes.
+      default:
+        if ($basicAuth === '') {
+          return drush_set_error('QA_API_BASIC_AUTH', dt('Curl request to endpoint @endpoint returned a @statusCode.', ['@endpoint' => $url, '@statusCode' => $statusCode]));
+        }
+        // If we tried with authentication, retry without.
+        $content = getQaEndpointContent($url);
+    }
+  }
+  if ($result === FALSE) {
+    return drush_set_error('QA_API_BASIC_AUTH', dt('Curl request to endpoint @endpoint failed.', ['@endpoint' => $url]));
+  }
+  curl_close($curl);
 
-	return $content;
+  return $content;
 }
 
 // Helper function to discover all existing modules in project,
@@ -436,7 +437,7 @@ function checkProjectModules() {
     $modules[] = $module->name;
   }
   // Exclude obsolete module file 'views_export.module' from the list.
-  $modules = array_diff($modules, array('views_export'));
+  $modules = array_diff($modules, ['views_export']);
 
   return $modules;
 }
@@ -444,5 +445,5 @@ function checkProjectModules() {
 // Helper function to exit Drush with status.
 function drushExitWithStatus($failed, $blocker) {
   drush_set_context('DRUSH_EXECUTION_COMPLETED', TRUE);
-  ($blocker == true && $failed == true) ? exit(1) : exit(0);
+  ($blocker == TRUE && $failed == TRUE) ? exit(1) : exit(0);
 }

@@ -508,9 +508,9 @@
 
         <dirname property="database-cachedir" file="${database-file}" />
         <mkdir dir="${database-cachedir}" />
-        
+
         <echo message="Backing up database ${db.name} to ${database-file}." />
-        
+
         <if>
             <equals arg1="${profile.core.major}" arg2="7" />
             <then>
@@ -535,7 +535,7 @@
                         <exec command='${toolkit.dir.bin.drush} -r ${build.platform.dir} vset gdpr_dump_table_map &apos;{"users":{"name":"UsernameSanitizer","mail":"EmailSanitizer","init":"EmailSanitizer","pass":"PasswordSanitizer"}}&apos; --format=json --exact -y >/dev/null' escape="false" />
                     </finally>
                 </trycatch>
-                
+
                 <drush command="gdpr-sql-dump" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
                     <param>--gzip</param>
                     <option name="result-file" value="${database-file}" />
@@ -554,6 +554,7 @@
         <echo message="Checking non-authorised modules and security updates for ${db.name}." />
         <drush command="toolkit-check-modules-authorized-security" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${project.id}</param>
+            <param>--devel=${resources.dir.devel.make}</param>
             <param>--blocker=${drush.authorized-security.blocker}</param>
         </drush>
     </target>
