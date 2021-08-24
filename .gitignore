@@ -13,3 +13,4 @@
 .phpunit.result.cache
 
 *.sql
+phpda.*
