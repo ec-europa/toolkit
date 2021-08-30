@@ -16,7 +16,6 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class CloneCommands extends AbstractCommands
 {
-
     use TaskRunnerTasks\CollectionFactory\loadTasks;
 
     /**
@@ -183,11 +182,6 @@ class CloneCommands extends AbstractCommands
 
         // Download the .sql file.
         $this->generateAsdaWgetInputFile($filename, $options);
-        $tasks[] = $this->taskExec('wget')
-            ->option('-O', $options['dumpfile'] . '.gz')
-            ->option('-i', self::TEMP_INPUTFILE)
-            ->option('-A', 'sql.gz')
-            ->option('-P', './');
 
         // Unzip the file.
         $tasks[] = $this->taskExec('gunzip')
@@ -225,12 +219,16 @@ class CloneCommands extends AbstractCommands
             ->mkdir($tmpDir)
             ->run();
 
-        $this->taskExec('wget')
-            ->option('-i', self::TEMP_INPUTFILE)
-            ->option('-O', 'latest.sh1')
-            ->option('-A', '.sh1')
-            ->option('-P', './')
-            ->run();
+        $url = $options['asda-url'] . '/latest.sh1';
+
+        $context = stream_context_create([
+            "http" => [
+                "header" => "Authorization: Basic " . base64_encode($options['asda-user'] . ":" . $options['asda-password']),
+                "protocol_version" => 1.1,
+            ]
+        ]);
+        $data = file_get_contents($url, false, $context);
+        file_put_contents('latest.sh1', $data);
     }
 
     /**
@@ -265,5 +263,16 @@ class CloneCommands extends AbstractCommands
             ->taskWriteToFile(self::TEMP_INPUTFILE)
             ->line($downloadLink)
             ->run();
+
+        $url = $options['asda-url'] . '/' .$filename;
+
+        $context = stream_context_create([
+            "http" => [
+                "header" => "Authorization: Basic " . base64_encode($options['asda-user'] . ":" . $options['asda-password']),
+                "protocol_version" => 1.1,
+            ]]);
+        $data = file_get_contents($url, false, $context);
+        file_put_contents('dump.sql.gz', $data);
     }
+
 }
