@@ -175,13 +175,12 @@ class CloneCommands extends AbstractCommands
         }
 
         // Download the .sha file.
-        $this->generateAsdaWgetInputFile('latest.sh1', $options);
-        $this->downloadChecksumFile($options);
+        $this->downloadFile('latest.sh1', $options);
         $fileContent = file_get_contents('latest.sh1');
         $filename = trim(explode('  ', $fileContent)[1]);
 
         // Download the .sql file.
-        $this->generateAsdaWgetInputFile($filename, $options);
+        $this->downloadFile($filename, $options);
 
         // Unzip the file.
         $tasks[] = $this->taskExec('gunzip')
@@ -189,8 +188,7 @@ class CloneCommands extends AbstractCommands
 
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
-            ->arg('latest.sh1')
-            ->arg(self::TEMP_INPUTFILE);
+            ->arg('latest.sh1');
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -202,24 +200,24 @@ class CloneCommands extends AbstractCommands
      * Make use checksum file in order to detect the proper file
      * to download.
      *
+     * Create file for usage in the downloadDump() function.
+     *
+     * @param string $filename
+     *   Name of filename to append to url.
+     *
      * @param array $options
      *   Command options.
      */
-    private function downloadChecksumFile(array $options = [
+    private function downloadFile($filename, array $options = [
         'asda-url' => InputOption::VALUE_REQUIRED,
         'asda-user' => InputOption::VALUE_REQUIRED,
         'asda-password' => InputOption::VALUE_REQUIRED,
-        'dumpfile' => InputOption::VALUE_REQUIRED,
     ])
     {
-        $tmpDir = $this->getConfig()->get("toolkit.tmp_folder");
 
-        // Create temp folder to prepare dist build in.
-        $tasks[] = $this->taskFilesystemStack()
-            ->mkdir($tmpDir)
-            ->run();
-
-        $url = $options['asda-url'] . '/latest.sh1';
+        // Workaround for EWPP projects.
+        // @ToDo Review if still needed.
+        $url = getenv('ASDA_URL') ?: $options['asda-url'] . '/' . $filename;
 
         $context = stream_context_create([
             "http" => [
@@ -228,51 +226,12 @@ class CloneCommands extends AbstractCommands
             ]
         ]);
         $data = file_get_contents($url, false, $context);
-        file_put_contents('latest.sh1', $data);
-    }
-
-    /**
-     * Create file for usage in wget --input-file argument in the
-     * downloadDump() function.
-     *
-     * @param string $filename
-     *   Name of filename to append to url.
-     *
-     * @param array $options
-     *   Command options.
-     */
-    private function generateAsdaWgetInputFile($filename, array $options = [
-        'asda-url' => InputOption::VALUE_REQUIRED,
-        'asda-user' => InputOption::VALUE_REQUIRED,
-        'asda-password' => InputOption::VALUE_REQUIRED,
-    ])
-    {
-        // Workaround to EWPP projects.
-        $url = getenv('ASDA_URL') ?: $options['asda-url'];
-
-        $disallowed = array('http://', 'https://');
-        foreach ($disallowed as $d) {
-            if (strpos($url, $d) === 0) {
-                $url = str_replace($d, '', $options['asda-url']);
-            }
+        if ($filename != 'latest.sh1') {
+            file_put_contents('dump.sql.gz', $data);
         }
-
-        $downloadLink = 'https://' . $options['asda-user'] . ':' . $options['asda-password'] . '@' . $url . '/' . $filename;
-
-        $tasks[] = $this->taskFilesystemStack()
-            ->taskWriteToFile(self::TEMP_INPUTFILE)
-            ->line($downloadLink)
-            ->run();
-
-        $url = $options['asda-url'] . '/' .$filename;
-
-        $context = stream_context_create([
-            "http" => [
-                "header" => "Authorization: Basic " . base64_encode($options['asda-user'] . ":" . $options['asda-password']),
-                "protocol_version" => 1.1,
-            ]]);
-        $data = file_get_contents($url, false, $context);
-        file_put_contents('dump.sql.gz', $data);
+        else {
+           file_put_contents($filename, $data);
+        }
     }
 
 }
