@@ -8,5 +8,6 @@ command:
         default: "default"
     test-phpunit:
       options:
+        execution: ${toolkit.test.phpunit.execution}
         from: ${toolkit.test.phpunit.from}
         to: ${toolkit.test.phpunit.to}
