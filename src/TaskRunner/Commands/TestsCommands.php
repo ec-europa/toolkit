@@ -132,12 +132,14 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     {
         $tasks = [];
 
-        if (!file_exists($options['from'])) {
+        if (file_exists($options['from'])) {
+            $this->taskProcessConfigFile($options['from'], $options['to'])->run();
+        }
+
+        if (!file_exists($options['to'])) {
             $this->say('PHUnit configuration not found, skipping.');
             return $this->collectionBuilder()->addTaskList($tasks);
         }
-
-        $this->taskProcessConfigFile($options['from'], $options['to'])->run();
 
         $execution_mode = $this->getConfig()->get('toolkit.test.phpunit.execution');
         $phpunit_bin = $this->getConfig()->get('runner.bin_dir') . '/phpunit';
