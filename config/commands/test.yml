@@ -6,3 +6,7 @@ command:
         to: ${toolkit.test.behat.to}
       suite:
         default: "default"
+    test-phpunit:
+      options:
+        from: ${toolkit.test.phpunit.from}
+        to: ${toolkit.test.phpunit.to}
