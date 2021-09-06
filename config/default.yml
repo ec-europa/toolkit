@@ -47,7 +47,7 @@ toolkit:
       from: behat.yml.dist
       to: behat.yml
     phpunit:
-      execution: parallel
+      execution: default
       from: phpunit.xml.dist
       to: phpunit.xml
   tool:
