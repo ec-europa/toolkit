@@ -45,6 +45,23 @@ behat:
   tags: "~@clone"
 ```
 
+### Commands to run before/after Behat tests
+
+Additional commands can be run before and/or after the test. Such commands
+should be defined in the `./runner.yml.dist` or `./runner.yml` files:
+
+```yaml
+behat:
+  commands:
+    before:
+      - task: exec
+        command: ls -la
+      - ...
+    after:
+      - task: exec
+        command: whoami
+      - ...
+```
 
 ## PHPCS testing
 To run coding standard tests you can make use of the `toolkit:test-phpcs`
