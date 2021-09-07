@@ -84,6 +84,21 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     /**
      * Run Behat tests.
      *
+     * Additional commands could run before and/or after the Behat tests. Such
+     * commands should be described in configuration files in this way:
+     * @code
+     * behat:
+     *   commands:
+     *     before:
+     *       - task: exec
+     *         command: ls -la
+     *       - ...
+     *     after:
+     *       - task: exec
+     *         command: whoami
+     *       - ...
+     * @endcode
+     *
      * @command toolkit:test-behat
      *
      * @aliases tb
@@ -99,6 +114,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     {
         $tasks = [];
 
+        // Execute a list of commands to run before tests.
+        if ($commands = $this->getConfig()->get('behat.commands.before')) {
+            $tasks[] = $this->taskCollectionFactory($commands);
+        }
+
         $this->taskProcessConfigFile($options['from'], $options['to'])->run();
 
         $behat_bin = $this->getConfig()->get('runner.bin_dir') . '/behat';
@@ -112,11 +132,31 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         ? $this->taskExec($behat_bin . ' --strict --suite=' . $options['suite'])
         : $this->taskExec($behat_bin . ' --suite=' . $options['suite']);
 
+        // Execute a list of commands to run after tests.
+        if ($commands = $this->getConfig()->get('behat.commands.after')) {
+            $tasks[] = $this->taskCollectionFactory($commands);
+        }
+
         return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
      * Run PHPUnit tests.
+     *
+     * Additional commands could run before and/or after the PHPUnit tests. Such
+     * commands should be described in configuration files in this way:
+     * @code
+     * phpunit:
+     *   commands:
+     *     before:
+     *       - task: exec
+     *         command: ls -la
+     *       - ...
+     *     after:
+     *       - task: exec
+     *         command: whoami
+     *       - ...
+     * @endcode
      *
      * @command toolkit:test-phpunit
      *
@@ -141,6 +181,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             return $this->collectionBuilder()->addTaskList($tasks);
         }
 
+        // Execute a list of commands to run before tests.
+        if ($commands = $this->getConfig()->get('phpunit.commands.before')) {
+            $tasks[] = $this->taskCollectionFactory($commands);
+        }
+
         $execution_mode = $this->getConfig()->get('toolkit.test.phpunit.execution');
         $phpunit_bin = $this->getConfig()->get('runner.bin_dir') . '/phpunit';
 
@@ -162,6 +207,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             }
         } else {
             $tasks[] = $this->taskExec($phpunit_bin);
+        }
+
+        // Execute a list of commands to run after tests.
+        if ($commands = $this->getConfig()->get('phpunit.commands.after')) {
+            $tasks[] = $this->taskCollectionFactory($commands);
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
