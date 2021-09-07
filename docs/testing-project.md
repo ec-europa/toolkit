@@ -45,6 +45,23 @@ behat:
   tags: "~@clone"
 ```
 
+### Commands to run before/after Behat tests
+
+Additional commands can be run before and/or after the test. Such commands
+should be defined in the `./runner.yml.dist` or `./runner.yml` files:
+
+```yaml
+behat:
+  commands:
+    before:
+      - task: exec
+        command: ls -la
+      - ...
+    after:
+      - task: exec
+        command: whoami
+      - ...
+```
 
 ## PHPCS testing
 To run coding standard tests you can make use of the `toolkit:test-phpcs`
@@ -97,6 +114,39 @@ command:
 docker-compose exec web ./vendor/bin/run toolkit:run-phpcbf --file-path=<file-to-fix>
 ```
 
+## PHPUnit testing
+
+Use the `toolkit:test-phopunit` command to run PHPUnit tests. The command will
+look for a `phpunit.xml.dist` or a  files, in the configured
+locations. If `phpunit.xml.dist` is found, a `phpunit.xml` will be generated. If
+`phpunit.xml.dist` is missing but there's a `phpunit.xml` file, the latter is
+used.
+
+Tests should be organised according to [PHPUnit documentation](
+https://phpunit.readthedocs.io/en/9.5/organizing-tests.html).
+
+To run the PHPUnit tests:
+```
+docker-compose exec web ./vendor/bin/run toolkit:test-phpunit
+```
+
+### Commands to run before/after PHPUnit tests
+
+Additional commands can be run before and/or after the test. Such commands
+should be defined in the `./runner.yml.dist` or `./runner.yml` files:
+
+```yaml
+phpunit:
+  commands:
+    before:
+      - task: exec
+        command: ls -la
+      - ...
+    after:
+      - task: exec
+        command: whoami
+      - ...
+```
 
 ## Testing in CI
 Toolkit is full integrated with oficial pipeline that currently requires minimum of 1 behat
