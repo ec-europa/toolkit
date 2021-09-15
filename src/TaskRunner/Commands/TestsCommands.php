@@ -53,6 +53,9 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                     if (isset($import['resource']) && $import['resource'] === 'vendor/ec-europa/qa-automation/dist/qa-conventions.yml') {
                         $containsQaConventions = true;
                     }
+                    if (isset($import['resource']) && $import['resource'] === 'vendor/ec-europa/qa-automation/dist/qa-conventions.compatible.yml') {
+                        $containsQaConventions = true;
+                    }
                 }
             }
         }
