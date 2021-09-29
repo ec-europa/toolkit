@@ -183,6 +183,14 @@ class CloneCommands extends AbstractCommands
 
         // Download the .sql file.
         $this->generateAsdaWgetInputFile($filename, $options);
+
+        // Display information about ASDA creation date.
+        $dumpData = substr(substr(file_get_contents('latest.sh1'), (strpos(file_get_contents('latest.sh1'), ' ')) + 2), 0, 15);
+        $dumpDate = date_parse_from_format("Ymd-His", $dumpData);
+        $dumpTimestamp = mktime($dumpDate['hour'], $dumpDate['minute'], $dumpDate['second'], $dumpDate['month'], $dumpDate['day'], $dumpDate['year']);
+        $dumpHrdate = 'ASDA DATE: ' . $dumpDate['day'] . ' ' . date('M', $dumpTimestamp) . ' ' . $dumpDate['year'] . ' at ' . $dumpDate['hour'] . ':' . $dumpDate['minute'];
+        $this->io()->title($dumpHrdate);
+
         $tasks[] = $this->taskExec('wget')
             ->option('-O', $options['dumpfile'] . '.gz')
             ->option('-i', self::TEMP_INPUTFILE)
