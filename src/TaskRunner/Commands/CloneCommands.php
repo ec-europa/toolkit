@@ -235,10 +235,8 @@ class CloneCommands extends AbstractCommands
         $data = file_get_contents($url, false, $context);
         if ($filename != 'latest.sh1') {
             file_put_contents('dump.sql.gz', $data);
-        }
-        else {
-           file_put_contents($filename, $data);
+        } else {
+            file_put_contents($filename, $data);
         }
     }
-
 }
