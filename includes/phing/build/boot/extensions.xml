@@ -21,5 +21,6 @@
     <taskdef name="replacedby" classname="Phing\Toolkit\Tasks\PhingDeprecatedTask" />
     <taskdef name="symlink-property-contents" classname="Phing\Toolkit\Tasks\SymlinkPropertyContentTask" />
     <taskdef name="toolkit-notifications" classname="Phing\Toolkit\Tasks\ToolkitNotificationsTask" />
+    <taskdef name="asda-date" classname="Phing\Toolkit\Tasks\AsdaDateTask" />
 
 </project>

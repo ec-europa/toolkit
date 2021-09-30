@@ -355,6 +355,7 @@
             drush-aliases-generate,
             drush-settings-generate,
             project-database-import,
+            project-asda-date,
             project-modules-devel-en,
             reset-filesystem-permissions,
             drush-cache-reset,
@@ -704,6 +705,10 @@
         <phingcall target="project-composer-install">
             <property name="composer-working-dir" value="${build.subsite.dir}" />
         </phingcall>
+    </target>
+
+    <target name="project-asda-date">
+        <asda-date projectid="${project.id}"/>
     </target>
 
 </project>
