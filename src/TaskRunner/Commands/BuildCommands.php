@@ -300,15 +300,15 @@ class BuildCommands extends AbstractCommands
             // Option to process validation test only.
             if (($options['validate'] == 'check')) {
                 $collection->taskExecStack()
-                    ->exec('npm i -D stylelint stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint "' . $theme_dir .  '/**/*.scss" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                    ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
+                    ->exec('npx stylelint "' . $theme_dir .  '/**/*.{css,scss,sass}" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
                     ->stopOnFail();
                 // Run and return task collection.
                 return $collection->run();
             } elseif ($options['validate'] == 'fix') {
                 $collection->taskExecStack()
-                    ->exec('npm i -D stylelint stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint --fix "' . $theme_dir .  '/**/*.scss" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                    ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
+                    ->exec('npx stylelint --fix "' . $theme_dir .  '/**/*.{css,scss,sass}" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
                     ->stopOnFail();
                 // Run and return task collection.
                 return $collection->run();
