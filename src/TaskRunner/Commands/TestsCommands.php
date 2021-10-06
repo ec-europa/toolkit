@@ -72,7 +72,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         if ($containsQaConventions) {
             $grumphp_bin = $this->getConfig()->get('runner.bin_dir') . '/grumphp';
-            $tasks[] = $this->taskExec($grumphp_bin . ' run');
+            $tasks[] = $this->taskExec($grumphp_bin . ' run --tasks=phpcs');
         } else {
             $this->say('All Drupal projects in the ec-europa namespace need to use Quality Assurance provided standards.');
             $this->say('Your configuration has to import the resource vendor/ec-europa/qa-automation/dist/qa-conventions.yml.');
@@ -269,4 +269,17 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
         return $this->collectionBuilder()->addTaskList($tasks);
     }
+
+    /**
+     * Run task yamllint.
+     *
+     * @command toolkit:run-yamllint
+     */
+    public function toolkitYamllint()
+    {
+        $grumphp_bin = $this->getConfig()->get('runner.bin_dir') . '/grumphp';
+        $tasks = [$this->taskExec($grumphp_bin . ' run --tasks=yamllint')];
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
 }
