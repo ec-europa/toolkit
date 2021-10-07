@@ -116,7 +116,7 @@ docker-compose exec web ./vendor/bin/run toolkit:run-phpcbf --file-path=<file-to
 
 ## PHPUnit testing
 
-Use the `toolkit:test-phopunit` command to run PHPUnit tests. The command will
+Use the `toolkit:test-phpunit` command to run PHPUnit tests. The command will
 look for a `phpunit.xml.dist` or a  files, in the configured
 locations. If `phpunit.xml.dist` is found, a `phpunit.xml` will be generated. If
 `phpunit.xml.dist` is missing but there's a `phpunit.xml` file, the latter is
@@ -128,6 +128,29 @@ https://phpunit.readthedocs.io/en/9.5/organizing-tests.html).
 To run the PHPUnit tests:
 ```
 docker-compose exec web ./vendor/bin/run toolkit:test-phpunit
+```
+
+## PHPmd testing
+Use the `toolkit:test-phpmd` command to run PHPMd tests.
+
+To run the PHPUnit tests:
+```
+docker-compose exec web ./vendor/bin/run toolkit:test-phpmd
+```
+
+## YamlLint testing
+Use the `toolkit:run-yamllint` command to run YamlLint tests.
+
+Two values can be configured:
+```
+tasks.yamllint.whitelist_patterns: [ ]
+tasks.yamllint.ignore_patterns:
+  - vendor/
+  - node_modules/
+```
+To run the YamlLint tests:
+```
+docker-compose exec web ./vendor/bin/run toolkit:run-yamllint
 ```
 
 ### Commands to run before/after PHPUnit tests
