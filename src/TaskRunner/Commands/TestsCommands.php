@@ -277,4 +277,16 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $tasks = [$this->taskExec($grumphp_bin . ' run --tasks=yamllint')];
         return $this->collectionBuilder()->addTaskList($tasks);
     }
+
+    /**
+     * Run test phpmd.
+     *
+     * @command toolkit:test-phpmd
+     */
+    public function toolkitPhpMd()
+    {
+        $grumphp_bin = $this->getConfig()->get('runner.bin_dir') . '/grumphp';
+        $tasks = [$this->taskExec($grumphp_bin . ' run --tasks=yamllint')];
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
 }
