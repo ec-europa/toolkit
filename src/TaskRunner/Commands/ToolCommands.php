@@ -123,7 +123,7 @@ class ToolCommands extends AbstractCommands
                         'extra' => [
                             'drupal' => [
                                 'version' => '8.x-3.4+15-dev',
-                            ]
+                            ],
                         ],
                     ],
                 ];
