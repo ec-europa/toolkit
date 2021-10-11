@@ -74,7 +74,7 @@ class ToolCommands extends AbstractCommands
      * @command toolkit:component-check
      *
      * @option endpoint The endpoint for the components whitelist/blacklist
-     * @option blocker  Whether or not the command should exit with errorstatus
+     * @option blocker  Whether the command should exit with errorstatus
      */
     public function componentCheck(array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
@@ -84,12 +84,16 @@ class ToolCommands extends AbstractCommands
     {
         // Currently undocumented in this class. Because I don't know how to
         // provide such a property to one single function other than naming the
-        // failed property exaclty for this function.
+        // failed property exactly for this function.
         $this->componentCheckFailed = false;
         $blocker = $options['blocker'];
         $endpointUrl = $options['endpoint'];
-        $basicAuth = getenv('QA_API_BASIC_AUTH') !== false ? getenv('QA_API_BASIC_AUTH') : '';
         $composerLock = file_get_contents('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
+
+        if (empty($basicAuth = getenv('QA_API_BASIC_AUTH'))) {
+            $this->io()->warning('Missing ENV var QA_API_BASIC_AUTH.');
+            return $blocker ? 1 : 0;
+        }
 
         if (isset($endpointUrl) && isset($composerLock['packages'])) {
             $result = self::getQaEndpointContent($endpointUrl, $basicAuth);
@@ -97,12 +101,12 @@ class ToolCommands extends AbstractCommands
             $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 
             // To test this command execute it with the --test-command option:
-            // ./vendor/bin/run toolkit:whitelist-components --test-command --endpoint-url="https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x"
+            // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x"
             // Then we provide an array in the packages that fails on each type
             // of validation.
             if ($options['test-command']) {
                 $composerLock['packages'] = [
-                    // Lines below shoul trow a warning.
+                    // Lines below should trow a warning.
                     ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/unreviewed'],
                     ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/devel'],
                     ['type' => 'drupal-module', 'version' => '1.0-alpha1', 'name' => 'drupal/xmlsitemap'],
@@ -116,46 +120,33 @@ class ToolCommands extends AbstractCommands
                         'name' => 'drupal/views_bulk_operations',
                         'extra' => [
                             'drupal' => [
-                                'version' => '8.x-3.4+15-dev'
-                            ]
-                        ]
-                    ]
+                                'version' => '8.x-3.4+15-dev',
+                            ],
+                        ],
+                    ],
                 ];
             }
 
-            // Loop over the require section.
+            // Loop over the packages.
             foreach ($composerLock['packages'] as $package) {
                 // Check if it's a drupal package.
-                // NOTE: Currently only supports drupal pagackages :(.
+                // NOTE: Currently only supports drupal packages :(.
                 if (substr($package['name'], 0, 7) === 'drupal/') {
                     $this->validateComponent($package, $modules);
                 }
             }
 
-            return $this->returnStatus($blocker);
+            // If the validation fail, return according to the blocker.
+            if ($this->componentCheckFailed) {
+                $msg = 'Failed the components check. Please contact the QA team.';
+                $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
+                $this->io()->warning($msg);
+                return $blocker ? 1 : 0;
+            }
+
+            // Give feedback if no problems found.
+            $this->io()->success('Components checked, nothing to report.');
         }//end if
-    }
-
-    /**
-     * Helper function to return the status code.
-     *
-     * @param bool $blocker Whether or not to exit 1.
-     *
-     * @return bool
-     */
-    protected function returnStatus($blocker)
-    {
-        // If the validation failed and we have a blocker, then return 1.
-        if ($this->componentCheckFailed && $blocker) {
-            $this->io()->error('Failed the components whitelist check. Please contact the QA team.');
-            return 1;
-        }
-
-        // If the validation failed and blocker was disabled, then return 0.
-        if ($this->componentCheckFailed && !$blocker) {
-            $this->io()->warning('Failed the components whitelist check. Please contact the QA team.');
-            return 0;
-        }
     }
 
     /**
