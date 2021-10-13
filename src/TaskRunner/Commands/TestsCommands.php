@@ -11,6 +11,7 @@ use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -264,5 +265,96 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             $tasks[] = $this->taskExec('./vendor/bin/phpcbf -s --standard=' . $standards . ' --extensions=' . $extensions . ' ' . $test_path);
         }
         return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Run lint YAML.
+     *
+     * Override the default include and exclude patterns in configuration files:
+     * @code
+     * toolkit:
+     *   lint:
+     *     yaml:
+     *       pattern: [ '*.yml', '*.yaml', '*.yml.dist', '*.yaml.dist' ]
+     *       include: [ 'lib/' ]
+     *       exclude: [ 'vendor/', 'web/', 'node_modules/' ]
+     * @endcode
+     *
+     * @command toolkit:lint-yaml
+     *
+     * @aliases tly
+     */
+    public function toolkitLintYaml()
+    {
+        $pattern = $this->getConfig()->get('toolkit.lint.yaml.pattern');
+        $include = $this->getConfig()->get('toolkit.lint.yaml.include');
+        $exclude = $this->getConfig()->get('toolkit.lint.yaml.exclude');
+
+        $this->say('Pattern: ' . implode(', ', $pattern));
+        $this->say('Include: ' . implode(', ', $include));
+        $this->say('Exclude: ' . implode(', ', $exclude));
+
+        $finder = (new Finder())
+            ->files()->followLinks()
+            ->ignoreVCS(FALSE)
+            ->ignoreDotFiles(FALSE)
+            ->name($pattern)
+            ->notPath($exclude)->in($include);
+
+        // Get the yml files in the root of the project.
+        $root_finder = (new Finder())
+            ->files()->followLinks()
+            ->ignoreVCS(FALSE)
+            ->ignoreDotFiles(FALSE)
+            ->name($pattern)->in('.')->depth(0);
+
+        $files = array_merge(
+            array_keys(iterator_to_array($finder)),
+            array_keys(iterator_to_array($root_finder))
+        );
+        $this->say('Found ' . count($files) . ' files to lint.');
+
+        // Prepare arguments.
+        $arg = implode(' ', $files);
+        $task = $this->taskExec("./vendor/bin/yaml-lint -q $arg");
+        return $this->collectionBuilder()->addTaskList([$task]);
+    }
+
+    /**
+     * Run lint PHP.
+     *
+     * Override the default include and exclude patterns in configuration files:
+     * @code
+     * toolkit:
+     *   lint:
+     *     php:
+     *       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
+     *       exclude: [ 'vendor/', 'web/' ]
+     * @endcode
+     *
+     * @command toolkit:lint-php
+     *
+     * @aliases tlp
+     */
+    public function toolkitLintPhp()
+    {
+        $excludes = $this->getConfig()->get('toolkit.lint.php.exclude', []);
+        $extensions = $this->getConfig()->get('toolkit.lint.php.extensions');
+
+        $this->say('Extensions: ' . implode(', ', $extensions));
+        $this->say('Exclude: ' . implode(', ', $excludes));
+
+        $opts = [];
+        foreach ($excludes as $exclude) {
+            $opts[] = "--exclude $exclude";
+        }
+
+        if ($extensions) {
+            $opts[] = '-e ' . implode(',', $extensions);
+        }
+        // Prepare options.
+        $opts_string = implode(' ', $opts);
+        $task = $this->taskExec("./vendor/bin/parallel-lint $opts_string .");
+        return $this->collectionBuilder()->addTaskList([$task]);
     }
 }
