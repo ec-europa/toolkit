@@ -38,6 +38,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:test-phpcs
      *
+     * @SuppressWarnings(PHPMD)
+     *
      * @aliases tp
      */
     public function toolkitPhpcs()
@@ -299,16 +301,16 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         $finder = (new Finder())
             ->files()->followLinks()
-            ->ignoreVCS(FALSE)
-            ->ignoreDotFiles(FALSE)
+            ->ignoreVCS(false)
+            ->ignoreDotFiles(false)
             ->name($pattern)
             ->notPath($exclude)->in($include);
 
         // Get the yml files in the root of the project.
         $root_finder = (new Finder())
             ->files()->followLinks()
-            ->ignoreVCS(FALSE)
-            ->ignoreDotFiles(FALSE)
+            ->ignoreVCS(false)
+            ->ignoreDotFiles(false)
             ->name($pattern)->in('.')->depth(0);
 
         $files = array_merge(
