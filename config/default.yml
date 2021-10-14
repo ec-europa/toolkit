@@ -37,7 +37,7 @@ toolkit:
     dev:
       commands: []
     npm:
-      packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify
+      packages: grunt grunt-contrib-jshint grunt-contrib-watch grunt-contrib-sass grunt-contrib-clean grunt-contrib-uglify
       mode: --save-dev
   scss:
     validate: null

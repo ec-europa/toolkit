@@ -316,22 +316,23 @@ class BuildCommands extends AbstractCommands
                 $finder = new Finder();
                 $finder->files()
                     ->in($theme_dir)
-                    ->name('gulpfile.js');
+                    ->name('Gruntfile.js');
 
                 // Build task collection.
                 $collection = $this->collectionBuilder();
     
                 if (empty($finder->hasResults())) {
                     $collection->taskExecStack()
-                        ->exec('cp vendor/ec-europa/toolkit/src/gulp/gulpfile.js ' . $theme_dir . '/gulpfile.js')
+                        ->exec('cp vendor/ec-europa/toolkit/src/gulp/Gruntfile.js ' . $theme_dir . '/Gruntfile.js')
                         ->stopOnFail();
                 }
 
                 $collection->taskExecStack()
                     ->dir($theme_dir)
                     ->exec('npm init -y --scope')
+                    ->exec('sudo apt-get install ruby-sass')
                     ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
-                    ->exec('./node_modules/.bin/gulp')
+                    ->exec('./node_modules/.bin/grunt')
                     ->stopOnFail();
     
                 // Run and return task collection.
