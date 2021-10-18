@@ -297,35 +297,21 @@ class BuildCommands extends AbstractCommands
             // Build task collection.
             $collection = $this->collectionBuilder();
 
-            // Option to process validation test only.
-            if (($options['validate'] == 'check')) {
-                $collection->taskExecStack()
-                    ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint "' . $theme_dir .  '/**/*.{css,scss,sass}" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
-                    ->stopOnFail();
-                // Run and return task collection.
-                return $collection->run();
-            } elseif ($options['validate'] == 'fix') {
-                $collection->taskExecStack()
-                    ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint --fix "' . $theme_dir .  '/**/*.{css,scss,sass}" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
-                    ->stopOnFail();
-                // Run and return task collection.
-                return $collection->run();
+            if (!empty($options['validate'])) {
+                $this->styleLintCheck($options['validate']);
             } else {
                 // Run theme task runner.
                 if ($options['theme-task-runner'] == 'grunt') {
-                  $taskRunnerConfigFile = 'Gruntfile.js';
-                  // Install ruby-sass for Grunt Task Runner.
-                  $collection->taskExecStack()
+                    $taskRunnerConfigFile = 'Gruntfile.js';
+                    // Install ruby-sass for Grunt Task Runner.
+                    $collection->taskExecStack()
                     ->dir($theme_dir)
                     ->exec('sudo apt-get install ruby-sass')
                     ->stopOnFail();
-                }
-                // Deprecated 'gulp' - update to grunt.
-                elseif ($options['theme-task-runner'] == 'gulp') {
-                  $taskRunnerConfigFile = 'gulpfile.js';
-                  $this->io()->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
+                } elseif ($options['theme-task-runner'] == 'gulp') {
+                    // Deprecated 'gulp' - update to grunt.
+                    $taskRunnerConfigFile = 'gulpfile.js';
+                    $this->io()->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
                 }
                 $finder = new Finder();
                 $finder->files()
@@ -337,7 +323,7 @@ class BuildCommands extends AbstractCommands
 
                 if (empty($finder->hasResults())) {
                     $collection->taskExecStack()
-                        ->exec('cp vendor/ec-europa/toolkit/src/ThemeTaskRunnerConfig/'. $taskRunnerConfigFile . ' ' . $theme_dir . '/' . $taskRunnerConfigFile)
+                        ->exec('cp vendor/ec-europa/toolkit/src/ThemeTaskRunnerConfig/' . $taskRunnerConfigFile . ' ' . $theme_dir . '/' . $taskRunnerConfigFile)
                         ->stopOnFail();
                 }
 
@@ -352,10 +338,33 @@ class BuildCommands extends AbstractCommands
 
                 // Run and return task collection.
                 return $collection->run();
+            } else {
+                $this->say("The theme " . $options['default-theme'] . "  couldn't be found on the lib/ folder.");
+                return 0;
             }
+        }
+    }
+
+
+    public function styleLintCheck($validate)
+    {
+        // Option to process validation test only.
+        if (($validate == 'check')) {
+            $collection->taskExecStack()
+                ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
+                ->exec('npx stylelint "' . $theme_dir .  '/**/*.{css,scss,sass}" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                ->stopOnFail();
+            // Run and return task collection.
+            return $collection->run();
+        } elseif ($validate == 'fix') {
+            $collection->taskExecStack()
+                ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
+                ->exec('npx stylelint --fix "' . $theme_dir .  '/**/*.{css,scss,sass}" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                ->stopOnFail();
+            // Run and return task collection.
+            return $collection->run();
         } else {
-            $this->say("The theme " . $options['default-theme'] . "  couldn't be found on the lib/ folder.");
-            return 0;
+            $this->say("Valid options for validate are: check, fix.");
         }
     }
 }

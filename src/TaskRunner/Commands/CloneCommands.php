@@ -51,10 +51,10 @@ class CloneCommands extends AbstractCommands
      * @option config-file    The config file that triggers the config import.
      */
     public function runDeploy(array $options = [
-        'sequence-file' => InputOption::VALUE_REQUIRED,
-        'sequence-key' => InputOption::VALUE_REQUIRED,
-        'config-file' => InputOption::VALUE_REQUIRED,
-    ])
+            'sequence-file' => InputOption::VALUE_REQUIRED,
+            'sequence-key' => InputOption::VALUE_REQUIRED,
+            'config-file' => InputOption::VALUE_REQUIRED,
+        ])
     {
         $tasks = [];
 
@@ -121,8 +121,8 @@ class CloneCommands extends AbstractCommands
      * @option dumpfile Drupal uri.
      */
     public function installDump(array $options = [
-        'dumpfile' => InputOption::VALUE_REQUIRED,
-    ])
+            'dumpfile' => InputOption::VALUE_REQUIRED,
+        ])
     {
         $tasks = [];
 
@@ -159,11 +159,11 @@ class CloneCommands extends AbstractCommands
      *   Collection builder.
      */
     public function downloadDump(array $options = [
-        'asda-url' => InputOption::VALUE_REQUIRED,
-        'asda-user' => InputOption::VALUE_REQUIRED,
-        'asda-password' => InputOption::VALUE_REQUIRED,
-        'dumpfile' => InputOption::VALUE_REQUIRED,
-    ])
+            'asda-url' => InputOption::VALUE_REQUIRED,
+            'asda-user' => InputOption::VALUE_REQUIRED,
+            'asda-password' => InputOption::VALUE_REQUIRED,
+            'dumpfile' => InputOption::VALUE_REQUIRED,
+        ])
     {
         $tasks = [];
 
@@ -216,10 +216,10 @@ class CloneCommands extends AbstractCommands
      *   Command options.
      */
     private function downloadFile($filename, array $options = [
-        'asda-url' => InputOption::VALUE_REQUIRED,
-        'asda-user' => InputOption::VALUE_REQUIRED,
-        'asda-password' => InputOption::VALUE_REQUIRED,
-    ])
+            'asda-url' => InputOption::VALUE_REQUIRED,
+            'asda-user' => InputOption::VALUE_REQUIRED,
+            'asda-password' => InputOption::VALUE_REQUIRED,
+        ])
     {
         // Workaround for EWPP projects.
         // @ToDo Review if still needed.
@@ -236,5 +236,6 @@ class CloneCommands extends AbstractCommands
             file_put_contents('dump.sql.gz', $data);
         } else {
             file_put_contents($filename, $data);
+        }
     }
 }
