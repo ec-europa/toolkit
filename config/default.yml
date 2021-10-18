@@ -3,7 +3,7 @@ toolkit:
   clean:
     config_file: 'config/sync/core.extension.yml'
   clone:
-    asda_url: 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project_id}'
+    asda_url: 'https://webgate.ec.europa.eu/fpfis/files/remote.php/dav/files/${env.ASDA_USER}/filesfor/automate_dumps/${toolkit.project_id}'
     dumpfile: 'dump.sql'
   deploy:
     config_file: 'config/sync/core.extension.yml'
@@ -37,8 +37,8 @@ toolkit:
     dev:
       commands: []
     npm:
-      packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify
-      mode: --save-dev
+      theme-task-runner: grunt
+      packages: grunt grunt-contrib-jshint grunt-contrib-watch grunt-contrib-sass grunt-contrib-clean grunt-contrib-uglify
   scss:
     validate: null
   test:
