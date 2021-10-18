@@ -11,6 +11,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Generic tools.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class ToolCommands extends AbstractCommands
 {
@@ -326,5 +328,110 @@ class ToolCommands extends AbstractCommands
             $collection->run();
         }
         return 0;
+    }
+
+    /**
+     * Check if composer.lock exists on the project root folder.
+     *
+     * @command toolkit:complock-check
+     *
+     */
+    public function composerLockCheck()
+    {
+        if (!file_exists('composer.lock')) {
+            $this->io()->error("Failed to detect a 'composer.lock' file on root folder.");
+            return 1;
+        } else {
+            $this->say("Detected 'composer.lock' file - Ok.");
+            // If the check is ok return '0'.
+            return 0;
+        }
+    }
+
+    /**
+     * Check project's .opts.yml file for forbidden commands.
+     *
+     * @command toolkit:opts-review
+     *
+     */
+    public function optsReview()
+    {
+        if (file_exists('.opts.yml')) {
+            $parseOptsFile = Yaml::parseFile('.opts.yml');
+            // List of commands to prevent the use.
+            $forbiddenCommands = [
+                'drush sql:conf',
+                'drush sql-conf',
+                'drush sql:connect',
+                'drush sql-connect',
+                'drush sql-connect',
+                'drush sql:create',
+                'drush sql-create',
+                'drush sql:drop',
+                'drush sql-drop',
+                'drush sql:cli',
+                'drush sql-cli',
+                'drush sqlc',
+                'drush sql:query',
+                'drush sql-query',
+                'drush sqlq',
+                'drush sql:dump',
+                'drush sql-dump',
+                'drush sql:sanitize',
+                'drush sql-sanitize',
+                'drush sqlsan',
+                'drush sql:sync',
+                'drush sql-sync',
+                'drush en',
+                'drush pm-enable',
+                'drush pm:disable',
+                'drush dis',
+                'drush pm-disable',
+                'drush user:login',
+                'drush uli',
+                'drush user-login',
+                'drush user:information',
+                'drush uinf',
+                'drush user-information',
+                'drush user:block',
+                'drush ublk',
+                'drush user-block',
+                'drush user:unblock',
+                'drush uublk',
+                'drush user-unblock',
+                'drush user:role:add',
+                'drush urol',
+                'drush user-add-role',
+                'drush user:role:remove',
+                'drush urrol',
+                'drush user-remove-role',
+                'drush user:create',
+                'drush ucrt',
+                'drush user-create',
+                'drush user:cancel',
+                'drush ucan',
+                'drush user-cancel',
+                'drush user:password',
+                'drush upwd',
+                'drush user-password',
+            ];
+            $reviewOk = true;
+            foreach ($parseOptsFile['upgrade_commands'] as $command) {
+                foreach ($forbiddenCommands as $forbiddenCommand) {
+                    if (strpos($command, $forbiddenCommand) !== false) {
+                        $this->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
+                        $reviewOk = false;
+                    }
+                }
+            }
+            if ($reviewOk == false) {
+                $this->io()->error("Failed the '.opts.yml' file review. Please contact the QA team.");
+                return 1;
+            } else {
+                $this->say("Review 'opts.yml' file - Ok.");
+                // If the review is ok return '0'.
+                return 0;
+            }
+        }
     }
 }

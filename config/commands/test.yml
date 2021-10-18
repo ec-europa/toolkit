@@ -4,6 +4,7 @@ command:
       options:
         from: ${toolkit.test.behat.from}
         to: ${toolkit.test.behat.to}
+
     test-phpunit:
       options:
         execution: ${toolkit.test.phpunit.execution}
