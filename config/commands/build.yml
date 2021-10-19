@@ -17,4 +17,5 @@ command:
         default-theme: ${drupal.site.default_theme}
         build-npm-packages: ${toolkit.build.npm.packages}
         build-npm-mode: ${toolkit.build.npm.mode}
+        theme-task-runner: ${toolkit.build.npm.theme-task-runner}
         validate: ${toolkit.scss.validate}

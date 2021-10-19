@@ -255,7 +255,7 @@ class BuildCommands extends AbstractCommands
      *
      * @option default-theme theme where to build asstes.
      *
-     * @option validate or validate=fix to check or fix scss files.
+     * @option validate accepts 'check' or 'fix' - (CSS/SCSS).
      *
      * @aliases tba
      */
@@ -264,82 +264,100 @@ class BuildCommands extends AbstractCommands
         'build-npm-packages' => InputOption::VALUE_OPTIONAL,
         'build-npm-mode' => InputOption::VALUE_OPTIONAL,
         'validate' => InputOption::VALUE_OPTIONAL,
+        'theme-task-runner' => InputOption::VALUE_OPTIONAL,
     ])
     {
-
         $tasks = [];
-
-        if (!empty($options['default-theme'])) {
+        if (!empty($options['default-theme']) && file_exists('config/sync/system.theme.yml')) {
             // No parameter sent, check for configuraton.
-            if (file_exists('config/sync/system.theme.yml')) {
-                $parseSystemTheme = Yaml::parseFile('config/sync/system.theme.yml');
-                $options['default-theme'] = $parseSystemTheme['default'];
-            }
+            $parseSystemTheme = Yaml::parseFile('config/sync/system.theme.yml');
+            $options['default-theme'] = $parseSystemTheme['default'];
         }
-
         // No theme available.
         if (empty($options['default-theme'])) {
             $this->say("The default-theme couldn't be found in the project. Skipping build.");
             return 0;
         }
-
         // Search Theme.
         $finder = new Finder();
         $finder->directories()
             ->in('lib')
             ->name($options['default-theme']);
-
         if ($finder->hasResults()) {
             foreach ($finder as $directory) {
                 $theme_dir = $directory->getRealPath();
             }
-
             // Build task collection.
             $collection = $this->collectionBuilder();
 
-            // Option to process validation test only.
-            if (($options['validate'] == 'check')) {
-                $collection->taskExecStack()
-                    ->exec('npm i -D stylelint stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint "' . $theme_dir .  '/**/*.scss" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
-                    ->stopOnFail();
-                // Run and return task collection.
-                return $collection->run();
-            } elseif ($options['validate'] == 'fix') {
-                $collection->taskExecStack()
-                    ->exec('npm i -D stylelint stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint --fix "' . $theme_dir .  '/**/*.scss" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
-                    ->stopOnFail();
-                // Run and return task collection.
-                return $collection->run();
-            } else {
-                $finder = new Finder();
-                $finder->files()
-                    ->in($theme_dir)
-                    ->name('gulpfile.js');
+            // Check if it's a stylelint task.
+            if (!empty($options['validate'])) {
+                return $this->styleLintTasks($options['validate'], $theme_dir);
+            }
 
-                // Build task collection.
-                $collection = $this->collectionBuilder();
-    
-                if (empty($finder->hasResults())) {
-                    $collection->taskExecStack()
-                        ->exec('cp vendor/ec-europa/toolkit/src/gulp/gulpfile.js ' . $theme_dir . '/gulpfile.js')
-                        ->stopOnFail();
-                }
-
+            // Run theme task runner.
+            if ($options['theme-task-runner'] == 'grunt') {
+                $taskRunnerConfigFile = 'Gruntfile.js';
+                // Install ruby-sass for Grunt Task Runner.
                 $collection->taskExecStack()
                     ->dir($theme_dir)
-                    ->exec('npm init -y --scope')
-                    ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
-                    ->exec('./node_modules/.bin/gulp')
+                    ->exec('sudo apt-get install ruby-sass')
                     ->stopOnFail();
-    
-                // Run and return task collection.
-                return $collection->run();
+            } elseif ($options['theme-task-runner'] == 'gulp') {
+                // Deprecated 'gulp' - update to grunt.
+                $taskRunnerConfigFile = 'gulpfile.js';
+                $this->io()->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
             }
-        } else {
-            $this->say("The theme " . $options['default-theme'] . "  couldn't be found on the lib/ folder.");
-            return 0;
+            $finder = new Finder();
+            $finder->files()
+                ->in($theme_dir)
+                ->name($taskRunnerConfigFile);
+
+
+            if (empty($finder->hasResults())) {
+                $collection->taskExecStack()
+                    ->exec('cp vendor/ec-europa/toolkit/src/ThemeTaskRunnerConfig/' . $taskRunnerConfigFile . ' ' . $theme_dir . '/' . $taskRunnerConfigFile)
+                    ->stopOnFail();
+            }
+
+            $collection->taskExecStack()
+                ->dir($theme_dir)
+                ->exec('npm init -y --scope')
+                ->exec('npm install ' . $options['build-npm-packages'] . ' --save-dev')
+                ->exec('./node_modules/.bin/' . $options['theme-task-runner'])
+                ->stopOnFail();
+
+            // Run and return task collection.
+            return $collection->run();
         }
+        $this->say("The theme " . $options['default-theme'] . "  couldn't be found on the lib/ folder.");
+        return 0;
+    }
+
+    /**
+     * StyleLint helper function.
+     *
+     * Executes a task 'check' or 'fix'.
+     */
+    public function styleLintTasks($validate, $theme_dir)
+    {
+        // Option to process validation test only.
+        if (($validate == 'check')) {
+            $collection->taskExecStack()
+                ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
+                ->exec('npx stylelint "' . $theme_dir .  '/**/*.{css,scss,sass}" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                ->stopOnFail();
+            // Run and return task collection.
+            return $collection->run();
+        } elseif ($validate == 'fix') {
+            $collection->taskExecStack()
+                ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
+                ->exec('npx stylelint --fix "' . $theme_dir .  '/**/*.{css,scss,sass}" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                ->stopOnFail();
+            // Run and return task collection.
+            return $collection->run();
+        }
+        // If failed show message.
+        $this->say("Valid options for validate are: check, fix.");
     }
 }
