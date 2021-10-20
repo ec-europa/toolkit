@@ -362,4 +362,68 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $task = $this->taskExec("./vendor/bin/parallel-lint $opts_string .");
         return $this->collectionBuilder()->addTaskList([$task]);
     }
+
+    /**
+     * Run Blackfire.
+     *
+     * @command toolkit:run-blackfire
+     *
+     * @aliases tbf
+     */
+    public function toolkitBlackfire()
+    {
+        $base_url = $this->getConfig()->get('drupal.base_url');
+        $bf_client_id = getenv('BLACKFIRE_CLIENT_ID');
+        $bf_client_token = getenv('BLACKFIRE_CLIENT_TOKEN');
+
+        if (empty($bf_client_id) || empty($bf_client_token)) {
+            $this->say('You must set the following environment variables: BLACKFIRE_CLIENT_ID, BLACKFIRE_CLIENT_TOKEN, skipping.');
+            return new ResultData(0);
+        }
+
+        $command = "blackfire -client-id=$bf_client_id -client-token=$bf_client_token curl $base_url";
+
+        // Execute a list of commands to run after tests.
+        $pages = $this->getConfig()->get('toolkit.test.blackfire.pages');
+        // Limit the pages up to 10 items.
+        $pages = array_slice((array) $pages, 0, 10);
+        foreach ($pages as $page) {
+            $this->say("Checking page: {$base_url}{$page}");
+
+            $response = $this->taskExec($command . $page)
+                ->silent(true)->run()->getMessage();
+
+            // Extract data from the response.
+            $any = '(?:[\s\S].*[\s\S])';
+            preg_match_all("/Graph.*(http.*){$any}Timeline.*(http.*){$any}.*recommendations.*(http.*)/", $response, $links);
+            $data = array_combine(
+                ['field_graph', 'field_timeline', 'field_recommendations'],
+                [$links[1], $links[2], $links[3]]
+            );
+            $collect = [
+                'field_memory' => 'Memory',
+                'field_wall_time' => 'Wall Time',
+                'field_io_wait' => 'I\/O Wait',
+                'field_cpu_time' => 'CPU Time',
+                'field_network' => 'Network',
+                'field_sql' => 'SQL',
+            ];
+            foreach ($collect as $key => $item) {
+                if (preg_match("/{$item}(.*)/", $response, $match)) {
+                    $data[$key] = trim(
+                        str_replace('[0m', '', trim($match[1], " \t\n\r\e\v\0\x0B"))
+                    );
+                }
+            }
+
+            // @TODO Send $data to QA website.
+
+            // Print the relevant elements.
+            $response_array = array_slice(preg_split("/\r\n|\n|\r/", $response), -6);
+            $this->writeln(implode("\n", $response_array));
+            $this->writeln('');
+        }
+
+        return new ResultData(0);
+    }
 }

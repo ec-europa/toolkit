@@ -50,6 +50,10 @@ toolkit:
       execution: default
       from: phpunit.xml.dist
       to: phpunit.xml
+    blackfire:
+      pages:
+        - "/"
+        - "/user"
   lint:
     yaml:
       pattern: [ '*.yml', '*.yaml', '*.yml.dist', '*.yaml.dist' ]
