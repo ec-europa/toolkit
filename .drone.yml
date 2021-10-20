@@ -89,4 +89,3 @@ matrix:
     - highest
   COMPOSER_VERSION:
     - 1
-    - 2
