@@ -73,6 +73,8 @@ class ToolCommands extends AbstractCommands
     /**
      * Check composer.json for components that are not whitelisted/blacklisted.
      *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
      * @command toolkit:component-check
      *
      * @option endpoint The endpoint for the components whitelist/blacklist

@@ -245,6 +245,8 @@ class BuildCommands extends AbstractCommands
     /**
      * Build theme assets (Css and Js).
      *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
      * @param array $options
      *   Additional options for the command.
      *
@@ -264,6 +266,7 @@ class BuildCommands extends AbstractCommands
         'build-npm-packages' => InputOption::VALUE_OPTIONAL,
         'build-npm-mode' => InputOption::VALUE_OPTIONAL,
         'validate' => InputOption::VALUE_OPTIONAL,
+        'theme-task-runner' => InputOption::VALUE_OPTIONAL,
     ])
     {
 
@@ -300,38 +303,51 @@ class BuildCommands extends AbstractCommands
             // Option to process validation test only.
             if (($options['validate'] == 'check')) {
                 $collection->taskExecStack()
-                    ->exec('npm i -D stylelint stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint "' . $theme_dir .  '/**/*.scss" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                    ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
+                    ->exec('npx stylelint "' . $theme_dir .  '/**/*.{css,scss,sass}" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
                     ->stopOnFail();
                 // Run and return task collection.
                 return $collection->run();
             } elseif ($options['validate'] == 'fix') {
                 $collection->taskExecStack()
-                    ->exec('npm i -D stylelint stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint --fix "' . $theme_dir .  '/**/*.scss" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                    ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
+                    ->exec('npx stylelint --fix "' . $theme_dir .  '/**/*.{css,scss,sass}" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
                     ->stopOnFail();
                 // Run and return task collection.
                 return $collection->run();
             } else {
+                // Run theme task runner.
+                if ($options['theme-task-runner'] == 'grunt') {
+                    $taskRunnerConfigFile = 'Gruntfile.js';
+                    // Install ruby-sass for Grunt Task Runner.
+                    $collection->taskExecStack()
+                        ->dir($theme_dir)
+                        ->exec('sudo apt-get install ruby-sass')
+                        ->stopOnFail();
+                } elseif ($options['theme-task-runner'] == 'gulp') {
+                    $taskRunnerConfigFile = 'gulpfile.js';
+                    $this->io()->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
+                }
+
                 $finder = new Finder();
                 $finder->files()
                     ->in($theme_dir)
-                    ->name('gulpfile.js');
+                    ->name($taskRunnerConfigFile);
 
                 // Build task collection.
                 $collection = $this->collectionBuilder();
     
                 if (empty($finder->hasResults())) {
                     $collection->taskExecStack()
-                        ->exec('cp vendor/ec-europa/toolkit/src/gulp/gulpfile.js ' . $theme_dir . '/gulpfile.js')
+                        ->exec('cp vendor/ec-europa/toolkit/src/ThemeTaskRunnerConfig/'. $taskRunnerConfigFile . ' ' . $theme_dir . '/' . $taskRunnerConfigFile)
                         ->stopOnFail();
                 }
 
                 $collection->taskExecStack()
                     ->dir($theme_dir)
                     ->exec('npm init -y --scope')
-                    ->exec('npm install ' . $options['build-npm-packages'] . ' ' . $options['build-npm-mode'])
-                    ->exec('./node_modules/.bin/gulp')
+                    ->exec('npm install ' . $options['build-npm-packages'] . ' --save-dev')
+                    ->exec('./node_modules/.bin/' . $options['theme-task-runner'])
                     ->stopOnFail();
     
                 // Run and return task collection.
