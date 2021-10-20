@@ -37,13 +37,12 @@ toolkit:
     dev:
       commands: []
     npm:
-      packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify
-      mode: --save-dev
+      theme-task-runner: grunt
+      packages: grunt grunt-contrib-jshint grunt-contrib-watch grunt-contrib-sass grunt-contrib-clean grunt-contrib-uglify
   scss:
     validate: null
   test:
     behat:
-      execution: default
       from: behat.yml.dist
       to: behat.yml
     phpunit:
