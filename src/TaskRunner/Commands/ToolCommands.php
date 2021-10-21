@@ -353,6 +353,8 @@ class ToolCommands extends AbstractCommands
     /**
      * Check project's .opts.yml file for forbidden commands.
      *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
      * @command toolkit:opts-review
      *
      */
@@ -418,13 +420,23 @@ class ToolCommands extends AbstractCommands
                 'user-password',
             ];
             $reviewOk = true;
-            foreach ($parseOptsFile['upgrade_commands'] as $env => $commands) {
+            foreach ($parseOptsFile['upgrade_commands'] as $key => $commands) {
                 foreach ($commands as $command) {
                     foreach ($forbiddenCommands as $forbiddenCommand) {
-                        $parsedCommand = explode(" ", $command);
-                        if (in_array($forbiddenCommand, $parsedCommand)) {
-                            $this->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
-                            $reviewOk = false;
+                        if ($key == 'default') {
+                            $parsedCommand = explode(" ", $command);
+                            if (in_array($forbiddenCommand, $parsedCommand)) {
+                                $this->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
+                                $reviewOk = false;
+                            }
+                        } else {
+                            foreach ($command as $env => $subCommand) {
+                                $parsedCommand = explode(" ", $subCommand);
+                                if (in_array($forbiddenCommand, $parsedCommand)) {
+                                    $this->say("The command '$subCommand' is not allowed. Please remove it from 'upgrade_commands' section.");
+                                    $reviewOk = false;
+                                }
+                            }
                         }
                     }
                 }
