@@ -368,7 +368,6 @@ class ToolCommands extends AbstractCommands
                 'sql-conf',
                 'sql:connect',
                 'sql-connect',
-                'sql-connect',
                 'sql:create',
                 'sql-create',
                 'sql:drop',
