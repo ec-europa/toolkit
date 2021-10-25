@@ -45,6 +45,7 @@ toolkit:
     behat:
       from: behat.yml.dist
       to: behat.yml
+      profile: default
     phpunit:
       execution: default
       from: phpunit.xml.dist
