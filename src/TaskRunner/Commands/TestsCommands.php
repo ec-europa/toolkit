@@ -379,8 +379,14 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     public function toolkitBlackfire()
     {
         $base_url = $this->getConfig()->get('drupal.base_url');
+        $project_id = $this->getConfig()->get('toolkit.project_id');
         $bf_client_id = getenv('BLACKFIRE_CLIENT_ID');
         $bf_client_token = getenv('BLACKFIRE_CLIENT_TOKEN');
+
+        if (!getenv('BLACKFIRE_SERVER_ID') || !getenv('BLACKFIRE_SERVER_TOKEN')) {
+            $this->say('The blackfire server is not properly configured, please contact QA team.');
+            return new ResultData(0);
+        }
 
         if (empty($bf_client_id) || empty($bf_client_token)) {
             $this->say('You must set the following environment variables: BLACKFIRE_CLIENT_ID, BLACKFIRE_CLIENT_TOKEN, skipping.');
@@ -396,38 +402,63 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         foreach ($pages as $page) {
             $this->say("Checking page: {$base_url}{$page}");
 
-            $response = $this->taskExec($command . $page)
+            $raw = $this->taskExec($command . $page)
                 ->silent(true)->run()->getMessage();
 
             // Extract data from the response.
             $any = '(?:[\s\S].*[\s\S])';
-            preg_match_all("/Graph.*(http.*){$any}Timeline.*(http.*){$any}.*recommendations.*(http.*)/", $response, $links);
-            $data = array_combine(
-                ['field_graph', 'field_timeline', 'field_recommendations'],
-                [$links[1], $links[2], $links[3]]
-            );
-            $collect = [
-                'field_memory' => 'Memory',
-                'field_wall_time' => 'Wall Time',
-                'field_io_wait' => 'I\/O Wait',
-                'field_cpu_time' => 'CPU Time',
-                'field_network' => 'Network',
-                'field_sql' => 'SQL',
-            ];
-            foreach ($collect as $key => $item) {
-                if (preg_match("/{$item}(.*)/", $response, $match)) {
-                    $data[$key] = trim(
-                        str_replace('[0m', '', trim($match[1], " \t\n\r\e\v\0\x0B"))
-                    );
-                }
+            preg_match_all("/Graph.*(http.*){$any}Timeline.*(http.*){$any}.*recommendations.*(http.*)/", $raw, $links);
+            if (empty($links[1][0]) || empty($links[2][0]) || empty($links[3][0])) {
+                $this->say('Something went wrong, contact the QA team.');
+                return new ResultData(0);
             }
 
-            // @TODO Send $data to QA website.
-
             // Print the relevant elements.
-            $response_array = array_slice(preg_split("/\r\n|\n|\r/", $response), -6);
+            $response_array = array_slice(preg_split("/\r\n|\n|\r/", $raw), -6);
             $this->writeln(implode("\n", $response_array));
             $this->writeln('');
+
+            // Handle repo name.
+            if (empty($repo = getenv('DRONE_REPO'))) {
+                $repo = getenv('CI_PROJECT_NAME');
+            }
+            // Send payload to QA website.
+            if (!empty($repo)) {
+                $payload = [
+                    '_links' => ['type' => [
+                        'href' => getenv('QA_WEBSITE_URL'). '/rest/type/node/blackfire',
+                    ]],
+                    'status' => [['value' => 0]],
+                    'type' => [['target_id' => 'blackfire']],
+                    'title' => [['value' => "Blackfire: $project_id"]],
+                    'body' => [['value' => $raw]],
+                    'field_blackfire_repository' => [['value' => $repo]],
+                    'field_blackfire_graph_url' => [['value' => $links[1][0]]],
+                    'field_blackfire_timeline_url' => [['value' => $links[2][0]]],
+                    'field_blackfire_recomendations' => [['value' => $links[3][0]]],
+                ];
+
+                $collect = [
+                    'field_blackfire_memory' => 'Memory',
+                    'field_blackfire_wall_time' => 'Wall Time',
+                    'field_blackfire_io_wait' => 'I\/O Wait',
+                    'field_blackfire_cpu_time' => 'CPU Time',
+                    'field_blackfire_network' => 'Network',
+                    'field_blackfire_sql' => 'SQL',
+                ];
+                foreach ($collect as $key => $item) {
+                    if (preg_match("/{$item}(.*)/", $raw, $match)) {
+                        $value = str_replace('[0m', '', trim($match[1], " \t\n\r\e\v\0\x0B"));
+                        $payload[$key] = [['value' => trim($value)]];
+                    }
+                }
+
+                if ($playload_response = ToolCommands::postQaContent($payload)) {
+                    $this->writeln("Payload sent to QA website: $playload_response");
+                } else {
+                    $this->writeln('Fail to send the payload.');
+                }
+            }
         }
 
         return new ResultData(0);

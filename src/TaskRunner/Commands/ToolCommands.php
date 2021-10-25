@@ -260,6 +260,66 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
+     * Helper to return the session token.
+     *
+     * @return bool|string
+     *   The token or false if the request failed.
+     */
+    public static function getQaSessionToken()
+    {
+        if (empty($url = getenv('QA_WEBSITE_URL'))) {
+            return false;
+        }
+        $options = array(
+            CURLOPT_RETURNTRANSFER => true,   // return web page
+            CURLOPT_HEADER         => false,  // don't return headers
+            CURLOPT_FOLLOWLOCATION => true,   // follow redirects
+            CURLOPT_MAXREDIRS      => 10,     // stop after 10 redirects
+            CURLOPT_ENCODING       => '',     // handle compressed
+            CURLOPT_USERAGENT      => 'Quality Assurance pipeline', // name of client
+            CURLOPT_AUTOREFERER    => true,   // set referrer on redirect
+            CURLOPT_CONNECTTIMEOUT => 120,    // time-out on connect
+            CURLOPT_TIMEOUT        => 120,    // time-out on response
+        );
+        $ch = curl_init("$url/session/token");
+        curl_setopt_array($ch, $options);
+        $token = curl_exec($ch);
+        curl_close($ch);
+        return $token;
+    }
+
+    /**
+     * Helper to send a payload to the QA Website.
+     *
+     * @param array $fields
+     *   Data to send.
+     *
+     * @return bool
+     *   True if data was sent properly, false otherwise.
+     *
+     * @throws \Exception
+     */
+    public static function postQaContent($fields)
+    {
+        if (!($token = self::getQaSessionToken())) {
+            return false;
+        }
+        $ch = curl_init(getenv('QA_WEBSITE_URL') . '/node?_format=hal_json');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields, JSON_UNESCAPED_SLASHES));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/hal+json',
+            "X-CSRF-Token: $token",
+            'Authorization: Basic ' . getenv('QA_WEBSITE_TOKEN'),
+        ]);
+        curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return $code;
+    }
+
+    /**
      * Check project compatibility for Drupal 9 upgrade.
      *
      * Note: The project configuration should be updated.
