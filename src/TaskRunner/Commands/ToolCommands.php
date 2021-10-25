@@ -83,6 +83,9 @@ class ToolCommands extends AbstractCommands
     public function componentCheck(array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
         'blocker' => InputOption::VALUE_REQUIRED,
+        'mandatory' => InputOption::VALUE_REQUIRED,
+        'recommended' => InputOption::VALUE_REQUIRED,
+        'review-status' => InputOption::VALUE_REQUIRED,
         'test-command' => false,
     ])
     {
@@ -129,6 +132,12 @@ class ToolCommands extends AbstractCommands
                         ],
                     ],
                 ];
+            }
+
+            $infoOptions = [$options['mandatory'], $options['recommended'], $options['review-status']];
+            if (in_array('1', $infoOptions)) {
+                $this->componentInfo($modules, $composerLock['packages'], $infoOptions);
+                return;
             }
 
             // Loop over the packages.
@@ -205,6 +214,65 @@ class ToolCommands extends AbstractCommands
                         $this->say("Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.");
                         $this->componentCheckFailed = true;
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * Helper function to check component's review information.
+     *
+     * @param array $packages The packages to validate.
+     * @param array $modules The modules list.
+     *
+     * @return void
+     */
+    protected function componentInfo($modules, $packages, $options)
+    {
+        foreach ($packages as $package) {
+            $projectPackages[] = $package['name'];
+        }
+        // Option 'mandatory'.
+        if ($options[0] === '1') {
+            foreach($modules as $module) {
+                if ($module['mandatory'] === '1') {
+                    $mandatoryPackages[] = $module['name'];
+                }
+            }
+            $diffMandatory = array_diff($mandatoryPackages, $projectPackages);
+            if (!empty($diffMandatory)) {
+                foreach ($diffMandatory  as $notPresent) {
+                    $this->io()->warning("Package $notPresent is mandatory and is not present on the project.");
+                }
+            }
+        }
+        // Option 'recommended'.
+        if ($options[1] === '1') {
+            foreach($modules as $module) {
+                if ($module['usage'] === 'recommended') {
+                    $recommendedPackages[] = $module['name'];
+                }
+            }
+            $recommendedPackages[] = $module['name'];
+            $diffRecommended = array_diff($recommendedPackages, $projectPackages);
+            if (!empty($diffRecommended)) {
+                foreach ($diffRecommended  as $notPresent) {
+                    $this->io()->note("Package $notPresent is recommended but is not present on the project.");
+                }
+            }
+        }
+        // Option 'review-status'.
+        if ($options[2] === '1') {
+            foreach ($packages as $package) {
+                if (array_key_exists($package['name'], $modules) == true) {
+                    $packageName = $package['name'];
+                    $reviewStatus = $modules[$package['name']]['status'];
+                    $outputType = [
+                        'authorised' => $this->io()->note("Package $packageName have the following review status - Authorised"),
+                        'rejected' => $this->io()->caution("Package $packageName have the following review status - Rejected"),
+                        'restricted' => $this->io()->warning("Package $packageName have the following review status - Restricted"),
+                    ];
+                    return $outputType[$reviewStatus];
                 }
             }
         }
