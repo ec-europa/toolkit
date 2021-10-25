@@ -15,14 +15,11 @@ To run the behat tests:
 ```
 docker-compose exec web ./vendor/bin/run toolkit:test-behat
 ```
+CICD will pick the default profile to run against clone install and clean profile to run against clean install.
 
-The default testing pipeline in Drone allows you to differentiate between behat
-tests that are supposed to run on a clean installation and behat tests that are
-supposed to run on a clone installation of the website. This is done through the
-usage of the @clone tag.
+ - default profile: executed against clone-install
+ - clean profile: executed against clean-install
 
-Tests with the @clone tag are excluded for testing behat on a clean installation
-and are exclusively used for testing behat on a clone installation.
 
 The default configuration for this is to have the following defined in your
 `./behat.yml.dist` file:
@@ -31,18 +28,11 @@ The default configuration for this is to have the following defined in your
 default:
   suites:
     default:
-      // Add the replacement for behat.tags to your config.
-      filters:
-        tags: "${behat.tags}"
-```
-
-And then you can control which tests you would like to run by changing the
-setting in your `./runner.yml.dist` file:
-
-```yaml
-// Excludes the @clone tags for your default behat testing.
-behat:
-  tags: "~@clone"
+    ...
+clean:
+  suites:
+    default:
+    ...
 ```
 
 ### Commands to run before/after Behat tests
