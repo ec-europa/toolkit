@@ -150,6 +150,8 @@ class CloneCommands extends AbstractCommands
      * In order to make use of this functionality you must add your
      * ASDA credentials to your environment like.
      *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
      * @param array $options
      *   Command options.
      *
@@ -186,9 +188,19 @@ class CloneCommands extends AbstractCommands
         // Display information about ASDA creation date.
         $dumpData = substr(substr(file_get_contents('latest.sh1'), (strpos(file_get_contents('latest.sh1'), ' ')) + 2), 0, 15);
         $dumpDate = date_parse_from_format("Ymd-His", $dumpData);
-        $dumpTimestamp = mktime($dumpDate['hour'], $dumpDate['minute'], $dumpDate['second'], $dumpDate['month'], $dumpDate['day'], $dumpDate['year']);
-        $dumpHrdate = 'ASDA DATE: ' . $dumpDate['day'] . ' ' . date('M', $dumpTimestamp) . ' ' . $dumpDate['year'] . ' at ' . $dumpDate['hour'] . ':' . $dumpDate['minute'];
-        $this->io()->title($dumpHrdate);
+        if (
+            is_array($dumpDate) &&
+            is_integer($dumpDate['hour']) &&
+            is_integer($dumpDate['minute']) &&
+            is_integer($dumpDate['second']) &&
+            is_integer($dumpDate['month']) &&
+            is_integer($dumpDate['day']) &&
+            is_integer($dumpDate['year'])
+        ) {
+            $dumpTimestamp = mktime($dumpDate['hour'], $dumpDate['minute'], $dumpDate['second'], $dumpDate['month'], $dumpDate['day'], $dumpDate['year']);
+            $dumpHrdate = 'ASDA DATE: ' . $dumpDate['day'] . ' ' . date('M', $dumpTimestamp) . ' ' . $dumpDate['year'] . ' at ' . $dumpDate['hour'] . ':' . $dumpDate['minute'];
+            $this->io()->title($dumpHrdate);
+        }
 
         $tasks[] = $this->taskExec('wget')
             ->option('-O', $options['dumpfile'] . '.gz')
