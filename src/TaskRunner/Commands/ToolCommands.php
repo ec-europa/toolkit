@@ -234,21 +234,21 @@ class ToolCommands extends AbstractCommands
         }
         // Option 'mandatory'.
         if ($options[0] === '1') {
-            foreach($modules as $module) {
+            foreach ($modules as $module) {
                 if ($module['mandatory'] === '1') {
                     $mandatoryPackages[] = $module['name'];
                 }
             }
             $diffMandatory = array_diff($mandatoryPackages, $projectPackages);
             if (!empty($diffMandatory)) {
-                foreach ($diffMandatory  as $notPresent) {
+                foreach ($diffMandatory as $notPresent) {
                     $this->io()->warning("Package $notPresent is mandatory and is not present on the project.");
                 }
             }
         }
         // Option 'recommended'.
         if ($options[1] === '1') {
-            foreach($modules as $module) {
+            foreach ($modules as $module) {
                 if ($module['usage'] === 'recommended') {
                     $recommendedPackages[] = $module['name'];
                 }
@@ -256,7 +256,7 @@ class ToolCommands extends AbstractCommands
             $recommendedPackages[] = $module['name'];
             $diffRecommended = array_diff($recommendedPackages, $projectPackages);
             if (!empty($diffRecommended)) {
-                foreach ($diffRecommended  as $notPresent) {
+                foreach ($diffRecommended as $notPresent) {
                     $this->io()->note("Package $notPresent is recommended but is not present on the project.");
                 }
             }
