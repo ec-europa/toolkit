@@ -284,11 +284,9 @@ class ToolCommands extends AbstractCommands
                     $reviewStatus = $modules[$packageName]['status'];
                     if ($reviewStatus == 'authorised') {
                         $this->say("Package $packageName have the following review status - Authorised");
-                    }
-                    elseif ($reviewStatus== 'rejected') {
+                    } elseif ($reviewStatus == 'rejected') {
                         $this->io()->caution("Package $packageName have the following review status - Rejected");
-                    }
-                    elseif ($reviewStatus == 'restricted') {
+                    } elseif ($reviewStatus == 'restricted') {
                         $this->io()->warning("Package $packageName have the following review status - Restricted");
                     }
                 }
@@ -325,8 +323,7 @@ class ToolCommands extends AbstractCommands
                 foreach ($decoding->installed as $installed) {
                     if (!array_key_exists('latest', $installed)) {
                         $this->io()->error("Package $installed->name does not provide information about last version.");
-                    }
-                    else {
+                    } else {
                         $this->io()->note("Package $installed->name with version installed $installed->version is outdated, please update to last version - $installed->latest");
                     }
                 }
