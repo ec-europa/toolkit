@@ -16,6 +16,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class TestsCommands.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 {
@@ -372,6 +374,9 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     /**
      * Run Blackfire.
      *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     *
      * @command toolkit:run-blackfire
      *
      * @aliases tbf
@@ -425,9 +430,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             // Send payload to QA website.
             if (!empty($repo)) {
                 $payload = [
-                    '_links' => ['type' => [
-                        'href' => getenv('QA_WEBSITE_URL'). '/rest/type/node/blackfire',
-                    ]],
+                    '_links' => [
+                        'type' => [
+                            'href' => getenv('QA_WEBSITE_URL'). '/rest/type/node/blackfire',
+                        ]
+                    ],
                     'status' => [['value' => 0]],
                     'type' => [['target_id' => 'blackfire']],
                     'title' => [['value' => "Blackfire: $project_id"]],
