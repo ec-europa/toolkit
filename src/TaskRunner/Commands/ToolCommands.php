@@ -86,6 +86,8 @@ class ToolCommands extends AbstractCommands
         'mandatory' => InputOption::VALUE_REQUIRED,
         'recommended' => InputOption::VALUE_REQUIRED,
         'review-status' => InputOption::VALUE_REQUIRED,
+        'insecure' => InputOption::VALUE_REQUIRED,
+        'outdated' => InputOption::VALUE_REQUIRED,
         'test-command' => false,
     ])
     {
@@ -134,13 +136,13 @@ class ToolCommands extends AbstractCommands
                 ];
             }
 
-            $infoOptions = [$options['mandatory'], $options['recommended'], $options['review-status']];
+            $infoOptions = [$options['mandatory'], $options['recommended'], $options['review-status'], $options['insecure'], $options['outdated']];
             if (in_array('1', $infoOptions)) {
                 $this->componentInfo($modules, $composerLock['packages'], $infoOptions);
                 return;
             }
 
-            // Loop over the packages.
+            // Proceed with 'blocker' option. Loop over the packages.
             foreach ($composerLock['packages'] as $package) {
                 // Check if it's a drupal package.
                 // NOTE: Currently only supports drupal packages :(.
@@ -234,6 +236,19 @@ class ToolCommands extends AbstractCommands
         }
         // Option 'mandatory'.
         if ($options[0] === '1') {
+            // Build task collection.
+            $collection = $this->collectionBuilder();
+            $collection->taskExecStack()
+                ->exec('vendor/bin/drush pm-list --fields=status --format=json')
+                ->printOutput(false)
+                ->storeState('insecure');
+            $result = $collection->run();
+            $projPackages = (json_decode($result['insecure'], true));
+            foreach ($projPackages as $projPackage => $status) {
+                if ($status['status'] == 'enabled') {
+                    $projectPackages[] = $projPackage;
+                }
+            }
             foreach ($modules as $module) {
                 if ($module['mandatory'] === '1') {
                     $mandatoryPackages[] = $module['name'];
@@ -264,15 +279,56 @@ class ToolCommands extends AbstractCommands
         // Option 'review-status'.
         if ($options[2] === '1') {
             foreach ($packages as $package) {
-                if (array_key_exists($package['name'], $modules) == true) {
-                    $packageName = $package['name'];
-                    $reviewStatus = $modules[$package['name']]['status'];
-                    $outputType = [
-                        'authorised' => $this->io()->note("Package $packageName have the following review status - Authorised"),
-                        'rejected' => $this->io()->caution("Package $packageName have the following review status - Rejected"),
-                        'restricted' => $this->io()->warning("Package $packageName have the following review status - Restricted"),
-                    ];
-                    return $outputType[$reviewStatus];
+                $packageName = $package['name'];
+                if (array_key_exists($packageName, $modules) === true) {
+                    $reviewStatus = $modules[$packageName]['status'];
+                    if ($reviewStatus == 'authorised') {
+                        $this->say("Package $packageName have the following review status - Authorised");
+                    }
+                    elseif ($reviewStatus== 'rejected') {
+                        $this->io()->caution("Package $packageName have the following review status - Rejected");
+                    }
+                    elseif ($reviewStatus == 'restricted') {
+                        $this->io()->warning("Package $packageName have the following review status - Restricted");
+                    }
+                }
+            }
+        }
+        // Option 'insecure'.
+        if ($options[3] === '1') {
+            // Build task collection.
+            $collection = $this->collectionBuilder();
+            $collection->taskExecStack()
+                ->exec('drush pm:security --format=json')
+                ->printOutput(false)
+                ->storeState('insecure');
+            $result = $collection->run();
+            $insecurePackages = ((array) $result['insecure']);
+            if (!empty($insecurePackages)) {
+                foreach ($insecurePackages as $insecurePackage) {
+                    $package = array_keys(json_decode($insecurePackage, true))[0];
+                    $this->io()->caution("Package $package have a security update, please update to last version.");
+                }
+            }
+        }
+        // Option 'outdated'.
+        if ($options[4] === '1') {
+            $collection = $this->collectionBuilder();
+            $collection->taskExecStack()
+                ->exec('composer outdated --direct --format=json')
+                ->printOutput(false)
+                ->storeState('outdated');
+            $result = $collection->run();
+            $outdatedPackages = ((array) $result['outdated']);
+            if (!empty($outdatedPackages)) {
+                $decoding = json_decode($outdatedPackages[0]);
+                foreach ($decoding->installed as $installed) {
+                    if (!array_key_exists('latest', $installed)) {
+                        $this->io()->error("Package $installed->name does not provide information about last version.");
+                    }
+                    else {
+                        $this->io()->note("Package $installed->name with version installed $installed->version is outdated, please update to last version - $installed->latest");
+                    }
                 }
             }
         }
