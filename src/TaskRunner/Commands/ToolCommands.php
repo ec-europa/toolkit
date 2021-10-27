@@ -662,7 +662,7 @@ class ToolCommands extends AbstractCommands
         $this->skipInsecure = true;
 
         $commitMsg = getenv('DRONE_COMMIT_MESSAGE') !== false ? getenv('DRONE_COMMIT_MESSAGE') : '';
-        $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMessage;
+        $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMsg;
 
         preg_match_all('/\[([^\]]*)\]/', $commitMsg, $findTokens);
 

@@ -51,6 +51,7 @@ toolkit:
       from: phpunit.xml.dist
       to: phpunit.xml
     blackfire:
+      uuid:
       pages:
         - "/"
         - "/user"
