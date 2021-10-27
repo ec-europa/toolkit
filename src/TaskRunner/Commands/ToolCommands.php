@@ -160,6 +160,7 @@ class ToolCommands extends AbstractCommands
 
                 // Give feedback if no problems found.
                 $this->io()->success('Components checked, nothing to report.');
+                return 0;
             }
 
             // Proceed with 'blocker' option. Loop over the packages.
