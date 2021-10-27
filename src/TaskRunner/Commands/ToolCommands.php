@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
+use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
 use Symfony\Component\Console\Input\InputOption;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use Symfony\Component\Yaml\Yaml;
@@ -16,6 +17,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ToolCommands extends AbstractCommands
 {
+    use loadTasks;
 
     /**
      * {@inheritdoc}
@@ -660,7 +662,7 @@ class ToolCommands extends AbstractCommands
         $this->skipInsecure = true;
 
         $commitMsg = getenv('DRONE_COMMIT_MESSAGE') !== false ? getenv('DRONE_COMMIT_MESSAGE') : '';
-        $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMessage;
+        $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMsg;
 
         preg_match_all('/\[([^\]]*)\]/', $commitMsg, $findTokens);
 
@@ -677,5 +679,43 @@ class ToolCommands extends AbstractCommands
                 }
             }
         }
+    }
+
+    /**
+     * Copy the needed resources to run Behat with Blackfire.
+     *
+     * @command toolkit:setup-blackfire-behat
+     */
+    public function setupBlackfireBehat()
+    {
+        $from = $this->getConfig()->get('toolkit.test.behat.from');
+        $blackfire_dir = __DIR__ . '/../../../resources/Blackfire';
+        $parseBehatYml = Yaml::parseFile($from);
+        if (isset($parseBehatYml['blackfire'])) {
+            $this->say('Blackfire profile was found, skipping.');
+        } else {
+            // Append the Blackfire profile to the behat.yml file.
+            $this->taskWriteToFile($from)->append(true)
+                ->line('# Toolkit auto-generated profile for Blackfire.')
+                ->text(file_get_contents("$blackfire_dir/blackfire.behat.yml"))
+                ->line('# End Toolkit.')
+                ->run();
+        }
+
+        // Add the test feature to the tests folder.
+        if (file_exists('tests/features/blackfire.feature')) {
+            $this->say('Blackfire test feature was found, skipping.');
+        } else {
+            $this->_copy("$blackfire_dir/blackfire.feature", 'tests/features/blackfire.feature');
+        }
+
+        // Add the Blackfire Context to the Context folder.
+        if (file_exists('tests/Behat/BlackfireMinkContext.php')) {
+            $this->say('Blackfire Mink context was found, skipping.');
+        } else {
+            $this->_copy("$blackfire_dir/BlackfireMinkContext.php", 'tests/Behat/BlackfireMinkContext.php');
+        }
+
+        return 0;
     }
 }
