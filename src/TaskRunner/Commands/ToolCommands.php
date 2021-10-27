@@ -100,6 +100,8 @@ class ToolCommands extends AbstractCommands
         $this->componentCheckInsecureFailed = false;
         $this->componentCheckOutdatedFailed = false;
 
+        $this->checkCommitMessage();
+
         $blocker = $options['blocker'];
         $endpointUrl = $options['endpoint'];
         $composerLock = file_get_contents('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
@@ -149,8 +151,8 @@ class ToolCommands extends AbstractCommands
                 if ($this->componentCheckFailed ||
                     $this->componentCheckMandatoryFailed ||
                     $this->componentCheckRecommendedFailed ||
-                    $this->componentCheckInsecureFailed ||
-                    $this->componentCheckOutdatedFailed
+                    ($this->componentCheckInsecureFailed && $this->skipInsecure) ||
+                    ($this->componentCheckOutdatedFailed && $this->skipOutdated)
                 ) {
                     $msg = 'Failed the components check, please verify the report and update the project.';
                     $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
@@ -176,8 +178,8 @@ class ToolCommands extends AbstractCommands
             if ($this->componentCheckFailed ||
                 $this->componentCheckMandatoryFailed ||
                 $this->componentCheckRecommendedFailed ||
-                $this->componentCheckInsecureFailed ||
-                $this->componentCheckOutdatedFailed
+                ($this->componentCheckInsecureFailed && $this->skipInsecure) ||
+                ($this->componentCheckOutdatedFailed && $this->skipOutdated)
             ) {
                 $msg = 'Failed the components check, please verify the report and update the project.';
                 $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
@@ -648,6 +650,31 @@ class ToolCommands extends AbstractCommands
                 $this->say("Review 'opts.yml' file - Ok.");
                 // If the review is ok return '0'.
                 return 0;
+            }
+        }
+    }
+
+    protected function checkCommitMessage()
+    {
+        $this->skipOutdated= true;
+        $this->skipInsecure= true;
+
+        $commitMsg = getenv('DRONE_COMMIT_MESSAGE') !== false ? getenv('DRONE_COMMIT_MESSAGE') : '';
+        $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMessage;
+
+        preg_match_all('/\[([^\]]*)\]/', $commitMsg, $findTokens);
+
+        if (isset($findTokens[1])) {
+            // Transform the message to a single token, last one will win.
+            foreach ($findTokens[1] as $token) {
+                $transformedToken = strtolower(str_replace('-', '_', $token));
+
+                if ($transformedToken == 'skip_outdated') {
+                    $this->skipOutdated= false;
+                }
+                if ($transformedToken == 'skip_insecure') {
+                    $this->skipInsecure = false;
+                }
             }
         }
     }
