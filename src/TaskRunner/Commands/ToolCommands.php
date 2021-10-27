@@ -155,6 +155,7 @@ class ToolCommands extends AbstractCommands
                 }
             }
 
+            // If the validation fail, return according to the blocker.
             if ($this->componentCheckFailed ||
                 $this->componentCheckMandatoryFailed ||
                 $this->componentCheckRecommendedFailed ||
