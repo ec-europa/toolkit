@@ -669,9 +669,7 @@ class ToolCommands extends AbstractCommands
         } else {
             // Append the Blackfire profile to the behat.yml file.
             $this->taskWriteToFile($from)->append(true)
-                ->line('# Toolkit auto-generated profile for Blackfire.')
                 ->text(file_get_contents("$blackfire_dir/blackfire.behat.yml"))
-                ->line('# End Toolkit.')
                 ->run();
         }
 

@@ -4,11 +4,8 @@ blackfire:
       contexts:
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
-        #- Drupal\DrupalExtension\Context\MinkContext
         - OpenEuropa\Site\Tests\Behat\DrupalContext
         - OpenEuropa\Site\Tests\Behat\FeatureContext
-        # Blackfire requires behat-mink rather than drupal-mink.
-        #- Behat\MinkExtension\Context\MinkContext
         - OpenEuropa\Site\Tests\Behat\MinkContext
       filters:
         tags: "~@wip&&@blackfire"
@@ -16,7 +13,7 @@ blackfire:
     # Declare and configure the BlackfireExtension
     Blackfire\Bridge\Behat\BlackfireExtension:
       # UUID or name of your Blackfire environment
-      blackfire_environment: c1474d14-9ebe-4bfb-94a8-66605c554b22
+      blackfire_environment: '${toolkit.test.blackfire.uuid}'
       # The name you want to give to your Blackfire Builds triggered by Behat
       build_name: 'Behat - ${toolkit.project_id}'
     Behat\MinkExtension:
