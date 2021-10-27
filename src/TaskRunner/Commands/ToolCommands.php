@@ -143,8 +143,25 @@ class ToolCommands extends AbstractCommands
             $infoOptions = [$options['mandatory'], $options['recommended'], $options['insecure'], $options['outdated']];
             if (in_array('1', $infoOptions)) {
                 $this->componentInfo($modules, $composerLock['packages'], $infoOptions);
-                return;
+
+                // If the validation fail, return according to the blocker.
+                if (
+                    $this->componentCheckFailed ||
+                    $this->componentCheckMandatoryFailed ||
+                    $this->componentCheckRecommendedFailed ||
+                    $this->componentCheckInsecureFailed ||
+                    $this->componentCheckOutdatedFailed
+                ) {
+                    $msg = 'Failed the components check, please verify the report and update the project.';
+                    $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
+                    $this->io()->warning($msg);
+                    return 1;
+                }
+
+                // Give feedback if no problems found.
+                $this->io()->success('Components checked, nothing to report.');
             }
+
 
             // Loop over the packages.
             foreach ($composerLock['packages'] as $package) {
