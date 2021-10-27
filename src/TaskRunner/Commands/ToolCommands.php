@@ -294,16 +294,20 @@ class ToolCommands extends AbstractCommands
         if ($options[2] === '1') {
             // Build task collection.
             $collection = $this->collectionBuilder();
-            $collection->taskExecStack()
+            $result = $collection->taskExecStack()
                 ->exec('drush pm:security --format=json')
                 ->printOutput(false)
-                ->storeState('insecure');
-            $result = $collection->run();
-            $insecurePackages = ((array) $result['insecure']);
-            if (!empty($insecurePackages)) {
+                ->storeState('insecure')
+                ->silent(true)
+                ->run()
+                ->getMessage();
+
+            if (strpos(trim($result), 'There are no outstanding security') !== false) {
+                $this->io()->note("There are no outstanding security updates.");
+            } else {
+                $insecurePackages = json_decode($result, true);
                 foreach ($insecurePackages as $insecurePackage) {
-                    $package = array_keys(json_decode($insecurePackage, true))[0];
-                    $this->io()->caution("Package $package have a security update, please update to last version.");
+                    $this->io()->caution("Package " . $package['name'] . " have a security update, please update to an safe version.");
                     $this->componentCheckInsecureFailed = true;
                 }
             }
