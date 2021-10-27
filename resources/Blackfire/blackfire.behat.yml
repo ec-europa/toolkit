@@ -4,11 +4,8 @@ blackfire:
       contexts:
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
-        #- Drupal\DrupalExtension\Context\MinkContext
         - OpenEuropa\Site\Tests\Behat\DrupalContext
         - OpenEuropa\Site\Tests\Behat\FeatureContext
-        # Blackfire requires behat-mink rather than drupal-mink.
-        #- Behat\MinkExtension\Context\MinkContext
         - OpenEuropa\Site\Tests\Behat\MinkContext
       filters:
         tags: "~@wip&&@blackfire"
