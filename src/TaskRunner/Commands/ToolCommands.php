@@ -144,7 +144,7 @@ class ToolCommands extends AbstractCommands
             $infoOptions = [$options['mandatory'], $options['recommended'], $options['insecure'], $options['outdated']];
             if (in_array('1', $infoOptions)) {
                 $this->componentInfo($modules, $composerLock['packages'], $infoOptions);
-                
+
                 // If the validation fail, return according to the blocker.
                 if ($this->componentCheckFailed ||
                     $this->componentCheckMandatoryFailed ||
@@ -157,7 +157,7 @@ class ToolCommands extends AbstractCommands
                     $this->io()->warning($msg);
                     return 1;
                 }
-    
+
                 // Give feedback if no problems found.
                 $this->io()->success('Components checked, nothing to report.');
             }
