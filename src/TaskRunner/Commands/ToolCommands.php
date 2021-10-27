@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
@@ -74,6 +74,7 @@ class ToolCommands extends AbstractCommands
      * Check composer.json for components that are not whitelisted/blacklisted.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      *
      * @command toolkit:component-check
      *
@@ -83,6 +84,10 @@ class ToolCommands extends AbstractCommands
     public function componentCheck(array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
         'blocker' => InputOption::VALUE_REQUIRED,
+        'mandatory' => InputOption::VALUE_REQUIRED,
+        'recommended' => InputOption::VALUE_REQUIRED,
+        'insecure' => InputOption::VALUE_REQUIRED,
+        'outdated' => InputOption::VALUE_REQUIRED,
         'test-command' => false,
     ])
     {
@@ -90,6 +95,10 @@ class ToolCommands extends AbstractCommands
         // provide such a property to one single function other than naming the
         // failed property exactly for this function.
         $this->componentCheckFailed = false;
+        $this->componentCheckMandatoryFailed = false;
+        $this->componentCheckRecommendedFailed = false;
+        $this->componentCheckInsecureFailed = false;
+        $this->componentCheckOutdatedFailed = false;
         $blocker = $options['blocker'];
         $endpointUrl = $options['endpoint'];
         $composerLock = file_get_contents('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
@@ -131,7 +140,13 @@ class ToolCommands extends AbstractCommands
                 ];
             }
 
-            // Loop over the packages.
+            $infoOptions = [$options['mandatory'], $options['recommended'], $options['insecure'], $options['outdated']];
+            if (in_array('1', $infoOptions)) {
+                $this->componentInfo($modules, $composerLock['packages'], $infoOptions);
+                return;
+            }
+
+            // Proceed with 'blocker' option. Loop over the packages.
             foreach ($composerLock['packages'] as $package) {
                 // Check if it's a drupal package.
                 // NOTE: Currently only supports drupal packages :(.
@@ -140,12 +155,16 @@ class ToolCommands extends AbstractCommands
                 }
             }
 
-            // If the validation fail, return according to the blocker.
-            if ($this->componentCheckFailed) {
-                $msg = 'Failed the components check. Please contact the QA team.';
+            if ($this->componentCheckFailed ||
+                $this->componentCheckMandatoryFailed ||
+                $this->componentCheckRecommendedFailed ||
+                $this->componentCheckInsecureFailed ||
+                $this->componentCheckOutdatedFailed
+            ) {
+                $msg = 'Failed the components check, please verify the report and update the project.';
                 $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
                 $this->io()->warning($msg);
-                return $blocker ? 1 : 0;
+                return 1;
             }
 
             // Give feedback if no problems found.
@@ -204,6 +223,107 @@ class ToolCommands extends AbstractCommands
                     if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
                         $this->say("Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.");
                         $this->componentCheckFailed = true;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Helper function to check component's review information.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     *
+     * @param array $packages The packages to validate.
+     * @param array $modules The modules list.
+     *
+     * @return void
+     */
+    protected function componentInfo($modules, $packages, $options)
+    {
+        foreach ($packages as $package) {
+            $projectPackages[] = $package['name'];
+        }
+        // Option 'mandatory'.
+        if ($options[0] === '1') {
+            // Build task collection.
+            $collection = $this->collectionBuilder();
+            $collection->taskExecStack()
+                ->exec('vendor/bin/drush pm-list --fields=status --format=json')
+                ->printOutput(false)
+                ->storeState('insecure');
+            $result = $collection->run();
+            $projPackages = (json_decode($result['insecure'], true));
+            foreach ($projPackages as $projPackage => $status) {
+                if ($status['status'] == 'enabled') {
+                    $projectPackages[] = $projPackage;
+                }
+            }
+            foreach ($modules as $module) {
+                if ($module['mandatory'] === '1') {
+                    $mandatoryPackages[] = $module['name'];
+                }
+            }
+            $diffMandatory = array_diff($mandatoryPackages, $projectPackages);
+            if (!empty($diffMandatory)) {
+                foreach ($diffMandatory as $notPresent) {
+                    $this->io()->warning("Package $notPresent is mandatory and is not present on the project.");
+                    $this->componentCheckMandatoryFailed = true;
+                }
+            }
+        }
+        // Option 'recommended'.
+        if ($options[1] === '1') {
+            foreach ($modules as $module) {
+                if ($module['usage'] === 'recommended') {
+                    $recommendedPackages[] = $module['name'];
+                }
+            }
+            $recommendedPackages[] = $module['name'];
+            $diffRecommended = array_diff($recommendedPackages, $projectPackages);
+            if (!empty($diffRecommended)) {
+                foreach ($diffRecommended as $notPresent) {
+                    $this->io()->note("Package $notPresent is recommended but is not present on the project.");
+                    $this->componentCheckRecommendedFailed = false;
+                }
+            }
+        }
+        // Option 'insecure'.
+        if ($options[3] === '1') {
+            // Build task collection.
+            $collection = $this->collectionBuilder();
+            $collection->taskExecStack()
+                ->exec('drush pm:security --format=json')
+                ->printOutput(false)
+                ->storeState('insecure');
+            $result = $collection->run();
+            $insecurePackages = ((array) $result['insecure']);
+            if (!empty($insecurePackages)) {
+                foreach ($insecurePackages as $insecurePackage) {
+                    $package = array_keys(json_decode($insecurePackage, true))[0];
+                    $this->io()->caution("Package $package have a security update, please update to last version.");
+                    $this->componentCheckInsecureFailed = true;
+                }
+            }
+        }
+        // Option 'outdated'.
+        if ($options[4] === '1') {
+            $collection = $this->collectionBuilder();
+            $collection->taskExecStack()
+                ->exec('composer outdated --direct --format=json')
+                ->printOutput(false)
+                ->storeState('outdated');
+            $result = $collection->run();
+            $outdatedPackages = ((array) $result['outdated']);
+            if (!empty($outdatedPackages)) {
+                $decoding = json_decode($outdatedPackages[0]);
+                foreach ($decoding->installed as $installed) {
+                    if (!array_key_exists('latest', $installed)) {
+                        $this->io()->error("Package $installed->name does not provide information about last version.");
+                    } else {
+                        $this->io()->note("Package $installed->name with version installed $installed->version is outdated, please update to last version - $installed->latest");
+                        $this->componentCheckOutdatedFailed = true;
                     }
                 }
             }
@@ -414,7 +534,6 @@ class ToolCommands extends AbstractCommands
      * Check project's .opts.yml file for forbidden commands.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *
      * @command toolkit:opts-review
      *
      */
