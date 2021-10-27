@@ -291,7 +291,7 @@ class ToolCommands extends AbstractCommands
             }
         }
         // Option 'insecure'.
-        if ($options[3] === '1') {
+        if ($options[2] === '1') {
             // Build task collection.
             $collection = $this->collectionBuilder();
             $collection->taskExecStack()
@@ -309,7 +309,7 @@ class ToolCommands extends AbstractCommands
             }
         }
         // Option 'outdated'.
-        if ($options[4] === '1') {
+        if ($options[3] === '1') {
             $collection = $this->collectionBuilder();
             $collection->taskExecStack()
                 ->exec('composer outdated --direct --format=json')
