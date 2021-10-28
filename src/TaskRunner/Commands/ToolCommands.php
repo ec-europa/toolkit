@@ -70,7 +70,7 @@ class ToolCommands extends AbstractCommands
         }//end if
     }
 
-     /**
+    /**
      * Check composer.json for components that are not whitelisted/blacklisted.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -145,11 +145,13 @@ class ToolCommands extends AbstractCommands
             ];
 
             foreach ($checks as $check) {
-                $this->say('Checking ' . $check . ' components.');
+                $this->io()->title('Checking ' . $check . ' components.');
                 $fct = "component" . $check;
                 $this->{$fct}($modules, $composerLock['packages']);
+                echo PHP_EOL;
             }
 
+            $this->io()->title('Checking evaluation status components.');
             // Proceed with 'blocker' option. Loop over the packages.
             foreach ($composerLock['packages'] as $package) {
                 // Check if it's a drupal package.
@@ -158,6 +160,12 @@ class ToolCommands extends AbstractCommands
                     $this->validateComponent($package, $modules);
                 }
             }
+            if ($this->componentCheckFailed == false) {
+                $this->say("Evaluation module check is OK.");
+            }
+            echo PHP_EOL;
+
+            $this->printComponentResults();
 
             // If the validation fail, return according to the blocker.
             if (
@@ -169,13 +177,44 @@ class ToolCommands extends AbstractCommands
             ) {
                 $msg = 'Failed the components check, please verify the report and update the project.';
                 $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
-                $this->io()->warning($msg);
+                $this->io()->error($msg);
                 return 1;
             }
 
             // Give feedback if no problems found.
             $this->io()->success('Components checked, nothing to report.');
         }//end if
+    }
+
+    /**
+     * Helper function to validate the component.
+     *
+     * @param array $package The package to validate.
+     * @param array $modules The modules list.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     *
+     * @return void
+     */
+    protected function printComponentResults()
+    {
+        $this->io()->title('Results:');
+
+        $skipInsegure = ($this->skipInsecure) ? '' : ' (Skipping)';
+        $skipOutdated = ($this->skipOutdated) ? '' : ' (Skipping)';
+
+        $msgs[] = ($this->componentCheckFailed) ? 'Evaluation module check failed.' : 'Evaluation module check passed.';
+        $msgs[] = ($this->componentCheckMandatoryFailed) ? 'Mandatory module check failed.' : 'Mandatory module check passed.';
+        $msgs[] = ($this->componentCheckRecommendedFailed) ? 'Recommended module check failed.' : 'Recommended module check passed.';
+        $msgs[] = ($this->componentCheckInsecureFailed) ? 'Insecure module check failed. (Reporting mode)' . $skipInsegure : 'Insecure module check passed.' . $skipInsegure;
+        $msgs[] = ($this->componentCheckOutdatedFailed) ? 'Outdated module check failed.' . $skipOutdated : 'Outdated module check passed.' . $skipOutdated;
+
+        foreach ($msgs as $msg) {
+            $this->say($msg);
+        }
+
+        echo PHP_EOL;
     }
 
     /**
@@ -235,7 +274,7 @@ class ToolCommands extends AbstractCommands
         }
     }
 
-     /**
+    /**
      * Helper function to check component's review information.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -258,14 +297,15 @@ class ToolCommands extends AbstractCommands
         $collection->taskExecStack()
             ->exec('vendor/bin/drush pm-list --fields=status --format=json')
             ->printOutput(false)
+            ->silent(true)
             ->storeState('insecure');
         $result = $collection->run();
-        $projPackages = (json_decode($result['insecure'], true));
-        foreach ($projPackages as $projPackage => $status) {
-            if ($status['status'] == 'enabled') {
-                $projectPackages[] = $projPackage;
-            }
-        }
+        // $projPackages = (json_decode($result['insecure'], true));
+        // foreach ($projPackages as $projPackage => $status) {
+        //     if ($status['status'] == 'enabled') {
+        //         $projectPackages[] = $projPackage;
+        //     }
+        // }
         foreach ($modules as $module) {
             if ($module['mandatory'] === '1') {
                 $mandatoryPackages[] = $module['name'];
@@ -274,7 +314,7 @@ class ToolCommands extends AbstractCommands
         $diffMandatory = array_diff($mandatoryPackages, $projectPackages);
         if (!empty($diffMandatory)) {
             foreach ($diffMandatory as $notPresent) {
-                $this->io()->warning("Package $notPresent is mandatory and is not present on the project.");
+                $this->say("Package $notPresent is mandatory and is not present on the project.");
                 $this->componentCheckMandatoryFailed = true;
             }
         }
@@ -305,7 +345,7 @@ class ToolCommands extends AbstractCommands
         $diffRecommended = array_diff($recommendedPackages, $projectPackages);
         if (!empty($diffRecommended)) {
             foreach ($diffRecommended as $notPresent) {
-                $this->io()->note("Package $notPresent is recommended but is not present on the project.");
+                $this->say("Package $notPresent is recommended but is not present on the project.");
                 $this->componentCheckRecommendedFailed = false;
             }
         }
@@ -324,10 +364,6 @@ class ToolCommands extends AbstractCommands
      */
     protected function componentInsecure($modules, $packages)
     {
-        foreach ($packages as $package) {
-            $projectPackages[] = $package['name'];
-        }
-
         // Build task collection.
         $collection = $this->collectionBuilder();
         $result = $collection->taskExecStack()
@@ -338,13 +374,15 @@ class ToolCommands extends AbstractCommands
             ->run()
             ->getMessage();
 
-        if (strpos(trim($result), 'There are no outstanding security') !== false) {
-            $this->io()->note("There are no outstanding security updates.");
+        if (strpos(trim((string) $result), 'There are no outstanding security') !== false) {
+            $this->say("There are no outstanding security updates.");
         } else {
             $insecurePackages = json_decode($result, true);
-            foreach ($insecurePackages as $insecurePackage) {
-                $this->io()->caution("Package " . $package['name'] . " have a security update, please update to an safe version.");
-                $this->componentCheckInsecureFailed = true;
+            if (is_array($insecurePackages)) {
+                foreach ($insecurePackages as $insecurePackage) {
+                    $this->io()->caution("Package " . $package['name'] . " have a security update, please update to an safe version.");
+                    $this->componentCheckInsecureFailed = true;
+                }
             }
         }
     }
@@ -377,9 +415,9 @@ class ToolCommands extends AbstractCommands
             $decoding = json_decode($outdatedPackages[0]);
             foreach ($decoding->installed as $installed) {
                 if (!array_key_exists('latest', $installed)) {
-                    $this->io()->error("Package $installed->name does not provide information about last version.");
+                    $this->say("Package $installed->name does not provide information about last version.");
                 } else {
-                    $this->io()->note("Package $installed->name with version installed $installed->version is outdated, please update to last version - $installed->latest");
+                    $this->say("Package $installed->name with version installed $installed->version is outdated, please update to last version - $installed->latest");
                     $this->componentCheckOutdatedFailed = true;
                 }
             }
@@ -564,9 +602,8 @@ class ToolCommands extends AbstractCommands
                 ->silent(true)
                 ->exec('composer remove drupal/upgrade_status --dev');
             $collection->run();
-
-            return 0;
         }
+        return 0;
     }
 
     /**
