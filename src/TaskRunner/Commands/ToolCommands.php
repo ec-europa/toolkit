@@ -622,6 +622,12 @@ class ToolCommands extends AbstractCommands
                 'user-password',
             ];
             $reviewOk = true;
+
+            if (empty($parseOptsFile['upgrade_commands'])) {
+                $this->say("The project is using default deploy instructions.");
+                return 0;
+            }
+
             foreach ($parseOptsFile['upgrade_commands'] as $key => $commands) {
                 foreach ($commands as $command) {
                     foreach ($forbiddenCommands as $forbiddenCommand) {
