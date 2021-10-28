@@ -142,11 +142,12 @@ class ToolCommands extends AbstractCommands
                 'Recommended',
                 'Insecure',
                 'Outdated',
-                ];
+            ];
 
             foreach ($checks as $check) {
-                $this->io()->say('Checking ' . $check . ' components.');
-                $this->component{$check}($modules, $composerLock['packages']);
+                $this->say('Checking ' . $check . ' components.');
+                $fct = "component" . $check;
+                $this->{$fct}($modules, $composerLock['packages']);
             }
 
             // Proceed with 'blocker' option. Loop over the packages.
@@ -699,7 +700,7 @@ class ToolCommands extends AbstractCommands
         $this->skipd9c = true;
 
         $commitMsg = getenv('DRONE_COMMIT_MESSAGE') !== false ? getenv('DRONE_COMMIT_MESSAGE') : '';
-        $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMessage;
+        $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMsg;
 
         preg_match_all('/\[([^\]]*)\]/', $commitMsg, $findTokens);
 
