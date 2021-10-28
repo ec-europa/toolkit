@@ -145,8 +145,9 @@ class ToolCommands extends AbstractCommands
             ];
 
             foreach ($checks as $check) {
-                $this->io()->say('Checking ' . $check . ' components.');
-                $this->component{$check}($modules, $composerLock['packages']);
+                $this->say('Checking ' . $check . ' components.');
+                $fct = "component" . $check;
+                $this->{$fct}($modules, $composerLock['packages']);
             }
 
             // Proceed with 'blocker' option. Loop over the packages.
@@ -258,12 +259,12 @@ class ToolCommands extends AbstractCommands
             ->printOutput(false)
             ->storeState('insecure');
         $result = $collection->run();
-        $projPackages = (json_decode($result['insecure'], true));
-        foreach ($projPackages as $projPackage => $status) {
-            if ($status['status'] == 'enabled') {
-                $projectPackages[] = $projPackage;
-            }
-        }
+        // $projPackages = (json_decode($result['insecure'], true));
+        // foreach ($projPackages as $projPackage => $status) {
+        //     if ($status['status'] == 'enabled') {
+        //         $projectPackages[] = $projPackage;
+        //     }
+        // }
         foreach ($modules as $module) {
             if ($module['mandatory'] === '1') {
                 $mandatoryPackages[] = $module['name'];
@@ -322,10 +323,6 @@ class ToolCommands extends AbstractCommands
      */
     protected function componentInsecure($modules, $packages)
     {
-        foreach ($packages as $package) {
-            $projectPackages[] = $package['name'];
-        }
-        
         // Build task collection.
         $collection = $this->collectionBuilder();
         $result = $collection->taskExecStack()
@@ -336,13 +333,15 @@ class ToolCommands extends AbstractCommands
             ->run()
             ->getMessage();
 
-        if (strpos(trim($result), 'There are no outstanding security') !== false) {
+        if (strpos(trim((string) $result), 'There are no outstanding security') !== false) {
             $this->io()->note("There are no outstanding security updates.");
         } else {
             $insecurePackages = json_decode($result, true);
-            foreach ($insecurePackages as $insecurePackage) {
-                $this->io()->caution("Package " . $package['name'] . " have a security update, please update to an safe version.");
-                $this->componentCheckInsecureFailed = true;
+            if (is_array($insecurePackages)) {
+                foreach ($insecurePackages as $insecurePackage) {
+                    $this->io()->caution("Package " . $package['name'] . " have a security update, please update to an safe version.");
+                    $this->componentCheckInsecureFailed = true;
+                }
             }
         }
     }
@@ -697,7 +696,7 @@ class ToolCommands extends AbstractCommands
         $this->skipd9c = true;
 
         $commitMsg = getenv('DRONE_COMMIT_MESSAGE') !== false ? getenv('DRONE_COMMIT_MESSAGE') : '';
-        $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMessage;
+        $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMsg;
 
         preg_match_all('/\[([^\]]*)\]/', $commitMsg, $findTokens);
 
