@@ -167,6 +167,7 @@ class ToolCommands extends AbstractCommands
 
             $this->printComponentResults();
 
+            $status = 0;
             // If the validation fail, return according to the blocker.
             if ($this->componentCheckFailed ||
                 $this->componentCheckMandatoryFailed ||
@@ -177,11 +178,23 @@ class ToolCommands extends AbstractCommands
                 $msg = 'Failed the components check, please verify the report and update the project.';
                 $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
                 $this->io()->error($msg);
-                return 1;
+                $status = 1;
             }
 
             // Give feedback if no problems found.
-            $this->io()->success('Components checked, nothing to report.');
+            if (!$status) {
+                $this->io()->success('Components checked, nothing to report.');
+            }
+
+            $this->io()->text([
+                'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
+                'The available tokens are:',
+                '    - [SKIP-OUTDATED]',
+                '    - [SKIP-INSECURE]',
+                '    - [SKIP-D9C)]',
+            ]);
+
+            return $status;
         }//end if
     }
 
@@ -542,67 +555,75 @@ class ToolCommands extends AbstractCommands
      */
     public function d9Compatibility()
     {
-        // Build task collection.
-        $collection = $this->collectionBuilder();
 
-        // Check if 'upgrade_status' module is already on the project.
-        $checkPackage = $this->taskExecStack()
-            ->silent(true)
-            ->exec('composer show drupal/upgrade_status -q')
-            ->stopOnFail()
-            ->run();
-        // The project already requires this package.
-        $this->say("Note: The project configuration should be updated before running this command.");
+        $this->checkCommitMessage();
 
-        if ($checkPackage->wasSuccessful()) {
-            $this->say("The module 'upgrade_status' already makes part of the project.");
+        if ($this->skipd9c) {
+            // Build task collection.
+            $collection = $this->collectionBuilder();
 
-            if (file_exists('config/sync/core.extension.yml')) {
-                $parseConfigFile = Yaml::parseFile('config/sync/core.extension.yml');
-                // If it's not enable, enable, analise and remove.
-                if (!isset($parseConfigFile['module']['upgrade_status'])) {
-                    $collection->taskExecStack()
-                        ->silent(true)
-                        ->exec('drush en upgrade_status');
-                    // Analise all packages/projects (contrib and custom).
-                    $collection->taskExecStack()
-                        ->exec('drush upgrade_status:analyze --all');
-                    // Uninstall module after analisys.
-                    $collection->taskExecStack()
-                        ->silent(true)
-                        ->exec('drush pm:uninstall upgrade_status');
-                } else {
-                    // Module already installed - just perform analisys.
-                    $collection->taskExecStack()
-                        ->exec('drush upgrade_status:analyze --all');
+            // Check if 'upgrade_status' module is already on the project.
+            $checkPackage = $this->taskExecStack()
+                ->silent(true)
+                ->exec('composer show drupal/upgrade_status -q')
+                ->stopOnFail()
+                ->run();
+            // The project already requires this package.
+            $this->say("Note: The project configuration should be updated before running this command.");
+
+            if ($checkPackage->wasSuccessful()) {
+                $this->say("The module 'upgrade_status' already makes part of the project.");
+  
+                if (file_exists('config/sync/core.extension.yml')) {
+                    $parseConfigFile = Yaml::parseFile('config/sync/core.extension.yml');
+                    // If it's not enable, enable, analise and remove.
+                    if (!isset($parseConfigFile['module']['upgrade_status'])) {
+                        $collection->taskExecStack()
+                            ->silent(true)
+                            ->exec('drush en upgrade_status');
+                        // Analise all packages/projects (contrib and custom).
+                        $collection->taskExecStack()
+                            ->exec('drush upgrade_status:analyze --all');
+                        // Uninstall module after analisys.
+                        $collection->taskExecStack()
+                            ->silent(true)
+                            ->exec('drush pm:uninstall upgrade_status');
+                    } else {
+                        // Module already installed - just perform analisys.
+                        $collection->taskExecStack()
+                            ->exec('drush upgrade_status:analyze --all');
+                    }
                 }
+                $collection->run();
+            } else {
+                // If the project don't require this package
+                // perform the following actions:
+                // Install and enable package.
+                // Analise.
+                // Uninstall and remove package.
+                $this->say("'Package drupal/upgrade_status not found' - Installing required package");
+                $collection->taskComposerRequire()
+                    ->silent(true)
+                    ->dependency('drupal/upgrade_status', '^2.0')
+                    ->dev();
+                $collection->taskExecStack()
+                    ->silent(true)
+                    ->exec('drush en upgrade_status');
+                $collection->taskExecStack()
+                    ->exec('drush upgrade_status:analyze --all');
+                $collection->taskExecStack()
+                    ->silent(true)
+                    ->exec('drush pm:uninstall upgrade_status');
+                $collection->taskExecStack()
+                    ->silent(true)
+                    ->exec('composer remove drupal/upgrade_status --dev');
+                $collection->run();
             }
-            $collection->run();
+            return 0;
         } else {
-            // If the project don't require this package
-            // perform the following actions:
-            // Install and enable package.
-            // Analise.
-            // Uninstall and remove package.
-            $this->say("'Package drupal/upgrade_status not found' - Installing required package");
-            $collection->taskComposerRequire()
-                ->silent(true)
-                ->dependency('drupal/upgrade_status', '^2.0')
-                ->dev();
-            $collection->taskExecStack()
-                ->silent(true)
-                ->exec('drush en upgrade_status');
-            $collection->taskExecStack()
-                ->exec('drush upgrade_status:analyze --all');
-            $collection->taskExecStack()
-                ->silent(true)
-                ->exec('drush pm:uninstall upgrade_status');
-            $collection->taskExecStack()
-                ->silent(true)
-                ->exec('composer remove drupal/upgrade_status --dev');
-            $collection->run();
+            $this->say("Drupal 9 compatibility step skipped by developer.");
+            return 0;
         }
-        return 0;
     }
 
     /**
