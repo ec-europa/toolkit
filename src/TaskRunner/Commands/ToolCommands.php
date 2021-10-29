@@ -169,6 +169,7 @@ class ToolCommands extends AbstractCommands
 
             $this->printComponentResults();
 
+            $status = 0;
             // If the validation fail, return according to the blocker.
             if ($this->componentCheckFailed ||
                 $this->componentCheckMandatoryFailed ||
@@ -179,11 +180,23 @@ class ToolCommands extends AbstractCommands
                 $msg = 'Failed the components check, please verify the report and update the project.';
                 $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
                 $this->io()->error($msg);
-                return 1;
+                $status = 1;
             }
 
             // Give feedback if no problems found.
-            $this->io()->success('Components checked, nothing to report.');
+            if (!$status) {
+                $this->io()->success('Components checked, nothing to report.');
+            }
+
+            $this->io()->text([
+                'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
+                'The available tokens are:',
+                '    - [SKIP-OUTDATED]',
+                '    - [SKIP-INSECURE]',
+                '    - [SKIP-D9C)]',
+            ]);
+
+            return $status;
         }//end if
     }
 
@@ -205,12 +218,12 @@ class ToolCommands extends AbstractCommands
         $skipInsegure = ($this->skipInsecure) ? '' : ' (Skipping)';
         $skipOutdated = ($this->skipOutdated) ? '' : ' (Skipping)';
         
-        $msgs[] = ($this->componentCheckFailed) ? 'Evaluation module check failed.' : 'Evaluation module check passed.';
         $msgs[] = ($this->componentCheckMandatoryFailed) ? 'Mandatory module check failed.' : 'Mandatory module check passed.';
         $msgs[] = ($this->componentCheckRecommendedFailed) ? 'Recommended module check failed.' : 'Recommended module check passed.';
         $msgs[] = ($this->componentCheckInsecureFailed) ? 'Insecure module check failed. (Reporting mode)' . $skipInsegure : 'Insecure module check passed.' . $skipInsegure;
         $msgs[] = ($this->componentCheckOutdatedFailed) ? 'Outdated module check failed.' . $skipOutdated : 'Outdated module check passed.' . $skipOutdated;
-        
+        $msgs[] = ($this->componentCheckFailed) ? 'Evaluation module check failed.' : 'Evaluation module check passed.';
+
         foreach ($msgs as $msg) {
             $this->say($msg);
         }
@@ -342,7 +355,7 @@ class ToolCommands extends AbstractCommands
                 $recommendedPackages[] = $module['name'];
             }
         }
-        $recommendedPackages[] = $module['name'];
+
         $diffRecommended = array_diff($recommendedPackages, $projectPackages);
         if (!empty($diffRecommended)) {
             foreach ($diffRecommended as $notPresent) {
@@ -440,12 +453,19 @@ class ToolCommands extends AbstractCommands
      */
     public static function getQaEndpointContent(string $url, string $basicAuth = ''): string
     {
+        if (!($token = self::getQaSessionToken())) {
+            return false;
+        }
+
         $content = '';
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         if ($basicAuth !== '') {
-            $header = ['Authorization: Basic ' . $basicAuth];
+            $header = [
+                'Authorization: Basic ' . $basicAuth,
+                "X-CSRF-Token: $token",
+            ];
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
         }
         $result = curl_exec($curl);
@@ -483,7 +503,7 @@ class ToolCommands extends AbstractCommands
     public static function getQaSessionToken()
     {
         if (empty($url = getenv('QA_WEBSITE_URL'))) {
-            return false;
+            $url = 'https://webgate.ec.europa.eu/fpfis/qa';
         }
         $options = array(
             CURLOPT_RETURNTRANSFER => true,   // return web page
@@ -516,10 +536,13 @@ class ToolCommands extends AbstractCommands
      */
     public static function postQaContent($fields)
     {
+        if (empty($url = getenv('QA_WEBSITE_URL'))) {
+            $url = 'https://webgate.ec.europa.eu/fpfis/qa';
+        }
         if (!($token = self::getQaSessionToken())) {
             return false;
         }
-        $ch = curl_init(getenv('QA_WEBSITE_URL') . '/node?_format=hal_json');
+        $ch = curl_init($url . '/node?_format=hal_json');
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields, JSON_UNESCAPED_SLASHES));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -544,67 +567,75 @@ class ToolCommands extends AbstractCommands
      */
     public function d9Compatibility()
     {
-        // Build task collection.
-        $collection = $this->collectionBuilder();
+        $this->checkCommitMessage();
 
-        // Check if 'upgrade_status' module is already on the project.
-        $checkPackage = $this->taskExecStack()
-            ->silent(true)
-            ->exec('composer show drupal/upgrade_status -q')
-            ->stopOnFail()
-            ->run();
-        // The project already requires this package.
-        $this->say("Note: The project configuration should be updated before running this command.");
+        if (!$this->skipd9c) {
+            $this->say("Developer is skipping Drupal 9 compatibility analysis.");
+            return 0;
+        }
 
-        if ($checkPackage->wasSuccessful()) {
-            $this->say("The module 'upgrade_status' already makes part of the project.");
-
-            if (file_exists('config/sync/core.extension.yml')) {
-                $parseConfigFile = Yaml::parseFile('config/sync/core.extension.yml');
-                // If it's not enable, enable, analise and remove.
-                if (!isset($parseConfigFile['module']['upgrade_status'])) {
-                    $collection->taskExecStack()
-                        ->silent(true)
-                        ->exec('drush en upgrade_status');
-                    // Analise all packages/projects (contrib and custom).
-                    $collection->taskExecStack()
-                        ->exec('drush upgrade_status:analyze --all');
-                    // Uninstall module after analisys.
-                    $collection->taskExecStack()
-                        ->silent(true)
-                        ->exec('drush pm:uninstall upgrade_status');
-                } else {
-                    // Module already installed - just perform analisys.
-                    $collection->taskExecStack()
-                        ->exec('drush upgrade_status:analyze --all');
+        $lockFile = getcwd() . "/composer.lock";
+        if (file_exists($lockFile)) {
+            $composerLock = json_decode(file_get_contents($lockFile), true);
+            foreach ($composerLock['packages'] as $pkg) {
+                if ($pkg['name'] == 'drupal/core') {
+                    $DrupalCore = $pkg;
+                    break;
                 }
             }
-            $collection->run();
-        } else {
-            // If the project don't require this package
-            // perform the following actions:
-            // Install and enable package.
-            // Analise.
-            // Uninstall and remove package.
-            $this->say("'Package drupal/upgrade_status not found' - Installing required package");
-            $collection->taskComposerRequire()
-                ->silent(true)
-                ->dependency('drupal/upgrade_status', '^2.0')
-                ->dev();
-            $collection->taskExecStack()
-                ->silent(true)
-                ->exec('drush en upgrade_status');
-            $collection->taskExecStack()
-                ->exec('drush upgrade_status:analyze --all');
-            $collection->taskExecStack()
-                ->silent(true)
-                ->exec('drush pm:uninstall upgrade_status');
-            $collection->taskExecStack()
-                ->silent(true)
-                ->exec('composer remove drupal/upgrade_status --dev');
-            $collection->run();
+
+            if (Semver::satisfies($DrupalCore['version'], '^9')) {
+                $this->say("Project already running on Drupal 9, skipping Drupal 9 compatibility analysis.");
+                return 0;
+            }
         }
-        return 0;
+
+        // Prepare project
+        $this->say("Preparing project to run upgrade_status:analyze command.");
+        $collection = $this->collectionBuilder();
+        $collection->taskComposerRequire()
+            ->dependency('phpspec/prophecy-phpunit', '^2')
+            ->dependency('drupal/upgrade_status', '^3')
+            ->dev()
+            ->run();
+
+        $collection = $this->collectionBuilder();
+        $collection->taskExecStack()
+            ->exec('drush en upgrade_status -y')
+            ->run();
+        
+        // Collect result details.
+        $result = $collection->taskExecStack()
+            ->exec('drush upgrade_status:analyze --all')
+            ->printOutput(false)
+            ->storeState('insecure')
+            ->silent(true)
+            ->run()
+            ->getMessage();
+
+        // Check for results.
+        $qaCompatibiltyresult = 0;
+        if (is_string($result)) {
+          $flags = [
+              'Check manually',
+              'Fix now',
+          ];
+  
+          foreach ($flags as $flag) {
+              if (strpos($flag, $result) !== false) {
+                  $qaCompatibiltyresult = 1;
+              }
+          }
+        }
+
+        if ($qaCompatibiltyresult) {
+            $this->say('Looks the project need some attentiom, please check the report.');
+        } else {
+            $this->say('Congrats, looks your projwct is Drupal 9 compatible. In any case you can check the report below.');
+        }
+
+        echo $result . PHP_EOL;
+        return $qaCompatibiltyresult;
     }
 
     /**
