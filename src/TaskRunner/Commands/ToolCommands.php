@@ -78,13 +78,16 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:component-check
      *
-     * @option endpoint The endpoint for the components whitelist/blacklist
-     * @option blocker  Whether the command should exit with errorstatus
+     * @option endpoint Deprecated
+     * @option blocker  Deprecated
      */
     public function componentCheck(array $options = [
+        'endpoint' => InputOption::VALUE_REQUIRED,
+        'blocker' => InputOption::VALUE_REQUIRED,
         'test-command' => false,
     ])
     {
+        
         // Currently undocumented in this class. Because I don't know how to
         // provide such a property to one single function other than naming the
         // failed property exactly for this function.
