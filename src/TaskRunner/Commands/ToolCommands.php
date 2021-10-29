@@ -592,16 +592,18 @@ class ToolCommands extends AbstractCommands
         $this->say("Preparing project to run upgrade_status:analyze command.");
         $collection = $this->collectionBuilder();
         $collection->taskComposerRequire()
-            ->silent(true)
-            ->printOutput(false)
-            ->dependency('drupal/prophecy-phpunit', '^2')
+            ->dependency('phpspec/prophecy-phpunit', '^2')
             ->dependency('drupal/upgrade_status', '^3')
             ->dev()
             ->run();
 
-        // Run command
-        $result = $collection->taskExecStack()
+        $collection = $this->collectionBuilder();
+        $collection->taskExecStack()
             ->exec('drush en upgrade_status -y')
+            ->run();
+        
+        // Collect result details.
+        $result = $collection->taskExecStack()
             ->exec('drush upgrade_status:analyze --all')
             ->printOutput(false)
             ->storeState('insecure')
@@ -610,16 +612,18 @@ class ToolCommands extends AbstractCommands
             ->getMessage();
 
         // Check for results.
-        $flags = [
-            'Check manually',
-            'Fix now',
-        ];
-
-        $qaCompatibiltyresult = 1;
-        foreach ($flags as $flag) {
-            if (strpos($flag, $result) !== false) {
-                $qaCompatibiltyresult = 1;
-            }
+        $qaCompatibiltyresult = 0;
+        if (is_string($result)) {
+          $flags = [
+              'Check manually',
+              'Fix now',
+          ];
+  
+          foreach ($flags as $flag) {
+              if (strpos($flag, $result) !== false) {
+                  $qaCompatibiltyresult = 1;
+              }
+          }
         }
 
         if ($qaCompatibiltyresult) {
