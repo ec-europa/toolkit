@@ -460,7 +460,10 @@ class ToolCommands extends AbstractCommands
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         if ($basicAuth !== '') {
-            $header = ['Authorization: Basic ' . $basicAuth];
+            $header = [
+                'Authorization: Basic ' . $basicAuth,
+                "X-CSRF-Token: $token",
+            ];
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
         }
         $result = curl_exec($curl);
