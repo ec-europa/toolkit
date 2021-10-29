@@ -629,7 +629,7 @@ class ToolCommands extends AbstractCommands
         if ($qaCompatibiltyresult) {
             $this->say('Looks the project need some attention, please check the report.');
         } else {
-            $this->say('Congrats, looks your project is Drupal 9 compatible. In any case you can check the report below.');
+            $this->say('Congrats, looks like your project is Drupal 9 compatible. In any case you can check the report below.');
         }
 
         echo $result . PHP_EOL;
