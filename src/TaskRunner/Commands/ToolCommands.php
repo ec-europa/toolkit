@@ -341,7 +341,7 @@ class ToolCommands extends AbstractCommands
                 $recommendedPackages[] = $module['name'];
             }
         }
-        $recommendedPackages[] = $module['name'];
+
         $diffRecommended = array_diff($recommendedPackages, $projectPackages);
         if (!empty($diffRecommended)) {
             foreach ($diffRecommended as $notPresent) {
@@ -439,12 +439,19 @@ class ToolCommands extends AbstractCommands
      */
     public static function getQaEndpointContent(string $url, string $basicAuth = ''): string
     {
+        if (!($token = self::getQaSessionToken())) {
+            return false;
+        }
+
         $content = '';
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         if ($basicAuth !== '') {
-            $header = ['Authorization: Basic ' . $basicAuth];
+            $header = [
+                'Authorization: Basic ' . $basicAuth,
+                "X-CSRF-Token: $token",
+            ];
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
         }
         $result = curl_exec($curl);
@@ -482,7 +489,7 @@ class ToolCommands extends AbstractCommands
     public static function getQaSessionToken()
     {
         if (empty($url = getenv('QA_WEBSITE_URL'))) {
-            return false;
+            $url = 'https://webgate.ec.europa.eu/fpfis/qa';
         }
         $options = array(
             CURLOPT_RETURNTRANSFER => true,   // return web page
@@ -515,10 +522,13 @@ class ToolCommands extends AbstractCommands
      */
     public static function postQaContent($fields)
     {
+        if (empty($url = getenv('QA_WEBSITE_URL'))) {
+            $url = 'https://webgate.ec.europa.eu/fpfis/qa';
+        }
         if (!($token = self::getQaSessionToken())) {
             return false;
         }
-        $ch = curl_init(getenv('QA_WEBSITE_URL') . '/node?_format=hal_json');
+        $ch = curl_init($url . '/node?_format=hal_json');
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields, JSON_UNESCAPED_SLASHES));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
