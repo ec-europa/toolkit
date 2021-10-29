@@ -576,67 +576,47 @@ class ToolCommands extends AbstractCommands
             }
         }
 
-        // Build task collection.
+        // Prepare project
+        $this->say("Preparing project to run upgrade_status:analyze command.");
         $collection = $this->collectionBuilder();
+        $collection->taskComposerRequire()
+                ->silent(true)
+                ->printOutput(false)
+                ->dependency('drupal/prophecy-phpunit', '^2')
+                ->dependency('drupal/upgrade_status', '^3')
+                ->dev()
+                ->run();
 
-        // Check if 'upgrade_status' module is already on the project.
-        $checkPackage = $this->taskExecStack()
+        // Run command
+        $result = $collection->taskExecStack()
+            ->exec('drush upgrade_status:analyze --all')
+            ->printOutput(false)
+            ->storeState('insecure')
             ->silent(true)
-            ->exec('composer show drupal/upgrade_status -q')
-            ->stopOnFail()
-            ->run();
-        // The project already requires this package.
-        $this->say("Note: The project configuration should be updated before running this command.");
+            ->run()
+            ->getMessage();
 
-        if ($checkPackage->wasSuccessful()) {
-            $this->say("The module 'upgrade_status' already makes part of the project.");
+        // Check for results.
+        $flags = [
+            'Check manually',
+            'Fix now',
+            ];
 
-            if (file_exists('config/sync/core.extension.yml')) {
-                $parseConfigFile = Yaml::parseFile('config/sync/core.extension.yml');
-                // If it's not enable, enable, analise and remove.
-                if (!isset($parseConfigFile['module']['upgrade_status'])) {
-                    $collection->taskExecStack()
-                        ->silent(true)
-                        ->exec('drush en upgrade_status');
-                    // Analise all packages/projects (contrib and custom).
-                    $collection->taskExecStack()
-                        ->exec('drush upgrade_status:analyze --all');
-                    // Uninstall module after analisys.
-                    $collection->taskExecStack()
-                        ->silent(true)
-                        ->exec('drush pm:uninstall upgrade_status');
-                } else {
-                    // Module already installed - just perform analisys.
-                    $collection->taskExecStack()
-                        ->exec('drush upgrade_status:analyze --all');
-                }
+        $qaCompatibiltyresult = 1;
+        foreach ($flags as $flag) {
+            if (strpos($flag, $result) !== false) {
+                $qaCompatibiltyresult = 1;
             }
-            $collection->run();
-        } else {
-            // If the project don't require this package
-            // perform the following actions:
-            // Install and enable package.
-            // Analise.
-            // Uninstall and remove package.
-            $this->say("'Package drupal/upgrade_status not found' - Installing required package");
-            $collection->taskComposerRequire()
-                ->silent(true)
-                ->dependency('drupal/upgrade_status', '^2.0')
-                ->dev();
-            $collection->taskExecStack()
-                ->silent(true)
-                ->exec('drush en upgrade_status');
-            $collection->taskExecStack()
-                ->exec('drush upgrade_status:analyze --all');
-            $collection->taskExecStack()
-                ->silent(true)
-                ->exec('drush pm:uninstall upgrade_status');
-            $collection->taskExecStack()
-                ->silent(true)
-                ->exec('composer remove drupal/upgrade_status --dev');
-            $collection->run();
         }
-        return 0;
+
+        if ($qaCompatibiltyresult) {
+            $this->say('Looks the project need some attentiom, please check the report.');
+        } else {
+            $this->say('Congrats, looks your projwct is Drupal 9 compatible. In any case you can check the report bellow.');
+        }
+
+        echo $result;
+        return $qaCompatibiltyresult;
     }
 
     /**
