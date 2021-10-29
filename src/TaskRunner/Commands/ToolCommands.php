@@ -589,6 +589,7 @@ class ToolCommands extends AbstractCommands
 
         // Run command
         $result = $collection->taskExecStack()
+            ->exec('drush en upgrade_status -y')
             ->exec('drush upgrade_status:analyze --all')
             ->printOutput(false)
             ->storeState('insecure')
