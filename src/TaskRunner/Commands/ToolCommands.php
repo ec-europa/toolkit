@@ -80,13 +80,16 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:component-check
      *
-     * @option endpoint The endpoint for the components whitelist/blacklist
-     * @option blocker  Whether the command should exit with errorstatus
+     * @option endpoint Deprecated
+     * @option blocker  Deprecated
      */
     public function componentCheck(array $options = [
+        'endpoint' => InputOption::VALUE_REQUIRED,
+        'blocker' => InputOption::VALUE_REQUIRED,
         'test-command' => false,
     ])
     {
+        
         // Currently undocumented in this class. Because I don't know how to
         // provide such a property to one single function other than naming the
         // failed property exactly for this function.
@@ -631,9 +634,9 @@ class ToolCommands extends AbstractCommands
         }
 
         if ($qaCompatibiltyresult) {
-            $this->say('Looks the project need some attentiom, please check the report.');
+            $this->say('Looks the project need some attention, please check the report.');
         } else {
-            $this->say('Congrats, looks your projwct is Drupal 9 compatible. In any case you can check the report below.');
+            $this->say('Congrats, looks like your project is Drupal 9 compatible. In any case you can check the report below.');
         }
 
         echo $result . PHP_EOL;
