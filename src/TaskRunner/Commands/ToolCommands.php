@@ -553,6 +553,29 @@ class ToolCommands extends AbstractCommands
      */
     public function d9Compatibility()
     {
+        $this->checkCommitMessage();
+
+        if (!$this->skipd9c) {
+            $this->say("Developer is skipping Drupal 9 compatibility analysis.");
+            return 0;
+        }
+
+        $lockFile = getcwd() . "/composer.lock";
+        if (file_exists($lockFile)) {
+            $composerLock = json_decode(file_get_contents($lockFile), true);
+            foreach ($composerLock['packages'] as $pkg) {
+                if ($pkg['name'] == 'drupal/core') {
+                    $DrupalCore = $pkg;
+                    break;
+                }
+            }
+
+            if (Semver::satisfies($DrupalCore['version'], '^9')) {
+                $this->say("Project already running on Drupal 9, skipping Drupal 9 compatibility analysis.");
+                return 0;
+            }
+        }
+
         // Build task collection.
         $collection = $this->collectionBuilder();
 
