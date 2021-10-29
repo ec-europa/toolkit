@@ -216,12 +216,12 @@ class ToolCommands extends AbstractCommands
         $skipInsegure = ($this->skipInsecure) ? '' : ' (Skipping)';
         $skipOutdated = ($this->skipOutdated) ? '' : ' (Skipping)';
         
-        $msgs[] = ($this->componentCheckFailed) ? 'Evaluation module check failed.' : 'Evaluation module check passed.';
         $msgs[] = ($this->componentCheckMandatoryFailed) ? 'Mandatory module check failed.' : 'Mandatory module check passed.';
         $msgs[] = ($this->componentCheckRecommendedFailed) ? 'Recommended module check failed.' : 'Recommended module check passed.';
         $msgs[] = ($this->componentCheckInsecureFailed) ? 'Insecure module check failed. (Reporting mode)' . $skipInsegure : 'Insecure module check passed.' . $skipInsegure;
         $msgs[] = ($this->componentCheckOutdatedFailed) ? 'Outdated module check failed.' . $skipOutdated : 'Outdated module check passed.' . $skipOutdated;
-        
+        $msgs[] = ($this->componentCheckFailed) ? 'Evaluation module check failed.' : 'Evaluation module check passed.';
+
         foreach ($msgs as $msg) {
             $this->say($msg);
         }
