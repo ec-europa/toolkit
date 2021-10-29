@@ -627,7 +627,7 @@ class ToolCommands extends AbstractCommands
             $this->say('Congrats, looks your projwct is Drupal 9 compatible. In any case you can check the report bellow.');
         }
 
-        echo $result;
+        echo $result . PHP_EOL;
         return $qaCompatibiltyresult;
     }
 
