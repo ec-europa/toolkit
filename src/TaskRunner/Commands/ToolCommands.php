@@ -546,6 +546,8 @@ class ToolCommands extends AbstractCommands
     /**
      * Check project compatibility for Drupal 9 upgrade.
      *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
      * Note: The project configuration should be updated.
      *
      * @command toolkit:d9-compatibility
@@ -589,7 +591,7 @@ class ToolCommands extends AbstractCommands
         $collection->taskExecStack()
             ->exec('drush en upgrade_status -y')
             ->run();
-        
+
         // Collect result details.
         $result = $collection->taskExecStack()
             ->exec('drush upgrade_status:analyze --all')
@@ -602,16 +604,16 @@ class ToolCommands extends AbstractCommands
         // Check for results.
         $qaCompatibiltyresult = 0;
         if (is_string($result)) {
-          $flags = [
-              'Check manually',
-              'Fix now',
-          ];
-  
-          foreach ($flags as $flag) {
-              if (strpos($flag, $result) !== false) {
-                  $qaCompatibiltyresult = 1;
-              }
-          }
+            $flags = [
+                'Check manually',
+                'Fix now',
+            ];
+
+            foreach ($flags as $flag) {
+                if (strpos($flag, $result) !== false) {
+                    $qaCompatibiltyresult = 1;
+                }
+            }
         }
 
         if ($qaCompatibiltyresult) {
