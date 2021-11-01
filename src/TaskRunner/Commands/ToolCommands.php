@@ -438,7 +438,7 @@ class ToolCommands extends AbstractCommands
             if (is_array($outdatedPackages)) {
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
                     if (!array_key_exists('latest', $outdatedPackage)) {
-                        $this->say("Package ". $outdatedPackage['name'] ." does not provide information about last version.");
+                        $this->say("Package " . $outdatedPackage['name'] . " does not provide information about last version.");
                     } else {
                         $this->say("Package " . $outdatedPackage['name'] . " with version installed " . $outdatedPackage["version"] . " is outdated, please update to last version - " . $outdatedPackage["latest"]);
                         $this->componentCheckOutdatedFailed = true;
