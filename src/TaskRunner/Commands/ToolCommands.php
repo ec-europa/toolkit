@@ -209,8 +209,8 @@ class ToolCommands extends AbstractCommands
         $skipOutdated = ($this->skipOutdated) ? '' : ' (Skipping)';
 
         $msgs[] = ($this->componentCheckMandatoryFailed) ? 'Mandatory module check failed.' : 'Mandatory module check passed.';
-        $msgs[] = ($this->componentCheckRecommendedFailed) ? 'Recommended module check failed.' : 'Recommended module check passed.';
-        $msgs[] = ($this->componentCheckInsecureFailed) ? 'Insecure module check failed. (Reporting mode)' . $skipInsegure : 'Insecure module check passed.' . $skipInsegure;
+        $msgs[] = ($this->componentCheckRecommendedFailed) ? 'Recommended module check failed. (report only)' : 'Recommended module check passed.';
+        $msgs[] = ($this->componentCheckInsecureFailed) ? 'Insecure module check failed.' . $skipInsegure : 'Insecure module check passed.' . $skipInsegure;
         $msgs[] = ($this->componentCheckOutdatedFailed) ? 'Outdated module check failed.' . $skipOutdated : 'Outdated module check passed.' . $skipOutdated;
         $msgs[] = ($this->componentCheckFailed) ? 'Evaluation module check failed.' : 'Evaluation module check passed.';
 
@@ -384,7 +384,7 @@ class ToolCommands extends AbstractCommands
             $insecurePackages = json_decode($result, true);
             if (is_array($insecurePackages)) {
                 foreach ($insecurePackages as $insecurePackage) {
-                    $this->io()->caution("Package " . $package['name'] . " have a security update, please update to an safe version.");
+                    $this->say("Package " . $insecurePackage['name'] . " have a security update, please update to an safe version.");
                     $this->componentCheckInsecureFailed = true;
                 }
             }
@@ -763,7 +763,7 @@ class ToolCommands extends AbstractCommands
 
     protected function checkCommitMessage()
     {
-        $this->skipOutdated = true;
+        $this->skipOutdated = false;
         $this->skipInsecure = true;
         $this->skipd9c = true;
 
