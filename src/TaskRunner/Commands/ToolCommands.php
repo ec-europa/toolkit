@@ -409,20 +409,27 @@ class ToolCommands extends AbstractCommands
         }
 
         $collection = $this->collectionBuilder();
-        $collection->taskExecStack()
-            ->exec('composer outdated --no-dev --direct --minor-only --format=json')
+        $result = $collection->taskExecStack()
+            ->exec('composer outdated --direct --minor-only --format=json')
             ->printOutput(false)
-            ->storeState('outdated');
-        $result = $collection->run();
-        $outdatedPackages = ((array) $result['outdated']);
-        if (!empty($outdatedPackages)) {
-            $decoding = json_decode($outdatedPackages[0]);
-            foreach ($decoding->installed as $installed) {
-                if (!array_key_exists('latest', $installed)) {
-                    $this->say("Package $installed->name does not provide information about last version.");
-                } else {
-                    $this->say("Package $installed->name with version installed $installed->version is outdated, please update to last version - $installed->latest");
-                    $this->componentCheckOutdatedFailed = true;
+            ->storeState('outdated')
+            ->silent(true)
+            ->run()
+            ->getMessage();
+
+        $outdatedPackages = json_decode($result, true);
+
+        if (empty($outdatedPackages['installed'])) {
+            $this->say("No outdated packages detected.");
+        } else {
+            if (is_array($outdatedPackages)) {
+                foreach ($outdatedPackages['installed'] as $outdatedPackage) {
+                    if (!array_key_exists('latest', $outdatedPackage)) {
+                        $this->say("Package ". $outdatedPackage['name'] ." does not provide information about last version.");
+                    } else {
+                        $this->say("Package " . $outdatedPackage['name'] . " with version installed " . $outdatedPackage["version"] . " is outdated, please update to last version - " . $outdatedPackage["latest"]);
+                        $this->componentCheckOutdatedFailed = true;
+                    }
                 }
             }
         }
