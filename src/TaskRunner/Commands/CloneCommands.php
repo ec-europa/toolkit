@@ -127,9 +127,11 @@ class CloneCommands extends AbstractCommands
         $tasks = [];
 
         if (!file_exists($options['dumpfile'])) {
-            $this->say('"' . $options['dumpfile'] . '" file not found, use the command "toolkit:download-dump --dumpfile ' . $options['dumpfile'] . '".');
+            if (!getenv('CI')) {
+                $this->say('"' . $options['dumpfile'] . '" file not found, use the command "toolkit:download-dump --dumpfile ' . $options['dumpfile'] . '".');
 
-            return $this->collectionBuilder()->addTaskList($tasks);
+                return $this->collectionBuilder()->addTaskList($tasks);
+            }
         }
 
         // Unzip and dump database file.
