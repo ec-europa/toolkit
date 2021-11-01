@@ -423,7 +423,7 @@ class ToolCommands extends AbstractCommands
         
         $collection = $this->collectionBuilder();
         $collection->taskExecStack()
-            ->exec('composer outdated --direct --format=json')
+            ->exec('composer outdated --no-dev --direct --minor-only --format=json')
             ->printOutput(false)
             ->storeState('outdated');
         $result = $collection->run();
