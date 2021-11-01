@@ -172,9 +172,11 @@ class CloneCommands extends AbstractCommands
 
         // Check credentials.
         if ($options['asda-user'] === '${env.ASDA_USER}' || $options['asda-password'] === '${env.ASDA_PASSWORD}') {
-            $this->say('ASDA credentials not found, set them as the following environment variables: ASDA_USER, ASDA_PASSWORD.');
-
-            return $this->collectionBuilder()->addTaskList($tasks);
+            // Check token
+            if (!getenv('CI')) {
+                $this->say('ASDA credentials not found, set them as the following environment variables: ASDA_USER, ASDA_PASSWORD.');
+                return $this->collectionBuilder()->addTaskList($tasks);
+            }
         }
 
         // Download the .sha file.
