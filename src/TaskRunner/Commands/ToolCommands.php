@@ -430,11 +430,11 @@ class ToolCommands extends AbstractCommands
             ->run()
             ->getMessage();
 
-        if (strpos(trim((string) $result), 'There are no outstanding security') !== false) {
-            $this->say("There are no outstanding security updates.");
+        $outdatedPackages = json_decode($result, true);
+
+        if (empty($outdatedPackages['installed'])) {
+            $this->say("No outdated packages detected.");
         } else {
-            $outdatedPackages = json_decode($result, true);
-            // var_dump($outdatedPackages);
             if (is_array($outdatedPackages)) {
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
                     if (!array_key_exists('latest', $outdatedPackage)) {
