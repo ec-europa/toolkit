@@ -13,12 +13,9 @@
     "require": {
         "php": "^7.1",
         "ext-json": "*",
-        "blackfire/php-sdk": "^1.27",
         "cweagans/composer-patches": "^1.4",
         "drush/drush": "^9.7.1 || ^10.0.0",
         "ec-europa/qa-automation": "^4.2",
-        "friends-of-behat/mink-browserkit-driver": "^1.5",
-        "friends-of-behat/mink-extension": "^2.5",
         "guzzlehttp/guzzle": "^6.3",
         "j13k/yaml-lint": "^1.1",
         "openeuropa/task-runner": "^1.0.0-beta6",
