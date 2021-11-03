@@ -438,24 +438,32 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             // Send payload to QA website.
             if (!empty($repo)) {
                 $payload = [
-                    '_links' => ['type' => [
-                        'href' => getenv('QA_WEBSITE_URL') . '/rest/type/node/blackfire',
-                    ]],
+                    '_links' => [
+                        'type' => [
+                            'href' => getenv('QA_WEBSITE_URL') . '/rest/type/node/blackfire',
+                        ],
+                    ],
                     'status' => [['value' => 0]],
                     'type' => [['target_id' => 'blackfire']],
                     'title' => [['value' => "Profiling: $project_id"]],
                     'body' => [['value' => $raw]],
                     'field_blackfire_repository' => [['value' => $repo]],
                     'field_blackfire_page' => [['value' => $page]],
-                    'field_blackfire_graph_url' => [[
-                        'value' => trim(str_replace('[0', '', $links[1][0]), " \t\n\r\e\v\0\x0B"),
-                    ]],
-                    'field_blackfire_timeline_url' => [[
-                        'value' => trim(str_replace('[0', '', $links[2][0]), " \t\n\r\e\v\0\x0B"),
-                    ]],
-                    'field_blackfire_recomendations' => [[
-                        'value' => trim(str_replace('[0', '', $links[3][0]), " \t\n\r\e\v\0\x0B"),
-                    ]],
+                    'field_blackfire_graph_url' => [
+                        [
+                            'value' => trim(str_replace('[0', '', $links[1][0]), " \t\n\r\e\v\0\x0B"),
+                        ],
+                    ],
+                    'field_blackfire_timeline_url' => [
+                        [
+                            'value' => trim(str_replace('[0', '', $links[2][0]), " \t\n\r\e\v\0\x0B"),
+                        ],
+                    ],
+                    'field_blackfire_recomendations' => [
+                        [
+                            'value' => trim(str_replace('[0', '', $links[3][0]), " \t\n\r\e\v\0\x0B"),
+                        ],
+                    ],
                 ];
 
                 $collect = [
