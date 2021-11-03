@@ -330,7 +330,9 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         // Prepare arguments.
         $arg = implode(' ', $files);
-        $task = $this->taskExec("./vendor/bin/yaml-lint -q $arg");
+        $task = $this->taskExec("./vendor/bin/yaml-lint -q $arg")
+            ->printMetadata(false);
+
         return $this->collectionBuilder()->addTaskList([$task]);
     }
 
