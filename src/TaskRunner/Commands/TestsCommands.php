@@ -398,6 +398,14 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             return new ResultData(0);
         }
 
+        // Confirm that blackfire is properly installed.
+        $test = $this->taskExec('which blackfire')->silent(true)
+            ->run()->getMessage();
+        if (strpos($test, 'not found') !== false) {
+            $this->say('The Blackfire is not installed, please contact QA team.');
+            return new ResultData(0);
+        }
+
         $command = "blackfire -client-id=$bf_client_id -client-token=$bf_client_token curl $base_url";
 
         // Execute a list of commands to run after tests.
@@ -430,19 +438,24 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             // Send payload to QA website.
             if (!empty($repo)) {
                 $payload = [
-                    '_links' => [
-                        'type' => [
-                            'href' => getenv('QA_WEBSITE_URL'). '/rest/type/node/blackfire',
-                        ]
-                    ],
+                    '_links' => ['type' => [
+                        'href' => getenv('QA_WEBSITE_URL') . '/rest/type/node/blackfire',
+                    ]],
                     'status' => [['value' => 0]],
                     'type' => [['target_id' => 'blackfire']],
-                    'title' => [['value' => "Blackfire: $project_id"]],
+                    'title' => [['value' => "Profiling: $project_id"]],
                     'body' => [['value' => $raw]],
                     'field_blackfire_repository' => [['value' => $repo]],
-                    'field_blackfire_graph_url' => [['value' => $links[1][0]]],
-                    'field_blackfire_timeline_url' => [['value' => $links[2][0]]],
-                    'field_blackfire_recomendations' => [['value' => $links[3][0]]],
+                    'field_blackfire_page' => [['value' => $page]],
+                    'field_blackfire_graph_url' => [[
+                        'value' => trim(str_replace('[0', '', $links[1][0]), " \t\n\r\e\v\0\x0B"),
+                    ]],
+                    'field_blackfire_timeline_url' => [[
+                        'value' => trim(str_replace('[0', '', $links[2][0]), " \t\n\r\e\v\0\x0B"),
+                    ]],
+                    'field_blackfire_recomendations' => [[
+                        'value' => trim(str_replace('[0', '', $links[3][0]), " \t\n\r\e\v\0\x0B"),
+                    ]],
                 ];
 
                 $collect = [
