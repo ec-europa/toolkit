@@ -797,6 +797,13 @@ class ToolCommands extends AbstractCommands
      */
     public function setupBlackfireBehat()
     {
+
+        // Check requirement if blackfire/php-sdk exist.
+        if (!class_exists('Blackfire\Client')) {
+            $this->say('Please install blackfire/php-sdk before continue.');
+            return 0;
+        }
+
         $from = $this->getConfig()->get('toolkit.test.behat.from');
         $blackfire_dir = __DIR__ . '/../../../resources/Blackfire';
         $parseBehatYml = Yaml::parseFile($from);
