@@ -433,6 +433,9 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             if (empty($repo = getenv('DRONE_REPO'))) {
                 $repo = getenv('CI_PROJECT_NAME');
             }
+            if (empty($ci_url = getenv('CI_PIPELINE_URL'))) {
+                $ci_url = getenv('DRONE_BUILD_LINK');
+            }
             // Send payload to QA website.
             if (!empty($repo)) {
                 $payload = [
@@ -445,6 +448,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                     'body' => [['value' => $raw]],
                     'field_blackfire_repository' => [['value' => $repo]],
                     'field_blackfire_page' => [['value' => $page]],
+                    'field_blackfire_ci_cd_url' => [['value' => $ci_url]],
                     'field_blackfire_graph_url' => [[
                         'value' => trim(str_replace('[0', '', $links[1][0]), " \t\n\r\e\v\0\x0B"),
                     ]],
