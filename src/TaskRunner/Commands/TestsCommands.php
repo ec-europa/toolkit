@@ -142,7 +142,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             ->silent(true)->run()->getMessage();
 
         if (strpos(trim($result), 'No scenarios') !== false) {
-            $this->say("No Scenarios found, please create at least one Scenario.");
+            $this->say("No Scenarios found for --profile=" . $profile . " " . $suiteParameter . ", please create at least one Scenario.");
             return new ResultData(1);
         }
 
