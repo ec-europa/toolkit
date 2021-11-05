@@ -405,6 +405,12 @@ class ToolCommands extends AbstractCommands
                 }
             }
         }
+
+        $fullSkip = getenv('QA_SKIP_INSECURE') !== false ? getenv('QA_SKIP_INSECURE') : false;
+        if ($fullSkip) {
+            $this->say('Globally Skipping security check for components.');
+            $this->componentCheckInsecureFailed = 0;
+        }
     }
 
     /**
@@ -448,6 +454,12 @@ class ToolCommands extends AbstractCommands
                     }
                 }
             }
+        }
+
+        $fullSkip = getenv('QA_SKIP_OUTDATED') !== false ? getenv('QA_SKIP_OUTDATED') : false;
+        if ($fullSkip) {
+            $this->say('Globally skipping outdated check for components.');
+            $this->componentCheckOutdatedFailed = 0;
         }
     }
 
