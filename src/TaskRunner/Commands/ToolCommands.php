@@ -196,7 +196,7 @@ class ToolCommands extends AbstractCommands
                 'The available tokens are:',
                 '    - [SKIP-OUTDATED]',
                 '    - [SKIP-INSECURE]',
-                '    - [SKIP-D9C)]',
+                '    - [SKIP-D9C]',
             ]);
 
             return $status;
@@ -310,13 +310,13 @@ class ToolCommands extends AbstractCommands
         // Option 'mandatory'.
 
         // Build task collection.
-        $collection = $this->collectionBuilder();
-        $collection->taskExecStack()
-            ->exec('vendor/bin/drush pm-list --fields=status --format=json')
-            ->printOutput(false)
-            ->silent(true)
-            ->storeState('insecure');
-        $result = $collection->run();
+        // $collection = $this->collectionBuilder();
+        // $collection->taskExecStack()
+        //     ->exec('vendor/bin/drush pm-list --fields=status --format=json')
+        //     ->printOutput(false)
+        //     ->silent(true)
+        //     ->storeState('insecure');
+        // $result = $collection->run();
         // $projPackages = (json_decode($result['insecure'], true));
         // foreach ($projPackages as $projPackage => $status) {
         //     if ($status['status'] == 'enabled') {
@@ -385,9 +385,9 @@ class ToolCommands extends AbstractCommands
         $collection = $this->collectionBuilder();
         $result = $collection->taskExecStack()
             ->exec('drush pm:security --format=json')
+            ->silent(true)
             ->printOutput(false)
             ->storeState('insecure')
-            ->silent(true)
             ->run()
             ->getMessage();
 
@@ -397,10 +397,24 @@ class ToolCommands extends AbstractCommands
             $insecurePackages = json_decode($result, true);
             if (is_array($insecurePackages)) {
                 foreach ($insecurePackages as $insecurePackage) {
-                    $this->say("Package " . $insecurePackage['name'] . " have a security update, please update to an safe version.");
-                    $this->componentCheckInsecureFailed = true;
+                    $historyTerms = $this->getPackageDetails($insecurePackage['name'], $insecurePackage['version'], '8.x');
+                    $packageInsecureConfirmation = true;
+                    $msg = "Package " . $insecurePackage['name'] . " have a security update, please update to an safe version.";
+
+                    if (!in_array("insecure", $historyTerms['terms'])) {
+                        $packageInsecureConfirmation = false;
+                        $msg = $msg . " (Confirmation failed, ignored)";
+                    }
+                    $this->say($msg);
+                    $this->componentCheckInsecureFailed = $packageInsecureConfirmation;
                 }
             }
+        }
+
+        $fullSkip = getenv('QA_SKIP_INSECURE') !== false ? getenv('QA_SKIP_INSECURE') : false;
+        if ($fullSkip) {
+            $this->say('Globally Skipping security check for components.');
+            $this->componentCheckInsecureFailed = 0;
         }
     }
 
@@ -445,6 +459,12 @@ class ToolCommands extends AbstractCommands
                     }
                 }
             }
+        }
+
+        $fullSkip = getenv('QA_SKIP_OUDATED') !== false ? getenv('QA_SKIP_OUDATED') : false;
+        if ($fullSkip) {
+            $this->say('Globally Skipping security check for components.');
+            $this->componentCheckOutdatedFailed = 0;
         }
     }
 
@@ -843,5 +863,54 @@ class ToolCommands extends AbstractCommands
         }
 
         return 0;
+    }
+
+    /**
+     * Call release history of d.org to confirm security alert.
+     */
+    public function getPackageDetails($package, $version, $core)
+    {
+        $name = explode("/", $package)[1];
+        $url = 'https://updates.drupal.org/release-history/' . $name . '/' . $core;
+
+        $releaseHistory = $fullReleaseHistory = [];
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        $header = [
+            'Content-Type' => 'application/hal+json'
+        ];
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+
+        $result = curl_exec($curl);
+
+        if ($result !== false) {
+            $fullReleaseHistory[$name] = simplexml_load_string($result);
+            $terms = [];
+            foreach ($fullReleaseHistory[$name]->releases as $release) {
+                foreach ($release as $releaseItem) {
+                    $versionTmp = (string) str_replace($core . "-", "", $releaseItem->version);
+
+                    if (!is_null($version) && Semver::satisfies($versionTmp, $version)) {
+                        foreach ($releaseItem->terms as $term) {
+                            foreach ($term as $termItem) {
+                                $terms[] = strtolower((string) $termItem->value);
+                            }
+                        }
+
+                        $releaseHistory = [
+                            'name' => $name,
+                            'version' => (string) $releaseItem->versions,
+                            'terms' => $terms,
+                        ];
+                    }
+                }
+            }
+            return $releaseHistory;
+        }
+
+        $this->say("No release history found.");
+        return 1;
     }
 }

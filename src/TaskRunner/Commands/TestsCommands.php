@@ -113,21 +113,23 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @option from     From behat.yml.dist config file.
      * @option to       To behat.yml config file.
-     * @option profile  The profile to execute.
+     * @option profile  The profile to execute, default profile is executed if none is provided.
+     * @option suite    The suite to execute, default runs all suites of profile.
      */
     public function toolkitBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
         'to' => InputOption::VALUE_OPTIONAL,
         'profile' => InputOption::VALUE_OPTIONAL,
+        'suite' => InputOption::VALUE_OPTIONAL,
     ])
     {
         $tasks = [];
-        $behat_bin = $this->getConfig()->get('runner.bin_dir') . '/behat';
-        $profile = $this->getConfig()->get('toolkit.test.behat.profile');
-        if (!empty($options['profile'])) {
-            $profile = $options['profile'];
-        }
-        $this->say("Executing profile: $profile");
+        $behatBin = $this->getConfig()->get('runner.bin_dir') . '/behat';
+        $defaultProfile = $this->getConfig()->get('toolkit.test.behat.profile');
+
+        $profile = (!empty($options['profile'])) ? $options['profile'] : $defaultProfile;
+        $suite = (!empty($options['suite'])) ? $options['suite'] : '';
+        $suiteParameter = ($suite) ? ' --suite=' . $suite : '';
 
         // Execute a list of commands to run before tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.before')) {
@@ -136,15 +138,15 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         $this->taskProcessConfigFile($options['from'], $options['to'])->run();
 
-        $result = $this->taskExec("$behat_bin --dry-run --profile=$profile")
+        $result = $this->taskExec($behatBin . " --dry-run --profile=" . $profile . " " . $suiteParameter)
             ->silent(true)->run()->getMessage();
 
         if (strpos(trim($result), 'No scenarios') !== false) {
-            $this->say("No Scenarios found for the profile '$profile', please create at least one Scenario.");
+            $this->say("No Scenarios found for --profile=" . $profile . " " . $suiteParameter . ", please create at least one Scenario.");
             return new ResultData(1);
         }
 
-        $tasks[] = $this->taskExec("$behat_bin --strict --profile=$profile");
+        $tasks[] = $this->taskExec($behatBin . " --profile=" . $profile . " " . $suiteParameter);
 
         // Execute a list of commands to run after tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.after')) {
