@@ -893,7 +893,7 @@ class ToolCommands extends AbstractCommands
                     if (!is_null($version) && Semver::satisfies($versionTmp, $version)) {
                         foreach ($releaseItem->terms as $term) {
                             foreach ($term as $termItem) {
-                                $terms[] = (string) $termItem->value;
+                                $terms[] = strtolower((string) $termItem->value);
                             }
                         }
 
