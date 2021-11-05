@@ -310,13 +310,13 @@ class ToolCommands extends AbstractCommands
         // Option 'mandatory'.
 
         // Build task collection.
-        $collection = $this->collectionBuilder();
-        $collection->taskExecStack()
-            ->exec('vendor/bin/drush pm-list --fields=status --format=json')
-            ->printOutput(false)
-            ->silent(true)
-            ->storeState('insecure');
-        $result = $collection->run();
+        // $collection = $this->collectionBuilder();
+        // $collection->taskExecStack()
+        //     ->exec('vendor/bin/drush pm-list --fields=status --format=json')
+        //     ->printOutput(false)
+        //     ->silent(true)
+        //     ->storeState('insecure');
+        // $result = $collection->run();
         // $projPackages = (json_decode($result['insecure'], true));
         // foreach ($projPackages as $projPackage => $status) {
         //     if ($status['status'] == 'enabled') {
@@ -410,6 +410,12 @@ class ToolCommands extends AbstractCommands
                 }
             }
         }
+
+        $fullSkip = getenv('QA_SKIP_INSECURE') !== false ? getenv('QA_SKIP_INSECURE') : false;
+        if ($fullSkip) {
+            $this->say('Globally Skipping security check for components.');
+            $this->componentCheckInsecureFailed = 0;
+        }
     }
 
     /**
@@ -453,6 +459,12 @@ class ToolCommands extends AbstractCommands
                     }
                 }
             }
+        }
+
+        $fullSkip = getenv('QA_SKIP_OUDATED') !== false ? getenv('QA_SKIP_OUDATED') : false;
+        if ($fullSkip) {
+            $this->say('Globally Skipping security check for components.');
+            $this->componentCheckOutdatedFailed = 0;
         }
     }
 
