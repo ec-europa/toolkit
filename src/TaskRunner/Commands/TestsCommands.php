@@ -127,7 +127,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $behatBin = $this->getConfig()->get('runner.bin_dir') . '/behat';
         $defaultProfile = $this->getConfig()->get('toolkit.test.behat.profile');
 
-        $profile = (!empty($options['profile'])) ? $options['suite'] : $defaultProfile;
+        $profile = (!empty($options['profile'])) ? $options['profile'] : $defaultProfile;
         $suite = (!empty($options['suite'])) ? $options['suite'] : '';
         $suiteParameter = ($suite) ? ' --suite=' . $suite : '';
 
