@@ -16,7 +16,8 @@
     "pear/versioncontrol_git": "dev-master",
     "pfrenssen/phpcs-pre-push": "1.0",
     "phing/phing": "~2.16.0",
-    "php": ">=5.4.0"
+    "php": ">=5.4.0",
+    "composer/semver":"^3.2"
   },
   "require-dev": {
     "ec-europa/qa-automation": "^3.2.0"
