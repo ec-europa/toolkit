@@ -12,7 +12,7 @@
     "ext-xml": "*",
     "guzzlehttp/guzzle": "^6.2.1",
     "kasperg/phing-github": "dev-feature/import",
-    "pear/archive_tar": "^1.4.13",
+    "pear/archive_tar": "^1.4.14",
     "pear/versioncontrol_git": "dev-master",
     "pfrenssen/phpcs-pre-push": "1.0",
     "phing/phing": "~2.16.0",
