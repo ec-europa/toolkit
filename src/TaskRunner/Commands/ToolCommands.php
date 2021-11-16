@@ -756,6 +756,10 @@ class ToolCommands extends AbstractCommands
                 $this->say("The project is using default deploy instructions.");
                 return 0;
             }
+            if (empty($parseOptsFile['upgrade_commands']['default']) || empty($parseOptsFile['upgrade_commands']['append'])) {
+                $this->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
+                return 1;
+            }
 
             foreach ($parseOptsFile['upgrade_commands'] as $key => $commands) {
                 foreach ($commands as $command) {
