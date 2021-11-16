@@ -303,37 +303,48 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     public function toolkitLintYaml()
     {
         $pattern = $this->getConfig()->get('toolkit.lint.yaml.pattern');
-        $include = $this->getConfig()->get('toolkit.lint.yaml.include');
-        $exclude = $this->getConfig()->get('toolkit.lint.yaml.exclude');
+        $includes = $this->getConfig()->get('toolkit.lint.yaml.include');
+        $excludes = $this->getConfig()->get('toolkit.lint.yaml.exclude');
 
         $this->say('Pattern: ' . implode(', ', $pattern));
-        $this->say('Include: ' . implode(', ', $include));
-        $this->say('Exclude: ' . implode(', ', $exclude));
+        $this->say('Include: ' . implode(', ', $includes));
+        $this->say('Exclude: ' . implode(', ', $excludes));
 
         $finder = (new Finder())
             ->files()->followLinks()
             ->ignoreVCS(false)
-            ->ignoreDotFiles(false)
-            ->name($pattern)
-            ->notPath($exclude)->in($include);
+            ->ignoreDotFiles(false);
+        foreach ($pattern as $name) {
+            $finder->name($name);
+        }
+        foreach ($includes as $include) {
+            $finder->in($include);
+        }
+        foreach ($excludes as $exclude) {
+            $finder->notPath($exclude);
+        }
 
         // Get the yml files in the root of the project.
         $root_finder = (new Finder())
             ->files()->followLinks()
             ->ignoreVCS(false)
             ->ignoreDotFiles(false)
-            ->name($pattern)->in('.')->depth(0);
+            ->in('.')->depth(0);
+        foreach ($pattern as $name) {
+            $root_finder->name($name);
+        }
 
         $files = array_merge(
             array_keys(iterator_to_array($finder)),
             array_keys(iterator_to_array($root_finder))
         );
         $this->say('Found ' . count($files) . ' files to lint.');
-
-        // Prepare arguments.
-        $arg = implode(' ', $files);
-        $task = $this->taskExec("./vendor/bin/yaml-lint -q $arg")
-            ->printMetadata(false);
+        if (!empty($files)) {
+            // Prepare arguments.
+            $arg = implode(' ', $files);
+            $task = $this->taskExec("./vendor/bin/yaml-lint -q $arg")
+                ->printMetadata(false);
+        }
 
         return $this->collectionBuilder()->addTaskList([$task]);
     }
