@@ -408,7 +408,15 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             return new ResultData(0);
         }
 
-        $command = "blackfire -client-id=$bf_client_id -client-token=$bf_client_token curl $base_url";
+        // Make sure that the blackfire agent is properly configured.
+        $config = $this->taskExec('cat /etc/blackfire/agent | grep server-id=')
+            ->silent(true)->run()->getMessage();
+        if ($config === 'server-id=') {
+            $this->taskExec('blackfire agent:config')->run();
+            $this->taskExec('sudo service blackfire-agent restart')->run();
+        }
+
+        $command = "blackfire --json curl $base_url";
 
         // Execute a list of commands to run after tests.
         $pages = $this->getConfig()->get('toolkit.test.blackfire.pages');
@@ -419,23 +427,51 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
             $raw = $this->taskExec($command . $page)
                 ->silent(true)->run()->getMessage();
+            $result = json_decode($raw, true);
 
-            // Extract data from the response.
-            $any = '(?:[\s\S].*[\s\S])';
-            preg_match_all("/Graph.*(http.*){$any}Timeline.*(http.*){$any}.*recommendations.*(http.*)/", $raw, $links);
-            if (empty($links[1][0]) || empty($links[2][0]) || empty($links[3][0])) {
-                $this->say('Something went wrong, contact the QA team.');
+            if (empty($result['_links']['graph_url']['href'])) {
+                $this->say('Something went wrong, please contact the QA team.');
                 return new ResultData(0);
             }
 
-            // Print the relevant elements.
-            $response_array = array_slice(preg_split("/\r\n|\n|\r/", $raw), -6);
-            $this->writeln(implode("\n", $response_array));
-            $this->writeln('');
+            $data = [];
+            $data['graph'] = $result['_links']['graph_url']['href'];
+            $data['timeline'] = $result['_links']['timeline_url']['href'];
+            $data['recommendation'] = $data['graph'] . '?settings%5BtabPane%5D=recommendations';
+            $data['cpu_time'] = $result['envelope']['cpu'] . 'ms';
+            $data['wall_time'] = $result['envelope']['wt'] . 'ms';
+            $data['io_wait'] = $result['envelope']['io'] . 'ms';
+            $data['memory'] = $this->formatBytes($result['envelope']['pmu']);
+            $data['sql'] = sprintf(
+                "%sms %srq",
+                $result['arguments']['io.db.query']['*']['wt'],
+                $result['arguments']['io.db.query']['*']['ct']
+            );
+            $data['network'] = sprintf(
+                '%s %s %s',
+                !empty($result['envelope']['nw']) ? $this->formatBytes($result['envelope']['nw']) : 'n/a',
+                !empty($result['envelope']['nw_in']) ? $this->formatBytes($result['envelope']['nw_in']) : 'n/a',
+                !empty($result['envelope']['nw_out']) ? $this->formatBytes($result['envelope']['nw_out']) : 'n/a'
+            );
+
+            // Print the relevant information.
+            $msg = sprintf(
+                "Memory:\t\t%s\nWall Time:\t%s\nI/O Wait:\t%s\nCPU Time:\t%s\nNetwork:\t%s\nSQL:\t\t%s",
+                $data['memory'],
+                $data['wall_time'],
+                $data['io_wait'],
+                $data['cpu_time'],
+                $data['network'],
+                $data['sql']
+            );
+            $this->writeln($msg);
 
             // Handle repo name.
             if (empty($repo = getenv('DRONE_REPO'))) {
                 $repo = getenv('CI_PROJECT_NAME');
+            }
+            if (empty($ci_url = getenv('DRONE_BUILD_LINK'))) {
+                $ci_url = getenv('CI_PIPELINE_URL');
             }
             // Send payload to QA website.
             if (!empty($repo)) {
@@ -449,40 +485,47 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                     'body' => [['value' => $raw]],
                     'field_blackfire_repository' => [['value' => $repo]],
                     'field_blackfire_page' => [['value' => $page]],
-                    'field_blackfire_graph_url' => [[
-                        'value' => trim(str_replace('[0', '', $links[1][0]), " \t\n\r\e\v\0\x0B"),
-                    ]],
-                    'field_blackfire_timeline_url' => [[
-                        'value' => trim(str_replace('[0', '', $links[2][0]), " \t\n\r\e\v\0\x0B"),
-                    ]],
-                    'field_blackfire_recomendations' => [[
-                        'value' => trim(str_replace('[0', '', $links[3][0]), " \t\n\r\e\v\0\x0B"),
-                    ]],
+                    'field_blackfire_ci_cd_url' => [['value' => $ci_url]],
+                    'field_blackfire_graph_url' => [['value' => $data['graph']]],
+                    'field_blackfire_timeline_url' => [['value' => $data['timeline']]],
+                    'field_blackfire_recomendations' => [['value' => $data['recommendation']]],
+                    'field_blackfire_memory' => [['value' => $data['memory']]],
+                    'field_blackfire_wall_time' => [['value' => $data['wall_time']]],
+                    'field_blackfire_io_wait' => [['value' => $data['io_wait']]],
+                    'field_blackfire_cpu_time' => [['value' => $data['cpu_time']]],
+                    'field_blackfire_network' => [['value' => $data['network']]],
+                    'field_blackfire_sql' => [['value' => $data['sql']]],
                 ];
-
-                $collect = [
-                    'field_blackfire_memory' => 'Memory',
-                    'field_blackfire_wall_time' => 'Wall Time',
-                    'field_blackfire_io_wait' => 'I\/O Wait',
-                    'field_blackfire_cpu_time' => 'CPU Time',
-                    'field_blackfire_network' => 'Network',
-                    'field_blackfire_sql' => 'SQL',
-                ];
-                foreach ($collect as $key => $item) {
-                    if (preg_match("/{$item}(.*)/", $raw, $match)) {
-                        $value = str_replace('[0m', '', trim($match[1], " \t\n\r\e\v\0\x0B"));
-                        $payload[$key] = [['value' => trim($value)]];
-                    }
-                }
-
                 if ($playload_response = ToolCommands::postQaContent($payload)) {
                     $this->writeln("Payload sent to QA website: $playload_response");
                 } else {
                     $this->writeln('Fail to send the payload.');
                 }
+                $this->writeln('');
             }
         }
 
         return new ResultData(0);
+    }
+
+    /**
+     * Helper to convert bytes to human readable unit.
+     *
+     * @param int $bytes
+     *   The bytes to convert.
+     * @param int $precision
+     *   The precision for the convertion.
+     *
+     * @return string
+     *   The converted value.
+     */
+    private function formatBytes($bytes, $precision = 2)
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+        return round($bytes, $precision) . $units[$pow];
     }
 }
