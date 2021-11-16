@@ -917,7 +917,7 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Run script to fix permissions.
+     * Run script to fix permissions (experimental).
      *
      * @command toolkit:fix-permissions
      */
