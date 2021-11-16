@@ -89,7 +89,7 @@ class ToolCommands extends AbstractCommands
         'test-command' => false,
     ])
     {
-        
+
         // Currently undocumented in this class. Because I don't know how to
         // provide such a property to one single function other than naming the
         // failed property exactly for this function.
@@ -217,10 +217,10 @@ class ToolCommands extends AbstractCommands
     protected function printComponentResults()
     {
         $this->io()->title('Results:');
-        
+
         $skipInsegure = ($this->skipInsecure) ? '' : ' (Skipping)';
         $skipOutdated = ($this->skipOutdated) ? '' : ' (Skipping)';
-        
+
         $msgs[] = ($this->componentCheckMandatoryFailed) ? 'Mandatory module check failed.' : 'Mandatory module check passed.';
         $msgs[] = ($this->componentCheckRecommendedFailed) ? 'Recommended module check failed. (report only)' : 'Recommended module check passed.';
         $msgs[] = ($this->componentCheckInsecureFailed) ? 'Insecure module check failed.' . $skipInsegure : 'Insecure module check passed.' . $skipInsegure;
@@ -230,7 +230,7 @@ class ToolCommands extends AbstractCommands
         foreach ($msgs as $msg) {
             $this->say($msg);
         }
-        
+
         echo PHP_EOL;
     }
 
@@ -635,7 +635,7 @@ class ToolCommands extends AbstractCommands
         $collection->taskExecStack()
             ->exec('drush en upgrade_status -y')
             ->run();
-        
+
         // Collect result details.
         $result = $collection->taskExecStack()
             ->exec('drush upgrade_status:analyze --all')
@@ -652,7 +652,7 @@ class ToolCommands extends AbstractCommands
                 'Check manually',
                 'Fix now',
             ];
-    
+
             foreach ($flags as $flag) {
                 if (strpos($flag, $result) !== false) {
                     $qaCompatibiltyresult = 1;
@@ -761,7 +761,11 @@ class ToolCommands extends AbstractCommands
                 $this->say("The project is using default deploy instructions.");
                 return 0;
             }
-            
+            if (empty($parseOptsFile['upgrade_commands']['default']) || empty($parseOptsFile['upgrade_commands']['append'])) {
+                $this->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
+                return 1;
+            }
+
             foreach ($parseOptsFile['upgrade_commands'] as $key => $commands) {
                 foreach ($commands as $command) {
                     foreach ($forbiddenCommands as $forbiddenCommand) {
