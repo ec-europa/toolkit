@@ -879,11 +879,11 @@ class ToolCommands extends AbstractCommands
      */
     public function getPackageDetails($package, $version, $core)
     {
+        $name = explode("/", $package)[1];
         // Drupal core is an exception, we should use '/drupal/current'.
         if ($package === 'drupal/core') {
             $url = 'https://updates.drupal.org/release-history/drupal/current';
         } else {
-            $name = explode("/", $package)[1];
             $url = 'https://updates.drupal.org/release-history/' . $name . '/' . $core;
         }
 
@@ -917,6 +917,7 @@ class ToolCommands extends AbstractCommands
                             'name' => $name,
                             'version' => (string) $releaseItem->versions,
                             'terms' => $terms,
+                            'date' => (string) $releaseItem->date,
                         ];
                     }
                 }
