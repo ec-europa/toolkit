@@ -89,7 +89,6 @@ class ToolCommands extends AbstractCommands
         'test-command' => false,
     ])
     {
-
         // Currently undocumented in this class. Because I don't know how to
         // provide such a property to one single function other than naming the
         // failed property exactly for this function.
@@ -172,9 +171,9 @@ class ToolCommands extends AbstractCommands
 
             $this->printComponentResults();
 
-            $status = 0;
             // If the validation fail, return according to the blocker.
-            if ($this->componentCheckFailed ||
+            if (
+                $this->componentCheckFailed ||
                 $this->componentCheckMandatoryFailed ||
                 $this->componentCheckRecommendedFailed ||
                 ($this->componentCheckInsecureFailed && $this->skipInsecure) ||
@@ -183,13 +182,11 @@ class ToolCommands extends AbstractCommands
                 $msg = 'Failed the components check, please verify the report and update the project.';
                 $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
                 $this->io()->error($msg);
-                $status = 1;
+                return 1;
             }
 
             // Give feedback if no problems found.
-            if (!$status) {
-                $this->io()->success('Components checked, nothing to report.');
-            }
+            $this->io()->success('Components checked, nothing to report.');
 
             $this->io()->text([
                 'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
@@ -198,8 +195,6 @@ class ToolCommands extends AbstractCommands
                 '    - [SKIP-INSECURE]',
                 '    - [SKIP-D9C]',
             ]);
-
-            return $status;
         }//end if
     }
 
@@ -399,14 +394,18 @@ class ToolCommands extends AbstractCommands
                 foreach ($insecurePackages as $insecurePackage) {
                     $historyTerms = $this->getPackageDetails($insecurePackage['name'], $insecurePackage['version'], '8.x');
                     $packageInsecureConfirmation = true;
-                    $msg = "Package " . $insecurePackage['name'] . " have a security update, please update to an safe version.";
+                    $msg = "Package {$insecurePackage['name']} have a security update, please update to a safe version.";
 
-                    if (!in_array("insecure", $historyTerms['terms'])) {
-                        $packageInsecureConfirmation = false;
-                        $msg = $msg . " (Confirmation failed, ignored)";
+                    if (empty($historyTerms['terms'])) {
+                        $this->say("Something went wrong when checking the package {$insecurePackage['name']}");
+                    } else {
+                        if (!in_array("insecure", $historyTerms['terms'])) {
+                            $packageInsecureConfirmation = false;
+                            $msg = $msg . " (Confirmation failed, ignored)";
+                        }
+                        $this->say($msg);
+                        $this->componentCheckInsecureFailed = $packageInsecureConfirmation;
                     }
-                    $this->say($msg);
-                    $this->componentCheckInsecureFailed = $packageInsecureConfirmation;
                 }
             }
         }
@@ -461,9 +460,9 @@ class ToolCommands extends AbstractCommands
             }
         }
 
-        $fullSkip = getenv('QA_SKIP_OUDATED') !== false ? getenv('QA_SKIP_OUDATED') : false;
+        $fullSkip = getenv('QA_SKIP_OUTDATED') !== false ? getenv('QA_SKIP_OUTDATED') : false;
         if ($fullSkip) {
-            $this->say('Globally Skipping security check for components.');
+            $this->say('Globally skipping outdated check for components.');
             $this->componentCheckOutdatedFailed = 0;
         }
     }
@@ -848,7 +847,9 @@ class ToolCommands extends AbstractCommands
         } else {
             // Append the Blackfire profile to the behat.yml file.
             $this->taskWriteToFile($from)->append(true)
+                ->line('# Toolkit auto-generated profile for Blackfire.')
                 ->text(file_get_contents("$blackfire_dir/blackfire.behat.yml"))
+                ->line('# End Toolkit.')
                 ->run();
         }
 
@@ -874,7 +875,13 @@ class ToolCommands extends AbstractCommands
      */
     public function getPackageDetails($package, $version, $core)
     {
-        $name = explode("/", $package)[1];
+        // Drupal core is an exception, we should use '/drupal/current'.
+        if ($package === 'drupal/core') {
+            $name = 'drupal';
+            $core = 'current';
+        } else {
+            $name = explode("/", $package)[1];
+        }
         $url = 'https://updates.drupal.org/release-history/' . $name . '/' . $core;
 
         $releaseHistory = $fullReleaseHistory = [];
