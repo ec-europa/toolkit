@@ -171,6 +171,7 @@ class ToolCommands extends AbstractCommands
 
             $this->printComponentResults();
 
+            $status = 0;
             // If the validation fail, return according to the blocker.
             if (
                 $this->componentCheckFailed ||
@@ -182,11 +183,13 @@ class ToolCommands extends AbstractCommands
                 $msg = 'Failed the components check, please verify the report and update the project.';
                 $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
                 $this->io()->error($msg);
-                return 1;
+                $status = 1;
             }
 
             // Give feedback if no problems found.
-            $this->io()->success('Components checked, nothing to report.');
+            if (!$status) {
+                $this->io()->success('Components checked, nothing to report.');
+            }
 
             $this->io()->text([
                 'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
@@ -195,6 +198,8 @@ class ToolCommands extends AbstractCommands
                 '    - [SKIP-INSECURE]',
                 '    - [SKIP-D9C]',
             ]);
+
+            return $status;
         }//end if
     }
 
@@ -305,13 +310,13 @@ class ToolCommands extends AbstractCommands
         // Option 'mandatory'.
 
         // Build task collection.
-        $collection = $this->collectionBuilder();
-        $collection->taskExecStack()
-            ->exec('vendor/bin/drush pm-list --fields=status --format=json')
-            ->printOutput(false)
-            ->silent(true)
-            ->storeState('insecure');
-        $result = $collection->run();
+        // $collection = $this->collectionBuilder();
+        // $collection->taskExecStack()
+        //     ->exec('vendor/bin/drush pm-list --fields=status --format=json')
+        //     ->printOutput(false)
+        //     ->silent(true)
+        //     ->storeState('insecure');
+        // $result = $collection->run();
         // $projPackages = (json_decode($result['insecure'], true));
         // foreach ($projPackages as $projPackage => $status) {
         //     if ($status['status'] == 'enabled') {
@@ -394,9 +399,9 @@ class ToolCommands extends AbstractCommands
                 foreach ($insecurePackages as $insecurePackage) {
                     $historyTerms = $this->getPackageDetails($insecurePackage['name'], $insecurePackage['version'], '8.x');
                     $packageInsecureConfirmation = true;
-                    $msg = "Package " . $insecurePackage['name'] . " have a security update, please update to an safe version.";
+                    $msg = "Package {$insecurePackage['name']} have a security update, please update to a safe version.";
 
-                    if (!in_array("insecure", $historyTerms['terms'])) {
+                    if (empty($historyTerms['terms']) || !in_array("insecure", $historyTerms['terms'])) {
                         $packageInsecureConfirmation = false;
                         $msg = $msg . " (Confirmation failed, ignored)";
                     }
@@ -407,6 +412,8 @@ class ToolCommands extends AbstractCommands
         }
 
         $fullSkip = getenv('QA_SKIP_INSECURE') !== false ? getenv('QA_SKIP_INSECURE') : false;
+        // Forcing skip due to issues with the security advisor date detection.
+        $fullSkip = true;
         if ($fullSkip) {
             $this->say('Globally Skipping security check for components.');
             $this->componentCheckInsecureFailed = 0;
@@ -872,8 +879,13 @@ class ToolCommands extends AbstractCommands
      */
     public function getPackageDetails($package, $version, $core)
     {
-        $name = explode("/", $package)[1];
-        $url = 'https://updates.drupal.org/release-history/' . $name . '/' . $core;
+        // Drupal core is an exception, we should use '/drupal/current'.
+        if ($package === 'drupal/core') {
+            $url = 'https://updates.drupal.org/release-history/drupal/current';
+        } else {
+            $name = explode("/", $package)[1];
+            $url = 'https://updates.drupal.org/release-history/' . $name . '/' . $core;
+        }
 
         $releaseHistory = $fullReleaseHistory = [];
         $curl = curl_init();
