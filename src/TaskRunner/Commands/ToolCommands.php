@@ -394,14 +394,18 @@ class ToolCommands extends AbstractCommands
                 foreach ($insecurePackages as $insecurePackage) {
                     $historyTerms = $this->getPackageDetails($insecurePackage['name'], $insecurePackage['version'], '8.x');
                     $packageInsecureConfirmation = true;
-                    $msg = "Package " . $insecurePackage['name'] . " have a security update, please update to an safe version.";
+                    $msg = "Package {$insecurePackage['name']} have a security update, please update to a safe version.";
 
-                    if (!in_array("insecure", $historyTerms['terms'])) {
-                        $packageInsecureConfirmation = false;
-                        $msg = $msg . " (Confirmation failed, ignored)";
+                    if (empty($historyTerms['terms'])) {
+                        $this->say("Something went wrong when checking the package {$insecurePackage['name']}");
+                    } else {
+                        if (!in_array("insecure", $historyTerms['terms'])) {
+                            $packageInsecureConfirmation = false;
+                            $msg = $msg . " (Confirmation failed, ignored)";
+                        }
+                        $this->say($msg);
+                        $this->componentCheckInsecureFailed = $packageInsecureConfirmation;
                     }
-                    $this->say($msg);
-                    $this->componentCheckInsecureFailed = $packageInsecureConfirmation;
                 }
             }
         }
@@ -872,7 +876,13 @@ class ToolCommands extends AbstractCommands
      */
     public function getPackageDetails($package, $version, $core)
     {
-        $name = explode("/", $package)[1];
+        // Drupal core is an exception, we should use '/drupal/current'.
+        if ($package === 'drupal/core') {
+            $name = 'drupal';
+            $core = 'current';
+        } else {
+            $name = explode("/", $package)[1];
+        }
         $url = 'https://updates.drupal.org/release-history/' . $name . '/' . $core;
 
         $releaseHistory = $fullReleaseHistory = [];
