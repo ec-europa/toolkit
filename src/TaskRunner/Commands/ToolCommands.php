@@ -960,7 +960,7 @@ class ToolCommands extends AbstractCommands
 
             // Handle PHP version.
             $php_version = phpversion();
-            $php_check = -1 === version_compare($php_version, $data['php_version']) ? 'FAIL' : 'OK';
+            $php_check = Semver::satisfies($php_version, $data['php_version']) ? 'OK' : 'FAIL';
 
             $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
             if ($composerLock) {
@@ -968,15 +968,7 @@ class ToolCommands extends AbstractCommands
                 $index = array_search('ec-europa/toolkit', array_column($composerLock['packages-dev'], 'name'));
                 if ($index !== false) {
                     $toolkit_version = $composerLock['packages-dev'][$index]['version'];
-                    $data['toolkit'] = explode('|', $data['toolkit']);
-                    foreach ($data['toolkit'] as $data_value) {
-                        if (ltrim($data_value, '~^<>=!')[0] === $toolkit_version[0]) {
-                            if (!(-1 === version_compare($toolkit_version, $data_value))) {
-                                $toolkit_check = 'OK';
-                                break;
-                            }
-                        }
-                    }
+                    $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
                 } else {
                     $toolkit_check = 'FAIL (not found)';
                 }
@@ -985,15 +977,7 @@ class ToolCommands extends AbstractCommands
                 $index = array_search('drupal/core', array_column($composerLock['packages'], 'name'));
                 if ($index !== false) {
                     $drupal_version = $composerLock['packages'][$index]['version'];
-                    $data['drupal'] = explode('|', $data['drupal']);
-                    foreach ($data['drupal'] as $data_value) {
-                        if (ltrim($data_value, '~^<>=!')[0] === $drupal_version[0]) {
-                            if (!(-1 === version_compare($drupal_version, $data_value))) {
-                                $drupal_check = 'OK';
-                                break;
-                            }
-                        }
-                    }
+                    $drupal_check = Semver::satisfies($drupal_version, $data['drupal']) ? 'OK' : 'FAIL';
                 } else {
                     $drupal_check = 'FAIL (not found)';
                 }
@@ -1002,8 +986,50 @@ class ToolCommands extends AbstractCommands
             }
         }
 
-        // @todo Handle GitHub.
-        // @todo Handle GitLab.
+        // Handle GitHub.
+        if (empty($token = getenv('GITHUB_API_TOKEN'))) {
+            $github_check = 'FAIL (Missing environment variable: GITHUB_API_TOKEN)';
+        } else {
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, 'https://api.github.com/user');
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, ["Authorization: Token $token"]);
+            curl_setopt($curl, CURLOPT_USERAGENT, 'Quality Assurance');
+            $result = curl_exec($curl);
+            $result = (array) json_decode($result);
+            $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            curl_close($curl);
+            if ($code === 200) {
+                if (isset($result['private_gists'])) {
+                    $github_check = "OK ($code)";
+                } else {
+                    $github_check = "OK ($code) - No private data";
+                }
+            } else {
+                $github_check = "FAIL ($code) " . trim($result['message']);
+            }
+        }
+
+        // Handle GitLab.
+        if (empty($token = getenv('GITLAB_API_TOKEN'))) {
+            $gitlab_check = 'FAIL (Missing environment variable: GITLAB_API_TOKEN)';
+        } else {
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, 'https://git.fpfis.eu/api/v4/users?username=qa-dashboard-api');
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, ["PRIVATE-TOKEN: $token"]);
+            curl_setopt($curl, CURLOPT_USERAGENT, 'Quality Assurance');
+            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+            $result = curl_exec($curl);
+            $result = (array) json_decode($result);
+            $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            curl_close($curl);
+            if ($code === 200) {
+                $gitlab_check = "OK ($code)";
+            } else {
+                $gitlab_check = "FAIL ($code) " . trim($result['message']);
+            }
+        }
 
         // Handle ASDA.
         if (!empty(getenv('ASDA_USER')) && !empty(getenv('ASDA_PASSWORD'))) {
