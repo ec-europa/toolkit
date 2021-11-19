@@ -1044,10 +1044,14 @@ class ToolCommands extends AbstractCommands
         }
 
         $this->writeln(sprintf(
-            "Checking PHP version: %s (%s)
+            "Required checks:
+=============================
+Checking PHP version: %s (%s)
 Checking Toolkit version: %s (%s)
 Checking Drupal version: %s (%s)
 
+Optional checks:
+=============================
 Checking QA Endpoint access: %s
 Checking github.com oauth access: %s
 Checking git.fpfis.eu oauth access: %s
