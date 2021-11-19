@@ -101,7 +101,7 @@ class ToolCommands extends AbstractCommands
         $this->checkCommitMessage();
 
         $endpointUrl = "https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x";
-        $composerLock = file_get_contents('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
+        $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
 
         if (empty($basicAuth = getenv('QA_API_BASIC_AUTH'))) {
             $this->io()->warning('Missing ENV var QA_API_BASIC_AUTH.');
@@ -925,5 +925,120 @@ class ToolCommands extends AbstractCommands
 
         $this->say("No release history found.");
         return 1;
+    }
+
+    /**
+     * Check the Toolkit Requirements.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     *
+     * @command toolkit:requirements
+     *
+     * @option endpoint The endpoint to get the requirements.
+     */
+    public function toolkitRequirements(array $options = [
+        'endpoint' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        $this->say("Checking Toolkit requirements:\n");
+        if (empty($options['endpoint'])) {
+            $options['endpoint'] = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
+        }
+        $php_check = $toolkit_check = $drupal_check = 'FAIL';
+        $endpoint_check = $github_check = $gitlab_check = $asda_check = 'FAIL';
+        $php_version = $toolkit_version = $drupal_version = '';
+
+        $result = self::getQaEndpointContent($options['endpoint'], getenv('QA_API_BASIC_AUTH'));
+        if ($result) {
+            $endpoint_check = 'OK';
+            $data = json_decode($result, true);
+            if (empty($data) || !isset($data['toolkit'])) {
+                $this->writeln('Invalid data.');
+                return 1;
+            }
+
+            // Handle PHP version.
+            $php_version = phpversion();
+            $php_check = -1 === version_compare($php_version, $data['php_version']) ? 'FAIL' : 'OK';
+
+            $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
+            if ($composerLock) {
+                // Handle Toolkit version.
+                $index = array_search('ec-europa/toolkit', array_column($composerLock['packages-dev'], 'name'));
+                if ($index !== false) {
+                    $toolkit_version = $composerLock['packages-dev'][$index]['version'];
+                    $data['toolkit'] = explode('|', $data['toolkit']);
+                    foreach ($data['toolkit'] as $data_value) {
+                        if (ltrim($data_value, '~^<>=!')[0] === $toolkit_version[0]) {
+                            if (!(-1 === version_compare($toolkit_version, $data_value))) {
+                                $toolkit_check = 'OK';
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    $toolkit_check = 'FAIL (not found)';
+                }
+
+                // Handle Drupal version.
+                $index = array_search('drupal/core', array_column($composerLock['packages'], 'name'));
+                if ($index !== false) {
+                    $drupal_version = $composerLock['packages'][$index]['version'];
+                    $data['drupal'] = explode('|', $data['drupal']);
+                    foreach ($data['drupal'] as $data_value) {
+                        if (ltrim($data_value, '~^<>=!')[0] === $drupal_version[0]) {
+                            if (!(-1 === version_compare($drupal_version, $data_value))) {
+                                $drupal_check = 'OK';
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    $drupal_check = 'FAIL (not found)';
+                }
+            } else {
+                $drupal_check = 'FAIL (missing composer.lock)';
+            }
+        }
+
+        // @todo Handle GitHub.
+        // @todo Handle GitLab.
+
+        // Handle ASDA.
+        if (!empty(getenv('ASDA_USER')) && !empty(getenv('ASDA_PASSWORD'))) {
+            $asda_check = 'OK';
+        } else {
+            $asda_check .= ' (Missing environment variable(s):';
+            $asda_check .= empty(getenv('ASDA_USER')) ? ' ASDA_USER' : '';
+            $asda_check .= empty(getenv('ASDA_PASSWORD')) ? ' ASDA_PASSWORD' : '';
+            $asda_check .= ')';
+        }
+
+        $this->writeln(sprintf(
+            "Checking PHP version: %s (%s)
+Checking Toolkit version: %s (%s)
+Checking Drupal version: %s (%s)
+
+Checking QA Endpoint access: %s
+Checking github.com oauth access: %s
+Checking git.fpfis.eu oauth access: %s
+Checking ASDA configuration: %s",
+            $php_check,
+            $php_version,
+            $toolkit_check,
+            $toolkit_version,
+            $drupal_check,
+            $drupal_version,
+            $endpoint_check,
+            $github_check,
+            $gitlab_check,
+            $asda_check
+        ));
+
+        if ($php_check !== 'OK' || $toolkit_check !== 'OK' || $drupal_check !== 'OK') {
+            return 1;
+        }
+        return 0;
     }
 }
