@@ -932,6 +932,9 @@ class ToolCommands extends AbstractCommands
     /**
      * Check the Toolkit Requirements.
      *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     *
      * @command toolkit:requirements
      *
      * @option endpoint The endpoint to get the requirements.
@@ -988,13 +991,12 @@ class ToolCommands extends AbstractCommands
         // Handle GitHub.
         if (empty($token = getenv('GITHUB_API_TOKEN'))) {
             $github_check = 'FAIL (Missing environment variable: GITHUB_API_TOKEN)';
-        }
-        else {
+        } else {
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, 'https://api.github.com/user');
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_HTTPHEADER, ["Authorization: Token $token"]);
-            curl_setopt($curl, CURLOPT_USERAGENT,'Quality Assurance');
+            curl_setopt($curl, CURLOPT_USERAGENT, 'Quality Assurance');
             $result = curl_exec($curl);
             $result = (array) json_decode($result);
             $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -1002,12 +1004,10 @@ class ToolCommands extends AbstractCommands
             if ($code === 200) {
                 if (isset($result['private_gists'])) {
                     $github_check = "OK ($code)";
-                }
-                else {
+                } else {
                     $github_check = "OK ($code) - No private data";
                 }
-            }
-            else {
+            } else {
                 $github_check = "FAIL ($code) " . trim($result['message']);
             }
         }
@@ -1015,22 +1015,20 @@ class ToolCommands extends AbstractCommands
         // Handle GitLab.
         if (empty($token = getenv('GITLAB_API_TOKEN'))) {
             $gitlab_check = 'FAIL (Missing environment variable: GITLAB_API_TOKEN)';
-        }
-        else {
+        } else {
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, 'https://git.fpfis.eu/api/v4/users?username=qa-dashboard-api');
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_HTTPHEADER, ["PRIVATE-TOKEN: $token"]);
-            curl_setopt($curl, CURLOPT_USERAGENT,'Quality Assurance');
-            curl_setopt($curl, CURLOPT_FOLLOWLOCATION,true);
+            curl_setopt($curl, CURLOPT_USERAGENT, 'Quality Assurance');
+            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
             $result = curl_exec($curl);
             $result = (array) json_decode($result);
             $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
             curl_close($curl);
             if ($code === 200) {
                 $gitlab_check = "OK ($code)";
-            }
-            else {
+            } else {
                 $gitlab_check = "FAIL ($code) " . trim($result['message']);
             }
         }
