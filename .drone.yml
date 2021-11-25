@@ -66,7 +66,7 @@ pipeline:
       - cp ./includes/phing/props/drone.props build.develop.props
       - ./toolkit/phing project-properties-validate ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
 
   # ============================================================================
   # Build section:
@@ -78,7 +78,7 @@ pipeline:
     commands:
       - ./toolkit/phing build-platform build-subsite-dev ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
 
   solr:
     image: fpfis/solr5
@@ -94,7 +94,7 @@ pipeline:
       - ./toolkit/phing install-clean ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
 
   # ============================================================================
   # Clone section:
@@ -104,14 +104,14 @@ pipeline:
     commands:
       - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql.gz' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
 
   smoketest:
     image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
     commands:
       - ./toolkit/phing drush-run-smoketest ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
 
   selenium:
     image: selenium/standalone-chrome
@@ -127,7 +127,7 @@ pipeline:
     commands:
       - ./toolkit/phing test-run-behat ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
 
   phpcs:
     image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
@@ -135,7 +135,7 @@ pipeline:
     commands:
       - ./toolkit/phing test-run-phpcs ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
 
   php7-comp:
     image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
@@ -159,22 +159,4 @@ pipeline:
       - ./toolkit/phing git-hook-disable ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-
-  # ============================================================================
-  # Notify section:
-  # ============================================================================
-  # slack:
-  #   image: plugins/slack
-  #   channel: ci
-  #   username: Subsite-QA
-  #   icon_url: https://www.drupal.org/files/examples_meatwad256.png
-  #   secrets: [ slack_webhook ]
-  #   when:
-  #     status: [ success, failure ]
-  #   template: >
-  #     {{#success build.status}}
-  #       {{repo.name}}@{{build.branch}} <{{build.link}}|passed> all subsite tests.
-  #     {{else}}
-  #       {{repo.name}}@{{build.branch}} <{{build.link}}|failed> subsite tests.
-  #     {{/success}}
+      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
