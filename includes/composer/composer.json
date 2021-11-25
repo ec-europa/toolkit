@@ -5,7 +5,7 @@
     "cweagans/composer-patches": "dev-checkpatched",
     "drupal/phingdrushtask": "^1.1",
     "drupol/phingbehattask": "^1.0",
-    "drush/drush": "^8.0",
+    "drush/drush": "*",
     "ext-json": "*",
     "ext-phar": "*",
     "ext-tidy": "^2.0",
