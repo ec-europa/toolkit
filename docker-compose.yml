@@ -1,0 +1,21 @@
+version: '2'
+services:
+  web:
+    image: fpfis/httpd-php:7.4-dev
+    working_dir: ${PWD}
+    ports:
+      - 8080:8080
+    volumes:
+      - ${PWD}:${PWD}
+      # - nfsmount:/var/www/html # Mac Users with the nfsmount volume.
+    environment:
+      # ASDA CREDENTIALS
+      # By leaving these variables empty Docker Compose will set them to their host values.
+      ASDA_USER:
+      ASDA_PASSWORD:
+      DOCUMENT_ROOT: ${PWD}
+      # XDEBUG CONFIGURATION
+      XDEBUG_CONFIG: idekey=cloud9ide remote_connect_back=0 remote_host=172.17.0.1 remote_enable=1
+      PHP_IDE_CONFIG: "serverName=Docker"
+      # For Xdebug setup, run this command in the terminal:
+      # For Mac users: sudo ifconfig en0 alias 10.254.254.254 255.255.255.0
