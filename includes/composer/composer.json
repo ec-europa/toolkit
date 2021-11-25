@@ -2,7 +2,7 @@
   "_comment_git_wrapper": "Master branch of git-wrapper has a fix for backwards compatibility with older versions of git. Revert to stable when 1.7.1 is released.",
   "require": {
     "cpliakas/git-wrapper": "^1.7",
-    "cweagans/composer-patches": "dev-checkpatched",
+    "cweagans/composer-patches": "*",
     "drupal/phingdrushtask": "^1.1",
     "drupol/phingbehattask": "^1.0",
     "drush/drush": "*",
@@ -11,7 +11,7 @@
     "ext-tidy": "^2.0",
     "ext-xml": "*",
     "guzzlehttp/guzzle": "^6.2.1",
-    "kasperg/phing-github": "dev-feature/import",
+    "kasperg/phing-github": "*",
     "pear/archive_tar": "^1.4.14",
     "pear/versioncontrol_git": "dev-master",
     "pfrenssen/phpcs-pre-push": "1.0",
@@ -35,19 +35,11 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/verbruggenalex/composer-patches.git"
-    },
-    {
-      "type": "vcs",
       "url": "https://github.com/verbruggenalex/phing-github.git"
     },
     {
       "type": "vcs",
       "url": "https://git.drupal.org/project/coder.git"
-    },
-    {
-      "type": "vcs",
-      "url": "https://git.drupal.org/project/phingdrushtask.git"
     },
     {
       "type": "package",
