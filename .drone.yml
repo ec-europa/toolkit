@@ -20,15 +20,15 @@ workspace:
 # ==============================================================================
 matrix:
   include:
-    # - PHP_VERSION: 5.6
-    #   PHING_OPTS: -logger phing.listener.AnsiColorLogger
-    #   BUILD_OPTIONS: -D'platform.package.version'='2.5' -D'profile'='multisite_drupal_standard'
-    # - PHP_VERSION: 7.3
-    #   PHING_OPTS: -logger phing.listener.AnsiColorLogger
-    #   BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard'
-    # - PHP_VERSION: 7.3
-    #   PHING_OPTS: -logger phing.listener.AnsiColorLogger
-    #   BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.x'
+    - PHP_VERSION: 5.6
+      PHING_OPTS: -logger phing.listener.AnsiColorLogger
+      BUILD_OPTIONS: -D'platform.package.version'='2.5' -D'profile'='multisite_drupal_standard'
+    - PHP_VERSION: 7.3
+      PHING_OPTS: -logger phing.listener.AnsiColorLogger
+      BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard'
+    - PHP_VERSION: 7.3
+      PHING_OPTS: -logger phing.listener.AnsiColorLogger
+      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.x'
     - PHP_VERSION: 7.4
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
       BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.x'
