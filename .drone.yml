@@ -1,23 +1,11 @@
-# ==============================================================================
-# Pull request clone ===========================================================
-# ==============================================================================
-# Use plugin to checkout pull requests for caching issue:
-# https://github.com/drone/drone/issues/2390
-# ==============================================================================
 clone:
   git:
-    image: plugins/git:next
+    image: registry.fpfis.eu/drone-plugins/git:next
 
-# ==============================================================================
-# Workspace location.
-# ==============================================================================
 workspace:
   base: /test
   path: toolkit
 
-# ==============================================================================
-# Matrix section
-# ==============================================================================
 matrix:
   include:
     - PHP_VERSION: 5.6
@@ -28,10 +16,10 @@ matrix:
       BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard'
     - PHP_VERSION: 7.3
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
-      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.x'
+      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.82'
     - PHP_VERSION: 7.4
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
-      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.x'
+      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.82'
     - PHP_VERSION: 7.4
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
       BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard'
@@ -41,122 +29,122 @@ matrix:
 # ==============================================================================
 services:
   web:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    detach: true
     environment:
       - DOCUMENT_ROOT=/test/toolkit/build
+  selenium:
+    image: registry.fpfis.eu/fpfis/selenium:standalone-chrome-${SELENIUM_VERSION=3.141.59-20210913}
+    shm_size: 2gb
+    environment:
+      - JAVA_OPTS=-Dselenium.LOGGER.level=WARNING
+    detach: true
   mysql:
-    image: percona/percona-server:5.6
+    image: registry.fpfis.eu/fpfis/sql:percona-${MYSQL_VERSION=5.7}
+    detach: true
+    command: --innodb-log-file_size=2G --max-allowed-packet=1G --innodb-buffer-pool-size=512M --wait-timeout=31536000
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+  solr:
+    image: registry.fpfis.eu/fpfis/solr:5
+    detach: true
 
-# ==============================================================================
-# Pipelines
-# ==============================================================================
 pipeline:
-
-  # ============================================================================
-  # Setup section:
-  # ============================================================================
   setup:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
     group: setup
+    secrets: [ github_api_token ]
     commands:
       - PROJECT=$(pwd) composer toolkit-install
       - rm -rf ./.tmp/ ./build
       - cp ./includes/phing/props/drone.props build.develop.props
       - ./toolkit/phing project-properties-validate ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
+      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
-  # ============================================================================
-  # Build section:
-  # ============================================================================
   build:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
     group: build
     secrets: [ github_api_token ]
     commands:
       - ./toolkit/phing build-platform build-subsite-dev ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
+      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
-  solr:
-    image: fpfis/solr5
-    group: build
-    detach: true
-
-  # ============================================================================
-  # Install section:
-  # ============================================================================
   install-clean:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    group: install-clean
+    secrets: [ github_api_token ]
     commands:
+      - ./toolkit/phing build-platform build-subsite-dev ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing install-clean ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
+      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
-  # ============================================================================
-  # Clone section:
-  # ============================================================================
   install-clone:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    group: install-clone
+    secrets: [ github_api_token ]
     commands:
+      - ./toolkit/phing build-platform build-subsite-dev ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql.gz' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
+      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   smoketest:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    group: smoke-tests
+    secrets: [ github_api_token ]
     commands:
       - ./toolkit/phing drush-run-smoketest ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
+      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
-  selenium:
-    image: selenium/standalone-chrome
-    group: prebehat
-    detach: true
-
-  # ============================================================================
-  # Test section:
-  # ============================================================================
   behat:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
     group: coding-standards
+    secrets: [ github_api_token ]
     commands:
       - ./toolkit/phing test-run-behat ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
+      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   phpcs:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
     group: coding-standards
+    secrets: [ github_api_token ]
     commands:
+      - touch /test/toolkit/composer.lock 
       - ./toolkit/phing test-run-phpcs ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
+      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   php7-comp:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
     group: coding-standards
+    secrets: [ github_api_token ]
     commands:
       - ./toolkit/phing test-run-phpcs-compatibility -D'phpcs.compat.checkreturn'='false' ${BUILD_OPTIONS} ${PHING_OPTS}
+    volumes:
+      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   create-distribution:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
-    group: deploy
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    group: create-distribution
+    secrets: [ github_api_token ]
     commands:
       - ./toolkit/phing create-distribution ${BUILD_OPTIONS} ${PHING_OPTS}
+    volumes:
+      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
-  # ============================================================================
-  # Git hook integration section:
-  # ============================================================================
   git-hooks:
-    image: fpfis/httpd-php-dev:${PHP_VERSION=5.6}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    group: git-hooks
+    secrets: [ github_api_token ]
     commands:
       - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing git-hook-disable ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}:/cache
+      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
