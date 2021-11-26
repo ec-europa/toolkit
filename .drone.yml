@@ -8,17 +8,21 @@ workspace:
 
 services:
   web:
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    secrets: [ github_api_token, composer_auth ]
     environment:
       - DOCUMENT_ROOT=/test/toolkit
 
 pipeline:
   composer-install:
     group: prepare
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    secrets: [ github_api_token, composer_auth ]
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
+      - composer self-update --1
+      - composer config -g github-oauth.github.com $${GITHUB_API_TOKEN}
       - composer install --ansi --no-suggest --no-progress
     when:
       matrix:
@@ -26,11 +30,13 @@ pipeline:
 
   composer-install:
     group: prepare
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    secrets: [ github_api_token, composer_auth ]
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
       - composer self-update --2
+      - composer config -g github-oauth.github.com $${GITHUB_API_TOKEN}
       - composer install --ansi --no-suggest --no-progress
     when:
       matrix:
@@ -38,10 +44,13 @@ pipeline:
 
   composer-update-lowest:
     group: post-prepare
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    secrets: [ github_api_token, composer_auth ]
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
+      - composer self-update --1
+      - composer config -g github-oauth.github.com $${GITHUB_API_TOKEN}
       - composer update --prefer-lowest --prefer-stable --ansi --no-suggest --no-progress
     when:
       matrix:
@@ -50,11 +59,13 @@ pipeline:
 
   composer-update-lowest:
     group: post-prepare
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    secrets: [ github_api_token, composer_auth ]
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
       - composer self-update --2
+      - composer config -g github-oauth.github.com $${GITHUB_API_TOKEN}
       - composer update --prefer-lowest --prefer-stable --ansi --no-suggest --no-progress
     when:
       matrix:
@@ -63,14 +74,16 @@ pipeline:
 
   grumphp:
     group: test
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    secrets: [ github_api_token, composer_auth ]
     commands:
       - ./vendor/bin/phpcs -i
       - ./vendor/bin/grumphp run
 
   phpunit:
     group: test
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    secrets: [ github_api_token, composer_auth ]
     commands:
       - ./vendor/bin/phpunit
 
