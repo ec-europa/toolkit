@@ -53,6 +53,7 @@ pipeline:
   setup:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
     group: setup
+    secrets: [ github_api_token ]
     commands:
       - PROJECT=$(pwd) composer toolkit-install
       - rm -rf ./.tmp/ ./build
@@ -93,6 +94,8 @@ pipeline:
 
   smoketest:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    group: smoke-tests
+    secrets: [ github_api_token ]
     commands:
       - ./toolkit/phing drush-run-smoketest ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
@@ -101,6 +104,7 @@ pipeline:
   behat:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
     group: coding-standards
+    secrets: [ github_api_token ]
     commands:
       - ./toolkit/phing test-run-behat ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
@@ -109,6 +113,7 @@ pipeline:
   phpcs:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
     group: coding-standards
+    secrets: [ github_api_token ]
     commands:
       - touch /test/toolkit/composer.lock 
       - ./toolkit/phing test-run-phpcs ${BUILD_OPTIONS} ${PHING_OPTS}
@@ -118,6 +123,7 @@ pipeline:
   php7-comp:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
     group: coding-standards
+    secrets: [ github_api_token ]
     commands:
       - ./toolkit/phing test-run-phpcs-compatibility -D'phpcs.compat.checkreturn'='false' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
@@ -125,7 +131,8 @@ pipeline:
 
   create-distribution:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
-    group: deploy
+    group: create-distribution
+    secrets: [ github_api_token ]
     commands:
       - ./toolkit/phing create-distribution ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
@@ -133,6 +140,8 @@ pipeline:
 
   git-hooks:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    group: git-hooks
+    secrets: [ github_api_token ]
     commands:
       - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing git-hook-disable ${BUILD_OPTIONS} ${PHING_OPTS}
