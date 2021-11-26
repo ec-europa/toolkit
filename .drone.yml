@@ -110,6 +110,7 @@ pipeline:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
     group: coding-standards
     commands:
+      - touch /test/toolkit/composer.lock 
       - ./toolkit/phing test-run-phpcs ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
