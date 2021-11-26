@@ -82,6 +82,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   install-clone:
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
     group: install-clone
     secrets: [ github_api_token ]
     commands:
