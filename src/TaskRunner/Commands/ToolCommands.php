@@ -592,6 +592,7 @@ class ToolCommands extends AbstractCommands
      * Check project compatibility for Drupal 9 upgrade.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      *
      * Note: The project configuration should be updated.
      *
@@ -619,6 +620,16 @@ class ToolCommands extends AbstractCommands
 
             if (Semver::satisfies($DrupalCore['version'], '^9')) {
                 $this->say("Project already running on Drupal 9, skipping Drupal 9 compatibility analysis.");
+                return 0;
+            }
+        }
+
+        // Check if developer is bypassing Drupal 9 check.
+        $optionsFile = getcwd() . "/.opts.yaml";
+        if (file_exists($optionsFile)) {
+            $options = Yaml::parseFile($optionsFile);
+            if (isset($options['d9_check']) && $options['d9_check'] == 'False') {
+                $this->say("Skipping Drupal 9 compatibility analysis, check .opts.yml.");
                 return 0;
             }
         }
@@ -956,6 +967,14 @@ class ToolCommands extends AbstractCommands
             if (empty($data) || !isset($data['toolkit'])) {
                 $this->writeln('Invalid data.');
                 return 1;
+            }
+
+            // Add exception for Drupal 8 after EOL.
+            $this->checkCommitMessage();
+            $date = date("Y-m-d");
+            if (!$this->skipd9c && ($date > "2021-11-30") && ($date < "2022-01-20")) {
+                $this->writeln("Developer is forcing Drupal 8 usage. Including drupal ^8.9.20 in te constraint.");
+                $data['drupal'] = $data['drupal'] . '|^8.9.20';
             }
 
             // Handle PHP version.
