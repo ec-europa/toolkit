@@ -53,7 +53,7 @@
   expectations:
     - file: "build/sites/default/settings.php"
       contains: |
-          "<?php
+          <?php
           $foo = 'bar';
 
           // Start Toolkit settings block.
@@ -85,7 +85,7 @@
           include $app_root . '/' . $site_path . '/settings.override.php';
           }
 
-          // End Toolkit settings block."
+          // End Toolkit settings block.
       not_contains: ~
 
 - configuration: []
@@ -98,7 +98,7 @@
   expectations:
     - file: "build/sites/default/settings.php"
       contains: |
-        "<?php
+        <?php
         $hash = '12345';
 
         // Start Toolkit settings block.
@@ -129,5 +129,5 @@
           include $app_root . '/' . $site_path . '/settings.override.php';
         }
 
-        // End Toolkit settings block."
+        // End Toolkit settings block.
       not_contains: ~
