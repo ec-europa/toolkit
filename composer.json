@@ -11,7 +11,7 @@
         "source": "https://github.com/ec-europa/toolkit"
     },
     "require": {
-        "php": "^7.3",
+        "php": "^7.3||^8.0",
         "ext-json": "*",
         "behat/behat": "^3.7 || ^3.8",
         "cweagans/composer-patches": "^1.4 || ^1.7",
