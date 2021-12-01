@@ -969,6 +969,14 @@ class ToolCommands extends AbstractCommands
                 return 1;
             }
 
+            // Add exception for Drupal 8 after working time.
+            $this->checkCommitMessage();
+            $date = date("Y-m-d");
+            if (!$this->skipd9c && ($date > "2021-11-30") && ($date < "2022-01-20")) {
+                $this->writeln("Developer is forcing Drupal 8 usage. Including drupal ^8.9.20 in te constraint.");
+                $data['drupal'] = $data['drupal'] . '|^8.9.20';
+            }
+
             // Handle PHP version.
             $php_version = phpversion();
             $php_check = Semver::satisfies($php_version, $data['php_version']) ? 'OK' : 'FAIL';
