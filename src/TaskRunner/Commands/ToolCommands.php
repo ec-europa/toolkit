@@ -969,7 +969,7 @@ class ToolCommands extends AbstractCommands
                 return 1;
             }
 
-            // Add exception for Drupal 8 after working time.
+            // Add exception for Drupal 8 after EOL.
             $this->checkCommitMessage();
             $date = date("Y-m-d");
             if (!$this->skipd9c && ($date > "2021-11-30") && ($date < "2022-01-20")) {
