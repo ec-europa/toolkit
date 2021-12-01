@@ -426,8 +426,10 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         $command = "blackfire --json curl $base_url";
 
-        // Execute a list of commands to run after tests.
+        // Get the list of pages to check and prevent duplicates.
         $pages = $this->getConfig()->get('toolkit.test.blackfire.pages');
+        $pages = array_unique($pages);
+
         // Limit the pages up to 10 items.
         $pages = array_slice((array) $pages, 0, 10);
         foreach ($pages as $page) {
