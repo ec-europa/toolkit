@@ -1,0 +1,135 @@
+diff --git a/CodeSniffer.php b/CodeSniffer.php
+index fa682c6..8850dfa 100644
+--- a/CodeSniffer.php
++++ b/CodeSniffer.php
+@@ -2025,12 +2025,12 @@ class PHP_CodeSniffer
+             $lastCharWasCaps = $classFormat;
+ 
+             for ($i = 1; $i < $length; $i++) {
+-                $ascii = ord($string{$i});
++                $ascii = ord($string[$i]);
+                 if ($ascii >= 48 && $ascii <= 57) {
+                     // The character is a number, so it cant be a capital.
+                     $isCaps = false;
+                 } else {
+-                    if (strtoupper($string{$i}) === $string{$i}) {
++                    if (strtoupper($string[$i]) === $string[$i]) {
+                         $isCaps = true;
+                     } else {
+                         $isCaps = false;
+@@ -2076,7 +2076,7 @@ class PHP_CodeSniffer
+                     continue;
+                 }
+ 
+-                if ($bit{0} !== strtoupper($bit{0})) {
++                if ($bit[0] !== strtoupper($bit[0])) {
+                     $validName = false;
+                     break;
+                 }
+diff --git a/CodeSniffer/CLI.php b/CodeSniffer/CLI.php
+index 29403cf..ee3d44b 100644
+--- a/CodeSniffer/CLI.php
++++ b/CodeSniffer/CLI.php
+@@ -456,7 +456,7 @@ class PHP_CodeSniffer_CLI
+                     continue;
+                 }
+ 
+-                if ($arg{1} === '-') {
++                if ($arg[1] === '-') {
+                     $this->processLongArgument(substr($arg, 2), $i);
+                 } else {
+                     $switches = str_split($arg);
+diff --git a/CodeSniffer/Standards/PEAR/Sniffs/Commenting/FileCommentSniff.php b/CodeSniffer/Standards/PEAR/Sniffs/Commenting/FileCommentSniff.php
+index 502e432..94e908f 100644
+--- a/CodeSniffer/Standards/PEAR/Sniffs/Commenting/FileCommentSniff.php
++++ b/CodeSniffer/Standards/PEAR/Sniffs/Commenting/FileCommentSniff.php
+@@ -386,7 +386,7 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
+                 $newName  = strtoupper($firstBit{0}).substr($firstBit, 1).'_';
+                 foreach ($nameBits as $bit) {
+                     if ($bit !== '') {
+-                        $newName .= strtoupper($bit{0}).substr($bit, 1).'_';
++                        $newName .= strtoupper($bit[0]).substr($bit, 1).'_';
+                     }
+                 }
+ 
+@@ -431,7 +431,7 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
+             $newName    = strtoupper($firstBit{0}).substr($firstBit, 1).'_';
+             foreach ($nameBits as $bit) {
+                 if ($bit !== '') {
+-                    $newName .= strtoupper($bit{0}).substr($bit, 1).'_';
++                    $newName .= strtoupper($bit[0]).substr($bit, 1).'_';
+                 }
+             }
+ 
+diff --git a/CodeSniffer/Standards/PEAR/Sniffs/Commenting/InlineCommentSniff.php b/CodeSniffer/Standards/PEAR/Sniffs/Commenting/InlineCommentSniff.php
+index fcc1d7a..41df703 100644
+--- a/CodeSniffer/Standards/PEAR/Sniffs/Commenting/InlineCommentSniff.php
++++ b/CodeSniffer/Standards/PEAR/Sniffs/Commenting/InlineCommentSniff.php
+@@ -68,11 +68,11 @@ class PEAR_Sniffs_Commenting_InlineCommentSniff implements PHP_CodeSniffer_Sniff
+                 $phpcsFile->fixer->replaceToken($stackPtr, $newComment);
+             }
+         } else if ($tokens[$stackPtr]['content']{0} === '/'
+-            && $tokens[$stackPtr]['content']{1} === '/'
++            && $tokens[$stackPtr]['content'][1] === '/'
+         ) {
+             $phpcsFile->recordMetric($stackPtr, 'Inline comment style', '// ...');
+         } else if ($tokens[$stackPtr]['content']{0} === '/'
+-            && $tokens[$stackPtr]['content']{1} === '*'
++            && $tokens[$stackPtr]['content'][1] === '*'
+         ) {
+             $phpcsFile->recordMetric($stackPtr, 'Inline comment style', '/* ... */');
+         }
+diff --git a/CodeSniffer/Standards/PEAR/Sniffs/NamingConventions/ValidClassNameSniff.php b/CodeSniffer/Standards/PEAR/Sniffs/NamingConventions/ValidClassNameSniff.php
+index 7eb587d..6fee3ff 100644
+--- a/CodeSniffer/Standards/PEAR/Sniffs/NamingConventions/ValidClassNameSniff.php
++++ b/CodeSniffer/Standards/PEAR/Sniffs/NamingConventions/ValidClassNameSniff.php
+@@ -77,7 +77,7 @@ class PEAR_Sniffs_NamingConventions_ValidClassNameSniff implements PHP_CodeSniff
+         $nameBits  = explode('_', $name);
+         $firstBit  = array_shift($nameBits);
+         foreach ($nameBits as $bit) {
+-            if ($bit === '' || $bit{0} !== strtoupper($bit{0})) {
++            if ($bit === '' || $bit[0] !== strtoupper($bit[0])) {
+                 $validName = false;
+                 break;
+             }
+@@ -95,7 +95,7 @@ class PEAR_Sniffs_NamingConventions_ValidClassNameSniff implements PHP_CodeSniff
+                 $newName = strtoupper($firstBit{0}).substr($firstBit, 1).'_';
+                 foreach ($nameBits as $bit) {
+                     if ($bit !== '') {
+-                        $newName .= strtoupper($bit{0}).substr($bit, 1).'_';
++                        $newName .= strtoupper($bit[0]).substr($bit, 1).'_';
+                     }
+                 }
+ 
+diff --git a/CodeSniffer/Standards/PEAR/Sniffs/NamingConventions/ValidFunctionNameSniff.php b/CodeSniffer/Standards/PEAR/Sniffs/NamingConventions/ValidFunctionNameSniff.php
+index 410009c..74fb4e8 100644
+--- a/CodeSniffer/Standards/PEAR/Sniffs/NamingConventions/ValidFunctionNameSniff.php
++++ b/CodeSniffer/Standards/PEAR/Sniffs/NamingConventions/ValidFunctionNameSniff.php
+@@ -266,10 +266,10 @@ class PEAR_Sniffs_NamingConventions_ValidFunctionNameSniff extends PHP_CodeSniff
+             // Check that each new word starts with a capital.
+             $nameBits = explode('_', $packagePart);
+             foreach ($nameBits as $bit) {
+-                if ($bit{0} !== strtoupper($bit{0})) {
++                if ($bit[0] !== strtoupper($bit[0])) {
+                     $newPackagePart = '';
+                     foreach ($nameBits as $bit) {
+-                        $newPackagePart .= strtoupper($bit{0}).substr($bit, 1).'_';
++                        $newPackagePart .= strtoupper($bit[0]).substr($bit, 1).'_';
+                     }
+ 
+                     $validName = false;
+diff --git a/CodeSniffer/Standards/Squiz/Sniffs/CSS/ColourDefinitionSniff.php b/CodeSniffer/Standards/Squiz/Sniffs/CSS/ColourDefinitionSniff.php
+index 85849ca..a2436d3 100644
+--- a/CodeSniffer/Standards/Squiz/Sniffs/CSS/ColourDefinitionSniff.php
++++ b/CodeSniffer/Standards/Squiz/Sniffs/CSS/ColourDefinitionSniff.php
+@@ -81,8 +81,8 @@ class Squiz_Sniffs_CSS_ColourDefinitionSniff implements PHP_CodeSniffer_Sniff
+             return;
+         }
+ 
+-        if ($colour{1} === $colour{2} && $colour{3} === $colour{4} && $colour{5} === $colour{6}) {
+-            $expected = '#'.$colour{1}.$colour{3}.$colour{5};
++        if ($colour[1] === $colour[2] && $colour[3] === $colour[4] && $colour[5] === $colour[6]) {
++            $expected = '#'.$colour[1].$colour[3].$colour[5];
+             $error    = 'CSS colours must use shorthand if available; expected %s but found %s';
+             $data     = array(
+                          $expected,
