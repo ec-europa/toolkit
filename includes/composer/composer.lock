@@ -792,16 +792,16 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "3.3.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "beafe1690368511e72b3f1d0fadda2b531dc177c"
+                "reference": "e7e7f9ebf6c2c95b523e3474d07aaf1779b3b597"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/beafe1690368511e72b3f1d0fadda2b531dc177c",
-                "reference": "beafe1690368511e72b3f1d0fadda2b531dc177c",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/e7e7f9ebf6c2c95b523e3474d07aaf1779b3b597",
+                "reference": "e7e7f9ebf6c2c95b523e3474d07aaf1779b3b597",
                 "shasum": ""
             },
             "require": {
