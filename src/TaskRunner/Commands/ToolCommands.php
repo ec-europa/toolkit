@@ -962,7 +962,8 @@ class ToolCommands extends AbstractCommands
 
             // Handle PHP version.
             $php_version = phpversion();
-            $php_check = Semver::satisfies($php_version, $data['php_version']) ? 'OK' : 'FAIL';
+            $isValid = version_compare($data['php_version'], $php_version);
+            $php_check = ($isValid >= 0) ? 'OK' : 'FAIL';
 
             $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
             if ($composerLock) {

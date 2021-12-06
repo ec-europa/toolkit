@@ -1,12 +1,6 @@
 clone:
   git:
-    image: plugins/git:next
-    when:
-      event: [ push, pull_request, tag ]
-  git:
-    image: plugins/git
-    when:
-      event: [ deployment ]
+    image: registry.fpfis.eu/drone-plugins/git:next
 
 workspace:
   base: /test
@@ -14,14 +8,14 @@ workspace:
 
 services:
   web:
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
     environment:
       - DOCUMENT_ROOT=/test/toolkit
 
 pipeline:
   composer-install:
     group: prepare
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -32,7 +26,7 @@ pipeline:
 
   composer-install:
     group: prepare
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -44,7 +38,7 @@ pipeline:
 
   composer-update-lowest:
     group: post-prepare
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -56,7 +50,7 @@ pipeline:
 
   composer-update-lowest:
     group: post-prepare
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -69,14 +63,14 @@ pipeline:
 
   grumphp:
     group: test
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
     commands:
       - ./vendor/bin/phpcs -i
       - ./vendor/bin/grumphp run
 
   phpunit:
     group: test
-    image: fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
     commands:
       - ./vendor/bin/phpunit
 
