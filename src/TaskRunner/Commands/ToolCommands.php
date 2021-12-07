@@ -581,7 +581,7 @@ class ToolCommands extends AbstractCommands
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/hal+json',
             "X-CSRF-Token: $token",
-            'Authorization: Basic ' . getenv('QA_WEBSITE_TOKEN'),
+            'Authorization: Basic ' . getenv('QA_API_BASIC_AUTH'),
         ]);
         curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
