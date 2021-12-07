@@ -483,11 +483,15 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             if (empty($ci_url = getenv('DRONE_BUILD_LINK'))) {
                 $ci_url = getenv('CI_PIPELINE_URL');
             }
+
             // Send payload to QA website.
+            if (empty($url = getenv('QA_WEBSITE_URL'))) {
+                $url = 'https://webgate.ec.europa.eu/fpfis/qa';
+            }
             if (!empty($repo)) {
                 $payload = [
                     '_links' => ['type' => [
-                        'href' => getenv('QA_WEBSITE_URL') . '/rest/type/node/blackfire',
+                        'href' => $url . '/rest/type/node/blackfire',
                     ]],
                     'status' => [['value' => 0]],
                     'type' => [['target_id' => 'blackfire']],
