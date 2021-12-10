@@ -93,9 +93,9 @@ pipeline:
     commands:
       - ./vendor/bin/yaml-lint *.yml *.yml.dist
       - CONFIG_FOLDER=$(if test -d config; then find config -type f -name "*.yml"; fi)
-      - if [ -z ${CONFIG_FOLDER} ]; then ./vendor/bin/yaml-lint ${CONFIG_FOLDER}; fi
+      - if [ -z $${CONFIG_FOLDER} ]; then ./vendor/bin/yaml-lint $${CONFIG_FOLDER}; fi
       - LIB_FOLDER=$(if test -d lib; then find lib -type f -name "*.yml"; fi)
-      - if [ -z ${LIB_FOLDER} ]; then ./vendor/bin/yaml-lint ${LIB_FOLDER}; fi
+      - if [ -z $${LIB_FOLDER} ]; then ./vendor/bin/yaml-lint $${LIB_FOLDER}; fi
 
 matrix:
   PHP_VERSION:
