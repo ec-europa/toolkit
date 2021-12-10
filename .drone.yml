@@ -102,7 +102,7 @@ pipeline:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     secrets: [ github_api_token, composer_auth ]
     commands:
-      - ./vendor/bin/parallel-lint --exclude web --exclude vendor . -e module -e inc -e theme -e install
+      - ./vendor/bin/parallel-lint --exclude web --exclude vendor -e module -e inc -e theme -e install -e php .
 
 matrix:
   PHP_VERSION:
