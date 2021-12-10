@@ -86,6 +86,15 @@ pipeline:
     commands:
       - ./vendor/bin/phpunit
 
+  lint-yaml:
+    group: test
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    secrets: [ github_api_token, composer_auth ]
+    commands:
+      - ./vendor/bin/yaml-lint *.yml *.yml.dist
+      - YAML_FILES=$(find  lib config -type f -name "*.yml")
+      - ./vendor/bin/yaml-lint ${YAML_FILES}
+
 matrix:
   PHP_VERSION:
     - 7.3
