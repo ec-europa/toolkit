@@ -92,7 +92,7 @@ pipeline:
     secrets: [ github_api_token, composer_auth ]
     commands:
       - ./vendor/bin/yaml-lint *.yml *.yml.dist
-      - YAML_FILES=$(find  lib config -type f -name "*.yml")
+      - YAML_FILES=$(if test -d lib; then find lib config -type f -name "*.yml"; fi)
       - ./vendor/bin/yaml-lint ${YAML_FILES}
 
 matrix:
