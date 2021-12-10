@@ -93,7 +93,7 @@ pipeline:
     commands:
       - ./vendor/bin/yaml-lint *.yml *.yml.dist
       - YAML_FILES=$(if test -d lib; then find lib config -type f -name "*.yml"; fi)
-      - ./vendor/bin/yaml-lint ${YAML_FILES}
+      - if [ -z "${YAML_FILES}" ]; then ./vendor/bin/yaml-lint ${YAML_FILES}; fi
 
 matrix:
   PHP_VERSION:
