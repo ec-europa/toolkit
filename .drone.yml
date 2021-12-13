@@ -80,6 +80,24 @@ pipeline:
     commands:
       - ./vendor/bin/phpunit
 
+  lint-yaml:
+    group: test
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    secrets: [ github_api_token, composer_auth ]
+    commands:
+      - ./vendor/bin/yaml-lint *.yml *.yml.dist
+      - CONFIG_FOLDER=$(if test -d config; then find config -type f -name "*.yml"; fi)
+      - if ! [ -z "$CONFIG_FOLDER" ]; then ./vendor/bin/yaml-lint $CONFIG_FOLDER; fi
+      - LIB_FOLDER=$(if test -d lib; then find lib -type f -name "*.yml"; fi)
+      - if ! [ -z "$LIB_FOLDER" ]; then ./vendor/bin/yaml-lint $LIB_FOLDER; fi
+
+  lint-php:
+    group: test
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    secrets: [ github_api_token, composer_auth ]
+    commands:
+      - ./vendor/bin/parallel-lint --exclude web --exclude vendor -e module -e inc -e theme -e install -e php .
+
 matrix:
   PHP_VERSION:
     - 7.3
