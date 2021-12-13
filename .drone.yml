@@ -1,6 +1,12 @@
 clone:
   git:
-    image: registry.fpfis.eu/drone-plugins/git:next
+    image: plugins/git:next
+    when:
+      event: [ push, pull_request, tag ]
+  git:
+    image: plugins/git
+    when:
+      event: [ deployment ]
 
 workspace:
   base: /test
@@ -76,7 +82,7 @@ pipeline:
 
   lint-yaml:
     group: test
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
     secrets: [ github_api_token, composer_auth ]
     commands:
       - ./vendor/bin/yaml-lint *.yml *.yml.dist
@@ -87,7 +93,7 @@ pipeline:
 
   lint-php:
     group: test
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
     secrets: [ github_api_token, composer_auth ]
     commands:
       - ./vendor/bin/parallel-lint --exclude web --exclude vendor -e module -e inc -e theme -e install -e php .
