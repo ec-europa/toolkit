@@ -4,12 +4,10 @@
   "rules": {
     "indentation": 2,
     "number-leading-zero": "always",
-
-    "selector-no-qualifying-type": null,
-    "selector-class-pattern": null,
-    "selector-max-id": null,
-    "max-nesting-depth": 6,
-    "selector-max-compound-selectors": 7
-
+    "max-nesting-depth": 2,
+    "selector-max-compound-selectors": 3,
+    "selector-class-pattern": "^[a-z]([a-z0-9-]+)?(__([a-z0-9]+-?)+)?(--([a-z0-9]+-?)+){0,2}$",
+    "selector-max-id": 0,
+    "no-duplicate-selectors": true
   }
 }

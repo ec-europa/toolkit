@@ -1,7 +1,3 @@
-imports:
-  - { resource: vendor/ec-europa/qa-automation/dist/library-conventions.yml }
-
-# grumphp.yml
 grumphp:
     tasks:
         phpcs:

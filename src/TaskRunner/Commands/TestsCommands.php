@@ -55,9 +55,6 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                     if (isset($import['resource']) && $import['resource'] === 'vendor/ec-europa/qa-automation/dist/qa-conventions.yml') {
                         $containsQaConventions = true;
                     }
-                    if (isset($import['resource']) && $import['resource'] === 'vendor/ec-europa/qa-automation/dist/qa-conventions.compatible.yml') {
-                        $containsQaConventions = true;
-                    }
                 }
             }
         }
@@ -93,53 +90,64 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * Additional commands could run before and/or after the Behat tests. Such
      * commands should be described in configuration files in this way:
      * @code
-     * behat:
-     *   commands:
-     *     before:
-     *       - task: exec
-     *         command: ls -la
-     *       - ...
-     *     after:
-     *       - task: exec
-     *         command: whoami
-     *       - ...
+     * toolkit:
+     *   test:
+     *     behat:
+     *       profile: "default"
+     *       commands:
+     *         before:
+     *           - task: exec
+     *             command: ls -la
+     *           - ...
+     *         after:
+     *           - task: exec
+     *             command: whoami
+     *           - ...
      * @endcode
      *
      * @command toolkit:test-behat
      *
      * @aliases tb
      *
-     * @option from   From behat.yml.dist config file.
-     * @option to     To behat.yml config file.
+     * @option from     From behat.yml.dist config file.
+     * @option to       To behat.yml config file.
+     * @option profile  The profile to execute.
+     * @option suite    The suite to execute, default runs all suites of profile.
      */
     public function toolkitBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
         'to' => InputOption::VALUE_OPTIONAL,
-        'suite' => 'default'
+        'profile' => InputOption::VALUE_OPTIONAL,
+        'suite' => InputOption::VALUE_OPTIONAL,
     ])
     {
         $tasks = [];
+        $behatBin = $this->getConfig()->get('runner.bin_dir') . '/behat';
+        $defaultProfile = $this->getConfig()->get('toolkit.test.behat.profile');
+
+        $profile = (!empty($options['profile'])) ? $options['profile'] : $defaultProfile;
+        $suite = (!empty($options['suite'])) ? $options['suite'] : '';
+        $suiteParameter = ($suite) ? ' --suite=' . $suite : '';
 
         // Execute a list of commands to run before tests.
-        if ($commands = $this->getConfig()->get('behat.commands.before')) {
+        if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.before')) {
             $tasks[] = $this->taskCollectionFactory($commands);
         }
 
         $this->taskProcessConfigFile($options['from'], $options['to'])->run();
 
-        $behat_bin = $this->getConfig()->get('runner.bin_dir') . '/behat';
-        $result = $this->taskExec($behat_bin . ' --dry-run --suite=' . $options['suite'])
-            ->silent(true)
-            ->printOutput(false)
-            ->run()
-            ->getMessage();
+        $result = $this->taskExec($behatBin . " --dry-run --profile=" . $profile . " " . $suiteParameter)
+            ->silent(true)->run()->getMessage();
 
-        $tasks[] = strpos(trim($result), 'No scenarios') !== 0
-        ? $this->taskExec($behat_bin . ' --strict --suite=' . $options['suite'])
-        : $this->taskExec($behat_bin . ' --suite=' . $options['suite']);
+        if (strpos(trim($result), 'No scenarios') !== false) {
+            $this->say("No Scenarios found for --profile=" . $profile . " " . $suiteParameter . ", please create at least one Scenario.");
+            return new ResultData(1);
+        }
+
+        $tasks[] = $this->taskExec($behatBin . " --profile=" . $profile . " " . $suiteParameter);
 
         // Execute a list of commands to run after tests.
-        if ($commands = $this->getConfig()->get('behat.commands.after')) {
+        if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.after')) {
             $tasks[] = $this->taskCollectionFactory($commands);
         }
 
@@ -292,36 +300,49 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     public function toolkitLintYaml()
     {
         $pattern = $this->getConfig()->get('toolkit.lint.yaml.pattern');
-        $include = $this->getConfig()->get('toolkit.lint.yaml.include');
-        $exclude = $this->getConfig()->get('toolkit.lint.yaml.exclude');
+        $includes = $this->getConfig()->get('toolkit.lint.yaml.include');
+        $excludes = $this->getConfig()->get('toolkit.lint.yaml.exclude');
 
         $this->say('Pattern: ' . implode(', ', $pattern));
-        $this->say('Include: ' . implode(', ', $include));
-        $this->say('Exclude: ' . implode(', ', $exclude));
+        $this->say('Include: ' . implode(', ', $includes));
+        $this->say('Exclude: ' . implode(', ', $excludes));
 
         $finder = (new Finder())
             ->files()->followLinks()
             ->ignoreVCS(false)
-            ->ignoreDotFiles(false)
-            ->name($pattern)
-            ->notPath($exclude)->in($include);
+            ->ignoreDotFiles(false);
+        foreach ($pattern as $name) {
+            $finder->name($name);
+        }
+        foreach ($includes as $include) {
+            $finder->in($include);
+        }
+        foreach ($excludes as $exclude) {
+            $finder->notPath($exclude);
+        }
 
         // Get the yml files in the root of the project.
         $root_finder = (new Finder())
             ->files()->followLinks()
             ->ignoreVCS(false)
             ->ignoreDotFiles(false)
-            ->name($pattern)->in('.')->depth(0);
+            ->in('.')->depth(0);
+        foreach ($pattern as $name) {
+            $root_finder->name($name);
+        }
 
         $files = array_merge(
             array_keys(iterator_to_array($finder)),
             array_keys(iterator_to_array($root_finder))
         );
         $this->say('Found ' . count($files) . ' files to lint.');
+        if (!empty($files)) {
+            // Prepare arguments.
+            $arg = implode(' ', $files);
+            $task = $this->taskExec("./vendor/bin/yaml-lint -q $arg")
+                ->printMetadata(false);
+        }
 
-        // Prepare arguments.
-        $arg = implode(' ', $files);
-        $task = $this->taskExec("./vendor/bin/yaml-lint -q $arg");
         return $this->collectionBuilder()->addTaskList([$task]);
     }
 
@@ -361,5 +382,164 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $opts_string = implode(' ', $opts);
         $task = $this->taskExec("./vendor/bin/parallel-lint $opts_string .");
         return $this->collectionBuilder()->addTaskList([$task]);
+    }
+
+    /**
+     * Run Blackfire.
+     *
+     * @command toolkit:run-blackfire
+     *
+     * @aliases tbf
+     */
+    public function toolkitBlackfire()
+    {
+        $base_url = $this->getConfig()->get('drupal.base_url');
+        $project_id = $this->getConfig()->get('toolkit.project_id');
+        $bf_client_id = getenv('BLACKFIRE_CLIENT_ID');
+        $bf_client_token = getenv('BLACKFIRE_CLIENT_TOKEN');
+
+        if (!getenv('BLACKFIRE_SERVER_ID') || !getenv('BLACKFIRE_SERVER_TOKEN')) {
+            $this->say('The blackfire server is not properly configured, please contact QA team.');
+            return new ResultData(0);
+        }
+
+        if (empty($bf_client_id) || empty($bf_client_token)) {
+            $this->say('You must set the following environment variables: BLACKFIRE_CLIENT_ID, BLACKFIRE_CLIENT_TOKEN, skipping.');
+            return new ResultData(0);
+        }
+
+        // Confirm that blackfire is properly installed.
+        $test = $this->taskExec('which blackfire')->silent(true)
+            ->run()->getMessage();
+        if (strpos($test, 'not found') !== false) {
+            $this->say('The Blackfire is not installed, please contact QA team.');
+            return new ResultData(0);
+        }
+
+        // Make sure that the blackfire agent is properly configured.
+        $config = $this->taskExec('cat /etc/blackfire/agent | grep server-id=')
+            ->silent(true)->run()->getMessage();
+        if ($config === 'server-id=') {
+            $this->taskExec('blackfire agent:config')->run();
+            $this->taskExec('sudo service blackfire-agent restart')->run();
+        }
+
+        $command = "blackfire --json curl $base_url";
+
+        // Get the list of pages to check and prevent duplicates.
+        $pages = $this->getConfig()->get('toolkit.test.blackfire.pages');
+        $pages = array_unique($pages);
+
+        // Limit the pages up to 10 items.
+        $pages = array_slice((array) $pages, 0, 10);
+        foreach ($pages as $page) {
+            $this->say("Checking page: {$base_url}{$page}");
+
+            $raw = $this->taskExec($command . $page)
+                ->silent(true)->run()->getMessage();
+            $result = json_decode($raw, true);
+
+            if (empty($result['_links']['graph_url']['href'])) {
+                $this->say('Something went wrong, please contact the QA team.');
+                return new ResultData(0);
+            }
+
+            $data = [];
+            $data['graph'] = $result['_links']['graph_url']['href'];
+            $data['timeline'] = $result['_links']['timeline_url']['href'];
+            $data['recommendation'] = $data['graph'] . '?settings%5BtabPane%5D=recommendations';
+            $data['cpu_time'] = $result['envelope']['cpu'] . 'ms';
+            $data['wall_time'] = $result['envelope']['wt'] . 'ms';
+            $data['io_wait'] = $result['envelope']['io'] . 'ms';
+            $data['memory'] = $this->formatBytes($result['envelope']['pmu']);
+            $data['sql'] = sprintf(
+                "%sms %srq",
+                $result['arguments']['io.db.query']['*']['wt'],
+                $result['arguments']['io.db.query']['*']['ct']
+            );
+            $data['network'] = sprintf(
+                '%s %s %s',
+                !empty($result['envelope']['nw']) ? $this->formatBytes($result['envelope']['nw']) : 'n/a',
+                !empty($result['envelope']['nw_in']) ? $this->formatBytes($result['envelope']['nw_in']) : 'n/a',
+                !empty($result['envelope']['nw_out']) ? $this->formatBytes($result['envelope']['nw_out']) : 'n/a'
+            );
+
+            // Print the relevant information.
+            $msg = sprintf(
+                "Memory:\t\t%s\nWall Time:\t%s\nI/O Wait:\t%s\nCPU Time:\t%s\nNetwork:\t%s\nSQL:\t\t%s",
+                $data['memory'],
+                $data['wall_time'],
+                $data['io_wait'],
+                $data['cpu_time'],
+                $data['network'],
+                $data['sql']
+            );
+            $this->writeln($msg);
+
+            // Handle repo name.
+            if (empty($repo = getenv('DRONE_REPO'))) {
+                $repo = getenv('CI_PROJECT_NAME');
+            }
+            if (empty($ci_url = getenv('DRONE_BUILD_LINK'))) {
+                $ci_url = getenv('CI_PIPELINE_URL');
+            }
+
+            // Send payload to QA website.
+            if (empty($url = getenv('QA_WEBSITE_URL'))) {
+                $url = 'https://webgate.ec.europa.eu/fpfis/qa';
+            }
+            if (!empty($repo)) {
+                $payload = [
+                    '_links' => ['type' => [
+                        'href' => $url . '/rest/type/node/blackfire',
+                    ]],
+                    'status' => [['value' => 0]],
+                    'type' => [['target_id' => 'blackfire']],
+                    'title' => [['value' => "Profiling: $project_id"]],
+                    'body' => [['value' => $raw]],
+                    'field_blackfire_repository' => [['value' => $repo]],
+                    'field_blackfire_page' => [['value' => $page]],
+                    'field_blackfire_ci_cd_url' => [['value' => $ci_url]],
+                    'field_blackfire_graph_url' => [['value' => $data['graph']]],
+                    'field_blackfire_timeline_url' => [['value' => $data['timeline']]],
+                    'field_blackfire_recomendations' => [['value' => $data['recommendation']]],
+                    'field_blackfire_memory' => [['value' => $data['memory']]],
+                    'field_blackfire_wall_time' => [['value' => $data['wall_time']]],
+                    'field_blackfire_io_wait' => [['value' => $data['io_wait']]],
+                    'field_blackfire_cpu_time' => [['value' => $data['cpu_time']]],
+                    'field_blackfire_network' => [['value' => $data['network']]],
+                    'field_blackfire_sql' => [['value' => $data['sql']]],
+                ];
+                if ($playload_response = ToolCommands::postQaContent($payload)) {
+                    $this->writeln("Payload sent to QA website: $playload_response");
+                } else {
+                    $this->writeln('Fail to send the payload.');
+                }
+                $this->writeln('');
+            }
+        }
+
+        return new ResultData(0);
+    }
+
+    /**
+     * Helper to convert bytes to human readable unit.
+     *
+     * @param int $bytes
+     *   The bytes to convert.
+     * @param int $precision
+     *   The precision for the convertion.
+     *
+     * @return string
+     *   The converted value.
+     */
+    private function formatBytes($bytes, $precision = 2)
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+        return round($bytes, $precision) . $units[$pow];
     }
 }

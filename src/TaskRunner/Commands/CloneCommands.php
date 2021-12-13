@@ -127,9 +127,11 @@ class CloneCommands extends AbstractCommands
         $tasks = [];
 
         if (!file_exists($options['dumpfile'])) {
-            $this->say('"' . $options['dumpfile'] . '" file not found, use the command "toolkit:download-dump --dumpfile ' . $options['dumpfile'] . '".');
+            if (!getenv('CI')) {
+                $this->say('"' . $options['dumpfile'] . '" file not found, use the command "toolkit:download-dump --dumpfile ' . $options['dumpfile'] . '".');
 
-            return $this->collectionBuilder()->addTaskList($tasks);
+                return $this->collectionBuilder()->addTaskList($tasks);
+            }
         }
 
         // Unzip and dump database file.
@@ -149,6 +151,8 @@ class CloneCommands extends AbstractCommands
      *
      * In order to make use of this functionality you must add your
      * ASDA credentials to your environment like.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *
      * @param array $options
      *   Command options.
@@ -182,6 +186,24 @@ class CloneCommands extends AbstractCommands
 
         // Download the .sql file.
         $this->generateAsdaWgetInputFile($filename, $options);
+
+        // Display information about ASDA creation date.
+        $dumpData = substr(substr(file_get_contents('latest.sh1'), (strpos(file_get_contents('latest.sh1'), ' ')) + 2), 0, 15);
+        $dumpDate = date_parse_from_format("Ymd-His", $dumpData);
+        if (
+            is_array($dumpDate) &&
+            is_integer($dumpDate['hour']) &&
+            is_integer($dumpDate['minute']) &&
+            is_integer($dumpDate['second']) &&
+            is_integer($dumpDate['month']) &&
+            is_integer($dumpDate['day']) &&
+            is_integer($dumpDate['year'])
+        ) {
+            $dumpTimestamp = mktime($dumpDate['hour'], $dumpDate['minute'], $dumpDate['second'], $dumpDate['month'], $dumpDate['day'], $dumpDate['year']);
+            $dumpHrdate = 'ASDA DATE: ' . $dumpDate['day'] . ' ' . date('M', $dumpTimestamp) . ' ' . $dumpDate['year'] . ' at ' . $dumpDate['hour'] . ':' . $dumpDate['minute'];
+            $this->io()->title($dumpHrdate);
+        }
+
         $tasks[] = $this->taskExec('wget')
             ->option('-O', $options['dumpfile'] . '.gz')
             ->option('-i', self::TEMP_INPUTFILE)
