@@ -14,14 +14,14 @@ workspace:
 
 services:
   web:
-    image: fpfis/httpd-php-ci:${PHP_VERSION=7.2}
+    image: fpfis/httpd-php-ci:${PHP_VERSION=7.3}
     environment:
       - DOCUMENT_ROOT=/test/toolkit
 
 pipeline:
   composer-install:
     group: prepare
-    image: fpfis/httpd-php-ci:${PHP_VERSION=7.2}
+    image: fpfis/httpd-php-ci:${PHP_VERSION=7.3}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -32,7 +32,7 @@ pipeline:
 
   composer-install:
     group: prepare
-    image: fpfis/httpd-php-ci:${PHP_VERSION=7.2}
+    image: fpfis/httpd-php-ci:${PHP_VERSION=7.3}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -44,7 +44,7 @@ pipeline:
 
   composer-update-lowest:
     group: post-prepare
-    image: fpfis/httpd-php-ci:${PHP_VERSION=7.2}
+    image: fpfis/httpd-php-ci:${PHP_VERSION=7.3}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -56,7 +56,7 @@ pipeline:
 
   composer-update-lowest:
     group: post-prepare
-    image: fpfis/httpd-php-ci:${PHP_VERSION=7.2}
+    image: fpfis/httpd-php-ci:${PHP_VERSION=7.3}
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -76,7 +76,7 @@ pipeline:
 
   phpunit:
     group: test
-    image: fpfis/httpd-php-ci:${PHP_VERSION=7.2}
+    image: fpfis/httpd-php-ci:${PHP_VERSION=7.3}
     commands:
       - ./vendor/bin/phpunit
 

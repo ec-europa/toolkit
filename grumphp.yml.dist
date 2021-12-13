@@ -3,29 +3,28 @@ imports:
 
 # grumphp.yml
 grumphp:
-  tasks:
-    phpcs:
-      standard: PSR12
-      ignore_patterns:
-        - vendor/
-        - tests/fixtures
-      triggered_by: [php]
-      exclude:
-        - Generic.Files.LineLength
-  extensions:
-    - EcEuropa\QaAutomation\ExtraTasksExtension
-  tasks:
-    git_commit_message:
-        allow_empty_message: false
-        enforce_capitalized_subject: true
-        enforce_no_subject_punctuations: false
-        enforce_no_subject_trailing_period: false
-        enforce_single_lined_subject: true
-        type_scope_conventions: []
-        max_body_width: 72
-        max_subject_width: 60
-        matchers:
-            Must contain JIRA issue number: /[A-Z]+\-\d+:/
-        case_insensitive: true
-        multiline: true
-        additional_modifiers: ''
+    tasks:
+        phpcs:
+            standard: PSR12
+            ignore_patterns:
+                - vendor/
+                - tests/fixtures
+            triggered_by: [php]
+            exclude:
+                - Generic.Files.LineLength
+        git_commit_message:
+            allow_empty_message: false
+            enforce_capitalized_subject: true
+            enforce_no_subject_punctuations: false
+            enforce_no_subject_trailing_period: false
+            enforce_single_lined_subject: true
+            type_scope_conventions: []
+            max_body_width: 72
+            max_subject_width: 60
+            matchers:
+                Must contain JIRA issue number: /[A-Z]+\-\d+:/
+            case_insensitive: true
+            multiline: true
+            additional_modifiers: ''
+    extensions:
+        - EcEuropa\QaAutomation\ExtraTasksExtension
