@@ -132,4 +132,5 @@ docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix
 - [Continuous integration](/docs/continuous-integration.md)
 - [Building assets](/docs/building-assets.md)
 - [Available tasks](/docs/available-tasks.md)
+- [Project documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)

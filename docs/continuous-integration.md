@@ -30,4 +30,5 @@ The pipeline allows for an automatic deployment to the acceptance environment. T
 - [Using Docker environment](/docs/docker-environment.md)
 - [Building assets](/docs/building-assets.md)
 - [Available tasks](/docs/available-tasks.md)
+- [Project documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)

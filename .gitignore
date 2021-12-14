@@ -14,3 +14,5 @@
 
 *.sql
 phpda.*
+
+docs/cache

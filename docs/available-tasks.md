@@ -55,4 +55,5 @@ Available commands:
 - [Using Docker environment](/docs/docker-environment.md)
 - [Continuous integration](/docs/continuous-integration.md)
 - [Building assets](/docs/building-assets.md)
+- [Project documentation](/docs/project-documentation.md)
 - [Changelog](/changelog.md)

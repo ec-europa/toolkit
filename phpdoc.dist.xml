@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+        configVersion="3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://www.phpdoc.org"
+        xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
+>
+    <paths>
+        <output>docs/phpdoc</output>
+        <cache>docs/cache</cache>
+    </paths>
+    <version number="3.0.0">
+        <api>
+            <source dsn=".">
+                <path>src</path>
+            </source>
+            <extensions>
+                <!--1 or more repetitions:-->
+                <extension>php</extension>
+            </extensions>
+            <default-package-name>Toolkit</default-package-name>
+            <ignore hidden="true" symlinks="true">
+                <!--1 or more repetitions:-->
+                <path>tests/**/*</path>
+                <path>vendor/**/*</path>
+            </ignore>
+        </api>
+        <guide format="rst">
+            <source dsn=".">
+              <!--1 or more repetitions:-->
+              <path>docs/support</path>
+            </source>
+            <!--Optional:-->
+            <output>docs</output>
+        </guide>
+    </version>
+</phpdocumentor>

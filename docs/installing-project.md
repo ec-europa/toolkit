@@ -80,4 +80,5 @@ These commands simulate the automated deployment that Drone provides through its
 - [Continuous integration](/docs/continuous-integration.md)
 - [Building assets](/docs/building-assets.md)
 - [Available tasks](/docs/available-tasks.md)
+- [Project documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)

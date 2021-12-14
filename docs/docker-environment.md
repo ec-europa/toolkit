@@ -60,4 +60,5 @@ selenium:
 - [Continuous integration](/docs/continuous-integration.md)
 - [Building assets](/docs/building-assets.md)
 - [Available tasks](/docs/available-tasks.md)
+- [Project documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)
