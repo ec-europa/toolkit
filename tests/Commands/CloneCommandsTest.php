@@ -17,7 +17,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class CloneCommandsTest extends AbstractTest
 {
-
     /**
      * Data provider for testClone.
      *

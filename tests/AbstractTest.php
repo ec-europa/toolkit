@@ -13,7 +13,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 abstract class AbstractTest extends TestCase
 {
-
     /**
      * {@inheritdoc}
      */

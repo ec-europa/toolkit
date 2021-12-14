@@ -16,7 +16,6 @@ namespace EcEuropa\Toolkit\Tests\Commands {
      */
     class DrupalCommandsTest extends AbstractTest
     {
-
         /**
          * Data provider for testDrupalSettingsSetup.
          *
