@@ -6,11 +6,7 @@ parameters:
     - tests/fixtures
   tasks.phpcs.triggered_by:
     - php
-
-  extensions:
-    - OpenEuropa\CodeReview\ExtraTasksExtension
-  tasks:
-    git_commit_message:
+  tasks.git_commit_message:
         allow_empty_message: false
         enforce_capitalized_subject: true
         enforce_no_subject_punctuations: false
@@ -24,3 +20,6 @@ parameters:
         case_insensitive: true
         multiline: true
         additional_modifiers: ''
+
+  extensions:
+    - OpenEuropa\CodeReview\ExtraTasksExtension
