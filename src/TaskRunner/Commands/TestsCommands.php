@@ -8,9 +8,9 @@ use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use NuvoleWeb\Robo\Task as NuvoleWebTasks;
 use OpenEuropa\TaskRunner\Contract\FilesystemAwareInterface;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
+use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
 use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
 use Robo\ResultData;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -24,7 +24,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     use TaskRunnerTasks\CollectionFactory\loadTasks;
     use TaskRunnerTraits\ConfigurationTokensTrait;
     use TaskRunnerTraits\FilesystemAwareTrait;
-    use \OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
+    use loadTasks;
 
     /**
      * {@inheritdoc}
@@ -124,17 +124,46 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:test-phpcs
      *
+     * @code
+     * toolkit:
+     *   test:
+     *     phpcs:
+     *       config: phpcs.xml
+     *       ignore_annotations: 0
+     *       show_sniffs: 0
+     *       standard:
+     *         - ./vendor/drupal/coder/coder_sniffer/Drupal
+     *         - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
+     *         - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+     *       ignore_patterns:
+     *         - vendor/
+     *         - web/
+     *         - node_modules/
+     *       triggered_by:
+     *         - php
+     *         - module
+     *         - inc
+     *         - theme
+     *         - install
+     *         - yml
+     *       files:
+     *         - ./lib
+     * @endcode
+     *
      * @aliases tp
+     *
+     * @option setup    Force the config file to be generated.
      */
-    public function toolkitPhpcs()
+    public function toolkitPhpcs(array $options = [
+        'setup' => InputOption::VALUE_OPTIONAL,
+    ])
     {
         $config = $this->getConfig();
         $file = $config->get('toolkit.test.phpcs.config');
-        if (!file_exists($file)) {
-            $this->say("File '$file' was not found, calling toolkit:setup-phpcs.");
+        if (!file_exists($file) || $options['setup']) {
+            $this->say('Calling toolkit:setup-phpcs.');
             $this->toolkitSetupPhpcs();
         }
-        $phpcs_bin = $config->get('runner.bin_dir') . '/phpcs';
         $phpcs_bin = $this->getBin('phpcs');
         $options = '';
         if (!empty($config->get('toolkit.test.phpcs.show_sniff'))) {
@@ -184,7 +213,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     ])
     {
         $tasks = [];
-        $behatBin = $this->getConfig()->get('runner.bin_dir') . '/behat';
+        $behatBin = $this->getBin('behat');
         $defaultProfile = $this->getConfig()->get('toolkit.test.behat.profile');
 
         $profile = (!empty($options['profile'])) ? $options['profile'] : $defaultProfile;
@@ -263,7 +292,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
 
         $execution_mode = $this->getConfig()->get('toolkit.test.phpunit.execution');
-        $phpunit_bin = $this->getConfig()->get('runner.bin_dir') . '/phpunit';
+        $phpunit_bin = $this->getBin('phpunit');
 
         if ($execution_mode == 'parallel') {
             $result = $this->taskExec($phpunit_bin . ' --list-suites')
