@@ -1,6 +1,6 @@
 {
     "name": "ec-europa/toolkit",
-    "description": "Toolkit packaged for Drupal 8.",
+    "description": "Toolkit packaged for Drupal 9.",
     "license": "EUPL-1.2",
     "type": "library",
     "homepage": "https://github.com/ec-europa/toolkit",
