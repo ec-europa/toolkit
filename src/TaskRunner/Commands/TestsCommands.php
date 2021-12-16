@@ -97,13 +97,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             foreach ($files as $file) {
                 if (file_exists($file)) {
                     $root->appendChild($phpcs_xml->createElement('file', $file));
-                }
-                else {
+                } else {
                     $this->writeln("The path '$file' was not found, ignoring.");
                 }
             }
-        }
-        else {
+        } else {
             $root->appendChild($phpcs_xml->createElement('file', '.'));
         }
         // Handle exclude patterns.
