@@ -3,35 +3,44 @@
         configVersion="3"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://www.phpdoc.org"
-        xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
+        xsi:noNamespaceSchemaLocation="data/xsd/phpdoc.xsd"
 >
+    <title>Toolkit</title>
     <paths>
-        <output>docs/phpdoc</output>
-        <cache>docs/cache</cache>
+        <output>documentation</output>
     </paths>
     <version number="3.0.0">
+        <folder>latest</folder>
         <api>
             <source dsn=".">
                 <path>src</path>
             </source>
-            <extensions>
-                <!--1 or more repetitions:-->
-                <extension>php</extension>
-            </extensions>
-            <default-package-name>Toolkit</default-package-name>
+            <output>api</output>
             <ignore hidden="true" symlinks="true">
-                <!--1 or more repetitions:-->
                 <path>tests/**/*</path>
+                <path>build/**/*</path>
+                <path>var/**/*</path>
                 <path>vendor/**/*</path>
             </ignore>
+            <extensions>
+                <extension>php</extension>
+            </extensions>
+            <ignore-tags>
+                <ignore-tag>template</ignore-tag>
+                <ignore-tag>template-extends</ignore-tag>
+                <ignore-tag>template-implements</ignore-tag>
+                <ignore-tag>extends</ignore-tag>
+                <ignore-tag>implements</ignore-tag>
+            </ignore-tags>
+            <default-package-name>phpDocumentor</default-package-name>
         </api>
-        <guide format="rst">
+        <guide>
             <source dsn=".">
-              <!--1 or more repetitions:-->
-              <path>docs/support</path>
+                <path>docs</path>
             </source>
-            <!--Optional:-->
-            <output>docs</output>
+            <output>guide</output>
         </guide>
     </version>
+    <setting name="guides.enabled" value="true"/>
+    <template name="default"/>
 </phpdocumentor>

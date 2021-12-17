@@ -123,14 +123,3 @@ Automatically fix, where possible, violations reported.
 ```
 docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix
 ```
-
-### Others topics
-- [Configuring a project](/docs/configuring-project.md)
-- [Installing the project](/docs/installing-project.md)
-- [Testing the project](/docs/testing-project.md)
-- [Using Docker environment](/docs/docker-environment.md)
-- [Continuous integration](/docs/continuous-integration.md)
-- [Building assets](/docs/building-assets.md)
-- [Available tasks](/docs/available-tasks.md)
-- [Project documentation](/docs/project-documentation.md)
-- [Changelog](/CHANGELOG.md)
