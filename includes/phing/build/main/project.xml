@@ -708,7 +708,7 @@
     </target>
 
     <target name="project-asda-date">
-        <asda-date projectid="${project.id}"/>
+        <asda-date path="${share.path.subsites.packages.database}/${project.id}"/>
     </target>
 
 </project>
