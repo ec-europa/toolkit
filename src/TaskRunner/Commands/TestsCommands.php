@@ -57,7 +57,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         // Handle standards.
         $root->appendChild($phpcs_xml->createComment(' Standards. '));
-        if (!empty($standards = $config->get('toolkit.test.phpcs.standard'))) {
+        if (!empty($standards = $config->get('toolkit.test.phpcs.standards'))) {
             foreach ($standards as $standard) {
                 $element = $phpcs_xml->createElement('rule');
                 $element->setAttribute('ref', $standard);
@@ -129,7 +129,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *       config: phpcs.xml
      *       ignore_annotations: 0
      *       show_sniffs: 0
-     *       standard:
+     *       standards:
      *         - ./vendor/drupal/coder/coder_sniffer/Drupal
      *         - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
      *         - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
@@ -157,20 +157,36 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     ])
     {
         $config = $this->getConfig();
-        $file = $config->get('toolkit.test.phpcs.config');
-        if (!file_exists($file) || $options['setup']) {
+        $phpcs_bin = $this->getBin('phpcs');
+        $config_file = $config->get('toolkit.test.phpcs.config');
+        if (!file_exists($config_file) || $options['setup']) {
             $this->say('Calling toolkit:setup-phpcs.');
             $this->toolkitSetupPhpcs();
         }
-        $phpcs_bin = $this->getBin('phpcs');
-        $options = '';
-        if (!empty($config->get('toolkit.test.phpcs.show_sniff'))) {
-            $options .= ' --warning-severity';
+
+        // Make sure the required standards are present.
+        $standards = [
+            './vendor/drupal/coder/coder_sniffer/Drupal',
+            './vendor/drupal/coder/coder_sniffer/DrupalPractice',
+            './vendor/ec-europa/qa-automation/phpcs/QualityAssurance',
+        ];
+        $rules = [];
+        $data = simplexml_load_file($config_file);
+        foreach ($data->rule as $item) {
+            if (isset($item['ref'])) {
+                $rules[] = (string) $item['ref'];
+            }
         }
+        if ($diff = array_diff($standards, $rules)) {
+            $this->say("The following standards are missing, please add them to the configuration file '$config_file'.\n" . implode("\n", $diff));
+            return new ResultData(1);
+        }
+
+        $options = '';
         if (!empty($config->get('toolkit.test.phpcs.ignore_annotations'))) {
             $options .= ' --ignore-annotations';
         }
-        $this->taskExec("$phpcs_bin --standard=$file$options")->run();
+        $this->taskExec("$phpcs_bin --standard=$config_file$options")->run();
     }
 
     /**

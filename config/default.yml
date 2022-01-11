@@ -59,7 +59,7 @@ toolkit:
       config: phpcs.xml
       ignore_annotations: 0
       show_sniffs: 0
-      standard:
+      standards:
         - ./vendor/drupal/coder/coder_sniffer/Drupal
         - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
         - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
@@ -67,6 +67,8 @@ toolkit:
         - vendor/
         - web/
         - node_modules/
+        - "*.min.css"
+        - "*.min.js"
       triggered_by:
         - php
         - module
@@ -76,6 +78,8 @@ toolkit:
         - yml
       files:
         - ./lib
+        - ./resources
+        - ./src
   lint:
     yaml:
       pattern: [ '*.yml', '*.yaml', '*.yml.dist', '*.yaml.dist' ]
