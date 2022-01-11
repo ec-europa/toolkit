@@ -55,9 +55,6 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                     if (isset($import['resource']) && $import['resource'] === 'vendor/ec-europa/qa-automation/dist/qa-conventions.yml') {
                         $containsQaConventions = true;
                     }
-                    if (isset($import['resource']) && $import['resource'] === 'vendor/ec-europa/qa-automation/dist/qa-conventions.compatible.yml') {
-                        $containsQaConventions = true;
-                    }
                 }
             }
         }
@@ -429,8 +426,10 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         $command = "blackfire --json curl $base_url";
 
-        // Execute a list of commands to run after tests.
+        // Get the list of pages to check and prevent duplicates.
         $pages = $this->getConfig()->get('toolkit.test.blackfire.pages');
+        $pages = array_unique($pages);
+
         // Limit the pages up to 10 items.
         $pages = array_slice((array) $pages, 0, 10);
         foreach ($pages as $page) {
@@ -484,11 +483,15 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             if (empty($ci_url = getenv('DRONE_BUILD_LINK'))) {
                 $ci_url = getenv('CI_PIPELINE_URL');
             }
+
             // Send payload to QA website.
+            if (empty($url = getenv('QA_WEBSITE_URL'))) {
+                $url = 'https://webgate.ec.europa.eu/fpfis/qa';
+            }
             if (!empty($repo)) {
                 $payload = [
                     '_links' => ['type' => [
-                        'href' => getenv('QA_WEBSITE_URL') . '/rest/type/node/blackfire',
+                        'href' => $url . '/rest/type/node/blackfire',
                     ]],
                     'status' => [['value' => 0]],
                     'type' => [['target_id' => 'blackfire']],

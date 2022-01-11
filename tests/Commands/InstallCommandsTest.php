@@ -17,7 +17,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class InstallCommandsTest extends AbstractTest
 {
-
     /**
      * Data provider for testInstall.
      *

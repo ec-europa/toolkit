@@ -19,7 +19,6 @@ use Symfony\Component\Console\Event\ConsoleCommandEvent;
  */
 class LoadDefaultConfigCommands extends AbstractCommands
 {
-
     /**
      * Path to YAML configuration file containing command defaults.
      *
