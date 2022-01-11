@@ -44,7 +44,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     public function toolkitSetupPhpcs()
     {
         $config = $this->getConfig();
-        $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
+        $config_file = $config->get('toolkit.test.phpcs.config');
         if (file_exists($config_file)) {
             $this->taskExec('rm')->arg($config_file)->run();
         }
