@@ -17,7 +17,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class BuildCommandsTest extends AbstractTest
 {
-
     /**
      * Data provider for testBuild.
      *

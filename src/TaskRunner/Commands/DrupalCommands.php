@@ -12,7 +12,6 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class DrupalCommands extends Drupal8Commands
 {
-
     /**
      * Comment ending the Toolkit settings block.
      *
