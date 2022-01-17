@@ -39,6 +39,13 @@ class PlatformVersionsTask extends \Task
     private $_majorVersion = '';
 
     /**
+     * The repository specified in the project props.
+     *
+     * @var string
+     */
+    private $_packageRepository = '';
+
+    /**
      * The version specified in the project props.
      *
      * @var string
@@ -83,7 +90,7 @@ class PlatformVersionsTask extends \Task
         );
 
         // Get latest version of Platform.
-        $resp = $this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases/latest');
+        $resp = $this->callGithubReleases('https://api.github.com/repos/' . $this->_packageRepository . '/releases/latest');
         $latest_version = $resp->tag_name;
 
         // Check if user has provided the latest version.
@@ -92,7 +99,7 @@ class PlatformVersionsTask extends \Task
         }
         else {
             // Get latest version of NE Platform.
-            $resp = $this->callGithubReleases('https://api.github.com/repos/ec-europa/platform-dev/releases');
+            $resp = $this->callGithubReleases('https://api.github.com/repos/' . $this->_packageRepository . '/releases');
             foreach($resp as $object) {
                 // Skip drafts and prereleases.
                 if ($object->draft == false && $object->prerelease == false) {
@@ -176,6 +183,18 @@ class PlatformVersionsTask extends \Task
             }
         }
     }//end checkRequirements()
+
+    /**
+     * Sets the current package repository.
+     *
+     * @param string $packageRepository The current project repository.
+     *
+     * @return void
+     */
+    public function setPackageRepository($packageRepository)
+    {
+        $this->_packageRepository = $packageRepository;
+    }//end setPackageRepository()
 
     /**
      * Sets the current package version.

@@ -563,13 +563,12 @@
         <property file="${project.tmp.dir}/build.version.props" logoutput="${logoutput}" override="true" />
         <mkdir dir="${share.path.platform.packages.deploy}" />
         <phingcall target="package-download-unpack">
-            <property name="package-name" value="platform-dev-${platform.package.version.current}.tar.gz" />
+            <property name="package-name" value="${platform.package.download.filename}" />
             <property name="package-cache-location" value="${share.path.platform.packages.deploy}" />
             <property name="package-download-location" value="${platform.package.download.location}" />
             <property name="package-extract-location" value="${build.platform.dir}" />
         </phingcall>
     </target>
-
     <target name="project-platform-set-htaccess" hidden="true" description="Append htaccess config to root .htaccess.">
         <if>
             <istrue value="${build.platform.htaccess.append.text}" />
@@ -593,7 +592,7 @@
         hidden="true">
         <!-- Delete of saved versions to force refresh -->
         <exec command='rm -rf ${project.tmp.dir}/build.version.props' outputProperty="log" checkreturn="true" />
-        <platformversions packageVersion="${platform.package.version}" preRelease="${platform.package.download.prerelease}" />
+        <platformversions packageVersion="${platform.package.version}" preRelease="${platform.package.download.prerelease}" packageRepository="${platform.package.repository}"/>
         <echoproperties regex="~^platform\.package\.version~" destfile="${project.tmp.dir}/build.version.props" />
     </target>
 
