@@ -32,11 +32,16 @@ class AsdaDateTask extends \Task
   public function main()
   {
     $latest = file_get_contents($this->path . '/latest.sh1');
+    $filename = substr($latest, strpos($latest, ' ') + 2);
+
     // Display information about ASDA creation date.
-    $dumpData = substr(substr($latest, strpos($latest, ' ') + 2), 0, 15);
-    $dumpDate = date_parse_from_format("Ymd-His", $dumpData);
-    $dumpTimestamp = mktime($dumpDate['hour'], $dumpDate['minute'], $dumpDate['second'], $dumpDate['month'], $dumpDate['day'], $dumpDate['year']);
-    $dumpHrdate = 'ASDA DATE: ' . $dumpDate['day'] . ' ' . date('M', $dumpTimestamp) . ' ' . $dumpDate['year'] . ' at ' . $dumpDate['hour'] . ':' . $dumpDate['minute'];
-    echo $dumpHrdate;
+    preg_match('/(\d{8})(?:-)?(\d{4})(\d{2})?/', $filename, $matches);
+    $date = date_parse_from_format('YmdHis', $matches[1] . $matches[2] . ($matches[3] ?? '00'));
+    if ($date['year'] && $date['month'] && $date['day']) {
+      $dumpTimestamp = mktime($date['hour'], $date['minute'], $date['second'], $date['month'], $date['day'], $date['year']);
+      echo sprintf('ASDA DATE: %d %s %d at %s:%s', $date['day'], date('M', $dumpTimestamp), $date['year'], $date['hour'], $date['minute']);
+    } else {
+      echo $filename;
+    }
   }
 }
