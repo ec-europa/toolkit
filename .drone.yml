@@ -8,28 +8,25 @@ workspace:
 
 matrix:
   include:
-    - PHP_VERSION: 5.6
-      PHING_OPTS: -logger phing.listener.AnsiColorLogger
-      BUILD_OPTIONS: -D'platform.package.version'='2.5' -D'profile'='multisite_drupal_standard'
     - PHP_VERSION: 7.3
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
       BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard'
-    - PHP_VERSION: 7.3
-      PHING_OPTS: -logger phing.listener.AnsiColorLogger
-      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.82'
-    - PHP_VERSION: 7.4
-      PHING_OPTS: -logger phing.listener.AnsiColorLogger
-      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.82'
     - PHP_VERSION: 7.4
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
       BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard'
+    - PHP_VERSION: 7.3
+      PHING_OPTS: -logger phing.listener.AnsiColorLogger
+      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.85'
+    - PHP_VERSION: 7.4
+      PHING_OPTS: -logger phing.listener.AnsiColorLogger
+      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.85'
 
 # ==============================================================================
 # Main services
 # ==============================================================================
 services:
   web:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     detach: true
     environment:
       - DOCUMENT_ROOT=/test/toolkit/build
@@ -51,10 +48,11 @@ services:
 
 pipeline:
   setup:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: setup
     secrets: [ github_api_token ]
     commands:
+      - composer self-update --1
       - PROJECT=$(pwd) composer toolkit-install
       - rm -rf ./.tmp/ ./build
       - cp ./includes/phing/props/drone.props build.develop.props
@@ -63,7 +61,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   build:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: build
     secrets: [ github_api_token ]
     commands:
@@ -72,7 +70,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   install-clean:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: install-clean
     secrets: [ github_api_token ]
     commands:
@@ -83,7 +81,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   install-clone:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: install-clone
     secrets: [ github_api_token ]
     commands:
@@ -93,7 +91,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   smoketest:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: smoke-tests
     secrets: [ github_api_token ]
     commands:
@@ -102,7 +100,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   behat:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: coding-standards
     secrets: [ github_api_token ]
     commands:
@@ -111,7 +109,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   phpcs:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: coding-standards
     secrets: [ github_api_token ]
     commands:
@@ -121,7 +119,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   php7-comp:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: coding-standards
     secrets: [ github_api_token ]
     commands:
@@ -130,7 +128,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   create-distribution:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: create-distribution
     secrets: [ github_api_token ]
     commands:
@@ -139,7 +137,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   git-hooks:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=5.6}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: git-hooks
     secrets: [ github_api_token ]
     commands:
