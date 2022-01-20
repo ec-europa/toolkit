@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ae229c743e8f58ae7e78b6711358d2d3",
+    "content-hash": "e5a8244d193ac609e17c9227083df66d",
     "packages": [
         {
             "name": "composer/semver",
@@ -487,7 +487,7 @@
                 "patches_applied": {
                     "https://www.drupal.org/project/coder/issues/3031056": "https://www.drupal.org/files/issues/2019-02-06/skip_missing_t_install_files-3031056-1.patch",
                     "https://www.drupal.org/project/coder/issues/3034698": "https://www.drupal.org/files/issues/2019-02-21/false_positive_options_element-3034698-05.patch",
-                    "0": "./patches/php74_coder.patch"
+                    "PHP7.4 Compatibility, deprecated curly braces syntax.": "patches/coder-php74-compatibility.patch"
                 }
             },
             "license": [
@@ -2080,9 +2080,9 @@
                 "branch-alias": {
                     "dev-master": "2.x-dev"
                 },
-                "patches_applied": [
-                    "./patches/php74.patch"
-                ]
+                "patches_applied": {
+                    "PHP7.4 Compatibility, deprecated curly braces syntax.": "patches/php_codesniffer-php74-compatibility.patch"
+                }
             },
             "autoload": {
                 "classmap": [
