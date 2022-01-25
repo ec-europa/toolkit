@@ -2,23 +2,23 @@
   "_comment_git_wrapper": "Master branch of git-wrapper has a fix for backwards compatibility with older versions of git. Revert to stable when 1.7.1 is released.",
   "require": {
     "cpliakas/git-wrapper": "^1.7",
-    "cweagans/composer-patches": "dev-checkpatched",
+    "cweagans/composer-patches": "^1.6.1",
     "drupal/phingdrushtask": "^1.1",
     "drupol/phingbehattask": "^1.0",
-    "drush/drush": "^8.4",
+    "drush/drush": "^8.4.10",
     "ext-json": "*",
     "ext-phar": "*",
-    "ext-tidy": "^2.0",
+    "ext-tidy": "*",
     "ext-xml": "*",
     "guzzlehttp/guzzle": "^6.2.1",
     "kasperg/phing-github": "dev-feature/import",
     "pear/archive_tar": "^1.4.14",
     "pear/versioncontrol_git": "dev-master",
     "pfrenssen/phpcs-pre-push": "1.0",
-    "phing/phing": "^2.17.0",
-    "php": ">=5.4.0",
-    "composer/semver":"^3.2",
-    "ec-europa/qa-automation": "^3.3.0"
+    "phing/phing": "^2.17.1",
+    "php": ">=7.3",
+    "composer/semver":"^3.2.7",
+    "ec-europa/qa-automation": "^3.4.0"
   },
   "require-dev": {
   },
@@ -83,11 +83,7 @@
       },
       "drupal/coder": {
         "https://www.drupal.org/project/coder/issues/3031056": "https://www.drupal.org/files/issues/2019-02-06/skip_missing_t_install_files-3031056-1.patch",
-        "https://www.drupal.org/project/coder/issues/3034698": "https://www.drupal.org/files/issues/2019-02-21/false_positive_options_element-3034698-05.patch",
-        "Compatibility with PHP7.4, deprecated curly braces syntax.": "./patches/php74_coder.patch"
-      },
-      "squizlabs/php_codesniffer": {
-        "Compatibility with PHP7.4, deprecated curly braces syntax.": "./patches/php74.patch"
+        "https://www.drupal.org/project/coder/issues/3034698": "https://www.drupal.org/files/issues/2019-02-21/false_positive_options_element-3034698-05.patch"
       }
     }
   },
