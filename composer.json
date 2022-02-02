@@ -16,7 +16,7 @@
         "behat/behat": "^3.7 || ^3.8",
         "cweagans/composer-patches": "^1.4 || ^1.7",
         "drush/drush": "^9.7.1 || ^10.0.0",
-        "ec-europa/qa-automation": "^8.1",
+        "ec-europa/qa-automation": "^8.1.1",
         "guzzlehttp/guzzle": "^6.3",
         "j13k/yaml-lint": "^1.1",
         "openeuropa/task-runner": "dev-master as 1.0.0",
@@ -41,7 +41,12 @@
         "composer-exit-on-patch-failure": true
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "cweagans/composer-patches": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpro/grumphp": true
+        }
     },
     "scripts": {
         "toolkit-update-phpcs-config": "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs'",
