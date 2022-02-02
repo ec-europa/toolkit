@@ -47,9 +47,11 @@ toolkit:
       to: behat.yml
       profile: default
     phpunit:
+      options: ''
       execution: default
       from: phpunit.xml.dist
       to: phpunit.xml
+      commands: []
     blackfire:
       uuid:
       pages:
