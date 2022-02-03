@@ -89,7 +89,7 @@ class BuildCommands extends AbstractCommands
             ->noDev();
 
         // Setup the site.
-        $runner_bin = $this->getConfig()->get('runner.bin_dir') . '/run';
+        $runner_bin = $this->getBin('run');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
             ->exec($runner_bin . ' drupal:permissions-setup --root=' . $options['dist-root'] . '/' . $options['root'])
@@ -99,7 +99,7 @@ class BuildCommands extends AbstractCommands
         $keep = '! -name "' . $options['dist-root'] . '" ! -name "' . implode('" ! -name "', explode(',', $options['keep'])) . '"';
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec('find ' . $options['dist-root'] . ' -maxdepth 1 ' . $keep . ' -exec rm -rf {} +');
+            ->exec("find {$options['dist-root']} -maxdepth 1 $keep -exec rm -rf {} +");
 
         // Prepare sha and tag variables.
         $tag = $options['tag'] ?? $this->getGitTag();
@@ -111,8 +111,15 @@ class BuildCommands extends AbstractCommands
         );
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
 
+        // Copy drush.yml file.
+        $drushFileOrigin = __DIR__ . '/../../../resources/Drush/drush.yml.dist';
+        if (file_exists($drushFileOrigin)) {
+            $tasks[] = $this->taskFilesystemStack()
+                ->copy($drushFileOrigin, $options['dist-root'] . '/web/sites/all/drush/drush.yml');
+        }
+
         // Collect and execute list of commands set on local runner.yml.
-        $commands = $this->getConfig()->get("toolkit.build.dist.commands");
+        $commands = $this->getConfig()->get('toolkit.build.dist.commands');
         if (!empty($commands)) {
             $tasks[] = $this->taskCollectionFactory($commands);
         }
@@ -120,7 +127,7 @@ class BuildCommands extends AbstractCommands
         // Remove 'unwanted' files from distribution.
         $remove = '-name "' . implode('" -o -name "', explode(',', $options['remove'])) . '"';
         $tasks[] = $this->taskExecStack()
-            ->exec('find dist -maxdepth 3  -type f \( ' . $remove . ' \)' . ' -exec rm -rf {} +');
+            ->exec("find dist -maxdepth 3 -type f ($remove) -exec rm -rf {} +");
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -147,16 +154,10 @@ class BuildCommands extends AbstractCommands
         $root = $options['root'];
 
         // Run site setup.
-        $runner_bin = $this->getConfig()->get('runner.bin_dir') . '/run';
+        $runner_bin = $this->getBin('run');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec($runner_bin . ' drupal:settings-setup --root=' . $root);
-
-        // Collect and execute list of commands set on local runner.yml.
-        $commands = $this->getConfig()->get("toolkit.build.dev.commands");
-        if (!empty($commands)) {
-            $tasks[] = $this->taskCollectionFactory($commands);
-        }
+            ->exec("$runner_bin drupal:settings-setup --root=$root");
 
         // Double check presence of required folders.
         $folders = [
@@ -175,6 +176,19 @@ class BuildCommands extends AbstractCommands
                     ->exec("mkdir -p $folder")
                     ->exec("chmod ug=rwx,o= $folder");
             }
+        }
+
+        // Copy drush.yml file.
+        $drushFileOrigin = __DIR__ . '/../../../resources/Drush/drush.yml.dist';
+        if (file_exists($drushFileOrigin)) {
+            $tasks[] = $this->taskFilesystemStack()
+                ->copy($drushFileOrigin, "$root/sites/all/drush/drush.yml");
+        }
+
+        // Collect and execute list of commands set on local runner.yml.
+        $commands = $this->getConfig()->get('toolkit.build.dev.commands');
+        if (!empty($commands)) {
+            $tasks[] = $this->taskCollectionFactory($commands);
         }
 
         // Build and return task collection.
@@ -209,10 +223,9 @@ class BuildCommands extends AbstractCommands
             // Run composer install.
             $tasks[] = $this->taskComposerInstall('composer');
             // Run toolkit:build-dev.
-            $runner_bin = $this->getConfig()->get('runner.bin_dir') . '/run';
             $tasks[] = $this->taskExecStack()
                 ->stopOnFail()
-                ->exec($runner_bin . ' toolkit:build-dev --root=' . $options['root']);
+                ->exec($this->getBin('run') . ' toolkit:build-dev --root=' . $options['root']);
         }
 
         // Build and return task collection.
@@ -268,11 +281,8 @@ class BuildCommands extends AbstractCommands
         'theme-task-runner' => InputOption::VALUE_OPTIONAL,
     ])
     {
-
-        $tasks = [];
-
         if (!empty($options['default-theme'])) {
-            // No parameter sent, check for configuraton.
+            // No parameter sent, check for configuration.
             if (file_exists('config/sync/system.theme.yml')) {
                 $parseSystemTheme = Yaml::parseFile('config/sync/system.theme.yml');
                 $options['default-theme'] = $parseSystemTheme['default'];
@@ -300,17 +310,11 @@ class BuildCommands extends AbstractCommands
             $collection = $this->collectionBuilder();
 
             // Option to process validation test only.
-            if (($options['validate'] == 'check')) {
+            if (in_array($options['validate'], ['check', 'fix'])) {
+                $fix = $options['validate'] === 'fix' ? '--fix' : '';
                 $collection->taskExecStack()
                     ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint "' . $theme_dir .  '/**/*.{css,scss,sass}" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
-                    ->stopOnFail();
-                // Run and return task collection.
-                return $collection->run();
-            } elseif ($options['validate'] == 'fix') {
-                $collection->taskExecStack()
-                    ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint --fix "' . $theme_dir .  '/**/*.{css,scss,sass}" ' . '--config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                    ->exec('npx stylelint ' . $fix . ' "' . $theme_dir .  '/**/*.{css,scss,sass}" --config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
                     ->stopOnFail();
                 // Run and return task collection.
                 return $collection->run();
