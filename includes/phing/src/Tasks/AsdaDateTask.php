@@ -31,7 +31,13 @@ class AsdaDateTask extends \Task
 
   public function main()
   {
-    $latest = file_get_contents($this->path . '/latest.sh1');
+    $path = file_exists($this->path) ? $this->path : '/tmp/toolkit/subsites/packages/database/' . basename($this->path);
+    if (!file_exists($path . '/latest.sh1')) {
+      echo 'The file latest.sh1 could not be found.';
+      return;
+    }
+
+    $latest = file_get_contents($path . '/latest.sh1');
     $filename = substr($latest, strpos($latest, ' ') + 2);
 
     // Display information about ASDA creation date.
