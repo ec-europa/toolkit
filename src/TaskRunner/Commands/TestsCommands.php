@@ -70,8 +70,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
 
         if ($containsQaConventions) {
-            $grumphp_bin = $this->getConfig()->get('runner.bin_dir') . '/grumphp';
-            $tasks[] = $this->taskExec($grumphp_bin . ' run');
+            $tasks[] = $this->taskExec($this->getBin('grumphp') . ' run');
         } else {
             $this->say('All Drupal projects in the ec-europa namespace need to use Quality Assurance provided standards.');
             $this->say('Your configuration has to import the resource vendor/ec-europa/qa-automation/dist/qa-conventions.yml.');
@@ -122,7 +121,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     ])
     {
         $tasks = [];
-        $behatBin = $this->getConfig()->get('runner.bin_dir') . '/behat';
+        $behatBin = $this->getBin('behat');
         $defaultProfile = $this->getConfig()->get('toolkit.test.behat.profile');
 
         $profile = (!empty($options['profile'])) ? $options['profile'] : $defaultProfile;
@@ -161,6 +160,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * commands should be described in configuration files in this way:
      * @code
      * phpunit:
+     *   options: '--log-junit report.xml'
      *   commands:
      *     before:
      *       - task: exec
@@ -201,10 +201,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
 
         $execution_mode = $this->getConfig()->get('toolkit.test.phpunit.execution');
-        $phpunit_bin = $this->getConfig()->get('runner.bin_dir') . '/phpunit';
+        $options = $this->getConfig()->get('toolkit.test.phpunit.options');
+        $phpunit_bin = $this->getBin('phpunit');
 
         if ($execution_mode == 'parallel') {
-            $result = $this->taskExec($phpunit_bin . ' --list-suites')
+            $result = $this->taskExec("$phpunit_bin --list-suites")
                 ->silent(true)
                 ->printOutput(false)
                 ->run()
@@ -216,11 +217,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             foreach ($suites as $suite) {
                 $suite = str_replace('- ', '', trim($suite));
                 if (strlen($suite) > 2) {
-                    $parallel->process($phpunit_bin . ' --testsuite=' . $suite);
+                    $parallel->process("$phpunit_bin --testsuite=$suite $options");
                 }
             }
         } else {
-            $tasks[] = $this->taskExec($phpunit_bin);
+            $tasks[] = $this->taskExec("$phpunit_bin $options");
         }
 
         // Execute a list of commands to run after tests.

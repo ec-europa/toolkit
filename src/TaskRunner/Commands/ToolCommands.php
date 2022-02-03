@@ -1056,6 +1056,49 @@ Checking ASDA configuration: %s",
     }
 
     /**
+     * Run script to fix permissions (experimental).
+     *
+     * @command toolkit:fix-permissions
+     */
+    public function fixPermissions(array $options = [
+        'drupal_path' => InputOption::VALUE_OPTIONAL,
+        'drupal_user' => InputOption::VALUE_OPTIONAL,
+        'httpd_group' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        $script = __DIR__ . '/../../../resources/scripts/fix-permissions.sh';
+        if (!file_exists($script)) {
+            $this->say("Script was not found at $script, skipping..");
+            return 0;
+        }
+        if (empty($options['drupal_path'])) {
+            $root = $this->getConfig()->get('drupal.root');
+            $options['drupal_path'] = getenv('DOCUMENT_ROOT') . '/' . $root;
+        }
+        if (empty($options['drupal_user'])) {
+            $options['drupal_user'] = getenv('DAEMON_USER');
+        }
+        if (empty($options['httpd_group'])) {
+            $options['httpd_group'] = getenv('DAEMON_GROUP');
+        }
+
+        $params = [
+            '--drupal_path=' . $options['drupal_path'],
+            '--drupal_user=' . $options['drupal_user'],
+            '--httpd_group=' . $options['httpd_group'],
+        ];
+        $command = $script . ' ' . implode(' ', $params);
+        $tasks[] = $this->taskExec($command);
+
+        $settings = $options['drupal_path']  . '/sites/default/settings.php';
+        if (file_exists($settings)) {
+            $tasks[] = $this->taskExec("chmod 440 $settings");
+        }
+
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
      * Check the Toolkit version.
      *
      * @command toolkit:check-version
