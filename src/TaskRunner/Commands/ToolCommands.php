@@ -604,22 +604,13 @@ class ToolCommands extends AbstractCommands
         $this->checkCommitMessage();
 
         if (!$this->skipd9c) {
-            $this->say("Developer is skipping Drupal 9 compatibility analysis.");
+            $this->say('Developer is skipping Drupal 9 compatibility analysis.');
             return 0;
         }
 
-        $lockFile = getcwd() . "/composer.lock";
-        if (file_exists($lockFile)) {
-            $composerLock = json_decode(file_get_contents($lockFile), true);
-            foreach ($composerLock['packages'] as $pkg) {
-                if ($pkg['name'] == 'drupal/core') {
-                    $DrupalCore = $pkg;
-                    break;
-                }
-            }
-
-            if (Semver::satisfies($DrupalCore['version'], '^9')) {
-                $this->say("Project already running on Drupal 9, skipping Drupal 9 compatibility analysis.");
+        if ($drupal_version = $this->getPackagePropertyFromComposer('drupal/core')) {
+            if (Semver::satisfies($drupal_version, '^9')) {
+                $this->say('Project already running on Drupal 9, skipping Drupal 9 compatibility analysis.');
                 return 0;
             }
         }
@@ -956,8 +947,7 @@ class ToolCommands extends AbstractCommands
         if (empty($options['endpoint'])) {
             $options['endpoint'] = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
         }
-        $php_check = $toolkit_check = $drupal_check = 'FAIL';
-        $endpoint_check = $github_check = $gitlab_check = $asda_check = 'FAIL';
+        $php_check = $toolkit_check = $drupal_check = $endpoint_check = $asda_check = 'FAIL';
         $php_version = $toolkit_version = $drupal_version = '';
 
         $result = self::getQaEndpointContent($options['endpoint'], getenv('QA_API_BASIC_AUTH'));
@@ -982,27 +972,17 @@ class ToolCommands extends AbstractCommands
             $isValid = version_compare($php_version, $data['php_version']);
             $php_check = ($isValid >= 0) ? 'OK' : 'FAIL';
 
-            $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
-            if ($composerLock) {
-                // Handle Toolkit version.
-                $index = array_search('ec-europa/toolkit', array_column($composerLock['packages-dev'], 'name'));
-                if ($index !== false) {
-                    $toolkit_version = $composerLock['packages-dev'][$index]['version'];
-                    $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
-                } else {
-                    $toolkit_check = 'FAIL (not found)';
-                }
-
-                // Handle Drupal version.
-                $index = array_search('drupal/core', array_column($composerLock['packages'], 'name'));
-                if ($index !== false) {
-                    $drupal_version = $composerLock['packages'][$index]['version'];
-                    $drupal_check = Semver::satisfies($drupal_version, $data['drupal']) ? 'OK' : 'FAIL';
-                } else {
-                    $drupal_check = 'FAIL (not found)';
-                }
+            // Handle Toolkit version.
+            if (!($toolkit_version = $this->getPackagePropertyFromComposer('ec-europa/toolkit'))) {
+                $toolkit_check = 'FAIL (not found)';
             } else {
-                $drupal_check = 'FAIL (missing composer.lock)';
+                $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
+            }
+            // Handle Drupal version.
+            if (!($drupal_version = $this->getPackagePropertyFromComposer('drupal/core'))) {
+                $drupal_check = 'FAIL (not found)';
+            } else {
+                $drupal_check = Semver::satisfies($drupal_version, $data['drupal']) ? 'OK' : 'FAIL';
             }
         }
 
@@ -1090,5 +1070,82 @@ Checking ASDA configuration: %s",
             return 1;
         }
         return 0;
+    }
+
+    /**
+     * Check the Toolkit version.
+     *
+     * @command toolkit:check-version
+     */
+    public function toolkitVersion()
+    {
+        $endpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
+        $result = self::getQaEndpointContent($endpoint, getenv('QA_API_BASIC_AUTH'));
+        $min_version = '';
+
+        if (!($composer_version = $this->getPackagePropertyFromComposer('ec-europa/toolkit'))) {
+            $this->writeln('Failed to get Toolkit version from composer.lock.');
+        }
+        if ($result) {
+            $data = json_decode($result, true);
+            if (empty($data) || !isset($data['toolkit'])) {
+                $this->writeln('Invalid data returned from the endpoint.');
+            } else {
+                $min_version = $data['toolkit'];
+                if ($composer_version) {
+                    $major = '' . intval(substr($composer_version, 0, 2));
+                    $min_versions = array_filter(explode('|', $min_version), function ($v) use ($major) {
+                        return strpos(substr($v, 0, 2), $major) !== false;
+                    });
+                    if (count($min_versions) === 1) {
+                        $min_version = end($min_versions);
+                    }
+                }
+            }
+        } else {
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+        }
+
+        $version_check = Semver::satisfies($composer_version, $min_version) ? 'OK' : 'FAIL';
+        $this->writeln(sprintf(
+            "Minimum version: %s\nCurrent version: %s\nVersion check: %s",
+            $min_version,
+            $composer_version,
+            $version_check
+        ));
+        if ($version_check === 'FAIL') {
+            return 1;
+        }
+    }
+
+    /**
+     * Helper to return a property from a package in the composer.lock file.
+     *
+     * @param $package
+     *   The package to search.
+     * @param $prop
+     *   The property to return. Default to 'version'.
+     *
+     * @return false|mixed
+     *   The property value, false if not found.
+     */
+    private function getPackagePropertyFromComposer($package, $prop = 'version')
+    {
+        if (!file_exists('composer.lock')) {
+            return false;
+        }
+        $composer = json_decode(file_get_contents('composer.lock'), true);
+        if ($composer) {
+            $type = 'packages-dev';
+            $index = array_search($package, array_column($composer[$type], 'name'));
+            if ($index === false) {
+                $type = 'packages';
+                $index = array_search($package, array_column($composer[$type], 'name'));
+            }
+            if ($index !== false && isset($composer[$type][$index][$prop])) {
+                return $composer[$type][$index][$prop];
+            }
+        }
+        return false;
     }
 }
