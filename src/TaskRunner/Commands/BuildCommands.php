@@ -112,10 +112,10 @@ class BuildCommands extends AbstractCommands
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
 
         // Copy drush.yml file.
-        $drushFileOrigin = __DIR__ . '/../../../resources/Drush/drush.yml.dist';
-        if (file_exists($drushFileOrigin)) {
+        $tk_drush = __DIR__ . '/../../../resources/Drush/drush.yml.dist';
+        if (file_exists($tk_drush)) {
             $tasks[] = $this->taskFilesystemStack()
-                ->copy($drushFileOrigin, $options['dist-root'] . '/web/sites/all/drush/drush.yml');
+                ->copy($tk_drush, $options['dist-root'] . '/web/sites/all/drush/drush.yml');
         }
 
         // Collect and execute list of commands set on local runner.yml.
@@ -179,10 +179,10 @@ class BuildCommands extends AbstractCommands
         }
 
         // Copy drush.yml file.
-        $drushFileOrigin = __DIR__ . '/../../../resources/Drush/drush.yml.dist';
-        if (file_exists($drushFileOrigin)) {
+        $tk_drush = __DIR__ . '/../../../resources/Drush/drush.yml.dist';
+        if (file_exists($tk_drush)) {
             $tasks[] = $this->taskFilesystemStack()
-                ->copy($drushFileOrigin, "$root/sites/all/drush/drush.yml");
+                ->copy($tk_drush, "$root/sites/all/drush/drush.yml");
         }
 
         // Collect and execute list of commands set on local runner.yml.
