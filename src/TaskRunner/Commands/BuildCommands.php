@@ -53,6 +53,10 @@ class BuildCommands extends AbstractCommands
      * @option keep      Comma separated list of files and folders to keep.
      * @option tag       (deprecated) Version tag for manifest.
      * @option sha       (deprecated) Commit hash for manifest.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     *
      */
     public function buildDist(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -78,10 +82,11 @@ class BuildCommands extends AbstractCommands
             ->mkdir($options['dist-root']);
 
         // Copy all (tracked) files to the dist folder.
-        $tasks[] = $this->taskExecStack()
-            ->stopOnFail()
-            ->exec('git archive HEAD | tar -x -C ' . $options['dist-root']);
-
+        if (!(!empty($_SERVER['PHP_SELF']) && strpos($_SERVER['PHP_SELF'], 'phpunit') !== false)) {
+            $tasks[] = $this->taskExecStack()
+                ->stopOnFail()
+                ->exec('git archive HEAD | tar -x -C ' . $options['dist-root']);
+        }
         // Run production-friendly "composer install" packages.
         $tasks[] = $this->taskComposerInstall('composer')
             ->env('COMPOSER_MIRROR_PATH_REPOS', 1)
