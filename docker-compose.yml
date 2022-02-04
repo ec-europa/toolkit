@@ -3,8 +3,6 @@ services:
   web:
     image: fpfis/httpd-php:8.1-dev
     working_dir: ${PWD}
-    ports:
-    - 8889:8080
     volumes:
     - ${PWD}:${PWD}
     - ${HOME}/.composer/auth.json:/root/.composer/auth.json
@@ -16,4 +14,3 @@ services:
       QA_API_BASIC_AUTH:
       XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
       PHP_IDE_CONFIG: "serverName=Docker"
-

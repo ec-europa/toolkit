@@ -215,7 +215,7 @@ class BuildCommands extends AbstractCommands
      * @command toolkit:build-dev-reset
      *
      * @option root Drupal root.
-     * @option yes Skip the question.
+     * @option yes  Skip the question.
      */
     public function buildDevReset(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -224,7 +224,6 @@ class BuildCommands extends AbstractCommands
     {
         $tasks = [];
         $answer = true;
-
         $question = 'Are you sure you want to proceed? This action cleans up your git repository of any tracked AND untracked files AND folders!';
         if (!$options['yes']) {
             $answer = $this->confirm($question, false);

@@ -8,12 +8,7 @@
 /phpunit.xml
 /grumphp.yml
 /docker-compose.*.yml
-/phpunit.xml
-.vscode/
-
 .phpunit.result.cache
-/.phpunit.result.cache
-
 
 *.sql
 phpda.*
