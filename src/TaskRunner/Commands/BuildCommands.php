@@ -111,11 +111,6 @@ class BuildCommands extends AbstractCommands
             json_encode(['version' => $tag, 'sha' => $hash], JSON_PRETTY_PRINT)
         );
 
-        // Do not process the tag version when running tests.
-        if (!(!empty($_SERVER['PHP_SELF']) && strpos($_SERVER['PHP_SELF'], 'phpunit') !== false)) {
-            $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
-        }
-
         // Copy drush.yml file.
         $tk_drush = file_exists('resources/Drush/drush.yml.dist')
         ? 'resources/Drush/drush.yml.dist'
