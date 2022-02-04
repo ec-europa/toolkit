@@ -55,6 +55,7 @@ class BuildCommandsTest extends AbstractTest
 
         // Assert expectations.
         $content = $output->fetch();
+        echo sprintf("Content for %s:\n%s\n", $command, $content);
         foreach ($expected as $row) {
             $this->assertContainsNotContains($content, $row);
         }
