@@ -112,7 +112,9 @@ class BuildCommands extends AbstractCommands
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
 
         // Copy drush.yml file.
-        $tk_drush = __DIR__ . '/../../../resources/Drush/drush.yml.dist';
+        $tk_drush = file_exists('resources/Drush/drush.yml.dist')
+            ? 'resources/Drush/drush.yml.dist'
+            : 'vendor/ec-europa/toolkit/resources/Drush/drush.yml.dist';
         if (file_exists($tk_drush)) {
             $tasks[] = $this->taskFilesystemStack()
                 ->copy($tk_drush, $options['dist-root'] . '/web/sites/all/drush/drush.yml');
@@ -179,7 +181,9 @@ class BuildCommands extends AbstractCommands
         }
 
         // Copy drush.yml file.
-        $tk_drush = __DIR__ . '/../../../resources/Drush/drush.yml.dist';
+        $tk_drush = file_exists('resources/Drush/drush.yml.dist')
+            ? 'resources/Drush/drush.yml.dist'
+            : 'vendor/ec-europa/toolkit/resources/Drush/drush.yml.dist';
         if (file_exists($tk_drush)) {
             $tasks[] = $this->taskFilesystemStack()
                 ->copy($tk_drush, "$root/sites/all/drush/drush.yml");
@@ -207,15 +211,20 @@ class BuildCommands extends AbstractCommands
      * @command toolkit:build-dev-reset
      *
      * @option root Drupal root.
+     * @option yes  Skip the question.
      */
     public function buildDevReset(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
+        'yes' => InputOption::VALUE_OPTIONAL,
     ])
     {
         $tasks = [];
-
+        $answer = true;
         $question = 'Are you sure you want to proceed? This action cleans up your git repository of any tracked AND untracked files AND folders!';
-        if ($this->confirm($question, false)) {
+        if (!$options['yes']) {
+            $answer = $this->confirm($question, false);
+        }
+        if ($answer) {
             // Clean git.
             $tasks[] = $this->taskGitStack()
                 ->stopOnFail()
@@ -267,7 +276,7 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-assets
      *
-     * @option default-theme theme where to build asstes.
+     * @option default-theme theme where to build assets.
      *
      * @option validate or validate=fix to check or fix scss files.
      *

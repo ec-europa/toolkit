@@ -1,17 +1,67 @@
-- command: 'toolkit:build-dev'
+- command: 'toolkit:build-dev --root=web'
   configuration:
     drupal:
       root: web
   expectations:
-  - contains: |
-      [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('./vendor/bin/run drupal:settings-setup --root=build')
-      [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('mkdir -p build/sites/default/files')
-          ->exec('chmod ug=rwx,o= build/sites/default/files')
-      [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('mkdir -p build/sites/default/private_files')
-          ->exec('chmod ug=rwx,o= build/sites/default/private_files')
+    - contains: |
+        [Simulator] Simulating ExecStack()
+            ->stopOnFail()
+            ->exec('./vendor/bin/run drupal:settings-setup --root=web')
+        [Simulator] Simulating ExecStack()
+            ->stopOnFail()
+            ->exec('mkdir -p web/sites/default/files')
+            ->exec('chmod ug=rwx,o= web/sites/default/files')
+        [Simulator] Simulating ExecStack()
+            ->stopOnFail()
+            ->exec('mkdir -p web/sites/default/private_files')
+            ->exec('chmod ug=rwx,o= web/sites/default/private_files')
+        [Simulator] Simulating Filesystem\FilesystemStack()
+            ->copy('resources/Drush/drush.yml.dist', 'web/sites/all/drush/drush.yml')
+
+- command: 'toolkit:build-dist --root=web --dist-root=dist'
+  configuration:
+    drupal:
+      root: web
+  expectations:
+    - contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+            ->remove('dist')
+            ->mkdir('dist')
+        [Simulator] Simulating ExecStack()
+            ->stopOnFail()
+            ->exec('git archive HEAD | tar -x -C dist')
+        [Simulator] Simulating Composer\Install('composer')
+            ->env('COMPOSER_MIRROR_PATH_REPOS', 1)
+            ->workingDir('dist')
+            ->optimizeAutoloader()
+            ->noDev()
+        [Simulator] Simulating ExecStack()
+            ->stopOnFail()
+            ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
+            ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
+        [Simulator] Simulating ExecStack()
+            ->stopOnFail()
+            ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "build" ! ... " -exec rm -rf {} +')
+        [Simulator] Simulating File\Write('dist/manifest.json')
+            ->text('{ ... }')
+        [Simulator] Simulating File\Write('dist/web/VERSION.txt')
+            ->text('4.6.5-23-g05b80ba')
+        [Simulator] Simulating Filesystem\FilesystemStack()
+            ->copy('resources/Drush/drush.yml.dist', 'dist/web/sites/all/drush/drush.yml')
+        [Simulator] Simulating ExecStack()
+            ->exec('find dist -maxdepth 3 -type f (-name "CHANGELOG.txt" - ... ) -exec rm -rf {} +')
+
+- command: 'toolkit:build-dev-reset --root=web --yes'
+  configuration:
+    drupal:
+      root: web
+  expectations:
+    - contains: |
+        [Simulator] Simulating Vcs\GitStack('git')
+            ->stopOnFail()
+            ->exec('clean -fdx --exclude=vendor/ec-europa/toolkit')
+        [Simulator] Simulating Composer\Install('composer')
+        [Simulator] Simulating ExecStack()
+            ->stopOnFail()
+            ->exec('./vendor/bin/run toolkit:build-dev --root=web')
+
