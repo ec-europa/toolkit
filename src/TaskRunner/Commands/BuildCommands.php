@@ -82,11 +82,9 @@ class BuildCommands extends AbstractCommands
             ->mkdir($options['dist-root']);
 
         // Copy all (tracked) files to the dist folder.
-        if (!(!empty($_SERVER['PHP_SELF']) && strpos($_SERVER['PHP_SELF'], 'phpunit') !== false)) {
-            $tasks[] = $this->taskExecStack()
-                ->stopOnFail()
-                ->exec('git archive HEAD | tar -x -C ' . $options['dist-root']);
-        }
+        $tasks[] = $this->taskExecStack()
+            ->stopOnFail()
+            ->exec('git archive HEAD | tar -x -C ' . $options['dist-root']);
         // Run production-friendly "composer install" packages.
         $tasks[] = $this->taskComposerInstall('composer')
             ->env('COMPOSER_MIRROR_PATH_REPOS', 1)
@@ -113,13 +111,9 @@ class BuildCommands extends AbstractCommands
 
         // Write version tag in manifest.json and VERSION.txt.
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')->text(
-            json_encode(['version' => $tag, 'sha' => $hash], JSON_PRETTY_PRINT)
+            json_encode(['version' => $tag, 'sha' => $hash])
         );
-
-        // Do not process the tag version when running tests.
-        if (!(!empty($_SERVER['PHP_SELF']) && strpos($_SERVER['PHP_SELF'], 'phpunit') !== false)) {
-            $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
-        }
+        $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
 
         // Copy drush.yml file.
         $tk_drush = file_exists('resources/Drush/drush.yml.dist')
