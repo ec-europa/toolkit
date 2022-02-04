@@ -94,9 +94,9 @@ pipeline:
 
 matrix:
   PHP_VERSION:
-    - 7.3
     - 7.4
     - 8.0
+    - 8.1
   COMPOSER_BOUNDARY:
     - lowest
     - highest
