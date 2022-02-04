@@ -109,12 +109,16 @@ class BuildCommands extends AbstractCommands
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')->text(
             json_encode(['version' => $tag, 'sha' => $hash], JSON_PRETTY_PRINT)
         );
-        $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
+
+        // Do not process the tag version when running tests.
+        if (!(!empty($_SERVER['PHP_SELF']) && strpos($_SERVER['PHP_SELF'], 'phpunit') !== false)) {
+            $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
+        }
 
         // Copy drush.yml file.
         $tk_drush = file_exists('resources/Drush/drush.yml.dist')
-            ? 'resources/Drush/drush.yml.dist'
-            : 'vendor/ec-europa/toolkit/resources/Drush/drush.yml.dist';
+        ? 'resources/Drush/drush.yml.dist'
+        : 'vendor/ec-europa/toolkit/resources/Drush/drush.yml.dist';
         if (file_exists($tk_drush)) {
             $tasks[] = $this->taskFilesystemStack()
                 ->copy($tk_drush, $options['dist-root'] . '/web/sites/all/drush/drush.yml');
@@ -182,8 +186,8 @@ class BuildCommands extends AbstractCommands
 
         // Copy drush.yml file.
         $tk_drush = file_exists('resources/Drush/drush.yml.dist')
-            ? 'resources/Drush/drush.yml.dist'
-            : 'vendor/ec-europa/toolkit/resources/Drush/drush.yml.dist';
+        ? 'resources/Drush/drush.yml.dist'
+        : 'vendor/ec-europa/toolkit/resources/Drush/drush.yml.dist';
         if (file_exists($tk_drush)) {
             $tasks[] = $this->taskFilesystemStack()
                 ->copy($tk_drush, "$root/sites/all/drush/drush.yml");
