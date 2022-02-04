@@ -8,11 +8,19 @@
     convertWarningsToExceptions = "true"
     processIsolation            = "true"
     stopOnFailure               = "false"
-    syntaxCheck                 = "false"
     bootstrap                   = "vendor/autoload.php">
     <testsuites>
-        <testsuite>
-            <directory>tests/</directory>
+        <testsuite name="build">
+            <file>tests/Commands/BuildCommandsTest.php</file>
+        </testsuite>
+        <testsuite name="clone">
+            <file>tests/Commands/CloneCommandsTest.php</file>
+        </testsuite>
+        <testsuite name="Drupal">
+            <file>tests/Commands/DrupalCommandsTest.php</file>
+        </testsuite>
+        <testsuite name="Install">
+            <file>tests/Commands/InstallCommandsTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
