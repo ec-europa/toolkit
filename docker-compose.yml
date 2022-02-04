@@ -3,10 +3,9 @@ services:
   web:
     image: fpfis/httpd-php:7.4-dev
     working_dir: ${PWD}
-    ports:
-    - 8889:8080
     volumes:
     - ${PWD}:${PWD}
+    - ${HOME}/.composer/auth.json:/root/.composer/auth.json
     - ${PWD}/resources/xDebug/xdebug.custom.ini:/etc/php/7.4/mods-available/xdebug.ini
     environment:
       DOCUMENT_ROOT: ${PWD}

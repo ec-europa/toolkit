@@ -18,7 +18,7 @@
         [Simulator] Simulating Filesystem\FilesystemStack()
             ->copy('resources/Drush/drush.yml.dist', 'web/sites/all/drush/drush.yml')
 
-- command: 'toolkit:build-dist --root=web --dist-root=dist'
+- command: 'toolkit:build-dist --root=web --dist-root=dist --tag=1.0.0 --sha=aBcDeF'
   configuration:
     drupal:
       root: web
@@ -43,7 +43,9 @@
             ->stopOnFail()
             ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "build" ! ... " -exec rm -rf {} +')
         [Simulator] Simulating File\Write('dist/manifest.json')
-            ->text('{ ... }')
+            ->text('{"version":"1.0.0","sha":"aBcDeF"}')
+        [Simulator] Simulating File\Write('dist/web/VERSION.txt')
+            ->text('1.0.0')
         [Simulator] Simulating Filesystem\FilesystemStack()
             ->copy('resources/Drush/drush.yml.dist', 'dist/web/sites/all/drush/drush.yml')
         [Simulator] Simulating ExecStack()
