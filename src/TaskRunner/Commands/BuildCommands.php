@@ -112,8 +112,7 @@ class BuildCommands extends AbstractCommands
         );
 
         // Do not process the tag version when running tests.
-        global $argv;
-        if (!(!empty($argv[0]) && strpos($argv[0], 'phpunit') !== false)) {
+        if (!(!empty($_SERVER['PHP_SELF']) && strpos($_SERVER['PHP_SELF'], 'phpunit') !== false)) {
             $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
         }
 
