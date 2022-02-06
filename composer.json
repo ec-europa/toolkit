@@ -41,7 +41,7 @@
         "composer-exit-on-patch-failure": true,
         "patches": {
             "openeuropa/task-runner": {
-                "PHP8.0 Compatibility, @todo Update to version 2.0.0-alpha1": "resources/patches/oe-task-runner-php8.patch"
+                "PHP8.0 Compatibility, @todo Update to version 2.0.0-alpha1": "https://raw.githubusercontent.com/ec-europa/toolkit/feature/DQA-3316/resources/patches/oe-task-runner-php8.patch"
             }
         }
     },
