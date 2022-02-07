@@ -35,14 +35,14 @@ class LoadDefaultConfigCommands extends AbstractCommands
     /**
      * Load default Toolkit configuration.
      *
-     * The Task Runner does not allow to provide default configuration for
+     * The Task Runner does not allow providing default configuration for
      * commands. In this hook we load Toolkit default configuration and re-apply
      * it to the Task Runner one.
      *
-     * @param Symfony\Component\Console\Event\ConsoleCommandEvent\ConsoleCommandEvent $event
+     * @param ConsoleCommandEvent $event
      *   Event of the console command event.
      *
-     * @hook pre-command-event *
+     * @hook pre-command-event
      */
     public function loadDefaultConfig(ConsoleCommandEvent $event)
     {
