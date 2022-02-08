@@ -12,18 +12,18 @@
     },
     "require": {
         "php": "^7.3 || ^8.0",
+        "ext-curl": "*",
         "ext-json": "*",
+        "ext-simplexml": "*",
         "behat/behat": "^3.7 || ^3.8",
         "cweagans/composer-patches": "^1.4 || ^1.7",
         "drush/drush": "^9.7.1 || ^10.0.0 || ^11.0.4",
-        "ec-europa/qa-automation": "^8.1.1",
+        "ec-europa/qa-automation": "^8.1.2",
         "guzzlehttp/guzzle": "^6.3",
         "j13k/yaml-lint": "^1.1",
         "openeuropa/task-runner": "dev-master as 1.0.0",
         "php-parallel-lint/php-parallel-lint": "^1.3",
-        "phpunit/phpunit": "^7.5 || ^9.5",
-        "ext-curl": "*",
-        "ext-simplexml": "*"
+        "phpunit/phpunit": "^7.5 || ^9.5"
     },
     "suggest": {
         "drupal/console": "The Drupal CLI, tool to generate boilerplate code, interact with and debug Drupal."
