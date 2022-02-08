@@ -687,106 +687,77 @@ class ToolCommands extends AbstractCommands
      */
     public function optsReview()
     {
-        if (!file_exists('.opts.yml')) {
-            $this->say("File 'opts.yml' was not found.");
-            return 0;
-        }
-        $parseOptsFile = Yaml::parseFile('.opts.yml');
-        // List of commands to prevent the use.
-        $forbiddenCommands = [
-            'sql:conf',
-            'sql-conf',
-            'sql:connect',
-            'sql-connect',
-            'sql:create',
-            'sql-create',
-            'sql:drop',
-            'sql-drop',
-            'sql:cli',
-            'sql-cli',
-            'sqlc',
-            'sql:query',
-            'sql-query',
-            'sqlq',
-            'sql:dump',
-            'sql-dump',
-            'sql:sanitize',
-            'sql-sanitize',
-            'sqlsan',
-            'sql:sync',
-            'sql-sync',
-            'en',
-            'pm-enable',
-            'pm:disable',
-            'dis',
-            'pm-disable',
-            'user:login',
-            'uli',
-            'user-login',
-            'user:information',
-            'uinf',
-            'user-information',
-            'user:block',
-            'ublk',
-            'user-block',
-            'user:unblock',
-            'uublk',
-            'user-unblock',
-            'user:role:add',
-            'urol',
-            'user-add-role',
-            'user:role:remove',
-            'urrol',
-            'user-remove-role',
-            'user:create',
-            'ucrt',
-            'user-create',
-            'user:cancel',
-            'ucan',
-            'user-cancel',
-            'user:password',
-            'upwd',
-            'user-password',
-        ];
-        $reviewOk = true;
+        if (file_exists('.opts.yml')) {
+            $parseOptsFile = Yaml::parseFile('.opts.yml');
+            // List of commands to prevent the use.
+            $forbiddenCommands = [
+                'sql:conf', 'sql-conf',
+                'sql:connect', 'sql-connect',
+                'sql:create', 'sql-create',
+                'sql:drop', 'sql-drop',
+                'sql:cli', 'sql-cli', 'sqlc',
+                'sql:query', 'sql-query', 'sqlq',
+                'sql:dump', 'sql-dump',
+                'sql:sanitize', 'sql-sanitize', 'sqlsan',
+                'sql:sync', 'sql-sync',
+                'pm:enable', 'pm-enable', 'en',
+                'pm:disable', 'pm-disable', 'dis',
+                'user:login', 'user-login', 'uli',
+                'user:information', 'user-information', 'uinf',
+                'user:block', 'user-block', 'ublk',
+                'user:unblock', 'user-unblock', 'uublk',
+                'user:role:add', 'user-add-role', 'urol',
+                'user:role:remove', 'user-remove-role', 'urrol',
+                'user:create', 'user-create', 'ucrt',
+                'user:cancel', 'user-cancel', 'ucan',
+                'user:password', 'user-password', 'upwd',
+                'php-eval', 'eval', 'ev',
+                'composer',
+                'git',
+                'wget',
+                'curl',
+            ];
+            $reviewOk = true;
 
-        if (empty($parseOptsFile['upgrade_commands'])) {
-            $this->say("The project is using default deploy instructions.");
-            return 0;
-        }
-        if (empty($parseOptsFile['upgrade_commands']['default']) && empty($parseOptsFile['upgrade_commands']['append'])) {
-            $this->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
-            return 1;
-        }
 
-        foreach ($parseOptsFile['upgrade_commands'] as $key => $commands) {
-            foreach ($commands as $command) {
-                foreach ($forbiddenCommands as $forbiddenCommand) {
-                    if ($key == 'default') {
-                        $parsedCommand = explode(" ", $command);
-                        if (in_array($forbiddenCommand, $parsedCommand)) {
-                            $this->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
-                            $reviewOk = false;
-                        }
-                    } else {
-                        foreach ($command as $env => $subCommand) {
-                            $parsedCommand = explode(" ", $subCommand);
+            if (empty($parseOptsFile['upgrade_commands'])) {
+                $this->say("The project is using default deploy instructions.");
+                return 0;
+            }
+            if (empty($parseOptsFile['upgrade_commands']['default']) && empty($parseOptsFile['upgrade_commands']['append'])) {
+                $this->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
+                return 1;
+            }
+
+            foreach ($parseOptsFile['upgrade_commands'] as $key => $commands) {
+                foreach ($commands as $command) {
+                    foreach ($forbiddenCommands as $forbiddenCommand) {
+                        if ($key == 'default') {
+                            $parsedCommand = explode(" ", $command);
                             if (in_array($forbiddenCommand, $parsedCommand)) {
-                                $this->say("The command '$subCommand' is not allowed. Please remove it from 'upgrade_commands' section.");
+                                $this->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
                                 $reviewOk = false;
+                            }
+                        } else {
+                            foreach ($command as $env => $subCommand) {
+                                $parsedCommand = explode(" ", $subCommand);
+                                if (in_array($forbiddenCommand, $parsedCommand)) {
+                                    $this->say("The command '$subCommand' is not allowed. Please remove it from 'upgrade_commands' section.");
+                                    $reviewOk = false;
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        if ($reviewOk == false) {
-            $this->io()->error("Failed the '.opts.yml' file review. Please contact the QA team.");
-            return 1;
-        } else {
-            $this->say("Review 'opts.yml' file - Ok.");
-            // If the review is ok return '0'.
-            return 0;
+            if ($reviewOk == false) {
+                $this->io()->error("Failed the '.opts.yml' file review. Please contact the QA team.");
+                return 1;
+            } else {
+                $this->say("Review 'opts.yml' file - Ok.");
+                // If the review is ok return '0'.
+                return 0;
+            }
         }
     }
 
