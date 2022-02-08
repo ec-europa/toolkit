@@ -52,6 +52,10 @@ class BuildCommands extends AbstractCommands
      * @option keep      Comma separated list of files and folders to keep.
      * @option tag       (deprecated) Version tag for manifest.
      * @option sha       (deprecated) Commit hash for manifest.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     *
      */
     public function buildDist(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
