@@ -516,8 +516,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                     'field_blackfire_network' => [['value' => $data['network']]],
                     'field_blackfire_sql' => [['value' => $data['sql']]],
                 ];
-                if ($playload_response = ToolCommands::postQaContent($payload)) {
-                    $this->writeln("Payload sent to QA website: $playload_response");
+                if ($payload_response = ToolCommands::postQaContent($payload)) {
+                    $this->writeln("Payload sent to QA website: $payload_response");
                 } else {
                     $this->writeln('Fail to send the payload.');
                 }
