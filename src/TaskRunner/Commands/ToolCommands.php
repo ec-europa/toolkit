@@ -468,12 +468,12 @@ class ToolCommands extends AbstractCommands
      * @param string $url The QA endpoint url.
      * @param string $basicAuth The basic auth.
      *
-     * @return bool|string
+     * @return string
      */
-    public static function getQaEndpointContent(string $url, string $basicAuth = ''): bool|string
+    public static function getQaEndpointContent(string $url, string $basicAuth = ''): string
     {
         if (!($token = self::getQaSessionToken())) {
-            return false;
+            return '';
         }
 
         $content = '';
@@ -516,10 +516,10 @@ class ToolCommands extends AbstractCommands
     /**
      * Helper to return the session token.
      *
-     * @return bool|string
+     * @return string
      *   The token or false if the request failed.
      */
-    public static function getQaSessionToken(): bool|string
+    public static function getQaSessionToken(): string
     {
         if (empty($url = getenv('QA_WEBSITE_URL'))) {
             $url = 'https://webgate.ec.europa.eu/fpfis/qa';
@@ -548,18 +548,18 @@ class ToolCommands extends AbstractCommands
      * @param array $fields
      *   Data to send.
      *
-     * @return bool|string
+     * @return string
      *   True if data was sent properly, false otherwise.
      *
      * @throws \Exception
      */
-    public static function postQaContent($fields): bool|string
+    public static function postQaContent($fields): string
     {
         if (empty($url = getenv('QA_WEBSITE_URL'))) {
             $url = 'https://webgate.ec.europa.eu/fpfis/qa';
         }
         if (!($token = self::getQaSessionToken())) {
-            return false;
+            return '';
         }
         $ch = curl_init($url . '/node?_format=hal_json');
         curl_setopt($ch, CURLOPT_POST, 1);
