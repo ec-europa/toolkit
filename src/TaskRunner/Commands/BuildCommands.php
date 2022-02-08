@@ -275,7 +275,7 @@ class BuildCommands extends AbstractCommands
      * @param array $options
      *   Additional options for the command.
      *
-     * @return \Robo\Collection\CollectionBuilder
+     * @return \Robo\Result|int
      *   The collection builder.
      *
      * @command toolkit:build-assets
