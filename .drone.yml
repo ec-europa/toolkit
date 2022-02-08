@@ -26,6 +26,7 @@ pipeline:
       - composer install --ansi --no-suggest --no-progress
     when:
       matrix:
+        COMPOSER_BOUNDARY: highest
         COMPOSER_VERSION: 1
 
   composer-install:
@@ -40,6 +41,7 @@ pipeline:
       - composer install --ansi --no-suggest --no-progress
     when:
       matrix:
+        COMPOSER_BOUNDARY: highest
         COMPOSER_VERSION: 2
 
   composer-update-lowest:
