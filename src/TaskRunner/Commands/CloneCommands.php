@@ -91,14 +91,14 @@ class CloneCommands extends AbstractCommands
         }
 
         // Default deployment sequence.
-        $bin_dir = $this->getConfig()->get('runner.bin_dir');
-        $tasks[] = $this->taskExec($bin_dir . '/drush state:set system.maintenance_mode 1 --input-format=integer -y');
-        $tasks[] = $this->taskExec($bin_dir . '/drush updatedb -y');
+        $drush_dir = $this->getBin('drush');
+        $tasks[] = $this->taskExec($drush_dir . ' state:set system.maintenance_mode 1 --input-format=integer -y');
+        $tasks[] = $this->taskExec($drush_dir . ' updatedb -y');
         if ($has_config) {
-            $tasks[] = $this->taskExec($bin_dir . '/run toolkit:import-config');
+            $tasks[] = $this->taskExec($this->getBin('run') . ' toolkit:import-config');
         }
-        $tasks[] = $this->taskExec($bin_dir . '/drush state:set system.maintenance_mode 0 --input-format=integer -y');
-        $tasks[] = $this->taskExec($bin_dir . '/drush cache:rebuild');
+        $tasks[] = $this->taskExec($drush_dir . ' state:set system.maintenance_mode 0 --input-format=integer -y');
+        $tasks[] = $this->taskExec($drush_dir . ' cache:rebuild');
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
@@ -134,7 +134,7 @@ class CloneCommands extends AbstractCommands
         }
 
         // Unzip and dump database file.
-        $drush_bin = $this->getConfig()->get('runner.bin_dir') . '/drush';
+        $drush_bin = $this->getBin('drush');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
             ->exec($drush_bin . ' sql-drop -y')

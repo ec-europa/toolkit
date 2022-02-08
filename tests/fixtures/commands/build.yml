@@ -18,7 +18,7 @@
         [Simulator] Simulating Filesystem\FilesystemStack()
             ->copy('resources/Drush/drush.yml.dist', 'web/sites/all/drush/drush.yml')
 
-- command: 'toolkit:build-dist --root=web --dist-root=dist --tag=1.0.0 --sha=aBcDeF'
+- command: 'toolkit:build-dist --root=web --dist-root=dist --tag=1.0.0 --sha=aBcDeF --keep=vendor --remove=CHANGELOG.txt'
   configuration:
     drupal:
       root: web
@@ -41,7 +41,7 @@
             ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
         [Simulator] Simulating ExecStack()
             ->stopOnFail()
-            ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "build" ! ... " -exec rm -rf {} +')
+            ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
         [Simulator] Simulating File\Write('dist/manifest.json')
             ->text('{"version":"1.0.0","sha":"aBcDeF"}')
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')
@@ -49,7 +49,7 @@
         [Simulator] Simulating Filesystem\FilesystemStack()
             ->copy('resources/Drush/drush.yml.dist', 'dist/web/sites/all/drush/drush.yml')
         [Simulator] Simulating ExecStack()
-            ->exec('find dist -maxdepth 3 -type f (-name "CHANGELOG.txt" - ... ) -exec rm -rf {} +')
+            ->exec('find dist -maxdepth 3 -type f (-name "CHANGELOG.txt") -exec rm -rf {} +')
 
 - command: 'toolkit:build-dev-reset --root=web --yes'
   configuration:
