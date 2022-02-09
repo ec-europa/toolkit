@@ -192,15 +192,21 @@ class CloneCommands extends AbstractCommands
             $password = getenv('NEXTCLOUD_PASS') && getenv('NEXTCLOUD_PASS') !== '${env.NEXTCLOUD_PASS}' ? getenv('NEXTCLOUD_PASS') : '';
             $url = $config->get('toolkit.clone.nextcloud_url');
         } else {
-            $this->say('Invalid value for variable ${toolkit.clone.asda_type}, use "default" or "nextcloud".');
+            $this->writeln('<error>Invalid value for variable ${toolkit.clone.asda_type}, use "default" or "nextcloud".</error>');
             return $this->collectionBuilder()->addTaskList($tasks);
         }
 
         if (empty($user)) {
-            $user = $this->ask('Username?');
+            if (empty($user = $this->ask('Please insert your username?'))) {
+                $this->writeln('<error>The username cannot be empty!</error>');
+                return $this->collectionBuilder()->addTaskList($tasks);
+            }
         }
         if (empty($password)) {
-            $password = $this->ask('Password?');
+            if (empty($password = $this->ask('Please insert your password?'))) {
+                $this->writeln('<error>The password cannot be empty!</error>');
+                return $this->collectionBuilder()->addTaskList($tasks);
+            }
         }
 
         $url = str_replace(['http://', 'https://'], '', $url);
