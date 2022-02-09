@@ -191,14 +191,6 @@ class ToolCommands extends AbstractCommands
             $this->io()->success('Components checked, nothing to report.');
         }
 
-        $this->io()->text([
-            'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
-            'The available tokens are:',
-            '    - [SKIP-OUTDATED]',
-            '    - [SKIP-INSECURE]',
-            '    - [SKIP-D9C]',
-        ]);
-
         return $status;
     }
 
