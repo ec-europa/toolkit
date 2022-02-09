@@ -197,7 +197,6 @@ class ToolCommands extends AbstractCommands
             'The available tokens are:',
             '    - [SKIP-OUTDATED]',
             '    - [SKIP-INSECURE]',
-            '    - [SKIP-D9C]',
         ]);
 
         return $status;
