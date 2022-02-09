@@ -149,70 +149,101 @@ class CloneCommands extends AbstractCommands
     /**
      * Download ASDA snapshot.
      *
-     * In order to make use of this functionality you must add your
-     * ASDA credentials to your environment like.
+     * Configuration for ASDA in NEXTCLOUD.
+     * - Environment variables: NEXTCLOUD_USER, NEXTCLOUD_PASS (EU Login).
+     * - Runner variables:
+     * @code
+     * toolkit:
+     *   clone:
+     *     asda_type: 'nextcloud'
+     *     nextcloud_url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'
+     * @endcode
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *
-     * @param array $options
-     *   Command options.
+     * Configuration for ASDA default.
+     * - Environment variables: ASDA_USER, ASDA_PASSWORD.
+     * - Runner variables:
+     * @code
+     * toolkit:
+     *   clone:
+     *     asda_type: 'default'
+     *     asda_url: 'webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project_id}'
+     * @endcode
      *
      * @command toolkit:download-dump
      *
      * @return \Robo\Collection\CollectionBuilder|void
      *   Collection builder.
      */
-    public function downloadDump(array $options = [
-        'asda-url' => InputOption::VALUE_REQUIRED,
-        'asda-user' => InputOption::VALUE_REQUIRED,
-        'asda-password' => InputOption::VALUE_REQUIRED,
-        'dumpfile' => InputOption::VALUE_REQUIRED,
-    ])
+    public function downloadDump()
     {
         $tasks = [];
-
-        // Check credentials.
-        if ($options['asda-user'] === '${env.ASDA_USER}' || $options['asda-password'] === '${env.ASDA_PASSWORD}') {
-            $this->say('ASDA credentials not found, set them as the following environment variables: ASDA_USER, ASDA_PASSWORD.');
-
+        $config = $this->getConfig();
+        $project_id = $config->get('toolkit.project_id');
+        $asda_type = $config->get('toolkit.clone.asda_type');
+        $dump_file = $config->get('toolkit.clone.dumpfile');
+        $this->say("ASDA type is: $asda_type");
+        if ($asda_type === 'default') {
+            $user = getenv('ASDA_USER') && getenv('ASDA_USER') !== '${env.ASDA_USER}' ? getenv('ASDA_USER') : '';
+            $password = getenv('ASDA_PASSWORD') && getenv('ASDA_PASSWORD') !== '${env.ASDA_PASSWORD}' ? getenv('ASDA_PASSWORD') : '';
+            $url = $config->get('toolkit.clone.asda_url');
+        } elseif ($asda_type === 'nextcloud') {
+            $user = getenv('NEXTCLOUD_USER') && getenv('NEXTCLOUD_USER') !== '${env.NEXTCLOUD_USER}' ? getenv('NEXTCLOUD_USER') : '';
+            $password = getenv('NEXTCLOUD_PASS') && getenv('NEXTCLOUD_PASS') !== '${env.NEXTCLOUD_PASS}' ? getenv('NEXTCLOUD_PASS') : '';
+            $url = $config->get('toolkit.clone.nextcloud_url');
+        } else {
+            $this->writeln('<error>Invalid value for variable ${toolkit.clone.asda_type}, use "default" or "nextcloud".</error>');
             return $this->collectionBuilder()->addTaskList($tasks);
         }
 
-        // Download the .sha file.
-        $this->generateAsdaWgetInputFile('latest.sh1', $options);
-        $this->downloadChecksumFile($options);
-        $fileContent = file_get_contents('latest.sh1');
-        $filename = trim(explode('  ', $fileContent)[1]);
-
-        // Download the .sql file.
-        $this->generateAsdaWgetInputFile($filename, $options);
-
-        // Display information about ASDA creation date.
-        $dumpData = substr(substr(file_get_contents('latest.sh1'), (strpos(file_get_contents('latest.sh1'), ' ')) + 2), 0, 15);
-        $dumpDate = date_parse_from_format("Ymd-His", $dumpData);
-        if (
-            is_array($dumpDate) &&
-            is_integer($dumpDate['hour']) &&
-            is_integer($dumpDate['minute']) &&
-            is_integer($dumpDate['second']) &&
-            is_integer($dumpDate['month']) &&
-            is_integer($dumpDate['day']) &&
-            is_integer($dumpDate['year'])
-        ) {
-            $dumpTimestamp = mktime($dumpDate['hour'], $dumpDate['minute'], $dumpDate['second'], $dumpDate['month'], $dumpDate['day'], $dumpDate['year']);
-            $dumpHrdate = 'ASDA DATE: ' . $dumpDate['day'] . ' ' . date('M', $dumpTimestamp) . ' ' . $dumpDate['year'] . ' at ' . $dumpDate['hour'] . ':' . $dumpDate['minute'];
-            $this->io()->title($dumpHrdate);
+        if (empty($user)) {
+            if (empty($user = $this->ask('Please insert your username?'))) {
+                $this->writeln('<error>The username cannot be empty!</error>');
+                return $this->collectionBuilder()->addTaskList($tasks);
+            }
+        }
+        if (empty($password)) {
+            if (empty($password = $this->ask('Please insert your password?'))) {
+                $this->writeln('<error>The password cannot be empty!</error>');
+                return $this->collectionBuilder()->addTaskList($tasks);
+            }
         }
 
-        $tasks[] = $this->taskExec('wget')
-            ->option('-O', $options['dumpfile'] . '.gz')
-            ->option('-i', self::TEMP_INPUTFILE)
-            ->option('-A', 'sql.gz')
-            ->option('-P', './');
+        $url = str_replace(['http://', 'https://'], '', $url);
+        if ($asda_type === 'nextcloud') {
+            $url = "$url/$user/forDevelopment/ec-europa/$project_id-reference/mysql";
+        }
+        $download_link = "https://$user:$password@$url";
+
+        // Download the .sha file.
+        $this->generateAsdaWgetInputFile($download_link . '/latest.sh1');
+        $this->wgetDownloadFile('latest.sh1', '.sh1')->run();
+        $latest = file_get_contents('latest.sh1');
+        $filename = trim(explode('  ', $latest)[1]);
+
+        // Display information about ASDA creation date.
+        preg_match('/(\d{8})(?:-)?(\d{4})(\d{2})?/', $filename, $matches);
+        $date = date_parse_from_format('YmdHis', $matches[1] . $matches[2] . ($matches[3] ?? '00'));
+        if (
+            is_integer($date['hour']) &&
+            is_integer($date['minute']) &&
+            is_integer($date['month']) &&
+            is_integer($date['day']) &&
+            is_integer($date['year'])
+        ) {
+            $timestamp = mktime($date['hour'], $date['minute'], $date['second'], $date['month'], $date['day'], $date['year']);
+            $output = sprintf('ASDA DATE: %d %s %d at %s:%s', $date['day'], date('M', $timestamp), $date['year'], $date['hour'], $date['minute']);
+            $separator = str_repeat('=', strlen($output));
+            $this->writeln("\n<info>$output\n$separator</info>\n");
+        }
+
+        // Download the .sql file.
+        $this->generateAsdaWgetInputFile($download_link . '/' . $filename);
+        $tasks[] = $this->wgetDownloadFile($dump_file . '.gz', '.sql.gz');
 
         // Unzip the file.
         $tasks[] = $this->taskExec('gunzip')
-            ->arg($options['dumpfile'] . '.gz');
+            ->arg($dump_file . '.gz')
+            ->option('-f');
 
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
@@ -224,67 +255,35 @@ class CloneCommands extends AbstractCommands
     }
 
     /**
-     * Download Checksum file.
+     * Create file containing a url for usage in wget --input-file argument.
      *
-     * Make use checksum file in order to detect the proper file
-     * to download.
-     *
-     * @param array $options
-     *   Command options.
+     * @param string $url
+     *   Url to fill in the temp file.
      */
-    private function downloadChecksumFile(array $options = [
-        'asda-url' => InputOption::VALUE_REQUIRED,
-        'asda-user' => InputOption::VALUE_REQUIRED,
-        'asda-password' => InputOption::VALUE_REQUIRED,
-        'dumpfile' => InputOption::VALUE_REQUIRED,
-    ])
+    private function generateAsdaWgetInputFile($url)
     {
-        $tmpDir = $this->getConfig()->get("toolkit.tmp_folder");
-
-        // Create temp folder to prepare dist build in.
-        $tasks[] = $this->taskFilesystemStack()
-            ->mkdir($tmpDir)
-            ->run();
-
-        $this->taskExec('wget')
-            ->option('-i', self::TEMP_INPUTFILE)
-            ->option('-O', 'latest.sh1')
-            ->option('-A', '.sh1')
-            ->option('-P', './')
+        $this->taskFilesystemStack()
+            ->taskWriteToFile(self::TEMP_INPUTFILE)
+            ->line($url)
             ->run();
     }
 
     /**
-     * Create file for usage in wget --input-file argument in the
-     * downloadDump() function.
+     * Download the file present in the tmp file.
      *
-     * @param string $filename
-     *   Name of filename to append to url.
+     * @param $destination
+     *   The destination filename.
+     * @param $accept
+     *   A comma-separated list of accepted extensions.
      *
-     * @param array $options
-     *   Command options.
+     * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Base\Exec
      */
-    private function generateAsdaWgetInputFile($filename, array $options = [
-        'asda-url' => InputOption::VALUE_REQUIRED,
-        'asda-user' => InputOption::VALUE_REQUIRED,
-        'asda-password' => InputOption::VALUE_REQUIRED,
-    ])
+    private function wgetDownloadFile($destination, $accept = null)
     {
-        // Workaround to EWPP projects.
-        $url = getenv('ASDA_URL') ?: $options['asda-url'];
-
-        $disallowed = array('http://', 'https://');
-        foreach ($disallowed as $d) {
-            if (strpos($url, $d) === 0) {
-                $url = str_replace($d, '', $options['asda-url']);
-            }
-        }
-
-        $downloadLink = 'https://' . $options['asda-user'] . ':' . $options['asda-password'] . '@' . $url . '/' . $filename;
-
-        $tasks[] = $this->taskFilesystemStack()
-            ->taskWriteToFile(self::TEMP_INPUTFILE)
-            ->line($downloadLink)
-            ->run();
+        return $this->taskExec('wget')
+            ->option('-i', self::TEMP_INPUTFILE)
+            ->option('-O', $destination)
+            ->option('-A', $accept)
+            ->option('-P', './');
     }
 }
