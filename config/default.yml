@@ -3,7 +3,9 @@ toolkit:
   clean:
     config_file: 'config/sync/core.extension.yml'
   clone:
-    asda_url: 'https://webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project_id}'
+    asda_type: 'default'
+    asda_url: 'webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project_id}'
+    nextcloud_url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'
     dumpfile: 'dump.sql'
   deploy:
     config_file: 'config/sync/core.extension.yml'
