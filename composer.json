@@ -12,8 +12,10 @@
     },
     "require": {
         "php": "^7.1",
+        "ext-curl": "*",
         "ext-json": "*",
-        "cweagans/composer-patches": "^1.4",
+        "ext-simplexml": "*",
+        "cweagans/composer-patches": "^1.7.2",
         "drush/drush": "^9.7.1 || ^10.0.0",
         "ec-europa/qa-automation": "^4.2",
         "guzzlehttp/guzzle": "^6.3",

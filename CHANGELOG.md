@@ -1,13 +1,41 @@
 # Toolkit change log
+
+## Version 4.7.0
+  - Include drush.yml file in the distribution with options:uri set with the value from env.VIRTUAL_HOST;
+  - Improve test coverage to toolkit itself;
+  - Add new target toolkit:check-version;
+  - Add new experimental target toolkit:fix-permissions; - MISSING?
+  - Extend list of .opts.yml of forbidden commands with: php-eval, composer, git, curl and wget;
+  - Add option to toolkit:test-phpunit to control report format (--log-junit report.xml);
+  - Include support to new ASDA version;
+  - Other minor improvements and fixes;
+
+## Version 4.6.4
+  - Hotfix to target toolkit:run-blackfire to prevent duplicated pages;
+
+## Version 4.6.3
+  - Hotfix to toolkit:requirements;
+
+## Version 4.6.2
+  - Hotfix to php version check;
+
+## Version 4.6.1
+  - Include soft bypass for Drupal 8 EOL using token message;
+  - Include hard bypass for Drupal 9 Compatibility using .opts.yml;
+  - Introduce new target toolkit:requirements;
+
+## Version 4.6.0
+  - Introduce new target toolkit:requirements;
+
 ## Version 4.5.0
   - Add support to Behat profiles, see toolkit:test-behat
   - Add support for php-unit, see toolkit:test-phpunit
   - Include integration for Blackfire service
   - Improve toolkit:build-assets task with support to grunt
   - Improve output of toolkit:download-dump with data display after download
-  - Fix toolkit:test-behat mandatory test check to enforce 1 running test 
+  - Fix toolkit:test-behat mandatory test check to enforce 1 running test
   - Add new target toolkit:lint-php to check php files syntax
-  - Add new target toolkit:lint-yaml to check yaml files sintax
+  - Add new target toolkit:lint-yaml to check yaml files syntax
   - Add new target toolkit:opts-review to check .opts.yaml file
   - Refactor toolkit:component-check with detection of insecure, outdated, mandatory and recommended packages
 
