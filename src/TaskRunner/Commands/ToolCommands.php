@@ -39,7 +39,7 @@ class ToolCommands extends AbstractCommands
     {
         $tasks = [];
 
-        $drush_bin = $this->getConfig()->get('runner.bin_dir') . '/drush';
+        $drush_bin = $this->getBin('drush');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
             ->exec($drush_bin . ' -y config-set system.performance css.preprocess 0')
@@ -69,7 +69,7 @@ class ToolCommands extends AbstractCommands
             foreach ($data as $notification) {
                 $this->io()->warning($notification['title'] . PHP_EOL . $notification['notification']);
             }
-        }//end if
+        }
     }
 
     /**
@@ -89,9 +89,11 @@ class ToolCommands extends AbstractCommands
         'test-command' => false,
     ])
     {
-        // Currently undocumented in this class. Because I don't know how to
-        // provide such a property to one single function other than naming the
-        // failed property exactly for this function.
+        if (empty($basicAuth = getenv('QA_API_BASIC_AUTH'))) {
+            $this->io()->error('Missing ENV var QA_API_BASIC_AUTH.');
+            return 1;
+        }
+
         $this->componentCheckFailed = false;
         $this->componentCheckMandatoryFailed = false;
         $this->componentCheckRecommendedFailed = false;
@@ -103,111 +105,105 @@ class ToolCommands extends AbstractCommands
         $endpointUrl = "https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x";
         $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
 
-        if (empty($basicAuth = getenv('QA_API_BASIC_AUTH'))) {
-            $this->io()->warning('Missing ENV var QA_API_BASIC_AUTH.');
+        if (!isset($composerLock['packages'])) {
+            $this->io()->error('No packages found in the composer.lock file.');
             return 1;
         }
 
-        if (isset($endpointUrl) && isset($composerLock['packages'])) {
-            $result = self::getQaEndpointContent($endpointUrl, $basicAuth);
-            $data = json_decode($result, true);
-            $modules = array_filter(array_combine(array_column($data, 'name'), $data));
+        $status = 0;
+        $result = self::getQaEndpointContent($endpointUrl, $basicAuth);
+        $data = json_decode($result, true);
+        $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 
-            // To test this command execute it with the --test-command option:
-            // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x"
-            // Then we provide an array in the packages that fails on each type
-            // of validation.
-            if ($options['test-command']) {
-                $composerLock['packages'] = [
-                    // Lines below should trow a warning.
-                    ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/unreviewed'],
-                    ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/devel'],
-                    ['type' => 'drupal-module', 'version' => '1.0-alpha1', 'name' => 'drupal/xmlsitemap'],
-                    // Allowed for single project jrc-k4p, otherwise trows warning.
-                    ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/active_facet_pills'],
-                    // Allowed dev version if the Drupal version meets the
-                    // conflict version constraints.
-                    [
-                        'version' => 'dev-1.x',
-                        'type' => 'drupal-module',
-                        'name' => 'drupal/views_bulk_operations',
-                        'extra' => [
-                            'drupal' => [
-                                'version' => '8.x-3.4+15-dev',
-                            ],
+        // To test this command execute it with the --test-command option:
+        // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x"
+        // Then we provide an array in the packages that fails on each type
+        // of validation.
+        if ($options['test-command']) {
+            $composerLock['packages'] = [
+                // Lines below should trow a warning.
+                ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/unreviewed'],
+                ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/devel'],
+                ['type' => 'drupal-module', 'version' => '1.0-alpha1', 'name' => 'drupal/xmlsitemap'],
+                // Allowed for single project jrc-k4p, otherwise trows warning.
+                ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/active_facet_pills'],
+                // Allowed dev version if the Drupal version meets the
+                // conflict version constraints.
+                [
+                    'version' => 'dev-1.x',
+                    'type' => 'drupal-module',
+                    'name' => 'drupal/views_bulk_operations',
+                    'extra' => [
+                        'drupal' => [
+                            'version' => '8.x-3.4+15-dev',
                         ],
                     ],
-                ];
-            }
-
-            // Execute all checks.
-            $checks = [
-                'Mandatory',
-                'Recommended',
-                'Insecure',
-                'Outdated',
+                ],
             ];
+        }
 
-            foreach ($checks as $check) {
-                $this->io()->title('Checking ' . $check . ' components.');
-                $fct = "component" . $check;
-                $this->{$fct}($modules, $composerLock['packages']);
-                echo PHP_EOL;
-            }
+        // Execute all checks.
+        $checks = [
+            'Mandatory',
+            'Recommended',
+            'Insecure',
+            'Outdated',
+        ];
 
-            $this->io()->title('Checking evaluation status components.');
-            // Proceed with 'blocker' option. Loop over the packages.
-            foreach ($composerLock['packages'] as $package) {
-                // Check if it's a drupal package.
-                // NOTE: Currently only supports drupal packages :(.
-                if (substr($package['name'], 0, 7) === 'drupal/') {
-                    $this->validateComponent($package, $modules);
-                }
-            }
-            if ($this->componentCheckFailed == false) {
-                $this->say("Evaluation module check is OK.");
-            }
+        foreach ($checks as $check) {
+            $this->io()->title('Checking ' . $check . ' components.');
+            $fct = "component" . $check;
+            $this->{$fct}($modules, $composerLock['packages']);
             echo PHP_EOL;
+        }
 
-            $this->printComponentResults();
-
-            $status = 0;
-            // If the validation fail, return according to the blocker.
-            if (
-                $this->componentCheckFailed ||
-                $this->componentCheckMandatoryFailed ||
-                $this->componentCheckRecommendedFailed ||
-                ($this->componentCheckInsecureFailed && $this->skipInsecure) ||
-                ($this->componentCheckOutdatedFailed && $this->skipOutdated)
-            ) {
-                $msg = 'Failed the components check, please verify the report and update the project.';
-                $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
-                $this->io()->error($msg);
-                $status = 1;
+        $this->io()->title('Checking evaluation status components.');
+        // Proceed with 'blocker' option. Loop over the packages.
+        foreach ($composerLock['packages'] as $package) {
+            // Check if it's a drupal package.
+            // NOTE: Currently only supports drupal packages :(.
+            if (substr($package['name'], 0, 7) === 'drupal/') {
+                $this->validateComponent($package, $modules);
             }
+        }
+        if ($this->componentCheckFailed == false) {
+            $this->say("Evaluation module check is OK.");
+        }
+        echo PHP_EOL;
 
-            // Give feedback if no problems found.
-            if (!$status) {
-                $this->io()->success('Components checked, nothing to report.');
-            }
+        $this->printComponentResults();
 
-            $this->io()->text([
-                'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
-                'The available tokens are:',
-                '    - [SKIP-OUTDATED]',
-                '    - [SKIP-INSECURE]',
-                '    - [SKIP-D9C]',
-            ]);
+        // If the validation fail, return according to the blocker.
+        if (
+            $this->componentCheckFailed ||
+            $this->componentCheckMandatoryFailed ||
+            $this->componentCheckRecommendedFailed ||
+            ($this->componentCheckInsecureFailed && $this->skipInsecure) ||
+            ($this->componentCheckOutdatedFailed && $this->skipOutdated)
+        ) {
+            $msg = 'Failed the components check, please verify the report and update the project.';
+            $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
+            $this->io()->error($msg);
+            $status = 1;
+        }
 
-            return $status;
-        }//end if
+        // Give feedback if no problems found.
+        if (!$status) {
+            $this->io()->success('Components checked, nothing to report.');
+        }
+
+        $this->io()->text([
+            'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
+            'The available tokens are:',
+            '    - [SKIP-OUTDATED]',
+            '    - [SKIP-INSECURE]',
+        ]);
+
+        return $status;
     }
 
     /**
      * Helper function to validate the component.
-     *
-     * @param array $package The package to validate.
-     * @param array $modules The modules list.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -374,12 +370,9 @@ class ToolCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      *
-     * @param array $packages The packages to validate.
-     * @param array $modules The modules list.
-     *
      * @return void
      */
-    protected function componentInsecure($modules, $packages)
+    protected function componentInsecure()
     {
         // Build task collection.
         $collection = $this->collectionBuilder();
@@ -426,17 +419,10 @@ class ToolCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      *
-     * @param array $packages The packages to validate.
-     * @param array $modules The modules list.
-     *
      * @return void
      */
-    protected function componentOutdated($modules, $packages)
+    protected function componentOutdated()
     {
-        foreach ($packages as $package) {
-            $projectPackages[] = $package['name'];
-        }
-
         $collection = $this->collectionBuilder();
         $result = $collection->taskExecStack()
             ->exec('composer outdated --direct --minor-only --format=json')
@@ -463,7 +449,7 @@ class ToolCommands extends AbstractCommands
             }
         }
 
-        $fullSkip = getenv('QA_SKIP_OUTDATED') !== false ? getenv('QA_SKIP_OUTDATED') : false;
+        $fullSkip = getenv('QA_SKIP_OUTDATED') !== false && getenv('QA_SKIP_OUTDATED');
         if ($fullSkip) {
             $this->say('Globally skipping outdated check for components.');
             $this->componentCheckOutdatedFailed = 0;
@@ -486,7 +472,7 @@ class ToolCommands extends AbstractCommands
     public static function getQaEndpointContent(string $url, string $basicAuth = ''): string
     {
         if (!($token = self::getQaSessionToken())) {
-            return false;
+            return '';
         }
 
         $content = '';
@@ -529,10 +515,10 @@ class ToolCommands extends AbstractCommands
     /**
      * Helper to return the session token.
      *
-     * @return bool|string
+     * @return string
      *   The token or false if the request failed.
      */
-    public static function getQaSessionToken()
+    public static function getQaSessionToken(): string
     {
         if (empty($url = getenv('QA_WEBSITE_URL'))) {
             $url = 'https://webgate.ec.europa.eu/fpfis/qa';
@@ -561,18 +547,18 @@ class ToolCommands extends AbstractCommands
      * @param array $fields
      *   Data to send.
      *
-     * @return bool
+     * @return string
      *   True if data was sent properly, false otherwise.
      *
      * @throws \Exception
      */
-    public static function postQaContent($fields)
+    public static function postQaContent($fields): string
     {
         if (empty($url = getenv('QA_WEBSITE_URL'))) {
             $url = 'https://webgate.ec.europa.eu/fpfis/qa';
         }
         if (!($token = self::getQaSessionToken())) {
-            return false;
+            return '';
         }
         $ch = curl_init($url . '/node?_format=hal_json');
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -599,27 +585,18 @@ class ToolCommands extends AbstractCommands
      * @command toolkit:d9-compatibility
      *
      */
-    public function d9Compatibility()
+    public function d9Compatibility(): int
     {
         $this->checkCommitMessage();
 
         if (!$this->skipd9c) {
-            $this->say("Developer is skipping Drupal 9 compatibility analysis.");
+            $this->say('Developer is skipping Drupal 9 compatibility analysis.');
             return 0;
         }
 
-        $lockFile = getcwd() . "/composer.lock";
-        if (file_exists($lockFile)) {
-            $composerLock = json_decode(file_get_contents($lockFile), true);
-            foreach ($composerLock['packages'] as $pkg) {
-                if ($pkg['name'] == 'drupal/core') {
-                    $DrupalCore = $pkg;
-                    break;
-                }
-            }
-
-            if (Semver::satisfies($DrupalCore['version'], '^9')) {
-                $this->say("Project already running on Drupal 9, skipping Drupal 9 compatibility analysis.");
+        if ($drupal_version = $this->getPackagePropertyFromComposer('drupal/core')) {
+            if (Semver::satisfies($drupal_version, '^9')) {
+                $this->say('Project already running on Drupal 9, skipping Drupal 9 compatibility analysis.');
                 return 0;
             }
         }
@@ -678,7 +655,7 @@ class ToolCommands extends AbstractCommands
      * @command toolkit:complock-check
      *
      */
-    public function composerLockCheck()
+    public function composerLockCheck(): int
     {
         if (!file_exists('composer.lock')) {
             $this->io()->error("Failed to detect a 'composer.lock' file on root folder.");
@@ -703,59 +680,31 @@ class ToolCommands extends AbstractCommands
             $parseOptsFile = Yaml::parseFile('.opts.yml');
             // List of commands to prevent the use.
             $forbiddenCommands = [
-                'sql:conf',
-                'sql-conf',
-                'sql:connect',
-                'sql-connect',
-                'sql:create',
-                'sql-create',
-                'sql:drop',
-                'sql-drop',
-                'sql:cli',
-                'sql-cli',
-                'sqlc',
-                'sql:query',
-                'sql-query',
-                'sqlq',
-                'sql:dump',
-                'sql-dump',
-                'sql:sanitize',
-                'sql-sanitize',
-                'sqlsan',
-                'sql:sync',
-                'sql-sync',
-                'en',
-                'pm-enable',
-                'pm:disable',
-                'dis',
-                'pm-disable',
-                'user:login',
-                'uli',
-                'user-login',
-                'user:information',
-                'uinf',
-                'user-information',
-                'user:block',
-                'ublk',
-                'user-block',
-                'user:unblock',
-                'uublk',
-                'user-unblock',
-                'user:role:add',
-                'urol',
-                'user-add-role',
-                'user:role:remove',
-                'urrol',
-                'user-remove-role',
-                'user:create',
-                'ucrt',
-                'user-create',
-                'user:cancel',
-                'ucan',
-                'user-cancel',
-                'user:password',
-                'upwd',
-                'user-password',
+                'sql:conf', 'sql-conf',
+                'sql:connect', 'sql-connect',
+                'sql:create', 'sql-create',
+                'sql:drop', 'sql-drop',
+                'sql:cli', 'sql-cli', 'sqlc',
+                'sql:query', 'sql-query', 'sqlq',
+                'sql:dump', 'sql-dump',
+                'sql:sanitize', 'sql-sanitize', 'sqlsan',
+                'sql:sync', 'sql-sync',
+                'pm:enable', 'pm-enable', 'en',
+                'pm:disable', 'pm-disable', 'dis',
+                'user:login', 'user-login', 'uli',
+                'user:information', 'user-information', 'uinf',
+                'user:block', 'user-block', 'ublk',
+                'user:unblock', 'user-unblock', 'uublk',
+                'user:role:add', 'user-add-role', 'urol',
+                'user:role:remove', 'user-remove-role', 'urrol',
+                'user:create', 'user-create', 'ucrt',
+                'user:cancel', 'user-cancel', 'ucan',
+                'user:password', 'user-password', 'upwd',
+                'php-eval', 'eval', 'ev',
+                'composer',
+                'git',
+                'wget',
+                'curl',
             ];
             $reviewOk = true;
 
@@ -947,8 +896,7 @@ class ToolCommands extends AbstractCommands
         if (empty($options['endpoint'])) {
             $options['endpoint'] = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
         }
-        $php_check = $toolkit_check = $drupal_check = 'FAIL';
-        $endpoint_check = $github_check = $gitlab_check = $asda_check = 'FAIL';
+        $php_check = $toolkit_check = $drupal_check = $endpoint_check = $asda_check = 'FAIL';
         $php_version = $toolkit_version = $drupal_version = '';
 
         $result = self::getQaEndpointContent($options['endpoint'], getenv('QA_API_BASIC_AUTH'));
@@ -965,27 +913,17 @@ class ToolCommands extends AbstractCommands
             $isValid = version_compare($php_version, $data['php_version']);
             $php_check = ($isValid >= 0) ? 'OK' : 'FAIL';
 
-            $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
-            if ($composerLock) {
-                // Handle Toolkit version.
-                $index = array_search('ec-europa/toolkit', array_column($composerLock['packages-dev'], 'name'));
-                if ($index !== false) {
-                    $toolkit_version = $composerLock['packages-dev'][$index]['version'];
-                    $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
-                } else {
-                    $toolkit_check = 'FAIL (not found)';
-                }
-
-                // Handle Drupal version.
-                $index = array_search('drupal/core', array_column($composerLock['packages'], 'name'));
-                if ($index !== false) {
-                    $drupal_version = $composerLock['packages'][$index]['version'];
-                    $drupal_check = Semver::satisfies($drupal_version, $data['drupal']) ? 'OK' : 'FAIL';
-                } else {
-                    $drupal_check = 'FAIL (not found)';
-                }
+            // Handle Toolkit version.
+            if (!($toolkit_version = $this->getPackagePropertyFromComposer('ec-europa/toolkit'))) {
+                $toolkit_check = 'FAIL (not found)';
             } else {
-                $drupal_check = 'FAIL (missing composer.lock)';
+                $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
+            }
+            // Handle Drupal version.
+            if (!($drupal_version = $this->getPackagePropertyFromComposer('drupal/core'))) {
+                $drupal_check = 'FAIL (not found)';
+            } else {
+                $drupal_check = Semver::satisfies($drupal_version, $data['drupal']) ? 'OK' : 'FAIL';
             }
         }
 
@@ -1073,5 +1011,126 @@ Checking ASDA configuration: %s",
             return 1;
         }
         return 0;
+    }
+
+    /**
+     * Run script to fix permissions (experimental).
+     *
+     * @command toolkit:fix-permissions
+     */
+    public function fixPermissions(array $options = [
+        'drupal_path' => InputOption::VALUE_OPTIONAL,
+        'drupal_user' => InputOption::VALUE_OPTIONAL,
+        'httpd_group' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        $script = __DIR__ . '/../../../resources/scripts/fix-permissions.sh';
+        if (!file_exists($script)) {
+            $this->say("Script was not found at $script, skipping..");
+            return 0;
+        }
+        if (empty($options['drupal_path'])) {
+            $root = $this->getConfig()->get('drupal.root');
+            $options['drupal_path'] = getenv('DOCUMENT_ROOT') . '/' . $root;
+        }
+        if (empty($options['drupal_user'])) {
+            $options['drupal_user'] = getenv('DAEMON_USER');
+        }
+        if (empty($options['httpd_group'])) {
+            $options['httpd_group'] = getenv('DAEMON_GROUP');
+        }
+
+        $params = [
+            '--drupal_path=' . $options['drupal_path'],
+            '--drupal_user=' . $options['drupal_user'],
+            '--httpd_group=' . $options['httpd_group'],
+        ];
+        $command = $script . ' ' . implode(' ', $params);
+        $tasks[] = $this->taskExec($command);
+
+        $settings = $options['drupal_path']  . '/sites/default/settings.php';
+        if (file_exists($settings)) {
+            $tasks[] = $this->taskExec("chmod 440 $settings");
+        }
+
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Check the Toolkit version.
+     *
+     * @command toolkit:check-version
+     */
+    public function toolkitVersion()
+    {
+        $endpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
+        $result = self::getQaEndpointContent($endpoint, getenv('QA_API_BASIC_AUTH'));
+        $min_version = '';
+
+        if (!($composer_version = $this->getPackagePropertyFromComposer('ec-europa/toolkit'))) {
+            $this->writeln('Failed to get Toolkit version from composer.lock.');
+        }
+        if ($result) {
+            $data = json_decode($result, true);
+            if (empty($data) || !isset($data['toolkit'])) {
+                $this->writeln('Invalid data returned from the endpoint.');
+            } else {
+                $min_version = $data['toolkit'];
+                if ($composer_version) {
+                    $major = '' . intval(substr($composer_version, 0, 2));
+                    $min_versions = array_filter(explode('|', $min_version), function ($v) use ($major) {
+                        return strpos(substr($v, 0, 2), $major) !== false;
+                    });
+                    if (count($min_versions) === 1) {
+                        $min_version = end($min_versions);
+                    }
+                }
+            }
+        } else {
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+        }
+
+        $version_check = Semver::satisfies($composer_version, $min_version) ? 'OK' : 'FAIL';
+        $this->writeln(sprintf(
+            "Minimum version: %s\nCurrent version: %s\nVersion check: %s",
+            $min_version,
+            $composer_version,
+            $version_check
+        ));
+        if ($version_check === 'FAIL') {
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+     * Helper to return a property from a package in the composer.lock file.
+     *
+     * @param $package
+     *   The package to search.
+     * @param $prop
+     *   The property to return. Default to 'version'.
+     *
+     * @return false|mixed
+     *   The property value, false if not found.
+     */
+    private function getPackagePropertyFromComposer($package, $prop = 'version')
+    {
+        if (!file_exists('composer.lock')) {
+            return false;
+        }
+        $composer = json_decode(file_get_contents('composer.lock'), true);
+        if ($composer) {
+            $type = 'packages-dev';
+            $index = array_search($package, array_column($composer[$type], 'name'));
+            if ($index === false) {
+                $type = 'packages';
+                $index = array_search($package, array_column($composer[$type], 'name'));
+            }
+            if ($index !== false && isset($composer[$type][$index][$prop])) {
+                return $composer[$type][$index][$prop];
+            }
+        }
+        return false;
     }
 }

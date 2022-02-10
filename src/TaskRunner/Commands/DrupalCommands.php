@@ -86,7 +86,7 @@ class DrupalCommands extends Drupal8Commands
 
         $collection = [];
 
-        // Copy default.settings.php on settings.php, if the latter does not exists.
+        // Copy default.settings.php on settings.php, if the latter does not exist.
         if (!file_exists($settings_path)) {
             $collection[] = $this->taskFilesystemStack()
                 ->copy($settings_default_path, $settings_path);

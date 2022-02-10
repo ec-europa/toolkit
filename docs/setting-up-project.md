@@ -10,7 +10,7 @@ To instantiate a new project to running as a subsite you only have to execute on
 for you automatically.
 
 ```
-composer create-project openeuropa/drupal-site-template --stability=dev <dg-name>-<project-id>-reference
+composer create-project ec-europa/subsite --stability=dev <dg-name>-<project-id>-reference
 docker-compose up -d
 docker-compose exec web vendor/bin/run
 ```
