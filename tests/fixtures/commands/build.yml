@@ -49,7 +49,7 @@
         [Simulator] Simulating Filesystem\FilesystemStack()
             ->copy('resources/Drush/drush.yml.dist', 'dist/web/sites/all/drush/drush.yml')
         [Simulator] Simulating ExecStack()
-            ->exec('find dist -maxdepth 3 -type f \(-name "CHANGELOG.txt"\) -exec rm -rf {} +')
+            ->exec('find dist -maxdepth 3 -type f \( -name "CHANGELOG.txt" \) -exec rm -rf {} +')
 
 - command: 'toolkit:build-dev-reset --root=web --yes'
   configuration:
@@ -64,4 +64,3 @@
         [Simulator] Simulating ExecStack()
             ->stopOnFail()
             ->exec('./vendor/bin/run toolkit:build-dev --root=web')
-

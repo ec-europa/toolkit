@@ -133,7 +133,7 @@ class BuildCommands extends AbstractCommands
         // Remove 'unwanted' files from distribution.
         $remove = '-name "' . implode('" -o -name "', explode(',', $options['remove'])) . '"';
         $tasks[] = $this->taskExecStack()
-            ->exec("find dist -maxdepth 3 -type f \($remove\) -exec rm -rf {} +");
+            ->exec("find dist -maxdepth 3 -type f \( $remove \) -exec rm -rf {} +");
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
