@@ -219,22 +219,30 @@ class CloneCommands extends AbstractCommands
         $this->generateAsdaWgetInputFile($download_link . '/latest.sh1');
         $this->wgetDownloadFile('latest.sh1', '.sh1')->run();
         $latest = file_get_contents('latest.sh1');
+        if (empty($latest)) {
+            $this->writeln('<error>Could not fetch the file latest.sh1</error>');
+            return $this->collectionBuilder()->addTaskList($tasks);
+        }
         $filename = trim(explode('  ', $latest)[1]);
 
         // Display information about ASDA creation date.
         preg_match('/(\d{8})(?:-)?(\d{4})(\d{2})?/', $filename, $matches);
-        $date = date_parse_from_format('YmdHis', $matches[1] . $matches[2] . ($matches[3] ?? '00'));
-        if (is_integer($date['hour']) &&
+        $date = !empty($matches) ? date_parse_from_format('YmdHis', $matches[1] . $matches[2] . ($matches[3] ?? '00')) : [];
+        if (!empty($date) &&
+            is_integer($date['hour']) &&
             is_integer($date['minute']) &&
             is_integer($date['month']) &&
             is_integer($date['day']) &&
             is_integer($date['year'])
         ) {
             $timestamp = mktime($date['hour'], $date['minute'], $date['second'], $date['month'], $date['day'], $date['year']);
-            $output = sprintf('ASDA DATE: %d %s %d at %s:%s', $date['day'], date('M', $timestamp), $date['year'], $date['hour'], $date['minute']);
-            $separator = str_repeat('=', strlen($output));
-            $this->writeln("\n<info>$output\n$separator</info>\n");
+            $output = sprintf('%d %s %d at %s:%s', $date['day'], date('M', $timestamp), $date['year'], $date['hour'], $date['minute']);
+        } else {
+            $output = $filename;
         }
+        $output = "ASDA DATE: $output";
+        $separator = str_repeat('=', strlen($output));
+        $this->writeln("\n<info>$output\n$separator</info>\n");
 
         // Download the .sql file.
         $this->generateAsdaWgetInputFile($download_link . '/' . $filename);
