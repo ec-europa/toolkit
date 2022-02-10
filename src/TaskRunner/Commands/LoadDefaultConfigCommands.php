@@ -43,7 +43,7 @@ class LoadDefaultConfigCommands extends AbstractCommands
      * @param ConsoleCommandEvent $event
      *   Event of the console command event.
      *
-     * @hook pre-command-event
+     * @hook pre-command-event *
      */
     public function loadDefaultConfig(ConsoleCommandEvent $event)
     {
