@@ -46,7 +46,7 @@ class InstallCommands extends AbstractCommands
         $has_config = file_exists($options['config-file']);
         $params = $has_config ? ' --existing-config' : '';
 
-        $runner_bin = $this->getConfig()->get('runner.bin_dir') . '/run';
+        $runner_bin = $this->getBin('run');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
             ->exec($runner_bin . ' toolkit:build-dev')
@@ -68,7 +68,7 @@ class InstallCommands extends AbstractCommands
     {
         $tasks = [];
 
-        $runner_bin = $this->getConfig()->get('runner.bin_dir') . '/run';
+        $runner_bin = $this->getBin('run');
         $tasks[] = $this->taskExec($runner_bin . ' toolkit:install-dump');
         $tasks[] = $this->taskExec($runner_bin . ' toolkit:run-deploy');
 
@@ -94,7 +94,7 @@ class InstallCommands extends AbstractCommands
     {
         $tasks = [];
 
-        $drush_bin = $this->getConfig()->get('runner.bin_dir') . '/drush';
+        $drush_bin = $this->getBin('drush');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
             ->exec($drush_bin . ' config:import -y')
