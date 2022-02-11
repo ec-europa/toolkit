@@ -1,0 +1,269 @@
+diff --git a/src/Collection/FilesCollection.php b/src/Collection/FilesCollection.php
+index 837695b..5364df7 100644
+--- a/src/Collection/FilesCollection.php
++++ b/src/Collection/FilesCollection.php
+@@ -14,9 +14,9 @@ use Symfony\Component\Finder\SplFileInfo as SymfonySplFileInfo;
+ use Traversable;
+
+ /**
+- * @extends ArrayCollection<int, \SplFileInfo>
++ * @extends ArrayCollection<array-key, \SplFileInfo>
+  */
+-class FilesCollection extends ArrayCollection implements \Serializable
++class FilesCollection extends ArrayCollection
+ {
+     /**
+      * Adds a rule that files must match.
+@@ -216,26 +216,26 @@ class FilesCollection extends ArrayCollection implements \Serializable
+         });
+     }
+
+-    /*
++    /**
+      * SplFileInfo cannot be serialized. Therefor, we help PHP a bit.
+      * This stuff is used for running tasks in parallel.
+      */
+-    public function serialize(): string
++    public function __serialize(): array
+     {
+-        return serialize($this->map(function (SplFileInfo $fileInfo): string {
++        return $this->map(function (SplFileInfo $fileInfo): string {
+             return $fileInfo instanceof SymfonySplFileInfo
+                 ? $fileInfo->getRelativePathname()
+                 : $fileInfo->getPathname();
+-        })->toArray());
++        })->toArray();
+     }
+
+-    /*
++    /**
+      * SplFileInfo cannot be serialized. Therefor, we help PHP a bit.
+      * This stuff is used for running tasks in parallel.
+      */
+-    public function unserialize($serialized): void
++    public function __unserialize(array $data): void
+     {
+-        $files = unserialize($serialized, ['allowed_classes' => false]);
++        $files = $data;
+         $this->clear();
+         foreach ($files as $file) {
+             $this->add(new SymfonySplFileInfo($file, dirname($file), $file));
+@@ -245,7 +245,7 @@ class FilesCollection extends ArrayCollection implements \Serializable
+     /**
+      * Help Psalm out a bit:
+      *
+-     * @return \ArrayIterator<int, SplFileInfo>
++     * @return \ArrayIterator<array-key, SplFileInfo>
+      */
+     public function getIterator(): \ArrayIterator
+     {
+diff --git a/src/Configuration/GrumPHPExtension.php b/src/Configuration/GrumPHPExtension.php
+index f8ff3a5..209948d 100644
+--- a/src/Configuration/GrumPHPExtension.php
++++ b/src/Configuration/GrumPHPExtension.php
+@@ -27,7 +27,7 @@ class GrumPHPExtension extends Extension
+         return new Configuration();
+     }
+
+-    public function getAlias()
++    public function getAlias(): string
+     {
+         return 'grumphp';
+     }
+diff --git a/src/Console/Command/Git/InitCommand.php b/src/Console/Command/Git/InitCommand.php
+index 604d075..1aadf49 100644
+--- a/src/Console/Command/Git/InitCommand.php
++++ b/src/Console/Command/Git/InitCommand.php
+@@ -102,10 +102,10 @@ class InitCommand extends Command
+         foreach (self::$hooks as $hook) {
+             $gitHook = $this->filesystem->buildPath($gitHooksPath, $hook);
+             $hookTemplate = $this->filesystem->guessFile(
+-                array_filter([
++                [
+                     $customHooksPath,
+                     $resourceHooksPath,
+-                ]),
++                ],
+                 [$hook]
+             );
+
+diff --git a/src/IO/ConsoleIO.php b/src/IO/ConsoleIO.php
+index 859b9a8..66fb93f 100644
+--- a/src/IO/ConsoleIO.php
++++ b/src/IO/ConsoleIO.php
+@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
+ use Symfony\Component\Console\Style\StyleInterface;
+ use Symfony\Component\Console\Style\SymfonyStyle;
+
+-class ConsoleIO implements IOInterface, \Serializable
++class ConsoleIO implements IOInterface
+ {
+     private $input;
+     private $output;
+@@ -143,16 +143,16 @@ class ConsoleIO implements IOInterface, \Serializable
+      * Serializing this IO will result in an unwritable resource stream.
+      * Therefor we serialize the data end build up a new stream instead.
+      */
+-    public function serialize()
++    public function __serialize()
+     {
+-        return serialize([
++        return [
+             'input' => [
+                 'arguments' => $this->input->getArguments(),
+             ],
+             'output' => [
+                 'verbosity' => $this->output->getVerbosity(),
+             ],
+-        ]);
++        ];
+     }
+
+     /**
+@@ -160,10 +160,8 @@ class ConsoleIO implements IOInterface, \Serializable
+      * Note: When you run in parallel mode, the stream will be non-blocking.
+      * All tasks can write at the same time, which is not optimal.
+      */
+-    public function unserialize($serialized)
++    public function __unserialize($serialized)
+     {
+-        $data = unserialize($serialized, ['allowed_classes' => false]);
+-
+         $this->input = new ArrayInput(
+             (array) ($data['input']['arguments'] ?? [])
+         );
+diff --git a/src/Locator/GuessedPathsLocator.php b/src/Locator/GuessedPathsLocator.php
+index 973e618..093223b 100644
+--- a/src/Locator/GuessedPathsLocator.php
++++ b/src/Locator/GuessedPathsLocator.php
+@@ -38,7 +38,7 @@ class GuessedPathsLocator
+
+     public function locate(?string $cliConfigFile): GuessedPaths
+     {
+-        $workingDir = getcwd();
++        $workingDir = (string) getcwd();
+         $cliConfigFile = $this->makeOptionalPathAbsolute($workingDir, $cliConfigFile);
+         $cliConfigPath = $cliConfigFile ? dirname($cliConfigFile) : null;
+         $projectDirEnv = $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_PROJECT_DIR'] ?? ''));
+@@ -55,13 +55,13 @@ class GuessedPathsLocator
+         );
+
+         $composerFilePathname = $this->filesystem->guessFile(
+-            array_filter([
++            [
+                 $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_COMPOSER_DIR'] ?? '')),
+                 $cliConfigPath,
+                 $projectDirEnv,
+                 $workingDir,
+                 $gitWorkingDir
+-            ]),
++            ],
+             [
+                 'composer.json'
+             ]
+@@ -74,13 +74,13 @@ class GuessedPathsLocator
+                 : []
+         );
+
+-        $binDir = $this->filesystem->guessPath(array_filter([
++        $binDir = $this->filesystem->guessPath([
+             $this->makeOptionalPathAbsolute($workingDir, (string) ($_SERVER['GRUMPHP_BIN_DIR'] ?? '')),
+             $this->makeOptionalPathAbsolute(
+                 $composerFilePath,
+                 $this->ensureOptionalArgumentWithValidSlashes($composerFile->getBinDir())
+             )
+-        ]));
++        ]);
+
+         $composerConfigDefaultPath = $this->makeOptionalPathAbsolute(
+             $composerFilePath,
+@@ -97,14 +97,14 @@ class GuessedPathsLocator
+         ]);
+
+         $defaultConfigFile = $this->filesystem->guessFile(
+-            array_filter([
++            [
+                 $cliConfigFile,
+                 $cliConfigPath,
+                 $composerConfigDefaultPath,
+                 $projectDir,
+                 $workingDir,
+                 $gitWorkingDir,
+-            ]),
++            ],
+             [
+                 'grumphp.yml',
+                 'grumphp.yaml',
+diff --git a/src/Task/CloverCoverage.php b/src/Task/CloverCoverage.php
+index bbd9829..9fa9fa3 100644
+--- a/src/Task/CloverCoverage.php
++++ b/src/Task/CloverCoverage.php
+@@ -84,7 +84,7 @@ class CloverCoverage implements TaskInterface
+     {
+         $configuration = $this->getConfig()->getOptions();
+         $percentage = round(min(100, max(0, (float) $configuration['level'])), 2);
+-        $cloverFile = $configuration['clover_file'];
++        $cloverFile = (string) $configuration['clover_file'];
+
+         if (!$this->filesystem->exists($cloverFile)) {
+             return TaskResult::createFailed($this, $context, 'Invalid input file provided');
+diff --git a/src/Task/TwigCs.php b/src/Task/TwigCs.php
+index 51459ba..e23d5fb 100644
+--- a/src/Task/TwigCs.php
++++ b/src/Task/TwigCs.php
+@@ -58,7 +58,7 @@ class TwigCs extends AbstractExternalTask
+         $arguments->addOptionalArgument('--ansi', true);
+
+         // removes all NULL, FALSE and Empty Strings
+-        $exclude = array_filter($config['exclude'], 'strlen');
++        $exclude = array_filter($config['exclude'], static fn (mixed $exclude): bool => $exclude && $exclude !== '');
+         $arguments->addArgumentArray('--exclude=%s', $exclude);
+
+         $process = $this->processBuilder->buildProcess($arguments);
+diff --git a/src/Util/Filesystem.php b/src/Util/Filesystem.php
+index e86fa83..ff13c33 100644
+--- a/src/Util/Filesystem.php
++++ b/src/Util/Filesystem.php
+@@ -63,19 +63,30 @@ class Filesystem extends SymfonyFilesystem
+         return $baseDir.DIRECTORY_SEPARATOR.$path;
+     }
+
++    /**
++     * @param non-empty-list<?string> $paths
++     */
+     public function guessPath(array $paths): string
+     {
++        $paths = array_filter($paths);
+         foreach ($paths as $path) {
+             if ($this->exists($path) && is_dir($path)) {
+                 return $path;
+             }
+         }
+
+-        return current($paths);
++        return (string) current($paths);
+     }
+
++    /**
++     * @param non-empty-list<?string> $paths
++     * @param non-empty-list<?string> $fileNames
++     */
+     public function guessFile(array $paths, array $fileNames): string
+     {
++        $paths = array_filter($paths);
++        $fileNames = array_filter($fileNames);
++
+         foreach ($paths as $path) {
+             if (!$this->exists($path)) {
+                 continue;
+@@ -93,8 +104,8 @@ class Filesystem extends SymfonyFilesystem
+             }
+         }
+
+-        $firstPath = current($paths);
+-        $firstName = current($fileNames);
++        $firstPath = (string) current($paths);
++        $firstName = (string) current($fileNames);
+
+         if (preg_match('#'.preg_quote($firstName, '#').'$#', $firstPath)) {
+             return $firstPath;

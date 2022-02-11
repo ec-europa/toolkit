@@ -266,6 +266,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * commands should be described in configuration files in this way:
      * @code
      * phpunit:
+     *   options: '--log-junit report.xml'
      *   commands:
      *     before:
      *       - task: exec
@@ -306,10 +307,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
 
         $execution_mode = $this->getConfig()->get('toolkit.test.phpunit.execution');
+        $options = $this->getConfig()->get('toolkit.test.phpunit.options');
         $phpunit_bin = $this->getBin('phpunit');
 
         if ($execution_mode == 'parallel') {
-            $result = $this->taskExec($phpunit_bin . ' --list-suites')
+            $result = $this->taskExec("$phpunit_bin --list-suites")
                 ->silent(true)
                 ->printOutput(false)
                 ->run()
@@ -321,11 +323,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             foreach ($suites as $suite) {
                 $suite = str_replace('- ', '', trim($suite));
                 if (strlen($suite) > 2) {
-                    $parallel->process($phpunit_bin . ' --testsuite=' . $suite);
+                    $parallel->process("$phpunit_bin --testsuite=$suite $options");
                 }
             }
         } else {
-            $tasks[] = $this->taskExec($phpunit_bin);
+            $tasks[] = $this->taskExec("$phpunit_bin $options");
         }
 
         // Execute a list of commands to run after tests.
@@ -615,8 +617,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                     'field_blackfire_network' => [['value' => $data['network']]],
                     'field_blackfire_sql' => [['value' => $data['sql']]],
                 ];
-                if ($playload_response = ToolCommands::postQaContent($payload)) {
-                    $this->writeln("Payload sent to QA website: $playload_response");
+                if ($payload_response = ToolCommands::postQaContent($payload)) {
+                    $this->writeln("Payload sent to QA website: $payload_response");
                 } else {
                     $this->writeln('Fail to send the payload.');
                 }

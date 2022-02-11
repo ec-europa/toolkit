@@ -3,12 +3,6 @@ command:
     install-dump:
       options:
         dumpfile: ${toolkit.clone.dumpfile}
-    download-dump:
-      options:
-        asda-url: ${toolkit.clone.asda_url}
-        asda-user: ${env.ASDA_USER}
-        asda-password: ${env.ASDA_PASSWORD}
-        dumpfile: ${toolkit.clone.dumpfile}
     run-deploy:
       options:
         sequence-file: ${toolkit.deploy.sequence_file}
