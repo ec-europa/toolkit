@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 8.5.1
+  - Support version 1 and 2 of openeuropa/task-runner
+
 ## Version 8.5.0
   - Extend support to PHP version 8.0 and 8.1;
   - Support to drush version 11;
