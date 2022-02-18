@@ -426,6 +426,7 @@
                 </drush>
             </else>
         </if>
+
         <if>
             <not>
                 <equals arg1="${build.site}" arg2="${project.id}" />
@@ -434,12 +435,16 @@
                 <relsym link="${build.platform.dir}/sites/${project.id}" target="${build.subsite.dir}" />
             </then>
         </if>
+
         <if>
             <equals arg1="${drush.rr.enabled}" arg2="1" />
             <then>
                 <phingcall target="drush-registry-rebuild" />
             </then>
         </if>
+
+        <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}"></drush>
+
         <if>
             <or>
                 <equals arg1="${profile}" arg2="multisite_drupal_standard"/>
@@ -449,7 +454,6 @@
                 <phingcall target="drush-solr-enable" />
             </then>
         </if>
-        <drush command="updatedb" assume="yes" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}"></drush>
     </target>
 
     <target name="drush-sql-drop" hidden="true" description="Drop a database.">
