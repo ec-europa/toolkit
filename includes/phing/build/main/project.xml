@@ -568,7 +568,11 @@
             <property name="package-download-location" value="${platform.package.download.location}" />
             <property name="package-extract-location" value="${build.platform.dir}" />
         </phingcall>
+        <exec command="cat ${build.platform.dir}/.version" checkreturn="true" passthru="false" logoutput="false" outputproperty="platform.version"/>
+        <exec command="cat ${build.platform.dir}/.commit" checkreturn="true" passthru="false" logoutput="false" outputproperty="platform.commit"/>
+        <echo msg="Using platform ${platform.version} with commit ${platform.commit}"/>
     </target>
+
     <target name="project-platform-set-htaccess" hidden="true" description="Append htaccess config to root .htaccess.">
         <if>
             <istrue value="${build.platform.htaccess.append.text}" />
