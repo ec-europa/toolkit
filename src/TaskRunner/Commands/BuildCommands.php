@@ -178,7 +178,7 @@ class BuildCommands extends AbstractCommands
             'temp_folder' => getenv('DRUPAL_FILE_TEMP_PATH') !== false ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp',
         ];
 
-        foreach ($folders as $folder) {dcweb
+        foreach ($folders as $folder) {
             if (!is_dir($folder)) {
                 // Create folder and set permissions.
                 // Permissions for files folders taken from:
