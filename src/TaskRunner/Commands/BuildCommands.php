@@ -126,7 +126,7 @@ class BuildCommands extends AbstractCommands
                 'uri' => reset($vHostArray)
             ];
             $yaml = new Yaml();
-            $this->taskFilesystemStack()->mkdir($options['dist-root'] . '/web/sites/all/drush');
+            $this->taskFilesystemStack()->mkdir($options['dist-root'] . '/web/sites/all/drush')->run();
             file_put_contents($options['dist-root'] . '/web/sites/all/drush/drush.yml', $yaml->dump($drush_options));
         }
 
@@ -201,7 +201,7 @@ class BuildCommands extends AbstractCommands
                 'uri' => reset($vHostArray)
             ];
             $yaml = new Yaml();
-            $this->taskFilesystemStack()->mkdir($root . '/sites/all/drush');
+            $this->taskFilesystemStack()->mkdir($root . '/sites/all/drush')->run();
             file_put_contents($root . '/sites/all/drush/drush.yml', $yaml->dump($drush_options));
         }
 
