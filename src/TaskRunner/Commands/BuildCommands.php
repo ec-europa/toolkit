@@ -126,7 +126,7 @@ class BuildCommands extends AbstractCommands
                 'uri' => reset($vHostArray)
             ];
             $yaml = new Yaml();
-            $this->taskFilesystemStack()->mkdir($options['dist-root'] . '/web/sites/all/drush');
+            $this->taskFilesystemStack()->mkdir($options['dist-root'] . '/web/sites/all/drush')->run();
             file_put_contents($options['dist-root'] . '/web/sites/all/drush/drush.yml', $yaml->dump($drush_options));
         }
 
@@ -178,7 +178,7 @@ class BuildCommands extends AbstractCommands
             'temp_folder' => getenv('DRUPAL_FILE_TEMP_PATH') !== false ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp',
         ];
 
-        foreach ($folders as $folder) {
+        foreach ($folders as $folder) {dcweb
             if (!is_dir($folder)) {
                 // Create folder and set permissions.
                 // Permissions for files folders taken from:
@@ -201,7 +201,7 @@ class BuildCommands extends AbstractCommands
                 'uri' => reset($vHostArray)
             ];
             $yaml = new Yaml();
-            $this->taskFilesystemStack()->mkdir($root . '/sites/all/drush');
+            $this->taskFilesystemStack()->mkdir($root . '/sites/all/drush')->run();
             file_put_contents($root . '/sites/all/drush/drush.yml', $yaml->dump($drush_options));
         }
 
