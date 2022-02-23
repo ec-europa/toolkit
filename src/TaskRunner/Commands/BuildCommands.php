@@ -126,8 +126,12 @@ class BuildCommands extends AbstractCommands
                 'uri' => reset($vHostArray)
             ];
             $yaml = new Yaml();
-            $this->taskFilesystemStack()->mkdir($options['dist-root'] . '/web/sites/all/drush')->run();
-            file_put_contents($options['dist-root'] . '/web/sites/all/drush/drush.yml', $yaml->dump($drush_options));
+            $yaml_content = $yaml->dump($drush_options);
+            $yaml_destination = $options['dist-root'] . '/web/sites/all/drush/drush.yml';
+            $tasks[] = $this->taskFilesystemStack()
+                ->mkdir($options['dist-root'] . '/web/sites/all/drush')
+                ->touch($yaml_destination);
+            $tasks[] = $this->taskWriteToFile($yaml_destination)->text($yaml_content);
         }
 
         // Collect and execute list of commands set on local runner.yml.
@@ -201,8 +205,12 @@ class BuildCommands extends AbstractCommands
                 'uri' => reset($vHostArray)
             ];
             $yaml = new Yaml();
-            $this->taskFilesystemStack()->mkdir($root . '/sites/all/drush')->run();
-            file_put_contents($root . '/sites/all/drush/drush.yml', $yaml->dump($drush_options));
+            $yaml_content = $yaml->dump($drush_options);
+            $yaml_destination = $root . '/sites/all/drush/drush.yml';
+            $tasks[] = $this->taskFilesystemStack()
+                ->mkdir($root . '/sites/all/drush')
+                ->touch($yaml_destination);
+            $tasks[] = $this->taskWriteToFile($yaml_destination)->text($yaml_content);
         }
 
         // Collect and execute list of commands set on local runner.yml.
