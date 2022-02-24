@@ -853,7 +853,7 @@ class ToolCommands extends AbstractCommands
             $terms = [];
             foreach ($fullReleaseHistory[$name]->releases as $release) {
                 foreach ($release as $releaseItem) {
-                    $versionTmp = (string) str_replace($core . "-", "", $releaseItem->version);
+                    $versionTmp = str_replace($core . "-", "", (string) $releaseItem->version);
 
                     if (!is_null($version) && Semver::satisfies($versionTmp, $version)) {
                         foreach ($releaseItem->terms as $term) {
