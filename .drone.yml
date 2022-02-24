@@ -1,6 +1,6 @@
 clone:
   git:
-    image: registry.fpfis.eu/drone-plugins/git:next
+    image: registry.fpfis.eu/drone-plugins/git
 
 workspace:
   base: /test
@@ -14,7 +14,7 @@ services:
 
 pipeline:
   composer-install:
-    group: prepare
+    group: composer
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
@@ -27,7 +27,7 @@ pipeline:
         COMPOSER_BOUNDARY: highest
 
   composer-update-lowest:
-    group: post-prepare
+    group: composer
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
