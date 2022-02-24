@@ -116,7 +116,10 @@ class BuildCommands extends AbstractCommands
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
 
         // Copy drush.yml file.
-        if ($tk_drush = file_exists('resources/Drush/drush.yml.dist')) {
+        $tk_drush = file_exists('resources/Drush/drush.yml.dist')
+            ? 'resources/Drush/drush.yml.dist'
+            : 'vendor/ec-europa/toolkit/resources/Drush/drush.yml.dist';
+        if (file_exists($tk_drush)) {
             $tasks[] = $this->taskFilesystemStack()
                 ->copy($tk_drush, $options['dist-root'] . '/web/sites/all/drush/drush.yml');
         } else {
@@ -195,7 +198,10 @@ class BuildCommands extends AbstractCommands
         }
 
         // Copy drush.yml file.
-        if ($tk_drush = file_exists('resources/Drush/drush.yml.dist')) {
+        $tk_drush = file_exists('resources/Drush/drush.yml.dist')
+            ? 'resources/Drush/drush.yml.dist'
+            : 'vendor/ec-europa/toolkit/resources/Drush/drush.yml.dist';
+        if (file_exists($tk_drush)) {
             $tasks[] = $this->taskFilesystemStack()
                 ->copy($tk_drush, $root . '/sites/all/drush/drush.yml');
         } else {
