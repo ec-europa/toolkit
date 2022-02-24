@@ -19,24 +19,11 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
+      - composer self-update --${COMPOSER_VERSION}
       - composer install --ansi --no-suggest --no-progress
     when:
       matrix:
         COMPOSER_BOUNDARY: highest
-        COMPOSER_VERSION: 1
-
-  composer-install:
-    group: prepare
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-    commands:
-      - composer self-update --2
-      - composer install --ansi --no-suggest --no-progress
-    when:
-      matrix:
-        COMPOSER_BOUNDARY: highest
-        COMPOSER_VERSION: 2
 
   composer-update-lowest:
     group: post-prepare
@@ -44,24 +31,11 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
+      - composer self-update --${COMPOSER_VERSION}
       - composer update --prefer-lowest --prefer-stable --ansi --no-suggest --no-progress
     when:
       matrix:
         COMPOSER_BOUNDARY: lowest
-        COMPOSER_VERSION: 1
-
-  composer-update-lowest:
-    group: post-prepare
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-    commands:
-      - composer self-update --2
-      - composer update --prefer-lowest --prefer-stable --ansi --no-suggest --no-progress
-    when:
-      matrix:
-        COMPOSER_BOUNDARY: lowest
-        COMPOSER_VERSION: 2
 
   grumphp:
     group: test
@@ -96,7 +70,6 @@ pipeline:
 
 matrix:
   PHP_VERSION:
-    - 7.3
     - 7.4
     - 8.0
     - 8.1
