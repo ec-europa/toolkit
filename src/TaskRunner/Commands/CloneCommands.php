@@ -171,25 +171,45 @@ class CloneCommands extends AbstractCommands
      *
      * @command toolkit:download-dump
      *
+     * @option asda-url      Overrides `${toolkit.clone.asda_url}`
+     * @option asda-user     Overrides `ASDA_USER` or `NEXTCLOUD_USER`
+     * @option asda-password Overrides `ASDA_PASSWORD` or `NEXTCLOUD_PASS`
+     * @option dumpfile      Overrides `${toolkit.clone.dumpfile}`
+     *
      * @return \Robo\Collection\CollectionBuilder|void
      *   Collection builder.
      */
-    public function downloadDump()
+    public function downloadDump(array $options = [
+        'asda-url' => InputOption::VALUE_OPTIONAL,
+        'asda-user' => InputOption::VALUE_OPTIONAL,
+        'asda-password' => InputOption::VALUE_OPTIONAL,
+        'dumpfile' => InputOption::VALUE_OPTIONAL,
+    ])
     {
         $tasks = [];
         $config = $this->getConfig();
         $project_id = $config->get('toolkit.project_id');
         $asda_type = $config->get('toolkit.clone.asda_type');
-        $dump_file = $config->get('toolkit.clone.dumpfile');
+        $dump_file = $options['dumpfile'] ?: $config->get('toolkit.clone.dumpfile');
+        $user = $options['asda-user'] ?: false;
+        $password = $options['asda-password'] ?: false;
         $this->say("ASDA type is: $asda_type");
         if ($asda_type === 'default') {
-            $user = getenv('ASDA_USER') && getenv('ASDA_USER') !== '${env.ASDA_USER}' ? getenv('ASDA_USER') : '';
-            $password = getenv('ASDA_PASSWORD') && getenv('ASDA_PASSWORD') !== '${env.ASDA_PASSWORD}' ? getenv('ASDA_PASSWORD') : '';
-            $url = $config->get('toolkit.clone.asda_url');
+            if (!$user) {
+                $user = getenv('ASDA_USER') && getenv('ASDA_USER') !== '${env.ASDA_USER}' ? getenv('ASDA_USER') : '';
+            }
+            if (!$password) {
+                $password = getenv('ASDA_PASSWORD') && getenv('ASDA_PASSWORD') !== '${env.ASDA_PASSWORD}' ? getenv('ASDA_PASSWORD') : '';
+            }
+            $url = $options['asda-url'] ?: $config->get('toolkit.clone.asda_url');
         } elseif ($asda_type === 'nextcloud') {
-            $user = getenv('NEXTCLOUD_USER') && getenv('NEXTCLOUD_USER') !== '${env.NEXTCLOUD_USER}' ? getenv('NEXTCLOUD_USER') : '';
-            $password = getenv('NEXTCLOUD_PASS') && getenv('NEXTCLOUD_PASS') !== '${env.NEXTCLOUD_PASS}' ? getenv('NEXTCLOUD_PASS') : '';
-            $url = $config->get('toolkit.clone.nextcloud_url');
+            if (!$user) {
+                $user = getenv('NEXTCLOUD_USER') && getenv('NEXTCLOUD_USER') !== '${env.NEXTCLOUD_USER}' ? getenv('NEXTCLOUD_USER') : '';
+            }
+            if (!$password) {
+                $password = getenv('NEXTCLOUD_PASS') && getenv('NEXTCLOUD_PASS') !== '${env.NEXTCLOUD_PASS}' ? getenv('NEXTCLOUD_PASS') : '';
+            }
+            $url = $options['asda-url'] ?: $config->get('toolkit.clone.nextcloud_url');
         } else {
             $this->writeln('<error>Invalid value for variable ${toolkit.clone.asda_type}, use "default" or "nextcloud".</error>');
             return $this->collectionBuilder()->addTaskList($tasks);
