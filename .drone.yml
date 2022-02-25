@@ -20,7 +20,6 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
       - composer self-update --${COMPOSER_VERSION}
-      - composer config --global github-oauth.github.com $${GITHUB_API_TOKEN}
       - composer install --ansi --no-suggest --no-progress
     when:
       matrix:
@@ -33,7 +32,6 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
       - composer self-update --${COMPOSER_VERSION}
-      - composer config --global github-oauth.github.com $${GITHUB_API_TOKEN}
       - composer update --prefer-lowest --prefer-stable --ansi --no-suggest --no-progress
     when:
       matrix:
