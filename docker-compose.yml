@@ -1,7 +1,9 @@
 version: '2'
 services:
   web:
-    image: registry.fpfis.eu/fpfis/httpd-php:8.1-dev
+    image: registry.fpfis.eu/fpfis/httpd-php:7.4-dev
+#    image: registry.fpfis.eu/fpfis/httpd-php:8.0-dev
+#    image: registry.fpfis.eu/fpfis/httpd-php:8.1-dev
     working_dir: ${PWD}
     volumes:
     - ${PWD}:${PWD}
