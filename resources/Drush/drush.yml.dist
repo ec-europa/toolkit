@@ -1,3 +1,2 @@
 options:
-  # Specify the base_url that should be used when generating links.
-  uri: ${env.VIRTUAL_HOST}
+  uri: '${env.VIRTUAL_HOST}'
