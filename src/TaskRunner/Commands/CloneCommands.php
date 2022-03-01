@@ -19,11 +19,6 @@ class CloneCommands extends AbstractCommands
     use TaskRunnerTasks\CollectionFactory\loadTasks;
 
     /**
-     * Path to file that hold the input information.
-     */
-    public const TEMP_INPUTFILE = 'temporary_inputfile.txt';
-
-    /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
@@ -126,14 +121,9 @@ class CloneCommands extends AbstractCommands
     {
         $tasks = [];
 
-        if (empty($options['dumpfile'])) {
-            $options['dumpfile'] = 'mysql.gz';
-        }
-
         if (!file_exists($options['dumpfile'])) {
             if (!getenv('CI')) {
-                $this->say('"' . $options['dumpfile'] . '" file not found, use the command "toolkit:download-dump --dumpfile ' . $options['dumpfile'] . '".');
-
+                $this->say('"' . $options['dumpfile'] . '" file not found, use the command "toolkit:download-dump".');
                 return $this->collectionBuilder()->addTaskList($tasks);
             }
         }
