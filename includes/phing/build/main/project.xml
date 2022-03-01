@@ -167,7 +167,7 @@
     </target>
 
     <target name="project-profile-build" hidden="true" description="Build Drupal profile.">
-        <drush command="dl" assume="yes">
+        <drush command="dl" assume="yes" bin="${toolkit.dir.bin.drush}">
             <param>"${profile}-${profile.core}"</param>
             <option name="destination">${project.basedir}</option>
             <option name="strict">0</option>
