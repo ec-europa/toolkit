@@ -2,7 +2,7 @@ command:
   toolkit:
     install-dump:
       options:
-        dumpfile: ${toolkit.clone.dumpfile}
+        dumpfile: 'mysql.gz'
     run-deploy:
       options:
         sequence-file: ${toolkit.deploy.sequence_file}
