@@ -2,6 +2,11 @@ grumphp:
   parallel:
     enabled: false
   tasks:
+    #phpunit:
+    #  config_file: ./phpunit.xml.dist
+    #  testsuite: ~
+    #  group: []
+    #  always_execute: true
     phpcs:
       standard: PSR12
       ignore_patterns:
