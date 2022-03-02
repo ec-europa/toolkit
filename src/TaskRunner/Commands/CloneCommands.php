@@ -296,7 +296,6 @@ class CloneCommands extends AbstractCommands
      *
      * @param string $url
      *   Url to fill in the temp file.
-     *
      * @param string $tmp
      *   The temporary filename.
      */
@@ -311,9 +310,11 @@ class CloneCommands extends AbstractCommands
     /**
      * Download the file present in the tmp file.
      *
+     * @param $tmp
+     *   The temporary filename.
      * @param $destination
      *   The destination filename.
-     * @param $accept
+     * @param null $accept
      *   A comma-separated list of accepted extensions.
      *
      * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Base\Exec
