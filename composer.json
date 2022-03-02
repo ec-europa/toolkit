@@ -13,6 +13,7 @@
     "require": {
         "php": "^7.1",
         "ext-curl": "*",
+        "ext-dom": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
         "cweagans/composer-patches": "^1.7.2",
