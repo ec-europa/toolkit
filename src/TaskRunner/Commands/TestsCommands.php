@@ -8,6 +8,7 @@ use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use NuvoleWeb\Robo\Task as NuvoleWebTasks;
 use OpenEuropa\TaskRunner\Contract\FilesystemAwareInterface;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
+use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
 use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
@@ -25,7 +26,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     use TaskRunnerTasks\CollectionFactory\loadTasks;
     use TaskRunnerTraits\ConfigurationTokensTrait;
     use TaskRunnerTraits\FilesystemAwareTrait;
-    use \OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
+    use loadTasks;
 
     /**
      * {@inheritdoc}
@@ -36,15 +37,114 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     }
 
     /**
-     * Run PHP code review.
+     * Setup PHP code sniffer for standalone execution.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     *
+     * @command toolkit:setup-phpcs
+     */
+    public function toolkitSetupPhpcs()
+    {
+        $config = $this->getConfig();
+        $config_file = $config->get('toolkit.test.phpcs.config');
+        if (file_exists($config_file)) {
+            $this->taskExec('rm')->arg($config_file)->run();
+        }
+
+        $phpcs_xml = new \DOMDocument('1.0', 'UTF-8');
+        $phpcs_xml->formatOutput = true;
+        // Root element.
+        $root = $phpcs_xml->createElement('ruleset');
+        $root->setAttribute('name', 'QA');
+        $phpcs_xml->appendChild($root);
+        $root->appendChild($phpcs_xml->createElement('description', 'QA PHPcs Ruleset'));
+
+        // Handle standards.
+        $root->appendChild($phpcs_xml->createComment(' Standards. '));
+        if (!empty($standards = $config->get('toolkit.test.phpcs.standards'))) {
+            foreach ($standards as $standard) {
+                $element = $phpcs_xml->createElement('rule');
+                $element->setAttribute('ref', $standard);
+                $root->appendChild($element);
+            }
+        }
+        $root->appendChild($phpcs_xml->createComment(' Arguments. '));
+        // Handle file extensions.
+        if (!empty($extensions = $config->get('toolkit.test.phpcs.triggered_by'))) {
+            $element = $phpcs_xml->createElement('arg');
+            $element->setAttribute('name', 'extensions');
+            $element->setAttribute('value', implode(',', array_values($extensions)));
+            $root->appendChild($element);
+        }
+        // Handle argument report.
+        $element = $phpcs_xml->createElement('arg');
+        $element->setAttribute('name', 'report');
+        $element->setAttribute('value', 'full');
+        $root->appendChild($element);
+        // Handle argument color.
+        $element = $phpcs_xml->createElement('arg');
+        $element->setAttribute('name', 'colors');
+        $root->appendChild($element);
+        // Handle argument progress.
+        $element = $phpcs_xml->createElement('arg');
+        $element->setAttribute('value', 'p');
+        $root->appendChild($element);
+        // Handle show sniffs.
+        if (!empty($config->get('toolkit.test.phpcs.show_sniffs'))) {
+            $element = $phpcs_xml->createElement('arg');
+            $element->setAttribute('value', 's');
+            $root->appendChild($element);
+        }
+        // Handle the files.
+        $root->appendChild($phpcs_xml->createComment(' Files to check. '));
+        if (!empty($files = $config->get('toolkit.test.phpcs.files'))) {
+            foreach ($files as $file) {
+                if (file_exists($file)) {
+                    $root->appendChild($phpcs_xml->createElement('file', $file));
+                } else {
+                    $this->writeln("The path '$file' was not found, ignoring.");
+                }
+            }
+        } else {
+            $root->appendChild($phpcs_xml->createElement('file', '.'));
+        }
+        // Handle exclude patterns.
+        $root->appendChild($phpcs_xml->createComment(' Exclude patterns. '));
+        if (!empty($ignores = $config->get('toolkit.test.phpcs.ignore_patterns'))) {
+            foreach ($ignores as $ignore) {
+                $root->appendChild($phpcs_xml->createElement('exclude-pattern', $ignore));
+            }
+        }
+
+        $root->appendChild($phpcs_xml->createComment(' Add your custom rules after this line. '));
+        $this->taskWriteToFile($config_file)
+            ->text($phpcs_xml->saveXML())->run();
+    }
+
+    /**
+     * Run PHP code sniffer.
      *
      * @command toolkit:test-phpcs
-     *
-     * @SuppressWarnings(PHPMD)
      *
      * @aliases tp
      */
     public function toolkitPhpcs()
+    {
+        $mode = $this->getConfig()->get('toolkit.test.phpcs.mode', 'grumphp');
+        if ($mode === 'grumphp') {
+            $this->say('Executing PHPcs within GrumPHP.');
+            return $this->runGrumphp();
+        } else {
+            $this->say('Executing PHPcs in standalone mode.');
+            return $this->runPhpcs();
+        }
+    }
+
+    /**
+     * Run PHP code sniffer within GrumPHP.
+     */
+    public function runGrumphp()
     {
         $tasks = [];
         $grumphpFile = './grumphp.yml.dist';
@@ -83,6 +183,71 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Run PHP code sniffer in standalone mode.
+     *
+     * @code
+     * toolkit:
+     *   test:
+     *     phpcs:
+     *       mode: grumphp || phpcs
+     *       config: phpcs.xml
+     *       ignore_annotations: 0
+     *       show_sniffs: 0
+     *       standards:
+     *         - ./vendor/drupal/coder/coder_sniffer/Drupal
+     *         - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
+     *         - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+     *       ignore_patterns:
+     *         - vendor/
+     *         - web/
+     *         - node_modules/
+     *       triggered_by:
+     *         - php
+     *         - module
+     *         - inc
+     *         - theme
+     *         - install
+     *         - yml
+     *       files:
+     *         - ./lib
+     * @endcode
+     */
+    public function runPhpcs()
+    {
+        $config = $this->getConfig();
+        $phpcs_bin = $this->getBin('phpcs');
+        $config_file = $config->get('toolkit.test.phpcs.config');
+        if (!file_exists($config_file)) {
+            $this->say('Calling toolkit:setup-phpcs.');
+            $this->toolkitSetupPhpcs();
+        }
+
+        // Make sure the required standards are present.
+        $standards = [
+            './vendor/drupal/coder/coder_sniffer/Drupal',
+            './vendor/drupal/coder/coder_sniffer/DrupalPractice',
+            './vendor/ec-europa/qa-automation/phpcs/QualityAssurance',
+        ];
+        $rules = [];
+        $data = simplexml_load_file($config_file);
+        foreach ($data->rule as $item) {
+            if (isset($item['ref'])) {
+                $rules[] = (string) $item['ref'];
+            }
+        }
+        if ($diff = array_diff($standards, $rules)) {
+            $this->say("The following standards are missing, please add them to the configuration file '$config_file'.\n" . implode("\n", $diff));
+            return new ResultData(1);
+        }
+
+        $options = '';
+        if (!empty($config->get('toolkit.test.phpcs.ignore_annotations'))) {
+            $options .= ' --ignore-annotations';
+        }
+        $this->taskExec("$phpcs_bin --standard=$config_file$options")->run();
     }
 
     /**
@@ -162,6 +327,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * commands should be described in configuration files in this way:
      * @code
      * phpunit:
+     *   options: '--log-junit report.xml'
      *   commands:
      *     before:
      *       - task: exec
@@ -238,7 +404,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:run-phpcbf
      *
-     * @SuppressWarnings(PHPMD)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *
      * @option test-path  directory or file path to be autofixed by phpcbf.
      *
@@ -488,6 +654,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             if (empty($ci_url = getenv('DRONE_BUILD_LINK'))) {
                 $ci_url = getenv('CI_PIPELINE_URL');
             }
+
             // Send payload to QA website.
             if (empty($url = getenv('QA_WEBSITE_URL'))) {
                 $url = 'https://webgate.ec.europa.eu/fpfis/qa';
