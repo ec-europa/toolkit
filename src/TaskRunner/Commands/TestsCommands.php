@@ -132,19 +132,19 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     public function toolkitPhpcs()
     {
         $mode = $this->getConfig()->get('toolkit.test.phpcs.mode', 'grumphp');
-        if ($mode === 'standalone') {
-            $this->say('Executing PHPcs in standalone mode.');
-            return $this->standalonePhpcs();
-        } else {
+        if ($mode === 'grumphp') {
             $this->say('Executing PHPcs within GrumPHP.');
-            return $this->grumphpPhpcs();
+            return $this->runGrumphp();
+        } else {
+            $this->say('Executing PHPcs in standalone mode.');
+            return $this->runPhpcs();
         }
     }
 
     /**
      * Run PHP code sniffer within GrumPHP.
      */
-    public function grumphpPhpcs()
+    public function runGrumphp()
     {
         $tasks = [];
         $grumphpFile = './grumphp.yml.dist';
@@ -192,7 +192,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * toolkit:
      *   test:
      *     phpcs:
-     *       mode: grumphp || standalone
+     *       mode: grumphp || phpcs
      *       config: phpcs.xml
      *       ignore_annotations: 0
      *       show_sniffs: 0
@@ -215,7 +215,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *         - ./lib
      * @endcode
      */
-    public function standalonePhpcs()
+    public function runPhpcs()
     {
         $config = $this->getConfig();
         $phpcs_bin = $this->getBin('phpcs');
