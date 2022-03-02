@@ -13,6 +13,7 @@
     "require": {
         "php": ">=7.4",
         "ext-curl": "*",
+        "ext-dom": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
         "behat/behat": "^3.7 || ^3.8",
