@@ -35,7 +35,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     }
 
     /**
-     * Setup PHP code sniffer.
+     * Setup PHP code sniffer for standalone execution.
      *
      * @command toolkit:setup-phpcs
      */
@@ -122,10 +122,72 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:test-phpcs
      *
+     * @aliases tp
+     */
+    public function toolkitPhpcs()
+    {
+        $mode = $this->getConfig()->get('toolkit.test.phpcs.mode', 'grumphp');
+        if ($mode === 'standalone') {
+            $this->say('Executing PHPcs in standalone mode.');
+            return $this->standalonePhpcs();
+        } else {
+            $this->say('Executing PHPcs within GrumPHP.');
+            return $this->grumphpPhpcs();
+        }
+    }
+
+    /**
+     * Run PHP code sniffer within GrumPHP.
+     */
+    public function grumphpPhpcs()
+    {
+        $tasks = [];
+        $grumphpFile = './grumphp.yml.dist';
+        $containsQaConventions = false;
+
+        if (file_exists($grumphpFile)) {
+            $grumphpArray = (array) Yaml::parse(file_get_contents($grumphpFile));
+            if (isset($grumphpArray['imports'])) {
+                foreach ($grumphpArray['imports'] as $import) {
+                    if (isset($import['resource']) && $import['resource'] === 'vendor/ec-europa/qa-automation/dist/qa-conventions.yml') {
+                        $containsQaConventions = true;
+                    }
+                }
+            }
+        }
+
+        $composerFile = './composer.json';
+        if (file_exists($composerFile)) {
+            $composerArray = json_decode(file_get_contents($composerFile), true);
+            if (isset($composerArray['extra']['grumphp']['config-default-path'])) {
+                $configDefaultPath = $composerArray['extra']['grumphp']['config-default-path'];
+                $this->say('You should remove the following from your composer.json extra array:');
+                echo "\n\"grumphp\": {\n    \"config-default-path\": \"$configDefaultPath\"\n}\n\n";
+            }
+        }
+
+        if ($containsQaConventions) {
+            $tasks[] = $this->taskExec($this->getBin('grumphp') . ' run');
+        } else {
+            $this->say('All Drupal projects in the ec-europa namespace need to use Quality Assurance provided standards.');
+            $this->say('Your configuration has to import the resource vendor/ec-europa/qa-automation/dist/qa-conventions.yml.');
+            $this->say('For more information visit: https://github.com/ec-europa/toolkit/blob/release/4.x/docs/testing-project.md#phpcs-testing');
+            $this->say('Add the following lines to your grumphp.yml.dist:');
+            echo "\nimports:\n  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }\n\n";
+            return new ResultData(1);
+        }
+
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Run PHP code sniffer in standalone mode.
+     *
      * @code
      * toolkit:
      *   test:
      *     phpcs:
+     *       mode: grumphp || standalone
      *       config: phpcs.xml
      *       ignore_annotations: 0
      *       show_sniffs: 0
@@ -147,19 +209,13 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *       files:
      *         - ./lib
      * @endcode
-     *
-     * @aliases tp
-     *
-     * @option setup    Force the config file to be generated.
      */
-    public function toolkitPhpcs(array $options = [
-        'setup' => InputOption::VALUE_OPTIONAL,
-    ])
+    public function standalonePhpcs()
     {
         $config = $this->getConfig();
         $phpcs_bin = $this->getBin('phpcs');
         $config_file = $config->get('toolkit.test.phpcs.config');
-        if (!file_exists($config_file) || $options['setup']) {
+        if (!file_exists($config_file)) {
             $this->say('Calling toolkit:setup-phpcs.');
             $this->toolkitSetupPhpcs();
         }
