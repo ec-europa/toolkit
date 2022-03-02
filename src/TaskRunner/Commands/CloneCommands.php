@@ -65,7 +65,7 @@ class CloneCommands extends AbstractCommands
             $sequence = $config->get($options['sequence-key']);
 
             if (!empty($sequence)) {
-                $sequence = isset($sequence['default']) ? $sequence['default'] : $sequence;
+                $sequence = $sequence['default'] ?? $sequence;
                 $this->say('Running custom deploy sequence "' . $options['sequence-key'] . '" from sequence file "' . $options['sequence-file'] . '".');
                 foreach ($sequence as $command) {
                     // Only execute strings. Opts.yml also supports append and
@@ -98,12 +98,7 @@ class CloneCommands extends AbstractCommands
     }
 
     /**
-     * Install clone from production snapshot.
-     *
-     * It restores the database and imports the configuration.
-     * - Verify if the dumpfile exists.
-     * - Import configuration from sync into active storage.
-     * - Execute cache-rebuild.
+     * Import the production snapshot.
      *
      * @param array $options
      *   Command options.
@@ -113,7 +108,7 @@ class CloneCommands extends AbstractCommands
      *
      * @command toolkit:install-dump
      *
-     * @option dumpfile Drupal uri.
+     * @option dumpfile The dump file name.
      */
     public function installDump(array $options = [
         'dumpfile' => InputOption::VALUE_REQUIRED,
