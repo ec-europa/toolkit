@@ -19,11 +19,6 @@ class CloneCommands extends AbstractCommands
     use TaskRunnerTasks\CollectionFactory\loadTasks;
 
     /**
-     * Path to file that hold the input information.
-     */
-    public const TEMP_INPUTFILE = 'temporary_inputfile.txt';
-
-    /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
@@ -70,7 +65,7 @@ class CloneCommands extends AbstractCommands
             $sequence = $config->get($options['sequence-key']);
 
             if (!empty($sequence)) {
-                $sequence = isset($sequence['default']) ? $sequence['default'] : $sequence;
+                $sequence = $sequence['default'] ?? $sequence;
                 $this->say('Running custom deploy sequence "' . $options['sequence-key'] . '" from sequence file "' . $options['sequence-file'] . '".');
                 foreach ($sequence as $command) {
                     // Only execute strings. Opts.yml also supports append and
@@ -103,12 +98,7 @@ class CloneCommands extends AbstractCommands
     }
 
     /**
-     * Install clone from production snapshot.
-     *
-     * It restores the database and imports the configuration.
-     * - Verify if the dumpfile exists.
-     * - Import configuration from sync into active storage.
-     * - Execute cache-rebuild.
+     * Import the production snapshot.
      *
      * @param array $options
      *   Command options.
@@ -118,7 +108,7 @@ class CloneCommands extends AbstractCommands
      *
      * @command toolkit:install-dump
      *
-     * @option dumpfile Drupal uri.
+     * @option dumpfile The dump file name.
      */
     public function installDump(array $options = [
         'dumpfile' => InputOption::VALUE_REQUIRED,
@@ -128,8 +118,7 @@ class CloneCommands extends AbstractCommands
 
         if (!file_exists($options['dumpfile'])) {
             if (!getenv('CI')) {
-                $this->say('"' . $options['dumpfile'] . '" file not found, use the command "toolkit:download-dump --dumpfile ' . $options['dumpfile'] . '".');
-
+                $this->say('"' . $options['dumpfile'] . '" file not found, use the command "toolkit:download-dump".');
                 return $this->collectionBuilder()->addTaskList($tasks);
             }
         }
@@ -139,9 +128,18 @@ class CloneCommands extends AbstractCommands
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
             ->exec($drush_bin . ' sql-drop -y')
-            ->exec($drush_bin . ' sql-create -y')
-            ->exec($drush_bin . ' sqlc < ' . $options['dumpfile']);
-
+            ->exec($drush_bin . ' sql-create -y');
+        $tasks[] = $this->taskExecStack()
+            ->stopOnFail()
+            ->silent(true)
+            ->exec(sprintf(
+                "gunzip < %s | mysql -u%s%s -h%s %s",
+                $options['dumpfile'],
+                getenv('DRUPAL_DATABASE_USERNAME'),
+                getenv('DRUPAL_DATABASE_PASSWORD') ? ' -p' . getenv('DRUPAL_DATABASE_PASSWORD') : '',
+                getenv('DRUPAL_DATABASE_HOST'),
+                getenv('DRUPAL_DATABASE_NAME'),
+            ));
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
     }
@@ -155,6 +153,10 @@ class CloneCommands extends AbstractCommands
      * @code
      * toolkit:
      *   clone:
+     *     asda_services:
+     *       - mysql
+     *       - solr
+     *       - virtuoso
      *     asda_type: 'nextcloud'
      *     nextcloud_url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'
      * @endcode
@@ -179,9 +181,11 @@ class CloneCommands extends AbstractCommands
         $tasks = [];
         $config = $this->getConfig();
         $project_id = $config->get('toolkit.project_id');
-        $asda_type = $config->get('toolkit.clone.asda_type');
-        $dump_file = $config->get('toolkit.clone.dumpfile');
+        $asda_type = $config->get('toolkit.clone.asda_type', 'default');
+        $asda_services = (array) $config->get('toolkit.clone.asda_services', 'mysql');
+
         $this->say("ASDA type is: $asda_type");
+        $this->say('ASDA services: ' . implode(', ', $asda_services));
         if ($asda_type === 'default') {
             $user = getenv('ASDA_USER') && getenv('ASDA_USER') !== '${env.ASDA_USER}' ? getenv('ASDA_USER') : '';
             $password = getenv('ASDA_PASSWORD') && getenv('ASDA_PASSWORD') !== '${env.ASDA_PASSWORD}' ? getenv('ASDA_PASSWORD') : '';
@@ -209,18 +213,42 @@ class CloneCommands extends AbstractCommands
         }
 
         $url = str_replace(['http://', 'https://'], '', $url);
-        if ($asda_type === 'nextcloud') {
-            $url = "$url/$user/forDevelopment/ec-europa/$project_id-reference/mysql";
-        }
         $download_link = "https://$user:$password@$url";
 
+        if ($asda_type === 'nextcloud') {
+            $download_link .= "/$user/forDevelopment/ec-europa/$project_id-reference/";
+            foreach ($asda_services as $service) {
+                $tasks = array_merge($tasks, $this->asdaProcessFile($download_link . $service, $service));
+            }
+        } else {
+            $tasks = $this->asdaProcessFile($download_link, 'mysql');
+        }
+
+        // Build and return task collection.
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Helper to download and process a ASDA file.
+     *
+     * @param $link
+     *   The link to the folder.
+     * @param $service
+     *   The service to use.
+     *
+     * @return array
+     *   The tasks to execute.
+     */
+    private function asdaProcessFile($link, $service)
+    {
+        $tasks = [];
         // Download the .sha file.
-        $this->generateAsdaWgetInputFile($download_link . '/latest.sh1');
-        $this->wgetDownloadFile('latest.sh1', '.sh1')->run();
-        $latest = file_get_contents('latest.sh1');
+        $this->generateAsdaWgetInputFile("$link/latest.sh1", "$service.txt");
+        $this->wgetDownloadFile("$service.txt", "$service-latest.sh1", '.sh1')->run();
+        $latest = file_get_contents("$service-latest.sh1");
         if (empty($latest)) {
-            $this->writeln('<error>Could not fetch the file latest.sh1</error>');
-            return $this->collectionBuilder()->addTaskList($tasks);
+            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
+            return $tasks;
         }
         $filename = trim(explode('  ', $latest)[1]);
 
@@ -236,30 +264,24 @@ class CloneCommands extends AbstractCommands
             is_integer($date['year'])
         ) {
             $timestamp = mktime($date['hour'], $date['minute'], $date['second'], $date['month'], $date['day'], $date['year']);
-            $output = sprintf('%d %s %d at %s:%s', $date['day'], date('M', $timestamp), $date['year'], $date['hour'], $date['minute']);
+            $output = sprintf('%02d %s %d at %02d:%02d', $date['day'], date('M', $timestamp), $date['year'], $date['hour'], $date['minute']);
         } else {
             $output = $filename;
         }
-        $output = "ASDA DATE: $output";
+        $output = strtoupper($service) . " DATE: $output";
         $separator = str_repeat('=', strlen($output));
         $this->writeln("\n<info>$output\n$separator</info>\n");
 
-        // Download the .sql file.
-        $this->generateAsdaWgetInputFile($download_link . '/' . $filename);
-        $tasks[] = $this->wgetDownloadFile($dump_file . '.gz', '.sql.gz');
-
-        // Unzip the file.
-        $tasks[] = $this->taskExec('gunzip')
-            ->arg($dump_file . '.gz')
-            ->option('-f');
+        // Download the file.
+        $this->generateAsdaWgetInputFile("$link/$filename", "$service.txt");
+        $tasks[] = $this->wgetDownloadFile("$service.txt", "$service.gz", '.sql.gz,.tar.gz');
 
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
-            ->arg('latest.sh1')
-            ->arg(self::TEMP_INPUTFILE);
+            ->arg("$service-latest.sh1")
+            ->arg("$service.txt");
 
-        // Build and return task collection.
-        return $this->collectionBuilder()->addTaskList($tasks);
+        return $tasks;
     }
 
     /**
@@ -267,11 +289,13 @@ class CloneCommands extends AbstractCommands
      *
      * @param string $url
      *   Url to fill in the temp file.
+     * @param string $tmp
+     *   The temporary filename.
      */
-    private function generateAsdaWgetInputFile($url)
+    private function generateAsdaWgetInputFile($url, $tmp)
     {
         $this->taskFilesystemStack()
-            ->taskWriteToFile(self::TEMP_INPUTFILE)
+            ->taskWriteToFile($tmp)
             ->line($url)
             ->run();
     }
@@ -279,17 +303,19 @@ class CloneCommands extends AbstractCommands
     /**
      * Download the file present in the tmp file.
      *
+     * @param $tmp
+     *   The temporary filename.
      * @param $destination
      *   The destination filename.
-     * @param $accept
+     * @param null $accept
      *   A comma-separated list of accepted extensions.
      *
      * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Base\Exec
      */
-    private function wgetDownloadFile($destination, $accept = null)
+    private function wgetDownloadFile($tmp, $destination, $accept = null)
     {
         return $this->taskExec('wget')
-            ->option('-i', self::TEMP_INPUTFILE)
+            ->option('-i', $tmp)
             ->option('-O', $destination)
             ->option('-A', $accept)
             ->option('-P', './');
