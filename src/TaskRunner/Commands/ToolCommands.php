@@ -167,7 +167,7 @@ class ToolCommands extends AbstractCommands
             }
         }
         if ($this->componentCheckFailed == false) {
-            $this->say("Evaluation module check is OK.");
+            $this->say("Evaluation module check passed.");
         }
         echo PHP_EOL;
 
@@ -178,8 +178,7 @@ class ToolCommands extends AbstractCommands
             $this->componentCheckFailed ||
             $this->componentCheckMandatoryFailed ||
             $this->componentCheckRecommendedFailed ||
-            ($this->componentCheckInsecureFailed && $this->skipInsecure) ||
-            ($this->componentCheckOutdatedFailed && $this->skipOutdated)
+            (!$this->skipInsecure && $this->componentCheckInsecureFailed)
         ) {
             $msg = 'Failed the components check, please verify the report and update the project.';
             $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
@@ -214,12 +213,12 @@ class ToolCommands extends AbstractCommands
     {
         $this->io()->title('Results:');
 
-        $skipInsegure = ($this->skipInsecure) ? '' : ' (Skipping)';
+        $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
         $skipOutdated = ($this->skipOutdated) ? '' : ' (Skipping)';
 
         $msgs[] = ($this->componentCheckMandatoryFailed) ? 'Mandatory module check failed.' : 'Mandatory module check passed.';
         $msgs[] = ($this->componentCheckRecommendedFailed) ? 'Recommended module check failed. (report only)' : 'Recommended module check passed.';
-        $msgs[] = ($this->componentCheckInsecureFailed) ? 'Insecure module check failed.' . $skipInsegure : 'Insecure module check passed.' . $skipInsegure;
+        $msgs[] = ($this->componentCheckInsecureFailed) ? 'Insecure module check failed.' . $skipInsecure : 'Insecure module check passed.' . $skipInsecure;
         $msgs[] = ($this->componentCheckOutdatedFailed) ? 'Outdated module check failed.' . $skipOutdated : 'Outdated module check passed.' . $skipOutdated;
         $msgs[] = ($this->componentCheckFailed) ? 'Evaluation module check failed.' : 'Evaluation module check passed.';
 
@@ -331,6 +330,9 @@ class ToolCommands extends AbstractCommands
                 $this->componentCheckMandatoryFailed = true;
             }
         }
+        if (!$this->componentCheckMandatoryFailed) {
+            $this->say('Mandatory components check passed.');
+        }
     }
 
     /**
@@ -361,6 +363,9 @@ class ToolCommands extends AbstractCommands
                 $this->say("Package $notPresent is recommended but is not present on the project.");
                 $this->componentCheckRecommendedFailed = false;
             }
+        }
+        if (!$this->componentCheckRecommendedFailed) {
+            $this->say('This step is in reporting mode, skipping.');
         }
     }
 
@@ -406,10 +411,11 @@ class ToolCommands extends AbstractCommands
 
         $fullSkip = getenv('QA_SKIP_INSECURE') !== false ? getenv('QA_SKIP_INSECURE') : false;
         // Forcing skip due to issues with the security advisor date detection.
-        $fullSkip = true;
         if ($fullSkip) {
             $this->say('Globally Skipping security check for components.');
             $this->componentCheckInsecureFailed = 0;
+        } elseif (!$this->componentCheckInsecureFailed) {
+            $this->say('Insecure components check passed.');
         }
     }
 
@@ -434,9 +440,7 @@ class ToolCommands extends AbstractCommands
 
         $outdatedPackages = json_decode($result, true);
 
-        if (empty($outdatedPackages['installed'])) {
-            $this->say("No outdated packages detected.");
-        } else {
+        if (!empty($outdatedPackages['installed'])) {
             if (is_array($outdatedPackages)) {
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
                     if (!array_key_exists('latest', $outdatedPackage)) {
@@ -453,6 +457,8 @@ class ToolCommands extends AbstractCommands
         if ($fullSkip) {
             $this->say('Globally skipping outdated check for components.');
             $this->componentCheckOutdatedFailed = 0;
+        } elseif (!$this->componentCheckOutdatedFailed) {
+            $this->say('Outdated components check passed.');
         }
     }
 
@@ -752,7 +758,7 @@ class ToolCommands extends AbstractCommands
     protected function checkCommitMessage()
     {
         $this->skipOutdated = false;
-        $this->skipInsecure = true;
+        $this->skipInsecure = false;
         $this->skipd9c = true;
 
         $commitMsg = getenv('DRONE_COMMIT_MESSAGE') !== false ? getenv('DRONE_COMMIT_MESSAGE') : '';
@@ -769,7 +775,7 @@ class ToolCommands extends AbstractCommands
                     $this->skipOutdated = false;
                 }
                 if ($transformedToken == 'skip_insecure') {
-                    $this->skipInsecure = false;
+                    $this->skipInsecure = true;
                 }
                 if ($transformedToken == 'skip_d9c') {
                     $this->skipd9c = false;
