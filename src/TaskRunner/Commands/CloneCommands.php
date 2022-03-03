@@ -119,7 +119,7 @@ class CloneCommands extends AbstractCommands
         if (!file_exists($options['dumpfile'])) {
             if (!getenv('CI')) {
                 $this->say('"' . $options['dumpfile'] . '" file not found, use the command "toolkit:download-dump".');
-                return $this->collectionBuilder()->addTaskList($tasks);
+                return 1;
             }
         }
 
