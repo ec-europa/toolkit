@@ -196,7 +196,12 @@ class BuildCommands extends AbstractCommands
             $tasks[] = $this->taskFilesystemStack()
                 ->copy('resources/Drush/drush.yml.dist', $root . '/web/sites/all/drush/drush.yml');
         } else {
-            $vHost = getenv('VIRTUAL_HOST');
+            if (!empty(getenv('VIRTUAL_HOST'))) {
+                $vHost = getenv('VIRTUAL_HOST');
+            } else {
+                $this->say("Add the 'VIRTUAL_HOST' variable to your '.env' file.");
+                return;
+            }
             $vHostArray = explode(',', $vHost);
             $drush_options['options'] = ['uri' => end($vHostArray)];
             $yaml = new Yaml();
