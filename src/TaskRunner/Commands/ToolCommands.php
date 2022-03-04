@@ -99,6 +99,7 @@ class ToolCommands extends AbstractCommands
         $this->componentCheckRecommendedFailed = false;
         $this->componentCheckInsecureFailed = false;
         $this->componentCheckOutdatedFailed = false;
+        $this->componentCheckDevVersionFailed = false;
 
         $this->checkCommitMessage();
 
@@ -171,6 +172,20 @@ class ToolCommands extends AbstractCommands
         }
         echo PHP_EOL;
 
+        $this->io()->title('Checking dev components.');
+        foreach ($composerLock['packages'] as $package) {
+            $typeBypass = in_array($package['type'], [
+                'drupal-custom-module',
+                'drupal-custom-theme',
+                'drupal-custom-profile',
+            ]);
+            if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
+                $this->componentCheckDevVersionFailed = true;
+                $this->say("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
+            }
+        }
+        echo PHP_EOL;
+
         $this->printComponentResults();
 
         // If the validation fail, return according to the blocker.
@@ -178,6 +193,7 @@ class ToolCommands extends AbstractCommands
             $this->componentCheckFailed ||
             $this->componentCheckMandatoryFailed ||
             $this->componentCheckRecommendedFailed ||
+            $this->componentCheckDevVersionFailed ||
             (!$this->skipInsecure && $this->componentCheckInsecureFailed)
         ) {
             $msg = 'Failed the components check, please verify the report and update the project.';
@@ -216,11 +232,12 @@ class ToolCommands extends AbstractCommands
         $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
         $skipOutdated = ($this->skipOutdated) ? '' : ' (Skipping)';
 
-        $msgs[] = ($this->componentCheckMandatoryFailed) ? 'Mandatory module check failed.' : 'Mandatory module check passed.';
-        $msgs[] = ($this->componentCheckRecommendedFailed) ? 'Recommended module check failed. (report only)' : 'Recommended module check passed.';
-        $msgs[] = ($this->componentCheckInsecureFailed) ? 'Insecure module check failed.' . $skipInsecure : 'Insecure module check passed.' . $skipInsecure;
-        $msgs[] = ($this->componentCheckOutdatedFailed) ? 'Outdated module check failed.' . $skipOutdated : 'Outdated module check passed.' . $skipOutdated;
-        $msgs[] = ($this->componentCheckFailed) ? 'Evaluation module check failed.' : 'Evaluation module check passed.';
+        $msgs[] = 'Mandatory module check ' . ($this->componentCheckMandatoryFailed ? 'failed.' : 'passed.');
+        $msgs[] = 'Recommended module check ' . ($this->componentCheckRecommendedFailed ? 'failed.' : 'passed.') . ' (report only)';
+        $msgs[] = 'Insecure module check ' . ($this->componentCheckInsecureFailed ? 'failed.' : 'passed.') . $skipInsecure;
+        $msgs[] = 'Outdated module check ' . ($this->componentCheckOutdatedFailed ? 'failed.' : 'passed.') . $skipOutdated;
+        $msgs[] = 'Dev module check ' . ($this->componentCheckDevVersionFailed ? 'failed.' : 'passed.');
+        $msgs[] = 'Evaluation module check ' . ($this->componentCheckFailed ? 'failed.' : 'passed.');
 
         foreach ($msgs as $msg) {
             $this->say($msg);
