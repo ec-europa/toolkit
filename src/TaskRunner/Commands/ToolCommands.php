@@ -710,7 +710,7 @@ class ToolCommands extends AbstractCommands
                 'user:create', 'user-create', 'ucrt',
                 'user:cancel', 'user-cancel', 'ucan',
                 'user:password', 'user-password', 'upwd',
-                'php-eval', 'eval', 'ev',
+                'php:eval', 'php-eval', 'eval', 'ev',
                 'composer',
                 'git',
                 'wget',
