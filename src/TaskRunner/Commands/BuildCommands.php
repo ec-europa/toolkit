@@ -194,7 +194,7 @@ class BuildCommands extends AbstractCommands
 
         if (file_exists('resources/Drush/drush.yml.dist')) {
             $tasks[] = $this->taskFilesystemStack()
-                ->copy('resources/Drush/drush.yml.dist', $root . '/web/sites/all/drush/drush.yml');
+                ->copy('resources/Drush/drush.yml.dist', $root . '/sites/all/drush/drush.yml');
         } else {
             if (!empty(getenv('VIRTUAL_HOST'))) {
                 $vHost = getenv('VIRTUAL_HOST');
@@ -206,9 +206,9 @@ class BuildCommands extends AbstractCommands
             $drush_options['options'] = ['uri' => end($vHostArray)];
             $yaml = new Yaml();
             $yaml_content = $yaml->dump($drush_options, 2, 2, Yaml::DUMP_OBJECT);
-            $yaml_destination = $root . '/web/sites/all/drush/drush.yml';
+            $yaml_destination = $root . '/sites/all/drush/drush.yml';
             $tasks[] = $this->taskFilesystemStack()
-                ->mkdir($root . '/web/sites/all/drush')
+                ->mkdir($root . '/sites/all/drush')
                 ->touch($yaml_destination);
             $tasks[] = $this->taskWriteToFile($yaml_destination)->text($yaml_content);
         }
