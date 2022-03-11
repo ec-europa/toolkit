@@ -189,7 +189,8 @@ class CloneCommands extends AbstractCommands
         if ($asda_type === 'default') {
             $user = getenv('ASDA_USER') && getenv('ASDA_USER') !== '${env.ASDA_USER}' ? getenv('ASDA_USER') : '';
             $password = getenv('ASDA_PASSWORD') && getenv('ASDA_PASSWORD') !== '${env.ASDA_PASSWORD}' ? getenv('ASDA_PASSWORD') : '';
-            $url = $config->get('toolkit.clone.asda_url');
+            // Workaround, EWPP projects uses the ASDA_URL.
+            $url = getenv('ASDA_URL') ?: $config->get('toolkit.clone.asda_url');
         } elseif ($asda_type === 'nextcloud') {
             $user = getenv('NEXTCLOUD_USER') && getenv('NEXTCLOUD_USER') !== '${env.NEXTCLOUD_USER}' ? getenv('NEXTCLOUD_USER') : '';
             $password = getenv('NEXTCLOUD_PASS') && getenv('NEXTCLOUD_PASS') !== '${env.NEXTCLOUD_PASS}' ? getenv('NEXTCLOUD_PASS') : '';
