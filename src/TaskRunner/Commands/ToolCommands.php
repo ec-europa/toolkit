@@ -184,6 +184,9 @@ class ToolCommands extends AbstractCommands
                 $this->say("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
             }
         }
+        if (!$this->componentCheckDevVersionFailed) {
+            $this->say('Dev components check passed.');
+        }
         echo PHP_EOL;
 
         $this->printComponentResults();
