@@ -120,9 +120,13 @@ class BuildCommands extends AbstractCommands
             $tasks[] = $this->taskFilesystemStack()
                 ->copy('resources/Drush/drush.yml.dist', $options['dist-root'] . '/web/sites/all/drush/drush.yml');
         } else {
+            $sitePath = getenv('SITE_PATH');
             $vHost = getenv('VIRTUAL_HOST');
             $vHostArray = explode(',', $vHost);
-            $drush_options['options'] = ['uri' => end($vHostArray)];
+
+            $baseUri = empty($sitePath) ? end($vHostArray) : end($vHostArray) . $sitePath;
+
+            $drush_options['options'] = ['uri' => $baseUri];
             $yaml = new Yaml();
             $yaml_content = $yaml->dump($drush_options, 2, 2, Yaml::DUMP_OBJECT);
             $yaml_destination = $options['dist-root'] . '/web/sites/all/drush/drush.yml';
