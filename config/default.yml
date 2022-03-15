@@ -1,3 +1,7 @@
+drupal:
+  root: "web"
+  base_url: "http://web:8080/web"
+  database-host: "mysql"
 toolkit:
   tmp_folder: '.tmp'
   clean:
