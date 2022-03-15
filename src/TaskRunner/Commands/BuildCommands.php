@@ -206,8 +206,13 @@ class BuildCommands extends AbstractCommands
                 $this->say("Add the 'VIRTUAL_HOST' variable to your '.env' file.");
                 return;
             }
+
             $vHostArray = explode(',', $vHost);
-            $drush_options['options'] = ['uri' => end($vHostArray)];
+            $sitePath = getenv('SITE_PATH');
+
+            $vHostArray = explode(',', $vHost);
+            $baseUri = empty($sitePath) ? end($vHostArray) : end($vHostArray) . $sitePath;
+            $drush_options['options'] = ['uri' => $baseUri];
             $yaml = new Yaml();
             $yaml_content = $yaml->dump($drush_options, 2, 2, Yaml::DUMP_OBJECT);
             $yaml_destination = $root . '/sites/all/drush/drush.yml';
