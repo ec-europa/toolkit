@@ -240,13 +240,20 @@ docker.project.id = environment
 
 # Database download settings.
 # ---------------------------
+db.dl.vendor = ec-europa
+db.dl.type = reference
 db.dl.filename =
 db.dl.filename.hash = latest.sh1
+db.dl.username =
+db.dl.password =
+# Example for NEXTCLOUD.
+db.dl.dir = remote.php/dav/files/${db.dl.username}/forDevelopment/${db.dl.vendor}/${project.id}-${db.dl.type}/mysql
+db.dl.host = files.fpfis.tech.ec.europa.eu
+db.dl.url = ${db.dl.host}/${db.dl.dir}/
+# Example for ASDA.
 db.dl.dir = fpfis/files-for/automate_dumps
 db.dl.host = webgate.ec.europa.eu
 db.dl.url = ${db.dl.host}/${db.dl.dir}/${project.id}/
-db.dl.username =
-db.dl.password =
 
 # Database connection settings.
 # -----------------------------

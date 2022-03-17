@@ -463,7 +463,7 @@
             <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
         </phingcall>
 
-        <!--> If we don't have a filename to download we grab the first filename from the hash file. -->
+        <!-- If we don't have a filename to download we grab the first filename from the hash file. -->
         <if>
             <isfalse value="${db.dl.filename}" />
             <then>
