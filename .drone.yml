@@ -80,7 +80,7 @@ pipeline:
       - ./toolkit/phing project-database-download -Dproject.id=${ASDA_PROJECT_ID} ${PHING_OPTS}
       - ./toolkit/phing project-asda-date -Dproject.id=${ASDA_PROJECT_ID} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
+      - /cache/${DRONE_REPO_NAME}/default:/cache
 
   asda-nextcloud:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
@@ -90,7 +90,7 @@ pipeline:
       - ./toolkit/phing project-database-download -Dproject.id=${ASDA_PROJECT_ID} -Ddb.dl.type=nextcloud ${PHING_OPTS}
       - ./toolkit/phing project-asda-date -Dproject.id=${ASDA_PROJECT_ID} ${PHING_OPTS}
     volumes:
-      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
+      - /cache/${DRONE_REPO_NAME}/nextcloud:/cache
 
   install-clean:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
