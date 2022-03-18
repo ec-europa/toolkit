@@ -68,7 +68,6 @@ db.dl.url = ${db.dl.host}/${db.dl.dir}/${project.id}/
 db.dl.username =
 db.dl.password =
 db.dl.nextcloud.host = files.fpfis.tech.ec.europa.eu
-db.dl.nextcloud.dir = remote.php/dav/files/${db.dl.username}/forDevelopment/${project.vendor}/${project.id}-${project.source}/mysql
 
 # Database connection settings.
 # -----------------------------
