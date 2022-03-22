@@ -558,33 +558,31 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     {
         $base_url = $this->getConfig()->get('drupal.base_url');
         $project_id = $this->getConfig()->get('toolkit.project_id');
-        $bf_client_id = getenv('BLACKFIRE_CLIENT_ID');
-        $bf_client_token = getenv('BLACKFIRE_CLIENT_TOKEN');
-
+        $problems = [];
         if (!getenv('BLACKFIRE_SERVER_ID') || !getenv('BLACKFIRE_SERVER_TOKEN')) {
-            $this->say('The blackfire server is not properly configured, please contact QA team.');
-            return new ResultData(0);
+            $problems[] = 'Missing environment variables: BLACKFIRE_SERVER_ID, BLACKFIRE_SERVER_TOKEN, skipping.';
         }
-
-        if (empty($bf_client_id) || empty($bf_client_token)) {
-            $this->say('You must set the following environment variables: BLACKFIRE_CLIENT_ID, BLACKFIRE_CLIENT_TOKEN, skipping.');
-            return new ResultData(0);
+        if (!getenv('BLACKFIRE_CLIENT_ID') || !getenv('BLACKFIRE_CLIENT_TOKEN')) {
+            $problems[] = 'Missing environment variables: BLACKFIRE_CLIENT_ID, BLACKFIRE_CLIENT_TOKEN, skipping.';
         }
 
         // Confirm that blackfire is properly installed.
         $test = $this->taskExec('which blackfire')->silent(true)
             ->run()->getMessage();
         if (strpos($test, 'not found') !== false) {
-            $this->say('The Blackfire is not installed, please contact QA team.');
-            return new ResultData(0);
+            $problems[] = 'The Blackfire is not installed, skipping.';
         }
 
         // Make sure that the blackfire agent is properly configured.
         $config = $this->taskExec('cat /etc/blackfire/agent | grep server-id=')
             ->silent(true)->run()->getMessage();
-        if ($config === 'server-id=') {
-            $this->taskExec('blackfire agent:config')->run();
-            $this->taskExec('sudo service blackfire-agent restart')->run();
+        if ($config === 'server-idd=') {
+            $problems[] = 'The Blackfire agent is not proplerly configured, skipping.';
+        }
+
+        if (!empty($problems)) {
+            $this->say("Problems found:\n" . implode("\n", $problems));
+            return new ResultData(0);
         }
 
         $command = "blackfire --json curl $base_url";
