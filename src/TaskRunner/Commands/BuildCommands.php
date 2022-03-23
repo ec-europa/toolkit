@@ -374,10 +374,12 @@ class BuildCommands extends AbstractCommands
                     $this->io()->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
                 }
 
-                $finder = new Finder();
-                $finder->files()
-                    ->in($theme_dir)
-                    ->name($taskRunnerConfigFile);
+                if (!empty($taskRunnerConfigFile)) {
+                    $finder = new Finder();
+                    $finder->files()
+                        ->in($theme_dir)
+                        ->name($taskRunnerConfigFile);
+                }
 
                 // Build task collection.
                 $collection = $this->collectionBuilder();
