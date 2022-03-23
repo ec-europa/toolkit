@@ -205,6 +205,8 @@ project.theme.default = ec_resp
 project.type = subsite
 project.url.base = http://web:8080
 project.url.production = https://ec.europa.eu/${project.id}
+project.vendor = ec-europa
+project.source = reference
 
 # Development modules.
 # --------------------
@@ -240,6 +242,7 @@ docker.project.id = environment
 
 # Database download settings.
 # ---------------------------
+db.dl.type = default
 db.dl.filename =
 db.dl.filename.hash = latest.sh1
 db.dl.dir = fpfis/files-for/automate_dumps
@@ -247,6 +250,7 @@ db.dl.host = webgate.ec.europa.eu
 db.dl.url = ${db.dl.host}/${db.dl.dir}/${project.id}/
 db.dl.username =
 db.dl.password =
+db.dl.nextcloud.host = files.fpfis.tech.ec.europa.eu
 
 # Database connection settings.
 # -----------------------------
@@ -456,5 +460,3 @@ db.host = mysql
 solr.host = solr
 behat.base_url = http://web:8080
 behat.wd_host.url = http://selenium:4444/wd/hub
-
-

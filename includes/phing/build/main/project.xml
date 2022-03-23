@@ -454,6 +454,42 @@
     </target>
 
     <target name="project-database-file-item" hidden="true" description="Check if database file is available and download it.">
+        <!-- If no user and password are provided, depending
+        on the type check if the env vars are available. -->
+        <if>
+            <equals arg1="${db.dl.type}" arg2="nextcloud" />
+            <then>
+                <if>
+                    <and>
+                        <equals arg1="${db.dl.username}" arg2="" />
+                        <equals arg1="${db.dl.password}" arg2="" />
+                        <isset property="env.NEXTCLOUD_USER" />
+                        <isset property="env.NEXTCLOUD_PASS" />
+                    </and>
+                    <then>
+                        <echo msg="Updating credentials from env vars NEXTCLOUD_USER and NEXTCLOUD_PASS" />
+                        <property name="db.dl.username" value="${env.NEXTCLOUD_USER}" override="true" />
+                        <property name="db.dl.password" value="${env.NEXTCLOUD_PASS}" override="true" />
+                    </then>
+                </if>
+                <property name="db.dl.url" value="${db.dl.nextcloud.host}/remote.php/dav/files/${db.dl.username}/forDevelopment/${project.vendor}/${project.id}-${project.source}/mysql" override="true" />
+            </then>
+            <elseif>
+                <and>
+                    <equals arg1="${db.dl.username}" arg2="" />
+                    <equals arg1="${db.dl.password}" arg2="" />
+                    <isset property="env.ASDA_USER" />
+                    <isset property="env.ASDA_PASSWORD" />
+                </and>
+                <then>
+                    <echo msg="Updating credentials from env vars ASDA_USER and ASDA_PASSWORD" />
+                    <property name="db.dl.username" value="${env.ASDA_USER}" override="true" />
+                    <property name="db.dl.password" value="${env.ASDA_PASSWORD}" override="true" />
+                </then>
+            </elseif>
+        </if>
+
+        <echo msg="Using type '${db.dl.type}' with user '${db.dl.username}' and url '${db.dl.url}'." />
 
         <!-- First download the hash file regardless of wether we have a filename or not. -->
         <echo msg="Download the production database hash ${db.dl.filename.hash}." />
@@ -463,7 +499,7 @@
             <property name="package-download-location" value="https://${db.dl.username}:${db.dl.password}@${db.dl.url}" />
         </phingcall>
 
-        <!--> If we don't have a filename to download we grab the first filename from the hash file. -->
+        <!-- If we don't have a filename to download we grab the first filename from the hash file. -->
         <if>
             <isfalse value="${db.dl.filename}" />
             <then>
