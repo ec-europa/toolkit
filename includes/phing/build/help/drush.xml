@@ -563,7 +563,7 @@
         </drush>
     </target>
 
-    <target name="check-modules-download-attribute" description="Checks for incorrect usage of download attributes..">
+    <target name="check-modules-download-attribute" description="Checks for incorrect usage of download attributes.">
         <echo message="Checking ${resources.dir.site.make}." />
         <drush command="toolkit-check-modules-download-attribute" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${resources.dir.site.make}</param>
