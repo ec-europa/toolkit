@@ -215,6 +215,25 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $config = $this->getConfig();
         $phpcs_bin = $this->getBin('phpcs');
         $config_file = $config->get('toolkit.test.phpcs.config');
+
+        $this->checkPhpCsRequirements();
+
+        $options = '';
+        if (!empty($config->get('toolkit.test.phpcs.ignore_annotations'))) {
+            $options .= ' --ignore-annotations';
+        }
+        $this->taskExec("$phpcs_bin --standard=$config_file$options")->run();
+    }
+
+    /**
+     * Make sure that the config file exists and configuration is correct.
+     *
+     * @return \Robo\ResultData|void
+     *   No return if all is ok, return 1 if fails.
+     */
+    private function checkPhpCsRequirements()
+    {
+        $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
         if (!file_exists($config_file)) {
             $this->say('Calling toolkit:setup-phpcs.');
             $this->toolkitSetupPhpcs();
@@ -235,14 +254,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
         if ($diff = array_diff($standards, $rules)) {
             $this->say("The following standards are missing, please add them to the configuration file '$config_file'.\n" . implode("\n", $diff));
-            return new ResultData(1);
+            exit;
         }
-
-        $options = '';
-        if (!empty($config->get('toolkit.test.phpcs.ignore_annotations'))) {
-            $options .= ' --ignore-annotations';
-        }
-        $this->taskExec("$phpcs_bin --standard=$config_file$options")->run();
     }
 
     /**
@@ -441,6 +454,21 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             $tasks[] = $this->taskExec('./vendor/bin/phpcbf -s --standard=' . $standards . ' --extensions=' . $extensions . ' ' . $test_path);
         }
         return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Run PHP code autofixing in standalone mode.
+     *
+     * @command toolkit:run-phpcbf-standalone
+     */
+    public function toolkitPhpcbfStandalone()
+    {
+        $phpcbf_bin = $this->getBin('phpcbf');
+        $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
+        $this->checkPhpCsRequirements();
+        return $this->collectionBuilder()->addTaskList([
+            $this->taskExec("$phpcbf_bin --standard=$config_file"),
+        ]);
     }
 
     /**
