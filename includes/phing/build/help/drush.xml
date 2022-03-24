@@ -555,7 +555,7 @@
     </target>
 
     <target name="check-modules-authorized-security" description="Checks for non-authorised contributed modules or/and with security updates.">
-        <echo message="Checking non-authorised modules and security updates for ${db.name}." />
+        <echo message="Checking non-authorised modules and security updates for ${project.id}." />
         <drush command="toolkit-check-modules-authorized-security" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${project.id}</param>
             <param>--devel=${resources.dir.devel.make}</param>
@@ -563,7 +563,7 @@
         </drush>
     </target>
 
-    <target name="check-modules-download-attribute" description="Checks for incorrect usage of download attributes..">
+    <target name="check-modules-download-attribute" description="Checks for incorrect usage of download attributes.">
         <echo message="Checking ${resources.dir.site.make}." />
         <drush command="toolkit-check-modules-download-attribute" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${resources.dir.site.make}</param>
@@ -572,7 +572,7 @@
     </target>
 
     <target name="check-modules-minimum-version" description="Checks for contributed modules using a lower version then the recommended one.">
-        <echo message="Checking contributed modules updates for ${db.name}." />
+        <echo message="Checking contributed modules updates for ${project.id}." />
         <drush command="toolkit-check-modules-minimum-version" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>${project.id}</param>
             <param>--blocker=${drush.minimum-version.blocker}</param>
@@ -580,7 +580,7 @@
     </target>
 
     <target name="check-modules-restricted" description="Checks for modules overridden not allowed to.">
-        <echo message="Checking modules that can't be overridden for ${db.name}." />
+        <echo message="Checking modules that can't be overridden for ${project.id}." />
         <drush command="toolkit-check-modules-restricted" root="${build.platform.dir}" alias="@${drush.alias.default}" bin="${toolkit.dir.bin.drush}" verbose="${drush.verbose}" color="${drush.color}">
             <param>--blocker=${drush.restricted.blocker}</param>
         </drush>

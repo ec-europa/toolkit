@@ -8,18 +8,20 @@ workspace:
 
 matrix:
   include:
-    - PHP_VERSION: 7.3
-      PHING_OPTS: -logger phing.listener.AnsiColorLogger
-      BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard'
+    #- PHP_VERSION: 7.3
+    #  PHING_OPTS: -logger phing.listener.AnsiColorLogger
+    #  BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard'
     - PHP_VERSION: 7.4
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
       BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard'
-    - PHP_VERSION: 7.3
-      PHING_OPTS: -logger phing.listener.AnsiColorLogger
-      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.85'
+      ASDA_PROJECT_ID: comm-cwt2019
+    #- PHP_VERSION: 7.3
+    #  PHING_OPTS: -logger phing.listener.AnsiColorLogger
+    #  BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.85'
     - PHP_VERSION: 7.4
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
       BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.85'
+      ASDA_PROJECT_ID: comm-cwt2019
 
 # ==============================================================================
 # Main services
@@ -70,13 +72,34 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
+  asda-nextcloud:
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    secrets: [ github_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass ]
+    group: asda-nextcloud
+    commands:
+      - ./toolkit/phing cache-clear-global
+      - ./toolkit/phing project-database-download -Dproject.id=${ASDA_PROJECT_ID} -Ddb.dl.type=nextcloud ${PHING_OPTS}
+      - ./toolkit/phing project-asda-date -Dproject.id=${ASDA_PROJECT_ID} ${PHING_OPTS}
+    volumes:
+      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
+
+  asda-default:
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+    secrets: [ github_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass ]
+    group: asda-default
+    commands:
+      - ./toolkit/phing cache-clear-global
+      - ./toolkit/phing project-database-download -Dproject.id=${ASDA_PROJECT_ID} ${PHING_OPTS}
+      - ./toolkit/phing project-asda-date -Dproject.id=${ASDA_PROJECT_ID} ${PHING_OPTS}
+    volumes:
+      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
+
   install-clean:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: install-clean
     secrets: [ github_api_token ]
     commands:
       - composer self-update --1
-      - ./toolkit/phing build-platform build-subsite-dev ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing install-clean ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
@@ -88,7 +111,6 @@ pipeline:
     secrets: [ github_api_token ]
     commands:
       - composer self-update --1
-      - ./toolkit/phing build-platform build-subsite-dev ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql.gz' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
