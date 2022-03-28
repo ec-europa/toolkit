@@ -655,7 +655,6 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                     '_links' => ['type' => [
                         'href' => $url . '/rest/type/node/blackfire',
                     ]],
-                    'status' => [['value' => 0]],
                     'type' => [['target_id' => 'blackfire']],
                     'title' => [['value' => "Profiling: $project_id"]],
                     'body' => [['value' => $raw]],
