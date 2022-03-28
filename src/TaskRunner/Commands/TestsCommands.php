@@ -577,7 +577,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $config = $this->taskExec('cat /etc/blackfire/agent | grep server-id=')
             ->silent(true)->run()->getMessage();
         if ($config === 'server-id=') {
-            $problems[] = 'The Blackfire agent is not proplerly configured, skipping.';
+            $this->taskExec('blackfire agent:config')->run();
+            $this->taskExec('service blackfire-agent restart')->run();
         }
 
         if (!empty($problems)) {
