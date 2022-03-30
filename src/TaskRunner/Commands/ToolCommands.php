@@ -574,7 +574,7 @@ class ToolCommands extends AbstractCommands
      *   Data to send.
      *
      * @return string
-     *   True if data was sent properly, false otherwise.
+     *   Empty if could not create session, http code if ok.
      *
      * @throws \Exception
      */
@@ -598,7 +598,7 @@ class ToolCommands extends AbstractCommands
         curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        return $code;
+        return (string) $code;
     }
 
     /**
@@ -922,7 +922,7 @@ class ToolCommands extends AbstractCommands
         if (empty($options['endpoint'])) {
             $options['endpoint'] = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
         }
-        $php_check = $toolkit_check = $drupal_check = $endpoint_check = $asda_check = 'FAIL';
+        $php_check = $toolkit_check = $drupal_check = $endpoint_check = $nextcloud_check = $asda_check = 'FAIL';
         $php_version = $toolkit_version = $drupal_version = '';
 
         $result = self::getQaEndpointContent($options['endpoint'], getenv('QA_API_BASIC_AUTH'));
@@ -1007,6 +1007,15 @@ class ToolCommands extends AbstractCommands
             $asda_check .= empty(getenv('ASDA_PASSWORD')) ? ' ASDA_PASSWORD' : '';
             $asda_check .= ')';
         }
+        // Handle NEXTCLOUD.
+        if (!empty(getenv('NEXTCLOUD_USER')) && !empty(getenv('NEXTCLOUD_PASS'))) {
+            $nextcloud_check = 'OK';
+        } else {
+            $nextcloud_check .= ' (Missing environment variable(s):';
+            $nextcloud_check .= empty(getenv('NEXTCLOUD_USER')) ? ' NEXTCLOUD_USER' : '';
+            $nextcloud_check .= empty(getenv('NEXTCLOUD_PASS')) ? ' NEXTCLOUD_PASS' : '';
+            $nextcloud_check .= ')';
+        }
 
         $this->writeln(sprintf(
             "Required checks:
@@ -1020,7 +1029,8 @@ Optional checks:
 Checking QA Endpoint access: %s
 Checking github.com oauth access: %s
 Checking git.fpfis.eu oauth access: %s
-Checking ASDA configuration: %s",
+Checking ASDA configuration: %s
+Checking NEXTCLOUD configuration: %s",
             $php_check,
             $php_version,
             $toolkit_check,
@@ -1030,7 +1040,8 @@ Checking ASDA configuration: %s",
             $endpoint_check,
             $github_check,
             $gitlab_check,
-            $asda_check
+            $asda_check,
+            $nextcloud_check
         ));
 
         if ($php_check !== 'OK' || $toolkit_check !== 'OK' || $drupal_check !== 'OK') {
