@@ -574,7 +574,7 @@ class ToolCommands extends AbstractCommands
      *   Data to send.
      *
      * @return string
-     *   True if data was sent properly, false otherwise.
+     *   Empty if could not create session, http code if ok.
      *
      * @throws \Exception
      */
@@ -598,7 +598,7 @@ class ToolCommands extends AbstractCommands
         curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        return $code;
+        return (string) $code;
     }
 
     /**
