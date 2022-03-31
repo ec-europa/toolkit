@@ -222,7 +222,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         if (!empty($config->get('toolkit.test.phpcs.ignore_annotations'))) {
             $options .= ' --ignore-annotations';
         }
-        $this->taskExec("$phpcs_bin --standard=$config_file$options")->run();
+        return $this->taskExec("$phpcs_bin --standard=$config_file$options")
+            ->run();
     }
 
     /**
