@@ -494,6 +494,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $pattern = $this->getConfig()->get('toolkit.lint.yaml.pattern');
         $includes = $this->getConfig()->get('toolkit.lint.yaml.include');
         $excludes = $this->getConfig()->get('toolkit.lint.yaml.exclude');
+        $tasks = [];
 
         $this->say('Pattern: ' . implode(', ', $pattern));
         $this->say('Include: ' . implode(', ', $includes));
@@ -527,15 +528,21 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             array_keys(iterator_to_array($finder)),
             array_keys(iterator_to_array($root_finder))
         );
+
+        $filesArray = array_chunk($files, 600);
+
         $this->say('Found ' . count($files) . ' files to lint.');
         if (!empty($files)) {
-            // Prepare arguments.
-            $arg = implode(' ', $files);
-            $task = $this->taskExec("./vendor/bin/yaml-lint -q $arg")
-                ->printMetadata(false);
+            foreach ($filesArray as $files) {
+                $this->say('Processing ' . count($files) . '...');
+                // Prepare arguments.
+                $arg = implode(' ', $files);
+                $tasks[] = $this->taskExec("./vendor/bin/yaml-lint -q $arg")
+                    ->printMetadata(false);
+            }
         }
 
-        return $this->collectionBuilder()->addTaskList([$task]);
+        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
