@@ -3,6 +3,7 @@
 # https://github.com/ec-europa/ne-pipelines/blob/master/drone/toolkit.yml
 # ------------------------------------------------------------------------------
 
+db.name = drupal
 db.user = drone
 db.password = password
 db.host = mysql
