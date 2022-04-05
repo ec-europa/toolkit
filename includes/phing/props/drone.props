@@ -3,6 +3,8 @@
 # https://github.com/ec-europa/ne-pipelines/blob/master/drone/toolkit.yml
 # ------------------------------------------------------------------------------
 
+db.user = drone
+db.password = password
 db.host = mysql
 solr.host = solr
 behat.wd_host.url = http://selenium:4444/wd/hub

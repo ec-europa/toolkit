@@ -8,19 +8,13 @@ workspace:
 
 matrix:
   include:
-    #- PHP_VERSION: 7.3
-    #  PHING_OPTS: -logger phing.listener.AnsiColorLogger
-    #  BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard'
     - PHP_VERSION: 7.4
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
-      BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard'
+      BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard' -D'db.name'='toolkit'
       ASDA_PROJECT_ID: comm-cwt2019
-    #- PHP_VERSION: 7.3
-    #  PHING_OPTS: -logger phing.listener.AnsiColorLogger
-    #  BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.85'
     - PHP_VERSION: 7.4
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
-      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.85'
+      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.85' -D'db.name'='toolkit'
       ASDA_PROJECT_ID: comm-cwt2019
 
 # ==============================================================================
@@ -43,7 +37,10 @@ services:
     detach: true
     command: --innodb-log-file_size=2G --max-allowed-packet=1G --innodb-buffer-pool-size=512M --wait-timeout=31536000
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_USER=drone
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=toolkit
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
   solr:
     image: registry.fpfis.eu/fpfis/solr:5
     detach: true
