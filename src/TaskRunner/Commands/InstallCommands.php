@@ -48,7 +48,6 @@ class InstallCommands extends AbstractCommands
         $runner_bin = $this->getBin('run');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec($runner_bin . ' toolkit:build-dev')
             ->exec($runner_bin . ' drupal:site-install' . $params);
 
         // Build and return task collection.
