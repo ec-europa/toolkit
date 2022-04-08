@@ -15,6 +15,7 @@ command:
     build-assets:
       options:
         default-theme: ${drupal.site.default_theme}
+        custom-code-folder: ${toolkit.build.custom-code-folder}
         build-npm-packages: ${toolkit.build.npm.packages}
         build-npm-mode: ${toolkit.build.npm.mode}
         validate: ${toolkit.scss.validate}

@@ -47,9 +47,12 @@ docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
 
 ### Define 'custom-code-folder'
 
-If for some reason your project is running custom code in other folder then 'lib', it's possible to make it configurable with the following parameter:
+If for some reason your project is running custom code in other folder then 'lib', it's possible to make it configurable with the following:
 ```
-docker-compose vendor/bin/run toolkit:build-assets --custom-code-folder='your_custom_folder'
+toolkit:
+  build:
+    custom-code-folder: 'your_folder'
+
 ```
 
 ### Build theme assets
