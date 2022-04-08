@@ -38,11 +38,18 @@ After this task is complete the generated folder '{your-theme}/assets' will look
 ```
 Note: The folder name 'assets' is the default value provided. It can be override on the 'gulpfile.js'.
 
-### Get 'default_theme'
+### Get 'default-theme'
 
 If no config files are present in the project, the default theme can be specified in a parameter the parameter in the task call:
 ```
 docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
+```
+
+### Define 'custom-code-folder'
+
+If for some reason your project is running custom code in other folder then 'lib', it's possible to make it configurable with the following porameter:
+```
+docker-compose vendor/bin/run toolkit:build-assets --custom-code-folder='your_custom_folder'
 ```
 
 ### Build theme assets
