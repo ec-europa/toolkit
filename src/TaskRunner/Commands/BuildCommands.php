@@ -341,8 +341,7 @@ class BuildCommands extends AbstractCommands
         // Define custom code folder. Defaults to 'lib'.
         if (empty($options['custom-code-folder'])) {
             $customCodeFolder = 'lib';
-        }
-        else {
+        } else {
             $customCodeFolder = $options['custom-code-folder'];
         }
 
