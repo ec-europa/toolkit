@@ -321,6 +321,7 @@ class BuildCommands extends AbstractCommands
         'build-npm-mode' => InputOption::VALUE_OPTIONAL,
         'validate' => InputOption::VALUE_OPTIONAL,
         'theme-task-runner' => InputOption::VALUE_OPTIONAL,
+        'custom-code-folder' => InputOption::VALUE_OPTIONAL,
     ])
     {
         if (!empty($options['default-theme'])) {
@@ -337,10 +338,18 @@ class BuildCommands extends AbstractCommands
             return 0;
         }
 
+        // Define custom code folder. Defaults to 'lib'.
+        if (empty($options['custom-code-folder'])) {
+            $customCodeFolder = 'lib';
+        }
+        else {
+            $customCodeFolder = $options['custom-code-folder'];
+        }
+
         // Search Theme.
         $finder = new Finder();
         $finder->directories()
-            ->in('lib')
+            ->in($customCodeFolder)
             ->name($options['default-theme']);
 
         if ($finder->hasResults()) {
