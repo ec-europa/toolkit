@@ -323,7 +323,7 @@ class ToolCommands extends AbstractCommands
         // Get enabled packages.
         $result = $this->taskExec('drush pm-list --fields=status --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->storeState('insecure')->run()->getMessage();
+            ->run()->getMessage();
         $projPackages = json_decode($result, true);
         $enabledPackages = array_keys(array_filter($projPackages, function($item) {
             return $item['status'] === 'Enabled';
