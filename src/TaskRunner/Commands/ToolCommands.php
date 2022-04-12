@@ -6,6 +6,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
 use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
+use Robo\Contract\VerbosityThresholdInterface;
 use Symfony\Component\Console\Input\InputOption;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use Symfony\Component\Yaml\Yaml;
@@ -399,15 +400,9 @@ class ToolCommands extends AbstractCommands
      */
     protected function componentInsecure()
     {
-        // Build task collection.
-        $collection = $this->collectionBuilder();
-        $result = $collection->taskExecStack()
-            ->exec('drush pm:security --format=json')
-            ->silent(true)
-            ->printOutput(false)
-            ->storeState('insecure')
-            ->run()
-            ->getMessage();
+        $result = $this->taskExec('drush pm:security --format=json')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
 
         if (strpos(trim((string) $result), 'There are no outstanding security') !== false) {
             $this->say("There are no outstanding security updates.");
@@ -449,14 +444,9 @@ class ToolCommands extends AbstractCommands
      */
     protected function componentOutdated()
     {
-        $collection = $this->collectionBuilder();
-        $result = $collection->taskExecStack()
-            ->exec('composer outdated --direct --minor-only --format=json')
-            ->printOutput(false)
-            ->storeState('outdated')
-            ->silent(true)
-            ->run()
-            ->getMessage();
+        $result = $this->taskExec('composer outdated --direct --minor-only --format=json')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
 
         $outdatedPackages = json_decode($result, true);
 
