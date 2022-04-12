@@ -325,12 +325,12 @@ class ToolCommands extends AbstractCommands
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
         $projPackages = json_decode($result, true);
-        $enabledPackages = array_keys(array_filter($projPackages, function($item) {
+        $enabledPackages = array_keys(array_filter($projPackages, function ($item) {
             return $item['status'] === 'Enabled';
         }));
 
         // Get mandatory packages.
-        $mandatoryPackages = array_column(array_filter($modules, function($item) {
+        $mandatoryPackages = array_column(array_filter($modules, function ($item) {
             return $item['mandatory'] === '1';
         }), 'machine_name');
 
