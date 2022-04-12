@@ -340,7 +340,7 @@ class BuildCommands extends AbstractCommands
         // Search Theme.
         $finder = new Finder();
         $finder->directories()
-            ->in('lib')
+            ->in($this->getConfig()->get('toolkit.build.custom-code-folder'))
             ->name($options['default-theme']);
 
         if ($finder->hasResults()) {
