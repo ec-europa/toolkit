@@ -324,4 +324,12 @@
         <toolkit-notifications endpointUrl="https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications" />
     </target>
 
+    <target name="toolkit-requirements" description="Check toolkit requirements">
+        <toolkit-requirements
+                endpoint="https://webgate.ec.europa.eu/fpfis/qa"
+                composer="${project.basedir}/composer.lock"
+                bootstrap="${build.platform.dir}/includes/bootstrap.inc"
+        />
+    </target>
+
 </project>

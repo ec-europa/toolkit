@@ -22,5 +22,6 @@
     <taskdef name="symlink-property-contents" classname="Phing\Toolkit\Tasks\SymlinkPropertyContentTask" />
     <taskdef name="toolkit-notifications" classname="Phing\Toolkit\Tasks\ToolkitNotificationsTask" />
     <taskdef name="asda-date" classname="Phing\Toolkit\Tasks\AsdaDateTask" />
+    <taskdef name="toolkit-requirements" classname="Phing\Toolkit\Tasks\ToolkitRequirementsTask" />
 
 </project>
