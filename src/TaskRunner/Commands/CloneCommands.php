@@ -176,13 +176,18 @@ class CloneCommands extends AbstractCommands
      * @return \Robo\Collection\CollectionBuilder|void
      *   Collection builder.
      */
-    public function downloadDump()
+    public function downloadDump(array $options = [
+        'is-admin' => InputOption::VALUE_NONE,
+    ])
     {
         $tasks = [];
         $config = $this->getConfig();
         $project_id = $config->get('toolkit.project_id');
         $asda_type = $config->get('toolkit.clone.asda_type', 'default');
         $asda_services = (array) $config->get('toolkit.clone.asda_services', 'mysql');
+        $vendor = $config->get('toolkit.clone.asda_vendor');
+        $source = $config->get('toolkit.clone.asda_source');
+        $is_admin = !($options['is-admin'] === 1) || $config->get('toolkit.clone.nextcloud_admin');
 
         $this->say("ASDA type is: $asda_type");
         $this->say('ASDA services: ' . implode(', ', $asda_services));
@@ -217,7 +222,11 @@ class CloneCommands extends AbstractCommands
         $download_link = "https://$user:$password@$url";
 
         if ($asda_type === 'nextcloud') {
-            $download_link .= "/$user/forDevelopment/ec-europa/$project_id-reference/";
+            if ($is_admin) {
+                $download_link .= "/$user/forDevelopment/$vendor/$project_id-$source/";
+            } else {
+                $download_link .= "/$user/$project_id-$source/";
+            }
             foreach ($asda_services as $service) {
                 $tasks = array_merge($tasks, $this->asdaProcessFile($download_link . $service, $service));
             }
