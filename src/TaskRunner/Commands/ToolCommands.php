@@ -320,31 +320,21 @@ class ToolCommands extends AbstractCommands
      */
     protected function componentMandatory($modules, $packages)
     {
-        foreach ($packages as $package) {
-            $projectPackages[] = $package['name'];
-        }
-        // Option 'mandatory'.
+        // Get enabled packages.
+        $result = $this->taskExec('drush pm-list --fields=status --format=json')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        $projPackages = json_decode($result, true);
+        $enabledPackages = array_keys(array_filter($projPackages, function ($item) {
+            return $item['status'] === 'Enabled';
+        }));
 
-        // Build task collection.
-        // $collection = $this->collectionBuilder();
-        // $collection->taskExecStack()
-        //     ->exec('vendor/bin/drush pm-list --fields=status --format=json')
-        //     ->printOutput(false)
-        //     ->silent(true)
-        //     ->storeState('insecure');
-        // $result = $collection->run();
-        // $projPackages = (json_decode($result['insecure'], true));
-        // foreach ($projPackages as $projPackage => $status) {
-        //     if ($status['status'] == 'enabled') {
-        //         $projectPackages[] = $projPackage;
-        //     }
-        // }
-        foreach ($modules as $module) {
-            if ($module['mandatory'] === '1') {
-                $mandatoryPackages[] = $module['name'];
-            }
-        }
-        $diffMandatory = array_diff($mandatoryPackages, $projectPackages);
+        // Get mandatory packages.
+        $mandatoryPackages = array_column(array_filter($modules, function ($item) {
+            return $item['mandatory'] === '1';
+        }), 'machine_name');
+
+        $diffMandatory = array_diff($mandatoryPackages, $enabledPackages);
         if (!empty($diffMandatory)) {
             foreach ($diffMandatory as $notPresent) {
                 $this->say("Package $notPresent is mandatory and is not present on the project.");
