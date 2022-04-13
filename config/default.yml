@@ -7,6 +7,9 @@ toolkit:
     asda_type: 'default'
     asda_url: 'webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project_id}'
     nextcloud_url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'
+    nextcloud_admin: false
+    asda_vendor: 'ec-europa'
+    asda_source: 'reference'
   deploy:
     config_file: 'config/sync/core.extension.yml'
     sequence_file: '.opts.yml'
