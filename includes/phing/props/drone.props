@@ -12,3 +12,4 @@ behat.wd_host.url = http://selenium:4444/wd/hub
 share.path = /cache
 project.db.file = ./dump.sql
 project.url.base = http://web:8080
+db.dl.nextcloud.admin = true
