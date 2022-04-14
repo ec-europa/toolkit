@@ -299,7 +299,7 @@ class ToolCommands extends AbstractCommands
                     $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
 
                     if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
-                        $this->say("Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.");
+                        echo "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue." . PHP_EOL;
                         $this->componentCheckFailed = true;
                     }
                 }
@@ -320,24 +320,29 @@ class ToolCommands extends AbstractCommands
      */
     protected function componentMandatory($modules, $packages)
     {
+        $enabledPackages = $mandatoryPackages = [];
         // Get enabled packages.
         $result = $this->taskExec('drush pm-list --fields=status --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
         $projPackages = json_decode($result, true);
-        $enabledPackages = array_keys(array_filter($projPackages, function ($item) {
-            return $item['status'] === 'Enabled';
-        }));
+        if (!empty($projPackages)) {
+            $enabledPackages = array_keys(array_filter($projPackages, function ($item) {
+                return $item['status'] === 'Enabled';
+            }));
+        }
 
         // Get mandatory packages.
-        $mandatoryPackages = array_column(array_filter($modules, function ($item) {
-            return $item['mandatory'] === '1';
-        }), 'machine_name');
+        if (!empty($modules)) {
+            $mandatoryPackages = array_column(array_filter($modules, function ($item) {
+                return $item['mandatory'] === '1';
+            }), 'machine_name');
+        }
 
         $diffMandatory = array_diff($mandatoryPackages, $enabledPackages);
         if (!empty($diffMandatory)) {
             foreach ($diffMandatory as $notPresent) {
-                $this->say("Package $notPresent is mandatory and is not present on the project.");
+                echo "Package $notPresent is mandatory and is not present on the project." . PHP_EOL;
                 $this->componentCheckMandatoryFailed = true;
             }
         }
@@ -371,7 +376,7 @@ class ToolCommands extends AbstractCommands
         $diffRecommended = array_diff($recommendedPackages, $projectPackages);
         if (!empty($diffRecommended)) {
             foreach ($diffRecommended as $notPresent) {
-                $this->say("Package $notPresent is recommended but is not present on the project.");
+                echo "Package $notPresent is recommended but is not present on the project." . PHP_EOL;
                 $this->componentCheckRecommendedFailed = false;
             }
         }
@@ -408,7 +413,7 @@ class ToolCommands extends AbstractCommands
                         $packageInsecureConfirmation = false;
                         $msg = $msg . " (Confirmation failed, ignored)";
                     }
-                    $this->say($msg);
+                    echo $msg . PHP_EOL;
                     $this->componentCheckInsecureFailed = $packageInsecureConfirmation;
                 }
             }
@@ -444,9 +449,9 @@ class ToolCommands extends AbstractCommands
             if (is_array($outdatedPackages)) {
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
                     if (!array_key_exists('latest', $outdatedPackage)) {
-                        $this->say("Package " . $outdatedPackage['name'] . " does not provide information about last version.");
+                        echo "Package " . $outdatedPackage['name'] . " does not provide information about last version." . PHP_EOL;
                     } else {
-                        $this->say("Package " . $outdatedPackage['name'] . " with version installed " . $outdatedPackage["version"] . " is outdated, please update to last version - " . $outdatedPackage["latest"]);
+                        echo "Package " . $outdatedPackage['name'] . " with version installed " . $outdatedPackage["version"] . " is outdated, please update to last version - " . $outdatedPackage["latest"] . PHP_EOL;
                         $this->componentCheckOutdatedFailed = true;
                     }
                 }
