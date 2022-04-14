@@ -589,6 +589,8 @@
             project-database-download">
         <echo msg="Import production database." />
 
+        <phingcall target="project-asda-date" />
+
         <if>
             <not>
                 <available file="${db-dl-file}" type="file" />
