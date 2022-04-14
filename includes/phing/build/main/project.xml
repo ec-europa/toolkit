@@ -355,7 +355,6 @@
             drush-aliases-generate,
             drush-settings-generate,
             project-database-import,
-            project-asda-date,
             project-modules-devel-en,
             reset-filesystem-permissions,
             drush-cache-reset,

@@ -427,6 +427,8 @@
             </else>
         </if>
 
+        <phingcall target="project-asda-date"/>
+
         <if>
             <not>
                 <equals arg1="${build.site}" arg2="${project.id}" />
