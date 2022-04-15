@@ -101,10 +101,13 @@ class ToolCommands extends AbstractCommands
         $this->componentCheckInsecureFailed = false;
         $this->componentCheckOutdatedFailed = false;
         $this->componentCheckDevVersionFailed = false;
+        $this->componentCheckToolkitRequireDev = false;
+        $this->componentCheckDrushRequire = false;
 
         $this->checkCommitMessage();
 
         $endpointUrl = "https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x";
+        $composerJson = file_exists('composer.json') ? json_decode(file_get_contents('composer.json'), true) : false;
         $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
 
         if (!isset($composerLock['packages'])) {
@@ -190,6 +193,32 @@ class ToolCommands extends AbstractCommands
         }
         echo PHP_EOL;
 
+        $this->io()->title('Checking require-dev section for Toolkit.');
+        foreach ($composerJson['require'] as $name => $package) {
+            if ($name == 'ec-europa/toolkit') {
+                $this->componentCheckToolkitRequireDev = true;
+                $this->say("Package $name cannot be used in require section. Move it to require-dev.");
+            }
+        }
+        if (!$this->componentCheckToolkitRequireDev) {
+            $this->say('Toolkit require-dev section check passed.');
+        }
+
+        echo PHP_EOL;
+
+        $this->io()->title('Checking require section for Drush.');
+        foreach ($composerJson['require-dev'] as $name => $package) {
+            if ($name == 'drush/drush') {
+                $this->componentCheckDrushRequire = true;
+                $this->say("Package $name cannot be used in require-dev. Move it to require section.");
+            }
+        }
+        if (!$this->componentCheckDrushRequire) {
+            $this->say('Drush require section check passed.');
+        }
+
+        echo PHP_EOL;
+
         $this->printComponentResults();
 
         // If the validation fail, return according to the blocker.
@@ -198,6 +227,8 @@ class ToolCommands extends AbstractCommands
             $this->componentCheckMandatoryFailed ||
             $this->componentCheckRecommendedFailed ||
             $this->componentCheckDevVersionFailed ||
+            $this->componentCheckToolkitRequireDev ||
+            $this->componentCheckDrushRequire ||
             (!$this->skipInsecure && $this->componentCheckInsecureFailed)
         ) {
             $msg = 'Failed the components check, please verify the report and update the project.';
@@ -242,6 +273,8 @@ class ToolCommands extends AbstractCommands
         $msgs[] = 'Outdated module check ' . ($this->componentCheckOutdatedFailed ? 'failed.' : 'passed.') . $skipOutdated;
         $msgs[] = 'Dev module check ' . ($this->componentCheckDevVersionFailed ? 'failed.' : 'passed.');
         $msgs[] = 'Evaluation module check ' . ($this->componentCheckFailed ? 'failed.' : 'passed.');
+        $msgs[] = 'Toolkit require-dev section check ' . ($this->componentCheckToolkitRequireDev ? 'failed.' : 'passed.');
+        $msgs[] = 'Drush require section check ' . ($this->componentCheckDrushRequire ? 'failed.' : 'passed.');
 
         foreach ($msgs as $msg) {
             $this->say($msg);
