@@ -234,11 +234,11 @@ class CloneCommands extends AbstractCommands
             }
         } else {
             // Check if the dump is already downloaded.
-            if (file_exists("$service.gz")) {
-                echo "File found for service $service." . PHP_EOL;
-                if ((time() - filemtime("$service.gz")) > 24 * 3600) {
+            if (file_exists('mysql.gz')) {
+                echo "File found for service mysql." . PHP_EOL;
+                if ((time() - filemtime('mysql.gz')) > 24 * 3600) {
                     echo 'File is older than 1 day, force download.';
-                    $tasks = $this->asdaProcessFile($download_link, $service);
+                    $tasks = $this->asdaProcessFile($download_link, 'mysql');
                 } else {
                     echo "Skipping download." . PHP_EOL;
                 }
