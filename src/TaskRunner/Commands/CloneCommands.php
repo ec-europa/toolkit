@@ -219,10 +219,20 @@ class CloneCommands extends AbstractCommands
         if ($asda_type === 'nextcloud') {
             $download_link .= "/$user/forDevelopment/ec-europa/$project_id-reference/";
             foreach ($asda_services as $service) {
-                $tasks = array_merge($tasks, $this->asdaProcessFile($download_link . $service, $service));
+                // Check if the dump is already downloaded.
+                if (file_exists("$service.gz")) {
+                    echo "File found for service $service, skipping download." . PHP_EOL;
+                } else {
+                    $tasks = array_merge($tasks, $this->asdaProcessFile($download_link . $service, $service));
+                }
             }
         } else {
-            $tasks = $this->asdaProcessFile($download_link, 'mysql');
+            // Check if the dump is already downloaded.
+            if (file_exists("$service.gz")) {
+                echo "File found for service $service, skipping download." . PHP_EOL;
+            } else {
+                $tasks = $this->asdaProcessFile($download_link, 'mysql');
+            }
         }
 
         // Build and return task collection.
