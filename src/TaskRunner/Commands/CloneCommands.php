@@ -221,7 +221,13 @@ class CloneCommands extends AbstractCommands
             foreach ($asda_services as $service) {
                 // Check if the dump is already downloaded.
                 if (file_exists("$service.gz")) {
-                    echo "File found for service $service, skipping download." . PHP_EOL;
+                    echo "File found for service $service." . PHP_EOL;
+                    if ((time() - filemtime("$service.gz")) > 24 * 3600) {
+                        echo 'File is older than 1 day, force download.';
+                        $tasks = array_merge($tasks, $this->asdaProcessFile($download_link . $service, $service));
+                    } else {
+                        echo "Skipping download." . PHP_EOL;
+                    }
                 } else {
                     $tasks = array_merge($tasks, $this->asdaProcessFile($download_link . $service, $service));
                 }
@@ -229,9 +235,15 @@ class CloneCommands extends AbstractCommands
         } else {
             // Check if the dump is already downloaded.
             if (file_exists("$service.gz")) {
-                echo "File found for service $service, skipping download." . PHP_EOL;
+                echo "File found for service $service." . PHP_EOL;
+                if ((time() - filemtime("$service.gz")) > 24 * 3600) {
+                    echo 'File is older than 1 day, force download.';
+                    $tasks = $this->asdaProcessFile($download_link, $service);
+                } else {
+                    echo "Skipping download." . PHP_EOL;
+                }
             } else {
-                $tasks = $this->asdaProcessFile($download_link, 'mysql');
+                $tasks = $this->asdaProcessFile($download_link, $service);
             }
         }
 
