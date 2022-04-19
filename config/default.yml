@@ -3,7 +3,7 @@ drupal:
   base_url: "http://web:8080/web"
   database-host: "mysql"
 toolkit:
-  tmp_folder: '.tmp'
+  tmp_folder: '/cache'
   clean:
     config_file: 'config/sync/core.extension.yml'
   clone:

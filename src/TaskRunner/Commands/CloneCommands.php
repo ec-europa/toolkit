@@ -115,10 +115,10 @@ class CloneCommands extends AbstractCommands
     ])
     {
         $tasks = [];
-
-        if (!file_exists($options['dumpfile'])) {
+        $tmp_folder = $this->getConfig()->get('toolkit.tmp_folder');
+        if (!file_exists("$tmp_folder/{$options['dumpfile']}")) {
             if (!getenv('CI')) {
-                $this->say('"' . $options['dumpfile'] . '" file not found, use the command "toolkit:download-dump".');
+                $this->say("'$tmp_folder/{$options['dumpfile']}' file not found, use the command 'toolkit:download-dump'.");
                 return 1;
             }
         }
@@ -134,7 +134,7 @@ class CloneCommands extends AbstractCommands
             ->silent(true)
             ->exec(sprintf(
                 "gunzip < %s | mysql -u%s%s -h%s %s",
-                $options['dumpfile'],
+                "$tmp_folder/{$options['dumpfile']}",
                 getenv('DRUPAL_DATABASE_USERNAME'),
                 getenv('DRUPAL_DATABASE_PASSWORD') ? ' -p' . getenv('DRUPAL_DATABASE_PASSWORD') : '',
                 getenv('DRUPAL_DATABASE_HOST'),
@@ -183,6 +183,7 @@ class CloneCommands extends AbstractCommands
         $project_id = $config->get('toolkit.project_id');
         $asda_type = $config->get('toolkit.clone.asda_type', 'default');
         $asda_services = (array) $config->get('toolkit.clone.asda_services', 'mysql');
+        $tmp_folder = $config->get('toolkit.tmp_folder');
 
         $this->say("ASDA type is: $asda_type");
         $this->say('ASDA services: ' . implode(', ', $asda_services));
@@ -218,9 +219,9 @@ class CloneCommands extends AbstractCommands
 
         foreach ($asda_services as $service) {
             // Check if the dump is already downloaded.
-            if (file_exists("$service.gz")) {
+            if (file_exists("$tmp_folder/$service.gz")) {
                 echo "File found for service $service." . PHP_EOL;
-                if ((time() - filemtime("$service.gz")) > 24 * 3600) {
+                if ((time() - filemtime("$tmp_folder/$service.gz")) > 24 * 3600) {
                     echo 'File is older than 1 day, force download.';
                     if ($asda_type === 'nextcloud') {
                         $download = "$download_link/$user/forDevelopment/ec-europa/$project_id-reference/$service";
@@ -259,10 +260,12 @@ class CloneCommands extends AbstractCommands
     private function asdaProcessFile($link, $service)
     {
         $tasks = [];
+        $tmp_folder = $this->getConfig()->get('toolkit.tmp_folder');
+
         // Download the .sha file.
-        $this->generateAsdaWgetInputFile("$link/latest.sh1", "$service.txt");
-        $this->wgetDownloadFile("$service.txt", "$service-latest.sh1", '.sh1')->run();
-        $latest = file_get_contents("$service-latest.sh1");
+        $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt");
+        $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1')->run();
+        $latest = file_get_contents("$tmp_folder/$service-latest.sh1");
         if (empty($latest)) {
             $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
             return $tasks;
@@ -290,13 +293,13 @@ class CloneCommands extends AbstractCommands
         $this->writeln("\n<info>$output\n$separator</info>\n");
 
         // Download the file.
-        $this->generateAsdaWgetInputFile("$link/$filename", "$service.txt");
-        $tasks[] = $this->wgetDownloadFile("$service.txt", "$service.gz", '.sql.gz,.tar.gz');
+        $this->generateAsdaWgetInputFile("$link/$filename", "$tmp_folder/$service.txt");
+        $tasks[] = $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service.gz", '.sql.gz,.tar.gz');
 
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
-            ->arg("$service-latest.sh1")
-            ->arg("$service.txt");
+            ->arg("$tmp_folder/$service-latest.sh1")
+            ->arg("$tmp_folder/$service.txt");
 
         return $tasks;
     }
