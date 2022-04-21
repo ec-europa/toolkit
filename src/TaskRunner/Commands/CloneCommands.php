@@ -173,11 +173,15 @@ class CloneCommands extends AbstractCommands
      *
      * @command toolkit:download-dump
      *
+     * @option is-admin  For nextcloud admin user.
+     * @option yes       Skip the question to download newer dump.
+     *
      * @return \Robo\Collection\CollectionBuilder|void
      *   Collection builder.
      */
     public function downloadDump(array $options = [
         'is-admin' => InputOption::VALUE_NONE,
+        'yes' => InputOption::VALUE_NONE,
     ])
     {
         $tasks = [];
@@ -187,11 +191,12 @@ class CloneCommands extends AbstractCommands
         $asda_services = (array) $config->get('toolkit.clone.asda_services', 'mysql');
         $vendor = $config->get('toolkit.clone.asda_vendor');
         $source = $config->get('toolkit.clone.asda_source');
-        $is_admin = !($options['is-admin'] === 1) || $config->get('toolkit.clone.nextcloud_admin');
+        $is_admin = !($options['is-admin'] === InputOption::VALUE_NONE) || $config->get('toolkit.clone.nextcloud_admin');
         $tmp_folder = $config->get('toolkit.tmp_folder');
 
-        $this->say("ASDA type is: $asda_type");
+        $this->say("ASDA type is: $asda_type" . ($asda_type === 'default' ? ' (The legacy ASDA will be dropped on 1 June)' : ''));
         $this->say('ASDA services: ' . implode(', ', $asda_services));
+
         if ($asda_type === 'default') {
             $user = getenv('ASDA_USER') && getenv('ASDA_USER') !== '${env.ASDA_USER}' ? getenv('ASDA_USER') : '';
             $password = getenv('ASDA_PASSWORD') && getenv('ASDA_PASSWORD') !== '${env.ASDA_PASSWORD}' ? getenv('ASDA_PASSWORD') : '';
@@ -221,34 +226,42 @@ class CloneCommands extends AbstractCommands
 
         $url = str_replace(['http://', 'https://'], '', $url);
         $download_link = "https://$user:$password@$url";
+        if ($asda_type === 'nextcloud') {
+            if ($is_admin) {
+                $download_link .= "/$user/forDevelopment/$vendor/$project_id-$source";
+            } else {
+                $download_link .= "/$user/$project_id-$source";
+            }
+        }
 
         foreach ($asda_services as $service) {
             // Check if the dump is already downloaded.
             if (file_exists("$tmp_folder/$service.gz")) {
-                echo "File found for service $service." . PHP_EOL;
-                if ((time() - filemtime("$tmp_folder/$service.gz")) > 24 * 3600) {
-                    echo 'File is older than 1 day, force download.';
-                    if ($asda_type === 'nextcloud') {
-                        if ($is_admin) {
-                            $download = "$download_link/$user/forDevelopment/$vendor/$project_id-$source/$service";
-                        } else {
-                            $download = "$download_link/$user/$project_id-$source/$service";
-                        }
-                        $tasks = array_merge($tasks, $this->asdaProcessFile($download, $service));
+                $this->say("File found for service $service, checking server for newer dump.");
+                if ($this->checkForNewerDump($asda_type, $download_link, $service)) {
+                    $question = "A newer dump was found for '$service', would you like to download?";
+                    if (!getenv('CI') && $options['yes'] === InputOption::VALUE_NONE) {
+                        $answer = $this->confirm($question);
                     } else {
-                        $tasks = $this->asdaProcessFile($download_link, $service);
+                        $this->say($question . ' (y/n) Y');
+                        $answer = true;
                     }
-                } else {
-                    echo 'Skipping download.' . PHP_EOL;
+                    if ($answer) {
+                        if ($asda_type === 'nextcloud') {
+                            $tasks = array_merge($tasks, $this->asdaProcessFile($download_link . '/' . $service, $service));
+                        } else {
+                            $tasks = $this->asdaProcessFile($download_link, $service);
+                        }
+                    } else {
+                        echo 'Skipping download.' . PHP_EOL;
+                    }
+                }
+                else {
+                    echo 'Local dump is up-to-date.' . PHP_EOL;
                 }
             } else {
                 if ($asda_type === 'nextcloud') {
-                    if ($is_admin) {
-                        $download = "$download_link/$user/forDevelopment/$vendor/$project_id-$source/$service";
-                    } else {
-                        $download = "$download_link/$user/$project_id-$source/$service";
-                    }
-                    $tasks = array_merge($tasks, $this->asdaProcessFile($download, $service));
+                    $tasks = array_merge($tasks, $this->asdaProcessFile($download_link . '/' . $service, $service));
                 } else {
                     $tasks = $this->asdaProcessFile($download_link, $service);
                 }
@@ -257,6 +270,44 @@ class CloneCommands extends AbstractCommands
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Check if a newer dump exists on the server.
+     *
+     * @param $asda_type
+     *   The asda type.
+     * @param $link
+     *   The link to the folder.
+     * @param $service
+     *   The service to use.
+     *
+     * @return bool
+     *   Return true if sha1 from local is different from the server,
+     *   False is case of error or no local file exists.
+     */
+    private function checkForNewerDump($asda_type, $link, $service) {
+        $tmp_folder = $this->getConfig()->get('toolkit.tmp_folder');
+        if (!file_exists("$tmp_folder/$service.gz")) {
+            return false;
+        }
+        if ($asda_type === 'nextcloud') {
+            $link .= "/$service";
+        }
+        // Download the .sha file.
+        $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt");
+        $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1')->run();
+        $latest = file_get_contents("$tmp_folder/$service-latest.sh1");
+        if (empty($latest)) {
+            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
+            return false;
+        }
+        $sha1 = trim(explode('  ', $latest)[0]);
+        // Compare with the local dump.
+        if ($sha1 !== sha1_file("$tmp_folder/$service.gz")) {
+            return true;
+        }
+        return false;
     }
 
     /**
