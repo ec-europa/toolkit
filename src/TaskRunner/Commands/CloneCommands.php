@@ -255,8 +255,7 @@ class CloneCommands extends AbstractCommands
                     } else {
                         echo 'Skipping download.' . PHP_EOL;
                     }
-                }
-                else {
+                } else {
                     echo 'Local dump is up-to-date.' . PHP_EOL;
                 }
             } else {
@@ -286,7 +285,8 @@ class CloneCommands extends AbstractCommands
      *   Return true if sha1 from local is different from the server,
      *   False is case of error or no local file exists.
      */
-    private function checkForNewerDump($asda_type, $link, $service) {
+    private function checkForNewerDump($asda_type, $link, $service)
+    {
         $tmp_folder = $this->getConfig()->get('toolkit.tmp_folder');
         if (!file_exists("$tmp_folder/$service.gz")) {
             return false;
