@@ -428,7 +428,6 @@ class ToolCommands extends AbstractCommands
                 }
             }
         }
-        define('QA_SKIP_INSECURE', 1);
 
         $fullSkip = getenv('QA_SKIP_INSECURE') !== false ? getenv('QA_SKIP_INSECURE') : false;
         // Forcing skip due to issues with the security advisor date detection.
