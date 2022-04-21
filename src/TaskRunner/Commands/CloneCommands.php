@@ -176,13 +176,18 @@ class CloneCommands extends AbstractCommands
      * @return \Robo\Collection\CollectionBuilder|void
      *   Collection builder.
      */
-    public function downloadDump()
+    public function downloadDump(array $options = [
+        'is-admin' => InputOption::VALUE_NONE,
+    ])
     {
         $tasks = [];
         $config = $this->getConfig();
         $project_id = $config->get('toolkit.project_id');
         $asda_type = $config->get('toolkit.clone.asda_type', 'default');
         $asda_services = (array) $config->get('toolkit.clone.asda_services', 'mysql');
+        $vendor = $config->get('toolkit.clone.asda_vendor');
+        $source = $config->get('toolkit.clone.asda_source');
+        $is_admin = !($options['is-admin'] === 1) || $config->get('toolkit.clone.nextcloud_admin');
         $tmp_folder = $config->get('toolkit.tmp_folder');
 
         $this->say("ASDA type is: $asda_type");
@@ -224,7 +229,11 @@ class CloneCommands extends AbstractCommands
                 if ((time() - filemtime("$tmp_folder/$service.gz")) > 24 * 3600) {
                     echo 'File is older than 1 day, force download.';
                     if ($asda_type === 'nextcloud') {
-                        $download = "$download_link/$user/forDevelopment/ec-europa/$project_id-reference/$service";
+                        if ($is_admin) {
+                            $download = "$download_link/$user/forDevelopment/$vendor/$project_id-$source/$service";
+                        } else {
+                            $download = "$download_link/$user/$project_id-$source/$service";
+                        }
                         $tasks = array_merge($tasks, $this->asdaProcessFile($download, $service));
                     } else {
                         $tasks = $this->asdaProcessFile($download_link, $service);
@@ -234,7 +243,11 @@ class CloneCommands extends AbstractCommands
                 }
             } else {
                 if ($asda_type === 'nextcloud') {
-                    $download = "$download_link/$user/forDevelopment/ec-europa/$project_id-reference/$service";
+                    if ($is_admin) {
+                        $download = "$download_link/$user/forDevelopment/$vendor/$project_id-$source/$service";
+                    } else {
+                        $download = "$download_link/$user/$project_id-$source/$service";
+                    }
                     $tasks = array_merge($tasks, $this->asdaProcessFile($download, $service));
                 } else {
                     $tasks = $this->asdaProcessFile($download_link, $service);
