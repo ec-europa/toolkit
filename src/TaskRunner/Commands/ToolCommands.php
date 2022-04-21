@@ -115,7 +115,7 @@ class ToolCommands extends AbstractCommands
         $status = 0;
         $result = self::getQaEndpointContent($endpointUrl, $basicAuth);
         $data = json_decode($result, true);
-        $modules = array_filter(array_combine(array_column($data, 'name'), $data));
+        $modules = (array) array_filter(array_combine(array_column($data, 'name'), $data));
 
         // To test this command execute it with the --test-command option:
         // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x"
@@ -313,12 +313,11 @@ class ToolCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      *
-     * @param array $packages The packages to validate.
      * @param array $modules The modules list.
      *
      * @return void
      */
-    protected function componentMandatory($modules, $packages)
+    protected function componentMandatory($modules)
     {
         $enabledPackages = $mandatoryPackages = [];
         // Get enabled packages.
@@ -357,8 +356,8 @@ class ToolCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      *
-     * @param array $packages The packages to validate.
      * @param array $modules The modules list.
+     * @param array $packages The packages to validate.
      *
      * @return void
      */
@@ -391,16 +390,18 @@ class ToolCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      *
+     * @param array $modules The modules list.
+     *
      * @return void
      */
-    protected function componentInsecure()
+    protected function componentInsecure($modules)
     {
         $result = $this->taskExec('drush pm:security --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
 
-        if (strpos(trim((string) $result), 'There are no outstanding security') !== false) {
-            $this->say("There are no outstanding security updates.");
+        if (strpos(trim($result), 'There are no outstanding security') !== false) {
+            $this->say('There are no outstanding security updates.');
         } else {
             $insecurePackages = json_decode($result, true);
             if (is_array($insecurePackages)) {
@@ -411,7 +412,13 @@ class ToolCommands extends AbstractCommands
 
                     if (empty($historyTerms['terms']) || !in_array("insecure", $historyTerms['terms'])) {
                         $packageInsecureConfirmation = false;
-                        $msg = $msg . " (Confirmation failed, ignored)";
+                        $msg .= ' (Confirmation failed, ignored)';
+                    }
+                    if (!empty($modules[$insecurePackage['name']]['secure'])) {
+                        if (Semver::satisfies($insecurePackage['version'], $modules[$insecurePackage['name']]['secure'])) {
+                            $packageInsecureConfirmation = false;
+                            $msg .= ' (Version marked as secure)';
+                        }
                     }
                     echo $msg . PHP_EOL;
                     $this->componentCheckInsecureFailed = $packageInsecureConfirmation;
