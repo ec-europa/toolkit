@@ -405,26 +405,30 @@ class ToolCommands extends AbstractCommands
         } else {
             $insecurePackages = json_decode($result, true);
             if (is_array($insecurePackages)) {
+                $messages = [];
                 foreach ($insecurePackages as $insecurePackage) {
-                    $historyTerms = $this->getPackageDetails($insecurePackage['name'], $insecurePackage['version'], '8.x');
-                    $packageInsecureConfirmation = true;
                     $msg = "Package {$insecurePackage['name']} have a security update, please update to a safe version.";
-
-                    if (empty($historyTerms['terms']) || !in_array("insecure", $historyTerms['terms'])) {
-                        $packageInsecureConfirmation = false;
-                        $msg .= ' (Confirmation failed, ignored)';
-                    }
                     if (!empty($modules[$insecurePackage['name']]['secure'])) {
                         if (Semver::satisfies($insecurePackage['version'], $modules[$insecurePackage['name']]['secure'])) {
-                            $packageInsecureConfirmation = false;
-                            $msg .= ' (Version marked as secure)';
+                            $messages[] = "$msg (Version marked as secure)";
+                            continue;
                         }
                     }
-                    echo $msg . PHP_EOL;
-                    $this->componentCheckInsecureFailed = $packageInsecureConfirmation;
+                    $historyTerms = $this->getPackageDetails($insecurePackage['name'], $insecurePackage['version'], '8.x');
+                    if (empty($historyTerms['terms']) || !in_array('insecure', $historyTerms['terms'])) {
+                        $messages[] = "$msg (Confirmation failed, ignored)";
+                        continue;
+                    }
+
+                    $messages[] = $msg;
+                    $this->componentCheckInsecureFailed = true;
+                }
+                if (!empty($messages)) {
+                    echo implode(PHP_EOL, $messages) . PHP_EOL;
                 }
             }
         }
+        define('QA_SKIP_INSECURE', 1);
 
         $fullSkip = getenv('QA_SKIP_INSECURE') !== false ? getenv('QA_SKIP_INSECURE') : false;
         // Forcing skip due to issues with the security advisor date detection.
