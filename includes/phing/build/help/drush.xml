@@ -37,6 +37,7 @@
                                 bin="${toolkit.dir.bin.drush}"
                                 verbose="${drush.verbose}"
                                 color="${drush.color}">
+                            <param>--exact</param>
                             <param>${variable-name}</param>
                             <param>${variable-value}</param>
                         </drush>

@@ -355,7 +355,6 @@
             drush-aliases-generate,
             drush-settings-generate,
             project-database-import,
-            project-asda-date,
             project-modules-devel-en,
             reset-filesystem-permissions,
             drush-cache-reset,
@@ -454,6 +453,9 @@
     </target>
 
     <target name="project-database-file-item" hidden="true" description="Check if database file is available and download it.">
+        <!-- Urlencode the db password in case there are breaking signs in it. -->
+        <php-urlencode value="${db.dl.password}" returnProperty="db.dl.password"/>
+
         <!-- If no user and password are provided, depending
         on the type check if the env vars are available. -->
         <if>
@@ -472,7 +474,15 @@
                         <property name="db.dl.password" value="${env.NEXTCLOUD_PASS}" override="true" />
                     </then>
                 </if>
-                <property name="db.dl.url" value="${db.dl.nextcloud.host}/remote.php/dav/files/${db.dl.username}/forDevelopment/${project.vendor}/${project.id}-${project.source}/mysql" override="true" />
+                <if>
+                    <equals arg1="${db.dl.nextcloud.admin}" arg2="true" />
+                    <then>
+                        <property name="db.dl.url" value="${db.dl.nextcloud.host}/remote.php/dav/files/${db.dl.username}/forDevelopment/${project.vendor}/${project.id}-${project.source}/mysql" override="true" />
+                    </then>
+                    <else>
+                        <property name="db.dl.url" value="${db.dl.nextcloud.host}/remote.php/dav/files/${db.dl.username}/${project.id}-${project.source}/mysql" override="true" />
+                    </else>
+                </if>
             </then>
             <elseif>
                 <and>
@@ -578,6 +588,8 @@
             project-database-file,
             project-database-download">
         <echo msg="Import production database." />
+
+        <phingcall target="project-asda-date" />
 
         <if>
             <not>
