@@ -703,6 +703,9 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                     'field_blackfire_cpu_time' => [['value' => $data['cpu_time']]],
                     'field_blackfire_network' => [['value' => $data['network']]],
                     'field_blackfire_sql' => [['value' => $data['sql']]],
+                    'field_blackfire_commit_has' => [['value' => getenv('DRONE_COMMIT') ?? '']],
+                    'field_blackfire_commit_link' => [['value' => getenv('DRONE_PULL_REQUEST') ?? '']],
+                    'field_blackfire_pr' => [['value' => getenv('DRONE_COMMIT_LINK') ?? '']],
                 ];
                 $payload_response = ToolCommands::postQaContent($payload);
                 if (!empty($payload_response) && $payload_response === '201') {
