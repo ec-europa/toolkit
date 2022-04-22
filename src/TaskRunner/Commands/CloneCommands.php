@@ -9,6 +9,7 @@ use Consolidation\Config\Loader\ConfigProcessor;
 use Consolidation\Config\Loader\YamlConfigLoader;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
+use Robo\Contract\VerbosityThresholdInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -176,7 +177,7 @@ class CloneCommands extends AbstractCommands
      * @option is-admin  For nextcloud admin user.
      * @option yes       Skip the question to download newer dump.
      *
-     * @return \Robo\Collection\CollectionBuilder|void
+     * @return \Robo\Collection\CollectionBuilder
      *   Collection builder.
      */
     public function downloadDump(array $options = [
@@ -235,11 +236,12 @@ class CloneCommands extends AbstractCommands
         }
 
         foreach ($asda_services as $service) {
+            $this->say("Checking service '$service'");
             // Check if the dump is already downloaded.
             if (file_exists("$tmp_folder/$service.gz")) {
-                $this->say("File found for service $service, checking server for newer dump.");
-                if ($this->checkForNewerDump($asda_type, $download_link, $service)) {
-                    $question = "A newer dump was found for '$service', would you like to download?";
+                $this->say("File found '$tmp_folder/$service.gz', checking server for newer dump");
+                if ($this->checkForNewerDump($download_link, $service)) {
+                    $question = "A newer dump was found, would you like to download?";
                     if (!getenv('CI') && $options['yes'] === InputOption::VALUE_NONE) {
                         $answer = $this->confirm($question);
                     } else {
@@ -247,20 +249,22 @@ class CloneCommands extends AbstractCommands
                         $answer = true;
                     }
                     if ($answer) {
+                        $this->say('Starting download');
                         if ($asda_type === 'nextcloud') {
-                            $tasks = array_merge($tasks, $this->asdaProcessFile($download_link . '/' . $service, $service));
+                            $tasks = array_merge($tasks, $this->asdaProcessFile("$download_link/$service", $service));
                         } else {
                             $tasks = $this->asdaProcessFile($download_link, $service);
                         }
                     } else {
-                        echo 'Skipping download.' . PHP_EOL;
+                        $this->say('Skipping download');
                     }
                 } else {
-                    echo 'Local dump is up-to-date.' . PHP_EOL;
+                    $this->say('Local dump is up-to-date');
                 }
             } else {
+                $this->say('Starting download');
                 if ($asda_type === 'nextcloud') {
-                    $tasks = array_merge($tasks, $this->asdaProcessFile($download_link . '/' . $service, $service));
+                    $tasks = array_merge($tasks, $this->asdaProcessFile("$download_link/$service", $service));
                 } else {
                     $tasks = $this->asdaProcessFile($download_link, $service);
                 }
@@ -274,8 +278,6 @@ class CloneCommands extends AbstractCommands
     /**
      * Check if a newer dump exists on the server.
      *
-     * @param $asda_type
-     *   The asda type.
      * @param $link
      *   The link to the folder.
      * @param $service
@@ -285,24 +287,34 @@ class CloneCommands extends AbstractCommands
      *   Return true if sha1 from local is different from the server,
      *   False is case of error or no local file exists.
      */
-    private function checkForNewerDump($asda_type, $link, $service)
+    private function checkForNewerDump($link, $service)
     {
-        $tmp_folder = $this->getConfig()->get('toolkit.tmp_folder');
+        $config = $this->getConfig();
+        $tmp_folder = $config->get('toolkit.tmp_folder');
         if (!file_exists("$tmp_folder/$service.gz")) {
             return false;
         }
-        if ($asda_type === 'nextcloud') {
+        if ($config->get('toolkit.clone.asda_type') === 'nextcloud') {
             $link .= "/$service";
         }
         // Download the .sha file.
-        $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt");
-        $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1')->run();
+        $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
+        $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1', true)
+            ->run();
         $latest = file_get_contents("$tmp_folder/$service-latest.sh1");
         if (empty($latest)) {
             $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
             return false;
         }
         $sha1 = trim(explode('  ', $latest)[0]);
+
+        // Remove temporary files.
+        $this->taskExec('rm')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->arg("$tmp_folder/$service-latest.sh1")
+            ->arg("$tmp_folder/$service.txt")
+            ->run();
+
         // Compare with the local dump.
         if ($sha1 !== sha1_file("$tmp_folder/$service.gz")) {
             return true;
@@ -327,8 +339,9 @@ class CloneCommands extends AbstractCommands
         $tmp_folder = $this->getConfig()->get('toolkit.tmp_folder');
 
         // Download the .sha file.
-        $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt");
-        $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1')->run();
+        $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
+        $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1', true)
+            ->run();
         $latest = file_get_contents("$tmp_folder/$service-latest.sh1");
         if (empty($latest)) {
             $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
@@ -357,11 +370,13 @@ class CloneCommands extends AbstractCommands
         $this->writeln("\n<info>$output\n$separator</info>\n");
 
         // Download the file.
-        $this->generateAsdaWgetInputFile("$link/$filename", "$tmp_folder/$service.txt");
-        $tasks[] = $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service.gz", '.sql.gz,.tar.gz');
+        $this->generateAsdaWgetInputFile("$link/$filename", "$tmp_folder/$service.txt", true);
+        $tasks[] = $this
+            ->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service.gz", '.sql.gz,.tar.gz');
 
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->arg("$tmp_folder/$service-latest.sh1")
             ->arg("$tmp_folder/$service.txt");
 
@@ -375,13 +390,18 @@ class CloneCommands extends AbstractCommands
      *   Url to fill in the temp file.
      * @param string $tmp
      *   The temporary filename.
+     * @param bool $silent
+     *   Whether show or not output from task.
      */
-    private function generateAsdaWgetInputFile($url, $tmp)
+    private function generateAsdaWgetInputFile($url, $tmp, $silent = false)
     {
-        $this->taskFilesystemStack()
+        $task = $this->taskFilesystemStack()
             ->taskWriteToFile($tmp)
-            ->line($url)
-            ->run();
+            ->line($url);
+        if ($silent) {
+            $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG);
+        }
+        $task->run();
     }
 
     /**
@@ -393,15 +413,22 @@ class CloneCommands extends AbstractCommands
      *   The destination filename.
      * @param null $accept
      *   A comma-separated list of accepted extensions.
+     * @param bool $silent
+     *   Whether show or not output from task.
      *
      * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Base\Exec
      */
-    private function wgetDownloadFile($tmp, $destination, $accept = null)
+    private function wgetDownloadFile($tmp, $destination, $accept = null, $silent = false)
     {
-        return $this->taskExec('wget')
+        $task = $this->taskExec('wget')
             ->option('-i', $tmp)
             ->option('-O', $destination)
             ->option('-A', $accept)
-            ->option('-P', './');
+            ->option('-P', './')
+            ->printMetadata(false);
+        if ($silent) {
+            $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG);
+        }
+        return $task;
     }
 }
