@@ -196,7 +196,7 @@ class ToolCommands extends AbstractCommands
         foreach ($composerLock['packages'] as $package) {
             if ($package['name'] == 'ec-europa/toolkit') {
                 $this->componentCheckToolkitRequireDev = true;
-                $this->io()->warning("Package 'ec-europa/toolkit' cannot be used in require section. Move it to require-dev.");
+                $this->io()->warning("Package 'ec-europa/toolkit' cannot be used in require section, must be on require-dev.");
             }
         }
         if (!$this->componentCheckToolkitRequireDev) {
@@ -212,7 +212,7 @@ class ToolCommands extends AbstractCommands
         foreach ($composerLock['packages-dev'] as $package) {
             if ($package['name'] == 'drush/drush') {
                 $this->componentCheckDrushRequire = true;
-                $this->io()->warning("Package 'drush/drush' cannot be used in require-dev. Move it to require section.");
+                $this->io()->warning("Package 'drush/drush' cannot be used in require-dev, must be on require section.");
             }
         }
         if (!$this->componentCheckDrushRequire) {
