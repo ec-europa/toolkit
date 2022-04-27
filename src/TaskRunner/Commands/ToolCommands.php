@@ -107,7 +107,6 @@ class ToolCommands extends AbstractCommands
         $this->checkCommitMessage();
 
         $endpointUrl = "https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x";
-        $composerJson = file_exists('composer.json') ? json_decode(file_get_contents('composer.json'), true) : false;
         $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
 
         if (!isset($composerLock['packages'])) {
@@ -194,29 +193,35 @@ class ToolCommands extends AbstractCommands
         echo PHP_EOL;
 
         $this->io()->title('Checking require-dev section for Toolkit.');
-        foreach ($composerJson['require'] as $name => $package) {
-            if ($name == 'ec-europa/toolkit') {
+        foreach ($composerLock['packages'] as $package) {
+            if ($package['name'] == 'ec-europa/toolkit') {
                 $this->componentCheckToolkitRequireDev = true;
-                $this->say("Package $name cannot be used in require section. Move it to require-dev.");
+                $this->io()->warning("Package 'ec-europa/toolkit' cannot be used in require section. Move it to require-dev.");
             }
         }
         if (!$this->componentCheckToolkitRequireDev) {
-            $this->say('Toolkit require-dev section check passed.');
+            foreach ($composerLock['packages-dev'] as $package) {
+                if ($package['name'] == 'ec-europa/toolkit') {
+                    $this->say('Toolkit require-dev section check passed.');
+                }
+            }
         }
-
         echo PHP_EOL;
 
         $this->io()->title('Checking require section for Drush.');
-        foreach ($composerJson['require-dev'] as $name => $package) {
-            if ($name == 'drush/drush') {
+        foreach ($composerLock['packages-dev'] as $package) {
+            if ($package['name'] == 'drush/drush') {
                 $this->componentCheckDrushRequire = true;
-                $this->say("Package $name cannot be used in require-dev. Move it to require section.");
+                $this->io()->warning("Package 'drush/drush' cannot be used in require-dev. Move it to require section.");
             }
         }
         if (!$this->componentCheckDrushRequire) {
-            $this->say('Drush require section check passed.');
+            foreach ($composerLock['packages'] as $package) {
+                if ($package['name'] == 'drush/drush') {
+                    $this->say('Drush require section check passed.');
+                }
+            }
         }
-
         echo PHP_EOL;
 
         $this->printComponentResults();
