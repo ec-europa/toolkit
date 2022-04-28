@@ -194,6 +194,9 @@ class CloneCommands extends AbstractCommands
         $source = $config->get('toolkit.clone.asda_source');
         $is_admin = !($options['is-admin'] === InputOption::VALUE_NONE) || $config->get('toolkit.clone.nextcloud_admin');
         $tmp_folder = $config->get('toolkit.tmp_folder');
+        if (!file_exists($tmp_folder)) {
+            $tmp_folder = sys_get_temp_dir();
+        }
 
         $this->say("ASDA type is: $asda_type" . ($asda_type === 'default' ? ' (The legacy ASDA will be dropped on 1 June)' : ''));
         $this->say('ASDA services: ' . implode(', ', $asda_services));
