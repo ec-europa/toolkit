@@ -116,7 +116,7 @@ class CloneCommands extends AbstractCommands
     ])
     {
         $tasks = [];
-        $tmp_folder = $this->getConfig()->get('toolkit.tmp_folder');
+        $tmp_folder = $this->tmpDirectory();
         if (!file_exists("$tmp_folder/{$options['dumpfile']}")) {
             if (!getenv('CI')) {
                 $this->say("'$tmp_folder/{$options['dumpfile']}' file not found, use the command 'toolkit:download-dump'.");
@@ -192,8 +192,11 @@ class CloneCommands extends AbstractCommands
         $asda_services = (array) $config->get('toolkit.clone.asda_services', 'mysql');
         $vendor = $config->get('toolkit.clone.asda_vendor');
         $source = $config->get('toolkit.clone.asda_source');
+        $tmp_folder = $this->tmpDirectory();
         $is_admin = !($options['is-admin'] === InputOption::VALUE_NONE) || $config->get('toolkit.clone.nextcloud_admin');
-        $tmp_folder = $config->get('toolkit.tmp_folder');
+        if (getenv('CI')) {
+            $is_admin = true;
+        }
 
         $this->say("ASDA type is: $asda_type" . ($asda_type === 'default' ? ' (The legacy ASDA will be dropped on 1 June)' : ''));
         $this->say('ASDA services: ' . implode(', ', $asda_services));
@@ -290,7 +293,7 @@ class CloneCommands extends AbstractCommands
     private function checkForNewerDump($link, $service)
     {
         $config = $this->getConfig();
-        $tmp_folder = $config->get('toolkit.tmp_folder');
+        $tmp_folder = $this->tmpDirectory();
         if (!file_exists("$tmp_folder/$service.gz")) {
             return false;
         }
@@ -336,7 +339,7 @@ class CloneCommands extends AbstractCommands
     private function asdaProcessFile($link, $service)
     {
         $tasks = [];
-        $tmp_folder = $this->getConfig()->get('toolkit.tmp_folder');
+        $tmp_folder = $this->tmpDirectory();
 
         // Download the .sha file.
         $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
@@ -430,5 +433,20 @@ class CloneCommands extends AbstractCommands
             $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG);
         }
         return $task;
+    }
+
+    /**
+     * Return the tmp folder path, folder is created if missing.
+     *
+     * @return string
+     *   The tmp folder path.
+     */
+    private function tmpDirectory(): string
+    {
+        $tmp_folder = (string) $this->getConfig()->get('toolkit.tmp_folder');
+        if (!file_exists($tmp_folder)) {
+            mkdir($tmp_folder);
+        }
+        return $tmp_folder;
     }
 }
