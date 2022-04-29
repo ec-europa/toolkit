@@ -445,7 +445,9 @@ class CloneCommands extends AbstractCommands
     {
         $tmp_folder = (string) $this->getConfig()->get('toolkit.tmp_folder');
         if (!file_exists($tmp_folder)) {
-            mkdir($tmp_folder);
+            if (!@mkdir($tmp_folder)) {
+                $tmp_folder = sys_get_temp_dir();
+            }
         }
         return $tmp_folder;
     }
