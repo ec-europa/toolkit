@@ -119,21 +119,6 @@ class BuildCommands extends AbstractCommands
         if (file_exists('resources/Drush/drush.yml.dist')) {
             $tasks[] = $this->taskFilesystemStack()
                 ->copy('resources/Drush/drush.yml.dist', $options['dist-root'] . '/web/sites/all/drush/drush.yml');
-        } else {
-            $sitePath = getenv('SITE_PATH');
-            $vHost = getenv('VIRTUAL_HOST');
-            $vHostArray = explode(',', $vHost);
-
-            $baseUri = empty($sitePath) ? end($vHostArray) : end($vHostArray) . $sitePath;
-
-            $drush_options['options'] = ['uri' => $baseUri];
-            $yaml = new Yaml();
-            $yaml_content = $yaml->dump($drush_options, 2, 2, Yaml::DUMP_OBJECT);
-            $yaml_destination = $options['dist-root'] . '/web/sites/all/drush/drush.yml';
-            $tasks[] = $this->taskFilesystemStack()
-                ->mkdir($options['dist-root'] . '/web/sites/all/drush')
-                ->touch($yaml_destination);
-            $tasks[] = $this->taskWriteToFile($yaml_destination)->text($yaml_content);
         }
 
         // Collect and execute list of commands set on local runner.yml.
@@ -199,27 +184,6 @@ class BuildCommands extends AbstractCommands
         if (file_exists('resources/Drush/drush.yml.dist')) {
             $tasks[] = $this->taskFilesystemStack()
                 ->copy('resources/Drush/drush.yml.dist', $root . '/sites/all/drush/drush.yml');
-        } else {
-            if (!empty(getenv('VIRTUAL_HOST'))) {
-                $vHost = getenv('VIRTUAL_HOST');
-            } else {
-                $this->say("Add the 'VIRTUAL_HOST' variable to your '.env' file.");
-                return;
-            }
-
-            $vHostArray = explode(',', $vHost);
-            $sitePath = getenv('SITE_PATH');
-
-            $vHostArray = explode(',', $vHost);
-            $baseUri = empty($sitePath) ? end($vHostArray) : end($vHostArray) . $sitePath;
-            $drush_options['options'] = ['uri' => $baseUri];
-            $yaml = new Yaml();
-            $yaml_content = $yaml->dump($drush_options, 2, 2, Yaml::DUMP_OBJECT);
-            $yaml_destination = $root . '/sites/all/drush/drush.yml';
-            $tasks[] = $this->taskFilesystemStack()
-                ->mkdir($root . '/sites/all/drush')
-                ->touch($yaml_destination);
-            $tasks[] = $this->taskWriteToFile($yaml_destination)->text($yaml_content);
         }
 
         // Collect and execute list of commands set on local runner.yml.
