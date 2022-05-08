@@ -161,12 +161,17 @@ class ToolCommands extends AbstractCommands
             echo PHP_EOL;
         }
 
+        // Get vendor list from 'api/v1/toolkit-requirements' endpoint.
+        $tkReqsEndpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
+        $resulttkReqsEndpoint = self::getQaEndpointContent($tkReqsEndpoint, getenv('QA_API_BASIC_AUTH'));
+        $datatkReqsEndpoint = json_decode($resulttkReqsEndpoint, true);
+        $vendorList = $datatkReqsEndpoint['vendor_list'];
+
         $this->io()->title('Checking evaluation status components.');
         // Proceed with 'blocker' option. Loop over the packages.
         foreach ($composerLock['packages'] as $package) {
-            // Check if it's a drupal package.
-            // NOTE: Currently only supports drupal packages :(.
-            if (substr($package['name'], 0, 7) === 'drupal/') {
+            // Check if vendor belongs to the monitorised vendor list.
+            if (in_array(explode('/', $package['name'])['0'], $vendorList)) {
                 $this->validateComponent($package, $modules);
             }
         }
