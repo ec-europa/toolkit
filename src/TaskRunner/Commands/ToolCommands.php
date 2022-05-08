@@ -1236,6 +1236,5 @@ Checking NEXTCLOUD configuration: %s",
         } else {
             $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
         }
-
     }
 }
