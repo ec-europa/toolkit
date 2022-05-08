@@ -1208,4 +1208,34 @@ Checking NEXTCLOUD configuration: %s",
         }
         return false;
     }
+
+    /**
+     * Check 'Vendor' packages being monitorised.
+     *
+     * @command toolkit:vendor-list
+     */
+    public function toolkitVendorList()
+    {
+        $endpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
+        $result = self::getQaEndpointContent($endpoint, getenv('QA_API_BASIC_AUTH'));
+
+        if ($result) {
+            $data = json_decode($result, true);
+            if (empty($data) || !isset($data['vendor_list'])) {
+                $this->writeln('Invalid data returned from the endpoint.');
+            } else {
+                $vendorList = $data['vendor_list'];
+                $this->io()->title("Vendors being monitorised:");
+                array_map(function ($vendor) {
+                    $this->writeln(sprintf(
+                        "%s",
+                        $vendor
+                    ));
+                }, $vendorList);
+            }
+        } else {
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+        }
+
+    }
 }
