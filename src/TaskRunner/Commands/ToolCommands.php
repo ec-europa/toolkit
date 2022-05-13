@@ -1219,7 +1219,7 @@ Checking NEXTCLOUD configuration: %s",
      */
     public function getQaApiBasicAuth(): string
     {
-        $auth = getenv('QA_API_BASIC_AUTHH');
+        $auth = getenv('QA_API_BASIC_AUTH');
         if (empty($auth)) {
             $this->say('Missing env var QA_API_BASIC_AUTH, asking for access.');
             if (empty($user = $this->ask('Please insert your username?'))) {
