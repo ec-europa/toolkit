@@ -364,7 +364,7 @@ class ToolCommands extends AbstractCommands
             ->run()->getMessage();
         $status = json_decode($result, true);
         if (empty($status['db-name'])) {
-            $config_file = 'config/sync/core.extension.yml';
+            $config_file = $this->getConfig()->get('toolkit.clean.config_file');
             $this->say("Website not installed, using $config_file file.");
             if (file_exists($config_file)) {
                 $config = Yaml::parseFile($config_file);
@@ -380,7 +380,7 @@ class ToolCommands extends AbstractCommands
             $result = $this->taskExec('drush pm-list --fields=status --format=json')
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                 ->run()->getMessage();
-            $projPackages = json_decode($result, TRUE);
+            $projPackages = json_decode($result, true);
             if (!empty($projPackages)) {
                 $enabledPackages = array_keys(array_filter($projPackages, function ($item) {
                     return $item['status'] === 'Enabled';
