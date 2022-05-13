@@ -1235,5 +1235,4 @@ Checking NEXTCLOUD configuration: %s",
 
         return $auth;
     }
-
 }
