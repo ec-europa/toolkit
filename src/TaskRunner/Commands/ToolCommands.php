@@ -358,15 +358,34 @@ class ToolCommands extends AbstractCommands
     protected function componentMandatory($modules)
     {
         $enabledPackages = $mandatoryPackages = [];
-        // Get enabled packages.
-        $result = $this->taskExec('drush pm-list --fields=status --format=json')
+        // Check if the website is installed.
+        $result = $this->taskExec('drush status --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
-        $projPackages = json_decode($result, true);
-        if (!empty($projPackages)) {
-            $enabledPackages = array_keys(array_filter($projPackages, function ($item) {
-                return $item['status'] === 'Enabled';
-            }));
+        $status = json_decode($result, true);
+        if (empty($status['db-name'])) {
+            $config_file = 'config/sync/core.extension.yml';
+            $this->say("Website not installed, using $config_file file.");
+            if (file_exists($config_file)) {
+                $config = Yaml::parseFile($config_file);
+                $enabledPackages = array_keys(array_merge(
+                    $config['module'] ?? [],
+                    $config['theme'] ?? []
+                ));
+            } else {
+                $this->say("Config file not found at $config_file.");
+            }
+        } else {
+            // Get enabled packages.
+            $result = $this->taskExec('drush pm-list --fields=status --format=json')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
+            $projPackages = json_decode($result, TRUE);
+            if (!empty($projPackages)) {
+                $enabledPackages = array_keys(array_filter($projPackages, function ($item) {
+                    return $item['status'] === 'Enabled';
+                }));
+            }
         }
 
         // Get mandatory packages.
