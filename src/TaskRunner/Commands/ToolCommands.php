@@ -1253,6 +1253,7 @@ Checking NEXTCLOUD configuration: %s",
 
         if ($result) {
             $data = json_decode($result, true);
+            var_dump($data);
             if (empty($data) || !isset($data['vendor_list'])) {
                 $this->writeln('Invalid data returned from the endpoint.');
             } else {
@@ -1290,6 +1291,10 @@ Checking NEXTCLOUD configuration: %s",
                 return '';
             }
             $auth = base64_encode("$user:$pass");
+            $this->writeln([
+                'Your token has been generated, please add it to your environment variables.',
+                '    export QA_API_BASIC_AUTH="' . $auth . '"',
+            ]);
         }
 
         return $auth;
