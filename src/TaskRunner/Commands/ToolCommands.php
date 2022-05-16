@@ -162,7 +162,10 @@ class ToolCommands extends AbstractCommands
 
         // Get vendor list from 'api/v1/toolkit-requirements' endpoint.
         $tkReqsEndpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
-        $resulttkReqsEndpoint = self::getQaEndpointContent($tkReqsEndpoint, getenv('QA_API_BASIC_AUTH'));
+        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+            return 1;
+        }
+        $resulttkReqsEndpoint = self::getQaEndpointContent($tkReqsEndpoint, $basicAuth);
         $datatkReqsEndpoint = json_decode($resulttkReqsEndpoint, true);
         $vendorList = $datatkReqsEndpoint['vendor_list'];
 
@@ -1243,7 +1246,10 @@ Checking NEXTCLOUD configuration: %s",
     public function toolkitVendorList()
     {
         $endpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
-        $result = self::getQaEndpointContent($endpoint, getenv('QA_API_BASIC_AUTH'));
+        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+            return 1;
+        }
+        $result = self::getQaEndpointContent($endpoint, $basicAuth);
 
         if ($result) {
             $data = json_decode($result, true);
