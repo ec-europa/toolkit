@@ -161,12 +161,17 @@ class ToolCommands extends AbstractCommands
             echo PHP_EOL;
         }
 
+        // Get vendor list from 'api/v1/toolkit-requirements' endpoint.
+        $tkReqsEndpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
+        $resulttkReqsEndpoint = self::getQaEndpointContent($tkReqsEndpoint, getenv('QA_API_BASIC_AUTH'));
+        $datatkReqsEndpoint = json_decode($resulttkReqsEndpoint, true);
+        $vendorList = $datatkReqsEndpoint['vendor_list'];
+
         $this->io()->title('Checking evaluation status components.');
         // Proceed with 'blocker' option. Loop over the packages.
         foreach ($composerLock['packages'] as $package) {
-            // Check if it's a drupal package.
-            // NOTE: Currently only supports drupal packages :(.
-            if (substr($package['name'], 0, 7) === 'drupal/') {
+            // Check if vendor belongs to the monitorised vendor list.
+            if (in_array(explode('/', $package['name'])['0'], $vendorList)) {
                 $this->validateComponent($package, $modules);
             }
         }
@@ -1202,5 +1207,34 @@ Checking NEXTCLOUD configuration: %s",
             }
         }
         return false;
+    }
+
+    /**
+     * Check 'Vendor' packages being monitorised.
+     *
+     * @command toolkit:vendor-list
+     */
+    public function toolkitVendorList()
+    {
+        $endpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
+        $result = self::getQaEndpointContent($endpoint, getenv('QA_API_BASIC_AUTH'));
+
+        if ($result) {
+            $data = json_decode($result, true);
+            if (empty($data) || !isset($data['vendor_list'])) {
+                $this->writeln('Invalid data returned from the endpoint.');
+            } else {
+                $vendorList = $data['vendor_list'];
+                $this->io()->title("Vendors being monitorised:");
+                array_map(function ($vendor) {
+                    $this->writeln(sprintf(
+                        "%s",
+                        $vendor
+                    ));
+                }, $vendorList);
+            }
+        } else {
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+        }
     }
 }
