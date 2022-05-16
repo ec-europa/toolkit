@@ -201,8 +201,7 @@ class ToolCommands extends AbstractCommands
         foreach ($composerLock['packages'] as $package) {
             foreach ($modules as $module) {
                 $packageName = $module['name'];
-                if ($module['dev_component'] == 'true' &&
-                    $packageName == $package['name']) {
+                if ($module['dev_component'] == 'true' && $packageName == $package['name']) {
                     $this->componentCheckDevCompRequireFailed = true;
                     $this->io()->warning("Package $packageName cannot be used on require section, must be on require-dev section.");
                 }
