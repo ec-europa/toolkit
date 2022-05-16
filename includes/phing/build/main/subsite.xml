@@ -111,7 +111,7 @@
         <phingcall target="drush-make-no-core">
             <property name="make-file" value="${resources.dir.site.make}" />
             <property name="make-folder" value="${build.${build-type}.dir}" />
-            <property name="make-destination" value="" />
+            <property name="make-destination" value="." />
             <property name="overwrite" value="" />
         </phingcall>
     </target>
