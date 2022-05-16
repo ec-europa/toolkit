@@ -222,7 +222,7 @@ class CloneCommands extends AbstractCommands
             }
         }
         if (empty($password)) {
-            if (empty($password = $this->ask('Please insert your password?'))) {
+            if (empty($password = $this->ask('Please insert your password:', true))) {
                 $this->writeln('<error>The password cannot be empty!</error>');
                 return $this->collectionBuilder()->addTaskList($tasks);
             }

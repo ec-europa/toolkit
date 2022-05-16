@@ -90,8 +90,7 @@ class ToolCommands extends AbstractCommands
         'test-command' => false,
     ])
     {
-        if (empty($basicAuth = getenv('QA_API_BASIC_AUTH'))) {
-            $this->io()->error('Missing ENV var QA_API_BASIC_AUTH.');
+        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
             return 1;
         }
 
@@ -163,7 +162,10 @@ class ToolCommands extends AbstractCommands
 
         // Get vendor list from 'api/v1/toolkit-requirements' endpoint.
         $tkReqsEndpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
-        $resulttkReqsEndpoint = self::getQaEndpointContent($tkReqsEndpoint, getenv('QA_API_BASIC_AUTH'));
+        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+            return 1;
+        }
+        $resulttkReqsEndpoint = self::getQaEndpointContent($tkReqsEndpoint, $basicAuth);
         $datatkReqsEndpoint = json_decode($resulttkReqsEndpoint, true);
         $vendorList = $datatkReqsEndpoint['vendor_list'];
 
@@ -629,13 +631,15 @@ class ToolCommands extends AbstractCommands
      *
      * @param array $fields
      *   Data to send.
+     * @param string $auth
+     *   The Basic auth.
      *
      * @return string
-     *   Empty if could not create session, http code if ok.
+     *   Empty string if could not create session, http code if ok.
      *
      * @throws \Exception
      */
-    public static function postQaContent($fields): string
+    public static function postQaContent(array $fields, string $auth): string
     {
         if (empty($url = getenv('QA_WEBSITE_URL'))) {
             $url = 'https://webgate.ec.europa.eu/fpfis/qa';
@@ -650,7 +654,7 @@ class ToolCommands extends AbstractCommands
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/hal+json',
             "X-CSRF-Token: $token",
-            'Authorization: Basic ' . getenv('QA_API_BASIC_AUTH'),
+            "Authorization: Basic $auth",
         ]);
         curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -982,7 +986,10 @@ class ToolCommands extends AbstractCommands
         $php_check = $toolkit_check = $drupal_check = $endpoint_check = $nextcloud_check = $asda_check = 'FAIL';
         $php_version = $toolkit_version = $drupal_version = '';
 
-        $result = self::getQaEndpointContent($options['endpoint'], getenv('QA_API_BASIC_AUTH'));
+        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+            return 1;
+        }
+        $result = self::getQaEndpointContent($options['endpoint'], $basicAuth);
         if ($result) {
             $endpoint_check = 'OK';
             $data = json_decode($result, true);
@@ -1158,7 +1165,10 @@ Checking NEXTCLOUD configuration: %s",
     public function toolkitVersion()
     {
         $endpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
-        $result = self::getQaEndpointContent($endpoint, getenv('QA_API_BASIC_AUTH'));
+        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+            return 1;
+        }
+        $result = self::getQaEndpointContent($endpoint, $basicAuth);
         $min_version = '';
 
         if (!($composer_version = $this->getPackagePropertyFromComposer('ec-europa/toolkit'))) {
@@ -1236,10 +1246,14 @@ Checking NEXTCLOUD configuration: %s",
     public function toolkitVendorList()
     {
         $endpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
-        $result = self::getQaEndpointContent($endpoint, getenv('QA_API_BASIC_AUTH'));
+        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+            return 1;
+        }
+        $result = self::getQaEndpointContent($endpoint, $basicAuth);
 
         if ($result) {
             $data = json_decode($result, true);
+            var_dump($data);
             if (empty($data) || !isset($data['vendor_list'])) {
                 $this->writeln('Invalid data returned from the endpoint.');
             } else {
@@ -1255,5 +1269,34 @@ Checking NEXTCLOUD configuration: %s",
         } else {
             $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
         }
+    }
+
+    /**
+     * Return the QA API BASIC AUTH from token or from questions.
+     *
+     * @return string
+     *   The Basic auth or empty string if fails.
+     */
+    public function getQaApiBasicAuth(): string
+    {
+        $auth = getenv('QA_API_BASIC_AUTH');
+        if (empty($auth)) {
+            $this->say('Missing env var QA_API_BASIC_AUTH, asking for access.');
+            if (empty($user = $this->ask('Please insert your username:'))) {
+                $this->writeln('<error>The username cannot be empty!</error>');
+                return '';
+            }
+            if (empty($pass = $this->ask('Please insert your password:', true))) {
+                $this->writeln('<error>The password cannot be empty!</error>');
+                return '';
+            }
+            $auth = base64_encode("$user:$pass");
+            $this->writeln([
+                'Your token has been generated, please add it to your environment variables.',
+                '    export QA_API_BASIC_AUTH="' . $auth . '"',
+            ]);
+        }
+
+        return $auth;
     }
 }
