@@ -265,10 +265,8 @@ class ToolCommands extends AbstractCommands
                 $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
                 // If module was not allowed in project.
                 if (!$allowedInProject) {
-                    $this->say("The use of $packageName:$packageVersion is restricted. Contact QA Team.");
+                    $this->say("The use of $packageName:$packageVersion is " . $modules[$packageName]['status'] . ". Contact QA Team.");
                     $this->componentCheckFailed = true;
-                } else {
-                    $this->say("Package $packageName:$packageVersion authorized.");
                 }
             }
 
