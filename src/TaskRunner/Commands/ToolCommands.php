@@ -261,11 +261,11 @@ class ToolCommands extends AbstractCommands
 
             // If module was rejected.
             if ($hasBeenQaEd && $wasRejected) {
-                $projectId = $this->getConfig()->get("toolkit.project_id");
+                $projectId = $this->getConfig()->get('toolkit.project_id');
                 $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
                 // If module was not allowed in project.
                 if (!$allowedInProject) {
-                    $this->say("Package $packageName:$packageVersion has been rejected by QA.");
+                    $this->say("The use of $packageName:$packageVersion is " . $modules[$packageName]['status'] . ". Contact QA Team.");
                     $this->componentCheckFailed = true;
                 }
             }

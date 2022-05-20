@@ -1,3 +1,5 @@
+## This branch is deprecated and will be removed, for Drupal 9 projects use branch release/8.x
+
 # NextEuropa Toolkit
 
 The NextEuropa Toolkit is a composer package designed to speed up the development of Drupal websites in Drupal 8. Its main core is the robo based build system that builds your development environments, deploy and test your code.
