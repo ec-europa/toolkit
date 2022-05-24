@@ -1,6 +1,6 @@
 # NextEuropa Toolkit
 
-The NextEuropa Toolkit is a composer package designed to speed up the development of Drupal websites in Drupal 8. Its main core is the robo based build system that builds your development environments, deploy and test your code.
+The NextEuropa Toolkit is a composer package designed to speed up the development of Drupal websites in Drupal 9. Its main core is the robo based build system that builds your development environments, deploy and test your code.
 
 [![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/toolkit/status.svg)](https://drone.fpfis.eu/ec-europa/toolkit) [![License](https://img.shields.io/badge/License-EUPL%201.1-blue.svg)](LICENSE)
 
@@ -14,7 +14,7 @@ You need to have the following software installed on your local development envi
 
 ```
 Toolkit is a developer package, make sure you install this in the dev section of your composer.json.
-composer require --dev ec-europa/toolkit:^3.1.0
+composer require --dev ec-europa/toolkit:^8
 ```
 
 The toolkit contains different components that help you during the development, the main
