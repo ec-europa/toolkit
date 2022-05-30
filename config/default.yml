@@ -80,6 +80,7 @@ toolkit:
         - vendor/
         - web/
         - node_modules/
+        - config/
         - "*.min.css"
         - "*.min.js"
       triggered_by:
