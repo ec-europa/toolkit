@@ -69,24 +69,13 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
-  asda-nextcloud:
+  asda:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     secrets: [ github_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass ]
     group: asda-nextcloud
     commands:
       - ./toolkit/phing cache-clear-global
       - ./toolkit/phing project-database-download -Dproject.id=${ASDA_PROJECT_ID} -Ddb.dl.type=nextcloud -Ddb.dl.nextcloud.admin=true ${PHING_OPTS}
-      - ./toolkit/phing project-asda-date -Dproject.id=${ASDA_PROJECT_ID} ${PHING_OPTS}
-    volumes:
-      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
-
-  asda-default:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
-    secrets: [ github_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass ]
-    group: asda-default
-    commands:
-      - ./toolkit/phing cache-clear-global
-      - ./toolkit/phing project-database-download -Dproject.id=${ASDA_PROJECT_ID} ${PHING_OPTS}
       - ./toolkit/phing project-asda-date -Dproject.id=${ASDA_PROJECT_ID} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
