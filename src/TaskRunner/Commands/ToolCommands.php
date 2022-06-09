@@ -766,6 +766,7 @@ class ToolCommands extends AbstractCommands
             $parseOptsFile = Yaml::parseFile('.opts.yml');
             // List of commands to prevent the use.
             $forbiddenCommands = [
+                'site:install', 'site-install', 'si', 'sin',
                 'sql:conf', 'sql-conf',
                 'sql:connect', 'sql-connect',
                 'sql:create', 'sql-create',
