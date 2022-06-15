@@ -2,148 +2,143 @@
 
 <project name="project" description="Targets shared by differenct project types." default="">
 
-  <target name="build-platform" description="Build NextEuropa Platform code without version control.">
-      <phingcall target="project-platform-backup" />
-      <phingcall target="project-platform-delete" />
+    <target name="build-platform" description="Build NextEuropa Platform code without version control.">
+        <phingcall target="project-platform-backup" />
+        <phingcall target="project-platform-delete" />
 
-      <if>
-          <contains string="${profile}" substring="multisite" />
-          <then>
-              <phingcall target="project-platform-set-version" />
-              <phingcall target="project-platform-package-unpack" />
-          </then>
-          <else>
-              <phingcall target="project-profile-build" />
-          </else>
-      </if>
+        <if>
+            <contains string="${profile}" substring="multisite" />
+            <then>
+                <phingcall target="project-platform-set-version" />
+                <phingcall target="project-platform-package-unpack" />
+            </then>
+            <else>
+                <phingcall target="project-profile-build" />
+            </else>
+        </if>
 
-     <phingcall target="project-modules-devops-dl" />
-     <phingcall target="project-platform-set-htaccess" />
-     <phingcall target="project-platform-restore" />
-
-  </target>
-
+        <phingcall target="project-modules-devops-dl" />
+        <phingcall target="project-platform-set-htaccess" />
+        <phingcall target="project-platform-restore" />
+    </target>
 
 
+    <target name="project-platform-backup" hidden="true" description="Backup site defined files from properties.">
+        <if>
+            <available file="${build.subsite.dir}/settings.php" type="file" />
+            <then>
+                <property name="site-detected" value="1" />
+            </then>
+            <else>
+                <echo msg="No site installation detected. Skipping backup." />
+            </else>
+        </if>
 
-      <target name="project-platform-backup" hidden="true" description="Backup site defined files from properties.">
-          <if>
-              <available file="${build.subsite.dir}/settings.php" type="file" />
-              <then>
-                  <property name="site-detected" value="1" />
-              </then>
-              <else>
-                  <echo msg="No site installation detected. Skipping backup." />
-              </else>
-          </if>
+        <if>
+            <and>
+                <equals arg1="${rebuild.auto}" arg2="0" />
+                <equals arg1="${site-detected}" arg2="1" />
+            </and>
+            <then>
+                <echo msg="Installed site detected." level="warning" />
+                <propertyprompt propertyName="project-subsite-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
+                <if>
+                    <equals arg1="${project-subsite-backup-activated}" arg2="y" />
+                    <then>
+                        <property name="rebuild.auto" value="1" override="true" />
+                    </then>
+                </if>
+            </then>
+        </if>
+        <if>
+            <and>
+                <equals arg1="${rebuild.auto}" arg2="1" />
+                <equals arg1="${site-detected}" arg2="1" />
+            </and>
+            <then>
+                <if>
+                    <available file="${rebuild.backup.destination}" type="dir" />
+                    <then>
+                        <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
+                    </then>
+                </if>
+                <mkdir dir="${rebuild.backup.destination}" />
+                <phingcall target="folder-unprotect">
+                    <property name="folder.to.unprotect" value="${build.platform.dir.sites}" />
+                </phingcall>
+                <foreach list="${rebuild.backup.site}" param="site-item" target="project-subsite-backup-item" delimiter=";">
+                    <property name="site-item-type" value="dir" />
+                </foreach>
+                <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-backup-item" delimiter=";">
+                    <property name="site-item-type" value="file" />
+                </foreach>
+            </then>
+        </if>
+        <if>
+            <equals arg1="${project-subsite-backup-activated}" arg2="y" />
+            <then>
+                <property name="rebuild.auto" value="0" override="true" />
+            </then>
+        </if>
+    </target>
 
-          <if>
-              <and>
-                  <equals arg1="${rebuild.auto}" arg2="0" />
-                  <equals arg1="${site-detected}" arg2="1" />
-              </and>
-              <then>
-                  <echo msg="Installed site detected." level="warning" />
-                  <propertyprompt propertyName="project-subsite-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
-                  <if>
-                      <equals arg1="${project-subsite-backup-activated}" arg2="y" />
-                      <then>
-                          <property name="rebuild.auto" value="1" override="true" />
-                      </then>
-                  </if>
-              </then>
-          </if>
-          <if>
-              <and>
-                  <equals arg1="${rebuild.auto}" arg2="1" />
-                  <equals arg1="${site-detected}" arg2="1" />
-              </and>
-              <then>
-                  <if>
-                      <available file="${rebuild.backup.destination}" type="dir" />
-                      <then>
-                          <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
-                      </then>
-                  </if>
-                  <mkdir dir="${rebuild.backup.destination}" />
-                  <phingcall target="folder-unprotect">
-                      <property name="folder.to.unprotect" value="${build.platform.dir.sites}" />
-                  </phingcall>
-                  <foreach list="${rebuild.backup.site}" param="site-item" target="project-subsite-backup-item" delimiter=";">
-                      <property name="site-item-type" value="dir" />
-                  </foreach>
-                  <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-backup-item" delimiter=";">
-                      <property name="site-item-type" value="file" />
-                  </foreach>
-              </then>
-          </if>
-          <if>
-              <equals arg1="${project-subsite-backup-activated}" arg2="y" />
-              <then>
-                  <property name="rebuild.auto" value="0" override="true" />
-              </then>
-          </if>
-      </target>
-
-      <target name="project-platform-delete" hidden="true" description="Remove previous platform build..">
-          <phingcall target="project-scratch-build">
-              <property name="dir-build" value="${build.platform.dir}" override="true" />
-          </phingcall>
-      </target>
+    <target name="project-platform-delete" hidden="true" description="Remove previous platform build..">
+        <phingcall target="project-scratch-build">
+            <property name="dir-build" value="${build.platform.dir}" override="true" />
+        </phingcall>
+    </target>
 
 
-          <target name="project-scratch-build" hidden="true" description="Delete previous build to start over clean.">
-              <echo msg="Delete previous build." />
-              <if>
-                  <available file="${build.platform.dir.settings}/default.settings.php" />
-                  <then>
-                      <copy file="${build.platform.dir.settings}/default.settings.php" tofile="${project.tmp.dir}/default.settings.php" overwrite="true" />
-                  </then>
-              </if>
-              <if>
-                  <available file="${build.platform.dir.settings}/settings.php" />
-                  <then>
-                      <copy file="${build.platform.dir.settings}/settings.php" tofile="${project.tmp.dir}/settings.php" overwrite="true" />
-                  </then>
-              </if>
-              <if>
-                  <available file="${build.platform.dir.settings}/settings.local.php" />
-                  <then>
-                      <copy file="${build.platform.dir.settings}/settings.local.php" tofile="${project.tmp.dir}/settings.local.php" overwrite="true" />
-                  </then>
-              </if>
-              <phingcall target="folder-unprotect">
-                  <property name="folder.to.unprotect" value="${dir-build}" />
-              </phingcall>
+    <target name="project-scratch-build" hidden="true" description="Delete previous build to start over clean.">
+        <echo msg="Delete previous build." />
+        <if>
+            <available file="${build.platform.dir.settings}/default.settings.php" />
+            <then>
+                <copy file="${build.platform.dir.settings}/default.settings.php" tofile="${project.tmp.dir}/default.settings.php" overwrite="true" />
+            </then>
+        </if>
+        <if>
+            <available file="${build.platform.dir.settings}/settings.php" />
+            <then>
+                <copy file="${build.platform.dir.settings}/settings.php" tofile="${project.tmp.dir}/settings.php" overwrite="true" />
+            </then>
+        </if>
+        <if>
+            <available file="${build.platform.dir.settings}/settings.local.php" />
+            <then>
+                <copy file="${build.platform.dir.settings}/settings.local.php" tofile="${project.tmp.dir}/settings.local.php" overwrite="true" />
+            </then>
+        </if>
+        <phingcall target="folder-unprotect">
+            <property name="folder.to.unprotect" value="${dir-build}" />
+        </phingcall>
 
-              <echo msg="Unprotecting folder." />
-              <phingcall target="folder-delete">
-                  <property name="folder.to.delete" value="${dir-build}" />
-              </phingcall>
-              <if>
-                  <available file="${project.tmp.dir}/default.settings.php" />
-                  <then>
-                      <mkdir dir="${build.platform.dir.settings}" />
-                      <copy file="${project.tmp.dir}/default.settings.php" tofile="${build.platform.dir.settings}/default.settings.php" />
-                  </then>
-              </if>
-              <if>
-                  <available file="${project.tmp.dir}/settings.php" />
-                  <then>
-                      <mkdir dir="${build.platform.dir.settings}" />
-                      <copy file="${project.tmp.dir}/settings.php" tofile="${build.platform.dir.settings}/settings.php" />
-                  </then>
-              </if>
-              <if>
-                  <available file="${project.tmp.dir}/settings.local.php" />
-                  <then>
-                      <mkdir dir="${build.platform.dir.settings}" />
-                      <copy file="${project.tmp.dir}/settings.local.php" tofile="${build.platform.dir.settings}/settings.local.php" />
-                  </then>
-              </if>
-
-          </target>
-
+        <echo msg="Unprotecting folder." />
+        <phingcall target="folder-delete">
+            <property name="folder.to.delete" value="${dir-build}" />
+        </phingcall>
+        <if>
+            <available file="${project.tmp.dir}/default.settings.php" />
+            <then>
+                <mkdir dir="${build.platform.dir.settings}" />
+                <copy file="${project.tmp.dir}/default.settings.php" tofile="${build.platform.dir.settings}/default.settings.php" />
+            </then>
+        </if>
+        <if>
+            <available file="${project.tmp.dir}/settings.php" />
+            <then>
+                <mkdir dir="${build.platform.dir.settings}" />
+                <copy file="${project.tmp.dir}/settings.php" tofile="${build.platform.dir.settings}/settings.php" />
+            </then>
+        </if>
+        <if>
+            <available file="${project.tmp.dir}/settings.local.php" />
+            <then>
+                <mkdir dir="${build.platform.dir.settings}" />
+                <copy file="${project.tmp.dir}/settings.local.php" tofile="${build.platform.dir.settings}/settings.local.php" />
+            </then>
+        </if>
+    </target>
 
     <target name="project-platform-enable-multisite" hidden="true" description="Enable multisite mode.">
         <if>
@@ -247,108 +242,107 @@
     </target>
 
     <target name="project-subsite-backup" hidden="true"  description="Backup site defined files from properties.">
-            <if>
-                <available file="${build.subsite.dir}/settings.php" type="file" />
-                <then>
-                    <property name="site-detected" value="1" />
-                </then>
-                <else>
-                    <echo msg="No site installation detected. Skipping backup." />
-                </else>
-            </if>
+        <if>
+            <available file="${build.subsite.dir}/settings.php" type="file" />
+            <then>
+                <property name="site-detected" value="1" />
+            </then>
+            <else>
+                <echo msg="No site installation detected. Skipping backup." />
+            </else>
+        </if>
 
-            <if>
-                <and>
-                    <equals arg1="${rebuild.auto}" arg2="0" />
-                    <equals arg1="${site-detected}" arg2="1" />
-                </and>
-                <then>
-                    <echo msg="Installed site detected." level="warning" />
-                    <propertyprompt propertyName="project-subsite-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
-                    <if>
-                        <equals arg1="${project-subsite-backup-activated}" arg2="y" />
-                        <then>
-                            <property name="rebuild.auto" value="1" override="true" />
-                        </then>
-                    </if>
-                </then>
-            </if>
-            <if>
-                <and>
-                    <equals arg1="${rebuild.auto}" arg2="1" />
-                    <equals arg1="${site-detected}" arg2="1" />
-                </and>
-                <then>
-                    <if>
-                        <available file="${rebuild.backup.destination}" type="dir" />
-                        <then>
-                            <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
-                        </then>
-                    </if>
-                    <mkdir dir="${rebuild.backup.destination}" />
-                    <phingcall target="folder-unprotect">
-                        <property name="folder.to.unprotect" value="${build.platform.dir.sites}" />
-                    </phingcall>
-                    <foreach list="${rebuild.backup.folders}" param="site-item" target="project-subsite-backup-item" delimiter=";">
-                        <property name="site-item-type" value="dir" />
-                    </foreach>
-                    <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-backup-item" delimiter=";">
-                        <property name="site-item-type" value="file" />
-                    </foreach>
-                </then>
-            </if>
-            <if>
-                <equals arg1="${project-subsite-backup-activated}" arg2="y" />
-                <then>
-                    <property name="rebuild.auto" value="0" override="true" />
-                </then>
-            </if>
-        </target>
+        <if>
+            <and>
+                <equals arg1="${rebuild.auto}" arg2="0" />
+                <equals arg1="${site-detected}" arg2="1" />
+            </and>
+            <then>
+                <echo msg="Installed site detected." level="warning" />
+                <propertyprompt propertyName="project-subsite-backup-activated" promptText="Do you wish to backup site for this build? (y/n)" />
+                <if>
+                    <equals arg1="${project-subsite-backup-activated}" arg2="y" />
+                    <then>
+                        <property name="rebuild.auto" value="1" override="true" />
+                    </then>
+                </if>
+            </then>
+        </if>
+        <if>
+            <and>
+                <equals arg1="${rebuild.auto}" arg2="1" />
+                <equals arg1="${site-detected}" arg2="1" />
+            </and>
+            <then>
+                <if>
+                    <available file="${rebuild.backup.destination}" type="dir" />
+                    <then>
+                        <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
+                    </then>
+                </if>
+                <mkdir dir="${rebuild.backup.destination}" />
+                <phingcall target="folder-unprotect">
+                    <property name="folder.to.unprotect" value="${build.platform.dir.sites}" />
+                </phingcall>
+                <foreach list="${rebuild.backup.folders}" param="site-item" target="project-subsite-backup-item" delimiter=";">
+                    <property name="site-item-type" value="dir" />
+                </foreach>
+                <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-backup-item" delimiter=";">
+                    <property name="site-item-type" value="file" />
+                </foreach>
+            </then>
+        </if>
+        <if>
+            <equals arg1="${project-subsite-backup-activated}" arg2="y" />
+            <then>
+                <property name="rebuild.auto" value="0" override="true" />
+            </then>
+        </if>
+    </target>
 
-        <target name="project-subsite-restore" hidden="true" description="Restore site defined files from properties.">
-            <if>
-                <available file="${rebuild.backup.destination}" type="dir" />
-                <then>
-                    <property name="backup-detected" value="1" />
-                </then>
-                <else>
-                    <echo msg="No site backup detected. Skipping restore." />
-                </else>
-            </if>
-            <if>
-                <and>
-                    <equals arg1="${rebuild.auto}" arg2="0" />
-                    <equals arg1="${backup-detected}" arg2="1" />
-                </and>
-                <then>
-                    <echo msg="Site backup detected." level="warning" />
-                    <propertyprompt propertyName="project-subsite-restore-activated" promptText="Do you wish to restore site for this build? (y/n)" />
-                    <if>
-                        <equals arg1="${project-subsite-restore-activated}" arg2="y" />
-                        <then>
-                            <property name="rebuild.auto" value="1" override="true" />
-                        </then>
-                    </if>
-                </then>
-            </if>
-            <if>
-                <and>
-                    <equals arg1="${rebuild.auto}" arg2="1" />
-                    <equals arg1="${backup-detected}" arg2="1" />
-                </and>
-                <then>
-                    <echo msg="Restoring site files and folders from ${rebuild.backup.destination}" />
-                    <foreach list="${rebuild.backup.folders}" param="site-item" target="project-subsite-restore-item" delimiter=";">
-                        <property name="site-item-type" value="dir" />
-                    </foreach>
-                    <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-restore-item" delimiter=";">
-                        <property name="site-item-type" value="file" />
-                    </foreach>
-                    <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
-                </then>
-            </if>
-        </target>
-
+    <target name="project-subsite-restore" hidden="true" description="Restore site defined files from properties.">
+        <if>
+            <available file="${rebuild.backup.destination}" type="dir" />
+            <then>
+                <property name="backup-detected" value="1" />
+            </then>
+            <else>
+                <echo msg="No site backup detected. Skipping restore." />
+            </else>
+        </if>
+        <if>
+            <and>
+                <equals arg1="${rebuild.auto}" arg2="0" />
+                <equals arg1="${backup-detected}" arg2="1" />
+            </and>
+            <then>
+                <echo msg="Site backup detected." level="warning" />
+                <propertyprompt propertyName="project-subsite-restore-activated" promptText="Do you wish to restore site for this build? (y/n)" />
+                <if>
+                    <equals arg1="${project-subsite-restore-activated}" arg2="y" />
+                    <then>
+                        <property name="rebuild.auto" value="1" override="true" />
+                    </then>
+                </if>
+            </then>
+        </if>
+        <if>
+            <and>
+                <equals arg1="${rebuild.auto}" arg2="1" />
+                <equals arg1="${backup-detected}" arg2="1" />
+            </and>
+            <then>
+                <echo msg="Restoring site files and folders from ${rebuild.backup.destination}" />
+                <foreach list="${rebuild.backup.folders}" param="site-item" target="project-subsite-restore-item" delimiter=";">
+                    <property name="site-item-type" value="dir" />
+                </foreach>
+                <foreach list="${rebuild.backup.files}" param="site-item" target="project-subsite-restore-item" delimiter=";">
+                    <property name="site-item-type" value="file" />
+                </foreach>
+                <delete dir="${rebuild.backup.destination}" includeemptydirs="true" />
+            </then>
+        </if>
+    </target>
 
     <target name="install-clone" description="Install NextEuropa site with sanitized production data."
         depends="
@@ -517,6 +511,15 @@
             </then>
         </if>
 
+        <if>
+            <matches string="${db.dl.filename}" pattern=".*NotFound.*" />
+            <then>
+                <echo msg="Found broken file, deleting."/>
+                <delete file="${share.path.subsites.packages.database}/${project.id}/${db.dl.filename.hash}" failonerror="true" />
+                <fail msg="Could not download the ${db.dl.filename.hash}, stopping execution."/>
+            </then>
+        </if>
+
         <!-- Download the ASDA dump. -->
         <echo msg="Download the ASDA database ${db.dl.filename}." />
         <phingcall target="package-download">
@@ -640,7 +643,7 @@
             </else>
         </if>
     </target>
-     <target name="project-platform-set-version" description="Save the platform version used for builds."
+    <target name="project-platform-set-version" description="Save the platform version used for builds."
         hidden="true">
         <!-- Delete of saved versions to force refresh -->
         <exec command='rm -rf ${project.tmp.dir}/build.version.props' outputProperty="log" checkreturn="true" />
