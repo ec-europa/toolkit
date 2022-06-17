@@ -338,17 +338,12 @@ class BuildCommands extends AbstractCommands
                     $this->io()->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
                 }
 
-                if (!empty($taskRunnerConfigFile)) {
-                    $finder = new Finder();
-                    $finder->files()
-                        ->in($theme_dir)
-                        ->name($taskRunnerConfigFile);
-                }
-
                 // Build task collection.
                 $collection = $this->collectionBuilder();
-
-                if (empty($finder->hasResults())) {
+                // Check if 'theme-task-runner' file exists.
+                // Create a new one from source if doesn't exist.
+                $files = scandir($theme_dir);
+                if (!in_array($taskRunnerConfigFile, $files)) {
                     $collection->taskExecStack()
                         ->exec('cp vendor/ec-europa/toolkit/src/ThemeTaskRunnerConfig/' . $taskRunnerConfigFile . ' ' . $theme_dir . '/' . $taskRunnerConfigFile)
                         ->stopOnFail();
