@@ -325,21 +325,28 @@ class BuildCommands extends AbstractCommands
                 // Run and return task collection.
                 return $collection->run();
             } else {
-                // Run theme task runner.
-                if ($options['theme-task-runner'] == 'grunt') {
-                    $taskRunnerConfigFile = 'Gruntfile.js';
-                    // Install ruby-sass for Grunt Task Runner.
-                    $collection->taskExecStack()
-                        ->dir($theme_dir)
-                        ->exec('sudo apt-get install ruby-sass')
-                        ->stopOnFail();
-                } elseif ($options['theme-task-runner'] == 'gulp') {
+                // Build task collection.
+                $collection = $this->collectionBuilder();
+
+                if ($options['theme-task-runner'] == 'gulp') {
                     $taskRunnerConfigFile = 'gulpfile.js';
                     $this->io()->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
                 }
+                elseif ($options['theme-task-runner'] == 'grunt') {
+                    $taskRunnerConfigFile = 'Gruntfile.js';
+                    $collection = $this->collectionBuilder();
+                    $collection->taskExecStack()
+                        ->dir($theme_dir)
+                        ->exec('sudo apt-get update')
+                        ->exec('sudo apt-get install ruby-sass -y')
+                        ->stopOnFail();
+                }
+                else {
+                    $themeTaskRunner = $options['theme-task-runner'];
+                    $this->say("$themeTaskRunner is not a supported 'theme-task-runner'. The supported plugins are 'gulp' and 'grunt' (Recommended).");
+                    return;
+                }
 
-                // Build task collection.
-                $collection = $this->collectionBuilder();
                 // Check if 'theme-task-runner' file exists.
                 // Create a new one from source if doesn't exist.
                 $files = scandir($theme_dir);
