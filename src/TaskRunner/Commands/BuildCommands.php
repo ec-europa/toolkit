@@ -331,8 +331,7 @@ class BuildCommands extends AbstractCommands
                 if ($options['theme-task-runner'] == 'gulp') {
                     $taskRunnerConfigFile = 'gulpfile.js';
                     $this->io()->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
-                }
-                elseif ($options['theme-task-runner'] == 'grunt') {
+                } elseif ($options['theme-task-runner'] == 'grunt') {
                     $taskRunnerConfigFile = 'Gruntfile.js';
                     $collection = $this->collectionBuilder();
                     $collection->taskExecStack()
@@ -340,8 +339,7 @@ class BuildCommands extends AbstractCommands
                         ->exec('sudo apt-get update')
                         ->exec('sudo apt-get install ruby-sass -y')
                         ->stopOnFail();
-                }
-                else {
+                } else {
                     $themeTaskRunner = $options['theme-task-runner'];
                     $this->say("$themeTaskRunner is not a supported 'theme-task-runner'. The supported plugins are 'gulp' and 'grunt' (Recommended).");
                     return;
