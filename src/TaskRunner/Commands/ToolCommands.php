@@ -167,7 +167,7 @@ class ToolCommands extends AbstractCommands
         }
         $resulttkReqsEndpoint = self::getQaEndpointContent($tkReqsEndpoint, $basicAuth);
         $datatkReqsEndpoint = json_decode($resulttkReqsEndpoint, true);
-        $vendorList = $datatkReqsEndpoint ?? $datatkReqsEndpoint['vendor_list'];
+        $vendorList = $datatkReqsEndpoint['vendor_list'] ?? [];
 
         $this->io()->title('Checking evaluation status components.');
         // Proceed with 'blocker' option. Loop over the packages.
@@ -1254,18 +1254,12 @@ Checking NEXTCLOUD configuration: %s",
 
         if ($result) {
             $data = json_decode($result, true);
-            var_dump($data);
             if (empty($data) || !isset($data['vendor_list'])) {
                 $this->writeln('Invalid data returned from the endpoint.');
             } else {
                 $vendorList = $data['vendor_list'];
-                $this->io()->title("Vendors being monitorised:");
-                array_map(function ($vendor) {
-                    $this->writeln(sprintf(
-                        "%s",
-                        $vendor
-                    ));
-                }, $vendorList);
+                $this->io()->title('Vendors being monitorised:');
+                $this->writeln($vendorList);
             }
         } else {
             $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
