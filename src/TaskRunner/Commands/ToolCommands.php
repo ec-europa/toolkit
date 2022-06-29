@@ -980,9 +980,10 @@ class ToolCommands extends AbstractCommands
         'endpoint' => InputOption::VALUE_OPTIONAL,
     ])
     {
+        $url = (!empty($url = getenv('QA_WEBSITE_URL'))) ? $url : 'https://webgate.ec.europa.eu/fpfis/qa';
         $this->say("Checking Toolkit requirements:\n");
         if (empty($options['endpoint'])) {
-            $options['endpoint'] = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
+            $options['endpoint'] = $url . '/api/v1/toolkit-requirements';
         }
         $php_check = $toolkit_check = $drupal_check = $endpoint_check = $nextcloud_check = $asda_check = 'FAIL';
         $php_version = $toolkit_version = $drupal_version = '';
