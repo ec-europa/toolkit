@@ -2,8 +2,8 @@
 
 To list all available tasks, please run:
 ```
-✔ ~/Projects/cnect-eurohpc-reference [master|✔] 
-15:12 $ docker-composer exec web ./vendor/bin/run 
+✔ ~/Projects/cnect-eurohpc-reference [master|✔]
+15:12 $ docker-composer exec web ./vendor/bin/run
 ```
 
 See bellow current list for version `4.0.0-beta8`.
@@ -17,7 +17,7 @@ Available commands:
   drupal:drush-setup            Write Drush configuration files to given directories.
   drupal:permissions-setup      Setup Drupal permissions.
   drupal:settings-setup         Setup Drupal settings.php file in compliance with Toolkit conventions.
-  drupal:setup-test             
+  drupal:setup-test
   drupal:site-install           [drupal:si|dsi] Install target site.
   drupal:site-post-install      Run Drupal post-install commands.
   drupal:site-pre-install       Run Drupal pre-install commands.
@@ -38,7 +38,6 @@ Available commands:
   toolkit:install-clone         Install a clone website.
   toolkit:install-clone-dev     Install a clone website in dev mode.
   toolkit:install-dump          Install clone from production snapshot.
-  toolkit:notifications         Display toolkit notifications.
   toolkit:run-deploy            Run deployment sequence.
   toolkit:run-phpcbf            [tpb] Run PHP code autofixing.
   toolkit:test-behat            [tb] Run Behat tests.

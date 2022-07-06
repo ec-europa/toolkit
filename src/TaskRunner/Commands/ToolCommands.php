@@ -57,11 +57,14 @@ class ToolCommands extends AbstractCommands
      * @command toolkit:notifications
      *
      * @option endpoint The endpoint for the notifications
+     *
+     * @deprecated
      */
     public function displayNotifications(array $options = [
         'endpoint' => InputOption::VALUE_OPTIONAL,
     ])
     {
+        $this->getOutput()->writeln('<comment>This command is deprecated and will be removed!</comment>');
         $endpointUrl = $options['endpoint'];
 
         if (isset($endpointUrl)) {
