@@ -426,11 +426,12 @@ class ToolCommands extends AbstractCommands
      */
     protected function componentRecommended($modules, $packages)
     {
+        $recommendedPackages = $projectPackages = [];
         foreach ($packages as $package) {
             $projectPackages[] = $package['name'];
         }
         foreach ($modules as $module) {
-            if ($module['usage'] === 'recommended') {
+            if (strtolower($module['usage']) === 'recommended') {
                 $recommendedPackages[] = $module['name'];
             }
         }
