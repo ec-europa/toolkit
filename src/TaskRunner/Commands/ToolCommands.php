@@ -64,7 +64,7 @@ class ToolCommands extends AbstractCommands
         'endpoint' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        $this->getOutput()->writeln('<comment>This command is deprecated and will be removed!</comment>');
+        $this->output->writeln('<comment>This command is deprecated and will be removed!</comment>');
         $endpointUrl = $options['endpoint'];
 
         if (isset($endpointUrl)) {
