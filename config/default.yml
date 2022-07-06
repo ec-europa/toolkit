@@ -96,7 +96,7 @@ toolkit:
         - ./src
     phpmd:
       config: phpmd.xml
-      format: text
+      format: ansi
       ignore_patterns:
         - vendor/
         - web/
