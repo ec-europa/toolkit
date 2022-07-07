@@ -469,7 +469,7 @@ class ToolCommands extends AbstractCommands
             ->run()->getMessage();
         $drush_result = trim($drush_result);
         if (!empty($drush_result) && $drush_result !== '[]') {
-            $data = json_decode($drush_result, TRUE);
+            $data = json_decode($drush_result, true);
             if (!empty($data) && is_array($data)) {
                 $packages = $data;
             }
@@ -480,7 +480,7 @@ class ToolCommands extends AbstractCommands
             ->run()->getMessage();
         $sc_result = trim($sc_result);
         if (!empty($sc_result) && $sc_result !== '[]') {
-            $data = json_decode($sc_result, TRUE);
+            $data = json_decode($sc_result, true);
             if (!empty($data) && is_array($data)) {
                 $packages = array_merge($packages, $data);
             }
