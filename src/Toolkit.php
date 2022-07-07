@@ -7,11 +7,10 @@ namespace EcEuropa\Toolkit;
 /**
  * Provides default Toolkit class.
  */
-final class Toolkit {
-
+final class Toolkit
+{
     /**
      * Constant holding the current version.
      */
     public const VERSION = '8.6.15';
-
 }
