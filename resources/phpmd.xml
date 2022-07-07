@@ -4,9 +4,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
          xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
-    <description>Toolkit custom PHP Mess Detector ruleset</description>
+    <description>Toolkit PHP Mess Detector ruleset</description>
 
-    <!-- https://phpmd.org/rules/index.html -->
+    <!--
+    By default, Toolkit load all the available rulesets, feel free to
+    adapt this ruleset to your needs.
+    @see https://phpmd.org/rules/index.html
+    -->
     <rule ref="rulesets/cleancode.xml" />
     <rule ref="rulesets/codesize.xml" />
     <rule ref="rulesets/controversial.xml" />

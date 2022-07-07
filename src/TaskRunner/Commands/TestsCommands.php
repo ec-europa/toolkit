@@ -131,8 +131,17 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             $this->say('Executing PHPcs within GrumPHP.');
             return $this->runGrumphp();
         } else {
+            $result = 0;
             $this->say('Executing PHPcs in standalone mode.');
-            return $this->runPhpcs();
+            $code = $this->runPhpcs();
+            $result += $code->getExitCode();
+
+            $this->say('Executing PHPmd in standalone mode.');
+            $code = $this->toolkitPhpmd();
+            $result += $code->getExitCode();
+            $this->writeln('Exit: ' . $result);
+
+            return $result;
         }
     }
 

@@ -41,16 +41,18 @@ Additional commands can be run before and/or after the test. Such commands
 should be defined in the `./runner.yml.dist` or `./runner.yml` files:
 
 ```yaml
-behat:
-  commands:
-    before:
-      - task: exec
-        command: ls -la
-      - ...
-    after:
-      - task: exec
-        command: whoami
-      - ...
+toolkit:
+  test:
+    behat:
+      commands:
+        before:
+          - task: exec
+            command: ls -la
+          - ...
+        after:
+          - task: exec
+            command: whoami
+          - ...
 ```
 
 ## PHPCS testing
@@ -126,21 +128,58 @@ Additional commands can be run before and/or after the test. Such commands
 should be defined in the `./runner.yml.dist` or `./runner.yml` files:
 
 ```yaml
-phpunit:
-  commands:
-    before:
-      - task: exec
-        command: ls -la
-      - ...
-    after:
-      - task: exec
-        command: whoami
-      - ...
+toolkit:
+  test:
+    phpunit:
+      commands:
+        before:
+          - task: exec
+            command: ls -la
+          - ...
+        after:
+          - task: exec
+            command: whoami
+          - ...
+```
+
+## PHPMD testing
+To run PHP Mess Detector tests you can make use of the `toolkit:test-phpmd`
+command. If the project does not have a phpmd.xml file in the root folder,
+Toolkit will create the default config file.
+
+To run the PHP Mess Detector checks:
+
+```
+docker-compose exec web ./vendor/bin/run toolkit:test-phpmd
+```
+
+These are the default configurations in the runner.yml file.
+
+```yaml
+toolkit:
+  test:
+    phpmd:
+      config: phpmd.xml
+      format: ansi
+      ignore_patterns:
+        - vendor/
+        - web/
+        - node_modules/
+        - config/
+      triggered_by:
+        - php
+        - module
+        - inc
+        - theme
+        - install
+      files:
+        - lib
+        - src
 ```
 
 ## Testing in CI
-Toolkit is full integrated with oficial pipeline that currently requires minimum of 1 behat
-test and a clean report for phpcs check.
+Toolkit is full integrated with oficial pipeline that currently requires minimum
+of 1 behat test and a clean report for phpcs check.
 
 Any customization done in your project will be respected in Drone build.
 
