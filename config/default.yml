@@ -94,6 +94,23 @@ toolkit:
         - ./lib
         - ./resources
         - ./src
+    phpmd:
+      config: phpmd.xml
+      format: ansi
+      ignore_patterns:
+        - vendor/
+        - web/
+        - node_modules/
+        - config/
+      triggered_by:
+        - php
+        - module
+        - inc
+        - theme
+        - install
+      files:
+        - lib
+        - src
   lint:
     yaml:
       pattern: [ '*.yml', '*.yaml', '*.yml.dist', '*.yaml.dist' ]

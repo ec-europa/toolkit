@@ -131,9 +131,61 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             $this->say('Executing PHPcs within GrumPHP.');
             return $this->runGrumphp();
         } else {
+            $result = 0;
             $this->say('Executing PHPcs in standalone mode.');
-            return $this->runPhpcs();
+            $code = $this->runPhpcs();
+            $result += $code->getExitCode();
+
+            $this->say('Executing PHPmd in standalone mode.');
+            $code = $this->toolkitPhpmd();
+            $result += $code->getExitCode();
+            $this->writeln('Exit: ' . $result);
+
+            return $result;
         }
+    }
+
+    /**
+     * Run PHPMD standalone.
+     *
+     * Check configurations at config/default.yml - 'toolkit.test.phpmd'.
+     *
+     * @command toolkit:test-phpmd
+     */
+    public function toolkitPhpmd()
+    {
+        $config = $this->getConfig();
+        $config_file = $config->get('toolkit.test.phpmd.config');
+
+        if (!file_exists($config_file)) {
+            $this->output->writeln('Could not find the ruleset file, the default will be created in the project root.');
+            copy(__DIR__ . '/../../../resources/phpmd.xml', $config_file);
+        }
+
+        $phpmd_bin = $this->getBin('phpmd');
+        $exclusions = (array) $config->get('toolkit.test.phpmd.ignore_patterns');
+        $extensions = (array) $config->get('toolkit.test.phpmd.triggered_by');
+        $files = (array) $config->get('toolkit.test.phpmd.files');
+        $format = $config->get('toolkit.test.phpmd.format');
+        $options = '';
+
+        if (!empty($exclusions)) {
+            $options .= '--exclude="' . implode(',', $exclusions) . '" ';
+        }
+        if (!empty($extensions)) {
+            $options .= '--suffixes="' . implode(',', $extensions) . '"';
+        }
+        if (!empty($files)) {
+            foreach ($files as $key => $file) {
+                if (!file_exists($file)) {
+                    $this->writeln("The path '$file' was not found, ignoring.");
+                    unset($files[$key]);
+                }
+            }
+            $files = implode(',', $files);
+        }
+        return $this->taskExec("$phpmd_bin $files $format $config_file $options")
+            ->run();
     }
 
     /**
