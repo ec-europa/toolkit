@@ -463,37 +463,49 @@ class ToolCommands extends AbstractCommands
      */
     protected function componentInsecure($modules)
     {
-        $result = $this->taskExec('drush pm:security --format=json')
+        $packages = [];
+        $drush_result = $this->taskExec($this->getBin('drush') . ' pm:security --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
+        $drush_result = trim($drush_result);
+        if (!empty($drush_result) && $drush_result !== '[]') {
+            $data = json_decode($drush_result, TRUE);
+            if (!empty($data) && is_array($data)) {
+                $packages = $data;
+            }
+        }
 
-        if (strpos(trim($result), 'There are no outstanding security') !== false) {
-            $this->say('There are no outstanding security updates.');
-        } else {
-            $insecurePackages = json_decode($result, true);
-            if (is_array($insecurePackages)) {
-                $messages = [];
-                foreach ($insecurePackages as $insecurePackage) {
-                    $msg = "Package {$insecurePackage['name']} have a security update, please update to a safe version.";
-                    if (!empty($modules[$insecurePackage['name']]['secure'])) {
-                        if (Semver::satisfies($insecurePackage['version'], $modules[$insecurePackage['name']]['secure'])) {
-                            $messages[] = "$msg (Version marked as secure)";
-                            continue;
-                        }
-                    }
-                    $historyTerms = $this->getPackageDetails($insecurePackage['name'], $insecurePackage['version'], '8.x');
-                    if (empty($historyTerms['terms']) || !in_array('insecure', $historyTerms['terms'])) {
-                        $messages[] = "$msg (Confirmation failed, ignored)";
-                        continue;
-                    }
+        $sc_result = $this->taskExec($this->getBin('security-checker') . ' security:check --no-dev --format=json')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        $sc_result = trim($sc_result);
+        if (!empty($sc_result) && $sc_result !== '[]') {
+            $data = json_decode($sc_result, TRUE);
+            if (!empty($data) && is_array($data)) {
+                $packages = array_merge($packages, $data);
+            }
+        }
 
-                    $messages[] = $msg;
-                    $this->componentCheckInsecureFailed = true;
-                }
-                if (!empty($messages)) {
-                    echo implode(PHP_EOL, $messages) . PHP_EOL;
+        $messages = [];
+        foreach ($packages as $name => $package) {
+            $msg = "Package $name have a security update, please update to a safe version.";
+            if (!empty($modules[$name]['secure'])) {
+                if (Semver::satisfies($package['version'], $modules[$name]['secure'])) {
+                    $messages[] = "$msg (Version marked as secure)";
+                    continue;
                 }
             }
+            $historyTerms = $this->getPackageDetails($name, $package['version'], '8.x');
+            if (!empty($historyTerms) && (empty($historyTerms['terms']) || !in_array('insecure', $historyTerms['terms']))) {
+                $messages[] = "$msg (Confirmation failed, ignored)";
+                continue;
+            }
+
+            $messages[] = $msg;
+            $this->componentCheckInsecureFailed = true;
+        }
+        if (!empty($messages)) {
+            $this->writeln($messages);
         }
 
         $fullSkip = getenv('QA_SKIP_INSECURE') !== false ? getenv('QA_SKIP_INSECURE') : false;
