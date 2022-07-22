@@ -170,10 +170,10 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $options = '';
 
         if (!empty($exclusions)) {
-            $options .= '--exclude="' . implode(',', $exclusions) . '" ';
+            $options .= '--exclude "' . implode(',', $exclusions) . '" ';
         }
         if (!empty($extensions)) {
-            $options .= '--suffixes="' . implode(',', $extensions) . '"';
+            $options .= '--suffixes "' . implode(',', $extensions) . '"';
         }
         if (!empty($files)) {
             foreach ($files as $key => $file) {
