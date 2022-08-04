@@ -1245,8 +1245,7 @@ Checking NEXTCLOUD configuration: %s",
         }
         if (!empty($GLOBALS['composer.lock'])) {
             $composer = $GLOBALS['composer.lock'];
-        }
-        else {
+        } else {
             $composer = json_decode(file_get_contents('composer.lock'), true);
             $GLOBALS['composer.lock'] = $composer;
         }
@@ -1254,17 +1253,16 @@ Checking NEXTCLOUD configuration: %s",
             if (is_null($section)) {
                 $type = 'packages-dev';
                 $index = array_search($package, array_column($composer[$type], 'name'));
-                if ($index === FALSE) {
+                if ($index === false) {
                     $type = 'packages';
                     $index = array_search($package, array_column($composer[$type], 'name'));
                 }
-                if ($index !== FALSE && isset($composer[$type][$index][$prop])) {
+                if ($index !== false && isset($composer[$type][$index][$prop])) {
                     return $composer[$type][$index][$prop];
                 }
-            }
-            elseif (isset($composer[$section])) {
+            } elseif (isset($composer[$section])) {
                 $index = array_search($package, array_column($composer[$section], 'name'));
-                if ($index !== FALSE && isset($composer[$section][$index][$prop])) {
+                if ($index !== false && isset($composer[$section][$index][$prop])) {
                     return $composer[$section][$index][$prop];
                 }
             }
@@ -1340,7 +1338,8 @@ Checking NEXTCLOUD configuration: %s",
      * @return string
      *   The current environment, one of: 'dev', 'acc', 'prod'.
      */
-    public static function getDeploymentEnvironment(): string {
+    public static function getDeploymentEnvironment(): string
+    {
         if (!getenv('CI')) {
             return 'dev';
         }
