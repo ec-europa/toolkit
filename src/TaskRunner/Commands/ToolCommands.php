@@ -222,17 +222,14 @@ class ToolCommands extends AbstractCommands
         $this->io()->newLine();
 
         $this->io()->title('Checking require section for Drush.');
-        foreach ($composerLock['packages-dev'] as $package) {
-            if ($package['name'] == 'drush/drush') {
-                $this->componentCheckDrushRequireFailed = true;
-                $this->io()->warning("Package 'drush/drush' cannot be used in require-dev, must be on require section.");
-            }
+        if (ToolCommands::getPackagePropertyFromComposer('drush/drush', 'version', 'packages-dev')) {
+            $this->componentCheckDrushRequireFailed = true;
+            $this->io()->warning("Package 'drush/drush' cannot be used in require-dev, must be on require section.");
         }
+
         if (!$this->componentCheckDrushRequireFailed) {
-            foreach ($composerLock['packages'] as $package) {
-                if ($package['name'] == 'drush/drush') {
-                    $this->say('Drush require section check passed.');
-                }
+            if (ToolCommands::getPackagePropertyFromComposer('drush/drush', 'version', 'packages')) {
+                $this->say('Drush require section check passed.');
             }
         }
         $this->io()->newLine();
