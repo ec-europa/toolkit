@@ -108,7 +108,10 @@ class ToolCommands extends AbstractCommands
 
         $this->checkCommitMessage();
 
-        $endpointUrl = "https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x";
+        $endpoint = 'https://webgate.ec.europa.eu/fpfis/qa';
+        if (!empty($options['endpoint'])) {
+            $endpoint = $options['endpoint'];
+        }
         $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
 
         if (!isset($composerLock['packages'])) {
@@ -117,12 +120,12 @@ class ToolCommands extends AbstractCommands
         }
 
         $status = 0;
-        $result = self::getQaEndpointContent($endpointUrl, $basicAuth);
+        $result = self::getQaEndpointContent($endpoint . '/api/v1/package-reviews?version=8.x', $basicAuth);
         $data = json_decode($result, true);
         $modules = (array) array_filter(array_combine(array_column($data, 'name'), $data));
 
         // To test this command execute it with the --test-command option:
-        // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x"
+        // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://webgate.ec.europa.eu/fpfis/qa"
         // Then we provide an array in the packages that fails on each type
         // of validation.
         if ($options['test-command']) {
@@ -164,7 +167,7 @@ class ToolCommands extends AbstractCommands
         }
 
         // Get vendor list from 'api/v1/toolkit-requirements' endpoint.
-        $tkReqsEndpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
+        $tkReqsEndpoint = $endpoint . '/api/v1/toolkit-requirements';
         if (empty($basicAuth = $this->getQaApiBasicAuth())) {
             return 1;
         }
@@ -367,8 +370,9 @@ class ToolCommands extends AbstractCommands
     protected function componentMandatory($modules)
     {
         $enabledPackages = $mandatoryPackages = [];
+        $drushBin = $this->getBin('drush');
         // Check if the website is installed.
-        $result = $this->taskExec('drush status --format=json')
+        $result = $this->taskExec($drushBin . ' status --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
         $status = json_decode($result, true);
@@ -386,7 +390,7 @@ class ToolCommands extends AbstractCommands
             }
         } else {
             // Get enabled packages.
-            $result = $this->taskExec('drush pm-list --fields=status --format=json')
+            $result = $this->taskExec($drushBin . ' pm-list --fields=status --format=json')
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                 ->run()->getMessage();
             $projPackages = json_decode($result, true);
@@ -399,15 +403,17 @@ class ToolCommands extends AbstractCommands
 
         // Get mandatory packages.
         if (!empty($modules)) {
-            $mandatoryPackages = array_column(array_filter($modules, function ($item) {
+            $mandatoryPackages = array_values(array_filter($modules, function ($item) {
                 return $item['mandatory'] === '1';
-            }), 'machine_name');
+            }));
         }
 
-        $diffMandatory = array_diff($mandatoryPackages, $enabledPackages);
+        $diffMandatory = array_diff(array_column($mandatoryPackages, 'machine_name'), $enabledPackages);
         if (!empty($diffMandatory)) {
             foreach ($diffMandatory as $notPresent) {
-                echo "Package $notPresent is mandatory and is not present on the project." . PHP_EOL;
+                $index = array_search($notPresent, array_column($mandatoryPackages, 'machine_name'));
+                $date = !empty($mandatoryPackages[$index]['mandatory_date']) ? ' (since ' . $mandatoryPackages[$index]['mandatory_date'] . ')' : '';
+                echo "Package $notPresent is mandatory$date and is not present on the project." . PHP_EOL;
                 $this->componentCheckMandatoryFailed = true;
             }
         }
@@ -429,20 +435,22 @@ class ToolCommands extends AbstractCommands
      */
     protected function componentRecommended($modules, $packages)
     {
-        $recommendedPackages = $projectPackages = [];
-        foreach ($packages as $package) {
-            $projectPackages[] = $package['name'];
-        }
-        foreach ($modules as $module) {
-            if (strtolower($module['usage']) === 'recommended') {
-                $recommendedPackages[] = $module['name'];
-            }
+        $recommendedPackages = [];
+        // Get project packages.
+        $projectPackages = array_column($packages, 'name');
+        // Get recommended packages.
+        if (!empty($modules)) {
+            $recommendedPackages = array_values(array_filter($modules, function ($item) {
+                return strtolower($item['usage']) === 'recommended';
+            }));
         }
 
-        $diffRecommended = array_diff($recommendedPackages, $projectPackages);
+        $diffRecommended = array_diff(array_column($recommendedPackages, 'name'), $projectPackages);
         if (!empty($diffRecommended)) {
             foreach ($diffRecommended as $notPresent) {
-                echo "Package $notPresent is recommended but is not present on the project." . PHP_EOL;
+                $index = array_search($notPresent, array_column($recommendedPackages, 'name'));
+                $date = !empty($recommendedPackages[$index]['mandatory_date']) ? ' (and will be mandatory at ' . $recommendedPackages[$index]['mandatory_date'] . ')' : '';
+                echo "Package $notPresent is recommended$date but is not present on the project." . PHP_EOL;
                 $this->componentCheckRecommendedFailed = false;
             }
         }
