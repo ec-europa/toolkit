@@ -696,7 +696,7 @@ class ToolCommands extends AbstractCommands
             return 0;
         }
 
-        if ($drupal_version = $this->getPackagePropertyFromComposer('drupal/core')) {
+        if ($drupal_version = self::getPackagePropertyFromComposer('drupal/core')) {
             if (Semver::satisfies($drupal_version, '^9')) {
                 $this->say('Project already running on Drupal 9, skipping Drupal 9 compatibility analysis.');
                 return 0;
@@ -1022,13 +1022,13 @@ class ToolCommands extends AbstractCommands
             $php_check = ($isValid >= 0) ? 'OK' : 'FAIL';
 
             // Handle Toolkit version.
-            if (!($toolkit_version = $this->getPackagePropertyFromComposer('ec-europa/toolkit'))) {
+            if (!($toolkit_version = self::getPackagePropertyFromComposer('ec-europa/toolkit'))) {
                 $toolkit_check = 'FAIL (not found)';
             } else {
                 $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
             }
             // Handle Drupal version.
-            if (!($drupal_version = $this->getPackagePropertyFromComposer('drupal/core'))) {
+            if (!($drupal_version = self::getPackagePropertyFromComposer('drupal/core'))) {
                 $drupal_check = 'FAIL (not found)';
             } else {
                 $drupal_check = Semver::satisfies($drupal_version, $data['drupal']) ? 'OK' : 'FAIL';
@@ -1189,7 +1189,7 @@ Checking NEXTCLOUD configuration: %s",
         $result = self::getQaEndpointContent($endpoint, $basicAuth);
         $min_version = '';
 
-        if (!($composer_version = $this->getPackagePropertyFromComposer('ec-europa/toolkit'))) {
+        if (!($composer_version = self::getPackagePropertyFromComposer('ec-europa/toolkit'))) {
             $this->writeln('Failed to get Toolkit version from composer.lock.');
         }
         if ($result) {
@@ -1228,29 +1228,43 @@ Checking NEXTCLOUD configuration: %s",
     /**
      * Helper to return a property from a package in the composer.lock file.
      *
-     * @param $package
-     *   The package to search.
-     * @param $prop
-     *   The property to return. Default to 'version'.
+     * @param string $package
+     *   The package name to search.
+     * @param string $prop
+     *   The property to return, default to 'version'.
+     * @param string|null $section
+     *   Set to 'packages' or 'packages-dev' to filter by section.
      *
      * @return false|mixed
      *   The property value, false if not found.
      */
-    private function getPackagePropertyFromComposer($package, $prop = 'version')
+    public static function getPackagePropertyFromComposer(string $package, string $prop = 'version', string $section = null)
     {
         if (!file_exists('composer.lock')) {
             return false;
         }
-        $composer = json_decode(file_get_contents('composer.lock'), true);
+        if (!empty($GLOBALS['composer.lock'])) {
+            $composer = $GLOBALS['composer.lock'];
+        } else {
+            $composer = json_decode(file_get_contents('composer.lock'), true);
+            $GLOBALS['composer.lock'] = $composer;
+        }
         if ($composer) {
-            $type = 'packages-dev';
-            $index = array_search($package, array_column($composer[$type], 'name'));
-            if ($index === false) {
-                $type = 'packages';
+            if (is_null($section)) {
+                $type = 'packages-dev';
                 $index = array_search($package, array_column($composer[$type], 'name'));
-            }
-            if ($index !== false && isset($composer[$type][$index][$prop])) {
-                return $composer[$type][$index][$prop];
+                if ($index === false) {
+                    $type = 'packages';
+                    $index = array_search($package, array_column($composer[$type], 'name'));
+                }
+                if ($index !== false && isset($composer[$type][$index][$prop])) {
+                    return $composer[$type][$index][$prop];
+                }
+            } elseif (isset($composer[$section])) {
+                $index = array_search($package, array_column($composer[$section], 'name'));
+                if ($index !== false && isset($composer[$section][$index][$prop])) {
+                    return $composer[$section][$index][$prop];
+                }
             }
         }
         return false;
@@ -1310,5 +1324,28 @@ Checking NEXTCLOUD configuration: %s",
         }
 
         return $auth;
+    }
+
+    /**
+     * Returns the current environment based on env vars.
+     *
+     * This command is called during build-dist, the build-dist is called in
+     * the create-distribution step during deployments.
+     * If CI env var is defined and TAG is available then the environment is
+     * 'prod' otherwise is 'acc'. If no CI env var is defined assume 'dev'
+     * environment.
+     *
+     * @return string
+     *   The current environment, one of: 'dev', 'acc', 'prod'.
+     */
+    public static function getDeploymentEnvironment(): string
+    {
+        if (!getenv('CI')) {
+            return 'dev';
+        }
+        if (getenv('CI_COMMIT_TAG') || getenv('DRONE_TAG')) {
+            return 'prod';
+        }
+        return 'acc';
     }
 }
