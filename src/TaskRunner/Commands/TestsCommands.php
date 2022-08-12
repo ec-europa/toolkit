@@ -699,7 +699,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             $data['cpu_time'] = $result['envelope']['cpu'] . 'ms';
             $data['wall_time'] = $result['envelope']['wt'] . 'ms';
             $data['io_wait'] = $result['envelope']['io'] . 'ms';
-            $data['memory'] = $this->formatBytes($result['envelope']['pmu']);
+            $data['memory'] = ToolCommands::formatBytes($result['envelope']['pmu']);
             $data['sql'] = sprintf(
                 "%sms %srq",
                 $result['arguments']['io.db.query']['*']['wt'],
@@ -707,9 +707,9 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             );
             $data['network'] = sprintf(
                 '%s %s %s',
-                !empty($result['envelope']['nw']) ? $this->formatBytes($result['envelope']['nw']) : 'n/a',
-                !empty($result['envelope']['nw_in']) ? $this->formatBytes($result['envelope']['nw_in']) : 'n/a',
-                !empty($result['envelope']['nw_out']) ? $this->formatBytes($result['envelope']['nw_out']) : 'n/a'
+                !empty($result['envelope']['nw']) ? ToolCommands::formatBytes($result['envelope']['nw']) : 'n/a',
+                !empty($result['envelope']['nw_in']) ? ToolCommands::formatBytes($result['envelope']['nw_in']) : 'n/a',
+                !empty($result['envelope']['nw_out']) ? ToolCommands::formatBytes($result['envelope']['nw_out']) : 'n/a'
             );
 
             // Print the relevant information.
@@ -770,26 +770,5 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
 
         return new ResultData(0);
-    }
-
-    /**
-     * Helper to convert bytes to human readable unit.
-     *
-     * @param int $bytes
-     *   The bytes to convert.
-     * @param int $precision
-     *   The precision for the convertion.
-     *
-     * @return string
-     *   The converted value.
-     */
-    private function formatBytes($bytes, $precision = 2)
-    {
-        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
-        $bytes = max($bytes, 0);
-        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-        $pow = min($pow, count($units) - 1);
-        $bytes /= pow(1024, $pow);
-        return round($bytes, $precision) . $units[$pow];
     }
 }
