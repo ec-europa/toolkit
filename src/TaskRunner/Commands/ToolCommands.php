@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use Composer\Semver\Semver;
 use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
 use Robo\Contract\VerbosityThresholdInterface;
+use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use Symfony\Component\Yaml\Yaml;
@@ -160,7 +161,7 @@ class ToolCommands extends AbstractCommands
             $this->io()->title('Checking ' . $check . ' components.');
             $fct = "component" . $check;
             $this->{$fct}($modules, $composerLock['packages']);
-            echo PHP_EOL;
+            $this->io()->newLine();
         }
 
         // Get vendor list from 'api/v1/toolkit-requirements' endpoint.
@@ -168,9 +169,9 @@ class ToolCommands extends AbstractCommands
         if (empty($basicAuth = $this->getQaApiBasicAuth())) {
             return 1;
         }
-        $resulttkReqsEndpoint = self::getQaEndpointContent($tkReqsEndpoint, $basicAuth);
-        $datatkReqsEndpoint = json_decode($resulttkReqsEndpoint, true);
-        $vendorList = $datatkReqsEndpoint['vendor_list'] ?? [];
+        $resultTkReqsEndpoint = self::getQaEndpointContent($tkReqsEndpoint, $basicAuth);
+        $dataTkReqsEndpoint = json_decode($resultTkReqsEndpoint, true);
+        $vendorList = $dataTkReqsEndpoint['vendor_list'] ?? [];
 
         $this->io()->title('Checking evaluation status components.');
         // Proceed with 'blocker' option. Loop over the packages.
@@ -183,7 +184,7 @@ class ToolCommands extends AbstractCommands
         if ($this->componentCheckFailed == false) {
             $this->say("Evaluation module check passed.");
         }
-        echo PHP_EOL;
+        $this->io()->newLine();
 
         $this->io()->title('Checking dev components.');
         foreach ($composerLock['packages'] as $package) {
@@ -200,38 +201,38 @@ class ToolCommands extends AbstractCommands
         if (!$this->componentCheckDevVersionFailed) {
             $this->say('Dev components check passed.');
         }
-        echo PHP_EOL;
+        $this->io()->newLine();
 
-        $this->io()->title('Checking dev components on require section.');
-        foreach ($composerLock['packages'] as $package) {
-            foreach ($modules as $module) {
-                $packageName = $module['name'];
-                if ($module['dev_component'] == 'true' && $packageName == $package['name']) {
-                    $this->componentCheckDevCompRequireFailed = true;
-                    $this->io()->warning("Package $packageName cannot be used on require section, must be on require-dev section.");
-                }
+        $this->io()->title('Checking dev components in require section.');
+        $devPackages = array_filter(
+            array_column($modules, 'dev_component', 'name'),
+            function ($value) {
+                return $value == 'true';
+            }
+        );
+        foreach ($devPackages as $packageName => $package) {
+            if (ToolCommands::getPackagePropertyFromComposer($packageName, 'version', 'packages')) {
+                $this->componentCheckDevCompRequireFailed = true;
+                $this->io()->warning("Package $packageName cannot be used on require section, must be on require-dev section.");
             }
         }
         if (!$this->componentCheckDevCompRequireFailed) {
-            $this->say('Check passed - no dev components found on require section.');
+            $this->say('Dev components in require section check passed');
         }
-        echo PHP_EOL;
+        $this->io()->newLine();
 
         $this->io()->title('Checking require section for Drush.');
-        foreach ($composerLock['packages-dev'] as $package) {
-            if ($package['name'] == 'drush/drush') {
-                $this->componentCheckDrushRequireFailed = true;
-                $this->io()->warning("Package 'drush/drush' cannot be used in require-dev, must be on require section.");
-            }
+        if (ToolCommands::getPackagePropertyFromComposer('drush/drush', 'version', 'packages-dev')) {
+            $this->componentCheckDrushRequireFailed = true;
+            $this->io()->warning("Package 'drush/drush' cannot be used in require-dev, must be on require section.");
         }
+
         if (!$this->componentCheckDrushRequireFailed) {
-            foreach ($composerLock['packages'] as $package) {
-                if ($package['name'] == 'drush/drush') {
-                    $this->say('Drush require section check passed.');
-                }
+            if (ToolCommands::getPackagePropertyFromComposer('drush/drush', 'version', 'packages')) {
+                $this->say('Drush require section check passed.');
             }
         }
-        echo PHP_EOL;
+        $this->io()->newLine();
 
         $this->printComponentResults();
 
@@ -245,8 +246,10 @@ class ToolCommands extends AbstractCommands
             $this->componentCheckDrushRequireFailed ||
             (!$this->skipInsecure && $this->componentCheckInsecureFailed)
         ) {
-            $msg = 'Failed the components check, please verify the report and update the project.';
-            $msg .= "\nSee the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.";
+            $msg = [
+                'Failed the components check, please verify the report and update the project.',
+                'See the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.',
+            ];
             $this->io()->error($msg);
             $status = 1;
         }
@@ -256,7 +259,7 @@ class ToolCommands extends AbstractCommands
             $this->io()->success('Components checked, nothing to report.');
         }
 
-        $this->io()->text([
+        $this->io()->note([
             'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
             'The available tokens are:',
             '    - [SKIP-OUTDATED]',
@@ -271,8 +274,6 @@ class ToolCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
-     * @return void
      */
     protected function printComponentResults()
     {
@@ -281,20 +282,16 @@ class ToolCommands extends AbstractCommands
         $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
         $skipOutdated = ($this->skipOutdated) ? '' : ' (Skipping)';
 
-        $msgs[] = 'Mandatory module check ' . ($this->componentCheckMandatoryFailed ? 'failed.' : 'passed.');
-        $msgs[] = 'Recommended module check ' . ($this->componentCheckRecommendedFailed ? 'failed.' : 'passed.') . ' (report only)';
-        $msgs[] = 'Insecure module check ' . ($this->componentCheckInsecureFailed ? 'failed.' : 'passed.') . $skipInsecure;
-        $msgs[] = 'Outdated module check ' . ($this->componentCheckOutdatedFailed ? 'failed.' : 'passed.') . $skipOutdated;
-        $msgs[] = 'Dev module check ' . ($this->componentCheckDevVersionFailed ? 'failed.' : 'passed.');
-        $msgs[] = 'Evaluation module check ' . ($this->componentCheckFailed ? 'failed.' : 'passed.');
-        $msgs[] = 'Toolkit require-dev section check ' . ($this->componentCheckDevCompRequireFailed ? 'failed.' : 'passed.');
-        $msgs[] = 'Drush require section check ' . ($this->componentCheckDrushRequireFailed ? 'failed.' : 'passed.');
-
-        foreach ($msgs as $msg) {
-            $this->say($msg);
-        }
-
-        echo PHP_EOL;
+        $this->io()->definitionList(
+            ['Mandatory module check ' => $this->componentCheckMandatoryFailed ? 'failed' : 'passed'],
+            ['Recommended module check ' => $this->componentCheckRecommendedFailed ? 'failed' : 'passed' . ' (report only)'],
+            ['Insecure module check ' => $this->componentCheckInsecureFailed ? 'failed' : 'passed' . $skipInsecure],
+            ['Outdated module check ' => $this->componentCheckOutdatedFailed ? 'failed' : 'passed' . $skipOutdated],
+            ['Dev module check ' => $this->componentCheckDevVersionFailed ? 'failed' : 'passed'],
+            ['Evaluation module check ' => $this->componentCheckFailed ? 'failed' : 'passed'],
+            ['Dev module in require-dev check ' => $this->componentCheckDevCompRequireFailed ? 'failed' : 'passed'],
+            ['Drush require section check ' => $this->componentCheckDrushRequireFailed ? 'failed' : 'passed'],
+        );
     }
 
     /**
@@ -305,8 +302,6 @@ class ToolCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
-     * @return void
      */
     protected function validateComponent($package, $modules)
     {
@@ -362,13 +357,14 @@ class ToolCommands extends AbstractCommands
      *
      * @param array $modules The modules list.
      *
-     * @return void
+     * @throws \Robo\Exception\TaskException
      */
     protected function componentMandatory($modules)
     {
         $enabledPackages = $mandatoryPackages = [];
+        $drushBin = $this->getBin('drush');
         // Check if the website is installed.
-        $result = $this->taskExec('drush status --format=json')
+        $result = $this->taskExec($drushBin . ' status --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
         $status = json_decode($result, true);
@@ -386,7 +382,7 @@ class ToolCommands extends AbstractCommands
             }
         } else {
             // Get enabled packages.
-            $result = $this->taskExec('drush pm-list --fields=status --format=json')
+            $result = $this->taskExec($drushBin . ' pm-list --fields=status --format=json')
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                 ->run()->getMessage();
             $projPackages = json_decode($result, true);
@@ -424,8 +420,6 @@ class ToolCommands extends AbstractCommands
      *
      * @param array $modules The modules list.
      * @param array $packages The packages to validate.
-     *
-     * @return void
      */
     protected function componentRecommended($modules, $packages)
     {
@@ -459,7 +453,7 @@ class ToolCommands extends AbstractCommands
      *
      * @param array $modules The modules list.
      *
-     * @return void
+     * @throws \Robo\Exception\TaskException
      */
     protected function componentInsecure($modules)
     {
@@ -523,8 +517,6 @@ class ToolCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
-     * @return void
      */
     protected function componentOutdated()
     {
@@ -568,6 +560,9 @@ class ToolCommands extends AbstractCommands
      * @param string $basicAuth The basic auth.
      *
      * @return string
+     *   The endpoint content, or empty string if no session is generated.
+     *
+     * @throws \Exception
      */
     public static function getQaEndpointContent(string $url, string $basicAuth = ''): string
     {
@@ -650,7 +645,7 @@ class ToolCommands extends AbstractCommands
      *   The Basic auth.
      *
      * @return string
-     *   Empty string if could not create session, http code if ok.
+     *   The endpoint response code, or empty string if no session is generated.
      *
      * @throws \Exception
      */
@@ -705,6 +700,7 @@ class ToolCommands extends AbstractCommands
 
         // Prepare project
         $this->say("Preparing project to run upgrade_status:analyze command.");
+        $drushBin = $this->getBin('drush');
         $collection = $this->collectionBuilder();
         $collection->taskComposerRequire()
             ->dependency('phpspec/prophecy-phpunit', '^2')
@@ -714,12 +710,12 @@ class ToolCommands extends AbstractCommands
 
         $collection = $this->collectionBuilder();
         $collection->taskExecStack()
-            ->exec('drush en upgrade_status -y')
+            ->exec($drushBin . ' en upgrade_status -y')
             ->run();
 
         // Collect result details.
         $result = $collection->taskExecStack()
-            ->exec('drush upgrade_status:analyze --all')
+            ->exec($drushBin . ' upgrade_status:analyze --all')
             ->printOutput(false)
             ->storeState('insecure')
             ->silent(true)
@@ -727,7 +723,7 @@ class ToolCommands extends AbstractCommands
             ->getMessage();
 
         // Check for results.
-        $qaCompatibiltyresult = 0;
+        $qaCompatibilityResult = 0;
         if (is_string($result)) {
             $flags = [
                 'Check manually',
@@ -736,45 +732,43 @@ class ToolCommands extends AbstractCommands
 
             foreach ($flags as $flag) {
                 if (strpos($flag, $result) !== false) {
-                    $qaCompatibiltyresult = 1;
+                    $qaCompatibilityResult = 1;
                 }
             }
         }
 
-        if ($qaCompatibiltyresult) {
+        if ($qaCompatibilityResult) {
             $this->say('Looks the project need some attention, please check the report.');
         } else {
             $this->say('Congrats, looks like your project is Drupal 9 compatible. In any case you can check the report below.');
         }
 
         echo $result . PHP_EOL;
-        return $qaCompatibiltyresult;
+        return $qaCompatibilityResult;
     }
 
     /**
-     * Check if composer.lock exists on the project root folder.
+     * Check if 'composer.lock' exists on the project root folder.
      *
      * @command toolkit:complock-check
-     *
      */
     public function composerLockCheck(): int
     {
         if (!file_exists('composer.lock')) {
             $this->io()->error("Failed to detect a 'composer.lock' file on root folder.");
             return 1;
-        } else {
-            $this->say("Detected 'composer.lock' file - Ok.");
-            // If the check is ok return '0'.
-            return 0;
         }
+        $this->say("Detected 'composer.lock' file - Ok.");
+        // If the check is ok return '0'.
+        return 0;
     }
 
     /**
      * Check project's .opts.yml file for forbidden commands.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @command toolkit:opts-review
      *
+     * @command toolkit:opts-review
      */
     public function optsReview()
     {
@@ -853,6 +847,9 @@ class ToolCommands extends AbstractCommands
         }
     }
 
+    /**
+     * Check the commit message for SKIPPING tokens.
+     */
     protected function checkCommitMessage()
     {
         $this->skipOutdated = false;
@@ -889,7 +886,6 @@ class ToolCommands extends AbstractCommands
      */
     public function setupBlackfireBehat()
     {
-
         // Check requirement if blackfire/php-sdk exist.
         if (!class_exists('Blackfire\Client')) {
             $this->say('Please install blackfire/php-sdk before continue.');
@@ -1099,32 +1095,21 @@ class ToolCommands extends AbstractCommands
             $nextcloud_check .= ')';
         }
 
-        $this->writeln(sprintf(
-            "Required checks:
-=============================
-Checking PHP version: %s (%s)
-Checking Toolkit version: %s (%s)
-Checking Drupal version: %s (%s)
+        $this->io()->title('Checking connections:');
+        $this->io()->definitionList(
+            ['QA Endpoint access' => $endpoint_check],
+            ['github.com oauth access' => $github_check],
+            ['git.fpfis.eu oauth access' => $gitlab_check],
+            ['ASDA configuration' => $asda_check],
+            ['NEXTCLOUD configuration' => $nextcloud_check],
+        );
 
-Optional checks:
-=============================
-Checking QA Endpoint access: %s
-Checking github.com oauth access: %s
-Checking git.fpfis.eu oauth access: %s
-Checking ASDA configuration: %s
-Checking NEXTCLOUD configuration: %s",
-            $php_check,
-            $php_version,
-            $toolkit_check,
-            $toolkit_version,
-            $drupal_check,
-            $drupal_version,
-            $endpoint_check,
-            $github_check,
-            $gitlab_check,
-            $asda_check,
-            $nextcloud_check
-        ));
+        $this->io()->title('Required checks:');
+        $this->io()->definitionList(
+            ['PHP version' => "$php_check ($php_version)"],
+            ['Toolkit version' => "$toolkit_check ($toolkit_version)"],
+            ['Drupal version' => "$drupal_check ($drupal_version)"],
+        );
 
         if ($php_check !== 'OK' || $toolkit_check !== 'OK' || $drupal_check !== 'OK') {
             return 1;
@@ -1287,14 +1272,15 @@ Checking NEXTCLOUD configuration: %s",
             $data = json_decode($result, true);
             if (empty($data) || !isset($data['vendor_list'])) {
                 $this->writeln('Invalid data returned from the endpoint.');
-            } else {
-                $vendorList = $data['vendor_list'];
-                $this->io()->title('Vendors being monitorised:');
-                $this->writeln($vendorList);
+                return 1;
             }
-        } else {
-            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $vendorList = $data['vendor_list'];
+            $this->io()->title('Vendors being monitorised:');
+            $this->writeln($vendorList);
+            return 0;
         }
+        $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+        return 1;
     }
 
     /**
@@ -1347,5 +1333,97 @@ Checking NEXTCLOUD configuration: %s",
             return 'prod';
         }
         return 'acc';
+    }
+
+    /**
+     * This command will execute all the testing tools.
+     *
+     * @command toolkit:code-review
+     *
+     * @option phpcs Execute the command toolkit:test-phpcs.
+     * @option opts-review Execute the command toolkit:opts-review.
+     * @option lint-php Execute the command toolkit:lint-php.
+     * @option lint-yaml Execute the command toolkit:lint-yaml.
+     */
+    public function toolkitCodeReview(array $options = [
+        'phpcs' => InputOption::VALUE_NONE,
+        'opts-review' => InputOption::VALUE_NONE,
+        'lint-php' => InputOption::VALUE_NONE,
+        'lint-yaml' => InputOption::VALUE_NONE,
+    ])
+    {
+        // If at least one option is given, use given options, else use all.
+        $phpcsResult = $optsReviewResult = $lintPhpResult = $lintYamlResult = [];
+        $phpcs = $options['phpcs'] !== InputOption::VALUE_NONE;
+        $optsReview = $options['opts-review'] !== InputOption::VALUE_NONE;
+        $lintPhp = $options['lint-php'] !== InputOption::VALUE_NONE;
+        $lintYaml = $options['lint-yaml'] !== InputOption::VALUE_NONE;
+        $exit = 0;
+
+        if ($phpcs || $optsReview || $lintPhp || $lintYaml) {
+            // Run given checks.
+            $runPhpcs = $phpcs;
+            $runOptsReview = $optsReview;
+            $runLintPhp = $lintPhp;
+            $runLintYaml = $lintYaml;
+        } else {
+            // Run all checks.
+            $runPhpcs = $runOptsReview = $runLintPhp = $runLintYaml = true;
+        }
+        $run = $this->getBin('run');
+        if ($runPhpcs) {
+            $code = $this->taskExec($run . ' toolkit:test-phpcs')
+                ->run()->getExitCode();
+            $phpcsResult = ['PHPcs' => $code > 0 ? 'failed' : 'passed'];
+            $exit += $code;
+            $this->io()->newLine(2);
+        }
+        if ($runOptsReview) {
+            $code = $this->taskExec($run . ' toolkit:opts-review')
+                ->run()->getExitCode();
+            $optsReviewResult = ['Opts review' => $code > 0 ? 'failed' : 'passed'];
+            $exit += $code;
+            $this->io()->newLine(2);
+        }
+        if ($runLintPhp) {
+            $code = $this->taskExec($run . ' toolkit:lint-php')
+                ->run()->getExitCode();
+            $lintPhpResult = ['Lint PHP' => $code > 0 ? 'failed' : 'passed'];
+            $exit += $code;
+            $this->io()->newLine(2);
+        }
+        if ($runLintYaml) {
+            $code = $this->taskExec($run . ' toolkit:lint-yaml')
+                ->run()->getExitCode();
+            $lintYamlResult = ['Lint YAML' => $code > 0 ? 'failed' : 'passed'];
+            $exit += $code;
+            $this->io()->newLine(2);
+        }
+
+        $this->io()->title('Results:');
+        $this->io()->definitionList($phpcsResult, $optsReviewResult, $lintPhpResult, $lintYamlResult);
+
+        return new ResultData($exit);
+    }
+
+    /**
+     * Helper to convert bytes to human-readable unit.
+     *
+     * @param int $bytes
+     *   The bytes to convert.
+     * @param int $precision
+     *   The precision for the conversion.
+     *
+     * @return string
+     *   The converted value.
+     */
+    public static function formatBytes($bytes, $precision = 2)
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+        return round($bytes, $precision) . $units[$pow];
     }
 }
