@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use Consolidation\Config\Config;
 use Consolidation\Config\Loader\ConfigProcessor;
 use Consolidation\Config\Loader\YamlConfigLoader;
+use EcEuropa\Toolkit\Toolkit;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 use Robo\Contract\VerbosityThresholdInterface;
@@ -118,7 +119,7 @@ class CloneCommands extends AbstractCommands
         $tasks = [];
         $tmp_folder = $this->tmpDirectory();
         if (!file_exists("$tmp_folder/{$options['dumpfile']}")) {
-            if (!getenv('CI')) {
+            if (!Toolkit::isCiCd()) {
                 $this->say("'$tmp_folder/{$options['dumpfile']}' file not found, use the command 'toolkit:download-dump'.");
                 return 1;
             }
@@ -194,7 +195,7 @@ class CloneCommands extends AbstractCommands
         $source = $config->get('toolkit.clone.asda_source');
         $tmp_folder = $this->tmpDirectory();
         $is_admin = !($options['is-admin'] === InputOption::VALUE_NONE) || $config->get('toolkit.clone.nextcloud_admin');
-        if (getenv('CI')) {
+        if (Toolkit::isCiCd()) {
             $is_admin = true;
         }
 
@@ -202,13 +203,13 @@ class CloneCommands extends AbstractCommands
         $this->say('ASDA services: ' . implode(', ', $asda_services));
 
         if ($asda_type === 'default') {
-            $user = getenv('ASDA_USER') && getenv('ASDA_USER') !== '${env.ASDA_USER}' ? getenv('ASDA_USER') : '';
-            $password = getenv('ASDA_PASSWORD') && getenv('ASDA_PASSWORD') !== '${env.ASDA_PASSWORD}' ? getenv('ASDA_PASSWORD') : '';
+            $user = Toolkit::getAsdaUser();
+            $password = Toolkit::getAsdaPass();
             // Workaround, EWPP projects uses the ASDA_URL.
             $url = getenv('ASDA_URL') ?: $config->get('toolkit.clone.asda_url');
         } elseif ($asda_type === 'nextcloud') {
-            $user = getenv('NEXTCLOUD_USER') && getenv('NEXTCLOUD_USER') !== '${env.NEXTCLOUD_USER}' ? getenv('NEXTCLOUD_USER') : '';
-            $password = getenv('NEXTCLOUD_PASS') && getenv('NEXTCLOUD_PASS') !== '${env.NEXTCLOUD_PASS}' ? getenv('NEXTCLOUD_PASS') : '';
+            $user = Toolkit::getNextcloudUser();
+            $password = Toolkit::getNextcloudPass();
             $url = $config->get('toolkit.clone.nextcloud_url');
         } else {
             $this->writeln('<error>Invalid value for variable ${toolkit.clone.asda_type}, use "default" or "nextcloud".</error>');
@@ -245,7 +246,7 @@ class CloneCommands extends AbstractCommands
                 $this->say("File found '$tmp_folder/$service.gz', checking server for newer dump");
                 if ($this->checkForNewerDump($download_link, $service)) {
                     $question = "A newer dump was found, would you like to download?";
-                    if (!getenv('CI') && $options['yes'] === InputOption::VALUE_NONE) {
+                    if (!Toolkit::isCiCd() && $options['yes'] === InputOption::VALUE_NONE) {
                         $answer = $this->confirm($question);
                     } else {
                         $this->say($question . ' (y/n) Y');
