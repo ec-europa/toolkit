@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
+use EcEuropa\Toolkit\Toolkit;
 use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
@@ -109,7 +110,7 @@ class ToolCommands extends AbstractCommands
 
         $this->checkCommitMessage();
 
-        $endpoint = 'https://webgate.ec.europa.eu/fpfis/qa';
+        $endpoint = Toolkit::getQaWebsiteUrl();
         if (!empty($options['endpoint'])) {
             $endpoint = $options['endpoint'];
         }
@@ -260,14 +261,14 @@ class ToolCommands extends AbstractCommands
         // Give feedback if no problems found.
         if (!$status) {
             $this->io()->success('Components checked, nothing to report.');
+        } else {
+            $this->io()->note([
+                'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
+                'The available tokens are:',
+                '    - [SKIP-OUTDATED]',
+                '    - [SKIP-INSECURE]',
+            ]);
         }
-
-        $this->io()->note([
-            'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
-            'The available tokens are:',
-            '    - [SKIP-OUTDATED]',
-            '    - [SKIP-INSECURE]',
-        ]);
 
         return $status;
     }
@@ -308,45 +309,70 @@ class ToolCommands extends AbstractCommands
      */
     protected function validateComponent($package, $modules)
     {
+        // Only validate module components for this time.
+        if (!isset($package['type']) || $package['type'] !== 'drupal-module') {
+            return;
+        }
         $packageName = $package['name'];
         $hasBeenQaEd = isset($modules[$packageName]);
         $wasRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
         $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
         $packageVersion = isset($package['extra']['drupal']['version']) ? explode('+', str_replace('8.x-', '', $package['extra']['drupal']['version']))[0] : $package['version'];
+        $allowedProjectTypes = !empty($modules[$packageName]['allowed_project_types']) ? $modules[$packageName]['allowed_project_types'] : '';
+        $allowedProfiles = !empty($modules[$packageName]['allowed_profiles']) ? $modules[$packageName]['allowed_profiles'] : '';
 
         // Exclude invalid.
-        $packageVersion = in_array($packageVersion, $this->getConfig()->get("toolkit.invalid-versions")) ?  $package['version'] : $packageVersion;
+        $packageVersion = in_array($packageVersion, $this->getConfig()->get('toolkit.invalid-versions')) ?  $package['version'] : $packageVersion;
 
-        // Only validate module components for this time.
-        if (isset($package['type']) && $package['type'] === 'drupal-module') {
-            // If module was not reviewed yet.
-            if (!$hasBeenQaEd) {
-                $this->say("Package $packageName:$packageVersion has not been reviewed by QA.");
-                $this->componentCheckFailed = true;
-            }
+        // If module was not reviewed yet.
+        if (!$hasBeenQaEd) {
+            $this->say("Package $packageName:$packageVersion has not been reviewed by QA.");
+            $this->componentCheckFailed = true;
+        }
 
-            // If module was rejected.
-            if ($hasBeenQaEd && $wasRejected) {
-                $projectId = $this->getConfig()->get('toolkit.project_id');
-                $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
-                // If module was not allowed in project.
-                if (!$allowedInProject) {
-                    $this->say("The use of $packageName:$packageVersion is " . $modules[$packageName]['status'] . ". Contact QA Team.");
-                    $this->componentCheckFailed = true;
+        // If module was rejected.
+        if ($hasBeenQaEd && $wasRejected) {
+            $projectId = $this->getConfig()->get('toolkit.project_id');
+            // Check if the module is allowed for this project id.
+            $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
+
+            // Check if the module is allowed for this type of project.
+            if (!$allowedInProject && !empty($allowedProjectTypes)) {
+                $allowedProjectTypes = array_map('trim', explode(',', $allowedProjectTypes));
+                // Load the project from the website.
+                $project = $this->getQaProjectInformation($projectId);
+                if (in_array($project['type'], $allowedProjectTypes)) {
+                    $allowedInProject = true;
                 }
             }
 
-            if ($wasNotRejected) {
-                # Once all projects are using Toolkit >=4.1.0, the 'version' key
-                # may be removed from the endpoint: /api/v1/package-reviews.
-                $constraints = [ 'whitelist' => false, 'blacklist' => true ];
-                foreach ($constraints as $constraint => $result) {
-                    $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
+            // Check if the module is allowed for this profile.
+            if (!$allowedInProject && !empty($allowedProfiles)) {
+                $allowedProfiles = array_map('trim', explode(',', $allowedProfiles));
+                // Load the project from the website.
+                $project = $this->getQaProjectInformation($projectId);
+                if (in_array($project['profile'], $allowedProfiles)) {
+                    $allowedInProject = true;
+                }
+            }
 
-                    if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
-                        echo "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue." . PHP_EOL;
-                        $this->componentCheckFailed = true;
-                    }
+            // If module was not allowed in project.
+            if (!$allowedInProject) {
+                $this->say("The use of $packageName:$packageVersion is {$modules[$packageName]['status']}. Contact QA Team.");
+                $this->componentCheckFailed = true;
+            }
+        }
+
+        if ($wasNotRejected) {
+            # Once all projects are using Toolkit >=4.1.0, the 'version' key
+            # may be removed from the endpoint: /api/v1/package-reviews.
+            $constraints = [ 'whitelist' => false, 'blacklist' => true ];
+            foreach ($constraints as $constraint => $result) {
+                $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
+
+                if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
+                    echo "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue." . PHP_EOL;
+                    $this->componentCheckFailed = true;
                 }
             }
         }
@@ -583,7 +609,7 @@ class ToolCommands extends AbstractCommands
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         if ($basicAuth !== '') {
             $header = [
-                'Authorization: Basic ' . $basicAuth,
+                "Authorization: Basic $basicAuth",
                 "X-CSRF-Token: $token",
             ];
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
@@ -622,9 +648,10 @@ class ToolCommands extends AbstractCommands
      */
     public static function getQaSessionToken(): string
     {
-        if (empty($url = getenv('QA_WEBSITE_URL'))) {
-            $url = 'https://webgate.ec.europa.eu/fpfis/qa';
+        if (!empty($GLOBALS['session_token'])) {
+            return $GLOBALS['session_token'];
         }
+        $url = Toolkit::getQaWebsiteUrl();
         $options = array(
             CURLOPT_RETURNTRANSFER => true,   // return web page
             CURLOPT_HEADER         => false,  // don't return headers
@@ -640,6 +667,7 @@ class ToolCommands extends AbstractCommands
         curl_setopt_array($ch, $options);
         $token = curl_exec($ch);
         curl_close($ch);
+        $GLOBALS['session_token'] = $token;
         return $token;
     }
 
@@ -658,9 +686,7 @@ class ToolCommands extends AbstractCommands
      */
     public static function postQaContent(array $fields, string $auth): string
     {
-        if (empty($url = getenv('QA_WEBSITE_URL'))) {
-            $url = 'https://webgate.ec.europa.eu/fpfis/qa';
-        }
+        $url = Toolkit::getQaWebsiteUrl();
         if (!($token = self::getQaSessionToken())) {
             return '';
         }
@@ -999,8 +1025,9 @@ class ToolCommands extends AbstractCommands
         'endpoint' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        $url = (!empty($url = getenv('QA_WEBSITE_URL'))) ? $url : 'https://webgate.ec.europa.eu/fpfis/qa';
         $this->say("Checking Toolkit requirements:\n");
+
+        $url = Toolkit::getQaWebsiteUrl();
         if (empty($options['endpoint'])) {
             $options['endpoint'] = $url . '/api/v1/toolkit-requirements';
         }
@@ -1025,11 +1052,8 @@ class ToolCommands extends AbstractCommands
             $php_check = ($isValid >= 0) ? 'OK' : 'FAIL';
 
             // Handle Toolkit version.
-            if (!($toolkit_version = self::getPackagePropertyFromComposer('ec-europa/toolkit'))) {
-                $toolkit_check = 'FAIL (not found)';
-            } else {
-                $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
-            }
+            $toolkit_version = Toolkit::VERSION;
+            $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
             // Handle Drupal version.
             if (!($drupal_version = self::getPackagePropertyFromComposer('drupal/core'))) {
                 $drupal_check = 'FAIL (not found)';
@@ -1084,21 +1108,25 @@ class ToolCommands extends AbstractCommands
         }
 
         // Handle ASDA.
-        if (!empty(getenv('ASDA_USER')) && !empty(getenv('ASDA_PASSWORD'))) {
+        $asda_user = Toolkit::getAsdaUser();
+        $asda_pass = Toolkit::getAsdaPass();
+        if (!empty($asda_user) && !empty($asda_pass)) {
             $asda_check = 'OK';
         } else {
             $asda_check .= ' (Missing environment variable(s):';
-            $asda_check .= empty(getenv('ASDA_USER')) ? ' ASDA_USER' : '';
-            $asda_check .= empty(getenv('ASDA_PASSWORD')) ? ' ASDA_PASSWORD' : '';
+            $asda_check .= empty($asda_user) ? ' ASDA_USER' : '';
+            $asda_check .= empty($asda_pass) ? ' ASDA_PASSWORD' : '';
             $asda_check .= ')';
         }
         // Handle NEXTCLOUD.
-        if (!empty(getenv('NEXTCLOUD_USER')) && !empty(getenv('NEXTCLOUD_PASS'))) {
+        $nc_user = Toolkit::getNExtcloudUser();
+        $nc_pass = Toolkit::getNExtcloudPass();
+        if (!empty($nc_user) && !empty($nc_pass)) {
             $nextcloud_check = 'OK';
         } else {
             $nextcloud_check .= ' (Missing environment variable(s):';
-            $nextcloud_check .= empty(getenv('NEXTCLOUD_USER')) ? ' NEXTCLOUD_USER' : '';
-            $nextcloud_check .= empty(getenv('NEXTCLOUD_PASS')) ? ' NEXTCLOUD_PASS' : '';
+            $nextcloud_check .= empty($nc_user) ? ' NEXTCLOUD_USER' : '';
+            $nextcloud_check .= empty($nc_pass) ? ' NEXTCLOUD_PASS' : '';
             $nextcloud_check .= ')';
         }
 
@@ -1174,10 +1202,16 @@ class ToolCommands extends AbstractCommands
      */
     public function toolkitVersion()
     {
-        $endpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
+        $this->say("Checking Toolkit version:\n");
+
+        $url = Toolkit::getQaWebsiteUrl();
+        $endpoint = $url . '/api/v1/toolkit-requirements';
         if (empty($basicAuth = $this->getQaApiBasicAuth())) {
             return 1;
         }
+        $toolkit_version = Toolkit::VERSION;
+        $min_version = '';
+
         $result = self::getQaEndpointContent($endpoint, $basicAuth);
         $min_version = '';
 
@@ -1190,8 +1224,8 @@ class ToolCommands extends AbstractCommands
                 $this->writeln('Invalid data returned from the endpoint.');
             } else {
                 $min_version = $data['toolkit'];
-                if ($composer_version) {
-                    $major = '' . intval(substr($composer_version, 0, 2));
+                if ($toolkit_version) {
+                    $major = '' . intval(substr($toolkit_version, 0, 2));
                     $min_versions = array_filter(explode('|', $min_version), function ($v) use ($major) {
                         return strpos(substr($v, 0, 2), $major) !== false;
                     });
@@ -1204,11 +1238,11 @@ class ToolCommands extends AbstractCommands
             $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
         }
 
-        $version_check = Semver::satisfies($composer_version, $min_version) ? 'OK' : 'FAIL';
+        $version_check = Semver::satisfies($toolkit_version, $min_version) ? 'OK' : 'FAIL';
         $this->writeln(sprintf(
             "Minimum version: %s\nCurrent version: %s\nVersion check: %s",
             $min_version,
-            $composer_version,
+            $toolkit_version,
             $version_check
         ));
         if ($version_check === 'FAIL') {
@@ -1269,7 +1303,8 @@ class ToolCommands extends AbstractCommands
      */
     public function toolkitVendorList()
     {
-        $endpoint = 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/toolkit-requirements';
+        $url = Toolkit::getQaWebsiteUrl();
+        $endpoint = $url . '/api/v1/toolkit-requirements';
         if (empty($basicAuth = $this->getQaApiBasicAuth())) {
             return 1;
         }
@@ -1298,6 +1333,9 @@ class ToolCommands extends AbstractCommands
      */
     public function getQaApiBasicAuth(): string
     {
+        if (!empty($GLOBALS['basic_auth'])) {
+            return $GLOBALS['basic_auth'];
+        }
         $auth = getenv('QA_API_BASIC_AUTH');
         if (empty($auth)) {
             $this->say('Missing env var QA_API_BASIC_AUTH, asking for access.');
@@ -1314,6 +1352,7 @@ class ToolCommands extends AbstractCommands
                 'Your token has been generated, please add it to your environment variables.',
                 '    export QA_API_BASIC_AUTH="' . $auth . '"',
             ]);
+            $GLOBALS['basic_auth'] = $auth;
         }
 
         return $auth;
@@ -1432,5 +1471,37 @@ class ToolCommands extends AbstractCommands
         $pow = min($pow, count($units) - 1);
         $bytes /= pow(1024, $pow);
         return round($bytes, $precision) . $units[$pow];
+    }
+
+    /**
+     * Returns the Project information from the QA Website.
+     *
+     * @param $project_id
+     *   The project ID to use.
+     *
+     * @return false|array
+     *   An array with the Project information, false if fails.
+     *
+     * @throws \Exception
+     */
+    public function getQaProjectInformation($project_id)
+    {
+        if (!isset($GLOBALS['projects'])) {
+            $GLOBALS['projects'] = [];
+        }
+        if (!empty($GLOBALS['projects'][$project_id])) {
+            return $GLOBALS['projects'][$project_id];
+        }
+        $url = Toolkit::getQaWebsiteUrl();
+        $endpoint = "$url/api/v1/project/ec-europa/$project_id-reference/information";
+        $project = self::getQaEndpointContent($endpoint, $this->getQaApiBasicAuth());
+        $project = json_decode($project, true);
+        $project = reset($project);
+        if (!empty($project['name']) && $project['name'] === "$project_id-reference") {
+            $GLOBALS['projects'][$project_id] = $project;
+            return $project;
+        }
+
+        return false;
     }
 }

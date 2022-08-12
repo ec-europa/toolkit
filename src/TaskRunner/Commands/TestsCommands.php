@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use EcEuropa\Toolkit\Toolkit;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use NuvoleWeb\Robo\Task as NuvoleWebTasks;
 use OpenEuropa\TaskRunner\Contract\FilesystemAwareInterface;
@@ -732,9 +733,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             }
 
             // Send payload to QA website.
-            if (empty($url = getenv('QA_WEBSITE_URL'))) {
-                $url = 'https://webgate.ec.europa.eu/fpfis/qa';
-            }
+            $url = Toolkit::getQaWebsiteUrl();
             if (!empty($repo)) {
                 $payload = [
                     '_links' => ['type' => [
