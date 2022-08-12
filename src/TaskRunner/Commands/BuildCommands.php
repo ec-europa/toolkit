@@ -35,9 +35,11 @@ class BuildCommands extends AbstractCommands
      * - ./dist
      * - ./dist/composer.json
      * - ./dist/composer.lock
-     * - ./dist/web
-     * - ./dist/vendor
+     * - ./dist/manifest.json
      * - ./dist/config
+     * - ./dist/vendor
+     * - ./dist/web
+     * - ./dist/web/VERSION.txt
      *
      * @param array $options
      *   Command options.
@@ -109,11 +111,29 @@ class BuildCommands extends AbstractCommands
         $tag = $options['tag'] ?? $this->getGitTag();
         $hash = $options['sha'] ?? $this->getGitCommitHash();
 
-        // Write version tag in manifest.json and VERSION.txt.
-        $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')->text(
-            json_encode(['version' => $tag, 'sha' => $hash])
-        );
-        $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')->text($tag);
+        // Write manifest.json and VERSION.txt files.
+        $drupal_profile = '';
+        $config = $this->getConfig();
+        $config_file = $config->get('toolkit.clean.config_file');
+        if (file_exists($config_file) && ($yml = Yaml::parseFile($config_file))) {
+            if (!empty($yml['profile'])) {
+                $drupal_profile = $yml['profile'];
+            }
+        }
+        $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')
+            ->text(json_encode([
+                'version' => $tag,
+                'sha' => $hash,
+                'environment' => ToolCommands::getDeploymentEnvironment(),
+                'project_id' => $config->get('toolkit.project_id'),
+                'drupal_version' => ToolCommands::getPackagePropertyFromComposer('drupal/core'),
+                'drupal_profile' => $drupal_profile,
+                'php_version' => phpversion(),
+                'toolkit_version' => ToolCommands::getPackagePropertyFromComposer('ec-europa/toolkit'),
+                'date' => date('Y-m-d H:i:s'),
+            ]));
+        $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')
+            ->text($tag);
 
         // Copy and process drush.yml file.
         if (file_exists('resources/Drush/drush.yml.dist')) {
