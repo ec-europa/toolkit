@@ -205,7 +205,7 @@ class ToolCommands extends AbstractCommands
 
         $this->io()->title('Checking dev components in require section.');
         $devPackages = array_filter(
-            array_column($modules, 'dev_component','name'),
+            array_column($modules, 'dev_component', 'name'),
             function ($value) {
                 return $value == 'true';
             }
@@ -1238,16 +1238,16 @@ class ToolCommands extends AbstractCommands
             if (is_null($section)) {
                 $type = 'packages-dev';
                 $index = array_search($package, array_column($composer[$type], 'name'));
-                if ($index === FALSE) {
+                if ($index === false) {
                     $type = 'packages';
                     $index = array_search($package, array_column($composer[$type], 'name'));
                 }
-                if ($index !== FALSE && isset($composer[$type][$index][$prop])) {
+                if ($index !== false && isset($composer[$type][$index][$prop])) {
                     return $composer[$type][$index][$prop];
                 }
             } elseif (isset($composer[$section])) {
                 $index = array_search($package, array_column($composer[$section], 'name'));
-                if ($index !== FALSE && isset($composer[$section][$index][$prop])) {
+                if ($index !== false && isset($composer[$section][$index][$prop])) {
                     return $composer[$section][$index][$prop];
                 }
             }
@@ -1324,7 +1324,8 @@ class ToolCommands extends AbstractCommands
      * @return string
      *   The current environment, one of: 'dev', 'acc', 'prod'.
      */
-    public static function getDeploymentEnvironment(): string {
+    public static function getDeploymentEnvironment(): string
+    {
         if (!getenv('CI')) {
             return 'dev';
         }
@@ -1365,8 +1366,7 @@ class ToolCommands extends AbstractCommands
             $runOptsReview = $optsReview;
             $runLintPhp = $lintPhp;
             $runLintYaml = $lintYaml;
-        }
-        else {
+        } else {
             // Run all checks.
             $runPhpcs = $runOptsReview = $runLintPhp = $runLintYaml = true;
         }
