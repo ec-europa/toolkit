@@ -9,7 +9,6 @@ namespace EcEuropa\Toolkit;
  */
 final class Toolkit
 {
-
     /**
      * Constant holding the current version.
      */
