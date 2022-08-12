@@ -22,8 +22,8 @@ final class Toolkit
      */
     public static function getQaWebsiteUrl(): string
     {
-        $url = 'https://webgate.ec.europa.eu/fpfis/qa';
-        return (string) getenv('QA_WEBSITE_URL') ?? $url;
+        $url = getenv('QA_WEBSITE_URL');
+        return !empty($url) ? $url : 'https://webgate.ec.europa.eu/fpfis/qa';
     }
 
     /**
@@ -34,7 +34,7 @@ final class Toolkit
      */
     public static function isCiCd(): bool
     {
-        return (bool) getenv('CI') ?? false;
+        return !empty(getenv('CI'));
     }
 
     /**
