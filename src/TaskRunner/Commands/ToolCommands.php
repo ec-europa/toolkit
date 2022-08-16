@@ -727,7 +727,7 @@ class ToolCommands extends AbstractCommands
 
         $this->checkCommitMessage();
 
-        if (!$this->skipdus) {
+        if (!$this->skipDus) {
             $this->say('Developer is skipping Drupal 9/10 compatibility analysis.');
             return 0;
         }
@@ -920,7 +920,7 @@ class ToolCommands extends AbstractCommands
     {
         $this->skipOutdated = false;
         $this->skipInsecure = false;
-        $this->skipdus = true;
+        $this->skipDus = true;
 
         $commitMsg = getenv('DRONE_COMMIT_MESSAGE') !== false ? getenv('DRONE_COMMIT_MESSAGE') : '';
         $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMsg;
@@ -939,7 +939,7 @@ class ToolCommands extends AbstractCommands
                     $this->skipInsecure = true;
                 }
                 if ($transformedToken == 'skip_d9c') {
-                    $this->skipdus = false;
+                    $this->skipDus = false;
                 }
             }
         }
