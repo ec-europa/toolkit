@@ -125,6 +125,8 @@ toolkit:
     whitelist-components:
       endpoint: 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x'
       blocker: true
+    drupal-upgrade:
+      skip: false
   invalid-versions:
     - 1.x
     - 2.x

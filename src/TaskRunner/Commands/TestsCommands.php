@@ -772,24 +772,4 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         return new ResultData(0);
     }
 
-    /**
-     * Run drupal-check.
-     *
-     * Checking deprecated code on Drupal Context.
-     *
-     * @command toolkit:drupal-check
-     *
-     * @option analysis       Check for correctness.
-     * @option deprecations   Check for deprecations.
-     *
-     * @aliases tdc
-     */
-    public function toolkitDrupalCheck(array $options = [
-        'analysis' => InputOption::VALUE_REQUIRED,
-        'deprecations' => InputOption::VALUE_REQUIRED,
-    ])
-    {
-        $task = $this->taskExec("./vendor/bin/drupal-check ./../../../lib");
-        return $this->collectionBuilder()->addTaskList([$task]);
-    }
 }
