@@ -720,21 +720,24 @@ class ToolCommands extends AbstractCommands
         'skip' => InputOption::VALUE_OPTIONAL,
     ]): int
     {
-        $mode = $this->getConfig()->get('toolkit.tool.drupal-upgrade.skip');
+        $skip = $this->getConfig()->get('toolkit.tool.drupal-upgrade.skip');
         if (!empty($options['skip'])) {
             $skip = $options['skip'];
         }
 
         $this->checkCommitMessage();
 
-        if (!$this->skipDus) {
-            $this->say('Developer is skipping Drupal 9/10 compatibility analysis.');
-            return 0;
-        }
-
         if ($drupal_version = self::getPackagePropertyFromComposer('drupal/core')) {
             if (Semver::satisfies($drupal_version, '^10')) {
                 $this->say('Project already running on Drupal 10, skipping Drupal 10 compatibility analysis.');
+                return 0;
+            }
+            if (!$this->skipDus && Semver::satisfies($drupal_version, '^8')) {
+                $this->say('Developer is skipping Drupal 9 compatibility analysis.');
+                return 0;
+            }
+            if (!$this->skipDus && Semver::satisfies($drupal_version, '^9')) {
+                $this->say('Developer is skipping Drupal 10 compatibility analysis.');
                 return 0;
             }
         }
