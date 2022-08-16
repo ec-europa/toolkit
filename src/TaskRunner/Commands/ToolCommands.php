@@ -744,14 +744,14 @@ class ToolCommands extends AbstractCommands
         $drushBin = $this->getBin('drush');
         $collection = $this->collectionBuilder();
         // Require 'drupal/upgrade_status' if does not exist on the project.
-        if (self::getPackagePropertyFromComposer('drupal/upgrade_status') != FALSE) {
+        if (self::getPackagePropertyFromComposer('drupal/upgrade_status') != false) {
             $collection->taskComposerRequire()
             ->dependency('drupal/upgrade_status', '^3')
             ->dev()
             ->run();
         }
         // Require 'drupal/core-dev' if does not exist on the project.
-        if (self::getPackagePropertyFromComposer('drupal/core-dev') != FALSE) {
+        if (self::getPackagePropertyFromComposer('drupal/core-dev') != false) {
             $collection->taskComposerRequire()
             ->dependency('drupal/core-dev')
             ->dev()
@@ -803,10 +803,10 @@ class ToolCommands extends AbstractCommands
             $this->say('Looks the project need some attention, please check the report above.');
         } else {
             if (Semver::satisfies($drupal_version, '^8')) {
-               $this->say('Congrats, looks like your project is Drupal 9 compatible.');
+                    $this->say('Congrats, looks like your project is Drupal 9 compatible.');
             }
             if (Semver::satisfies($drupal_version, '^9')) {
-               $this->say('Congrats, looks like your project is Drupal 10 compatible.');
+                    $this->say('Congrats, looks like your project is Drupal 10 compatible.');
             }
         }
 

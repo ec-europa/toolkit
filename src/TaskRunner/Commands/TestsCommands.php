@@ -771,5 +771,4 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         return new ResultData(0);
     }
-
 }
