@@ -14,3 +14,4 @@
 phpda.*
 
 documentation
+.phpdoc/cache*
