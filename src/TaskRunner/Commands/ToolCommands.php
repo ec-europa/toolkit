@@ -713,33 +713,14 @@ class ToolCommands extends AbstractCommands
      * @command toolkit:drupal-upgrade-status
      *
      * @aliases tdus
-     *
-     * @option skip Return results from a previous scan of a project (defaults to: 'false')
      */
-    public function drupalUpgradeStatus(array $options = [
-        'skip' => InputOption::VALUE_OPTIONAL,
-    ]): int
+    public function drupalUpgradeStatus(): int
     {
-        $skip = $this->getConfig()->get('toolkit.tool.drupal-upgrade.skip');
-        if (!empty($options['skip'])) {
-            $skip = $options['skip'];
-        }
 
         $this->checkCommitMessage();
 
-        if ($drupal_version = self::getPackagePropertyFromComposer('drupal/core')) {
-            if (Semver::satisfies($drupal_version, '^10')) {
-                $this->say('Project already running on Drupal 10, skipping Drupal 10 compatibility analysis.');
-                return 0;
-            }
-            if (!$this->skipDus && Semver::satisfies($drupal_version, '^8')) {
-                $this->say('Developer is skipping Drupal 9 compatibility analysis.');
-                return 0;
-            }
-            if (!$this->skipDus && Semver::satisfies($drupal_version, '^9')) {
-                $this->say('Developer is skipping Drupal 10 compatibility analysis.');
-                return 0;
-            }
+        if (!$this->skipDus) {
+            return 0;
         }
 
         // Prepare project.
@@ -767,25 +748,14 @@ class ToolCommands extends AbstractCommands
             ->exec($drushBin . ' en upgrade_status -y')
             ->run();
 
-        // Return results from a previous scan of a project.
-        if ($skip == true) {
-            $result = $collection->taskExecStack()
-                ->exec($drushBin . ' us-a --all --skip-existing')
-                ->printOutput(false)
-                ->storeState('insecure')
-                ->silent(true)
-                ->run()
-                ->getMessage();
-        } else {
-            // Otherwise perform the default module's analysis.
-            $result = $collection->taskExecStack()
-                ->exec($drushBin . ' us-a --all')
-                ->printOutput(false)
-                ->storeState('insecure')
-                ->silent(true)
-                ->run()
-                ->getMessage();
-        }
+        // Perform the default analysis to all contrib and custom components.
+        $result = $collection->taskExecStack()
+            ->exec($drushBin . ' us-a --all')
+            ->printOutput(false)
+            ->storeState('insecure')
+            ->silent(true)
+            ->run()
+            ->getMessage();
 
         // Check flagged results.
         $qaCompatibilityResult = 0;
@@ -806,10 +776,10 @@ class ToolCommands extends AbstractCommands
             $this->say('Looks the project need some attention, please check the report above.');
         } else {
             if (Semver::satisfies($drupal_version, '^8')) {
-                    $this->say('Congrats, looks like your project is Drupal 9 compatible.');
+                $this->say('Congrats, looks like your project is Drupal 9 compatible.');
             }
             if (Semver::satisfies($drupal_version, '^9')) {
-                    $this->say('Congrats, looks like your project is Drupal 10 compatible.');
+                $this->say('Congrats, looks like your project is Drupal 10 compatible.');
             }
         }
 
