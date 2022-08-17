@@ -29,6 +29,7 @@ locally and can be used in CI tools like Jenkins, Drone or Travis.
 - [Continuous integration](/docs/continuous-integration.md)
 - [Available tasks](/docs/available-tasks.md)
 - [Building assets](/docs/building-assets.md)
+- [Project documentation](/docs/project-documentation.md)
 - [Changelog](/changelog.md)
 
 ## Contributing
