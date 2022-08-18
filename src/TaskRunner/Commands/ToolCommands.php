@@ -706,77 +706,83 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Check project compatibility for Drupal 9 upgrade.
+     * Check project compatibility for Drupal 9/10 upgrade.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *
-     * Note: The project configuration should be updated.
+     * @command toolkit:drupal-upgrade-status
      *
-     * @command toolkit:d9-compatibility
-     *
+     * @aliases tdus
      */
-    public function d9Compatibility(): int
+    public function drupalUpgradeStatus(): int
     {
+
         $this->checkCommitMessage();
 
-        if (!$this->skipd9c) {
-            $this->say('Developer is skipping Drupal 9 compatibility analysis.');
+        if (!$this->skipDus) {
             return 0;
         }
 
-        if ($drupal_version = self::getPackagePropertyFromComposer('drupal/core')) {
-            if (Semver::satisfies($drupal_version, '^9')) {
-                $this->say('Project already running on Drupal 9, skipping Drupal 9 compatibility analysis.');
-                return 0;
-            }
-        }
-
-        // Prepare project
-        $this->say("Preparing project to run upgrade_status:analyze command.");
+        // Prepare project.
+        $this->say("Preparing the project to run upgrade_status.");
         $drushBin = $this->getBin('drush');
         $collection = $this->collectionBuilder();
-        $collection->taskComposerRequire()
-            ->dependency('phpspec/prophecy-phpunit', '^2')
+        // Require 'drupal/upgrade_status' if does not exist on the project.
+        if (self::getPackagePropertyFromComposer('drupal/upgrade_status') != false) {
+            $collection->taskComposerRequire()
             ->dependency('drupal/upgrade_status', '^3')
             ->dev()
             ->run();
+        }
+        // Require 'drupal/core-dev' if does not exist on the project.
+        if (self::getPackagePropertyFromComposer('drupal/core-dev') != false) {
+            $collection->taskComposerRequire()
+            ->dependency('drupal/core-dev')
+            ->dev()
+            ->run();
+        }
 
+        // Build collection.
         $collection = $this->collectionBuilder();
         $collection->taskExecStack()
             ->exec($drushBin . ' en upgrade_status -y')
             ->run();
 
-        // Collect result details.
+        // Perform the default analysis to all contrib and custom components.
         $result = $collection->taskExecStack()
-            ->exec($drushBin . ' upgrade_status:analyze --all')
+            ->exec($drushBin . ' us-a --all')
             ->printOutput(false)
             ->storeState('insecure')
             ->silent(true)
             ->run()
             ->getMessage();
 
-        // Check for results.
+        // Check flagged results.
         $qaCompatibilityResult = 0;
         if (is_string($result)) {
             $flags = [
                 'Check manually',
                 'Fix now',
             ];
-
             foreach ($flags as $flag) {
-                if (strpos($flag, $result) !== false) {
+                if (strpos($result, $flag) !== false) {
                     $qaCompatibilityResult = 1;
                 }
             }
         }
+        echo $result . PHP_EOL;
 
         if ($qaCompatibilityResult) {
-            $this->say('Looks the project need some attention, please check the report.');
+            $this->say('Looks the project need some attention, please check the report above.');
         } else {
-            $this->say('Congrats, looks like your project is Drupal 9 compatible. In any case you can check the report below.');
+            if (Semver::satisfies($drupal_version, '^8')) {
+                $this->say('Congrats, looks like your project is Drupal 9 compatible.');
+            }
+            if (Semver::satisfies($drupal_version, '^9')) {
+                $this->say('Congrats, looks like your project is Drupal 10 compatible.');
+            }
         }
 
-        echo $result . PHP_EOL;
         return $qaCompatibilityResult;
     }
 
@@ -887,7 +893,7 @@ class ToolCommands extends AbstractCommands
     {
         $this->skipOutdated = false;
         $this->skipInsecure = false;
-        $this->skipd9c = true;
+        $this->skipDus = true;
 
         $commitMsg = getenv('DRONE_COMMIT_MESSAGE') !== false ? getenv('DRONE_COMMIT_MESSAGE') : '';
         $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMsg;
@@ -906,7 +912,7 @@ class ToolCommands extends AbstractCommands
                     $this->skipInsecure = true;
                 }
                 if ($transformedToken == 'skip_d9c') {
-                    $this->skipd9c = false;
+                    $this->skipDus = false;
                 }
             }
         }
