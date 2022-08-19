@@ -33,4 +33,5 @@ docker-compose exec web vendor/bin/run
 - [Continuous integration](/docs/continuous-integration.md)
 - [Building assets](/docs/building-assets.md)
 - [Available tasks](/docs/available-tasks.md)
+- [Update Project Documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)
