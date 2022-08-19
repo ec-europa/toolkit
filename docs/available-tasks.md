@@ -41,7 +41,7 @@ Available commands:
   toolkit:run-phpcbf            [tpb] Run PHP code autofixing.
   toolkit:test-behat            [tb] Run Behat tests.
   toolkit:test-phpcs            [tp] Run PHP code review.
-  toolkit:upgrade-status        [tdus] Check project compatibility for Drupal 9/10 upgrade.
+  toolkit:drupal-upgrade-status [tdus] Check project compatibility for Drupal 9/10 upgrade.
 
 
 ```
