@@ -728,14 +728,14 @@ class ToolCommands extends AbstractCommands
         $drushBin = $this->getBin('drush');
         $collection = $this->collectionBuilder();
         // Require 'drupal/upgrade_status' if does not exist on the project.
-        if (self::getPackagePropertyFromComposer('drupal/upgrade_status') != false) {
+        if (self::getPackagePropertyFromComposer('drupal/upgrade_status') == false) {
             $collection->taskComposerRequire()
             ->dependency('drupal/upgrade_status', '^3')
             ->dev()
             ->run();
         }
         // Require 'drupal/core-dev' if does not exist on the project.
-        if (self::getPackagePropertyFromComposer('drupal/core-dev') != false) {
+        if (self::getPackagePropertyFromComposer('drupal/core-dev') == false) {
             $collection->taskComposerRequire()
             ->dependency('drupal/core-dev')
             ->dev()
@@ -771,7 +771,7 @@ class ToolCommands extends AbstractCommands
             }
         }
         echo $result . PHP_EOL;
-
+        $drupal_version = self::getPackagePropertyFromComposer('drupal/core');
         if ($qaCompatibilityResult) {
             $this->say('Looks the project need some attention, please check the report above.');
         } else {
