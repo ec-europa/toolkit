@@ -1551,8 +1551,7 @@ class ToolCommands extends AbstractCommands
                     ->run()->getMessage();
                 if (strpos($info, '[installed]') !== false) {
                     $data[$package] = 'installed';
-                }
-                else {
+                } else {
                     $data[$package] = 'fail';
                     $return = 1;
                 }
