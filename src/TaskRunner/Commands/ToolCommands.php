@@ -9,6 +9,7 @@ use EcEuropa\Toolkit\Toolkit;
 use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use Symfony\Component\Yaml\Yaml;
@@ -1503,5 +1504,67 @@ class ToolCommands extends AbstractCommands
         }
 
         return false;
+    }
+
+
+    /**
+     * This command will install the packages present in the opts.yml file.
+     *
+     * @command toolkit:install-dependencies
+     */
+    public function toolkitInstallDependencies()
+    {
+        $return = 0;
+        if (!file_exists('.opts.yml')) {
+            return $return;
+        }
+        $opts = Yaml::parseFile('.opts.yml');
+        $packages = $opts['extra_pkgs'] ?? [];
+        if (empty($packages)) {
+            return $return;
+        }
+
+        $data = $install = [];
+        $this->io()->title('Installing dependencies');
+
+        // The command apt list needs the apt update to run.
+        $this->taskExec('apt-get update')->run();
+
+        foreach ($packages as $package) {
+            $info = $this->taskExec("apt list $package")
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
+            if (strpos($info, '[installed]') === false) {
+                $install[] = $package;
+            } else {
+                $data[$package] = 'already installed';
+            }
+        }
+
+        if (!empty($install)) {
+            $this->taskExec('apt-get upgrade -y')->run();
+            $this->taskExec('apt-get install -y ' . implode(' ', $install))
+                ->run();
+            foreach ($install as $package) {
+                $info = $this->taskExec("apt list $package")
+                    ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                    ->run()->getMessage();
+                if (strpos($info, '[installed]') !== false) {
+                    $data[$package] = 'installed';
+                }
+                else {
+                    $data[$package] = 'fail';
+                    $return = 1;
+                }
+            }
+        }
+
+        $table = new Table($this->io());
+        $table->setHeaders(['Package', 'Status']);
+        foreach ($data as $package => $status) {
+            $table->addRow([$package, $status]);
+        }
+        $table->render();
+        return $return;
     }
 }
