@@ -353,7 +353,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         if (Toolkit::isCiCd()) {
             $this->taskExecStack()
-                ->exec($this->getBin('run') . ' toolkit:install-dependencies');
+                ->exec($this->getBin('run') . ' toolkit:install-dependencies')
+                ->run();
         }
 
         $behatBin = $this->getBin('behat');
