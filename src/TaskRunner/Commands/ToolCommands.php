@@ -1517,6 +1517,7 @@ class ToolCommands extends AbstractCommands
         'print' => InputOption::VALUE_NONE,
     ])
     {
+        $this->io()->title('Installing dependencies');
         $return = 0;
         if (!file_exists('.opts.yml')) {
             return $return;
@@ -1524,10 +1525,10 @@ class ToolCommands extends AbstractCommands
         $opts = Yaml::parseFile('.opts.yml');
         $packages = $opts['extra_pkgs'] ?? [];
         if (empty($packages)) {
+            $this->output()->writeln('No packages found, skipping.');
             return $return;
         }
 
-        $this->io()->title('Installing dependencies');
         $print = $options['print'] !== InputOption::VALUE_NONE;
         $verbose = $print ? VerbosityThresholdInterface::VERBOSITY_NORMAL : VerbosityThresholdInterface::VERBOSITY_DEBUG;
         $data = $install = [];
