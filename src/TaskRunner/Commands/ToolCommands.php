@@ -1506,13 +1506,16 @@ class ToolCommands extends AbstractCommands
         return false;
     }
 
-
     /**
-     * This command will install the packages present in the opts.yml file.
+     * Install packages present in the opts.yml file under extra_pkgs section.
      *
      * @command toolkit:install-dependencies
+     *
+     * @option print Shows output from apt commands.
      */
-    public function toolkitInstallDependencies()
+    public function toolkitInstallDependencies(array $options = [
+        'print' => InputOption::VALUE_NONE,
+    ])
     {
         $return = 0;
         if (!file_exists('.opts.yml')) {
@@ -1524,28 +1527,42 @@ class ToolCommands extends AbstractCommands
             return $return;
         }
 
-        $data = $install = [];
         $this->io()->title('Installing dependencies');
+        $print = $options['print'] !== InputOption::VALUE_NONE;
+        $verbose = $print ? VerbosityThresholdInterface::VERBOSITY_NORMAL : VerbosityThresholdInterface::VERBOSITY_DEBUG;
+        $data = $install = [];
 
         // The command apt list needs the apt update to run.
-        $this->taskExec('apt-get update')->run();
+        $this->taskExec('apt-get update')
+            ->setVerbosityThreshold($verbose)->run();
 
         foreach ($packages as $package) {
             $info = $this->taskExec("apt list $package")
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                 ->run()->getMessage();
-            if (strpos($info, '[installed]') === false) {
-                $install[] = $package;
-            } else {
+            // The package is installed if output contains '[installed]'. If
+            // the name is not in the output the package was not found.
+            if (strpos($info, '[installed]') !== false) {
                 $data[$package] = 'already installed';
+            } elseif (strpos($info, $package) === false) {
+                $data[$package] = 'not found';
+            } else {
+                $install[] = $package;
+            }
+            if ($print) {
+                $this->output()->writeln(["Running apt list $package", $info]);
             }
         }
 
         if (!empty($install)) {
-            $this->taskExec('apt-get upgrade -y')->run();
-            $this->taskExec('apt-get install -y ' . implode(' ', $install))
-                ->run();
+            $this->taskExec('apt-get upgrade -y')
+                ->setVerbosityThreshold($verbose)->run();
+            // Install the missing packages.
             foreach ($install as $package) {
+                $this->taskExec("apt-get install -y $package")
+                    ->setVerbosityThreshold($verbose)->run();
+
+                // Check if the package was installed.
                 $info = $this->taskExec("apt list $package")
                     ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                     ->run()->getMessage();
@@ -1554,6 +1571,9 @@ class ToolCommands extends AbstractCommands
                 } else {
                     $data[$package] = 'fail';
                     $return = 1;
+                }
+                if ($print) {
+                    $this->output()->writeln(["Running apt list $package", $info]);
                 }
             }
         }
