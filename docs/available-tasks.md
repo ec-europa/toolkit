@@ -29,7 +29,6 @@ Available commands:
   toolkit:build-dev-reset       Build site for local development from scratch with a clean git.
   toolkit:build-dist            Build the distribution package.
   toolkit:component-check       Check composer.json for components that are not whitelisted/blacklisted.
-  toolkit:d9-compatibility      Check project compatibility for Drupal 9 upgrade.
   toolkit:disable-drupal-cache  Disable aggregation and clear cache.
   toolkit:download-dump         Download ASDA snapshot.
   toolkit:import-config         Import config.
@@ -42,6 +41,7 @@ Available commands:
   toolkit:run-phpcbf            [tpb] Run PHP code autofixing.
   toolkit:test-behat            [tb] Run Behat tests.
   toolkit:test-phpcs            [tp] Run PHP code review.
+  toolkit:drupal-upgrade-status [tdus] Check project compatibility for Drupal 9/10 upgrade.
 
 
 ```
@@ -54,4 +54,5 @@ Available commands:
 - [Using Docker environment](/docs/docker-environment.md)
 - [Continuous integration](/docs/continuous-integration.md)
 - [Building assets](/docs/building-assets.md)
+- [Update Project Documentation](/docs/project-documentation.md)
 - [Changelog](/changelog.md)
