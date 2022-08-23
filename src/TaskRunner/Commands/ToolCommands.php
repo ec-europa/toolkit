@@ -1545,7 +1545,7 @@ class ToolCommands extends AbstractCommands
             if (strpos($info, '[installed]') !== false) {
                 $data[$package] = 'already installed';
             } elseif (strpos($info, $package) === false) {
-                $data[$package] = 'not found';
+                $data[$package] = 'not found, skip install';
             } else {
                 $install[] = $package;
             }
@@ -1555,11 +1555,9 @@ class ToolCommands extends AbstractCommands
         }
 
         if (!empty($install)) {
-            $this->taskExec('apt-get upgrade -y')
-                ->setVerbosityThreshold($verbose)->run();
             // Install the missing packages.
             foreach ($install as $package) {
-                $this->taskExec("apt-get install -y $package")
+                $this->taskExec("apt-get install -y --no-install-recommends $package")
                     ->setVerbosityThreshold($verbose)->run();
 
                 // Check if the package was installed.
