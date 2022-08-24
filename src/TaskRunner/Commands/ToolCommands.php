@@ -9,6 +9,7 @@ use EcEuropa\Toolkit\Toolkit;
 use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use Symfony\Component\Yaml\Yaml;
@@ -1509,5 +1510,85 @@ class ToolCommands extends AbstractCommands
         }
 
         return false;
+    }
+
+    /**
+     * Install packages present in the opts.yml file under extra_pkgs section.
+     *
+     * @command toolkit:install-dependencies
+     *
+     * @option print Shows output from apt commands.
+     */
+    public function toolkitInstallDependencies(array $options = [
+        'print' => InputOption::VALUE_NONE,
+    ])
+    {
+        $this->io()->title('Installing dependencies');
+        $return = 0;
+        if (!file_exists('.opts.yml')) {
+            return $return;
+        }
+        $opts = Yaml::parseFile('.opts.yml');
+        $packages = $opts['extra_pkgs'] ?? [];
+        if (empty($packages)) {
+            $this->output()->writeln('No packages found, skipping.');
+            return $return;
+        }
+
+        $print = $options['print'] !== InputOption::VALUE_NONE;
+        $verbose = $print ? VerbosityThresholdInterface::VERBOSITY_NORMAL : VerbosityThresholdInterface::VERBOSITY_DEBUG;
+        $data = $install = [];
+
+        // The command apt list needs the apt update to run.
+        $this->taskExec('apt-get update')
+            ->setVerbosityThreshold($verbose)->run();
+
+        foreach ($packages as $package) {
+            $info = $this->taskExec("apt list $package")
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
+            // The package is installed if output contains '[installed]'. If
+            // the name is not in the output the package was not found.
+            if (strpos($info, '[installed]') !== false) {
+                $data[$package] = 'already installed';
+            } elseif (strpos($info, $package) === false) {
+                $data[$package] = 'not found, skip install';
+            } else {
+                $install[] = $package;
+            }
+            if ($print) {
+                $this->output()->writeln(["Running apt list $package", $info]);
+            }
+        }
+
+        if (!empty($install)) {
+            // Install the missing packages.
+            foreach ($install as $package) {
+                $this->taskExec("apt-get install -y --no-install-recommends $package")
+                    ->setVerbosityThreshold($verbose)->run();
+
+                // Check if the package was installed.
+                $info = $this->taskExec("apt list $package")
+                    ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                    ->run()->getMessage();
+                if (strpos($info, '[installed]') !== false) {
+                    $data[$package] = 'installed';
+                } else {
+                    $data[$package] = 'fail';
+                    $return = 1;
+                }
+                if ($print) {
+                    $this->output()->writeln(["Running apt list $package", $info]);
+                }
+            }
+        }
+
+        $table = new Table($this->io());
+        $table->setHeaders(['Package', 'Status']);
+        foreach ($data as $package => $status) {
+            $table->addRow([$package, $status]);
+        }
+        $table->render();
+        return $return;
     }
 }

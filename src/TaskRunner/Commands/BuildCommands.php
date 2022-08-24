@@ -180,6 +180,7 @@ class BuildCommands extends AbstractCommands
         $runner_bin = $this->getBin('run');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
+            ->exec("$runner_bin toolkit:install-dependencies")
             ->exec("$runner_bin drupal:settings-setup --root=$root");
 
         // Double check presence of required folders.
