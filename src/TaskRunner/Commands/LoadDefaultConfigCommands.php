@@ -4,8 +4,18 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use Consolidation\Config\Config;
 use Consolidation\Config\Loader\ConfigProcessor;
+use Consolidation\Config\Loader\YamlConfigLoader;
+use Consolidation\Config\Util\ConfigOverlay;
+//use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
+use Robo\Common\ConfigAwareTrait;
+use Robo\Common\IO;
+use Robo\Contract\BuilderAwareInterface;
+use Robo\Contract\ConfigAwareInterface;
+use Robo\Contract\IOAwareInterface;
+use Robo\LoadAllTasks;
 use Robo\Robo;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 
@@ -54,10 +64,50 @@ class LoadDefaultConfigCommands extends AbstractCommands
 
         // Re-build configuration.
         $processor = new ConfigProcessor();
-        $processor->add($default_config->export());
-        $processor->add($config->export());
+        $merged = $this->overrideConfigurations($default_config->export(), $config->export());
+        $processor->add($merged);
 
         // Import newly built configuration.
         $config->import($processor->export());
+    }
+
+    /**
+     * Override and merge second $arr2 into the $arr1.
+     *
+     * @param $arr1
+     *   The base array.
+     * @param $arr2
+     *   The array to be added to the $arr1.
+     *
+     * @return array
+     *   Returns the $arr1 containning the $arr2.
+     */
+    private function overrideConfigurations($arr1, $arr2)
+    {
+        foreach ($arr2 as $search => $replace) {
+            if (!isset($arr1[$search])) {
+                $arr1[$search] = $replace;
+                continue;
+            }
+            if (is_array($replace)) {
+                foreach ($replace as $key => $item) {
+                    if (is_array($item)) {
+                        foreach ($item as $j => $value) {
+                            if (is_array($value)) {
+                                foreach ($value as $value_key => $val) {
+                                    $arr1[$search][$key][$j][$value_key] = $val;
+                                }
+                            } else {
+                                $arr1[$search][$key][$j] = $value;
+                            }
+                        }
+                    } else {
+                        $arr1[$search][$key] = $item;
+                    }
+                }
+            }
+        }
+
+        return $arr1;
     }
 }
