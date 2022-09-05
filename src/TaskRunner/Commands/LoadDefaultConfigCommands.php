@@ -29,7 +29,6 @@ use Symfony\Component\Console\Event\ConsoleCommandEvent;
  */
 class LoadDefaultConfigCommands extends AbstractCommands
 {
-
     /**
      * Configurations that can be replaced by a project.
      *
