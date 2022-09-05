@@ -27,7 +27,6 @@ class LoadDefaultConfigCommands extends AbstractCommands
      */
     private $overrides = [
         'toolkit.build.dist.keep',
-        'toolkit.build.dist.keep',
         'toolkit.test.phpcs.standards',
         'toolkit.test.phpcs.ignore_patterns',
         'toolkit.test.phpcs.triggered_by',
