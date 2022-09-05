@@ -4,18 +4,9 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
-use Consolidation\Config\Config;
 use Consolidation\Config\Loader\ConfigProcessor;
-use Consolidation\Config\Loader\YamlConfigLoader;
 use Consolidation\Config\Util\ConfigOverlay;
-//use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use Robo\Common\ConfigAwareTrait;
-use Robo\Common\IO;
-use Robo\Contract\BuilderAwareInterface;
-use Robo\Contract\ConfigAwareInterface;
-use Robo\Contract\IOAwareInterface;
-use Robo\LoadAllTasks;
 use Robo\Robo;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 
@@ -90,7 +81,6 @@ class LoadDefaultConfigCommands extends AbstractCommands
         $context = $default_config->getContext(ConfigOverlay::DEFAULT_CONTEXT);
         foreach ($this->overrides as $override) {
             if ($value = $config->get($override)) {
-                $default_config->set($override, $value);
                 $context->set($override, $value);
             }
         }
@@ -99,6 +89,7 @@ class LoadDefaultConfigCommands extends AbstractCommands
         $processor = new ConfigProcessor();
         $default_config->addContext(ConfigOverlay::DEFAULT_CONTEXT, $context);
         $processor->add($default_config->export());
+        $processor->add($config->export());
 
         // Import newly built configuration.
         $config->import($processor->export());
