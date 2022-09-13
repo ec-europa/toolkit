@@ -653,7 +653,7 @@ class ToolCommands extends AbstractCommands
             return $GLOBALS['session_token'];
         }
         $url = Toolkit::getQaWebsiteUrl();
-        $options = array(
+        $options = [
             CURLOPT_RETURNTRANSFER => true,   // return web page
             CURLOPT_HEADER         => false,  // don't return headers
             CURLOPT_FOLLOWLOCATION => true,   // follow redirects
@@ -663,7 +663,7 @@ class ToolCommands extends AbstractCommands
             CURLOPT_AUTOREFERER    => true,   // set referrer on redirect
             CURLOPT_CONNECTTIMEOUT => 120,    // time-out on connect
             CURLOPT_TIMEOUT        => 120,    // time-out on response
-        );
+        ];
         $ch = curl_init("$url/session/token");
         curl_setopt_array($ch, $options);
         $token = curl_exec($ch);
@@ -813,41 +813,25 @@ class ToolCommands extends AbstractCommands
     public function optsReview()
     {
         if (file_exists('.opts.yml')) {
+            if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+                return 1;
+            }
+            $project_id = $this->getConfig()->get('toolkit.project_id');
+            $url = Toolkit::getQaWebsiteUrl();
+            $url .= '/api/v1/project/ec-europa/' . $project_id . '-reference/information/constraints';
+            $result = self::getQaEndpointContent($url, $basicAuth);
+            $result = json_decode($result, true);
+            if (!isset($result['constraints'])) {
+                $this->io()->error('Failed to get constraints from the endpoint.');
+                return 1;
+            }
+            $forbiddenCommands = $result['constraints'];
+
             $parseOptsFile = Yaml::parseFile('.opts.yml');
-            // List of commands to prevent the use.
-            $forbiddenCommands = [
-                'site:install', 'site-install', 'si', 'sin',
-                'sql:conf', 'sql-conf',
-                'sql:connect', 'sql-connect',
-                'sql:create', 'sql-create',
-                'sql:drop', 'sql-drop',
-                'sql:cli', 'sql-cli', 'sqlc',
-                'sql:query', 'sql-query', 'sqlq',
-                'sql:dump', 'sql-dump',
-                'sql:sanitize', 'sql-sanitize', 'sqlsan',
-                'sql:sync', 'sql-sync',
-                'pm:enable', 'pm-enable', 'pm-install', 'install', 'in', 'en',
-                'pm:disable', 'pm-disable', 'dis',
-                'pm:uninstall', 'pm-uninstall', 'pmu', 'un',
-                'user:login', 'user-login', 'uli',
-                'user:information', 'user-information', 'uinf',
-                'user:block', 'user-block', 'ublk',
-                'user:unblock', 'user-unblock', 'uublk',
-                'user:role:add', 'user-add-role', 'urol',
-                'user:role:remove', 'user-remove-role', 'urrol',
-                'user:create', 'user-create', 'ucrt',
-                'user:cancel', 'user-cancel', 'ucan',
-                'user:password', 'user-password', 'upwd',
-                'php:eval', 'php-eval', 'eval', 'ev',
-                'composer',
-                'git',
-                'wget',
-                'curl',
-            ];
             $reviewOk = true;
 
             if (empty($parseOptsFile['upgrade_commands'])) {
-                $this->say("The project is using default deploy instructions.");
+                $this->say('The project is using default deploy instructions.');
                 return 0;
             }
             if (empty($parseOptsFile['upgrade_commands']['default']) && empty($parseOptsFile['upgrade_commands']['append'])) {
@@ -866,7 +850,7 @@ class ToolCommands extends AbstractCommands
                             }
                         } else {
                             foreach ($command as $env => $subCommand) {
-                                $parsedCommand = explode(" ", $subCommand);
+                                $parsedCommand = explode(' ', $subCommand);
                                 if (in_array($forbiddenCommand, $parsedCommand)) {
                                     $this->say("The command '$subCommand' is not allowed. Please remove it from 'upgrade_commands' section.");
                                     $reviewOk = false;
@@ -879,11 +863,10 @@ class ToolCommands extends AbstractCommands
             if ($reviewOk == false) {
                 $this->io()->error("Failed the '.opts.yml' file review. Please contact the QA team.");
                 return 1;
-            } else {
-                $this->say("Review 'opts.yml' file - Ok.");
-                // If the review is ok return '0'.
-                return 0;
             }
+            $this->say("Review 'opts.yml' file - Ok.");
+            // If the review is ok return '0'.
+            return 0;
         }
     }
 
