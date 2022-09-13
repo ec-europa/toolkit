@@ -29,13 +29,14 @@ locally and can be used in CI tools like Jenkins, Drone or Travis.
 - [Continuous integration](/docs/continuous-integration.md)
 - [Available tasks](/docs/available-tasks.md)
 - [Building assets](/docs/building-assets.md)
-- [Changelog](/changelog.md)
+- [Update Project Documentation](/docs/project-documentation.md)
+- [Changelog](/CHANGELOG.md)
 
 ## Contributing
-Please read [CONTRIBUTING.md](/CONTRIBUTING.MD) for details on our code of conduct and the process to submit pull-request to us.
+Please read [CONTRIBUTING.md](/CONTRIBUTING.md) for details on our code of conduct and the process to submit pull-request to us.
 
 ## License
-This project is licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2 - see the [LICENSE.md](/LICENSE.md) for details.
+This project is licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2 - see the [LICENSE.txt](/LICENSE.txt) for details.
 
 ## Maintainers
 This project is maintained by members of the Quality Assurance team who review
@@ -43,6 +44,8 @@ incoming pull requests for the NextEuropa project. The board on which they
 operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
 
 <details><summary><b>Contact list</b></summary>
+
 - [Alex Verbruggen](https://github.com/verbruggenalex): Maintainer - Quality Assurance
+
 - [Joao Santos](https://github.com/jonhy81): Maintainer - Quality Assurance
 </details>

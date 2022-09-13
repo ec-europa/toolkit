@@ -7,10 +7,10 @@ The override file, as its name implies, can contain configuration overrides for 
 services.
 If a service is defined in both files, Docker Compose merges the configurations.
 
-Find more information on Docker Compose extension mechanism on 
+Find more information on Docker Compose extension mechanism on
 [the official Docker Compose documentation](https://docs.docker.com/compose/extends/).
 
-The following configuration parameters are provided as environment variables in the [/.env](.env) file:
+The following configuration parameters are provided as environment variables in the `./.env` file:
 
 | Name                                  | Description                                               |
 |---------------------------------------|-----------------------------------------------------------|
@@ -30,7 +30,7 @@ The following configuration parameters are provided as environment variables in 
 | `DRUPAL_WEBTOOLS_ANALYTICS_SITE_ID`   | Drupal site unique identifier                             |
 | `DRUPAL_WEBTOOLS_ANALYTICS_SITE_PATH` | The domain + root path without protocol.                  |
 
-Environment variables will be loaded by Docker Compose when running `docker-compose up -d`.  
+Environment variables will be loaded by Docker Compose when running `docker-compose up -d`.
 
 ### Subsite configuration
 By default, subsite configuration go into file `runner.yml.dist`, see bellow an example.
@@ -63,12 +63,14 @@ Toolkit will load the credentials necessary to clone your subsite from your envi
 - ASDA_USER
 - ASDA_PASSWORD
 
-### Others topics
+### Other topics
 - [Setting up a project](/docs/setting-up-project.md)
+- Configuring a project
 - [Installing the project](/docs/installing-project.md)
 - [Testing the project](/docs/testing-project.md)
 - [Using Docker environment](/docs/docker-environment.md)
 - [Continuous integration](/docs/continuous-integration.md)
+- [Available tasks](/docs/available-tasks.md)
 - [Building assets](/docs/building-assets.md)
 - [Update Project Documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)

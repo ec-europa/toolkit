@@ -178,7 +178,7 @@ toolkit:
 ```
 
 ## Testing in CI
-Toolkit is full integrated with oficial pipeline that currently requires minimum
+Toolkit is full integrated with official pipeline that currently requires minimum
 of 1 behat test and a clean report for phpcs check.
 
 Any customization done in your project will be respected in Drone build.
@@ -187,8 +187,10 @@ Any customization done in your project will be respected in Drone build.
 - [Setting up a project](/docs/setting-up-project.md)
 - [Configuring a project](/docs/configuring-project.md)
 - [Installing the project](/docs/installing-project.md)
+- Testing the project
 - [Using Docker environment](/docs/docker-environment.md)
 - [Continuous integration](/docs/continuous-integration.md)
+- [Available tasks](/docs/available-tasks.md)
 - [Building assets](/docs/building-assets.md)
 - [Update Project Documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)

@@ -3,8 +3,11 @@
 ### Before install
 To start, run:
 
+```
 docker-compose up
-It's advised to not daemonize docker-compose so you can turn it off (CTRL+C) quickly when you're done working. However, if you'd like to daemonize it, you have to add the flag -d:
+```
+
+It's advised to not daemonize docker-compose, so you can turn it off (CTRL+C) quickly when you're done working. However, if you'd like to daemonize it, you have to add the flag -d:
 
 ```
 docker-compose up -d
@@ -28,7 +31,9 @@ docker-compose exec web ./vendor/bin/run toolkit:install-clean
 
 To install the site from existing configuration run:
 
+```
 docker-compose exec web ./vendor/bin/run drupal:site-install --existing-config
+```
 
 
 ### Clone installation
@@ -75,10 +80,11 @@ These commands simulate the automated deployment that Drone provides through its
 ### Other topics
 - [Setting up a project](/docs/setting-up-project.md)
 - [Configuring a project](/docs/configuring-project.md)
+- Installing the project
 - [Testing the project](/docs/testing-project.md)
 - [Using Docker environment](/docs/docker-environment.md)
 - [Continuous integration](/docs/continuous-integration.md)
-- [Building assets](/docs/building-assets.md)
 - [Available tasks](/docs/available-tasks.md)
+- [Building assets](/docs/building-assets.md)
 - [Update Project Documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)

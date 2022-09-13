@@ -25,13 +25,14 @@ docker-compose exec web composer install
 docker-compose exec web vendor/bin/run
 ```
 
-### Others topics
+### Other topics
+- Setting up a project
 - [Configuring a project](/docs/configuring-project.md)
 - [Installing the project](/docs/installing-project.md)
 - [Testing the project](/docs/testing-project.md)
 - [Using Docker environment](/docs/docker-environment.md)
 - [Continuous integration](/docs/continuous-integration.md)
-- [Building assets](/docs/building-assets.md)
 - [Available tasks](/docs/available-tasks.md)
+- [Building assets](/docs/building-assets.md)
 - [Update Project Documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)
