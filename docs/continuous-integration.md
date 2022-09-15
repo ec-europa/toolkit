@@ -16,7 +16,7 @@ Starting tunnel at https://user:pass@reponame-buildid1-buildid2-demo.ci.fpfis.te
 2019/08/06 06:20:17 [I] [control.go:411] [b6a48e313c53a474] [reponame-buildid1-buildid2--demo] start proxy success
 ```
 
-You can simply copy paste the tunnel url and visit your site. When appending /shell to your tunnel url you get access to the build through a web shell.
+You can simply copy/paste the tunnel url and visit your site.
 
 ## Deploy mode
 
@@ -28,7 +28,8 @@ The pipeline allows for an automatic deployment to the acceptance environment. T
 - [Installing the project](/docs/installing-project.md)
 - [Testing the project](/docs/testing-project.md)
 - [Using Docker environment](/docs/docker-environment.md)
-- [Building assets](/docs/building-assets.md)
+- Continuous integration
 - [Available tasks](/docs/available-tasks.md)
+- [Building assets](/docs/building-assets.md)
 - [Update Project Documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)

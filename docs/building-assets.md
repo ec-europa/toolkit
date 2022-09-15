@@ -4,7 +4,7 @@
 
 Toolkit provides a way to build theme assets with Gulp.js.
 
-By default a gulpfile is included and as well some npm packages in order to:
+By default, a gulpfile is included and as well some npm packages in order to:
 
 - Look for Scss files and convert them into Css
 - Minify Css and Js
@@ -47,7 +47,7 @@ docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
 
 ### Define 'custom-code-folder'
 
-If for some reason your project is running custom code in other folder then 'lib', it's possible to make it configurable with the following:
+If for some reason your project is running custom code in other folder then `lib`, it's possible to make it configurable with the following:
 ```
 toolkit:
   build:
@@ -68,7 +68,7 @@ docker-compose exec web ./vendor/bin/run tba
 This will (re)generate the /assets folder.
 
 ## Enable build assets during CI
-To enable auto build of assets you should extend the tasks buidl-dev and build-dist. See example bellow.
+To enable auto build of assets you should extend the tasks `build-dev` and `build-dist`. See example bellow.
 ```
 toolkit:
   project_id: "my-project"
@@ -93,7 +93,7 @@ If the file do not exists, toolkit will create one using the default template.
 ### Install additional npm packages
 
 Additional npm packages can be installed to extend the functionality.
-In order to do that add them in the file 'runner.yml' like the example bellow:
+In order to do that add them in the file `runner.yml` like the example bellow:
 
 ```
 toolkit:
@@ -104,8 +104,8 @@ toolkit:
 
 #### npm install --save-dev
 
-By default the npm packages are installed with the option '--save-dev' and will appear in the devDependencies.
-To override this behavior add in the file 'runner.yml' the following property:
+By default, the npm packages are installed with the option `--save-dev` and will appear in the devDependencies.
+To override this behavior add in the file `runner.yml` the following property:
 
 ```
 toolkit:
@@ -134,13 +134,14 @@ Automatically fix, where possible, violations reported.
 docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix
 ```
 
-### Others topics
+### Other topics
+- [Setting up a project](/docs/setting-up-project.md)
 - [Configuring a project](/docs/configuring-project.md)
 - [Installing the project](/docs/installing-project.md)
 - [Testing the project](/docs/testing-project.md)
 - [Using Docker environment](/docs/docker-environment.md)
 - [Continuous integration](/docs/continuous-integration.md)
-- [Building assets](/docs/building-assets.md)
 - [Available tasks](/docs/available-tasks.md)
+- Building assets
 - [Update Project Documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)
