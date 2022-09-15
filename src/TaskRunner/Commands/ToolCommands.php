@@ -1081,7 +1081,7 @@ class ToolCommands extends AbstractCommands
             $gitlab_check = 'FAIL (Missing environment variable: GITLAB_API_TOKEN)';
         } else {
             $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, 'https://git.fpfis.eu/api/v4/users?username=qa-dashboard-api');
+            curl_setopt($curl, CURLOPT_URL, 'https://git.fpfis.tech.ec.europa.eu/api/v4/users?username=qa-dashboard-api');
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_HTTPHEADER, ["PRIVATE-TOKEN: $token"]);
             curl_setopt($curl, CURLOPT_USERAGENT, 'Quality Assurance');
@@ -1123,8 +1123,8 @@ class ToolCommands extends AbstractCommands
         $this->io()->title('Checking connections:');
         $this->io()->definitionList(
             ['QA Endpoint access' => $endpoint_check],
-            ['github.com oauth access' => $github_check],
-            ['git.fpfis.eu oauth access' => $gitlab_check],
+            ['GitHub oauth access' => $github_check],
+            ['GitLab oauth access' => $gitlab_check],
             ['ASDA configuration' => $asda_check],
             ['NEXTCLOUD configuration' => $nextcloud_check],
         );
