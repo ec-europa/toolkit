@@ -45,7 +45,9 @@ operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
 
 <details><summary><b>Contact list</b></summary>
 
-- [Alex Verbruggen](https://github.com/verbruggenalex): Maintainer - Quality Assurance
-
 - [Joao Santos](https://github.com/jonhy81): Maintainer - Quality Assurance
+
+- [Miguel Martins](https://github.com/zarabatana): Maintainer - Quality Assurance
+
+- [Joao Silva](https://github.com/joaocsilva): Maintainer - Quality Assurance
 </details>

@@ -7,7 +7,7 @@
     "minimum-stability": "beta",
     "prefer-stable": true,
     "support": {
-        "email": "europamanagement@ec.europa.eu",
+        "email": "DIGIT-NEXTEUROPA-QA@ec.europa.eu",
         "source": "https://github.com/ec-europa/toolkit"
     },
     "require": {
