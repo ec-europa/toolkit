@@ -6,11 +6,12 @@ services:
     volumes:
     - ${PWD}:${PWD}
     - ${HOME}/.composer/auth.json:/root/.composer/auth.json
-    - ${PWD}/resources/xDebug/xdebug.custom.ini:/etc/php/8.1/mods-available/xdebug.ini
     environment:
       DOCUMENT_ROOT: ${PWD}
       ASDA_USER:
       ASDA_PASSWORD:
+      NEXTCLOUD_USER:
+      NEXTCLOUD_PASS:
       QA_API_BASIC_AUTH:
       XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
       PHP_IDE_CONFIG: "serverName=Docker"

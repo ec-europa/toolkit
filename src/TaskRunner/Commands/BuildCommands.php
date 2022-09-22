@@ -49,6 +49,8 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-dist
      *
+     * @aliases tk-bdist
+     *
      * @option root      Drupal root.
      * @option dist-root Distribution package root.
      * @option keep      Comma separated list of files and folders to keep.
@@ -166,6 +168,8 @@ class BuildCommands extends AbstractCommands
      *   Collection builder.
      *
      * @command toolkit:build-dev
+     *
+     * @aliases tk-bdev
      *
      * @option root Drupal root.
      */
@@ -298,7 +302,7 @@ class BuildCommands extends AbstractCommands
      *
      * @option validate or validate=fix to check or fix scss files.
      *
-     * @aliases tba
+     * @aliases tba, tk-assets
      */
     public function buildAssets(array $options = [
         'default-theme' => InputOption::VALUE_REQUIRED,

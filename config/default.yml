@@ -68,7 +68,7 @@ toolkit:
         - "/"
         - "/user"
     phpcs:
-      mode: grumphp
+      mode: phpcs
       config: phpcs.xml
       ignore_annotations: 0
       show_sniffs: 0
