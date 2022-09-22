@@ -6,6 +6,18 @@ workspace:
   base: /test
   path: toolkit
 
+matrix:
+  PHP_VERSION:
+    - 7.4
+    - 8.0
+    - 8.1
+  COMPOSER_BOUNDARY:
+    - lowest
+    - highest
+  COMPOSER_VERSION:
+    - 1
+    - 2
+
 services:
   web:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
@@ -42,7 +54,7 @@ pipeline:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
     commands:
       - ./vendor/bin/phpcs -i
-      - ./vendor/bin/grumphp run
+      - ./vendor/bin/phpcs -p
 
   phpunit:
     group: test
@@ -67,15 +79,3 @@ pipeline:
     secrets: [ github_api_token, composer_auth ]
     commands:
       - ./vendor/bin/parallel-lint --exclude web --exclude vendor -e module -e inc -e theme -e install -e php .
-
-matrix:
-  PHP_VERSION:
-    - 7.4
-    - 8.0
-    - 8.1
-  COMPOSER_BOUNDARY:
-    - lowest
-    - highest
-  COMPOSER_VERSION:
-    - 1
-    - 2

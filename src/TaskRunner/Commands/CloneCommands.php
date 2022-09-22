@@ -149,9 +149,12 @@ class CloneCommands extends AbstractCommands
     /**
      * Download ASDA snapshot.
      *
+     * @codingStandardsIgnoreStart Generic.Commenting.DocComment.TagsNotGrouped
+     *
      * Configuration for ASDA in NEXTCLOUD.
      * - Environment variables: NEXTCLOUD_USER, NEXTCLOUD_PASS (EU Login).
      * - Runner variables:
+     *
      * @code
      * toolkit:
      *   clone:
@@ -166,12 +169,15 @@ class CloneCommands extends AbstractCommands
      * Configuration for ASDA default.
      * - Environment variables: ASDA_USER, ASDA_PASSWORD.
      * - Runner variables:
+     *
      * @code
      * toolkit:
      *   clone:
      *     asda_type: 'default'
      *     asda_url: 'webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project_id}'
      * @endcode
+     *
+     * @codingStandardsIgnoreEnd
      *
      * @command toolkit:download-dump
      *

@@ -323,6 +323,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * Additional commands could run before and/or after the Behat tests. Such
      * commands should be described in configuration files in this way:
+     *
      * @code
      * toolkit:
      *   test:
@@ -400,6 +401,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * Additional commands could run before and/or after the PHPUnit tests. Such
      * commands should be described in configuration files in this way:
+     *
      * @code
      * phpunit:
      *   options: '--log-junit report.xml'
@@ -493,6 +495,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * Run lint YAML.
      *
      * Override the default include and exclude patterns in configuration files:
+     *
      * @code
      * toolkit:
      *   lint:
@@ -563,6 +566,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * Run lint PHP.
      *
      * Override the default include and exclude patterns in configuration files:
+     *
      * @code
      * toolkit:
      *   lint:

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<ruleset name="phpcs">
+    <description>The coding standard for phpcs.</description>
+
+    <!-- Standard. -->
+    <rule ref="PSR12" />
+
+    <!-- Arguments. -->
+    <arg name="extensions" value="php,inc,yml"/>
+    <arg name="report" value="full"/>
+    <arg name="colors"/>
+    <arg value="ps"/>
+
+    <!-- Files to check. -->
+    <file>src</file>
+
+    <!-- Exclude patterns. -->
+    <exclude-pattern>vendor/</exclude-pattern>
+    <exclude-pattern>tests/fixtures</exclude-pattern>
+
+    <rule ref="Generic">
+        <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine"/>
+        <exclude name="Generic.Classes.OpeningBraceSameLine.BraceOnNewLine"/>
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed"/>
+        <exclude name="Generic.Files.LowercasedFilename.NotFound"/>
+        <exclude name="Generic.Files.EndFileNoNewline.Found"/>
+        <exclude name="Generic.PHP.ClosingPHPTag.NotFound"/>
+        <exclude name="Generic.Files.LineLength.TooLong"/>
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
+        <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning"/>
+        <exclude name="Generic.PHP.UpperCaseConstant.Found"/>
+        <exclude name="Generic.CodeAnalysis.AssignmentInCondition.Found"/>
+        <exclude name="Generic.Formatting.NoSpaceAfterCast.SpaceFound"/>
+        <exclude name="Generic.Arrays.ArrayIndent.CloseBraceNotNewLine"/>
+        <exclude name="Generic.PHP.NoSilencedErrors.Discouraged"/>
+        <exclude name="Generic.Formatting.SpaceBeforeCast.NoSpace"/>
+        <!-- Disable metrics -->
+        <exclude name="Generic.Metrics"/>
+    </rule>
+
+    <rule ref="Generic.Formatting.SpaceAfterNot">
+        <properties>
+            <property name="spacing" value="0"/>
+        </properties>
+    </rule>
+
+    <rule ref="Generic.WhiteSpace.ScopeIndent">
+        <properties>
+            <property name="indent" value="4"/>
+            <property name="tabIndent" value="false"/>
+        </properties>
+    </rule>
+
+    <rule ref="Generic.WhiteSpace.DisallowTabIndent" />
+    <rule ref="Generic.Files.EndFileNewline.Found" />
+    <rule ref="Generic.Formatting.SpaceAfterCast.SpaceFound" />
+
+</ruleset>
