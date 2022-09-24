@@ -96,6 +96,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         // Handle the files.
         $root->appendChild($phpcs_xml->createComment(' Files to check. '));
         if (!empty($files = $config->get('toolkit.test.phpcs.files'))) {
+            $files = is_string($files) ? explode(',', $files) : $files;
             foreach ($files as $file) {
                 if (file_exists($file)) {
                     $root->appendChild($phpcs_xml->createElement('file', $file));
@@ -288,10 +289,12 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     /**
      * Make sure that the config file exists and configuration is correct.
      *
+     * @command toolkit:check-phpcs-requirements
+     *
      * @return \Robo\ResultData|void
      *   No return if all is ok, return 1 if fails.
      */
-    private function checkPhpCsRequirements()
+    public function checkPhpCsRequirements()
     {
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
         if (!file_exists($config_file)) {

@@ -15,6 +15,28 @@ final class Toolkit
     public const VERSION = '8.7.0';
 
     /**
+     * Returns the Toolkit root.
+     *
+     * @return string
+     *   The Toolkit root.
+     */
+    public static function getToolkitRoot(): string
+    {
+        return __DIR__ . '/../';
+    }
+
+    /**
+     * Returns the Project root.
+     *
+     * @return string
+     *   The Project root.
+     */
+    public static function getProjectRoot(): string
+    {
+        return __DIR__ . '/../../../../';
+    }
+
+    /**
      * Returns the QA base url.
      *
      * @return string

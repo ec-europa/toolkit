@@ -129,3 +129,30 @@ toolkit:
   invalid-versions:
     - 1.x
     - 2.x
+  hooks:
+    # A relative path from the project root where the hooks are located.
+    dir: 'resources/git/hooks'
+    active:
+      # Check for modified files and run PHPcs.
+      - pre-commit
+      # Check if the commit message is properly formatted.
+      - prepare-commit-msg
+      # Run the PHPcs and linters (configurable).
+      - pre-push
+    prepare-commit-msg:
+      example: 'ABC-123: The commit message.'
+      conditions:
+        - message: "The commit message must start with the JIRA issue number."
+          regex: /^[A-Z]+\-\d+/
+        - message: "The JIRA issue number must be followed by a colon and space."
+          regex: /^[A-Z]+\-\d+:\ /
+        - message: "The subject must start with capital letter."
+          regex: /^[A-Z]+\-\d+:\ [A-Z]/
+        - message: "The commit message must end with a period."
+          regex: /\.$/
+    pre-push:
+      commands:
+        - toolkit:test-phpcs
+        - toolkit:lint-yaml
+        - toolkit:lint-php
+        - toolkit:opts-review
