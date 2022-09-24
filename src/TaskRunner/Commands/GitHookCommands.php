@@ -32,7 +32,7 @@ class GitHookCommands extends AbstractCommands
      * @param array $options
      *   Command options.
      *
-     * @return \Robo\ResultData
+     * @return int|ResultData
      *   The exit code.
      *
      * @command toolkit:hooks-enable
@@ -81,7 +81,7 @@ class GitHookCommands extends AbstractCommands
      * @param array $options
      *   Command options.
      *
-     * @return \Robo\ResultData
+     * @return int|ResultData
      *   The exit code.
      *
      * @command toolkit:hooks-disable
@@ -157,10 +157,8 @@ class GitHookCommands extends AbstractCommands
             }
             if (
                 $is_enabled &&
-                (
-                    sha1_file($file_path) !== sha1_file($git_hooks_dir . '/' . $hook) ||
-                    filesize($file_path) !== filesize($git_hooks_dir . '/' . $hook)
-                )
+                (sha1_file($file_path) !== sha1_file($git_hooks_dir . '/' . $hook) ||
+                    filesize($file_path) !== filesize($git_hooks_dir . '/' . $hook))
             ) {
                 $needs_update = true;
             }
@@ -196,14 +194,14 @@ class GitHookCommands extends AbstractCommands
      * @param string $arg3
      *   The third argument of the given hook.
      *
-     * @return \Robo\ResultData
-     *   Collection builder.
+     * @return int|ResultData
+     *   The exit code.
      *
      * @command toolkit:hooks-run
      */
+    // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassAfterLastUsed
     public function hooksRun(string $hook, $arg1 = '', $arg2 = '', $arg3 = '')
     {
-        $this->io()->say("Receive request for hook: $hook");
         if (empty($hook)) {
             $this->io()->say('Please provide a hook to run.');
             return ResultData::EXITCODE_ERROR;
@@ -264,7 +262,6 @@ class GitHookCommands extends AbstractCommands
             ->run();
 
         // Execute the command.
-        $files = "'" . implode("' '", $diff) . "'";
         $result = $this->taskExec("$phpcs --standard=$config_file")->run();
 
         // Restore the config file if it existed, otherwise remove the
@@ -386,5 +383,4 @@ class GitHookCommands extends AbstractCommands
         }
         return $method;
     }
-
 }
