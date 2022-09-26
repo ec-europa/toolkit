@@ -31,5 +31,6 @@ The pipeline allows for an automatic deployment to the acceptance environment. T
 - Continuous integration
 - [Available tasks](/docs/available-tasks.md)
 - [Building assets](/docs/building-assets.md)
+- [Git Hooks](/docs/git-hooks.md)
 - [Update Project Documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)

@@ -23,5 +23,6 @@ Then push the changes generated.
 - [Continuous integration](/docs/continuous-integration.md)
 - [Available tasks](/docs/available-tasks.md)
 - [Building assets](/docs/building-assets.md)
+- [Git Hooks](/docs/git-hooks.md)
 - Update Project Documentation
 - [Changelog](/CHANGELOG.md)

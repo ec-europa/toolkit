@@ -192,5 +192,6 @@ Any customization done in your project will be respected in Drone build.
 - [Continuous integration](/docs/continuous-integration.md)
 - [Available tasks](/docs/available-tasks.md)
 - [Building assets](/docs/building-assets.md)
+- [Git Hooks](/docs/git-hooks.md)
 - [Update Project Documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)

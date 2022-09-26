@@ -71,5 +71,6 @@ Available commands:
 - [Continuous integration](/docs/continuous-integration.md)
 - Available tasks
 - [Building assets](/docs/building-assets.md)
+- [Git Hooks](/docs/git-hooks.md)
 - [Update Project Documentation](/docs/project-documentation.md)
 - [Changelog](/CHANGELOG.md)
