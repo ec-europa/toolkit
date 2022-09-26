@@ -1535,7 +1535,8 @@ class ToolCommands extends AbstractCommands
             if (strpos($info, '[installed]') !== false) {
                 $data[$package] = 'already installed';
             } elseif (strpos($info, $package) === false) {
-                $data[$package] = 'not found, skip install';
+                $data[$package] = 'not found';
+                $return = 1;
             } else {
                 $install[] = $package;
             }
