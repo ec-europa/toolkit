@@ -73,14 +73,14 @@ Labels:
 The command `toolkit:hooks-enable` will read the configuration
 `toolkit.hooks.active` and enable these hooks.
 
-Alternatively you can use the argument `hook` to enable a set of hooks.
+Alternatively you can use the option `hooks` to enable a set of hooks.
 
 ### Disable all the active hooks
 
 The command `toolkit:hooks-disable` will read the configuration
 `toolkit.hooks.active` and disable these hooks.
 
-Alternatively you can use the argument `hook` to disable a set of hooks.
+Alternatively you can use the option `hooks` to disable a set of hooks.
 
 ### Delete all the enabled hooks
 
@@ -140,7 +140,7 @@ use the hook `commit-msg`, so we add the file `resources/git/hooks/commit-msg`.
 
 ### Add the hook to the active hooks
 
-In your runner.yml, extend the Toolkit configuration to add your custom hook.
+In your `runner.yml`, extend the Toolkit configuration to add your custom hook.
 
 Do not forget to copy the existing ones (in case you want to use them),
 otherwise your configuration will override the default provided by Toolkit.

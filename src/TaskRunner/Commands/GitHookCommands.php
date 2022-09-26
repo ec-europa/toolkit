@@ -12,7 +12,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
- * Provides commands to build a site for development and a production artifact.
+ * Provides commands to interact with git hooks.
  */
 class GitHookCommands extends AbstractCommands
 {
@@ -316,13 +316,14 @@ class GitHookCommands extends AbstractCommands
      */
     private function runPrePush()
     {
-        $config = $this->getConfig()->get('toolkit.hooks');
+        $exit = 0;
         $runner_bin = $this->getBin('run');
-        foreach ($config['pre-push']['commands'] as $test) {
-            $result = $this->taskExec($runner_bin . ' ' . $test);
-            var_dump($result);
+        $commands = $this->getConfig()->get('toolkit.hooks.pre-push.commands');
+        foreach ($commands as $test) {
+            $result = $this->taskExec($runner_bin . ' ' . $test)->run();
+            $exit += $result->getExitCode();
         }
-        return ResultData::EXITCODE_ERROR;
+        return $exit;
     }
 
     /**
