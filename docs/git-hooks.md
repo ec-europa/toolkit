@@ -64,8 +64,11 @@ To list the available commands, execute the following command:
 
 Labels:
 `Hook` - Represents the name of the hook.
+
 `Active by config` - Whether the hook is active in configuration.
-`Hooks exists` - Whether the hook is enable under `.git/hooks` folder
+
+`Hooks exists` - Whether the hook is enable under `.git/hooks` folder.
+
 `Modified file` - Whether the hook is not the same as in the `resources/git/hooks` folder.
 
 ### Enable all the active hooks
