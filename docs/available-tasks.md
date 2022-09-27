@@ -5,7 +5,7 @@ To list all available tasks, please run:
 docker-composer exec web ./vendor/bin/run
 ```
 
-See bellow current list for version `8.7.0`.
+See bellow current list for version `9.0.0`.
 ```
 Available commands:
   help                              Displays help for a command
