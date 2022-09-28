@@ -21,16 +21,16 @@ The toolkit contains different components that help you during the development, 
 component is the Phing build system that let's you easily set up the project
 locally and can be used in CI tools like Jenkins, Drone or Travis.
 
-- [Setting up a project](/docs/setting-up-project.md)
-- [Configuring a project](/docs/configuring-project.md)
-- [Installing the project](/docs/installing-project.md)
-- [Testing the project](/docs/testing-project.md)
-- [Using Docker environment](/docs/docker-environment.md)
-- [Continuous integration](/docs/continuous-integration.md)
-- [Available tasks](/docs/available-tasks.md)
-- [Building assets](/docs/building-assets.md)
-- [Git Hooks](/docs/git-hooks.md)
-- [Update Project Documentation](/docs/project-documentation.md)
+- [Setting up a project](/docs/user-guide/setting-up-project.md)
+- [Configuring a project](/docs/user-guide/configuring-project.md)
+- [Installing the project](/docs/user-guide/installing-project.md)
+- [Testing the project](/docs/user-guide/testing-project.md)
+- [Using Docker environment](/docs/user-guide/docker-environment.md)
+- [Continuous integration](/docs/user-guide/continuous-integration.md)
+- [Available tasks](/docs/user-guide/available-tasks.md)
+- [Building assets](/docs/user-guide/building-assets.md)
+- [Git Hooks](/docs/user-guide/git-hooks.md)
+- [Update Project Documentation](/docs/user-guide/project-documentation.md)
 - [Changelog](/CHANGELOG.md)
 
 ## Contributing
