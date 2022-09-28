@@ -21,16 +21,16 @@ The toolkit contains different components that help you during the development, 
 component is the Phing build system that let's you easily set up the project
 locally and can be used in CI tools like Jenkins, Drone or Travis.
 
-- [Setting up a project](/docs/user-guide/setting-up-project.md)
-- [Configuring a project](/docs/user-guide/configuring-project.md)
-- [Installing the project](/docs/user-guide/installing-project.md)
-- [Testing the project](/docs/user-guide/testing-project.md)
-- [Using Docker environment](/docs/user-guide/docker-environment.md)
-- [Continuous integration](/docs/user-guide/continuous-integration.md)
-- [Available tasks](/docs/user-guide/available-tasks.md)
-- [Building assets](/docs/user-guide/building-assets.md)
-- [Git Hooks](/docs/user-guide/git-hooks.md)
-- [Update Project Documentation](/docs/user-guide/project-documentation.md)
+- [Setting up a project](/docs/getting-started/setting-up-project.md)
+- [Configuring a project](/docs/getting-started/configuring-project.md)
+- [Installing the project](/docs/getting-started/installing-project.md)
+- [Testing the project](/docs/getting-started/testing-project.md)
+- [Using Docker environment](/docs/getting-started/docker-environment.md)
+- [Continuous integration](/docs/getting-started/continuous-integration.md)
+- [Available tasks](/docs/getting-started/available-tasks.md)
+- [Building assets](/docs/getting-started/building-assets.md)
+- [Git Hooks](/docs/getting-started/git-hooks.md)
+- [Update Project Documentation](/docs/getting-started/project-documentation.md)
 - [Changelog](/CHANGELOG.md)
 
 ## Contributing
