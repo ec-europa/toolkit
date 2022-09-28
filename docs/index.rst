@@ -5,7 +5,7 @@
 .. toctree::
    :hidden:
 
-   getting-started/index
+   guide/index
 
 
 Documentation
