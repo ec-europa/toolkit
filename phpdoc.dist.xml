@@ -32,7 +32,7 @@
                 <ignore-tag>extends</ignore-tag>
                 <ignore-tag>implements</ignore-tag>
             </ignore-tags>
-            <default-package-name>phpDocumentor</default-package-name>
+            <default-package-name>Toolkit</default-package-name>
         </api>
         <guide>
             <source dsn=".">
