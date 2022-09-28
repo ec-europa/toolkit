@@ -7,8 +7,10 @@ workspace:
   path: toolkit
 
 matrix:
-  PHP_VERSION: 8.1
-  COMPOSER_VERSION: 2
+  PHP_VERSION:
+    - 8.1
+  COMPOSER_VERSION:
+    - 2
   COMPOSER_BOUNDARY:
     - lowest
     - highest
