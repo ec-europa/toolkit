@@ -9,7 +9,7 @@ To update the documentation run the following command. This will update
 the content inside the folder ‘docs’.
 
 ```
-docker run --rm -v $(pwd):/data phpdoc/phpdoc run -d ./  -t ./docs
+docker run --rm -v $(pwd):/data phpdoc/phpdoc run -d ./src -t ./docs
 ```
 
 Then push the changes generated.
@@ -23,5 +23,6 @@ Then push the changes generated.
 - [Continuous integration](/docs/continuous-integration.md)
 - [Available tasks](/docs/available-tasks.md)
 - [Building assets](/docs/building-assets.md)
+- [Git Hooks](/docs/git-hooks.md)
 - Update Project Documentation
 - [Changelog](/CHANGELOG.md)

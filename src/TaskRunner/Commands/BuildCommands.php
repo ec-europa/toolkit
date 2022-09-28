@@ -49,6 +49,8 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-dist
      *
+     * @aliases tk-bdist
+     *
      * @option root      Drupal root.
      * @option dist-root Distribution package root.
      * @option keep      Comma separated list of files and folders to keep.
@@ -57,7 +59,6 @@ class BuildCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      */
     public function buildDist(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -166,6 +167,8 @@ class BuildCommands extends AbstractCommands
      *   Collection builder.
      *
      * @command toolkit:build-dev
+     *
+     * @aliases tk-bdev
      *
      * @option root Drupal root.
      */
@@ -284,21 +287,20 @@ class BuildCommands extends AbstractCommands
     /**
      * Build theme assets (Css and Js).
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *
      * @param array $options
      *   Additional options for the command.
-     *
-     * @return \Robo\Result|int
-     *   The collection builder.
      *
      * @command toolkit:build-assets
      *
      * @option default-theme theme where to build assets.
-     *
      * @option validate or validate=fix to check or fix scss files.
      *
-     * @aliases tba
+     * @aliases tba, tk-assets
+     *
+     * @return \Robo\Result|int
+     *   The collection builder.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function buildAssets(array $options = [
         'default-theme' => InputOption::VALUE_REQUIRED,

@@ -11,7 +11,7 @@
         "source": "https://github.com/ec-europa/toolkit"
     },
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.1",
         "ext-curl": "*",
         "ext-dom": "*",
         "ext-json": "*",
@@ -19,7 +19,7 @@
         "behat/behat": "^3.7 || ^3.8",
         "cweagans/composer-patches": "^1.4 || ^1.7",
         "drush/drush": "^9.7.1 || ^10.0.0 || ^11.0.4",
-        "ec-europa/qa-automation": "^8.1.5",
+        "ec-europa/qa-automation": "^9.0",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "j13k/yaml-lint": "^1.1",
         "openeuropa/task-runner": "^2.0@alpha",
@@ -57,7 +57,7 @@
         "post-install-cmd": [
             "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs,../../ec-europa/qa-automation/phpcs'"
         ],
-        "post-update-cmd" : [
+        "post-update-cmd": [
             "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs,../../ec-europa/qa-automation/phpcs'"
         ]
     }

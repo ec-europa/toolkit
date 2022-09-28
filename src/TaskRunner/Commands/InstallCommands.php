@@ -32,6 +32,8 @@ class InstallCommands extends AbstractCommands
      *
      * @command toolkit:install-clean
      *
+     * @aliases tk-iclean
+     *
      * @return \Robo\Collection\CollectionBuilder
      *   Collection builder.
      */
@@ -59,6 +61,8 @@ class InstallCommands extends AbstractCommands
      *
      * @command toolkit:install-clone
      *
+     * @aliases tk-iclone
+     *
      * @return \Robo\Collection\CollectionBuilder
      *   Collection builder.
      */
@@ -84,6 +88,8 @@ class InstallCommands extends AbstractCommands
      * Import config.
      *
      * @command toolkit:import-config
+     *
+     * @aliases tk-ci
      *
      * @return \Robo\Collection\CollectionBuilder
      *   Collection builder.

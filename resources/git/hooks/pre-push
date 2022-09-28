@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Called by "git push" after it has checked the remote status, but before
+# anything has been pushed. Receives two arguments, the name of the remote,
+# followed by the remote url. If this script exits with a non-zero status
+# nothing will be pushed.
+#
+# This hook will execute the commands defined in the configuration
+# toolkit.hooks.pre-push.commands.
+#
+
+./vendor/bin/run toolkit:hooks-run `basename "$0"` $1 $2

@@ -289,7 +289,7 @@ class ToolCommands extends AbstractCommands
 
         $this->io()->definitionList(
             ['Mandatory module check ' => $this->componentCheckMandatoryFailed ? 'failed' : 'passed'],
-            ['Recommended module check ' => $this->componentCheckRecommendedFailed ? 'failed' : 'passed' . ' (report only)'],
+            ['Recommended module check ' => ($this->componentCheckRecommendedFailed ? 'failed' : 'passed') . ' (report only)'],
             ['Insecure module check ' => $this->componentCheckInsecureFailed ? 'failed' : 'passed' . $skipInsecure],
             ['Outdated module check ' => $this->componentCheckOutdatedFailed ? 'failed' : 'passed' . $skipOutdated],
             ['Dev module check ' => $this->componentCheckDevVersionFailed ? 'failed' : 'passed'],
@@ -382,12 +382,12 @@ class ToolCommands extends AbstractCommands
     /**
      * Helper function to check component's review information.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @param array $modules The modules list.
      *
      * @throws \Robo\Exception\TaskException
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function componentMandatory($modules)
     {
@@ -447,11 +447,11 @@ class ToolCommands extends AbstractCommands
     /**
      * Helper function to check component's review information.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @param array $modules The modules list.
      * @param array $packages The packages to validate.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function componentRecommended($modules, $packages)
     {
@@ -482,12 +482,12 @@ class ToolCommands extends AbstractCommands
     /**
      * Helper function to check component's review information.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @param array $modules The modules list.
      *
      * @throws \Robo\Exception\TaskException
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function componentInsecure($modules)
     {
@@ -588,8 +588,6 @@ class ToolCommands extends AbstractCommands
      * This function is made publicly available as a static function for other
      * projects to call. Then we have to maintain less code.
      *
-     * @SuppressWarnings(PHPMD.MissingImport)
-     *
      * @param string $url The QA endpoint url.
      * @param string $basicAuth The basic auth.
      *
@@ -597,6 +595,8 @@ class ToolCommands extends AbstractCommands
      *   The endpoint content, or empty string if no session is generated.
      *
      * @throws \Exception
+     *
+     * @SuppressWarnings(PHPMD.MissingImport)
      */
     public static function getQaEndpointContent(string $url, string $basicAuth = ''): string
     {

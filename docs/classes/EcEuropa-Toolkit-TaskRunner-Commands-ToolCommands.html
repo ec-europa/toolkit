@@ -56,16 +56,6 @@
                     <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="namespaces/openeuropa.html" class="">OpenEuropa</a>
-</h4>
-    <ul class="phpdocumentor-list">
-                    <li>
-                <a href="namespaces/openeuropa-site.html" class="">Site</a>
-                
-            </li>
-            </ul>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/eceuropa.html" class="">EcEuropa</a>
 </h4>
     <ul class="phpdocumentor-list">
@@ -129,7 +119,7 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">21</span>
+    <span class="phpdocumentor-element-found-in__line">22</span>
 
     </aside>
 
@@ -179,13 +169,6 @@
 <dd>Check if &#039;composer.lock&#039; exists on the project root folder.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_d9Compatibility">d9Compatibility()</a>
-    <span>
-                                &nbsp;: int    </span>
-</dt>
-<dd>Check project compatibility for Drupal 9 upgrade.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_disableDrupalCache">disableDrupalCache()</a>
     <span>
                                 &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
@@ -198,6 +181,13 @@
                                 &nbsp;: mixed    </span>
 </dt>
 <dd>Display toolkit notifications.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_drupalUpgradeStatus">drupalUpgradeStatus()</a>
+    <span>
+                                &nbsp;: int    </span>
+</dt>
+<dd>Check project compatibility for Drupal 9/10 upgrade.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_fixPermissions">fixPermissions()</a>
@@ -298,6 +288,13 @@
 <dd>This command will execute all the testing tools.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_toolkitInstallDependencies">toolkitInstallDependencies()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Install packages present in the opts.yml file under extra_pkgs section.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_toolkitRequirements">toolkitRequirements()</a>
     <span>
                                 &nbsp;: mixed    </span>
@@ -393,7 +390,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">92</span>
+    <span class="phpdocumentor-element-found-in__line">93</span>
 
     </aside>
 
@@ -488,7 +485,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">788</span>
+    <span class="phpdocumentor-element-found-in__line">795</span>
 
     </aside>
 
@@ -529,64 +526,6 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_d9Compatibility">
-        d9Compatibility()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_d9Compatibility" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">718</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Check project compatibility for Drupal 9 upgrade.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">d9Compatibility</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
-
-    
-    
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
-<p>Note: The project configuration should be updated.</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:d9-compatibility</p>
-</section>
-
-                                    </dd>
-                                            </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
     <h4 class="phpdocumentor-element__name" id="method_disableDrupalCache">
         disableDrupalCache()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_disableDrupalCache" class="headerlink"><i class="fas fa-link"></i></a>
@@ -594,7 +533,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">41</span>
+    <span class="phpdocumentor-element-found-in__line">42</span>
 
     </aside>
 
@@ -644,7 +583,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">65</span>
+    <span class="phpdocumentor-element-found-in__line">66</span>
 
     </aside>
 
@@ -712,6 +651,72 @@
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_drupalUpgradeStatus">
+        drupalUpgradeStatus()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_drupalUpgradeStatus" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">718</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Check project compatibility for Drupal 9/10 upgrade.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">drupalUpgradeStatus</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
+
+    
+    
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">command</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>toolkit:drupal-upgrade-status</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">aliases</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>tdus</p>
+</section>
+
+                                    </dd>
+                                            </dl>
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">int</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_fixPermissions">
         fixPermissions()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_fixPermissions" class="headerlink"><i class="fas fa-link"></i></a>
@@ -719,7 +724,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1160</span>
+    <span class="phpdocumentor-element-found-in__line">1150</span>
 
     </aside>
 
@@ -778,7 +783,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1466</span>
+    <span class="phpdocumentor-element-found-in__line">1456</span>
 
     </aside>
 
@@ -840,7 +845,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">28</span>
+    <span class="phpdocumentor-element-found-in__line">29</span>
 
     </aside>
 
@@ -879,7 +884,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1373</span>
+    <span class="phpdocumentor-element-found-in__line">1363</span>
 
     </aside>
 
@@ -926,7 +931,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">962</span>
+    <span class="phpdocumentor-element-found-in__line">952</span>
 
     </aside>
 
@@ -992,7 +997,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1267</span>
+    <span class="phpdocumentor-element-found-in__line">1257</span>
 
     </aside>
 
@@ -1063,7 +1068,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1334</span>
+    <span class="phpdocumentor-element-found-in__line">1324</span>
 
     </aside>
 
@@ -1104,7 +1109,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">600</span>
+    <span class="phpdocumentor-element-found-in__line">601</span>
 
     </aside>
 
@@ -1147,6 +1152,14 @@ projects to call. Then we have to maintain less code.</p>
     </h5>
     <dl class="phpdocumentor-tag-list">
                                     <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
+                                                            
+                                             
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
                     <span class="phpdocumentor-tag__name">SuppressWarnings</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
@@ -1154,14 +1167,6 @@ projects to call. Then we have to maintain less code.</p>
                                                  <section class="phpdocumentor-description"><p>(PHPMD.MissingImport)</p>
 </section>
 
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                             
                                     </dd>
                                             </dl>
 
@@ -1186,7 +1191,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1487</span>
+    <span class="phpdocumentor-element-found-in__line">1477</span>
 
     </aside>
 
@@ -1247,7 +1252,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">649</span>
+    <span class="phpdocumentor-element-found-in__line">650</span>
 
     </aside>
 
@@ -1288,7 +1293,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">806</span>
+    <span class="phpdocumentor-element-found-in__line">813</span>
 
     </aside>
 
@@ -1345,7 +1350,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">687</span>
+    <span class="phpdocumentor-element-found-in__line">688</span>
 
     </aside>
 
@@ -1415,7 +1420,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">920</span>
+    <span class="phpdocumentor-element-found-in__line">910</span>
 
     </aside>
 
@@ -1463,7 +1468,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1394</span>
+    <span class="phpdocumentor-element-found-in__line">1384</span>
 
     </aside>
 
@@ -1551,6 +1556,74 @@ projects to call. Then we have to maintain less code.</p>
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_toolkitInstallDependencies">
+        toolkitInstallDependencies()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_toolkitInstallDependencies" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">1505</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Install packages present in the opts.yml file under extra_pkgs section.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">toolkitInstallDependencies</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;print&#039; =&gt; InputOption::VALUE_NONE]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$options</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;print&#039; =&gt; InputOption::VALUE_NONE]</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">command</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>toolkit:install-dependencies</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>print Shows output from apt commands.</p>
+</section>
+
+                                    </dd>
+                                            </dl>
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_toolkitRequirements">
         toolkitRequirements()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_toolkitRequirements" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1558,7 +1631,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1024</span>
+    <span class="phpdocumentor-element-found-in__line">1014</span>
 
     </aside>
 
@@ -1644,7 +1717,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1304</span>
+    <span class="phpdocumentor-element-found-in__line">1294</span>
 
     </aside>
 
@@ -1692,7 +1765,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1203</span>
+    <span class="phpdocumentor-element-found-in__line">1193</span>
 
     </aside>
 
@@ -1740,7 +1813,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">886</span>
+    <span class="phpdocumentor-element-found-in__line">876</span>
 
     </aside>
 
@@ -1779,7 +1852,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">491</span>
+    <span class="phpdocumentor-element-found-in__line">492</span>
 
     </aside>
 
@@ -1810,6 +1883,14 @@ projects to call. Then we have to maintain less code.</p>
     </h5>
     <dl class="phpdocumentor-tag-list">
                                     <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><abbr title="\Robo\Exception\TaskException">TaskException</abbr></span>
+                                                            
+                                             
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
                     <span class="phpdocumentor-tag__name">SuppressWarnings</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
@@ -1826,14 +1907,6 @@ projects to call. Then we have to maintain less code.</p>
                                                  <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
 </section>
 
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Robo\Exception\TaskException">TaskException</abbr></span>
-                                                            
-                                             
                                     </dd>
                                             </dl>
 
@@ -1856,7 +1929,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">391</span>
+    <span class="phpdocumentor-element-found-in__line">392</span>
 
     </aside>
 
@@ -1887,6 +1960,14 @@ projects to call. Then we have to maintain less code.</p>
     </h5>
     <dl class="phpdocumentor-tag-list">
                                     <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><abbr title="\Robo\Exception\TaskException">TaskException</abbr></span>
+                                                            
+                                             
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
                     <span class="phpdocumentor-tag__name">SuppressWarnings</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
@@ -1903,14 +1984,6 @@ projects to call. Then we have to maintain less code.</p>
                                                  <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
 </section>
 
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Robo\Exception\TaskException">TaskException</abbr></span>
-                                                            
-                                             
                                     </dd>
                                             </dl>
 
@@ -1933,7 +2006,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">554</span>
+    <span class="phpdocumentor-element-found-in__line">555</span>
 
     </aside>
 
@@ -1990,7 +2063,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">455</span>
+    <span class="phpdocumentor-element-found-in__line">456</span>
 
     </aside>
 
@@ -2068,7 +2141,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">282</span>
+    <span class="phpdocumentor-element-found-in__line">283</span>
 
     </aside>
 
@@ -2125,7 +2198,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">310</span>
+    <span class="phpdocumentor-element-found-in__line">311</span>
 
     </aside>
 

@@ -1,0 +1,4 @@
+command:
+  toolkit:
+    hooks:
+      active: ${toolkit.hooks.active}

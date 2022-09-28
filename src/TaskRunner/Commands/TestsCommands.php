@@ -11,6 +11,7 @@ use OpenEuropa\TaskRunner\Contract\FilesystemAwareInterface;
 use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
 use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
+use Robo\Exception\TaskException;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
@@ -36,7 +37,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     }
 
     /**
-     * Setup PHP code sniffer for standalone execution.
+     * Setup PHP code sniffer.
      *
      * @command toolkit:setup-phpcs
      */
@@ -95,6 +96,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         // Handle the files.
         $root->appendChild($phpcs_xml->createComment(' Files to check. '));
         if (!empty($files = $config->get('toolkit.test.phpcs.files'))) {
+            $files = is_string($files) ? explode(',', $files) : $files;
             foreach ($files as $file) {
                 if (file_exists($file)) {
                     $root->appendChild($phpcs_xml->createElement('file', $file));
@@ -123,35 +125,38 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:test-phpcs
      *
-     * @aliases tp
+     * @aliases tk-phpcs
+     *
+     * @see runPhpcs()
      */
     public function toolkitPhpcs()
     {
-        $mode = $this->getConfig()->get('toolkit.test.phpcs.mode', 'grumphp');
+        $mode = $this->getConfig()->get('toolkit.test.phpcs.mode', 'phpcs');
         if ($mode === 'grumphp') {
             $this->say('Executing PHPcs within GrumPHP.');
             return $this->runGrumphp();
         } else {
             $result = 0;
-            $this->say('Executing PHPcs in standalone mode.');
+            $this->say('Executing PHPcs.');
             $code = $this->runPhpcs();
             $result += $code->getExitCode();
 
-            $this->say('Executing PHPmd in standalone mode.');
+            $this->say('Executing PHPmd.');
             $code = $this->toolkitPhpmd();
             $result += $code->getExitCode();
-            $this->writeln('Exit: ' . $result);
 
             return $result;
         }
     }
 
     /**
-     * Run PHPMD standalone.
+     * Run PHPMD.
      *
      * Check configurations at config/default.yml - 'toolkit.test.phpmd'.
      *
      * @command toolkit:test-phpmd
+     *
+     * @aliases tk-phpmd
      */
     public function toolkitPhpmd()
     {
@@ -191,10 +196,14 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
     /**
      * Run PHP code sniffer within GrumPHP.
+     *
+     * @throws TaskException
+     *
+     * @deprecated
      */
     public function runGrumphp()
     {
-        $tasks = [];
+        $bin = $this->getBin('grumphp');
         $grumphpFile = './grumphp.yml.dist';
         $containsQaConventions = false;
 
@@ -220,7 +229,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
 
         if ($containsQaConventions) {
-            $tasks[] = $this->taskExec($this->getBin('grumphp') . ' run');
+            return $this->taskExec("$bin run")->run();
         } else {
             $this->say('All Drupal projects in the ec-europa namespace need to use Quality Assurance provided standards.');
             $this->say('Your configuration has to import the resource vendor/ec-europa/qa-automation/dist/qa-conventions.yml.');
@@ -229,18 +238,16 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             echo "\nimports:\n  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }\n\n";
             return new ResultData(1);
         }
-
-        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
-     * Run PHP code sniffer in standalone mode.
+     * Run PHP code sniffer.
      *
      * @code
      * toolkit:
      *   test:
      *     phpcs:
-     *       mode: grumphp || phpcs
+     *       mode: phpcs || grumphp
      *       config: phpcs.xml
      *       ignore_annotations: 0
      *       show_sniffs: 0
@@ -282,10 +289,12 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     /**
      * Make sure that the config file exists and configuration is correct.
      *
+     * @command toolkit:check-phpcs-requirements
+     *
      * @return \Robo\ResultData|void
      *   No return if all is ok, return 1 if fails.
      */
-    private function checkPhpCsRequirements()
+    public function checkPhpCsRequirements()
     {
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
         if (!file_exists($config_file)) {
@@ -317,6 +326,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * Additional commands could run before and/or after the Behat tests. Such
      * commands should be described in configuration files in this way:
+     *
      * @code
      * toolkit:
      *   test:
@@ -335,7 +345,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:test-behat
      *
-     * @aliases tb
+     * @aliases tb, tk-behat
      *
      * @option from     From behat.yml.dist config file.
      * @option to       To behat.yml config file.
@@ -371,15 +381,15 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         $this->taskProcessConfigFile($options['from'], $options['to'])->run();
 
-        $result = $this->taskExec($behatBin . " --dry-run --profile=" . $profile . " " . $suiteParameter)
+        $result = $this->taskExec("$behatBin --dry-run --profile=$profile $suiteParameter")
             ->silent(true)->run()->getMessage();
 
         if (strpos(trim($result), 'No scenarios') !== false) {
-            $this->say("No Scenarios found for --profile=" . $profile . " " . $suiteParameter . ", please create at least one Scenario.");
+            $this->say("No Scenarios found for profile $profile $suiteParameter, please create at least one Scenario.");
             return new ResultData(1);
         }
 
-        $tasks[] = $this->taskExec($behatBin . " --profile=" . $profile . " " . $suiteParameter);
+        $tasks[] = $this->taskExec("$behatBin --profile=$profile $suiteParameter");
 
         // Execute a list of commands to run after tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.after')) {
@@ -394,6 +404,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * Additional commands could run before and/or after the PHPUnit tests. Such
      * commands should be described in configuration files in this way:
+     *
      * @code
      * phpunit:
      *   options: '--log-junit report.xml'
@@ -410,7 +421,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:test-phpunit
      *
-     * @aliases tp
+     * @aliases tp, tk-phpunit
      *
      * @option from   From phpunit.xml.dist config file.
      * @option to     To phpunit.xml config file.
@@ -473,69 +484,21 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:run-phpcbf
      *
-     * @SuppressWarnings(PHPMD)
-     *
-     * @option test-path  directory or file path to be autofixed by phpcbf.
-     *
-     * @aliases tpb
+     * @aliases tk-phpcbf
      */
-    public function toolkitPhpcbf(array $options = [
-        'test-path' => InputOption::VALUE_REQUIRED,
-    ])
-    {
-        $tasks = [];
-        $grumphpFile = './grumphp.yml.dist';
-        $test_path = $options['test-path'];
-
-        if (file_exists($grumphpFile)) {
-            $grumphpArray = (array) Yaml::parse(file_get_contents($grumphpFile));
-            // Extensions extraction.
-            if (isset($grumphpArray['parameters']['tasks.phpcs.triggered_by'])) {
-                $extensions = implode(',', array_values($grumphpArray['parameters']['tasks.phpcs.triggered_by']));
-            }
-            // Standards extraction.
-            if (isset($grumphpArray['imports'])) {
-                foreach ($grumphpArray['imports'] as $import) {
-                    if (isset($import['resource'])) {
-                        $qaConventionsFile = './' . $import['resource'];
-                    }
-                }
-            }
-        }
-        if (file_exists($qaConventionsFile)) {
-            $qaConventionsArray = (array) Yaml::parse(file_get_contents($qaConventionsFile));
-            if (isset($qaConventionsArray['parameters']['tasks.phpcs.standard'])) {
-                foreach ($qaConventionsArray['parameters']['tasks.phpcs.standard'] as $standard) {
-                    $standards[] = $standard;
-                }
-                $standards = implode(',', array_values($standards));
-            }
-        }
-        if (isset($extensions) && isset($standards)) {
-            $tasks[] = $this->taskExec('./vendor/bin/phpcbf -s --standard=' . $standards . ' --extensions=' . $extensions . ' ' . $test_path);
-        }
-        return $this->collectionBuilder()->addTaskList($tasks);
-    }
-
-    /**
-     * Run PHP code autofixing in standalone mode.
-     *
-     * @command toolkit:run-phpcbf-standalone
-     */
-    public function toolkitPhpcbfStandalone()
+    public function toolkitPhpcbf()
     {
         $phpcbf_bin = $this->getBin('phpcbf');
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
         $this->checkPhpCsRequirements();
-        return $this->collectionBuilder()->addTaskList([
-            $this->taskExec("$phpcbf_bin --standard=$config_file"),
-        ]);
+        return $this->taskExec("$phpcbf_bin --standard=$config_file")->run();
     }
 
     /**
      * Run lint YAML.
      *
      * Override the default include and exclude patterns in configuration files:
+     *
      * @code
      * toolkit:
      *   lint:
@@ -547,7 +510,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:lint-yaml
      *
-     * @aliases tly
+     * @aliases tly, tk-yaml
      */
     public function toolkitLintYaml()
     {
@@ -595,7 +558,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             echo 'Processing ' . count($files) . ' files.' . PHP_EOL;
             // Prepare arguments.
             $arg = implode(' ', $files);
-            $tasks[] = $this->taskExec("./vendor/bin/yaml-lint -q $arg")
+            $tasks[] = $this->taskExec($this->getBin('yaml-lint') . " -q $arg")
                 ->printMetadata(false);
         }
 
@@ -606,6 +569,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * Run lint PHP.
      *
      * Override the default include and exclude patterns in configuration files:
+     *
      * @code
      * toolkit:
      *   lint:
@@ -616,7 +580,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:lint-php
      *
-     * @aliases tlp
+     * @aliases tlp, tk-php
      */
     public function toolkitLintPhp()
     {
@@ -636,7 +600,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
         // Prepare options.
         $opts_string = implode(' ', $opts);
-        $task = $this->taskExec("./vendor/bin/parallel-lint $opts_string .");
+        $task = $this->taskExec($this->getBin('parallel-lint') . " $opts_string .");
         return $this->collectionBuilder()->addTaskList([$task]);
     }
 
@@ -645,7 +609,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:run-blackfire
      *
-     * @aliases tbf
+     * @aliases tbf, tk-bfire
      */
     public function toolkitBlackfire()
     {

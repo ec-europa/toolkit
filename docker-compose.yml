@@ -1,16 +1,15 @@
 version: '2'
 services:
   web:
-    image: registry.fpfis.eu/fpfis/httpd-php:7.4-dev
+    image: registry.fpfis.eu/fpfis/httpd-php:8.1-dev
     working_dir: ${PWD}
     volumes:
     - ${PWD}:${PWD}
-    - ${HOME}/.composer/auth.json:/root/.composer/auth.json
-    - ${PWD}/resources/xDebug/xdebug.custom.ini:/etc/php/8.1/mods-available/xdebug.ini
+#    - ${HOME}/.composer/auth.json:/root/.composer/auth.json
     environment:
       DOCUMENT_ROOT: ${PWD}
-      ASDA_USER:
-      ASDA_PASSWORD:
+      NEXTCLOUD_USER:
+      NEXTCLOUD_PASS:
       QA_API_BASIC_AUTH:
       XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
       PHP_IDE_CONFIG: "serverName=Docker"

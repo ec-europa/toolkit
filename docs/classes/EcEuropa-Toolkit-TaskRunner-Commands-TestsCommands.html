@@ -56,16 +56,6 @@
                     <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="namespaces/openeuropa.html" class="">OpenEuropa</a>
-</h4>
-    <ul class="phpdocumentor-list">
-                    <li>
-                <a href="namespaces/openeuropa-site.html" class="">Site</a>
-                
-            </li>
-            </ul>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/eceuropa.html" class="">EcEuropa</a>
 </h4>
     <ul class="phpdocumentor-list">
@@ -132,7 +122,7 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">23</span>
 
     </aside>
 
@@ -171,6 +161,13 @@
 
 <dl class="phpdocumentor-table-of-contents">
                         <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_checkPhpCsRequirements">checkPhpCsRequirements()</a>
+    <span>
+                                &nbsp;: <abbr title="\Robo\ResultData">ResultData</abbr>|void    </span>
+</dt>
+<dd>Make sure that the config file exists and configuration is correct.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
     <span>
                                 &nbsp;: mixed    </span>
@@ -189,7 +186,7 @@
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
-<dd>Run PHP code sniffer in standalone mode.</dd>
+<dd>Run PHP code sniffer.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitBehat">toolkitBehat()</a>
@@ -227,13 +224,6 @@
 <dd>Run PHP code autofixing.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitPhpcbfStandalone">toolkitPhpcbfStandalone()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Run PHP code autofixing in standalone mode.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitPhpcs">toolkitPhpcs()</a>
     <span>
                                 &nbsp;: mixed    </span>
@@ -245,7 +235,7 @@
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
-<dd>Run PHPMD standalone.</dd>
+<dd>Run PHPMD.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitPhpUnit">toolkitPhpUnit()</a>
@@ -259,14 +249,7 @@
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
-<dd>Setup PHP code sniffer for standalone execution.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_checkPhpCsRequirements">checkPhpCsRequirements()</a>
-    <span>
-                                &nbsp;: <abbr title="\Robo\ResultData">ResultData</abbr>|void    </span>
-</dt>
-<dd>Make sure that the config file exists and configuration is correct.</dd>
+<dd>Setup PHP code sniffer.</dd>
 
         </dl>
 
@@ -287,6 +270,56 @@
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_checkPhpCsRequirements">
+        checkPhpCsRequirements()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_checkPhpCsRequirements" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">297</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Make sure that the config file exists and configuration is correct.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">checkPhpCsRequirements</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\ResultData">ResultData</abbr>|void</span></code>
+
+    
+    
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">command</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>toolkit:check-phpcs-requirements</p>
+</section>
+
+                                    </dd>
+                                            </dl>
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\ResultData">ResultData</abbr>|void</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>No return if all is ok, return 1 if fails.</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_getConfigurationFile">
         getConfigurationFile()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
@@ -294,7 +327,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">33</span>
+    <span class="phpdocumentor-element-found-in__line">34</span>
 
     </aside>
 
@@ -324,7 +357,7 @@
         class="phpdocumentor-element
             -method
             -public
-                                                        "
+            -deprecated                                            "
 >
     <h4 class="phpdocumentor-element__name" id="method_runGrumphp">
         runGrumphp()
@@ -333,13 +366,13 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">195</span>
+    <span class="phpdocumentor-element-found-in__line">204</span>
 
     </aside>
 
         <p class="phpdocumentor-summary">Run PHP code sniffer within GrumPHP.</p>
 
-    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <code class="phpdocumentor-code phpdocumentor-signature -deprecated">
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">runGrumphp</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
@@ -351,7 +384,22 @@
         <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
     </h5>
     <dl class="phpdocumentor-tag-list">
-                                </dl>
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><abbr title="\Robo\Exception\TaskException">TaskException</abbr></span>
+                                                            
+                                             
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">deprecated</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                             
+                                    </dd>
+                                            </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
@@ -372,11 +420,11 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">266</span>
+    <span class="phpdocumentor-element-found-in__line">273</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Run PHP code sniffer in standalone mode.</p>
+        <p class="phpdocumentor-summary">Run PHP code sniffer.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -398,7 +446,7 @@
                                                  <section class="phpdocumentor-description"><p>toolkit:
 test:
 phpcs:
-mode: grumphp || phpcs
+mode: phpcs || grumphp
 config: phpcs.xml
 ignore_annotations: 0
 show_sniffs: 0
@@ -450,7 +498,7 @@ files:
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">345</span>
+    <span class="phpdocumentor-element-found-in__line">355</span>
 
     </aside>
 
@@ -524,7 +572,7 @@ command: whoami
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>tb</p>
+                                                 <section class="phpdocumentor-description"><p>tb, tk-behat</p>
 </section>
 
                                     </dd>
@@ -585,7 +633,7 @@ command: whoami
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">643</span>
+    <span class="phpdocumentor-element-found-in__line">614</span>
 
     </aside>
 
@@ -617,7 +665,7 @@ command: whoami
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>tbf</p>
+                                                 <section class="phpdocumentor-description"><p>tbf, tk-bfire</p>
 </section>
 
                                     </dd>
@@ -642,7 +690,7 @@ command: whoami
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">614</span>
+    <span class="phpdocumentor-element-found-in__line">585</span>
 
     </aside>
 
@@ -696,7 +744,7 @@ exclude: [ 'vendor/', 'web/' ]</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>tlp</p>
+                                                 <section class="phpdocumentor-description"><p>tlp, tk-php</p>
 </section>
 
                                     </dd>
@@ -721,7 +769,7 @@ exclude: [ 'vendor/', 'web/' ]</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">545</span>
+    <span class="phpdocumentor-element-found-in__line">515</span>
 
     </aside>
 
@@ -776,7 +824,7 @@ exclude: [ 'vendor/', 'web/', 'node_modules/' ]</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>tly</p>
+                                                 <section class="phpdocumentor-description"><p>tly, tk-yaml</p>
 </section>
 
                                     </dd>
@@ -801,7 +849,7 @@ exclude: [ 'vendor/', 'web/', 'node_modules/' ]</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">475</span>
+    <span class="phpdocumentor-element-found-in__line">489</span>
 
     </aside>
 
@@ -809,21 +857,10 @@ exclude: [ 'vendor/', 'web/', 'node_modules/' ]</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitPhpcbf</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;test-path&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">toolkitPhpcbf</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;test-path&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-            </dl>
-
+    
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
@@ -840,77 +877,11 @@ exclude: [ 'vendor/', 'web/', 'node_modules/' ]</p>
 
                                     </dd>
                                                 <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD)</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>test-path  directory or file path to be autofixed by phpcbf.</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
                     <span class="phpdocumentor-tag__name">aliases</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>tpb</p>
-</section>
-
-                                    </dd>
-                                            </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_toolkitPhpcbfStandalone">
-        toolkitPhpcbfStandalone()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitPhpcbfStandalone" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">518</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Run PHP code autofixing in standalone mode.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitPhpcbfStandalone</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-    
-    
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:run-phpcbf-standalone</p>
+                                                 <section class="phpdocumentor-description"><p>tk-phpcbf</p>
 </section>
 
                                     </dd>
@@ -935,7 +906,7 @@ exclude: [ 'vendor/', 'web/', 'node_modules/' ]</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">128</span>
+    <span class="phpdocumentor-element-found-in__line">132</span>
 
     </aside>
 
@@ -967,9 +938,17 @@ exclude: [ 'vendor/', 'web/', 'node_modules/' ]</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>tp</p>
+                                                 <section class="phpdocumentor-description"><p>tk-phpcs</p>
 </section>
 
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">see</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                    <span class="phpdocumentor-tag-link"><abbr title="\EcEuropa\Toolkit\TaskRunner\Commands\runPhpcs()">runPhpcs()</abbr></span>
+                                        
+                                             
                                     </dd>
                                             </dl>
 
@@ -992,11 +971,11 @@ exclude: [ 'vendor/', 'web/', 'node_modules/' ]</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">156</span>
+    <span class="phpdocumentor-element-found-in__line">161</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Run PHPMD standalone.</p>
+        <p class="phpdocumentor-summary">Run PHPMD.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -1021,6 +1000,15 @@ exclude: [ 'vendor/', 'web/', 'node_modules/' ]</p>
 </section>
 
                                     </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">aliases</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>tk-phpmd</p>
+</section>
+
+                                    </dd>
                                             </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
@@ -1042,7 +1030,7 @@ exclude: [ 'vendor/', 'web/', 'node_modules/' ]</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">411</span>
+    <span class="phpdocumentor-element-found-in__line">429</span>
 
     </aside>
 
@@ -1114,7 +1102,7 @@ command: whoami
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>tp</p>
+                                                 <section class="phpdocumentor-description"><p>tp, tk-phpunit</p>
 </section>
 
                                     </dd>
@@ -1157,11 +1145,11 @@ command: whoami
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">43</span>
+    <span class="phpdocumentor-element-found-in__line">44</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Setup PHP code sniffer for standalone execution.</p>
+        <p class="phpdocumentor-summary">Setup PHP code sniffer.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -1190,47 +1178,6 @@ command: whoami
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
         
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_checkPhpCsRequirements">
-        checkPhpCsRequirements()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_checkPhpCsRequirements" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">288</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Make sure that the config file exists and configuration is correct.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">checkPhpCsRequirements</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\ResultData">ResultData</abbr>|void</span></code>
-
-    
-    
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\ResultData">ResultData</abbr>|void</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>No return if all is ok, return 1 if fails.</p>
-</section>
-
     
 </article>
             </section>

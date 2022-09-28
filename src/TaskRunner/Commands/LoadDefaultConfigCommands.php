@@ -61,12 +61,9 @@ class LoadDefaultConfigCommands extends AbstractCommands
      * commands. In this hook we load Toolkit default configuration and re-apply
      * it to the Task Runner one.
      *
-     * @param ConsoleCommandEvent $event
-     *   Event of the console command event.
-     *
      * @hook pre-command-event *
      */
-    public function loadDefaultConfig(ConsoleCommandEvent $event)
+    public function loadDefaultConfig()
     {
         // Load Toolkit default configuration.
         $default_config = Robo::createConfiguration([$this->getDefaultConfigurationFile()]);

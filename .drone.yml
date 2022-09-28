@@ -6,16 +6,25 @@ workspace:
   base: /test
   path: toolkit
 
+matrix:
+  PHP_VERSION:
+    - 8.1
+  COMPOSER_VERSION:
+    - 2
+  COMPOSER_BOUNDARY:
+    - lowest
+    - highest
+
 services:
   web:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     environment:
       - DOCUMENT_ROOT=/test/toolkit
 
 pipeline:
   composer-install:
     group: composer
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -27,7 +36,7 @@ pipeline:
 
   composer-update-lowest:
     group: composer
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -37,25 +46,24 @@ pipeline:
       matrix:
         COMPOSER_BOUNDARY: lowest
 
-  grumphp:
+  phpcs:
     group: test
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     commands:
       - ./vendor/bin/phpcs -i
-      - ./vendor/bin/grumphp run
+      - ./vendor/bin/phpcs -p
 
   phpunit:
     group: test
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     commands:
       - ./vendor/bin/phpunit
 
   lint-yaml:
     group: test
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, composer_auth ]
     commands:
-      - ./vendor/bin/yaml-lint *.yml *.yml.dist
       - CONFIG_FOLDER=$(if test -d config; then find config -type f -name "*.yml"; fi)
       - if ! [ -z "$CONFIG_FOLDER" ]; then ./vendor/bin/yaml-lint $CONFIG_FOLDER; fi
       - LIB_FOLDER=$(if test -d lib; then find lib -type f -name "*.yml"; fi)
@@ -63,19 +71,7 @@ pipeline:
 
   lint-php:
     group: test
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, composer_auth ]
     commands:
       - ./vendor/bin/parallel-lint --exclude web --exclude vendor -e module -e inc -e theme -e install -e php .
-
-matrix:
-  PHP_VERSION:
-    - 7.4
-    - 8.0
-    - 8.1
-  COMPOSER_BOUNDARY:
-    - lowest
-    - highest
-  COMPOSER_VERSION:
-    - 1
-    - 2
