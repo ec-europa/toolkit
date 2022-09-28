@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-            <title>Toolkit</title>
+                    <title>Toolkit</title>
     
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
     <link rel="icon" href="images/favicon.ico"/>
@@ -99,7 +100,7 @@
 </h4>
     <ul class="phpdocumentor-list">
                     <li>
-                <a href="namespaces/eceuropa-toolkit.html" class="-active">Toolkit</a>
+                <a href="namespaces/eceuropa-toolkit.html" class="">Toolkit</a>
                 
             </li>
             </ul>
@@ -127,42 +128,107 @@
 </aside>
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <ul class="phpdocumentor-breadcrumbs">
-            <li class="phpdocumentor-breadcrumb"><a href="namespaces/eceuropa.html">EcEuropa</a></li>
-    </ul>
+                    <div class="section" id="available-tasks">
+<h1>Available tasks</h1>
+<p>To list all available tasks, please run:</p>
+<pre><code class="language- " >docker-composer exec web ./vendor/bin/run
+</code></pre>
+<p>See bellow current list for version <code>9.0.0</code>.</p>
+<pre><code class="language- " >Available commands:
+  help                              Displays help for a command
+  list                              Lists commands
+ changelog
+  changelog:generate                [changelog:g|cg] Generate a changelog based on GitHub issues and pull requests.
+ drupal
+  drupal:drush-setup                Write Drush configuration files to given directories.
+  drupal:permissions-setup          Setup Drupal permissions.
+  drupal:settings-setup             Setup Drupal settings.php file in compliance with Toolkit conventions.
+  drupal:site-install               [drupal:si|dsi] Install target site.
+  drupal:site-post-install          Run Drupal post-install commands.
+  drupal:site-pre-install           Run Drupal pre-install commands.
+ release
+  release:create-archive            [release:ca|rca] Create a release for the current project.
+ toolkit
+  toolkit:build-assets              [tba|tk-assets] Build theme assets (Css and Js).
+  toolkit:build-dev                 [tk-bdev] Build site for local development.
+  toolkit:build-dev-reset           Build site for local development from scratch with a clean git.
+  toolkit:build-dist                [tk-bdist] Build the distribution package.
+  toolkit:check-version             Check the Toolkit version.
+  toolkit:check-phpcs-requirements  Make sure that the config file exists and configuration is correct.
+  toolkit:code-review               This command will execute all the testing tools.
+  toolkit:complock-check            Check if &#039;composer.lock&#039; exists on the project root folder.
+  toolkit:component-check           Check composer.json for components that are not whitelisted/blacklisted.
+  toolkit:disable-drupal-cache      Disable aggregation and clear cache.
+  toolkit:download-dump             Download ASDA snapshot.
+  toolkit:drupal-upgrade-status     [tdus] Check project compatibility for Drupal 9/10 upgrade.
+  toolkit:fix-permissions           Run script to fix permissions (experimental).
+  toolkit:hooks-delete-all          Remove all existing hooks, this will ignore active hooks list.
+  toolkit:hooks-disable             Disable the git hooks.
+  toolkit:hooks-enable              Enable the git hooks defined in the configuration or in given option.
+  toolkit:hooks-list                List available hooks and its status.
+  toolkit:hooks-run                 Run a specific hook.
+  toolkit:import-config             [tk-ci] Import config.
+  toolkit:install-clean             [tk-iclean] Install a clean website.
+  toolkit:install-clone             [tk-iclone] Install a clone website.
+  toolkit:install-dependencies      Install packages present in the opts.yml file under extra_pkgs section.
+  toolkit:install-dump              Import the production snapshot.
+  toolkit:lint-php                  [tlp|tk-php] Run lint PHP.
+  toolkit:lint-yaml                 [tly|tk-yaml] Run lint YAML.
+  toolkit:notifications             Display toolkit notifications.
+  toolkit:opts-review               Check project&#039;s .opts.yml file for forbidden commands.
+  toolkit:requirements              Check the Toolkit Requirements.
+  toolkit:run-blackfire             [tbf|tk-bfire] Run Blackfire.
+  toolkit:run-deploy                Run deployment sequence.
+  toolkit:run-phpcbf                [tk-phpcbf] Run PHP code autofixing.
+  toolkit:setup-blackfire-behat     Copy the needed resources to run Behat with Blackfire.
+  toolkit:setup-phpcs               Setup PHP code sniffer.
+  toolkit:test-behat                [tb|tk-behat] Run Behat tests.
+  toolkit:test-phpcs                [tk-phpcs] Run PHP code sniffer.
+  toolkit:test-phpmd                [tk-phpmd] Run PHPMD.
+  toolkit:test-phpunit              [tp|tk-phpunit] Run PHPUnit tests.
+  toolkit:vendor-list               Check &#039;Vendor&#039; packages being monitorised.
+</code></pre>
+<div class="section" id="other-topics">
+<h2>Other topics</h2>
 
-    <article class="phpdocumentor-element -namespace">
-        <h2 class="phpdocumentor-content__title">Toolkit</h2>
 
-        
-<h3 id="namespaces">
-    Namespaces
-    <a href="#namespaces" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
+<ul>
+    <li>
+            <a href="docs/setting-up-project.md">Setting up a project</a>
+        </li>
+    <li>
+            <a href="docs/configuring-project.md">Configuring a project</a>
+        </li>
+    <li>
+            <a href="docs/installing-project.md">Installing the project</a>
+        </li>
+    <li>
+            <a href="docs/testing-project.md">Testing the project</a>
+        </li>
+    <li>
+            <a href="docs/docker-environment.md">Using Docker environment</a>
+        </li>
+    <li>
+            <a href="docs/continuous-integration.md">Continuous integration</a>
+        </li>
+    <li>
+            Available tasks
+        </li>
+    <li>
+            <a href="docs/building-assets.md">Building assets</a>
+        </li>
+    <li>
+            <a href="docs/git-hooks.md">Git Hooks</a>
+        </li>
+    <li>
+            <a href="docs/project-documentation.md">Update Project Documentation</a>
+        </li>
+    <li>
+            <a href="CHANGELOG.md">Changelog</a>
+        </li>
+</ul>
+</div>
 
-<dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -namespace"><a href="namespaces/eceuropa-toolkit-taskrunner.html"><abbr title="\EcEuropa\Toolkit\TaskRunner">TaskRunner</abbr></a></dt>
-    </dl>
-
-<h3 id="interfaces_class_traits">
-    Interfaces, Classes, Traits and Enums
-    <a href="#interfaces_class_traits" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
-
-<dl class="phpdocumentor-table-of-contents">
-    
-            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/EcEuropa-Toolkit-Toolkit.html"><abbr title="\EcEuropa\Toolkit\Toolkit">Toolkit</abbr></a></dt>
-        <dd>Provides default Toolkit class.</dd>
-    
-    
-    </dl>
-
-
-
-        
-
-        
-    </article>
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
@@ -176,7 +242,7 @@
 </section>
             </div>
         </div>
-        <a href="namespaces/eceuropa-toolkit.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

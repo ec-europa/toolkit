@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-            <title>Toolkit</title>
+                    <title>Toolkit</title>
     
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
     <link rel="icon" href="images/favicon.ico"/>
@@ -99,7 +100,7 @@
 </h4>
     <ul class="phpdocumentor-list">
                     <li>
-                <a href="namespaces/eceuropa-toolkit.html" class="-active">Toolkit</a>
+                <a href="namespaces/eceuropa-toolkit.html" class="">Toolkit</a>
                 
             </li>
             </ul>
@@ -127,42 +128,67 @@
 </aside>
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <ul class="phpdocumentor-breadcrumbs">
-            <li class="phpdocumentor-breadcrumb"><a href="namespaces/eceuropa.html">EcEuropa</a></li>
-    </ul>
-
-    <article class="phpdocumentor-element -namespace">
-        <h2 class="phpdocumentor-content__title">Toolkit</h2>
-
-        
-<h3 id="namespaces">
-    Namespaces
-    <a href="#namespaces" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
-
-<dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -namespace"><a href="namespaces/eceuropa-toolkit-taskrunner.html"><abbr title="\EcEuropa\Toolkit\TaskRunner">TaskRunner</abbr></a></dt>
-    </dl>
-
-<h3 id="interfaces_class_traits">
-    Interfaces, Classes, Traits and Enums
-    <a href="#interfaces_class_traits" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
-
-<dl class="phpdocumentor-table-of-contents">
-    
-            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/EcEuropa-Toolkit-Toolkit.html"><abbr title="\EcEuropa\Toolkit\Toolkit">Toolkit</abbr></a></dt>
-        <dd>Provides default Toolkit class.</dd>
-    
-    
-    </dl>
+                    <div class="section" id="continuous-integration">
+<h1>Continuous integration</h1>
+<p>To check the status of the continuous integration of your project, go to <a href="https://drone.fpfis.eu/ec-europa">Drone</a>.</p>
+<p>A pipeline - created and maintained by DIGIT - is applied by default. It manages the code review of the code, runs all the business tests on the repository and builds the site artifact for the deployment. Customizing this pipeline, under express approval, is possible by adding a custom .drone.yml file to the project&#039;s root folder. For more detailed information on the pipelines you can visit <a href="https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines">https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines</a> .</p>
+<div class="section" id="demo-mode">
+<h2>Demo mode</h2>
+<p>The pipeline allows for an ephemeral environment to be spawned for a limited amount of time. This is done by creating a pull request from a branch named <strong>demo</strong> to the <strong>master</strong> branch. After the project is built a tunnel will open that gives you access to the build. The url comes in the format of:</p>
+<pre><code class="language- " >URL saved to /test/toolkit4/.frpc
+URL parts save to /test/toolkit4/.frpc.env
+HTML email saved to /test/toolkit4/.frpc.html
+Starting tunnel at https://user:pass@reponame-buildid1-buildid2-demo.ci.fpfis.tech.ec.europa.eu/
+2019/08/06 06:20:17 [I] [control.go:276] [b6a48e313c53a474] login to server success, get run id [b6a48e313c53a474]
+2019/08/06 06:20:17 [I] [control.go:411] [b6a48e313c53a474] [reponame-buildid1-buildid2--demo] start proxy success
+</code></pre>
+<p>You can simply copy/paste the tunnel url and visit your site.</p>
+</div>
+<div class="section" id="deploy-mode">
+<h2>Deploy mode</h2>
+<p>The pipeline allows for an automatic deployment to the acceptance environment. This is done by creating a pull request from a branch named <strong>deploy</strong> to the <strong>master</strong> branch. After the pipeline passes all required tests it will automatically merge your pull request into master and trigger the deployment to the acceptance environment.</p>
+<div class="section" id="other-topics">
+<h3>Other topics</h3>
 
 
+<ul>
+    <li>
+            <a href="docs/setting-up-project.md">Setting up a project</a>
+        </li>
+    <li>
+            <a href="docs/configuring-project.md">Configuring a project</a>
+        </li>
+    <li>
+            <a href="docs/installing-project.md">Installing the project</a>
+        </li>
+    <li>
+            <a href="docs/testing-project.md">Testing the project</a>
+        </li>
+    <li>
+            <a href="docs/docker-environment.md">Using Docker environment</a>
+        </li>
+    <li>
+            Continuous integration
+        </li>
+    <li>
+            <a href="docs/available-tasks.md">Available tasks</a>
+        </li>
+    <li>
+            <a href="docs/building-assets.md">Building assets</a>
+        </li>
+    <li>
+            <a href="docs/git-hooks.md">Git Hooks</a>
+        </li>
+    <li>
+            <a href="docs/project-documentation.md">Update Project Documentation</a>
+        </li>
+    <li>
+            <a href="CHANGELOG.md">Changelog</a>
+        </li>
+</ul>
+</div>
+</div>
 
-        
-
-        
-    </article>
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
@@ -176,7 +202,7 @@
 </section>
             </div>
         </div>
-        <a href="namespaces/eceuropa-toolkit.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

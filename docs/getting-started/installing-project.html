@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-            <title>Toolkit</title>
+                    <title>Toolkit</title>
     
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
     <link rel="icon" href="images/favicon.ico"/>
@@ -99,7 +100,7 @@
 </h4>
     <ul class="phpdocumentor-list">
                     <li>
-                <a href="namespaces/eceuropa-toolkit.html" class="-active">Toolkit</a>
+                <a href="namespaces/eceuropa-toolkit.html" class="">Toolkit</a>
                 
             </li>
             </ul>
@@ -127,42 +128,99 @@
 </aside>
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <ul class="phpdocumentor-breadcrumbs">
-            <li class="phpdocumentor-breadcrumb"><a href="namespaces/eceuropa.html">EcEuropa</a></li>
-    </ul>
+                    <div class="section" id="installing-a-project">
+<h1>Installing a project</h1>
+<div class="section" id="before-install">
+<h2>Before install</h2>
+<p>To start, run:</p>
+<pre><code class="language- " >docker-compose up
+</code></pre>
+<p>It&#039;s advised to not daemonize docker-compose, so you can turn it off (CTRL+C) quickly when you&#039;re done working. However, if you&#039;d like to daemonize it, you have to add the flag -d:</p>
+<pre><code class="language- " >docker-compose up -d
+</code></pre>
+<p>Build the site by running:</p>
+<pre><code class="language- " >docker-compose exec web composer install
+</code></pre>
+<p>Using default configuration, the development site files should be available in the web directory and the development site should be available at: <a href="http://localhost:8080/web">http://localhost:8080/web</a>.</p>
+</div>
+<div class="section" id="clean-installation">
+<h2>Clean installation</h2>
+<p>To setup the site in local development mode and install it run:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:install-clean
+</code></pre>
+<p>To install the site from existing configuration run:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run drupal:site-install --existing-config
+</code></pre>
+</div>
+<div class="section" id="clone-installation">
+<h2>Clone installation</h2>
+<p>To setup the site using clone mode run:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:build-dev
+docker-compose exec web ./vendor/bin/run toolkit:download-dump
+docker-compose exec web ./vendor/bin/run toolkit:install-clone
+</code></pre>
+<p>Toolkit will load the credentials necessary to download the sanitized database dump for your project, so make sure you have the following variables in your environment:</p>
+<pre><code class="language- " >- ASDA_USER
+- ASDA_PASSWORD
+</code></pre>
+<p>If you want to run extra commands after the <code>toolkit:install-clone</code> command you
+can configure the following in your <code>runner.yml.dist</code> file:</p>
+<pre><code class="language-yaml " >toolkit:
+  install:
+    clone:
+      commands:
+        - ./vendor/bin/drush status
+</code></pre>
+<p>When running the command <a href="toolkit:install-clone">toolkit:install-clone</a> it will run the following sequence of commands after the database import:</p>
+<pre><code class="language- " >./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer -y
+./vendor/bin/drush updatedb -y
+./vendor/bin/run toolkit:import-config
+./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
+./vendor/bin/drush cache:rebuild
+</code></pre>
+<p>These commands simulate the automated deployment that Drone provides through its pipeline. You can alter these commands by providing a file named <strong>.opts.yml</strong> in the root of your project folder. For more detailed information on the contents of this <strong>.opts.yml</strong> file please refer to this page: <a href="https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides">https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides</a> .</p>
+</div>
+<div class="section" id="other-topics">
+<h2>Other topics</h2>
 
-    <article class="phpdocumentor-element -namespace">
-        <h2 class="phpdocumentor-content__title">Toolkit</h2>
 
-        
-<h3 id="namespaces">
-    Namespaces
-    <a href="#namespaces" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
+<ul>
+    <li>
+            <a href="docs/setting-up-project.md">Setting up a project</a>
+        </li>
+    <li>
+            <a href="docs/configuring-project.md">Configuring a project</a>
+        </li>
+    <li>
+            Installing the project
+        </li>
+    <li>
+            <a href="docs/testing-project.md">Testing the project</a>
+        </li>
+    <li>
+            <a href="docs/docker-environment.md">Using Docker environment</a>
+        </li>
+    <li>
+            <a href="docs/continuous-integration.md">Continuous integration</a>
+        </li>
+    <li>
+            <a href="docs/available-tasks.md">Available tasks</a>
+        </li>
+    <li>
+            <a href="docs/building-assets.md">Building assets</a>
+        </li>
+    <li>
+            <a href="docs/git-hooks.md">Git Hooks</a>
+        </li>
+    <li>
+            <a href="docs/project-documentation.md">Update Project Documentation</a>
+        </li>
+    <li>
+            <a href="CHANGELOG.md">Changelog</a>
+        </li>
+</ul>
+</div>
 
-<dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -namespace"><a href="namespaces/eceuropa-toolkit-taskrunner.html"><abbr title="\EcEuropa\Toolkit\TaskRunner">TaskRunner</abbr></a></dt>
-    </dl>
-
-<h3 id="interfaces_class_traits">
-    Interfaces, Classes, Traits and Enums
-    <a href="#interfaces_class_traits" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
-
-<dl class="phpdocumentor-table-of-contents">
-    
-            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/EcEuropa-Toolkit-Toolkit.html"><abbr title="\EcEuropa\Toolkit\Toolkit">Toolkit</abbr></a></dt>
-        <dd>Provides default Toolkit class.</dd>
-    
-    
-    </dl>
-
-
-
-        
-
-        
-    </article>
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
@@ -176,7 +234,7 @@
 </section>
             </div>
         </div>
-        <a href="namespaces/eceuropa-toolkit.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

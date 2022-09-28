@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-            <title>Toolkit</title>
+                    <title>Toolkit</title>
     
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
     <link rel="icon" href="images/favicon.ico"/>
@@ -99,7 +100,7 @@
 </h4>
     <ul class="phpdocumentor-list">
                     <li>
-                <a href="namespaces/eceuropa-toolkit.html" class="-active">Toolkit</a>
+                <a href="namespaces/eceuropa-toolkit.html" class="">Toolkit</a>
                 
             </li>
             </ul>
@@ -127,42 +128,56 @@
 </aside>
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <ul class="phpdocumentor-breadcrumbs">
-            <li class="phpdocumentor-breadcrumb"><a href="namespaces/eceuropa.html">EcEuropa</a></li>
-    </ul>
-
-    <article class="phpdocumentor-element -namespace">
-        <h2 class="phpdocumentor-content__title">Toolkit</h2>
-
-        
-<h3 id="namespaces">
-    Namespaces
-    <a href="#namespaces" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
-
-<dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -namespace"><a href="namespaces/eceuropa-toolkit-taskrunner.html"><abbr title="\EcEuropa\Toolkit\TaskRunner">TaskRunner</abbr></a></dt>
-    </dl>
-
-<h3 id="interfaces_class_traits">
-    Interfaces, Classes, Traits and Enums
-    <a href="#interfaces_class_traits" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
-
-<dl class="phpdocumentor-table-of-contents">
-    
-            <dt class="phpdocumentor-table-of-contents__entry -class"><a href="classes/EcEuropa-Toolkit-Toolkit.html"><abbr title="\EcEuropa\Toolkit\Toolkit">Toolkit</abbr></a></dt>
-        <dd>Provides default Toolkit class.</dd>
-    
-    
-    </dl>
+                    <div class="section" id="update-project-documentation">
+<h1>Update Project Documentation</h1>
+<p>Use docker to update the documentation locally</p>
+<p>The Docker image comes with all dependencies pre-installed.</p>
+<p>To update the documentation run the following command. This will update
+the content inside the folder ‘docs’.</p>
+<pre><code class="language- " >docker run --rm -v $(pwd):/data phpdoc/phpdoc run -d ./src -t ./docs
+</code></pre>
+<p>Then push the changes generated.</p>
+<div class="section" id="other-topics">
+<h2>Other topics</h2>
 
 
+<ul>
+    <li>
+            <a href="docs/setting-up-project.md">Setting up a project</a>
+        </li>
+    <li>
+            <a href="docs/configuring-project.md">Configuring a project</a>
+        </li>
+    <li>
+            <a href="docs/installing-project.md">Installing the project</a>
+        </li>
+    <li>
+            <a href="docs/testing-project.md">Testing the project</a>
+        </li>
+    <li>
+            <a href="docs/docker-environment.md">Using Docker environment</a>
+        </li>
+    <li>
+            <a href="docs/continuous-integration.md">Continuous integration</a>
+        </li>
+    <li>
+            <a href="docs/available-tasks.md">Available tasks</a>
+        </li>
+    <li>
+            <a href="docs/building-assets.md">Building assets</a>
+        </li>
+    <li>
+            <a href="docs/git-hooks.md">Git Hooks</a>
+        </li>
+    <li>
+            Update Project Documentation
+        </li>
+    <li>
+            <a href="CHANGELOG.md">Changelog</a>
+        </li>
+</ul>
+</div>
 
-        
-
-        
-    </article>
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
@@ -176,7 +191,7 @@
 </section>
             </div>
         </div>
-        <a href="namespaces/eceuropa-toolkit.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
