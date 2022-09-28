@@ -19,7 +19,7 @@
         "behat/behat": "^3.7 || ^3.8",
         "cweagans/composer-patches": "^1.4 || ^1.7",
         "drush/drush": "^9.7.1 || ^10.0.0 || ^11.0.4",
-        "ec-europa/qa-automation": "dev-feature/DQA-4440",
+        "ec-europa/qa-automation": "^9.0",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "j13k/yaml-lint": "^1.1",
         "openeuropa/task-runner": "^2.0@alpha",
