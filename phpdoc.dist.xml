@@ -7,7 +7,7 @@
 >
     <title>Toolkit</title>
     <paths>
-        <output>documentation</output>
+        <output>docs</output>
     </paths>
     <version number="3.0.0">
         <folder>latest</folder>
@@ -36,9 +36,9 @@
         </api>
         <guide>
             <source dsn=".">
-                <path>docs/user-guide</path>
+                <path>docs/guides</path>
             </source>
-            <output>User Guide</output>
+            <output>guides</output>
         </guide>
     </version>
     <setting name="guides.enabled" value="true"/>
