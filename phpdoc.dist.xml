@@ -36,7 +36,7 @@
         </api>
         <guide>
             <source dsn=".">
-                <path>docs/guides</path>
+                <path>docs/getting-started</path>
             </source>
             <output>getting-started</output>
         </guide>
