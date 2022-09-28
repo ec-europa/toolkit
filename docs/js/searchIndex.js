@@ -1,56 +1,6 @@
 Search.appendIndex(
     [
                 {
-            "fqsen": "\\OpenEuropa\\Site\\Tests\\Behat\\BlackfireMinkContext",
-            "name": "BlackfireMinkContext",
-            "summary": "Extends\u0020Behat\u0020MinkContext\u0020and\u0020add\u0020steps\u0020from\u0020Drupal\u0020MinkContext.",
-            "url": "classes/OpenEuropa-Site-Tests-Behat-BlackfireMinkContext.html"
-        },                {
-            "fqsen": "\\OpenEuropa\\Site\\Tests\\Behat\\BlackfireMinkContext\u003A\u003AassertAtPath\u0028\u0029",
-            "name": "assertAtPath",
-            "summary": "Visit\u0020a\u0020given\u0020path,\u0020and\u0020additionally\u0020check\u0020for\u0020HTTP\u0020response\u0020code\u0020200.",
-            "url": "classes/OpenEuropa-Site-Tests-Behat-BlackfireMinkContext.html#method_assertAtPath"
-        },                {
-            "fqsen": "\\OpenEuropa\\Site\\Tests\\Behat\\BlackfireMinkContext\u003A\u003AassertTextVisible\u0028\u0029",
-            "name": "assertTextVisible",
-            "summary": "",
-            "url": "classes/OpenEuropa-Site-Tests-Behat-BlackfireMinkContext.html#method_assertTextVisible"
-        },                {
-            "fqsen": "\\OpenEuropa\\Site\\Tests\\Behat\\BlackfireMinkContext\u003A\u003AassertNotTextVisible\u0028\u0029",
-            "name": "assertNotTextVisible",
-            "summary": "",
-            "url": "classes/OpenEuropa-Site-Tests-Behat-BlackfireMinkContext.html#method_assertNotTextVisible"
-        },                {
-            "fqsen": "\\OpenEuropa\\Site\\Tests\\Behat\\BlackfireMinkContext\u003A\u003AassertHttpResponse\u0028\u0029",
-            "name": "assertHttpResponse",
-            "summary": "",
-            "url": "classes/OpenEuropa-Site-Tests-Behat-BlackfireMinkContext.html#method_assertHttpResponse"
-        },                {
-            "fqsen": "\\OpenEuropa\\Site\\Tests\\Behat\\BlackfireMinkContext\u003A\u003AassertNotHttpResponse\u0028\u0029",
-            "name": "assertNotHttpResponse",
-            "summary": "",
-            "url": "classes/OpenEuropa-Site-Tests-Behat-BlackfireMinkContext.html#method_assertNotHttpResponse"
-        },                {
-            "fqsen": "\\OpenEuropa\\Site\\Tests\\Behat\\BlackfireMinkContext\u003A\u003ApressButton\u0028\u0029",
-            "name": "pressButton",
-            "summary": "Presses\u0020button\u0020with\u0020specified\u0020id\u007Cname\u007Ctitle\u007Calt\u007Cvalue.",
-            "url": "classes/OpenEuropa-Site-Tests-Behat-BlackfireMinkContext.html#method_pressButton"
-        },                {
-            "fqsen": "\\OpenEuropa\\Site\\Tests\\Behat\\BlackfireMinkContext\u003A\u003AassertHeading\u0028\u0029",
-            "name": "assertHeading",
-            "summary": "",
-            "url": "classes/OpenEuropa-Site-Tests-Behat-BlackfireMinkContext.html#method_assertHeading"
-        },                {
-            "fqsen": "\\OpenEuropa\\Site\\Tests\\Behat\\BlackfireMinkContext\u003A\u003AassertRegionLinkFollow\u0028\u0029",
-            "name": "assertRegionLinkFollow",
-            "summary": "",
-            "url": "classes/OpenEuropa-Site-Tests-Behat-BlackfireMinkContext.html#method_assertRegionLinkFollow"
-        },                {
-            "fqsen": "\\OpenEuropa\\Site\\Tests\\Behat\\BlackfireMinkContext\u003A\u003AiAmOnLandingPage\u0028\u0029",
-            "name": "iAmOnLandingPage",
-            "summary": "This\u0020is\u0020the\u0020example\u0020provided\u0020by\u0020Blackfire\u0020docs.",
-            "url": "classes/OpenEuropa-Site-Tests-Behat-BlackfireMinkContext.html#method_iAmOnLandingPage"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands",
             "name": "BuildCommands",
             "summary": "Provides\u0020commands\u0020to\u0020build\u0020a\u0020site\u0020for\u0020development\u0020and\u0020a\u0020production\u0020artifact.",
@@ -171,6 +121,71 @@ Search.appendIndex(
             "summary": "Comment\u0020starting\u0020the\u0020Toolkit\u0020settings\u0020block.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#property_blockStart"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands",
+            "name": "GitHookCommands",
+            "summary": "Provides\u0020commands\u0020to\u0020interact\u0020with\u0020git\u0020hooks.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands\u003A\u003AgetConfigurationFile\u0028\u0029",
+            "name": "getConfigurationFile",
+            "summary": "\u007B\u0040inheritdoc\u007D",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html#method_getConfigurationFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands\u003A\u003AhooksEnable\u0028\u0029",
+            "name": "hooksEnable",
+            "summary": "Enable\u0020the\u0020git\u0020hooks\u0020defined\u0020in\u0020the\u0020configuration\u0020or\u0020in\u0020given\u0020option.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html#method_hooksEnable"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands\u003A\u003AhooksDisable\u0028\u0029",
+            "name": "hooksDisable",
+            "summary": "Disable\u0020the\u0020git\u0020hooks.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html#method_hooksDisable"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands\u003A\u003AhooksDeleteAll\u0028\u0029",
+            "name": "hooksDeleteAll",
+            "summary": "Remove\u0020all\u0020existing\u0020hooks,\u0020this\u0020will\u0020ignore\u0020active\u0020hooks\u0020list.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html#method_hooksDeleteAll"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands\u003A\u003AhooksList\u0028\u0029",
+            "name": "hooksList",
+            "summary": "List\u0020available\u0020hooks\u0020and\u0020its\u0020status.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html#method_hooksList"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands\u003A\u003AhooksRun\u0028\u0029",
+            "name": "hooksRun",
+            "summary": "Run\u0020a\u0020specific\u0020hook.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html#method_hooksRun"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands\u003A\u003ArunPreCommit\u0028\u0029",
+            "name": "runPreCommit",
+            "summary": "Hook\u003A\u0020Executes\u0020the\u0020PHPcs\u0020against\u0020the\u0020modified\u0020files.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html#method_runPreCommit"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands\u003A\u003ArunPrepareCommitMsg\u0028\u0029",
+            "name": "runPrepareCommitMsg",
+            "summary": "Hook\u003A\u0020Executes\u0020the\u0020prepare\u002Dcommit\u002Dmsg\u0020conditions.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html#method_runPrepareCommitMsg"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands\u003A\u003ArunPrePush\u0028\u0029",
+            "name": "runPrePush",
+            "summary": "Hook\u003A\u0020Executes\u0020the\u0020pre\u002Dpush\u0020commands.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html#method_runPrePush"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands\u003A\u003AgetAvailableHooks\u0028\u0029",
+            "name": "getAvailableHooks",
+            "summary": "Return\u0020the\u0020available\u0020hooks\u0020from\u0020Toolkit\u0020and\u0020Project.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html#method_getAvailableHooks"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands\u003A\u003AgetHookFiles\u0028\u0029",
+            "name": "getHookFiles",
+            "summary": "Return\u0020the\u0020hooks\u0020present\u0020in\u0020given\u0020directory.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html#method_getHookFiles"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHookCommands\u003A\u003AconvertHookToMethod\u0028\u0029",
+            "name": "convertHookToMethod",
+            "summary": "Converts\u0020a\u0020hook\u0020name\u0020to\u0020method\u0020name.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHookCommands.html#method_convertHookToMethod"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\InstallCommands",
             "name": "InstallCommands",
             "summary": "Class\u0020ToolkitCommands.",
@@ -211,6 +226,11 @@ Search.appendIndex(
             "summary": "Load\u0020default\u0020Toolkit\u0020configuration.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LoadDefaultConfigCommands.html#method_loadDefaultConfig"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LoadDefaultConfigCommands\u003A\u003A\u0024overrides",
+            "name": "overrides",
+            "summary": "Configurations\u0020that\u0020can\u0020be\u0020replaced\u0020by\u0020a\u0020project.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LoadDefaultConfigCommands.html#property_overrides"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands",
             "name": "TestsCommands",
             "summary": "Class\u0020TestsCommands.",
@@ -223,7 +243,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitSetupPhpcs\u0028\u0029",
             "name": "toolkitSetupPhpcs",
-            "summary": "Setup\u0020PHP\u0020code\u0020sniffer\u0020for\u0020standalone\u0020execution.",
+            "summary": "Setup\u0020PHP\u0020code\u0020sniffer.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitSetupPhpcs"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitPhpcs\u0028\u0029",
@@ -233,7 +253,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitPhpmd\u0028\u0029",
             "name": "toolkitPhpmd",
-            "summary": "Run\u0020PHPMD\u0020standalone.",
+            "summary": "Run\u0020PHPMD.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitPhpmd"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003ArunGrumphp\u0028\u0029",
@@ -243,7 +263,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003ArunPhpcs\u0028\u0029",
             "name": "runPhpcs",
-            "summary": "Run\u0020PHP\u0020code\u0020sniffer\u0020in\u0020standalone\u0020mode.",
+            "summary": "Run\u0020PHP\u0020code\u0020sniffer.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_runPhpcs"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AcheckPhpCsRequirements\u0028\u0029",
@@ -265,11 +285,6 @@ Search.appendIndex(
             "name": "toolkitPhpcbf",
             "summary": "Run\u0020PHP\u0020code\u0020autofixing.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitPhpcbf"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitPhpcbfStandalone\u0028\u0029",
-            "name": "toolkitPhpcbfStandalone",
-            "summary": "Run\u0020PHP\u0020code\u0020autofixing\u0020in\u0020standalone\u0020mode.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitPhpcbfStandalone"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitLintYaml\u0028\u0029",
             "name": "toolkitLintYaml",
@@ -356,10 +371,10 @@ Search.appendIndex(
             "summary": "Helper\u0020to\u0020send\u0020a\u0020payload\u0020to\u0020the\u0020QA\u0020Website.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_postQaContent"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003Ad9Compatibility\u0028\u0029",
-            "name": "d9Compatibility",
-            "summary": "Check\u0020project\u0020compatibility\u0020for\u0020Drupal\u00209\u0020upgrade.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_d9Compatibility"
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AdrupalUpgradeStatus\u0028\u0029",
+            "name": "drupalUpgradeStatus",
+            "summary": "Check\u0020project\u0020compatibility\u0020for\u0020Drupal\u00209\/10\u0020upgrade.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_drupalUpgradeStatus"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AcomposerLockCheck\u0028\u0029",
             "name": "composerLockCheck",
@@ -436,10 +451,25 @@ Search.appendIndex(
             "summary": "Returns\u0020the\u0020Project\u0020information\u0020from\u0020the\u0020QA\u0020Website.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_getQaProjectInformation"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AtoolkitInstallDependencies\u0028\u0029",
+            "name": "toolkitInstallDependencies",
+            "summary": "Install\u0020packages\u0020present\u0020in\u0020the\u0020opts.yml\u0020file\u0020under\u0020extra_pkgs\u0020section.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_toolkitInstallDependencies"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Toolkit",
             "name": "Toolkit",
             "summary": "Provides\u0020default\u0020Toolkit\u0020class.",
             "url": "classes/EcEuropa-Toolkit-Toolkit.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Toolkit\u003A\u003AgetToolkitRoot\u0028\u0029",
+            "name": "getToolkitRoot",
+            "summary": "Returns\u0020the\u0020Toolkit\u0020root.",
+            "url": "classes/EcEuropa-Toolkit-Toolkit.html#method_getToolkitRoot"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Toolkit\u003A\u003AgetProjectRoot\u0028\u0029",
+            "name": "getProjectRoot",
+            "summary": "Returns\u0020the\u0020Project\u0020root.",
+            "url": "classes/EcEuropa-Toolkit-Toolkit.html#method_getProjectRoot"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Toolkit\u003A\u003AgetQaWebsiteUrl\u0028\u0029",
             "name": "getQaWebsiteUrl",
@@ -476,145 +506,10 @@ Search.appendIndex(
             "summary": "Constant\u0020holding\u0020the\u0020current\u0020version.",
             "url": "classes/EcEuropa-Toolkit-Toolkit.html#constant_VERSION"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\AbstractTest",
-            "name": "AbstractTest",
-            "summary": "Abstract\u0020test\u0020class\u0020for\u0020Toolkit\u0020commands.",
-            "url": "classes/EcEuropa-Toolkit-Tests-AbstractTest.html"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\AbstractTest\u003A\u003AsetUp\u0028\u0029",
-            "name": "setUp",
-            "summary": "\u007B\u0040inheritdoc\u007D",
-            "url": "classes/EcEuropa-Toolkit-Tests-AbstractTest.html#method_setUp"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\AbstractTest\u003A\u003AassertContainsNotContains\u0028\u0029",
-            "name": "assertContainsNotContains",
-            "summary": "Helper\u0020function\u0020to\u0020assert\u0020contain\u0020\/\u0020not\u0020contain\u0020expectations.",
-            "url": "classes/EcEuropa-Toolkit-Tests-AbstractTest.html#method_assertContainsNotContains"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\AbstractTest\u003A\u003AtrimEachLine\u0028\u0029",
-            "name": "trimEachLine",
-            "summary": "Trim\u0020each\u0020line\u0020of\u0020a\u0020blob\u0020of\u0020text,\u0020used\u0020when\u0020asserting\u0020on\u0020multiline\u0020strings.",
-            "url": "classes/EcEuropa-Toolkit-Tests-AbstractTest.html#method_trimEachLine"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\AbstractTest\u003A\u003AgetClassLoader\u0028\u0029",
-            "name": "getClassLoader",
-            "summary": "Get\u0020class\u0020loader.",
-            "url": "classes/EcEuropa-Toolkit-Tests-AbstractTest.html#method_getClassLoader"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\AbstractTest\u003A\u003AgetFixtureRoot\u0028\u0029",
-            "name": "getFixtureRoot",
-            "summary": "Get\u0020fixture\u0020root.",
-            "url": "classes/EcEuropa-Toolkit-Tests-AbstractTest.html#method_getFixtureRoot"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\AbstractTest\u003A\u003AgetFixtureFilepath\u0028\u0029",
-            "name": "getFixtureFilepath",
-            "summary": "Get\u0020fixture\u0020filepath.",
-            "url": "classes/EcEuropa-Toolkit-Tests-AbstractTest.html#method_getFixtureFilepath"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\AbstractTest\u003A\u003AgetFixtureContent\u0028\u0029",
-            "name": "getFixtureContent",
-            "summary": "Get\u0020fixture\u0020content.",
-            "url": "classes/EcEuropa-Toolkit-Tests-AbstractTest.html#method_getFixtureContent"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\AbstractTest\u003A\u003AgetSandboxFilepath\u0028\u0029",
-            "name": "getSandboxFilepath",
-            "summary": "Get\u0020sandbox\u0020filepath.",
-            "url": "classes/EcEuropa-Toolkit-Tests-AbstractTest.html#method_getSandboxFilepath"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\AbstractTest\u003A\u003AgetSandboxRoot\u0028\u0029",
-            "name": "getSandboxRoot",
-            "summary": "Get\u0020sandbox\u0020root\u0020path.",
-            "url": "classes/EcEuropa-Toolkit-Tests-AbstractTest.html#method_getSandboxRoot"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands\\BuildCommandsTest",
-            "name": "BuildCommandsTest",
-            "summary": "Abstract\u0020test\u0020class\u0020for\u0020Toolkit\u0020commands.",
-            "url": "classes/EcEuropa-Toolkit-Tests-Commands-BuildCommandsTest.html"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands\\BuildCommandsTest\u003A\u003AdataProvider\u0028\u0029",
-            "name": "dataProvider",
-            "summary": "Data\u0020provider\u0020for\u0020testBuild.",
-            "url": "classes/EcEuropa-Toolkit-Tests-Commands-BuildCommandsTest.html#method_dataProvider"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands\\BuildCommandsTest\u003A\u003AtestBuild\u0028\u0029",
-            "name": "testBuild",
-            "summary": "Test\u0020\u0022toolkit\u003Abuild\u002D\u002A\u0022\u0020commands.",
-            "url": "classes/EcEuropa-Toolkit-Tests-Commands-BuildCommandsTest.html#method_testBuild"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands\\CloneCommandsTest",
-            "name": "CloneCommandsTest",
-            "summary": "Abstract\u0020test\u0020class\u0020for\u0020Toolkit\u0020commands.",
-            "url": "classes/EcEuropa-Toolkit-Tests-Commands-CloneCommandsTest.html"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands\\CloneCommandsTest\u003A\u003AdataProvider\u0028\u0029",
-            "name": "dataProvider",
-            "summary": "Data\u0020provider\u0020for\u0020testClone.",
-            "url": "classes/EcEuropa-Toolkit-Tests-Commands-CloneCommandsTest.html#method_dataProvider"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands\\CloneCommandsTest\u003A\u003AtestClone\u0028\u0029",
-            "name": "testClone",
-            "summary": "Test\u0020\u0022toolkit\u003Aclone\u002D\u002A\u0022\u0020commands.",
-            "url": "classes/EcEuropa-Toolkit-Tests-Commands-CloneCommandsTest.html#method_testClone"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\random_bytes\u0028\u0029",
-            "name": "random_bytes",
-            "summary": "Override\u0020random_bytes\u0020function\u0020for\u0020test.",
-            "url": "namespaces/eceuropa-toolkit-taskrunner-commands.html#function_random_bytes"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands\\DrupalCommandsTest",
-            "name": "DrupalCommandsTest",
-            "summary": "Abstract\u0020test\u0020class\u0020for\u0020Toolkit\u0020commands.",
-            "url": "classes/EcEuropa-Toolkit-Tests-Commands-DrupalCommandsTest.html"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands\\DrupalCommandsTest\u003A\u003AdataProvider\u0028\u0029",
-            "name": "dataProvider",
-            "summary": "Data\u0020provider\u0020for\u0020testDrupalSettingsSetup.",
-            "url": "classes/EcEuropa-Toolkit-Tests-Commands-DrupalCommandsTest.html#method_dataProvider"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands\\DrupalCommandsTest\u003A\u003AtestDrupalSettingsSetup\u0028\u0029",
-            "name": "testDrupalSettingsSetup",
-            "summary": "Test\u0020Toolkit\u0020very\u0020own\u0020\u0022drupal\u003Asettings\u002Dsetup\u0022\u0020command.",
-            "url": "classes/EcEuropa-Toolkit-Tests-Commands-DrupalCommandsTest.html#method_testDrupalSettingsSetup"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands\\InstallCommandsTest",
-            "name": "InstallCommandsTest",
-            "summary": "Abstract\u0020test\u0020class\u0020for\u0020Toolkit\u0020commands.",
-            "url": "classes/EcEuropa-Toolkit-Tests-Commands-InstallCommandsTest.html"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands\\InstallCommandsTest\u003A\u003AdataProvider\u0028\u0029",
-            "name": "dataProvider",
-            "summary": "Data\u0020provider\u0020for\u0020testInstall.",
-            "url": "classes/EcEuropa-Toolkit-Tests-Commands-InstallCommandsTest.html#method_dataProvider"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands\\InstallCommandsTest\u003A\u003AtestInstall\u0028\u0029",
-            "name": "testInstall",
-            "summary": "Test\u0020\u0022toolkit\u003Ainstall\u002D\u002A\u0022\u0020commands.",
-            "url": "classes/EcEuropa-Toolkit-Tests-Commands-InstallCommandsTest.html#method_testInstall"
-        },                {
             "fqsen": "\\",
             "name": "\\",
             "summary": "",
             "url": "namespaces/default.html"
-        },                {
-            "fqsen": "\\OpenEuropa\\Site\\Tests\\Behat",
-            "name": "Behat",
-            "summary": "",
-            "url": "namespaces/openeuropa-site-tests-behat.html"
-        },                {
-            "fqsen": "\\OpenEuropa\\Site\\Tests",
-            "name": "Tests",
-            "summary": "",
-            "url": "namespaces/openeuropa-site-tests.html"
-        },                {
-            "fqsen": "\\OpenEuropa\\Site",
-            "name": "Site",
-            "summary": "",
-            "url": "namespaces/openeuropa-site.html"
-        },                {
-            "fqsen": "\\OpenEuropa",
-            "name": "OpenEuropa",
-            "summary": "",
-            "url": "namespaces/openeuropa.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands",
             "name": "Commands",
@@ -635,15 +530,5 @@ Search.appendIndex(
             "name": "EcEuropa",
             "summary": "",
             "url": "namespaces/eceuropa.html"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests",
-            "name": "Tests",
-            "summary": "",
-            "url": "namespaces/eceuropa-toolkit-tests.html"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Tests\\Commands",
-            "name": "Commands",
-            "summary": "",
-            "url": "namespaces/eceuropa-toolkit-tests-commands.html"
         }            ]
 );
