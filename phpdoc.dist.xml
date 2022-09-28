@@ -38,7 +38,7 @@
             <source dsn=".">
                 <path>docs/guides</path>
             </source>
-            <output>guides</output>
+            <output>getting-started</output>
         </guide>
     </version>
     <setting name="guides.enabled" value="true"/>

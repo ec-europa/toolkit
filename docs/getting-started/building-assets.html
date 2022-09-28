@@ -61,7 +61,7 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/building-assets.html" class="">Command to run:</a>
+    <a href="guide/building-assets.html" class="">Building assets</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -128,10 +128,12 @@
 </aside>
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <p># Building assets</p>
-<p>## Overview</p>
+                    <div class="section" id="building-assets">
+<h1>Building assets</h1>
+<div class="section" id="overview">
+<h2>Overview</h2>
 <p>Toolkit provides a way to build theme assets with Gulp.js.</p>
-<p>By default a gulpfile is included and as well some npm packages in order to:</p>
+<p>By default, a gulpfile is included and as well some npm packages in order to:</p>
 
 
 <ul>
@@ -148,13 +150,14 @@
             Validate and fix scss files
         </li>
 </ul>
-<div class="section" id="command-to-run">
-<h1>Command to run:</h1>
+<p>Command to run:</p>
+<pre><code class="language- " >docker-compose vendor/bin/run toolkit:build-assets
+</code></pre>
 </div>
-<div class="section" id="docker-compose-vendor-bin-run-32065d6cc351dca6f5872440f066e3bde6fdf49f">
-<h1>docker-compose vendor/bin/run <a href="toolkit:build-assets">toolkit:build-assets</a></h1>
-<p>## How to use</p>
-<p>### Source files</p>
+<div class="section" id="how-to-use">
+<h2>How to use</h2>
+<div class="section" id="source-files">
+<h3>Source files</h3>
 <p>The folder structure for the source files should be aligned like this:</p>
 
 
@@ -167,47 +170,44 @@
         </li>
 </ul>
 <p>After this task is complete the generated folder &#039;{your-theme}/assets&#039; will look like this:</p>
+<pre><code class="language- " >/your-theme
+  /assests
+    /css
+      style.min.css
+    /js
+      script.min.js
+</code></pre>
+<p>Note: The folder name &#039;assets&#039; is the default value provided. It can be override on the &#039;gulpfile.js&#039;.</p>
 </div>
-<div class="section" id="your-theme">
-<h1>/your-theme</h1>
-<blockquote><p>/assests
-  /css
-    style.min.css
-  /js
-script.min.js</p>
-</blockquote>
+<div class="section" id="get-default-theme">
+<h3>Get &#039;default-theme&#039;</h3>
+<p>If no config files are present in the project, the default theme can be specified in a parameter the parameter in the task call:</p>
+<pre><code class="language- " >docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
+</code></pre>
 </div>
-<div class="section" id="note-the-folder-name-assets-is-the-default-value-provided-it-can-be-override-on-the-gulpfile-js">
-<h1>Note: The folder name &#039;assets&#039; is the default value provided. It can be override on the &#039;gulpfile.js&#039;.</h1>
-<p>### Get &#039;default-theme&#039;</p>
-</div>
-<div class="section" id="if-no-config-files-are-present-in-the-project-the-default-theme-can-be-specified-in-a-parameter-the-parameter-in-the-task-call">
-<h1>If no config files are present in the project, the default theme can be specified in a parameter the parameter in the task call:</h1>
-</div>
-<div class="section" id="docker-compose-vendor-bin-run-9c1620a52ec31d253956411f11fbe71c218ca762-default-theme-your-theme">
-<h1>docker-compose vendor/bin/run <a href="toolkit:build-assets">toolkit:build-assets</a> --default-theme=your-theme</h1>
-<p>### Define &#039;custom-code-folder&#039;</p>
-</div>
-<div class="section" id="if-for-some-reason-your-project-is-running-custom-code-in-other-folder-then-lib-it-s-possible-to-make-it-configurable-with-the-following">
-<h1>If for some reason your project is running custom code in other folder then &#039;lib&#039;, it&#039;s possible to make it configurable with the following:</h1>
-<p>toolkit:
+<div class="section" id="define-custom-code-folder">
+<h3>Define &#039;custom-code-folder&#039;</h3>
+<p>If for some reason your project is running custom code in other folder then <code>lib</code>\ , it&#039;s possible to make it configurable with the following:</p>
+<pre><code class="language- " >toolkit:
   build:
-custom-code-folder: &#039;yourfolder&#039;</p>
-<hr />
-<p>### Build theme assets</p>
-<p>Run the following command:</p>
+    custom-code-folder: &#039;your_folder&#039;
+</code></pre>
 </div>
-<div class="section" id="docker-compose-exec-web-vendor-bin-run-1208875e171a4db35e92df53d255b4972bd0ec2a">
-<h1>docker-compose exec web ./vendor/bin/run <a href="toolkit:build-assets">toolkit:build-assets</a></h1>
-<p>or
+<div class="section" id="build-theme-assets">
+<h3>Build theme assets</h3>
+<p>Run the following command:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:build-assets
+or
 docker-compose exec web ./vendor/bin/run tba
-```</p>
+</code></pre>
 <p>This will (re)generate the /assets folder.</p>
-<p>## Enable build assets during CI
-To enable auto build of assets you should extend the tasks buidl-dev and build-dist. See example bellow.
-<code>`
-toolkit:
-  project_id: "my-project"
+</div>
+</div>
+<div class="section" id="enable-build-assets-during-ci">
+<h2>Enable build assets during CI</h2>
+<p>To enable auto build of assets you should extend the tasks <code>build-dev</code> and <code>build-dist</code>. See example bellow.</p>
+<pre><code class="language- " >toolkit:
+  project_id: &quot;my-project&quot;
   build:
     dev:
       commands:
@@ -217,47 +217,91 @@ toolkit:
       commands:
       - ...
       - ./vendor/bin/run toolkit:build-assets
-`</code></p>
-<p>## Extending functionality</p>
-<p>### Add a custom &#039;gulpfile.js&#039; file</p>
+</code></pre>
+</div>
+<div class="section" id="extending-functionality">
+<h2>Extending functionality</h2>
+<div class="section" id="add-a-custom-gulpfile-js-file">
+<h3>Add a custom &#039;gulpfile.js&#039; file</h3>
 <p>It&#039;s possible to use a custom gulpfile on the theme root folder.
 If the file do not exists, toolkit will create one using the default template.</p>
-<p>### Install additional npm packages</p>
+</div>
+<div class="section" id="install-additional-npm-packages">
+<h3>Install additional npm packages</h3>
 <p>Additional npm packages can be installed to extend the functionality.
-In order to do that add them in the file &#039;runner.yml&#039; like the example bellow:</p>
+In order to do that add them in the file <code>runner.yml</code> like the example bellow:</p>
+<pre><code class="language- " >toolkit:
+  build:
+    npm:
+      packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify
+</code></pre>
+<div class="section" id="npm-install-save-dev">
+<h4>npm install --save-dev</h4>
+<p>By default, the npm packages are installed with the option <code>--save-dev</code> and will appear in the devDependencies.
+To override this behavior add in the file <code>runner.yml</code> the following property:</p>
+<pre><code class="language- " >toolkit:
+  build:
+    npm:
+     mode: (leave empty or add &#039;--save-prod&#039;)
+</code></pre>
 </div>
-<div class="section" id="toolkit">
-<h1>toolkit:</h1>
-<blockquote><p>build:
-  npm:
-packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify</p>
-</blockquote>
-<hr />
-<p>#### npm install --save-dev</p>
-<p>By default the npm packages are installed with the option &#039;--save-dev&#039; and will appear in the devDependencies.
-To override this behavior add in the file &#039;runner.yml&#039; the following property:</p>
 </div>
-<div class="section" id="toolkit">
-<h1>toolkit:</h1>
-<blockquote><p>build:
-  npm:
-mode: (leave empty or add &#039;--save-prod&#039;)</p>
-</blockquote>
-<hr />
-<p>## Validate and fix scss files</p>
-<p>### Check theme&#039;s scss files for issues</p>
+<div class="section" id="validate-and-fix-scss-files">
+<h2>Validate and fix scss files</h2>
+<div class="section" id="check-theme-s-scss-files-for-issues">
+<h3>Check theme&#039;s scss files for issues</h3>
 <p>Provides a report of violations.</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=check
+or
+docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate
+</code></pre>
 </div>
-<div class="section" id="docker-compose-exec-web-vendor-bin-run-9977b6e62104dc5bc4e1de697620008d576bde80-validate-check">
-<h1>docker-compose exec web ./vendor/bin/run <a href="toolkit:build-assets">toolkit:build-assets</a> --validate=check</h1>
-<p>or
-docker-compose exec web ./vendor/bin/run <a href="toolkit:build-assets">toolkit:build-assets</a> --validate
-```</p>
-<p>### Automatically fix errors</p>
+<div class="section" id="automatically-fix-errors">
+<h3>Automatically fix errors</h3>
 <p>Automatically fix, where possible, violations reported.</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix
+</code></pre>
 </div>
-<div class="section" id="docker-compose-exec-web-vendor-bin-run-6e70fddb90bdbfe906370f2639ac2dac91d4a3a1-validate-fix">
-<h1>docker-compose exec web ./vendor/bin/run <a href="toolkit:build-assets">toolkit:build-assets</a> --validate=fix</h1>
+<div class="section" id="other-topics">
+<h3>Other topics</h3>
+
+
+<ul>
+    <li>
+            <a href="docs/setting-up-project.md">Setting up a project</a>
+        </li>
+    <li>
+            <a href="docs/configuring-project.md">Configuring a project</a>
+        </li>
+    <li>
+            <a href="docs/installing-project.md">Installing the project</a>
+        </li>
+    <li>
+            <a href="docs/testing-project.md">Testing the project</a>
+        </li>
+    <li>
+            <a href="docs/docker-environment.md">Using Docker environment</a>
+        </li>
+    <li>
+            <a href="docs/continuous-integration.md">Continuous integration</a>
+        </li>
+    <li>
+            <a href="docs/available-tasks.md">Available tasks</a>
+        </li>
+    <li>
+            Building assets
+        </li>
+    <li>
+            <a href="docs/git-hooks.md">Git Hooks</a>
+        </li>
+    <li>
+            <a href="docs/project-documentation.md">Update Project Documentation</a>
+        </li>
+    <li>
+            <a href="CHANGELOG.md">Changelog</a>
+        </li>
+</ul>
+</div>
 </div>
 
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">

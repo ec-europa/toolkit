@@ -61,7 +61,7 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/building-assets.html" class="">Command to run:</a>
+    <a href="guide/building-assets.html" class="">Building assets</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -128,49 +128,109 @@
 </aside>
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <div class="section" id="available-tasks">
-<h1>Available tasks</h1>
-<p>To list all available tasks, please run:</p>
-<hr />
-<blockquote><p>✔ nbsp;/Projects/cnect-eurohpc-reference [master|✔]<br>15:12 $ docker-composer exec web ./vendor/bin/run</p>
+                    <div class="section" id="docker-environment">
+<h1>Docker environment</h1>
+<p>By default, Docker Compose reads two files, a <code>docker-compose.yml</code> and an optional <code>docker-compose.override.yml</code> file.
+By convention, the <code>docker-compose.yml</code> contains your base configuration and it&#039;s provided by default.
+The override file, as its name implies, can contain configuration overrides for existing services or entirely new
+services.
+If a service is defined in both files, Docker Compose merges the configurations.</p>
+<p>Find more information on Docker Compose extension mechanism on
+<a href="https://docs.docker.com/compose/extends/">the official Docker Compose documentation</a>.</p>
+<p>The following configuration parameters are provided as environment variables in the <code>./.env</code> file:</p>
+<blockquote><p><em> - Name
+  - Description
+</em> - <code>DRUPAL_DATABASE_NAME</code>
+  - Database name
+<em> - <code>DRUPAL_DATABASE_USERNAME</code>
+  - Database username
+</em> - <code>DRUPAL_DATABASE_PASSWORD</code>
+  - Database password
+<em> - <code>DRUPAL_DATABASE_PREFIX</code>
+  - Database prefix
+</em> - <code>DRUPAL_DATABASE_HOST</code>
+  - Database host
+<em> - <code>DRUPAL_DATABASE_PORT</code>
+  - Database port
+</em> - <code>DRUPAL_SPARQL_HOSTNAME</code>
+  - SPARQL hostname
+<em> - <code>DRUPAL_SPARQL_PORT</code>
+  - SPARQL port
+</em> - <code>DRUPAL_CAS_HOSTNAME</code>
+  - EULogin hostname, use <code>ecas.ec.europa.eu</code> for production
+<em> - <code>DRUPAL_CAS_PORT</code>
+  - EULogin port, use <code>443</code> for production
+</em> - <code>DRUPAL_ACCOUNT_USERNAME</code>
+  - Drupal admin account, defaults to <code>admin</code> if empty
+<em> - <code>DRUPAL_ACCOUNT_PASSWORD</code>
+  - Drupal admin password, defaults to random string if empty
+</em> - <code>DRUPAL_BASE_URL</code>
+  - Drupal site base URL, used to setup Behat tests
+<em> - <code>DRUPAL_WEBTOOLS_ANALYTICS_SITE_ID</code>
+  - Drupal site unique identifier
+</em> - <code>DRUPAL_WEBTOOLS_ANALYTICS_SITE_PATH</code>
+- The domain + root path without protocol.</p>
 </blockquote>
-<p>See bellow current list for version <code>4.0.0-beta8</code>.</p>
-<hr />
-<blockquote><p>Available commands:
-  help                          Displays help for a command
-  list                          Lists commands
- changelog
-  <a href="changelog:generate">changelog:generate</a>            [<a href="changelog:g|cg">changelog:g|cg</a>] Generate a changelog based on GitHub issues and pull requests.
- drupal
-  <a href="drupal:drush-setup">drupal:drush-setup</a>            Write Drush configuration files to given directories.
-  <a href="drupal:permissions-setup">drupal:permissions-setup</a>      Setup Drupal permissions.
-  <a href="drupal:settings-setup">drupal:settings-setup</a>         Setup Drupal settings.php file in compliance with Toolkit conventions.
-  <a href="drupal:setup-test">drupal:setup-test</a><br><a href="drupal:site-install">drupal:site-install</a>           [<a href="drupal:si|dsi">drupal:si|dsi</a>] Install target site.
-  <a href="drupal:site-post-install">drupal:site-post-install</a>      Run Drupal post-install commands.
-  <a href="drupal:site-pre-install">drupal:site-pre-install</a>       Run Drupal pre-install commands.
- release
-  <a href="release:create-archive">release:create-archive</a>        [<a href="release:ca|rca">release:ca|rca</a>] Create a release for the current project.
- toolkit
-  <a href="toolkit:build-assets">toolkit:build-assets</a>          [tba] Build theme assets (Css/Js).
-  <a href="toolkit:build-dev">toolkit:build-dev</a>             Build site for local development.
-  <a href="toolkit:build-dev-reset">toolkit:build-dev-reset</a>       Build site for local development from scratch with a clean git.
-  <a href="toolkit:build-dist">toolkit:build-dist</a>            Build the distribution package.
-  <a href="toolkit:component-check">toolkit:component-check</a>       Check composer.json for components that are not whitelisted/blacklisted.
-  <a href="toolkit:d9-compatibility">toolkit:d9-compatibility</a>      Check project compatibility for Drupal 9 upgrade.
-  <a href="toolkit:disable-drupal-cache">toolkit:disable-drupal-cache</a>  Disable aggregation and clear cache.
-  <a href="toolkit:download-dump">toolkit:download-dump</a>         Download ASDA snapshot.
-  <a href="toolkit:import-config">toolkit:import-config</a>         Import config.
-  <a href="toolkit:install-clean">toolkit:install-clean</a>         Install a clean website.
-  <a href="toolkit:install-clean-dev">toolkit:install-clean-dev</a>     Install a clean website in dev mode.
-  <a href="toolkit:install-clone">toolkit:install-clone</a>         Install a clone website.
-  <a href="toolkit:install-clone-dev">toolkit:install-clone-dev</a>     Install a clone website in dev mode.
-  <a href="toolkit:install-dump">toolkit:install-dump</a>          Install clone from production snapshot.
-  <a href="toolkit:notifications">toolkit:notifications</a>         Display toolkit notifications.
-  <a href="toolkit:run-deploy">toolkit:run-deploy</a>            Run deployment sequence.
-  <a href="toolkit:run-phpcbf">toolkit:run-phpcbf</a>            [tpb] Run PHP code autofixing.
-  <a href="toolkit:test-behat">toolkit:test-behat</a>            [tb] Run Behat tests.
-<a href="toolkit:test-phpcs">toolkit:test-phpcs</a>            [tp] Run PHP code review.</p>
-</blockquote>
+<p>Environment variables will be loaded by Docker Compose when running <code>docker-compose up -d</code>.</p>
+<div class="section" id="subsite-configuration">
+<h2>Subsite configuration</h2>
+<p>By default, subsite configuration go into file <code>runner.yml.dist</code>\ , see bellow an example.</p>
+<pre><code class="language- " >drupal:
+  root: &quot;web&quot;
+  base_url: ${env.DRUPAL_BASE_URL}
+  site:
+    profile: &quot;standard&quot;
+    name: &quot;Drupal website configuration goes here!&quot;
+    generate_db_url: false
+  account:
+    name: ${env.DRUPAL_ACCOUNT_USERNAME}
+    password: ${env.DRUPAL_ACCOUNT_PASSWORD}
+
+selenium:
+  host: &quot;http://selenium&quot;
+  port: &quot;4444&quot;
+  browser: &quot;chrome&quot;
+</code></pre>
+</div>
+<div class="section" id="other-topics">
+<h2>Other topics</h2>
+
+
+<ul>
+    <li>
+            <a href="docs/setting-up-project.md">Setting up a project</a>
+        </li>
+    <li>
+            <a href="docs/configuring-project.md">Configuring a project</a>
+        </li>
+    <li>
+            <a href="docs/installing-project.md">Installing the project</a>
+        </li>
+    <li>
+            <a href="docs/testing-project.md">Testing the project</a>
+        </li>
+    <li>
+            Using Docker environment
+        </li>
+    <li>
+            <a href="docs/continuous-integration.md">Continuous integration</a>
+        </li>
+    <li>
+            <a href="docs/available-tasks.md">Available tasks</a>
+        </li>
+    <li>
+            <a href="docs/building-assets.md">Building assets</a>
+        </li>
+    <li>
+            <a href="docs/git-hooks.md">Git Hooks</a>
+        </li>
+    <li>
+            <a href="docs/project-documentation.md">Update Project Documentation</a>
+        </li>
+    <li>
+            <a href="CHANGELOG.md">Changelog</a>
+        </li>
+</ul>
 </div>
 
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">

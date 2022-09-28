@@ -1,135 +1,173 @@
-# Building assets
 
-## Overview
+Building assets
+===============
+
+Overview
+--------
 
 Toolkit provides a way to build theme assets with Gulp.js.
 
-By default a gulpfile is included and as well some npm packages in order to:
+By default, a gulpfile is included and as well some npm packages in order to:
 
-- Look for Scss files and convert them into Css
-- Minify Css and Js
-- Merge files into one minimized file
-- Validate and fix scss files
+
+* Look for Scss files and convert them into Css
+* Minify Css and Js
+* Merge files into one minimized file
+* Validate and fix scss files
 
 Command to run:
-```
-docker-compose vendor/bin/run toolkit:build-assets
-```
 
-## How to use
+.. code-block::
 
-### Source files
+   docker-compose vendor/bin/run toolkit:build-assets
+
+How to use
+----------
+
+Source files
+^^^^^^^^^^^^
 
 The folder structure for the source files should be aligned like this:
 
-- {your-theme-folder}/src/scss
-- {your-theme-folder}/src/js
 
+* {your-theme-folder}/src/scss
+* {your-theme-folder}/src/js
 
 After this task is complete the generated folder '{your-theme}/assets' will look like this:
 
-```
-/your-theme
-  /assests
-    /css
-      style.min.css
-    /js
-      script.min.js
-```
+.. code-block::
+
+   /your-theme
+     /assests
+       /css
+         style.min.css
+       /js
+         script.min.js
+
 Note: The folder name 'assets' is the default value provided. It can be override on the 'gulpfile.js'.
 
-### Get 'default-theme'
+Get 'default-theme'
+^^^^^^^^^^^^^^^^^^^
 
 If no config files are present in the project, the default theme can be specified in a parameter the parameter in the task call:
-```
-docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
-```
 
-### Define 'custom-code-folder'
+.. code-block::
 
-If for some reason your project is running custom code in other folder then 'lib', it's possible to make it configurable with the following:
-```
-toolkit:
-  build:
-    custom-code-folder: 'your_folder'
+   docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
 
-```
+Define 'custom-code-folder'
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-### Build theme assets
+If for some reason your project is running custom code in other folder then ``lib``\ , it's possible to make it configurable with the following:
+
+.. code-block::
+
+   toolkit:
+     build:
+       custom-code-folder: 'your_folder'
+
+Build theme assets
+^^^^^^^^^^^^^^^^^^
 
 Run the following command:
 
-```
-docker-compose exec web ./vendor/bin/run toolkit:build-assets
-or
-docker-compose exec web ./vendor/bin/run tba
-```
+.. code-block::
+
+   docker-compose exec web ./vendor/bin/run toolkit:build-assets
+   or
+   docker-compose exec web ./vendor/bin/run tba
 
 This will (re)generate the /assets folder.
 
-## Enable build assets during CI
-To enable auto build of assets you should extend the tasks buidl-dev and build-dist. See example bellow.
-```
-toolkit:
-  project_id: "my-project"
-  build:
-    dev:
-      commands:
-      - ...
-      - ./vendor/bin/run toolkit:build-assets
-    dist:
-      commands:
-      - ...
-      - ./vendor/bin/run toolkit:build-assets
-```
+Enable build assets during CI
+-----------------------------
 
-## Extending functionality
+To enable auto build of assets you should extend the tasks ``build-dev`` and ``build-dist``. See example bellow.
 
-### Add a custom 'gulpfile.js' file
+.. code-block::
+
+   toolkit:
+     project_id: "my-project"
+     build:
+       dev:
+         commands:
+         - ...
+         - ./vendor/bin/run toolkit:build-assets
+       dist:
+         commands:
+         - ...
+         - ./vendor/bin/run toolkit:build-assets
+
+Extending functionality
+-----------------------
+
+Add a custom 'gulpfile.js' file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 It's possible to use a custom gulpfile on the theme root folder.
 If the file do not exists, toolkit will create one using the default template.
 
-### Install additional npm packages
+Install additional npm packages
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Additional npm packages can be installed to extend the functionality.
-In order to do that add them in the file 'runner.yml' like the example bellow:
+In order to do that add them in the file ``runner.yml`` like the example bellow:
 
-```
-toolkit:
-  build:
-    npm:
-      packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify
-```
+.. code-block::
 
-#### npm install --save-dev
+   toolkit:
+     build:
+       npm:
+         packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify
 
-By default the npm packages are installed with the option '--save-dev' and will appear in the devDependencies.
-To override this behavior add in the file 'runner.yml' the following property:
+npm install --save-dev
+~~~~~~~~~~~~~~~~~~~~~~
 
-```
-toolkit:
-  build:
-    npm:
-     mode: (leave empty or add '--save-prod')
-```
+By default, the npm packages are installed with the option ``--save-dev`` and will appear in the devDependencies.
+To override this behavior add in the file ``runner.yml`` the following property:
 
-## Validate and fix scss files
+.. code-block::
 
-### Check theme's scss files for issues
+   toolkit:
+     build:
+       npm:
+        mode: (leave empty or add '--save-prod')
+
+Validate and fix scss files
+---------------------------
+
+Check theme's scss files for issues
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Provides a report of violations.
 
-```
-docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=check
-or
-docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate
-```
+.. code-block::
 
-### Automatically fix errors
+   docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=check
+   or
+   docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate
+
+Automatically fix errors
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Automatically fix, where possible, violations reported.
 
-```
-docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix
-```
+.. code-block::
+
+   docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix
+
+Other topics
+^^^^^^^^^^^^
+
+
+* `Setting up a project </docs/setting-up-project.md>`_
+* `Configuring a project </docs/configuring-project.md>`_
+* `Installing the project </docs/installing-project.md>`_
+* `Testing the project </docs/testing-project.md>`_
+* `Using Docker environment </docs/docker-environment.md>`_
+* `Continuous integration </docs/continuous-integration.md>`_
+* `Available tasks </docs/available-tasks.md>`_
+* Building assets
+* `Git Hooks </docs/git-hooks.md>`_
+* `Update Project Documentation </docs/project-documentation.md>`_
+* `Changelog </CHANGELOG.md>`_

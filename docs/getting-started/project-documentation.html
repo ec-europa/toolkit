@@ -61,7 +61,7 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/building-assets.html" class="">Command to run:</a>
+    <a href="guide/building-assets.html" class="">Building assets</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -128,141 +128,54 @@
 </aside>
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <div class="section" id="testing-the-project">
-<h1>Testing the project</h1>
-<p>This guide explains how to use the resources provided by toolkit to test
-your project. You can list all resources available with the following
-command:</p>
-<div class="section" id="behat-testing">
-<h2>Behat testing</h2>
-<p>To run behat tests you can make use of the <code>toolkit:test-behat</code>
-command. This will re-generate your behat configuration from
-<code>./behat.yml.dist</code> and run it on your current site installation.</p>
-<p>New tests should be stored in <code>./tests/features/</code> folder, then they
-will be executed automatically by toolkit task.</p>
-<p>To run the behat tests:</p>
-<hr />
-<blockquote><p>docker-compose exec web ./vendor/bin/run <a href="toolkit:test-behat">toolkit:test-behat</a></p>
-</blockquote>
-<p>CICD will pick the default profile to run against clone install and
-clean profile to run against clean install.</p>
+                    <div class="section" id="update-project-documentation">
+<h1>Update Project Documentation</h1>
+<p>Use docker to update the documentation locally</p>
+<p>The Docker image comes with all dependencies pre-installed.</p>
+<p>To update the documentation run the following command. This will update
+the content inside the folder ‘docs’.</p>
+<pre><code class="language- " >docker run --rm -v $(pwd):/data phpdoc/phpdoc run -d ./src -t ./docs
+</code></pre>
+<p>Then push the changes generated.</p>
+<div class="section" id="other-topics">
+<h2>Other topics</h2>
 
 
 <ul>
     <li>
-            default profile: executed against clone-install
+            <a href="docs/setting-up-project.md">Setting up a project</a>
         </li>
     <li>
-            clean profile: executed against clean-install
+            <a href="docs/configuring-project.md">Configuring a project</a>
+        </li>
+    <li>
+            <a href="docs/installing-project.md">Installing the project</a>
+        </li>
+    <li>
+            <a href="docs/testing-project.md">Testing the project</a>
+        </li>
+    <li>
+            <a href="docs/docker-environment.md">Using Docker environment</a>
+        </li>
+    <li>
+            <a href="docs/continuous-integration.md">Continuous integration</a>
+        </li>
+    <li>
+            <a href="docs/available-tasks.md">Available tasks</a>
+        </li>
+    <li>
+            <a href="docs/building-assets.md">Building assets</a>
+        </li>
+    <li>
+            <a href="docs/git-hooks.md">Git Hooks</a>
+        </li>
+    <li>
+            Update Project Documentation
+        </li>
+    <li>
+            <a href="CHANGELOG.md">Changelog</a>
         </li>
 </ul>
-<p>The default configuration for this is to have the following defined in
-your <code>./behat.yml.dist</code> file:</p>
-<pre><code class="language-yaml " >default:
-  suites:
-    default:
-    ...
-clean:
-  suites:
-    default:
-    ...
-</code></pre>
-<div class="section" id="commands-to-run-before-after-behat-tests">
-<h3>Commands to run before/after Behat tests</h3>
-<p>Additional commands can be run before and/or after the test. Such
-commands should be defined in the <code>./runner.yml.dist</code> or
-<code>./runner.yml</code> files:</p>
-<pre><code class="language-yaml " >behat:
-  commands:
-    before:
-      - task: exec
-        command: ls -la
-      - ...
-    after:
-      - task: exec
-        command: whoami
-      - ...
-</code></pre>
-</div>
-</div>
-<div class="section" id="phpcs-testing">
-<h2>PHPCS testing</h2>
-<p>To run coding standard tests you can make use of the
-<code>toolkit:test-phpcs</code> command. This will validate your configuration
-from <code>./grumphp.yml.dist</code> and run it on your current codebase.</p>
-<p>To run the coding standard checks:</p>
-<hr />
-<blockquote><p>docker-compose exec web ./vendor/bin/run <a href="toolkit:test-phpcs">toolkit:test-phpcs</a></p>
-</blockquote>
-<p>This will first validate the configuration of your
-<code>./grumphp.yml.dist</code>. The correct configuration of this file contains
-the import of the qa conventions like shown below:</p>
-<pre><code class="language-yaml " >imports:
-  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }
-parameters:
-  tasks.phpcs.ignore_patterns:
-    - vendor/
-    - web/
-  tasks.phpcs.triggered_by:
-    - php
-    - module
-    - inc
-    - theme
-    - install
-    - yml
-
-  extensions:
-    - OpenEuropa\CodeReview\ExtraTasksExtension
-</code></pre>
-<p>Previously this was hardcoded in your composer.json. But if you want to
-be able to override configuration from the qa convention you should
-remove that setting. So if you have the following lines in your
-composer.json you should remove those lines:</p>
-<pre><code class="language-json " >&quot;grumphp&quot;: {
-    &quot;config-default-path&quot;: &quot;vendor/ec-europa/qa-automation/dist/qa-conventions.yml&quot;
-}
-</code></pre>
-<p>PHPCBF task is available, to automatic fix your issues please run the
-following command:</p>
-<hr />
-<blockquote><p>docker-compose exec web ./vendor/bin/run <a href="toolkit:run-phpcbf">toolkit:run-phpcbf</a> --file-path=&lt;file-to-fix&gt;</p>
-</blockquote>
-</div>
-<div class="section" id="phpunit-testing">
-<h2>PHPUnit testing</h2>
-<p>Use the <code>toolkit:test-phopunit</code> command to run PHPUnit tests. The
-command will look for a <code>phpunit.xml.dist</code> or a files, in the
-configured locations. If <code>phpunit.xml.dist</code> is found, a
-<code>phpunit.xml</code> will be generated. If <code>phpunit.xml.dist</code> is missing
-but there’s a <code>phpunit.xml</code> file, the latter is used.</p>
-<p>Tests should be organised according to <a href="https://phpunit.readthedocs.io/en/9.5/organizing-tests.html">PHPUnit documentation</a>_.</p>
-<p>To run the PHPUnit tests:</p>
-<hr />
-<blockquote><p>docker-compose exec web ./vendor/bin/run <a href="toolkit:test-phpunit">toolkit:test-phpunit</a></p>
-</blockquote>
-<div class="section" id="commands-to-run-before-after-phpunit-tests">
-<h3>Commands to run before/after PHPUnit tests</h3>
-<p>Additional commands can be run before and/or after the test. Such
-commands should be defined in the <code>./runner.yml.dist</code> or
-<code>./runner.yml</code> files:</p>
-<pre><code class="language-yaml " >phpunit:
-  commands:
-    before:
-      - task: exec
-        command: ls -la
-      - ...
-    after:
-      - task: exec
-        command: whoami
-      - ...
-</code></pre>
-</div>
-</div>
-<div class="section" id="testing-in-ci">
-<h2>Testing in CI</h2>
-<p>Toolkit is full integrated with oficial pipeline that currently requires
-minimum of 1 behat test and a clean report for phpcs check.</p>
-<p>Any customization done in your project will be respected in Drone build.</p>
 </div>
 
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">

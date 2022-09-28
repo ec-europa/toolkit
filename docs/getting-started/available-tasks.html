@@ -61,7 +61,7 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/building-assets.html" class="">Command to run:</a>
+    <a href="guide/building-assets.html" class="">Building assets</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -128,123 +128,105 @@
 </aside>
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <div class="section" id="docker-environment">
-<h1>Docker environment</h1>
-<p>By default, Docker Compose reads two files, a <code>docker-compose.yml</code> and
-an optional <code>docker-compose.override.yml</code> file. By convention, the
-<code>docker-compose.yml</code> contains your base configuration and it’s
-provided by default. The override file, as its name implies, can contain
-configuration overrides for existing services or entirely new services.
-If a service is defined in both files, Docker Compose merges the
-configurations.</p>
-<p>Find more information on Docker Compose extension mechanism on <a href="https://docs.docker.com/compose/extends/">the official Docker Compose documentation</a>_.</p>
-<p>The following configuration parameters are provided as environment
-variables in the <a href=".env">/.env</a>_ file:</p>
-<table>
-            <thead>
-                            <tr>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                    </tr>
-                    </thead>
-    
-    <tbody>
-                    <tr>
-                                    <td><code>DRUPAL_DATABASE_NAME</code></td>
-                                    <td>Database name</td>
-                            </tr>
-                    <tr>
-                                    <td><code>D
-RUPAL_DATABASE_USERNAME</code></td>
-                                    <td>Database username</td>
-                            </tr>
-                    <tr>
-                                    <td><code>D
-RUPAL_DATABASE_PASSWORD</code></td>
-                                    <td>Database password</td>
-                            </tr>
-                    <tr>
-                                    <td>`
-DRUPAL_DATABASE_PREFIX`</td>
-                                    <td>Database prefix</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_DATABASE_HOST</code></td>
-                                    <td>Database host</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_DATABASE_PORT</code></td>
-                                    <td>Database port</td>
-                            </tr>
-                    <tr>
-                                    <td>`
-DRUPAL_SPARQL_HOSTNAME`</td>
-                                    <td>SPARQL hostname</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_SPARQL_PORT</code></td>
-                                    <td>SPARQL port</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_CAS_HOSTNAME</code></td>
-                                    <td>EULogin hostname, use
-<code>ecas.ec.europa.eu</code> for production</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_CAS_PORT</code></td>
-                                    <td>EULogin port, use <code>443</code> for production</td>
-                            </tr>
-                    <tr>
-                                    <td><code>
-DRUPAL_ACCOUNT_USERNAME</code></td>
-                                    <td>Drupal admin account, defaults to
-<code>admin</code> if empty</td>
-                            </tr>
-                    <tr>
-                                    <td><code>
-DRUPAL_ACCOUNT_PASSWORD</code></td>
-                                    <td>Drupal admin password, defaults to
-random string if empty</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_BASE_URL</code></td>
-                                    <td>Drupal site base URL, used to setup
-Behat tests</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_WEB
-TOOLS_ANALYTICS_SITE_ID</code></td>
-                                    <td>Drupal site unique identifier</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_WEBTO
-OLS_ANALYTICS_SITE_PATH</code></td>
-                                    <td>The domain + root path without protocol.</td>
-                            </tr>
-            </tbody>
-</table>
-<p>Environment variables will be loaded by Docker Compose when running
-<code>docker-compose up -d</code>.</p>
-<div class="section" id="subsite-configuration">
-<h2>Subsite configuration</h2>
-<p>By default, subsite configuration go into file <code>runner.yml.dist</code>, see
-bellow an example.</p>
-<hr />
-<blockquote><p>drupal:
-  root: &quot;web&quot;
-  baseurl: ${env.DRUPAL_BASE_URL}
-  site:
-    profile: &quot;standard&quot;
-    name: &quot;Drupal website configuration goes here!&quot;
-    generatedburl: false
-  account:
-    name: ${env.DRUPAL_ACCOUNT_USERNAME}
-password: ${env.DRUPAL_ACCOUNT_PASSWORD}</p>
-<p>selenium:
-  host: &quot;<a href="http://selenium">http://selenium</a>&quot;
-  port: &quot;4444&quot;
-browser: &quot;chrome&quot;</p>
-</blockquote>
+                    <div class="section" id="available-tasks">
+<h1>Available tasks</h1>
+<p>To list all available tasks, please run:</p>
+<pre><code class="language- " >docker-composer exec web ./vendor/bin/run
+</code></pre>
+<p>See bellow current list for version <code>9.0.0</code>.</p>
+<pre><code class="language- " >Available commands:
+  help                              Displays help for a command
+  list                              Lists commands
+ changelog
+  changelog:generate                [changelog:g|cg] Generate a changelog based on GitHub issues and pull requests.
+ drupal
+  drupal:drush-setup                Write Drush configuration files to given directories.
+  drupal:permissions-setup          Setup Drupal permissions.
+  drupal:settings-setup             Setup Drupal settings.php file in compliance with Toolkit conventions.
+  drupal:site-install               [drupal:si|dsi] Install target site.
+  drupal:site-post-install          Run Drupal post-install commands.
+  drupal:site-pre-install           Run Drupal pre-install commands.
+ release
+  release:create-archive            [release:ca|rca] Create a release for the current project.
+ toolkit
+  toolkit:build-assets              [tba|tk-assets] Build theme assets (Css and Js).
+  toolkit:build-dev                 [tk-bdev] Build site for local development.
+  toolkit:build-dev-reset           Build site for local development from scratch with a clean git.
+  toolkit:build-dist                [tk-bdist] Build the distribution package.
+  toolkit:check-version             Check the Toolkit version.
+  toolkit:check-phpcs-requirements  Make sure that the config file exists and configuration is correct.
+  toolkit:code-review               This command will execute all the testing tools.
+  toolkit:complock-check            Check if &#039;composer.lock&#039; exists on the project root folder.
+  toolkit:component-check           Check composer.json for components that are not whitelisted/blacklisted.
+  toolkit:disable-drupal-cache      Disable aggregation and clear cache.
+  toolkit:download-dump             Download ASDA snapshot.
+  toolkit:drupal-upgrade-status     [tdus] Check project compatibility for Drupal 9/10 upgrade.
+  toolkit:fix-permissions           Run script to fix permissions (experimental).
+  toolkit:hooks-delete-all          Remove all existing hooks, this will ignore active hooks list.
+  toolkit:hooks-disable             Disable the git hooks.
+  toolkit:hooks-enable              Enable the git hooks defined in the configuration or in given option.
+  toolkit:hooks-list                List available hooks and its status.
+  toolkit:hooks-run                 Run a specific hook.
+  toolkit:import-config             [tk-ci] Import config.
+  toolkit:install-clean             [tk-iclean] Install a clean website.
+  toolkit:install-clone             [tk-iclone] Install a clone website.
+  toolkit:install-dependencies      Install packages present in the opts.yml file under extra_pkgs section.
+  toolkit:install-dump              Import the production snapshot.
+  toolkit:lint-php                  [tlp|tk-php] Run lint PHP.
+  toolkit:lint-yaml                 [tly|tk-yaml] Run lint YAML.
+  toolkit:notifications             Display toolkit notifications.
+  toolkit:opts-review               Check project&#039;s .opts.yml file for forbidden commands.
+  toolkit:requirements              Check the Toolkit Requirements.
+  toolkit:run-blackfire             [tbf|tk-bfire] Run Blackfire.
+  toolkit:run-deploy                Run deployment sequence.
+  toolkit:run-phpcbf                [tk-phpcbf] Run PHP code autofixing.
+  toolkit:setup-blackfire-behat     Copy the needed resources to run Behat with Blackfire.
+  toolkit:setup-phpcs               Setup PHP code sniffer.
+  toolkit:test-behat                [tb|tk-behat] Run Behat tests.
+  toolkit:test-phpcs                [tk-phpcs] Run PHP code sniffer.
+  toolkit:test-phpmd                [tk-phpmd] Run PHPMD.
+  toolkit:test-phpunit              [tp|tk-phpunit] Run PHPUnit tests.
+  toolkit:vendor-list               Check &#039;Vendor&#039; packages being monitorised.
+</code></pre>
+<div class="section" id="other-topics">
+<h2>Other topics</h2>
+
+
+<ul>
+    <li>
+            <a href="docs/setting-up-project.md">Setting up a project</a>
+        </li>
+    <li>
+            <a href="docs/configuring-project.md">Configuring a project</a>
+        </li>
+    <li>
+            <a href="docs/installing-project.md">Installing the project</a>
+        </li>
+    <li>
+            <a href="docs/testing-project.md">Testing the project</a>
+        </li>
+    <li>
+            <a href="docs/docker-environment.md">Using Docker environment</a>
+        </li>
+    <li>
+            <a href="docs/continuous-integration.md">Continuous integration</a>
+        </li>
+    <li>
+            Available tasks
+        </li>
+    <li>
+            <a href="docs/building-assets.md">Building assets</a>
+        </li>
+    <li>
+            <a href="docs/git-hooks.md">Git Hooks</a>
+        </li>
+    <li>
+            <a href="docs/project-documentation.md">Update Project Documentation</a>
+        </li>
+    <li>
+            <a href="CHANGELOG.md">Changelog</a>
+        </li>
+</ul>
 </div>
 
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">

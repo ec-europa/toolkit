@@ -61,7 +61,7 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/building-assets.html" class="">Command to run:</a>
+    <a href="guide/building-assets.html" class="">Building assets</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -128,144 +128,207 @@
 </aside>
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <div class="section" id="configuring-a-project">
-<h1>Configuring a project</h1>
-<div class="section" id="environment-configuration">
-<h2>Environment configuration</h2>
-<p>By default, Docker Compose reads two files, a <code>docker-compose.yml</code> and
-an optional <code>docker-compose.override.yml</code> file. By convention, the
-<code>docker-compose.yml</code> contains your base configuration and it’s
-provided by default. The override file, as its name implies, can contain
-configuration overrides for existing services or entirely new services.
-If a service is defined in both files, Docker Compose merges the
-configurations.</p>
-<p>Find more information on Docker Compose extension mechanism on <a href="https://docs.docker.com/compose/extends/">the official Docker Compose documentation</a>_.</p>
-<p>The following configuration parameters are provided as environment
-variables in the <a href=".env">/.env</a>_ file:</p>
-<table>
-            <thead>
-                            <tr>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                    </tr>
-                    </thead>
-    
-    <tbody>
-                    <tr>
-                                    <td><code>DRUPAL_DATABASE_NAME</code></td>
-                                    <td>Database name</td>
-                            </tr>
-                    <tr>
-                                    <td><code>D
-RUPAL_DATABASE_USERNAME</code></td>
-                                    <td>Database username</td>
-                            </tr>
-                    <tr>
-                                    <td><code>D
-RUPAL_DATABASE_PASSWORD</code></td>
-                                    <td>Database password</td>
-                            </tr>
-                    <tr>
-                                    <td>`
-DRUPAL_DATABASE_PREFIX`</td>
-                                    <td>Database prefix</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_DATABASE_HOST</code></td>
-                                    <td>Database host</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_DATABASE_PORT</code></td>
-                                    <td>Database port</td>
-                            </tr>
-                    <tr>
-                                    <td>`
-DRUPAL_SPARQL_HOSTNAME`</td>
-                                    <td>SPARQL hostname</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_SPARQL_PORT</code></td>
-                                    <td>SPARQL port</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_CAS_HOSTNAME</code></td>
-                                    <td>EULogin hostname, use
-<code>ecas.ec.europa.eu</code> for production</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_CAS_PORT</code></td>
-                                    <td>EULogin port, use <code>443</code> for production</td>
-                            </tr>
-                    <tr>
-                                    <td><code>
-DRUPAL_ACCOUNT_USERNAME</code></td>
-                                    <td>Drupal admin account, defaults to
-<code>admin</code> if empty</td>
-                            </tr>
-                    <tr>
-                                    <td><code>
-DRUPAL_ACCOUNT_PASSWORD</code></td>
-                                    <td>Drupal admin password, defaults to
-random string if empty</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_BASE_URL</code></td>
-                                    <td>Drupal site base URL, used to setup
-Behat tests</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_WEB
-TOOLS_ANALYTICS_SITE_ID</code></td>
-                                    <td>Drupal site unique identifier</td>
-                            </tr>
-                    <tr>
-                                    <td><code>DRUPAL_WEBTO
-OLS_ANALYTICS_SITE_PATH</code></td>
-                                    <td>The domain + root path without protocol.</td>
-                            </tr>
-            </tbody>
-</table>
-<p>Environment variables will be loaded by Docker Compose when running
-<code>docker-compose up -d</code>.</p>
-</div>
-<div class="section" id="subsite-configuration">
-<h2>Subsite configuration</h2>
-<p>By default, subsite configuration go into file <code>runner.yml.dist</code>, see
-bellow an example.</p>
-<hr />
-<blockquote><p>drupal:
-  root: &quot;web&quot;
-  baseurl: ${env.DRUPAL_BASE_URL}
-  site:
-    profile: &quot;standard&quot;
-    name: &quot;Drupal website configuration goes here!&quot;
-    generatedburl: false
-  account:
-    name: ${env.DRUPAL_ACCOUNT_USERNAME}
-password: ${env.DRUPAL_ACCOUNT_PASSWORD}</p>
-<p>toolkit:
-projectid: &#039;PROJECTID&#039;</p>
-<p>selenium:
-  host: &quot;<a href="http://selenium">http://selenium</a>&quot;
-  port: &quot;4444&quot;
-browser: &quot;chrome&quot;</p>
-</blockquote>
-</div>
-<div class="section" id="clone-configuration">
-<h2>Clone configuration</h2>
-<p>Toolkit will load the credentials necessary to clone your subsite from
-your environment, so make sure you have in your env the following
-variables:</p>
+                    <div class="section" id="testing-the-project">
+<h1>Testing the project</h1>
+<p>This guide explains how to use the resources provided by toolkit to test your
+project. You can list all resources available with the following command:</p>
+<div class="section" id="behat-testing">
+<h2>Behat testing</h2>
+<p>To run behat tests you can make use of the <code>toolkit:test-behat</code> command. This will
+re-generate your behat configuration from <code>./behat.yml.dist</code> and run it on your
+current site installation.</p>
+<p>New tests should be stored in <code>./tests/features/</code> folder, then they will be executed
+automatically by toolkit task.</p>
+<p>To run the behat tests:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:test-behat
+</code></pre>
+<p>CICD will pick the default profile to run against clone install and clean profile to run against clean install.</p>
 
 
 <ul>
     <li>
-            ASDA_USER
+            default profile: executed against clone-install
         </li>
     <li>
-            ASDA_PASSWORD
+            clean profile: executed against clean-install
         </li>
 </ul>
+<p>The default configuration for this is to have the following defined in your
+<code>./behat.yml.dist</code> file:</p>
+<pre><code class="language-yaml " >default:
+  suites:
+    default:
+    ...
+clean:
+  suites:
+    default:
+    ...
+</code></pre>
+<div class="section" id="commands-to-run-before-after-behat-tests">
+<h3>Commands to run before/after Behat tests</h3>
+<p>Additional commands can be run before and/or after the test. Such commands
+should be defined in the <code>./runner.yml.dist</code> or <code>./runner.yml</code> files:</p>
+<pre><code class="language-yaml " >toolkit:
+  test:
+    behat:
+      commands:
+        before:
+          - task: exec
+            command: ls -la
+          - ...
+        after:
+          - task: exec
+            command: whoami
+          - ...
+</code></pre>
+</div>
+</div>
+<div class="section" id="phpcs-testing">
+<h2>PHPCS testing</h2>
+<p>To run coding standard tests you can make use of the <code>toolkit:test-phpcs</code>
+command. This will validate your configuration from <code>./grumphp.yml.dist</code> and run
+it on your current codebase.</p>
+<p>To run the coding standard checks:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:test-phpcs
+</code></pre>
+<p>This will first validate the configuration of your <code>./grumphp.yml.dist</code>. The
+correct configuration of this file contains the import of the qa conventions
+like shown below:</p>
+<pre><code class="language-yaml " >imports:
+  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }
+parameters:
+  tasks.phpcs.ignore_patterns:
+    - vendor/
+    - web/
+  tasks.phpcs.triggered_by:
+    - php
+    - module
+    - inc
+    - theme
+    - install
+    - yml
+
+  extensions:
+    - OpenEuropa\CodeReview\ExtraTasksExtension
+</code></pre>
+<p>Previously this was hardcoded in your composer.json. But if you want to be able
+to override configuration from the qa convention you should remove that setting.
+So if you have the following lines in your composer.json you should remove those
+lines:</p>
+<pre><code class="language-json " >&quot;grumphp&quot;: {
+    &quot;config-default-path&quot;: &quot;vendor/ec-europa/qa-automation/dist/qa-conventions.yml&quot;
+}
+</code></pre>
+<p>PHPCBF task is available, to automatic fix your issues please run the following
+command:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:run-phpcbf --file-path=&lt;file-to-fix&gt;
+</code></pre>
+</div>
+<div class="section" id="phpunit-testing">
+<h2>PHPUnit testing</h2>
+<p>Use the <code>toolkit:test-phopunit</code> command to run PHPUnit tests. The command will
+look for a <code>phpunit.xml.dist</code> or a  files, in the configured
+locations. If <code>phpunit.xml.dist</code> is found, a <code>phpunit.xml</code> will be generated. If
+<code>phpunit.xml.dist</code> is missing but there&#039;s a <code>phpunit.xml</code> file, the latter is
+used.</p>
+<p>Tests should be organised according to <a href="https://phpunit.readthedocs.io/en/9.5/organizing-tests.html">PHPUnit documentation</a>.</p>
+<p>To run the PHPUnit tests:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:test-phpunit
+</code></pre>
+<div class="section" id="commands-to-run-before-after-phpunit-tests">
+<h3>Commands to run before/after PHPUnit tests</h3>
+<p>Additional commands can be run before and/or after the test. Such commands
+should be defined in the <code>./runner.yml.dist</code> or <code>./runner.yml</code> files:</p>
+<pre><code class="language-yaml " >toolkit:
+  test:
+    phpunit:
+      commands:
+        before:
+          - task: exec
+            command: ls -la
+          - ...
+        after:
+          - task: exec
+            command: whoami
+          - ...
+</code></pre>
+</div>
+</div>
+<div class="section" id="phpmd-testing">
+<h2>PHPMD testing</h2>
+<p>To run PHP Mess Detector tests you can make use of the <code>toolkit:test-phpmd</code>
+command. If the project does not have a phpmd.xml file in the root folder,
+Toolkit will create the default config file.</p>
+<p>To run the PHP Mess Detector checks:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:test-phpmd
+</code></pre>
+<p>These are the default configurations in the runner.yml file.</p>
+<pre><code class="language-yaml " >toolkit:
+  test:
+    phpmd:
+      config: phpmd.xml
+      format: ansi
+      ignore_patterns:
+        - vendor/
+        - web/
+        - node_modules/
+        - config/
+      triggered_by:
+        - php
+        - module
+        - inc
+        - theme
+        - install
+      files:
+        - lib
+        - src
+</code></pre>
+</div>
+<div class="section" id="testing-in-ci">
+<h2>Testing in CI</h2>
+<p>Toolkit is full integrated with official pipeline that currently requires minimum
+of 1 behat test and a clean report for phpcs check.</p>
+<p>Any customization done in your project will be respected in Drone build.</p>
+<div class="section" id="other-topics">
+<h3>Other topics</h3>
+
+
+<ul>
+    <li>
+            <a href="docs/setting-up-project.md">Setting up a project</a>
+        </li>
+    <li>
+            <a href="docs/configuring-project.md">Configuring a project</a>
+        </li>
+    <li>
+            <a href="docs/installing-project.md">Installing the project</a>
+        </li>
+    <li>
+            Testing the project
+        </li>
+    <li>
+            <a href="docs/docker-environment.md">Using Docker environment</a>
+        </li>
+    <li>
+            <a href="docs/continuous-integration.md">Continuous integration</a>
+        </li>
+    <li>
+            <a href="docs/available-tasks.md">Available tasks</a>
+        </li>
+    <li>
+            <a href="docs/building-assets.md">Building assets</a>
+        </li>
+    <li>
+            <a href="docs/git-hooks.md">Git Hooks</a>
+        </li>
+    <li>
+            <a href="docs/project-documentation.md">Update Project Documentation</a>
+        </li>
+    <li>
+            <a href="CHANGELOG.md">Changelog</a>
+        </li>
+</ul>
+</div>
 </div>
 
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">

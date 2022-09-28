@@ -61,7 +61,7 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/building-assets.html" class="">Command to run:</a>
+    <a href="guide/building-assets.html" class="">Building assets</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -132,29 +132,65 @@
 <h1>Setting up a project</h1>
 <div class="section" id="getting-the-sourcecode">
 <h2>Getting the sourcecode</h2>
-<p>Below we explain the difference between setting up a new project and
-setting up an existing project:</p>
+<p>Below we explain the difference between setting up a new project and setting up
+an existing project:</p>
 <div class="section" id="new-project-from-scratch">
 <h3>New project from scratch</h3>
-<p>To instantiate a new project to running as a subsite you only have to
-execute one command which will perform multiple steps for you
-automatically.</p>
-<hr />
-<blockquote><p>composer create-project openeuropa/drupal-site-template --stability=dev &lt;dg-name&gt;-&lt;project-id&gt;-reference
+<p>To instantiate a new project to running as a subsite you only have to execute one command which will perform multiple steps
+for you automatically.</p>
+<pre><code class="language- " >composer create-project ec-europa/subsite --stability=dev &lt;dg-name&gt;-&lt;project-id&gt;-reference dev-release/8.x
 docker-compose up -d
-docker-compose exec web vendor/bin/run</p>
-</blockquote>
+docker-compose exec web vendor/bin/run
+</code></pre>
 </div>
 <div class="section" id="from-existent-project-from-repository">
 <h3>From existent project from repository</h3>
-<p>To install locally a project running Toolkit 4 you should run the
-following commands:</p>
-<hr />
-<blockquote><p>git clone git@<a href="github.com:ec-europa/">github.com:ec-europa/</a>&lt;repository-name&gt;.git
+<p>To install locally a project running Toolkit 4 you should run the following commands:</p>
+<pre><code class="language- " >git clone git@github.com:ec-europa/&lt;repository-name&gt;.git
 docker-compose up -d
 docker-compose exec web composer install
-docker-compose exec web vendor/bin/run</p>
-</blockquote>
+docker-compose exec web vendor/bin/run
+</code></pre>
+</div>
+<div class="section" id="other-topics">
+<h3>Other topics</h3>
+
+
+<ul>
+    <li>
+            Setting up a project
+        </li>
+    <li>
+            <a href="docs/configuring-project.md">Configuring a project</a>
+        </li>
+    <li>
+            <a href="docs/installing-project.md">Installing the project</a>
+        </li>
+    <li>
+            <a href="docs/testing-project.md">Testing the project</a>
+        </li>
+    <li>
+            <a href="docs/docker-environment.md">Using Docker environment</a>
+        </li>
+    <li>
+            <a href="docs/continuous-integration.md">Continuous integration</a>
+        </li>
+    <li>
+            <a href="docs/available-tasks.md">Available tasks</a>
+        </li>
+    <li>
+            <a href="docs/building-assets.md">Building assets</a>
+        </li>
+    <li>
+            <a href="docs/git-hooks.md">Git Hooks</a>
+        </li>
+    <li>
+            <a href="docs/project-documentation.md">Update Project Documentation</a>
+        </li>
+    <li>
+            <a href="CHANGELOG.md">Changelog</a>
+        </li>
+</ul>
 </div>
 </div>
 
