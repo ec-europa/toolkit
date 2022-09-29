@@ -116,7 +116,6 @@ class CloneCommands extends AbstractCommands
         'dumpfile' => InputOption::VALUE_REQUIRED,
     ])
     {
-        $tasks = [];
         if ($this->getConfig()->get('toolkit.clone.asda_dump_type') === 'dumper') {
             $options['dumpfile'] = 'dumper.gz';
         }
@@ -127,8 +126,9 @@ class CloneCommands extends AbstractCommands
                 return 1;
             }
         }
+        $tasks = [];
 
-        // Unzip and dump database file.
+        // Recreate the database.
         $drush_bin = $this->getBin('drush');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
@@ -141,7 +141,7 @@ class CloneCommands extends AbstractCommands
             // myloader in the docker images.
             $tasks[] = $this->taskExecStack()
                 ->stopOnFail()
-                ->exec(Toolkit::getToolkitRoot() . 'resources/install-dumper.sh');
+                ->exec(Toolkit::getToolkitRoot() . 'resources/scripts/install-dumper.sh');
 
             // Clean up and extract the dump.
             $tasks[] = $this->taskExecStack()
@@ -509,10 +509,10 @@ class CloneCommands extends AbstractCommands
      */
     private function getAsdaServices(): array
     {
-        $config = $this->getConfig()->get('toolkit.clone');
-        $services = (array) (!empty($config['asda_services']) ? $config['asda_services'] : 'mysql');
+        $config = $this->getConfig();
+        $services = (array) $config->get('toolkit.clone.asda_services', 'mysql');
         // Replace the 'mysql' service with the 'dumper' if defined.
-        if ($config['asda_dump_type'] === 'dumper') {
+        if ($config->get('toolkit.clone.asda_dump_type') === 'dumper') {
             $services[] = 'dumper';
             $key = array_search('mysql', $services);
             if ($key !== false) {
