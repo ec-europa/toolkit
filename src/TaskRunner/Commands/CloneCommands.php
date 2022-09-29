@@ -137,6 +137,12 @@ class CloneCommands extends AbstractCommands
 
         $dump_type = $this->getConfig()->get('toolkit.clone.asda_dump_type');
         if ($dump_type === 'dumper') {
+            // This is a temporary workaround while we do not have the
+            // myloader in the docker images.
+            $tasks[] = $this->taskExecStack()
+                ->stopOnFail()
+                ->exec(Toolkit::getToolkitRoot() . 'resources/install-dumper.sh');
+
             // Clean up and extract the dump.
             $tasks[] = $this->taskExecStack()
                 ->stopOnFail()
