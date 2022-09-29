@@ -13,6 +13,7 @@ documentation.
     configuring-project
     continuous-integration
     docker-environment
+    git-hooks
     installing-project
     project-documentation
     setting-up-project
