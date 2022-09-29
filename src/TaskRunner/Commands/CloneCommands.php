@@ -117,6 +117,9 @@ class CloneCommands extends AbstractCommands
     ])
     {
         $tasks = [];
+        if ($this->getConfig()->get('toolkit.clone.asda_dump_type') === 'dumper') {
+            $options['dumpfile'] = 'dumper.gz';
+        }
         $tmp_folder = $this->tmpDirectory();
         if (!file_exists("$tmp_folder/{$options['dumpfile']}")) {
             if (!Toolkit::isCiCd()) {
@@ -131,17 +134,48 @@ class CloneCommands extends AbstractCommands
             ->stopOnFail()
             ->exec($drush_bin . ' sql-drop -y')
             ->exec($drush_bin . ' sql-create -y');
-        $tasks[] = $this->taskExecStack()
-            ->stopOnFail()
-            ->silent(true)
-            ->exec(sprintf(
+
+        $dump_type = $this->getConfig()->get('toolkit.clone.asda_dump_type');
+        if ($dump_type === 'dumper') {
+            // Clean up and extract the dump.
+            $tasks[] = $this->taskExecStack()
+                ->stopOnFail()
+                ->silent(TRUE)
+                ->exec("rm -rf $tmp_folder/dumper")
+                ->exec("mkdir $tmp_folder/dumper")
+                ->exec("tar -xf $tmp_folder/{$options['dumpfile']} -C $tmp_folder/dumper");
+
+            $options = [
+                '--host ' . getenv('DRUPAL_DATABASE_HOST'),
+                '--database ' . getenv('DRUPAL_DATABASE_NAME'),
+                '--user ' . getenv('DRUPAL_DATABASE_USERNAME'),
+                getenv('DRUPAL_DATABASE_PASSWORD') ? '--password ' . getenv('DRUPAL_DATABASE_PASSWORD') : '',
+                '--threads 8',
+                '--max-threads-per-table 8',
+                '--innodb-optimize-keys',
+                '--purge-mode DROP',
+                '--compress-protocol',
+                '--skip-definer',
+                '--verbose 3',
+                "--directory $tmp_folder/dumper"
+            ];
+            $command = 'myloader ' . implode(' ', $options);
+        } else {
+            $command = sprintf(
                 "gunzip < %s | mysql -u%s%s -h%s %s",
                 "$tmp_folder/{$options['dumpfile']}",
                 getenv('DRUPAL_DATABASE_USERNAME'),
                 getenv('DRUPAL_DATABASE_PASSWORD') ? ' -p' . getenv('DRUPAL_DATABASE_PASSWORD') : '',
                 getenv('DRUPAL_DATABASE_HOST'),
                 getenv('DRUPAL_DATABASE_NAME'),
-            ));
+            );
+        }
+
+        $tasks[] = $this->taskExecStack()
+            ->stopOnFail()
+            ->silent(TRUE)
+            ->exec($command);
+
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
     }
@@ -196,7 +230,7 @@ class CloneCommands extends AbstractCommands
         $config = $this->getConfig();
         $project_id = $config->get('toolkit.project_id');
         $asda_type = $config->get('toolkit.clone.asda_type', 'default');
-        $asda_services = (array) $config->get('toolkit.clone.asda_services', 'mysql');
+        $asda_services = $this->getAsdaServices();
         $vendor = $config->get('toolkit.clone.asda_vendor');
         $source = $config->get('toolkit.clone.asda_source');
         $tmp_folder = $this->tmpDirectory();
@@ -457,5 +491,28 @@ class CloneCommands extends AbstractCommands
             }
         }
         return $tmp_folder;
+    }
+
+    /**
+     * Returns the defined asda services.
+     *
+     * If dumper is defined the mysql services will be replaced.
+     *
+     * @return array
+     *   An array with the services.
+     */
+    private function getAsdaServices(): array
+    {
+        $config = $this->getConfig()->get('toolkit.clone');
+        $services = (array) (!empty($config['asda_services']) ? $config['asda_services'] : 'mysql');
+        // Replace the 'mysql' service with the 'dumper' if defined.
+        if ($config['asda_dump_type'] === 'dumper') {
+            $services[] = 'dumper';
+            $key = array_search('mysql', $services);
+            if ($key !== false) {
+                unset($services[$key]);
+            }
+        }
+        return $services;
     }
 }
