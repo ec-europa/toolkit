@@ -140,7 +140,7 @@ class CloneCommands extends AbstractCommands
             // Clean up and extract the dump.
             $tasks[] = $this->taskExecStack()
                 ->stopOnFail()
-                ->silent(TRUE)
+                ->silent(true)
                 ->exec("rm -rf $tmp_folder/dumper")
                 ->exec("mkdir $tmp_folder/dumper")
                 ->exec("tar -xf $tmp_folder/{$options['dumpfile']} -C $tmp_folder/dumper");
@@ -173,7 +173,7 @@ class CloneCommands extends AbstractCommands
 
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->silent(TRUE)
+            ->silent(true)
             ->exec($command);
 
         // Build and return task collection.
