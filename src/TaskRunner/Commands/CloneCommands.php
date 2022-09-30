@@ -116,7 +116,8 @@ class CloneCommands extends AbstractCommands
         'dumpfile' => InputOption::VALUE_REQUIRED,
     ])
     {
-        if ($this->getConfig()->get('toolkit.clone.asda_dump_type') === 'dumper') {
+        $config = $this->getConfig();
+        if ($config->get('toolkit.clone.asda_dump_type') === 'dumper') {
             $options['dumpfile'] = 'dumper.gz';
         }
         $tmp_folder = $this->tmpDirectory();
@@ -135,13 +136,14 @@ class CloneCommands extends AbstractCommands
             ->exec($drush_bin . ' sql-drop -y')
             ->exec($drush_bin . ' sql-create -y');
 
+        $database = getenv('DRUPAL_DATABASE_NAME');
         $dump_type = $this->getConfig()->get('toolkit.clone.asda_dump_type');
         if ($dump_type === 'dumper') {
             // This is a temporary workaround while we do not have the
             // myloader in the docker images.
             $tasks[] = $this->taskExecStack()
                 ->stopOnFail()
-                ->exec(Toolkit::getToolkitRoot() . 'resources/scripts/install-dumper.sh');
+                ->exec(Toolkit::getToolkitRoot() . 'resources/scripts/dumper-install.sh');
 
             // Clean up and extract the dump.
             $tasks[] = $this->taskExecStack()
@@ -151,9 +153,14 @@ class CloneCommands extends AbstractCommands
                 ->exec("mkdir $tmp_folder/dumper")
                 ->exec("tar -xf $tmp_folder/{$options['dumpfile']} -C $tmp_folder/dumper");
 
+            // Rename the dump files to match the current database.
+            $tasks[] = $this->taskExecStack()
+                ->stopOnFail()
+                ->exec(Toolkit::getToolkitRoot() . "resources/scripts/dumper-prepare-db.sh $database $tmp_folder/dumper");
+
             $options = [
                 '--host ' . getenv('DRUPAL_DATABASE_HOST'),
-                '--database ' . getenv('DRUPAL_DATABASE_NAME'),
+                "--database $database",
                 '--user ' . getenv('DRUPAL_DATABASE_USERNAME'),
                 getenv('DRUPAL_DATABASE_PASSWORD') ? '--password ' . getenv('DRUPAL_DATABASE_PASSWORD') : '',
                 '--threads 8',
@@ -173,7 +180,7 @@ class CloneCommands extends AbstractCommands
                 getenv('DRUPAL_DATABASE_USERNAME'),
                 getenv('DRUPAL_DATABASE_PASSWORD') ? ' -p' . getenv('DRUPAL_DATABASE_PASSWORD') : '',
                 getenv('DRUPAL_DATABASE_HOST'),
-                getenv('DRUPAL_DATABASE_NAME'),
+                $database,
             );
         }
 
