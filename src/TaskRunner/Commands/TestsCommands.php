@@ -379,7 +379,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             return new ResultData(1);
         }
 
-        $tasks[] = $this->taskExec($behatBin . " --profile=" . $profile . " " . $suiteParameter);
+        $tasks[] = $this->taskExec($behatBin . " --strict --profile=" . $profile . " " . $suiteParameter);
 
         // Execute a list of commands to run after tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.after')) {
