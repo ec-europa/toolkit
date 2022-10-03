@@ -22,7 +22,6 @@
         "ec-europa/qa-automation": "^9.0",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "j13k/yaml-lint": "^1.1",
-        "openeuropa/task-runner": "^2.0@alpha",
         "php-parallel-lint/php-parallel-lint": "^1.3",
         "phpmd/phpmd": "^2.12",
         "phpunit/phpunit": "^7.5 || ^9.5"
