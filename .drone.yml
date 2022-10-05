@@ -15,12 +15,6 @@ matrix:
     - lowest
     - highest
 
-services:
-  web:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
-    environment:
-      - DOCUMENT_ROOT=/test/toolkit
-
 pipeline:
   composer-install:
     group: composer

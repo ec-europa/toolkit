@@ -22,7 +22,7 @@ final class Toolkit
      */
     public static function getToolkitRoot(): string
     {
-        return __DIR__ . '/../';
+        return realpath(__DIR__ . '/../');
     }
 
     /**
@@ -33,7 +33,7 @@ final class Toolkit
      */
     public static function getProjectRoot(): string
     {
-        return __DIR__ . '/../../../../';
+        return realpath(__DIR__ . '/../../../../');
     }
 
     /**

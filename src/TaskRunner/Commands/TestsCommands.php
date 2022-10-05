@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use NuvoleWeb\Robo\Task as NuvoleWebTasks;
-use OpenEuropa\TaskRunner\Contract\FilesystemAwareInterface;
-use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
-use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
-use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
 use Robo\Exception\TaskException;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,20 +15,14 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class TestsCommands.
  */
-class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
+class TestsCommands extends AbstractCommands
 {
-    use NuvoleWebTasks\Config\loadTasks;
-    use TaskRunnerTasks\CollectionFactory\loadTasks;
-    use TaskRunnerTraits\ConfigurationTokensTrait;
-    use TaskRunnerTraits\FilesystemAwareTrait;
-    use loadTasks;
-
     /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
     {
-        return __DIR__ . '/../../../config/commands/test.yml';
+        return Toolkit::getToolkitRoot() . '/config/commands/test.yml';
     }
 
     /**
@@ -129,7 +118,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @see runPhpcs()
      */
-    public function toolkitPhpcs()
+    public function toolkitTestPhpcs()
     {
         $mode = $this->getConfig()->get('toolkit.test.phpcs.mode', 'phpcs');
         if ($mode === 'grumphp') {
@@ -142,7 +131,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             $result += $code->getExitCode();
 
             $this->say('Executing PHPmd.');
-            $code = $this->toolkitPhpmd();
+            $code = $this->toolkitTestPhpmd();
             $result += $code->getExitCode();
 
             return $result;
@@ -158,7 +147,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @aliases tk-phpmd
      */
-    public function toolkitPhpmd()
+    public function toolkitTestPhpmd()
     {
         $config = $this->getConfig();
         $config_file = $config->get('toolkit.test.phpmd.config');
@@ -201,7 +190,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @deprecated
      */
-    public function runGrumphp()
+    protected function runGrumphp()
     {
         $bin = $this->getBin('grumphp');
         $grumphpFile = './grumphp.yml.dist';
@@ -270,13 +259,13 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *         - ./lib
      * @endcode
      */
-    public function runPhpcs()
+    protected function runPhpcs()
     {
         $config = $this->getConfig();
         $phpcs_bin = $this->getBin('phpcs');
         $config_file = $config->get('toolkit.test.phpcs.config');
 
-        $this->checkPhpCsRequirements();
+        $this->toolkitCheckPhpcsRequirements();
 
         $options = '';
         if (!empty($config->get('toolkit.test.phpcs.ignore_annotations'))) {
@@ -290,11 +279,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * Make sure that the config file exists and configuration is correct.
      *
      * @command toolkit:check-phpcs-requirements
-     *
-     * @return \Robo\ResultData|void
-     *   No return if all is ok, return 1 if fails.
      */
-    public function checkPhpCsRequirements()
+    public function toolkitCheckPhpcsRequirements()
     {
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
         if (!file_exists($config_file)) {
@@ -352,7 +338,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * @option profile  The profile to execute.
      * @option suite    The suite to execute, default runs all suites of profile.
      */
-    public function toolkitBehat(array $options = [
+    public function toolkitTestBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
         'to' => InputOption::VALUE_OPTIONAL,
         'profile' => InputOption::VALUE_OPTIONAL,
@@ -362,9 +348,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $tasks = [];
 
         if (Toolkit::isCiCd()) {
-            $this->taskExecStack()
-                ->exec($this->getBin('run') . ' toolkit:install-dependencies')
-                ->run();
+            $this->taskExec($this->getBin('run') . ' toolkit:install-dependencies')->run();
         }
 
         $behatBin = $this->getBin('behat');
@@ -379,7 +363,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             $tasks[] = $this->taskCollectionFactory($commands);
         }
 
-        $this->taskProcessConfigFile($options['from'], $options['to'])->run();
+        $this->taskProcess($options['from'], $options['to'])->run();
 
         $result = $this->taskExec("$behatBin --dry-run --profile=$profile $suiteParameter")
             ->silent(true)->run()->getMessage();
@@ -426,7 +410,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * @option from   From phpunit.xml.dist config file.
      * @option to     To phpunit.xml config file.
      */
-    public function toolkitPhpUnit(array $options = [
+    public function toolkitTestPhpunit(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
         'to' => InputOption::VALUE_OPTIONAL,
     ])
@@ -434,7 +418,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $tasks = [];
 
         if (file_exists($options['from'])) {
-            $this->taskProcessConfigFile($options['from'], $options['to'])->run();
+            $this->taskProcess($options['from'], $options['to'])->run();
         }
 
         if (!file_exists($options['to'])) {
@@ -486,11 +470,11 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @aliases tk-phpcbf
      */
-    public function toolkitPhpcbf()
+    public function toolkitRunPhpcbf()
     {
         $phpcbf_bin = $this->getBin('phpcbf');
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
-        $this->checkPhpCsRequirements();
+        $this->toolkitCheckPhpcsRequirements();
         return $this->taskExec("$phpcbf_bin --standard=$config_file")->run();
     }
 
@@ -611,7 +595,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @aliases tbf, tk-bfire
      */
-    public function toolkitBlackfire()
+    public function toolkitRunBlackfire()
     {
         $base_url = $this->getConfig()->get('drupal.base_url');
         $project_id = $this->getConfig()->get('toolkit.project_id');

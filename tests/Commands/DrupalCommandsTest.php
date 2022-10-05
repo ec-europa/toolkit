@@ -10,9 +10,9 @@ namespace EcEuropa\Toolkit\Tests\Commands {
     use Symfony\Component\Yaml\Yaml;
 
     /**
-     * @group drupal
-     *
      * Test Toolkit Drupal commands.
+     *
+     * @group drupal
      */
     class DrupalCommandsTest extends AbstractTest
     {
@@ -78,6 +78,8 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands {
 
     /**
      * Override random_bytes function for test.
+     *
+     * phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.NotCamelCaps
      */
     function random_bytes()
     {

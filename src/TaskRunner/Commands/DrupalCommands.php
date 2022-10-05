@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
-use OpenEuropa\TaskRunner\Commands\Drupal8Commands;
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Drupal commands to setup and install a Drupal 8 site.
  */
-class DrupalCommands extends Drupal8Commands
+class DrupalCommands extends AbstractCommands
 {
     /**
      * Comment ending the Toolkit settings block.
@@ -73,7 +73,7 @@ class DrupalCommands extends Drupal8Commands
      *                                  settings.php.
      * @option skip-permissions-setup   Drupal skip permissions setup.
      */
-    public function settingsSetup(array $options = [
+    public function drupalSettingsSetup(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
         'sites-subdir' => InputOption::VALUE_REQUIRED,
         'force' => false,
@@ -104,7 +104,43 @@ class DrupalCommands extends Drupal8Commands
 
         // Set necessary permissions on the default folder.
         if (!$options['skip-permissions-setup']) {
-            $collection[] = $this->permissionsSetup($options);
+            $collection[] = $this->drupalPermissionsSetup($options);
+        }
+
+        return $this->collectionBuilder()->addTaskList($collection);
+    }
+
+    /**
+     * Setup Drupal permissions.
+     *
+     * This command will set the necessary permissions on the default folder.
+     *
+     * @param array $options
+     *
+     * @command drupal:permissions-setup
+     *
+     * @option root                     Drupal root.
+     * @option sites-subdir             Drupal site subdirectory.
+     * @option skip-permissions-setup   Drupal skip permissions setup.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     */
+    public function drupalPermissionsSetup(array $options = [
+        'root' => InputOption::VALUE_REQUIRED,
+        'sites-subdir' => InputOption::VALUE_REQUIRED,
+    ])
+    {
+        $subdirPath = $options['root'] . '/sites/' . $options['sites-subdir'];
+
+        // Define collection of tasks.
+        $collection = [
+            // Note that the chmod() method takes decimal values.
+            $this->taskFilesystemStack()->chmod($subdirPath, octdec('775'), 0000, true),
+        ];
+
+        if (file_exists($subdirPath . '/settings.php')) {
+            // Note that the chmod() method takes decimal values.
+            $collection[] = $this->taskFilesystemStack()->chmod($subdirPath . '/settings.php', octdec('664'));
         }
 
         return $this->collectionBuilder()->addTaskList($collection);

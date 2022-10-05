@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
-use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use EcEuropa\Toolkit\Toolkit;
 use Robo\Robo;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
@@ -16,14 +16,12 @@ use Symfony\Component\Yaml\Yaml;
  */
 class BuildCommands extends AbstractCommands
 {
-    use TaskRunnerTasks\CollectionFactory\loadTasks;
-
     /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
     {
-        return __DIR__ . '/../../../config/commands/build.yml';
+        return Toolkit::getToolkitRoot() . '/config/commands/build.yml';
     }
 
     /**
@@ -343,7 +341,7 @@ class BuildCommands extends AbstractCommands
                 $fix = $options['validate'] === 'fix' ? '--fix' : '';
                 $collection->taskExecStack()
                     ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint ' . $fix . ' "' . $theme_dir .  '/**/*.{css,scss,sass}" --config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                    ->exec('npx stylelint ' . $fix . ' "' . $theme_dir . '/**/*.{css,scss,sass}" --config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
                     ->stopOnFail();
                 // Run and return task collection.
                 return $collection->run();

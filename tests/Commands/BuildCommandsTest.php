@@ -11,9 +11,9 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @group build
- *
  * Test Toolkit build commands.
+ *
+ * @group build
  */
 class BuildCommandsTest extends AbstractTest
 {

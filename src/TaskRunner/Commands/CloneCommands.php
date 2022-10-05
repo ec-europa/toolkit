@@ -7,9 +7,8 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use Consolidation\Config\Config;
 use Consolidation\Config\Loader\ConfigProcessor;
 use Consolidation\Config\Loader\YamlConfigLoader;
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 use Robo\Contract\VerbosityThresholdInterface;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -18,14 +17,12 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class CloneCommands extends AbstractCommands
 {
-    use TaskRunnerTasks\CollectionFactory\loadTasks;
-
     /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
     {
-        return __DIR__ . '/../../../config/commands/clone.yml';
+        return Toolkit::getToolkitRoot() . '/config/commands/clone.yml';
     }
 
     /**

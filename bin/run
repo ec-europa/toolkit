@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+
+use EcEuropa\Toolkit\TaskRunner\Runner;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+
+$candidates = [
+    __DIR__ . '/vendor/autoload.php',
+    __DIR__ . '/../../autoload.php',
+    __DIR__ . '/../autoload.php',
+];
+$autoloaderPath = FALSE;
+foreach ($candidates as $candidate) {
+    if (file_exists($candidate)) {
+        $autoloaderPath = $candidate;
+        break;
+    }
+}
+if (!$autoloaderPath) {
+    die("Could not find autoloader. Run 'composer install'.");
+}
+
+$classLoader = require $autoloaderPath;
+
+$runner = new Runner($classLoader, new ArgvInput($argv), new ConsoleOutput());
+exit($runner->run());

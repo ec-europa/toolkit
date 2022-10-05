@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
 use Robo\Contract\VerbosityThresholdInterface;
+use Robo\Exception\AbortTasksException;
 use Robo\ResultData;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
-use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -21,14 +21,12 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ToolCommands extends AbstractCommands
 {
-    use loadTasks;
-
     /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
     {
-        return __DIR__ . '/../../../config/commands/tool.yml';
+        return Toolkit::getToolkitRoot() . '/config/commands/tool.yml';
     }
 
     /**
@@ -323,7 +321,7 @@ class ToolCommands extends AbstractCommands
         $allowedProfiles = !empty($modules[$packageName]['allowed_profiles']) ? $modules[$packageName]['allowed_profiles'] : '';
 
         // Exclude invalid.
-        $packageVersion = in_array($packageVersion, $this->getConfig()->get('toolkit.invalid-versions')) ?  $package['version'] : $packageVersion;
+        $packageVersion = in_array($packageVersion, $this->getConfig()->get('toolkit.invalid-versions')) ? $package['version'] : $packageVersion;
 
         // If module was not reviewed yet.
         if (!$hasBeenQaEd) {
@@ -1574,5 +1572,32 @@ class ToolCommands extends AbstractCommands
         }
         $table->render();
         return $return;
+    }
+
+    /**
+     * Dumps the current configuration.
+     *
+     * @param string|null $key
+     *   Optional configuration key.
+     *
+     * @command config
+     *
+     * @return string
+     *   The config values.
+     *
+     * @throws \Robo\Exception\AbortTasksException
+     */
+    public function config(?string $key = null): string
+    {
+        if (!$key) {
+            $config = $this->getConfig()->export();
+        } else {
+            if (!$this->getConfig()->has($key)) {
+                throw new AbortTasksException("The key '$key' was not found.");
+            }
+            $config = $this->getConfig()->get($key);
+        }
+
+        return trim(Yaml::dump($config, 10, 2));
     }
 }

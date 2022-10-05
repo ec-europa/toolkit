@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
-use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use EcEuropa\Toolkit\Toolkit;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -13,15 +13,12 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class InstallCommands extends AbstractCommands
 {
-    use TaskRunnerTasks\CollectionFactory\loadTasks;
-    use TaskRunnerTasks\Drush\loadTasks;
-
     /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
     {
-        return __DIR__ . '/../../../config/commands/install.yml';
+        return Toolkit::getToolkitRoot() . '/config/commands/install.yml';
     }
 
     /**
@@ -71,11 +68,13 @@ class InstallCommands extends AbstractCommands
         $tasks = [];
 
         $runner_bin = $this->getBin('run');
-        $tasks[] = $this->taskExec($runner_bin . ' toolkit:install-dump');
-        $tasks[] = $this->taskExec($runner_bin . ' toolkit:run-deploy');
+        $tasks[] = $this->taskExecStack()
+            ->stopOnFail()
+            ->exec($runner_bin . ' toolkit:install-dump')
+            ->exec($runner_bin . ' toolkit:run-deploy');
 
         // Collect and execute list of commands set on local runner.yml.
-        $commands = $this->getConfig()->get("toolkit.install.clone.commands");
+        $commands = $this->getConfig()->get('toolkit.install.clone.commands');
         if (!empty($commands)) {
             $tasks[] = $this->taskCollectionFactory($commands);
         }
