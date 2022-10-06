@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
