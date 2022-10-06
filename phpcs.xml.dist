@@ -13,7 +13,6 @@
 
     <!-- Files to check. -->
     <file>src</file>
-    <file>bin</file>
     <file>tests/Commands</file>
 
     <!-- Exclude patterns. -->
