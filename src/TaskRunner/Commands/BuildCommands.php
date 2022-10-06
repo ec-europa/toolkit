@@ -370,8 +370,9 @@ class BuildCommands extends AbstractCommands
                 // Create a new one from source if doesn't exist.
                 $files = scandir($theme_dir);
                 if (!in_array($taskRunnerConfigFile, $files)) {
+                    $dir = Toolkit::getToolkitRoot() . '/resources/assets';
                     $collection->taskExecStack()
-                        ->exec('cp vendor/ec-europa/toolkit/src/ThemeTaskRunnerConfig/' . $taskRunnerConfigFile . ' ' . $theme_dir . '/' . $taskRunnerConfigFile)
+                        ->exec("cp $dir/$taskRunnerConfigFile $theme_dir/$taskRunnerConfigFile")
                         ->stopOnFail();
                 }
 

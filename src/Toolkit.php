@@ -12,7 +12,7 @@ final class Toolkit
     /**
      * Constant holding the current version.
      */
-    public const VERSION = '9.0.0';
+    public const VERSION = '9.0.2';
 
     /**
      * Returns the Toolkit root.

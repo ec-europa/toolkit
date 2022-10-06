@@ -136,14 +136,11 @@ class Runner
      */
     public function run()
     {
-        $classes = (new RelativeNamespaceDiscovery($this->classLoader))
-            ->setRelativeNamespace('TaskRunner\Commands')
-            ->setSearchPattern('/.*Commands\.php$/')
-            ->getClasses();
+        $classes = $this->discoverCommandClasses();
 
         $this->runner->registerCommandClasses($this->application, $classes);
 
-        return $this->runner->execute($_SERVER['argv']);
+        return $this->runner->execute($_SERVER['argv'], self::APPLICATION_NAME, '0.0.1', $this->output);
     }
 
     /**
@@ -226,6 +223,7 @@ class Runner
      */
     private function prepareContainer()
     {
+        // Here we use createDefaultContainer() because is not possible to set the $ouput when using createContainer().
         $this->container = Robo::createDefaultContainer(
             $this->input,
             $this->output,
@@ -245,7 +243,8 @@ class Runner
      */
     private function prepareRunner()
     {
-        $this->runner = new RoboRunner();
+        // Passing an array as RoboClass will avoid Robo from processing a RoboFile.
+        $this->runner = new RoboRunner(['']);
         $this->runner
             ->setRelativePluginNamespace('TaskRunner')
             ->setClassLoader($this->classLoader)
@@ -253,5 +252,19 @@ class Runner
             ->setConfigurationFilename(Toolkit::getToolkitRoot() . '/config/default.yml')
             ->setSelfUpdateRepository(self::REPOSITORY);
         return $this;
+    }
+
+    /**
+     * Discover Command classes.
+     *
+     * @return array|string[]
+     *   An array with the Command classes.
+     */
+    private function discoverCommandClasses()
+    {
+        return (new RelativeNamespaceDiscovery($this->classLoader))
+            ->setRelativeNamespace('TaskRunner\Commands')
+            ->setSearchPattern('/.*Commands\.php$/')
+            ->getClasses();
     }
 }

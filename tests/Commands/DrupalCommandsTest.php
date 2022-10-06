@@ -3,8 +3,9 @@
 declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Commands {
+
+    use EcEuropa\Toolkit\TaskRunner\Runner;
     use EcEuropa\Toolkit\Tests\AbstractTest;
-    use OpenEuropa\TaskRunner\TaskRunner;
     use Symfony\Component\Console\Input\StringInput;
     use Symfony\Component\Console\Output\BufferedOutput;
     use Symfony\Component\Yaml\Yaml;
@@ -62,7 +63,7 @@ namespace EcEuropa\Toolkit\Tests\Commands {
 
             // Run command.
             $input = new StringInput('drupal:settings-setup --working-dir=' . $this->getSandboxRoot());
-            $runner = new TaskRunner($input, new BufferedOutput(), $this->getClassLoader());
+            $runner = new Runner($this->getClassLoader(), $input, new BufferedOutput());
             $runner->run();
 
             // Assert expectations.

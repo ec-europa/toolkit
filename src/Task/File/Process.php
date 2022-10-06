@@ -12,7 +12,7 @@ use Robo\Result;
 use Robo\Task\BaseTask;
 
 /**
- * Performs search and replace inside a files.
+ * Process a source file to its destination replacing tokens.
  *
  * ``` php
  * <?php
@@ -94,7 +94,6 @@ class Process extends BaseTask implements BuilderAwareInterface
     protected function processTokens()
     {
         $config = $this->getConfig();
-
         return array_map(function ($key) use ($config) {
             $value = $config->get($key);
             if (is_array($value)) {
@@ -124,17 +123,15 @@ class Process extends BaseTask implements BuilderAwareInterface
         if ($this->source !== $this->destination) {
             $this->collectionBuilder()->taskFilesystemStack()
                 ->copy($this->source, $this->destination, true)->run();
-            $this->printTaskInfo('_copy [{source}, {destination}, true]', [
-                'source' => $this->source,
-                'destination' => $this->destination,
-            ]);
+//            $this->printTaskInfo('_copy [{source}, {destination}, true]', [
+//                'source' => $this->source,
+//                'destination' => $this->destination,
+//            ]);
         }
 
         $tokens = $this->processTokens();
         $result = $this->collectionBuilder()->taskReplaceInFile($this->destination)
-            ->from(array_keys($tokens))
-            ->to(array_values($tokens))
-            ->run();
+            ->from(array_keys($tokens))->to(array_values($tokens))->run();
 
         return new Result($this, $result->getExitCode(), $result->getMessage());
     }

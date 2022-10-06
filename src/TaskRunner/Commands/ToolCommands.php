@@ -1573,31 +1573,4 @@ class ToolCommands extends AbstractCommands
         $table->render();
         return $return;
     }
-
-    /**
-     * Dumps the current configuration.
-     *
-     * @param string|null $key
-     *   Optional configuration key.
-     *
-     * @command config
-     *
-     * @return string
-     *   The config values.
-     *
-     * @throws \Robo\Exception\AbortTasksException
-     */
-    public function config(?string $key = null): string
-    {
-        if (!$key) {
-            $config = $this->getConfig()->export();
-        } else {
-            if (!$this->getConfig()->has($key)) {
-                throw new AbortTasksException("The key '$key' was not found.");
-            }
-            $config = $this->getConfig()->get($key);
-        }
-
-        return trim(Yaml::dump($config, 10, 2));
-    }
 }
