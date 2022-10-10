@@ -8,7 +8,6 @@ use Robo\Collection\CollectionBuilder;
 use Robo\Common\BuilderAwareTrait;
 use Robo\Contract\BuilderAwareInterface;
 use Robo\Exception\TaskException;
-use Robo\Task\Base\Exec;
 use Robo\Task\BaseTask;
 
 /**
@@ -203,6 +202,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                 return $this->collectionBuilder()->addTaskList($tasks);
 
             case 'exec':
+                /** @var \Robo\Task\Base\Exec $taskExec */
                 $taskExec = $this->collectionBuilder()->taskExec($task['command']);
                 if (!empty($task['arguments'])) {
                     $taskExec->args($task['arguments']);
