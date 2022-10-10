@@ -14,13 +14,11 @@ trait Tasks
     /**
      * Execute a command.
      *
-     * @param string $name
-     *   The name of the command being executed.
      * @param array $tasks
      *   An array with tasks to execute.
      */
-    protected function taskExecute(string $name, array $tasks)
+    protected function taskExecute(array $tasks)
     {
-        return $this->task(ConfigurationCommand::class, $name, $tasks);
+        return $this->task(ConfigurationCommand::class, $tasks);
     }
 }

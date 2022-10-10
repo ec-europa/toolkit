@@ -18,13 +18,6 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     use BuilderAwareTrait;
 
     /**
-     * The name of the command being executed.
-     *
-     * @var string
-     */
-    protected string $name;
-
-    /**
      * An array with tasks to execute.
      *
      * @var array
@@ -67,14 +60,11 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Constructs a new Process task.
      *
-     * @param string $name
-     *   The Command name.
      * @param array $tasks
      *   The Command Tasks.
      */
-    public function __construct(string $name, array $tasks)
+    public function __construct(array $tasks)
     {
-        $this->name = $name;
         $this->tasks = $tasks;
     }
 
@@ -246,8 +236,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
         if (is_string($task)) {
             $task = ['task' => 'exec', 'command' => $task];
             $this->printTaskWarning(sprintf(
-                "The command '%s' must have a 'task' to execute, use: %s",
-                $this->name,
+                "A command must have a 'task' to execute, use: %s",
                 json_encode($task)
             ));
         }
@@ -282,10 +271,9 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     private function throwParamException(string $param, string $task)
     {
         throw new TaskException($this, sprintf(
-            "The parameter '%s' is required for task '%s' in configuration command '%s'.",
+            "The parameter '%s' is required for task '%s' in configuration command.",
             $task,
             $param,
-            $this->name
         ));
     }
 
