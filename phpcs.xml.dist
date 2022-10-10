@@ -25,6 +25,10 @@
         <exclude name="Generic.Classes.OpeningBraceSameLine.BraceOnNewLine"/>
         <exclude name="Generic.CodeAnalysis.AssignmentInCondition.Found"/>
         <exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClass"/>
+        <!-- Allow single-line doc comments. See https://github.com/squizlabs/PHP_CodeSniffer/issues/258. -->
+        <exclude name="Generic.Commenting.DocComment.ContentAfterOpen" />
+        <exclude name="Generic.Commenting.DocComment.ContentBeforeClose" />
+        <exclude name="Generic.Commenting.DocComment.MissingShort" />
         <exclude name="Generic.Commenting.Todo.TaskFound"/>
         <exclude name="Generic.Files.EndFileNoNewline.Found"/>
         <exclude name="Generic.Files.LowercasedFilename.NotFound"/>

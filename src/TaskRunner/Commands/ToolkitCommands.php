@@ -66,6 +66,6 @@ class ToolkitCommands extends AbstractCommands
      */
     public function toolkitRelease()
     {
-
+        throw new AbortTasksException('@TODO This task needs to be implemented.');
     }
 }

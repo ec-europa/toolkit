@@ -8,12 +8,11 @@ use Robo\Collection\CollectionBuilder;
 use Robo\Common\BuilderAwareTrait;
 use Robo\Contract\BuilderAwareInterface;
 use Robo\Exception\TaskException;
-use Robo\Result;
 use Robo\Task\Base\Exec;
 use Robo\Task\BaseTask;
 
 /**
- *
+ * Execute the tasks from a Configuration command.
  */
 class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
 {
@@ -81,7 +80,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     }
 
     /**
-     * @return Result
+     * Run the command tasks.
      */
     public function run()
     {
@@ -162,7 +161,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                 ]);
 
             case 'run':
-                /** @var Exec $taskExec */
+                /** @var \Robo\Task\Base\Exec $taskExec */
                 $taskExec = $this->collectionBuilder()
                     ->taskExec($this->getConfig()->get('runner.bin_dir') . '/run')
                     ->arg($task['command']);
@@ -232,11 +231,11 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Validate and ensure the parameter are met.
      *
-     * @see $this->availableTasks
-     * @see $this->paramDefaultValue()
-     *
      * @param $task
      *   The task being executed.
+     *
+     * @see $this->availableTasks
+     * @see $this->paramDefaultValue()
      *
      * @throws TaskException
      */
@@ -248,7 +247,8 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
             $task = ['task' => 'exec', 'command' => $task];
             $this->printTaskWarning(sprintf(
                 "The command '%s' must have a 'task' to execute, use: %s",
-                $this->name, json_encode($task)
+                $this->name,
+                json_encode($task)
             ));
         }
         if (!isset($task['task']) || !isset($tasks[$task['task']])) {
@@ -272,18 +272,20 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Report missing parameter, this stops the execution.
      *
-     * @param $param
+     * @param string $param
      *   The missing parameter.
-     * @param $task
+     * @param string $task
      *   The task being checked.
      *
      * @throws TaskException
      */
-    private function throwParamException($param, $task)
+    private function throwParamException(string $param, string $task)
     {
         throw new TaskException($this, sprintf(
             "The parameter '%s' is required for task '%s' in configuration command '%s'.",
-            $task, $param, $this->name
+            $task,
+            $param,
+            $this->name
         ));
     }
 
@@ -291,7 +293,10 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * The default parameter values, return all or given parameter default value.
      *
      * @param string $key
-     * @return array|mixed
+     *   The parameter name.
+     *
+     * @return string|bool|mixed
+     *   The default value for given name.
      */
     private function paramDefaultValue(string $key)
     {
