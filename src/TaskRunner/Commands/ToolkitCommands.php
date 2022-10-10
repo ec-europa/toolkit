@@ -11,7 +11,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class ToolkitCommands extends AbstractCommands
 {
-
     /**
      * Dumps the current configuration.
      *
@@ -44,6 +43,8 @@ class ToolkitCommands extends AbstractCommands
      *
      * @param string $version
      *   The version to set.
+     *
+     * @command toolkit:version-write
      */
     public function toolkitVersionWrite($version)
     {
@@ -55,8 +56,16 @@ class ToolkitCommands extends AbstractCommands
             ->run();
     }
 
-    public function testCommand()
+    /**
+     * Create a release for Toolkit.
+     *
+     * @param string $version
+     *   The version to set.
+     *
+     * @command toolkit:release
+     */
+    public function toolkitRelease()
     {
-        $this->taskProcess('behat.yml.dist', 'behat.yml')->run();
+
     }
 }

@@ -123,10 +123,6 @@ class Process extends BaseTask implements BuilderAwareInterface
         if ($this->source !== $this->destination) {
             $this->collectionBuilder()->taskFilesystemStack()
                 ->copy($this->source, $this->destination, true)->run();
-//            $this->printTaskInfo('_copy [{source}, {destination}, true]', [
-//                'source' => $this->source,
-//                'destination' => $this->destination,
-//            ]);
         }
 
         $tokens = $this->processTokens();

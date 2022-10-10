@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\TaskRunner;
 use Composer\Autoload\ClassLoader;
 use Consolidation\Config\Loader\ConfigProcessor;
 use Consolidation\Config\Util\ConfigOverlay;
+use EcEuropa\Toolkit\TaskRunner\Commands\ConfigurationCommands;
 use EcEuropa\Toolkit\Toolkit;
 use League\Container\Container;
 use Psr\Container\ContainerInterface;
@@ -51,7 +52,7 @@ class Runner
     /**
      * The Robo Runner.
      *
-     * @var RoboRunner
+     * @var \Robo\Runner
      */
     private $runner;
 
@@ -129,7 +130,7 @@ class Runner
     }
 
     /**
-     * Execute the application.
+     * Execute the Runner.
      *
      * @return int
      *   The status code.
@@ -137,10 +138,11 @@ class Runner
     public function run()
     {
         $classes = $this->discoverCommandClasses();
-
         $this->runner->registerCommandClasses($this->application, $classes);
 
-        return $this->runner->execute($_SERVER['argv'], self::APPLICATION_NAME, '0.0.1', $this->output);
+        $this->registerConfigurationCommands();
+
+        return $this->runner->run($this->input, $this->output, $this->application);
     }
 
     /**
@@ -160,8 +162,7 @@ class Runner
      */
     private function prepareApplication()
     {
-        $this->application = new Application(self::APPLICATION_NAME, '0.0.1');
-        $this->application->setAutoExit(false);
+        $this->application = Robo::createDefaultApplication(self::APPLICATION_NAME, '0.0.1');
         $this->application->getDefinition()
             ->addOption(new InputOption(
                 '--working-dir',
@@ -223,7 +224,8 @@ class Runner
      */
     private function prepareContainer()
     {
-        // Here we use createDefaultContainer() because is not possible to set the $ouput when using createContainer().
+        // Here we use createDefaultContainer() because is not possible
+        // to set the $output when using createContainer().
         $this->container = Robo::createDefaultContainer(
             $this->input,
             $this->output,
@@ -231,6 +233,7 @@ class Runner
             $this->config,
             $this->classLoader
         );
+        $this->container->get('commandFactory')->setIncludeAllPublicMethods(false);
         $this->container->add('config', $this->config);
 
         return $this;
@@ -248,9 +251,9 @@ class Runner
         $this->runner
             ->setRelativePluginNamespace('TaskRunner')
             ->setClassLoader($this->classLoader)
-            ->setContainer($this->container)
             ->setConfigurationFilename(Toolkit::getToolkitRoot() . '/config/default.yml')
-            ->setSelfUpdateRepository(self::REPOSITORY);
+            ->setSelfUpdateRepository(self::REPOSITORY)
+            ->setContainer($this->container);
         return $this;
     }
 
@@ -266,5 +269,66 @@ class Runner
             ->setRelativeNamespace('TaskRunner\Commands')
             ->setSearchPattern('/.*Commands\.php$/')
             ->getClasses();
+    }
+
+    /**
+     * Register commands in the runner.yml under 'commands:'.
+     */
+    private function registerConfigurationCommands()
+    {
+        if (!$commands = $this->getConfig()->get('commands')) {
+            return;
+        }
+
+        /** @var \Consolidation\AnnotatedCommand\AnnotatedCommandFactory $commandFactory */
+        $commandFactory = Robo::getContainer()->get('commandFactory');
+        $this->runner->registerCommandClass($this->application, ConfigurationCommands::class);
+        $commandClass = Robo::getContainer()->get(ConfigurationCommands::class . "Commands");
+
+        foreach ($commands as $name => $tasks) {
+            $aliases = [];
+            // This command has been already registered as an annotated command.
+            if ($this->application->has($name)) {
+                $registeredCommand = $this->application->get($name);
+                $aliases = $registeredCommand->getAliases();
+                // The dynamic command overrides an alias rather than a
+                // registered command main name. Get the command main name.
+                if (in_array($name, $aliases, true)) {
+                    $name = $registeredCommand->getName();
+                }
+            }
+
+            $commandInfo = $commandFactory->createCommandInfo($commandClass, 'execute');
+            $commandInfo->addAnnotation('tasks', $tasks['tasks'] ?? $tasks);
+
+            $command = $commandFactory->createCommand($commandInfo, $commandClass)
+                ->setName($name);
+            // Check for options if the 'tasks' property exists.
+            if (isset($tasks['tasks'])) {
+                if (isset($tasks['aliases']) || !empty($aliases)) {
+                    $aliases = array_merge(
+                        $aliases,
+                        array_map('trim', explode(',', $tasks['aliases'] ?? []))
+                    );
+                    $command->setAliases($aliases);
+                }
+                if (isset($tasks['description'])) {
+                    $command->setDescription($tasks['description']);
+                }
+                if (isset($tasks['help'])) {
+                    $command->setHelp($tasks['help']);
+                }
+                if (isset($tasks['hidden'])) {
+                    $command->setHidden((bool) $tasks['hidden']);
+                }
+                if (isset($tasks['usage'])) {
+                    foreach ((array) $tasks['usage'] as $usage) {
+                        $command->addUsage($usage);
+                    }
+                }
+            }
+
+            $this->application->add($command);
+        }
     }
 }

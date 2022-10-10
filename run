@@ -10,7 +10,7 @@ $candidates = [
     __DIR__ . '/../../autoload.php',
     __DIR__ . '/../autoload.php',
 ];
-$autoloaderPath = FALSE;
+$autoloaderPath = false;
 foreach ($candidates as $candidate) {
     if (file_exists($candidate)) {
         $autoloaderPath = $candidate;

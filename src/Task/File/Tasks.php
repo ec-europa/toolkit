@@ -18,8 +18,6 @@ trait Tasks
      *   The source file to process.
      * @param string $destination
      *   The destination file.
-     *
-     * @return \EcEuropa\Toolkit\Task\File\Process|\Robo\Collection\CollectionBuilder
      */
     protected function taskProcess(string $source, string $destination)
     {

@@ -19,6 +19,7 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
 {
     use ConfigAwareTrait;
     use \EcEuropa\Toolkit\Task\File\Tasks;
+    use \EcEuropa\Toolkit\Task\Command\Tasks;
 
     /**
      * Path to YAML configuration file containing command defaults.

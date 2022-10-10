@@ -51,7 +51,7 @@ toolkit:
     sequence_key: 'upgrade_commands'
   install:
     clone:
-      commands: []
+      commands: [ ]
   build:
     dist:
       root: 'dist'
@@ -73,9 +73,9 @@ toolkit:
         - MAINTAINERS.txt
         - UPDATE.txt
         - README.txt
-      commands: []
+      commands: [ ]
     dev:
-      commands: []
+      commands: [ ]
     custom-code-folder: 'lib'
     npm:
       theme-task-runner: grunt
@@ -92,7 +92,7 @@ toolkit:
       execution: default
       from: phpunit.xml.dist
       to: phpunit.xml
-      commands: []
+      commands: [ ]
     blackfire:
       uuid:
       pages:
@@ -188,6 +188,6 @@ toolkit:
         - toolkit:lint-php
         - toolkit:opts-review
 # Dynamic commands.
-commands:
-  drupal:setup-test:
-    - { task: process, source: behat.yml.dist, destination: behat.yml }
+commands: [ ]
+#  drupal:setup-test:
+#    - { task: process, source: behat.yml.dist, destination: behat.yml }
