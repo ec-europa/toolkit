@@ -284,14 +284,9 @@ class DrupalCommands extends AbstractCommands
             $exec_options['db-url'] = http_build_url($db_url, $db_array);
         }
 
-        if (!empty($options['existing-config'])) {
-            $exec_options['existing-config'] = true;
+        if ($options['existing-config']) {
+            $exec_options['existing-config'] = null;
         }
-
-        $task = $this->taskExec("$drush site:install {$options['site-profile']}")
-            ->args($exec_args)
-            ->options($exec_options, '=')
-            ->option('-y');
 
         $tasks = [
             $this->drupalSitePreInstall($options),
@@ -299,44 +294,32 @@ class DrupalCommands extends AbstractCommands
         if (!$options['skip-permissions-setup']) {
             $tasks[] = $this->drupalPermissionsSetup($options);
         }
-        $tasks[] = $task;
-        $tasks[] = $this->sitePostInstall($options);
+
+        $tasks[] = $this->taskExec("$drush site:install {$options['site-profile']}")
+            ->args($exec_args)
+            ->options($exec_options, '=')
+            ->option('-y');
+
+        $tasks[] = $this->drupalSitePostInstall($options);
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
-     * Run Drupal post-install commands.
+     * Process pre and post install string-only commands by replacing given tokens.
      *
-     * Commands have to be listed under the "drupal.post_install" property in
-     * your local runner.yml.dist/runner.yml files, as shown below:
-     *
-     * > drupal:
-     * >   ...
-     * >   post_install:
-     * >     - "./vendor/bin/drush en views -y"
-     * >     - { task: "process", source: "behat.yml.dist", destination: "behat.yml" }
-     *
-     * Post-install commands are automatically executed after installing the site
-     * when running "drupal:site-install".
-     *
-     * @command drupal:site-post-install
-     *
-     * @option root
-     *   The Drupal root. All occurrences of "!root" in the post-install
-     *   string-only commands will be substituted with this value.
-     *
-     * @return \Robo\Contract\TaskInterface
+     * @param array $commands
+     *   List of commands.
+     * @param array $tokens
+     *   Replacement key-value tokens.
      */
-    public function sitePostInstall(array $options = [
-        'root' => InputOption::VALUE_REQUIRED,
-    ])
+    protected function processPrePostInstallCommands(array &$commands, array $tokens)
     {
-        $tasks = $this->getConfig()->get('drupal.post_install', []);
-        $this->processPrePostInstallCommands($tasks, [
-            '!root' => $options['root'],
-        ]);
-        return $this->taskExecute($tasks);
+        foreach ($commands as $key => $value) {
+            if (is_string($value)) {
+                $commands[$key] = str_replace(array_keys($tokens), array_values($tokens), $value);
+            }
+        }
     }
 
     /**
@@ -367,6 +350,40 @@ class DrupalCommands extends AbstractCommands
     ])
     {
         $tasks = $this->getConfig()->get('drupal.pre_install', []);
+        $this->processPrePostInstallCommands($tasks, [
+            '!root' => $options['root'],
+        ]);
+        return $this->taskExecute($tasks);
+    }
+
+    /**
+     * Run Drupal post-install commands.
+     *
+     * Commands have to be listed under the "drupal.post_install" property in
+     * your local runner.yml.dist/runner.yml files, as shown below:
+     *
+     * > drupal:
+     * >   ...
+     * >   post_install:
+     * >     - "./vendor/bin/drush en views -y"
+     * >     - { task: "process", source: "behat.yml.dist", destination: "behat.yml" }
+     *
+     * Post-install commands are automatically executed after installing the site
+     * when running "drupal:site-install".
+     *
+     * @command drupal:site-post-install
+     *
+     * @option root
+     *   The Drupal root. All occurrences of "!root" in the post-install
+     *   string-only commands will be substituted with this value.
+     *
+     * @return \Robo\Contract\TaskInterface
+     */
+    public function drupalSitePostInstall(array $options = [
+        'root' => InputOption::VALUE_REQUIRED,
+    ])
+    {
+        $tasks = $this->getConfig()->get('drupal.post_install', []);
         $this->processPrePostInstallCommands($tasks, [
             '!root' => $options['root'],
         ]);
@@ -429,22 +446,5 @@ if (file_exists(\$app_root . '/' . \$site_path . '/settings.override.php')) {
 {$this->blockEnd}
 
 EOF;
-    }
-
-    /**
-     * Process pre and post install string-only commands by replacing given tokens.
-     *
-     * @param array $commands
-     *   List of commands.
-     * @param array $tokens
-     *   Replacement key-value tokens.
-     */
-    protected function processPrePostInstallCommands(array &$commands, array $tokens)
-    {
-        foreach ($commands as $key => $value) {
-            if (is_string($value)) {
-                $commands[$key] = str_replace(array_keys($tokens), array_values($tokens), $value);
-            }
-        }
     }
 }

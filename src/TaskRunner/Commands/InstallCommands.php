@@ -44,8 +44,7 @@ class InstallCommands extends AbstractCommands
         $params = file_exists($options['config-file']) ? ' --existing-config' : '';
 
         $runner_bin = $this->getBin('run');
-        $tasks[] = $this->taskExec($runner_bin . ' drupal:site-install' . $params)
-            ->stopOnFail();
+        $tasks[] = $this->taskExec($runner_bin . ' drupal:site-install' . $params);
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
