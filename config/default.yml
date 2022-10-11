@@ -3,7 +3,7 @@ runner:
 drupal:
   root: "web"
   base_url: "http://web:8080/web"
-  database-host: "mysql"
+  virtual_host: "http://web:8080/web"
   root_absolute: ~
   # Drupal site information.
   site:
@@ -13,6 +13,8 @@ drupal:
     update: "false"
     locale: "en"
     sites_subdir: "default"
+    existing_config: "false"
+    generate_db_url: "false"
   # Drupal Administrator account information.
   account:
     name: "admin"

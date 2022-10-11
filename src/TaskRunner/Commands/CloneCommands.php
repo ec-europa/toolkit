@@ -65,7 +65,7 @@ class CloneCommands extends AbstractCommands
 
             if (!empty($sequence)) {
                 $sequence = $sequence['default'] ?? $sequence;
-                $this->say('Running custom deploy sequence "' . $options['sequence-key'] . '" from sequence file "' . $options['sequence-file'] . '".');
+                $this->say("Running custom deploy sequence '{$options['sequence-key']}' from sequence file '{$options['sequence-file']}'.");
                 foreach ($sequence as $command) {
                     // Only execute strings. Opts.yml also supports append and
                     // default array to append or override the default commands.
@@ -77,10 +77,10 @@ class CloneCommands extends AbstractCommands
                 }
                 return $this->collectionBuilder()->addTaskList($tasks);
             } else {
-                $this->say('Sequence key "' . $options['sequence-key'] . '" does not contain commands, running default set of deployment commands.');
+                $this->say("Sequence key '{$options['sequence-key']}' does not contain commands, running default set of deployment commands.");
             }
         } else {
-            $this->say('Sequence file "' . $options['sequence-file'] . '" does not exist, running default set of deployment commands.');
+            $this->say("Sequence file '{$options['sequence-file']}' does not exist, running default set of deployment commands.");
         }
 
         // Default deployment sequence.

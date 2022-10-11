@@ -143,7 +143,7 @@ class BuildCommands extends AbstractCommands
         // Collect and execute list of commands set on local runner.yml.
         $commands = $this->getConfig()->get('toolkit.build.dist.commands');
         if (!empty($commands)) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
         // Remove 'unwanted' files from distribution.
@@ -211,7 +211,7 @@ class BuildCommands extends AbstractCommands
         // Collect and execute list of commands set on local runner.yml.
         $commands = $this->getConfig()->get('toolkit.build.dev.commands');
         if (!empty($commands)) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
         // Build and return task collection.

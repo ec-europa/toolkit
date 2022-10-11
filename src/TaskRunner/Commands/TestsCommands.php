@@ -360,7 +360,7 @@ class TestsCommands extends AbstractCommands
 
         // Execute a list of commands to run before tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.before')) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
         $this->taskProcess($options['from'], $options['to'])->run();
@@ -377,7 +377,7 @@ class TestsCommands extends AbstractCommands
 
         // Execute a list of commands to run after tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.after')) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -428,7 +428,7 @@ class TestsCommands extends AbstractCommands
 
         // Execute a list of commands to run before tests.
         if ($commands = $this->getConfig()->get('phpunit.commands.before')) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
         $execution_mode = $this->getConfig()->get('toolkit.test.phpunit.execution');
@@ -457,7 +457,7 @@ class TestsCommands extends AbstractCommands
 
         // Execute a list of commands to run after tests.
         if ($commands = $this->getConfig()->get('phpunit.commands.after')) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);

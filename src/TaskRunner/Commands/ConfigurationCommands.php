@@ -18,6 +18,6 @@ class ConfigurationCommands extends AbstractCommands
         /** @var \Consolidation\AnnotatedCommand\AnnotatedCommand $command */
         $command = Robo::application()->get($name);
         $tasks = $command->getAnnotationData()['tasks'];
-        return $this->taskExecute($name, $tasks);
+        return $this->taskExecute($tasks);
     }
 }

@@ -235,10 +235,8 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
 
         if (is_string($task)) {
             $task = ['task' => 'exec', 'command' => $task];
-            $this->printTaskWarning(sprintf(
-                "A command must have a 'task' to execute, use: %s",
-                json_encode($task)
-            ));
+            $message = "A command must have a 'task' to execute, use: %s";
+            $this->printTaskWarning(sprintf($message, json_encode($task)));
         }
         if (!isset($task['task']) || !isset($tasks[$task['task']])) {
             throw new TaskException(
@@ -270,11 +268,8 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      */
     private function throwParamException(string $param, string $task)
     {
-        throw new TaskException($this, sprintf(
-            "The parameter '%s' is required for task '%s' in configuration command.",
-            $task,
-            $param,
-        ));
+        $message = "The parameter '%s' is required for task '%s' in configuration command.";
+        throw new TaskException($this, sprintf($message, $task, $param));
     }
 
     /**
