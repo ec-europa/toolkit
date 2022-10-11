@@ -130,7 +130,6 @@ class DrupalCommands extends AbstractCommands
      *
      * @option root                     Drupal root.
      * @option sites-subdir             Drupal site subdirectory.
-     * @option skip-permissions-setup   Drupal skip permissions setup.
      *
      * @return \Robo\Collection\CollectionBuilder
      */
@@ -157,9 +156,10 @@ class DrupalCommands extends AbstractCommands
     /**
      * Validate command drupal:site-install.
      *
+     * @param CommandData $commandData
+     *
      * @hook validate drupal:site-install
      *
-     * @param CommandData $commandData
      * @throws \Exception
      *   Thrown when the settings file or its containing folder does not exist
      *   or is not writeable.
@@ -196,6 +196,8 @@ class DrupalCommands extends AbstractCommands
      * This command will install a target Drupal site using configuration values
      * provided in local runner.yml.dist/runner.yml files.
      *
+     * @param array $options
+     *
      * @command drupal:site-install
      *
      * @option root                   Drupal root.
@@ -220,8 +222,6 @@ class DrupalCommands extends AbstractCommands
      * @option skip-permissions-setup Whether to skip making the settings file and folder writable during installation.
      *
      * @aliases drupal:si,dsi
-     *
-     * @param array $options
      *
      * @return \Robo\Collection\CollectionBuilder
      */

@@ -21,7 +21,7 @@ namespace EcEuropa\Toolkit\Tests\Commands {
          * Data provider for testDrupalSettingsSetup.
          *
          * @return array
-         *   An array of test data arrays with assertations.
+         *   An array of test data arrays with assertions.
          */
         public function dataProvider()
         {
@@ -49,8 +49,9 @@ namespace EcEuropa\Toolkit\Tests\Commands {
             file_put_contents($configFile, Yaml::dump($config));
 
             // Setup test directory.
-            $sites_subdir = isset($config['drupal']['site']['sites_subdir']) ? $config['drupal']['site']['sites_subdir'] : 'default';
-            $settings_root = $this->getSandboxRoot() . '/build/sites/default';
+            $root = $config['drupal']['root'] ?? 'web';
+            $sites_subdir = $config['drupal']['site']['sites_subdir'] ?? 'default';
+            $settings_root = $this->getSandboxRoot() . '/' . $root . '/sites/' . $sites_subdir;
             mkdir($settings_root, 0777, true);
 
             // Setup initial default.settings.php and settings.php, if any.

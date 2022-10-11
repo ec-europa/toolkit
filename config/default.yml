@@ -15,6 +15,8 @@ drupal:
     sites_subdir: "default"
     existing_config: "false"
     generate_db_url: "false"
+    skip_permissions_setup: "false"
+    settings_override_file: "settings.override.php"
   # Drupal Administrator account information.
   account:
     name: "admin"
