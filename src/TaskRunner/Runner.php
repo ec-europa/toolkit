@@ -193,23 +193,25 @@ class Runner
         } elseif (file_exists($working_dir . '/runner.yml.dist')) {
             $config_file = $working_dir . '/runner.yml.dist';
         }
-        $current_config = Robo::createConfiguration([realpath($config_file)]);
-
-        // Allow some configurations to be overridden. If a given property is
-        // defined on a project level it will replace the default values
-        // instead of merge.
-        $context = $default_config->getContext(ConfigOverlay::DEFAULT_CONTEXT);
-        foreach ($this->overrides as $override) {
-            if ($value = $current_config->get($override)) {
-                $context->set($override, $value);
-            }
-        }
 
         // Re-build configuration.
         $processor = new ConfigProcessor();
+        $context = $default_config->getContext(ConfigOverlay::DEFAULT_CONTEXT);
         $default_config->addContext(ConfigOverlay::DEFAULT_CONTEXT, $context);
         $processor->add($default_config->export());
-        $processor->add($current_config->export());
+
+        if (!empty($config_file)) {
+            // Allow some configurations to be overridden. If a given property is
+            // defined on a project level it will replace the default values
+            // instead of merge.
+            $current_config = Robo::createConfiguration([realpath($config_file)]);
+            foreach ($this->overrides as $override) {
+                if ($value = $current_config->get($override)) {
+                    $context->set($override, $value);
+                }
+            }
+            $processor->add($current_config->export());
+        }
 
         // Import newly built configuration.
         $this->config->replace($processor->export());
