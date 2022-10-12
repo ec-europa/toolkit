@@ -149,11 +149,12 @@ toolkit:
         - lib
         - src
   lint:
-    yaml:
+    eslint:
       config: .eslintrc.json
-      packages: 'eslint eslint-config-airbnb eslint-config-prettier eslint-plugin-prettier eslint-plugin-yml'
-      extensions: [ '.yml', '.yaml', '.yml.dist', '.yaml.dist' ]
+      packages: 'eslint-config-drupal eslint-plugin-yml'
       ignores: [ 'vendor/*', 'web/*', 'dist/*' ]
+      extensions_yaml: [ '.yml', '.yaml' ]
+      extensions_js: [ '.js' ]
     php:
       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
       exclude: [ 'vendor/', 'web/' ]

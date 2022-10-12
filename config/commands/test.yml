@@ -11,11 +11,15 @@ command:
         to: ${toolkit.test.phpunit.to}
     setup-eslint:
       options:
-        config: ${toolkit.lint.yaml.config}
-        ignores: ${toolkit.lint.yaml.ignores}
+        config: ${toolkit.lint.eslint.config}
+        ignores: ${toolkit.lint.eslint.ignores}
         drupal-root: ${drupal.root}
-        packages: ${toolkit.lint.yaml.packages}
+        packages: ${toolkit.lint.eslint.packages}
     lint-yaml:
       options:
-        config: ${toolkit.lint.yaml.config}
-        extensions: ${toolkit.lint.yaml.extensions}
+        config: ${toolkit.lint.eslint.config}
+        extensions: ${toolkit.lint.eslint.extensions_yaml}
+    lint-js:
+      options:
+        config: ${toolkit.lint.eslint.config}
+        extensions: ${toolkit.lint.eslint.extensions_js}

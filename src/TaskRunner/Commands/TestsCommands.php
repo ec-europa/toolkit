@@ -510,7 +510,7 @@ class TestsCommands extends AbstractCommands
     ])
     {
         $config = $options['config'];
-        if ($options['force']) {
+        if ($options['force'] && file_exists($config)) {
             $this->taskExec('rm')->arg($config)->run();
         }
 
@@ -543,21 +543,34 @@ class TestsCommands extends AbstractCommands
                 ],
             ];
 
-            // Add the drupal core eslint if it exists.
-            $drupal_eslint = './' . $options['drupal-root'] . '/core/.eslintrc.json';
-            if (file_exists($drupal_eslint)) {
-                $data['extends'] = $drupal_eslint;
+            // Check if we have a Drupal environment.
+            $drupal_core = './' . $options['drupal-root'] . '/core';
+            if (file_exists($drupal_core)) {
+                // Add the drupal core eslint if it exists.
+                $drupal_eslint = './' . $options['drupal-root'] . '/core/.eslintrc.json';
+                if (file_exists($drupal_eslint)) {
+                    $data['extends'] = $drupal_eslint;
+                }
+
+                // Copy the prettier configurations from Drupal or fallback to defaults.
+                $prettier = './' . $options['drupal-root'] . '/core/.prettierrc.json';
+                $prettier = file_exists($prettier)
+                    ? json_decode(file_get_contents($prettier), true)
+                    : ['singleQuote' => true, 'printWidth' => 80, 'semi' => true, 'trailingComma' => 'all'];
+                $data['rules'] = [
+                    'prettier/prettier' => ['error', $prettier],
+                ];
             }
 
-            // Allow single upper quotes.
-            $data['rules'] = [
-                'prettier/prettier' => ['error', ['singleQuote' => false]],
-            ];
-
             $this->collectionBuilder()->addCode(function () use ($config, $data) {
-                $this->output()->writeln(" <fg=white;bg=cyan;options=bold>[Exec]</> Writing $config<info></>");
+                $this->output()->writeln(" <fg=white;bg=cyan;options=bold>[File\Write]</> Writing to $config.<info></>");
                 file_put_contents($config, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
             })->run();
+        }
+
+        // Ignore all yaml files for prettier.
+        if (!file_exists('.prettierignore')) {
+            $this->taskWriteToFile('.prettierignore')->text('*.yml')->run();
         }
 
         return ResultData::EXITCODE_OK;
@@ -566,14 +579,14 @@ class TestsCommands extends AbstractCommands
     /**
      * Run lint YAML.
      *
-     * Override the default include and exclude patterns in configuration files:
+     * Override the default configurations.
      *
      * @code
      * toolkit:
      *   lint:
      *     yaml:
      *       config: .eslintrc.json
-     *       extensions: [ '.yml', '.yaml', '.yml.dist', '.yaml.dist' ]
+     *       extensions_yaml: [ '.yml', '.yaml' ]
      * @endcode
      *
      * @command toolkit:lint-yaml
@@ -596,7 +609,46 @@ class TestsCommands extends AbstractCommands
             : $options['extensions'];
         $args .= ' --ext ' . implode(',', $extensions);
 
-        $tasks[] = $this->taskExec($this->getBin('run') . ' toolkit:setup-eslint');
+        $this->taskExec($this->getBin('run') . ' toolkit:setup-eslint')->run();
+        $tasks[] = $this->taskExec($this->getNodeBin('eslint') . " $args .");
+
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Run lint JS.
+     *
+     * Override configurations.
+     *
+     * @code
+     * toolkit:
+     *   lint:
+     *     eslint:
+     *       config: .eslintrc.json
+     *       extensions_js: [ '.js' ]
+     * @endcode
+     *
+     * @command toolkit:lint-js
+     *
+     * @option config     The eslint config file.
+     * @option extensions The extensions to check.
+     *
+     * @aliases tljs, tk-js
+     */
+    public function toolkitLintJs(array $options = [
+        'config' => InputOption::VALUE_OPTIONAL,
+        'extensions' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        $tasks = [];
+        $args = "--config {$options['config']}";
+        // Clean up extensions.
+        $extensions = is_string($options['extensions'])
+            ? array_map('trim', explode(',', $options['extensions']))
+            : $options['extensions'];
+        $args .= ' --ext ' . implode(',', $extensions);
+
+        $this->taskExec($this->getBin('run') . ' toolkit:setup-eslint')->run();
         $tasks[] = $this->taskExec($this->getNodeBin('eslint') . " $args .");
 
         return $this->collectionBuilder()->addTaskList($tasks);
