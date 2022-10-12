@@ -9,3 +9,12 @@ command:
         execution: ${toolkit.test.phpunit.execution}
         from: ${toolkit.test.phpunit.from}
         to: ${toolkit.test.phpunit.to}
+    setup-eslint:
+      options:
+        config: ${toolkit.lint.yaml.config}
+        ignores: ${toolkit.lint.yaml.ignores}
+        drupal-root: ${drupal.root}
+    lint-yaml:
+      options:
+        config: ${toolkit.lint.yaml.config}
+        extensions: ${toolkit.lint.yaml.extensions}

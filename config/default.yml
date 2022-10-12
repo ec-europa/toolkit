@@ -1,5 +1,6 @@
 runner:
   bin_dir: "./vendor/bin"
+  bin_node_dir: "./node_modules/.bin"
 drupal:
   root: "web"
   base_url: "http://web:8080/web"
@@ -149,9 +150,9 @@ toolkit:
         - src
   lint:
     yaml:
-      pattern: [ '*.yml', '*.yaml', '*.yml.dist', '*.yaml.dist' ]
-      include: [ 'lib/', 'config/' ]
-      exclude: [ 'vendor/', 'web/', 'node_modules/' ]
+      config: .eslintrc.json
+      extensions: [ '.yml', '.yaml', '.yml.dist', '.yaml.dist' ]
+      ignores: [ 'vendor/*', 'web/*', 'dist/*' ]
     php:
       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
       exclude: [ 'vendor/', 'web/' ]

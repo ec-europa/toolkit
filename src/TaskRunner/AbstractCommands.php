@@ -58,13 +58,35 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
      */
     protected function getBin($name)
     {
-        $filename = $this->getConfig()->get('runner.bin_dir') . '/' . $name;
+        $filename = $this->getConfigValue('runner.bin_dir') . '/' . $name;
         if (!file_exists($filename) && !$this->isSimulating()) {
             throw new TaskException($this, "Executable '$filename' was not found.");
         }
 
         return $filename;
     }
+
+    /**
+     * Return the path to given bin from node packages.
+     *
+     * @param string $name
+     *   The bin to look for.
+     *
+     * @return string
+     *   The bin path.
+     *
+     * @throws TaskException
+     */
+    protected function getNodeBin($name)
+    {
+        $filename = $this->getConfigValue('runner.bin_node_dir') . '/' . $name;
+        if (!file_exists($filename) && !$this->isSimulating()) {
+            throw new TaskException($this, "Executable '$filename' was not found.");
+        }
+
+        return $filename;
+    }
+
 
     /**
      * Check if current command is being executed with option simulate.
@@ -75,5 +97,16 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     protected function isSimulating()
     {
         return (bool) $this->input()->getOption('simulate');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfigValue($key, $default = null)
+    {
+        if (!$this->getConfig()) {
+            return $default;
+        }
+        return $this->getConfig()->get($key, $default);
     }
 }

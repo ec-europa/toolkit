@@ -9,7 +9,6 @@ use EcEuropa\Toolkit\Toolkit;
 use Robo\Exception\TaskException;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -116,18 +115,18 @@ class TestsCommands extends AbstractCommands
      *
      * @aliases tk-phpcs
      *
-     * @see runPhpcs()
+     * @see toolkitRunPhpcs()
      */
     public function toolkitTestPhpcs()
     {
         $mode = $this->getConfig()->get('toolkit.test.phpcs.mode', 'phpcs');
         if ($mode === 'grumphp') {
             $this->say('Executing PHPcs within GrumPHP.');
-            return $this->runGrumphp();
+            return $this->toolkitRunGrumphp();
         } else {
             $result = 0;
             $this->say('Executing PHPcs.');
-            $code = $this->runPhpcs();
+            $code = $this->toolkitRunPhpcs();
             $result += $code->getExitCode();
 
             $this->say('Executing PHPmd.');
@@ -190,7 +189,7 @@ class TestsCommands extends AbstractCommands
      *
      * @deprecated
      */
-    protected function runGrumphp()
+    protected function toolkitRunGrumphp()
     {
         $bin = $this->getBin('grumphp');
         $grumphpFile = './grumphp.yml.dist';
@@ -259,7 +258,7 @@ class TestsCommands extends AbstractCommands
      *         - ./lib
      * @endcode
      */
-    protected function runPhpcs()
+    protected function toolkitRunPhpcs()
     {
         $config = $this->getConfig();
         $phpcs_bin = $this->getBin('phpcs');
@@ -479,6 +478,78 @@ class TestsCommands extends AbstractCommands
     }
 
     /**
+     * Setup the lint-yaml.
+     *
+     * @code
+     * drupal:
+     *   root: web
+     * toolkit:
+     *   lint:
+     *     yaml:
+     *       config: .eslintrc.json
+     *       extensions: [ '.yml', '.yaml', '.yml.dist', '.yaml.dist' ]
+     * @endcode
+     *
+     * @command toolkit:setup-eslint
+     *
+     * @option config   From phpunit.xml.dist config file.
+     * @option ignores     To phpunit.xml config file.
+     * @option drupal-root     To phpunit.xml config file.
+     *
+     * @return int
+     */
+    public function toolkitSetupEslint(array $options = [
+        'config' => InputOption::VALUE_OPTIONAL,
+        'ignores' => InputOption::VALUE_OPTIONAL,
+        'drupal-root' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        $config = $options['config'];
+        if (file_exists($config)) {
+            $this->taskExec('rm')->arg($config)->run();
+        }
+
+        if (!file_exists('package.json')) {
+            $this->taskExecStack()
+                ->exec('npm ini -y')
+                ->exec('npm install --save-dev eslint -y')
+                ->run();
+        }
+
+        if (!file_exists('node_modules/.bin/eslint')) {
+            $this->taskExec('npm install')->run();
+        }
+
+        $ignores = is_string($options['ignores'])
+            ? array_map('trim', explode(',', $options['ignores']))
+            : $options['ignores'];
+        if (!file_exists($config)) {
+            $data = [
+                'ignorePatterns' => $ignores,
+                // The docker-compose file makes use of
+                // empty mappings in env variables.
+                'overrides' => [
+                    [
+                        'files' => ['docker-compose*.yml'],
+                        'rules' => ['yml/no-empty-mapping-value' => 'off'],
+                    ],
+                ],
+            ];
+            $drupal_eslint = './' . $options['drupal-root'] . '/core/.eslintrc.json';
+            if (file_exists($drupal_eslint)) {
+                $data['extends'] = $drupal_eslint;
+            }
+
+            $this->collectionBuilder()->addCode(function () use ($config, $data) {
+                $this->output()->writeln(" <fg=white;bg=cyan;options=bold>[Exec]</> Writing $config<info></>");
+                file_put_contents($config, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            })->run();
+        }
+
+        return ResultData::EXITCODE_OK;
+    }
+
+    /**
      * Run lint YAML.
      *
      * Override the default include and exclude patterns in configuration files:
@@ -487,64 +558,32 @@ class TestsCommands extends AbstractCommands
      * toolkit:
      *   lint:
      *     yaml:
-     *       pattern: [ '*.yml', '*.yaml', '*.yml.dist', '*.yaml.dist' ]
-     *       include: [ 'lib/' ]
-     *       exclude: [ 'vendor/', 'web/', 'node_modules/' ]
+     *       config: .eslintrc.json
+     *       extensions: [ '.yml', '.yaml', '.yml.dist', '.yaml.dist' ]
      * @endcode
      *
      * @command toolkit:lint-yaml
      *
+     * @option config     The eslint config file.
+     * @option extensions The extensions to check.
+     *
      * @aliases tly, tk-yaml
      */
-    public function toolkitLintYaml()
+    public function toolkitLintYaml(array $options = [
+        'config' => InputOption::VALUE_OPTIONAL,
+        'extensions' => InputOption::VALUE_OPTIONAL,
+    ])
     {
         $tasks = [];
-        $pattern = $this->getConfig()->get('toolkit.lint.yaml.pattern');
-        $includes = $this->getConfig()->get('toolkit.lint.yaml.include');
-        $excludes = $this->getConfig()->get('toolkit.lint.yaml.exclude');
+        $args = "--config {$options['config']}";
+        // Clean up extensions.
+        $extensions = is_string($options['extensions'])
+            ? array_map('trim', explode(',', $options['extensions']))
+            : $options['extensions'];
+        $args .= ' --ext ' . implode(',', $extensions);
 
-        $this->say('Pattern: ' . implode(', ', $pattern));
-        $this->say('Include: ' . implode(', ', $includes));
-        $this->say('Exclude: ' . implode(', ', $excludes));
-
-        $finder = (new Finder())
-            ->files()->followLinks()
-            ->ignoreVCS(false)
-            ->ignoreDotFiles(false);
-        foreach ($pattern as $name) {
-            $finder->name($name);
-        }
-        foreach ($includes as $include) {
-            $finder->in($include);
-        }
-        foreach ($excludes as $exclude) {
-            $finder->notPath($exclude);
-        }
-
-        // Get the yml files in the root of the project.
-        $root_finder = (new Finder())
-            ->files()->followLinks()
-            ->ignoreVCS(false)
-            ->ignoreDotFiles(false)
-            ->in('.')->depth(0);
-        foreach ($pattern as $name) {
-            $root_finder->name($name);
-        }
-
-        $finder_files = array_merge(
-            array_keys(iterator_to_array($finder)),
-            array_keys(iterator_to_array($root_finder))
-        );
-
-        $this->say('Found ' . count($finder_files) . ' files to lint.');
-        $chunk = array_chunk($finder_files, 600);
-        foreach ($chunk as $files) {
-            echo 'Processing ' . count($files) . ' files.' . PHP_EOL;
-            // Prepare arguments.
-            $arg = implode(' ', $files);
-            $tasks[] = $this->taskExec($this->getBin('yaml-lint') . " -q $arg")
-                ->printMetadata(false);
-        }
+        $tasks[] = $this->taskExec($this->getBin('run') . ' toolkit:setup-eslint');
+        $tasks[] = $this->taskExec($this->getNodeBin('eslint') . " $args .");
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
