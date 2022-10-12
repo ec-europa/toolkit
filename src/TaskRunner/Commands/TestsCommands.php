@@ -487,14 +487,17 @@ class TestsCommands extends AbstractCommands
      *   lint:
      *     yaml:
      *       config: .eslintrc.json
+     *       packages: '...'
      *       extensions: [ '.yml', '.yaml', '.yml.dist', '.yaml.dist' ]
      * @endcode
      *
      * @command toolkit:setup-eslint
      *
-     * @option config   From phpunit.xml.dist config file.
-     * @option ignores     To phpunit.xml config file.
-     * @option drupal-root     To phpunit.xml config file.
+     * @option config       The eslint config file.
+     * @option ignores      The patterns to ignore.
+     * @option drupal-root  The drupal root.
+     * @option packages     The npm packages to install.
+     * @option force        If true, the config file will be deleted.
      *
      * @return int
      */
@@ -502,21 +505,25 @@ class TestsCommands extends AbstractCommands
         'config' => InputOption::VALUE_OPTIONAL,
         'ignores' => InputOption::VALUE_OPTIONAL,
         'drupal-root' => InputOption::VALUE_OPTIONAL,
+        'packages' => InputOption::VALUE_OPTIONAL,
+        'force' => false,
     ])
     {
         $config = $options['config'];
-        if (file_exists($config)) {
+        if ($options['force']) {
             $this->taskExec('rm')->arg($config)->run();
         }
 
+        // Create a package.json if it doesn't exist.
         if (!file_exists('package.json')) {
-            $this->taskExecStack()
-                ->exec('npm ini -y')
-                ->exec('npm install --save-dev eslint -y')
-                ->run();
+            $this->taskExec('npm ini -y')->run();
+            $this->taskExec("npm install --save-dev {$options['packages']} -y")->run();
         }
 
-        if (!file_exists('node_modules/.bin/eslint')) {
+        // Check if the binary exists.
+        try {
+            $this->getNodeBin('eslint');
+        } catch (TaskException $e) {
             $this->taskExec('npm install')->run();
         }
 
@@ -535,10 +542,17 @@ class TestsCommands extends AbstractCommands
                     ],
                 ],
             ];
+
+            // Add the drupal core eslint if it exists.
             $drupal_eslint = './' . $options['drupal-root'] . '/core/.eslintrc.json';
             if (file_exists($drupal_eslint)) {
                 $data['extends'] = $drupal_eslint;
             }
+
+            // Allow single upper quotes.
+            $data['rules'] = [
+                'prettier/prettier' => ['error', ['singleQuote' => false]],
+            ];
 
             $this->collectionBuilder()->addCode(function () use ($config, $data) {
                 $this->output()->writeln(" <fg=white;bg=cyan;options=bold>[Exec]</> Writing $config<info></>");

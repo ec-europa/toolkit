@@ -14,6 +14,7 @@ command:
         config: ${toolkit.lint.yaml.config}
         ignores: ${toolkit.lint.yaml.ignores}
         drupal-root: ${drupal.root}
+        packages: ${toolkit.lint.yaml.packages}
     lint-yaml:
       options:
         config: ${toolkit.lint.yaml.config}

@@ -151,6 +151,7 @@ toolkit:
   lint:
     yaml:
       config: .eslintrc.json
+      packages: 'eslint eslint-config-airbnb eslint-config-prettier eslint-plugin-prettier eslint-plugin-yml'
       extensions: [ '.yml', '.yaml', '.yml.dist', '.yaml.dist' ]
       ignores: [ 'vendor/*', 'web/*', 'dist/*' ]
     php:
