@@ -87,7 +87,6 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
         return $filename;
     }
 
-
     /**
      * Check if current command is being executed with option simulate.
      *
