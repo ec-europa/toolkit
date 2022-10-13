@@ -636,8 +636,12 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
         // Prepare options.
         $opts_string = implode(' ', $opts);
-        $task = $this->taskExec("./vendor/bin/parallel-lint $opts_string .");
-        return $this->collectionBuilder()->addTaskList([$task]);
+        $result = $this->taskExec("./vendor/bin/parallel-lint $opts_string .")
+            ->run();
+        if (in_array($result->getExitCode(), [0, 254])) {
+            return ResultData::EXITCODE_OK;
+        }
+        return $result->getExitCode();
     }
 
     /**
