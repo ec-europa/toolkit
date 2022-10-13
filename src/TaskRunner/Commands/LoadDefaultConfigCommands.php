@@ -34,11 +34,11 @@ class LoadDefaultConfigCommands extends AbstractCommands
         'toolkit.test.phpmd.ignore_patterns',
         'toolkit.test.phpmd.triggered_by',
         'toolkit.test.phpmd.files',
-        'toolkit.test.lint.yaml.pattern',
-        'toolkit.test.lint.yaml.include',
-        'toolkit.test.lint.yaml.exclude',
-        'toolkit.test.lint.php.extensions',
-        'toolkit.test.lint.php.exclude',
+        'toolkit.lint.yaml.pattern',
+        'toolkit.lint.yaml.include',
+        'toolkit.lint.yaml.exclude',
+        'toolkit.lint.php.extensions',
+        'toolkit.lint.php.exclude',
     ];
 
     /**
