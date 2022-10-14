@@ -238,8 +238,7 @@ class Runner
             ->setConcrete(ConfigForCommand::class);
 
         $this->container->get('commandFactory')
-            ->setIncludeAllPublicMethods(false)
-            ->setIgnoreCommandsInTraits(true);
+            ->setIncludeAllPublicMethods(false);
 
         Robo::finalizeContainer($this->container);
 
