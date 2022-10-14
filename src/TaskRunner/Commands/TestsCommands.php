@@ -503,7 +503,7 @@ class TestsCommands extends AbstractCommands
      */
     public function toolkitSetupEslint(array $options = [
         'config' => InputOption::VALUE_OPTIONAL,
-        'ignores' => InputOption::VALUE_OPTIONAL,
+        'ignores' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
         'drupal-root' => InputOption::VALUE_OPTIONAL,
         'packages' => InputOption::VALUE_OPTIONAL,
         'force' => false,
@@ -527,12 +527,9 @@ class TestsCommands extends AbstractCommands
             $this->taskExec('npm install')->run();
         }
 
-        $ignores = is_string($options['ignores'])
-            ? array_map('trim', explode(',', $options['ignores']))
-            : $options['ignores'];
         if (!file_exists($config)) {
             $data = [
-                'ignorePatterns' => $ignores,
+                'ignorePatterns' => $options['ignores'],
                 // The docker-compose file makes use of
                 // empty mappings in env variables.
                 'overrides' => [
@@ -597,17 +594,13 @@ class TestsCommands extends AbstractCommands
      * @aliases tly, tk-yaml
      */
     public function toolkitLintYaml(array $options = [
-        'config' => InputOption::VALUE_OPTIONAL,
-        'extensions' => InputOption::VALUE_OPTIONAL,
+        'config' => InputOption::VALUE_REQUIRED,
+        'extensions' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
     ])
     {
         $tasks = [];
-        $args = "--config {$options['config']}";
-        // Clean up extensions.
-        $extensions = is_string($options['extensions'])
-            ? array_map('trim', explode(',', $options['extensions']))
-            : $options['extensions'];
-        $args .= ' --ext ' . implode(',', $extensions);
+        $args = '--config ' . $options['config'];
+        $args .= ' --ext ' . implode(',', $options['extensions']);
 
         $this->taskExec($this->getBin('run') . ' toolkit:setup-eslint')->run();
         $tasks[] = $this->taskExec($this->getNodeBin('eslint') . " $args .");
@@ -636,17 +629,13 @@ class TestsCommands extends AbstractCommands
      * @aliases tljs, tk-js
      */
     public function toolkitLintJs(array $options = [
-        'config' => InputOption::VALUE_OPTIONAL,
-        'extensions' => InputOption::VALUE_OPTIONAL,
+        'config' => InputOption::VALUE_REQUIRED,
+        'extensions' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
     ])
     {
         $tasks = [];
-        $args = "--config {$options['config']}";
-        // Clean up extensions.
-        $extensions = is_string($options['extensions'])
-            ? array_map('trim', explode(',', $options['extensions']))
-            : $options['extensions'];
-        $args .= ' --ext ' . implode(',', $extensions);
+        $args = '--config ' . $options['config'];
+        $args .= ' --ext ' . implode(',', $options['extensions']);
 
         $this->taskExec($this->getBin('run') . ' toolkit:setup-eslint')->run();
         $tasks[] = $this->taskExec($this->getNodeBin('eslint') . " $args .");
@@ -669,13 +658,18 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:lint-php
      *
+     * @option exclude     The eslint config file.
+     * @option extensions The extensions to check.
+     *
      * @aliases tlp, tk-php
      */
-    public function toolkitLintPhp()
+    public function toolkitLintPhp(array $options = [
+        'extensions' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'exclude' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+    ])
     {
-        $excludes = $this->getConfig()->get('toolkit.lint.php.exclude', []);
-        $extensions = $this->getConfig()->get('toolkit.lint.php.extensions');
-
+        $extensions = $options['extensions'];
+        $excludes = $options['exclude'];
         $this->say('Extensions: ' . implode(', ', $extensions));
         $this->say('Exclude: ' . implode(', ', $excludes));
 

@@ -23,3 +23,7 @@ command:
       options:
         config: ${toolkit.lint.eslint.config}
         extensions: ${toolkit.lint.eslint.extensions_js}
+    lint-php:
+      options:
+        extensions: ${toolkit.lint.php.extensions}
+        exclude: ${toolkit.lint.php.exclude}

@@ -12,10 +12,13 @@ use Robo\Robo;
  */
 class ConfigurationCommands extends AbstractCommands
 {
+    /**
+     * Execute a configuration command.
+     */
     public function execute()
     {
         $name = $this->input()->getArgument('command');
-        /** @var \Consolidation\AnnotatedCommand\AnnotatedCommand $command */
+        /* @var \Consolidation\AnnotatedCommand\AnnotatedCommand $command */
         $command = Robo::application()->get($name);
         $tasks = $command->getAnnotationData()['tasks'];
         return $this->taskExecute($tasks);

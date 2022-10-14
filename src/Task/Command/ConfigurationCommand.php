@@ -150,7 +150,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                 ]);
 
             case 'run':
-                /** @var \Robo\Task\Base\Exec $taskExec */
+                /* @var \Robo\Task\Base\Exec $taskExec */
                 $taskExec = $this->collectionBuilder()
                     ->taskExec($this->getConfig()->get('runner.bin_dir') . '/run')
                     ->arg($task['command']);
@@ -192,7 +192,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                 return $this->collectionBuilder()->addTaskList($tasks);
 
             case 'exec':
-                /** @var \Robo\Task\Base\Exec $taskExec */
+                /* @var \Robo\Task\Base\Exec $taskExec */
                 $taskExec = $this->collectionBuilder()->taskExec($task['command']);
                 if (!empty($task['arguments'])) {
                     $taskExec->args($task['arguments']);
@@ -211,7 +211,10 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     }
 
     /**
+     * Return the current tasks.
+     *
      * @return array
+     *   The tasks.
      */
     public function getTasks()
     {

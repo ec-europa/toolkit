@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner;
 
 use Composer\Autoload\ClassLoader;
+use Consolidation\AnnotatedCommand\Hooks\HookManager;
 use Consolidation\Config\Loader\ConfigProcessor;
 use Consolidation\Config\Util\ConfigOverlay;
+use Drush\Command\GlobalOptionsEventListener;
+use Drush\Symfony\DrushStyleInjector;
 use EcEuropa\Toolkit\TaskRunner\Commands\ConfigurationCommands;
+use EcEuropa\Toolkit\TaskRunner\Inject\ConfigForCommand;
 use EcEuropa\Toolkit\Toolkit;
 use League\Container\Container;
 use Psr\Container\ContainerInterface;
@@ -226,17 +230,18 @@ class Runner
      */
     private function prepareContainer()
     {
-        // Here we use createDefaultContainer() because is not possible
-        // to set the $output when using createContainer().
-        $this->container = Robo::createDefaultContainer(
-            $this->input,
-            $this->output,
-            $this->application,
-            $this->config,
-            $this->classLoader
-        );
-        $this->container->get('commandFactory')->setIncludeAllPublicMethods(false);
-        $this->container->add('config', $this->config);
+        $this->container = new Container();
+        $this->container->defaultToShared();
+
+        Robo::configureContainer($this->container, $this->application, $this->config, $this->input, $this->output, $this->classLoader);
+        $this->container->extend('injectConfigEventListener')
+            ->setConcrete(ConfigForCommand::class);
+
+        $this->container->get('commandFactory')
+            ->setIncludeAllPublicMethods(false)
+            ->setIgnoreCommandsInTraits(true);
+
+        Robo::finalizeContainer($this->container);
 
         return $this;
     }
@@ -282,7 +287,7 @@ class Runner
             return;
         }
 
-        /** @var \Consolidation\AnnotatedCommand\AnnotatedCommandFactory $commandFactory */
+        /* @var \Consolidation\AnnotatedCommand\AnnotatedCommandFactory $commandFactory */
         $commandFactory = Robo::getContainer()->get('commandFactory');
         $this->runner->registerCommandClass($this->application, ConfigurationCommands::class);
         $commandClass = Robo::getContainer()->get(ConfigurationCommands::class . "Commands");
