@@ -9,6 +9,9 @@ command:
         execution: ${toolkit.test.phpunit.execution}
         from: ${toolkit.test.phpunit.from}
         to: ${toolkit.test.phpunit.to}
+    test-phpstan:
+      options:
+        files: ${toolkit.test.phpstan.files}
     setup-eslint:
       options:
         config: ${toolkit.lint.eslint.config}
