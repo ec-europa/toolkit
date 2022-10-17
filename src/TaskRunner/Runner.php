@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner;
 
 use Composer\Autoload\ClassLoader;
-use Consolidation\AnnotatedCommand\Hooks\HookManager;
 use Consolidation\Config\Loader\ConfigProcessor;
 use Consolidation\Config\Util\ConfigOverlay;
-use Drush\Command\GlobalOptionsEventListener;
-use Drush\Symfony\DrushStyleInjector;
 use EcEuropa\Toolkit\TaskRunner\Commands\ConfigurationCommands;
 use EcEuropa\Toolkit\TaskRunner\Inject\ConfigForCommand;
 use EcEuropa\Toolkit\Toolkit;

@@ -159,8 +159,7 @@ class GitHookCommands extends AbstractCommands
             ) {
                 $needs_update = true;
             }
-            // @todo Confirm this.
-            $hook_origin = strpos($file_path, Toolkit::getProjectRoot()) !== false ? $project_id : 'toolkit';
+            $hook_origin = str_contains($file_path, 'ec-europa/toolkit') ? 'toolkit' : $project_id;
             $rows[] = [
                 "$hook ($hook_origin)",
                 $is_active ? 'Yes' : 'No',

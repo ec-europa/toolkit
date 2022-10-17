@@ -259,7 +259,7 @@ class DrupalCommands extends AbstractCommands
             $options['existing-config'] = true;
         }
 
-        $drush = $this->getConfig()->get('runner.bin_dir') . '/drush';
+        $drush = $this->getBin('drush');
         $exec_args = [];
         $exec_options = [
             'root' => getcwd() . '/' . $options['root'] . '/',

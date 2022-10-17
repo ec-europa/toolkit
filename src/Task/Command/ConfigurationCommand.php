@@ -234,26 +234,26 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      */
     private function validateAndEnsureParameters(&$task)
     {
-        $tasks = $this->availableTasks;
+        $availableTasks = $this->availableTasks;
 
         if (is_string($task)) {
             $task = ['task' => 'exec', 'command' => $task];
             $message = "A command must have a 'task' to execute, use: %s";
             $this->printTaskWarning(sprintf($message, json_encode($task)));
         }
-        if (!isset($task['task']) || !isset($tasks[$task['task']])) {
+        if (!isset($task['task']) || !isset($availableTasks[$task['task']])) {
             throw new TaskException(
                 $this,
                 "Task '" . ($task['task'] ?? '') . "' is not supported."
             );
         }
-        foreach ((array) $tasks[$task['task']]['required'] as $required) {
+        foreach ((array) $availableTasks[$task['task']]['required'] as $required) {
             if (empty($task[$required])) {
                 $this->throwParamException($task['task'], $required);
             }
         }
-        if (isset($tasks[$task['task']]['defaults'])) {
-            foreach ((array) $tasks[$task['task']]['defaults'] as $default) {
+        if (isset($availableTasks[$task['task']]['defaults'])) {
+            foreach ((array) $availableTasks[$task['task']]['defaults'] as $default) {
                 $task[$default] = $task[$default] ?? $this->paramDefaultValue($default);
             }
         }
