@@ -296,6 +296,27 @@ class TestsCommands extends AbstractCommands
     }
 
     /**
+     * Run PHPStan.
+     *
+     * Check configurations at config/default.yml - 'toolkit.test.phpstan'.
+     *
+     * @command toolkit:test-phpstan
+     *
+     * @option files  The files to check.
+     *
+     * @aliases tk-phpstan
+     */
+    public function toolkitTestPhpstan(array $options = [
+        'files' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+    ])
+    {
+        Toolkit::filterFolders($options['files']);
+        $args = implode(' ', $options['files']);
+        $task = $this->taskExec($this->getBin('phpstan') . ' analyse ' . $args);
+        return $this->collectionBuilder()->addTask($task);
+    }
+
+    /**
      * Run Behat tests.
      *
      * Check configurations at config/default.yml - 'toolkit.test.behat'.

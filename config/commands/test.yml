@@ -16,6 +16,9 @@ command:
         ignore_patterns: ${toolkit.test.phpmd.ignore_patterns}
         triggered_by: ${toolkit.test.phpmd.triggered_by}
         files: ${toolkit.test.phpmd.files}
+    test-phpstan:
+      options:
+        files: ${toolkit.test.phpstan.files}
     setup-eslint:
       options:
         config: ${toolkit.lint.eslint.config}

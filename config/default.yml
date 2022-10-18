@@ -153,6 +153,10 @@ toolkit:
       files:
         - lib
         - src
+    phpstan:
+      files:
+        - lib
+        - src
   lint:
     eslint:
       config: .eslintrc.json

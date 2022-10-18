@@ -131,15 +131,13 @@ class ToolCommands extends AbstractCommands
         if (self::getPackagePropertyFromComposer('drupal/upgrade_status') == false) {
             $collection->taskComposerRequire()
                 ->dependency('drupal/upgrade_status', '^3')
-                ->dev()
-                ->run();
+                ->dev()->run();
         }
         // Require 'drupal/core-dev' if does not exist on the project.
         if (self::getPackagePropertyFromComposer('drupal/core-dev') == false) {
             $collection->taskComposerRequire()
                 ->dependency('drupal/core-dev')
-                ->dev()
-                ->run();
+                ->dev()->run();
         }
 
         // Build collection.
