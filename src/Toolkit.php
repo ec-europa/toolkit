@@ -106,4 +106,17 @@ final class Toolkit
         $pass = getenv('NEXTCLOUD_PASS');
         return !empty($pass) && $pass !== '${env.NEXTCLOUD_PASS}' ? $pass : '';
     }
+
+    /**
+     * Remove un-existing folders from given array.
+     *
+     * @param array $files
+     *   The folders to check.
+     */
+    public static function filterFolders(array &$files)
+    {
+        $files = array_filter($files, function ($folder) {
+            return file_exists($folder);
+        });
+    }
 }
