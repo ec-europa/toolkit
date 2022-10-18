@@ -10,7 +10,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class Website
 {
-    protected static $url = 'https://webgate.ec.europa.eu/fpfis/qa';
+    /**
+     * The default base url.
+     *
+     * @var string
+     */
+    protected static string $url = 'https://webgate.ec.europa.eu/fpfis/qa';
 
     /**
      * Returns the QA website base url.
@@ -23,7 +28,13 @@ class Website
         return self::$url;
     }
 
-    public static function setUrl($url)
+    /**
+     * Set the url to be used.
+     *
+     * @param string $url
+     *   The url to use.
+     */
+    public static function setUrl(string $url)
     {
         self::$url = $url;
     }
