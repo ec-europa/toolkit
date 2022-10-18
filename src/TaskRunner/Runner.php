@@ -22,6 +22,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Toolkit Runner.
+ *
+ * @@SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class Runner
 {
     use ConfigAwareTrait;
@@ -276,6 +281,9 @@ class Runner
 
     /**
      * Register commands in the runner.yml under 'commands:'.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     private function registerConfigurationCommands()
     {

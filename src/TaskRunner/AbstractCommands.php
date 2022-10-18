@@ -36,11 +36,9 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     /**
      * Command initialization.
      *
-     * @param ConsoleCommandEvent $event
-     *
      * @hook pre-command-event *
      */
-    public function initializeRuntimeConfiguration(ConsoleCommandEvent $event)
+    public function initializeRuntimeConfiguration()
     {
         Robo::loadConfiguration([$this->getConfigurationFile()], $this->getConfig());
     }
