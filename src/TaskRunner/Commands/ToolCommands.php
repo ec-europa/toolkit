@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
 use Robo\Contract\VerbosityThresholdInterface;
+use Robo\Exception\AbortTasksException;
 use Robo\ResultData;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
-use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -21,14 +21,12 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ToolCommands extends AbstractCommands
 {
-    use loadTasks;
-
     /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
     {
-        return __DIR__ . '/../../../config/commands/tool.yml';
+        return Toolkit::getToolkitRoot() . '/config/commands/tool.yml';
     }
 
     /**
@@ -323,7 +321,7 @@ class ToolCommands extends AbstractCommands
         $allowedProfiles = !empty($modules[$packageName]['allowed_profiles']) ? $modules[$packageName]['allowed_profiles'] : '';
 
         // Exclude invalid.
-        $packageVersion = in_array($packageVersion, $this->getConfig()->get('toolkit.invalid-versions')) ?  $package['version'] : $packageVersion;
+        $packageVersion = in_array($packageVersion, $this->getConfig()->get('toolkit.invalid-versions')) ? $package['version'] : $packageVersion;
 
         // If module was not reviewed yet.
         if (!$hasBeenQaEd) {
@@ -608,6 +606,8 @@ class ToolCommands extends AbstractCommands
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 120);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 120);
         if ($basicAuth !== '') {
             $header = [
                 "Authorization: Basic $basicAuth",

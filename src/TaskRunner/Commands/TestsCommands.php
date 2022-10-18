@@ -4,36 +4,24 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use NuvoleWeb\Robo\Task as NuvoleWebTasks;
-use OpenEuropa\TaskRunner\Contract\FilesystemAwareInterface;
-use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
-use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
-use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
 use Robo\Exception\TaskException;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class TestsCommands.
  */
-class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
+class TestsCommands extends AbstractCommands
 {
-    use NuvoleWebTasks\Config\loadTasks;
-    use TaskRunnerTasks\CollectionFactory\loadTasks;
-    use TaskRunnerTraits\ConfigurationTokensTrait;
-    use TaskRunnerTraits\FilesystemAwareTrait;
-    use loadTasks;
-
     /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
     {
-        return __DIR__ . '/../../../config/commands/test.yml';
+        return Toolkit::getToolkitRoot() . '/config/commands/test.yml';
     }
 
     /**
@@ -127,22 +115,22 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @aliases tk-phpcs
      *
-     * @see runPhpcs()
+     * @see toolkitRunPhpcs()
      */
-    public function toolkitPhpcs()
+    public function toolkitTestPhpcs()
     {
         $mode = $this->getConfig()->get('toolkit.test.phpcs.mode', 'phpcs');
         if ($mode === 'grumphp') {
             $this->say('Executing PHPcs within GrumPHP.');
-            return $this->runGrumphp();
+            return $this->toolkitRunGrumphp();
         } else {
             $result = 0;
             $this->say('Executing PHPcs.');
-            $code = $this->runPhpcs();
+            $code = $this->toolkitRunPhpcs();
             $result += $code->getExitCode();
 
             $this->say('Executing PHPmd.');
-            $code = $this->toolkitPhpmd();
+            $code = $this->toolkitTestPhpmd();
             $result += $code->getExitCode();
 
             return $result;
@@ -158,7 +146,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @aliases tk-phpmd
      */
-    public function toolkitPhpmd()
+    public function toolkitTestPhpmd()
     {
         $config = $this->getConfig();
         $config_file = $config->get('toolkit.test.phpmd.config');
@@ -201,7 +189,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @deprecated
      */
-    public function runGrumphp()
+    protected function toolkitRunGrumphp()
     {
         $bin = $this->getBin('grumphp');
         $grumphpFile = './grumphp.yml.dist';
@@ -270,13 +258,13 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *         - ./lib
      * @endcode
      */
-    public function runPhpcs()
+    protected function toolkitRunPhpcs()
     {
         $config = $this->getConfig();
         $phpcs_bin = $this->getBin('phpcs');
         $config_file = $config->get('toolkit.test.phpcs.config');
 
-        $this->checkPhpCsRequirements();
+        $this->toolkitCheckPhpcsRequirements();
 
         $options = '';
         if (!empty($config->get('toolkit.test.phpcs.ignore_annotations'))) {
@@ -290,11 +278,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * Make sure that the config file exists and configuration is correct.
      *
      * @command toolkit:check-phpcs-requirements
-     *
-     * @return \Robo\ResultData|void
-     *   No return if all is ok, return 1 if fails.
      */
-    public function checkPhpCsRequirements()
+    public function toolkitCheckPhpcsRequirements()
     {
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
         if (!file_exists($config_file)) {
@@ -352,7 +337,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * @option profile  The profile to execute.
      * @option suite    The suite to execute, default runs all suites of profile.
      */
-    public function toolkitBehat(array $options = [
+    public function toolkitTestBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
         'to' => InputOption::VALUE_OPTIONAL,
         'profile' => InputOption::VALUE_OPTIONAL,
@@ -362,9 +347,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $tasks = [];
 
         if (Toolkit::isCiCd()) {
-            $this->taskExecStack()
-                ->exec($this->getBin('run') . ' toolkit:install-dependencies')
-                ->run();
+            $this->taskExec($this->getBin('run') . ' toolkit:install-dependencies')->run();
         }
 
         $behatBin = $this->getBin('behat');
@@ -376,10 +359,10 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         // Execute a list of commands to run before tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.before')) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
-        $this->taskProcessConfigFile($options['from'], $options['to'])->run();
+        $this->taskProcess($options['from'], $options['to'])->run();
 
         $result = $this->taskExec("$behatBin --dry-run --profile=$profile $suiteParameter")
             ->silent(true)->run()->getMessage();
@@ -393,7 +376,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         // Execute a list of commands to run after tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.after')) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -426,7 +409,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * @option from   From phpunit.xml.dist config file.
      * @option to     To phpunit.xml config file.
      */
-    public function toolkitPhpUnit(array $options = [
+    public function toolkitTestPhpunit(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
         'to' => InputOption::VALUE_OPTIONAL,
     ])
@@ -434,7 +417,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $tasks = [];
 
         if (file_exists($options['from'])) {
-            $this->taskProcessConfigFile($options['from'], $options['to'])->run();
+            $this->taskProcess($options['from'], $options['to'])->run();
         }
 
         if (!file_exists($options['to'])) {
@@ -444,7 +427,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         // Execute a list of commands to run before tests.
         if ($commands = $this->getConfig()->get('phpunit.commands.before')) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
         $execution_mode = $this->getConfig()->get('toolkit.test.phpunit.execution');
@@ -473,7 +456,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
 
         // Execute a list of commands to run after tests.
         if ($commands = $this->getConfig()->get('phpunit.commands.after')) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -486,81 +469,176 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @aliases tk-phpcbf
      */
-    public function toolkitPhpcbf()
+    public function toolkitRunPhpcbf()
     {
         $phpcbf_bin = $this->getBin('phpcbf');
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
-        $this->checkPhpCsRequirements();
+        $this->toolkitCheckPhpcsRequirements();
         return $this->taskExec("$phpcbf_bin --standard=$config_file")->run();
+    }
+
+    /**
+     * Setup the lint-yaml.
+     *
+     * @code
+     * drupal:
+     *   root: web
+     * toolkit:
+     *   lint:
+     *     yaml:
+     *       config: .eslintrc.json
+     *       packages: '...'
+     *       extensions: [ '.yml', '.yaml', '.yml.dist', '.yaml.dist' ]
+     * @endcode
+     *
+     * @command toolkit:setup-eslint
+     *
+     * @option config       The eslint config file.
+     * @option ignores      The patterns to ignore.
+     * @option drupal-root  The drupal root.
+     * @option packages     The npm packages to install.
+     * @option force        If true, the config file will be deleted.
+     *
+     * @return int
+     */
+    public function toolkitSetupEslint(array $options = [
+        'config' => InputOption::VALUE_OPTIONAL,
+        'ignores' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'drupal-root' => InputOption::VALUE_OPTIONAL,
+        'packages' => InputOption::VALUE_OPTIONAL,
+        'force' => false,
+    ])
+    {
+        $config = $options['config'];
+        if ($options['force'] && file_exists($config)) {
+            $this->taskExec('rm')->arg($config)->run();
+        }
+
+        // Create a package.json if it doesn't exist.
+        if (!file_exists('package.json')) {
+            $this->taskExec('npm ini -y')->run();
+            $this->taskExec("npm install --save-dev {$options['packages']} -y")->run();
+        }
+
+        // Check if the binary exists.
+        try {
+            $this->getNodeBin('eslint');
+        } catch (TaskException $e) {
+            $this->taskExec('npm install')->run();
+        }
+
+        if (!file_exists($config)) {
+            $data = [
+                'ignorePatterns' => $options['ignores'],
+                // The docker-compose file makes use of
+                // empty mappings in env variables.
+                'overrides' => [
+                    [
+                        'files' => ['docker-compose*.yml'],
+                        'rules' => ['yml/no-empty-mapping-value' => 'off'],
+                    ],
+                ],
+            ];
+
+            // Check if we have a Drupal environment.
+            $drupal_core = './' . $options['drupal-root'] . '/core';
+            if (file_exists($drupal_core)) {
+                // Add the drupal core eslint if it exists.
+                $drupal_eslint = './' . $options['drupal-root'] . '/core/.eslintrc.json';
+                if (file_exists($drupal_eslint)) {
+                    $data['extends'] = $drupal_eslint;
+                }
+
+                // Copy the prettier configurations from Drupal or fallback to defaults.
+                $prettier = './' . $options['drupal-root'] . '/core/.prettierrc.json';
+                $prettier = file_exists($prettier)
+                    ? json_decode(file_get_contents($prettier), true)
+                    : ['singleQuote' => true, 'printWidth' => 80, 'semi' => true, 'trailingComma' => 'all'];
+                $data['rules'] = [
+                    'prettier/prettier' => ['error', $prettier],
+                ];
+            }
+
+            $this->collectionBuilder()->addCode(function () use ($config, $data) {
+                $this->output()->writeln(" <fg=white;bg=cyan;options=bold>[File\Write]</> Writing to $config.<info></>");
+                file_put_contents($config, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            })->run();
+        }
+
+        // Ignore all yaml files for prettier.
+        if (!file_exists('.prettierignore')) {
+            $this->taskWriteToFile('.prettierignore')->text('*.yml')->run();
+        }
+
+        return ResultData::EXITCODE_OK;
     }
 
     /**
      * Run lint YAML.
      *
-     * Override the default include and exclude patterns in configuration files:
+     * Override the default configurations.
      *
      * @code
      * toolkit:
      *   lint:
      *     yaml:
-     *       pattern: [ '*.yml', '*.yaml', '*.yml.dist', '*.yaml.dist' ]
-     *       include: [ 'lib/' ]
-     *       exclude: [ 'vendor/', 'web/', 'node_modules/' ]
+     *       config: .eslintrc.json
+     *       extensions_yaml: [ '.yml', '.yaml' ]
      * @endcode
      *
      * @command toolkit:lint-yaml
      *
+     * @option config     The eslint config file.
+     * @option extensions The extensions to check.
+     *
      * @aliases tly, tk-yaml
      */
-    public function toolkitLintYaml()
+    public function toolkitLintYaml(array $options = [
+        'config' => InputOption::VALUE_REQUIRED,
+        'extensions' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+    ])
     {
         $tasks = [];
-        $pattern = $this->getConfig()->get('toolkit.lint.yaml.pattern');
-        $includes = $this->getConfig()->get('toolkit.lint.yaml.include');
-        $excludes = $this->getConfig()->get('toolkit.lint.yaml.exclude');
+        $args = '--config ' . $options['config'];
+        $args .= ' --ext ' . implode(',', $options['extensions']);
 
-        $this->say('Pattern: ' . implode(', ', $pattern));
-        $this->say('Include: ' . implode(', ', $includes));
-        $this->say('Exclude: ' . implode(', ', $excludes));
+        $this->taskExec($this->getBin('run') . ' toolkit:setup-eslint')->run();
+        $tasks[] = $this->taskExec($this->getNodeBin('eslint') . " $args .");
 
-        $finder = (new Finder())
-            ->files()->followLinks()
-            ->ignoreVCS(false)
-            ->ignoreDotFiles(false);
-        foreach ($pattern as $name) {
-            $finder->name($name);
-        }
-        foreach ($includes as $include) {
-            $finder->in($include);
-        }
-        foreach ($excludes as $exclude) {
-            $finder->notPath($exclude);
-        }
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
 
-        // Get the yml files in the root of the project.
-        $root_finder = (new Finder())
-            ->files()->followLinks()
-            ->ignoreVCS(false)
-            ->ignoreDotFiles(false)
-            ->in('.')->depth(0);
-        foreach ($pattern as $name) {
-            $root_finder->name($name);
-        }
+    /**
+     * Run lint JS.
+     *
+     * Override configurations.
+     *
+     * @code
+     * toolkit:
+     *   lint:
+     *     eslint:
+     *       config: .eslintrc.json
+     *       extensions_js: [ '.js' ]
+     * @endcode
+     *
+     * @command toolkit:lint-js
+     *
+     * @option config     The eslint config file.
+     * @option extensions The extensions to check.
+     *
+     * @aliases tljs, tk-js
+     */
+    public function toolkitLintJs(array $options = [
+        'config' => InputOption::VALUE_REQUIRED,
+        'extensions' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+    ])
+    {
+        $tasks = [];
+        $args = '--config ' . $options['config'];
+        $args .= ' --ext ' . implode(',', $options['extensions']);
 
-        $finder_files = array_merge(
-            array_keys(iterator_to_array($finder)),
-            array_keys(iterator_to_array($root_finder))
-        );
-
-        $this->say('Found ' . count($finder_files) . ' files to lint.');
-        $chunk = array_chunk($finder_files, 600);
-        foreach ($chunk as $files) {
-            echo 'Processing ' . count($files) . ' files.' . PHP_EOL;
-            // Prepare arguments.
-            $arg = implode(' ', $files);
-            $tasks[] = $this->taskExec($this->getBin('yaml-lint') . " -q $arg")
-                ->printMetadata(false);
-        }
+        $this->taskExec($this->getBin('run') . ' toolkit:setup-eslint')->run();
+        $tasks[] = $this->taskExec($this->getNodeBin('eslint') . " $args .");
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
@@ -580,13 +658,18 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:lint-php
      *
+     * @option exclude     The eslint config file.
+     * @option extensions The extensions to check.
+     *
      * @aliases tlp, tk-php
      */
-    public function toolkitLintPhp()
+    public function toolkitLintPhp(array $options = [
+        'extensions' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'exclude' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+    ])
     {
-        $excludes = $this->getConfig()->get('toolkit.lint.php.exclude', []);
-        $extensions = $this->getConfig()->get('toolkit.lint.php.extensions');
-
+        $extensions = $options['extensions'];
+        $excludes = $options['exclude'];
         $this->say('Extensions: ' . implode(', ', $extensions));
         $this->say('Exclude: ' . implode(', ', $excludes));
 
@@ -611,7 +694,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @aliases tbf, tk-bfire
      */
-    public function toolkitBlackfire()
+    public function toolkitRunBlackfire()
     {
         $base_url = $this->getConfig()->get('drupal.base_url');
         $project_id = $this->getConfig()->get('toolkit.project_id');

@@ -6,9 +6,12 @@
 /.tmp/
 /runner.yml
 /phpunit.xml
-/grumphp.yml
 /docker-compose.*.yml
 .phpunit.result.cache
 *.sql
 phpda.*
 .phpdoc*
+node_modules/
+.prettierignore
+package.json
+package-lock.json

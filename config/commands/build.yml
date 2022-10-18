@@ -1,17 +1,12 @@
 command:
   toolkit:
+    options:
+      root: ${drupal.root}
     build-dist:
       options:
-        root: ${drupal.root}
         dist-root: ${toolkit.build.dist.root}
         keep: ${toolkit.build.dist.keep}
         remove: ${toolkit.build.dist.remove}
-    build-dev:
-      options:
-        root: ${drupal.root}
-    build-dev-reset:
-      options:
-        root: ${drupal.root}
     build-assets:
       options:
         default-theme: ${drupal.site.default_theme}

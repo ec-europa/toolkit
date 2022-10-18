@@ -7,9 +7,8 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use Consolidation\Config\Config;
 use Consolidation\Config\Loader\ConfigProcessor;
 use Consolidation\Config\Loader\YamlConfigLoader;
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 use Robo\Contract\VerbosityThresholdInterface;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -18,14 +17,12 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class CloneCommands extends AbstractCommands
 {
-    use TaskRunnerTasks\CollectionFactory\loadTasks;
-
     /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
     {
-        return __DIR__ . '/../../../config/commands/clone.yml';
+        return Toolkit::getToolkitRoot() . '/config/commands/clone.yml';
     }
 
     /**
@@ -68,7 +65,7 @@ class CloneCommands extends AbstractCommands
 
             if (!empty($sequence)) {
                 $sequence = $sequence['default'] ?? $sequence;
-                $this->say('Running custom deploy sequence "' . $options['sequence-key'] . '" from sequence file "' . $options['sequence-file'] . '".');
+                $this->say("Running custom deploy sequence '{$options['sequence-key']}' from sequence file '{$options['sequence-file']}'.");
                 foreach ($sequence as $command) {
                     // Only execute strings. Opts.yml also supports append and
                     // default array to append or override the default commands.
@@ -80,10 +77,10 @@ class CloneCommands extends AbstractCommands
                 }
                 return $this->collectionBuilder()->addTaskList($tasks);
             } else {
-                $this->say('Sequence key "' . $options['sequence-key'] . '" does not contain commands, running default set of deployment commands.');
+                $this->say("Sequence key '{$options['sequence-key']}' does not contain commands, running default set of deployment commands.");
             }
         } else {
-            $this->say('Sequence file "' . $options['sequence-file'] . '" does not exist, running default set of deployment commands.');
+            $this->say("Sequence file '{$options['sequence-file']}' does not exist, running default set of deployment commands.");
         }
 
         // Default deployment sequence.

@@ -9,3 +9,21 @@ command:
         execution: ${toolkit.test.phpunit.execution}
         from: ${toolkit.test.phpunit.from}
         to: ${toolkit.test.phpunit.to}
+    setup-eslint:
+      options:
+        config: ${toolkit.lint.eslint.config}
+        ignores: ${toolkit.lint.eslint.ignores}
+        drupal-root: ${drupal.root}
+        packages: ${toolkit.lint.eslint.packages}
+    lint-yaml:
+      options:
+        config: ${toolkit.lint.eslint.config}
+        extensions: ${toolkit.lint.eslint.extensions_yaml}
+    lint-js:
+      options:
+        config: ${toolkit.lint.eslint.config}
+        extensions: ${toolkit.lint.eslint.extensions_js}
+    lint-php:
+      options:
+        extensions: ${toolkit.lint.php.extensions}
+        exclude: ${toolkit.lint.php.exclude}

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
 use Robo\ResultData;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,14 +15,12 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class GitHookCommands extends AbstractCommands
 {
-    use TaskRunnerTasks\CollectionFactory\loadTasks;
-
     /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
     {
-        return Toolkit::getToolkitRoot() . 'config/commands/githooks.yml';
+        return Toolkit::getToolkitRoot() . '/config/commands/githooks.yml';
     }
 
     /**
@@ -67,8 +64,8 @@ class GitHookCommands extends AbstractCommands
         }
 
         foreach ($hooks as $hook) {
-            if ($this->_copy($available_hooks[$hook], Toolkit::getProjectRoot() . '.git/hooks/' . $hook)) {
-                $this->_chmod(Toolkit::getProjectRoot() . '.git/hooks/' . $hook, 0755);
+            if ($this->_copy($available_hooks[$hook], Toolkit::getProjectRoot() . '/.git/hooks/' . $hook)) {
+                $this->_chmod(Toolkit::getProjectRoot() . '/.git/hooks/' . $hook, 0755);
             }
         }
 
@@ -102,11 +99,11 @@ class GitHookCommands extends AbstractCommands
         }
 
         foreach ($hooks as $hook) {
-            if (!file_exists(Toolkit::getProjectRoot() . '.git/hooks/' . $hook)) {
+            if (!file_exists(Toolkit::getProjectRoot() . '/.git/hooks/' . $hook)) {
                 $this->io()->say("The hook '$hook' was not found, skipping.");
                 continue;
             }
-            $this->_remove(Toolkit::getProjectRoot() . '.git/hooks/' . $hook);
+            $this->_remove(Toolkit::getProjectRoot() . '/.git/hooks/' . $hook);
         }
 
         return $return;
@@ -119,7 +116,7 @@ class GitHookCommands extends AbstractCommands
      */
     public function hooksDeleteAll()
     {
-        $directory = Toolkit::getProjectRoot() . '.git/hooks';
+        $directory = Toolkit::getProjectRoot() . '/.git/hooks';
         $files = scandir($directory);
         foreach ($files as $file) {
             if (in_array($file, ['.', '..'])) {
@@ -143,7 +140,7 @@ class GitHookCommands extends AbstractCommands
     public function hooksList()
     {
         $rows = [];
-        $git_hooks_dir = Toolkit::getProjectRoot() . '.git/hooks';
+        $git_hooks_dir = Toolkit::getProjectRoot() . '/.git/hooks';
         $config = $this->getConfig()->get('toolkit.hooks');
         $project_id = $this->getConfig()->get('toolkit.project_id');
         $hooks = $this->getAvailableHooks();
@@ -162,7 +159,7 @@ class GitHookCommands extends AbstractCommands
             ) {
                 $needs_update = true;
             }
-            $hook_origin = strpos($file_path, Toolkit::getProjectRoot()) !== false ? $project_id : 'toolkit';
+            $hook_origin = str_contains($file_path, 'ec-europa/toolkit') ? 'toolkit' : $project_id;
             $rows[] = [
                 "$hook ($hook_origin)",
                 $is_active ? 'Yes' : 'No',
@@ -208,7 +205,7 @@ class GitHookCommands extends AbstractCommands
         }
 
         // Make sure the hook is enabled.
-        $enabled_hooks = $this->getHookFiles(Toolkit::getProjectRoot() . '.git/hooks');
+        $enabled_hooks = $this->getHookFiles(Toolkit::getProjectRoot() . '/.git/hooks');
         if (!isset($enabled_hooks[$hook])) {
             $this->io()->say("The hook '$hook' does not exist or is not enabled.");
             return ResultData::EXITCODE_ERROR;
@@ -335,8 +332,8 @@ class GitHookCommands extends AbstractCommands
     private function getAvailableHooks()
     {
         $dir = trim($this->getConfig()->get('toolkit.hooks.dir'), '/');
-        $toolkit_hooks = $this->getHookFiles(Toolkit::getToolkitRoot() . $dir);
-        $project_hooks = $this->getHookFiles(Toolkit::getProjectRoot() . $dir);
+        $toolkit_hooks = $this->getHookFiles(Toolkit::getToolkitRoot() . "/$dir");
+        $project_hooks = $this->getHookFiles(Toolkit::getProjectRoot() . "/$dir");
         return array_merge($toolkit_hooks, $project_hooks);
     }
 

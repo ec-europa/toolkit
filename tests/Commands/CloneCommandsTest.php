@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Commands;
 
+use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
-use OpenEuropa\TaskRunner\TaskRunner;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @group clone
- *
  * Test Toolkit build commands.
+ *
+ * @group clone
  */
 class CloneCommandsTest extends AbstractTest
 {
@@ -50,7 +50,7 @@ class CloneCommandsTest extends AbstractTest
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
         $output = new BufferedOutput();
 
-        $runner = new TaskRunner($input, $output, $this->getClassLoader());
+        $runner = new Runner($this->getClassLoader(), $input, $output);
         $runner->run();
 
         // Assert expectations.

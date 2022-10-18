@@ -12,7 +12,7 @@ final class Toolkit
     /**
      * Constant holding the current version.
      */
-    public const VERSION = '9.0.0';
+    public const VERSION = '9.1.0';
 
     /**
      * Returns the Toolkit root.
@@ -22,7 +22,7 @@ final class Toolkit
      */
     public static function getToolkitRoot(): string
     {
-        return __DIR__ . '/../';
+        return realpath(__DIR__ . '/../');
     }
 
     /**
@@ -33,7 +33,7 @@ final class Toolkit
      */
     public static function getProjectRoot(): string
     {
-        return __DIR__ . '/../../../../';
+        return realpath(__DIR__ . '/../../../../');
     }
 
     /**

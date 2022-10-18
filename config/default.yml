@@ -1,7 +1,43 @@
+runner:
+  bin_dir: "./vendor/bin"
+  bin_node_dir: "./node_modules/.bin"
 drupal:
   root: "web"
   base_url: "http://web:8080/web"
-  database-host: "mysql"
+  virtual_host: "http://web:8080/web"
+  root_absolute: ~
+  # Drupal site information.
+  site:
+    name: "Site name"
+    mail: "info@example.org"
+    profile: "minimal"
+    update: "false"
+    locale: "en"
+    sites_subdir: "default"
+    existing_config: "false"
+    generate_db_url: "false"
+    skip_permissions_setup: "false"
+    settings_override_file: "settings.override.php"
+  # Drupal Administrator account information.
+  account:
+    name: "admin"
+    password: "admin"
+    mail: "admin@example.org"
+  # Drupal database settings.
+  database:
+    scheme: "mysql"
+    host: "mysql"
+    port: "3306"
+    name: ""
+    user: ""
+    password: ""
+  # Following lines will be converted in PHP and appended to default.settings.php.
+  settings: [ ]
+  # List of shell commands to be before and after the site installation.
+  # You can use same syntax as the "commands:", check the documentation for more.
+  # Configuration token replacement is supported too.
+  pre_install: [ ]
+  post_install: [ ]
 toolkit:
   tmp_folder: '/cache'
   clean:
@@ -20,7 +56,7 @@ toolkit:
     sequence_key: 'upgrade_commands'
   install:
     clone:
-      commands: []
+      commands: [ ]
   build:
     dist:
       root: 'dist'
@@ -42,9 +78,9 @@ toolkit:
         - MAINTAINERS.txt
         - UPDATE.txt
         - README.txt
-      commands: []
+      commands: [ ]
     dev:
-      commands: []
+      commands: [ ]
     custom-code-folder: 'lib'
     npm:
       theme-task-runner: grunt
@@ -61,7 +97,7 @@ toolkit:
       execution: default
       from: phpunit.xml.dist
       to: phpunit.xml
-      commands: []
+      commands: [ ]
     blackfire:
       uuid:
       pages:
@@ -113,10 +149,12 @@ toolkit:
         - lib
         - src
   lint:
-    yaml:
-      pattern: [ '*.yml', '*.yaml', '*.yml.dist', '*.yaml.dist' ]
-      include: [ 'lib/', 'config/' ]
-      exclude: [ 'vendor/', 'web/', 'node_modules/' ]
+    eslint:
+      config: .eslintrc.json
+      packages: 'eslint-config-drupal eslint-plugin-yml'
+      ignores: [ 'vendor/*', 'web/*', 'dist/*' ]
+      extensions_yaml: [ '.yml', '.yaml' ]
+      extensions_js: [ '.js' ]
     php:
       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
       exclude: [ 'vendor/', 'web/' ]
@@ -156,3 +194,4 @@ toolkit:
         - toolkit:lint-yaml
         - toolkit:lint-php
         - toolkit:opts-review
+commands: [ ]

@@ -3,16 +3,17 @@
 declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Commands {
+
+    use EcEuropa\Toolkit\TaskRunner\Runner;
     use EcEuropa\Toolkit\Tests\AbstractTest;
-    use OpenEuropa\TaskRunner\TaskRunner;
     use Symfony\Component\Console\Input\StringInput;
     use Symfony\Component\Console\Output\BufferedOutput;
     use Symfony\Component\Yaml\Yaml;
 
     /**
-     * @group drupal
-     *
      * Test Toolkit Drupal commands.
+     *
+     * @group drupal
      */
     class DrupalCommandsTest extends AbstractTest
     {
@@ -20,7 +21,7 @@ namespace EcEuropa\Toolkit\Tests\Commands {
          * Data provider for testDrupalSettingsSetup.
          *
          * @return array
-         *   An array of test data arrays with assertations.
+         *   An array of test data arrays with assertions.
          */
         public function dataProvider()
         {
@@ -48,8 +49,9 @@ namespace EcEuropa\Toolkit\Tests\Commands {
             file_put_contents($configFile, Yaml::dump($config));
 
             // Setup test directory.
-            $sites_subdir = isset($config['drupal']['site']['sites_subdir']) ? $config['drupal']['site']['sites_subdir'] : 'default';
-            $settings_root = $this->getSandboxRoot() . '/build/sites/default';
+            $root = $config['drupal']['root'] ?? 'web';
+            $sites_subdir = $config['drupal']['site']['sites_subdir'] ?? 'default';
+            $settings_root = $this->getSandboxRoot() . '/' . $root . '/sites/' . $sites_subdir;
             mkdir($settings_root, 0777, true);
 
             // Setup initial default.settings.php and settings.php, if any.
@@ -62,7 +64,7 @@ namespace EcEuropa\Toolkit\Tests\Commands {
 
             // Run command.
             $input = new StringInput('drupal:settings-setup --working-dir=' . $this->getSandboxRoot());
-            $runner = new TaskRunner($input, new BufferedOutput(), $this->getClassLoader());
+            $runner = new Runner($this->getClassLoader(), $input, new BufferedOutput());
             $runner->run();
 
             // Assert expectations.
@@ -78,6 +80,8 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands {
 
     /**
      * Override random_bytes function for test.
+     *
+     * phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.NotCamelCaps
      */
     function random_bytes()
     {
