@@ -330,12 +330,16 @@ class TestsCommands extends AbstractCommands
      * @option to       The destination config file (behat.yml).
      * @option profile  The profile to execute.
      * @option suite    The suite to execute, default runs all suites of profile.
+     * @option options  Extra options for the command without -- (only options with no value).
+     *
+     * @usage --profile='prod' --options='strict stop-on-failure'
      */
     public function toolkitTestBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
         'to' => InputOption::VALUE_OPTIONAL,
         'profile' => InputOption::VALUE_OPTIONAL,
         'suite' => InputOption::VALUE_OPTIONAL,
+        'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
         $tasks = [];
@@ -346,10 +350,17 @@ class TestsCommands extends AbstractCommands
 
         $behatBin = $this->getBin('behat');
         $defaultProfile = $this->getConfig()->get('toolkit.test.behat.profile');
+        $execOpts = [
+            'profile' => !empty($options['profile']) ? $options['profile'] : $defaultProfile,
+        ];
 
-        $profile = (!empty($options['profile'])) ? $options['profile'] : $defaultProfile;
-        $suite = (!empty($options['suite'])) ? $options['suite'] : '';
-        $suiteParameter = ($suite) ? ' --suite=' . $suite : '';
+        if (!empty($options['suite'])) {
+            $execOpts['suite'] = $options['suite'];
+        }
+        if (!empty($options['options'])) {
+            $extraOptions = array_fill_keys(explode(' ', $options['options']), null);
+            $execOpts = array_merge($execOpts, $extraOptions);
+        }
 
         // Execute a list of commands to run before tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.before')) {
@@ -358,15 +369,14 @@ class TestsCommands extends AbstractCommands
 
         $this->taskProcess($options['from'], $options['to'])->run();
 
-        $result = $this->taskExec("$behatBin --dry-run --profile=$profile $suiteParameter")
+        $result = $this->taskExec($behatBin)->options($execOpts + ['dry-run' => null], '=')
             ->silent(true)->run()->getMessage();
-
-        if (strpos(trim($result), 'No scenarios') !== false) {
-            $this->say("No Scenarios found for profile $profile $suiteParameter, please create at least one Scenario.");
+        if (str_contains(trim($result), 'No scenarios')) {
+            $this->say("No Scenarios found for profile {$execOpts['profile']}, please create at least one Scenario.");
             return new ResultData(1);
         }
 
-        $tasks[] = $this->taskExec("$behatBin --profile=$profile $suiteParameter");
+        $tasks[] = $this->taskExec($behatBin)->options($execOpts, '=');
 
         // Execute a list of commands to run after tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.after')) {
