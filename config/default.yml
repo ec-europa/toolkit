@@ -93,12 +93,17 @@ toolkit:
       to: behat.yml
       profile: default
       options: 'strict'
+      commands:
+        before: [ ]
+        after: [ ]
     phpunit:
       options: ''
       execution: default
       from: phpunit.xml.dist
       to: phpunit.xml
-      commands: [ ]
+      commands:
+        before: [ ]
+        after: [ ]
     blackfire:
       uuid:
       pages:

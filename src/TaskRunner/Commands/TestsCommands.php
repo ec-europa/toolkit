@@ -6,6 +6,8 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
+use EcEuropa\Toolkit\Website;
+use Robo\Exception\AbortTasksException;
 use Robo\Exception\TaskException;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
@@ -27,7 +29,12 @@ class TestsCommands extends AbstractCommands
     /**
      * Setup PHP code sniffer.
      *
+     * Check configurations at config/default.yml - 'toolkit.test.phpcs'.
+     *
      * @command toolkit:setup-phpcs
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitSetupPhpcs()
     {
@@ -144,40 +151,43 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:test-phpmd
      *
+     * @option config           The config file.
+     * @option format           The format to use.
+     * @option ignore_patterns  An array with ignore patterns.
+     * @option triggered_by     An array with extensions to check.
+     * @option files            An array with paths to check.
+     *
      * @aliases tk-phpmd
      */
-    public function toolkitTestPhpmd()
+    public function toolkitTestPhpmd(array $options = [
+        'config' => InputOption::VALUE_REQUIRED,
+        'format' => InputOption::VALUE_REQUIRED,
+        'ignore_patterns' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'triggered_by' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'files' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+    ])
     {
-        $config = $this->getConfig();
-        $config_file = $config->get('toolkit.test.phpmd.config');
+        $phpmd_bin = $this->getBin('phpmd');
+        $phpmd_config = $this->getConfig()->get('toolkit.test.phpmd');
+        $config_file = $phpmd_config['config'];
+        $format = $phpmd_config['format'];
+        $options = '';
 
         if (!file_exists($config_file)) {
             $this->output->writeln('Could not find the ruleset file, the default will be created in the project root.');
-            copy(__DIR__ . '/../../../resources/phpmd.xml', $config_file);
+            $this->_copy(Toolkit::getToolkitRoot() . '/resources/phpmd.xml', $config_file);
         }
 
-        $phpmd_bin = $this->getBin('phpmd');
-        $exclusions = (array) $config->get('toolkit.test.phpmd.ignore_patterns');
-        $extensions = (array) $config->get('toolkit.test.phpmd.triggered_by');
-        $files = (array) $config->get('toolkit.test.phpmd.files');
-        $format = $config->get('toolkit.test.phpmd.format');
-        $options = '';
+        if (!empty($phpmd_config['ignore_patterns'])) {
+            $options .= '--exclude "' . implode(',', $phpmd_config['ignore_patterns']) . '" ';
+        }
+        if (!empty($phpmd_config['triggered_by'])) {
+            $options .= '--suffixes "' . implode(',', $phpmd_config['triggered_by']) . '" ';
+        }
 
-        if (!empty($exclusions)) {
-            $options .= '--exclude "' . implode(',', $exclusions) . '" ';
-        }
-        if (!empty($extensions)) {
-            $options .= '--suffixes "' . implode(',', $extensions) . '"';
-        }
-        if (!empty($files)) {
-            foreach ($files as $key => $file) {
-                if (!file_exists($file)) {
-                    $this->writeln("The path '$file' was not found, ignoring.");
-                    unset($files[$key]);
-                }
-            }
-            $files = implode(',', $files);
-        }
+        Toolkit::filterFolders($phpmd_config['files']);
+        $files = implode(',', $phpmd_config['files']);
+
         return $this->taskExec("$phpmd_bin $files $format $config_file $options")
             ->run();
     }
@@ -231,32 +241,7 @@ class TestsCommands extends AbstractCommands
     /**
      * Run PHP code sniffer.
      *
-     * @code
-     * toolkit:
-     *   test:
-     *     phpcs:
-     *       mode: phpcs || grumphp
-     *       config: phpcs.xml
-     *       ignore_annotations: 0
-     *       show_sniffs: 0
-     *       standards:
-     *         - ./vendor/drupal/coder/coder_sniffer/Drupal
-     *         - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
-     *         - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
-     *       ignore_patterns:
-     *         - vendor/
-     *         - web/
-     *         - node_modules/
-     *       triggered_by:
-     *         - php
-     *         - module
-     *         - inc
-     *         - theme
-     *         - install
-     *         - yml
-     *       files:
-     *         - ./lib
-     * @endcode
+     * Check configurations at config/default.yml - 'toolkit.test.phpcs'.
      */
     protected function toolkitRunPhpcs()
     {
@@ -287,6 +272,11 @@ class TestsCommands extends AbstractCommands
             $this->toolkitSetupPhpcs();
         }
 
+        // Skip standards check for Toolkit.
+        if (getcwd() === Toolkit::getToolkitRoot()) {
+            return;
+        }
+
         // Make sure the required standards are present.
         $standards = [
             './vendor/drupal/coder/coder_sniffer/Drupal',
@@ -301,8 +291,7 @@ class TestsCommands extends AbstractCommands
             }
         }
         if ($diff = array_diff($standards, $rules)) {
-            $this->say("The following standards are missing, please add them to the configuration file '$config_file'.\n" . implode("\n", $diff));
-            exit;
+            throw new AbortTasksException("The following standards are missing, please add them to the configuration file '$config_file'.\n" . implode("\n", $diff));
         }
     }
 
@@ -330,31 +319,15 @@ class TestsCommands extends AbstractCommands
     /**
      * Run Behat tests.
      *
-     * Additional commands could run before and/or after the Behat tests. Such
-     * commands should be described in configuration files in this way:
-     *
-     * @code
-     * toolkit:
-     *   test:
-     *     behat:
-     *       profile: "default"
-     *       commands:
-     *         before:
-     *           - task: exec
-     *             command: ls -la
-     *           - ...
-     *         after:
-     *           - task: exec
-     *             command: whoami
-     *           - ...
-     * @endcode
+     * Check configurations at config/default.yml - 'toolkit.test.behat'.
+     * Accept commands to run before and/or after the Behat tests.
      *
      * @command toolkit:test-behat
      *
      * @aliases tb, tk-behat
      *
-     * @option from     From behat.yml.dist config file.
-     * @option to       To behat.yml config file.
+     * @option from     The dist config file (behat.yml.dist).
+     * @option to       The destination config file (behat.yml).
      * @option profile  The profile to execute.
      * @option suite    The suite to execute, default runs all suites of profile.
      * @option options  Extra options for the command without -- (only options with no value).
@@ -416,33 +389,21 @@ class TestsCommands extends AbstractCommands
     /**
      * Run PHPUnit tests.
      *
-     * Additional commands could run before and/or after the PHPUnit tests. Such
-     * commands should be described in configuration files in this way:
-     *
-     * @code
-     * phpunit:
-     *   options: '--log-junit report.xml'
-     *   commands:
-     *     before:
-     *       - task: exec
-     *         command: ls -la
-     *       - ...
-     *     after:
-     *       - task: exec
-     *         command: whoami
-     *       - ...
-     * @endcode
+     * Check configurations at config/default.yml - 'toolkit.test.phpunit'.
+     * Accept commands to run before and/or after the PHPUnit tests.
      *
      * @command toolkit:test-phpunit
      *
      * @aliases tp, tk-phpunit
      *
-     * @option from   From phpunit.xml.dist config file.
-     * @option to     To phpunit.xml config file.
+     * @option execution   The execution type (default or parallel).
+     * @option from        The dist config file (phpunit.xml.dist).
+     * @option to          The destination config file (phpunit.xml).
      */
     public function toolkitTestPhpunit(array $options = [
-        'from' => InputOption::VALUE_OPTIONAL,
-        'to' => InputOption::VALUE_OPTIONAL,
+        'execution' => InputOption::VALUE_REQUIRED,
+        'from' => InputOption::VALUE_REQUIRED,
+        'to' => InputOption::VALUE_REQUIRED,
     ])
     {
         $tasks = [];
@@ -456,16 +417,17 @@ class TestsCommands extends AbstractCommands
             return $this->collectionBuilder()->addTaskList($tasks);
         }
 
+        $phpunit_config = $this->getConfig()->get('toolkit.test.phpunit');
+
         // Execute a list of commands to run before tests.
-        if ($commands = $this->getConfig()->get('phpunit.commands.before')) {
-            $tasks[] = $this->taskExecute($commands);
+        if (!empty($phpunit_config['commands']['before'])) {
+            $tasks[] = $this->taskExecute($phpunit_config['commands']['before']);
         }
 
-        $execution_mode = $this->getConfig()->get('toolkit.test.phpunit.execution');
-        $options = $this->getConfig()->get('toolkit.test.phpunit.options');
+        $options = $phpunit_config['options'];
         $phpunit_bin = $this->getBin('phpunit');
 
-        if ($execution_mode == 'parallel') {
+        if ($phpunit_config['execution'] == 'parallel') {
             $result = $this->taskExec("$phpunit_bin --list-suites")
                 ->silent(true)
                 ->printOutput(false)
@@ -486,8 +448,8 @@ class TestsCommands extends AbstractCommands
         }
 
         // Execute a list of commands to run after tests.
-        if ($commands = $this->getConfig()->get('phpunit.commands.after')) {
-            $tasks[] = $this->taskExecute($commands);
+        if (!empty($phpunit_config['commands']['after'])) {
+            $tasks[] = $this->taskExecute($phpunit_config['commands']['after']);
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -509,18 +471,9 @@ class TestsCommands extends AbstractCommands
     }
 
     /**
-     * Setup the lint-yaml.
+     * Setup the ESLint configurations and dependencies.
      *
-     * @code
-     * drupal:
-     *   root: web
-     * toolkit:
-     *   lint:
-     *     yaml:
-     *       config: .eslintrc.json
-     *       packages: '...'
-     *       extensions: [ '.yml', '.yaml', '.yml.dist', '.yaml.dist' ]
-     * @endcode
+     * Check configurations at config/default.yml - 'toolkit.lint.eslint'.
      *
      * @command toolkit:setup-eslint
      *
@@ -531,6 +484,8 @@ class TestsCommands extends AbstractCommands
      * @option force        If true, the config file will be deleted.
      *
      * @return int
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitSetupEslint(array $options = [
         'config' => InputOption::VALUE_OPTIONAL,
@@ -607,15 +562,7 @@ class TestsCommands extends AbstractCommands
     /**
      * Run lint YAML.
      *
-     * Override the default configurations.
-     *
-     * @code
-     * toolkit:
-     *   lint:
-     *     yaml:
-     *       config: .eslintrc.json
-     *       extensions_yaml: [ '.yml', '.yaml' ]
-     * @endcode
+     * Check configurations at config/default.yml - 'toolkit.lint.eslint'.
      *
      * @command toolkit:lint-yaml
      *
@@ -642,15 +589,7 @@ class TestsCommands extends AbstractCommands
     /**
      * Run lint JS.
      *
-     * Override configurations.
-     *
-     * @code
-     * toolkit:
-     *   lint:
-     *     eslint:
-     *       config: .eslintrc.json
-     *       extensions_js: [ '.js' ]
-     * @endcode
+     * Check configurations at config/default.yml - 'toolkit.lint.eslint'.
      *
      * @command toolkit:lint-js
      *
@@ -677,20 +616,12 @@ class TestsCommands extends AbstractCommands
     /**
      * Run lint PHP.
      *
-     * Override the default include and exclude patterns in configuration files:
-     *
-     * @code
-     * toolkit:
-     *   lint:
-     *     php:
-     *       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
-     *       exclude: [ 'vendor/', 'web/' ]
-     * @endcode
+     * Check configurations at config/default.yml - 'toolkit.lint.php'.
      *
      * @command toolkit:lint-php
      *
      * @option exclude     The eslint config file.
-     * @option extensions The extensions to check.
+     * @option extensions  The extensions to check.
      *
      * @aliases tlp, tk-php
      */
@@ -724,6 +655,10 @@ class TestsCommands extends AbstractCommands
      * @command toolkit:run-blackfire
      *
      * @aliases tbf, tk-bfire
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function toolkitRunBlackfire()
     {
@@ -843,8 +778,8 @@ class TestsCommands extends AbstractCommands
                     'field_blackfire_commit_link' => [['value' => getenv('DRONE_PULL_REQUEST') ?? '']],
                     'field_blackfire_pr' => [['value' => getenv('DRONE_COMMIT_LINK') ?? '']],
                 ];
-                $basicAuth = (new ToolCommands())->getQaApiBasicAuth();
-                $payload_response = ToolCommands::postQaContent($payload, $basicAuth);
+                $basicAuth = Website::basicAuth();
+                $payload_response = Website::post($payload, $basicAuth);
                 if (!empty($payload_response) && $payload_response === '201') {
                     $this->writeln("Payload sent to QA website: $payload_response");
                 } else {

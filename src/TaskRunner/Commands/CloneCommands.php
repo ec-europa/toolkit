@@ -14,6 +14,9 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Provides commands to clone a site for development and a production artifact.
+ *
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 class CloneCommands extends AbstractCommands
 {
@@ -183,6 +186,9 @@ class CloneCommands extends AbstractCommands
      *
      * @return \Robo\Collection\CollectionBuilder
      *   Collection builder.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function downloadDump(array $options = [
         'is-admin' => InputOption::VALUE_NONE,
@@ -226,7 +232,7 @@ class CloneCommands extends AbstractCommands
             }
         }
         if (empty($password)) {
-            if (empty($password = $this->ask('Please insert your password:', true))) {
+            if (empty($password = $this->askHidden('Please insert your password:'))) {
                 $this->writeln('<error>The password cannot be empty!</error>');
                 return $this->collectionBuilder()->addTaskList($tasks);
             }

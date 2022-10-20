@@ -7,8 +7,8 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use Composer\Semver\Semver;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
+use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
-use Robo\Exception\AbortTasksException;
 use Robo\ResultData;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
@@ -69,7 +69,7 @@ class ToolCommands extends AbstractCommands
         $endpointUrl = $options['endpoint'];
 
         if (isset($endpointUrl)) {
-            $result = self::getQaEndpointContent($endpointUrl);
+            $result = Website::get($endpointUrl);
             $data = json_decode($result, true);
             foreach ($data as $notification) {
                 $this->io()->warning($notification['title'] . PHP_EOL . $notification['notification']);
@@ -78,632 +78,32 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Check composer.json for components that are not whitelisted/blacklisted.
+     * Check the commit message for SKIPPING tokens.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
-     * @command toolkit:component-check
-     *
-     * @option endpoint Deprecated
-     * @option blocker  Deprecated
+     * @return array
+     *   An array with tokens present in the commit message.
      */
-    public function componentCheck(array $options = [
-        'endpoint' => InputOption::VALUE_REQUIRED,
-        'blocker' => InputOption::VALUE_REQUIRED,
-        'test-command' => false,
-    ])
+    public static function getCommitTokens()
     {
-        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
-            return 1;
-        }
-
-        $this->componentCheckFailed = false;
-        $this->componentCheckMandatoryFailed = false;
-        $this->componentCheckRecommendedFailed = false;
-        $this->componentCheckInsecureFailed = false;
-        $this->componentCheckOutdatedFailed = false;
-        $this->componentCheckDevVersionFailed = false;
-        $this->componentCheckDevCompRequireFailed = false;
-        $this->componentCheckDrushRequireFailed = false;
-
-        $this->checkCommitMessage();
-
-        $endpoint = Toolkit::getQaWebsiteUrl();
-        if (!empty($options['endpoint'])) {
-            $endpoint = $options['endpoint'];
-        }
-        $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
-
-        if (!isset($composerLock['packages'])) {
-            $this->io()->error('No packages found in the composer.lock file.');
-            return 1;
-        }
-
-        $status = 0;
-        $result = self::getQaEndpointContent($endpoint . '/api/v1/package-reviews?version=8.x', $basicAuth);
-        $data = json_decode($result, true);
-        $modules = (array) array_filter(array_combine(array_column($data, 'name'), $data));
-
-        // To test this command execute it with the --test-command option:
-        // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://webgate.ec.europa.eu/fpfis/qa"
-        // Then we provide an array in the packages that fails on each type
-        // of validation.
-        if ($options['test-command']) {
-            $composerLock['packages'] = [
-                // Lines below should trow a warning.
-                ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/unreviewed'],
-                ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/devel'],
-                ['type' => 'drupal-module', 'version' => '1.0-alpha1', 'name' => 'drupal/xmlsitemap'],
-                // Allowed for single project jrc-k4p, otherwise trows warning.
-                ['type' => 'drupal-module', 'version' => '1.0', 'name' => 'drupal/active_facet_pills'],
-                // Allowed dev version if the Drupal version meets the
-                // conflict version constraints.
-                [
-                    'version' => 'dev-1.x',
-                    'type' => 'drupal-module',
-                    'name' => 'drupal/views_bulk_operations',
-                    'extra' => [
-                        'drupal' => [
-                            'version' => '8.x-3.4+15-dev',
-                        ],
-                    ],
-                ],
-            ];
-        }
-
-        // Execute all checks.
-        $checks = [
-            'Mandatory',
-            'Recommended',
-            'Insecure',
-            'Outdated',
-        ];
-
-        foreach ($checks as $check) {
-            $this->io()->title('Checking ' . $check . ' components.');
-            $fct = "component" . $check;
-            $this->{$fct}($modules, $composerLock['packages']);
-            $this->io()->newLine();
-        }
-
-        // Get vendor list from 'api/v1/toolkit-requirements' endpoint.
-        $tkReqsEndpoint = $endpoint . '/api/v1/toolkit-requirements';
-        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
-            return 1;
-        }
-        $resultTkReqsEndpoint = self::getQaEndpointContent($tkReqsEndpoint, $basicAuth);
-        $dataTkReqsEndpoint = json_decode($resultTkReqsEndpoint, true);
-        $vendorList = $dataTkReqsEndpoint['vendor_list'] ?? [];
-
-        $this->io()->title('Checking evaluation status components.');
-        // Proceed with 'blocker' option. Loop over the packages.
-        foreach ($composerLock['packages'] as $package) {
-            // Check if vendor belongs to the monitorised vendor list.
-            if (in_array(explode('/', $package['name'])['0'], $vendorList)) {
-                $this->validateComponent($package, $modules);
-            }
-        }
-        if ($this->componentCheckFailed == false) {
-            $this->say("Evaluation module check passed.");
-        }
-        $this->io()->newLine();
-
-        $this->io()->title('Checking dev components.');
-        foreach ($composerLock['packages'] as $package) {
-            $typeBypass = in_array($package['type'], [
-                'drupal-custom-module',
-                'drupal-custom-theme',
-                'drupal-custom-profile',
-            ]);
-            if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
-                $this->componentCheckDevVersionFailed = true;
-                $this->say("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
-            }
-        }
-        if (!$this->componentCheckDevVersionFailed) {
-            $this->say('Dev components check passed.');
-        }
-        $this->io()->newLine();
-
-        $this->io()->title('Checking dev components in require section.');
-        $devPackages = array_filter(
-            array_column($modules, 'dev_component', 'name'),
-            function ($value) {
-                return $value == 'true';
-            }
-        );
-        foreach ($devPackages as $packageName => $package) {
-            if (ToolCommands::getPackagePropertyFromComposer($packageName, 'version', 'packages')) {
-                $this->componentCheckDevCompRequireFailed = true;
-                $this->io()->warning("Package $packageName cannot be used on require section, must be on require-dev section.");
-            }
-        }
-        if (!$this->componentCheckDevCompRequireFailed) {
-            $this->say('Dev components in require section check passed');
-        }
-        $this->io()->newLine();
-
-        $this->io()->title('Checking require section for Drush.');
-        if (ToolCommands::getPackagePropertyFromComposer('drush/drush', 'version', 'packages-dev')) {
-            $this->componentCheckDrushRequireFailed = true;
-            $this->io()->warning("Package 'drush/drush' cannot be used in require-dev, must be on require section.");
-        }
-
-        if (!$this->componentCheckDrushRequireFailed) {
-            if (ToolCommands::getPackagePropertyFromComposer('drush/drush', 'version', 'packages')) {
-                $this->say('Drush require section check passed.');
-            }
-        }
-        $this->io()->newLine();
-
-        $this->printComponentResults();
-
-        // If the validation fail, return according to the blocker.
-        if (
-            $this->componentCheckFailed ||
-            $this->componentCheckMandatoryFailed ||
-            $this->componentCheckRecommendedFailed ||
-            $this->componentCheckDevVersionFailed ||
-            $this->componentCheckDevCompRequireFailed ||
-            $this->componentCheckDrushRequireFailed ||
-            (!$this->skipInsecure && $this->componentCheckInsecureFailed)
-        ) {
-            $msg = [
-                'Failed the components check, please verify the report and update the project.',
-                'See the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.',
-            ];
-            $this->io()->error($msg);
-            $status = 1;
-        }
-
-        // Give feedback if no problems found.
-        if (!$status) {
-            $this->io()->success('Components checked, nothing to report.');
-        } else {
-            $this->io()->note([
-                'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
-                'The available tokens are:',
-                '    - [SKIP-OUTDATED]',
-                '    - [SKIP-INSECURE]',
-            ]);
-        }
-
-        return $status;
-    }
-
-    /**
-     * Helper function to validate the component.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
-    protected function printComponentResults()
-    {
-        $this->io()->title('Results:');
-
-        $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
-        $skipOutdated = ($this->skipOutdated) ? '' : ' (Skipping)';
-
-        $this->io()->definitionList(
-            ['Mandatory module check ' => $this->componentCheckMandatoryFailed ? 'failed' : 'passed'],
-            ['Recommended module check ' => ($this->componentCheckRecommendedFailed ? 'failed' : 'passed') . ' (report only)'],
-            ['Insecure module check ' => $this->componentCheckInsecureFailed ? 'failed' : 'passed' . $skipInsecure],
-            ['Outdated module check ' => $this->componentCheckOutdatedFailed ? 'failed' : 'passed' . $skipOutdated],
-            ['Dev module check ' => $this->componentCheckDevVersionFailed ? 'failed' : 'passed'],
-            ['Evaluation module check ' => $this->componentCheckFailed ? 'failed' : 'passed'],
-            ['Dev module in require-dev check ' => $this->componentCheckDevCompRequireFailed ? 'failed' : 'passed'],
-            ['Drush require section check ' => $this->componentCheckDrushRequireFailed ? 'failed' : 'passed'],
-        );
-    }
-
-    /**
-     * Helper function to validate the component.
-     *
-     * @param array $package The package to validate.
-     * @param array $modules The modules list.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
-    protected function validateComponent($package, $modules)
-    {
-        // Only validate module components for this time.
-        if (!isset($package['type']) || $package['type'] !== 'drupal-module') {
-            return;
-        }
-        $packageName = $package['name'];
-        $hasBeenQaEd = isset($modules[$packageName]);
-        $wasRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
-        $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
-        $packageVersion = isset($package['extra']['drupal']['version']) ? explode('+', str_replace('8.x-', '', $package['extra']['drupal']['version']))[0] : $package['version'];
-        $allowedProjectTypes = !empty($modules[$packageName]['allowed_project_types']) ? $modules[$packageName]['allowed_project_types'] : '';
-        $allowedProfiles = !empty($modules[$packageName]['allowed_profiles']) ? $modules[$packageName]['allowed_profiles'] : '';
-
-        // Exclude invalid.
-        $packageVersion = in_array($packageVersion, $this->getConfig()->get('toolkit.invalid-versions')) ? $package['version'] : $packageVersion;
-
-        // If module was not reviewed yet.
-        if (!$hasBeenQaEd) {
-            $this->say("Package $packageName:$packageVersion has not been reviewed by QA.");
-            $this->componentCheckFailed = true;
-        }
-
-        // If module was rejected.
-        if ($hasBeenQaEd && $wasRejected) {
-            $projectId = $this->getConfig()->get('toolkit.project_id');
-            // Check if the module is allowed for this project id.
-            $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
-
-            // Check if the module is allowed for this type of project.
-            if (!$allowedInProject && !empty($allowedProjectTypes)) {
-                $allowedProjectTypes = array_map('trim', explode(',', $allowedProjectTypes));
-                // Load the project from the website.
-                $project = $this->getQaProjectInformation($projectId);
-                if (in_array($project['type'], $allowedProjectTypes)) {
-                    $allowedInProject = true;
+        $tokens = [];
+        $commitMsg = getenv('DRONE_COMMIT_MESSAGE') !== false ? getenv('DRONE_COMMIT_MESSAGE') : '';
+        $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMsg;
+        preg_match_all('/\[([^\]]*)\]/', $commitMsg, $findTokens);
+        if (isset($findTokens[1])) {
+            foreach ($findTokens[1] as $token) {
+                $transformedToken = strtolower(str_replace('-', '_', $token));
+                if ($transformedToken == 'skip_outdated') {
+                    $tokens['skipOutdated'] = true;
                 }
-            }
-
-            // Check if the module is allowed for this profile.
-            if (!$allowedInProject && !empty($allowedProfiles)) {
-                $allowedProfiles = array_map('trim', explode(',', $allowedProfiles));
-                // Load the project from the website.
-                $project = $this->getQaProjectInformation($projectId);
-                if (in_array($project['profile'], $allowedProfiles)) {
-                    $allowedInProject = true;
+                if ($transformedToken == 'skip_insecure') {
+                    $tokens['skipInsecure'] = true;
                 }
-            }
-
-            // If module was not allowed in project.
-            if (!$allowedInProject) {
-                $this->say("The use of $packageName:$packageVersion is {$modules[$packageName]['status']}. Contact QA Team.");
-                $this->componentCheckFailed = true;
-            }
-        }
-
-        if ($wasNotRejected) {
-            # Once all projects are using Toolkit >=4.1.0, the 'version' key
-            # may be removed from the endpoint: /api/v1/package-reviews.
-            $constraints = [ 'whitelist' => false, 'blacklist' => true ];
-            foreach ($constraints as $constraint => $result) {
-                $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
-
-                if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
-                    echo "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue." . PHP_EOL;
-                    $this->componentCheckFailed = true;
+                if ($transformedToken == 'skip_d9c') {
+                    $tokens['skipDus'] = true;
                 }
             }
         }
-    }
-
-    /**
-     * Helper function to check component's review information.
-     *
-     * @param array $modules The modules list.
-     *
-     * @throws \Robo\Exception\TaskException
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
-    protected function componentMandatory($modules)
-    {
-        $enabledPackages = $mandatoryPackages = [];
-        $drushBin = $this->getBin('drush');
-        // Check if the website is installed.
-        $result = $this->taskExec($drushBin . ' status --format=json')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
-        $status = json_decode($result, true);
-        if (empty($status['db-name'])) {
-            $config_file = $this->getConfig()->get('toolkit.clean.config_file');
-            $this->say("Website not installed, using $config_file file.");
-            if (file_exists($config_file)) {
-                $config = Yaml::parseFile($config_file);
-                $enabledPackages = array_keys(array_merge(
-                    $config['module'] ?? [],
-                    $config['theme'] ?? []
-                ));
-            } else {
-                $this->say("Config file not found at $config_file.");
-            }
-        } else {
-            // Get enabled packages.
-            $result = $this->taskExec($drushBin . ' pm-list --fields=status --format=json')
-                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-                ->run()->getMessage();
-            $projPackages = json_decode($result, true);
-            if (!empty($projPackages)) {
-                $enabledPackages = array_keys(array_filter($projPackages, function ($item) {
-                    return $item['status'] === 'Enabled';
-                }));
-            }
-        }
-
-        // Get mandatory packages.
-        if (!empty($modules)) {
-            $mandatoryPackages = array_values(array_filter($modules, function ($item) {
-                return $item['mandatory'] === '1';
-            }));
-        }
-
-        $diffMandatory = array_diff(array_column($mandatoryPackages, 'machine_name'), $enabledPackages);
-        if (!empty($diffMandatory)) {
-            foreach ($diffMandatory as $notPresent) {
-                $index = array_search($notPresent, array_column($mandatoryPackages, 'machine_name'));
-                $date = !empty($mandatoryPackages[$index]['mandatory_date']) ? ' (since ' . $mandatoryPackages[$index]['mandatory_date'] . ')' : '';
-                echo "Package $notPresent is mandatory$date and is not present on the project." . PHP_EOL;
-                $this->componentCheckMandatoryFailed = true;
-            }
-        }
-        if (!$this->componentCheckMandatoryFailed) {
-            $this->say('Mandatory components check passed.');
-        }
-    }
-
-    /**
-     * Helper function to check component's review information.
-     *
-     * @param array $modules The modules list.
-     * @param array $packages The packages to validate.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
-    protected function componentRecommended($modules, $packages)
-    {
-        $recommendedPackages = [];
-        // Get project packages.
-        $projectPackages = array_column($packages, 'name');
-        // Get recommended packages.
-        if (!empty($modules)) {
-            $recommendedPackages = array_values(array_filter($modules, function ($item) {
-                return strtolower($item['usage']) === 'recommended';
-            }));
-        }
-
-        $diffRecommended = array_diff(array_column($recommendedPackages, 'name'), $projectPackages);
-        if (!empty($diffRecommended)) {
-            foreach ($diffRecommended as $notPresent) {
-                $index = array_search($notPresent, array_column($recommendedPackages, 'name'));
-                $date = !empty($recommendedPackages[$index]['mandatory_date']) ? ' (and will be mandatory at ' . $recommendedPackages[$index]['mandatory_date'] . ')' : '';
-                echo "Package $notPresent is recommended$date but is not present on the project." . PHP_EOL;
-                $this->componentCheckRecommendedFailed = false;
-            }
-        }
-        if (!$this->componentCheckRecommendedFailed) {
-            $this->say('This step is in reporting mode, skipping.');
-        }
-    }
-
-    /**
-     * Helper function to check component's review information.
-     *
-     * @param array $modules The modules list.
-     *
-     * @throws \Robo\Exception\TaskException
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
-    protected function componentInsecure($modules)
-    {
-        $packages = [];
-        $drush_result = $this->taskExec($this->getBin('drush') . ' pm:security --format=json')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
-        $drush_result = trim($drush_result);
-        if (!empty($drush_result) && $drush_result !== '[]') {
-            $data = json_decode($drush_result, true);
-            if (!empty($data) && is_array($data)) {
-                $packages = $data;
-            }
-        }
-
-        $sc_result = $this->taskExec($this->getBin('security-checker') . ' security:check --no-dev --format=json')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
-        $sc_result = trim($sc_result);
-        if (!empty($sc_result) && $sc_result !== '[]') {
-            $data = json_decode($sc_result, true);
-            if (!empty($data) && is_array($data)) {
-                $packages = array_merge($packages, $data);
-            }
-        }
-
-        $messages = [];
-        foreach ($packages as $name => $package) {
-            $msg = "Package $name have a security update, please update to a safe version.";
-            if (!empty($modules[$name]['secure'])) {
-                if (Semver::satisfies($package['version'], $modules[$name]['secure'])) {
-                    $messages[] = "$msg (Version marked as secure)";
-                    continue;
-                }
-            }
-            $historyTerms = $this->getPackageDetails($name, $package['version'], '8.x');
-            if (!empty($historyTerms) && (empty($historyTerms['terms']) || !in_array('insecure', $historyTerms['terms']))) {
-                $messages[] = "$msg (Confirmation failed, ignored)";
-                continue;
-            }
-
-            $messages[] = $msg;
-            $this->componentCheckInsecureFailed = true;
-        }
-        if (!empty($messages)) {
-            $this->writeln($messages);
-        }
-
-        $fullSkip = getenv('QA_SKIP_INSECURE') !== false ? getenv('QA_SKIP_INSECURE') : false;
-        // Forcing skip due to issues with the security advisor date detection.
-        if ($fullSkip) {
-            $this->say('Globally Skipping security check for components.');
-            $this->componentCheckInsecureFailed = 0;
-        } elseif (!$this->componentCheckInsecureFailed) {
-            $this->say('Insecure components check passed.');
-        }
-    }
-
-    /**
-     * Helper function to check component's review information.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
-    protected function componentOutdated()
-    {
-        $result = $this->taskExec('composer outdated --direct --minor-only --format=json')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
-
-        $outdatedPackages = json_decode($result, true);
-
-        if (!empty($outdatedPackages['installed'])) {
-            if (is_array($outdatedPackages)) {
-                foreach ($outdatedPackages['installed'] as $outdatedPackage) {
-                    if (!array_key_exists('latest', $outdatedPackage)) {
-                        echo "Package " . $outdatedPackage['name'] . " does not provide information about last version." . PHP_EOL;
-                    } else {
-                        echo "Package " . $outdatedPackage['name'] . " with version installed " . $outdatedPackage["version"] . " is outdated, please update to last version - " . $outdatedPackage["latest"] . PHP_EOL;
-                        $this->componentCheckOutdatedFailed = true;
-                    }
-                }
-            }
-        }
-
-        $fullSkip = getenv('QA_SKIP_OUTDATED') !== false && getenv('QA_SKIP_OUTDATED');
-        if ($fullSkip) {
-            $this->say('Globally skipping outdated check for components.');
-            $this->componentCheckOutdatedFailed = 0;
-        } elseif (!$this->componentCheckOutdatedFailed) {
-            $this->say('Outdated components check passed.');
-        }
-    }
-
-    /**
-     * Curl function to access endpoint with or without authentication.
-     *
-     * This function is made publicly available as a static function for other
-     * projects to call. Then we have to maintain less code.
-     *
-     * @param string $url The QA endpoint url.
-     * @param string $basicAuth The basic auth.
-     *
-     * @return string
-     *   The endpoint content, or empty string if no session is generated.
-     *
-     * @throws \Exception
-     *
-     * @SuppressWarnings(PHPMD.MissingImport)
-     */
-    public static function getQaEndpointContent(string $url, string $basicAuth = ''): string
-    {
-        if (!($token = self::getQaSessionToken())) {
-            return '';
-        }
-
-        $content = '';
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 120);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 120);
-        if ($basicAuth !== '') {
-            $header = [
-                "Authorization: Basic $basicAuth",
-                "X-CSRF-Token: $token",
-            ];
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-        }
-        $result = curl_exec($curl);
-
-        if ($result !== false) {
-            $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            switch ($statusCode) {
-                // Upon success set the content to be returned.
-                case 200:
-                    $content = $result;
-                    break;
-                // Upon other status codes.
-                default:
-                    if ($basicAuth === '') {
-                        throw new \Exception(sprintf('Curl request to endpoint "%s" returned a %u.', $url, $statusCode));
-                    }
-                    // If we tried with authentication, retry without.
-                    $content = self::getQaEndpointContent($url);
-            }
-        }
-        if ($result === false) {
-            throw new \Exception(sprintf('Curl request to endpoint "%s" failed.', $url));
-        }
-        curl_close($curl);
-
-        return $content;
-    }
-
-    /**
-     * Helper to return the session token.
-     *
-     * @return string
-     *   The token or false if the request failed.
-     */
-    public static function getQaSessionToken(): string
-    {
-        if (!empty($GLOBALS['session_token'])) {
-            return $GLOBALS['session_token'];
-        }
-        $url = Toolkit::getQaWebsiteUrl();
-        $options = [
-            CURLOPT_RETURNTRANSFER => true,   // return web page
-            CURLOPT_HEADER         => false,  // don't return headers
-            CURLOPT_FOLLOWLOCATION => true,   // follow redirects
-            CURLOPT_MAXREDIRS      => 10,     // stop after 10 redirects
-            CURLOPT_ENCODING       => '',     // handle compressed
-            CURLOPT_USERAGENT      => 'Quality Assurance pipeline', // name of client
-            CURLOPT_AUTOREFERER    => true,   // set referrer on redirect
-            CURLOPT_CONNECTTIMEOUT => 120,    // time-out on connect
-            CURLOPT_TIMEOUT        => 120,    // time-out on response
-        ];
-        $ch = curl_init("$url/session/token");
-        curl_setopt_array($ch, $options);
-        $token = curl_exec($ch);
-        curl_close($ch);
-        $GLOBALS['session_token'] = $token;
-        return $token;
-    }
-
-    /**
-     * Helper to send a payload to the QA Website.
-     *
-     * @param array $fields
-     *   Data to send.
-     * @param string $auth
-     *   The Basic auth.
-     *
-     * @return string
-     *   The endpoint response code, or empty string if no session is generated.
-     *
-     * @throws \Exception
-     */
-    public static function postQaContent(array $fields, string $auth): string
-    {
-        $url = Toolkit::getQaWebsiteUrl();
-        if (!($token = self::getQaSessionToken())) {
-            return '';
-        }
-        $ch = curl_init($url . '/node?_format=hal_json');
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields, JSON_UNESCAPED_SLASHES));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/hal+json',
-            "X-CSRF-Token: $token",
-            "Authorization: Basic $auth",
-        ]);
-        curl_exec($ch);
-        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-        return (string) $code;
+        return $tokens;
     }
 
     /**
@@ -717,30 +117,27 @@ class ToolCommands extends AbstractCommands
      */
     public function drupalUpgradeStatus(): int
     {
-
-        $this->checkCommitMessage();
-
-        if (!$this->skipDus) {
+        // Execute by default, skip if token is given.
+        $commitTokens = ToolCommands::getCommitTokens();
+        if (isset($commitTokens['skipDus'])) {
             return 0;
         }
 
         // Prepare project.
-        $this->say("Preparing the project to run upgrade_status.");
+        $this->say('Preparing the project to run upgrade_status.');
         $drushBin = $this->getBin('drush');
         $collection = $this->collectionBuilder();
         // Require 'drupal/upgrade_status' if does not exist on the project.
         if (self::getPackagePropertyFromComposer('drupal/upgrade_status') == false) {
             $collection->taskComposerRequire()
-            ->dependency('drupal/upgrade_status', '^3')
-            ->dev()
-            ->run();
+                ->dependency('drupal/upgrade_status', '^3')
+                ->dev()->run();
         }
         // Require 'drupal/core-dev' if does not exist on the project.
         if (self::getPackagePropertyFromComposer('drupal/core-dev') == false) {
             $collection->taskComposerRequire()
-            ->dependency('drupal/core-dev')
-            ->dev()
-            ->run();
+                ->dependency('drupal/core-dev')
+                ->dev()->run();
         }
 
         // Build collection.
@@ -761,11 +158,7 @@ class ToolCommands extends AbstractCommands
         // Check flagged results.
         $qaCompatibilityResult = 0;
         if (is_string($result)) {
-            $flags = [
-                'Check manually',
-                'Fix now',
-            ];
-            foreach ($flags as $flag) {
+            foreach (['Check manually', 'Fix now'] as $flag) {
                 if (strpos($result, $flag) !== false) {
                     $qaCompatibilityResult = 1;
                 }
@@ -806,20 +199,21 @@ class ToolCommands extends AbstractCommands
     /**
      * Check project's .opts.yml file for forbidden commands.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *
      * @command toolkit:opts-review
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function optsReview()
     {
         if (file_exists('.opts.yml')) {
-            if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+            if (empty($basicAuth = Website::basicAuth())) {
                 return 1;
             }
             $project_id = $this->getConfig()->get('toolkit.project_id');
             $url = Toolkit::getQaWebsiteUrl();
             $url .= '/api/v1/project/ec-europa/' . $project_id . '-reference/information/constraints';
-            $result = self::getQaEndpointContent($url, $basicAuth);
+            $result = Website::get($url, $basicAuth);
             $result = json_decode($result, true);
             if (!isset($result['constraints'])) {
                 $this->io()->error('Failed to get constraints from the endpoint.');
@@ -849,7 +243,7 @@ class ToolCommands extends AbstractCommands
                                 $reviewOk = false;
                             }
                         } else {
-                            foreach ($command as $env => $subCommand) {
+                            foreach ($command as $subCommand) {
                                 $parsedCommand = explode(' ', $subCommand);
                                 if (in_array($forbiddenCommand, $parsedCommand)) {
                                     $this->say("The command '$subCommand' is not allowed. Please remove it from 'upgrade_commands' section.");
@@ -867,38 +261,6 @@ class ToolCommands extends AbstractCommands
             $this->say("Review 'opts.yml' file - Ok.");
             // If the review is ok return '0'.
             return 0;
-        }
-    }
-
-    /**
-     * Check the commit message for SKIPPING tokens.
-     */
-    protected function checkCommitMessage()
-    {
-        $this->skipOutdated = false;
-        $this->skipInsecure = false;
-        $this->skipDus = true;
-
-        $commitMsg = getenv('DRONE_COMMIT_MESSAGE') !== false ? getenv('DRONE_COMMIT_MESSAGE') : '';
-        $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMsg;
-
-        preg_match_all('/\[([^\]]*)\]/', $commitMsg, $findTokens);
-
-        if (isset($findTokens[1])) {
-            // Transform the message to a single token, last one will win.
-            foreach ($findTokens[1] as $token) {
-                $transformedToken = strtolower(str_replace('-', '_', $token));
-
-                if ($transformedToken == 'skip_outdated') {
-                    $this->skipOutdated = false;
-                }
-                if ($transformedToken == 'skip_insecure') {
-                    $this->skipInsecure = true;
-                }
-                if ($transformedToken == 'skip_d9c') {
-                    $this->skipDus = false;
-                }
-            }
         }
     }
 
@@ -947,69 +309,15 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Call release history of d.org to confirm security alert.
-     */
-    public function getPackageDetails($package, $version, $core)
-    {
-        $name = explode("/", $package)[1];
-        // Drupal core is an exception, we should use '/drupal/current'.
-        if ($package === 'drupal/core') {
-            $url = 'https://updates.drupal.org/release-history/drupal/current';
-        } else {
-            $url = 'https://updates.drupal.org/release-history/' . $name . '/' . $core;
-        }
-
-        $releaseHistory = $fullReleaseHistory = [];
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-        $header = [
-            'Content-Type' => 'application/hal+json'
-        ];
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-
-        $result = curl_exec($curl);
-
-        if ($result !== false) {
-            $fullReleaseHistory[$name] = simplexml_load_string($result);
-            $terms = [];
-            foreach ($fullReleaseHistory[$name]->releases as $release) {
-                foreach ($release as $releaseItem) {
-                    $versionTmp = str_replace($core . "-", "", (string) $releaseItem->version);
-
-                    if (!is_null($version) && Semver::satisfies($versionTmp, $version)) {
-                        foreach ($releaseItem->terms as $term) {
-                            foreach ($term as $termItem) {
-                                $terms[] = strtolower((string) $termItem->value);
-                            }
-                        }
-
-                        $releaseHistory = [
-                            'name' => $name,
-                            'version' => (string) $releaseItem->versions,
-                            'terms' => $terms,
-                            'date' => (string) $releaseItem->date,
-                        ];
-                    }
-                }
-            }
-            return $releaseHistory;
-        }
-
-        $this->say("No release history found.");
-        return 1;
-    }
-
-    /**
      * Check the Toolkit Requirements.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      *
      * @command toolkit:requirements
      *
      * @option endpoint The endpoint to get the requirements.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function toolkitRequirements(array $options = [
         'endpoint' => InputOption::VALUE_OPTIONAL,
@@ -1024,10 +332,10 @@ class ToolCommands extends AbstractCommands
         $php_check = $toolkit_check = $drupal_check = $endpoint_check = $nextcloud_check = $asda_check = 'FAIL';
         $php_version = $toolkit_version = $drupal_version = '';
 
-        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+        if (empty($basicAuth = Website::basicAuth())) {
             return 1;
         }
-        $result = self::getQaEndpointContent($options['endpoint'], $basicAuth);
+        $result = Website::get($options['endpoint'], $basicAuth);
         if ($result) {
             $endpoint_check = 'OK';
             $data = json_decode($result, true);
@@ -1177,7 +485,7 @@ class ToolCommands extends AbstractCommands
         $command = $script . ' ' . implode(' ', $params);
         $tasks[] = $this->taskExec($command);
 
-        $settings = $options['drupal_path']  . '/sites/default/settings.php';
+        $settings = $options['drupal_path'] . '/sites/default/settings.php';
         if (file_exists($settings)) {
             $tasks[] = $this->taskExec("chmod 440 $settings");
         }
@@ -1189,6 +497,8 @@ class ToolCommands extends AbstractCommands
      * Check the Toolkit version.
      *
      * @command toolkit:check-version
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitVersion()
     {
@@ -1196,16 +506,15 @@ class ToolCommands extends AbstractCommands
 
         $url = Toolkit::getQaWebsiteUrl();
         $endpoint = $url . '/api/v1/toolkit-requirements';
-        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+        if (empty($basicAuth = Website::basicAuth())) {
             return 1;
         }
         $toolkit_version = Toolkit::VERSION;
+
+        $result = Website::get($endpoint, $basicAuth);
         $min_version = '';
 
-        $result = self::getQaEndpointContent($endpoint, $basicAuth);
-        $min_version = '';
-
-        if (!($composer_version = self::getPackagePropertyFromComposer('ec-europa/toolkit'))) {
+        if (!(self::getPackagePropertyFromComposer('ec-europa/toolkit'))) {
             $this->writeln('Failed to get Toolkit version from composer.lock.');
         }
         if ($result) {
@@ -1253,6 +562,8 @@ class ToolCommands extends AbstractCommands
      *
      * @return false|mixed
      *   The property value, false if not found.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public static function getPackagePropertyFromComposer(string $package, string $prop = 'version', string $section = null)
     {
@@ -1295,10 +606,10 @@ class ToolCommands extends AbstractCommands
     {
         $url = Toolkit::getQaWebsiteUrl();
         $endpoint = $url . '/api/v1/toolkit-requirements';
-        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+        if (empty($basicAuth = Website::basicAuth())) {
             return 1;
         }
-        $result = self::getQaEndpointContent($endpoint, $basicAuth);
+        $result = Website::get($endpoint, $basicAuth);
 
         if ($result) {
             $data = json_decode($result, true);
@@ -1313,39 +624,6 @@ class ToolCommands extends AbstractCommands
         }
         $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
         return 1;
-    }
-
-    /**
-     * Return the QA API BASIC AUTH from token or from questions.
-     *
-     * @return string
-     *   The Basic auth or empty string if fails.
-     */
-    public function getQaApiBasicAuth(): string
-    {
-        if (!empty($GLOBALS['basic_auth'])) {
-            return $GLOBALS['basic_auth'];
-        }
-        $auth = getenv('QA_API_BASIC_AUTH');
-        if (empty($auth)) {
-            $this->say('Missing env var QA_API_BASIC_AUTH, asking for access.');
-            if (empty($user = $this->ask('Please insert your username:'))) {
-                $this->writeln('<error>The username cannot be empty!</error>');
-                return '';
-            }
-            if (empty($pass = $this->ask('Please insert your password:', true))) {
-                $this->writeln('<error>The password cannot be empty!</error>');
-                return '';
-            }
-            $auth = base64_encode("$user:$pass");
-            $this->writeln([
-                'Your token has been generated, please add it to your environment variables.',
-                '    export QA_API_BASIC_AUTH="' . $auth . '"',
-            ]);
-            $GLOBALS['basic_auth'] = $auth;
-        }
-
-        return $auth;
     }
 
     /**
@@ -1380,6 +658,9 @@ class ToolCommands extends AbstractCommands
      * @option opts-review Execute the command toolkit:opts-review.
      * @option lint-php Execute the command toolkit:lint-php.
      * @option lint-yaml Execute the command toolkit:lint-yaml.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitCodeReview(array $options = [
         'phpcs' => InputOption::VALUE_NONE,
@@ -1464,43 +745,14 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Returns the Project information from the QA Website.
-     *
-     * @param $project_id
-     *   The project ID to use.
-     *
-     * @return false|array
-     *   An array with the Project information, false if fails.
-     *
-     * @throws \Exception
-     */
-    public function getQaProjectInformation($project_id)
-    {
-        if (!isset($GLOBALS['projects'])) {
-            $GLOBALS['projects'] = [];
-        }
-        if (!empty($GLOBALS['projects'][$project_id])) {
-            return $GLOBALS['projects'][$project_id];
-        }
-        $url = Toolkit::getQaWebsiteUrl();
-        $endpoint = "$url/api/v1/project/ec-europa/$project_id-reference/information";
-        $project = self::getQaEndpointContent($endpoint, $this->getQaApiBasicAuth());
-        $project = json_decode($project, true);
-        $project = reset($project);
-        if (!empty($project['name']) && $project['name'] === "$project_id-reference") {
-            $GLOBALS['projects'][$project_id] = $project;
-            return $project;
-        }
-
-        return false;
-    }
-
-    /**
      * Install packages present in the opts.yml file under extra_pkgs section.
      *
      * @command toolkit:install-dependencies
      *
      * @option print Shows output from apt commands.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitInstallDependencies(array $options = [
         'print' => InputOption::VALUE_NONE,

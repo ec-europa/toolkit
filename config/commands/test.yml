@@ -11,6 +11,13 @@ command:
         execution: ${toolkit.test.phpunit.execution}
         from: ${toolkit.test.phpunit.from}
         to: ${toolkit.test.phpunit.to}
+    test-phpmd:
+      options:
+        config: ${toolkit.test.phpmd.config}
+        format: ${toolkit.test.phpmd.format}
+        ignore_patterns: ${toolkit.test.phpmd.ignore_patterns}
+        triggered_by: ${toolkit.test.phpmd.triggered_by}
+        files: ${toolkit.test.phpmd.files}
     test-phpstan:
       options:
         files: ${toolkit.test.phpstan.files}
