@@ -12,6 +12,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Provides commands to interact with git hooks.
+ *
+ * @SuppressWarnings("unused")
  */
 class GitHookCommands extends AbstractCommands
 {
@@ -90,12 +92,11 @@ class GitHookCommands extends AbstractCommands
     ])
     {
         $config = $this->getConfig()->get('toolkit.hooks');
-        $return = ResultData::EXITCODE_OK;
 
         $hooks = !empty($options['hooks']) ? explode(',', $options['hooks']) : $config['active'];
         if (empty($hooks)) {
             $this->io()->say('No active hooks to disable, run toolkit:hooks-delete-all to delete them all.');
-            return $return;
+            return ResultData::EXITCODE_OK;
         }
 
         foreach ($hooks as $hook) {
@@ -106,7 +107,7 @@ class GitHookCommands extends AbstractCommands
             $this->_remove(Toolkit::getProjectRoot() . '/.git/hooks/' . $hook);
         }
 
-        return $return;
+        return ResultData::EXITCODE_OK;
     }
 
     /**
@@ -136,6 +137,9 @@ class GitHookCommands extends AbstractCommands
      * List available hooks and its status.
      *
      * @command toolkit:hooks-list
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function hooksList()
     {
@@ -284,7 +288,6 @@ class GitHookCommands extends AbstractCommands
         $message = trim(file_get_contents($args['arg1']));
         $config = $this->getConfig()->get('toolkit.hooks');
         $conditions = $config['prepare-commit-msg']['conditions'];
-        $return = ResultData::EXITCODE_OK;
         $problems = [];
         foreach ($conditions as $condition) {
             preg_match($condition['regex'], $message, $matches);

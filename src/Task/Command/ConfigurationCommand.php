@@ -91,6 +91,10 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * @return CollectionBuilder
      *
      * @throws TaskException
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function taskExecute($task)
     {

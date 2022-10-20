@@ -44,8 +44,7 @@ pipeline:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     commands:
-      - ./vendor/bin/phpcs -i
-      - ./vendor/bin/phpcs -p
+      - ./run toolkit:test-phpcs || echo "Fail"
 
   phpunit:
     group: test

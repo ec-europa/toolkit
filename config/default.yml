@@ -92,12 +92,17 @@ toolkit:
       from: behat.yml.dist
       to: behat.yml
       profile: default
+      commands:
+        before: [ ]
+        after: [ ]
     phpunit:
       options: ''
       execution: default
       from: phpunit.xml.dist
       to: phpunit.xml
-      commands: [ ]
+      commands:
+        before: [ ]
+        after: [ ]
     blackfire:
       uuid:
       pages:
