@@ -53,31 +53,6 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Display toolkit notifications.
-     *
-     * @command toolkit:notifications
-     *
-     * @option endpoint The endpoint for the notifications
-     *
-     * @deprecated
-     */
-    public function displayNotifications(array $options = [
-        'endpoint' => InputOption::VALUE_OPTIONAL,
-    ])
-    {
-        $this->output->writeln('<comment>This command is deprecated and will be removed!</comment>');
-        $endpointUrl = $options['endpoint'];
-
-        if (isset($endpointUrl)) {
-            $result = Website::get($endpointUrl);
-            $data = json_decode($result, true);
-            foreach ($data as $notification) {
-                $this->io()->warning($notification['title'] . PHP_EOL . $notification['notification']);
-            }
-        }
-    }
-
-    /**
      * Check the commit message for SKIPPING tokens.
      *
      * @return array
@@ -211,7 +186,7 @@ class ToolCommands extends AbstractCommands
                 return 1;
             }
             $project_id = $this->getConfig()->get('toolkit.project_id');
-            $url = Toolkit::getQaWebsiteUrl();
+            $url = Website::url();
             $url .= '/api/v1/project/ec-europa/' . $project_id . '-reference/information/constraints';
             $result = Website::get($url, $basicAuth);
             $result = json_decode($result, true);
@@ -325,9 +300,8 @@ class ToolCommands extends AbstractCommands
     {
         $this->say("Checking Toolkit requirements:\n");
 
-        $url = Toolkit::getQaWebsiteUrl();
-        if (empty($options['endpoint'])) {
-            $options['endpoint'] = $url . '/api/v1/toolkit-requirements';
+        if (!empty($options['endpoint'])) {
+            Website::setUrl($options['endpoint']);
         }
         $php_check = $toolkit_check = $drupal_check = $endpoint_check = $nextcloud_check = $asda_check = 'FAIL';
         $php_version = $toolkit_version = $drupal_version = '';
@@ -335,7 +309,7 @@ class ToolCommands extends AbstractCommands
         if (empty($basicAuth = Website::basicAuth())) {
             return 1;
         }
-        $result = Website::get($options['endpoint'], $basicAuth);
+        $result = Website::get(Website::url() . '/api/v1/toolkit-requirements', $basicAuth);
         if ($result) {
             $endpoint_check = 'OK';
             $data = json_decode($result, true);
@@ -504,7 +478,7 @@ class ToolCommands extends AbstractCommands
     {
         $this->say("Checking Toolkit version:\n");
 
-        $url = Toolkit::getQaWebsiteUrl();
+        $url = Website::url();
         $endpoint = $url . '/api/v1/toolkit-requirements';
         if (empty($basicAuth = Website::basicAuth())) {
             return 1;
@@ -604,12 +578,10 @@ class ToolCommands extends AbstractCommands
      */
     public function toolkitVendorList()
     {
-        $url = Toolkit::getQaWebsiteUrl();
-        $endpoint = $url . '/api/v1/toolkit-requirements';
         if (empty($basicAuth = Website::basicAuth())) {
             return 1;
         }
-        $result = Website::get($endpoint, $basicAuth);
+        $result = Website::get(Website::url() . '/api/v1/toolkit-requirements', $basicAuth);
 
         if ($result) {
             $data = json_decode($result, true);

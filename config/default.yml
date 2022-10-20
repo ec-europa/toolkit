@@ -167,12 +167,6 @@ toolkit:
     php:
       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
       exclude: [ 'vendor/', 'web/' ]
-  tool:
-    notifications:
-      endpoint: 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/notifications'
-    whitelist-components:
-      endpoint: 'https://webgate.ec.europa.eu/fpfis/qa/api/v1/package-reviews?version=8.x'
-      blocker: true
   invalid-versions:
     - 1.x
     - 2.x

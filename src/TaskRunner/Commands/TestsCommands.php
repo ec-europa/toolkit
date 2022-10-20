@@ -743,7 +743,7 @@ class TestsCommands extends AbstractCommands
             }
 
             // Send payload to QA website.
-            $url = Toolkit::getQaWebsiteUrl();
+            $url = Website::url();
             if (!empty($repo)) {
                 $payload = [
                     '_links' => ['type' => [

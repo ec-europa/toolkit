@@ -37,18 +37,6 @@ final class Toolkit
     }
 
     /**
-     * Returns the QA base url.
-     *
-     * @return string
-     *   The base url.
-     */
-    public static function getQaWebsiteUrl(): string
-    {
-        $url = getenv('QA_WEBSITE_URL');
-        return !empty($url) ? $url : 'https://webgate.ec.europa.eu/fpfis/qa';
-    }
-
-    /**
      * Returns whether is running in CI/CD environment.
      *
      * @return bool

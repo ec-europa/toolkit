@@ -36,7 +36,7 @@ class ComponentCheckCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function componentCheck(array $options = [
-        'endpoint' => InputOption::VALUE_REQUIRED,
+        'endpoint' => InputOption::VALUE_OPTIONAL,
         'test-command' => false,
     ])
     {
