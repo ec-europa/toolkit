@@ -12,6 +12,7 @@ use Robo\Robo;
  */
 class ConfigurationCommands extends AbstractCommands
 {
+
     /**
      * Execute a configuration command.
      */
@@ -23,4 +24,5 @@ class ConfigurationCommands extends AbstractCommands
         $tasks = $command->getAnnotationData()['tasks'];
         return $this->taskExecute($tasks);
     }
+
 }

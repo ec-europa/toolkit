@@ -17,6 +17,7 @@ namespace EcEuropa\Toolkit\Tests\Commands {
      */
     class DrupalCommandsTest extends AbstractTest
     {
+
         /**
          * Data provider for testDrupalSettingsSetup.
          *
@@ -73,6 +74,7 @@ namespace EcEuropa\Toolkit\Tests\Commands {
                 $this->assertContainsNotContains($content, $row);
             }
         }
+
     }
 }
 

@@ -20,6 +20,7 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class CloneCommands extends AbstractCommands
 {
+
     /**
      * {@inheritdoc}
      */
@@ -461,4 +462,5 @@ class CloneCommands extends AbstractCommands
         }
         return $tmp_folder;
     }
+
 }

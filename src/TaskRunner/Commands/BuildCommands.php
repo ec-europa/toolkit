@@ -16,6 +16,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class BuildCommands extends AbstractCommands
 {
+
     /**
      * {@inheritdoc}
      */
@@ -391,4 +392,5 @@ class BuildCommands extends AbstractCommands
             return 0;
         }
     }
+
 }

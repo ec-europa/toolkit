@@ -437,4 +437,5 @@ if (file_exists(\$app_root . '/' . \$site_path . '/settings.override.php')) {
 
 EOF;
     }
+
 }

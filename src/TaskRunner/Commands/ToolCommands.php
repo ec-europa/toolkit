@@ -21,6 +21,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ToolCommands extends AbstractCommands
 {
+
     /**
      * {@inheritdoc}
      */
@@ -799,4 +800,5 @@ class ToolCommands extends AbstractCommands
         $table->render();
         return $return;
     }
+
 }

@@ -11,6 +11,7 @@ namespace EcEuropa\Toolkit\Task\File;
  */
 trait Tasks
 {
+
     /**
      * Process the file.
      *
@@ -23,4 +24,5 @@ trait Tasks
     {
         return $this->task(Process::class, $source, $destination);
     }
+
 }

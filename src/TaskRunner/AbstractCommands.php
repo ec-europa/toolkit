@@ -10,7 +10,6 @@ use Robo\Contract\ConfigAwareInterface;
 use Robo\Exception\TaskException;
 use Robo\Robo;
 use Robo\Tasks;
-use Symfony\Component\Console\Event\ConsoleCommandEvent;
 
 /**
  * Class AbstractCommands.
@@ -106,4 +105,5 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
         }
         return $this->getConfig()->get($key, $default);
     }
+
 }

@@ -18,6 +18,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class TestsCommands extends AbstractCommands
 {
+
     /**
      * {@inheritdoc}
      */
@@ -756,9 +757,11 @@ class TestsCommands extends AbstractCommands
             $url = Website::url();
             if (!empty($repo)) {
                 $payload = [
-                    '_links' => ['type' => [
-                        'href' => $url . '/rest/type/node/blackfire',
-                    ]],
+                    '_links' => [
+                        'type' => [
+                            'href' => $url . '/rest/type/node/blackfire',
+                        ],
+                    ],
                     'type' => [['target_id' => 'blackfire']],
                     'title' => [['value' => "Profiling: $project_id"]],
                     'body' => [['value' => $raw]],
@@ -791,4 +794,5 @@ class TestsCommands extends AbstractCommands
 
         return new ResultData(0);
     }
+
 }

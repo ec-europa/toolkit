@@ -582,4 +582,5 @@ class ComponentCheckCommands extends AbstractCommands
             ],
         ];
     }
+
 }

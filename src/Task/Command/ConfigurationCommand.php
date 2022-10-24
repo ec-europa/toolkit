@@ -301,4 +301,5 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
         ];
         return $defaults[$key] ?? '';
     }
+
 }

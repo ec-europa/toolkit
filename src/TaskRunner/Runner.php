@@ -343,4 +343,5 @@ class Runner
             $this->application->add($command);
         }
     }
+
 }
