@@ -209,7 +209,6 @@ class DrupalCommands extends AbstractCommands
      * @option account-name           Admin account name.
      * @option account-password       Admin account password.
      * @option account-mail           Admin email.
-     * @option database-type          Deprecated, use "database-scheme"
      * @option database-scheme        Database scheme.
      * @option database-host          Database host.
      * @option database-port          Database port.
@@ -217,7 +216,6 @@ class DrupalCommands extends AbstractCommands
      * @option database-user          Database username.
      * @option database-password      Database password.
      * @option sites-subdir           Sites sub-directory.
-     * @option config-dir             Deprecated, use "existing-config" for Drupal 8.6 and higher.
      * @option existing-config        Whether existing config should be imported during installation.
      * @option skip-permissions-setup Whether to skip making the settings file and folder writable during installation.
      *
@@ -249,18 +247,10 @@ class DrupalCommands extends AbstractCommands
         'skip-permissions-setup' => false,
     ])
     {
-        if ($options['database-type']) {
-            $message = "'database-type' is deprecated and will be removed in 1.0.0. Use 'database-scheme' instead.";
-            $this->io()->warning($message);
-            $options['database-scheme'] = $options['database-type'];
-        }
-        if ($options['config-dir']) {
-            $this->io()->warning("The 'config-dir' option is deprecated. Use 'existing-config' instead.");
-            $options['existing-config'] = true;
-        }
-
-        $drush = $this->getBin('drush');
-        $exec_args = [];
+        $exec_args = [
+            'site:install',
+            $options['site-profile'],
+        ];
         $exec_options = [
             'root' => getcwd() . '/' . $options['root'] . '/',
             'site-name' => $options['site-name'],
@@ -295,7 +285,7 @@ class DrupalCommands extends AbstractCommands
             $tasks[] = $this->drupalPermissionsSetup($options);
         }
 
-        $tasks[] = $this->taskExec("$drush site:install {$options['site-profile']}")
+        $tasks[] = $this->taskExec($this->getBin('drush'))
             ->args($exec_args)
             ->options($exec_options, '=')
             ->option('-y');

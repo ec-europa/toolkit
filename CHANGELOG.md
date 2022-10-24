@@ -1,5 +1,11 @@
 # Toolkit change log
 
+## Version 9.0.0
+  - DQA-0000: Update support email and README. by @joaocsilva in #553
+  - DQA-4585: Make pipeline fail if package is not found. by @joaocsilva in #554
+  - DQA-4745: Add Git hook commands. by @joaocsilva in #556
+  - DQA-4440: Drop grumphp dependency and set minium PHP version to 8.1. by @joaocsilva in #555
+
 ## Version 8.5.1
   - Support version 1 and 2 of openeuropa/task-runner
 
