@@ -6,12 +6,6 @@ workspace:
   base: /test
   path: toolkit
 
-services:
-  web:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.4}-ci
-    environment:
-      - DOCUMENT_ROOT=/test/toolkit
-
 pipeline:
   composer-install:
     group: composer
