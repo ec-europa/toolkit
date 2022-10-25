@@ -24,3 +24,6 @@ command:
     settings-setup:
       options:
         force: ${drupal.site.force}
+    drush-setup:
+      options:
+        config-dir: ${drupal.root}/drush

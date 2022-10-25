@@ -8,6 +8,7 @@ use Consolidation\AnnotatedCommand\CommandData;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Drupal commands to setup and install a Drupal 8 site.
@@ -188,6 +189,39 @@ class DrupalCommands extends AbstractCommands
                 throw new \Exception(sprintf($message, $requiredFile));
             }
         }
+    }
+
+    /**
+     * Write Drush configuration file at "${drupal.root}/drush/drush.yml".
+     *
+     * Configuration file contents can be customized by editing "drupal.drush"
+     * values in your local runner.yml.dist/runner.yml, as shown below:
+     *
+     * > drupal:
+     * >   drush:
+     * >     options:
+     * >       ignored-directories: "${drupal.root}"
+     * >       uri: "${drupal.base_url}"
+     *
+     * @param array $options
+     *
+     * @command drupal:drush-setup
+     *
+     * @option root         Drupal root.
+     * @option config-dir   Directory where to store Drush 9 configuration file.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     */
+    public function drupalDrushSetup(array $options = [
+        'root' => InputOption::VALUE_REQUIRED,
+        'config-dir' => InputOption::VALUE_REQUIRED,
+    ])
+    {
+        $config = $this->getConfig();
+        $yaml = Yaml::dump($config->get('drupal.drush'));
+        return $this->collectionBuilder()->addTask(
+            $this->taskWriteToFile($options['config-dir'] . '/drush.yml')->text($yaml)
+        );
     }
 
     /**

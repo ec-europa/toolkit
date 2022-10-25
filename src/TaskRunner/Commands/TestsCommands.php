@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
+use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Exception\AbortTasksException;
 use Robo\Exception\TaskException;
 use Robo\ResultData;
@@ -371,7 +372,8 @@ class TestsCommands extends AbstractCommands
         $this->taskProcess($options['from'], $options['to'])->run();
 
         $result = $this->taskExec($behatBin)->options($execOpts + ['dry-run' => null], '=')
-            ->silent(true)->run()->getMessage();
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
         if (str_contains(trim($result), 'No scenarios')) {
             $this->say("No Scenarios found for profile {$execOpts['profile']}, please create at least one Scenario.");
             return new ResultData(1);
