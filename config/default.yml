@@ -33,6 +33,9 @@ drupal:
     password: ""
   # Following lines will be converted in PHP and appended to default.settings.php.
   settings: [ ]
+  drush:
+    options:
+      uri: "${drupal.base_url}"
   # List of shell commands to be before and after the site installation.
   # You can use same syntax as the "commands:", check the documentation for more.
   # Configuration token replacement is supported too.
