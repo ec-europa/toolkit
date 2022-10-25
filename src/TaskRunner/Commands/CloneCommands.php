@@ -90,6 +90,7 @@ class CloneCommands extends AbstractCommands
         // Default deployment sequence.
         $drush_dir = $this->getBin('drush');
         $tasks[] = $this->taskExec($drush_dir . ' state:set system.maintenance_mode 1 --input-format=integer -y');
+        $tasks[] = $this->taskExec($drush_dir . ' updatedb -y --no-post-updates');
         $tasks[] = $this->taskExec($drush_dir . ' updatedb -y');
         if ($has_config) {
             $tasks[] = $this->taskExec($this->getBin('run') . ' toolkit:import-config');
@@ -106,7 +107,7 @@ class CloneCommands extends AbstractCommands
      * @param array $options
      *   Command options.
      *
-     * @return \Robo\Collection\CollectionBuilder
+     * @return \Robo\Collection\CollectionBuilder|int
      *   Collection builder.
      *
      * @command toolkit:install-dump

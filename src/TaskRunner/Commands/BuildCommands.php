@@ -63,18 +63,11 @@ class BuildCommands extends AbstractCommands
         'root' => InputOption::VALUE_REQUIRED,
         'dist-root' => InputOption::VALUE_REQUIRED,
         'keep' => InputOption::VALUE_REQUIRED,
+        'remove' => InputOption::VALUE_REQUIRED,
         'tag' => InputOption::VALUE_OPTIONAL,
         'sha' => InputOption::VALUE_OPTIONAL,
-        'remove' => InputOption::VALUE_REQUIRED,
     ])
     {
-        if ($options['tag']) {
-            @trigger_error('Passing the --tag option is deprecated in ec-europa/toolkit:4.1.0 and is removed from ec-europa/toolkit:5.0.0. The tag is automatically computed.', E_USER_DEPRECATED);
-        }
-        if ($options['sha']) {
-            @trigger_error('Passing the --sha option is deprecated in ec-europa/toolkit:4.1.0 and is removed from ec-europa/toolkit:5.0.0. The commit SHA is automatically computed.', E_USER_DEPRECATED);
-        }
-
         $tasks = [];
 
         // Delete and (re)create the dist folder.
