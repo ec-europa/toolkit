@@ -332,10 +332,6 @@ class TestsCommands extends AbstractCommands
                     'paths' => array_values($options['files']),
                     'excludePaths' => $ignores,
                 ],
-                'includes' => [
-                    'vendor/mglaman/phpstan-drupal/extension.neon',
-                    'vendor/phpstan/phpstan-deprecation-rules/rules.neon',
-                ],
             ];
             $tasks[] = $this->taskWriteToFile($options['config'])
                 ->text(Yaml::dump($config_content, 10, 2));
