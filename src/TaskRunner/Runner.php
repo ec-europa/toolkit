@@ -98,6 +98,7 @@ class Runner
         'toolkit.test.phpmd.triggered_by',
         'toolkit.test.phpmd.files',
         'toolkit.test.phpstan.files',
+        'toolkit.test.phpstan.ignores',
         'toolkit.lint.eslint.ignores',
         'toolkit.lint.eslint.extensions_yaml',
         'toolkit.lint.eslint.extensions_js',

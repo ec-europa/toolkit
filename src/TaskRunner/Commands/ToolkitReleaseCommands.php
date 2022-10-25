@@ -65,7 +65,7 @@ class ToolkitReleaseCommands extends AbstractCommands
         $result = $this->taskExec('git')
             ->arg('log')
             ->arg($latest_version . '...' . $this->releaseBranch)
-            ->option('pretty', '  - %s by %an', '=')
+            ->option('pretty', '  - %s', '=')
             ->option('no-merges')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()
@@ -106,7 +106,7 @@ class ToolkitReleaseCommands extends AbstractCommands
         $this->taskGitStack()->stopOnFail()
             ->add('-A')
             ->commit("Prepare release $version")
-            ->push('origin', 'release/9.x')
+            ->push('origin', $this->releaseBranch)
             ->run();
 
         $answer = $this->ask('The changelog was pushed, do you want to create and push the tag? (yes/no) [no]');

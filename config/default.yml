@@ -158,9 +158,10 @@ toolkit:
         - lib
         - src
     phpstan:
-      files:
-        - lib
-        - src
+      config: phpstan.neon
+      level: 1
+      files: [ 'lib', 'src' ]
+      ignores: [ 'vendor' ]
   lint:
     eslint:
       config: .eslintrc.json

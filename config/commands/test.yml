@@ -20,6 +20,8 @@ command:
         files: ${toolkit.test.phpmd.files}
     test-phpstan:
       options:
+        config: ${toolkit.test.phpstan.config}
+        level: ${toolkit.test.phpstan.level}
         files: ${toolkit.test.phpstan.files}
     setup-eslint:
       options:
