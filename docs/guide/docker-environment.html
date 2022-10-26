@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-            <title>Toolkit</title>
+                    <title>Toolkit</title>
     
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <base href="../">
     <link rel="icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
@@ -131,33 +132,111 @@
 </aside>
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <h2>Documentation</h2>
+                    <div class="section" id="docker-environment">
+<h1>Docker environment</h1>
+<p>By default, Docker Compose reads two files, a <code>docker-compose.yml</code> and an optional <code>docker-compose.override.yml</code> file.
+By convention, the <code>docker-compose.yml</code> contains your base configuration and it's provided by default.
+The override file, as its name implies, can contain configuration overrides for existing services or entirely new
+services.
+If a service is defined in both files, Docker Compose merges the configurations.</p>
+<p>Find more information on Docker Compose extension mechanism on
+<a href="https://docs.docker.com/compose/extends/">the official Docker Compose documentation</a>.</p>
+<p>The following configuration parameters are provided as environment variables in the <code>./.env</code> file:</p>
+<blockquote><p><em> - Name
+  - Description
+</em> - <code>DRUPAL_DATABASE_NAME</code>
+  - Database name
+<em> - <code>DRUPAL_DATABASE_USERNAME</code>
+  - Database username
+</em> - <code>DRUPAL_DATABASE_PASSWORD</code>
+  - Database password
+<em> - <code>DRUPAL_DATABASE_PREFIX</code>
+  - Database prefix
+</em> - <code>DRUPAL_DATABASE_HOST</code>
+  - Database host
+<em> - <code>DRUPAL_DATABASE_PORT</code>
+  - Database port
+</em> - <code>DRUPAL_SPARQL_HOSTNAME</code>
+  - SPARQL hostname
+<em> - <code>DRUPAL_SPARQL_PORT</code>
+  - SPARQL port
+</em> - <code>DRUPAL_CAS_HOSTNAME</code>
+  - EULogin hostname, use <code>ecas.ec.europa.eu</code> for production
+<em> - <code>DRUPAL_CAS_PORT</code>
+  - EULogin port, use <code>443</code> for production
+</em> - <code>DRUPAL_ACCOUNT_USERNAME</code>
+  - Drupal admin account, defaults to <code>admin</code> if empty
+<em> - <code>DRUPAL_ACCOUNT_PASSWORD</code>
+  - Drupal admin password, defaults to random string if empty
+</em> - <code>DRUPAL_BASE_URL</code>
+  - Drupal site base URL, used to setup Behat tests
+<em> - <code>DRUPAL_WEBTOOLS_ANALYTICS_SITE_ID</code>
+  - Drupal site unique identifier
+</em> - <code>DRUPAL_WEBTOOLS_ANALYTICS_SITE_PATH</code>
+- The domain + root path without protocol.</p>
+</blockquote>
+<p>Environment variables will be loaded by Docker Compose when running <code>docker-compose up -d</code>.</p>
+<div class="section" id="subsite-configuration">
+<h2>Subsite configuration</h2>
+<p>By default, subsite configuration go into file <code>runner.yml.dist</code>\ , see bellow an example.</p>
+<pre><code class="language- " >drupal:
+  root: &quot;web&quot;
+  base_url: ${env.DRUPAL_BASE_URL}
+  site:
+    profile: &quot;standard&quot;
+    name: &quot;Drupal website configuration goes here!&quot;
+    generate_db_url: false
+  account:
+    name: ${env.DRUPAL_ACCOUNT_USERNAME}
+    password: ${env.DRUPAL_ACCOUNT_PASSWORD}
 
-    
-    <h3 id="packages">
-    Packages
-    <a href="#packages" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
-
-<dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -package"><a href="packages/Toolkit.html"><abbr title="\Toolkit">Toolkit</abbr></a></dt>
-    </dl>
-
-<h3 id="namespaces">
-    Namespaces
-    <a href="#namespaces" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
-
-<dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -namespace"><a href="namespaces/eceuropa.html"><abbr title="\EcEuropa">EcEuropa</abbr></a></dt>
-    </dl>
+selenium:
+  host: &quot;http://selenium&quot;
+  port: &quot;4444&quot;
+  browser: &quot;chrome&quot;
+</code></pre>
+</div>
+<div class="section" id="other-topics">
+<h2>Other topics</h2>
 
 
+<ul>
+    <li>
+            <a href="/docs/guide/setting-up-project.rst">Setting up a project</a>
+        </li>
+    <li>
+            <a href="/docs/guide/configuring-project.rst">Configuring a project</a>
+        </li>
+    <li>
+            <a href="/docs/guide/installing-project.rst">Installing the project</a>
+        </li>
+    <li>
+            <a href="/docs/guide/testing-project.rst">Testing the project</a>
+        </li>
+    <li>
+            Using Docker environment
+        </li>
+    <li>
+            <a href="/docs/guide/continuous-integration.rst">Continuous integration</a>
+        </li>
+    <li>
+            <a href="/docs/guide/building-assets.rst">Building assets</a>
+        </li>
+    <li>
+            <a href="/docs/guide/commands.rst">Commands</a>
+        </li>
+    <li>
+            <a href="/docs/guide/git-hooks.rst">Git Hooks</a>
+        </li>
+    <li>
+            <a href="/docs/guide/project-documentation.rst">Update Project Documentation</a>
+        </li>
+    <li>
+            <a href="/CHANGELOG.md">Changelog</a>
+        </li>
+</ul>
+</div>
 
-
-    
-
-    
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
@@ -171,7 +250,7 @@
 </section>
             </div>
         </div>
-        <a href="index.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

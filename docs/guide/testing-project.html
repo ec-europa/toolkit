@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-            <title>Toolkit</title>
+                    <title>Toolkit</title>
     
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <base href="../">
     <link rel="icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
@@ -131,33 +132,209 @@
 </aside>
 
             <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <h2>Documentation</h2>
-
-    
-    <h3 id="packages">
-    Packages
-    <a href="#packages" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
-
-<dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -package"><a href="packages/Toolkit.html"><abbr title="\Toolkit">Toolkit</abbr></a></dt>
-    </dl>
-
-<h3 id="namespaces">
-    Namespaces
-    <a href="#namespaces" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
-
-<dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -namespace"><a href="namespaces/eceuropa.html"><abbr title="\EcEuropa">EcEuropa</abbr></a></dt>
-    </dl>
+                    <div class="section" id="testing-the-project">
+<h1>Testing the project</h1>
+<p>This guide explains how to use the resources provided by toolkit to test your
+project. You can list all resources available with the following command:</p>
+<div class="section" id="behat-testing">
+<h2>Behat testing</h2>
+<p>To run behat tests you can make use of the <code>toolkit:test-behat</code> command. This will
+re-generate your behat configuration from <code>./behat.yml.dist</code> and run it on your
+current site installation.</p>
+<p>New tests should be stored in <code>./tests/features/</code> folder, then they will be executed
+automatically by toolkit task.</p>
+<p>To run the behat tests:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:test-behat
+</code></pre>
+<p>CICD will pick the default profile to run against clone install and clean profile to run against clean install.</p>
 
 
+<ul>
+    <li>
+            default profile: executed against clone-install
+        </li>
+    <li>
+            clean profile: executed against clean-install
+        </li>
+</ul>
+<p>The default configuration for this is to have the following defined in your
+<code>./behat.yml.dist</code> file:</p>
+<pre><code class="language-yaml " >default:
+  suites:
+    default:
+    ...
+clean:
+  suites:
+    default:
+    ...
+</code></pre>
+<div class="section" id="commands-to-run-before-after-behat-tests">
+<h3>Commands to run before/after Behat tests</h3>
+<p>Additional commands can be run before and/or after the test. Such commands
+should be defined in the <code>./runner.yml.dist</code> or <code>./runner.yml</code> files:</p>
+<pre><code class="language-yaml " >toolkit:
+  test:
+    behat:
+      commands:
+        before:
+          - task: exec
+            command: ls -la
+          - ...
+        after:
+          - task: exec
+            command: whoami
+          - ...
+</code></pre>
+</div>
+</div>
+<div class="section" id="phpcs-testing">
+<h2>PHPCS testing</h2>
+<p>To run coding standard tests you can make use of the <code>toolkit:test-phpcs</code>
+command. This will validate your configuration from <code>./grumphp.yml.dist</code> and run
+it on your current codebase.</p>
+<p>To run the coding standard checks:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:test-phpcs
+</code></pre>
+<p>This will first validate the configuration of your <code>./grumphp.yml.dist</code>. The
+correct configuration of this file contains the import of the qa conventions
+like shown below:</p>
+<pre><code class="language-yaml " >imports:
+  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }
+parameters:
+  tasks.phpcs.ignore_patterns:
+    - vendor/
+    - web/
+  tasks.phpcs.triggered_by:
+    - php
+    - module
+    - inc
+    - theme
+    - install
+    - yml
+
+  extensions:
+    - OpenEuropa\CodeReview\ExtraTasksExtension
+</code></pre>
+<p>Previously this was hardcoded in your composer.json. But if you want to be able
+to override configuration from the qa convention you should remove that setting.
+So if you have the following lines in your composer.json you should remove those
+lines:</p>
+<pre><code class="language-json " >&quot;grumphp&quot;: {
+    &quot;config-default-path&quot;: &quot;vendor/ec-europa/qa-automation/dist/qa-conventions.yml&quot;
+}
+</code></pre>
+<p>PHPCBF task is available, to automatic fix your issues please run the following
+command:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:run-phpcbf --file-path=&lt;file-to-fix&gt;
+</code></pre>
+</div>
+<div class="section" id="phpunit-testing">
+<h2>PHPUnit testing</h2>
+<p>Use the <code>toolkit:test-phopunit</code> command to run PHPUnit tests. The command will
+look for a <code>phpunit.xml.dist</code> or a  files, in the configured
+locations. If <code>phpunit.xml.dist</code> is found, a <code>phpunit.xml</code> will be generated. If
+<code>phpunit.xml.dist</code> is missing but there's a <code>phpunit.xml</code> file, the latter is
+used.</p>
+<p>Tests should be organised according to <a href="https://phpunit.readthedocs.io/en/9.5/organizing-tests.html">PHPUnit documentation</a>.</p>
+<p>To run the PHPUnit tests:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:test-phpunit
+</code></pre>
+<div class="section" id="commands-to-run-before-after-phpunit-tests">
+<h3>Commands to run before/after PHPUnit tests</h3>
+<p>Additional commands can be run before and/or after the test. Such commands
+should be defined in the <code>./runner.yml.dist</code> or <code>./runner.yml</code> files:</p>
+<pre><code class="language-yaml " >toolkit:
+  test:
+    phpunit:
+      commands:
+        before:
+          - task: exec
+            command: ls -la
+          - ...
+        after:
+          - task: exec
+            command: whoami
+          - ...
+</code></pre>
+</div>
+</div>
+<div class="section" id="phpmd-testing">
+<h2>PHPMD testing</h2>
+<p>To run PHP Mess Detector tests you can make use of the <code>toolkit:test-phpmd</code>
+command. If the project does not have a phpmd.xml file in the root folder,
+Toolkit will create the default config file.</p>
+<p>To run the PHP Mess Detector checks:</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:test-phpmd
+</code></pre>
+<p>These are the default configurations in the runner.yml file.</p>
+<pre><code class="language-yaml " >toolkit:
+  test:
+    phpmd:
+      config: phpmd.xml
+      format: ansi
+      ignore_patterns:
+        - vendor/
+        - web/
+        - node_modules/
+        - config/
+      triggered_by:
+        - php
+        - module
+        - inc
+        - theme
+        - install
+      files:
+        - lib
+        - src
+</code></pre>
+</div>
+<div class="section" id="testing-in-ci">
+<h2>Testing in CI</h2>
+<p>Toolkit is full integrated with official pipeline that currently requires minimum
+of 1 behat test and a clean report for phpcs check.</p>
+<p>Any customization done in your project will be respected in Drone build.</p>
+<div class="section" id="other-topics">
+<h3>Other topics</h3>
 
 
-    
+<ul>
+    <li>
+            <a href="/docs/guide/setting-up-project.rst">Setting up a project</a>
+        </li>
+    <li>
+            <a href="/docs/guide/configuring-project.rst">Configuring a project</a>
+        </li>
+    <li>
+            <a href="/docs/guide/installing-project.rst">Installing the project</a>
+        </li>
+    <li>
+            Testing the project
+        </li>
+    <li>
+            <a href="/docs/guide/docker-environment.rst">Using Docker environment</a>
+        </li>
+    <li>
+            <a href="/docs/guide/continuous-integration.rst">Continuous integration</a>
+        </li>
+    <li>
+            <a href="/docs/guide/building-assets.rst">Building assets</a>
+        </li>
+    <li>
+            <a href="/docs/guide/commands.rst">Commands</a>
+        </li>
+    <li>
+            <a href="/docs/guide/git-hooks.rst">Git Hooks</a>
+        </li>
+    <li>
+            <a href="/docs/guide/project-documentation.rst">Update Project Documentation</a>
+        </li>
+    <li>
+            <a href="/CHANGELOG.md">Changelog</a>
+        </li>
+</ul>
+</div>
+</div>
 
-    
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
@@ -171,7 +348,7 @@
 </section>
             </div>
         </div>
-        <a href="index.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
