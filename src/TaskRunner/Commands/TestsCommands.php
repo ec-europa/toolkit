@@ -95,6 +95,9 @@ class TestsCommands extends AbstractCommands
         if (!empty($files = $config->get('toolkit.test.phpcs.files'))) {
             $files = is_string($files) ? explode(',', $files) : $files;
             Toolkit::filterFolders($files);
+            foreach ($files as $file) {
+                $root->appendChild($phpcs_xml->createElement('file', $file));
+            }
         } else {
             $root->appendChild($phpcs_xml->createElement('file', '.'));
         }
