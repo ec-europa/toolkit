@@ -79,14 +79,14 @@ Other topics
 ^^^^^^^^^^^^
 
 
-* `Setting up a project </docs/setting-up-project.md>`_
-* `Configuring a project </docs/configuring-project.md>`_
-* `Installing the project </docs/installing-project.md>`_
-* `Testing the project </docs/testing-project.md>`_
+* `Setting up a project </docs/guide/setting-up-project.rst>`_
+* `Configuring a project </docs/guide/configuring-project.rst>`_
+* `Installing the project </docs/guide/installing-project.rst>`_
+* `Testing the project </docs/guide/testing-project.rst>`_
 * Using Docker environment
-* `Continuous integration </docs/continuous-integration.md>`_
-* `Available tasks </docs/available-tasks.md>`_
-* `Building assets </docs/building-assets.md>`_
-* `Git Hooks </docs/git-hooks.md>`_
-* `Update Project Documentation </docs/project-documentation.md>`_
+* `Continuous integration </docs/guide/continuous-integration.rst>`_
+* `Available tasks </docs/guide/available-tasks.rst>`_
+* `Building assets </docs/guide/building-assets.rst>`_
+* `Git Hooks </docs/guide/git-hooks.rst>`_
+* `Update Project Documentation </docs/guide/project-documentation.rst>`_
 * `Changelog </CHANGELOG.md>`_
