@@ -37,8 +37,8 @@ Other topics
 * `Testing the project </docs/guide/testing-project.rst>`_
 * `Using Docker environment </docs/guide/docker-environment.rst>`_
 * Continuous integration
-* `Available tasks </docs/guide/available-tasks.rst>`_
 * `Building assets </docs/guide/building-assets.rst>`_
+* `Commands </docs/guide/commands.rst>`_
 * `Git Hooks </docs/guide/git-hooks.rst>`_
 * `Update Project Documentation </docs/guide/project-documentation.rst>`_
 * `Changelog </CHANGELOG.md>`_

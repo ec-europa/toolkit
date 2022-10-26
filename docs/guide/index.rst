@@ -8,7 +8,7 @@ documentation.
 .. toctree::
     :maxdepth: 2
 
-    available-tasks
+    commands
     building-assets
     configuring-project
     continuous-integration
