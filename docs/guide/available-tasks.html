@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
                     <title>Toolkit</title>
-
+    
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
@@ -57,7 +57,7 @@
                     <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Getting started</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/available-tasks.html" class="-active">Available tasks</a>
+    <a href="guide/available-tasks.html" class="">Available tasks</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -105,7 +105,7 @@
     <ul class="phpdocumentor-list">
                     <li>
                 <a href="namespaces/eceuropa-toolkit.html" class="">Toolkit</a>
-
+                
             </li>
             </ul>
 
@@ -117,7 +117,7 @@
 </h4>
 
                         </section>
-
+            
     <section class="phpdocumentor-sidebar__category">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
@@ -137,12 +137,12 @@
 <p>To list all available tasks, please run:</p>
 <pre><code class="language- " >docker-composer exec web ./vendor/bin/run
 </code></pre>
-<p>See bellow current list for version <code>9.0.0</code>.</p>
+<p>See bellow current list for version <code>9.1.0</code>.</p>
 <pre><code class="language- " >Available commands:
-  help                              Displays help for a command
-  list                              Lists commands
- changelog
-  changelog:generate                [changelog:g|cg] Generate a changelog based on GitHub issues and pull requests.
+  completion                        Dump the shell completion script
+  config                            Dumps the current configuration.
+  help                              Display help for a command
+  list                              List commands
  drupal
   drupal:drush-setup                Write Drush configuration files to given directories.
   drupal:permissions-setup          Setup Drupal permissions.
@@ -150,15 +150,13 @@
   drupal:site-install               [drupal:si|dsi] Install target site.
   drupal:site-post-install          Run Drupal post-install commands.
   drupal:site-pre-install           Run Drupal pre-install commands.
- release
-  release:create-archive            [release:ca|rca] Create a release for the current project.
  toolkit
   toolkit:build-assets              [tba|tk-assets] Build theme assets (Css and Js).
   toolkit:build-dev                 [tk-bdev] Build site for local development.
   toolkit:build-dev-reset           Build site for local development from scratch with a clean git.
   toolkit:build-dist                [tk-bdist] Build the distribution package.
-  toolkit:check-version             Check the Toolkit version.
   toolkit:check-phpcs-requirements  Make sure that the config file exists and configuration is correct.
+  toolkit:check-version             Check the Toolkit version.
   toolkit:code-review               This command will execute all the testing tools.
   toolkit:complock-check            Check if &#039;composer.lock&#039; exists on the project root folder.
   toolkit:component-check           Check composer.json for components that are not whitelisted/blacklisted.
@@ -171,24 +169,26 @@
   toolkit:hooks-enable              Enable the git hooks defined in the configuration or in given option.
   toolkit:hooks-list                List available hooks and its status.
   toolkit:hooks-run                 Run a specific hook.
-  toolkit:import-config             [tk-ci] Import config.
+  toolkit:import-config             [tk-ic] Import config.
   toolkit:install-clean             [tk-iclean] Install a clean website.
   toolkit:install-clone             [tk-iclone] Install a clone website.
   toolkit:install-dependencies      Install packages present in the opts.yml file under extra_pkgs section.
   toolkit:install-dump              Import the production snapshot.
+  toolkit:lint-js                   [tljs|tk-js] Run lint JS.
   toolkit:lint-php                  [tlp|tk-php] Run lint PHP.
   toolkit:lint-yaml                 [tly|tk-yaml] Run lint YAML.
-  toolkit:notifications             Display toolkit notifications.
   toolkit:opts-review               Check project&#039;s .opts.yml file for forbidden commands.
   toolkit:requirements              Check the Toolkit Requirements.
   toolkit:run-blackfire             [tbf|tk-bfire] Run Blackfire.
   toolkit:run-deploy                Run deployment sequence.
   toolkit:run-phpcbf                [tk-phpcbf] Run PHP code autofixing.
   toolkit:setup-blackfire-behat     Copy the needed resources to run Behat with Blackfire.
+  toolkit:setup-eslint              Setup the ESLint configurations and dependencies.
   toolkit:setup-phpcs               Setup PHP code sniffer.
   toolkit:test-behat                [tb|tk-behat] Run Behat tests.
   toolkit:test-phpcs                [tk-phpcs] Run PHP code sniffer.
   toolkit:test-phpmd                [tk-phpmd] Run PHPMD.
+  toolkit:test-phpstan              [tk-phpstan] Run PHPStan.
   toolkit:test-phpunit              [tp|tk-phpunit] Run PHPUnit tests.
   toolkit:vendor-list               Check &#039;Vendor&#039; packages being monitorised.
 </code></pre>
@@ -198,37 +198,37 @@
 
 <ul>
     <li>
-            <a href="docs/guide/setting-up-project.rst">Setting up a project</a>
+            <a href="/docs/guide/setting-up-project.rst">Setting up a project</a>
         </li>
     <li>
-            <a href="docs/guide/configuring-project.rst">Configuring a project</a>
+            <a href="/docs/guide/configuring-project.rst">Configuring a project</a>
         </li>
     <li>
-            <a href="docs/guide/installing-project.rst">Installing the project</a>
+            <a href="/docs/guide/installing-project.rst">Installing the project</a>
         </li>
     <li>
-            <a href="docs/testing-project.rst">Testing the project</a>
+            <a href="/docs/guide/testing-project.rst">Testing the project</a>
         </li>
     <li>
-            <a href="docs/guide/docker-environment.rst">Using Docker environment</a>
+            <a href="/docs/guide/docker-environment.rst">Using Docker environment</a>
         </li>
     <li>
-            <a href="docs/guide/continuous-integration.rst">Continuous integration</a>
+            <a href="/docs/guide/continuous-integration.rst">Continuous integration</a>
         </li>
     <li>
             Available tasks
         </li>
     <li>
-            <a href="docs/guide/building-assets.rst">Building assets</a>
+            <a href="/docs/guide/building-assets.rst">Building assets</a>
         </li>
     <li>
-            <a href="docs/guide/git-hooks.rst">Git Hooks</a>
+            <a href="/docs/guide/git-hooks.rst">Git Hooks</a>
         </li>
     <li>
-            <a href="docs/guide/project-documentation.rst">Update Project Documentation</a>
+            <a href="/docs/guide/project-documentation.rst">Update Project Documentation</a>
         </li>
     <li>
-            <a href="CHANGELOG.md">Changelog</a>
+            <a href="/CHANGELOG.md">Changelog</a>
         </li>
 </ul>
 </div>

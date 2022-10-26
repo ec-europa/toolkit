@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
                     <title>Toolkit</title>
-
+    
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
@@ -61,7 +61,7 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/building-assets.html" class="-active">Building assets</a>
+    <a href="guide/building-assets.html" class="">Building assets</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -105,7 +105,7 @@
     <ul class="phpdocumentor-list">
                     <li>
                 <a href="namespaces/eceuropa-toolkit.html" class="">Toolkit</a>
-
+                
             </li>
             </ul>
 
@@ -117,7 +117,7 @@
 </h4>
 
                         </section>
-
+            
     <section class="phpdocumentor-sidebar__category">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
@@ -173,7 +173,7 @@
             {your-theme-folder}/src/js
         </li>
 </ul>
-<p>After this task is complete the generated folder &#039;{your-theme}/assets&#039; will look like this:</p>
+<p>After this task is complete the generated folder '{your-theme}/assets' will look like this:</p>
 <pre><code class="language- " >/your-theme
   /assests
     /css
@@ -181,17 +181,17 @@
     /js
       script.min.js
 </code></pre>
-<p>Note: The folder name &#039;assets&#039; is the default value provided. It can be override on the &#039;gulpfile.js&#039;.</p>
+<p>Note: The folder name 'assets' is the default value provided. It can be override on the 'gulpfile.js'.</p>
 </div>
 <div class="section" id="get-default-theme">
-<h3>Get &#039;default-theme&#039;</h3>
+<h3>Get 'default-theme'</h3>
 <p>If no config files are present in the project, the default theme can be specified in a parameter the parameter in the task call:</p>
 <pre><code class="language- " >docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
 </code></pre>
 </div>
 <div class="section" id="define-custom-code-folder">
-<h3>Define &#039;custom-code-folder&#039;</h3>
-<p>If for some reason your project is running custom code in other folder then <code>lib</code>\ , it&#039;s possible to make it configurable with the following:</p>
+<h3>Define 'custom-code-folder'</h3>
+<p>If for some reason your project is running custom code in other folder then <code>lib</code>\ , it's possible to make it configurable with the following:</p>
 <pre><code class="language- " >toolkit:
   build:
     custom-code-folder: &#039;your_folder&#039;
@@ -226,8 +226,8 @@ docker-compose exec web ./vendor/bin/run tba
 <div class="section" id="extending-functionality">
 <h2>Extending functionality</h2>
 <div class="section" id="add-a-custom-gulpfile-js-file">
-<h3>Add a custom &#039;gulpfile.js&#039; file</h3>
-<p>It&#039;s possible to use a custom gulpfile on the theme root folder.
+<h3>Add a custom 'gulpfile.js' file</h3>
+<p>It's possible to use a custom gulpfile on the theme root folder.
 If the file do not exists, toolkit will create one using the default template.</p>
 </div>
 <div class="section" id="install-additional-npm-packages">
@@ -253,7 +253,7 @@ To override this behavior add in the file <code>runner.yml</code> the following 
 <div class="section" id="validate-and-fix-scss-files">
 <h2>Validate and fix scss files</h2>
 <div class="section" id="check-theme-s-scss-files-for-issues">
-<h3>Check theme&#039;s scss files for issues</h3>
+<h3>Check theme's scss files for issues</h3>
 <p>Provides a report of violations.</p>
 <pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=check
 or
@@ -272,37 +272,37 @@ docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate
 
 <ul>
     <li>
-            <a href="docs/guide/setting-up-project.rst">Setting up a project</a>
+            <a href="/docs/guide/setting-up-project.rst">Setting up a project</a>
         </li>
     <li>
-            <a href="docs/guide/configuring-project.rst">Configuring a project</a>
+            <a href="/docs/guide/configuring-project.rst">Configuring a project</a>
         </li>
     <li>
-            <a href="docs/guide/installing-project.rst">Installing the project</a>
+            <a href="/docs/guide/installing-project.rst">Installing the project</a>
         </li>
     <li>
-            <a href="docs/testing-project.rst">Testing the project</a>
+            <a href="/docs/guide/testing-project.rst">Testing the project</a>
         </li>
     <li>
-            <a href="docs/guide/docker-environment.rst">Using Docker environment</a>
+            <a href="/docs/guide/docker-environment.rst">Using Docker environment</a>
         </li>
     <li>
-            <a href="docs/guide/continuous-integration.rst">Continuous integration</a>
+            <a href="/docs/guide/continuous-integration.rst">Continuous integration</a>
         </li>
     <li>
-            <a href="docs/guide/available-tasks.rst">Available tasks</a>
+            <a href="/docs/guide/available-tasks.rst">Available tasks</a>
         </li>
     <li>
             Building assets
         </li>
     <li>
-            <a href="docs/guide/git-hooks.rst">Git Hooks</a>
+            <a href="/docs/guide/git-hooks.rst">Git Hooks</a>
         </li>
     <li>
-            <a href="docs/guide/project-documentation.rst">Update Project Documentation</a>
+            <a href="/docs/guide/project-documentation.rst">Update Project Documentation</a>
         </li>
     <li>
-            <a href="CHANGELOG.md">Changelog</a>
+            <a href="/CHANGELOG.md">Changelog</a>
         </li>
 </ul>
 </div>
