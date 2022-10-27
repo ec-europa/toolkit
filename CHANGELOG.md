@@ -1,19 +1,19 @@
 # Toolkit change log
 
 ## Version 9.0.0
-  - DQA-0000: Update support email and README. by @joaocsilva in #553
-  - DQA-4585: Make pipeline fail if package is not found. by @joaocsilva in #554
-  - DQA-4745: Add Git hook commands. by @joaocsilva in #556
-  - DQA-4440: Drop grumphp dependency and set minium PHP version to 8.1. by @joaocsilva in #555
+  - DQA-0000: Update support email and README;
+  - DQA-4585: Make pipeline fail if package is not found;
+  - DQA-4745: Add Git hook commands;
+  - DQA-4440: Drop GrumPHP dependency and set minimum PHP version to 8.1;
 
 ## Version 8.5.1
-  - Support version 1 and 2 of openeuropa/task-runner
+  - Support version 1 and 2 of openeuropa/task-runner;
 
 ## Version 8.5.0
   - Extend support to PHP version 8.0 and 8.1;
   - Support to drush version 11;
   - Update qa-automation minimum version to 8.1.2;
-  - Disable grumphp parallel feature;
+  - Disable GrumPHP parallel feature;
   - Include drush.yml file in the distribution with options:uri set with the value from env.VIRTUAL_HOST;
   - Improve test coverage to toolkit itself;
   - Add new target toolkit:check-version;
