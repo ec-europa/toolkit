@@ -15,6 +15,19 @@ use Symfony\Component\Yaml\Yaml;
  */
 class DrupalCommands extends AbstractCommands
 {
+    /**
+     * Comment ending the Toolkit settings block.
+     *
+     * @var string
+     */
+    protected $blockEnd = '// End Toolkit settings block.';
+
+    /**
+     * Comment starting the Toolkit settings block.
+     *
+     * @var string
+     */
+    protected $blockStart = '// Start Toolkit settings block.';
 
     /**
      * {@inheritdoc}
@@ -89,10 +102,15 @@ class DrupalCommands extends AbstractCommands
                 ->copy($settings_default_path, $settings_path);
         }
 
-        $tasks[] = $this->taskReplaceBlock($settings_path)
-            ->start("\n\n// Start Toolkit settings block.\n\n")
-            ->end("\n\n// End Toolkit settings block.\n")
-            ->content($this->getToolkitSettingsBlock());
+        // Remove Toolkit settings block, if any.
+        $tasks[] = $this->taskReplaceInFile($settings_path)
+            ->regex($this->getSettingsBlockRegex())
+            ->to('');
+
+        // Append Toolkit settings block to settings.php file.
+        $tasks[] = $this->taskWriteToFile($settings_path)
+            ->append()
+            ->text($this->getToolkitSettingsBlock());
 
         // Set necessary permissions on the default folder.
         if (!$options['skip-permissions-setup']) {
@@ -397,6 +415,17 @@ class DrupalCommands extends AbstractCommands
     }
 
     /**
+     * Remove settings block from given content.
+     *
+     * @return string
+     *   Content without setting block.
+     */
+    protected function getSettingsBlockRegex()
+    {
+        return '/^\n' . preg_quote($this->blockStart, '/') . '.*?' . preg_quote($this->blockEnd, '/') . '\n/sm';
+    }
+
+    /**
      * Helper function to update settings.php file.
      *
      * @return string
@@ -409,6 +438,9 @@ class DrupalCommands extends AbstractCommands
         $hashSalt = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(random_bytes(55)));
 
         return <<< EOF
+
+{$this->blockStart}
+
 \$databases['default']['default'] = array (
   'database' => getenv('DRUPAL_DATABASE_NAME'),
   'username' => getenv('DRUPAL_DATABASE_USERNAME'),
@@ -416,7 +448,7 @@ class DrupalCommands extends AbstractCommands
   'prefix' => getenv('DRUPAL_DATABASE_PREFIX'),
   'host' => getenv('DRUPAL_DATABASE_HOST'),
   'port' => getenv('DRUPAL_DATABASE_PORT'),
-  'namespace' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? 'Drupal\\\\\\Core\\\\\\Database\\\\\\Driver\\\\\\' . getenv('DRUPAL_DATABASE_DRIVER') : 'Drupal\\\\\\Core\\\\\\Database\\\\\\Driver\\\\\\mysql',
+  'namespace' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? 'Drupal\\\\Core\\\\Database\\\\Driver\\\\' . getenv('DRUPAL_DATABASE_DRIVER') : 'Drupal\\\\Core\\\\Database\\\\Driver\\\\mysql',
   'driver' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? getenv('DRUPAL_DATABASE_DRIVER') : 'mysql',
 );
 
@@ -434,6 +466,9 @@ class DrupalCommands extends AbstractCommands
 if (file_exists(\$app_root . '/' . \$site_path . '/settings.override.php')) {
   include \$app_root . '/' . \$site_path . '/settings.override.php';
 }
+
+{$this->blockEnd}
+
 EOF;
     }
 
