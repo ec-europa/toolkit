@@ -56,7 +56,7 @@ How to use
 List available hooks
 ^^^^^^^^^^^^^^^^^^^^
 
-To list the available commands, execute the following command:
+To list the available hooks, execute the following command:
 
 .. code-block::
 

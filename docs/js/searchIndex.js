@@ -106,6 +106,46 @@ Search.appendIndex(
             "summary": "The\u0020content\u0020from\u0020the\u0020source.",
             "url": "classes/EcEuropa-Toolkit-Task-File-Process.html#property_content"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Task\\File\\ReplaceBlock",
+            "name": "ReplaceBlock",
+            "summary": "Replace\u0020a\u0020block\u0020of\u0020content\u0020in\u0020given\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Task\\File\\ReplaceBlock\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Class\u0020constructor.",
+            "url": "classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html#method___construct"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Task\\File\\ReplaceBlock\u003A\u003A\u0024filename",
+            "name": "filename",
+            "summary": "The\u0020file\u0020to\u0020process.",
+            "url": "classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html#property_filename"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Task\\File\\ReplaceBlock\u003A\u003A\u0024start",
+            "name": "start",
+            "summary": "The\u0020start\u0020string\u0020to\u0020match.",
+            "url": "classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html#property_start"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Task\\File\\ReplaceBlock\u003A\u003A\u0024end",
+            "name": "end",
+            "summary": "The\u0020end\u0020string\u0020to\u0020match.",
+            "url": "classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html#property_end"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Task\\File\\ReplaceBlock\u003A\u003A\u0024content",
+            "name": "content",
+            "summary": "The\u0020content\u0020to\u0020write\u0020into\u0020the\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html#property_content"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Task\\File\\ReplaceBlock\u003A\u003A\u0024excludeStartEnd",
+            "name": "excludeStartEnd",
+            "summary": "If\u0020true,\u0020the\u0020start\u0020and\u0020end\u0020matches\u0020will\u0020be\u0020removed.",
+            "url": "classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html#property_excludeStartEnd"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Task\\File\\ReplaceBlock\u003A\u003Arun\u0028\u0029",
+            "name": "run",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html#method_run"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Task\\File\\Tasks",
             "name": "Tasks",
             "summary": "Robo\u0020task\u0020to\u0020Replace\u0020configs\/tokens\u0020in\u0020file.",
@@ -115,6 +155,11 @@ Search.appendIndex(
             "name": "taskProcess",
             "summary": "Process\u0020the\u0020file.",
             "url": "classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskProcess"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Task\\File\\Tasks\u003A\u003AtaskReplaceBlock\u0028\u0029",
+            "name": "taskReplaceBlock",
+            "summary": "Replace\u0020block\u0020in\u0020a\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskReplaceBlock"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands",
             "name": "AbstractCommands",
@@ -691,6 +736,16 @@ Search.appendIndex(
             "summary": "Dumps\u0020the\u0020current\u0020configuration.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitCommands.html#method_config"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitCommands\u003A\u003AgenerateCommandsList\u0028\u0029",
+            "name": "generateCommandsList",
+            "summary": "Generate\u0020the\u0020list\u0020of\u0020commands\u0020in\u0020the\u0020commands.rst\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitCommands.html#method_generateCommandsList"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitCommands\u003A\u003AtoolkitGenerateDocumentation\u0028\u0029",
+            "name": "toolkitGenerateDocumentation",
+            "summary": "Generate\u0020the\u0020documentation",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitCommands.html#method_toolkitGenerateDocumentation"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands",
             "name": "ToolkitReleaseCommands",
             "summary": "Class\u0020AbstractCommands.",
@@ -706,10 +761,10 @@ Search.appendIndex(
             "summary": "Write\u0020the\u0020release\u0020changelog\u0020to\u0020the\u0020CHANGELOG.md\u0020file.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitReleaseCommands.html#method_toolkitChangelogWrite"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands\u003A\u003AtoolkitRelease\u0028\u0029",
-            "name": "toolkitRelease",
-            "summary": "Create\u0020a\u0020release\u0020for\u0020Toolkit.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitReleaseCommands.html#method_toolkitRelease"
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands\u003A\u003AtoolkitPrepareRelease\u0028\u0029",
+            "name": "toolkitPrepareRelease",
+            "summary": "Prepare\u0020a\u0020release\u0020for\u0020Toolkit.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitReleaseCommands.html#method_toolkitPrepareRelease"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands\u003A\u003AgetLatestChangelogVersion\u0028\u0029",
             "name": "getLatestChangelogVersion",

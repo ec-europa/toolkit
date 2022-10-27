@@ -77,7 +77,7 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/git-hooks.html" class="">Git hooks</a>
+    <a href="guide/git-hooks.html" class="-active">Git hooks</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -189,7 +189,7 @@
 <h2>How to use</h2>
 <div class="section" id="list-available-hooks">
 <h3>List available hooks</h3>
-<p>To list the available commands, execute the following command:</p>
+<p>To list the available hooks, execute the following command:</p>
 <pre><code class="language- " >&gt; ./vendor/bin/run toolkit:hooks-list
 +------------------------------+------------------+-------------+---------------+
 | Hook                         | Active by config | Hook exists | Modified file |
@@ -240,7 +240,7 @@ callback in the format <code>runHookName</code>.</p>
 <p>Example for hook <code>prepare-commit-msg</code>\ , toolkit will look for a callback
 named <code>runPrepareCommitMsg()</code>.</p>
 <p>The callback method is responsible to retrieve the arguments
-with <code>$this-&gt;input()-&gt;getArguments()</code>.</p>
+with <code>$this->input()->getArguments()</code>.</p>
 <p>For more details check the Commands class
 at <code>EcEuropa\Toolkit\TaskRunner\Commands\GitHookCommands</code></p>
 </div>
@@ -327,37 +327,37 @@ class QaGitHookCommands extends GitHookCommands
 
 <ul>
     <li>
-            <a href="/docs/guide/setting-up-project.rst">Setting up a project</a>
+            <a href="docs/guide/setting-up-project.rst">Setting up a project</a>
         </li>
     <li>
-            <a href="/docs/guide/configuring-project.rst">Configuring a project</a>
+            <a href="docs/guide/configuring-project.rst">Configuring a project</a>
         </li>
     <li>
-            <a href="/docs/guide/installing-project.rst">Installing the project</a>
+            <a href="docs/guide/installing-project.rst">Installing the project</a>
         </li>
     <li>
-            <a href="/docs/guide/testing-project.rst">Testing the project</a>
+            <a href="docs/guide/testing-project.rst">Testing the project</a>
         </li>
     <li>
-            <a href="/docs/guide/docker-environment.rst">Using Docker environment</a>
+            <a href="docs/guide/docker-environment.rst">Using Docker environment</a>
         </li>
     <li>
-            <a href="/docs/guide/continuous-integration.rst">Continuous integration</a>
+            <a href="docs/guide/continuous-integration.rst">Continuous integration</a>
         </li>
     <li>
-            <a href="/docs/guide/building-assets.rst">Building assets</a>
+            <a href="docs/guide/building-assets.rst">Building assets</a>
         </li>
     <li>
-            <a href="/docs/guide/commands.rst">Commands</a>
+            <a href="docs/guide/commands.rst">Commands</a>
         </li>
     <li>
             Git Hooks
         </li>
     <li>
-            <a href="/docs/guide/project-documentation.rst">Update Project Documentation</a>
+            <a href="docs/guide/project-documentation.rst">Update Project Documentation</a>
         </li>
     <li>
-            <a href="/CHANGELOG.md">Changelog</a>
+            <a href="CHANGELOG.md">Changelog</a>
         </li>
 </ul>
 </div>

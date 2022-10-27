@@ -8,7 +8,9 @@ To list all available tasks, please run:
 
    docker-composer exec web ./vendor/bin/run
 
-See bellow current list for version ``9.1.0``.
+See bellow current list of available commands:
+
+.. toolkit-block-commands
 
 .. code-block::
 
@@ -65,6 +67,8 @@ See bellow current list for version ``9.1.0``.
      toolkit:test-phpstan              [tk-phpstan] Run PHPStan.
      toolkit:test-phpunit              [tp|tk-phpunit] Run PHPUnit tests.
      toolkit:vendor-list               Check 'Vendor' packages being monitorised.
+
+.. toolkit-block-commands-end
 
 Other topics
 ^^^^^^^^^^^^
