@@ -160,7 +160,7 @@ Other topics
 ^^^^^^^^^^^^
 
 
-* `Setting up a project </docs/guide/setting-up-project.rst>`_
+* `Setting up a project </guide/setting-up-project.html>`_
 * `Configuring a project </docs/guide/configuring-project.rst>`_
 * `Installing the project </docs/guide/installing-project.rst>`_
 * `Testing the project </docs/guide/testing-project.rst>`_

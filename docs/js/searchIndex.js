@@ -143,7 +143,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Task\\File\\ReplaceBlock\u003A\u003Arun\u0028\u0029",
             "name": "run",
-            "summary": "",
+            "summary": "Run\u0020the\u0020task.",
             "url": "classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html#method_run"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Task\\File\\Tasks",
@@ -753,7 +753,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands\u003A\u003AtoolkitVersionWrite\u0028\u0029",
             "name": "toolkitVersionWrite",
-            "summary": "Write\u0020the\u0020specified\u0020version\u0020string\u0020back\u0020into\u0020the\u0020Toolkit.php\u0020file.",
+            "summary": "Write\u0020the\u0020specified\u0020version\u0020string\u0020into\u0020needed\u0020places.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitReleaseCommands.html#method_toolkitVersionWrite"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands\u003A\u003AtoolkitChangelogWrite\u0028\u0029",
