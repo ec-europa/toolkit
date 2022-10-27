@@ -57,7 +57,7 @@ class ToolkitCommands extends AbstractCommands
         // Remove the header part.
         $r = preg_replace('/((.|\n)*)(Available commands:)/', '\3', $r);
         // Add spaces to match the .rst format.
-        $r = preg_replace('/^/im', '   ', $r);
+        $r = preg_replace('/^/im', ' ', $r);
 
         $start = ".. toolkit-block-commands\n\n.. code-block::\n\n";
         $end = "\n\n.. toolkit-block-commands-end";

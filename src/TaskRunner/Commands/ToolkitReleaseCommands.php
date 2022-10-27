@@ -70,8 +70,9 @@ class ToolkitReleaseCommands extends AbstractCommands
         $result = $this->taskExec('git')
             ->arg('log')
             ->arg($latest_version . '...' . $this->releaseBranch)
-            ->option('pretty', '  - %s', '=')
-            ->option('no-merges')
+            ->option('pretty', '  - %s %an %cn', '=')
+            ->option('merges')
+            ->option('reverse')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()
             ->getMessage();

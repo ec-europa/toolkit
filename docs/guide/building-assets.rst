@@ -44,7 +44,7 @@ After this task is complete the generated folder '{your-theme}/assets' will look
        /js
          script.min.js
 
-Note: The folder name 'assets' is the default value provided. It can be override on the 'gulpfile.js'.
+Note: The folder name ``assets`` is the default value provided, it can be override in the 'gulpfile.js'.
 
 Get 'default-theme'
 ^^^^^^^^^^^^^^^^^^^

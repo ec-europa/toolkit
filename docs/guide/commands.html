@@ -188,6 +188,101 @@
   toolkit:test-phpunit              [tp|tk-phpunit] Run PHPUnit tests.
   toolkit:vendor-list               Check &#039;Vendor&#039; packages being monitorised.
 </code></pre>
+<div class="section" id="creating-custom-commands">
+<h2>Creating custom commands</h2>
+<p>To provide custom commands, make sure that your classes are loaded, for example using
+PSR-4 namespacing set the autoload in the composer.json file.</p>
+<pre><code class="language- " >{
+  &quot;autoload&quot;: {
+    &quot;psr-4&quot;: {
+      &quot;My\\Project\\&quot;: &quot;./src/&quot;
+    }
+  }
+}
+</code></pre>
+<p>Create your command class under <code>src/TaskRunner/Commands</code> that will extend the abstract Toolkit command, like:</p>
+<pre><code class="language- " >&lt;?php
+
+namespace My\Project\TaskRunner\Commands;
+
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+
+class ExampleCommands extends AbstractCommands {
+  /**
+   * @command example:first-command
+   */
+  public function commandOne() { }
+}
+</code></pre>
+<p>The configuration commands are a mapping to the <a href="https://robo.li/#tasks">Robo Tasks</a>, the
+list of available tasks is:</p>
+<table>
+            <thead>
+                            <tr>
+                                            <th>Task</th>
+                                            <th>Robo Task</th>
+                                    </tr>
+                    </thead>
+    
+    <tbody>
+                    <tr>
+                                    <td>mkdir</td>
+                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                            </tr>
+                    <tr>
+                                    <td>touch</td>
+                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                            </tr>
+                    <tr>
+                                    <td>copy</td>
+                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                            </tr>
+                    <tr>
+                                    <td>chmod</td>
+                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                            </tr>
+                    <tr>
+                                    <td>chgrp</td>
+                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                            </tr>
+                    <tr>
+                                    <td>chown</td>
+                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                            </tr>
+                    <tr>
+                                    <td>remove</td>
+                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                            </tr>
+                    <tr>
+                                    <td>rename</td>
+                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                            </tr>
+                    <tr>
+                                    <td>symlink</td>
+                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                            </tr>
+                    <tr>
+                                    <td>mirror</td>
+                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                            </tr>
+                    <tr>
+                                    <td>process</td>
+                                    <td><a href="src/Task/File/Process.php">Process</a></td>
+                            </tr>
+                    <tr>
+                                    <td>append</td>
+                                    <td><a href="https://robo.li/tasks/File/#write">Write with append()</a></td>
+                            </tr>
+                    <tr>
+                                    <td>run</td>
+                                    <td>Runner tasks</td>
+                            </tr>
+                    <tr>
+                                    <td>exec</td>
+                                    <td><a href="https://robo.li/tasks/Base/#exec">Exec</a></td>
+                            </tr>
+            </tbody>
+</table>
 </div>
 
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">

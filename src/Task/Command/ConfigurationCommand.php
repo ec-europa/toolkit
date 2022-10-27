@@ -166,35 +166,6 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                 }
                 return $taskExec;
 
-            case 'process-php':
-                // If we don't override destination file simply exit here.
-                if (!$task['override'] && file_exists($task['destination'])) {
-                    return $this->collectionBuilder();
-                }
-
-                // Copy source file to destination before processing it.
-                $tasks[] = $this->collectionBuilder()->taskFilesystemStack()
-                    ->copy($task['source'], $task['destination'], true);
-
-                // Map dynamic task type to actual task callback.
-                $map = [
-                    'append' => 'taskAppendConfiguration',
-                    'prepend' => 'taskPrependConfiguration',
-                    'write' => 'taskWriteConfiguration',
-                ];
-
-                if (!isset($map[$task['type']])) {
-                    $message = "'process-php' task type '{$task['type']}' is not supported, valid values are: 'append', 'prepend' and 'write'.";
-                    throw new TaskException($this, $message);
-                }
-                $method = $map[$task['type']];
-
-                // Add selected process task and return collection.
-                $tasks[] = $this->{$method}($task['destination'], $this->getConfig())
-                    ->setConfigKey($task['config']);
-
-                return $this->collectionBuilder()->addTaskList($tasks);
-
             case 'exec':
                 /* @var \Robo\Task\Base\Exec $taskExec */
                 $taskExec = $this->collectionBuilder()->taskExec($task['command']);
