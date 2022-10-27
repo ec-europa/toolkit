@@ -25,7 +25,7 @@ class ToolkitReleaseCommands extends AbstractCommands
     private string $releaseBranch = 'release/9.x';
 
     /**
-     * Write the specified version string back into the Toolkit.php file.
+     * Write the specified version string into needed places.
      *
      * @param string $version
      *   The version to set.
@@ -36,11 +36,16 @@ class ToolkitReleaseCommands extends AbstractCommands
      */
     public function toolkitVersionWrite(string $version)
     {
-        return $this->taskReplaceInFile(Toolkit::getToolkitRoot() . '/src/Toolkit.php')
+        $tasks = [];
+        $tasks[] = $this->taskReplaceInFile(Toolkit::getToolkitRoot() . '/src/Toolkit.php')
             ->regex("#VERSION = '[^']*'#")
-            ->regex("#VERSION = '[^']*'#")
-            ->to("VERSION = '" . $version . "'")
-            ->run();
+            ->to("VERSION = '" . $version . "'");
+
+        $tasks[] = $this->taskReplaceInFile(Toolkit::getToolkitRoot() . '/phpdoc.dist.xml')
+            ->regex('#<version number="[^"]*">#')
+            ->to('<version number="' . $version . '">');
+
+        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
@@ -80,44 +85,24 @@ class ToolkitReleaseCommands extends AbstractCommands
     }
 
     /**
-     * Create a release for Toolkit.
+     * Prepare a release for Toolkit.
      *
      * @param string $version
      *   The version to set.
      *
-     * @command toolkit:release
+     * @command toolkit:prepare-release
      *
      * @hidden
      */
-    public function toolkitRelease(string $version)
+    public function toolkitPrepareRelease(string $version)
     {
         $runner_bin = $this->getBin('run');
-        $this->taskExec($runner_bin)->args(['toolkit:version-write', $version])
-            ->run();
-        $this->taskExec($runner_bin)->args(['toolkit:changelog-write', $version])
-            ->run();
-
-        $answer = $this->ask("The changelog and version were updated, please validate.\nDo you want to commit and push the changes? (yes/no) [no]");
-        if (!in_array($answer, ['y', 'yes'])) {
-            $this->writeln('Stopping here.');
-            return;
-        }
-
-        $this->taskGitStack()->stopOnFail()
-            ->add('-A')
-            ->commit("Prepare release $version")
-            ->push('origin', $this->releaseBranch)
-            ->run();
-
-        $answer = $this->ask('The changelog was pushed, do you want to create and push the tag? (yes/no) [no]');
-        if (!in_array($answer, ['y', 'yes'])) {
-            $this->writeln('Stopping here.');
-            return;
-        }
-
-        $this->taskGitStack()->stopOnFail()
-            ->tag($version)
-            ->push('origin', $version);
+        return $this->collectionBuilder()->addTaskList([
+            $this->taskExec($runner_bin)->args(['toolkit:version-write', $version]),
+            $this->taskExec($runner_bin)->args(['toolkit:changelog-write', $version]),
+            $this->taskExec($runner_bin)->args(['toolkit:generate-commands-list']),
+            $this->taskExec($runner_bin)->args(['toolkit:generate-documentation']),
+        ]);
     }
 
     /**

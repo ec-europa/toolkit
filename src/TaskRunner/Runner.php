@@ -170,7 +170,7 @@ class Runner
      */
     private function prepareApplication()
     {
-        $this->application = Robo::createDefaultApplication(self::APPLICATION_NAME, '0.0.1');
+        $this->application = Robo::createDefaultApplication(self::APPLICATION_NAME, Toolkit::VERSION);
         $this->application->getDefinition()
             ->addOption(new InputOption(
                 '--working-dir',
