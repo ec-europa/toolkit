@@ -120,6 +120,7 @@ class Website
                 case 200:
                     $content = $result;
                     break;
+
                 // Upon other status codes.
                 default:
                     if ($basicAuth === '') {
@@ -234,4 +235,5 @@ class Website
 
         return false;
     }
+
 }

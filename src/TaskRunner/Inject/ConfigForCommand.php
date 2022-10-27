@@ -230,4 +230,5 @@ class ConfigForCommand implements EventSubscriberInterface
     {
         return InputOption::VALUE_IS_ARRAY === (InputOption::VALUE_IS_ARRAY & $inputOption->getDefault());
     }
+
 }

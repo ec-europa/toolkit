@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class GitHookCommands extends AbstractCommands
 {
+
     /**
      * {@inheritdoc}
      */
@@ -384,4 +385,5 @@ class GitHookCommands extends AbstractCommands
         }
         return $method;
     }
+
 }

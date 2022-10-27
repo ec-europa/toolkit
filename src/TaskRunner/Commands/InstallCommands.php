@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class InstallCommands extends AbstractCommands
 {
+
     /**
      * {@inheritdoc}
      */
@@ -102,4 +103,5 @@ class InstallCommands extends AbstractCommands
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
     }
+
 }

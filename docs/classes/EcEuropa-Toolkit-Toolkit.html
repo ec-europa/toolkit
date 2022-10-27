@@ -56,7 +56,7 @@
                     <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Getting started</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/available-tasks.html" class="">Available tasks</a>
+    <a href="guide/commands.html" class="">Commands</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -177,11 +177,18 @@
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/EcEuropa-Toolkit-Toolkit.html#constant_VERSION">VERSION</a>
     <span>
-        &nbsp;= &#039;9.0.0&#039;                            </span>
+        &nbsp;= &#039;9.1.0&#039;                            </span>
 </dt>
 <dd>Constant holding the current version.</dd>
 
                         <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-Toolkit.html#method_filterFolders">filterFolders()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Remove un-existing folders from given array.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-Toolkit.html#method_getAsdaPass">getAsdaPass()</a>
     <span>
                                 &nbsp;: string    </span>
@@ -215,13 +222,6 @@
                                 &nbsp;: string    </span>
 </dt>
 <dd>Returns the Project root.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-Toolkit.html#method_getQaWebsiteUrl">getQaWebsiteUrl()</a>
-    <span>
-                                &nbsp;: string    </span>
-</dt>
-<dd>Returns the QA base url.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-Toolkit.html#method_getToolkitRoot">getToolkitRoot()</a>
@@ -266,7 +266,7 @@
     <span class="phpdocumentor-signature__visibility">public</span>
         <span class="phpdocumentor-signature__type">mixed</span>
     <span class="phpdocumentor-signature__name">VERSION</span>
-    = <span class="phpdocumentor-signature__default-value">&#039;9.0.0&#039;</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;9.1.0&#039;</span>
 </code>
 
 
@@ -291,6 +291,51 @@
             -public
                                     -static                    "
 >
+    <h4 class="phpdocumentor-element__name" id="method_filterFolders">
+        filterFolders()
+        <a href="classes/EcEuropa-Toolkit-Toolkit.html#method_filterFolders" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Toolkit.php"><a href="files/src-toolkit.html"><abbr title="src/Toolkit.php">Toolkit.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">104</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Remove un-existing folders from given array.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">filterFolders</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__reference-operator">&amp;</span><span class="phpdocumentor-signature__argument__name">$files</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$files</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The folders to check.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                    -static                    "
+>
     <h4 class="phpdocumentor-element__name" id="method_getAsdaPass">
         getAsdaPass()
         <a href="classes/EcEuropa-Toolkit-Toolkit.html#method_getAsdaPass" class="headerlink"><i class="fas fa-link"></i></a>
@@ -298,7 +343,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Toolkit.php"><a href="files/src-toolkit.html"><abbr title="src/Toolkit.php">Toolkit.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">80</span>
+    <span class="phpdocumentor-element-found-in__line">68</span>
 
     </aside>
 
@@ -333,7 +378,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Toolkit.php"><a href="files/src-toolkit.html"><abbr title="src/Toolkit.php">Toolkit.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">68</span>
+    <span class="phpdocumentor-element-found-in__line">56</span>
 
     </aside>
 
@@ -368,7 +413,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Toolkit.php"><a href="files/src-toolkit.html"><abbr title="src/Toolkit.php">Toolkit.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">104</span>
+    <span class="phpdocumentor-element-found-in__line">92</span>
 
     </aside>
 
@@ -403,7 +448,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Toolkit.php"><a href="files/src-toolkit.html"><abbr title="src/Toolkit.php">Toolkit.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">92</span>
+    <span class="phpdocumentor-element-found-in__line">80</span>
 
     </aside>
 
@@ -466,41 +511,6 @@
             -public
                                     -static                    "
 >
-    <h4 class="phpdocumentor-element__name" id="method_getQaWebsiteUrl">
-        getQaWebsiteUrl()
-        <a href="classes/EcEuropa-Toolkit-Toolkit.html#method_getQaWebsiteUrl" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Toolkit.php"><a href="files/src-toolkit.html"><abbr title="src/Toolkit.php">Toolkit.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">45</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Returns the QA base url.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">getQaWebsiteUrl</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
-
-    
-    
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>The base url.</p>
-</section>
-
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                    -static                    "
->
     <h4 class="phpdocumentor-element__name" id="method_getToolkitRoot">
         getToolkitRoot()
         <a href="classes/EcEuropa-Toolkit-Toolkit.html#method_getToolkitRoot" class="headerlink"><i class="fas fa-link"></i></a>
@@ -543,7 +553,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Toolkit.php"><a href="files/src-toolkit.html"><abbr title="src/Toolkit.php">Toolkit.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">57</span>
+    <span class="phpdocumentor-element-found-in__line">45</span>
 
     </aside>
 

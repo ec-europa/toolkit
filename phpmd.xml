@@ -14,10 +14,11 @@
     <rule ref="rulesets/codesize.xml">
         <exclude name="TooManyFields" />
         <exclude name="TooManyPublicMethods" />
+        <exclude name="ExcessiveClassComplexity" />
     </rule>
     <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity">
         <properties>
-            <property name="maximum" description="The maximum WMC tolerable for a class." value="150"/>
+            <property name="maximum" value="120"/>
         </properties>
     </rule>
     <rule ref="rulesets/codesize.xml/TooManyPublicMethods">

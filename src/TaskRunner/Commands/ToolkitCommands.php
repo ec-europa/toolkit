@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
-use EcEuropa\Toolkit\Toolkit;
 use Robo\Exception\AbortTasksException;
+use Robo\Exception\TaskException;
+use Robo\ResultData;
 use Symfony\Component\Yaml\Yaml;
 
 class ToolkitCommands extends AbstractCommands
 {
+
     /**
      * Dumps the current configuration.
      *
@@ -39,73 +41,58 @@ class ToolkitCommands extends AbstractCommands
     }
 
     /**
-     * Write the specified version string back into the Toolkit.php file.
+     * Generate the list of commands in the commands.rst file.
      *
-     * @param string $version
-     *   The version to set.
-     *
-     * @command toolkit:version-write
+     * @command toolkit:generate-commands-list
      *
      * @hidden
+     *
+     * @aliases tk-gcl
      */
-    public function toolkitVersionWrite(string $version)
+    public function generateCommandsList()
     {
-        return $this->taskReplaceInFile(Toolkit::getToolkitRoot() . '/src/Toolkit.php')
-            ->regex("#VERSION = '[^']*'#")
-            ->regex("#VERSION = '[^']*'#")
-            ->to("VERSION = '" . $version . "'")
-            ->run();
+        // Get the available commands.
+        $r = $this->taskExec($this->getBin('run'))
+            ->silent(true)->run()->getMessage();
+        // Remove the header part.
+        $r = preg_replace('/((.|\n)*)(Available commands:)/', '\3', $r);
+        // Add spaces to match the .rst format.
+        $r = preg_replace('/^/im', '   ', $r);
+
+        $start = ".. toolkit-block-commands\n\n.. code-block::\n\n";
+        $end = "\n\n.. toolkit-block-commands-end";
+        $task = $this->taskReplaceBlock('docs/guide/commands.rst')
+            ->start($start)
+            ->end($end)
+            ->content($r);
+        return $this->collectionBuilder()->addTask($task);
     }
 
     /**
-     * Write the release changelog to the CHANGELOG.md file.
+     * Generate the documentation
      *
-     * @param string $version
-     *   The version to set.
-     *
-     * @command toolkit:changelog-write
+     * @command toolkit:generate-documentation
      *
      * @hidden
+     *
+     * @aliases tk-docs
+     *
+     * @throws TaskException
      */
-    public function toolkitChangelogWrite(string $version)
+    public function toolkitGenerateDocumentation()
     {
-        throw new AbortTasksException('@TODO This task needs to be implemented.');
-        $this->taskChangelog()
-            ->setHeader("## Version 8.5.1\n")
-            ->version($version)
-            ->change("## Version 9.0.0\nReleased to github")
-            ->run();
+        // Download the phar file if do not exist.
+        $phpDoc = 'vendor/bin/phpDoc';
+        if (!file_exists($phpDoc)) {
+            file_put_contents($phpDoc, file_get_contents('https://phpdoc.org/phpDocumentor.phar'));
+            if (filesize($phpDoc) <= 0) {
+                $this->writeln('Fail to download the phpDocumentor.phar file.');
+                return ResultData::EXITCODE_ERROR;
+            }
+            $this->_chmod($phpDoc, 0755);
+        }
+        $task = $this->taskExec($this->getBin('phpDoc'));
+        return $this->collectionBuilder()->addTask($task);
     }
 
-    /**
-     * Create a release for Toolkit.
-     *
-     * @param string $version
-     *   The version to set.
-     *
-     * @command toolkit:release
-     *
-     * @hidden
-     */
-    public function toolkitRelease(string $version)
-    {
-        throw new AbortTasksException('@TODO This task needs to be implemented.');
-        // Call the toolkit:version-write and toolkit:changelog-write and create tag.
-        $tasks = [];
-        $runner_bin = $this->getBin('run');
-        $tasks[] = $this->taskExecStack()
-            ->stopOnFail()
-            ->exec("$runner_bin toolkit:version-write $version")
-            ->exec("$runner_bin toolkit:changelog-write $version");
-
-        $tasks[] = $this->taskGitStack()
-            ->stopOnFail()
-            ->add('-A')
-            ->commit("Prepare release $version")
-            ->push('origin', 'master')
-            ->tag($version)
-            ->push('origin', $version);
-
-        return $this->collectionBuilder()->addTaskList($tasks);
-    }
 }

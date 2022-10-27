@@ -17,6 +17,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class InstallCommandsTest extends AbstractTest
 {
+
     /**
      * Data provider for testInstall.
      *
@@ -58,4 +59,5 @@ class InstallCommandsTest extends AbstractTest
             $this->assertContainsNotContains($content, $row);
         }
     }
+
 }

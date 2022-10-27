@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
+use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Exception\AbortTasksException;
 use Robo\Exception\TaskException;
 use Robo\ResultData;
@@ -18,6 +19,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class TestsCommands extends AbstractCommands
 {
+
     /**
      * {@inheritdoc}
      */
@@ -92,12 +94,9 @@ class TestsCommands extends AbstractCommands
         $root->appendChild($phpcs_xml->createComment(' Files to check. '));
         if (!empty($files = $config->get('toolkit.test.phpcs.files'))) {
             $files = is_string($files) ? explode(',', $files) : $files;
+            Toolkit::filterFolders($files);
             foreach ($files as $file) {
-                if (file_exists($file)) {
-                    $root->appendChild($phpcs_xml->createElement('file', $file));
-                } else {
-                    $this->writeln("The path '$file' was not found, ignoring.");
-                }
+                $root->appendChild($phpcs_xml->createElement('file', $file));
             }
         } else {
             $root->appendChild($phpcs_xml->createElement('file', '.'));
@@ -302,18 +301,48 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:test-phpstan
      *
+     * @option config The path to the config file.
+     * @option level  The level of rule options.
      * @option files  The files to check.
      *
      * @aliases tk-phpstan
      */
     public function toolkitTestPhpstan(array $options = [
+        'config' => InputOption::VALUE_REQUIRED,
+        'level' => InputOption::VALUE_REQUIRED,
         'files' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
     ])
     {
+        $config = $this->getConfig();
+        // Only run if we find a Drupal installation.
+        if (!file_exists($config->get('drupal.root'))) {
+            $this->say('Could not find a Drupal installation, skipping.');
+            return 0;
+        }
+        $tasks = [];
         Toolkit::filterFolders($options['files']);
-        $args = implode(' ', $options['files']);
-        $task = $this->taskExec($this->getBin('phpstan') . ' analyse ' . $args);
-        return $this->collectionBuilder()->addTask($task);
+        $ignores = $config->get('toolkit.test.phpstan.ignores');
+        Toolkit::filterFolders($ignores);
+
+        // If the config file is not found, generate a new one.
+        if (!file_exists($options['config'])) {
+            $config_content = [
+                'parameters' => [
+                    'drupal' => [
+                        'drupal_root' => getcwd() . '/' . $config->get('drupal.root'),
+                    ],
+                    'level' => $options['level'],
+                    'paths' => array_values($options['files']),
+                    'excludePaths' => $ignores,
+                ],
+            ];
+            $tasks[] = $this->taskWriteToFile($options['config'])
+                ->text(Yaml::dump($config_content, 10, 2));
+        }
+        $tasks[] = $this->taskExec($this->getBin('phpstan'))
+            ->arg('analyse')
+            ->option('configuration', $options['config']);
+        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
@@ -370,7 +399,8 @@ class TestsCommands extends AbstractCommands
         $this->taskProcess($options['from'], $options['to'])->run();
 
         $result = $this->taskExec($behatBin)->options($execOpts + ['dry-run' => null], '=')
-            ->silent(true)->run()->getMessage();
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
         if (str_contains(trim($result), 'No scenarios')) {
             $this->say("No Scenarios found for profile {$execOpts['profile']}, please create at least one Scenario.");
             return new ResultData(1);
@@ -756,9 +786,11 @@ class TestsCommands extends AbstractCommands
             $url = Website::url();
             if (!empty($repo)) {
                 $payload = [
-                    '_links' => ['type' => [
-                        'href' => $url . '/rest/type/node/blackfire',
-                    ]],
+                    '_links' => [
+                        'type' => [
+                            'href' => $url . '/rest/type/node/blackfire',
+                        ],
+                    ],
                     'type' => [['target_id' => 'blackfire']],
                     'title' => [['value' => "Profiling: $project_id"]],
                     'body' => [['value' => $raw]],
@@ -791,4 +823,5 @@ class TestsCommands extends AbstractCommands
 
         return new ResultData(0);
     }
+
 }

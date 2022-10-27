@@ -98,6 +98,7 @@ class Runner
         'toolkit.test.phpmd.triggered_by',
         'toolkit.test.phpmd.files',
         'toolkit.test.phpstan.files',
+        'toolkit.test.phpstan.ignores',
         'toolkit.lint.eslint.ignores',
         'toolkit.lint.eslint.extensions_yaml',
         'toolkit.lint.eslint.extensions_js',
@@ -169,7 +170,7 @@ class Runner
      */
     private function prepareApplication()
     {
-        $this->application = Robo::createDefaultApplication(self::APPLICATION_NAME, '0.0.1');
+        $this->application = Robo::createDefaultApplication(self::APPLICATION_NAME, Toolkit::VERSION);
         $this->application->getDefinition()
             ->addOption(new InputOption(
                 '--working-dir',
@@ -343,4 +344,5 @@ class Runner
             $this->application->add($command);
         }
     }
+
 }

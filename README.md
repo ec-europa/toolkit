@@ -7,30 +7,26 @@ The NextEuropa Toolkit is a composer package designed to speed up the developmen
 ## Prerequisites
 You need to have the following software installed on your local development environment:
 
-* [Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
+* [Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
 ## User guide
 
 ```
 Toolkit is a developer package, make sure you install this in the dev section of your composer.json.
-composer require --dev ec-europa/toolkit:^8
+composer require --dev ec-europa/toolkit:^9
 ```
 
-The toolkit contains different components that help you during the development, the main
-component is the Phing build system that let's you easily set up the project
-locally and can be used in CI tools like Jenkins, Drone or Travis.
-
-- [Setting up a project](/docs/guide/setting-up-project.md)
-- [Configuring a project](/docs/guide/configuring-project.md)
-- [Installing the project](/docs/guide/installing-project.md)
-- [Testing the project](/docs/guide/testing-project.md)
-- [Using Docker environment](/docs/guide/docker-environment.md)
-- [Continuous integration](/docs/guide/continuous-integration.md)
-- [Available tasks](/docs/guide/available-tasks.md)
-- [Building assets](/docs/guide/building-assets.md)
-- [Git Hooks](/docs/guide/git-hooks.md)
-- [Update Project Documentation](/docs/guide/project-documentation.md)
+- [Setting up a project](/docs/guide/setting-up-project.rst)
+- [Configuring a project](/docs/guide/configuring-project.rst)
+- [Installing the project](/docs/guide/installing-project.rst)
+- [Testing the project](/docs/guide/testing-project.rst)
+- [Using Docker environment](/docs/guide/docker-environment.rst)
+- [Continuous integration](/docs/guide/continuous-integration.rst)
+- [Building assets](/docs/guide/building-assets.rst)
+- [Commands](/docs/guide/commands.rst)
+- [Git Hooks](/docs/guide/git-hooks.rst)
+- [Update Project Documentation](/docs/guide/project-documentation.rst)
 - [Changelog](/CHANGELOG.md)
 
 ## Contributing

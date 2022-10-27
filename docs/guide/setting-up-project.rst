@@ -16,7 +16,7 @@ for you automatically.
 
 .. code-block::
 
-   composer create-project ec-europa/subsite --stability=dev <dg-name>-<project-id>-reference dev-release/8.x
+   composer create-project ec-europa/subsite --stability=dev <dg-name>-<project-id>-reference dev-release/9.x
    docker-compose up -d
    docker-compose exec web vendor/bin/run
 
@@ -37,13 +37,13 @@ Other topics
 
 
 * Setting up a project
-* `Configuring a project </docs/configuring-project.md>`_
-* `Installing the project </docs/installing-project.md>`_
-* `Testing the project </docs/testing-project.md>`_
-* `Using Docker environment </docs/docker-environment.md>`_
-* `Continuous integration </docs/continuous-integration.md>`_
-* `Available tasks </docs/available-tasks.md>`_
-* `Building assets </docs/building-assets.md>`_
-* `Git Hooks </docs/git-hooks.md>`_
-* `Update Project Documentation </docs/project-documentation.md>`_
+* `Configuring a project </docs/guide/configuring-project.rst>`_
+* `Installing the project </docs/guide/installing-project.rst>`_
+* `Testing the project </docs/guide/testing-project.rst>`_
+* `Using Docker environment </docs/guide/docker-environment.rst>`_
+* `Continuous integration </docs/guide/continuous-integration.rst>`_
+* `Building assets </docs/guide/building-assets.rst>`_
+* `Commands </docs/guide/commands.rst>`_
+* `Git Hooks </docs/guide/git-hooks.rst>`_
+* `Update Project Documentation </docs/guide/project-documentation.rst>`_
 * `Changelog </CHANGELOG.md>`_

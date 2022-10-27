@@ -11,6 +11,7 @@ namespace EcEuropa\Toolkit\Task\Command;
  */
 trait Tasks
 {
+
     /**
      * Execute a command.
      *
@@ -21,4 +22,5 @@ trait Tasks
     {
         return $this->task(ConfigurationCommand::class, $tasks);
     }
+
 }
