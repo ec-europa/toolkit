@@ -57,6 +57,26 @@
                     <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Getting started</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/setting-up-project.html" class="">Setting up a project</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/configuring-project.html" class="-active">Configuring a project</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/installing-project.html" class="">Installing a project</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/testing-project.html" class="">Testing the project</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/continuous-integration.html" class="">Continuous integration</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/commands.html" class="">Commands</a>
 </h4>
 
@@ -65,35 +85,11 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/configuring-project.html" class="-active">Configuring a project</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/continuous-integration.html" class="">Continuous integration</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/docker-environment.html" class="">Docker environment</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/git-hooks.html" class="">Git hooks</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/installing-project.html" class="">Installing a project</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/project-documentation.html" class="">Update Project Documentation</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/setting-up-project.html" class="">Setting up a project</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/testing-project.html" class="">Testing the project</a>
 </h4>
 
                         </section>
@@ -181,7 +177,7 @@ If a service is defined in both files, Docker Compose merges the configurations.
 </div>
 <div class="section" id="subsite-configuration">
 <h2>Subsite configuration</h2>
-<p>By default, subsite configuration go into file <code>runner.yml.dist</code>\ , see bellow an example.</p>
+<p>By default, subsite configuration go into file <code>runner.yml.dist</code>, see bellow an example.</p>
 <pre><code class="language- " >drupal:
   root: &quot;web&quot;
   base_url: ${env.DRUPAL_BASE_URL}
@@ -199,62 +195,7 @@ toolkit:
 selenium:
   host: &quot;http://selenium&quot;
   port: &quot;4444&quot;
-  browser: &quot;chrome&quot;
-</code></pre>
-</div>
-<div class="section" id="clone-configuration">
-<h2>Clone configuration</h2>
-<p>Toolkit will load the credentials necessary to clone your subsite from your environment, so make sure you have in your env the following variables:</p>
-
-
-<ul>
-    <li>
-            ASDA_USER
-        </li>
-    <li>
-            ASDA_PASSWORD
-        </li>
-</ul>
-</div>
-<div class="section" id="other-topics">
-<h2>Other topics</h2>
-
-
-<ul>
-    <li>
-            <a href="docs/guide/setting-up-project.rst">Setting up a project</a>
-        </li>
-    <li>
-            Configuring a project
-        </li>
-    <li>
-            <a href="docs/guide/installing-project.rst">Installing the project</a>
-        </li>
-    <li>
-            <a href="docs/guide/testing-project.rst">Testing the project</a>
-        </li>
-    <li>
-            <a href="docs/guide/docker-environment.rst">Using Docker environment</a>
-        </li>
-    <li>
-            <a href="docs/guide/continuous-integration.rst">Continuous integration</a>
-        </li>
-    <li>
-            <a href="docs/guide/building-assets.rst">Building assets</a>
-        </li>
-    <li>
-            <a href="docs/guide/commands.rst">Commands</a>
-        </li>
-    <li>
-            <a href="docs/guide/git-hooks.rst">Git Hooks</a>
-        </li>
-    <li>
-            <a href="docs/guide/project-documentation.rst">Update Project Documentation</a>
-        </li>
-    <li>
-            <a href="CHANGELOG.md">Changelog</a>
-        </li>
-</ul>
+  browser: &quot;chrome&quot;</code></pre>
 </div>
 
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">

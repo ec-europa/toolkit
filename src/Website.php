@@ -8,6 +8,9 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Handle communications with QA api.
+ */
 class Website
 {
     /**

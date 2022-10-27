@@ -58,7 +58,7 @@ Environment variables will be loaded by Docker Compose when running ``docker-com
 Subsite configuration
 ^^^^^^^^^^^^^^^^^^^^^
 
-By default, subsite configuration go into file ``runner.yml.dist``\ , see bellow an example.
+By default, subsite configuration go into file ``runner.yml.dist``, see bellow an example.
 
 .. code-block::
 
@@ -80,28 +80,3 @@ By default, subsite configuration go into file ``runner.yml.dist``\ , see bellow
      host: "http://selenium"
      port: "4444"
      browser: "chrome"
-
-Clone configuration
-^^^^^^^^^^^^^^^^^^^
-
-Toolkit will load the credentials necessary to clone your subsite from your environment, so make sure you have in your env the following variables:
-
-
-* ASDA_USER
-* ASDA_PASSWORD
-
-Other topics
-^^^^^^^^^^^^
-
-
-* `Setting up a project </docs/guide/setting-up-project.rst>`_
-* Configuring a project
-* `Installing the project </docs/guide/installing-project.rst>`_
-* `Testing the project </docs/guide/testing-project.rst>`_
-* `Using Docker environment </docs/guide/docker-environment.rst>`_
-* `Continuous integration </docs/guide/continuous-integration.rst>`_
-* `Building assets </docs/guide/building-assets.rst>`_
-* `Commands </docs/guide/commands.rst>`_
-* `Git Hooks </docs/guide/git-hooks.rst>`_
-* `Update Project Documentation </docs/guide/project-documentation.rst>`_
-* `Changelog </CHANGELOG.md>`_

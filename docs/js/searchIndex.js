@@ -1003,7 +1003,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Website",
             "name": "Website",
-            "summary": "",
+            "summary": "Handle\u0020communications\u0020with\u0020QA\u0020api.",
             "url": "classes/EcEuropa-Toolkit-Website.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Website\u003A\u003A\u0024url",

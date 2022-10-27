@@ -57,6 +57,26 @@
                     <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Getting started</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/setting-up-project.html" class="">Setting up a project</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/configuring-project.html" class="">Configuring a project</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/installing-project.html" class="">Installing a project</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/testing-project.html" class="">Testing the project</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/continuous-integration.html" class="">Continuous integration</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/commands.html" class="">Commands</a>
 </h4>
 
@@ -65,35 +85,11 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/configuring-project.html" class="">Configuring a project</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/continuous-integration.html" class="">Continuous integration</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/docker-environment.html" class="">Docker environment</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/git-hooks.html" class="-active">Git hooks</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/installing-project.html" class="">Installing a project</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/project-documentation.html" class="">Update Project Documentation</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/setting-up-project.html" class="">Setting up a project</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/testing-project.html" class="">Testing the project</a>
 </h4>
 
                         </section>
@@ -237,7 +233,7 @@ argument representing the hook name, and you can pass up to 3 extra arguments.</
 </code></pre>
 <p>The command <code>toolkit:hooks-run</code> will transform the hook name and look for a
 callback in the format <code>runHookName</code>.</p>
-<p>Example for hook <code>prepare-commit-msg</code>\ , toolkit will look for a callback
+<p>Example for hook <code>prepare-commit-msg</code>, toolkit will look for a callback
 named <code>runPrepareCommitMsg()</code>.</p>
 <p>The callback method is responsible to retrieve the arguments
 with <code>$this->input()->getArguments()</code>.</p>
@@ -264,15 +260,15 @@ at <code>EcEuropa\Toolkit\TaskRunner\Commands\GitHookCommands</code></p>
 </ul>
 <div class="section" id="create-the-hook">
 <h3>Create the hook</h3>
-<p>Add the hook that you want to the <code>resources/git/hooks</code>\ , in this example we will
-use the hook <code>commit-msg</code>\ , so we add the file <code>resources/git/hooks/commit-msg</code>.</p>
+<p>Add the hook that you want to the <code>resources/git/hooks</code>, in this example we will
+use the hook <code>commit-msg</code>, so we add the file <code>resources/git/hooks/commit-msg</code>.</p>
 <pre><code class="language-shell " >#!/bin/sh
 ./vendor/bin/run toolkit:hooks-run `basename &quot;$0&quot;` $1 $2
 </code></pre>
 </div>
 <div class="section" id="add-the-hook-to-the-active-hooks">
 <h3>Add the hook to the active hooks</h3>
-<p>In your <code>runner.yml</code>\ , extend the Toolkit configuration to add your custom hook.</p>
+<p>In your <code>runner.yml</code>, extend the Toolkit configuration to add your custom hook.</p>
 <p>Do not forget to copy the existing ones (in case you want to use them),
 otherwise your configuration will override the default provided by Toolkit.</p>
 <pre><code class="language-yaml " >toolkit:
@@ -318,48 +314,7 @@ class QaGitHookCommands extends GitHookCommands
 | pre-push (toolkit)           | Yes              | No          | No            |
 | prepare-commit-msg (toolkit) | Yes              | No          | No            |
 | commit-msg (digit-qa)        | Yes              | No          | No            |
-+------------------------------+------------------+-------------+---------------+
-</code></pre>
-</div>
-<div class="section" id="other-topics">
-<h3>Other topics</h3>
-
-
-<ul>
-    <li>
-            <a href="docs/guide/setting-up-project.rst">Setting up a project</a>
-        </li>
-    <li>
-            <a href="docs/guide/configuring-project.rst">Configuring a project</a>
-        </li>
-    <li>
-            <a href="docs/guide/installing-project.rst">Installing the project</a>
-        </li>
-    <li>
-            <a href="docs/guide/testing-project.rst">Testing the project</a>
-        </li>
-    <li>
-            <a href="docs/guide/docker-environment.rst">Using Docker environment</a>
-        </li>
-    <li>
-            <a href="docs/guide/continuous-integration.rst">Continuous integration</a>
-        </li>
-    <li>
-            <a href="docs/guide/building-assets.rst">Building assets</a>
-        </li>
-    <li>
-            <a href="docs/guide/commands.rst">Commands</a>
-        </li>
-    <li>
-            Git Hooks
-        </li>
-    <li>
-            <a href="docs/guide/project-documentation.rst">Update Project Documentation</a>
-        </li>
-    <li>
-            <a href="CHANGELOG.md">Changelog</a>
-        </li>
-</ul>
++------------------------------+------------------+-------------+---------------+</code></pre>
 </div>
 </div>
 

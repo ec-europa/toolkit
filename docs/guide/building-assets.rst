@@ -58,7 +58,7 @@ If no config files are present in the project, the default theme can be specifie
 Define 'custom-code-folder'
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If for some reason your project is running custom code in other folder then ``lib``\ , it's possible to make it configurable with the following:
+If for some reason your project is running custom code in other folder then ``lib``, it's possible to make it configurable with the following:
 
 .. code-block::
 
@@ -155,19 +155,3 @@ Automatically fix, where possible, violations reported.
 .. code-block::
 
    docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix
-
-Other topics
-^^^^^^^^^^^^
-
-
-* `Setting up a project </guide/setting-up-project.html>`_
-* `Configuring a project </docs/guide/configuring-project.rst>`_
-* `Installing the project </docs/guide/installing-project.rst>`_
-* `Testing the project </docs/guide/testing-project.rst>`_
-* `Using Docker environment </docs/guide/docker-environment.rst>`_
-* `Continuous integration </docs/guide/continuous-integration.rst>`_
-* Building assets
-* `Commands </docs/guide/commands.rst>`_
-* `Git Hooks </docs/guide/git-hooks.rst>`_
-* `Update Project Documentation </docs/guide/project-documentation.rst>`_
-* `Changelog </CHANGELOG.md>`_

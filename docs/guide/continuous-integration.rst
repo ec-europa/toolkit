@@ -26,19 +26,3 @@ Deploy mode
 -----------
 
 The pipeline allows for an automatic deployment to the acceptance environment. This is done by creating a pull request from a branch named **deploy** to the **master** branch. After the pipeline passes all required tests it will automatically merge your pull request into master and trigger the deployment to the acceptance environment.
-
-Other topics
-^^^^^^^^^^^^
-
-
-* `Setting up a project </docs/guide/setting-up-project.rst>`_
-* `Configuring a project </docs/guide/configuring-project.rst>`_
-* `Installing the project </docs/guide/installing-project.rst>`_
-* `Testing the project </docs/guide/testing-project.rst>`_
-* `Using Docker environment </docs/guide/docker-environment.rst>`_
-* Continuous integration
-* `Building assets </docs/guide/building-assets.rst>`_
-* `Commands </docs/guide/commands.rst>`_
-* `Git Hooks </docs/guide/git-hooks.rst>`_
-* `Update Project Documentation </docs/guide/project-documentation.rst>`_
-* `Changelog </CHANGELOG.md>`_

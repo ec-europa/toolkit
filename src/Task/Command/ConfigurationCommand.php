@@ -231,8 +231,8 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * @param $task
      *   The task being executed.
      *
-     * @see $this->availableTasks
-     * @see $this->paramDefaultValue()
+     * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::availableTasks
+     * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::paramDefaultValue()
      *
      * @throws TaskException
      */

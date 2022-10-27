@@ -8,15 +8,14 @@ documentation.
 .. toctree::
     :maxdepth: 2
 
+    setting-up-project
+    configuring-project
+    installing-project
+    testing-project
+    continuous-integration
     commands
     building-assets
-    configuring-project
-    continuous-integration
-    docker-environment
     git-hooks
-    installing-project
     project-documentation
-    setting-up-project
-    testing-project
 
 .. |phpdoc| replace:: phpDocumentor

@@ -57,6 +57,26 @@
                     <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Getting started</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/setting-up-project.html" class="">Setting up a project</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/configuring-project.html" class="">Configuring a project</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/installing-project.html" class="">Installing a project</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/testing-project.html" class="">Testing the project</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/continuous-integration.html" class="">Continuous integration</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/commands.html" class="">Commands</a>
 </h4>
 
@@ -65,35 +85,11 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/configuring-project.html" class="">Configuring a project</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/continuous-integration.html" class="">Continuous integration</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/docker-environment.html" class="">Docker environment</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/git-hooks.html" class="">Git hooks</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/installing-project.html" class="">Installing a project</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/project-documentation.html" class="">Update Project Documentation</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/setting-up-project.html" class="">Setting up a project</a>
-</h4>
-
-                                    <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/testing-project.html" class="">Testing the project</a>
 </h4>
 
                         </section>
@@ -191,7 +187,7 @@
 </div>
 <div class="section" id="define-custom-code-folder">
 <h3>Define &#039;custom-code-folder&#039;</h3>
-<p>If for some reason your project is running custom code in other folder then <code>lib</code>\ , it&#039;s possible to make it configurable with the following:</p>
+<p>If for some reason your project is running custom code in other folder then <code>lib</code>, it&#039;s possible to make it configurable with the following:</p>
 <pre><code class="language- " >toolkit:
   build:
     custom-code-folder: &#039;your_folder&#039;
@@ -263,48 +259,7 @@ docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate
 <div class="section" id="automatically-fix-errors">
 <h3>Automatically fix errors</h3>
 <p>Automatically fix, where possible, violations reported.</p>
-<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix
-</code></pre>
-</div>
-<div class="section" id="other-topics">
-<h3>Other topics</h3>
-
-
-<ul>
-    <li>
-            <a href="guide/setting-up-project.html">Setting up a project</a>
-        </li>
-    <li>
-            <a href="docs/guide/configuring-project.rst">Configuring a project</a>
-        </li>
-    <li>
-            <a href="docs/guide/installing-project.rst">Installing the project</a>
-        </li>
-    <li>
-            <a href="docs/guide/testing-project.rst">Testing the project</a>
-        </li>
-    <li>
-            <a href="docs/guide/docker-environment.rst">Using Docker environment</a>
-        </li>
-    <li>
-            <a href="docs/guide/continuous-integration.rst">Continuous integration</a>
-        </li>
-    <li>
-            Building assets
-        </li>
-    <li>
-            <a href="docs/guide/commands.rst">Commands</a>
-        </li>
-    <li>
-            <a href="docs/guide/git-hooks.rst">Git Hooks</a>
-        </li>
-    <li>
-            <a href="docs/guide/project-documentation.rst">Update Project Documentation</a>
-        </li>
-    <li>
-            <a href="CHANGELOG.md">Changelog</a>
-        </li>
-</ul>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix</code></pre>
 </div>
 </div>
 

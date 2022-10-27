@@ -198,19 +198,3 @@ Toolkit is full integrated with official pipeline that currently requires minimu
 of 1 behat test and a clean report for phpcs check.
 
 Any customization done in your project will be respected in Drone build.
-
-Other topics
-^^^^^^^^^^^^
-
-
-* `Setting up a project </docs/guide/setting-up-project.rst>`_
-* `Configuring a project </docs/guide/configuring-project.rst>`_
-* `Installing the project </docs/guide/installing-project.rst>`_
-* Testing the project
-* `Using Docker environment </docs/guide/docker-environment.rst>`_
-* `Continuous integration </docs/guide/continuous-integration.rst>`_
-* `Building assets </docs/guide/building-assets.rst>`_
-* `Commands </docs/guide/commands.rst>`_
-* `Git Hooks </docs/guide/git-hooks.rst>`_
-* `Update Project Documentation </docs/guide/project-documentation.rst>`_
-* `Changelog </CHANGELOG.md>`_

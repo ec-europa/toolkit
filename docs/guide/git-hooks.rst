@@ -124,7 +124,7 @@ Example of the ``prepare-commit-msg`` hook (receives two extra arguments).
 The command ``toolkit:hooks-run`` will transform the hook name and look for a
 callback in the format ``runHookName``.
 
-Example for hook ``prepare-commit-msg``\ , toolkit will look for a callback
+Example for hook ``prepare-commit-msg``, toolkit will look for a callback
 named ``runPrepareCommitMsg()``.
 
 The callback method is responsible to retrieve the arguments
@@ -149,8 +149,8 @@ To do so, you need to
 Create the hook
 ^^^^^^^^^^^^^^^
 
-Add the hook that you want to the ``resources/git/hooks``\ , in this example we will
-use the hook ``commit-msg``\ , so we add the file ``resources/git/hooks/commit-msg``.
+Add the hook that you want to the ``resources/git/hooks``, in this example we will
+use the hook ``commit-msg``, so we add the file ``resources/git/hooks/commit-msg``.
 
 .. code-block:: shell
 
@@ -160,7 +160,7 @@ use the hook ``commit-msg``\ , so we add the file ``resources/git/hooks/commit-m
 Add the hook to the active hooks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In your ``runner.yml``\ , extend the Toolkit configuration to add your custom hook.
+In your ``runner.yml``, extend the Toolkit configuration to add your custom hook.
 
 Do not forget to copy the existing ones (in case you want to use them),
 otherwise your configuration will override the default provided by Toolkit.
@@ -218,19 +218,3 @@ List the available commands, your custom hook should be available.
    | prepare-commit-msg (toolkit) | Yes              | No          | No            |
    | commit-msg (digit-qa)        | Yes              | No          | No            |
    +------------------------------+------------------+-------------+---------------+
-
-Other topics
-^^^^^^^^^^^^
-
-
-* `Setting up a project </docs/guide/setting-up-project.rst>`_
-* `Configuring a project </docs/guide/configuring-project.rst>`_
-* `Installing the project </docs/guide/installing-project.rst>`_
-* `Testing the project </docs/guide/testing-project.rst>`_
-* `Using Docker environment </docs/guide/docker-environment.rst>`_
-* `Continuous integration </docs/guide/continuous-integration.rst>`_
-* `Building assets </docs/guide/building-assets.rst>`_
-* `Commands </docs/guide/commands.rst>`_
-* Git Hooks
-* `Update Project Documentation </docs/guide/project-documentation.rst>`_
-* `Changelog </CHANGELOG.md>`_

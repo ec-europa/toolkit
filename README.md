@@ -1,6 +1,6 @@
-# NextEuropa Toolkit
+# Toolkit
 
-The NextEuropa Toolkit is a composer package designed to speed up the development of Drupal websites in Drupal 9. Its main core is the robo based build system that builds your development environments, deploy and test your code.
+The Toolkit is a composer package designed to speed up the development of Drupal websites in Drupal 9+. Its main core is the robo based build system that builds your development environments, deploy and test your code.
 
 [![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/toolkit/status.svg)](https://drone.fpfis.eu/ec-europa/toolkit) [![License](https://img.shields.io/badge/License-EUPL%201.1-blue.svg)](LICENSE)
 
@@ -10,7 +10,7 @@ You need to have the following software installed on your local development envi
 * [Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
-## User guide
+## User guide and documentation
 
 ```
 Toolkit is a developer package, make sure you install this in the dev section of your composer.json.
@@ -29,6 +29,8 @@ composer require --dev ec-europa/toolkit:^9
 - [Update Project Documentation](/docs/guide/project-documentation.rst)
 - [Changelog](/CHANGELOG.md)
 
+To have more details about this package, please check the [full documentation](https://ec-europa.github.io/toolkit/).
+
 ## Contributing
 Please read [CONTRIBUTING.md](/CONTRIBUTING.md) for details on our code of conduct and the process to submit pull-request to us.
 
@@ -37,7 +39,7 @@ This project is licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2 - see th
 
 ## Maintainers
 This project is maintained by members of the Quality Assurance team who review
-incoming pull requests for the NextEuropa project. The board on which they
+incoming pull requests for this project. The board on which they
 operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
 
 <details><summary><b>Contact list</b></summary>
