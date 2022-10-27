@@ -20,7 +20,7 @@ See bellow current list of available commands:
      help                              Display help for a command
      list                              List commands
     drupal
-     drupal:drush-setup                Write Drush configuration files to given directories.
+     drupal:drush-setup                Write Drush configuration file at "${drupal.root}/drush/drush.yml".
      drupal:permissions-setup          Setup Drupal permissions.
      drupal:settings-setup             Setup Drupal settings.php file in compliance with Toolkit conventions.
      drupal:site-install               [drupal:si|dsi] Install target site.

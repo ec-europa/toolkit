@@ -168,7 +168,7 @@ class ReplaceBlock extends BaseTask
 
         $this->printTaskInfo('Writing to file {filename}', ['filename' => $this->filename]);
 
-        $pattern = '/(' . preg_quote($this->start) . ')((.|\n)*)(' . preg_quote($this->end) . ')/';
+        $pattern = '#(' . preg_quote($this->start) . ')((.|\n)*)(' . preg_quote($this->end) . ')#';
 
         $file = file_get_contents($this->filename);
 
