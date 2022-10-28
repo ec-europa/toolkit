@@ -841,6 +841,7 @@ class ToolCommands extends AbstractCommands
 
             foreach ($parseOptsFile['upgrade_commands'] as $key => $commands) {
                 foreach ($commands as $command) {
+                    $command = str_replace('\\', '', $command);
                     foreach ($forbiddenCommands as $forbiddenCommand) {
                         if ($key == 'default') {
                             $parsedCommand = explode(" ", $command);
