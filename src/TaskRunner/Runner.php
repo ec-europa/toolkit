@@ -145,11 +145,7 @@ class Runner
      */
     public function run()
     {
-        $classes = $this->discoverCommandClasses();
-        $this->runner->registerCommandClasses($this->application, $classes);
-
         $this->registerConfigurationCommands();
-
         return $this->runner->run($this->input, $this->output, $this->application);
     }
 
@@ -265,20 +261,6 @@ class Runner
             ->setSelfUpdateRepository(self::REPOSITORY)
             ->setContainer($this->container);
         return $this;
-    }
-
-    /**
-     * Discover Command classes.
-     *
-     * @return array|string[]
-     *   An array with the Command classes.
-     */
-    private function discoverCommandClasses()
-    {
-        return (new RelativeNamespaceDiscovery($this->classLoader))
-            ->setRelativeNamespace('TaskRunner\Commands')
-            ->setSearchPattern('/.*Commands\.php$/')
-            ->getClasses();
     }
 
     /**
