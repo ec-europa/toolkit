@@ -2,7 +2,7 @@
 
 The Toolkit is a composer package designed to speed up the development of Drupal websites in Drupal 9+. Its main core is the robo based build system that builds your development environments, deploy and test your code.
 
-[![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/toolkit/status.svg)](https://drone.fpfis.eu/ec-europa/toolkit) [![License](https://img.shields.io/badge/License-EUPL%201.1-blue.svg)](LICENSE)
+[![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/toolkit/status.svg?branch=release/9.x)](https://drone.fpfis.eu/ec-europa/toolkit) [![License](https://img.shields.io/badge/License-EUPL%201.1-blue.svg)](LICENSE)
 
 ## Prerequisites
 You need to have the following software installed on your local development environment:
