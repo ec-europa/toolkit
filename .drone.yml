@@ -132,15 +132,15 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
-  php7-comp:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
-    group: coding-standards
-    secrets: [ github_api_token ]
-    commands:
-      - composer self-update --1
-      - ./toolkit/phing test-run-phpcs-compatibility -D'phpcs.compat.checkreturn'='false' ${BUILD_OPTIONS} ${PHING_OPTS}
-    volumes:
-      - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
+  #php7-comp:
+  #  image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
+  #  group: coding-standards
+  #  secrets: [ github_api_token ]
+  #  commands:
+  #    - composer self-update --1
+  #    - ./toolkit/phing test-run-phpcs-compatibility -D'phpcs.compat.checkreturn'='false' ${BUILD_OPTIONS} ${PHING_OPTS}
+  #  volumes:
+  #    - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   create-distribution:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
