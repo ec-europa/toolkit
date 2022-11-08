@@ -130,16 +130,8 @@ class TestsCommands extends AbstractCommands
             $this->say('Executing PHPcs within GrumPHP.');
             return $this->toolkitRunGrumphp();
         } else {
-            $result = 0;
             $this->say('Executing PHPcs.');
-            $code = $this->toolkitRunPhpcs();
-            $result += $code->getExitCode();
-
-            $this->say('Executing PHPmd.');
-            $code = $this->toolkitTestPhpmd();
-            $result += $code->getExitCode();
-
-            return $result;
+            return $this->toolkitRunPhpcs();
         }
     }
 
