@@ -483,6 +483,9 @@ class ComponentCheckCommands extends AbstractCommands
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
                     if (!array_key_exists('latest', $outdatedPackage)) {
                         echo "Package {$outdatedPackage['name']} does not provide information about last version." . PHP_EOL;
+                    } elseif (array_key_exists('warning', $outdatedPackage)) {
+                        echo $outdatedPackage['warning'] . PHP_EOL;
+                        $this->outdatedFailed = true;
                     } else {
                         echo "Package {$outdatedPackage['name']} with version installed {$outdatedPackage["version"]} is outdated, please update to last version - {$outdatedPackage['latest']}" . PHP_EOL;
                         $this->outdatedFailed = true;
