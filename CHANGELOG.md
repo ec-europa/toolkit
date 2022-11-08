@@ -2,7 +2,7 @@
 
 ## Version 9.1.1
   - DQA-5129: Define timeouts in curl.
-  - DQA-0: Fix Commands loaded twice.
+  - DQA-5409: Fix Commands loaded twice.
   - DQA-5289: Display warning for abandoned packages.
   - DQA-5371: Do not execute phpmd together with phpcs.
 
