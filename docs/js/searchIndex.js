@@ -891,11 +891,6 @@ Search.appendIndex(
             "summary": "Create\u0020and\u0020configure\u0020the\u0020Robo\u0020runner.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_prepareRunner"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AdiscoverCommandClasses\u0028\u0029",
-            "name": "discoverCommandClasses",
-            "summary": "Discover\u0020Command\u0020classes.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_discoverCommandClasses"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AregisterConfigurationCommands\u0028\u0029",
             "name": "registerConfigurationCommands",
             "summary": "Register\u0020commands\u0020in\u0020the\u0020runner.yml\u0020under\u0020\u0027commands\u003A\u0027.",
