@@ -15,18 +15,30 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @group clone
  */
-class CloneCommandsTest extends AbstractTest
+class DumpCommandsTest extends AbstractTest
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->filesystem->copy(
+            $this->getFixtureFilepath('samples/sample-dump.sql'),
+            $this->getSandboxFilepath('dump.sql')
+        );
+    }
 
     /**
      * Data provider for testClone.
      *
      * @return array
-     *   An array of test data arrays with assertations.
+     *   An array of test data arrays with assertions.
      */
     public function dataProvider()
     {
-        return $this->getFixtureContent('commands/clone.yml');
+        return $this->getFixtureContent('commands/dump.yml');
     }
 
     /**

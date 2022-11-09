@@ -101,8 +101,8 @@ class ToolkitReleaseCommands extends AbstractCommands
         return $this->collectionBuilder()->addTaskList([
             $this->taskExec($runner_bin)->args(['toolkit:version-write', $version]),
             $this->taskExec($runner_bin)->args(['toolkit:changelog-write', $version]),
-            $this->taskExec($runner_bin)->args(['toolkit:generate-commands-list']),
-            $this->taskExec($runner_bin)->args(['toolkit:generate-documentation']),
+            $this->taskExec($runner_bin)->arg('toolkit:generate-commands-list'),
+            $this->taskExec($runner_bin)->arg('toolkit:generate-documentation'),
         ]);
     }
 

@@ -22,7 +22,7 @@ class BuildCommandsTest extends AbstractTest
      * Data provider for testBuild.
      *
      * @return array
-     *   An array of test data arrays with assertations.
+     *   An array of test data arrays with assertions.
      */
     public function dataProvider()
     {
@@ -32,7 +32,7 @@ class BuildCommandsTest extends AbstractTest
     /**
      * Test "toolkit:build-*" commands.
      *
-     * @param mixed $command
+     * @param string $command
      *   A command.
      * @param array $config
      *   A configuration.
@@ -41,11 +41,10 @@ class BuildCommandsTest extends AbstractTest
      *
      * @dataProvider dataProvider
      */
-    public function testBuild($command, array $config, array $expected)
+    public function testBuild(string $command, array $config, array $expected)
     {
-        // Setup test Task Runner configuration file.
-        $configFile = $this->getSandboxFilepath('runner.yml');
-        file_put_contents($configFile, Yaml::dump($config));
+        // Setup configuration file.
+        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
 
         if (in_array($command, ['toolkit:build-dev --root=web', 'toolkit:build-dist --root=web --dist-root=dist --tag=1.0.0 --sha=aBcDeF --keep=vendor --remove=CHANGELOG.txt'])) {
             $this->markTestSkipped('Skip test');
@@ -59,7 +58,7 @@ class BuildCommandsTest extends AbstractTest
 
         // Assert expectations.
         $content = $output->fetch();
-//        echo "\n\n-----> $command\n$content\n\n<-----\n";
+//        $this->debugExpectations($content, $expectations);
         foreach ($expected as $row) {
             $this->assertContainsNotContains($content, $row);
         }

@@ -14,6 +14,22 @@ use Symfony\Component\Yaml\Yaml;
 abstract class AbstractTest extends TestCase
 {
     /**
+     * A Filesystem object.
+     *
+     * @var Filesystem
+     */
+    public Filesystem $filesystem;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+        $this->filesystem = new Filesystem();
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -21,11 +37,12 @@ abstract class AbstractTest extends TestCase
         if (!is_dir($this->getSandboxRoot())) {
             mkdir($this->getSandboxRoot());
         }
-        $filesystem = new Filesystem();
-        $filesystem->chmod($this->getSandboxRoot(), 0777, umask(), true);
-        $filesystem->remove(glob($this->getSandboxRoot() . '/*'));
-        $filesystem->copy($this->getFixtureFilepath('samples/sample-dump.sql'), $this->getSandboxFilepath('dump.sql'));
-        $filesystem->copy($this->getFixtureFilepath('samples/sample-config.yml'), $this->getSandboxFilepath('config.yml'));
+        $this->filesystem->chmod($this->getSandboxRoot(), 0777, umask(), true);
+        $this->filesystem->remove(glob($this->getSandboxRoot() . '/*'));
+        $this->filesystem->copy(
+            $this->getFixtureFilepath('samples/sample-config.yml'),
+            $this->getSandboxFilepath('config.yml')
+        );
     }
 
     /**
@@ -36,16 +53,40 @@ abstract class AbstractTest extends TestCase
      * @param array $expected
      *   Content expected.
      */
-    protected function assertContainsNotContains($content, array $expected)
+    protected function assertContainsNotContains(string $content, array $expected)
     {
         if (!empty($expected['contains'])) {
             $this->assertContains($this->trimEachLine($expected['contains']), [$this->trimEachLine($content)]);
-            $this->assertEquals(substr_count($this->trimEachLine($content), $this->trimEachLine($expected['contains'])), 1, 'String found more than once.');
+            $this->assertEquals(
+                substr_count($this->trimEachLine($content), $this->trimEachLine($expected['contains'])),
+                1,
+                'String found more than once.'
+            );
         }
 
         if (!empty($expected['not_contains'])) {
-            $this->assertNotContains($this->trimEachLine($expected['not_contains']), $this->trimEachLine($content));
+            $this->assertNotContains($this->trimEachLine($expected['not_contains']), [$this->trimEachLine($content)]);
         }
+    }
+
+    /**
+     * Helper function to debug the expectations and the content before assert.
+     *
+     * @param string $content
+     *   Content to test.
+     * @param array $expectations
+     *   Array with expectations.
+     */
+    protected function debugExpectations(string $content, array $expectations)
+    {
+        $debug = "\n-- Content --\n$content\n-- End Content --\n";
+        if (!empty($expectations[0]['contains'])) {
+            $debug .= "-- Contains --\n{$expectations[0]['contains']}\n-- End Contains --\n";
+        }
+        if (!empty($expectations['not_contains'])) {
+            $debug .= "-- NotContains --\n{$expectations[0]['not_contains']}\n-- End NotContains --\n";
+        }
+        echo $debug;
     }
 
     /**
@@ -57,7 +98,7 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   Trimmed text.
      */
-    protected function trimEachLine($text)
+    protected function trimEachLine(string $text)
     {
         return implode(PHP_EOL, array_map('trim', explode(PHP_EOL, $text)));
     }
@@ -77,7 +118,7 @@ abstract class AbstractTest extends TestCase
      * Get fixture root.
      *
      * @return mixed
-     *   A set of test data.
+     *   The filepath of fixtures.
      */
     protected function getFixtureRoot()
     {
@@ -91,9 +132,9 @@ abstract class AbstractTest extends TestCase
      *   A name of Sandbox.
      *
      * @return string
-     *   The filepath of the sandbox.
+     *   The filepath of the sandbox file.
      */
-    protected function getFixtureFilepath($name)
+    protected function getFixtureFilepath($name): string
     {
         return $this->getFixtureRoot() . '/' . $name;
     }
@@ -104,7 +145,7 @@ abstract class AbstractTest extends TestCase
      * @param string $filepath
      *   File path.
      *
-     * @return mixed
+     * @return mixed|string
      *   A set of test data.
      */
     protected function getFixtureContent($filepath)
@@ -119,9 +160,9 @@ abstract class AbstractTest extends TestCase
      *   A name of Sandbox.
      *
      * @return string
-     *   The filepath of the sandbox.
+     *   The filepath of the sandbox file.
      */
-    protected function getSandboxFilepath($name)
+    protected function getSandboxFilepath($name): string
     {
         return $this->getSandboxRoot() . '/' . $name;
     }
@@ -132,8 +173,9 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   The filepath of sandbox.
      */
-    protected function getSandboxRoot()
+    protected function getSandboxRoot(): string
     {
         return __DIR__ . '/sandbox';
     }
+
 }

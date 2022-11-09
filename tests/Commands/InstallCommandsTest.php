@@ -22,7 +22,7 @@ class InstallCommandsTest extends AbstractTest
      * Data provider for testInstall.
      *
      * @return array
-     *   An array of test data arrays with assertations.
+     *   An array of test data arrays with assertions.
      */
     public function dataProvider()
     {
@@ -32,20 +32,30 @@ class InstallCommandsTest extends AbstractTest
     /**
      * Test "toolkit:install-*" commands.
      *
-     * @param mixed $command
+     * @param string $command
      *   A command.
      * @param array $config
      *   A configuration.
-     * @param array $expected
+     * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testInstall($command, array $config, array $expected)
+    public function testInstall(string $command, array $config = [], array $expectations = [])
     {
-        // Setup test Task Runner configuration file.
-        $configFile = $this->getSandboxFilepath('runner.yml');
-        file_put_contents($configFile, Yaml::dump($config));
+        // Setup configuration file.
+        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+
+        // Provide the .opts.yml file if option config-file is used,
+        // otherwise make sure the file is not present.
+        if (str_contains($command, '--config-file')) {
+            $this->filesystem->copy(
+                $this->getFixtureFilepath('samples/sample-opts.yml'),
+                $this->getSandboxFilepath('.opts.yml')
+            );
+        } else {
+            $this->filesystem->remove($this->getSandboxFilepath('.opts.yml'));
+        }
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
@@ -55,8 +65,9 @@ class InstallCommandsTest extends AbstractTest
 
         // Assert expectations.
         $content = $output->fetch();
-        foreach ($expected as $row) {
-            $this->assertContainsNotContains($content, $row);
+        $this->debugExpectations($content, $expectations);
+        foreach ($expectations as $expectation) {
+            $this->assertContainsNotContains($content, $expectation);
         }
     }
 

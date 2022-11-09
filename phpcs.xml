@@ -17,6 +17,7 @@
     <!-- Files to check. -->
     <file>src</file>
     <file>tests/Commands</file>
+    <file>tests/AbstractTest.php</file>
 
     <!-- Exclude patterns. -->
     <exclude-pattern>vendor/</exclude-pattern>

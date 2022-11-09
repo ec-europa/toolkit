@@ -10,17 +10,31 @@
     stopOnFailure               = "false"
     bootstrap                   = "vendor/autoload.php">
     <testsuites>
-        <testsuite name="build">
+        <testsuite name="Build">
             <file>tests/Commands/BuildCommandsTest.php</file>
         </testsuite>
-        <testsuite name="clone">
-            <file>tests/Commands/CloneCommandsTest.php</file>
+        <testsuite name="Component Check">
+            <file>tests/Commands/ComponentCheckCommandsTest.php</file>
         </testsuite>
         <testsuite name="Drupal">
             <file>tests/Commands/DrupalCommandsTest.php</file>
         </testsuite>
+        <testsuite name="Dump">
+            <file>tests/Commands/DumpCommandsTest.php</file>
+        </testsuite>
+        <testsuite name="Git Hooks">
+            <file>tests/Commands/GitHooksCommandsTest.php</file>
+        </testsuite>
         <testsuite name="Install">
             <file>tests/Commands/InstallCommandsTest.php</file>
         </testsuite>
+        <testsuite name="Toolkit">
+            <file>tests/Commands/ToolkitCommandsTest.php</file>
+        </testsuite>
+        <testsuite name="Toolkit Release">
+            <file>tests/Commands/ToolkitReleaseCommandsTest.php</file>
+        </testsuite>
+<!--        configuration-->
+<!--        tasks-->
     </testsuites>
 </phpunit>

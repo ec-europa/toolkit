@@ -15,7 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
  *
  * @SuppressWarnings("unused")
  */
-class GitHookCommands extends AbstractCommands
+class GitHooksCommands extends AbstractCommands
 {
 
     /**
@@ -23,7 +23,7 @@ class GitHookCommands extends AbstractCommands
      */
     public function getConfigurationFile()
     {
-        return Toolkit::getToolkitRoot() . '/config/commands/githooks.yml';
+        return Toolkit::getToolkitRoot() . '/config/commands/git-hooks.yml';
     }
 
     /**

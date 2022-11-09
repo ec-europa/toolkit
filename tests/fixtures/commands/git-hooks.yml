@@ -1,0 +1,5 @@
+#@command toolkit:hooks-enable
+#@command toolkit:hooks-disable
+#@command toolkit:hooks-delete-all
+#@command toolkit:hooks-list
+#@command toolkit:hooks-run

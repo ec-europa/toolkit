@@ -131,7 +131,7 @@ The callback method is responsible to retrieve the arguments
 with ``$this->input()->getArguments()``.
 
 For more details check the Commands class
-at ``EcEuropa\Toolkit\TaskRunner\Commands\GitHookCommands``
+at ``EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands``
 
 Extending the git hooks
 -----------------------
@@ -143,7 +143,7 @@ To do so, you need to
 
 * Create the hook under your ``resources/git/hooks`` folder.
 * Add the hook name to your active hooks under ``toolkit.hooks.active``.
-* Create a new class extending the ``GitHookCommands`` class and define the
+* Create a new class extending the ``GitHooksCommands`` class and define the
   ``run`` callback for the hook.
 
 Create the hook
@@ -175,7 +175,7 @@ otherwise your configuration will override the default provided by Toolkit.
          - pre-push
          - commit-msg
 
-Create a class extending the GitHookCommands
+Create a class extending the GitHooksCommands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Is in this class that you will define the callback for your hook.
@@ -188,10 +188,10 @@ Add your class under ``src/TaskRunner/Commands``.
 
    namespace Digit\Qa\TaskRunner\Commands;
 
-   use EcEuropa\Toolkit\TaskRunner\Commands\GitHookCommands;
+   use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
    use Robo\ResultData;
 
-   class QaGitHookCommands extends GitHookCommands
+   class QaGitHooksCommands extends GitHooksCommands
    {
        public function runCommitMsg()
        {

@@ -31,29 +31,6 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Disable aggregation and clear cache.
-     *
-     * @command toolkit:disable-drupal-cache
-     *
-     * @return \Robo\Collection\CollectionBuilder
-     *   Collection builder.
-     */
-    public function disableDrupalCache()
-    {
-        $tasks = [];
-
-        $drush_bin = $this->getBin('drush');
-        $tasks[] = $this->taskExecStack()
-            ->stopOnFail()
-            ->exec($drush_bin . ' -y config-set system.performance css.preprocess 0')
-            ->exec($drush_bin . ' -y config-set system.performance js.preprocess 0')
-            ->exec($drush_bin . ' cache:rebuild');
-
-        // Build and return task collection.
-        return $this->collectionBuilder()->addTaskList($tasks);
-    }
-
-    /**
      * Check the commit message for SKIPPING tokens.
      *
      * @return array
@@ -80,80 +57,6 @@ class ToolCommands extends AbstractCommands
             }
         }
         return $tokens;
-    }
-
-    /**
-     * Check project compatibility for Drupal 9/10 upgrade.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *
-     * @command toolkit:drupal-upgrade-status
-     *
-     * @aliases tdus
-     */
-    public function drupalUpgradeStatus(): int
-    {
-        // Execute by default, skip if token is given.
-        $commitTokens = ToolCommands::getCommitTokens();
-        if (isset($commitTokens['skipDus'])) {
-            return 0;
-        }
-
-        // Prepare project.
-        $this->say('Preparing the project to run upgrade_status.');
-        $drushBin = $this->getBin('drush');
-        $collection = $this->collectionBuilder();
-        // Require 'drupal/upgrade_status' if does not exist on the project.
-        if (self::getPackagePropertyFromComposer('drupal/upgrade_status') == false) {
-            $collection->taskComposerRequire()
-                ->dependency('drupal/upgrade_status', '^3')
-                ->dev()->run();
-        }
-        // Require 'drupal/core-dev' if does not exist on the project.
-        if (self::getPackagePropertyFromComposer('drupal/core-dev') == false) {
-            $collection->taskComposerRequire()
-                ->dependency('drupal/core-dev')
-                ->dev()->run();
-        }
-
-        // Build collection.
-        $collection = $this->collectionBuilder();
-        $collection->taskExecStack()
-            ->exec($drushBin . ' en upgrade_status -y')
-            ->run();
-
-        // Perform the default analysis to all contrib and custom components.
-        $result = $collection->taskExecStack()
-            ->exec($drushBin . ' us-a --all')
-            ->printOutput(false)
-            ->storeState('insecure')
-            ->silent(true)
-            ->run()
-            ->getMessage();
-
-        // Check flagged results.
-        $qaCompatibilityResult = 0;
-        if (is_string($result)) {
-            foreach (['Check manually', 'Fix now'] as $flag) {
-                if (strpos($result, $flag) !== false) {
-                    $qaCompatibilityResult = 1;
-                }
-            }
-        }
-        echo $result . PHP_EOL;
-        $drupal_version = self::getPackagePropertyFromComposer('drupal/core');
-        if ($qaCompatibilityResult) {
-            $this->say('Looks the project need some attention, please check the report above.');
-        } else {
-            if (Semver::satisfies($drupal_version, '^8')) {
-                $this->say('Congrats, looks like your project is Drupal 9 compatible.');
-            }
-            if (Semver::satisfies($drupal_version, '^9')) {
-                $this->say('Congrats, looks like your project is Drupal 10 compatible.');
-            }
-        }
-
-        return $qaCompatibilityResult;
     }
 
     /**

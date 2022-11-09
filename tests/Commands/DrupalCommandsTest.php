@@ -26,7 +26,7 @@ namespace EcEuropa\Toolkit\Tests\Commands {
          */
         public function dataProvider()
         {
-            return $this->getFixtureContent('commands/drupal-settings-setup.yml');
+            return $this->getFixtureContent('commands/drupal.yml');
         }
 
         /**

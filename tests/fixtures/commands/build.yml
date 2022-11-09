@@ -1,3 +1,8 @@
+#@command toolkit:build-dist
+#@command toolkit:build-dev
+#@command toolkit:build-dev-reset
+#@command toolkit:build-assets
+
 - command: 'toolkit:build-dev --root=web'
   configuration:
     drupal:
