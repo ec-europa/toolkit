@@ -33,6 +33,8 @@ class InstallCommands extends AbstractCommands
      *
      * @command toolkit:install-clean
      *
+     * @option config-file  The path to the config file.
+     *
      * @aliases tk-iclean
      *
      * @return \Robo\Collection\CollectionBuilder

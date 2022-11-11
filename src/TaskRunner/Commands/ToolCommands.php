@@ -638,7 +638,7 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:install-dependencies
      *
-     * @option print Shows output from apt commands.
+     * @option print  Shows output from apt commands.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)

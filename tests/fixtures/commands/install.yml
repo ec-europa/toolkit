@@ -1,8 +1,3 @@
-#@command toolkit:install-clean
-#@command toolkit:install-clone
-#@command toolkit:run-deploy
-#@command toolkit:run-deploy --config-file=.opts.yml
-#@command toolkit:import-config
 - command: 'toolkit:install-clean'
   configuration: []
   expectations:
@@ -10,6 +5,15 @@
         [Simulator] Simulating Exec('./vendor/bin/run')
           ->arg('drupal:site-install')
         [Simulator] Running ./vendor/bin/run 'drupal:site-install'
+
+- command: 'toolkit:install-clean --config-file=core.extensions.yml'
+  configuration: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('drupal:site-install')
+          ->option('existing-config')
+        [Simulator] Running ./vendor/bin/run 'drupal:site-install' --existing-config
 
 - command: 'toolkit:install-clone'
   configuration: []

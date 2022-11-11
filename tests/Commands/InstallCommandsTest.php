@@ -46,15 +46,21 @@ class InstallCommandsTest extends AbstractTest
         // Setup configuration file.
         file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
 
-        // Provide the .opts.yml file if option config-file is used,
-        // otherwise make sure the file is not present.
+        // If option config-file is used, provide the files .opts.yml and core.extensions.yml
+        // for commands toolkit:install-clean and toolkit:run-deploy, otherwise make sure
+        // the files do not exist.
         if (str_contains($command, '--config-file')) {
             $this->filesystem->copy(
                 $this->getFixtureFilepath('samples/sample-opts.yml'),
                 $this->getSandboxFilepath('.opts.yml')
             );
+            $this->filesystem->copy(
+                $this->getFixtureFilepath('samples/sample-core.extensions.yml'),
+                $this->getSandboxFilepath('core.extensions.yml')
+            );
         } else {
             $this->filesystem->remove($this->getSandboxFilepath('.opts.yml'));
+            $this->filesystem->remove($this->getSandboxFilepath('core.extensions.yml'));
         }
 
         // Run command.
@@ -65,7 +71,7 @@ class InstallCommandsTest extends AbstractTest
 
         // Assert expectations.
         $content = $output->fetch();
-        $this->debugExpectations($content, $expectations);
+//        $this->debugExpectations($content, $expectations);
         foreach ($expectations as $expectation) {
             $this->assertContainsNotContains($content, $expectation);
         }
