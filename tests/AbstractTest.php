@@ -46,6 +46,14 @@ abstract class AbstractTest extends TestCase
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        $this->filesystem->remove($this->getSandboxRoot());
+    }
+
+    /**
      * Helper function to assert contain / not contain expectations.
      *
      * @param string $content
@@ -100,7 +108,7 @@ abstract class AbstractTest extends TestCase
      */
     protected function trimEachLine(string $text)
     {
-        return implode(PHP_EOL, array_map('trim', explode(PHP_EOL, $text)));
+        return trim(implode(PHP_EOL, array_map('trim', explode(PHP_EOL, $text))));
     }
 
     /**

@@ -1,1 +1,161 @@
 #@command toolkit:component-check
+- command: 'toolkit:component-check'
+  configuration: []
+  expectations:
+    - contains: |
+        Checking Mandatory components.
+        ==============================
+
+         [Simulator] Running ./vendor/bin/drush status --format=json
+        >  Website not installed, using config/sync/core.extension.yml file.
+        >  Config file not found at config/sync/core.extension.yml.
+
+        Checking Recommended components.
+        ================================
+
+        >  This step is in reporting mode, skipping.
+
+        Checking Insecure components.
+        =============================
+
+         [Simulator] Running ./vendor/bin/drush pm:security --format=json
+         [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+        >  Insecure components check passed.
+
+        Checking Outdated components.
+        =============================
+
+         [Simulator] Running composer outdated --direct --minor-only --format=json
+        >  Outdated components check passed.
+
+        Checking evaluation status components.
+        ======================================
+
+        >  The use of drupal/codesnippet:1.8 is restricted. Contact QA Team.
+        >  The use of drupal/github_connect:2.0.0-alpha1 is restricted. Contact QA Team.
+        >  The use of drupal/responsive_tables_filter:1.17 is restricted. Contact QA Team.
+        >  The use of drupal/restui:1.21 is rejected. Contact QA Team.
+
+        Checking dev components.
+        ========================
+
+        >  Dev components check passed.
+
+        Checking dev components in require section.
+        ===========================================
+
+        >  Dev components in require section check passed
+
+        Checking require section for Drush.
+        ===================================
+
+        >  Drush require section check passed.
+
+        Results:
+        ========
+
+         ---------------------------------- ----------------------
+          Mandatory module check             failed
+          Recommended module check           passed (report only)
+          Insecure module check              passed
+          Outdated module check              passed (Skipping)
+          Dev module check                   passed
+          Evaluation module check            failed
+          Dev module in require-dev check    passed
+          Drush require section check        passed
+         ---------------------------------- ----------------------
+
+         [ERROR] Failed the components check, please verify the report and update the
+                 project.
+
+                 See the list of packages at
+                 https://webgate.ec.europa.eu/fpfis/qa/package-reviews.
+
+         ! [NOTE] NOTE: It is possible to bypass the insecure and outdated check by
+         !        providing a token in the commit message.
+         !
+         !        The available tokens are:
+         !
+         !            - [SKIP-OUTDATED]
+         !
+         !            - [SKIP-INSECURE]
+
+- command: 'toolkit:component-check --test-command'
+  configuration: []
+  expectations:
+    - contains: |
+        Checking Mandatory components.
+        ==============================
+
+         [Simulator] Running ./vendor/bin/drush status --format=json
+        >  Website not installed, using config/sync/core.extension.yml file.
+        >  Config file not found at config/sync/core.extension.yml.
+
+        Checking Recommended components.
+        ================================
+
+        >  This step is in reporting mode, skipping.
+
+        Checking Insecure components.
+        =============================
+
+         [Simulator] Running ./vendor/bin/drush pm:security --format=json
+         [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+        >  Insecure components check passed.
+
+        Checking Outdated components.
+        =============================
+
+         [Simulator] Running composer outdated --direct --minor-only --format=json
+        >  Outdated components check passed.
+
+        Checking evaluation status components.
+        ======================================
+
+        >  Package drupal/unreviewed:1.0 has not been reviewed by QA.
+        >  The use of drupal/devel:1.0 is rejected. Contact QA Team.
+        >  The use of drupal/active_facet_pills:1.0 is restricted. Contact QA Team.
+
+        Checking dev components.
+        ========================
+
+        >  Package drupal/views_bulk_operations:dev-1.x cannot be used in dev version.
+
+        Checking dev components in require section.
+        ===========================================
+
+        >  Dev components in require section check passed
+
+        Checking require section for Drush.
+        ===================================
+
+        >  Drush require section check passed.
+
+        Results:
+        ========
+
+         ---------------------------------- ----------------------
+          Mandatory module check             failed
+          Recommended module check           passed (report only)
+          Insecure module check              passed
+          Outdated module check              passed (Skipping)
+          Dev module check                   failed
+          Evaluation module check            failed
+          Dev module in require-dev check    passed
+          Drush require section check        passed
+         ---------------------------------- ----------------------
+
+         [ERROR] Failed the components check, please verify the report and update the
+                 project.
+
+                 See the list of packages at
+                 https://webgate.ec.europa.eu/fpfis/qa/package-reviews.
+
+         ! [NOTE] NOTE: It is possible to bypass the insecure and outdated check by
+         !        providing a token in the commit message.
+         !
+         !        The available tokens are:
+         !
+         !            - [SKIP-OUTDATED]
+         !
+         !            - [SKIP-INSECURE]

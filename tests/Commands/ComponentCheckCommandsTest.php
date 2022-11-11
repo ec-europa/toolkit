@@ -1,12 +1,14 @@
 <?php
 
-// phpcs:ignoreFile
-
 declare(strict_types=1);
 
 namespace Commands;
 
+use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Yaml\Yaml;
 
 class ComponentCheckCommandsTest extends AbstractTest
 {
@@ -29,14 +31,33 @@ class ComponentCheckCommandsTest extends AbstractTest
      *   A command.
      * @param array $config
      *   A configuration.
-     * @param array $expected
+     * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testComponentCheck(string $command, array $config = [], array $expected = [])
+    public function testComponentCheck(string $command, array $config = [], array $expectations = [])
     {
-        $this->markTestSkipped('Skip test');
+        // Setup configuration file.
+        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+
+        $this->filesystem->copy(
+            $this->getFixtureFilepath('samples/sample-composer.lock'),
+            $this->getSandboxFilepath('composer.lock')
+        );
+
+        // Run command.
+        $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
+        $output = new BufferedOutput();
+        $runner = new Runner($this->getClassLoader(), $input, $output);
+        $runner->run();
+
+        // Assert expectations.
+        $content = $output->fetch();
+//        $this->debugExpectations($content, $expectations);
+        foreach ($expectations as $expectation) {
+            $this->assertContainsNotContains($content, $expectation);
+        }
     }
 
 }
