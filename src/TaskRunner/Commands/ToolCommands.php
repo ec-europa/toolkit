@@ -528,12 +528,15 @@ class ToolCommands extends AbstractCommands
     /**
      * This command will execute all the testing tools.
      *
+     * If no option is given, all the tests will be executed.
+     *
      * @command toolkit:code-review
      *
-     * @option phpcs Execute the command toolkit:test-phpcs.
-     * @option opts-review Execute the command toolkit:opts-review.
-     * @option lint-php Execute the command toolkit:lint-php.
-     * @option lint-yaml Execute the command toolkit:lint-yaml.
+     * @option phpcs        Execute the command toolkit:test-phpcs.
+     * @option opts-review  Execute the command toolkit:opts-review.
+     * @option lint-php     Execute the command toolkit:lint-php.
+     * @option lint-yaml    Execute the command toolkit:lint-yaml.
+     * @option phpstan      Execute the command toolkit:test-phpstan.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -543,58 +546,68 @@ class ToolCommands extends AbstractCommands
         'opts-review' => InputOption::VALUE_NONE,
         'lint-php' => InputOption::VALUE_NONE,
         'lint-yaml' => InputOption::VALUE_NONE,
+        'phpstan' => InputOption::VALUE_NONE,
     ])
     {
         // If at least one option is given, use given options, else use all.
-        $phpcsResult = $optsReviewResult = $lintPhpResult = $lintYamlResult = [];
-        $phpcs = $options['phpcs'] !== InputOption::VALUE_NONE;
-        $optsReview = $options['opts-review'] !== InputOption::VALUE_NONE;
-        $lintPhp = $options['lint-php'] !== InputOption::VALUE_NONE;
-        $lintYaml = $options['lint-yaml'] !== InputOption::VALUE_NONE;
+        $phpcsResult = $optsReviewResult = $lintPhpResult = $lintYamlResult = $phpStanResult = [];
+        $phpcs = $options['phpcs'] === true;
+        $optsReview = $options['opts-review'] === true;
+        $lintPhp = $options['lint-php'] === true;
+        $lintYaml = $options['lint-yaml'] === true;
+        $phpStan = $options['phpstan'] === true;
         $exit = 0;
 
-        if ($phpcs || $optsReview || $lintPhp || $lintYaml) {
+        if ($phpcs || $optsReview || $lintPhp || $lintYaml || $phpStan) {
             // Run given checks.
             $runPhpcs = $phpcs;
             $runOptsReview = $optsReview;
             $runLintPhp = $lintPhp;
             $runLintYaml = $lintYaml;
+            $runPhpStan = $phpStan;
         } else {
             // Run all checks.
-            $runPhpcs = $runOptsReview = $runLintPhp = $runLintYaml = true;
+            $runPhpcs = $runOptsReview = $runLintPhp = $runLintYaml = $runPhpStan = true;
         }
         $run = $this->getBin('run');
         if ($runPhpcs) {
-            $code = $this->taskExec($run . ' toolkit:test-phpcs')
+            $code = $this->taskExec($run)->arg('toolkit:test-phpcs')
                 ->run()->getExitCode();
             $phpcsResult = ['PHPcs' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $this->io()->newLine(2);
         }
         if ($runOptsReview) {
-            $code = $this->taskExec($run . ' toolkit:opts-review')
+            $code = $this->taskExec($run)->arg('toolkit:opts-review')
                 ->run()->getExitCode();
             $optsReviewResult = ['Opts review' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $this->io()->newLine(2);
         }
         if ($runLintPhp) {
-            $code = $this->taskExec($run . ' toolkit:lint-php')
+            $code = $this->taskExec($run)->arg('toolkit:lint-php')
                 ->run()->getExitCode();
             $lintPhpResult = ['Lint PHP' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $this->io()->newLine(2);
         }
         if ($runLintYaml) {
-            $code = $this->taskExec($run . ' toolkit:lint-yaml')
+            $code = $this->taskExec($run)->arg('toolkit:lint-yaml')
                 ->run()->getExitCode();
             $lintYamlResult = ['Lint YAML' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $this->io()->newLine(2);
         }
+        if ($runPhpStan) {
+            $code = $this->taskExec($run)->arg('toolkit:test-phpstan')
+                ->run()->getExitCode();
+            $phpStanResult = ['PHPStan' => $code > 0 ? 'failed' : 'passed'];
+            $exit += $code;
+            $this->io()->newLine(2);
+        }
 
         $this->io()->title('Results:');
-        $this->io()->definitionList($phpcsResult, $optsReviewResult, $lintPhpResult, $lintYamlResult);
+        $this->io()->definitionList($phpcsResult, $optsReviewResult, $lintPhpResult, $lintYamlResult, $phpStanResult);
 
         return new ResultData($exit);
     }
@@ -646,7 +659,7 @@ class ToolCommands extends AbstractCommands
             return $return;
         }
 
-        $print = $options['print'] !== InputOption::VALUE_NONE;
+        $print = $options['print'] === true;
         $verbose = $print ? VerbosityThresholdInterface::VERBOSITY_NORMAL : VerbosityThresholdInterface::VERBOSITY_DEBUG;
         $data = $install = [];
 
@@ -660,9 +673,9 @@ class ToolCommands extends AbstractCommands
                 ->run()->getMessage();
             // The package is installed if output contains '[installed]'. If
             // the name is not in the output the package was not found.
-            if (strpos($info, '[installed]') !== false) {
+            if (str_contains($info, '[installed]')) {
                 $data[$package] = 'already installed';
-            } elseif (strpos($info, $package) === false) {
+            } elseif (!str_contains($info, $package)) {
                 $data[$package] = 'not found';
                 $return = 1;
             } else {
@@ -683,7 +696,7 @@ class ToolCommands extends AbstractCommands
                 $info = $this->taskExec("apt list $package")
                     ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                     ->run()->getMessage();
-                if (strpos($info, '[installed]') !== false) {
+                if (str_contains($info, '[installed]')) {
                     $data[$package] = 'installed';
                 } else {
                     $data[$package] = 'fail';
