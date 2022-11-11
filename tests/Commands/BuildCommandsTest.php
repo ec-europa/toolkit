@@ -6,6 +6,7 @@ namespace EcEuropa\Toolkit\Tests\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
+use EcEuropa\Toolkit\Toolkit;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
@@ -30,37 +31,45 @@ class BuildCommandsTest extends AbstractTest
     }
 
     /**
-     * Test "toolkit:build-*" commands.
+     * Test BuildCommands commands.
      *
      * @param string $command
      *   A command.
      * @param array $config
      *   A configuration.
-     * @param array $expected
+     * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testBuild(string $command, array $config, array $expected)
+    public function testBuild(string $command, array $config = [], array $expectations = [])
     {
         // Setup configuration file.
         file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
 
-        if (in_array($command, ['toolkit:build-dev --root=web', 'toolkit:build-dist --root=web --dist-root=dist --tag=1.0.0 --sha=aBcDeF --keep=vendor --remove=CHANGELOG.txt'])) {
-            $this->markTestSkipped('Skip test');
+        // If option config-file is used, provide the files .opts.yml and core.extensions.yml
+        // for commands toolkit:install-clean and toolkit:run-deploy, otherwise make sure
+        // the files do not exist.
+        if (str_contains($command, '--default-theme')) {
+            $this->filesystem->mkdir($this->getSandboxFilepath('code'));
+            $this->filesystem->mkdir($this->getSandboxFilepath('code/theme'));
         }
 
         // Run command.
-        $input = new StringInput($command . ' --simulate');
+        $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
         $output = new BufferedOutput();
         $runner = new Runner($this->getClassLoader(), $input, $output);
         $runner->run();
 
         // Assert expectations.
         $content = $output->fetch();
-//        $this->debugExpectations($content, $expectations);
-        foreach ($expected as $row) {
-            $this->assertContainsNotContains($content, $row);
+        // Attempt to remove absolute paths to Toolkit and replace with "tk".
+        if (str_contains($content, Toolkit::getToolkitRoot())) {
+            $content = str_replace(Toolkit::getToolkitRoot(), 'tk', $content);
+        }
+        $this->debugExpectations($content, $expectations);
+        foreach ($expectations as $expectation) {
+            $this->assertContainsNotContains($content, $expectation);
         }
     }
 

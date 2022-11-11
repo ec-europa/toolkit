@@ -30,7 +30,7 @@ class InstallCommandsTest extends AbstractTest
     }
 
     /**
-     * Test "toolkit:install-*" commands.
+     * Test InstallCommands commands.
      *
      * @param string $command
      *   A command.
