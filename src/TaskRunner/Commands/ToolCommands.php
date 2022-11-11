@@ -844,7 +844,7 @@ class ToolCommands extends AbstractCommands
                     $command = str_replace('\\', '', $command);
                     foreach ($forbiddenCommands as $forbiddenCommand) {
                         if ($key == 'default') {
-                            $parsedCommand = preg_split("/[\s;&|]/", $command, 0, PREG_SPLIT_NO_EMPTY);;
+                            $parsedCommand = preg_split("/[\s;&|]/", $command, 0, PREG_SPLIT_NO_EMPTY);
                             if (in_array($forbiddenCommand, $parsedCommand)) {
                                 $this->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
                                 $reviewOk = false;
