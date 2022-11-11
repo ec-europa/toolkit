@@ -242,6 +242,10 @@ class DumpCommands extends AbstractCommands
         $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
         $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1', true)
             ->run();
+        if (!file_exists("$tmp_folder/$service-latest.sh1")) {
+            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
+            return false;
+        }
         $latest = file_get_contents("$tmp_folder/$service-latest.sh1");
         if (empty($latest)) {
             $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
@@ -283,6 +287,10 @@ class DumpCommands extends AbstractCommands
         $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
         $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1', true)
             ->run();
+        if (!file_exists("$tmp_folder/$service-latest.sh1")) {
+            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
+            return $tasks;
+        }
         $latest = file_get_contents("$tmp_folder/$service-latest.sh1");
         if (empty($latest)) {
             $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");

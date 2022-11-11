@@ -10,6 +10,11 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Test Toolkit component-check command.
+ *
+ * @group component
+ */
 class ComponentCheckCommandsTest extends AbstractTest
 {
 

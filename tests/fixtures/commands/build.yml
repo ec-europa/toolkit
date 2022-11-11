@@ -1,8 +1,3 @@
-#@command toolkit:build-dist | root dist-root keep tag sha
-#@command toolkit:build-dev  | root
-#@command toolkit:build-dev-reset | root yes
-#@command toolkit:build-assets | default-theme build-npm-packages validate theme-task-runner
-
 - command: 'toolkit:build-dist --root=web --dist-root=dist --tag=1.0.0 --sha=aBcDeF --keep=vendor --remove=CHANGELOG.txt'
   configuration: []
   expectations:

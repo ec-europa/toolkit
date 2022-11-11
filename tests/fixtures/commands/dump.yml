@@ -1,2 +1,82 @@
-#@command toolkit:install-dump
-#@command toolkit:download-dump
+- command: 'toolkit:install-dump'
+  configuration:
+    toolkit:
+      tmp_folder: .
+  expectations:
+    - contains: |
+        >  './mysql.gz' file not found, use the command 'toolkit:download-dump'.
+
+- command: 'toolkit:install-dump --dumpfile=dump.sql.gz'
+  configuration:
+    toolkit:
+      tmp_folder: .
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/drush')
+          ->arg('sql-drop')
+          ->rawArg('-y')
+        [Simulator] Running ./vendor/bin/drush sql-drop -y
+        [Simulator] Simulating Exec('./vendor/bin/drush')
+          ->arg('sql-create')
+          ->rawArg('-y')
+        [Simulator] Running ./vendor/bin/drush sql-create -y
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->silent(1)
+        ->exec('gunzip < ./dump.sql.gz | mysql -uroot -hmysql drupal')
+
+- command: 'toolkit:download-dump'
+  configuration:
+    toolkit:
+      tmp_folder: .
+      project_id: digit-qa
+  expectations:
+    - contains: |
+        >  ASDA type is: default (The legacy ASDA will be dropped on 1 June)
+        >  ASDA services: mysql
+        >  Checking service 'mysql'
+        >  Starting download
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        [Simulator] Running wget -i ./mysql.txt -O ./mysql-latest.sh1 -A .sh1 -P ./
+
+        MYSQL DATE: 18 Jul 2022 at 00:56
+        ================================
+
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        [Simulator] Simulating Exec('wget')
+          ->option('-i', './mysql.txt')
+          ->option('-O', './mysql.gz')
+          ->option('-A', '.sql.gz,.tar.gz')
+          ->option('-P', './')
+          ->printMetadata()
+        [Simulator] Running wget -i ./mysql.txt -O ./mysql.gz -A '.sql.gz,.tar.gz' -P ./
+        [Simulator] Running rm ./mysql-latest.sh1 ./mysql.txt
+
+- command: 'toolkit:download-dump'
+  configuration:
+    toolkit:
+      tmp_folder: .
+      project_id: digit-qa
+      clone:
+        asda_type: nextcloud
+  expectations:
+    - contains: |
+        >  ASDA type is: nextcloud
+        >  ASDA services: mysql
+        >  Checking service 'mysql'
+        >  Starting download
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        [Simulator] Running wget -i ./mysql.txt -O ./mysql-latest.sh1 -A .sh1 -P ./
+
+        MYSQL DATE: 18 Jul 2022 at 00:56
+        ================================
+
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        [Simulator] Simulating Exec('wget')
+          ->option('-i', './mysql.txt')
+          ->option('-O', './mysql.gz')
+          ->option('-A', '.sql.gz,.tar.gz')
+          ->option('-P', './')
+          ->printMetadata()
+        [Simulator] Running wget -i ./mysql.txt -O ./mysql.gz -A '.sql.gz,.tar.gz' -P ./
+        [Simulator] Running rm ./mysql-latest.sh1 ./mysql.txt

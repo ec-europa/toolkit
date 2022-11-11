@@ -11,27 +11,15 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Test Toolkit build commands.
+ * Test Toolkit dump commands.
  *
- * @group clone
+ * @group dump
  */
 class DumpCommandsTest extends AbstractTest
 {
 
     /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->filesystem->copy(
-            $this->getFixtureFilepath('samples/sample-dump.sql'),
-            $this->getSandboxFilepath('dump.sql')
-        );
-    }
-
-    /**
-     * Data provider for testClone.
+     * Data provider for testDump.
      *
      * @return array
      *   An array of test data arrays with assertions.
@@ -42,22 +30,37 @@ class DumpCommandsTest extends AbstractTest
     }
 
     /**
-     * Test "toolkit:clone-*" commands.
+     * Test DumpCommands commands.
      *
-     * @param mixed $command
+     * @param string $command
      *   A command.
      * @param array $config
      *   A configuration.
-     * @param array $expected
+     * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testClone($command, array $config, array $expected)
+    public function testDump(string $command, array $config = [], array $expectations = [])
     {
-        // Setup test Task Runner configuration file.
-        $configFile = $this->getSandboxFilepath('runner.yml');
-        file_put_contents($configFile, Yaml::dump($config));
+        // Setup configuration file.
+        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+
+        if (str_contains($command, 'install-dump')) {
+            $this->filesystem->copy(
+                $this->getFixtureFilepath('samples/sample-dump.sql.gz'),
+                $this->getSandboxFilepath('dump.sql.gz')
+            );
+            putenv('DRUPAL_DATABASE_NAME=drupal');
+            putenv('DRUPAL_DATABASE_USERNAME=root');
+            putenv('DRUPAL_DATABASE_HOST=mysql');
+        }
+        if (str_contains($command, 'download-dump')) {
+            $this->filesystem->copy(
+                $this->getFixtureFilepath('samples/sample-mysql-latest.sh1'),
+                $this->getSandboxFilepath('mysql-latest.sh1')
+            );
+        }
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
@@ -68,8 +71,9 @@ class DumpCommandsTest extends AbstractTest
 
         // Assert expectations.
         $content = $output->fetch();
-        foreach ($expected as $row) {
-            $this->assertContainsNotContains($content, $row);
+//        $this->debugExpectations($content, $expectations);
+        foreach ($expectations as $expectation) {
+            $this->assertContainsNotContains($content, $expectation);
         }
     }
 
