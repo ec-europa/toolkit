@@ -71,7 +71,7 @@ class DumpCommandsTest extends AbstractTest
 
         // Assert expectations.
         $content = $output->fetch();
-//        $this->debugExpectations($content, $expectations);
+        $this->debugExpectations($content, $expectations);
         foreach ($expectations as $expectation) {
             $this->assertContainsNotContains($content, $expectation);
         }
