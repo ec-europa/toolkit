@@ -21,7 +21,7 @@
           ->stopOnFail()
           ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
         [Simulator] Simulating File\Write('dist/manifest.json')
-          ->text('{"version":"1.0.0","sha":"aBcDeF","environment":"dev", ... 22-11-11 09:00:00"}')
+          ->text('{"version":"1.0.0","sha":"aBcDeF","environment":"acc", ... 22-11-11 09:00:00"}')
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')
           ->text('1.0.0')
         [Simulator] Simulating ExecStack()

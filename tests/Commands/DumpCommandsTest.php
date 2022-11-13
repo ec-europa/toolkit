@@ -51,9 +51,6 @@ class DumpCommandsTest extends AbstractTest
                 $this->getFixtureFilepath('samples/sample-dump.sql.gz'),
                 $this->getSandboxFilepath('dump.sql.gz')
             );
-            putenv('DRUPAL_DATABASE_NAME=drupal');
-            putenv('DRUPAL_DATABASE_USERNAME=root');
-            putenv('DRUPAL_DATABASE_HOST=mysql');
         }
         if (str_contains($command, 'download-dump')) {
             $this->filesystem->copy(

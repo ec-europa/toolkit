@@ -9,6 +9,13 @@
     processIsolation            = "true"
     stopOnFailure               = "false"
     bootstrap                   = "vendor/autoload.php">
+    <php>
+        <ini name="memory_limit" value="1G"/>
+        <env name="CI" value="true"/>
+        <env name="DRUPAL_DATABASE_NAME" value="drupal"/>
+        <env name="DRUPAL_DATABASE_USERNAME" value="root"/>
+        <env name="DRUPAL_DATABASE_HOST" value="mysql"/>
+    </php>
     <testsuites>
         <testsuite name="Build">
             <file>tests/Commands/BuildCommandsTest.php</file>
