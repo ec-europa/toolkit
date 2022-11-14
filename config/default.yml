@@ -53,6 +53,9 @@ toolkit:
     nextcloud_admin: false
     asda_vendor: 'ec-europa'
     asda_source: 'reference'
+  components:
+    outdated:
+      check: true
   deploy:
     config_file: 'config/sync/core.extension.yml'
     sequence_file: '.opts.yml'
