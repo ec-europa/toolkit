@@ -72,7 +72,7 @@ class GitHooksCommandsTest extends AbstractTest
         if (str_contains($content, Toolkit::getToolkitRoot())) {
             $content = str_replace(Toolkit::getToolkitRoot(), 'tk', $content);
         }
-//        $this->debugExpectations($content, $expectations);
+        $this->debugExpectations($content, $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
             $this->assertContainsNotContains($content, $expectation);
