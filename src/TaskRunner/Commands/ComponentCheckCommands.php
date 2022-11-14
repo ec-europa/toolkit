@@ -118,7 +118,7 @@ class ComponentCheckCommands extends AbstractCommands
             ]);
             if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
                 $this->devVersionFailed = true;
-                $this->say("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
+                $this->writeln("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
             }
         }
         if (!$this->devVersionFailed) {
@@ -255,7 +255,7 @@ class ComponentCheckCommands extends AbstractCommands
 
         // If module was not reviewed yet.
         if (!$hasBeenQaEd) {
-            $this->say("Package $packageName:$packageVersion has not been reviewed by QA.");
+            $this->writeln("Package $packageName:$packageVersion has not been reviewed by QA.");
             $this->commandFailed = true;
         }
 
@@ -287,7 +287,7 @@ class ComponentCheckCommands extends AbstractCommands
 
             // If module was not allowed in project.
             if (!$allowedInProject) {
-                $this->say("The use of $packageName:$packageVersion is {$modules[$packageName]['status']}. Contact QA Team.");
+                $this->writeln("The use of $packageName:$packageVersion is {$modules[$packageName]['status']}. Contact QA Team.");
                 $this->commandFailed = true;
             }
         }
@@ -299,7 +299,7 @@ class ComponentCheckCommands extends AbstractCommands
             foreach ($constraints as $constraint => $result) {
                 $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
                 if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
-                    echo "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue." . PHP_EOL;
+                    $this->writeln("Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.");
                     $this->commandFailed = true;
                 }
             }
@@ -362,7 +362,7 @@ class ComponentCheckCommands extends AbstractCommands
             foreach ($diffMandatory as $notPresent) {
                 $index = array_search($notPresent, array_column($mandatoryPackages, 'machine_name'));
                 $date = !empty($mandatoryPackages[$index]['mandatory_date']) ? ' (since ' . $mandatoryPackages[$index]['mandatory_date'] . ')' : '';
-                echo "Package $notPresent is mandatory$date and is not present on the project." . PHP_EOL;
+                $this->writeln("Package $notPresent is mandatory$date and is not present on the project.");
                 $this->mandatoryFailed = true;
             }
         }
@@ -397,7 +397,7 @@ class ComponentCheckCommands extends AbstractCommands
             foreach ($diffRecommended as $notPresent) {
                 $index = array_search($notPresent, array_column($recommendedPackages, 'name'));
                 $date = !empty($recommendedPackages[$index]['mandatory_date']) ? ' (and will be mandatory at ' . $recommendedPackages[$index]['mandatory_date'] . ')' : '';
-                echo "Package $notPresent is recommended$date but is not present on the project." . PHP_EOL;
+                $this->writeln("Package $notPresent is recommended$date but is not present on the project.");
                 $this->recommendedFailed = false;
             }
         }
@@ -491,12 +491,12 @@ class ComponentCheckCommands extends AbstractCommands
             if (is_array($outdatedPackages)) {
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
                     if (!array_key_exists('latest', $outdatedPackage)) {
-                        echo "Package {$outdatedPackage['name']} does not provide information about last version." . PHP_EOL;
+                        $this->writeln("Package {$outdatedPackage['name']} does not provide information about last version.");
                     } elseif (array_key_exists('warning', $outdatedPackage)) {
-                        echo $outdatedPackage['warning'] . PHP_EOL;
+                        $this->writeln($outdatedPackage['warning']);
                         $this->outdatedFailed = true;
                     } else {
-                        echo "Package {$outdatedPackage['name']} with version installed {$outdatedPackage["version"]} is outdated, please update to last version - {$outdatedPackage['latest']}" . PHP_EOL;
+                        $this->writeln("Package {$outdatedPackage['name']} with version installed {$outdatedPackage["version"]} is outdated, please update to last version - {$outdatedPackage['latest']}");
                         $this->outdatedFailed = true;
                     }
                 }
