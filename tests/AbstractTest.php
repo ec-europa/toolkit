@@ -38,11 +38,6 @@ abstract class AbstractTest extends TestCase
             mkdir($this->getSandboxRoot());
         }
         $this->filesystem->chmod($this->getSandboxRoot(), 0777, umask(), true);
-        $this->filesystem->remove(glob($this->getSandboxRoot() . '/*'));
-        $this->filesystem->copy(
-            $this->getFixtureFilepath('samples/sample-config.yml'),
-            $this->getSandboxFilepath('config.yml')
-        );
     }
 
     /**
@@ -50,7 +45,7 @@ abstract class AbstractTest extends TestCase
      */
     protected function tearDown(): void
     {
-        $this->filesystem->remove($this->getSandboxRoot());
+        $this->filesystem->remove(glob($this->getSandboxRoot() . '/*'));
     }
 
     /**

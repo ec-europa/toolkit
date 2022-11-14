@@ -29,14 +29,14 @@ class ToolkitReleaseCommandsTest extends AbstractTest
      *   A command.
      * @param array $config
      *   A configuration.
-     * @param array $expected
+     * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testToolkitRelease(string $command, array $config = [], array $expected = [])
+    public function testToolkitRelease(string $command, array $config = [], array $expectations = [])
     {
-        $this->markTestSkipped('Skip test');
+        $this->markTestIncomplete('Skip test');
     }
 
 }

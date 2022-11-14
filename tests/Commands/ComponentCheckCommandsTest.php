@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Commands;
+namespace EcEuropa\Toolkit\Tests\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
@@ -57,9 +57,10 @@ class ComponentCheckCommandsTest extends AbstractTest
         $runner = new Runner($this->getClassLoader(), $input, $output);
         $runner->run();
 
-        // Assert expectations.
+        // Fetch the output.
         $content = $output->fetch();
 //        $this->debugExpectations($content, $expectations);
+        // Assert expectations.
         foreach ($expectations as $expectation) {
             $this->assertContainsNotContains($content, $expectation);
         }

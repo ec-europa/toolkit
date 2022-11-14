@@ -47,9 +47,7 @@ class BuildCommandsTest extends AbstractTest
         // Setup configuration file.
         file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
 
-        // If option config-file is used, provide the files .opts.yml and core.extensions.yml
-        // for commands toolkit:install-clean and toolkit:run-deploy, otherwise make sure
-        // the files do not exist.
+        // Create folders for command toolkit:build-assets when default-theme is used.
         if (str_contains($command, '--default-theme')) {
             $this->filesystem->mkdir($this->getSandboxFilepath('code'));
             $this->filesystem->mkdir($this->getSandboxFilepath('code/theme'));
@@ -61,13 +59,14 @@ class BuildCommandsTest extends AbstractTest
         $runner = new Runner($this->getClassLoader(), $input, $output);
         $runner->run();
 
-        // Assert expectations.
+        // Fetch the output.
         $content = $output->fetch();
         // Attempt to remove absolute paths to Toolkit and replace with "tk".
         if (str_contains($content, Toolkit::getToolkitRoot())) {
             $content = str_replace(Toolkit::getToolkitRoot(), 'tk', $content);
         }
-        $this->debugExpectations($content, $expectations);
+//        $this->debugExpectations($content, $expectations);
+        // Assert expectations.
         foreach ($expectations as $expectation) {
             $this->assertContainsNotContains($content, $expectation);
         }

@@ -45,9 +45,8 @@ namespace EcEuropa\Toolkit\Tests\Commands {
          */
         public function testDrupalSettingsSetup(array $config, $initial_default_settings, $initial_settings, array $expected)
         {
-            // Setup test Task Runner configuration file.
-            $configFile = $this->getSandboxFilepath('runner.yml');
-            file_put_contents($configFile, Yaml::dump($config));
+            // Setup configuration file.
+            file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
 
             // Setup test directory.
             $root = $config['drupal']['root'] ?? 'web';
