@@ -37,7 +37,7 @@ class GitHooksCommands extends AbstractCommands
      *
      * @command toolkit:hooks-enable
      *
-     * @option hooks    The hooks to enable (default: toolkit.hooks.active)
+     * @option hooks  The hooks to enable (default: toolkit.hooks.active)
      *
      * @usage --hooks=pre-push
      */
@@ -66,9 +66,10 @@ class GitHooksCommands extends AbstractCommands
             return $return;
         }
 
+        $dir = $this->getWorkingDir();
         foreach ($hooks as $hook) {
-            if ($this->_copy($available_hooks[$hook], Toolkit::getProjectRoot() . '/.git/hooks/' . $hook)) {
-                $this->_chmod(Toolkit::getProjectRoot() . '/.git/hooks/' . $hook, 0755);
+            if ($this->_copy($available_hooks[$hook], $dir . '/.git/hooks/' . $hook)) {
+                $this->_chmod($dir . '/.git/hooks/' . $hook, 0755);
             }
         }
 
@@ -86,7 +87,7 @@ class GitHooksCommands extends AbstractCommands
      *
      * @command toolkit:hooks-disable
      *
-     * @option hooks    The hooks to disable (default: toolkit.git.hooks)
+     * @option hooks  The hooks to disable (default: toolkit.git.hooks)
      */
     public function hooksDisable(array $options = [
         'hooks' => InputOption::VALUE_REQUIRED,
@@ -100,12 +101,13 @@ class GitHooksCommands extends AbstractCommands
             return ResultData::EXITCODE_OK;
         }
 
+        $dir = $this->getWorkingDir();
         foreach ($hooks as $hook) {
-            if (!file_exists(Toolkit::getProjectRoot() . '/.git/hooks/' . $hook)) {
+            if (!file_exists($dir . '/.git/hooks/' . $hook)) {
                 $this->io()->say("The hook '$hook' was not found, skipping.");
                 continue;
             }
-            $this->_remove(Toolkit::getProjectRoot() . '/.git/hooks/' . $hook);
+            $this->_remove($dir . '/.git/hooks/' . $hook);
         }
 
         return ResultData::EXITCODE_OK;
@@ -118,14 +120,14 @@ class GitHooksCommands extends AbstractCommands
      */
     public function hooksDeleteAll()
     {
-        $directory = Toolkit::getProjectRoot() . '/.git/hooks';
+        $directory = $this->getWorkingDir() . '/.git/hooks';
         $files = scandir($directory);
         foreach ($files as $file) {
             if (in_array($file, ['.', '..'])) {
                 continue;
             }
             // Ignore sample files.
-            if (substr($file, -7) === '.sample') {
+            if (str_ends_with($file, '.sample')) {
                 continue;
             }
             if (unlink($directory . '/' . $file)) {
@@ -145,7 +147,7 @@ class GitHooksCommands extends AbstractCommands
     public function hooksList()
     {
         $rows = [];
-        $git_hooks_dir = Toolkit::getProjectRoot() . '/.git/hooks';
+        $git_hooks_dir = $this->getWorkingDir() . '/.git/hooks';
         $config = $this->getConfig()->get('toolkit.hooks');
         $project_id = $this->getConfig()->get('toolkit.project_id');
         $hooks = $this->getAvailableHooks();
@@ -210,7 +212,7 @@ class GitHooksCommands extends AbstractCommands
         }
 
         // Make sure the hook is enabled.
-        $enabled_hooks = $this->getHookFiles(Toolkit::getProjectRoot() . '/.git/hooks');
+        $enabled_hooks = $this->getHookFiles($this->getWorkingDir() . '/.git/hooks');
         if (!isset($enabled_hooks[$hook])) {
             $this->io()->say("The hook '$hook' does not exist or is not enabled.");
             return ResultData::EXITCODE_ERROR;
@@ -337,7 +339,7 @@ class GitHooksCommands extends AbstractCommands
     {
         $dir = trim($this->getConfig()->get('toolkit.hooks.dir'), '/');
         $toolkit_hooks = $this->getHookFiles(Toolkit::getToolkitRoot() . "/$dir");
-        $project_hooks = $this->getHookFiles(Toolkit::getProjectRoot() . "/$dir");
+        $project_hooks = $this->getHookFiles($this->getWorkingDir() . "/$dir");
         return array_merge($toolkit_hooks, $project_hooks);
     }
 
@@ -348,10 +350,13 @@ class GitHooksCommands extends AbstractCommands
      *   The directory to check for hooks.
      *
      * @return array
-     *   An array keyed by hook name and path as value.
+     *   An array keyed by hook name and path as value, false if do not exist.
      */
     private function getHookFiles(string $directory)
     {
+        if (empty($directory)) {
+            return [];
+        }
         $directory = rtrim($directory, '/');
         if (!file_exists($directory)) {
             return [];
@@ -370,14 +375,18 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Converts a hook name to method name.
      *
-     * @param $hook
+     * @param string $hook
      *   The hook name to convert.
      *
-     * @return string
-     *   The converted hook name, i.e: the pre-push becomes runPrePush.
+     * @return false|string
+     *   The converted hook name, i.e: the pre-push becomes
+     *   runPrePush, FALSE if empty hook provided.
      */
-    private function convertHookToMethod($hook)
+    private function convertHookToMethod(string $hook)
     {
+        if (empty($hook)) {
+            return false;
+        }
         $method = 'run';
         $exploded = explode('-', $hook);
         foreach ($exploded as $item) {

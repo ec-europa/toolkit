@@ -106,4 +106,14 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
         return $this->getConfig()->get($key, $default);
     }
 
+    /**
+     * Returns the current working directory.
+     *
+     * @return string
+     */
+    public function getWorkingDir()
+    {
+        return (string) $this->input->getParameterOption('--working-dir', getcwd());
+    }
+
 }
