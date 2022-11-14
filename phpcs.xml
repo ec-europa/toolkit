@@ -16,7 +16,8 @@
 
     <!-- Files to check. -->
     <file>src</file>
-    <file>tests/Commands</file>
+    <file>tests/Unit</file>
+    <file>tests/Features</file>
     <file>tests/AbstractTest.php</file>
 
     <!-- Exclude patterns. -->

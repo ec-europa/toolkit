@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EcEuropa\Toolkit\Tests\Commands;
+namespace EcEuropa\Toolkit\Tests\Unit;
 
 use ArgumentCountError;
 use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
@@ -10,13 +10,8 @@ use EcEuropa\Toolkit\Toolkit;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 
-class GitHooksFunctionsTest extends TestCase
+class GitHooksCommandsTest extends TestCase
 {
-
-    public function testConfigurationFile()
-    {
-        $this->assertFileExists((new GitHooksCommands())->getConfigurationFile());
-    }
 
     public function testConvertHookToMethod()
     {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace EcEuropa\Toolkit\Tests\Commands;
+namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
+use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
-use EcEuropa\Toolkit\Toolkit;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
@@ -68,11 +68,16 @@ class GitHooksCommandsTest extends AbstractTest
 
         // Fetch the output.
         $content = $output->fetch();
-        $this->debugExpectations($content, $expectations);
+//        $this->debugExpectations($content, $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
             $this->assertContainsNotContains($content, $expectation);
         }
+    }
+
+    public function testConfigurationFileExists()
+    {
+        $this->assertFileExists((new GitHooksCommands())->getConfigurationFile());
     }
 
 }

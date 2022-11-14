@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace EcEuropa\Toolkit\Tests\Commands;
+namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
+use EcEuropa\Toolkit\TaskRunner\Commands\TestsCommands;
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
 use Symfony\Component\Console\Input\StringInput;
@@ -11,26 +12,26 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Test Toolkit install commands.
+ * Test Toolkit tests commands.
  *
- * @group install
+ * @group tests
  */
-class InstallCommandsTest extends AbstractTest
+class TestsCommandsTest extends AbstractTest
 {
 
     /**
-     * Data provider for testInstall.
+     * Data provider for testTests.
      *
      * @return array
      *   An array of test data arrays with assertions.
      */
     public function dataProvider()
     {
-        return $this->getFixtureContent('commands/install.yml');
+        return $this->getFixtureContent('commands/tests.yml');
     }
 
     /**
-     * Test InstallCommands commands.
+     * Test TestsCommands commands.
      *
      * @param string $command
      *   A command.
@@ -41,27 +42,11 @@ class InstallCommandsTest extends AbstractTest
      *
      * @dataProvider dataProvider
      */
-    public function testInstall(string $command, array $config = [], array $expectations = [])
+    public function testTests(string $command, array $config = [], array $expectations = [])
     {
+        $this->markTestIncomplete('Skip test');
         // Setup configuration file.
         file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
-
-        // If option config-file is used, provide the files .opts.yml and core.extensions.yml
-        // for commands toolkit:install-clean and toolkit:run-deploy, otherwise make sure
-        // the files do not exist.
-        if (str_contains($command, '--config-file')) {
-            $this->filesystem->copy(
-                $this->getFixtureFilepath('samples/sample-opts.yml'),
-                $this->getSandboxFilepath('.opts.yml')
-            );
-            $this->filesystem->copy(
-                $this->getFixtureFilepath('samples/sample-core.extensions.yml'),
-                $this->getSandboxFilepath('core.extensions.yml')
-            );
-        } else {
-            $this->filesystem->remove($this->getSandboxFilepath('.opts.yml'));
-            $this->filesystem->remove($this->getSandboxFilepath('core.extensions.yml'));
-        }
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
@@ -76,6 +61,11 @@ class InstallCommandsTest extends AbstractTest
         foreach ($expectations as $expectation) {
             $this->assertContainsNotContains($content, $expectation);
         }
+    }
+
+    public function testConfigurationFileExists()
+    {
+        $this->assertFileExists((new TestsCommands())->getConfigurationFile());
     }
 
 }

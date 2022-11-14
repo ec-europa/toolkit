@@ -1,22 +1,24 @@
 <?php
 
+// phpcs:ignoreFile
+
 declare(strict_types=1);
 
-namespace EcEuropa\Toolkit\Tests\Commands;
+namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
+use EcEuropa\Toolkit\TaskRunner\Commands\ToolCommands;
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
-use EcEuropa\Toolkit\Toolkit;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Test Toolkit build commands.
+ * Test Toolkit tool commands.
  *
- * @group build
+ * @group tool
  */
-class BuildCommandsTest extends AbstractTest
+class ToolCommandsTest extends AbstractTest
 {
 
     /**
@@ -27,11 +29,11 @@ class BuildCommandsTest extends AbstractTest
      */
     public function dataProvider()
     {
-        return $this->getFixtureContent('commands/build.yml');
+        return $this->getFixtureContent('commands/tool.yml');
     }
 
     /**
-     * Test BuildCommands commands.
+     * Test ToolCommands commands.
      *
      * @param string $command
      *   A command.
@@ -42,16 +44,12 @@ class BuildCommandsTest extends AbstractTest
      *
      * @dataProvider dataProvider
      */
-    public function testBuild(string $command, array $config = [], array $expectations = [])
+    public function testTool(string $command, array $config = [], array $expectations = [])
     {
+        $this->markTestIncomplete('Skip test');
+
         // Setup configuration file.
         file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
-
-        // Create folders for command toolkit:build-assets when default-theme is used.
-        if (str_contains($command, '--default-theme')) {
-            $this->filesystem->mkdir($this->getSandboxFilepath('code'));
-            $this->filesystem->mkdir($this->getSandboxFilepath('code/theme'));
-        }
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
@@ -66,6 +64,11 @@ class BuildCommandsTest extends AbstractTest
         foreach ($expectations as $expectation) {
             $this->assertContainsNotContains($content, $expectation);
         }
+    }
+
+    public function testConfigurationFileExists()
+    {
+        $this->assertFileExists((new ToolCommands())->getConfigurationFile());
     }
 
 }

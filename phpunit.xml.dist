@@ -10,42 +10,17 @@
     stopOnFailure               = "false"
     bootstrap                   = "vendor/autoload.php">
     <php>
-        <ini name="output_buffering" value="8192"/>
-        <ini name="memory_limit" value="-1"/>
         <env name="CI" value="true"/>
         <env name="DRUPAL_DATABASE_NAME" value="drupal"/>
         <env name="DRUPAL_DATABASE_USERNAME" value="root"/>
         <env name="DRUPAL_DATABASE_HOST" value="mysql"/>
     </php>
     <testsuites>
-        <testsuite name="Build">
-            <file>tests/Commands/BuildCommandsTest.php</file>
+        <testsuite name="Features">
+            <directory>tests/Features</directory>
         </testsuite>
-        <testsuite name="Component Check">
-            <file>tests/Commands/ComponentCheckCommandsTest.php</file>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
         </testsuite>
-        <testsuite name="Drupal">
-            <file>tests/Commands/DrupalCommandsTest.php</file>
-        </testsuite>
-        <testsuite name="Dump">
-            <file>tests/Commands/DumpCommandsTest.php</file>
-        </testsuite>
-        <testsuite name="Git Hooks">
-            <file>tests/Commands/GitHooksCommandsTest.php</file>
-        </testsuite>
-        <testsuite name="Git Hooks Functions">
-            <file>tests/Commands/GitHooksFunctionsTest.php</file>
-        </testsuite>
-        <testsuite name="Install">
-            <file>tests/Commands/InstallCommandsTest.php</file>
-        </testsuite>
-        <testsuite name="Toolkit">
-            <file>tests/Commands/ToolkitCommandsTest.php</file>
-        </testsuite>
-        <testsuite name="Toolkit Release">
-            <file>tests/Commands/ToolkitReleaseCommandsTest.php</file>
-        </testsuite>
-<!--        configuration-->
-<!--        tasks-->
     </testsuites>
 </phpunit>
