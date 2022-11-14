@@ -85,7 +85,7 @@
     - contains: |
         [Simulator] Simulating ExecStack()
           ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
-          ->exec('npx stylelint "tk/te ... lelintrc.json --fix')
+          ->exec('npx stylelint "/test/toolkit/tests/sandbox/code/theme/ ... lelintrc.json --fix')
           ->stopOnFail()
 
 - command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code'
@@ -93,15 +93,15 @@
   expectations:
     - contains: |
         [Simulator] Simulating ExecStack()
-          ->dir('tk/tests/sandbox/code/theme')
+          ->dir('/test/toolkit/tests/sandbox/code/theme')
           ->exec('sudo apt-get update')
           ->exec('sudo apt-get install ruby-sass -y')
           ->stopOnFail()
         [Simulator] Simulating ExecStack()
-          ->exec('cp tk/resources/asse ... /theme/Gruntfile.js')
+          ->exec('cp /test/toolkit/resources/assets/Gruntfile.js /test/t ... /theme/Gruntfile.js')
           ->stopOnFail()
         [Simulator] Simulating ExecStack()
-          ->dir('tk/tests/sandbox/code/theme')
+          ->dir('/test/toolkit/tests/sandbox/code/theme')
           ->exec('npm init -y --scope')
           ->exec('npm install grunt grunt-contrib-jshint grunt-contrib-w ... b-uglify --save-dev')
           ->exec('./node_modules/.bin/grunt')

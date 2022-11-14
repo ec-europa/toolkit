@@ -3,43 +3,43 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->copy('tk/resources/git/hooks/pre-commit', 'tk/tests/sandbox/.git/hooks/pre-commit')
+          ->copy('/test/toolkit/resources/git/hooks/pre-commit', '/test/toolkit/tests/sandbox/.git/hooks/pre-commit')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('tk/tests/sandbox/.git/hooks/pre-commit', 493, 0, )
+          ->chmod('/test/toolkit/tests/sandbox/.git/hooks/pre-commit', 493, 0, )
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->copy('tk/resources/git/hooks/prepare-commit-msg', 'tk/tests/sandbox/.gi ... /prepare-commit-msg')
+          ->copy('/test/toolkit/resources/git/hooks/prepare-commit-msg', '/test/toolkit/tests/sandbox/.git/hooks/prepare-commit-msg')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('tk/tests/sandbox/.gi ... /prepare-commit-msg', 493, 0, )
+          ->chmod('/test/toolkit/tests/sandbox/.git/hooks/prepare-commit-msg', 493, 0, )
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->copy('tk/resources/git/hooks/pre-push', 'tk/tests/sandbox/.git/hooks/pre-push')
+          ->copy('/test/toolkit/resources/git/hooks/pre-push', '/test/toolkit/tests/sandbox/.git/hooks/pre-push')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('tk/tests/sandbox/.git/hooks/pre-push', 493, 0, )
+          ->chmod('/test/toolkit/tests/sandbox/.git/hooks/pre-push', 493, 0, )
 
 - command: 'toolkit:hooks-enable --hooks=pre-commit'
   configuration: []
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->copy('tk/resources/git/hooks/pre-commit', 'tk/tests/sandbox/.git/hooks/pre-commit')
+          ->copy('/test/toolkit/resources/git/hooks/pre-commit', '/test/toolkit/tests/sandbox/.git/hooks/pre-commit')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('tk/tests/sandbox/.git/hooks/pre-commit', 493, 0, )
+          ->chmod('/test/toolkit/tests/sandbox/.git/hooks/pre-commit', 493, 0, )
 
 - command: 'toolkit:hooks-disable'
   configuration: []
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('tk/tests/sandbox/.git/hooks/pre-commit')
+          ->remove('/test/toolkit/tests/sandbox/.git/hooks/pre-commit')
         >  The hook 'prepare-commit-msg' was not found, skipping.
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('tk/tests/sandbox/.git/hooks/pre-push')
+          ->remove('/test/toolkit/tests/sandbox/.git/hooks/pre-push')
 
 - command: 'toolkit:hooks-disable --hooks=pre-commit'
   configuration: []
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('tk/tests/sandbox/.git/hooks/pre-commit')
+          ->remove('/test/toolkit/tests/sandbox/.git/hooks/pre-commit')
 
 - command: 'toolkit:hooks-delete-all'
   configuration: []
@@ -70,3 +70,30 @@
 
 
         toolkit:hooks-run <hook> [<arg1> [<arg2> [<arg3>]]]
+
+- command: 'toolkit:hooks-run pre-commit'
+  configuration: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('git diff --diff-filter=M --name-only --cached')
+          ->silent(1)
+        [Simulator] Running git diff --diff-filter=M --name-only --cached
+
+- command: 'toolkit:hooks-run pre-push'
+  configuration: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:test-phpcs')
+        [Simulator] Running ./vendor/bin/run toolkit:test-phpcs
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:lint-yaml')
+        [Simulator] Running ./vendor/bin/run toolkit:lint-yaml
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:lint-php')
+        [Simulator] Running ./vendor/bin/run toolkit:lint-php
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:opts-review')
+        [Simulator] Running ./vendor/bin/run toolkit:opts-review
+
+- command: 'toolkit:hooks-run prepare-commit-msg'
+  configuration: []
+  expectations:
+    - contains: |
+        >  The hook 'prepare-commit-msg' does not exist or is not enabled.
