@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands;
 use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
+use EcEuropa\Toolkit\Toolkit;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
@@ -65,6 +66,14 @@ class GitHooksCommandsTest extends AbstractTest
         $output = new BufferedOutput();
         $runner = new Runner($this->getClassLoader(), $input, $output);
         $runner->run();
+
+        if ($command === 'toolkit:hooks-run') {
+            if (str_starts_with(Toolkit::getRoboVersion(), '4')) {
+                $expectations = $expectations['robo4'];
+            } else {
+                $expectations = $expectations['robo3'];
+            }
+        }
 
         // Fetch the output.
         $content = $output->fetch();
