@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignoreFile
-
 declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Features\Commands;

@@ -45,6 +45,7 @@ class TestsCommandsTest extends AbstractTest
     public function testTests(string $command, array $config = [], array $expectations = [])
     {
         $this->markTestIncomplete('Skip test');
+
         // Setup configuration file.
         file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
 
