@@ -209,7 +209,7 @@ class ComponentCheckCommands extends AbstractCommands
 
         $this->io()->definitionList(
             ['Mandatory module check ' => $this->mandatoryFailed ? 'failed' : 'passed'],
-            ['Recommended module check ' => $this->recommendedFailed ? $this->printRecommendedWarningMessage() : 'passed'],
+            ['Recommended module check ' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
             ['Insecure module check ' => $this->insecureFailed ? 'failed' : 'passed' . $skipInsecure],
             ['Outdated module check ' => $this->outdatedFailed ? 'failed' : 'passed' . $skipOutdated],
             ['Dev module check ' => $this->devVersionFailed ? 'failed' : 'passed'],
@@ -592,7 +592,10 @@ class ComponentCheckCommands extends AbstractCommands
         ];
     }
 
-    private function printRecommendedWarningMessage(): string
+    /**
+     * Returns the recommended components warning message.
+     */
+    private function getRecommendedWarningMessage(): string
     {
         return $this->recommendedFailedCount . ($this->recommendedFailedCount > 1 ? ' warnings' : ' warning');
     }
