@@ -53,10 +53,10 @@ class Website
         if (!empty($GLOBALS['basic_auth'])) {
             return $GLOBALS['basic_auth'];
         }
-        $io = new SymfonyStyle(new ArgvInput(), new ConsoleOutput());
 
         $auth = getenv('QA_API_BASIC_AUTH');
         if (empty($auth)) {
+            $io = new SymfonyStyle(new ArgvInput(), new ConsoleOutput());
             $io->writeln('Missing env var QA_API_BASIC_AUTH, asking for access.');
             if (empty($user = $io->ask('Please insert your username:'))) {
                 $io->writeln('<error>The username cannot be empty!</error>');
