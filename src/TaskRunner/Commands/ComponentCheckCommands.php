@@ -48,7 +48,7 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         $commitTokens = ToolCommands::getCommitTokens();
-        if (isset($commitTokens['skipOutdated'])) {
+        if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
             $this->skipOutdated = true;
         }
         if (isset($commitTokens['skipInsecure'])) {
@@ -167,6 +167,7 @@ class ComponentCheckCommands extends AbstractCommands
             $this->devVersionFailed ||
             $this->devCompRequireFailed ||
             $this->drushRequireFailed ||
+            (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipInsecure && $this->insecureFailed)
         ) {
             $msg = [
@@ -182,10 +183,16 @@ class ComponentCheckCommands extends AbstractCommands
             $this->io()->success('Components checked, nothing to report.');
         } else {
             $this->io()->note([
-                'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
-                'The available tokens are:',
-                '    - [SKIP-OUTDATED]',
-                '    - [SKIP-INSECURE]',
+                'It is possible to bypass the insecure and outdated check:',
+                '- Insecure check:',
+                '   - by providing a token in the commit message: [SKIP-INSECURE]',
+                '- Outdated check:',
+                '   - by providing a token in the commit message: [SKIP-OUTDATED]',
+                '   - Or, update the configuration in the runner.yml.dist as shown below: ',
+                '        toolkit:',
+                '          components:',
+                '            outdated:',
+                '              check: false',
             ]);
         }
 
@@ -203,13 +210,13 @@ class ComponentCheckCommands extends AbstractCommands
         $this->io()->title('Results:');
 
         $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
-        $skipOutdated = ($this->skipOutdated) ? '' : ' (Skipping)';
+        $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
 
         $this->io()->definitionList(
             ['Mandatory module check ' => $this->mandatoryFailed ? 'failed' : 'passed'],
             ['Recommended module check ' => ($this->recommendedFailed ? 'failed' : 'passed') . ' (report only)'],
             ['Insecure module check ' => $this->insecureFailed ? 'failed' : 'passed' . $skipInsecure],
-            ['Outdated module check ' => $this->outdatedFailed ? 'failed' : 'passed' . $skipOutdated],
+            ['Outdated module check ' => ($this->outdatedFailed ? 'failed' : 'passed') . $skipOutdated],
             ['Dev module check ' => $this->devVersionFailed ? 'failed' : 'passed'],
             ['Evaluation module check ' => $this->commandFailed ? 'failed' : 'passed'],
             ['Dev module in require-dev check ' => $this->devCompRequireFailed ? 'failed' : 'passed'],
@@ -495,11 +502,7 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
 
-        $fullSkip = getenv('QA_SKIP_OUTDATED') !== false && getenv('QA_SKIP_OUTDATED');
-        if ($fullSkip) {
-            $this->say('Globally skipping outdated check for components.');
-            $this->outdatedFailed = false;
-        } elseif (!$this->outdatedFailed) {
+        if (!$this->outdatedFailed) {
             $this->say('Outdated components check passed.');
         }
     }
