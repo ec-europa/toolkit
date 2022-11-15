@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace EcEuropa\Toolkit\Tests\Commands {
+namespace EcEuropa\Toolkit\Tests\Features\Commands {
 
+    use EcEuropa\Toolkit\TaskRunner\Commands\DrupalCommands;
     use EcEuropa\Toolkit\TaskRunner\Runner;
     use EcEuropa\Toolkit\Tests\AbstractTest;
     use Symfony\Component\Console\Input\StringInput;
@@ -26,7 +27,7 @@ namespace EcEuropa\Toolkit\Tests\Commands {
          */
         public function dataProvider()
         {
-            return $this->getFixtureContent('commands/drupal-settings-setup.yml');
+            return $this->getFixtureContent('commands/drupal.yml');
         }
 
         /**
@@ -45,9 +46,8 @@ namespace EcEuropa\Toolkit\Tests\Commands {
          */
         public function testDrupalSettingsSetup(array $config, $initial_default_settings, $initial_settings, array $expected)
         {
-            // Setup test Task Runner configuration file.
-            $configFile = $this->getSandboxFilepath('runner.yml');
-            file_put_contents($configFile, Yaml::dump($config));
+            // Setup configuration file.
+            file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
 
             // Setup test directory.
             $root = $config['drupal']['root'] ?? 'web';
@@ -73,6 +73,11 @@ namespace EcEuropa\Toolkit\Tests\Commands {
                 $content = file_get_contents($this->getSandboxFilepath($row['file']));
                 $this->assertContainsNotContains($content, $row);
             }
+        }
+
+        public function testConfigurationFileExists()
+        {
+            $this->assertFileExists((new DrupalCommands())->getConfigurationFile());
         }
 
     }

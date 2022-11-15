@@ -1,0 +1,9 @@
+#@command toolkit:complock-check
+#@command toolkit:opts-review
+#@command toolkit:setup-blackfire-behat
+#@command toolkit:requirements
+#@command toolkit:fix-permissions
+#@command toolkit:check-version
+#@command toolkit:vendor-list
+#@command toolkit:code-review
+#@command toolkit:install-dependencies

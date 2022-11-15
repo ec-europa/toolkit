@@ -1,0 +1,13 @@
+#@command toolkit:setup-phpcs
+#@command toolkit:test-phpcs
+#@command toolkit:test-phpmd
+#@command toolkit:check-phpcs-requirements
+#@command toolkit:test-phpstan
+#@command toolkit:test-behat
+#@command toolkit:test-phpunit
+#@command toolkit:run-phpcbf
+#@command toolkit:setup-eslint
+#@command toolkit:lint-yaml
+#@command toolkit:lint-js
+#@command toolkit:lint-php
+#@command toolkit:run-blackfire

@@ -19,6 +19,7 @@ pipeline:
   composer-install:
     group: composer
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    secrets: [ github_api_token, gitlab_api_token, composer_auth ]
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -31,6 +32,7 @@ pipeline:
   composer-update-lowest:
     group: composer
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    secrets: [ github_api_token, gitlab_api_token, composer_auth ]
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -49,6 +51,7 @@ pipeline:
   phpunit:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    secrets: [ qa_api_basic_auth, github_api_token, gitlab_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass ]
     commands:
       - ./run toolkit:test-phpunit
 
