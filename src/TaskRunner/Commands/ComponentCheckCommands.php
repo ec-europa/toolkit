@@ -183,18 +183,16 @@ class ComponentCheckCommands extends AbstractCommands
             $this->io()->success('Components checked, nothing to report.');
         } else {
             $this->io()->note([
-                'NOTE: It is possible to bypass the insecure and outdated check:',
+                'It is possible to bypass the insecure and outdated check:',
                 '- Insecure check:',
                 '   - by providing a token in the commit message: [SKIP-INSECURE]',
                 '- Outdated check:',
                 '   - by providing a token in the commit message: [SKIP-OUTDATED]',
-                '   - Or, updating runner.yml.dist toolkit settings: ',
-                '       toolkit:',
-                '         ...',
-                '         components:',
-                '           outdated:',
-                '             check: false',
-                '         ...',
+                '   - Or, update the configuration in the runner.yml.dist as shown below: ',
+                '        toolkit:',
+                '          components:',
+                '            outdated:',
+                '              check: false',
             ]);
         }
 
