@@ -13,7 +13,7 @@ use Robo\Task\BaseTask;
  *
  * ``` php
  * <?php
- * // Insert content btwween the 'start' and 'end'.
+ * // Insert content between the 'start' and 'end'.
  * $this->taskReplaceBlock('file.txt')
  *   ->start('#block-start')
  *   ->end('#block-end')

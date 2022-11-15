@@ -13,12 +13,12 @@ use Robo\Contract\VerbosityThresholdInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
- * Provides commands to clone a site for development and a production artifact.
+ * Provides commands to download and install dump files.
  *
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  * @SuppressWarnings(PHPMD.NPathComplexity)
  */
-class CloneCommands extends AbstractCommands
+class DumpCommands extends AbstractCommands
 {
 
     /**
@@ -26,79 +26,7 @@ class CloneCommands extends AbstractCommands
      */
     public function getConfigurationFile()
     {
-        return Toolkit::getToolkitRoot() . '/config/commands/clone.yml';
-    }
-
-    /**
-     * Run deployment sequence.
-     *
-     * This command will check for a file that holds the deployment sequence. If
-     * it is available it will run the commands defined in the yaml file under the
-     * selected key. If not we will run a standard set of deployment commands.
-     *
-     * @param array $options
-     *   Command options.
-     *
-     * @return \Robo\Collection\CollectionBuilder
-     *   Collection builder.
-     *
-     * @command toolkit:run-deploy
-     *
-     * @option sequence-file  The file that holds the deployment sequence.
-     * @option sequence-key   The key under which the commands are defined.
-     * @option config-file    The config file that triggers the config import.
-     */
-    public function runDeploy(array $options = [
-        'sequence-file' => InputOption::VALUE_REQUIRED,
-        'sequence-key' => InputOption::VALUE_REQUIRED,
-        'config-file' => InputOption::VALUE_REQUIRED,
-    ])
-    {
-        $tasks = [];
-
-        $has_config = file_exists($options['config-file']);
-        $has_sequence = file_exists($options['sequence-file']);
-
-        if ($has_sequence) {
-            $config = new Config();
-            $loader = new YamlConfigLoader();
-            $processor = new ConfigProcessor();
-            $processor->extend($loader->load($options['sequence-file']));
-            $config->import($processor->export());
-            $sequence = $config->get($options['sequence-key']);
-
-            if (!empty($sequence)) {
-                $sequence = $sequence['default'] ?? $sequence;
-                $this->say("Running custom deploy sequence '{$options['sequence-key']}' from sequence file '{$options['sequence-file']}'.");
-                foreach ($sequence as $command) {
-                    // Only execute strings. Opts.yml also supports append and
-                    // default array to append or override the default commands.
-                    // @see: https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides
-                    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/MULTISITE-23137
-                    if (is_string($command)) {
-                        $tasks[] = $this->taskExec($command);
-                    }
-                }
-                return $this->collectionBuilder()->addTaskList($tasks);
-            } else {
-                $this->say("Sequence key '{$options['sequence-key']}' does not contain commands, running default set of deployment commands.");
-            }
-        } else {
-            $this->say("Sequence file '{$options['sequence-file']}' does not exist, running default set of deployment commands.");
-        }
-
-        // Default deployment sequence.
-        $drush_dir = $this->getBin('drush');
-        $tasks[] = $this->taskExec($drush_dir . ' state:set system.maintenance_mode 1 --input-format=integer -y');
-        $tasks[] = $this->taskExec($drush_dir . ' updatedb -y --no-post-updates');
-        $tasks[] = $this->taskExec($drush_dir . ' updatedb -y');
-        if ($has_config) {
-            $tasks[] = $this->taskExec($this->getBin('run') . ' toolkit:import-config');
-        }
-        $tasks[] = $this->taskExec($drush_dir . ' state:set system.maintenance_mode 0 --input-format=integer -y');
-        $tasks[] = $this->taskExec($drush_dir . ' cache:rebuild');
-
-        return $this->collectionBuilder()->addTaskList($tasks);
+        return Toolkit::getToolkitRoot() . '/config/commands/dump.yml';
     }
 
     /**
@@ -114,7 +42,7 @@ class CloneCommands extends AbstractCommands
      *
      * @option dumpfile The dump file name.
      */
-    public function installDump(array $options = [
+    public function toolkitInstallDump(array $options = [
         'dumpfile' => InputOption::VALUE_REQUIRED,
     ])
     {
@@ -129,10 +57,8 @@ class CloneCommands extends AbstractCommands
 
         // Unzip and dump database file.
         $drush_bin = $this->getBin('drush');
-        $tasks[] = $this->taskExecStack()
-            ->stopOnFail()
-            ->exec($drush_bin . ' sql-drop -y')
-            ->exec($drush_bin . ' sql-create -y');
+        $tasks[] = $this->taskExec($drush_bin)->arg('sql-drop')->rawArg('-y');
+        $tasks[] = $this->taskExec($drush_bin)->arg('sql-create')->rawArg('-y');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
             ->silent(true)
@@ -192,7 +118,7 @@ class CloneCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function downloadDump(array $options = [
+    public function toolkitDownloadDump(array $options = [
         'is-admin' => InputOption::VALUE_NONE,
         'yes' => InputOption::VALUE_NONE,
     ])
@@ -293,16 +219,16 @@ class CloneCommands extends AbstractCommands
     /**
      * Check if a newer dump exists on the server.
      *
-     * @param $link
+     * @param string $link
      *   The link to the folder.
-     * @param $service
+     * @param string $service
      *   The service to use.
      *
      * @return bool
      *   Return true if sha1 from local is different from the server,
      *   False is case of error or no local file exists.
      */
-    private function checkForNewerDump($link, $service)
+    private function checkForNewerDump(string $link, string $service)
     {
         $config = $this->getConfig();
         $tmp_folder = $this->tmpDirectory();
@@ -316,6 +242,10 @@ class CloneCommands extends AbstractCommands
         $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
         $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1', true)
             ->run();
+        if (!file_exists("$tmp_folder/$service-latest.sh1")) {
+            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
+            return false;
+        }
         $latest = file_get_contents("$tmp_folder/$service-latest.sh1");
         if (empty($latest)) {
             $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
@@ -340,15 +270,15 @@ class CloneCommands extends AbstractCommands
     /**
      * Helper to download and process a ASDA file.
      *
-     * @param $link
+     * @param string $link
      *   The link to the folder.
-     * @param $service
+     * @param string $service
      *   The service to use.
      *
      * @return array
      *   The tasks to execute.
      */
-    private function asdaProcessFile($link, $service)
+    private function asdaProcessFile(string $link, string $service)
     {
         $tasks = [];
         $tmp_folder = $this->tmpDirectory();
@@ -357,6 +287,10 @@ class CloneCommands extends AbstractCommands
         $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
         $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1', true)
             ->run();
+        if (!file_exists("$tmp_folder/$service-latest.sh1")) {
+            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
+            return $tasks;
+        }
         $latest = file_get_contents("$tmp_folder/$service-latest.sh1");
         if (empty($latest)) {
             $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
@@ -408,7 +342,7 @@ class CloneCommands extends AbstractCommands
      * @param bool $silent
      *   Whether show or not output from task.
      */
-    private function generateAsdaWgetInputFile($url, $tmp, $silent = false)
+    private function generateAsdaWgetInputFile(string $url, string $tmp, bool $silent = false)
     {
         $task = $this->taskFilesystemStack()
             ->taskWriteToFile($tmp)
@@ -422,18 +356,18 @@ class CloneCommands extends AbstractCommands
     /**
      * Download the file present in the tmp file.
      *
-     * @param $tmp
+     * @param string $tmp
      *   The temporary filename.
-     * @param $destination
+     * @param string $destination
      *   The destination filename.
-     * @param null $accept
+     * @param string|null $accept
      *   A comma-separated list of accepted extensions.
      * @param bool $silent
      *   Whether show or not output from task.
      *
      * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Base\Exec
      */
-    private function wgetDownloadFile($tmp, $destination, $accept = null, $silent = false)
+    private function wgetDownloadFile(string $tmp, string $destination, string $accept = null, bool $silent = false)
     {
         $task = $this->taskExec('wget')
             ->option('-i', $tmp)

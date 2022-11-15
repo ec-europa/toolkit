@@ -1,0 +1,3 @@
+#@command config
+#@command toolkit:generate-commands-list
+#@command toolkit:generate-documentation

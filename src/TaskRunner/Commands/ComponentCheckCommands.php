@@ -361,6 +361,7 @@ class ComponentCheckCommands extends AbstractCommands
                 $index = array_search($notPresent, array_column($mandatoryPackages, 'machine_name'));
                 $date = !empty($mandatoryPackages[$index]['mandatory_date']) ? ' (since ' . $mandatoryPackages[$index]['mandatory_date'] . ')' : '';
                 $this->writeln("Package $notPresent is mandatory$date and is not present on the project.");
+
                 $this->mandatoryFailed = true;
             }
         }

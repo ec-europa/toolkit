@@ -13,7 +13,6 @@ use EcEuropa\Toolkit\Toolkit;
 use League\Container\Container;
 use Psr\Container\ContainerInterface;
 use Robo\Application;
-use Robo\ClassDiscovery\RelativeNamespaceDiscovery;
 use Robo\Common\ConfigAwareTrait;
 use Robo\Config\Config;
 use Robo\Robo;

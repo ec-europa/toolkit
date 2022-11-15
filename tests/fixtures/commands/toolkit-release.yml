@@ -1,0 +1,3 @@
+#@command toolkit:version-write
+#@command toolkit:changelog-write
+#@command toolkit:prepare-release
