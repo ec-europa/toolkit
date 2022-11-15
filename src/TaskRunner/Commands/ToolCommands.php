@@ -85,6 +85,7 @@ class ToolCommands extends AbstractCommands
      */
     public function optsReview()
     {
+        $reviewOk = true;
         if (file_exists('.opts.yml')) {
             if (empty($basicAuth = Website::basicAuth())) {
                 return 1;
@@ -101,7 +102,6 @@ class ToolCommands extends AbstractCommands
             $forbiddenCommands = $result['constraints'];
 
             $parseOptsFile = Yaml::parseFile('.opts.yml');
-            $reviewOk = true;
 
             if (empty($parseOptsFile['upgrade_commands'])) {
                 $this->say('The project is using default deploy instructions.');
@@ -134,14 +134,14 @@ class ToolCommands extends AbstractCommands
                     }
                 }
             }
-            if ($reviewOk == false) {
-                $this->io()->error("Failed the '.opts.yml' file review. Please contact the QA team.");
-                return 1;
-            }
-            $this->say("Review 'opts.yml' file - Ok.");
-            // If the review is ok return '0'.
-            return 0;
         }
+        if (!$reviewOk) {
+            $this->io()->error("Failed the '.opts.yml' file review. Please contact the QA team.");
+            return 1;
+        }
+
+        $this->say("Review 'opts.yml' file - Ok.");
+        return 0;
     }
 
     /**
