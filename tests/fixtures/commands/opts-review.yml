@@ -1,0 +1,35 @@
+- command: 'toolkit:opts-review'
+  sample: ''
+  configuration:
+    toolkit:
+      project_id: digit-qa
+  expectations:
+    - contains: |
+        >  Review 'opts.yml' file - Ok.
+
+- command: 'toolkit:opts-review'
+  sample: opts.yml
+  configuration:
+    toolkit:
+      project_id: digit-qa
+  expectations:
+    - contains: |
+        >  Review 'opts.yml' file - Ok.
+
+- command: 'toolkit:opts-review'
+  sample: opts-broken.yml
+  configuration:
+    toolkit:
+      project_id: digit-qa
+  expectations:
+    - contains: |
+        >  The command './vendor/bin/drush uli' is not allowed. Please remove it from 'upgrade_commands' section.
+        >  The command './vendor/bin/drush uli|echo' is not allowed. Please remove it from 'upgrade_commands' section.
+        >  The command './vendor/bin/drush uli;echo' is not allowed. Please remove it from 'upgrade_commands' section.
+        >  The command './vendor/bin/drush uli&echo' is not allowed. Please remove it from 'upgrade_commands' section.
+        >  The command 'echo;curl https://www.example.com' is not allowed. Please remove it from 'upgrade_commands' section.
+        >  The command 'echo&curl https://www.example.com' is not allowed. Please remove it from 'upgrade_commands' section.
+        >  The command 'echo|curl https://www.example.com' is not allowed. Please remove it from 'upgrade_commands' section.
+        >  The command 'echo&&curl https://www.example.com' is not allowed. Please remove it from 'upgrade_commands' section.
+
+        [ERROR] Failed the '.opts.yml' file review. Please contact the QA team.

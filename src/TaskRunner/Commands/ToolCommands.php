@@ -85,6 +85,7 @@ class ToolCommands extends AbstractCommands
      */
     public function optsReview()
     {
+        $reviewOk = true;
         if (file_exists('.opts.yml')) {
             if (empty($basicAuth = Website::basicAuth())) {
                 return 1;
@@ -101,7 +102,6 @@ class ToolCommands extends AbstractCommands
             $forbiddenCommands = $result['constraints'];
 
             $parseOptsFile = Yaml::parseFile('.opts.yml');
-            $reviewOk = true;
 
             if (empty($parseOptsFile['upgrade_commands'])) {
                 $this->say('The project is using default deploy instructions.');
@@ -114,16 +114,17 @@ class ToolCommands extends AbstractCommands
 
             foreach ($parseOptsFile['upgrade_commands'] as $key => $commands) {
                 foreach ($commands as $command) {
+                    $command = str_replace('\\', '', $command);
+                    $parsedCommand = preg_split("/[\s;&|]/", $command, 0, PREG_SPLIT_NO_EMPTY);
                     foreach ($forbiddenCommands as $forbiddenCommand) {
                         if ($key == 'default') {
-                            $parsedCommand = explode(" ", $command);
                             if (in_array($forbiddenCommand, $parsedCommand)) {
                                 $this->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
                                 $reviewOk = false;
                             }
                         } else {
                             foreach ($command as $subCommand) {
-                                $parsedCommand = explode(' ', $subCommand);
+                                $parsedCommand = preg_split("/[\s;&|]/", $subCommand, 0, PREG_SPLIT_NO_EMPTY);
                                 if (in_array($forbiddenCommand, $parsedCommand)) {
                                     $this->say("The command '$subCommand' is not allowed. Please remove it from 'upgrade_commands' section.");
                                     $reviewOk = false;
@@ -133,14 +134,14 @@ class ToolCommands extends AbstractCommands
                     }
                 }
             }
-            if ($reviewOk == false) {
-                $this->io()->error("Failed the '.opts.yml' file review. Please contact the QA team.");
-                return 1;
-            }
-            $this->say("Review 'opts.yml' file - Ok.");
-            // If the review is ok return '0'.
-            return 0;
         }
+        if (!$reviewOk) {
+            $this->io()->error("Failed the '.opts.yml' file review. Please contact the QA team.");
+            return 1;
+        }
+
+        $this->say("Review 'opts.yml' file - Ok.");
+        return 0;
     }
 
     /**

@@ -29,6 +29,9 @@
 <!--        <testsuite name="Component Check">-->
 <!--            <file>tests/Features/Commands/ComponentCheckCommandsTest.php</file>-->
 <!--        </testsuite>-->
+<!--        <testsuite name="Configuration">-->
+<!--            <file>tests/Features/Commands/ConfigurationCommandsTest.php</file>-->
+<!--        </testsuite>-->
 <!--        <testsuite name="Drupal">-->
 <!--            <file>tests/Features/Commands/DrupalCommandsTest.php</file>-->
 <!--        </testsuite>-->
@@ -43,6 +46,12 @@
 <!--        </testsuite>-->
 <!--        <testsuite name="Install">-->
 <!--            <file>tests/Features/Commands/InstallCommandsTest.php</file>-->
+<!--        </testsuite>-->
+<!--        <testsuite name="Tests">-->
+<!--            <file>tests/Features/Commands/TestsCommandsTest.php</file>-->
+<!--        </testsuite>-->
+<!--        <testsuite name="Tool">-->
+<!--            <file>tests/Features/Commands/ToolCommandsTest.php</file>-->
 <!--        </testsuite>-->
 <!--        <testsuite name="Toolkit">-->
 <!--            <file>tests/Features/Commands/ToolkitCommandsTest.php</file>-->

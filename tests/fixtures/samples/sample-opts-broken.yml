@@ -1,0 +1,14 @@
+upgrade_commands:
+  default:
+    - ./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer -y
+    - ./vendor/bin/drush config:import -y
+    - ./vendor/bin/drush updatedb -y
+    - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
+    - ./vendor/bin/drush u\li
+    - ./vendor/bin/drush uli|echo
+    - ./vendor/bin/drush uli;echo
+    - ./vendor/bin/drush uli&echo
+    - echo;curl https://www.example.com
+    - echo&curl https://www.example.com
+    - echo|curl https://www.example.com
+    - echo&&curl https://www.example.com

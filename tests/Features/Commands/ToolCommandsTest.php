@@ -64,6 +64,57 @@ class ToolCommandsTest extends AbstractTest
         }
     }
 
+    /**
+     * Data provider for command toolkit:opts-review.
+     *
+     * @return array
+     *   An array of test data arrays with assertions.
+     */
+    public function dataProviderOptsReview()
+    {
+        return $this->getFixtureContent('commands/opts-review.yml');
+    }
+
+    /**
+     * Test command toolkit:opts-review.
+     *
+     * @param string $command
+     *   A command.
+     * @param string $sample
+     *   The sample file to use.
+     * @param array $config
+     *   A configuration.
+     * @param array $expectations
+     *   Tests expected.
+     *
+     * @dataProvider dataProviderOptsReview
+     */
+    public function testOptsReview(string $command, string $sample = '', array $config = [], array $expectations = [])
+    {
+        // Setup configuration file.
+        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+
+        if (!empty($sample)) {
+            $this->filesystem->copy(
+                $this->getFixtureFilepath('samples/sample-' . $sample),
+                $this->getSandboxFilepath('.opts.yml')
+            );
+        }
+
+        // Run command.
+        $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
+        $output = new BufferedOutput();
+        $runner = new Runner($this->getClassLoader(), $input, $output);
+        $runner->run();
+
+        // Fetch the output.
+        $content = $output->fetch();
+        // Assert expectations.
+        foreach ($expectations as $expectation) {
+            $this->assertContainsNotContains($content, $expectation);
+        }
+    }
+
     public function testConfigurationFileExists()
     {
         $this->assertFileExists((new ToolCommands())->getConfigurationFile());
