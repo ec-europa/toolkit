@@ -23,6 +23,8 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $drushRequireFailed = false;
     protected bool $skipOutdated = false;
     protected bool $skipInsecure = false;
+    protected bool $skipRecommended = true;
+    protected int $recommendedFailedCount = 0;
 
     /**
      * Check composer.json for components that are not whitelisted/blacklisted.
@@ -163,7 +165,7 @@ class ComponentCheckCommands extends AbstractCommands
         if (
             $this->commandFailed ||
             $this->mandatoryFailed ||
-            $this->recommendedFailed ||
+            (!$this->skipRecommended && $this->recommendedFailed) ||
             $this->devVersionFailed ||
             $this->devCompRequireFailed ||
             $this->drushRequireFailed ||
@@ -207,7 +209,7 @@ class ComponentCheckCommands extends AbstractCommands
 
         $this->io()->definitionList(
             ['Mandatory module check ' => $this->mandatoryFailed ? 'failed' : 'passed'],
-            ['Recommended module check ' => ($this->recommendedFailed ? 'failed' : 'passed') . ' (report only)'],
+            ['Recommended module check ' => $this->recommendedFailed ? $this->printRecommendedWarningMessage() : 'passed'],
             ['Insecure module check ' => $this->insecureFailed ? 'failed' : 'passed' . $skipInsecure],
             ['Outdated module check ' => $this->outdatedFailed ? 'failed' : 'passed' . $skipOutdated],
             ['Dev module check ' => $this->devVersionFailed ? 'failed' : 'passed'],
@@ -388,11 +390,15 @@ class ComponentCheckCommands extends AbstractCommands
             foreach ($diffRecommended as $notPresent) {
                 $index = array_search($notPresent, array_column($recommendedPackages, 'name'));
                 $date = !empty($recommendedPackages[$index]['mandatory_date']) ? ' (and will be mandatory at ' . $recommendedPackages[$index]['mandatory_date'] . ')' : '';
-                echo "Package $notPresent is recommended$date but is not present on the project." . PHP_EOL;
-                $this->recommendedFailed = false;
+                $this->writeln("Package $notPresent is recommended$date but is not present on the project.");
+                $this->recommendedFailed = true;
             }
+
+            $this->say("See the list of recommended packages at https://webgate.ec.europa.eu/fpfis/qa/requirements.");
+            $this->recommendedFailedCount = count($diffRecommended);
         }
-        if (!$this->recommendedFailed) {
+
+        if ($this->skipRecommended) {
             $this->say('This step is in reporting mode, skipping.');
         }
     }
@@ -584,6 +590,11 @@ class ComponentCheckCommands extends AbstractCommands
                 ],
             ],
         ];
+    }
+
+    private function printRecommendedWarningMessage(): string
+    {
+        return $this->recommendedFailedCount . ($this->recommendedFailedCount > 1 ? ' warnings' : ' warning');
     }
 
 }
