@@ -2,10 +2,11 @@ command:
   toolkit:
     code-review:
       options:
-        phpcs: 1
-        opts-review: 1
-        lint-php: 1
-        lint-yaml: 1
+        phpcs: 'false'
+        opts-review: 'false'
+        lint-php: 'false'
+        lint-yaml: 'false'
+        phpstan: 'false'
     install-dependencies:
       options:
-        print: 0
+        print: 'false'

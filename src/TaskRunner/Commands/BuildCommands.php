@@ -123,7 +123,7 @@ class BuildCommands extends AbstractCommands
                 'drupal_profile' => $drupal_profile,
                 'php_version' => phpversion(),
                 'toolkit_version' => ToolCommands::getPackagePropertyFromComposer('ec-europa/toolkit'),
-                'date' => date('Y-m-d H:i:s'),
+                'date' => $this->isSimulating() ? '2022-11-11 09:00:00' : date('Y-m-d H:i:s'),
             ]));
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')
             ->text($tag);
@@ -160,9 +160,9 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-dev
      *
-     * @aliases tk-bdev
+     * @option root  Drupal root.
      *
-     * @option root Drupal root.
+     * @aliases tk-bdev
      */
     public function buildDev(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -223,8 +223,8 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-dev-reset
      *
-     * @option root Drupal root.
-     * @option yes  Skip the question.
+     * @option root  Drupal root.
+     * @option yes   Skip the question.
      */
     public function buildDevReset(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -282,27 +282,29 @@ class BuildCommands extends AbstractCommands
      * @param array $options
      *   Additional options for the command.
      *
-     * @command toolkit:build-assets
-     *
-     * @option default-theme theme where to build assets.
-     * @option validate or validate=fix to check or fix scss files.
-     *
-     * @aliases tba, tk-assets
-     *
      * @return \Robo\Result|int
      *   The collection builder.
+     *
+     * @command toolkit:build-assets
+     *
+     * @option default-theme       The theme where to build assets.
+     * @option build-npm-packages  The packages to install.
+     * @option validate            Whether to validate or fix the scss.
+     * @option theme-task-runner   The runner to use, one of 'grunt' or 'gulp'.
+     *
+     * @aliases tba, tk-assets
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function buildAssets(array $options = [
-        'default-theme' => InputOption::VALUE_REQUIRED,
-        'build-npm-packages' => InputOption::VALUE_OPTIONAL,
-        'build-npm-mode' => InputOption::VALUE_OPTIONAL,
-        'validate' => InputOption::VALUE_OPTIONAL,
-        'theme-task-runner' => InputOption::VALUE_OPTIONAL,
+        'default-theme' => InputOption::VALUE_OPTIONAL,
+        'custom-code-folder' => InputOption::VALUE_REQUIRED,
+        'build-npm-packages' => InputOption::VALUE_REQUIRED,
+        'validate' => InputOption::VALUE_REQUIRED,
+        'theme-task-runner' => InputOption::VALUE_REQUIRED,
     ])
     {
-        if (!empty($options['default-theme'])) {
+        if (empty($options['default-theme'])) {
             // No parameter sent, check for configuration.
             if (file_exists('config/sync/system.theme.yml')) {
                 $parseSystemTheme = Yaml::parseFile('config/sync/system.theme.yml');
@@ -319,7 +321,7 @@ class BuildCommands extends AbstractCommands
         // Search Theme.
         $finder = new Finder();
         $finder->directories()
-            ->in($this->getConfig()->get('toolkit.build.custom-code-folder'))
+            ->in($options['custom-code-folder'])
             ->name($options['default-theme']);
 
         if ($finder->hasResults()) {
@@ -335,18 +337,15 @@ class BuildCommands extends AbstractCommands
                 $fix = $options['validate'] === 'fix' ? '--fix' : '';
                 $collection->taskExecStack()
                     ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint ' . $fix . ' "' . $theme_dir . '/**/*.{css,scss,sass}" --config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                    ->exec('npx stylelint "' . $theme_dir . '/**/*.{css,scss,sass}" --config vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json ' . $fix)
                     ->stopOnFail();
                 // Run and return task collection.
                 return $collection->run();
             } else {
-                // Build task collection.
-                $collection = $this->collectionBuilder();
-
-                if ($options['theme-task-runner'] == 'gulp') {
+                if ($options['theme-task-runner'] === 'gulp') {
                     $taskRunnerConfigFile = 'gulpfile.js';
                     $this->io()->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
-                } elseif ($options['theme-task-runner'] == 'grunt') {
+                } elseif ($options['theme-task-runner'] === 'grunt') {
                     $taskRunnerConfigFile = 'Gruntfile.js';
                     $collection = $this->collectionBuilder();
                     $collection->taskExecStack()
@@ -357,7 +356,7 @@ class BuildCommands extends AbstractCommands
                 } else {
                     $themeTaskRunner = $options['theme-task-runner'];
                     $this->say("$themeTaskRunner is not a supported 'theme-task-runner'. The supported plugins are 'gulp' and 'grunt' (Recommended).");
-                    return;
+                    return 0;
                 }
 
                 // Check if 'theme-task-runner' file exists.
@@ -373,7 +372,7 @@ class BuildCommands extends AbstractCommands
                 $collection->taskExecStack()
                     ->dir($theme_dir)
                     ->exec('npm init -y --scope')
-                    ->exec('npm install ' . $options['build-npm-packages'] . ' --save-dev')
+                    ->exec("npm install {$options['build-npm-packages']} --save-dev")
                     ->exec('./node_modules/.bin/' . $options['theme-task-runner'])
                     ->stopOnFail();
 
@@ -381,7 +380,7 @@ class BuildCommands extends AbstractCommands
                 return $collection->run();
             }
         } else {
-            $this->say("The theme " . $options['default-theme'] . "  couldn't be found on the lib/ folder.");
+            $this->say("The theme '{$options['default-theme']}'  couldn't be found on the '{$options['custom-code-folder']}' folder.");
             return 0;
         }
     }

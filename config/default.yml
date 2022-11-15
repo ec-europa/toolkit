@@ -53,6 +53,9 @@ toolkit:
     nextcloud_admin: false
     asda_vendor: 'ec-europa'
     asda_source: 'reference'
+  components:
+    outdated:
+      check: true
   deploy:
     config_file: 'config/sync/core.extension.yml'
     sequence_file: '.opts.yml'
@@ -89,7 +92,7 @@ toolkit:
       theme-task-runner: grunt
       packages: grunt grunt-contrib-jshint grunt-contrib-watch grunt-contrib-sass grunt-contrib-clean grunt-contrib-uglify
   scss:
-    validate: null
+    validate: 'false'
   test:
     behat:
       from: behat.yml.dist
@@ -115,8 +118,8 @@ toolkit:
     phpcs:
       mode: phpcs
       config: phpcs.xml
-      ignore_annotations: 0
-      show_sniffs: 0
+      ignore_annotations: 'false'
+      show_sniffs: 'false'
       standards:
         - ./vendor/drupal/coder/coder_sniffer/Drupal
         - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
@@ -159,7 +162,7 @@ toolkit:
         - src
     phpstan:
       config: phpstan.neon
-      level: 1
+      level: '1'
       files: [ 'lib', 'src' ]
       ignores: [ 'vendor' ]
   lint:

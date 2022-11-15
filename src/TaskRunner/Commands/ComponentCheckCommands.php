@@ -50,7 +50,7 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         $commitTokens = ToolCommands::getCommitTokens();
-        if (isset($commitTokens['skipOutdated'])) {
+        if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
             $this->skipOutdated = true;
         }
         if (isset($commitTokens['skipInsecure'])) {
@@ -120,7 +120,7 @@ class ComponentCheckCommands extends AbstractCommands
             ]);
             if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
                 $this->devVersionFailed = true;
-                $this->say("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
+                $this->writeln("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
             }
         }
         if (!$this->devVersionFailed) {
@@ -169,6 +169,7 @@ class ComponentCheckCommands extends AbstractCommands
             $this->devVersionFailed ||
             $this->devCompRequireFailed ||
             $this->drushRequireFailed ||
+            (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipInsecure && $this->insecureFailed)
         ) {
             $msg = [
@@ -184,10 +185,16 @@ class ComponentCheckCommands extends AbstractCommands
             $this->io()->success('Components checked, nothing to report.');
         } else {
             $this->io()->note([
-                'NOTE: It is possible to bypass the insecure and outdated check by providing a token in the commit message.',
-                'The available tokens are:',
-                '    - [SKIP-OUTDATED]',
-                '    - [SKIP-INSECURE]',
+                'It is possible to bypass the insecure and outdated check:',
+                '- Insecure check:',
+                '   - by providing a token in the commit message: [SKIP-INSECURE]',
+                '- Outdated check:',
+                '   - by providing a token in the commit message: [SKIP-OUTDATED]',
+                '   - Or, update the configuration in the runner.yml.dist as shown below: ',
+                '        toolkit:',
+                '          components:',
+                '            outdated:',
+                '              check: false',
             ]);
         }
 
@@ -205,13 +212,13 @@ class ComponentCheckCommands extends AbstractCommands
         $this->io()->title('Results:');
 
         $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
-        $skipOutdated = ($this->skipOutdated) ? '' : ' (Skipping)';
+        $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
 
         $this->io()->definitionList(
             ['Mandatory module check ' => $this->mandatoryFailed ? 'failed' : 'passed'],
             ['Recommended module check ' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
             ['Insecure module check ' => $this->insecureFailed ? 'failed' : 'passed' . $skipInsecure],
-            ['Outdated module check ' => $this->outdatedFailed ? 'failed' : 'passed' . $skipOutdated],
+            ['Outdated module check ' => ($this->outdatedFailed ? 'failed' : 'passed') . $skipOutdated],
             ['Dev module check ' => $this->devVersionFailed ? 'failed' : 'passed'],
             ['Evaluation module check ' => $this->commandFailed ? 'failed' : 'passed'],
             ['Dev module in require-dev check ' => $this->devCompRequireFailed ? 'failed' : 'passed'],
@@ -248,7 +255,7 @@ class ComponentCheckCommands extends AbstractCommands
 
         // If module was not reviewed yet.
         if (!$hasBeenQaEd) {
-            $this->say("Package $packageName:$packageVersion has not been reviewed by QA.");
+            $this->writeln("Package $packageName:$packageVersion has not been reviewed by QA.");
             $this->commandFailed = true;
         }
 
@@ -280,7 +287,7 @@ class ComponentCheckCommands extends AbstractCommands
 
             // If module was not allowed in project.
             if (!$allowedInProject) {
-                $this->say("The use of $packageName:$packageVersion is {$modules[$packageName]['status']}. Contact QA Team.");
+                $this->writeln("The use of $packageName:$packageVersion is {$modules[$packageName]['status']}. Contact QA Team.");
                 $this->commandFailed = true;
             }
         }
@@ -292,7 +299,7 @@ class ComponentCheckCommands extends AbstractCommands
             foreach ($constraints as $constraint => $result) {
                 $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
                 if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
-                    echo "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue." . PHP_EOL;
+                    $this->writeln("Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.");
                     $this->commandFailed = true;
                 }
             }
@@ -355,7 +362,8 @@ class ComponentCheckCommands extends AbstractCommands
             foreach ($diffMandatory as $notPresent) {
                 $index = array_search($notPresent, array_column($mandatoryPackages, 'machine_name'));
                 $date = !empty($mandatoryPackages[$index]['mandatory_date']) ? ' (since ' . $mandatoryPackages[$index]['mandatory_date'] . ')' : '';
-                echo "Package $notPresent is mandatory$date and is not present on the project." . PHP_EOL;
+                $this->writeln("Package $notPresent is mandatory$date and is not present on the project.");
+
                 $this->mandatoryFailed = true;
             }
         }
@@ -488,23 +496,19 @@ class ComponentCheckCommands extends AbstractCommands
             if (is_array($outdatedPackages)) {
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
                     if (!array_key_exists('latest', $outdatedPackage)) {
-                        echo "Package {$outdatedPackage['name']} does not provide information about last version." . PHP_EOL;
+                        $this->writeln("Package {$outdatedPackage['name']} does not provide information about last version.");
                     } elseif (array_key_exists('warning', $outdatedPackage)) {
-                        echo $outdatedPackage['warning'] . PHP_EOL;
+                        $this->writeln($outdatedPackage['warning']);
                         $this->outdatedFailed = true;
                     } else {
-                        echo "Package {$outdatedPackage['name']} with version installed {$outdatedPackage["version"]} is outdated, please update to last version - {$outdatedPackage['latest']}" . PHP_EOL;
+                        $this->writeln("Package {$outdatedPackage['name']} with version installed {$outdatedPackage["version"]} is outdated, please update to last version - {$outdatedPackage['latest']}");
                         $this->outdatedFailed = true;
                     }
                 }
             }
         }
 
-        $fullSkip = getenv('QA_SKIP_OUTDATED') !== false && getenv('QA_SKIP_OUTDATED');
-        if ($fullSkip) {
-            $this->say('Globally skipping outdated check for components.');
-            $this->outdatedFailed = false;
-        } elseif (!$this->outdatedFailed) {
+        if (!$this->outdatedFailed) {
             $this->say('Outdated components check passed.');
         }
     }

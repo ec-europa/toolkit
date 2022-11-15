@@ -9,18 +9,46 @@
     processIsolation            = "true"
     stopOnFailure               = "false"
     bootstrap                   = "vendor/autoload.php">
+    <php>
+        <env name="CI" value="true"/>
+        <env name="DRUPAL_DATABASE_NAME" value="drupal"/>
+        <env name="DRUPAL_DATABASE_USERNAME" value="root"/>
+        <env name="DRUPAL_DATABASE_HOST" value="mysql"/>
+    </php>
     <testsuites>
-        <testsuite name="build">
-            <file>tests/Commands/BuildCommandsTest.php</file>
+        <testsuite name="Features">
+            <directory>tests/Features</directory>
         </testsuite>
-        <testsuite name="clone">
-            <file>tests/Commands/CloneCommandsTest.php</file>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
         </testsuite>
-        <testsuite name="Drupal">
-            <file>tests/Commands/DrupalCommandsTest.php</file>
-        </testsuite>
-        <testsuite name="Install">
-            <file>tests/Commands/InstallCommandsTest.php</file>
-        </testsuite>
+
+<!--        <testsuite name="Build">-->
+<!--            <file>tests/Features/Commands/BuildCommandsTest.php</file>-->
+<!--        </testsuite>-->
+<!--        <testsuite name="Component Check">-->
+<!--            <file>tests/Features/Commands/ComponentCheckCommandsTest.php</file>-->
+<!--        </testsuite>-->
+<!--        <testsuite name="Drupal">-->
+<!--            <file>tests/Features/Commands/DrupalCommandsTest.php</file>-->
+<!--        </testsuite>-->
+<!--        <testsuite name="Dump">-->
+<!--            <file>tests/Features/Commands/DumpCommandsTest.php</file>-->
+<!--        </testsuite>-->
+<!--        <testsuite name="Git Hooks">-->
+<!--            <file>tests/Features/Commands/GitHooksCommandsTest.php</file>-->
+<!--        </testsuite>-->
+<!--        <testsuite name="Git Hooks Functions">-->
+<!--            <file>tests/Unit/GitHooksFunctionsTest.php</file>-->
+<!--        </testsuite>-->
+<!--        <testsuite name="Install">-->
+<!--            <file>tests/Features/Commands/InstallCommandsTest.php</file>-->
+<!--        </testsuite>-->
+<!--        <testsuite name="Toolkit">-->
+<!--            <file>tests/Features/Commands/ToolkitCommandsTest.php</file>-->
+<!--        </testsuite>-->
+<!--        <testsuite name="Toolkit Release">-->
+<!--            <file>tests/Features/Commands/ToolkitReleaseCommandsTest.php</file>-->
+<!--        </testsuite>-->
     </testsuites>
 </phpunit>

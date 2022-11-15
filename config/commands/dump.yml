@@ -1,0 +1,5 @@
+command:
+  toolkit:
+    install-dump:
+      options:
+        dumpfile: 'mysql.gz'

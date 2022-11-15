@@ -1,63 +1,108 @@
-- command: 'toolkit:build-dev --root=web'
-  configuration:
-    drupal:
-      root: web
-  expectations:
-    - contains: |
-        [Simulator] Simulating ExecStack()
-            ->stopOnFail()
-            ->exec('./vendor/bin/run drupal:settings-setup --root=web')
-        [Simulator] Simulating ExecStack()
-            ->stopOnFail()
-            ->exec('mkdir -p web/sites/default/files')
-            ->exec('chmod ug=rwx,o= web/sites/default/files')
-        [Simulator] Simulating ExecStack()
-            ->stopOnFail()
-            ->exec('mkdir -p web/sites/default/private_files')
-            ->exec('chmod ug=rwx,o= web/sites/default/private_files')
-
 - command: 'toolkit:build-dist --root=web --dist-root=dist --tag=1.0.0 --sha=aBcDeF --keep=vendor --remove=CHANGELOG.txt'
-  configuration:
-    drupal:
-      root: web
+  configuration: []
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-            ->remove('dist')
-            ->mkdir('dist')
+          ->remove('dist')
+          ->mkdir('dist')
         [Simulator] Simulating ExecStack()
-            ->stopOnFail()
-            ->exec('git archive HEAD | tar -x -C dist')
+          ->stopOnFail()
+          ->exec('git archive HEAD | tar -x -C dist')
         [Simulator] Simulating Composer\Install('composer')
-            ->env('COMPOSER_MIRROR_PATH_REPOS', 1)
-            ->workingDir('dist')
-            ->optimizeAutoloader()
-            ->noDev()
+          ->env('COMPOSER_MIRROR_PATH_REPOS', 1)
+          ->workingDir('dist')
+          ->optimizeAutoloader()
+          ->noDev()
         [Simulator] Simulating ExecStack()
-            ->stopOnFail()
-            ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
-            ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
+          ->stopOnFail()
+          ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
+          ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
         [Simulator] Simulating ExecStack()
-            ->stopOnFail()
-            ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
+          ->stopOnFail()
+          ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
         [Simulator] Simulating File\Write('dist/manifest.json')
-            ->text('{"version":"1.0.0","sha":"aBcDeF"}')
+          ->text('{"version":"1.0.0","sha":"aBcDeF","environment":"acc", ... 22-11-11 09:00:00"}')
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')
-            ->text('1.0.0')
-
+          ->text('1.0.0')
         [Simulator] Simulating ExecStack()
-            ->exec('find dist -maxdepth 3 -type f \( -name "CHANGELOG.txt" \) -exec rm -rf {} +')
+          ->exec('find dist -maxdepth 3 -type f \( -name "CHANGELOG.txt" \) -exec rm -rf {} +')
+
+- command: 'toolkit:build-dev'
+  configuration: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('./vendor/bin/run toolkit:install-dependencies')
+          ->exec('./vendor/bin/run drupal:settings-setup --root=web')
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('mkdir -p web/sites/default/files')
+          ->exec('chmod ug=rwx,o= web/sites/default/files')
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('mkdir -p web/sites/default/private_files')
+          ->exec('chmod ug=rwx,o= web/sites/default/private_files')
+
+- command: 'toolkit:build-dev --root=test'
+  configuration: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('./vendor/bin/run toolkit:install-dependencies')
+          ->exec('./vendor/bin/run drupal:settings-setup --root=test')
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('mkdir -p test/sites/default/files')
+          ->exec('chmod ug=rwx,o= test/sites/default/files')
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('mkdir -p test/sites/default/private_files')
+          ->exec('chmod ug=rwx,o= test/sites/default/private_files')
 
 - command: 'toolkit:build-dev-reset --root=web --yes'
-  configuration:
-    drupal:
-      root: web
+  configuration: []
   expectations:
     - contains: |
         [Simulator] Simulating Vcs\GitStack('git')
-            ->stopOnFail()
-            ->exec('clean -fdx --exclude=vendor/ec-europa/toolkit')
+          ->stopOnFail()
+          ->exec('clean -fdx --exclude=vendor/ec-europa/toolkit')
         [Simulator] Simulating Composer\Install('composer')
         [Simulator] Simulating ExecStack()
-            ->stopOnFail()
-            ->exec('./vendor/bin/run toolkit:build-dev --root=web')
+          ->stopOnFail()
+          ->exec('./vendor/bin/run toolkit:build-dev --root=web')
+
+- command: 'toolkit:build-assets'
+  configuration: []
+  expectations:
+    - contains: |
+        >  The default-theme couldn't be found in the project. Skipping build.
+
+- command: 'toolkit:build-assets --default-theme=theme --validate=fix --custom-code-folder=code'
+  configuration: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating ExecStack()
+          ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
+          ->exec('npx stylelint "/test/toolkit/tests/sandbox/code/theme/ ... lelintrc.json --fix')
+          ->stopOnFail()
+
+- command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code'
+  configuration: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating ExecStack()
+          ->dir('/test/toolkit/tests/sandbox/code/theme')
+          ->exec('sudo apt-get update')
+          ->exec('sudo apt-get install ruby-sass -y')
+          ->stopOnFail()
+        [Simulator] Simulating ExecStack()
+          ->exec('cp /test/toolkit/resources/assets/Gruntfile.js /test/t ... /theme/Gruntfile.js')
+          ->stopOnFail()
+        [Simulator] Simulating ExecStack()
+          ->dir('/test/toolkit/tests/sandbox/code/theme')
+          ->exec('npm init -y --scope')
+          ->exec('npm install grunt grunt-contrib-jshint grunt-contrib-w ... b-uglify --save-dev')
+          ->exec('./node_modules/.bin/grunt')
+          ->stopOnFail()
