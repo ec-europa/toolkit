@@ -20,6 +20,7 @@ services:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     environment:
       - DOCUMENT_ROOT=/test/toolkit
+      - VIRTUAL_HOST=http://web:8080
 
 pipeline:
   composer-install:
