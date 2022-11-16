@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests;
 
+use EcEuropa\Toolkit\Website;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
@@ -38,6 +39,8 @@ abstract class AbstractTest extends TestCase
             mkdir($this->getSandboxRoot());
         }
         $this->filesystem->chmod($this->getSandboxRoot(), 0777, umask(), true);
+
+        $this->setUpMock();
     }
 
     /**
@@ -137,7 +140,7 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   The filepath of the sandbox file.
      */
-    protected function getFixtureFilepath($name): string
+    protected function getFixtureFilepath(string $name): string
     {
         return $this->getFixtureRoot() . '/' . $name;
     }
@@ -151,7 +154,7 @@ abstract class AbstractTest extends TestCase
      * @return mixed|string
      *   A set of test data.
      */
-    protected function getFixtureContent($filepath)
+    protected function getFixtureContent(string $filepath)
     {
         return Yaml::parse(file_get_contents($this->getFixtureFilepath($filepath)));
     }
@@ -165,7 +168,7 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   The filepath of the sandbox file.
      */
-    protected function getSandboxFilepath($name): string
+    protected function getSandboxFilepath(string $name): string
     {
         return $this->getSandboxRoot() . '/' . $name;
     }
@@ -179,6 +182,15 @@ abstract class AbstractTest extends TestCase
     protected function getSandboxRoot(): string
     {
         return __DIR__ . '/sandbox';
+    }
+
+    /**
+     * Set up the mock server.
+     */
+    protected function setUpMock()
+    {
+        // Set up the mock.
+        Website::setUrl('http://localhost:8080/tests/mock');
     }
 
 }

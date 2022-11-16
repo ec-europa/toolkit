@@ -3,6 +3,8 @@ services:
   web:
     image: registry.fpfis.eu/fpfis/httpd-php:8.1-ci
     working_dir: /test/toolkit
+    ports:
+      - "8080:8080"
     volumes:
     - ${PWD}:/test/toolkit
 #    - ${HOME}/.composer/auth.json:/root/.composer/auth.json

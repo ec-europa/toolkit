@@ -2,7 +2,7 @@
   sample: ''
   configuration:
     toolkit:
-      project_id: digit-qa
+      project_id: toolkit
   expectations:
     - contains: |
         >  Review 'opts.yml' file - Ok.
@@ -11,7 +11,7 @@
   sample: opts.yml
   configuration:
     toolkit:
-      project_id: digit-qa
+      project_id: toolkit
   expectations:
     - contains: |
         >  Review 'opts.yml' file - Ok.
@@ -20,7 +20,7 @@
   sample: opts-broken.yml
   configuration:
     toolkit:
-      project_id: digit-qa
+      project_id: toolkit
   expectations:
     - contains: |
         >  The command './vendor/bin/drush uli' is not allowed. Please remove it from 'upgrade_commands' section.

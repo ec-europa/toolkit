@@ -42,7 +42,7 @@
 <!--            <file>tests/Features/Commands/GitHooksCommandsTest.php</file>-->
 <!--        </testsuite>-->
 <!--        <testsuite name="Git Hooks Functions">-->
-<!--            <file>tests/Unit/GitHooksFunctionsTest.php</file>-->
+<!--            <file>tests/Unit/GitHooksCommandsTest.php</file>-->
 <!--        </testsuite>-->
 <!--        <testsuite name="Install">-->
 <!--            <file>tests/Features/Commands/InstallCommandsTest.php</file>-->
