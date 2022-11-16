@@ -190,7 +190,7 @@ abstract class AbstractTest extends TestCase
     protected function setUpMock()
     {
         // Set up the mock.
-        $base_url = getenv('VIRTUAL_HOST') ?? 'http://localhost:8080';
+        $base_url = !empty(getenv('VIRTUAL_HOST')) ? getenv('VIRTUAL_HOST') : 'http://localhost:8080';
         Website::setUrl(rtrim($base_url, '/') . '/tests/mock');
     }
 
