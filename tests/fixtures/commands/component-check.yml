@@ -197,3 +197,74 @@
         !                    outdated:
         !
         !                      check: false
+
+- command: 'toolkit:component-check'
+  configuration:
+    toolkit:
+      project_id: digit-qa
+      clean:
+        config_file: 'core.extensions-good.yml'
+  expectations:
+    - contains: |
+        Checking Mandatory components.
+        ==============================
+
+        [Simulator] Running ./vendor/bin/drush status --format=json
+        >  Website not installed, using core.extensions-good.yml file.
+        >  Mandatory components check passed.
+
+        Checking Recommended components.
+        ================================
+
+        Package drupal/redis is recommended but is not present on the project.
+        >  See the list of recommended packages at https://webgate.ec.europa.eu/fpfis/qa/requirements.
+        >  This step is in reporting mode, skipping.
+
+        Checking Insecure components.
+        =============================
+
+        [Simulator] Running ./vendor/bin/drush pm:security --format=json
+        [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+        >  Insecure components check passed.
+
+        Checking Outdated components.
+        =============================
+
+        [Simulator] Running composer outdated --direct --minor-only --format=json
+        >  Outdated components check passed.
+
+        Checking evaluation status components.
+        ======================================
+
+        >  Evaluation module check passed.
+
+        Checking dev components.
+        ========================
+
+        >  Dev components check passed.
+
+        Checking dev components in require section.
+        ===========================================
+
+        >  Dev components in require section check passed
+
+        Checking require section for Drush.
+        ===================================
+
+        >  Drush require section check passed.
+
+        Results:
+        ========
+
+        ---------------------------------- -----------
+        Mandatory module check             passed
+        Recommended module check           1 warning
+        Insecure module check              passed
+        Outdated module check              passed
+        Dev module check                   passed
+        Evaluation module check            passed
+        Dev module in require-dev check    passed
+        Drush require section check        passed
+        ---------------------------------- -----------
+
+        [OK] Components checked, nothing to report.

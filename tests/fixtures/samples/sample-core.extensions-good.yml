@@ -1,0 +1,14 @@
+_core:
+  default_config_hash: ClDHXxblLcG0L7MgsLvfBI_eTuiHGQDc
+module:
+  config: 0
+  dropsolid_purge: 0
+  redirect: 0
+  oe_dashboard_agent: 0
+  monolog: 0
+  redis: 0
+  seckit: 0
+  drush: 0
+theme:
+  seven: 0
+profile: minimal

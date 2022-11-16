@@ -47,6 +47,13 @@ class ComponentCheckCommandsTest extends AbstractTest
         // Setup configuration file.
         file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
 
+        if (!empty($config['toolkit']['clean']['config_file'])) {
+            $this->filesystem->copy(
+                $this->getFixtureFilepath('samples/sample-' . $config['toolkit']['clean']['config_file']),
+                $this->getSandboxFilepath($config['toolkit']['clean']['config_file'])
+            );
+        }
+
         $this->filesystem->copy(
             $this->getFixtureFilepath('samples/sample-composer.lock'),
             $this->getSandboxFilepath('composer.lock')
