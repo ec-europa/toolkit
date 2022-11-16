@@ -186,12 +186,14 @@ abstract class AbstractTest extends TestCase
 
     /**
      * Set up the mock server.
+     *
+     * To access the mock directly in the browser, make sure the port is exposed in the docker-compose.yml
+     * file and access for example: http://localhost:8080/tests/mock/api/v1/package-reviews.
      */
     protected function setUpMock()
     {
         // Set up the mock.
-        $base_url = !empty(getenv('VIRTUAL_HOST')) ? getenv('VIRTUAL_HOST') : 'http://localhost:8080';
-        var_dump($base_url);
+        $base_url = !empty(getenv('VIRTUAL_HOST')) ? getenv('VIRTUAL_HOST') : 'web:8080';
         Website::setUrl(rtrim($base_url, '/') . '/tests/mock');
     }
 

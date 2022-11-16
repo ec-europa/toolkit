@@ -4,7 +4,7 @@ services:
     image: registry.fpfis.eu/fpfis/httpd-php:8.1-ci
     working_dir: /test/toolkit
     ports:
-      # Use port "8080:8080" to access the endpoints in the browser.
+      # Use port "8080:8080" to access the mock in the browser.
       - "8080"
     volumes:
     - ${PWD}:/test/toolkit
