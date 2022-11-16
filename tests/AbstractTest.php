@@ -190,7 +190,7 @@ abstract class AbstractTest extends TestCase
     protected function setUpMock()
     {
         // Set up the mock.
-        Website::setUrl('http://localhost:8080/tests/mock');
+        Website::setUrl('http://web:8080/tests/mock');
     }
 
 }
