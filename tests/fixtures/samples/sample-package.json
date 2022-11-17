@@ -1,0 +1,7 @@
+{
+  "name": "toolkit",
+  "devDependencies": {
+    "eslint-config-drupal": "^5.0.2",
+    "eslint-plugin-yml": "^1.2.0"
+  }
+}

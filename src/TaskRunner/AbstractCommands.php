@@ -43,7 +43,7 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     }
 
     /**
-     * Return the path to given bin.
+     * Validate and return the path to given bin.
      *
      * @param string $name
      *   The bin to look for.
@@ -53,35 +53,57 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
      *
      * @throws TaskException
      */
-    protected function getBin($name)
+    protected function getBin(string $name): string
     {
-        $filename = $this->getConfigValue('runner.bin_dir') . '/' . $name;
-        if (!file_exists($filename) && !$this->isSimulating()) {
-            throw new TaskException($this, "Executable '$filename' was not found.");
+        $bin = $this->getBinPath($name);
+        if (!file_exists($bin) && !$this->isSimulating()) {
+            throw new TaskException($this, "Executable '$bin' was not found.");
         }
 
-        return $filename;
+        return $bin;
+    }
+
+    /**
+     * Return the path to given bin.
+     *
+     * @return string
+     *   The path to given binary.
+     */
+    protected function getBinPath(string $name): string
+    {
+        return $this->getConfigValue('runner.bin_dir') . '/' . $name;
+    }
+
+    /**
+     * Validate and return the path to given bin from node packages.
+     *
+     * @param string $name
+     *   The bin to look for.
+     *
+     * @return string
+     *   The bin path.
+     *
+     * @throws TaskException
+     */
+    protected function getNodeBin(string $name): string
+    {
+        $bin = $this->getNodeBinPath($name);
+        if (!file_exists($bin) && !$this->isSimulating()) {
+            throw new TaskException($this, "Executable '$bin' was not found.");
+        }
+
+        return $bin;
     }
 
     /**
      * Return the path to given bin from node packages.
      *
-     * @param string $name
-     *   The bin to look for.
-     *
      * @return string
-     *   The bin path.
-     *
-     * @throws TaskException
+     *   The path to given binary.
      */
-    protected function getNodeBin($name)
+    protected function getNodeBinPath(string $name): string
     {
-        $filename = $this->getConfigValue('runner.bin_node_dir') . '/' . $name;
-        if (!file_exists($filename) && !$this->isSimulating()) {
-            throw new TaskException($this, "Executable '$filename' was not found.");
-        }
-
-        return $filename;
+        return $this->getConfigValue('runner.bin_node_dir') . '/' . $name;
     }
 
     /**
@@ -110,8 +132,9 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
      * Returns the current working directory.
      *
      * @return string
+     *   The current working directory.
      */
-    public function getWorkingDir()
+    public function getWorkingDir(): string
     {
         return (string) $this->input->getParameterOption('--working-dir', getcwd());
     }
