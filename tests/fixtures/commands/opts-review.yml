@@ -4,8 +4,7 @@
     toolkit:
       project_id: toolkit
   expectations:
-    - contains: |
-        >  Review 'opts.yml' file - Ok.
+    - contains: ">  The file 'opts.yml' was not found, skipping."
 
 - command: 'toolkit:opts-review'
   sample: opts.yml
@@ -13,8 +12,25 @@
     toolkit:
       project_id: toolkit
   expectations:
+    - contains: ">  Review 'opts.yml' file - Ok."
+
+- command: 'toolkit:opts-review'
+  sample: config.yml
+  configuration:
+    toolkit:
+      project_id: toolkit
+  expectations:
+    - contains: ">  The project is using default deploy instructions."
+
+- command: 'toolkit:opts-review'
+  sample: opts-broken-structure.yml
+  configuration:
+    toolkit:
+      project_id: toolkit
+  expectations:
     - contains: |
-        >  Review 'opts.yml' file - Ok.
+        >  Your structure for the 'upgrade_commands' is invalid.
+        See the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override
 
 - command: 'toolkit:opts-review'
   sample: opts-broken.yml

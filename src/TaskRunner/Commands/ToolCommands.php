@@ -86,47 +86,50 @@ class ToolCommands extends AbstractCommands
     public function optsReview()
     {
         $reviewOk = true;
-        if (file_exists('.opts.yml')) {
-            $project_id = $this->getConfig()->get('toolkit.project_id');
-            $forbiddenCommands = Website::projectConstraints($project_id);
-            if (empty($forbiddenCommands)) {
-                $this->io()->error('Failed to get constraints from the endpoint.');
-                return 1;
-            }
+        if (!file_exists('.opts.yml')) {
+            $this->say("The file 'opts.yml' was not found, skipping.");
+            return 0;
+        }
+        $project_id = $this->getConfig()->get('toolkit.project_id');
+        $forbiddenCommands = Website::projectConstraints($project_id);
+        if (empty($forbiddenCommands)) {
+            $this->io()->error('Failed to get constraints from the endpoint.');
+            return 1;
+        }
 
-            $parseOptsFile = Yaml::parseFile('.opts.yml');
-            if (empty($parseOptsFile['upgrade_commands'])) {
-                $this->say('The project is using default deploy instructions.');
-                return 0;
-            }
-            if (empty($parseOptsFile['upgrade_commands']['default']) && empty($parseOptsFile['upgrade_commands']['append'])) {
-                $this->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
-                return 1;
-            }
+        $parseOptsFile = Yaml::parseFile('.opts.yml');
+        if (empty($parseOptsFile['upgrade_commands'])) {
+            $this->say('The project is using default deploy instructions.');
+            return 0;
+        }
+        if (empty($parseOptsFile['upgrade_commands']['default']) && empty($parseOptsFile['upgrade_commands']['append'])) {
+            $this->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
+            return 1;
+        }
 
-            foreach ($parseOptsFile['upgrade_commands'] as $key => $commands) {
-                foreach ($commands as $command) {
-                    $command = str_replace('\\', '', $command);
-                    $parsedCommand = preg_split("/[\s;&|]/", $command, 0, PREG_SPLIT_NO_EMPTY);
-                    foreach ($forbiddenCommands as $forbiddenCommand) {
-                        if ($key == 'default') {
+        foreach ($parseOptsFile['upgrade_commands'] as $key => $commands) {
+            foreach ($commands as $command) {
+                $command = str_replace('\\', '', $command);
+                $parsedCommand = preg_split("/[\s;&|]/", $command, 0, PREG_SPLIT_NO_EMPTY);
+                foreach ($forbiddenCommands as $forbiddenCommand) {
+                    if ($key == 'default') {
+                        if (in_array($forbiddenCommand, $parsedCommand)) {
+                            $this->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
+                            $reviewOk = false;
+                        }
+                    } else {
+                        foreach ($command as $subCommand) {
+                            $parsedCommand = preg_split("/[\s;&|]/", $subCommand, 0, PREG_SPLIT_NO_EMPTY);
                             if (in_array($forbiddenCommand, $parsedCommand)) {
-                                $this->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
+                                $this->say("The command '$subCommand' is not allowed. Please remove it from 'upgrade_commands' section.");
                                 $reviewOk = false;
-                            }
-                        } else {
-                            foreach ($command as $subCommand) {
-                                $parsedCommand = preg_split("/[\s;&|]/", $subCommand, 0, PREG_SPLIT_NO_EMPTY);
-                                if (in_array($forbiddenCommand, $parsedCommand)) {
-                                    $this->say("The command '$subCommand' is not allowed. Please remove it from 'upgrade_commands' section.");
-                                    $reviewOk = false;
-                                }
                             }
                         }
                     }
                 }
             }
         }
+
         if (!$reviewOk) {
             $this->io()->error("Failed the '.opts.yml' file review. Please contact the QA team.");
             return 1;
