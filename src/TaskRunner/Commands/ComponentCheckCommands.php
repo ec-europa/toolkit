@@ -31,7 +31,8 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @command toolkit:component-check
      *
-     * @option endpoint Deprecated
+     * @option endpoint     (Deprecated) Specify an endpoint to use.
+     * @option test-command If set the command will load test packages.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -72,8 +73,7 @@ class ComponentCheckCommands extends AbstractCommands
 
         // To test this command execute it with the --test-command option:
         // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://webgate.ec.europa.eu/fpfis/qa"
-        // Then we provide an array in the packages that fails on each type
-        // of validation.
+        // Then we provide an array in the packages that fails on each type of validation.
         if ($options['test-command']) {
             $composerLock['packages'] = $this->testPackages();
         }
@@ -200,7 +200,7 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
-     * Helper function to validate the component.
+     * Print the component check results.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -233,7 +233,7 @@ class ComponentCheckCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function validateComponent($package, $modules)
+    protected function validateComponent(array $package, array $modules)
     {
         // Only validate module components for this time.
         if (!isset($package['type']) || $package['type'] !== 'drupal-module') {
@@ -312,7 +312,7 @@ class ComponentCheckCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function componentMandatory($modules)
+    protected function componentMandatory(array $modules)
     {
         $enabledPackages = $mandatoryPackages = [];
         $drushBin = $this->getBin('drush');
@@ -377,7 +377,7 @@ class ComponentCheckCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function componentRecommended($modules, $packages)
+    protected function componentRecommended(array $modules, array $packages)
     {
         $recommendedPackages = [];
         // Get project packages.
@@ -417,7 +417,7 @@ class ComponentCheckCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function componentInsecure($modules)
+    protected function componentInsecure(array $modules)
     {
         $packages = [];
         $drush_result = $this->taskExec($this->getBin('drush') . ' pm:security --format=json')
@@ -511,8 +511,19 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Call release history of d.org to confirm security alert.
+     *
+     * @param string $package
+     *   The package to check.
+     * @param string $version
+     *   The version to check.
+     * @param string $core
+     *   The package core version.
+     *
+     * @return array|int
+     *   Array with package info from d.org, 1
+     *   if no release history found.
      */
-    protected function getPackageDetails($package, $version, $core)
+    protected function getPackageDetails(string $package, string $version, string $core)
     {
         $name = explode('/', $package)[1];
         // Drupal core is an exception, we should use '/drupal/current'.
