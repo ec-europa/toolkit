@@ -87,22 +87,14 @@ class ToolCommands extends AbstractCommands
     {
         $reviewOk = true;
         if (file_exists('.opts.yml')) {
-            if (empty($basicAuth = Website::basicAuth())) {
-                return 1;
-            }
             $project_id = $this->getConfig()->get('toolkit.project_id');
-            $url = Website::url();
-            $url .= '/api/v1/project/ec-europa/' . $project_id . '-reference/information/constraints';
-            $result = Website::get($url, $basicAuth);
-            $result = json_decode($result, true);
-            if (!isset($result['constraints'])) {
+            $forbiddenCommands = Website::projectConstraints($project_id);
+            if (empty($forbiddenCommands)) {
                 $this->io()->error('Failed to get constraints from the endpoint.');
                 return 1;
             }
-            $forbiddenCommands = $result['constraints'];
 
             $parseOptsFile = Yaml::parseFile('.opts.yml');
-
             if (empty($parseOptsFile['upgrade_commands'])) {
                 $this->say('The project is using default deploy instructions.');
                 return 0;
@@ -158,7 +150,7 @@ class ToolCommands extends AbstractCommands
         }
 
         $from = $this->getConfig()->get('toolkit.test.behat.from');
-        $blackfire_dir = __DIR__ . '/../../../resources/Blackfire';
+        $blackfire_dir = Toolkit::getToolkitRoot() . '/resources/Blackfire';
         $parseBehatYml = Yaml::parseFile($from);
         if (isset($parseBehatYml['blackfire'])) {
             $this->say('Blackfire profile was found, skipping.');
@@ -208,43 +200,37 @@ class ToolCommands extends AbstractCommands
         if (!empty($options['endpoint'])) {
             Website::setUrl($options['endpoint']);
         }
-        $php_check = $toolkit_check = $drupal_check = $endpoint_check = $nextcloud_check = $asda_check = 'FAIL';
-        $php_version = $toolkit_version = $drupal_version = '';
-
-        if (empty($basicAuth = Website::basicAuth())) {
+        $data = Website::requirements();
+        if (empty($data)) {
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
             return 1;
         }
-        $result = Website::get(Website::url() . '/api/v1/toolkit-requirements', $basicAuth);
-        if ($result) {
-            $endpoint_check = 'OK';
-            $data = json_decode($result, true);
-            if (empty($data) || !isset($data['toolkit'])) {
-                $this->writeln('Invalid data.');
-                return 1;
-            }
+        if (!isset($data['toolkit'])) {
+            $this->writeln('Invalid data returned from the endpoint.');
+            return 1;
+        }
+        $endpoint_check = 'OK';
 
-            // Handle PHP version.
-            $php_version = phpversion();
-            $isValid = version_compare($php_version, $data['php_version']);
-            $php_check = ($isValid >= 0) ? 'OK' : 'FAIL';
+        // Handle PHP version.
+        $php_version = phpversion();
+        $isValid = version_compare($php_version, $data['php_version']);
+        $php_check = ($isValid >= 0) ? 'OK' : 'FAIL';
 
-            // Handle Toolkit version.
-            $toolkit_version = Toolkit::VERSION;
-            $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
-            // Handle Drupal version.
-            if (!($drupal_version = self::getPackagePropertyFromComposer('drupal/core'))) {
-                $drupal_check = 'FAIL (not found)';
-            } else {
-                $drupal_check = Semver::satisfies($drupal_version, $data['drupal']) ? 'OK' : 'FAIL';
-            }
+        // Handle Toolkit version.
+        $toolkit_version = Toolkit::VERSION;
+        $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
+        // Handle Drupal version.
+        if (!($drupal_version = self::getPackagePropertyFromComposer('drupal/core'))) {
+            $drupal_check = 'FAIL (not found)';
+        } else {
+            $drupal_check = Semver::satisfies($drupal_version, $data['drupal']) ? 'OK' : 'FAIL';
         }
 
         // Handle GitHub.
         if (empty($token = getenv('GITHUB_API_TOKEN'))) {
             $github_check = 'FAIL (Missing environment variable: GITHUB_API_TOKEN)';
         } else {
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, 'https://api.github.com/user');
+            $curl = curl_init('https://api.github.com/user');
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_HTTPHEADER, ["Authorization: Token $token"]);
             curl_setopt($curl, CURLOPT_USERAGENT, 'Quality Assurance');
@@ -267,8 +253,7 @@ class ToolCommands extends AbstractCommands
         if (empty($token = getenv('GITLAB_API_TOKEN'))) {
             $gitlab_check = 'FAIL (Missing environment variable: GITLAB_API_TOKEN)';
         } else {
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, 'https://git.fpfis.tech.ec.europa.eu/api/v4/users?username=qa-dashboard-api');
+            $curl = curl_init('https://git.fpfis.tech.ec.europa.eu/api/v4/users?username=qa-dashboard-api');
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_HTTPHEADER, ["PRIVATE-TOKEN: $token"]);
             curl_setopt($curl, CURLOPT_USERAGENT, 'Quality Assurance');
@@ -290,7 +275,7 @@ class ToolCommands extends AbstractCommands
         if (!empty($asda_user) && !empty($asda_pass)) {
             $asda_check = 'OK';
         } else {
-            $asda_check .= ' (Missing environment variable(s):';
+            $asda_check = 'FAIL (Missing environment variable(s):';
             $asda_check .= empty($asda_user) ? ' ASDA_USER' : '';
             $asda_check .= empty($asda_pass) ? ' ASDA_PASSWORD' : '';
             $asda_check .= ')';
@@ -301,7 +286,7 @@ class ToolCommands extends AbstractCommands
         if (!empty($nc_user) && !empty($nc_pass)) {
             $nextcloud_check = 'OK';
         } else {
-            $nextcloud_check .= ' (Missing environment variable(s):';
+            $nextcloud_check = 'FAIL (Missing environment variable(s):';
             $nextcloud_check .= empty($nc_user) ? ' NEXTCLOUD_USER' : '';
             $nextcloud_check .= empty($nc_pass) ? ' NEXTCLOUD_PASS' : '';
             $nextcloud_check .= ')';
@@ -340,7 +325,7 @@ class ToolCommands extends AbstractCommands
         'httpd_group' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        $script = __DIR__ . '/../../../resources/scripts/fix-permissions.sh';
+        $script = Toolkit::getToolkitRoot() . '/resources/scripts/fix-permissions.sh';
         if (!file_exists($script)) {
             $this->say("Script was not found at $script, skipping..");
             return 0;
@@ -383,29 +368,22 @@ class ToolCommands extends AbstractCommands
     {
         $this->say("Checking Toolkit version:\n");
 
-        $url = Website::url();
-        $endpoint = $url . '/api/v1/toolkit-requirements';
-        if (empty($basicAuth = Website::basicAuth())) {
-            return 1;
-        }
         $toolkit_version = Toolkit::VERSION;
-
-        $result = Website::get($endpoint, $basicAuth);
+        $data = Website::requirements();
         $min_version = '';
 
         if (!(self::getPackagePropertyFromComposer('ec-europa/toolkit'))) {
             $this->writeln('Failed to get Toolkit version from composer.lock.');
         }
-        if ($result) {
-            $data = json_decode($result, true);
-            if (empty($data) || !isset($data['toolkit'])) {
+        if (!empty($data)) {
+            if (!isset($data['toolkit'])) {
                 $this->writeln('Invalid data returned from the endpoint.');
             } else {
                 $min_version = $data['toolkit'];
                 if ($toolkit_version) {
                     $major = '' . intval(substr($toolkit_version, 0, 2));
                     $min_versions = array_filter(explode('|', $min_version), function ($v) use ($major) {
-                        return strpos(substr($v, 0, 2), $major) !== false;
+                        return str_contains(substr($v, 0, 2), $major);
                     });
                     if (count($min_versions) === 1) {
                         $min_version = end($min_versions);
@@ -486,21 +464,19 @@ class ToolCommands extends AbstractCommands
         if (empty($basicAuth = Website::basicAuth())) {
             return 1;
         }
-        $result = Website::get(Website::url() . '/api/v1/toolkit-requirements', $basicAuth);
-
-        if ($result) {
-            $data = json_decode($result, true);
-            if (empty($data) || !isset($data['vendor_list'])) {
-                $this->writeln('Invalid data returned from the endpoint.');
-                return 1;
-            }
-            $vendorList = $data['vendor_list'];
-            $this->io()->title('Vendors being monitorised:');
-            $this->writeln($vendorList);
-            return 0;
+        $data = Website::requirements();
+        if (empty($data)) {
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            return 1;
         }
-        $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
-        return 1;
+        if (!isset($data['vendor_list'])) {
+            $this->writeln('Invalid data returned from the endpoint.');
+            return 1;
+        }
+        $vendorList = $data['vendor_list'];
+        $this->io()->title('Vendors being monitorised:');
+        $this->writeln($vendorList);
+        return 0;
     }
 
     /**
