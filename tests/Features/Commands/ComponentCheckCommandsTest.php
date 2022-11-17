@@ -37,17 +37,27 @@ class ComponentCheckCommandsTest extends AbstractTest
      *   A command.
      * @param array $config
      *   A configuration.
+     * @param string $tokens
+     *   Tokens to set in the commit message.
      * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testComponentCheck(string $command, array $config = [], array $expectations = [])
+    public function testComponentCheck(string $command, array $config = [], string $tokens = '', array $expectations = [])
     {
-        $this->markTestIncomplete('Skip test');
-
         // Setup configuration file.
         file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+
+        if (!empty($tokens)) {
+            putenv('CI_COMMIT_MESSAGE=' . $tokens);
+        }
+        if (!empty($config['toolkit']['clean']['config_file'])) {
+            $this->filesystem->copy(
+                $this->getFixtureFilepath('samples/sample-' . $config['toolkit']['clean']['config_file']),
+                $this->getSandboxFilepath($config['toolkit']['clean']['config_file'])
+            );
+        }
 
         $this->filesystem->copy(
             $this->getFixtureFilepath('samples/sample-composer.lock'),
