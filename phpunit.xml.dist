@@ -23,41 +23,23 @@
             <directory>tests/Unit</directory>
         </testsuite>
 
-<!--        <testsuite name="Build">-->
+        <testsuite name="Run specific test(s)">
+            <!-- Feature tests. -->
 <!--            <file>tests/Features/Commands/BuildCommandsTest.php</file>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Component Check">-->
 <!--            <file>tests/Features/Commands/ComponentCheckCommandsTest.php</file>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Configuration">-->
 <!--            <file>tests/Features/Commands/ConfigurationCommandsTest.php</file>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Drupal">-->
 <!--            <file>tests/Features/Commands/DrupalCommandsTest.php</file>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Dump">-->
 <!--            <file>tests/Features/Commands/DumpCommandsTest.php</file>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Git Hooks">-->
 <!--            <file>tests/Features/Commands/GitHooksCommandsTest.php</file>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Git Hooks Functions">-->
-<!--            <file>tests/Unit/GitHooksCommandsTest.php</file>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Install">-->
 <!--            <file>tests/Features/Commands/InstallCommandsTest.php</file>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Tests">-->
 <!--            <file>tests/Features/Commands/TestsCommandsTest.php</file>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Tool">-->
 <!--            <file>tests/Features/Commands/ToolCommandsTest.php</file>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Toolkit">-->
 <!--            <file>tests/Features/Commands/ToolkitCommandsTest.php</file>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Toolkit Release">-->
 <!--            <file>tests/Features/Commands/ToolkitReleaseCommandsTest.php</file>-->
-<!--        </testsuite>-->
+
+            <!-- Unit tests. -->
+<!--            <file>tests/Unit/GitHooksCommandsTest.php</file>-->
+<!--            <file>tests/Unit/MockTest.php</file>-->
+        </testsuite>
     </testsuites>
 </phpunit>
