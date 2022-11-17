@@ -517,13 +517,16 @@ class TestsCommands extends AbstractCommands
         'force' => false,
     ])
     {
+        $actions = false;
         $config = $options['config'];
         if ($options['force'] && file_exists($config)) {
+            $actions = true;
             $this->taskExec('rm')->arg($config)->run();
         }
 
         // Create a package.json if it doesn't exist.
         if (!file_exists('package.json')) {
+            $actions = true;
             $this->taskExec('npm ini -y')->run();
             $this->taskExec("npm install --save-dev {$options['packages']} -y")->run();
         }
@@ -532,10 +535,12 @@ class TestsCommands extends AbstractCommands
         try {
             $this->getNodeBin('eslint');
         } catch (TaskException $e) {
+            $actions = true;
             $this->taskExec('npm install')->run();
         }
 
         if (!file_exists($config)) {
+            $actions = true;
             $data = [
                 'ignorePatterns' => $options['ignores'],
                 // The docker-compose file makes use of
@@ -575,7 +580,12 @@ class TestsCommands extends AbstractCommands
 
         // Ignore all yaml files for prettier.
         if (!file_exists('.prettierignore')) {
+            $actions = true;
             $this->taskWriteToFile('.prettierignore')->text('*.yml')->run();
+        }
+
+        if (!$actions) {
+            $this->say('No actions needed.');
         }
 
         return ResultData::EXITCODE_OK;
@@ -590,22 +600,19 @@ class TestsCommands extends AbstractCommands
      *
      * @option config     The eslint config file.
      * @option extensions The extensions to check.
+     * @option options    Extra options for the command without -- (only options with no value).
      *
      * @aliases tly, tk-yaml
+     *
+     * @usage --extensions='.yml' --options='fix no-eslintrc'
      */
     public function toolkitLintYaml(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
         'extensions' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        $tasks = [];
-        $args = '--config ' . $options['config'];
-        $args .= ' --ext ' . implode(',', $options['extensions']);
-
-        $this->taskExec($this->getBin('run') . ' toolkit:setup-eslint')->run();
-        $tasks[] = $this->taskExec($this->getNodeBin('eslint') . " $args .");
-
-        return $this->collectionBuilder()->addTaskList($tasks);
+        return $this->toolkitRunEsLint($options['config'], $options['extensions'], $options['options']);
     }
 
     /**
@@ -617,20 +624,51 @@ class TestsCommands extends AbstractCommands
      *
      * @option config     The eslint config file.
      * @option extensions The extensions to check.
+     * @option options    Extra options for the command without -- (only options with no value).
      *
      * @aliases tljs, tk-js
+     *
+     * @usage --extensions='.js' --options='fix no-eslintrc'
      */
     public function toolkitLintJs(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
         'extensions' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        $tasks = [];
-        $args = '--config ' . $options['config'];
-        $args .= ' --ext ' . implode(',', $options['extensions']);
+        return $this->toolkitRunEsLint($options['config'], $options['extensions'], $options['options']);
+    }
 
-        $this->taskExec($this->getBin('run') . ' toolkit:setup-eslint')->run();
-        $tasks[] = $this->taskExec($this->getNodeBin('eslint') . " $args .");
+    /**
+     * Execute the eslint.
+     *
+     * @param string $config
+     *   The eslint config file.
+     * @param array $extensions
+     *   The extensions to check.
+     * @param string $options
+     *   Extra options for the command.
+     *
+     * @see toolkitLintYaml()
+     * @see toolkitLintJs()
+     */
+    private function toolkitRunEsLint(string $config, array $extensions, string $options)
+    {
+        $tasks = [];
+
+        $tasks[] = $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint');
+
+        $opts = [
+            'config' => $config,
+            'ext' => implode(',', $extensions),
+        ];
+
+        if (!empty($options)) {
+            $extra = array_fill_keys(explode(' ', $options), null);
+            $opts = array_merge($opts, $extra);
+        }
+
+        $tasks[] = $this->taskExec($this->getNodeBinPath('eslint'))->options($opts)->arg('.');
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
@@ -644,31 +682,31 @@ class TestsCommands extends AbstractCommands
      *
      * @option exclude     The eslint config file.
      * @option extensions  The extensions to check.
+     * @option options     Extra options for the command without -- (only options with no value).
      *
      * @aliases tlp, tk-php
      */
     public function toolkitLintPhp(array $options = [
         'extensions' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
         'exclude' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        $extensions = $options['extensions'];
-        $excludes = $options['exclude'];
-        $this->say('Extensions: ' . implode(', ', $extensions));
-        $this->say('Exclude: ' . implode(', ', $excludes));
-
-        $opts = [];
-        foreach ($excludes as $exclude) {
-            $opts[] = "--exclude $exclude";
+        $task = $this->taskExec($this->getBin('parallel-lint'));
+        foreach ($options['exclude'] as $exclude) {
+            $task->option('exclude', $exclude);
+        }
+        if ($options['extensions']) {
+            $task->option('-e', implode(',', $options['extensions']));
+        }
+        if (!empty($options['options'])) {
+            $opts = explode(' ', $options['options']);
+            foreach ($opts as $opt) {
+                $task->option($opt);
+            }
         }
 
-        if ($extensions) {
-            $opts[] = '-e ' . implode(',', $extensions);
-        }
-        // Prepare options.
-        $opts_string = implode(' ', $opts);
-        $task = $this->taskExec($this->getBin('parallel-lint') . " $opts_string .");
-        return $this->collectionBuilder()->addTaskList([$task]);
+        return $this->collectionBuilder()->addTask($task->rawArg('.'));
     }
 
     /**

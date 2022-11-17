@@ -171,10 +171,13 @@ toolkit:
       packages: 'eslint-config-drupal eslint-plugin-yml'
       ignores: [ 'vendor/*', 'web/*', 'dist/*' ]
       extensions_yaml: [ '.yml', '.yaml' ]
+      options_yaml: ''
       extensions_js: [ '.js' ]
+      options_js: ''
     php:
       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
       exclude: [ 'vendor/', 'web/' ]
+      options: ''
   invalid-versions:
     - 1.x
     - 2.x
