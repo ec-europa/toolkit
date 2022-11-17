@@ -40,7 +40,7 @@ abstract class AbstractTest extends TestCase
         }
         $this->filesystem->chmod($this->getSandboxRoot(), 0777, umask(), true);
 
-        $this->setUpMock();
+        self::setUpMock();
     }
 
     /**
@@ -104,7 +104,7 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   Trimmed text.
      */
-    protected function trimEachLine(string $text)
+    protected function trimEachLine(string $text): string
     {
         return trim(implode(PHP_EOL, array_map('trim', explode(PHP_EOL, $text))));
     }
@@ -123,10 +123,10 @@ abstract class AbstractTest extends TestCase
     /**
      * Get fixture root.
      *
-     * @return mixed
+     * @return string
      *   The filepath of fixtures.
      */
-    protected function getFixtureRoot()
+    protected function getFixtureRoot(): string
     {
         return __DIR__ . '/fixtures';
     }
@@ -190,11 +190,22 @@ abstract class AbstractTest extends TestCase
      * To access the mock directly in the browser, make sure the port is exposed in the docker-compose.yml
      * file and access for example: http://localhost:8080/tests/mock/api/v1/package-reviews.
      */
-    protected function setUpMock()
+    public static function setUpMock()
     {
-        // Set up the mock.
-        $base_url = !empty(getenv('VIRTUAL_HOST')) ? getenv('VIRTUAL_HOST') : 'web:8080';
-        Website::setUrl(rtrim($base_url, '/') . '/tests/mock');
+        Website::setUrl(self::getMockBaseUrl() . '/tests/mock');
+    }
+
+    /**
+     * Return the mock base url.
+     *
+     * @return string
+     *   The mock base url, defaults to web:8080.
+     */
+    public static function getMockBaseUrl(): string
+    {
+        return !empty(getenv('VIRTUAL_HOST'))
+            ? (string) getenv('VIRTUAL_HOST')
+            : 'web:8080';
     }
 
 }
