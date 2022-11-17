@@ -102,8 +102,7 @@ class Website
         }
 
         $content = '';
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
+        $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 120);
         curl_setopt($curl, CURLOPT_TIMEOUT, 120);
@@ -153,7 +152,6 @@ class Website
         if (!empty($GLOBALS['session_token'])) {
             return $GLOBALS['session_token'];
         }
-        $url = self::url();
         $options = [
             CURLOPT_RETURNTRANSFER => true,   // return web page
             CURLOPT_HEADER         => false,  // don't return headers
@@ -165,7 +163,7 @@ class Website
             CURLOPT_CONNECTTIMEOUT => 120,    // time-out on connect
             CURLOPT_TIMEOUT        => 120,    // time-out on response
         ];
-        $ch = curl_init("$url/session/token");
+        $ch = curl_init(self::url() . '/session/token');
         curl_setopt_array($ch, $options);
         $token = (string) curl_exec($ch);
         curl_close($ch);
@@ -188,11 +186,10 @@ class Website
      */
     public static function post(array $fields, string $auth): string
     {
-        $url = self::url();
         if (!($token = self::getSessionToken())) {
             return '';
         }
-        $ch = curl_init($url . '/node?_format=hal_json');
+        $ch = curl_init(self::url() . '/node?_format=hal_json');
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields, JSON_UNESCAPED_SLASHES));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -210,9 +207,9 @@ class Website
     }
 
     /**
-     * Returns the Project information from the QA Website.
+     * Returns the Project information from the endpoint.
      *
-     * @param $project_id
+     * @param string $project_id
      *   The project ID to use.
      *
      * @return false|array
@@ -220,7 +217,7 @@ class Website
      *
      * @throws \Exception
      */
-    public static function projectInformation($project_id)
+    public static function projectInformation(string $project_id)
     {
         if (!isset($GLOBALS['projects'])) {
             $GLOBALS['projects'] = [];
@@ -228,17 +225,64 @@ class Website
         if (!empty($GLOBALS['projects'][$project_id])) {
             return $GLOBALS['projects'][$project_id];
         }
-        $url = self::url();
-        $endpoint = "$url/api/v1/project/ec-europa/$project_id-reference/information";
-        $project = self::get($endpoint, self::basicAuth());
-        $project = json_decode($project, true);
-        $project = reset($project);
-        if (!empty($project['name']) && $project['name'] === "$project_id-reference") {
-            $GLOBALS['projects'][$project_id] = $project;
-            return $project;
+        $endpoint = "/api/v1/project/ec-europa/$project_id-reference/information";
+        $response = self::get(self::url() . $endpoint, self::basicAuth());
+        $data = json_decode($response, true);
+        $data = reset($data);
+        if (!empty($data['name']) && $data['name'] === "$project_id-reference") {
+            $GLOBALS['projects'][$project_id] = $data;
+            return $data;
         }
 
         return false;
+    }
+
+    /**
+     * Returns the Project constraints from the endpoint.
+     *
+     * @param string $project_id
+     *   The project ID to use.
+     *
+     * @return false|array
+     *   An array with the constraints, false if fails.
+     *
+     * @throws \Exception
+     */
+    public static function projectConstraints(string $project_id)
+    {
+        if (!isset($GLOBALS['constraints'])) {
+            $GLOBALS['constraints'] = [];
+        } elseif (!empty($GLOBALS['constraints'])) {
+            return $GLOBALS['constraints'];
+        }
+        $endpoint = '/api/v1/project/ec-europa/' . $project_id . '-reference/information/constraints';
+        $response = self::get(self::url() . $endpoint, self::basicAuth());
+        $data = json_decode($response, true);
+        if (empty($data) || !isset($data['constraints'])) {
+            return false;
+        }
+        $GLOBALS['constraints'] = $data['constraints'];
+        return $data['constraints'];
+    }
+
+    /**
+     * Returns the toolkit requirements from the endpoint.
+     */
+    public static function requirements()
+    {
+        if (!isset($GLOBALS['requirements'])) {
+            $GLOBALS['requirements'] = [];
+        }
+        if (!empty($GLOBALS['requirements'])) {
+            return $GLOBALS['requirements'];
+        }
+        $response = self::get(self::url() . '/api/v1/toolkit-requirements', self::basicAuth());
+        if (empty($response)) {
+            return false;
+        }
+        $data = json_decode($response, true);
+        $GLOBALS['requirements'] = $data;
+        return $data;
     }
 
 }
