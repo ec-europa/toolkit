@@ -92,8 +92,10 @@ class ComponentCheckCommands extends AbstractCommands
             $this->io()->newLine();
         }
 
-        // Get vendor list.
-        $dataTkReqsEndpoint = Website::requirements();
+        // Get vendor list from 'api/v1/toolkit-requirements' endpoint.
+        $tkReqsEndpoint = $endpoint . '/api/v1/toolkit-requirements';
+        $resultTkReqsEndpoint = Website::get($tkReqsEndpoint, $basicAuth);
+        $dataTkReqsEndpoint = json_decode($resultTkReqsEndpoint, true);
         $vendorList = $dataTkReqsEndpoint['vendor_list'] ?? [];
 
         $this->io()->title('Checking evaluation status components.');
@@ -291,6 +293,8 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         if ($wasNotRejected) {
+            # Once all projects are using Toolkit >=4.1.0, the 'version' key
+            # may be removed from the endpoint: /api/v1/package-reviews.
             $constraints = [ 'whitelist' => false, 'blacklist' => true ];
             foreach ($constraints as $constraint => $result) {
                 $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
@@ -523,9 +527,11 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         $releaseHistory = $fullReleaseHistory = [];
-        $curl = curl_init($url);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type' => 'application/hal+json']);
+        $header = ['Content-Type' => 'application/hal+json'];
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
         $result = curl_exec($curl);
 
         if ($result !== false) {
