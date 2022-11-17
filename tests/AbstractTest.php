@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests;
 
+use EcEuropa\Toolkit\Website;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
@@ -38,6 +39,8 @@ abstract class AbstractTest extends TestCase
             mkdir($this->getSandboxRoot());
         }
         $this->filesystem->chmod($this->getSandboxRoot(), 0777, umask(), true);
+
+        self::setUpMock();
     }
 
     /**
@@ -101,7 +104,7 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   Trimmed text.
      */
-    protected function trimEachLine(string $text)
+    protected function trimEachLine(string $text): string
     {
         return trim(implode(PHP_EOL, array_map('trim', explode(PHP_EOL, $text))));
     }
@@ -120,10 +123,10 @@ abstract class AbstractTest extends TestCase
     /**
      * Get fixture root.
      *
-     * @return mixed
+     * @return string
      *   The filepath of fixtures.
      */
-    protected function getFixtureRoot()
+    protected function getFixtureRoot(): string
     {
         return __DIR__ . '/fixtures';
     }
@@ -137,7 +140,7 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   The filepath of the sandbox file.
      */
-    protected function getFixtureFilepath($name): string
+    protected function getFixtureFilepath(string $name): string
     {
         return $this->getFixtureRoot() . '/' . $name;
     }
@@ -151,7 +154,7 @@ abstract class AbstractTest extends TestCase
      * @return mixed|string
      *   A set of test data.
      */
-    protected function getFixtureContent($filepath)
+    protected function getFixtureContent(string $filepath)
     {
         return Yaml::parse(file_get_contents($this->getFixtureFilepath($filepath)));
     }
@@ -165,7 +168,7 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   The filepath of the sandbox file.
      */
-    protected function getSandboxFilepath($name): string
+    protected function getSandboxFilepath(string $name): string
     {
         return $this->getSandboxRoot() . '/' . $name;
     }
@@ -179,6 +182,30 @@ abstract class AbstractTest extends TestCase
     protected function getSandboxRoot(): string
     {
         return __DIR__ . '/sandbox';
+    }
+
+    /**
+     * Set up the mock server.
+     *
+     * To access the mock directly in the browser, make sure the port is exposed in the docker-compose.yml
+     * file and access for example: http://localhost:8080/tests/mock/api/v1/package-reviews.
+     */
+    public static function setUpMock()
+    {
+        Website::setUrl(self::getMockBaseUrl() . '/tests/mock');
+    }
+
+    /**
+     * Return the mock base url.
+     *
+     * @return string
+     *   The mock base url, defaults to web:8080.
+     */
+    public static function getMockBaseUrl(): string
+    {
+        return !empty(getenv('VIRTUAL_HOST'))
+            ? (string) getenv('VIRTUAL_HOST')
+            : 'web:8080';
     }
 
 }
