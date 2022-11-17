@@ -50,7 +50,7 @@ class ComponentCheckCommandsTest extends AbstractTest
         file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
 
         if (!empty($tokens)) {
-            putenv('DRONE_COMMIT_MESSAGE=' . $tokens);
+            putenv('CI_COMMIT_MESSAGE=' . $tokens);
         }
         if (!empty($config['toolkit']['clean']['config_file'])) {
             $this->filesystem->copy(
