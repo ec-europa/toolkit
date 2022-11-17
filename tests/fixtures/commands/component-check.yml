@@ -1,5 +1,6 @@
 - command: 'toolkit:component-check'
   configuration: []
+  tokens: ''
   expectations:
     - contains: |
         Checking Mandatory components.
@@ -96,9 +97,14 @@
         !
         !                      check: false
 
-
 - command: 'toolkit:component-check --test-command'
-  configuration: []
+  configuration:
+    toolkit:
+      project_id: digit-qa
+      components:
+        outdated:
+          check: false
+  tokens: '[skip_insecure][skip_d9c]'
   expectations:
     - contains: |
         Checking Mandatory components.
@@ -160,16 +166,16 @@
         Results:
         ========
 
-        ---------------------------------- ------------
+        ---------------------------------- -------------------
         Mandatory module check             failed
         Recommended module check           4 warnings
-        Insecure module check              passed
-        Outdated module check              passed
+        Insecure module check              passed (Skipping)
+        Outdated module check              passed (Skipping)
         Dev module check                   failed
         Evaluation module check            failed
         Dev module in require-dev check    passed
         Drush require section check        passed
-        ---------------------------------- ------------
+        ---------------------------------- -------------------
 
         [ERROR] Failed the components check, please verify the report and update the
         project.
@@ -204,6 +210,7 @@
       project_id: digit-qa
       clean:
         config_file: 'core.extensions-good.yml'
+  tokens: ''
   expectations:
     - contains: |
         Checking Mandatory components.
