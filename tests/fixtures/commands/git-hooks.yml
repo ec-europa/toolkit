@@ -92,8 +92,8 @@
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/run toolkit:test-phpcs')
         [Simulator] Running ./vendor/bin/run toolkit:test-phpcs
-        [Simulator] Simulating Exec('./vendor/bin/run toolkit:lint-yaml')
-        [Simulator] Running ./vendor/bin/run toolkit:lint-yaml
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:test-phpmd')
+        [Simulator] Running ./vendor/bin/run toolkit:test-phpmd
         [Simulator] Simulating Exec('./vendor/bin/run toolkit:lint-php')
         [Simulator] Running ./vendor/bin/run toolkit:lint-php
         [Simulator] Simulating Exec('./vendor/bin/run toolkit:opts-review')
