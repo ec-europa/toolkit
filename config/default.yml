@@ -205,7 +205,7 @@ toolkit:
     pre-push:
       commands:
         - toolkit:test-phpcs
-        - toolkit:lint-yaml
+        - toolkit:test-phpmd
         - toolkit:lint-php
         - toolkit:opts-review
 commands: [ ]
