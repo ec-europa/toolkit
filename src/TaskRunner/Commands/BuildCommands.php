@@ -117,14 +117,14 @@ class BuildCommands extends AbstractCommands
         }
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')
             ->text(json_encode([
-                'version' => $tag,
-                'sha' => $hash,
-                'environment' => ToolCommands::getDeploymentEnvironment(),
+                'drupal_profile' => $drupal_profile,
                 'project_id' => $config->get('toolkit.project_id'),
                 'drupal_version' => ToolCommands::getPackagePropertyFromComposer('drupal/core'),
-                'drupal_profile' => $drupal_profile,
                 'php_version' => phpversion(),
                 'toolkit_version' => ToolCommands::getPackagePropertyFromComposer('ec-europa/toolkit'),
+                'environment' => ToolCommands::getDeploymentEnvironment(),
+                'version' => $tag,
+                'sha' => $hash,
                 'date' => $this->isSimulating() ? '2022-11-11 09:00:00' : date('Y-m-d H:i:s'),
             ]));
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')
