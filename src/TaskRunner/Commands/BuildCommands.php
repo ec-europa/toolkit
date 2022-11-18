@@ -112,6 +112,8 @@ class BuildCommands extends AbstractCommands
             if (!empty($yml['profile'])) {
                 $drupal_profile = $yml['profile'];
             }
+        } elseif (!empty($config->get('drupal.site.profile'))) {
+            $drupal_profile = $config->get('drupal.site.profile');
         }
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')
             ->text(json_encode([
