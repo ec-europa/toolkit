@@ -1,2 +1,0 @@
-upgrade_commands:
-  - ./vendor/bin/drush cache-rebuild
