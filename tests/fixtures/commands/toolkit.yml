@@ -1,3 +1,67 @@
-#@command config
-#@command toolkit:generate-commands-list
-#@command toolkit:generate-documentation
+- command: 'config runner'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        bin_dir: ./vendor/bin
+        bin_node_dir: ./node_modules/.bin
+        working_dir: /test/toolkit/tests/sandbox
+
+- command: 'config drupal.site'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        name: 'Site name'
+        mail: info@example.org
+        profile: minimal
+        update: 'false'
+        locale: en
+        sites_subdir: default
+        existing_config: 'false'
+        generate_db_url: 'false'
+        skip_permissions_setup: 'false'
+        settings_override_file: settings.override.php
+
+- command: 'toolkit:generate-commands-list'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->silent(1)
+        [Simulator] Running ./vendor/bin/run
+        [error]    in task EcEuropa\Toolkit\Task\File\ReplaceBlock
+
+        The file docs/guide/commands.rst could not be found.
+
+- command: 'toolkit:generate-commands-list'
+  configuration: []
+  resources:
+    - from: sample-commands.rst
+      to: docs/guide/commands.rst
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->silent(1)
+        [Simulator] Running ./vendor/bin/run
+        [Simulator] Simulating EcEuropa\Toolkit\Task\File\ReplaceBlock('docs/guide/commands.rst')
+        ->start('.. toolkit-block-commands
+
+          .. code-block::
+
+        ')
+        ->end('
+
+          .. toolkit-block-commands-end')
+        ->content(' ')
+
+- command: 'toolkit:generate-documentation'
+  configuration: []
+  resources:
+    - from: sample-bin
+      to: vendor/bin/phpDoc
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/phpDoc')
+        [Simulator] Running ./vendor/bin/phpDoc

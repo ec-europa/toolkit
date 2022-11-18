@@ -166,17 +166,24 @@ class ReplaceBlock extends BaseTask
             return Result::error($this, $error_message, ['key' => 'start']);
         }
 
-        $this->printTaskInfo('Writing to file {filename}', ['filename' => $this->filename]);
-
-        $pattern = '#(' . preg_quote($this->start) . ')((.|\n)*)(' . preg_quote($this->end) . ')#';
+        $pattern = '~(' . preg_quote($this->start) . ')(.+?)(' . preg_quote($this->end) . ')~s';
 
         $file = file_get_contents($this->filename);
 
         if (!$this->excludeStartEnd) {
-            $this->content = '\1' . $this->content . '\4';
+            $this->content = '\1' . $this->content . '\3';
         }
-        $result = preg_replace($pattern, $this->content, $file);
-        file_put_contents($this->filename, $result);
+
+        $result = preg_replace($pattern, $this->content, $file, -1, $count);
+        if ($count > 0) {
+            $res = file_put_contents($this->filename, $result);
+            if ($res === false) {
+                return Result::error($this, 'Error writing to file {filename}.', ['filename' => $this->filename]);
+            }
+            $this->printTaskSuccess('{filename} updated. {count} items replaced', ['filename' => $this->filename, 'count' => $count]);
+        } else {
+            $this->printTaskInfo('{filename} unchanged. {count} items replaced', ['filename' => $this->filename, 'count' => $count]);
+        }
 
         return Result::success($this);
     }

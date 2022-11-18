@@ -77,7 +77,7 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/commands.html" class=""></a>
+    <a href="guide/commands.html" class="">Commands</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -238,7 +238,7 @@ named <code>runPrepareCommitMsg()</code>.</p>
 <p>The callback method is responsible to retrieve the arguments
 with <code>$this->input()->getArguments()</code>.</p>
 <p>For more details check the Commands class
-at <code>EcEuropa\Toolkit\TaskRunner\Commands\GitHookCommands</code></p>
+at <code>EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands</code></p>
 </div>
 <div class="section" id="extending-the-git-hooks">
 <h2>Extending the git hooks</h2>
@@ -254,7 +254,7 @@ at <code>EcEuropa\Toolkit\TaskRunner\Commands\GitHookCommands</code></p>
             Add the hook name to your active hooks under <code>toolkit.hooks.active</code>.
         </li>
     <li>
-            Create a new class extending the <code>GitHookCommands</code> class and define the
+            Create a new class extending the <code>GitHooksCommands</code> class and define the
 <code>run</code> callback for the hook.
         </li>
 </ul>
@@ -280,18 +280,18 @@ otherwise your configuration will override the default provided by Toolkit.</p>
       - commit-msg
 </code></pre>
 </div>
-<div class="section" id="create-a-class-extending-the-githookcommands">
-<h3>Create a class extending the GitHookCommands</h3>
+<div class="section" id="create-a-class-extending-the-githookscommands">
+<h3>Create a class extending the GitHooksCommands</h3>
 <p>Is in this class that you will define the callback for your hook.</p>
 <p>Add your class under <code>src/TaskRunner/Commands</code>.</p>
 <pre><code class="language-php " >&lt;?php
 
 namespace Digit\Qa\TaskRunner\Commands;
 
-use EcEuropa\Toolkit\TaskRunner\Commands\GitHookCommands;
+use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
 use Robo\ResultData;
 
-class QaGitHookCommands extends GitHookCommands
+class QaGitHooksCommands extends GitHooksCommands
 {
     public function runCommitMsg()
     {
