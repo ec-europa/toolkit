@@ -76,7 +76,7 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/commands.html" class=""></a>
+    <a href="guide/commands.html" class="">Commands</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -211,6 +211,13 @@
 <dd>Path to YAML configuration file containing command defaults.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Returns the current working directory.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_initializeRuntimeConfiguration">initializeRuntimeConfiguration()</a>
     <span>
                                 &nbsp;: mixed    </span>
@@ -219,6 +226,13 @@
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Validate and return the path to given bin.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBinPath">getBinPath()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
@@ -247,6 +261,13 @@
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getNodeBin">getNodeBin()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Validate and return the path to given bin from node packages.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getNodeBinPath">getNodeBinPath()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
@@ -306,7 +327,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">297</span>
+    <span class="phpdocumentor-element-found-in__line">299</span>
 
     </aside>
 
@@ -314,7 +335,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">buildAssets</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;default-theme&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;build-npm-packages&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;build-npm-mode&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;validate&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;theme-task-runner&#039; =&gt; InputOption::VALUE_OPTIONAL]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Result">Result</abbr>|int</span></code>
+                    <span class="phpdocumentor-signature__name">buildAssets</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;default-theme&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;custom-code-folder&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;build-npm-packages&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;validate&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;theme-task-runner&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Result">Result</abbr>|int</span></code>
 
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
@@ -322,7 +343,7 @@
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$options</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;default-theme&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;build-npm-packages&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;build-npm-mode&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;validate&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;theme-task-runner&#039; =&gt; InputOption::VALUE_OPTIONAL]</span>            </dt>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;default-theme&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;custom-code-folder&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;build-npm-packages&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;validate&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;theme-task-runner&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>Additional options for the command.</p>
 </section>
@@ -350,7 +371,7 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>default-theme theme where to build assets.</p>
+                                                 <section class="phpdocumentor-description"><p>default-theme       The theme where to build assets.</p>
 </section>
 
                                     </dd>
@@ -359,7 +380,25 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>validate or validate=fix to check or fix scss files.</p>
+                                                 <section class="phpdocumentor-description"><p>build-npm-packages  The packages to install.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>validate            Whether to validate or fix the scss.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>theme-task-runner   The runner to use, one of 'grunt' or 'gulp'.</p>
 </section>
 
                                     </dd>
@@ -444,20 +483,20 @@
 
                                     </dd>
                                                 <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>root  Drupal root.</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
                     <span class="phpdocumentor-tag__name">aliases</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
                                                  <section class="phpdocumentor-description"><p>tk-bdev</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>root Drupal root.</p>
 </section>
 
                                     </dd>
@@ -528,7 +567,7 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>root Drupal root.</p>
+                                                 <section class="phpdocumentor-description"><p>root  Drupal root.</p>
 </section>
 
                                     </dd>
@@ -537,7 +576,7 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>yes  Skip the question.</p>
+                                                 <section class="phpdocumentor-description"><p>yes   Skip the question.</p>
 </section>
 
                                     </dd>
@@ -737,6 +776,41 @@ The folder structure will match the following:</p>
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getWorkingDir">
+        getWorkingDir()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">137</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns the current working directory.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">getWorkingDir</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>The current working directory.</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_initializeRuntimeConfiguration">
         initializeRuntimeConfiguration()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_initializeRuntimeConfiguration" class="headerlink"><i class="fas fa-link"></i></a>
@@ -796,7 +870,7 @@ The folder structure will match the following:</p>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Return the path to given bin.</p>
+        <p class="phpdocumentor-summary">Validate and return the path to given bin.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
@@ -846,6 +920,52 @@ The folder structure will match the following:</p>
             -protected
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getBinPath">
+        getBinPath()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBinPath" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">72</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Return the path to given bin.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                    <span class="phpdocumentor-signature__name">getBinPath</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$name</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$name</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>The path to given binary.</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_getConfigValue">
         getConfigValue()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigValue" class="headerlink"><i class="fas fa-link"></i></a>
@@ -853,7 +973,7 @@ The folder structure will match the following:</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">101</span>
+    <span class="phpdocumentor-element-found-in__line">123</span>
 
     </aside>
 
@@ -975,11 +1095,11 @@ The folder structure will match the following:</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">77</span>
+    <span class="phpdocumentor-element-found-in__line">88</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Return the path to given bin from node packages.</p>
+        <p class="phpdocumentor-summary">Validate and return the path to given bin from node packages.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
@@ -1029,6 +1149,52 @@ The folder structure will match the following:</p>
             -protected
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getNodeBinPath">
+        getNodeBinPath()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getNodeBinPath" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">104</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Return the path to given bin from node packages.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                    <span class="phpdocumentor-signature__name">getNodeBinPath</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$name</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$name</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>The path to given binary.</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_isSimulating">
         isSimulating()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isSimulating" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1036,7 +1202,7 @@ The folder structure will match the following:</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">93</span>
+    <span class="phpdocumentor-element-found-in__line">115</span>
 
     </aside>
 

@@ -76,7 +76,7 @@
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/commands.html" class=""></a>
+    <a href="guide/commands.html" class="">Commands</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -198,20 +198,6 @@
 <dd>Check if &#039;composer.lock&#039; exists on the project root folder.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_disableDrupalCache">disableDrupalCache()</a>
-    <span>
-                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
-</dt>
-<dd>Disable aggregation and clear cache.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_drupalUpgradeStatus">drupalUpgradeStatus()</a>
-    <span>
-                                &nbsp;: int    </span>
-</dt>
-<dd>Check project compatibility for Drupal 9/10 upgrade.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_fixPermissions">fixPermissions()</a>
     <span>
                                 &nbsp;: mixed    </span>
@@ -252,6 +238,13 @@
                                 &nbsp;: false|mixed    </span>
 </dt>
 <dd>Helper to return a property from a package in the composer.lock file.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Returns the current working directory.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_initializeRuntimeConfiguration">initializeRuntimeConfiguration()</a>
@@ -314,6 +307,13 @@
     <span>
                                 &nbsp;: string    </span>
 </dt>
+<dd>Validate and return the path to given bin.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBinPath">getBinPath()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
 <dd>Return the path to given bin.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
@@ -325,6 +325,13 @@
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getNodeBin">getNodeBin()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Validate and return the path to given bin from node packages.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getNodeBinPath">getNodeBinPath()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
@@ -384,7 +391,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">164</span>
+    <span class="phpdocumentor-element-found-in__line">67</span>
 
     </aside>
 
@@ -425,122 +432,6 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_disableDrupalCache">
-        disableDrupalCache()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_disableDrupalCache" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">41</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Disable aggregation and clear cache.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">disableDrupalCache</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
-
-    
-    
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:disable-drupal-cache</p>
-</section>
-
-                                    </dd>
-                        </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Collection builder.</p>
-</section>
-
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_drupalUpgradeStatus">
-        drupalUpgradeStatus()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_drupalUpgradeStatus" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">94</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Check project compatibility for Drupal 9/10 upgrade.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">drupalUpgradeStatus</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
-
-    
-    
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:drupal-upgrade-status</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tdus</p>
-</section>
-
-                                    </dd>
-                        </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
     <h4 class="phpdocumentor-element__name" id="method_fixPermissions">
         fixPermissions()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_fixPermissions" class="headerlink"><i class="fas fa-link"></i></a>
@@ -548,7 +439,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">433</span>
+    <span class="phpdocumentor-element-found-in__line">325</span>
 
     </aside>
 
@@ -607,7 +498,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">710</span>
+    <span class="phpdocumentor-element-found-in__line">606</span>
 
     </aside>
 
@@ -663,7 +554,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">62</span>
+    <span class="phpdocumentor-element-found-in__line">39</span>
 
     </aside>
 
@@ -731,7 +622,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">614</span>
+    <span class="phpdocumentor-element-found-in__line">497</span>
 
     </aside>
 
@@ -772,7 +663,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">543</span>
+    <span class="phpdocumentor-element-found-in__line">428</span>
 
     </aside>
 
@@ -845,6 +736,41 @@ environment.</p>
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getWorkingDir">
+        getWorkingDir()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">137</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns the current working directory.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">getWorkingDir</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>The current working directory.</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_initializeRuntimeConfiguration">
         initializeRuntimeConfiguration()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_initializeRuntimeConfiguration" class="headerlink"><i class="fas fa-link"></i></a>
@@ -900,7 +826,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">183</span>
+    <span class="phpdocumentor-element-found-in__line">86</span>
 
     </aside>
 
@@ -966,7 +892,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">248</span>
+    <span class="phpdocumentor-element-found-in__line">147</span>
 
     </aside>
 
@@ -1014,7 +940,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">638</span>
+    <span class="phpdocumentor-element-found-in__line">524</span>
 
     </aside>
 
@@ -1022,15 +948,17 @@ environment.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitCodeReview</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;phpcs&#039; =&gt; InputOption::VALUE_NONE, &#039;opts-review&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-php&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-yaml&#039; =&gt; InputOption::VALUE_NONE]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">toolkitCodeReview</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;phpcs&#039; =&gt; InputOption::VALUE_NONE, &#039;opts-review&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-php&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-yaml&#039; =&gt; InputOption::VALUE_NONE, &#039;phpstan&#039; =&gt; InputOption::VALUE_NONE]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-    
+        <section class="phpdocumentor-description"><p>If no option is given, all the tests will be executed.</p>
+</section>
+
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$options</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;phpcs&#039; =&gt; InputOption::VALUE_NONE, &#039;opts-review&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-php&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-yaml&#039; =&gt; InputOption::VALUE_NONE]</span>            </dt>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;phpcs&#039; =&gt; InputOption::VALUE_NONE, &#039;opts-review&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-php&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-yaml&#039; =&gt; InputOption::VALUE_NONE, &#039;phpstan&#039; =&gt; InputOption::VALUE_NONE]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"></section>
 
@@ -1057,7 +985,7 @@ environment.</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>phpcs Execute the command toolkit:test-phpcs.</p>
+                                                 <section class="phpdocumentor-description"><p>phpcs        Execute the command toolkit:test-phpcs.</p>
 </section>
 
                                     </dd>
@@ -1066,7 +994,7 @@ environment.</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>opts-review Execute the command toolkit:opts-review.</p>
+                                                 <section class="phpdocumentor-description"><p>opts-review  Execute the command toolkit:opts-review.</p>
 </section>
 
                                     </dd>
@@ -1075,7 +1003,7 @@ environment.</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>lint-php Execute the command toolkit:lint-php.</p>
+                                                 <section class="phpdocumentor-description"><p>lint-php     Execute the command toolkit:lint-php.</p>
 </section>
 
                                     </dd>
@@ -1084,7 +1012,16 @@ environment.</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>lint-yaml Execute the command toolkit:lint-yaml.</p>
+                                                 <section class="phpdocumentor-description"><p>lint-yaml    Execute the command toolkit:lint-yaml.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>phpstan      Execute the command toolkit:test-phpstan.</p>
 </section>
 
                                     </dd>
@@ -1127,7 +1064,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">730</span>
+    <span class="phpdocumentor-element-found-in__line">626</span>
 
     </aside>
 
@@ -1170,7 +1107,7 @@ environment.</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>print Shows output from apt commands.</p>
+                                                 <section class="phpdocumentor-description"><p>print  Shows output from apt commands.</p>
 </section>
 
                                     </dd>
@@ -1213,7 +1150,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">298</span>
+    <span class="phpdocumentor-element-found-in__line">197</span>
 
     </aside>
 
@@ -1308,7 +1245,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">580</span>
+    <span class="phpdocumentor-element-found-in__line">465</span>
 
     </aside>
 
@@ -1356,7 +1293,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ToolCommands.php"><a href="files/src-taskrunner-commands-toolcommands.html"><abbr title="src/TaskRunner/Commands/ToolCommands.php">ToolCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">478</span>
+    <span class="phpdocumentor-element-found-in__line">370</span>
 
     </aside>
 
@@ -1417,7 +1354,7 @@ environment.</p>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Return the path to given bin.</p>
+        <p class="phpdocumentor-summary">Validate and return the path to given bin.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
@@ -1467,6 +1404,52 @@ environment.</p>
             -protected
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getBinPath">
+        getBinPath()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBinPath" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">72</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Return the path to given bin.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                    <span class="phpdocumentor-signature__name">getBinPath</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$name</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$name</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>The path to given binary.</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_getConfigValue">
         getConfigValue()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigValue" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1474,7 +1457,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">101</span>
+    <span class="phpdocumentor-element-found-in__line">123</span>
 
     </aside>
 
@@ -1526,11 +1509,11 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">77</span>
+    <span class="phpdocumentor-element-found-in__line">88</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Return the path to given bin from node packages.</p>
+        <p class="phpdocumentor-summary">Validate and return the path to given bin from node packages.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
@@ -1580,6 +1563,52 @@ environment.</p>
             -protected
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getNodeBinPath">
+        getNodeBinPath()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getNodeBinPath" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">104</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Return the path to given bin from node packages.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                    <span class="phpdocumentor-signature__name">getNodeBinPath</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$name</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$name</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>The path to given binary.</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_isSimulating">
         isSimulating()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isSimulating" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1587,7 +1616,7 @@ environment.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">93</span>
+    <span class="phpdocumentor-element-found-in__line">115</span>
 
     </aside>
 
