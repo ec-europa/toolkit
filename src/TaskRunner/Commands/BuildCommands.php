@@ -112,18 +112,20 @@ class BuildCommands extends AbstractCommands
             if (!empty($yml['profile'])) {
                 $drupal_profile = $yml['profile'];
             }
+        } elseif (!empty($config->get('drupal.site.profile'))) {
+            $drupal_profile = $config->get('drupal.site.profile');
         }
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')
             ->text(json_encode([
-                'version' => $tag,
-                'sha' => $hash,
-                'environment' => ToolCommands::getDeploymentEnvironment(),
+                'drupal_profile' => $drupal_profile,
                 'project_id' => $config->get('toolkit.project_id'),
                 'drupal_version' => ToolCommands::getPackagePropertyFromComposer('drupal/core'),
-                'drupal_profile' => $drupal_profile,
                 'php_version' => phpversion(),
                 'toolkit_version' => ToolCommands::getPackagePropertyFromComposer('ec-europa/toolkit'),
-                'date' => $this->isSimulating() ? '2022-11-11 09:00:00' : date('Y-m-d H:i:s'),
+                'environment' => ToolCommands::getDeploymentEnvironment(),
+                'date' => date('Y-m-d H:i:s'),
+                'version' => $tag,
+                'sha' => $hash,
             ]));
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')
             ->text($tag);
