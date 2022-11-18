@@ -123,9 +123,9 @@ class BuildCommands extends AbstractCommands
                 'php_version' => phpversion(),
                 'toolkit_version' => ToolCommands::getPackagePropertyFromComposer('ec-europa/toolkit'),
                 'environment' => ToolCommands::getDeploymentEnvironment(),
+                'date' => date('Y-m-d H:i:s'),
                 'version' => $tag,
                 'sha' => $hash,
-                'date' => $this->isSimulating() ? '2022-11-11 09:00:00' : date('Y-m-d H:i:s'),
             ]));
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')
             ->text($tag);
