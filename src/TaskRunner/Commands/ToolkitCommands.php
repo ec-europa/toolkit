@@ -52,19 +52,17 @@ class ToolkitCommands extends AbstractCommands
     public function generateCommandsList()
     {
         // Get the available commands.
-        $r = $this->taskExec($this->getBin('run'))
+        $commands = $this->taskExec($this->getBin('run'))
             ->silent(true)->run()->getMessage();
         // Remove the header part.
-        $r = preg_replace('/((.|\n)*)(Available commands:)/', '\3', $r);
+        $commands = preg_replace('/((.|\n)*)(Available commands:)/', '\3', $commands);
         // Add spaces to match the .rst format.
-        $r = preg_replace('/^/im', ' ', $r);
+        $commands = preg_replace('/^/im', ' ', $commands);
 
         $start = ".. toolkit-block-commands\n\n.. code-block::\n\n";
         $end = "\n\n.. toolkit-block-commands-end";
         $task = $this->taskReplaceBlock('docs/guide/commands.rst')
-            ->start($start)
-            ->end($end)
-            ->content($r);
+            ->start($start)->end($end)->content($commands);
         return $this->collectionBuilder()->addTask($task);
     }
 
