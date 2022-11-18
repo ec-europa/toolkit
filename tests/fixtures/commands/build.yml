@@ -21,7 +21,41 @@
           ->stopOnFail()
           ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
         [Simulator] Simulating File\Write('dist/manifest.json')
-          ->text('{"version":"1.0.0","sha":"aBcDeF","environment":"acc", ... 22-11-11 09:00:00"}')
+          ->text('{"drupal_profile":"minimal","project_id":null,"drupal_ ... .0","sha":"aBcDeF"}')
+        [Simulator] Simulating File\Write('dist/web/VERSION.txt')
+          ->text('1.0.0')
+        [Simulator] Simulating ExecStack()
+          ->exec('find dist -maxdepth 3 -type f \( -name "CHANGELOG.txt" \) -exec rm -rf {} +')
+
+- command: 'toolkit:build-dist --root=web --dist-root=dist --tag=1.0.0 --sha=aBcDeF --keep=vendor --remove=CHANGELOG.txt'
+  configuration:
+    toolkit:
+      project_id: toolkit
+    drupal:
+      site:
+        profile: test
+  expectations:
+    - contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->remove('dist')
+          ->mkdir('dist')
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('git archive HEAD | tar -x -C dist')
+        [Simulator] Simulating Composer\Install('composer')
+          ->env('COMPOSER_MIRROR_PATH_REPOS', 1)
+          ->workingDir('dist')
+          ->optimizeAutoloader()
+          ->noDev()
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
+          ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
+        [Simulator] Simulating File\Write('dist/manifest.json')
+          ->text('{"drupal_profile":"test","project_id":"toolkit","drupa ... .0","sha":"aBcDeF"}')
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')
           ->text('1.0.0')
         [Simulator] Simulating ExecStack()
