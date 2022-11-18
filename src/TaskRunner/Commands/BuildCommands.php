@@ -120,7 +120,7 @@ class BuildCommands extends AbstractCommands
                 $drupal_profile = $yml['profile'];
             }
         } elseif (!empty($config->get('drupal.site.profile'))) {
-            $drupal_profile = $config->get('toolkit.clean.config_file');
+            $drupal_profile = $config->get('drupal.site.profile');
         }
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')
             ->text(json_encode([
