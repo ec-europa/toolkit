@@ -22,7 +22,7 @@ trait Tasks
      *
      * @return \EcEuropa\Toolkit\Task\File\Process|\Robo\Collection\CollectionBuilder
      */
-    protected function taskProcess(string $source, string $destination)
+    protected function taskProcess(string $source, string $destination = '')
     {
         return $this->task(Process::class, $source, $destination);
     }

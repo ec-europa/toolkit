@@ -28,6 +28,7 @@
 <!--            <file>tests/Features/Commands/BuildCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ComponentCheckCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ConfigurationCommandsTest.php</file>-->
+<!--            <file>tests/Features/Commands/DocumentationCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/DrupalCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/DumpCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/GitHooksCommandsTest.php</file>-->

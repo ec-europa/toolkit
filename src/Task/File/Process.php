@@ -16,6 +16,7 @@ use Robo\Task\BaseTask;
  *
  * ``` php
  * <?php
+ * $this->taskProcess('behat.yml')->run();
  * $this->taskProcess('behat.yml.dist', 'behat.yml')->run();
  * ?>
  * ```
@@ -29,14 +30,14 @@ class Process extends BaseTask implements BuilderAwareInterface
      *
      * @var string
      */
-    protected $source;
+    protected string $source;
 
     /**
      * Destination file.
      *
      * @var string
      */
-    protected $destination;
+    protected string $destination;
 
     /**
      * The content from the source.
@@ -51,10 +52,13 @@ class Process extends BaseTask implements BuilderAwareInterface
      * @param string $source
      * @param string $destination
      */
-    public function __construct(string $source, string $destination)
+    public function __construct(string $source, string $destination = '')
     {
         $this->source = $source;
         $this->destination = $destination;
+        if (empty($this->destination)) {
+            $this->destination = $source;
+        }
     }
 
     /**
@@ -118,9 +122,8 @@ class Process extends BaseTask implements BuilderAwareInterface
             ]);
         }
 
-        $this->printTaskInfo('Creating {filename}', ['filename' => $this->destination]);
-
         if ($this->source !== $this->destination) {
+            $this->printTaskInfo('Creating {filename}', ['filename' => $this->destination]);
             $this->collectionBuilder()->taskFilesystemStack()
                 ->copy($this->source, $this->destination, true)->run();
         }

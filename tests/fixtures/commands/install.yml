@@ -1,5 +1,6 @@
 - command: 'toolkit:install-clean'
   configuration: []
+  resources: []
   expectations:
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/run')
@@ -8,6 +9,9 @@
 
 - command: 'toolkit:install-clean --config-file=core.extensions.yml'
   configuration: []
+  resources:
+    - from: 'sample-core.extensions.yml'
+      to: 'core.extensions.yml'
   expectations:
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/run')
@@ -17,6 +21,7 @@
 
 - command: 'toolkit:install-clone'
   configuration: []
+  resources: []
   expectations:
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/run')
@@ -28,6 +33,7 @@
 
 - command: 'toolkit:run-deploy'
   configuration: []
+  resources: []
   expectations:
     - contains: |
         >  Sequence file '.opts.yml' does not exist, running default set of deployment commands.
@@ -64,6 +70,9 @@
 
 - command: 'toolkit:run-deploy --config-file=.opts.yml'
   configuration: []
+  resources:
+    - from: 'sample-opts.yml'
+      to: '.opts.yml'
   expectations:
     - contains: |
         >  Running custom deploy sequence 'upgrade_commands' from sequence file '.opts.yml'.
@@ -78,6 +87,7 @@
 
 - command: 'toolkit:import-config'
   configuration: []
+  resources: []
   expectations:
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/drush')

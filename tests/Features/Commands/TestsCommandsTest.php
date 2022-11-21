@@ -47,16 +47,11 @@ class TestsCommandsTest extends AbstractTest
     public function testTests(string $command, array $config = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
-        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
-
-        if (!empty($resources)) {
-            foreach ($resources as $resource) {
-                $this->filesystem->copy(
-                    $this->getFixtureFilepath('samples/' . $resource['from']),
-                    $this->getSandboxFilepath($resource['to'])
-                );
-            }
+        if (!empty($config)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
         }
+
+        $this->prepareResources($resources);
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());

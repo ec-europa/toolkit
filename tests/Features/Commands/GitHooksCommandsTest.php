@@ -36,12 +36,12 @@ class GitHooksCommandsTest extends AbstractTest
         parent::setUp();
 
         // Create .git/hooks folder.
-        $this->filesystem->mkdir($this->getSandboxFilepath('.git'));
-        $this->filesystem->mkdir($this->getSandboxFilepath('.git/hooks'));
+        $this->fs->mkdir($this->getSandboxFilepath('.git'));
+        $this->fs->mkdir($this->getSandboxFilepath('.git/hooks'));
 
         // Create dummy hooks.
-        $this->filesystem->touch($this->getSandboxFilepath('.git/hooks/pre-commit'));
-        $this->filesystem->touch($this->getSandboxFilepath('.git/hooks/pre-push'));
+        $this->fs->touch($this->getSandboxFilepath('.git/hooks/pre-commit'));
+        $this->fs->touch($this->getSandboxFilepath('.git/hooks/pre-push'));
     }
 
     /**
@@ -59,7 +59,9 @@ class GitHooksCommandsTest extends AbstractTest
     public function testGitHooks(string $command, array $config = [], array $expectations = [])
     {
         // Setup configuration file.
-        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        if (!empty($config)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        }
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());

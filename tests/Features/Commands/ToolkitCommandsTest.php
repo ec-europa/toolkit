@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
+use EcEuropa\Toolkit\TaskRunner\Commands\ToolkitCommands;
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
 use Symfony\Component\Console\Input\StringInput;
@@ -47,17 +48,10 @@ class ToolkitCommandsTest extends AbstractTest
     {
         // Setup configuration file.
         if (!empty($config)) {
-            $this->filesystem->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
         }
 
-        if (!empty($resources)) {
-            foreach ($resources as $resource) {
-                $this->filesystem->copy(
-                    $this->getFixtureFilepath('samples/' . $resource['from']),
-                    $this->getSandboxFilepath($resource['to'])
-                );
-            }
-        }
+        $this->prepareResources($resources);
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
@@ -72,6 +66,11 @@ class ToolkitCommandsTest extends AbstractTest
         foreach ($expectations as $expectation) {
             $this->assertContainsNotContains($content, $expectation);
         }
+    }
+
+    public function testConfigurationFileExists()
+    {
+        $this->assertFileExists((new ToolkitCommands())->getConfigurationFile());
     }
 
 }

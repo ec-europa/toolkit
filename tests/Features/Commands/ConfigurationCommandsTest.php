@@ -44,8 +44,11 @@ class ConfigurationCommandsTest extends AbstractTest
     public function testConfiguration(string $command, array $config = [], array $expectations = [])
     {
         $this->markTestIncomplete('Skip test');
+
         // Setup configuration file.
-        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        if (!empty($config)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        }
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());

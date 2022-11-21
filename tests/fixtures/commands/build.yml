@@ -1,5 +1,6 @@
 - command: 'toolkit:build-dist --root=web --dist-root=dist --tag=1.0.0 --sha=aBcDeF --keep=vendor --remove=CHANGELOG.txt'
   configuration: []
+  resources: []
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
@@ -34,6 +35,7 @@
     drupal:
       site:
         profile: test
+  resources: []
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
@@ -63,6 +65,7 @@
 
 - command: 'toolkit:build-dev'
   configuration: []
+  resources: []
   expectations:
     - contains: |
         [Simulator] Simulating ExecStack()
@@ -80,6 +83,7 @@
 
 - command: 'toolkit:build-dev --root=test'
   configuration: []
+  resources: []
   expectations:
     - contains: |
         [Simulator] Simulating ExecStack()
@@ -97,6 +101,7 @@
 
 - command: 'toolkit:build-dev-reset --root=web --yes'
   configuration: []
+  resources: []
   expectations:
     - contains: |
         [Simulator] Simulating Vcs\GitStack('git')
@@ -109,12 +114,16 @@
 
 - command: 'toolkit:build-assets'
   configuration: []
+  resources: []
   expectations:
     - contains: |
         >  The default-theme couldn't be found in the project. Skipping build.
 
-- command: 'toolkit:build-assets --default-theme=theme --validate=fix --custom-code-folder=code'
+- command: 'toolkit:build-assets --default-theme=theme --validate=fix --custom-code-folder=code --theme-task-runner=gulp --build-npm-packages=gulp-cli'
   configuration: []
+  resources:
+    - from: sample-package.json
+      to: code/theme/package.json
   expectations:
     - contains: |
         [Simulator] Simulating ExecStack()
@@ -122,8 +131,32 @@
           ->exec('npx stylelint "/test/toolkit/tests/sandbox/code/theme/ ... lelintrc.json --fix')
           ->stopOnFail()
 
+- command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code --theme-task-runner=gulp --build-npm-packages=gulp-cli'
+  configuration: []
+  resources:
+    - from: sample-package.json
+      to: code/theme/package.json
+  expectations:
+    - contains: |
+        [WARNING] 'Gulp' is being deprecated - use 'Grunt' instead!
+
+        [Simulator] Simulating ExecStack()
+          ->exec('cp /test/toolkit/resources/assets/gulpfile.js /test/to ... e/theme/gulpfile.js')
+          ->stopOnFail()
+        [Simulator] Simulating ExecStack()
+          ->dir('/test/toolkit/tests/sandbox/code/theme')
+          ->exec('npm init -y --scope')
+          ->exec('npm install gulp-cli --save-dev')
+          ->exec('./node_modules/.bin/gulp')
+          ->stopOnFail()
+
 - command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code'
   configuration: []
+  resources:
+    - from: sample-package.json
+      to: code/theme/package.json
+  #    - mkdir: theme
+  #    - mkdir: theme/theme
   expectations:
     - contains: |
         [Simulator] Simulating ExecStack()

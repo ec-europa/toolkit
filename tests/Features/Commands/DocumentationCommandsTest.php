@@ -4,70 +4,50 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
-use EcEuropa\Toolkit\TaskRunner\Commands\DumpCommands;
+use EcEuropa\Toolkit\TaskRunner\Commands\DocumentationCommands;
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Yaml\Yaml;
-
-use function str_contains;
 
 /**
- * Test Toolkit dump commands.
+ * Test Documentation commands.
  *
- * @group dump
+ * @group toolkit
  */
-class DumpCommandsTest extends AbstractTest
+class DocumentationCommandsTest extends AbstractTest
 {
 
     /**
-     * Data provider for testDump.
+     * Data provider for testToolkit.
      *
      * @return array
      *   An array of test data arrays with assertions.
      */
     public function dataProvider()
     {
-        return $this->getFixtureContent('commands/dump.yml');
+        return $this->getFixtureContent('commands/documentation.yml');
     }
 
     /**
-     * Test DumpCommands commands.
+     * Test ToolkitCommands commands.
      *
      * @param string $command
      *   A command.
-     * @param array $config
-     *   A configuration.
+     * @param array $resources
+     *   Resources needed for the test.
      * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testDump(string $command, array $config = [], array $expectations = [])
+    public function testDocumentation(string $command, array $resources = [], array $expectations = [])
     {
-        // Setup configuration file.
-        if (!empty($config)) {
-            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
-        }
-
-        if (str_contains($command, 'install-dump')) {
-            $this->fs->copy(
-                $this->getFixtureFilepath('samples/sample-dump.sql.gz'),
-                $this->getSandboxFilepath('dump.sql.gz')
-            );
-        }
-        if (str_contains($command, 'download-dump')) {
-            $this->fs->copy(
-                $this->getFixtureFilepath('samples/sample-mysql-latest.sh1'),
-                $this->getSandboxFilepath('mysql-latest.sh1')
-            );
-        }
+        $this->prepareResources($resources);
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
         $output = new BufferedOutput();
-
         $runner = new Runner($this->getClassLoader(), $input, $output);
         $runner->run();
 
@@ -82,7 +62,7 @@ class DumpCommandsTest extends AbstractTest
 
     public function testConfigurationFileExists()
     {
-        $this->assertFileExists((new DumpCommands())->getConfigurationFile());
+        $this->assertFileExists((new DocumentationCommands())->getConfigurationFile());
     }
 
 }
