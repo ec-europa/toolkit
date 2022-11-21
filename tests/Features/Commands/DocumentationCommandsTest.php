@@ -53,7 +53,7 @@ class DocumentationCommandsTest extends AbstractTest
 
         // Fetch the output.
         $content = $output->fetch();
-//        $this->debugExpectations($content, $expectations);
+        $this->debugExpectations($content, $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
             $this->assertContainsNotContains($content, $expectation);
