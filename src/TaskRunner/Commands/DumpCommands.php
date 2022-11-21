@@ -49,10 +49,8 @@ class DumpCommands extends AbstractCommands
         $tasks = [];
         $tmp_folder = $this->tmpDirectory();
         if (!file_exists("$tmp_folder/{$options['dumpfile']}")) {
-            if (!Toolkit::isCiCd()) {
-                $this->say("'$tmp_folder/{$options['dumpfile']}' file not found, use the command 'toolkit:download-dump'.");
-                return 1;
-            }
+            $this->say("'$tmp_folder/{$options['dumpfile']}' file not found, use the command 'toolkit:download-dump'.");
+            return 1;
         }
 
         // Unzip and dump database file.

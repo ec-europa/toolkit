@@ -1,16 +1,18 @@
-# @todo Check if we should fail if is CI and no dump is found.
-#- command: 'toolkit:install-dump'
-#  configuration:
-#    toolkit:
-#      tmp_folder: .
-#  expectations:
-#    - contains: |
-#        >  './mysql.gz' file not found, use the command 'toolkit:download-dump'.
+- command: 'toolkit:install-dump'
+  configuration:
+    toolkit:
+      tmp_folder: .
+  resources: []
+  expectations:
+    - contains: ">  './mysql.gz' file not found, use the command 'toolkit:download-dump'."
 
 - command: 'toolkit:install-dump --dumpfile=dump.sql.gz'
   configuration:
     toolkit:
       tmp_folder: .
+  resources:
+    - from: sample-dump.sql.gz
+      to: dump.sql.gz
   expectations:
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/drush')
@@ -31,6 +33,9 @@
     toolkit:
       tmp_folder: .
       project_id: digit-qa
+  resources:
+    - from: sample-mysql-latest.sh1
+      to: mysql-latest.sh1
   expectations:
     - contains: |
         >  ASDA type is: default (The legacy ASDA will be dropped on 1 June)
@@ -60,6 +65,9 @@
       project_id: digit-qa
       clone:
         asda_type: nextcloud
+  resources:
+    - from: sample-mysql-latest.sh1
+      to: mysql-latest.sh1
   expectations:
     - contains: |
         >  ASDA type is: nextcloud
