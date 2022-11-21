@@ -3,7 +3,7 @@ command:
     generate-documentation:
       options:
         token: ${env.GITHUB_API_TOKEN}
-        repo: 'https://%s@github.com/joaocsilva/toolkit'
+        repo: 'https://%s@github.com/ec-europa/toolkit'
         docs-dir: docs
         tmp-dir: docs_tmp
         branch: documentation

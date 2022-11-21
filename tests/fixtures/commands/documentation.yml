@@ -5,17 +5,13 @@
 
 - command: 'toolkit:generate-documentation --branch=docs'
   resources:
+    - mkdir: docs
     - from: sample-bin
       to: vendor/bin/phpDoc
   expectations:
     - contains: |
-        [Simulator] Simulating Filesystem\CopyDir(array (
-            'docs/guide' => 'docs_tmp/guide',
-          ))
-          ->exclude(array (
-          ))
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->copy('docs/index.rst', 'docs_tmp/index.rst')
+          ->mkdir('docs_tmp')
         [Simulator] Simulating Filesystem\CleanDir('docs')
         [Simulator] Simulating Filesystem\CopyDir(array (
             'docs_tmp' => 'docs',
@@ -24,37 +20,30 @@
         [Simulator] Running ./vendor/bin/phpDoc
         [Simulator] Simulating Filesystem\CleanDir('docs_tmp')
 
-        [Vcs\GitStack] Running git clone --depth 1 https://github.com/joaocsilva/toolkit docs_tmp --branch docs
+        [Vcs\GitStack] Running git clone --depth 1 https://github.com/ec-europa/toolkit docs_tmp --branch docs
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->remove(array (
           ))
         [Simulator] Simulating Filesystem\CopyDir(array (
             'docs' => 'docs_tmp',
           ))
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('git -C docs_tmp config user.name "Toolkit"')
-          ->exec('git -C docs_tmp config user.email "DIGIT-NEXTEUROPA-QA@ec.europa.eu"')
-          ->exec('git -C docs_tmp add .')
-          ->exec('git -C docs_tmp commit -m "Generate documentation."')
-          ->exec('git -C docs_tmp push')
-        [Simulator] Simulating Filesystem\DeleteDir('docs_tmp')
 
 - command: 'toolkit:generate-documentation --docs-dir=documentation'
   resources:
+    - mkdir: docs_tmp
     - from: sample-bin
       to: vendor/bin/phpDoc
-    - mkdir: documentation
+    - from: sample-config.yml
+      to: documentation/index.rst
     - from: sample-config.yml
       to: documentation/guide/test.html
+    - from: sample-config.yml
+      to: documentation/guide/test.rst
   expectations:
     - contains: |
-        [Simulator] Simulating Filesystem\CopyDir(array (
-            'documentation/guide' => 'docs_tmp/guide',
-          ))
-          ->exclude(array (
-            0 => 'documentation/guide/test.html',
-          ))
+        [Simulator] Simulating Filesystem\DeleteDir('docs_tmp')
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->copy('documentation/guide/test.rst', 'docs_tmp/guide/test.rst')
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->copy('documentation/index.rst', 'docs_tmp/index.rst')
         [Simulator] Simulating Filesystem\CleanDir('documentation')
@@ -65,7 +54,7 @@
         [Simulator] Running ./vendor/bin/phpDoc
         [Simulator] Simulating Filesystem\CleanDir('docs_tmp')
 
-        [Vcs\GitStack] Running git clone --depth 1 https://github.com/joaocsilva/toolkit docs_tmp --branch documentation
+        [Vcs\GitStack] Running git clone --depth 1 https://github.com/ec-europa/toolkit docs_tmp --branch documentation
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->remove(array (
           ))

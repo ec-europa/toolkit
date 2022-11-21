@@ -116,8 +116,7 @@
   configuration: []
   resources: []
   expectations:
-    - contains: |
-        >  The default-theme couldn't be found in the project. Skipping build.
+    - contains: ">  The default-theme couldn't be found in the project. Skipping build."
 
 - command: 'toolkit:build-assets --default-theme=theme --validate=fix --custom-code-folder=code --theme-task-runner=gulp --build-npm-packages=gulp-cli'
   configuration: []
@@ -155,8 +154,6 @@
   resources:
     - from: sample-package.json
       to: code/theme/package.json
-  #    - mkdir: theme
-  #    - mkdir: theme/theme
   expectations:
     - contains: |
         [Simulator] Simulating ExecStack()

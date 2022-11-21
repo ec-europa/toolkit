@@ -10,6 +10,7 @@ use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Finder\Finder;
 
 class DocumentationCommands extends AbstractCommands
 {
@@ -58,7 +59,7 @@ class DocumentationCommands extends AbstractCommands
     }
 
     /**
-     * Generate the documentation
+     * Generate the documentation.
      *
      * @command toolkit:generate-documentation
      *
@@ -102,12 +103,12 @@ class DocumentationCommands extends AbstractCommands
         }
 
         return $builder
-            // Backup relevant files.
+            // Backup all .rst files.
             ->addTaskList($this->backupRelevantFiles())
             // Clean up documentation folder.
             ->addTask($this->cleanDir($this->docsDir))
             // Restore stored files.
-            ->addTask($this->taskCopyDir([$options['tmp-dir'] => $this->docsDir]))
+            ->addTask($this->taskCopyDir([$this->tmpDir => $this->docsDir]))
             // Generate documentation.
             ->addTask($this->taskExec($this->getBin('phpDoc')))
             // Clean up temporary folder.
@@ -118,6 +119,8 @@ class DocumentationCommands extends AbstractCommands
             ->addTask($this->cleanDir($this->tmpDir, false))
             // Copy generated docs.
             ->addTask($this->taskCopyDir([$this->docsDir => $this->tmpDir]))
+            // Clean up all .rst files.
+            ->addTask($this->cleanUpRstFiles())
             // Commit and push.
             ->addTask($this->gitAddCommitPush())
             // Delete temporary folder.
@@ -125,15 +128,20 @@ class DocumentationCommands extends AbstractCommands
     }
 
     /**
-     * Save the relevant files: index.rst and guide/!*.html.
+     * Backup all *.rst files.
      */
     private function backupRelevantFiles(): array
     {
         $tasks = [];
-        $tasks[] = $this->taskCopyDir([$this->docsDir . '/guide' => $this->tmpDir . '/guide'])
-            ->exclude(glob($this->docsDir . '/guide/*.html'));
-        $tasks[] = $this->taskFilesystemStack()
-            ->copy($this->docsDir . '/index.rst', $this->tmpDir . '/index.rst');
+        if (!file_exists($this->tmpDir)) {
+            $this->_mkdir($this->tmpDir);
+        }
+        $finder = new Finder();
+        $finder->files()->in($this->docsDir)->name('*.rst');
+        foreach ($finder as $file) {
+            $tasks[] = $this->taskFilesystemStack()
+                ->copy($file->getPathname(), $this->tmpDir . '/' . $file->getRelativePathname());
+        }
         return $tasks;
     }
 
@@ -194,6 +202,22 @@ class DocumentationCommands extends AbstractCommands
         }
         // This glob do not include hidden files or directories.
         return $this->taskFilesystemStack()->remove(glob($directory . '/*'));
+    }
+
+    /**
+     * Clean up documentation to keep only .html files.
+     */
+    private function cleanUpRstFiles()
+    {
+        // Note, use Finder inside a addCode() because Finder will search
+        // immediately for the files and the folder do not exist yet.
+        return $this->collectionBuilder()->addCode(function () {
+            $finder = new Finder();
+            $finder->files()->in($this->tmpDir)->name('*.rst');
+            foreach ($finder as $file) {
+                $this->_remove($file->getPathname());
+            }
+        });
     }
 
     /**

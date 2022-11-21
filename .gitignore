@@ -15,7 +15,7 @@ node_modules/
 .prettierignore
 package.json
 package-lock.json
-/documentation/
+/docs_tmp/
 
 # Documentation folder exclusions.
 !docs/
