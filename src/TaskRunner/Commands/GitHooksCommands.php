@@ -246,9 +246,6 @@ class GitHooksCommands extends AbstractCommands
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
 
         // Get the modified files, returns a list with a file per line.
-//        $diff = $this->taskExec('git diff --diff-filter=M --name-only --cached')
-//            ->silent(true)->run()->getOutputData();
-
         $diff = $this->taskExec('git')
             ->arg('diff')
             ->options([
