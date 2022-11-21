@@ -506,8 +506,6 @@ class TestsCommands extends AbstractCommands
      * @option force        If true, the config file will be deleted.
      *
      * @return int
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitSetupEslint(array $options = [
         'config' => InputOption::VALUE_OPTIONAL,
@@ -541,41 +539,7 @@ class TestsCommands extends AbstractCommands
 
         if (!file_exists($config)) {
             $actions = true;
-            $data = [
-                'ignorePatterns' => $options['ignores'],
-                // The docker-compose file makes use of
-                // empty mappings in env variables.
-                'overrides' => [
-                    [
-                        'files' => ['docker-compose*.yml'],
-                        'rules' => ['yml/no-empty-mapping-value' => 'off'],
-                    ],
-                ],
-            ];
-
-            // Check if we have a Drupal environment.
-            $drupal_core = './' . $options['drupal-root'] . '/core';
-            if (file_exists($drupal_core)) {
-                // Add the drupal core eslint if it exists.
-                $drupal_eslint = './' . $options['drupal-root'] . '/core/.eslintrc.json';
-                if (file_exists($drupal_eslint)) {
-                    $data['extends'] = $drupal_eslint;
-                }
-
-                // Copy the prettier configurations from Drupal or fallback to defaults.
-                $prettier = './' . $options['drupal-root'] . '/core/.prettierrc.json';
-                $prettier = file_exists($prettier)
-                    ? json_decode(file_get_contents($prettier), true)
-                    : ['singleQuote' => true, 'printWidth' => 80, 'semi' => true, 'trailingComma' => 'all'];
-                $data['rules'] = [
-                    'prettier/prettier' => ['error', $prettier],
-                ];
-            }
-
-            $this->collectionBuilder()->addCode(function () use ($config, $data) {
-                $this->output()->writeln(" <fg=white;bg=cyan;options=bold>[File\Write]</> Writing to $config.<info></>");
-                file_put_contents($config, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-            })->run();
+            $this->generateEslintConfigurations($config, $options);
         }
 
         // Ignore all yaml files for prettier.
@@ -589,6 +553,53 @@ class TestsCommands extends AbstractCommands
         }
 
         return ResultData::EXITCODE_OK;
+    }
+
+    /**
+     * Generate configurations for ESLint.
+     *
+     * @param string $config
+     *   The path for the configuration file.
+     * @param array $options
+     *   The options passed to the command.
+     */
+    private function generateEslintConfigurations(string $config, array $options)
+    {
+        $data = [
+            'ignorePatterns' => $options['ignores'],
+            // The docker-compose file makes use of
+            // empty mappings in env variables.
+            'overrides' => [
+                [
+                    'files' => ['docker-compose*.yml'],
+                    'rules' => ['yml/no-empty-mapping-value' => 'off'],
+                ],
+            ],
+        ];
+
+        // Check if we have a Drupal environment.
+        $drupal_core = './' . $options['drupal-root'] . '/core';
+        if (file_exists($drupal_core)) {
+            // Add the drupal core eslint if it exists.
+            $drupal_eslint = './' . $options['drupal-root'] . '/core/.eslintrc.json';
+            if (file_exists($drupal_eslint)) {
+                $data['extends'] = $drupal_eslint;
+            }
+
+            // Copy the prettier configurations from Drupal or fallback to defaults.
+            $prettier = './' . $options['drupal-root'] . '/core/.prettierrc.json';
+            $prettier = file_exists($prettier)
+                ? json_decode(file_get_contents($prettier), true)
+                : ['singleQuote' => true, 'printWidth' => 80, 'semi' => true, 'trailingComma' => 'all'];
+            $data['rules'] = [
+                'prettier/prettier' => ['error', $prettier],
+            ];
+        }
+
+        $this->collectionBuilder()->addCode(function () use ($config, $data) {
+            $this->output()->writeln(" <fg=white;bg=cyan;options=bold>[File\Write]</> Writing to $config.<info></>");
+            file_put_contents($config, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        })->run();
     }
 
     /**

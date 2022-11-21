@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\Robo;
+use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -298,7 +299,7 @@ class BuildCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function buildAssets(array $options = [
+    public function buildAssets(ConsoleIO $io, array $options = [
         'default-theme' => InputOption::VALUE_OPTIONAL,
         'custom-code-folder' => InputOption::VALUE_REQUIRED,
         'build-npm-packages' => InputOption::VALUE_REQUIRED,
@@ -346,7 +347,7 @@ class BuildCommands extends AbstractCommands
             } else {
                 if ($options['theme-task-runner'] === 'gulp') {
                     $taskRunnerConfigFile = 'gulpfile.js';
-                    $this->io()->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
+                    $io->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
                 } elseif ($options['theme-task-runner'] === 'grunt') {
                     $taskRunnerConfigFile = 'Gruntfile.js';
                     $collection = $this->collectionBuilder();

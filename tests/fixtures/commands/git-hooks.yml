@@ -82,7 +82,13 @@
   configuration: []
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('git diff --diff-filter=M --name-only --cached')
+        [Simulator] Simulating Exec('git')
+          ->arg('diff')
+          ->options(array (
+            'diff-filter' => 'M',
+            'name-only' => NULL,
+            'cached' => NULL,
+          ), '=')
           ->silent(1)
         [Simulator] Running git diff --diff-filter=M --name-only --cached
 
@@ -90,14 +96,18 @@
   configuration: []
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run toolkit:test-phpcs')
-        [Simulator] Running ./vendor/bin/run toolkit:test-phpcs
-        [Simulator] Simulating Exec('./vendor/bin/run toolkit:test-phpmd')
-        [Simulator] Running ./vendor/bin/run toolkit:test-phpmd
-        [Simulator] Simulating Exec('./vendor/bin/run toolkit:lint-php')
-        [Simulator] Running ./vendor/bin/run toolkit:lint-php
-        [Simulator] Simulating Exec('./vendor/bin/run toolkit:opts-review')
-        [Simulator] Running ./vendor/bin/run toolkit:opts-review
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:test-phpcs')
+        [Simulator] Running ./vendor/bin/run 'toolkit:test-phpcs'
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:test-phpmd')
+        [Simulator] Running ./vendor/bin/run 'toolkit:test-phpmd'
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:lint-php')
+        [Simulator] Running ./vendor/bin/run 'toolkit:lint-php'
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:opts-review')
+        [Simulator] Running ./vendor/bin/run 'toolkit:opts-review'
 
 - command: 'toolkit:hooks-run prepare-commit-msg'
   configuration: []

@@ -8,6 +8,7 @@ use Composer\Semver\Semver;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
+use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
@@ -38,7 +39,7 @@ class ComponentCheckCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function componentCheck(array $options = [
+    public function componentCheck(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_OPTIONAL,
         'test-command' => false,
     ])
@@ -62,7 +63,7 @@ class ComponentCheckCommands extends AbstractCommands
         $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
 
         if (!isset($composerLock['packages'])) {
-            $this->io()->error('No packages found in the composer.lock file.');
+            $io->error('No packages found in the composer.lock file.');
             return 1;
         }
 
@@ -86,17 +87,17 @@ class ComponentCheckCommands extends AbstractCommands
             'Outdated',
         ];
         foreach ($checks as $check) {
-            $this->io()->title("Checking $check components.");
+            $io->title("Checking $check components.");
             $fct = "component$check";
             $this->{$fct}($modules, $composerLock['packages']);
-            $this->io()->newLine();
+            $io->newLine();
         }
 
         // Get vendor list.
         $dataTkReqsEndpoint = Website::requirements();
         $vendorList = $dataTkReqsEndpoint['vendor_list'] ?? [];
 
-        $this->io()->title('Checking evaluation status components.');
+        $io->title('Checking evaluation status components.');
         // Proceed with 'blocker' option. Loop over the packages.
         foreach ($composerLock['packages'] as $package) {
             // Check if vendor belongs to the monitorised vendor list.
@@ -107,9 +108,9 @@ class ComponentCheckCommands extends AbstractCommands
         if ($this->commandFailed === false) {
             $this->say('Evaluation module check passed.');
         }
-        $this->io()->newLine();
+        $io->newLine();
 
-        $this->io()->title('Checking dev components.');
+        $io->title('Checking dev components.');
         foreach ($composerLock['packages'] as $package) {
             $typeBypass = in_array($package['type'], [
                 'drupal-custom-module',
@@ -124,9 +125,9 @@ class ComponentCheckCommands extends AbstractCommands
         if (!$this->devVersionFailed) {
             $this->say('Dev components check passed.');
         }
-        $this->io()->newLine();
+        $io->newLine();
 
-        $this->io()->title('Checking dev components in require section.');
+        $io->title('Checking dev components in require section.');
         $devPackages = array_filter(
             array_column($modules, 'dev_component', 'name'),
             function ($value) {
@@ -136,18 +137,18 @@ class ComponentCheckCommands extends AbstractCommands
         foreach ($devPackages as $packageName => $package) {
             if (ToolCommands::getPackagePropertyFromComposer($packageName, 'version', 'packages')) {
                 $this->devCompRequireFailed = true;
-                $this->io()->warning("Package $packageName cannot be used on require section, must be on require-dev section.");
+                $io->warning("Package $packageName cannot be used on require section, must be on require-dev section.");
             }
         }
         if (!$this->devCompRequireFailed) {
             $this->say('Dev components in require section check passed');
         }
-        $this->io()->newLine();
+        $io->newLine();
 
-        $this->io()->title('Checking require section for Drush.');
+        $io->title('Checking require section for Drush.');
         if (ToolCommands::getPackagePropertyFromComposer('drush/drush', 'version', 'packages-dev')) {
             $this->drushRequireFailed = true;
-            $this->io()->warning("Package 'drush/drush' cannot be used in require-dev, must be on require section.");
+            $io->warning("Package 'drush/drush' cannot be used in require-dev, must be on require section.");
         }
 
         if (!$this->drushRequireFailed) {
@@ -155,9 +156,9 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->say('Drush require section check passed.');
             }
         }
-        $this->io()->newLine();
+        $io->newLine();
 
-        $this->printComponentResults();
+        $this->printComponentResults($io);
 
         // If the validation fail, return according to the blocker.
         if (
@@ -174,15 +175,15 @@ class ComponentCheckCommands extends AbstractCommands
                 'Failed the components check, please verify the report and update the project.',
                 'See the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.',
             ];
-            $this->io()->error($msg);
+            $io->error($msg);
             $status = 1;
         }
 
         // Give feedback if no problems found.
         if (!$status) {
-            $this->io()->success('Components checked, nothing to report.');
+            $io->success('Components checked, nothing to report.');
         } else {
-            $this->io()->note([
+            $io->note([
                 'It is possible to bypass the insecure and outdated check:',
                 '- Insecure check:',
                 '   - by providing a token in the commit message: [SKIP-INSECURE]',
@@ -201,26 +202,23 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Print the component check results.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function printComponentResults()
+    protected function printComponentResults(ConsoleIO $io)
     {
-        $this->io()->title('Results:');
+        $io->title('Results:');
 
         $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
         $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
 
-        $this->io()->definitionList(
-            ['Mandatory module check ' => $this->mandatoryFailed ? 'failed' : 'passed'],
-            ['Recommended module check ' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
-            ['Insecure module check ' => $this->insecureFailed ? 'failed' : 'passed' . $skipInsecure],
-            ['Outdated module check ' => ($this->outdatedFailed ? 'failed' : 'passed') . $skipOutdated],
-            ['Dev module check ' => $this->devVersionFailed ? 'failed' : 'passed'],
-            ['Evaluation module check ' => $this->commandFailed ? 'failed' : 'passed'],
-            ['Dev module in require-dev check ' => $this->devCompRequireFailed ? 'failed' : 'passed'],
-            ['Drush require section check ' => $this->drushRequireFailed ? 'failed' : 'passed'],
+        $io->definitionList(
+            ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
+            ['Recommended module check' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
+            ['Insecure module check' => $this->getFailedOrPassed($this->insecureFailed) . $skipInsecure],
+            ['Outdated module check' => $this->getFailedOrPassed($this->outdatedFailed) . $skipOutdated],
+            ['Dev module check' => $this->getFailedOrPassed($this->devVersionFailed)],
+            ['Evaluation module check' => $this->getFailedOrPassed($this->commandFailed)],
+            ['Dev module in require-dev check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
+            ['Drush require section check' => $this->getFailedOrPassed($this->drushRequireFailed)],
         );
     }
 
@@ -605,6 +603,17 @@ class ComponentCheckCommands extends AbstractCommands
     private function getRecommendedWarningMessage(): string
     {
         return $this->recommendedFailedCount . ($this->recommendedFailedCount > 1 ? ' warnings' : ' warning');
+    }
+
+    /**
+     * If given bool is TRUE 'failed' is return, otherwise 'passed'.
+     *
+     * @param bool $value
+     *   The value to check.
+     */
+    private function getFailedOrPassed(bool $value): string
+    {
+        return $value ? 'failed' : 'passed';
     }
 
 }
