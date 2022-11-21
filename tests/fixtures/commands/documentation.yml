@@ -35,9 +35,9 @@
       to: vendor/bin/phpDoc
     - from: sample-config.yml
       to: documentation/index.rst
-    - from: sample-config.yml
+    - from: sample-package.json
       to: documentation/guide/test.html
-    - from: sample-config.yml
+    - from: sample-commands.rst
       to: documentation/guide/test.rst
   expectations:
     - contains: |
