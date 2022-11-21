@@ -44,7 +44,6 @@
         [Simulator] Simulating Filesystem\DeleteDir('docs_tmp')
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->copy('documentation/guide/test.rst', 'docs_tmp/guide/test.rst')
-        [Simulator] Simulating Filesystem\FilesystemStack()
           ->copy('documentation/index.rst', 'docs_tmp/index.rst')
         [Simulator] Simulating Filesystem\CleanDir('documentation')
         [Simulator] Simulating Filesystem\CopyDir(array (

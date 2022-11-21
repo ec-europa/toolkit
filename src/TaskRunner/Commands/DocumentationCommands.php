@@ -104,7 +104,7 @@ class DocumentationCommands extends AbstractCommands
 
         return $builder
             // Backup all .rst files.
-            ->addTaskList($this->backupRelevantFiles())
+            ->addTask($this->backupRelevantFiles())
             // Clean up documentation folder.
             ->addTask($this->cleanDir($this->docsDir))
             // Restore stored files.
@@ -130,19 +130,18 @@ class DocumentationCommands extends AbstractCommands
     /**
      * Backup all *.rst files.
      */
-    private function backupRelevantFiles(): array
+    private function backupRelevantFiles()
     {
-        $tasks = [];
+        $task = $this->taskFilesystemStack();
         if (!file_exists($this->tmpDir)) {
-            $this->_mkdir($this->tmpDir);
+            $task->mkdir($this->tmpDir);
         }
         $finder = new Finder();
         $finder->files()->in($this->docsDir)->name('*.rst');
         foreach ($finder as $file) {
-            $tasks[] = $this->taskFilesystemStack()
-                ->copy($file->getPathname(), $this->tmpDir . '/' . $file->getRelativePathname());
+            $task->copy($file->getPathname(), $this->tmpDir . '/' . $file->getRelativePathname());
         }
-        return $tasks;
+        return $task;
     }
 
     /**
