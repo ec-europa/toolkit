@@ -376,6 +376,71 @@ Search.appendIndex(
             "summary": "Execute\u0020a\u0020configuration\u0020command.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ConfigurationCommands.html#method_execute"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands",
+            "name": "DocumentationCommands",
+            "summary": "Class\u0020AbstractCommands.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003AgetConfigurationFile\u0028\u0029",
+            "name": "getConfigurationFile",
+            "summary": "Path\u0020to\u0020YAML\u0020configuration\u0020file\u0020containing\u0020command\u0020defaults.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_getConfigurationFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003AtoolkitGenerateDocumentation\u0028\u0029",
+            "name": "toolkitGenerateDocumentation",
+            "summary": "Generate\u0020the\u0020documentation",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_toolkitGenerateDocumentation"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003AbackupRelevantFiles\u0028\u0029",
+            "name": "backupRelevantFiles",
+            "summary": "Save\u0020the\u0020relevant\u0020files\u003A\u0020index.rst\u0020and\u0020guide\/\u0021\u002A.html.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_backupRelevantFiles"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003AgitClone\u0028\u0029",
+            "name": "gitClone",
+            "summary": "Clone\u0020the\u0020documentation\u0020branch\u0020\u0028hide\u0020output\u0020to\u0020avoid\u0020expose\u0020token\u0029.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_gitClone"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003AgitAddCommitPush\u0028\u0029",
+            "name": "gitAddCommitPush",
+            "summary": "Git\u0020add\u0020commit\u0020and\u0020push\u0020to\u0020the\u0020documentation\u0020branch.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_gitAddCommitPush"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003AcleanDir\u0028\u0029",
+            "name": "cleanDir",
+            "summary": "Clean\u0020up\u0020given\u0020directory.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_cleanDir"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003AdownloadPhpDocPhar\u0028\u0029",
+            "name": "downloadPhpDocPhar",
+            "summary": "Ensure\u0020that\u0020the\u0020phpDoc\u0020phar\u0020file\u0020exists.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_downloadPhpDocPhar"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003A\u0024token",
+            "name": "token",
+            "summary": "The\u0020GitHub\u0020token.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#property_token"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003A\u0024docsDir",
+            "name": "docsDir",
+            "summary": "The\u0020documentation\u0020directory.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#property_docsDir"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003A\u0024tmpDir",
+            "name": "tmpDir",
+            "summary": "A\u0020temporary\u0020directory.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#property_tmpDir"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003A\u0024repo",
+            "name": "repo",
+            "summary": "The\u0020repository\u0020where\u0020the\u0020documentation\u0020is.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#property_repo"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003A\u0024branch",
+            "name": "branch",
+            "summary": "The\u0020documentation\u0020branch.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#property_branch"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalCommands",
             "name": "DrupalCommands",
             "summary": "Drupal\u0020commands\u0020to\u0020setup\u0020and\u0020install\u0020a\u0020Drupal\u00208\u0020site.",
@@ -775,11 +840,6 @@ Search.appendIndex(
             "name": "generateCommandsList",
             "summary": "Generate\u0020the\u0020list\u0020of\u0020commands\u0020in\u0020the\u0020commands.rst\u0020file.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitCommands.html#method_generateCommandsList"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitCommands\u003A\u003AtoolkitGenerateDocumentation\u0028\u0029",
-            "name": "toolkitGenerateDocumentation",
-            "summary": "Generate\u0020the\u0020documentation",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitCommands.html#method_toolkitGenerateDocumentation"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands",
             "name": "ToolkitReleaseCommands",
