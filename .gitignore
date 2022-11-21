@@ -16,3 +16,10 @@ node_modules/
 package.json
 package-lock.json
 /documentation/
+
+# Documentation folder exclusions.
+!docs/
+docs/*
+!docs/guide/
+docs/guide/*
+!docs/guide/*.rst
