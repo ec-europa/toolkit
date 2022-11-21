@@ -47,7 +47,9 @@ class ToolCommandsTest extends AbstractTest
         $this->markTestIncomplete('Skip test');
 
         // Setup configuration file.
-        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        if (!empty($config)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        }
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
@@ -92,10 +94,12 @@ class ToolCommandsTest extends AbstractTest
     public function testOptsReview(string $command, string $sample = '', array $config = [], array $expectations = [])
     {
         // Setup configuration file.
-        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        if (!empty($config)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        }
 
         if (!empty($sample)) {
-            $this->filesystem->copy(
+            $this->fs->copy(
                 $this->getFixtureFilepath('samples/sample-' . $sample),
                 $this->getSandboxFilepath('.opts.yml')
             );

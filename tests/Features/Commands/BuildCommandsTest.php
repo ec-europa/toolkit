@@ -37,21 +37,20 @@ class BuildCommandsTest extends AbstractTest
      *   A command.
      * @param array $config
      *   A configuration.
+     * @param array $resources
+     *   Resources needed for the test.
      * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testBuild(string $command, array $config = [], array $expectations = [])
+    public function testBuild(string $command, array $config = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
-        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
-
-        // Create folders for command toolkit:build-assets when default-theme is used.
-        if (str_contains($command, '--default-theme')) {
-            $this->filesystem->mkdir($this->getSandboxFilepath('code'));
-            $this->filesystem->mkdir($this->getSandboxFilepath('code/theme'));
+        if (!empty($config)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
         }
+        $this->prepareResources($resources);
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());

@@ -19,7 +19,7 @@ abstract class AbstractTest extends TestCase
      *
      * @var Filesystem
      */
-    public Filesystem $filesystem;
+    public Filesystem $fs;
 
     /**
      * {@inheritdoc}
@@ -27,7 +27,7 @@ abstract class AbstractTest extends TestCase
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
-        $this->filesystem = new Filesystem();
+        $this->fs = new Filesystem();
     }
 
     /**
@@ -36,9 +36,9 @@ abstract class AbstractTest extends TestCase
     protected function setUp(): void
     {
         if (!is_dir($this->getSandboxRoot())) {
-            mkdir($this->getSandboxRoot());
+            $this->fs->mkdir($this->getSandboxRoot());
         }
-        $this->filesystem->chmod($this->getSandboxRoot(), 0777, umask(), true);
+        $this->fs->chmod($this->getSandboxRoot(), 0777, umask(), true);
 
         self::setUpMock();
     }
@@ -48,7 +48,7 @@ abstract class AbstractTest extends TestCase
      */
     protected function tearDown(): void
     {
-        $this->filesystem->remove(glob($this->getSandboxRoot() . '/{,.}[!.,!..]*', GLOB_BRACE));
+        $this->fs->remove(glob($this->getSandboxRoot() . '/{,.}[!.,!..]*', GLOB_BRACE));
     }
 
     /**
@@ -72,6 +72,34 @@ abstract class AbstractTest extends TestCase
 
         if (!empty($expected['not_contains'])) {
             $this->assertNotContains($this->trimEachLine($expected['not_contains']), [$this->trimEachLine($content)]);
+        }
+    }
+
+    /**
+     * Prepare given resources.
+     *
+     * Currently, accepts:
+     * ```
+     * - from: source.yml
+     *   to: destination.yml
+     *
+     * - mkdir: test-folder
+     * ```
+     *
+     * @param array $resources
+     *   An array with resources to process.
+     */
+    protected function prepareResources(array $resources)
+    {
+        foreach ($resources as $resource) {
+            if (isset($resource['from'], $resource['to'])) {
+                $this->fs->copy(
+                    $this->getFixtureFilepath('samples/' . $resource['from']),
+                    $this->getSandboxFilepath($resource['to'])
+                );
+            } elseif (isset($resource['mkdir'])) {
+                $this->fs->mkdir($this->getSandboxFilepath($resource['mkdir']));
+            }
         }
     }
 

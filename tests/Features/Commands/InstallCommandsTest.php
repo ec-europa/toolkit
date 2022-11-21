@@ -39,32 +39,21 @@ class InstallCommandsTest extends AbstractTest
      *   A command.
      * @param array $config
      *   A configuration.
+     * @param array $resources
+     *   Resources needed for the test.
      * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testInstall(string $command, array $config = [], array $expectations = [])
+    public function testInstall(string $command, array $config = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
-        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
-
-        // If option config-file is used, provide the files .opts.yml and core.extensions.yml
-        // for commands toolkit:install-clean and toolkit:run-deploy, otherwise make sure
-        // the files do not exist.
-        if (str_contains($command, '--config-file')) {
-            $this->filesystem->copy(
-                $this->getFixtureFilepath('samples/sample-opts.yml'),
-                $this->getSandboxFilepath('.opts.yml')
-            );
-            $this->filesystem->copy(
-                $this->getFixtureFilepath('samples/sample-core.extensions.yml'),
-                $this->getSandboxFilepath('core.extensions.yml')
-            );
-        } else {
-            $this->filesystem->remove($this->getSandboxFilepath('.opts.yml'));
-            $this->filesystem->remove($this->getSandboxFilepath('core.extensions.yml'));
+        if (!empty($config)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
         }
+
+        $this->prepareResources($resources);
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());

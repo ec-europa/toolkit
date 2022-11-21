@@ -17,5 +17,6 @@ services:
       ASDA_USER:
       ASDA_PASSWORD:
       QA_API_BASIC_AUTH:
+      GITHUB_API_TOKEN:
       XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
       PHP_IDE_CONFIG: "serverName=Docker"

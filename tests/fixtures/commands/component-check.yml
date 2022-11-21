@@ -1,6 +1,9 @@
 - command: 'toolkit:component-check'
   configuration: []
   tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
   expectations:
     - contains: |
         Checking Mandatory components.
@@ -105,6 +108,9 @@
         outdated:
           check: false
   tokens: '[skip_insecure][skip_d9c]'
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
   expectations:
     - contains: |
         Checking Mandatory components.
@@ -209,8 +215,13 @@
     toolkit:
       project_id: digit-qa
       clean:
-        config_file: 'core.extensions-good.yml'
+        config_file: core.extensions-good.yml
   tokens: ''
+  resources:
+    - from: sample-core.extensions-good.yml
+      to: core.extensions-good.yml
+    - from: sample-composer.lock
+      to: composer.lock
   expectations:
     - contains: |
         Checking Mandatory components.

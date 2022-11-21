@@ -55,13 +55,3 @@
 
           .. toolkit-block-commands-end')
         ->content(' ')
-
-- command: 'toolkit:generate-documentation'
-  configuration: []
-  resources:
-    - from: sample-bin
-      to: vendor/bin/phpDoc
-  expectations:
-    - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/phpDoc')
-        [Simulator] Running ./vendor/bin/phpDoc

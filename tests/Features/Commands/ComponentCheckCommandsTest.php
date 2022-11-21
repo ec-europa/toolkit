@@ -39,30 +39,25 @@ class ComponentCheckCommandsTest extends AbstractTest
      *   A configuration.
      * @param string $tokens
      *   Tokens to set in the commit message.
+     * @param array $resources
+     *   Resources needed for the test.
      * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testComponentCheck(string $command, array $config = [], string $tokens = '', array $expectations = [])
+    public function testComponentCheck(string $command, array $config = [], string $tokens = '', array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
-        file_put_contents($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        if (!empty($config)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        }
 
         if (!empty($tokens)) {
             putenv('CI_COMMIT_MESSAGE=' . $tokens);
         }
-        if (!empty($config['toolkit']['clean']['config_file'])) {
-            $this->filesystem->copy(
-                $this->getFixtureFilepath('samples/sample-' . $config['toolkit']['clean']['config_file']),
-                $this->getSandboxFilepath($config['toolkit']['clean']['config_file'])
-            );
-        }
 
-        $this->filesystem->copy(
-            $this->getFixtureFilepath('samples/sample-composer.lock'),
-            $this->getSandboxFilepath('composer.lock')
-        );
+        $this->prepareResources($resources);
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());

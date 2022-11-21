@@ -15,3 +15,11 @@ node_modules/
 .prettierignore
 package.json
 package-lock.json
+/docs_tmp/
+
+# Documentation folder exclusions.
+!docs/
+docs/*
+!docs/guide/
+docs/guide/*
+!docs/guide/*.rst
