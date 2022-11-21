@@ -137,7 +137,7 @@ class DocumentationCommands extends AbstractCommands
             $task->mkdir($this->tmpDir);
         }
         $finder = new Finder();
-        $finder->files()->in($this->docsDir)->name('*.rst')->sortByName();
+        $finder->files()->in($this->docsDir)->name('*.rst')->sortByModifiedTime();
         foreach ($finder as $file) {
             $task->copy($file->getPathname(), $this->tmpDir . '/' . $file->getRelativePathname());
         }
