@@ -62,16 +62,16 @@
         Results:
         ========
 
-        ---------------------------------- -----------
-        Mandatory module check             failed
-        Recommended module check           1 warning
-        Insecure module check              passed
-        Outdated module check              passed
-        Dev module check                   passed
-        Evaluation module check            failed
-        Dev module in require-dev check    passed
-        Drush require section check        passed
-        ---------------------------------- -----------
+        --------------------------------- -----------
+        Mandatory module check            failed
+        Recommended module check          1 warning
+        Insecure module check             passed
+        Outdated module check             passed
+        Dev module check                  passed
+        Evaluation module check           failed
+        Dev module in require-dev check   passed
+        Drush require section check       passed
+        --------------------------------- -----------
 
         [ERROR] Failed the components check, please verify the report and update the
         project.
@@ -172,16 +172,16 @@
         Results:
         ========
 
-        ---------------------------------- -------------------
-        Mandatory module check             failed
-        Recommended module check           4 warnings
-        Insecure module check              passed (Skipping)
-        Outdated module check              passed (Skipping)
-        Dev module check                   failed
-        Evaluation module check            failed
-        Dev module in require-dev check    passed
-        Drush require section check        passed
-        ---------------------------------- -------------------
+        --------------------------------- -------------------
+        Mandatory module check            failed
+        Recommended module check          4 warnings
+        Insecure module check             passed (Skipping)
+        Outdated module check             passed (Skipping)
+        Dev module check                  failed
+        Evaluation module check           failed
+        Dev module in require-dev check   passed
+        Drush require section check       passed
+        --------------------------------- -------------------
 
         [ERROR] Failed the components check, please verify the report and update the
         project.
@@ -274,15 +274,15 @@
         Results:
         ========
 
-        ---------------------------------- -----------
-        Mandatory module check             passed
-        Recommended module check           1 warning
-        Insecure module check              passed
-        Outdated module check              passed
-        Dev module check                   passed
-        Evaluation module check            passed
-        Dev module in require-dev check    passed
-        Drush require section check        passed
-        ---------------------------------- -----------
+        --------------------------------- -----------
+        Mandatory module check            passed
+        Recommended module check          1 warning
+        Insecure module check             passed
+        Outdated module check             passed
+        Dev module check                  passed
+        Evaluation module check           passed
+        Dev module in require-dev check   passed
+        Drush require section check       passed
+        --------------------------------- -----------
 
         [OK] Components checked, nothing to report.

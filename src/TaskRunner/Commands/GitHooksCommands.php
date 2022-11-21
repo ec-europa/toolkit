@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\ResultData;
+use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -32,7 +33,7 @@ class GitHooksCommands extends AbstractCommands
      * @param array $options
      *   Command options.
      *
-     * @return int|ResultData
+     * @return int
      *   The exit code.
      *
      * @command toolkit:hooks-enable
@@ -41,7 +42,7 @@ class GitHooksCommands extends AbstractCommands
      *
      * @usage --hooks=pre-push
      */
-    public function hooksEnable(array $options = [
+    public function hooksEnable(ConsoleIO $io, array $options = [
         'hooks' => InputOption::VALUE_REQUIRED,
     ])
     {
@@ -50,7 +51,7 @@ class GitHooksCommands extends AbstractCommands
 
         $hooks = !empty($options['hooks']) ? explode(',', $options['hooks']) : $config['active'];
         if (empty($hooks)) {
-            $this->io()->say('No active hooks to enable, run toolkit:hooks-list to list the available hooks.');
+            $io->say('No active hooks to enable, run toolkit:hooks-list to list the available hooks.');
             return $return;
         }
         $available_hooks = $this->getAvailableHooks();
@@ -58,7 +59,7 @@ class GitHooksCommands extends AbstractCommands
         // Validate hooks.
         foreach ($hooks as $hook) {
             if (!isset($available_hooks[$hook])) {
-                $this->io()->say("The hook '$hook' was not found.");
+                $io->say("The hook '$hook' was not found.");
                 $return = ResultData::EXITCODE_ERROR;
             }
         }
@@ -82,14 +83,14 @@ class GitHooksCommands extends AbstractCommands
      * @param array $options
      *   Command options.
      *
-     * @return int|ResultData
+     * @return int
      *   The exit code.
      *
      * @command toolkit:hooks-disable
      *
      * @option hooks  The hooks to disable (default: toolkit.git.hooks)
      */
-    public function hooksDisable(array $options = [
+    public function hooksDisable(ConsoleIO $io, array $options = [
         'hooks' => InputOption::VALUE_REQUIRED,
     ])
     {
@@ -97,14 +98,14 @@ class GitHooksCommands extends AbstractCommands
 
         $hooks = !empty($options['hooks']) ? explode(',', $options['hooks']) : $config['active'];
         if (empty($hooks)) {
-            $this->io()->say('No active hooks to disable, run toolkit:hooks-delete-all to delete them all.');
+            $io->say('No active hooks to disable, run toolkit:hooks-delete-all to delete them all.');
             return ResultData::EXITCODE_OK;
         }
 
         $dir = $this->getWorkingDir();
         foreach ($hooks as $hook) {
             if (!file_exists($dir . '/.git/hooks/' . $hook)) {
-                $this->io()->say("The hook '$hook' was not found, skipping.");
+                $io->say("The hook '$hook' was not found, skipping.");
                 continue;
             }
             $this->_remove($dir . '/.git/hooks/' . $hook);
@@ -118,7 +119,7 @@ class GitHooksCommands extends AbstractCommands
      *
      * @command toolkit:hooks-delete-all
      */
-    public function hooksDeleteAll()
+    public function hooksDeleteAll(ConsoleIO $io)
     {
         $directory = $this->getWorkingDir() . '/.git/hooks';
         $files = scandir($directory);
@@ -131,7 +132,7 @@ class GitHooksCommands extends AbstractCommands
                 continue;
             }
             if (unlink($directory . '/' . $file)) {
-                $this->io()->say("The hook $file was deleted.");
+                $io->say("The hook $file was deleted.");
             }
         }
     }
@@ -144,7 +145,7 @@ class GitHooksCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function hooksList()
+    public function hooksList(ConsoleIO $io)
     {
         $rows = [];
         $git_hooks_dir = $this->getWorkingDir() . '/.git/hooks';
@@ -175,7 +176,7 @@ class GitHooksCommands extends AbstractCommands
             ];
         }
 
-        $table = new Table($this->io());
+        $table = new Table($io);
         $table
             ->setHeaders([
                 'Hook',
@@ -198,23 +199,23 @@ class GitHooksCommands extends AbstractCommands
      * @param string $arg3
      *   The third argument of the given hook.
      *
-     * @return int|ResultData
+     * @return int
      *   The exit code.
      *
      * @command toolkit:hooks-run
      */
     // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassAfterLastUsed
-    public function hooksRun(string $hook, $arg1 = '', $arg2 = '', $arg3 = '')
+    public function hooksRun(ConsoleIO $io, string $hook, string $arg1 = '', string $arg2 = '', string $arg3 = '')
     {
         if (empty($hook)) {
-            $this->io()->say('Please provide a hook to run.');
+            $io->say('Please provide a hook to run.');
             return ResultData::EXITCODE_ERROR;
         }
 
         // Make sure the hook is enabled.
         $enabled_hooks = $this->getHookFiles($this->getWorkingDir() . '/.git/hooks');
         if (!isset($enabled_hooks[$hook])) {
-            $this->io()->say("The hook '$hook' does not exist or is not enabled.");
+            $io->say("The hook '$hook' does not exist or is not enabled.");
             return ResultData::EXITCODE_ERROR;
         }
 
@@ -229,7 +230,7 @@ class GitHooksCommands extends AbstractCommands
         }
 
         if (!method_exists($this, $method)) {
-            $this->io()->say("The hook '$hook' does not have the corresponding method '$method'.");
+            $io->say("The hook '$hook' does not have the corresponding method '$method'.");
             return ResultData::EXITCODE_ERROR;
         }
 
@@ -245,7 +246,16 @@ class GitHooksCommands extends AbstractCommands
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
 
         // Get the modified files, returns a list with a file per line.
-        $diff = $this->taskExec('git diff --diff-filter=M --name-only --cached')
+//        $diff = $this->taskExec('git diff --diff-filter=M --name-only --cached')
+//            ->silent(true)->run()->getOutputData();
+
+        $diff = $this->taskExec('git')
+            ->arg('diff')
+            ->options([
+                'diff-filter' => 'M',
+                'name-only' => null,
+                'cached' => null,
+            ], '=')
             ->silent(true)->run()->getOutputData();
         // The output is empty if there's nothing to be committed.
         if (empty($diff)) {
@@ -262,11 +272,13 @@ class GitHooksCommands extends AbstractCommands
         }
         // Setup the ruleset with the files to check.
         $files_setup = implode(',', $diff);
-        $this->taskExec($this->getBin('run') . " toolkit:setup-phpcs -Dtoolkit.test.phpcs.files=$files_setup")
+        $this->taskExec($this->getBin('run'))
+            ->arg('toolkit:setup-phpcs')
+            ->rawArg("-Dtoolkit.test.phpcs.files=$files_setup")
             ->run();
 
         // Execute the command.
-        $result = $this->taskExec("$phpcs --standard=$config_file")->run();
+        $result = $this->taskExec($phpcs)->option('standard', $config_file, '=')->run();
 
         // Restore the config file if it existed, otherwise remove the
         // generated config.
@@ -282,7 +294,7 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Hook: Executes the prepare-commit-msg conditions.
      */
-    private function runPrepareCommitMsg()
+    private function runPrepareCommitMsg(ConsoleIO $io)
     {
         $args = $this->input()->getArguments();
         // The arg1 is the file that contains the commit message.
@@ -299,14 +311,12 @@ class GitHooksCommands extends AbstractCommands
             }
         }
         if (!empty($problems)) {
-            $this->io()
-                ->say('The commit message validation failed with the following problems:');
+            $io->say('The commit message validation failed with the following problems:');
             foreach ($problems as $problem) {
                 echo $problem . PHP_EOL;
             }
             if (!empty($config['prepare-commit-msg']['example'])) {
-                $this->io()
-                    ->say("Example: {$config['prepare-commit-msg']['example']}");
+                $io->say("Example: {$config['prepare-commit-msg']['example']}");
             }
             return ResultData::EXITCODE_ERROR;
         }
@@ -323,7 +333,7 @@ class GitHooksCommands extends AbstractCommands
         $runner_bin = $this->getBin('run');
         $commands = $this->getConfig()->get('toolkit.hooks.pre-push.commands');
         foreach ($commands as $test) {
-            $result = $this->taskExec($runner_bin . ' ' . $test)->run();
+            $result = $this->taskExec($runner_bin)->arg($test)->run();
             $exit += $result->getExitCode();
         }
         return $exit;

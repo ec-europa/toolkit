@@ -10,6 +10,7 @@ use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
+use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
@@ -64,10 +65,10 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:complock-check
      */
-    public function composerLockCheck(): int
+    public function composerLockCheck(ConsoleIO $io): int
     {
         if (!file_exists('composer.lock')) {
-            $this->io()->error("Failed to detect a 'composer.lock' file on root folder.");
+            $io->error("Failed to detect a 'composer.lock' file on root folder.");
             return 1;
         }
         $this->say("Detected 'composer.lock' file - Ok.");
@@ -83,7 +84,7 @@ class ToolCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function optsReview()
+    public function optsReview(ConsoleIO $io)
     {
         $reviewOk = true;
         if (!file_exists('.opts.yml')) {
@@ -93,7 +94,7 @@ class ToolCommands extends AbstractCommands
         $project_id = $this->getConfig()->get('toolkit.project_id');
         $forbiddenCommands = Website::projectConstraints($project_id);
         if (empty($forbiddenCommands)) {
-            $this->io()->error('Failed to get constraints from the endpoint.');
+            $io->error('Failed to get constraints from the endpoint.');
             return 1;
         }
 
@@ -131,7 +132,7 @@ class ToolCommands extends AbstractCommands
         }
 
         if (!$reviewOk) {
-            $this->io()->error("Failed the '.opts.yml' file review. Please contact the QA team.");
+            $io->error("Failed the '.opts.yml' file review. Please contact the QA team.");
             return 1;
         }
 
@@ -194,7 +195,7 @@ class ToolCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function toolkitRequirements(array $options = [
+    public function toolkitRequirements(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_OPTIONAL,
     ])
     {
@@ -295,8 +296,8 @@ class ToolCommands extends AbstractCommands
             $nextcloud_check .= ')';
         }
 
-        $this->io()->title('Checking connections:');
-        $this->io()->definitionList(
+        $io->title('Checking connections:');
+        $io->definitionList(
             ['QA Endpoint access' => $endpoint_check],
             ['GitHub oauth access' => $github_check],
             ['GitLab oauth access' => $gitlab_check],
@@ -304,8 +305,8 @@ class ToolCommands extends AbstractCommands
             ['NEXTCLOUD configuration' => $nextcloud_check],
         );
 
-        $this->io()->title('Required checks:');
-        $this->io()->definitionList(
+        $io->title('Required checks:');
+        $io->definitionList(
             ['PHP version' => "$php_check ($php_version)"],
             ['Toolkit version' => "$toolkit_check ($toolkit_version)"],
             ['Drupal version' => "$drupal_check ($drupal_version)"],
@@ -462,23 +463,23 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:vendor-list
      */
-    public function toolkitVendorList()
+    public function toolkitVendorList(ConsoleIO $io)
     {
-        if (empty($basicAuth = Website::basicAuth())) {
+        if (empty(Website::basicAuth())) {
             return 1;
         }
         $data = Website::requirements();
         if (empty($data)) {
-            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
             return 1;
         }
         if (!isset($data['vendor_list'])) {
-            $this->writeln('Invalid data returned from the endpoint.');
+            $io->writeln('Invalid data returned from the endpoint.');
             return 1;
         }
         $vendorList = $data['vendor_list'];
-        $this->io()->title('Vendors being monitorised:');
-        $this->writeln($vendorList);
+        $io->title('Vendors being monitorised:');
+        $io->writeln($vendorList);
         return 0;
     }
 
@@ -521,7 +522,7 @@ class ToolCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function toolkitCodeReview(array $options = [
+    public function toolkitCodeReview(ConsoleIO $io, array $options = [
         'phpcs' => InputOption::VALUE_NONE,
         'opts-review' => InputOption::VALUE_NONE,
         'lint-php' => InputOption::VALUE_NONE,
@@ -555,39 +556,39 @@ class ToolCommands extends AbstractCommands
                 ->run()->getExitCode();
             $phpcsResult = ['PHPcs' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
-            $this->io()->newLine(2);
+            $io->newLine(2);
         }
         if ($runOptsReview) {
             $code = $this->taskExec($run)->arg('toolkit:opts-review')
                 ->run()->getExitCode();
             $optsReviewResult = ['Opts review' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
-            $this->io()->newLine(2);
+            $io->newLine(2);
         }
         if ($runLintPhp) {
             $code = $this->taskExec($run)->arg('toolkit:lint-php')
                 ->run()->getExitCode();
             $lintPhpResult = ['Lint PHP' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
-            $this->io()->newLine(2);
+            $io->newLine(2);
         }
         if ($runLintYaml) {
             $code = $this->taskExec($run)->arg('toolkit:lint-yaml')
                 ->run()->getExitCode();
             $lintYamlResult = ['Lint YAML' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
-            $this->io()->newLine(2);
+            $io->newLine(2);
         }
         if ($runPhpStan) {
             $code = $this->taskExec($run)->arg('toolkit:test-phpstan')
                 ->run()->getExitCode();
             $phpStanResult = ['PHPStan' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
-            $this->io()->newLine(2);
+            $io->newLine(2);
         }
 
-        $this->io()->title('Results:');
-        $this->io()->definitionList($phpcsResult, $optsReviewResult, $lintPhpResult, $lintYamlResult, $phpStanResult);
+        $io->title('Results:');
+        $io->definitionList($phpcsResult, $optsReviewResult, $lintPhpResult, $lintYamlResult, $phpStanResult);
 
         return new ResultData($exit);
     }
@@ -618,16 +619,16 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:install-dependencies
      *
-     * @option print  Shows output from apt commands.
+     * @option print Shows output from apt commands.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function toolkitInstallDependencies(array $options = [
+    public function toolkitInstallDependencies(ConsoleIO $io, array $options = [
         'print' => InputOption::VALUE_NONE,
     ])
     {
-        $this->io()->title('Installing dependencies');
+        $io->title('Installing dependencies');
         $return = 0;
         if (!file_exists('.opts.yml')) {
             return $return;
@@ -688,7 +689,7 @@ class ToolCommands extends AbstractCommands
             }
         }
 
-        $table = new Table($this->io());
+        $table = new Table($io);
         $table->setHeaders(['Package', 'Status']);
         foreach ($data as $package => $status) {
             $table->addRow([$package, $status]);
