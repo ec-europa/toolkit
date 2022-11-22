@@ -12,10 +12,10 @@ matrix:
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
       BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard' -D'db.name'='toolkit'
       ASDA_PROJECT_ID: comm-cwt2019
-    - PHP_VERSION: 7.4
-      PHING_OPTS: -logger phing.listener.AnsiColorLogger
-      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.85' -D'db.name'='toolkit'
-      ASDA_PROJECT_ID: comm-cwt2019
+    #- PHP_VERSION: 7.4
+    #  PHING_OPTS: -logger phing.listener.AnsiColorLogger
+    #  BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.85' -D'db.name'='toolkit'
+    #  ASDA_PROJECT_ID: comm-cwt2019
 
 # ==============================================================================
 # Main services
