@@ -293,9 +293,10 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:test-phpstan
      *
-     * @option config The path to the config file.
-     * @option level  The level of rule options.
-     * @option files  The files to check.
+     * @option config       The path to the config file.
+     * @option level        The level of rule options.
+     * @option files        The files to check.
+     * @option memory-limit The PHP memory limit.
      *
      * @aliases tk-phpstan
      */
@@ -303,6 +304,7 @@ class TestsCommands extends AbstractCommands
         'config' => InputOption::VALUE_REQUIRED,
         'level' => InputOption::VALUE_REQUIRED,
         'files' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'memory-limit' => InputOption::VALUE_OPTIONAL,
     ])
     {
         $config = $this->getConfig();
@@ -315,6 +317,9 @@ class TestsCommands extends AbstractCommands
         Toolkit::filterFolders($options['files']);
         $ignores = $config->get('toolkit.test.phpstan.ignores');
         Toolkit::filterFolders($ignores);
+        if (!$options['memory-limit']) {
+            $options['memory-limit'] = ini_get('memory_limit');
+        }
 
         // If the config file is not found, generate a new one.
         if (!file_exists($options['config'])) {
@@ -333,7 +338,10 @@ class TestsCommands extends AbstractCommands
         }
         $tasks[] = $this->taskExec($this->getBin('phpstan'))
             ->arg('analyse')
-            ->option('configuration', $options['config']);
+            ->options([
+                'memory-limit' => $options['memory-limit'],
+                'configuration' => $options['config']
+            ], '=');
         return $this->collectionBuilder()->addTaskList($tasks);
     }
 

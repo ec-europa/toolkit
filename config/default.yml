@@ -165,6 +165,7 @@ toolkit:
       level: '1'
       files: [ 'lib', 'src' ]
       ignores: [ 'vendor' ]
+      memory_limit: ''
   lint:
     eslint:
       config: .eslintrc.json
