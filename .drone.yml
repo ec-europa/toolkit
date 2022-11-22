@@ -75,7 +75,7 @@ pipeline:
     group: asda-nextcloud
     commands:
       - ./toolkit/phing cache-clear-global
-      - ./toolkit/phing project-database-download -Dproject.id=${ASDA_PROJECT_ID} -Ddb.dl.type=nextcloud -Ddb.dl.nextcloud.admin=true ${PHING_OPTS}
+      - ./toolkit/phing project-database-download -Dproject.id=${ASDA_PROJECT_ID} -Ddb.dl.nextcloud.admin=true ${PHING_OPTS}
       - ./toolkit/phing project-asda-date -Dproject.id=${ASDA_PROJECT_ID} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
