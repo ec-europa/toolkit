@@ -36,19 +36,21 @@ class ToolkitReleaseCommandsTest extends AbstractTest
      *   A command.
      * @param array $config
      *   A configuration.
+     * @param array $resources
+     *   Resources needed for the test.
      * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testToolkitRelease(string $command, array $config = [], array $expectations = [])
+    public function testToolkitRelease(string $command, array $config = [], array $resources = [], array $expectations = [])
     {
-        $this->markTestIncomplete('Skip test');
-
         // Setup configuration file.
         if (!empty($config)) {
             $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
         }
+
+        $this->prepareResources($resources);
 
         // Run command.
         $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
