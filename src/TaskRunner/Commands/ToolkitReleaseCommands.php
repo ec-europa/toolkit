@@ -6,8 +6,8 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
-use EcEuropa\Toolkit\Toolkit;
 use Robo\Contract\VerbosityThresholdInterface;
+use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -45,16 +45,28 @@ class ToolkitReleaseCommands extends AbstractCommands
      *
      * @hidden
      */
-    public function toolkitVersionWrite(string $version)
+    public function toolkitVersionWrite(ConsoleIO $io, string $version)
     {
+        if (empty($version) || !Semver::satisfies($version, '>0.0.0')) {
+            $io->error('You must provide a valid version as first argument.');
+            return ResultData::EXITCODE_ERROR;
+        }
+        if (!file_exists('src/Toolkit.php')) {
+            $io->error('Could not find the file src/Toolkit.php.');
+            return ResultData::EXITCODE_ERROR;
+        }
         $tasks = [];
-        $tasks[] = $this->taskReplaceInFile(Toolkit::getToolkitRoot() . '/src/Toolkit.php')
+        $tasks[] = $this->taskReplaceInFile('src/Toolkit.php')
             ->regex("#VERSION = '[^']*'#")
             ->to("VERSION = '" . $version . "'");
 
-        $tasks[] = $this->taskReplaceInFile(Toolkit::getToolkitRoot() . '/phpdoc.dist.xml')
-            ->regex('#<version number="[^"]*">#')
-            ->to('<version number="' . $version . '">');
+        if (!file_exists('phpdoc.dist.xml')) {
+            $io->warning('Could not find the file phpdoc.dist.xml, ignoring.');
+        } else {
+            $tasks[] = $this->taskReplaceInFile('phpdoc.dist.xml')
+                ->regex('#<version number="[^"]*">#')
+                ->to('<version number="' . $version . '">');
+        }
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
@@ -83,24 +95,24 @@ class ToolkitReleaseCommands extends AbstractCommands
         'full-link' => InputOption::VALUE_NONE,
     ])
     {
+        // Make sure a version is given.
+        if (empty($version) || !Semver::satisfies($version, '>0.0.0')) {
+            $io->error('You must provide a valid version as first argument.');
+            return ResultData::EXITCODE_ERROR;
+        }
         // Get the latest version from the changelog.
         $changelog_latest = $this->getLatestChangelogVersion();
         $is_first_log = empty($changelog_latest);
-        // If $from is not given, use the version from the changelog file.
-        if (empty($version)) {
-            $io->error('You must provide a valid version as first argument.');
-            return 1;
-        }
         if ($is_first_log && empty($changelog_latest)) {
             $io->error("You must provide a 'from' value, could not find latest version in the $this->changelog file.");
-            return 1;
+            return ResultData::EXITCODE_ERROR;
         }
         if (empty($from)) {
             $from = $changelog_latest;
         }
         if (!$is_first_log && !Semver::satisfies($version, '>' . $from)) {
             $io->error("The given version $version do not satisfies the version $from found in the $this->changelog file.");
-            return 1;
+            return ResultData::EXITCODE_ERROR;
         }
 
         // Get git log.

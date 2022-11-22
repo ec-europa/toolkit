@@ -1,14 +1,43 @@
+- command: 'toolkit:version-write ""'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: "[ERROR] You must provide a valid version as first argument."
+
 - command: 'toolkit:version-write 9.5.0'
   configuration: []
   resources: []
   expectations:
+    - contains: "[ERROR] Could not find the file src/Toolkit.php."
+
+- command: 'toolkit:version-write 9.5.0'
+  configuration: []
+  resources:
+    - from: sample-config.yml
+      to: src/Toolkit.php
+    - from: sample-config.yml
+      to: phpdoc.dist.xml
+  expectations:
     - contains: |
-        [Simulator] Simulating File\Replace('/test/toolkit/src/Toolkit.php')
+        [Simulator] Simulating File\Replace('src/Toolkit.php')
           ->regex('#VERSION = '[^']*'#')
           ->to('VERSION = '9.5.0'')
-        [Simulator] Simulating File\Replace('/test/toolkit/phpdoc.dist.xml')
-        ->regex('#<version number="[^"]*">#')
-        ->to('<version number="9.5.0">')
+        [Simulator] Simulating File\Replace('phpdoc.dist.xml')
+          ->regex('#<version number="[^"]*">#')
+          ->to('<version number="9.5.0">')
+
+- command: 'toolkit:version-write 9.5.0'
+  configuration: []
+  resources:
+    - from: sample-config.yml
+      to: src/Toolkit.php
+  expectations:
+    - contains: |
+        [WARNING] Could not find the file phpdoc.dist.xml, ignoring.
+
+        [Simulator] Simulating File\Replace('src/Toolkit.php')
+          ->regex('#VERSION = '[^']*'#')
+          ->to('VERSION = '9.5.0'')
 
 - command: 'toolkit:changelog-write ""'
   configuration: []
