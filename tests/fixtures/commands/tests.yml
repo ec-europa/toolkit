@@ -2,7 +2,6 @@
 #@command toolkit:test-phpcs
 #@command toolkit:test-phpmd
 #@command toolkit:check-phpcs-requirements
-#@command toolkit:test-phpstan
 #@command toolkit:test-behat
 #@command toolkit:test-phpunit
 #@command toolkit:run-phpcbf
@@ -147,3 +146,90 @@
           ->option('show-deprecated')
           ->rawArg('.')
         [Simulator] Running ./vendor/bin/parallel-lint --exclude vendor/ --exclude web/ -e 'php,module,inc,theme,install' --show-deprecated .
+
+- command: 'toolkit:test-phpstan'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: ">  Could not find a Drupal installation, skipping."
+
+- command: 'toolkit:test-phpstan'
+  configuration: []
+  resources:
+    - mkdir: web
+  expectations:
+    - contains: |
+        [Simulator] Simulating File\Write('phpstan.neon')
+          ->text('parameters: ... ')
+        [Simulator] Simulating Exec('./vendor/bin/phpstan')
+          ->arg('analyse')
+          ->options(array (
+            'memory-limit' => '4G',
+            'configuration' => 'phpstan.neon',
+          ), '=')
+        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=4G --configuration=phpstan.neon
+
+- command: 'toolkit:test-phpstan --memory-limit=512M'
+  configuration: []
+  resources:
+    - mkdir: web
+  expectations:
+    - contains: |
+        [Simulator] Simulating File\Write('phpstan.neon')
+          ->text('parameters: ... ')
+        [Simulator] Simulating Exec('./vendor/bin/phpstan')
+          ->arg('analyse')
+          ->options(array (
+            'memory-limit' => '512M',
+            'configuration' => 'phpstan.neon',
+          ), '=')
+        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=512M --configuration=phpstan.neon
+
+- command: 'toolkit:test-phpstan'
+  configuration:
+    toolkit:
+      test:
+        phpstan:
+          config: fake
+          level: 3
+          files: [ test.php, test2.php ]
+          memory-limit: 512M
+          options: debug
+  resources:
+    - mkdir: web
+    - from: sample-config.yml
+      to: test.php
+    - from: sample-config.yml
+      to: test2.php
+  expectations:
+    - contains: |
+        [Simulator] Simulating File\Write('fake')
+          ->text('parameters: ... ')
+        [Simulator] Simulating Exec('./vendor/bin/phpstan')
+          ->arg('analyse')
+          ->options(array (
+            'memory-limit' => '4G',
+            'configuration' => 'fake',
+          ), '=')
+          ->options(array (
+            'debug' => NULL,
+          ))
+        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=4G --configuration=fake --debug
+
+- command: 'toolkit:test-phpstan --memory-limit=512M --config=fake --level=3'
+  configuration: []
+  resources:
+    - mkdir: web
+    - from: sample-config.yml
+      to: test.php
+    - from: sample-config.yml
+      to: fake
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/phpstan')
+          ->arg('analyse')
+          ->options(array (
+            'memory-limit' => '512M',
+            'configuration' => 'fake',
+          ), '=')
+        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=512M --configuration=fake
