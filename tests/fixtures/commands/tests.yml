@@ -185,12 +185,22 @@
           ), '=')
         [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=512M --configuration=phpstan.neon
 
-- command: 'toolkit:test-phpstan --memory-limit=512M --config=fake --level=3'
-  configuration: []
+- command: 'toolkit:test-phpstan'
+  configuration:
+    toolkit:
+      test:
+        phpstan:
+          config: fake
+          level: 3
+          files: [ test.php, test2.php ]
+          memory-limit: 512M
+          options: debug
   resources:
     - mkdir: web
     - from: sample-config.yml
       to: test.php
+    - from: sample-config.yml
+      to: test2.php
   expectations:
     - contains: |
         [Simulator] Simulating File\Write('fake')
@@ -198,10 +208,13 @@
         [Simulator] Simulating Exec('./vendor/bin/phpstan')
           ->arg('analyse')
           ->options(array (
-            'memory-limit' => '512M',
+            'memory-limit' => '4G',
             'configuration' => 'fake',
           ), '=')
-        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=512M --configuration=fake
+          ->options(array (
+            'debug' => NULL,
+          ))
+        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=4G --configuration=fake --debug
 
 - command: 'toolkit:test-phpstan --memory-limit=512M --config=fake --level=3'
   configuration: []

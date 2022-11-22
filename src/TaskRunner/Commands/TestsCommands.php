@@ -297,14 +297,18 @@ class TestsCommands extends AbstractCommands
      * @option level        The level of rule options.
      * @option files        The files to check.
      * @option memory-limit The PHP memory limit.
+     * @option options      Extra options for the command without -- (only options with no value).
      *
      * @aliases tk-phpstan
+     *
+     * @usage --memory-limit='4G' --options='debug'
      */
     public function toolkitTestPhpstan(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
         'level' => InputOption::VALUE_REQUIRED,
         'files' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
         'memory-limit' => InputOption::VALUE_OPTIONAL,
+        'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
         $config = $this->getConfig();
@@ -336,12 +340,20 @@ class TestsCommands extends AbstractCommands
             $tasks[] = $this->taskWriteToFile($options['config'])
                 ->text(Yaml::dump($config_content, 10, 2));
         }
-        $tasks[] = $this->taskExec($this->getBin('phpstan'))
+
+        $exec = $this->taskExec($this->getBin('phpstan'))
             ->arg('analyse')
             ->options([
                 'memory-limit' => $options['memory-limit'],
                 'configuration' => $options['config']
             ], '=');
+
+        if (!empty($options['options'])) {
+            $extraOptions = array_fill_keys(explode(' ', $options['options']), null);
+            $exec->options($extraOptions);
+        }
+
+        $tasks[] = $exec;
         return $this->collectionBuilder()->addTaskList($tasks);
     }
 
