@@ -55,8 +55,6 @@ pipeline:
     commands:
       - /scripts/run.sh echo "Container ready"
       - PROJECT=$(pwd) composer toolkit-install
-      - composer install
-      - ls -la .
       - rm -rf ./.tmp/ ./build
       - cp ./includes/phing/props/drone.props build.develop.props
       - ./toolkit/phing project-properties-validate ${PHING_OPTS}
