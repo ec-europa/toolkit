@@ -163,7 +163,7 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-dev
      *
-     * @option root  Drupal root.
+     * @option root Drupal root.
      *
      * @aliases tk-bdev
      */
@@ -226,8 +226,8 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-dev-reset
      *
-     * @option root  Drupal root.
-     * @option yes   Skip the question.
+     * @option root Drupal root.
+     * @option yes  Skip the question.
      */
     public function buildDevReset(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -290,10 +290,10 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-assets
      *
-     * @option default-theme       The theme where to build assets.
-     * @option build-npm-packages  The packages to install.
-     * @option validate            Whether to validate or fix the scss.
-     * @option theme-task-runner   The runner to use, one of 'grunt' or 'gulp'.
+     * @option default-theme      The theme where to build assets.
+     * @option build-npm-packages The packages to install.
+     * @option validate           Whether to validate or fix the scss.
+     * @option theme-task-runner  The runner to use, one of 'grunt' or 'gulp'.
      *
      * @aliases tba, tk-assets
      *

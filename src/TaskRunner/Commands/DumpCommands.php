@@ -107,8 +107,8 @@ class DumpCommands extends AbstractCommands
      *
      * @command toolkit:download-dump
      *
-     * @option is-admin  For nextcloud admin user.
-     * @option yes       Skip the question to download newer dump.
+     * @option is-admin For nextcloud admin user.
+     * @option yes      Skip the question to download newer dump.
      *
      * @return \Robo\Collection\CollectionBuilder
      *   Collection builder.

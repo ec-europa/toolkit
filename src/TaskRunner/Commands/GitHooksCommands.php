@@ -38,7 +38,7 @@ class GitHooksCommands extends AbstractCommands
      *
      * @command toolkit:hooks-enable
      *
-     * @option hooks  The hooks to enable (default: toolkit.hooks.active)
+     * @option hooks The hooks to enable (default: toolkit.hooks.active)
      *
      * @usage --hooks=pre-push
      */
@@ -88,7 +88,7 @@ class GitHooksCommands extends AbstractCommands
      *
      * @command toolkit:hooks-disable
      *
-     * @option hooks  The hooks to disable (default: toolkit.git.hooks)
+     * @option hooks The hooks to disable (default: toolkit.git.hooks)
      */
     public function hooksDisable(ConsoleIO $io, array $options = [
         'hooks' => InputOption::VALUE_REQUIRED,

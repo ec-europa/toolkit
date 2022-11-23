@@ -118,8 +118,8 @@ toolkit:
     phpcs:
       mode: phpcs
       config: phpcs.xml
-      ignore_annotations: 'false'
-      show_sniffs: 'false'
+      ignore_annotations: false
+      show_sniffs: false
       standards:
         - ./vendor/drupal/coder/coder_sniffer/Drupal
         - ./vendor/drupal/coder/coder_sniffer/DrupalPractice

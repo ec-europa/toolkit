@@ -142,11 +142,11 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:test-phpmd
      *
-     * @option config           The config file.
-     * @option format           The format to use.
-     * @option ignore_patterns  An array with ignore patterns.
-     * @option triggered_by     An array with extensions to check.
-     * @option files            An array with paths to check.
+     * @option config          The config file.
+     * @option format          The format to use.
+     * @option ignore_patterns An array with ignore patterns.
+     * @option triggered_by    An array with extensions to check.
+     * @option files           An array with paths to check.
      *
      * @aliases tk-phpmd
      */
@@ -438,9 +438,9 @@ class TestsCommands extends AbstractCommands
      *
      * @aliases tp, tk-phpunit
      *
-     * @option execution   The execution type (default or parallel).
-     * @option from        The dist config file (phpunit.xml.dist).
-     * @option to          The destination config file (phpunit.xml).
+     * @option execution The execution type (default or parallel).
+     * @option from      The dist config file (phpunit.xml.dist).
+     * @option to        The destination config file (phpunit.xml).
      */
     public function toolkitTestPhpunit(array $options = [
         'execution' => InputOption::VALUE_REQUIRED,
@@ -519,11 +519,11 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:setup-eslint
      *
-     * @option config       The eslint config file.
-     * @option ignores      The patterns to ignore.
-     * @option drupal-root  The drupal root.
-     * @option packages     The npm packages to install.
-     * @option force        If true, the config file will be deleted.
+     * @option config      The eslint config file.
+     * @option ignores     The patterns to ignore.
+     * @option drupal-root The drupal root.
+     * @option packages    The npm packages to install.
+     * @option force       If true, the config file will be deleted.
      *
      * @return int
      */
@@ -711,9 +711,9 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:lint-php
      *
-     * @option exclude     The eslint config file.
-     * @option extensions  The extensions to check.
-     * @option options     Extra options for the command without -- (only options with no value).
+     * @option exclude    The eslint config file.
+     * @option extensions The extensions to check.
+     * @option options    Extra options for the command without -- (only options with no value).
      *
      * @aliases tlp, tk-php
      */
