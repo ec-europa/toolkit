@@ -29,7 +29,7 @@ class ToolkitReleaseCommands extends AbstractCommands
     private string $releaseBranch = 'release/9.x';
 
     /**
-     * Holds the base url for the Pull requests.
+     * The Toolkit repo url.
      *
      * @var string
      */
