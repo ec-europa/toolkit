@@ -127,7 +127,6 @@ pipeline:
     secrets: [ github_api_token ]
     commands:
       - composer self-update --1
-      - touch /test/toolkit/composer.lock
       - ./toolkit/phing test-run-phpcs ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
