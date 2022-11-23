@@ -26,7 +26,7 @@ services:
     detach: true
     environment: &env
       - DOCUMENT_ROOT=/test/toolkit/build
-      - COMPOSERVER='1.10.26'
+      - COMPOSERVER=1.10.26
   selenium:
     image: registry.fpfis.eu/fpfis/selenium:standalone-chrome-${SELENIUM_VERSION=3.141.59-20210913}
     shm_size: 2gb
