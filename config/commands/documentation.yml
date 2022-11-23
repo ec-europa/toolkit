@@ -7,3 +7,4 @@ command:
         docs-dir: docs
         tmp-dir: docs_tmp
         branch: documentation
+        push: false

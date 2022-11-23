@@ -1,4 +1,3 @@
-
 Building assets
 ===============
 
@@ -8,7 +7,6 @@ Overview
 Toolkit provides a way to build theme assets with Gulp.js.
 
 By default, a gulpfile is included and as well some npm packages in order to:
-
 
 * Look for Scss files and convert them into Css
 * Minify Css and Js
@@ -29,7 +27,6 @@ Source files
 
 The folder structure for the source files should be aligned like this:
 
-
 * {your-theme-folder}/src/scss
 * {your-theme-folder}/src/js
 
@@ -38,7 +35,7 @@ After this task is complete the generated folder '{your-theme}/assets' will look
 .. code-block::
 
    /your-theme
-     /assests
+     /assets
        /css
          style.min.css
        /js

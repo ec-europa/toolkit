@@ -102,6 +102,26 @@ Create your command class under ``src/TaskRunner/Commands`` that will extend the
    public function commandOne() { }
  }
 
+Creating configuration commands
+----
+
+Configuration commands are created in the configuration file ``runner.yml``, like shown below:
+
+.. code-block:: yaml
+
+   commands:
+     drupal:setup-test:
+       - { task: process, source: behat.yml.dist, destination: behat.yml }
+
+     drupal:setup-test2:
+       aliases: test
+       description: 'Setup the behat file'
+       help: 'Some help text'
+       hidden: false
+       usage: '--simulate'
+       tasks:
+         - { task: process, source: behat.yml.dist, destination: behat.yml }
+
 The configuration commands are a mapping to the `Robo Tasks <https://robo.li/#tasks>`_, the
 list of available tasks is:
 

@@ -115,48 +115,7 @@ class ToolkitReleaseCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        // Get git log.
-        $result = $this->taskExec('git')
-            ->arg('log')
-            ->arg($from . '...' . $this->releaseBranch)
-            ->options([
-                'pretty' => '%s##%an##%ae',
-                'reverse' => null,
-            ], '=')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()
-            ->getMessage();
-
-        $changelog = [];
-        foreach (explode(PHP_EOL, $result) as $item) {
-            $data = explode('##', $item);
-            if (empty($data[0]) || empty($data[1]) || empty($data[2])) {
-                continue;
-            }
-
-            $pr = '';
-            $message = $data[0];
-            $name = $data[1];
-            $email = $data[2];
-            // Extract PR from the message.
-            if (preg_match('#(.+) (\(\#[0-9]+\))$#', $message, $matches)) {
-                $message = $matches[1] ?? '';
-                $pr = isset($matches[2]) ? trim($matches[2], '(#)') : '';
-            }
-            // Try to get username from email.
-            if (preg_match('#^[0-9]+\+(.+)@users.noreply.github.com$#', $email, $matches)) {
-                $name = '@' . $matches[1] ?? '';
-            }
-
-            $log = '  - ' . trim($message, '.') . '.';
-            if ($options['show-name'] === true) {
-                $log .= ' by ' . $name;
-            }
-            if ($options['show-pr'] === true) {
-                $log .= " in $this->repo/pull/$pr";
-            }
-            $changelog[] = $log;
-        }
+        $changelog = $this->prepareChangelog($from, $options);
 
         if ($options['full-link'] === true) {
             $changelog[] = '';
@@ -207,6 +166,81 @@ class ToolkitReleaseCommands extends AbstractCommands
         $content = file_get_contents($this->changelog);
         preg_match('/## Version (.*)/', $content, $match);
         return !empty($match[1]) ? $match[1] : '';
+    }
+
+    /**
+     * Get the git log and process it.
+     *
+     * @param string $from
+     *   The row to process.
+     * @param array $options
+     *   The command options.
+     *
+     * @return array
+     *   An array containing the changelog.
+     */
+    private function prepareChangelog(string $from, array $options)
+    {
+        // Get git log.
+        $result = $this->taskExec('git')
+            ->arg('log')
+            ->arg($from . '...' . $this->releaseBranch)
+            ->options([
+                'pretty' => '%s##%an##%ae',
+                'reverse' => null,
+            ], '=')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()
+            ->getMessage();
+
+        $changelog = [];
+        foreach (explode(PHP_EOL, $result) as $item) {
+            $data = explode('##', $item);
+            if (empty($data[0]) || empty($data[1]) || empty($data[2])) {
+                continue;
+            }
+            $changelog[] = $this->prepareChangelogRow($data, $options);
+        }
+
+        return $changelog;
+    }
+
+    /**
+     * Prepare the changelog row.
+     *
+     * @param array $data
+     *   The row to process.
+     * @param array $options
+     *   The command options.
+     *
+     * @return string
+     *   The prepared row.
+     */
+    private function prepareChangelogRow(array $data, array $options)
+    {
+        $message = $data[0];
+        $name = $data[1];
+        $email = $data[2];
+        // Extract PR from the message.
+        $pr = '';
+        if (preg_match('#(.+) (\(\#[0-9]+\))$#', $message, $matches)) {
+            $message = $matches[1] ?? '';
+            $pr = isset($matches[2]) ? trim($matches[2], '(#)') : '';
+        }
+        // Try to get username from email.
+        if (preg_match('#^[0-9]+\+(.+)@users.noreply.github.com$#', $email, $matches)) {
+            $name = '@' . $matches[1] ?? '';
+        }
+
+        $log = '  - ' . trim($message, '.') . '.';
+        if ($options['show-name'] === true) {
+            $log .= ' by ' . $name;
+        }
+        if ($options['show-pr'] === true) {
+            $log .= ' in ' . $this->repo . "/pull/$pr";
+        }
+
+        return $log;
     }
 
 }

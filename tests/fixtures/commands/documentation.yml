@@ -60,6 +60,41 @@
         [Simulator] Simulating Filesystem\CopyDir(array (
             'documentation' => 'docs_tmp',
           ))
+        No --push given, skip.
+        [Simulator] Simulating Filesystem\DeleteDir('docs_tmp')
+
+- command: 'toolkit:generate-documentation --docs-dir=documentation --push'
+  resources:
+    - mkdir: docs_tmp
+    - from: sample-bin
+      to: vendor/bin/phpDoc
+    - from: sample-config.yml
+      to: documentation/index.rst
+    - from: sample-package.json
+      to: documentation/guide/test.html
+    - from: sample-commands.rst
+      to: documentation/guide/test.rst
+  expectations:
+    - contains: |
+        [Simulator] Simulating Filesystem\DeleteDir('docs_tmp')
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->copy('documentation/guide/test.rst', 'docs_tmp/guide/test.rst')
+          ->copy('documentation/index.rst', 'docs_tmp/index.rst')
+        [Simulator] Simulating Filesystem\CleanDir('documentation')
+        [Simulator] Simulating Filesystem\CopyDir(array (
+            'docs_tmp' => 'documentation',
+          ))
+        [Simulator] Simulating Exec('./vendor/bin/phpDoc')
+        [Simulator] Running ./vendor/bin/phpDoc
+        [Simulator] Simulating Filesystem\CleanDir('docs_tmp')
+
+        [Vcs\GitStack] Running git clone --depth 1 https://github.com/ec-europa/toolkit docs_tmp --branch documentation
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->remove(array (
+          ))
+        [Simulator] Simulating Filesystem\CopyDir(array (
+            'documentation' => 'docs_tmp',
+          ))
         [Simulator] Simulating ExecStack()
           ->stopOnFail()
           ->exec('git -C docs_tmp config user.name "Toolkit"')
