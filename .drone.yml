@@ -24,8 +24,9 @@ services:
   web:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     detach: true
-    environment:
+    environment: &env
       - DOCUMENT_ROOT=/test/toolkit/build
+      - COMPOSERVER='--1'
   selenium:
     image: registry.fpfis.eu/fpfis/selenium:standalone-chrome-${SELENIUM_VERSION=3.141.59-20210913}
     shm_size: 2gb
@@ -41,9 +42,9 @@ services:
       - MYSQL_PASSWORD=password
       - MYSQL_DATABASE=toolkit
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
-  solr:
-    image: registry.fpfis.eu/fpfis/solr:5
-    detach: true
+  #solr:
+  #  image: registry.fpfis.eu/fpfis/solr:5
+  #  detach: true
 
 pipeline:
   setup:
@@ -51,8 +52,14 @@ pipeline:
     group: setup
     secrets: [ github_api_token ]
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
+      #- composer self-update --1
+      - composer --version
+      - ls -la .
       - PROJECT=$(pwd) composer toolkit-install
+      - ls -la .
+      - composer install
+      - ls -la .
       - rm -rf ./.tmp/ ./build
       - cp ./includes/phing/props/drone.props build.develop.props
       - ./toolkit/phing project-properties-validate ${PHING_OPTS}
@@ -64,7 +71,9 @@ pipeline:
     group: build
     secrets: [ github_api_token ]
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
+      #- composer self-update --1
+      - composer --version
       - ./toolkit/phing build-platform build-subsite-dev ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
@@ -74,6 +83,7 @@ pipeline:
     secrets: [ github_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass ]
     group: asda-nextcloud
     commands:
+      - /scripts/run.sh echo "Container ready"
       - ./toolkit/phing cache-clear-global
       - ./toolkit/phing project-database-download -Dproject.id=${ASDA_PROJECT_ID} -Ddb.dl.nextcloud.admin=true ${PHING_OPTS}
       - ./toolkit/phing project-asda-date -Dproject.id=${ASDA_PROJECT_ID} ${PHING_OPTS}
@@ -85,7 +95,9 @@ pipeline:
     group: install-clean
     secrets: [ github_api_token ]
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
+      #- composer self-update --1
+      - composer --version
       - ./toolkit/phing install-clean ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
@@ -96,7 +108,9 @@ pipeline:
     group: install-clone
     secrets: [ github_api_token ]
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
+      #- composer self-update --1
+      - composer --version
       - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql.gz' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
@@ -106,7 +120,9 @@ pipeline:
     group: smoke-tests
     secrets: [ github_api_token ]
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
+      #- composer self-update --1
+      - composer --version
       - ./toolkit/phing drush-run-smoketest ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
@@ -116,7 +132,9 @@ pipeline:
     group: behat
     secrets: [ github_api_token ]
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
+      #- composer self-update --1
+      - composer --version
       - ./toolkit/phing test-run-behat ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
@@ -126,7 +144,9 @@ pipeline:
     group: coding-standards
     secrets: [ github_api_token ]
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
+      #- composer self-update --1
+      - composer --version
       - ./toolkit/phing test-run-phpcs ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
@@ -146,7 +166,9 @@ pipeline:
     group: create-distribution
     secrets: [ github_api_token ]
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
+      #- composer self-update --1
+      - composer --version
       - ./toolkit/phing create-distribution ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
@@ -156,7 +178,9 @@ pipeline:
     group: git-hooks
     secrets: [ github_api_token ]
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
+      #- composer self-update --1
+      - composer --version
       - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing git-hook-disable ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
