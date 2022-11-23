@@ -12,10 +12,10 @@ matrix:
       PHING_OPTS: -logger phing.listener.AnsiColorLogger
       BUILD_OPTIONS: -D'platform.package.version'='2.6' -D'profile'='multisite_drupal_standard' -D'db.name'='toolkit'
       ASDA_PROJECT_ID: comm-cwt2019
-    #- PHP_VERSION: 7.4
-    #  PHING_OPTS: -logger phing.listener.AnsiColorLogger
-    #  BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.85' -D'db.name'='toolkit'
-    #  ASDA_PROJECT_ID: comm-cwt2019
+    - PHP_VERSION: 7.4
+      PHING_OPTS: -logger phing.listener.AnsiColorLogger
+      BUILD_OPTIONS: -D'profile'='drupal' -D'profile.name'='minimal' -D'profile.core'='7.85' -D'db.name'='toolkit'
+      ASDA_PROJECT_ID: comm-cwt2019
 
 # ==============================================================================
 # Main services
@@ -113,7 +113,7 @@ pipeline:
 
   behat:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
-    group: coding-standards
+    group: behat
     secrets: [ github_api_token ]
     commands:
       - composer self-update --1
