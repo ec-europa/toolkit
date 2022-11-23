@@ -85,7 +85,7 @@ class TestsCommands extends AbstractCommands
         $element->setAttribute('value', 'p');
         $root->appendChild($element);
         // Handle show sniffs.
-        if ($config->get('toolkit.test.phpcs.show_sniffs') === 'true') {
+        if ($config->get('toolkit.test.phpcs.show_sniffs') === true) {
             $element = $phpcs_xml->createElement('arg');
             $element->setAttribute('value', 's');
             $root->appendChild($element);
@@ -243,7 +243,7 @@ class TestsCommands extends AbstractCommands
         $this->toolkitCheckPhpcsRequirements();
 
         $options = '';
-        if ($config->get('toolkit.test.phpcs.ignore_annotations') === 'true') {
+        if ($config->get('toolkit.test.phpcs.ignore_annotations') === true) {
             $options .= ' --ignore-annotations';
         }
         return $this->taskExec("$phpcs_bin --standard=$config_file$options")

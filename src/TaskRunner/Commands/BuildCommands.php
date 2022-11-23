@@ -383,7 +383,7 @@ class BuildCommands extends AbstractCommands
                 return $collection->run();
             }
         } else {
-            $this->say("The theme '{$options['default-theme']}'  couldn't be found on the '{$options['custom-code-folder']}' folder.");
+            $this->say("The theme '{$options['default-theme']}' couldn't be found on the '{$options['custom-code-folder']}' folder.");
             return 0;
         }
     }
