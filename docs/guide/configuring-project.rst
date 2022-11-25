@@ -1,4 +1,3 @@
-
 Configuring a project
 =====================
 

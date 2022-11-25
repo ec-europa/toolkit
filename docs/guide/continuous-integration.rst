@@ -1,15 +1,19 @@
-
 Continuous integration
 ======================
 
 To check the status of the continuous integration of your project, go to `Drone <https://drone.fpfis.eu/ec-europa>`_.
 
-A pipeline - created and maintained by DIGIT - is applied by default. It manages the code review of the code, runs all the business tests on the repository and builds the site artifact for the deployment. Customizing this pipeline, under express approval, is possible by adding a custom .drone.yml file to the project's root folder. For more detailed information on the pipelines you can visit https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines .
+A pipeline - created and maintained by DIGIT - is applied by default. It manages the code review of the code, runs all
+the business tests on the repository and builds the site artifact for the deployment. Customizing this pipeline, under
+express approval, is possible by adding a custom .drone.yml file to the project's root folder. For more detailed
+information on the pipelines you can visit https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines .
 
 Demo mode
 ---------
 
-The pipeline allows for an ephemeral environment to be spawned for a limited amount of time. This is done by creating a pull request from a branch named **demo** to the **master** branch. After the project is built a tunnel will open that gives you access to the build. The url comes in the format of:
+The pipeline allows for an ephemeral environment to be spawned for a limited amount of time. This is done by creating a
+pull request from a branch named **demo** to the **master** branch. After the project is built a tunnel will open that
+gives you access to the build. The url comes in the format of:
 
 .. code-block::
 
@@ -25,4 +29,6 @@ You can simply copy/paste the tunnel url and visit your site.
 Deploy mode
 -----------
 
-The pipeline allows for an automatic deployment to the acceptance environment. This is done by creating a pull request from a branch named **deploy** to the **master** branch. After the pipeline passes all required tests it will automatically merge your pull request into master and trigger the deployment to the acceptance environment.
+The pipeline allows for an automatic deployment to the acceptance environment. This is done by creating a pull request
+from a branch named **deploy** to the **master** branch. After the pipeline passes all required tests it will
+automatically merge your pull request into master and trigger the deployment to the acceptance environment.
