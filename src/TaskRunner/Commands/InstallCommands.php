@@ -33,7 +33,7 @@ class InstallCommands extends AbstractCommands
      *
      * @command toolkit:install-clean
      *
-     * @option config-file  The path to the config file.
+     * @option config-file The path to the config file.
      *
      * @aliases tk-iclean
      *
@@ -96,9 +96,9 @@ class InstallCommands extends AbstractCommands
      *
      * @command toolkit:run-deploy
      *
-     * @option sequence-file  The file that holds the deployment sequence.
-     * @option sequence-key   The key under which the commands are defined.
-     * @option config-file    The config file that triggers the config import.
+     * @option sequence-file The file that holds the deployment sequence.
+     * @option sequence-key  The key under which the commands are defined.
+     * @option config-file   The config file that triggers the config import.
      */
     public function toolkitRunDeploy(array $options = [
         'sequence-file' => InputOption::VALUE_REQUIRED,

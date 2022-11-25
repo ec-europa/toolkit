@@ -1,4 +1,3 @@
-
 Git hooks
 =========
 
@@ -9,9 +8,8 @@ Toolkit provides a way to activate or deactivate git hooks.
 
 By default, Toolkit provides three hooks:
 
-
 * pre-commit: Run the PHPcs against the modified files.
-* prepare-commit-msg: Check if the commit message mets the conditions.
+* prepare-commit-msg: Check if the commit message meets the conditions.
 * pre-push: Run a set of linters and checks.
 
 Configuration
@@ -75,7 +73,7 @@ Labels:
 
 ``Active by config`` - Whether the hook is active in configuration.
 
-``Hooks exists`` - Whether the hook is enable under ``.git/hooks`` folder.
+``Hooks exists`` - Whether the hook is enabled under ``.git/hooks`` folder.
 
 ``Modified file`` - Whether the hook is not the same as in the ``resources/git/hooks`` folder.
 

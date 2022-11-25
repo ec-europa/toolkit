@@ -51,6 +51,13 @@ class DocumentationCommands extends AbstractCommands
     private string $branch;
 
     /**
+     * Whether to push the documentation.
+     *
+     * @var bool
+     */
+    private bool $push;
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
@@ -68,6 +75,7 @@ class DocumentationCommands extends AbstractCommands
      * @option docs-dir The documentation directory.
      * @option tmp-dir  The temporary directory.
      * @option branch   The documentation branch.
+     * @option push     If set, the documentation will be pushed.
      *
      * @hidden
      *
@@ -79,10 +87,11 @@ class DocumentationCommands extends AbstractCommands
         'docs-dir' => InputOption::VALUE_REQUIRED,
         'tmp-dir' => InputOption::VALUE_REQUIRED,
         'branch' => InputOption::VALUE_REQUIRED,
+        'push' => InputOption::VALUE_NONE,
     ])
     {
-        if (empty($options['token']) || $options['token'] === '${env.GITHUB_API_TOKEN}') {
-            $io->error('The env var GITHUB_API_TOKEN is required.');
+        if ($options['push'] && empty($options['token']) || $options['token'] === '${env.GITHUB_API_TOKEN}') {
+            $io->error('The env var GITHUB_API_TOKEN is required to push.');
             return ResultData::EXITCODE_ERROR;
         }
 
@@ -96,6 +105,7 @@ class DocumentationCommands extends AbstractCommands
         $this->docsDir = $options['docs-dir'];
         $this->tmpDir = $options['tmp-dir'];
         $this->branch = $options['branch'];
+        $this->push = $options['push'];
         $builder = $this->collectionBuilder();
 
         if (file_exists($this->tmpDir)) {
@@ -150,9 +160,14 @@ class DocumentationCommands extends AbstractCommands
     private function gitClone(): array
     {
         $tasks = [];
-        $repo = sprintf($this->repo, $this->token);
+        // Only apply the token if we have the option push.
+        if ($this->push) {
+            $repo = sprintf($this->repo, $this->token);
+        } else {
+            $repo = str_replace('%s@', '', $this->repo);
+        }
         $tasks[] = $this->collectionBuilder()->addCode(function () use ($repo) {
-            // Remove the token from the url for output.
+            // Remove the token from the url for output if given.
             if (str_contains($repo, '@')) {
                 $protocol = strstr($repo, '://', true);
                 $repo = $protocol . '://' . substr(strstr($repo, '@'), 1);
@@ -176,6 +191,12 @@ class DocumentationCommands extends AbstractCommands
      */
     private function gitAddCommitPush()
     {
+        if (!$this->push) {
+            return $this->collectionBuilder()->addCode(function () {
+                $this->output()->writeln('No --push given, skip.');
+            });
+        }
+
         return $this->taskExecStack()
             ->stopOnFail()
             ->exec('git -C ' . $this->tmpDir . ' config user.name "Toolkit"')

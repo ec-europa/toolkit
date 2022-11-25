@@ -79,11 +79,10 @@ class DrupalCommands extends AbstractCommands
      *
      * @command drupal:settings-setup
      *
-     * @option root                     Drupal root.
-     * @option sites-subdir             Drupal site subdirectory.
-     * @option force                    Drupal force generation of a new
-     *                                  settings.php.
-     * @option skip-permissions-setup   Drupal skip permissions setup.
+     * @option root                   Drupal root.
+     * @option sites-subdir           Drupal site subdirectory.
+     * @option force                  Drupal force generation of a new settings.php.
+     * @option skip-permissions-setup Drupal skip permissions setup.
      */
     public function drupalSettingsSetup(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -130,8 +129,8 @@ class DrupalCommands extends AbstractCommands
      *
      * @command drupal:permissions-setup
      *
-     * @option root                     Drupal root.
-     * @option sites-subdir             Drupal site subdirectory.
+     * @option root         Drupal root.
+     * @option sites-subdir Drupal site subdirectory.
      *
      * @return \Robo\Collection\CollectionBuilder
      */
@@ -208,8 +207,8 @@ class DrupalCommands extends AbstractCommands
      *
      * @command drupal:drush-setup
      *
-     * @option root         Drupal root.
-     * @option config-dir   Directory where to store Drush 9 configuration file.
+     * @option root       Drupal root.
+     * @option config-dir Directory where to store Drush 9 configuration file.
      *
      * @return \Robo\Collection\CollectionBuilder
      */
@@ -250,7 +249,7 @@ class DrupalCommands extends AbstractCommands
      * @option database-name          Database name.
      * @option database-user          Database username.
      * @option database-password      Database password.
-     * @option sites-subdir           Sites sub-directory.
+     * @option sites-subdir           Sites subdirectory.
      * @option existing-config        Whether existing config should be imported during installation.
      * @option skip-permissions-setup Whether to skip making the settings file and folder writable during installation.
      *
