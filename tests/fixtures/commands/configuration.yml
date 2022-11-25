@@ -36,29 +36,55 @@
           - { task: process, source: behat.yml.dist, destination: behat.yml }
   resources: []
   expectations:
-    - contains: |
-        Description:
-          Setup the behat file
+    robo4:
+      - contains: |
+          Description:
+            Setup the behat file
 
-        Usage:
-          example:full
-          full
-          example:full --simulate
+          Usage:
+            example:full
+            full
+            example:full --simulate
 
-        Options:
-          -h, --help                           Display help for the given command. When no command is given display help for the list command
-          -q, --quiet                          Do not output any message
-          -V, --version                        Display this application version
-              --ansi|--no-ansi                 Force (or disable --no-ansi) ANSI output
-          -n, --no-interaction                 Do not ask any interactive question
-              --simulate                       Run in simulated mode (show what would have happened).
-              --progress-delay=PROGRESS-DELAY  Number of seconds before progress bar is displayed in long-running task collections. Default: 2s. [default: 2]
-          -D, --define=DEFINE                  Define a configuration item value. (multiple values allowed)
-              --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox"]
-          -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+          Options:
+            -h, --help                           Display help for the given command. When no command is given display help for the list command
+            -q, --quiet                          Do not output any message
+            -V, --version                        Display this application version
+                --ansi|--no-ansi                 Force (or disable --no-ansi) ANSI output
+            -n, --no-interaction                 Do not ask any interactive question
+                --simulate                       Run in simulated mode (show what would have happened).
+                --progress-delay=PROGRESS-DELAY  Number of seconds before progress bar is displayed in long-running task collections. Default: 2s. [default: 2]
+            -D, --define=DEFINE                  Define a configuration item value. (multiple values allowed)
+                --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox"]
+            -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
-        Help:
-          Some help text
+          Help:
+            Some help text
+    robo3:
+      - contains: |
+          Description:
+            Setup the behat file
+
+          Usage:
+            example:full
+            full
+            example:full --simulate
+
+          Options:
+            -h, --help                           Display this help message
+            -q, --quiet                          Do not output any message
+            -V, --version                        Display this application version
+                --ansi                           Force ANSI output
+                --no-ansi                        Disable ANSI output
+            -n, --no-interaction                 Do not ask any interactive question
+                --simulate                       Run in simulated mode (show what would have happened).
+                --progress-delay=PROGRESS-DELAY  Number of seconds before progress bar is displayed in long-running task collections. Default: 2s. [default: 2]
+            -D, --define=DEFINE                  Define a configuration item value. (multiple values allowed)
+                --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox"]
+            -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+          Help:
+            Some help text
 
 - command: 'test:tasks'
   configuration:
@@ -69,7 +95,7 @@
         - { task: copy, from: test.txt, to: test-2.txt }
         - { task: copy, from: test.txt, to: test-3.txt }
         - { task: copy, from: test.txt, to: test-4.txt }
-        - { task: chmod, file: test-2.txt, permissions: 0775 }
+        - { task: chmod, file: test-2.txt, permissions: '0775' }
         - { task: chgrp, file: test-2.txt, group: root }
         - { task: chown, file: test-2.txt, user: root }
         - { task: remove, file: test-4.txt }
