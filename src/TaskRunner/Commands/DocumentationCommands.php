@@ -128,6 +128,32 @@ class DocumentationCommands extends AbstractCommands
     }
 
     /**
+     * Generate the list of commands in the commands.rst file.
+     *
+     * @command toolkit:generate-commands-list
+     *
+     * @hidden
+     *
+     * @aliases tk-gcl
+     */
+    public function toolkitGenerateCommandsList()
+    {
+        // Get the available commands.
+        $commands = $this->taskExec($this->getBin('run'))
+            ->silent(true)->run()->getMessage();
+        // Remove the header part.
+        $commands = preg_replace('/((.|\n)*)(Available commands:)/', '\3', $commands);
+        // Add spaces to match the .rst format.
+        $commands = preg_replace('/^/im', ' ', $commands);
+
+        $start = ".. toolkit-block-commands\n\n.. code-block::\n\n";
+        $end = "\n\n.. toolkit-block-commands-end";
+        $task = $this->taskReplaceBlock('docs/guide/commands.rst')
+            ->start($start)->end($end)->content($commands);
+        return $this->collectionBuilder()->addTask($task);
+    }
+
+    /**
      * Backup all *.rst files.
      */
     private function backupRelevantFiles()

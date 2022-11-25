@@ -11,7 +11,7 @@ use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 
-class ToolkitReleaseCommands extends AbstractCommands
+class ReleaseCommands extends AbstractCommands
 {
 
     /**

@@ -52,26 +52,34 @@ abstract class AbstractTest extends TestCase
     }
 
     /**
-     * Helper function to assert contain / not contain expectations.
+     * Helper function to do dynamic assertions.
      *
      * @param string $content
      *   Content to test.
      * @param array $expected
      *   Content expected.
      */
-    protected function assertContainsNotContains(string $content, array $expected)
+    protected function assertDynamic(string $content, array $expected)
     {
         if (!empty($expected['contains'])) {
             $this->assertContains($this->trimEachLine($expected['contains']), [$this->trimEachLine($content)]);
             $this->assertEquals(
-                substr_count($this->trimEachLine($content), $this->trimEachLine($expected['contains'])),
                 1,
+                substr_count($this->trimEachLine($content), $this->trimEachLine($expected['contains'])),
                 'String found more than once.'
             );
         }
 
         if (!empty($expected['not_contains'])) {
             $this->assertNotContains($this->trimEachLine($expected['not_contains']), [$this->trimEachLine($content)]);
+        }
+
+        if (!empty($expected['string'])) {
+            $this->assertStringContainsString($this->trimEachLine($expected['string']), $this->trimEachLine($content));
+        }
+
+        if (!empty($expected['file_expected']) && !empty($expected['file_actual'])) {
+            $this->assertFileEquals($expected['file_expected'], $expected['file_actual']);
         }
     }
 
@@ -82,8 +90,8 @@ abstract class AbstractTest extends TestCase
      * ```
      * - from: source.yml
      *   to: destination.yml
-     *
      * - mkdir: test-folder
+     * - touch: test-folder/touched.txt
      * ```
      *
      * @param array $resources
@@ -99,6 +107,8 @@ abstract class AbstractTest extends TestCase
                 );
             } elseif (isset($resource['mkdir'])) {
                 $this->fs->mkdir($this->getSandboxFilepath($resource['mkdir']));
+            } elseif (isset($resource['touch'])) {
+                $this->fs->touch($this->getSandboxFilepath($resource['touch']));
             }
         }
     }
@@ -114,11 +124,23 @@ abstract class AbstractTest extends TestCase
     protected function debugExpectations(string $content, array $expectations)
     {
         $debug = "\n-- Content --\n$content\n-- End Content --\n";
-        if (!empty($expectations[0]['contains'])) {
-            $debug .= "-- Contains --\n{$expectations[0]['contains']}\n-- End Contains --\n";
-        }
-        if (!empty($expectations['not_contains'])) {
-            $debug .= "-- NotContains --\n{$expectations[0]['not_contains']}\n-- End NotContains --\n";
+        foreach ($expectations as $expectation) {
+            if (!empty($expectation['contains'])) {
+                $debug .= "-- Contains --\n{$expectation['contains']}\n-- End Contains --\n";
+            }
+            if (!empty($expectation['not_contains'])) {
+                $debug .= "-- NotContains --\n{$expectation['not_contains']}\n-- End NotContains --\n";
+            }
+            if (!empty($expectation['string'])) {
+                $debug .= "-- String --\n{$expectation['string']}\n-- End String --\n";
+            }
+            if (!empty($expectation['file_expected']) && !empty($expectation['file_actual'])) {
+                $debug .= "-- Files equal - expected --\n";
+                $debug .= file_get_contents($expectation['file_expected']);
+                $debug .= "\n-- END expected --\n-- Files equal - actual --\n";
+                $debug .= file_get_contents($expectation['file_actual']);
+                $debug .= "\n-- END actual --\n";
+            }
         }
         echo $debug;
     }

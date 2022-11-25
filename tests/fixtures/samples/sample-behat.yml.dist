@@ -1,0 +1,36 @@
+default:
+  suites:
+    default:
+      paths:
+        - '%paths.base%/tests/features'
+      contexts:
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MarkupContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\MinkContext
+      filters:
+        tags: '~@wip&&${toolkit.test.behat.tags.clone}'
+  extensions:
+    Drupal\MinkExtension:
+      goutte: ~
+      ajax_timeout: 10
+      browser_name: '${selenium.browser}'
+      javascript_session: 'selenium2'
+      selenium2:
+        wd_host: '${selenium.host}:${selenium.port}/wd/hub'
+        capabilities: { 'browser': '${selenium.browser}', 'version': '*', '${selenium.browser}': {'switches':['--start-maximized','--start-fullscreen']}}
+      base_url: '${drupal.base_url}'
+      files_path: '%paths.base%/tests/files'
+    Drupal\DrupalExtension:
+      api_driver: 'drupal'
+      drush:
+        alias: '@self'
+      drupal:
+        drupal_root: '${drupal.root}'
+  formatters:
+    progress: ~
+clean:
+  suites:
+    default:
+      filters:
+        tags: '~@wip&&${toolkit.test.behat.tags.clean}'

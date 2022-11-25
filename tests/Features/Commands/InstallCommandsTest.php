@@ -66,7 +66,7 @@ class InstallCommandsTest extends AbstractTest
 //        $this->debugExpectations($content, $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
-            $this->assertContainsNotContains($content, $expectation);
+            $this->assertDynamic($content, $expectation);
         }
     }
 

@@ -9,6 +9,8 @@ use Robo\Common\BuilderAwareTrait;
 use Robo\Contract\BuilderAwareInterface;
 use Robo\Exception\TaskException;
 use Robo\Task\BaseTask;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Process\Process;
 
 /**
  * Execute the tasks from a Configuration command.
@@ -50,10 +52,10 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
         'remove' => ['required' => 'file'],
         'symlink' => ['required' => ['from', 'to']],
         'mirror' => ['required' => ['from', 'to']],
-        'process' => ['required' => ['source', 'destination']],
+        'process' => ['required' => ['source'], 'defaults' => 'destination'],
         'append' => ['required' => ['file', 'text']],
         'run' => ['required' => 'command'],
-        'process-php' => ['required' => ['source', 'destination'], 'defaults' => 'override'],
+//        'process-php' => ['required' => ['source', 'destination'], 'defaults' => 'override'],
         'exec' => ['required' => 'command'],
     ];
 
@@ -164,6 +166,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                 if (!empty($task['options'])) {
                     $taskExec->options($task['options'], '=');
                 }
+                $this->prepareOutput($taskExec);
                 return $taskExec;
 
             case 'exec':
@@ -178,10 +181,11 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                 if (!empty($task['dir'])) {
                     $taskExec->dir($task['dir']);
                 }
+                $this->prepareOutput($taskExec);
                 return $taskExec;
 
             default:
-                throw new TaskException($this, "Task '{$task['task']}' is not supported.");
+                $this->throwInvalidTaskException($task['task'] ?? '');
         }
     }
 
@@ -213,14 +217,11 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
 
         if (is_string($task)) {
             $task = ['task' => 'exec', 'command' => $task];
-            $message = "A command must have a 'task' to execute, use: %s";
+            $message = 'A command must have a "task" to execute, use: %s';
             $this->printTaskWarning(sprintf($message, json_encode($task)));
         }
         if (!isset($task['task']) || !isset($availableTasks[$task['task']])) {
-            throw new TaskException(
-                $this,
-                "Task '" . ($task['task'] ?? '') . "' is not supported."
-            );
+            $this->throwInvalidTaskException($task['task'] ?? '');
         }
         foreach ((array) $availableTasks[$task['task']]['required'] as $required) {
             if (empty($task[$required])) {
@@ -231,6 +232,20 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
             foreach ((array) $availableTasks[$task['task']]['defaults'] as $default) {
                 $task[$default] = $task[$default] ?? $this->paramDefaultValue($default);
             }
+        }
+    }
+
+    /**
+     * Prepares the Output of a taskExec.
+     *
+     * @param $taskExec
+     *   The task exec being executed.
+     */
+    private function prepareOutput($taskExec)
+    {
+        $taskExec->interactive(Process::isTtySupported());
+        if ($this->output() instanceof NullOutput) {
+            $taskExec->printOutput(false);
         }
     }
 
@@ -246,8 +261,24 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      */
     private function throwParamException(string $param, string $task)
     {
-        $message = "The parameter '%s' is required for task '%s' in configuration command.";
+        $message = 'The parameter "%s" is required for task "%s" in configuration command.';
         throw new TaskException($this, sprintf($message, $task, $param));
+    }
+
+    /**
+     * Report missing parameter, this stops the execution.
+     *
+     * @param string $param
+     *   The missing parameter.
+     * @param string $task
+     *   The task being checked.
+     *
+     * @throws TaskException
+     */
+    private function throwInvalidTaskException(string $task)
+    {
+        $message = 'Task "%s" is not supported.';
+        throw new TaskException($this, sprintf($message, $task));
     }
 
     /**

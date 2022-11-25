@@ -62,7 +62,7 @@ class ToolCommandsTest extends AbstractTest
 //        $this->debugExpectations($content, $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
-            $this->assertContainsNotContains($content, $expectation);
+            $this->assertDynamic($content, $expectation);
         }
     }
 
@@ -115,7 +115,7 @@ class ToolCommandsTest extends AbstractTest
         $content = $output->fetch();
         // Assert expectations.
         foreach ($expectations as $expectation) {
-            $this->assertContainsNotContains($content, $expectation);
+            $this->assertDynamic($content, $expectation);
         }
     }
 

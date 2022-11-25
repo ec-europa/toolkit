@@ -1,0 +1,144 @@
+- command: 'config runner'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        bin_dir: ./vendor/bin
+        bin_node_dir: ./node_modules/.bin
+        working_dir: /test/toolkit/tests/sandbox
+
+- command: 'config drupal.site'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        name: 'Site name'
+        mail: info@example.org
+        profile: minimal
+        update: 'false'
+        locale: en
+        sites_subdir: default
+        existing_config: 'false'
+        generate_db_url: 'false'
+        skip_permissions_setup: 'false'
+        settings_override_file: settings.override.php
+
+- command: 'help example:full'
+  configuration:
+    commands:
+      example:full:
+        aliases: full
+        description: 'Setup the behat file'
+        help: 'Some help text'
+        hidden: false
+        usage: '--simulate'
+        tasks:
+          - { task: process, source: behat.yml.dist, destination: behat.yml }
+  resources: [ ]
+  expectations:
+    - contains: |
+        Description:
+          Setup the behat file
+
+        Usage:
+          example:full
+          full
+          example:full --simulate
+
+        Options:
+          -h, --help                           Display help for the given command. When no command is given display help for the list command
+          -q, --quiet                          Do not output any message
+          -V, --version                        Display this application version
+              --ansi|--no-ansi                 Force (or disable --no-ansi) ANSI output
+          -n, --no-interaction                 Do not ask any interactive question
+              --simulate                       Run in simulated mode (show what would have happened).
+              --progress-delay=PROGRESS-DELAY  Number of seconds before progress bar is displayed in long-running task collections. Default: 2s. [default: 2]
+          -D, --define=DEFINE                  Define a configuration item value. (multiple values allowed)
+              --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox"]
+          -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+        Help:
+          Some help text
+
+- command: 'test:tasks'
+  configuration:
+    commands:
+      test:tasks:
+        - { task: mkdir, dir: test }
+        - { task: touch, file: test.txt, time: 111111, atime: 111111 }
+        - { task: copy, from: test.txt, to: test-2.txt }
+        - { task: copy, from: test.txt, to: test-3.txt }
+        - { task: copy, from: test.txt, to: test-4.txt }
+        - { task: chmod, file: test-2.txt, permissions: 0775 }
+        - { task: chgrp, file: test-2.txt, group: root }
+        - { task: chown, file: test-2.txt, user: root }
+        - { task: remove, file: test-4.txt }
+        - { task: rename, from: test-3.txt, to: test-renamed.txt }
+        - { task: symlink, from: test-renamed.txt, to: test-symlink.txt }
+        - { task: mirror, from: test, to: test-mirror }
+        - { task: append, file: test-processed.txt, text: 'Drupal root is ${drupal.root}' }
+        - { task: process, source: test-processed.txt, destination: test-processed.txt }
+        - { task: append, file: test-compare.txt, text: 'Drupal root is web' }
+  resources: []
+  expectations:
+    - contains: |
+        [Filesystem\FilesystemStack] mkdir ["test",511]
+        [Filesystem\FilesystemStack] touch ["test.txt",111111,111111]
+        [Filesystem\FilesystemStack] _copy ["test.txt","test-2.txt",false]
+        [Filesystem\FilesystemStack] _copy ["test.txt","test-3.txt",false]
+        [Filesystem\FilesystemStack] _copy ["test.txt","test-4.txt",false]
+        [Filesystem\FilesystemStack] _chmod ["test-2.txt","0775",0,false]
+        [Filesystem\FilesystemStack] _chgrp ["test-2.txt","root",false]
+        [Filesystem\FilesystemStack] _chown ["test-2.txt","root",false]
+        [Filesystem\FilesystemStack] remove ["test-4.txt"]
+        [Filesystem\FilesystemStack] _rename ["test-3.txt","test-renamed.txt",false]
+        [Filesystem\FilesystemStack] symlink ["test-renamed.txt","test-symlink.txt"]
+        [Filesystem\FilesystemStack] mirror ["test","test-mirror"]
+        [File\Write] Writing to test-processed.txt.
+        [File\Replace] test-processed.txt unchanged. 0 items replaced
+        [File\Replace] test-processed.txt unchanged. 0 items replaced
+        [File\Write] Writing to test-compare.txt.
+        [File\Replace] test-compare.txt unchanged. 0 items replaced
+    - file_expected: test-processed.txt
+      file_actual: test-compare.txt
+
+- command: 'test:no-task'
+  configuration:
+    commands:
+      test:no-task:
+        - { task: no-task, filename: test.txt }
+  resources: []
+  expectations:
+    - contains: |
+        [CollectionBuilder]    in task EcEuropa\Toolkit\Task\Command\ConfigurationCommand
+
+        Task "no-task" is not supported.
+        [CollectionBuilder]  Exit code 1
+
+- command: 'test:wrong-param'
+  configuration:
+    commands:
+      test:wrong-param:
+        - { task: process, destination: 'test.txt' }
+  resources: []
+  expectations:
+    - contains: |
+        [CollectionBuilder]    in task EcEuropa\Toolkit\Task\Command\ConfigurationCommand
+
+        The parameter "source" is required for task "process" in configuration command.
+        [CollectionBuilder]  Exit code 1
+
+- command: 'test:warning'
+  configuration:
+    commands:
+      test:warning:
+        - echo '{  }' > dummy.yml
+  resources:
+    - from: sample-config.yml
+      to: dummy-copy.yml
+  expectations:
+    - string: |
+        [EcEuropa\Toolkit\Task\Command\ConfigurationCommand] A command must have a "task" to execute, use: {"task":"exec","command":"echo '{  }' > dummy.yml"}
+        [Exec] Running echo '{  }' > dummy.yml
+    - file_expected: dummy.yml
+      file_actual: dummy-copy.yml
