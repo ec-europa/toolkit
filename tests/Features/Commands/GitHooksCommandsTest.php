@@ -64,10 +64,7 @@ class GitHooksCommandsTest extends AbstractTest
         }
 
         // Run command.
-        $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
-        $output = new BufferedOutput();
-        $runner = new Runner($this->getClassLoader(), $input, $output);
-        $runner->run();
+        $result = $this->runCommand($command);
 
         if ($command === 'toolkit:hooks-run') {
             if (str_starts_with(Toolkit::getRoboVersion(), '4')) {
@@ -77,12 +74,10 @@ class GitHooksCommandsTest extends AbstractTest
             }
         }
 
-        // Fetch the output.
-        $content = $output->fetch();
-//        $this->debugExpectations($content, $expectations);
+//        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
-            $this->assertDynamic($content, $expectation);
+            $this->assertDynamic($result['output'], $expectation);
         }
     }
 
