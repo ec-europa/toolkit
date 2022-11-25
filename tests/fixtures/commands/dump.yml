@@ -38,7 +38,7 @@
       to: mysql-latest.sh1
   expectations:
     - contains: |
-        >  ASDA type is: default (The legacy ASDA will be dropped on 1 June)
+        >  ASDA type is: nextcloud
         >  ASDA services: mysql
         >  Checking service 'mysql'
         >  Starting download
@@ -64,13 +64,13 @@
       tmp_folder: .
       project_id: digit-qa
       clone:
-        asda_type: nextcloud
+        asda_type: default
   resources:
     - from: sample-mysql-latest.sh1
       to: mysql-latest.sh1
   expectations:
     - contains: |
-        >  ASDA type is: nextcloud
+        >  ASDA type is: default (The legacy ASDA will be dropped on 1 June)
         >  ASDA services: mysql
         >  Checking service 'mysql'
         >  Starting download

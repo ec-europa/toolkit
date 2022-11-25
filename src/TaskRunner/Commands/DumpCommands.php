@@ -124,7 +124,7 @@ class DumpCommands extends AbstractCommands
         $tasks = [];
         $config = $this->getConfig();
         $project_id = $config->get('toolkit.project_id');
-        $asda_type = $config->get('toolkit.clone.asda_type', 'default');
+        $asda_type = $config->get('toolkit.clone.asda_type', 'nextcloud');
         $asda_services = (array) $config->get('toolkit.clone.asda_services', 'mysql');
         $vendor = $config->get('toolkit.clone.asda_vendor');
         $source = $config->get('toolkit.clone.asda_source');
