@@ -34,7 +34,7 @@
         usage: '--simulate'
         tasks:
           - { task: process, source: behat.yml.dist, destination: behat.yml }
-  resources: [ ]
+  resources: []
   expectations:
     - contains: |
         Description:

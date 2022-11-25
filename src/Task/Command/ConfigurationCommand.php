@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Task\Command;
 
+use EcEuropa\Toolkit\Task\File\ReplaceBlock;
 use Robo\Collection\CollectionBuilder;
 use Robo\Common\BuilderAwareTrait;
 use Robo\Contract\BuilderAwareInterface;
@@ -57,6 +58,10 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
         'run' => ['required' => 'command'],
 //        'process-php' => ['required' => ['source', 'destination'], 'defaults' => 'override'],
         'exec' => ['required' => 'command'],
+        'replace-block' => [
+            'required' => ['filename', 'start', 'end'],
+            'defaults' => ['content', 'excludeStartEnd'],
+        ],
     ];
 
     /**
@@ -184,6 +189,22 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                 $this->prepareOutput($taskExec);
                 return $taskExec;
 
+            case 'replace-block':
+                /* @var ReplaceBlock $task */
+                $replaceBlock = $this->collectionBuilder()
+                    ->taskReplaceBlock($task['filename'])
+                    ->start($task['start']);
+                if (!empty($task['end'])) {
+                    $replaceBlock->end($task['end']);
+                }
+                if (!empty($task['content'])) {
+                    $replaceBlock->content($task['content']);
+                }
+                if ($task['excludeStartEnd']) {
+                    $replaceBlock->excludeStartEnd();
+                }
+                return $replaceBlock;
+
             default:
                 $this->throwInvalidTaskException($task['task'] ?? '');
         }
@@ -300,6 +321,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
             'recursive' => false,
             'time' => time(),
             'umask' => 0000,
+            'excludeStartEnd' => false,
         ];
         return $defaults[$key] ?? '';
     }

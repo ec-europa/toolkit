@@ -1,0 +1,9 @@
+# First title
+
+{start}
+This text should be removed
+{end}
+
+# Second title
+
+Content

@@ -33,14 +33,14 @@
 <!--            <file>tests/Features/Commands/DumpCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/GitHooksCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/InstallCommandsTest.php</file>-->
+<!--            <file>tests/Features/Commands/ReleaseCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/TestsCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ToolCommandsTest.php</file>-->
-<!--            <file>tests/Features/Commands/ToolkitCommandsTest.php</file>-->
-<!--            <file>tests/Features/Commands/ToolkitReleaseCommandsTest.php</file>-->
 
             <!-- Unit tests. -->
 <!--            <file>tests/Unit/GitHooksCommandsTest.php</file>-->
 <!--            <file>tests/Unit/MockTest.php</file>-->
+<!--            <file>tests/Unit/ReplaceBlockTest.php</file>-->
         </testsuite>
     </testsuites>
 </phpunit>

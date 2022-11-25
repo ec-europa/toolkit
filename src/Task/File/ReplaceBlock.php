@@ -19,14 +19,12 @@ use Robo\Task\BaseTask;
  *   ->end('#block-end')
  *   ->content('This content will be between the start and the end')
  *   ->run();
- * // Remove everything after the 'start'.
+ * // Insert content between the 'start' and 'end', and exclude 'start' and 'end'.
  * $this->taskReplaceBlock('file.txt')
- *   ->start($start)
- *   ->run();
- * // Remove everything after the 'start' including the 'start'.
- * $this->taskReplaceBlock('file.txt')
- *   ->start($start)
+ *   ->start('#block-start')
+ *   ->end('#block-end')
  *   ->excludeStartEnd()
+ *   ->content('This content will be between the start and the end')
  *   ->run();
  * ?>
  * ```
@@ -41,21 +39,21 @@ class ReplaceBlock extends BaseTask
     protected string $filename;
 
     /**
-     * The start string to match..
+     * The start string to match.
      *
      * @var string
      */
     protected string $start;
 
     /**
-     * The end string to match..
+     * The end string to match.
      *
      * @var string
      */
-    protected string $end = '';
+    protected string $end;
 
     /**
-     * The content to write into the file..
+     * The content to write into the file.
      *
      * @var string
      */
@@ -143,11 +141,14 @@ class ReplaceBlock extends BaseTask
     /**
      * Mark the start and end to be removed.
      *
+     * @param bool $exclude
+     *   Whether to exclude the 'start' and 'end'.
+     *
      * @return $this
      */
-    public function excludeStartEnd()
+    public function excludeStartEnd(bool $exclude = true)
     {
-        $this->excludeStartEnd = true;
+        $this->excludeStartEnd = $exclude;
         return $this;
     }
 
@@ -165,6 +166,9 @@ class ReplaceBlock extends BaseTask
         if (empty($this->start)) {
             return Result::error($this, $error_message, ['key' => 'start']);
         }
+        if (empty($this->end)) {
+            return Result::error($this, $error_message, ['key' => 'end']);
+        }
 
         $pattern = '~(' . preg_quote($this->start) . ')(.+?)(' . preg_quote($this->end) . ')~s';
 
@@ -176,8 +180,7 @@ class ReplaceBlock extends BaseTask
 
         $result = preg_replace($pattern, $this->content, $file, -1, $count);
         if ($count > 0) {
-            $res = file_put_contents($this->filename, $result);
-            if ($res === false) {
+            if (file_put_contents($this->filename, $result) === false) {
                 return Result::error($this, 'Error writing to file {filename}.', ['filename' => $this->filename]);
             }
             $this->printTaskSuccess('{filename} updated. {count} items replaced', ['filename' => $this->filename, 'count' => $count]);

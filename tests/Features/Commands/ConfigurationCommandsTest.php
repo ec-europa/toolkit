@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
-use EcEuropa\Toolkit\Task\Command\ConfigurationCommand;
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
-use League\Container\ContainerAwareInterface;
-use League\Container\ContainerAwareTrait;
-use Robo\Collection\CollectionBuilder;
-use Robo\Robo;
-use Robo\TaskAccessor;
 use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Yaml\Yaml;
 
@@ -60,17 +53,12 @@ class ConfigurationCommandsTest extends AbstractTest
         $this->prepareResources($resources);
 
         // Run command.
-        $input = new StringInput($command . ' --working-dir=' . $this->getSandboxRoot());
-        $output = new BufferedOutput();
-        $runner = new Runner($this->getClassLoader(), $input, $output);
-        $runner->run();
+        $result = $this->runCommand($command, false);
 
-        // Fetch the output.
-        $content = $output->fetch();
-//        $this->debugExpectations($content, $expectations);
+//        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
-            $this->assertDynamic($content, $expectation);
+            $this->assertDynamic($result['output'], $expectation);
         }
     }
 
@@ -97,7 +85,7 @@ class ConfigurationCommandsTest extends AbstractTest
         file_put_contents($this->getSandboxFilepath('test-static.txt'), 'The drupal root is web');
 
         // Run command.
-        $input = new StringInput('test:run --working-dir=' . $this->getSandboxRoot());;
+        $input = new StringInput('test:run --working-dir=' . $this->getSandboxRoot());
 
         $runner = new Runner($this->getClassLoader(), $input, (new NullOutput()));
         $runner->getConfig()->set('runner.bin_dir', '../../.');
@@ -118,9 +106,6 @@ class ConfigurationCommandsTest extends AbstractTest
     public function testConfigurationExec()
     {
         $config = [
-            'runner' => [
-                'bin_dir' => '../../.',
-            ],
             'commands' => [
                 'test:exec' => [
                     ['task' => 'exec', 'command' => 'echo "The drupal root is web" > test-static.txt'],
@@ -133,27 +118,19 @@ class ConfigurationCommandsTest extends AbstractTest
         file_put_contents($this->getSandboxFilepath('test.txt'), "The drupal root is web\n");
 
         // Run command.
-        $input = new StringInput('test:exec --working-dir=' . $this->getSandboxRoot());;
-        $output = new BufferedOutput();
-
-        $runner = new Runner($this->getClassLoader(), $input, $output);
-        $runner->getConfig()->set('runner.bin_dir', '../../.');
-        $code = $runner->run();
+        $result = $this->runCommand('test:exec', false);
 
         // Asserts.
-        $this->assertEquals(0, $code);
+        $this->assertEquals(0, $result['code']);
         $this->assertFileExists($this->getSandboxFilepath('runner.yml'));
         $this->assertFileEquals(
             $this->getSandboxFilepath('test.txt'),
             $this->getSandboxFilepath('test-static.txt')
         );
-        $this->assertStringStartsWith(' [Exec] Running echo "The drupal root is web" > test-static.txt', $output->fetch());
+        $this->assertStringStartsWith(
+            ' [Exec] Running echo "The drupal root is web" > test-static.txt',
+            $result['output']
+        );
     }
-
-    /**
-     * Test ConfigurationCommands 'php-process'.
-     */
-    private function testConfigurationProcessPhp()
-    {}
 
 }

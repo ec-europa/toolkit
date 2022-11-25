@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests;
 
+use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Website;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -111,6 +115,33 @@ abstract class AbstractTest extends TestCase
                 $this->fs->touch($this->getSandboxFilepath($resource['touch']));
             }
         }
+    }
+
+    /**
+     * Execute given command.
+     *
+     * @param string $command
+     *   The command to execute.
+     * @param bool $simulate
+     *   Whether use --simulate.
+     * @param bool $output
+     *   Whether to output.
+     *
+     * @return array
+     *   An array keyed by 'code' and 'output'.
+     */
+    public function runCommand(string $command, bool $simulate = true, bool $output = true): array
+    {
+        $simulation = $simulate ? ' --simulate' : '';
+        $outputObject = $output ? new BufferedOutput() : new NullOutput();
+
+        $input = new StringInput($command . $simulation . ' --working-dir=' . $this->getSandboxRoot());
+        $runner = new Runner($this->getClassLoader(), $input, $outputObject);
+
+        return [
+            'code' => $runner->run(),
+            'output' => $output ? $outputObject->fetch() : '',
+        ];
     }
 
     /**
