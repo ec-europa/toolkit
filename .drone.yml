@@ -24,8 +24,9 @@ services:
   web:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     detach: true
-    environment:
+    environment: &env
       - DOCUMENT_ROOT=/test/toolkit/build
+      - COMPOSERVER=1.10.26
   selenium:
     image: registry.fpfis.eu/fpfis/selenium:standalone-chrome-${SELENIUM_VERSION=3.141.59-20210913}
     shm_size: 2gb
@@ -41,17 +42,18 @@ services:
       - MYSQL_PASSWORD=password
       - MYSQL_DATABASE=toolkit
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
-  solr:
-    image: registry.fpfis.eu/fpfis/solr:5
-    detach: true
+  #solr:
+  #  image: registry.fpfis.eu/fpfis/solr:5
+  #  detach: true
 
 pipeline:
   setup:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: setup
     secrets: [ github_api_token ]
+    environment: *env
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
       - PROJECT=$(pwd) composer toolkit-install
       - rm -rf ./.tmp/ ./build
       - cp ./includes/phing/props/drone.props build.develop.props
@@ -63,8 +65,9 @@ pipeline:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: build
     secrets: [ github_api_token ]
+    environment: *env
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
       - ./toolkit/phing build-platform build-subsite-dev ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
@@ -73,9 +76,11 @@ pipeline:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     secrets: [ github_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass ]
     group: asda-nextcloud
+    environment: *env
     commands:
+      - /scripts/run.sh echo "Container ready"
       - ./toolkit/phing cache-clear-global
-      - ./toolkit/phing project-database-download -Dproject.id=${ASDA_PROJECT_ID} -Ddb.dl.type=nextcloud -Ddb.dl.nextcloud.admin=true ${PHING_OPTS}
+      - ./toolkit/phing project-database-download -Dproject.id=${ASDA_PROJECT_ID} -Ddb.dl.nextcloud.admin=true ${PHING_OPTS}
       - ./toolkit/phing project-asda-date -Dproject.id=${ASDA_PROJECT_ID} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
@@ -84,8 +89,9 @@ pipeline:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: install-clean
     secrets: [ github_api_token ]
+    environment: *env
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
       - ./toolkit/phing install-clean ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing drush-gdpr-dump -D'database-file'='/test/toolkit/dump.sql' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
@@ -95,8 +101,9 @@ pipeline:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: install-clone
     secrets: [ github_api_token ]
+    environment: *env
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
       - ./toolkit/phing install-clone -D'project.db.file'='/test/toolkit/dump.sql.gz' ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
@@ -105,18 +112,20 @@ pipeline:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: smoke-tests
     secrets: [ github_api_token ]
+    environment: *env
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
       - ./toolkit/phing drush-run-smoketest ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
   behat:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
-    group: coding-standards
+    group: behat
     secrets: [ github_api_token ]
+    environment: *env
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
       - ./toolkit/phing test-run-behat ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
@@ -125,10 +134,12 @@ pipeline:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: coding-standards
     secrets: [ github_api_token ]
+    environment: *env
     commands:
-      - composer self-update --1
-      - touch /test/toolkit/composer.lock
+      - /scripts/run.sh echo "Container ready"
+      - touch composer.lock
       - ./toolkit/phing test-run-phpcs ${BUILD_OPTIONS} ${PHING_OPTS}
+      - rm composer.lock
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
 
@@ -137,7 +148,7 @@ pipeline:
   #  group: coding-standards
   #  secrets: [ github_api_token ]
   #  commands:
-  #    - composer self-update --1
+  #    - /scripts/run.sh echo "Container ready"
   #    - ./toolkit/phing test-run-phpcs-compatibility -D'phpcs.compat.checkreturn'='false' ${BUILD_OPTIONS} ${PHING_OPTS}
   #  volumes:
   #    - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
@@ -146,8 +157,9 @@ pipeline:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: create-distribution
     secrets: [ github_api_token ]
+    environment: *env
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
       - ./toolkit/phing create-distribution ${BUILD_OPTIONS} ${PHING_OPTS}
     volumes:
       - /cache/${DRONE_REPO_NAME}/${PHP_VERSION}:/cache
@@ -156,8 +168,9 @@ pipeline:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=7.3}-ci
     group: git-hooks
     secrets: [ github_api_token ]
+    environment: *env
     commands:
-      - composer self-update --1
+      - /scripts/run.sh echo "Container ready"
       - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing git-hook-disable ${BUILD_OPTIONS} ${PHING_OPTS}
       - ./toolkit/phing git-hook-enable ${BUILD_OPTIONS} ${PHING_OPTS}
