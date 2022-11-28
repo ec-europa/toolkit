@@ -73,7 +73,7 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
             // Assert expectations.
             foreach ($expected as $row) {
                 $content = file_get_contents($this->getSandboxFilepath($row['file']));
-                $this->assertContainsNotContains($content, $row);
+                $this->assertDynamic($content, $row);
             }
         }
 

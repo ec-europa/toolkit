@@ -103,3 +103,34 @@
           ->exec('git -C docs_tmp commit -m "Generate documentation."')
           ->exec('git -C docs_tmp push')
         [Simulator] Simulating Filesystem\DeleteDir('docs_tmp')
+
+- command: 'toolkit:generate-commands-list'
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->silent(1)
+        [Simulator] Running ./vendor/bin/run
+        [error]    in task EcEuropa\Toolkit\Task\File\ReplaceBlock
+
+        The file docs/guide/commands.rst could not be found.
+
+- command: 'toolkit:generate-commands-list'
+  resources:
+    - from: sample-commands.rst
+      to: docs/guide/commands.rst
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->silent(1)
+        [Simulator] Running ./vendor/bin/run
+        [Simulator] Simulating EcEuropa\Toolkit\Task\File\ReplaceBlock('docs/guide/commands.rst')
+        ->start('.. toolkit-block-commands
+
+          .. code-block::
+
+        ')
+        ->end('
+
+          .. toolkit-block-commands-end')
+        ->content(' ')

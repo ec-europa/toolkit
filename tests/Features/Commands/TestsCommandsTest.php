@@ -54,17 +54,11 @@ class TestsCommandsTest extends AbstractTest
         $this->prepareResources($resources);
 
         // Run command.
-        $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
-        $output = new BufferedOutput();
-        $runner = new Runner($this->getClassLoader(), $input, $output);
-        $runner->run();
-
-        // Fetch the output.
-        $content = $output->fetch();
-//        $this->debugExpectations($content, $expectations);
+        $result = $this->runCommand($command);
+//        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
-            $this->assertContainsNotContains($content, $expectation);
+            $this->assertDynamic($result['output'], $expectation);
         }
     }
 

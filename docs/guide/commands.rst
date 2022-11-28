@@ -15,7 +15,7 @@ See bellow current list of available commands:
 
  Available commands:
    completion                        Dump the shell completion script
-   config                            Dumps the current configuration.
+   config                            Dumps the current or given configuration.
    help                              Display help for a command
    list                              List commands
   drupal
@@ -125,34 +125,36 @@ Configuration commands are created in the configuration file ``runner.yml``, lik
 The configuration commands are a mapping to the `Robo Tasks <https://robo.li/#tasks>`_, the
 list of available tasks is:
 
-+---------+------------------------------------------------------------------------+
-| Task    | Robo Task                                                              |
-+=========+========================================================================+
-| mkdir   | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
-+---------+------------------------------------------------------------------------+
-| touch   | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
-+---------+------------------------------------------------------------------------+
-| copy    | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
-+---------+------------------------------------------------------------------------+
-| chmod   | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
-+---------+------------------------------------------------------------------------+
-| chgrp   | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
-+---------+------------------------------------------------------------------------+
-| chown   | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
-+---------+------------------------------------------------------------------------+
-| remove  | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
-+---------+------------------------------------------------------------------------+
-| rename  | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
-+---------+------------------------------------------------------------------------+
-| symlink | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
-+---------+------------------------------------------------------------------------+
-| mirror  | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
-+---------+------------------------------------------------------------------------+
-| process | `Process </src/Task/File/Process.php>`_                                |
-+---------+------------------------------------------------------------------------+
-| append  | `Write with append() <https://robo.li/tasks/File/#write>`_             |
-+---------+------------------------------------------------------------------------+
-| run     | Runner tasks                                                           |
-+---------+------------------------------------------------------------------------+
-| exec    | `Exec <https://robo.li/tasks/Base/#exec>`_                             |
-+---------+------------------------------------------------------------------------+
++---------------+------------------------------------------------------------------------+
+| Task          | Robo Task                                                              |
++===============+========================================================================+
+| mkdir         | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
++---------------+------------------------------------------------------------------------+
+| touch         | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
++---------------+------------------------------------------------------------------------+
+| copy          | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
++---------------+------------------------------------------------------------------------+
+| chmod         | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
++---------------+------------------------------------------------------------------------+
+| chgrp         | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
++---------------+------------------------------------------------------------------------+
+| chown         | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
++---------------+------------------------------------------------------------------------+
+| remove        | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
++---------------+------------------------------------------------------------------------+
+| rename        | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
++---------------+------------------------------------------------------------------------+
+| symlink       | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
++---------------+------------------------------------------------------------------------+
+| mirror        | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
++---------------+------------------------------------------------------------------------+
+| process       | `Process </src/Task/File/Process.php>`_                                |
++---------------+------------------------------------------------------------------------+
+| append        | `Write with append() <https://robo.li/tasks/File/#write>`_             |
++---------------+------------------------------------------------------------------------+
+| run           | Runner tasks                                                           |
++---------------+------------------------------------------------------------------------+
+| exec          | `Exec <https://robo.li/tasks/Base/#exec>`_                             |
++---------------+------------------------------------------------------------------------+
+| replace-block | `ReplaceBlock </src/Task/File/ReplaceBlock.php>`_                      |
++---------------+------------------------------------------------------------------------+

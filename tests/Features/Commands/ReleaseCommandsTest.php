@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
-use EcEuropa\Toolkit\TaskRunner\Commands\ToolkitCommands;
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
 use Symfony\Component\Console\Input\StringInput;
@@ -12,26 +11,26 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Test Toolkit commands.
+ * Test Toolkit release commands.
  *
- * @group toolkit
+ * @group toolkit-release
  */
-class ToolkitCommandsTest extends AbstractTest
+class ReleaseCommandsTest extends AbstractTest
 {
 
     /**
-     * Data provider for testToolkit.
+     * Data provider for testToolkitRelease.
      *
      * @return array
      *   An array of test data arrays with assertions.
      */
     public function dataProvider()
     {
-        return $this->getFixtureContent('commands/toolkit.yml');
+        return $this->getFixtureContent('commands/release.yml');
     }
 
     /**
-     * Test ToolkitCommands commands.
+     * Test ToolkitReleaseCommands commands.
      *
      * @param string $command
      *   A command.
@@ -44,7 +43,7 @@ class ToolkitCommandsTest extends AbstractTest
      *
      * @dataProvider dataProvider
      */
-    public function testToolkit(string $command, array $config = [], array $resources = [], array $expectations = [])
+    public function testToolkitRelease(string $command, array $config = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
         if (!empty($config)) {
@@ -54,23 +53,12 @@ class ToolkitCommandsTest extends AbstractTest
         $this->prepareResources($resources);
 
         // Run command.
-        $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
-        $output = new BufferedOutput();
-        $runner = new Runner($this->getClassLoader(), $input, $output);
-        $runner->run();
-
-        // Fetch the output.
-        $content = $output->fetch();
-//        $this->debugExpectations($content, $expectations);
+        $result = $this->runCommand($command);
+//        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
-            $this->assertContainsNotContains($content, $expectation);
+            $this->assertDynamic($result['output'], $expectation);
         }
-    }
-
-    public function testConfigurationFileExists()
-    {
-        $this->assertFileExists((new ToolkitCommands())->getConfigurationFile());
     }
 
 }

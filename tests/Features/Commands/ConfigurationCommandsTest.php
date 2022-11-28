@@ -6,8 +6,9 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
+use EcEuropa\Toolkit\Toolkit;
 use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -36,33 +37,109 @@ class ConfigurationCommandsTest extends AbstractTest
      *   A command.
      * @param array $config
      *   A configuration.
+     * @param array $resources
+     *   Resources needed for the test.
      * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testConfiguration(string $command, array $config = [], array $expectations = [])
+    public function testConfiguration(string $command, array $config = [], array $resources = [], array $expectations = [])
     {
-        $this->markTestIncomplete('Skip test');
-
         // Setup configuration file.
         if (!empty($config)) {
             $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
         }
 
-        // Run command.
-        $input = new StringInput($command . ' --simulate --working-dir=' . $this->getSandboxRoot());
-        $output = new BufferedOutput();
-        $runner = new Runner($this->getClassLoader(), $input, $output);
-        $runner->run();
+        $this->prepareResources($resources);
 
-        // Fetch the output.
-        $content = $output->fetch();
-//        $this->debugExpectations($content, $expectations);
+        // Run command.
+        $result = $this->runCommand($command, false);
+
+        if ($command === 'help example:full') {
+            if (str_starts_with(Toolkit::getRoboVersion(), '4')) {
+                $expectations = $expectations['robo4'];
+            } else {
+                $expectations = $expectations['robo3'];
+            }
+        }
+
+//        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
-            $this->assertContainsNotContains($content, $expectation);
+            $this->assertDynamic($result['output'], $expectation);
         }
+    }
+
+    /**
+     * Test ConfigurationCommands 'run' and 'process'.
+     */
+    public function testConfigurationRunAndProcess()
+    {
+        $config = [
+            'commands' => [
+                'test:run' => [
+                    ['task' => 'run', 'command' => 'drupal:test-setup'],
+                ],
+                'drupal:test-setup' => [
+                    ['task' => 'process', 'source' => 'test.txt', 'destination' => 'test-output.txt'],
+                ],
+            ],
+        ];
+        $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+
+        // This file will be processed.
+        file_put_contents($this->getSandboxFilepath('test.txt'), 'The drupal root is ${drupal.root}');
+        // Static version to compare.
+        file_put_contents($this->getSandboxFilepath('test-static.txt'), 'The drupal root is web');
+
+        // Run command.
+        $input = new StringInput('test:run --working-dir=' . $this->getSandboxRoot());
+
+        $runner = new Runner($this->getClassLoader(), $input, (new NullOutput()));
+        $runner->getConfig()->set('runner.bin_dir', '../../.');
+        $code = $runner->run();
+
+        // Asserts.
+        $this->assertEquals(0, $code);
+        $this->assertFileExists($this->getSandboxFilepath('runner.yml'));
+        $this->assertFileEquals(
+            $this->getSandboxFilepath('test-output.txt'),
+            $this->getSandboxFilepath('test-static.txt')
+        );
+    }
+
+    /**
+     * Test ConfigurationCommands 'exec'.
+     */
+    public function testConfigurationExec()
+    {
+        $config = [
+            'commands' => [
+                'test:exec' => [
+                    ['task' => 'exec', 'command' => 'echo "The drupal root is web" > test-static.txt'],
+                ],
+            ],
+        ];
+        $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+
+        // The file to compare.
+        file_put_contents($this->getSandboxFilepath('test.txt'), "The drupal root is web\n");
+
+        // Run command.
+        $result = $this->runCommand('test:exec', false);
+
+        // Asserts.
+        $this->assertEquals(0, $result['code']);
+        $this->assertFileExists($this->getSandboxFilepath('runner.yml'));
+        $this->assertFileEquals(
+            $this->getSandboxFilepath('test.txt'),
+            $this->getSandboxFilepath('test-static.txt')
+        );
+        $this->assertStringStartsWith(
+            ' [Exec] Running echo "The drupal root is web" > test-static.txt',
+            $result['output']
+        );
     }
 
 }
