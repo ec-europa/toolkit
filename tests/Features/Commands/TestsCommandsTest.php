@@ -51,6 +51,13 @@ class TestsCommandsTest extends AbstractTest
             $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
         }
 
+        if ($command === 'toolkit:run-blackfire') {
+            putenv('BLACKFIRE_SERVER_ID=test');
+            putenv('BLACKFIRE_SERVER_TOKEN=test');
+            putenv('BLACKFIRE_CLIENT_ID=test');
+            putenv('BLACKFIRE_CLIENT_TOKEN=test');
+        }
+
         $this->prepareResources($resources);
 
         // Run command.

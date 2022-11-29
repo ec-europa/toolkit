@@ -111,6 +111,21 @@ final class Toolkit
     }
 
     /**
+     * If given content is a string, it will be exploded by given separator.
+     *
+     * @param mixed $data
+     *   If the data is a string it will be exploded by comma.
+     * @param string $sep
+     *   The separator to explode the string.
+     */
+    public static function ensureArray(mixed &$data, string $sep = ',')
+    {
+        if (is_string($data)) {
+            $data = array_map('trim', explode($sep, $data));
+        }
+    }
+
+    /**
      * Return the current Robo version.
      *
      * @return string

@@ -1,12 +1,3 @@
-#@command toolkit:setup-phpcs
-#@command toolkit:test-phpcs
-#@command toolkit:test-phpmd
-#@command toolkit:check-phpcs-requirements
-#@command toolkit:test-behat
-#@command toolkit:test-phpunit
-#@command toolkit:run-phpcbf
-#@command toolkit:run-blackfire
-
 - command: 'toolkit:setup-eslint'
   configuration: []
   resources: []
@@ -233,3 +224,139 @@
             'configuration' => 'fake',
           ), '=')
         [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=512M --configuration=fake
+
+- command: 'toolkit:setup-phpcs'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating File\Write('phpcs.xml')
+          ->text('<?xml version="1.0" encoding="UTF-8"?> ... ')
+
+- command: 'toolkit:test-phpcs'
+  configuration: []
+  resources:
+    - from: sample-phpcs.xml
+      to: phpcs.xml
+  expectations:
+    - contains: |
+        >  Executing PHPcs.
+        [Simulator] Simulating Exec('./vendor/bin/phpcs --standard=phpcs.xml')
+        [Simulator] Running ./vendor/bin/phpcs --standard=phpcs.xml
+
+- command: 'toolkit:test-phpmd'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        Could not find the ruleset file, the default will be created in the project root.
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->copy('/test/toolkit/resources/phpmd.xml', 'phpmd.xml')
+        [Simulator] Simulating Exec('./vendor/bin/phpmd')
+          ->args(array (
+            0 => '',
+            1 => 'ansi',
+            2 => 'phpmd.xml',
+          ))
+          ->options(array (
+            'exclude' => '',
+            'suffixes' => 'php,module,inc,theme,install',
+          ))
+        [Simulator] Running ./vendor/bin/phpmd '' ansi phpmd.xml --exclude --suffixes 'php,module,inc,theme,install'
+
+- command: 'toolkit:test-phpmd'
+  configuration: []
+  resources:
+    - mkdir: src
+    - mkdir: vendor
+    - from: sample-phpmd.xml
+      to: phpmd.xml
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/phpmd')
+          ->args(array (
+            0 => 'src',
+            1 => 'ansi',
+            2 => 'phpmd.xml',
+          ))
+          ->options(array ( ... ))
+        [Simulator] Running ./vendor/bin/phpmd src ansi phpmd.xml --exclude vendor/ --suffixes 'php,module,inc,theme,install'
+
+- command: 'toolkit:check-phpcs-requirements'
+  configuration: []
+  resources:
+    - from: sample-phpcs-wrong.xml
+      to: phpcs.xml
+  expectations:
+    - contains: |
+        [error]  The following standards are missing, please add them to the configuration file 'phpcs.xml'.
+        ./vendor/drupal/coder/coder_sniffer/Drupal
+        ./vendor/drupal/coder/coder_sniffer/DrupalPractice
+        ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+
+- command: 'toolkit:check-phpcs-requirements'
+  configuration: []
+  resources:
+    - from: sample-phpcs.xml
+      to: phpcs.xml
+  expectations:
+    - not_contains: "[error]  The following standards are missing, please add them to the configuration file"
+
+- command: 'toolkit:test-behat'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:install-dependencies')
+        [Simulator] Running ./vendor/bin/run toolkit:install-dependencies
+        [Simulator] Simulating EcEuropa\Toolkit\Task\File\Process('behat.yml.dist', 'behat.yml')
+        [Simulator] Running ./vendor/bin/behat --profile=default --strict --dry-run
+        [Simulator] Simulating Exec('./vendor/bin/behat')
+          ->options(array (
+            'profile' => 'default',
+            'strict' => NULL,
+          ), '=')
+        [Simulator] Running ./vendor/bin/behat --profile=default --strict
+
+- command: 'toolkit:test-phpunit'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: ">  PHUnit configuration not found, skipping."
+
+- command: 'toolkit:test-phpunit'
+  configuration: []
+  resources:
+    - from: sample-phpunit.xml.dist
+      to: phpunit.xml
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/phpunit ')
+        [Simulator] Running ./vendor/bin/phpunit
+
+- command: 'toolkit:run-phpcbf'
+  configuration: []
+  resources:
+    - from: sample-phpcs.xml
+      to: phpcs.xml
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/phpcbf --standard=phpcs.xml')
+        [Simulator] Running ./vendor/bin/phpcbf --standard=phpcs.xml
+
+- command: 'toolkit:run-blackfire'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('which blackfire')
+          ->silent(1)
+        [Simulator] Running which blackfire
+        [Simulator] Simulating Exec('cat /etc/blackfire/agent | grep server-id=')
+          ->silent(1)
+        [Simulator] Running cat /etc/blackfire/agent | grep server-id=
+        >  Checking page: http://web:8080/web/
+        [Simulator] Simulating Exec('blackfire --json curl http://web:8080/web/')
+           ->silent(1)
+        [Simulator] Running blackfire --json curl http://web:8080/web/
+        >  Something went wrong, please contact the QA team.

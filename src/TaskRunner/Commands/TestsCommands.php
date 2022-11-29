@@ -158,29 +158,33 @@ class TestsCommands extends AbstractCommands
         'files' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
     ])
     {
-        $phpmd_bin = $this->getBin('phpmd');
-        $phpmd_config = $this->getConfig()->get('toolkit.test.phpmd');
-        $config_file = $phpmd_config['config'];
-        $format = $phpmd_config['format'];
-        $options = '';
+        $tasks = $execOptions = [];
+        Toolkit::ensureArray($options['files']);
+        Toolkit::ensureArray($options['ignore_patterns']);
+        Toolkit::ensureArray($options['triggered_by']);
 
-        if (!file_exists($config_file)) {
+        if (!file_exists($options['config'])) {
             $this->output->writeln('Could not find the ruleset file, the default will be created in the project root.');
-            $this->_copy(Toolkit::getToolkitRoot() . '/resources/phpmd.xml', $config_file);
+            $tasks[] = $this->taskFilesystemStack()
+                ->copy(Toolkit::getToolkitRoot() . '/resources/phpmd.xml', $options['config']);
         }
 
-        if (!empty($phpmd_config['ignore_patterns'])) {
-            $options .= '--exclude "' . implode(',', $phpmd_config['ignore_patterns']) . '" ';
+        if (!empty($options['ignore_patterns'])) {
+            Toolkit::filterFolders($options['ignore_patterns']);
+            $execOptions['exclude'] = implode(',', $options['ignore_patterns']);
         }
-        if (!empty($phpmd_config['triggered_by'])) {
-            $options .= '--suffixes "' . implode(',', $phpmd_config['triggered_by']) . '" ';
+        if (!empty($options['triggered_by'])) {
+            $execOptions['suffixes'] = implode(',', $options['triggered_by']);
         }
 
-        Toolkit::filterFolders($phpmd_config['files']);
-        $files = implode(',', $phpmd_config['files']);
+        Toolkit::filterFolders($options['files']);
+        $files = implode(',', $options['files']);
 
-        return $this->taskExec("$phpmd_bin $files $format $config_file $options")
-            ->run();
+        $tasks[] = $this->taskExec($this->getBin('phpmd'))
+            ->args([$files, $options['format'], $options['config']])
+            ->options($execOptions);
+
+        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
