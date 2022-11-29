@@ -1,42 +1,50 @@
 - command: 'toolkit:opts-review'
-  sample: ''
   configuration:
     toolkit:
       project_id: toolkit
+  resources: []
   expectations:
     - contains: ">  The file 'opts.yml' was not found, skipping."
 
 - command: 'toolkit:opts-review'
-  sample: opts.yml
   configuration:
     toolkit:
       project_id: toolkit
+  resources:
+    - from: 'sample-opts.yml'
+      to: '.opts.yml'
   expectations:
     - contains: ">  Review 'opts.yml' file - Ok."
 
 - command: 'toolkit:opts-review'
-  sample: config.yml
   configuration:
     toolkit:
       project_id: toolkit
+  resources:
+    - from: 'sample-config.yml'
+      to: '.opts.yml'
   expectations:
     - contains: ">  The project is using default deploy instructions."
 
 - command: 'toolkit:opts-review'
-  sample: opts-broken-structure.yml
   configuration:
     toolkit:
       project_id: toolkit
+  resources:
+    - from: 'sample-opts-broken-structure.yml'
+      to: '.opts.yml'
   expectations:
     - contains: |
         >  Your structure for the 'upgrade_commands' is invalid.
         See the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override
 
 - command: 'toolkit:opts-review'
-  sample: opts-broken.yml
   configuration:
     toolkit:
       project_id: toolkit
+  resources:
+    - from: 'sample-opts-broken.yml'
+      to: '.opts.yml'
   expectations:
     - contains: |
         >  The command './vendor/bin/drush uli' is not allowed. Please remove it from 'upgrade_commands' section.

@@ -345,13 +345,12 @@ class ToolCommands extends AbstractCommands
             $options['httpd_group'] = getenv('DAEMON_GROUP');
         }
 
-        $params = [
-            '--drupal_path=' . $options['drupal_path'],
-            '--drupal_user=' . $options['drupal_user'],
-            '--httpd_group=' . $options['httpd_group'],
+        $execOptions = [
+            'drupal_path' => $options['drupal_path'],
+            'drupal_user' => $options['drupal_user'],
+            'httpd_group' => $options['httpd_group'],
         ];
-        $command = $script . ' ' . implode(' ', $params);
-        $tasks[] = $this->taskExec($command);
+        $tasks[] = $this->taskExec($script)->options($execOptions, '=');
 
         $settings = $options['drupal_path'] . '/sites/default/settings.php';
         if (file_exists($settings)) {
@@ -368,20 +367,20 @@ class ToolCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function toolkitVersion()
+    public function toolkitVersion(ConsoleIO $io)
     {
-        $this->say("Checking Toolkit version:\n");
+        $io->say("Checking Toolkit version:\n");
 
         $toolkit_version = Toolkit::VERSION;
         $data = Website::requirements();
         $min_version = '';
 
         if (!(self::getPackagePropertyFromComposer('ec-europa/toolkit'))) {
-            $this->writeln('Failed to get Toolkit version from composer.lock.');
+            $io->warning('Failed to get Toolkit version from composer.lock.');
         }
         if (!empty($data)) {
             if (!isset($data['toolkit'])) {
-                $this->writeln('Invalid data returned from the endpoint.');
+                $io->writeln('Invalid data returned from the endpoint.');
             } else {
                 $min_version = $data['toolkit'];
                 if ($toolkit_version) {
@@ -395,20 +394,20 @@ class ToolCommands extends AbstractCommands
                 }
             }
         } else {
-            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
         }
 
         $version_check = Semver::satisfies($toolkit_version, $min_version) ? 'OK' : 'FAIL';
-        $this->writeln(sprintf(
+        $io->writeln(sprintf(
             "Minimum version: %s\nCurrent version: %s\nVersion check: %s",
             $min_version,
             $toolkit_version,
             $version_check
         ));
         if ($version_check === 'FAIL') {
-            return 1;
+            return ResultData::EXITCODE_ERROR;
         }
-        return 0;
+        return ResultData::EXITCODE_OK;
     }
 
     /**
@@ -459,28 +458,28 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Check 'Vendor' packages being monitorised.
+     * Check 'Vendor' packages being monitored.
      *
      * @command toolkit:vendor-list
      */
     public function toolkitVendorList(ConsoleIO $io)
     {
         if (empty(Website::basicAuth())) {
-            return 1;
+            return ResultData::EXITCODE_ERROR;
         }
         $data = Website::requirements();
         if (empty($data)) {
             $io->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
-            return 1;
+            return ResultData::EXITCODE_ERROR;
         }
         if (!isset($data['vendor_list'])) {
             $io->writeln('Invalid data returned from the endpoint.');
-            return 1;
+            return ResultData::EXITCODE_ERROR;
         }
         $vendorList = $data['vendor_list'];
-        $io->title('Vendors being monitorised:');
+        $io->title('Vendors being monitored:');
         $io->writeln($vendorList);
-        return 0;
+        return ResultData::EXITCODE_OK;
     }
 
     /**
@@ -531,7 +530,6 @@ class ToolCommands extends AbstractCommands
     ])
     {
         // If at least one option is given, use given options, else use all.
-        $phpcsResult = $optsReviewResult = $lintPhpResult = $lintYamlResult = $phpStanResult = [];
         $phpcs = $options['phpcs'] === true;
         $optsReview = $options['opts-review'] === true;
         $lintPhp = $options['lint-php'] === true;
@@ -557,6 +555,8 @@ class ToolCommands extends AbstractCommands
             $phpcsResult = ['PHPcs' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $io->newLine(2);
+        } else {
+            $phpcsResult = ['PHPcs' => 'skip'];
         }
         if ($runOptsReview) {
             $code = $this->taskExec($run)->arg('toolkit:opts-review')
@@ -564,6 +564,8 @@ class ToolCommands extends AbstractCommands
             $optsReviewResult = ['Opts review' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $io->newLine(2);
+        } else {
+            $optsReviewResult = ['Opts review' => 'skip'];
         }
         if ($runLintPhp) {
             $code = $this->taskExec($run)->arg('toolkit:lint-php')
@@ -571,6 +573,8 @@ class ToolCommands extends AbstractCommands
             $lintPhpResult = ['Lint PHP' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $io->newLine(2);
+        } else {
+            $lintPhpResult = ['Lint PHP' => 'skip'];
         }
         if ($runLintYaml) {
             $code = $this->taskExec($run)->arg('toolkit:lint-yaml')
@@ -578,6 +582,8 @@ class ToolCommands extends AbstractCommands
             $lintYamlResult = ['Lint YAML' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $io->newLine(2);
+        } else {
+            $lintYamlResult = ['Lint YAML' => 'skip'];
         }
         if ($runPhpStan) {
             $code = $this->taskExec($run)->arg('toolkit:test-phpstan')
@@ -585,6 +591,8 @@ class ToolCommands extends AbstractCommands
             $phpStanResult = ['PHPStan' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $io->newLine(2);
+        } else {
+            $phpStanResult = ['PHPStan' => 'skip'];
         }
 
         $io->title('Results:');
@@ -628,15 +636,15 @@ class ToolCommands extends AbstractCommands
         'print' => InputOption::VALUE_NONE,
     ])
     {
-        $io->title('Installing dependencies');
         $return = 0;
         if (!file_exists('.opts.yml')) {
             return $return;
         }
+        $io->title('Installing dependencies');
         $opts = Yaml::parseFile('.opts.yml');
         $packages = $opts['extra_pkgs'] ?? [];
         if (empty($packages)) {
-            $this->output()->writeln('No packages found, skipping.');
+            $io->writeln('No packages found, skipping.');
             return $return;
         }
 
@@ -663,7 +671,7 @@ class ToolCommands extends AbstractCommands
                 $install[] = $package;
             }
             if ($print) {
-                $this->output()->writeln(["Running apt list $package", $info]);
+                $io->writeln(["Running apt list $package", $info]);
             }
         }
 
@@ -684,7 +692,7 @@ class ToolCommands extends AbstractCommands
                     $return = 1;
                 }
                 if ($print) {
-                    $this->output()->writeln(["Running apt list $package", $info]);
+                    $io->writeln(["Running apt list $package", $info]);
                 }
             }
         }
