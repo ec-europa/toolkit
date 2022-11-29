@@ -59,7 +59,7 @@ docker.project.id = environment
 
 # Database download settings.
 # ---------------------------
-db.dl.type = default
+db.dl.type = nextcloud
 db.dl.filename =
 db.dl.filename.hash = latest.sh1
 db.dl.dir = fpfis/files-for/automate_dumps
