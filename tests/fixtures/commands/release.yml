@@ -17,6 +17,8 @@
       to: src/Toolkit.php
     - from: sample-config.yml
       to: phpdoc.dist.xml
+    - from: sample-config.yml
+      to: tests/fixtures/commands/tool.yml
   expectations:
     - contains: |
         [Simulator] Simulating File\Replace('src/Toolkit.php')
@@ -25,6 +27,12 @@
         [Simulator] Simulating File\Replace('phpdoc.dist.xml')
           ->regex('#<version number="[^"]*">#')
           ->to('<version number="9.5.0">')
+        [Simulator] Simulating File\Replace('tests/fixtures/commands/tool.yml')
+          ->regex('#Toolkit version   OK \([0-9.]+\)#')
+          ->to('Toolkit version   OK (9.5.0)')
+        [Simulator] Simulating File\Replace('tests/fixtures/commands/tool.yml')
+          ->regex('#Current version: [0-9.]+#')
+          ->to('Current version: 9.5.0')
 
 - command: 'toolkit:version-write 9.5.0'
   configuration: []
@@ -34,6 +42,8 @@
   expectations:
     - contains: |
         [WARNING] Could not find the file phpdoc.dist.xml, ignoring.
+
+        [WARNING] Could not find the file tests/fixtures/commands/tool.yml, ignoring.
 
         [Simulator] Simulating File\Replace('src/Toolkit.php')
           ->regex('#VERSION = '[^']*'#')
@@ -83,7 +93,7 @@
           ->setBody('## Version 9.6.0
 
 
-        ')
+          ')
 
 - command: 'toolkit:changelog-write 9.6.0 --show-pr --show-name --full-link'
   configuration: []
