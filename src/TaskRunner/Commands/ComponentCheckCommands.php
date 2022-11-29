@@ -100,7 +100,7 @@ class ComponentCheckCommands extends AbstractCommands
         $io->title('Checking evaluation status components.');
         // Proceed with 'blocker' option. Loop over the packages.
         foreach ($composerLock['packages'] as $package) {
-            // Check if vendor belongs to the monitorised vendor list.
+            // Check if vendor belongs to the monitored vendor list.
             if (in_array(explode('/', $package['name'])['0'], $vendorList)) {
                 $this->validateComponent($package, $modules);
             }

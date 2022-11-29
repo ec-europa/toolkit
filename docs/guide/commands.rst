@@ -65,7 +65,7 @@ See bellow current list of available commands:
    toolkit:test-phpmd                [tk-phpmd] Run PHPMD.
    toolkit:test-phpstan              [tk-phpstan] Run PHPStan.
    toolkit:test-phpunit              [tp|tk-phpunit] Run PHPUnit tests.
-   toolkit:vendor-list               Check 'Vendor' packages being monitorised.
+   toolkit:vendor-list               Check 'Vendor' packages being monitored.
 
 .. toolkit-block-commands-end
 
