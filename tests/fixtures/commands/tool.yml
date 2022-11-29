@@ -42,7 +42,7 @@
 
         ----------------- ---------------------
         PHP version       OK (8.1.12)
-        Toolkit version   OK (9.1.1)
+        Toolkit version   OK (9.2.0)
         Drupal version    FAIL (not found) ()
         ----------------- ---------------------
 
@@ -72,7 +72,7 @@
 
         ----------------- -------------
         PHP version       OK (8.1.12)
-        Toolkit version   OK (9.1.1)
+        Toolkit version   OK (9.2.0)
         Drupal version    OK (9.4.8)
         ----------------- -------------
 
@@ -105,7 +105,7 @@
           [WARNING] Failed to get Toolkit version from composer.lock.
 
         Minimum version: ^9.0
-        Current version: 9.1.1
+        Current version: 9.2.0
         Version check: OK
 
 - command: toolkit:check-version
@@ -118,7 +118,7 @@
         >  Checking Toolkit version:
 
         Minimum version: ^9.0
-        Current version: 9.1.1
+        Current version: 9.2.0
         Version check: OK
 
 - command: toolkit:vendor-list
