@@ -29,13 +29,13 @@
         Checking connections:
         =====================
 
-        ------------------------- -------------------------------------------------------
+        ------------------------- ----------
         QA Endpoint access        OK
         GitHub oauth access       OK (200)
-        GitLab oauth access       FAIL (Missing environment variable: GITLAB_API_TOKEN)
+        GitLab oauth access       OK (200)
         ASDA configuration        OK
         NEXTCLOUD configuration   OK
-        ------------------------- -------------------------------------------------------
+        ------------------------- ----------
 
         Required checks:
         ================
@@ -59,13 +59,13 @@
         Checking connections:
         =====================
 
-        ------------------------- -------------------------------------------------------
+        ------------------------- ----------
         QA Endpoint access        OK
         GitHub oauth access       OK (200)
-        GitLab oauth access       FAIL (Missing environment variable: GITLAB_API_TOKEN)
+        GitLab oauth access       OK (200)
         ASDA configuration        OK
         NEXTCLOUD configuration   OK
-        ------------------------- -------------------------------------------------------
+        ------------------------- ----------
 
         Required checks:
         ================

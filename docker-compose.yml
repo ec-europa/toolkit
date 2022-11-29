@@ -19,5 +19,6 @@ services:
       ASDA_PASSWORD:
       QA_API_BASIC_AUTH:
       GITHUB_API_TOKEN:
+      GITLAB_API_TOKEN:
       XDEBUG_CONFIG: client_host=host.docker.internal
       PHP_IDE_CONFIG: "serverName=Docker"
