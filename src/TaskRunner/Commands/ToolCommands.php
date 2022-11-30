@@ -87,57 +87,70 @@ class ToolCommands extends AbstractCommands
     public function optsReview(ConsoleIO $io)
     {
         $reviewOk = true;
-        if (!file_exists('.opts.yml')) {
-            $this->say("The file 'opts.yml' was not found, skipping.");
-            return 0;
+        $opts = '.opts.yml';
+        if (!file_exists($opts)) {
+            $io->say("The file '$opts' was not found, skipping.");
+            return ResultData::EXITCODE_OK;
         }
         $project_id = $this->getConfig()->get('toolkit.project_id');
+        if (empty($project_id)) {
+            $io->say('The configuration toolkit.project_id value is not valid.');
+            return ResultData::EXITCODE_ERROR;
+        }
         $forbiddenCommands = Website::projectConstraints($project_id);
         if (empty($forbiddenCommands)) {
             $io->error('Failed to get constraints from the endpoint.');
-            return 1;
+            return ResultData::EXITCODE_ERROR;
         }
 
-        $parseOptsFile = Yaml::parseFile('.opts.yml');
+        $parseOptsFile = Yaml::parseFile($opts);
+
+        // Check for invalid php_version value, if given version is 8.0 as float when converted to string will be 8
+        // and will cause issues like in docker images.
+        if (!empty($parseOptsFile['php_version']) && is_float($parseOptsFile['php_version'])) {
+            if ((string) $parseOptsFile['php_version'] === '8') {
+                $io->say('The php_version should be wrapped with upper-quotes like "php_version: \'8.0\'".');
+                $reviewOk = false;
+            }
+        }
+
         if (empty($parseOptsFile['upgrade_commands'])) {
-            $this->say('The project is using default deploy instructions.');
-            return 0;
+            $io->say('The project is using default deploy instructions.');
+            return $reviewOk ? ResultData::EXITCODE_OK : ResultData::EXITCODE_ERROR;
         }
         if (empty($parseOptsFile['upgrade_commands']['default']) && empty($parseOptsFile['upgrade_commands']['append'])) {
-            $this->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
-            return 1;
+            $io->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
+            return ResultData::EXITCODE_ERROR;
         }
-
-        foreach ($parseOptsFile['upgrade_commands'] as $key => $commands) {
-            foreach ($commands as $command) {
-                $command = str_replace('\\', '', $command);
-                $parsedCommand = preg_split("/[\s;&|]/", $command, 0, PREG_SPLIT_NO_EMPTY);
-                foreach ($forbiddenCommands as $forbiddenCommand) {
-                    if ($key == 'default') {
-                        if (in_array($forbiddenCommand, $parsedCommand)) {
-                            $this->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
-                            $reviewOk = false;
-                        }
-                    } else {
-                        foreach ($command as $subCommand) {
-                            $parsedCommand = preg_split("/[\s;&|]/", $subCommand, 0, PREG_SPLIT_NO_EMPTY);
-                            if (in_array($forbiddenCommand, $parsedCommand)) {
-                                $this->say("The command '$subCommand' is not allowed. Please remove it from 'upgrade_commands' section.");
-                                $reviewOk = false;
-                            }
-                        }
-                    }
+        // Gather all the commands, ignore the 'ephemeral' commands.
+        $commands = [];
+        if (!empty($parseOptsFile['upgrade_commands']['append']['acceptance'])) {
+            $commands = array_merge($commands, $parseOptsFile['upgrade_commands']['append']['acceptance']);
+            unset($parseOptsFile['upgrade_commands']['append']['acceptance']);
+        }
+        if (!empty($parseOptsFile['upgrade_commands']['append']['production'])) {
+            $commands = array_merge($commands, $parseOptsFile['upgrade_commands']['append']['production']);
+            unset($parseOptsFile['upgrade_commands']['append']['production']);
+        }
+        $commands = array_unique(array_merge($commands, $parseOptsFile['upgrade_commands']['default'] ?? $parseOptsFile['upgrade_commands']));
+        foreach ($commands as $command) {
+            $command = str_replace('\\', '', $command);
+            $parsedCommand = preg_split('/[\s;&|]/', $command, 0, PREG_SPLIT_NO_EMPTY);
+            foreach ($forbiddenCommands as $forbiddenCommand) {
+                if (in_array($forbiddenCommand, $parsedCommand)) {
+                    $io->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
+                    $reviewOk = false;
                 }
             }
         }
 
         if (!$reviewOk) {
-            $io->error("Failed the '.opts.yml' file review. Please contact the QA team.");
-            return 1;
+            $io->error("Failed the '$opts' file review. Please contact the QA team.");
+            return ResultData::EXITCODE_ERROR;
         }
 
-        $this->say("Review 'opts.yml' file - Ok.");
-        return 0;
+        $io->say("Review '$opts' file - Ok.");
+        return ResultData::EXITCODE_OK;
     }
 
     /**
