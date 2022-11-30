@@ -1,5 +1,29 @@
 # Toolkit change log
 
+## Version 9.2.0
+  - DQA-5384: Improve test coverage for toolkit.
+  - DQA-5102: Set outdated as soft block.
+  - DQA-5452: Improve recommended check output.
+  - DQA-5323: Avoid backslash bypass on .opts.yml file review.
+  - DQA-5323: Website::basicAuth loads SymfonyStyle when not need.
+  - DQA-5482: Tests for ComponentCheckCommands.
+  - DQA-5483: PHPunit mock for webservices.
+  - DQA-5453: Commands maintenance.
+  - DQA-5456: Hook pre-push replace lint-yaml with test-phpmd.
+  - DQA-5411: Allow options in the lint commands.
+  - DQA-5319: Fix ReplaceBlock and add tests.
+  - DQA-5507: Manifest drupal profile fallback to runner.yml.
+  - DQA-5319: Move documentation into a branch.
+  - DQA-5453: Remove usage of deprecated io() & PHPmd.
+  - DQA-5477: Tests for ToolkitReleaseCommands & changelog-write improvements.
+  - DQA-5536: PHPStan allow option memory-limit.
+  - DQA-5546: Set default ASDA as NEXTCLOUD.
+  - DQA-5453: Documentation & ToolkitRelease.
+  - DQA-5476: Tests for ToolkitCommands & ConfigurationCommands.
+  - DQA-5475: Tests for ToolCommands.
+  - DQA-5474: Tests for TestsCommands.
+  - DQA-5627: Command opts-review to check bad php_version.
+
 ## Version 9.1.1
   - DQA-5129: Define timeouts in curl.
   - DQA-5409: Fix Commands loaded twice.

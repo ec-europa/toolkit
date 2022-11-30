@@ -56,16 +56,30 @@ class ReleaseCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
         $tasks = [];
+        // Replace the version in the Toolkit class file.
         $tasks[] = $this->taskReplaceInFile('src/Toolkit.php')
             ->regex("#VERSION = '[^']*'#")
             ->to("VERSION = '" . $version . "'");
 
+        // Replace the version in the phpdoc file.
         if (!file_exists('phpdoc.dist.xml')) {
             $io->warning('Could not find the file phpdoc.dist.xml, ignoring.');
         } else {
             $tasks[] = $this->taskReplaceInFile('phpdoc.dist.xml')
                 ->regex('#<version number="[^"]*">#')
                 ->to('<version number="' . $version . '">');
+        }
+
+        // Replace the version in the tests files.
+        if (!file_exists('tests/fixtures/commands/tool.yml')) {
+            $io->warning('Could not find the file tests/fixtures/commands/tool.yml, ignoring.');
+        } else {
+            $tasks[] = $this->taskReplaceInFile('tests/fixtures/commands/tool.yml')
+                ->regex('#Toolkit version   OK \([0-9.]+\)#')
+                ->to("Toolkit version   OK ($version)");
+            $tasks[] = $this->taskReplaceInFile('tests/fixtures/commands/tool.yml')
+                ->regex('#Current version: [0-9.]+#')
+                ->to("Current version: $version");
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
