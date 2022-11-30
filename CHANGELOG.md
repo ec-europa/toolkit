@@ -22,6 +22,7 @@
   - DQA-5476: Tests for ToolkitCommands & ConfigurationCommands.
   - DQA-5475: Tests for ToolCommands.
   - DQA-5474: Tests for TestsCommands.
+  - DQA-5627: Command opts-review to check bad php_version.
 
 ## Version 9.1.1
   - DQA-5129: Define timeouts in curl.
