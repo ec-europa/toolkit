@@ -12,12 +12,6 @@
   expectations:
     - contains: ">  Detected 'composer.lock' file - Ok."
 
-- command: toolkit:setup-blackfire-behat
-  configuration: []
-  resources: []
-  expectations:
-    - contains: ">  Please install blackfire/php-sdk before continue."
-
 - command: toolkit:requirements
   configuration: []
   resources: []

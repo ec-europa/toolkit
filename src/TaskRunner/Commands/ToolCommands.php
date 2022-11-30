@@ -141,50 +141,6 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Copy the needed resources to run Behat with Blackfire.
-     *
-     * @command toolkit:setup-blackfire-behat
-     */
-    public function setupBlackfireBehat()
-    {
-        // Check requirement if blackfire/php-sdk exist.
-        if (!class_exists('Blackfire\Client')) {
-            $this->say('Please install blackfire/php-sdk before continue.');
-            return 0;
-        }
-
-        $from = $this->getConfig()->get('toolkit.test.behat.from');
-        $blackfire_dir = Toolkit::getToolkitRoot() . '/resources/Blackfire';
-        $parseBehatYml = Yaml::parseFile($from);
-        if (isset($parseBehatYml['blackfire'])) {
-            $this->say('Blackfire profile was found, skipping.');
-        } else {
-            // Append the Blackfire profile to the behat.yml file.
-            $this->taskWriteToFile($from)->append(true)
-                ->line('# Toolkit auto-generated profile for Blackfire.')
-                ->text(file_get_contents("$blackfire_dir/blackfire.behat.yml"))
-                ->line('# End Toolkit.')
-                ->run();
-        }
-
-        // Add the test feature to the tests folder.
-        if (file_exists('tests/features/blackfire.feature')) {
-            $this->say('Blackfire test feature was found, skipping.');
-        } else {
-            $this->_copy("$blackfire_dir/blackfire.feature", 'tests/features/blackfire.feature');
-        }
-
-        // Add the Blackfire Context to the Context folder.
-        if (file_exists('tests/Behat/BlackfireMinkContext.php')) {
-            $this->say('Blackfire Mink context was found, skipping.');
-        } else {
-            $this->_copy("$blackfire_dir/BlackfireMinkContext.php", 'tests/Behat/BlackfireMinkContext.php');
-        }
-
-        return 0;
-    }
-
-    /**
      * Check the Toolkit Requirements.
      *
      * @command toolkit:requirements

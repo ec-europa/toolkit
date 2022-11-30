@@ -1,0 +1,22 @@
+- command: 'toolkit:run-blackfire'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('which blackfire')
+          ->silent(1)
+        [Simulator] Running which blackfire
+        [Simulator] Simulating Exec('cat /etc/blackfire/agent | grep server-id=')
+          ->silent(1)
+        [Simulator] Running cat /etc/blackfire/agent | grep server-id=
+        >  Checking page: http://web:8080/web/
+        [Simulator] Simulating Exec('blackfire --json curl http://web:8080/web/')
+           ->silent(1)
+        [Simulator] Running blackfire --json curl http://web:8080/web/
+        >  Something went wrong, please contact the QA team.
+
+- command: toolkit:setup-blackfire-behat
+  configuration: []
+  resources: []
+  expectations:
+    - contains: ">  Please install blackfire/php-sdk before continue."

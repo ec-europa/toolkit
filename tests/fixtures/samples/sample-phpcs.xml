@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset name="phpcs">
+    <description>The coding standard for phpcs.</description>
+
+    <!-- Standards. -->
+    <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal"/>
+    <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice"/>
+    <rule ref="./vendor/ec-europa/qa-automation/phpcs/QualityAssurance"/>
+
+    <!-- Arguments. -->
+    <arg name="extensions" value="php,inc,yml"/>
+    <arg name="report" value="full"/>
+    <arg name="colors"/>
+    <arg value="ps"/>
+
+    <!-- Files to check. -->
+    <file>.</file>
+
+</ruleset>
