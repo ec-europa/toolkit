@@ -96,6 +96,9 @@ abstract class AbstractTest extends TestCase
      *   to: destination.yml
      * - mkdir: test-folder
      * - touch: test-folder/touched.txt
+     * - file: test.txt
+     *   content: |
+     *     Some content to add
      * ```
      *
      * @param array $resources
@@ -113,6 +116,11 @@ abstract class AbstractTest extends TestCase
                 $this->fs->mkdir($this->getSandboxFilepath($resource['mkdir']));
             } elseif (isset($resource['touch'])) {
                 $this->fs->touch($this->getSandboxFilepath($resource['touch']));
+            } elseif (isset($resource['file'], $resource['content'])) {
+                $this->fs->dumpFile(
+                    $this->getSandboxFilepath($resource['file']),
+                    $resource['content']
+                );
             }
         }
     }

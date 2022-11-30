@@ -4,11 +4,17 @@ upgrade_commands:
     - ./vendor/bin/drush config:import -y
     - ./vendor/bin/drush updatedb -y
     - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
-    - ./vendor/bin/drush u\li
-    - ./vendor/bin/drush uli|echo
-    - ./vendor/bin/drush uli;echo
-    - ./vendor/bin/drush uli&echo
-    - echo;curl https://www.example.com
-    - echo&curl https://www.example.com
-    - echo|curl https://www.example.com
-    - echo&&curl https://www.example.com
+  append:
+    production:
+      - echo;curl https://www.example.com
+      - echo&curl https://www.example.com
+      - echo|curl https://www.example.com
+      - echo&&curl https://www.example.com
+    acceptance:
+      - ./vendor/bin/drush u\li
+      - ./vendor/bin/drush uli|echo
+      - ./vendor/bin/drush uli;echo
+      - ./vendor/bin/drush uli&echo
+    ephemeral:
+      - ./vendor/bin/drush sql:cli this should not fail
+php_version: 8.0

@@ -90,7 +90,6 @@ class ToolCommandsTest extends AbstractTest
         if (!empty($config)) {
             $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
         }
-
         $this->prepareResources($resources);
 
         // Run command.

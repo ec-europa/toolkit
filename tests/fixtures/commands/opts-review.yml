@@ -4,7 +4,39 @@
       project_id: toolkit
   resources: []
   expectations:
-    - contains: ">  The file 'opts.yml' was not found, skipping."
+    - contains: ">  The file '.opts.yml' was not found, skipping."
+
+- command: 'toolkit:opts-review'
+  configuration:
+    toolkit:
+      project_id: toolkit
+  resources:
+    - file: .opts.yml
+      content: "php_version: 8.0"
+  expectations:
+    - contains: |
+        >  The php_version should be wrapped with upper-quotes like "php_version: '8.0'".
+        >  The project is using default deploy instructions.
+
+- command: 'toolkit:opts-review'
+  configuration:
+    toolkit:
+      project_id: toolkit
+  resources:
+    - file: .opts.yml
+      content: "php_version: 8.1"
+  expectations:
+    - contains: ">  The project is using default deploy instructions."
+
+- command: 'toolkit:opts-review'
+  configuration:
+    toolkit:
+      project_id: toolkit
+  resources:
+    - file: .opts.yml
+      content: "php_version: '8.0'"
+  expectations:
+    - contains: ">  The project is using default deploy instructions."
 
 - command: 'toolkit:opts-review'
   configuration:
@@ -14,7 +46,8 @@
     - from: 'sample-opts.yml'
       to: '.opts.yml'
   expectations:
-    - contains: ">  Review 'opts.yml' file - Ok."
+    - contains: ">  Review '.opts.yml' file - Ok."
+    - not_contains: ">  The php_version should be wrapped with upper-quotes"
 
 - command: 'toolkit:opts-review'
   configuration:
@@ -47,6 +80,7 @@
       to: '.opts.yml'
   expectations:
     - contains: |
+        >  The php_version should be wrapped with upper-quotes like "php_version: '8.0'".
         >  The command './vendor/bin/drush uli' is not allowed. Please remove it from 'upgrade_commands' section.
         >  The command './vendor/bin/drush uli|echo' is not allowed. Please remove it from 'upgrade_commands' section.
         >  The command './vendor/bin/drush uli;echo' is not allowed. Please remove it from 'upgrade_commands' section.
