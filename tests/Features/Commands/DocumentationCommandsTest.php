@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\Commands\DocumentationCommands;
-use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
-use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * Test Documentation commands.

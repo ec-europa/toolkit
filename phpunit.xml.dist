@@ -25,6 +25,7 @@
 
         <testsuite name="Run specific test(s)">
             <!-- Feature tests. -->
+<!--            <file>tests/Features/Commands/BlackfireCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/BuildCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ComponentCheckCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ConfigurationCommandsTest.php</file>-->
@@ -33,6 +34,7 @@
 <!--            <file>tests/Features/Commands/DumpCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/GitHooksCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/InstallCommandsTest.php</file>-->
+<!--            <file>tests/Features/Commands/LintCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ReleaseCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/TestsCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ToolCommandsTest.php</file>-->

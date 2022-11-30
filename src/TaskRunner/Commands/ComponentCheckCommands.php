@@ -59,15 +59,14 @@ class ComponentCheckCommands extends AbstractCommands
             $this->skipInsecure = true;
         }
 
-        $endpoint = Website::url();
         $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
-
         if (!isset($composerLock['packages'])) {
             $io->error('No packages found in the composer.lock file.');
             return 1;
         }
 
         $status = 0;
+        $endpoint = Website::url();
         $result = Website::get($endpoint . '/api/v1/package-reviews?version=8.x', $basicAuth);
         $data = json_decode($result, true);
         $modules = array_filter(array_combine(array_column($data, 'name'), $data));

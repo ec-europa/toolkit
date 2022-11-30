@@ -205,7 +205,7 @@ class GitHooksCommands extends AbstractCommands
      * @command toolkit:hooks-run
      */
     // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassAfterLastUsed
-    public function hooksRun(ConsoleIO $io, string $hook, string $arg1 = '', string $arg2 = '', string $arg3 = '')
+    public function hooksRun(ConsoleIO $io, string $hook, $arg1 = '', $arg2 = '', $arg3 = '')
     {
         if (empty($hook)) {
             $io->say('Please provide a hook to run.');
@@ -222,7 +222,7 @@ class GitHooksCommands extends AbstractCommands
         $method = $this->convertHookToMethod($hook);
 
         // Check if the method exists in other classes that are instance
-        // of this. The first to the found is used.
+        // of this. The first to be found is used.
         foreach (get_declared_classes() as $class) {
             if ($class instanceof $this && method_exists($class, $method)) {
                 return (new $class())->$method();
@@ -291,8 +291,9 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Hook: Executes the prepare-commit-msg conditions.
      */
-    private function runPrepareCommitMsg(ConsoleIO $io)
+    private function runPrepareCommitMsg()
     {
+        $io = $this->io ?? new ConsoleIO($this->input(), $this->output());
         $args = $this->input()->getArguments();
         // The arg1 is the file that contains the commit message.
         // NOTE: Do not use the arg2 because it is not updated when new
@@ -310,7 +311,7 @@ class GitHooksCommands extends AbstractCommands
         if (!empty($problems)) {
             $io->say('The commit message validation failed with the following problems:');
             foreach ($problems as $problem) {
-                echo $problem . PHP_EOL;
+                $io->writeln($problem);
             }
             if (!empty($config['prepare-commit-msg']['example'])) {
                 $io->say("Example: {$config['prepare-commit-msg']['example']}");
