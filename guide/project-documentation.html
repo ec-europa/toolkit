@@ -55,7 +55,7 @@
 </label>
 <aside class="phpdocumentor-column -four phpdocumentor-sidebar">
                     <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">Getting started</h2>
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html" class="">Setting up a project</a>
 </h4>
@@ -130,13 +130,9 @@
             <div class="phpdocumentor-column -eight phpdocumentor-content">
                     <div class="section" id="update-project-documentation">
 <h1>Update Project Documentation</h1>
-<p>Use docker to update the documentation locally</p>
-<p>The Docker image comes with all dependencies pre-installed.</p>
-<p>To update the documentation run the following command. This will update
-the content inside the folder ‘docs’.</p>
-<pre><code class="language- " >docker run --rm -v $(pwd):/data phpdoc/phpdoc run
-</code></pre>
-<p>Then push the changes generated.</p>
+<p>To generate the Toolkit documentation you can make use of the <code>toolkit:generate-documentation</code>
+command.</p>
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:generate-documentation</code></pre>
 </div>
 
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">

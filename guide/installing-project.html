@@ -55,7 +55,7 @@
 </label>
 <aside class="phpdocumentor-column -four phpdocumentor-sidebar">
                     <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">Getting started</h2>
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html" class="">Setting up a project</a>
 </h4>
@@ -135,21 +135,25 @@
 <p>To start, run:</p>
 <pre><code class="language- " >docker-compose up
 </code></pre>
-<p>It&#039;s advised to not daemonize docker-compose, so you can turn it off (CTRL+C) quickly when you&#039;re done working. However, if you&#039;d like to daemonize it, you have to add the flag -d:</p>
+<p>It&#039;s advised to not daemonize docker-compose, so you can turn it off (CTRL+C) quickly when you&#039;re
+done working. However, if you&#039;d like to daemonize it, you have to add the flag <code>-d</code>:</p>
 <pre><code class="language- " >docker-compose up -d
 </code></pre>
 <p>Build the site by running:</p>
 <pre><code class="language- " >docker-compose exec web composer install
 </code></pre>
-<p>Using default configuration, the development site files should be available in the web directory and the development site should be available at: <a href="http://localhost:8080/web">http://localhost:8080/web</a>.</p>
+<p>Using default configuration, the development site files should be available in the web directory
+and the development site should be available at: <a href="http://localhost:8080/web">http://localhost:8080/web</a>.</p>
 </div>
 <div class="section" id="clean-installation">
 <h2>Clean installation</h2>
 <p>To setup the site in local development mode and install it run:</p>
-<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:install-clean
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:build-dev
+docker-compose exec web ./vendor/bin/run toolkit:install-clean
 </code></pre>
 <p>To install the site from existing configuration run:</p>
-<pre><code class="language- " >docker-compose exec web ./vendor/bin/run drupal:site-install --existing-config
+<pre><code class="language- " >docker-compose exec web ./vendor/bin/run toolkit:build-dev
+docker-compose exec web ./vendor/bin/run toolkit:install-clean --existing-config
 </code></pre>
 </div>
 <div class="section" id="clone-installation">
@@ -159,8 +163,14 @@
 docker-compose exec web ./vendor/bin/run toolkit:download-dump
 docker-compose exec web ./vendor/bin/run toolkit:install-clone
 </code></pre>
-<p>Toolkit will load the credentials necessary to download the sanitized database dump for your project, so make sure you have the following variables in your environment:</p>
-<pre><code class="language- " >- ASDA_USER
+<p>Toolkit will load the credentials necessary to download the sanitized database dump for your
+project, so make sure you have the following variables in your environment:</p>
+<pre><code class="language- " ># For nextcloud ASDA
+- NEXTCLOUD_USER
+- NEXTCLOUD_PASS
+
+# For default ASDA (deprecated)
+- ASDA_USER
 - ASDA_PASSWORD
 </code></pre>
 <p>If you want to run extra commands after the <code>toolkit:install-clone</code> command you
@@ -171,14 +181,18 @@ can configure the following in your <code>runner.yml.dist</code> file:</p>
       commands:
         - ./vendor/bin/drush status
 </code></pre>
-<p>When running the command <a href="toolkit:install-clone">toolkit:install-clone</a> it will run the following sequence of commands after the database import:</p>
+<p>When running the command <a href="toolkit:install-clone">toolkit:install-clone</a> it will run the following sequence of
+commands after the database import:</p>
 <pre><code class="language- " >./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer -y
 ./vendor/bin/drush updatedb -y
 ./vendor/bin/run toolkit:import-config
 ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
 ./vendor/bin/drush cache:rebuild
 </code></pre>
-<p>These commands simulate the automated deployment that Drone provides through its pipeline. You can alter these commands by providing a file named <strong>.opts.yml</strong> in the root of your project folder. For more detailed information on the contents of this <strong>.opts.yml</strong> file please refer to this page: <a href="https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides">https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides</a> .</p>
+<p>These commands simulate the automated deployment that Drone provides through its pipeline. You can
+alter these commands by providing a file named <strong>.opts.yml</strong> in the root of your project folder. For
+more detailed information on the contents of this <strong>.opts.yml</strong> file please refer to this
+page: <a href="https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides">https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides</a> .</p>
 </div>
 
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">

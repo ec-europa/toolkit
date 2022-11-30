@@ -55,7 +55,7 @@
 </label>
 <aside class="phpdocumentor-column -four phpdocumentor-sidebar">
                     <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">Getting started</h2>
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html" class="">Setting up a project</a>
 </h4>
@@ -136,7 +136,7 @@
 <p>See bellow current list of available commands:</p>
 <pre><code class="language- " >Available commands:
   completion                        Dump the shell completion script
-  config                            Dumps the current configuration.
+  config                            Dumps the current or given configuration.
   help                              Display help for a command
   list                              List commands
  drupal
@@ -186,7 +186,7 @@
   toolkit:test-phpmd                [tk-phpmd] Run PHPMD.
   toolkit:test-phpstan              [tk-phpstan] Run PHPStan.
   toolkit:test-phpunit              [tp|tk-phpunit] Run PHPUnit tests.
-  toolkit:vendor-list               Check &#039;Vendor&#039; packages being monitorised.
+  toolkit:vendor-list               Check &#039;Vendor&#039; packages being monitored.
 </code></pre>
 <div class="section" id="creating-custom-commands">
 <h2>Creating custom commands</h2>
@@ -213,6 +213,23 @@ class ExampleCommands extends AbstractCommands {
    */
   public function commandOne() { }
 }
+</code></pre>
+</div>
+<div class="section" id="creating-configuration-commands">
+<h2>Creating configuration commands</h2>
+<p>Configuration commands are created in the configuration file <code>runner.yml</code>, like shown below:</p>
+<pre><code class="language-yaml " >commands:
+  drupal:setup-test:
+    - { task: process, source: behat.yml.dist, destination: behat.yml }
+
+  drupal:setup-test2:
+    aliases: test
+    description: &#039;Setup the behat file&#039;
+    help: &#039;Some help text&#039;
+    hidden: false
+    usage: &#039;--simulate&#039;
+    tasks:
+      - { task: process, source: behat.yml.dist, destination: behat.yml }
 </code></pre>
 <p>The configuration commands are a mapping to the <a href="https://robo.li/#tasks">Robo Tasks</a>, the
 list of available tasks is:</p>
@@ -280,6 +297,10 @@ list of available tasks is:</p>
                     <tr>
                                     <td>exec</td>
                                     <td><a href="https://robo.li/tasks/Base/#exec">Exec</a></td>
+                            </tr>
+                    <tr>
+                                    <td>replace-block</td>
+                                    <td><a href="src/Task/File/ReplaceBlock.php">ReplaceBlock</a></td>
                             </tr>
             </tbody>
 </table>

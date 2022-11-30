@@ -31,10 +31,20 @@ Search.appendIndex(
             "summary": "Validate\u0020and\u0020ensure\u0020the\u0020parameter\u0020are\u0020met.",
             "url": "classes/EcEuropa-Toolkit-Task-Command-ConfigurationCommand.html#method_validateAndEnsureParameters"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Task\\Command\\ConfigurationCommand\u003A\u003AprepareOutput\u0028\u0029",
+            "name": "prepareOutput",
+            "summary": "Prepares\u0020the\u0020Output\u0020of\u0020a\u0020taskExec.",
+            "url": "classes/EcEuropa-Toolkit-Task-Command-ConfigurationCommand.html#method_prepareOutput"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Task\\Command\\ConfigurationCommand\u003A\u003AthrowParamException\u0028\u0029",
             "name": "throwParamException",
             "summary": "Report\u0020missing\u0020parameter,\u0020this\u0020stops\u0020the\u0020execution.",
             "url": "classes/EcEuropa-Toolkit-Task-Command-ConfigurationCommand.html#method_throwParamException"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Task\\Command\\ConfigurationCommand\u003A\u003AthrowInvalidTaskException\u0028\u0029",
+            "name": "throwInvalidTaskException",
+            "summary": "Report\u0020missing\u0020parameter,\u0020this\u0020stops\u0020the\u0020execution.",
+            "url": "classes/EcEuropa-Toolkit-Task-Command-ConfigurationCommand.html#method_throwInvalidTaskException"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Task\\Command\\ConfigurationCommand\u003A\u003AparamDefaultValue\u0028\u0029",
             "name": "paramDefaultValue",
@@ -211,6 +221,21 @@ Search.appendIndex(
             "summary": "Returns\u0020the\u0020current\u0020working\u0020directory.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BlackfireCommands",
+            "name": "BlackfireCommands",
+            "summary": "Commands\u0020to\u0020interact\u0020with\u0020the\u0020Blackfire.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BlackfireCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BlackfireCommands\u003A\u003AtoolkitRunBlackfire\u0028\u0029",
+            "name": "toolkitRunBlackfire",
+            "summary": "Run\u0020Blackfire.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BlackfireCommands.html#method_toolkitRunBlackfire"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BlackfireCommands\u003A\u003AsetupBlackfireBehat\u0028\u0029",
+            "name": "setupBlackfireBehat",
+            "summary": "Copy\u0020the\u0020needed\u0020resources\u0020to\u0020run\u0020Behat\u0020with\u0020Blackfire.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BlackfireCommands.html#method_setupBlackfireBehat"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands",
             "name": "BuildCommands",
             "summary": "Provides\u0020commands\u0020to\u0020build\u0020a\u0020site\u0020for\u0020development\u0020and\u0020a\u0020production\u0020artifact.",
@@ -306,6 +331,11 @@ Search.appendIndex(
             "summary": "Returns\u0020the\u0020recommended\u0020components\u0020warning\u0020message.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getRecommendedWarningMessage"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AgetFailedOrPassed\u0028\u0029",
+            "name": "getFailedOrPassed",
+            "summary": "If\u0020given\u0020bool\u0020is\u0020TRUE\u0020\u0027failed\u0027\u0020is\u0020return,\u0020otherwise\u0020\u0027passed\u0027.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getFailedOrPassed"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024commandFailed",
             "name": "commandFailed",
             "summary": "",
@@ -376,6 +406,11 @@ Search.appendIndex(
             "summary": "Execute\u0020a\u0020configuration\u0020command.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ConfigurationCommands.html#method_execute"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ConfigurationCommands\u003A\u003Aconfig\u0028\u0029",
+            "name": "config",
+            "summary": "Dumps\u0020the\u0020current\u0020or\u0020given\u0020configuration.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ConfigurationCommands.html#method_config"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands",
             "name": "DocumentationCommands",
             "summary": "Class\u0020AbstractCommands.",
@@ -390,6 +425,11 @@ Search.appendIndex(
             "name": "toolkitGenerateDocumentation",
             "summary": "Generate\u0020the\u0020documentation.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_toolkitGenerateDocumentation"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003AtoolkitGenerateCommandsList\u0028\u0029",
+            "name": "toolkitGenerateCommandsList",
+            "summary": "Generate\u0020the\u0020list\u0020of\u0020commands\u0020in\u0020the\u0020commands.rst\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_toolkitGenerateCommandsList"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003AbackupRelevantFiles\u0028\u0029",
             "name": "backupRelevantFiles",
@@ -445,6 +485,11 @@ Search.appendIndex(
             "name": "branch",
             "summary": "The\u0020documentation\u0020branch.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#property_branch"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003A\u0024push",
+            "name": "push",
+            "summary": "Whether\u0020to\u0020push\u0020the\u0020documentation.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#property_push"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalCommands",
             "name": "DrupalCommands",
@@ -666,6 +711,96 @@ Search.appendIndex(
             "summary": "Import\u0020config.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitImportConfig"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LintCommands",
+            "name": "LintCommands",
+            "summary": "Commands\u0020to\u0020lint\u0020the\u0020source\u0020code\u0020and\u0020interact\u0020with\u0020ESLint.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LintCommands\u003A\u003AgetConfigurationFile\u0028\u0029",
+            "name": "getConfigurationFile",
+            "summary": "Path\u0020to\u0020YAML\u0020configuration\u0020file\u0020containing\u0020command\u0020defaults.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_getConfigurationFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LintCommands\u003A\u003AtoolkitSetupEslint\u0028\u0029",
+            "name": "toolkitSetupEslint",
+            "summary": "Setup\u0020the\u0020ESLint\u0020configurations\u0020and\u0020dependencies.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitSetupEslint"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LintCommands\u003A\u003AgenerateEslintConfigurations\u0028\u0029",
+            "name": "generateEslintConfigurations",
+            "summary": "Generate\u0020configurations\u0020for\u0020ESLint.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_generateEslintConfigurations"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LintCommands\u003A\u003AtoolkitLintYaml\u0028\u0029",
+            "name": "toolkitLintYaml",
+            "summary": "Run\u0020lint\u0020YAML.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintYaml"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LintCommands\u003A\u003AtoolkitLintJs\u0028\u0029",
+            "name": "toolkitLintJs",
+            "summary": "Run\u0020lint\u0020JS.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintJs"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LintCommands\u003A\u003AtoolkitRunEsLint\u0028\u0029",
+            "name": "toolkitRunEsLint",
+            "summary": "Execute\u0020the\u0020eslint.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitRunEsLint"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LintCommands\u003A\u003AtoolkitLintPhp\u0028\u0029",
+            "name": "toolkitLintPhp",
+            "summary": "Run\u0020lint\u0020PHP.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintPhp"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands",
+            "name": "ReleaseCommands",
+            "summary": "Class\u0020AbstractCommands.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003AtoolkitVersionWrite\u0028\u0029",
+            "name": "toolkitVersionWrite",
+            "summary": "Write\u0020the\u0020specified\u0020version\u0020string\u0020into\u0020needed\u0020places.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitVersionWrite"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003AtoolkitChangelogWrite\u0028\u0029",
+            "name": "toolkitChangelogWrite",
+            "summary": "Write\u0020the\u0020release\u0020changelog\u0020to\u0020the\u0020CHANGELOG.md\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitChangelogWrite"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003AtoolkitPrepareRelease\u0028\u0029",
+            "name": "toolkitPrepareRelease",
+            "summary": "Prepare\u0020a\u0020release\u0020for\u0020Toolkit.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitPrepareRelease"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003AgetLatestChangelogVersion\u0028\u0029",
+            "name": "getLatestChangelogVersion",
+            "summary": "Reads\u0020the\u0020changelog\u0020file\u0020and\u0020returns\u0020the\u0020latest\u0020version.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_getLatestChangelogVersion"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003AprepareChangelog\u0028\u0029",
+            "name": "prepareChangelog",
+            "summary": "Get\u0020the\u0020git\u0020log\u0020and\u0020process\u0020it.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_prepareChangelog"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003AprepareChangelogRow\u0028\u0029",
+            "name": "prepareChangelogRow",
+            "summary": "Prepare\u0020the\u0020changelog\u0020row.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_prepareChangelogRow"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003A\u0024changelog",
+            "name": "changelog",
+            "summary": "The\u0020changelog\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_changelog"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003A\u0024releaseBranch",
+            "name": "releaseBranch",
+            "summary": "The\u0020release\u0020branch.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_releaseBranch"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003A\u0024repo",
+            "name": "repo",
+            "summary": "The\u0020Toolkit\u0020repo\u0020url.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_repo"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands",
             "name": "TestsCommands",
             "summary": "Class\u0020TestsCommands.",
@@ -726,36 +861,6 @@ Search.appendIndex(
             "summary": "Run\u0020PHP\u0020code\u0020autofixing.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitRunPhpcbf"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitSetupEslint\u0028\u0029",
-            "name": "toolkitSetupEslint",
-            "summary": "Setup\u0020the\u0020ESLint\u0020configurations\u0020and\u0020dependencies.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitSetupEslint"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitLintYaml\u0028\u0029",
-            "name": "toolkitLintYaml",
-            "summary": "Run\u0020lint\u0020YAML.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitLintYaml"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitLintJs\u0028\u0029",
-            "name": "toolkitLintJs",
-            "summary": "Run\u0020lint\u0020JS.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitLintJs"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitRunEsLint\u0028\u0029",
-            "name": "toolkitRunEsLint",
-            "summary": "Execute\u0020the\u0020eslint.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitRunEsLint"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitLintPhp\u0028\u0029",
-            "name": "toolkitLintPhp",
-            "summary": "Run\u0020lint\u0020PHP.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitLintPhp"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitRunBlackfire\u0028\u0029",
-            "name": "toolkitRunBlackfire",
-            "summary": "Run\u0020Blackfire.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitRunBlackfire"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands",
             "name": "ToolCommands",
             "summary": "Generic\u0020tools.",
@@ -781,11 +886,6 @@ Search.appendIndex(
             "summary": "Check\u0020project\u0027s\u0020.opts.yml\u0020file\u0020for\u0020forbidden\u0020commands.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_optsReview"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AsetupBlackfireBehat\u0028\u0029",
-            "name": "setupBlackfireBehat",
-            "summary": "Copy\u0020the\u0020needed\u0020resources\u0020to\u0020run\u0020Behat\u0020with\u0020Blackfire.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_setupBlackfireBehat"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AtoolkitRequirements\u0028\u0029",
             "name": "toolkitRequirements",
             "summary": "Check\u0020the\u0020Toolkit\u0020Requirements.",
@@ -808,7 +908,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AtoolkitVendorList\u0028\u0029",
             "name": "toolkitVendorList",
-            "summary": "Check\u0020\u0027Vendor\u0027\u0020packages\u0020being\u0020monitorised.",
+            "summary": "Check\u0020\u0027Vendor\u0027\u0020packages\u0020being\u0020monitored.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_toolkitVendorList"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AgetDeploymentEnvironment\u0028\u0029",
@@ -830,56 +930,6 @@ Search.appendIndex(
             "name": "toolkitInstallDependencies",
             "summary": "Install\u0020packages\u0020present\u0020in\u0020the\u0020opts.yml\u0020file\u0020under\u0020extra_pkgs\u0020section.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_toolkitInstallDependencies"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitCommands",
-            "name": "ToolkitCommands",
-            "summary": "Class\u0020AbstractCommands.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitCommands.html"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitCommands\u003A\u003Aconfig\u0028\u0029",
-            "name": "config",
-            "summary": "Dumps\u0020the\u0020current\u0020configuration.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitCommands.html#method_config"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitCommands\u003A\u003AgenerateCommandsList\u0028\u0029",
-            "name": "generateCommandsList",
-            "summary": "Generate\u0020the\u0020list\u0020of\u0020commands\u0020in\u0020the\u0020commands.rst\u0020file.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitCommands.html#method_generateCommandsList"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands",
-            "name": "ToolkitReleaseCommands",
-            "summary": "Class\u0020AbstractCommands.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitReleaseCommands.html"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands\u003A\u003AtoolkitVersionWrite\u0028\u0029",
-            "name": "toolkitVersionWrite",
-            "summary": "Write\u0020the\u0020specified\u0020version\u0020string\u0020into\u0020needed\u0020places.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitReleaseCommands.html#method_toolkitVersionWrite"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands\u003A\u003AtoolkitChangelogWrite\u0028\u0029",
-            "name": "toolkitChangelogWrite",
-            "summary": "Write\u0020the\u0020release\u0020changelog\u0020to\u0020the\u0020CHANGELOG.md\u0020file.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitReleaseCommands.html#method_toolkitChangelogWrite"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands\u003A\u003AtoolkitPrepareRelease\u0028\u0029",
-            "name": "toolkitPrepareRelease",
-            "summary": "Prepare\u0020a\u0020release\u0020for\u0020Toolkit.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitReleaseCommands.html#method_toolkitPrepareRelease"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands\u003A\u003AgetLatestChangelogVersion\u0028\u0029",
-            "name": "getLatestChangelogVersion",
-            "summary": "Reads\u0020the\u0020changelog\u0020file\u0020and\u0020returns\u0020the\u0020latest\u0020version.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitReleaseCommands.html#method_getLatestChangelogVersion"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands\u003A\u003A\u0024changelog",
-            "name": "changelog",
-            "summary": "The\u0020changelog\u0020file.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitReleaseCommands.html#property_changelog"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolkitReleaseCommands\u003A\u003A\u0024releaseBranch",
-            "name": "releaseBranch",
-            "summary": "The\u0020release\u0020branch.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolkitReleaseCommands.html#property_releaseBranch"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Inject\\ConfigForCommand",
             "name": "ConfigForCommand",
@@ -1090,6 +1140,11 @@ Search.appendIndex(
             "name": "filterFolders",
             "summary": "Remove\u0020un\u002Dexisting\u0020folders\u0020from\u0020given\u0020array.",
             "url": "classes/EcEuropa-Toolkit-Toolkit.html#method_filterFolders"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Toolkit\u003A\u003AensureArray\u0028\u0029",
+            "name": "ensureArray",
+            "summary": "If\u0020given\u0020content\u0020is\u0020a\u0020string,\u0020it\u0020will\u0020be\u0020exploded\u0020by\u0020given\u0020separator.",
+            "url": "classes/EcEuropa-Toolkit-Toolkit.html#method_ensureArray"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Toolkit\u003A\u003AgetRoboVersion\u0028\u0029",
             "name": "getRoboVersion",

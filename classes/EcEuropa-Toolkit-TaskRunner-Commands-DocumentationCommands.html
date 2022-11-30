@@ -54,7 +54,7 @@
 </label>
 <aside class="phpdocumentor-column -four phpdocumentor-sidebar">
                     <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">Getting started</h2>
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html" class="">Setting up a project</a>
 </h4>
@@ -190,6 +190,13 @@
 <dd>The documentation directory.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#property_push">$push</a>
+    <span>
+                        &nbsp;: bool            </span>
+</dt>
+<dd>Whether to push the documentation.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#property_repo">$repo</a>
     <span>
                         &nbsp;: string            </span>
@@ -230,6 +237,13 @@
                                 &nbsp;: mixed    </span>
 </dt>
 <dd>Command initialization.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_toolkitGenerateCommandsList">toolkitGenerateCommandsList()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Generate the list of commands in the commands.rst file.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_toolkitGenerateDocumentation">toolkitGenerateDocumentation()</a>
@@ -304,7 +318,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_backupRelevantFiles">backupRelevantFiles()</a>
     <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Backup all *.rst files.</dd>
 
@@ -414,6 +428,39 @@
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$docsDir</span>
+    </code>
+
+    
+    
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_push">
+        $push
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#property_push" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DocumentationCommands.php"><a href="files/src-taskrunner-commands-documentationcommands.html"><abbr title="src/TaskRunner/Commands/DocumentationCommands.php">DocumentationCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">58</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Whether to push the documentation.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+        <span class="phpdocumentor-signature__type">bool</span>
+    <span class="phpdocumentor-signature__name">$push</span>
     </code>
 
     
@@ -540,7 +587,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DocumentationCommands.php"><a href="files/src-taskrunner-commands-documentationcommands.html"><abbr title="src/TaskRunner/Commands/DocumentationCommands.php">DocumentationCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">56</span>
+    <span class="phpdocumentor-element-found-in__line">63</span>
 
     </aside>
 
@@ -649,6 +696,70 @@
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_toolkitGenerateCommandsList">
+        toolkitGenerateCommandsList()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_toolkitGenerateCommandsList" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DocumentationCommands.php"><a href="files/src-taskrunner-commands-documentationcommands.html"><abbr title="src/TaskRunner/Commands/DocumentationCommands.php">DocumentationCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">149</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Generate the list of commands in the commands.rst file.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">toolkitGenerateCommandsList</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    
+    
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">command</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>toolkit:generate-commands-list</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">hidden</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                             
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">aliases</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>tk-gcl</p>
+</section>
+
+                                    </dd>
+                        </dl>
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_toolkitGenerateDocumentation">
         toolkitGenerateDocumentation()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html#method_toolkitGenerateDocumentation" class="headerlink"><i class="fas fa-link"></i></a>
@@ -656,7 +767,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DocumentationCommands.php"><a href="files/src-taskrunner-commands-documentationcommands.html"><abbr title="src/TaskRunner/Commands/DocumentationCommands.php">DocumentationCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">76</span>
+    <span class="phpdocumentor-element-found-in__line">84</span>
 
     </aside>
 
@@ -664,7 +775,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitGenerateDocumentation</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;token&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;repo&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;docs-dir&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;tmp-dir&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;branch&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">toolkitGenerateDocumentation</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;token&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;repo&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;docs-dir&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;tmp-dir&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;branch&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;push&#039; =&gt; InputOption::VALUE_NONE]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
@@ -680,7 +791,7 @@
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$options</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;token&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;repo&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;docs-dir&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;tmp-dir&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;branch&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;token&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;repo&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;docs-dir&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;tmp-dir&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;branch&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;push&#039; =&gt; InputOption::VALUE_NONE]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"></section>
 
@@ -744,6 +855,15 @@
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
                                                  <section class="phpdocumentor-description"><p>branch   The documentation branch.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>push     If set, the documentation will be pushed.</p>
 </section>
 
                                     </dd>
@@ -1229,7 +1349,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DocumentationCommands.php"><a href="files/src-taskrunner-commands-documentationcommands.html"><abbr title="src/TaskRunner/Commands/DocumentationCommands.php">DocumentationCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">133</span>
+    <span class="phpdocumentor-element-found-in__line">169</span>
 
     </aside>
 
@@ -1237,14 +1357,14 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">backupRelevantFiles</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+                    <span class="phpdocumentor-signature__name">backupRelevantFiles</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
         
     
@@ -1262,7 +1382,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DocumentationCommands.php"><a href="files/src-taskrunner-commands-documentationcommands.html"><abbr title="src/TaskRunner/Commands/DocumentationCommands.php">DocumentationCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">197</span>
+    <span class="phpdocumentor-element-found-in__line">243</span>
 
     </aside>
 
@@ -1316,7 +1436,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DocumentationCommands.php"><a href="files/src-taskrunner-commands-documentationcommands.html"><abbr title="src/TaskRunner/Commands/DocumentationCommands.php">DocumentationCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">210</span>
+    <span class="phpdocumentor-element-found-in__line">256</span>
 
     </aside>
 
@@ -1349,7 +1469,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DocumentationCommands.php"><a href="files/src-taskrunner-commands-documentationcommands.html"><abbr title="src/TaskRunner/Commands/DocumentationCommands.php">DocumentationCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">226</span>
+    <span class="phpdocumentor-element-found-in__line">272</span>
 
     </aside>
 
@@ -1382,7 +1502,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DocumentationCommands.php"><a href="files/src-taskrunner-commands-documentationcommands.html"><abbr title="src/TaskRunner/Commands/DocumentationCommands.php">DocumentationCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">178</span>
+    <span class="phpdocumentor-element-found-in__line">218</span>
 
     </aside>
 
@@ -1415,7 +1535,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DocumentationCommands.php"><a href="files/src-taskrunner-commands-documentationcommands.html"><abbr title="src/TaskRunner/Commands/DocumentationCommands.php">DocumentationCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">151</span>
+    <span class="phpdocumentor-element-found-in__line">186</span>
 
     </aside>
 
