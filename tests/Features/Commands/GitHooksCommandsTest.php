@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
-use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
 use EcEuropa\Toolkit\Toolkit;
-use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
 
 /**

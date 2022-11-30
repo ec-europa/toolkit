@@ -4,30 +4,31 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
+use EcEuropa\Toolkit\TaskRunner\Commands\LintCommands;
 use EcEuropa\Toolkit\Tests\AbstractTest;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Test Toolkit release commands.
+ * Test Toolkit lint commands.
  *
- * @group toolkit-release
+ * @group lint
  */
-class ReleaseCommandsTest extends AbstractTest
+class LintCommandsTest extends AbstractTest
 {
 
     /**
-     * Data provider for testToolkitRelease.
+     * Data provider for testLint.
      *
      * @return array
      *   An array of test data arrays with assertions.
      */
     public function dataProvider()
     {
-        return $this->getFixtureContent('commands/release.yml');
+        return $this->getFixtureContent('commands/lint.yml');
     }
 
     /**
-     * Test ToolkitReleaseCommands commands.
+     * Test LintCommands commands.
      *
      * @param string $command
      *   A command.
@@ -40,7 +41,7 @@ class ReleaseCommandsTest extends AbstractTest
      *
      * @dataProvider dataProvider
      */
-    public function testToolkitRelease(string $command, array $config = [], array $resources = [], array $expectations = [])
+    public function testLint(string $command, array $config = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
         if (!empty($config)) {
@@ -55,6 +56,11 @@ class ReleaseCommandsTest extends AbstractTest
         foreach ($expectations as $expectation) {
             $this->assertDynamic($result['output'], $expectation);
         }
+    }
+
+    public function testConfigurationFileExists()
+    {
+        $this->assertFileExists((new LintCommands())->getConfigurationFile());
     }
 
 }

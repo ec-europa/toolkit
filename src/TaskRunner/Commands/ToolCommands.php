@@ -87,101 +87,70 @@ class ToolCommands extends AbstractCommands
     public function optsReview(ConsoleIO $io)
     {
         $reviewOk = true;
-        if (!file_exists('.opts.yml')) {
-            $this->say("The file 'opts.yml' was not found, skipping.");
-            return 0;
+        $opts = '.opts.yml';
+        if (!file_exists($opts)) {
+            $io->say("The file '$opts' was not found, skipping.");
+            return ResultData::EXITCODE_OK;
         }
         $project_id = $this->getConfig()->get('toolkit.project_id');
+        if (empty($project_id)) {
+            $io->say('The configuration toolkit.project_id value is not valid.');
+            return ResultData::EXITCODE_ERROR;
+        }
         $forbiddenCommands = Website::projectConstraints($project_id);
         if (empty($forbiddenCommands)) {
             $io->error('Failed to get constraints from the endpoint.');
-            return 1;
+            return ResultData::EXITCODE_ERROR;
         }
 
-        $parseOptsFile = Yaml::parseFile('.opts.yml');
+        $parseOptsFile = Yaml::parseFile($opts);
+
+        // Check for invalid php_version value, if given version is 8.0 as float when converted to string will be 8
+        // and will cause issues like in docker images.
+        if (!empty($parseOptsFile['php_version']) && is_float($parseOptsFile['php_version'])) {
+            if ((string) $parseOptsFile['php_version'] === '8') {
+                $io->say('The php_version should be wrapped with upper-quotes like "php_version: \'8.0\'".');
+                $reviewOk = false;
+            }
+        }
+
         if (empty($parseOptsFile['upgrade_commands'])) {
-            $this->say('The project is using default deploy instructions.');
-            return 0;
+            $io->say('The project is using default deploy instructions.');
+            return $reviewOk ? ResultData::EXITCODE_OK : ResultData::EXITCODE_ERROR;
         }
         if (empty($parseOptsFile['upgrade_commands']['default']) && empty($parseOptsFile['upgrade_commands']['append'])) {
-            $this->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
-            return 1;
+            $io->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
+            return ResultData::EXITCODE_ERROR;
         }
-
-        foreach ($parseOptsFile['upgrade_commands'] as $key => $commands) {
-            foreach ($commands as $command) {
-                $command = str_replace('\\', '', $command);
-                $parsedCommand = preg_split("/[\s;&|]/", $command, 0, PREG_SPLIT_NO_EMPTY);
-                foreach ($forbiddenCommands as $forbiddenCommand) {
-                    if ($key == 'default') {
-                        if (in_array($forbiddenCommand, $parsedCommand)) {
-                            $this->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
-                            $reviewOk = false;
-                        }
-                    } else {
-                        foreach ($command as $subCommand) {
-                            $parsedCommand = preg_split("/[\s;&|]/", $subCommand, 0, PREG_SPLIT_NO_EMPTY);
-                            if (in_array($forbiddenCommand, $parsedCommand)) {
-                                $this->say("The command '$subCommand' is not allowed. Please remove it from 'upgrade_commands' section.");
-                                $reviewOk = false;
-                            }
-                        }
-                    }
+        // Gather all the commands, ignore the 'ephemeral' commands.
+        $commands = [];
+        if (!empty($parseOptsFile['upgrade_commands']['append']['acceptance'])) {
+            $commands = array_merge($commands, $parseOptsFile['upgrade_commands']['append']['acceptance']);
+            unset($parseOptsFile['upgrade_commands']['append']['acceptance']);
+        }
+        if (!empty($parseOptsFile['upgrade_commands']['append']['production'])) {
+            $commands = array_merge($commands, $parseOptsFile['upgrade_commands']['append']['production']);
+            unset($parseOptsFile['upgrade_commands']['append']['production']);
+        }
+        $commands = array_unique(array_merge($commands, $parseOptsFile['upgrade_commands']['default'] ?? $parseOptsFile['upgrade_commands']));
+        foreach ($commands as $command) {
+            $command = str_replace('\\', '', $command);
+            $parsedCommand = preg_split('/[\s;&|]/', $command, 0, PREG_SPLIT_NO_EMPTY);
+            foreach ($forbiddenCommands as $forbiddenCommand) {
+                if (in_array($forbiddenCommand, $parsedCommand)) {
+                    $io->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
+                    $reviewOk = false;
                 }
             }
         }
 
         if (!$reviewOk) {
-            $io->error("Failed the '.opts.yml' file review. Please contact the QA team.");
-            return 1;
+            $io->error("Failed the '$opts' file review. Please contact the QA team.");
+            return ResultData::EXITCODE_ERROR;
         }
 
-        $this->say("Review 'opts.yml' file - Ok.");
-        return 0;
-    }
-
-    /**
-     * Copy the needed resources to run Behat with Blackfire.
-     *
-     * @command toolkit:setup-blackfire-behat
-     */
-    public function setupBlackfireBehat()
-    {
-        // Check requirement if blackfire/php-sdk exist.
-        if (!class_exists('Blackfire\Client')) {
-            $this->say('Please install blackfire/php-sdk before continue.');
-            return 0;
-        }
-
-        $from = $this->getConfig()->get('toolkit.test.behat.from');
-        $blackfire_dir = Toolkit::getToolkitRoot() . '/resources/Blackfire';
-        $parseBehatYml = Yaml::parseFile($from);
-        if (isset($parseBehatYml['blackfire'])) {
-            $this->say('Blackfire profile was found, skipping.');
-        } else {
-            // Append the Blackfire profile to the behat.yml file.
-            $this->taskWriteToFile($from)->append(true)
-                ->line('# Toolkit auto-generated profile for Blackfire.')
-                ->text(file_get_contents("$blackfire_dir/blackfire.behat.yml"))
-                ->line('# End Toolkit.')
-                ->run();
-        }
-
-        // Add the test feature to the tests folder.
-        if (file_exists('tests/features/blackfire.feature')) {
-            $this->say('Blackfire test feature was found, skipping.');
-        } else {
-            $this->_copy("$blackfire_dir/blackfire.feature", 'tests/features/blackfire.feature');
-        }
-
-        // Add the Blackfire Context to the Context folder.
-        if (file_exists('tests/Behat/BlackfireMinkContext.php')) {
-            $this->say('Blackfire Mink context was found, skipping.');
-        } else {
-            $this->_copy("$blackfire_dir/BlackfireMinkContext.php", 'tests/Behat/BlackfireMinkContext.php');
-        }
-
-        return 0;
+        $io->say("Review '$opts' file - Ok.");
+        return ResultData::EXITCODE_OK;
     }
 
     /**

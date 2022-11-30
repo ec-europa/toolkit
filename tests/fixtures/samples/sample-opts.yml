@@ -4,5 +4,13 @@ upgrade_commands:
     - ./vendor/bin/drush config:import -y
     - ./vendor/bin/drush updatedb -y
     - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
+  append:
+    production:
+      - ./vendor/bin/drush cache:rebuild
+    acceptance:
+      - ./vendor/bin/drush cache:rebuild
+    ephemeral:
+      - ./vendor/bin/drush cache:rebuild
 extra_pkgs:
   - php8.1-zip
+php_version: '8.0'

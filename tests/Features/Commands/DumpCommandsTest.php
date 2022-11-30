@@ -5,13 +5,8 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\Commands\DumpCommands;
-use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
-use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Yaml\Yaml;
-
-use function str_contains;
 
 /**
  * Test Toolkit dump commands.
@@ -52,7 +47,6 @@ class DumpCommandsTest extends AbstractTest
         if (!empty($config)) {
             $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
         }
-
         $this->prepareResources($resources);
 
         // Run command.
