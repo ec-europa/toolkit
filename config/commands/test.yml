@@ -25,24 +25,3 @@ command:
         files: ${toolkit.test.phpstan.files}
         memory-limit: ${toolkit.test.phpstan.memory_limit}
         options: ${toolkit.test.phpstan.options}
-    setup-eslint:
-      options:
-        config: ${toolkit.lint.eslint.config}
-        ignores: ${toolkit.lint.eslint.ignores}
-        drupal-root: ${drupal.root}
-        packages: ${toolkit.lint.eslint.packages}
-    lint-yaml:
-      options:
-        config: ${toolkit.lint.eslint.config}
-        extensions: ${toolkit.lint.eslint.extensions_yaml}
-        options: ${toolkit.lint.eslint.options_yaml}
-    lint-js:
-      options:
-        config: ${toolkit.lint.eslint.config}
-        extensions: ${toolkit.lint.eslint.extensions_js}
-        options: ${toolkit.lint.eslint.options_js}
-    lint-php:
-      options:
-        extensions: ${toolkit.lint.php.extensions}
-        exclude: ${toolkit.lint.php.exclude}
-        options: ${toolkit.lint.php.options}
