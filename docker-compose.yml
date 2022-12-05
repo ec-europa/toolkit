@@ -1,16 +1,24 @@
 version: '2'
 services:
   web:
-    image: registry.fpfis.eu/fpfis/httpd-php:8.1-dev
-    working_dir: ${PWD}
+    image: registry.fpfis.eu/fpfis/httpd-php:8.1-ci
+    working_dir: /test/toolkit
+    ports:
+      # Use port "8080:8080" to access the mock in the browser OR to use xdebug.
+      - "8080"
+#      - "8080:8080"
     volumes:
-    - ${PWD}:${PWD}
-#    - ${HOME}/.composer/auth.json:/root/.composer/auth.json
+      - ${PWD}:/test/toolkit
+#      - ${PWD}/resources/xDebug/xdebug.custom.ini:/etc/php/8.1/mods-available/xdebug.ini
     environment:
-      DOCUMENT_ROOT: ${PWD}
+      DOCUMENT_ROOT: /test/toolkit
+      VIRTUAL_HOST: localhost:8080
       NEXTCLOUD_USER:
       NEXTCLOUD_PASS:
+      ASDA_USER:
+      ASDA_PASSWORD:
       QA_API_BASIC_AUTH:
-      XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
+      GITHUB_API_TOKEN:
+      GITLAB_API_TOKEN:
+      XDEBUG_CONFIG: client_host=host.docker.internal
       PHP_IDE_CONFIG: "serverName=Docker"
-      VIRTUAL_HOST: web:8080

@@ -1,4 +1,3 @@
-
 Building assets
 ===============
 
@@ -8,7 +7,6 @@ Overview
 Toolkit provides a way to build theme assets with Gulp.js.
 
 By default, a gulpfile is included and as well some npm packages in order to:
-
 
 * Look for Scss files and convert them into Css
 * Minify Css and Js
@@ -29,7 +27,6 @@ Source files
 
 The folder structure for the source files should be aligned like this:
 
-
 * {your-theme-folder}/src/scss
 * {your-theme-folder}/src/js
 
@@ -38,13 +35,13 @@ After this task is complete the generated folder '{your-theme}/assets' will look
 .. code-block::
 
    /your-theme
-     /assests
+     /assets
        /css
          style.min.css
        /js
          script.min.js
 
-Note: The folder name 'assets' is the default value provided. It can be override on the 'gulpfile.js'.
+Note: The folder name ``assets`` is the default value provided, it can be override in the 'gulpfile.js'.
 
 Get 'default-theme'
 ^^^^^^^^^^^^^^^^^^^
@@ -58,7 +55,7 @@ If no config files are present in the project, the default theme can be specifie
 Define 'custom-code-folder'
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If for some reason your project is running custom code in other folder then ``lib``\ , it's possible to make it configurable with the following:
+If for some reason your project is running custom code in other folder then ``lib``, it's possible to make it configurable with the following:
 
 .. code-block::
 
@@ -155,19 +152,3 @@ Automatically fix, where possible, violations reported.
 .. code-block::
 
    docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix
-
-Other topics
-^^^^^^^^^^^^
-
-
-* `Setting up a project </docs/setting-up-project.md>`_
-* `Configuring a project </docs/configuring-project.md>`_
-* `Installing the project </docs/installing-project.md>`_
-* `Testing the project </docs/testing-project.md>`_
-* `Using Docker environment </docs/docker-environment.md>`_
-* `Continuous integration </docs/continuous-integration.md>`_
-* `Available tasks </docs/available-tasks.md>`_
-* Building assets
-* `Git Hooks </docs/git-hooks.md>`_
-* `Update Project Documentation </docs/project-documentation.md>`_
-* `Changelog </CHANGELOG.md>`_

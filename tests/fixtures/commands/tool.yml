@@ -1,0 +1,225 @@
+- command: toolkit:complock-check
+  configuration: []
+  resources: []
+  expectations:
+    - contains: "[ERROR] Failed to detect a 'composer.lock' file on root folder."
+
+- command: toolkit:complock-check
+  configuration: []
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+  expectations:
+    - contains: ">  Detected 'composer.lock' file - Ok."
+
+- command: toolkit:requirements
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        >  Checking Toolkit requirements:
+
+
+        Checking connections:
+        =====================
+
+        ------------------------- ----------
+        QA Endpoint access        OK
+        GitHub oauth access       OK (200)
+        GitLab oauth access       OK (200)
+        ASDA configuration        OK
+        NEXTCLOUD configuration   OK
+        ------------------------- ----------
+
+        Required checks:
+        ================
+
+        ----------------- ---------------------
+        PHP version       OK (8.1.12)
+        Toolkit version   OK (9.2.0)
+        Drupal version    FAIL (not found) ()
+        ----------------- ---------------------
+
+- command: toolkit:requirements
+  configuration: []
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+  expectations:
+    - contains: |
+        >  Checking Toolkit requirements:
+
+
+        Checking connections:
+        =====================
+
+        ------------------------- ----------
+        QA Endpoint access        OK
+        GitHub oauth access       OK (200)
+        GitLab oauth access       OK (200)
+        ASDA configuration        OK
+        NEXTCLOUD configuration   OK
+        ------------------------- ----------
+
+        Required checks:
+        ================
+
+        ----------------- -------------
+        PHP version       OK (8.1.12)
+        Toolkit version   OK (9.2.0)
+        Drupal version    OK (9.4.8)
+        ----------------- -------------
+
+- command: toolkit:fix-permissions
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('/test/toolkit/resources/scripts/fix-permissions.sh')
+          ->options(array ( ... ), '=')
+        [Simulator] Running /test/toolkit/resources/scripts/fix-permissions.sh --drupal_path=/test/toolkit/web --drupal_user=www-data --httpd_group=www-data
+
+
+- command: toolkit:fix-permissions  --drupal_path=/test/toolkit/test --drupal_user=test --httpd_group=test
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('/test/toolkit/resources/scripts/fix-permissions.sh')
+          ->options(array ( ... ), '=')
+        [Simulator] Running /test/toolkit/resources/scripts/fix-permissions.sh --drupal_path=/test/toolkit/test --drupal_user=test --httpd_group=test
+
+- command: toolkit:check-version
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        >  Checking Toolkit version:
+
+          [WARNING] Failed to get Toolkit version from composer.lock.
+
+        Minimum version: ^9.0
+        Current version: 9.2.0
+        Version check: OK
+
+- command: toolkit:check-version
+  configuration: []
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+  expectations:
+    - contains: |
+        >  Checking Toolkit version:
+
+        Minimum version: ^9.0
+        Current version: 9.2.0
+        Version check: OK
+
+- command: toolkit:vendor-list
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        Vendors being monitored:
+        ========================
+
+        drupal
+        vlucas
+
+- command: toolkit:code-review
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:test-phpcs')
+        [Simulator] Running ./vendor/bin/run 'toolkit:test-phpcs'
+
+
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:opts-review')
+        [Simulator] Running ./vendor/bin/run 'toolkit:opts-review'
+
+
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:lint-php')
+        [Simulator] Running ./vendor/bin/run 'toolkit:lint-php'
+
+
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:lint-yaml')
+        [Simulator] Running ./vendor/bin/run 'toolkit:lint-yaml'
+
+
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:test-phpstan')
+        [Simulator] Running ./vendor/bin/run 'toolkit:test-phpstan'
+
+
+        Results:
+        ========
+
+        ------------- --------
+        PHPcs         passed
+        Opts review   passed
+        Lint PHP      passed
+        Lint YAML     passed
+        PHPStan       passed
+        ------------- --------
+
+- command: toolkit:code-review --phpcs
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:test-phpcs')
+        [Simulator] Running ./vendor/bin/run 'toolkit:test-phpcs'
+
+
+        Results:
+        ========
+
+        ------------- --------
+        PHPcs         passed
+        Opts review   skip
+        Lint PHP      skip
+        Lint YAML     skip
+        PHPStan       skip
+        ------------- --------
+
+- command: toolkit:install-dependencies
+  configuration: []
+  resources: []
+  expectations:
+    - not_contains: "Installing dependencies"
+
+- command: toolkit:install-dependencies
+  configuration: []
+  resources:
+    - from: 'sample-opts-broken.yml'
+      to: '.opts.yml'
+  expectations:
+    - contains: |
+        Installing dependencies
+        =======================
+
+        No packages found, skipping.
+
+- command: toolkit:install-dependencies
+  configuration: []
+  resources:
+    - from: 'sample-opts.yml'
+      to: '.opts.yml'
+  expectations:
+    - contains: |
+        Installing dependencies
+        =======================
+
+        [Simulator] Running apt-get update
+        [Simulator] Running apt list php8.1-zip
+        +------------+-----------+
+        | Package    | Status    |
+        +------------+-----------+
+        | php8.1-zip | not found |
+        +------------+-----------+

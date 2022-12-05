@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
-use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use EcEuropa\Toolkit\Toolkit;
 use Robo\Robo;
+use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -16,14 +17,13 @@ use Symfony\Component\Yaml\Yaml;
  */
 class BuildCommands extends AbstractCommands
 {
-    use TaskRunnerTasks\CollectionFactory\loadTasks;
 
     /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
     {
-        return __DIR__ . '/../../../config/commands/build.yml';
+        return Toolkit::getToolkitRoot() . '/config/commands/build.yml';
     }
 
     /**
@@ -64,18 +64,11 @@ class BuildCommands extends AbstractCommands
         'root' => InputOption::VALUE_REQUIRED,
         'dist-root' => InputOption::VALUE_REQUIRED,
         'keep' => InputOption::VALUE_REQUIRED,
+        'remove' => InputOption::VALUE_REQUIRED,
         'tag' => InputOption::VALUE_OPTIONAL,
         'sha' => InputOption::VALUE_OPTIONAL,
-        'remove' => InputOption::VALUE_REQUIRED,
     ])
     {
-        if ($options['tag']) {
-            @trigger_error('Passing the --tag option is deprecated in ec-europa/toolkit:4.1.0 and is removed from ec-europa/toolkit:5.0.0. The tag is automatically computed.', E_USER_DEPRECATED);
-        }
-        if ($options['sha']) {
-            @trigger_error('Passing the --sha option is deprecated in ec-europa/toolkit:4.1.0 and is removed from ec-europa/toolkit:5.0.0. The commit SHA is automatically computed.', E_USER_DEPRECATED);
-        }
-
         $tasks = [];
 
         // Delete and (re)create the dist folder.
@@ -120,18 +113,20 @@ class BuildCommands extends AbstractCommands
             if (!empty($yml['profile'])) {
                 $drupal_profile = $yml['profile'];
             }
+        } elseif (!empty($config->get('drupal.site.profile'))) {
+            $drupal_profile = $config->get('drupal.site.profile');
         }
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')
             ->text(json_encode([
-                'version' => $tag,
-                'sha' => $hash,
-                'environment' => ToolCommands::getDeploymentEnvironment(),
+                'drupal_profile' => $drupal_profile,
                 'project_id' => $config->get('toolkit.project_id'),
                 'drupal_version' => ToolCommands::getPackagePropertyFromComposer('drupal/core'),
-                'drupal_profile' => $drupal_profile,
                 'php_version' => phpversion(),
                 'toolkit_version' => ToolCommands::getPackagePropertyFromComposer('ec-europa/toolkit'),
+                'environment' => ToolCommands::getDeploymentEnvironment(),
                 'date' => date('Y-m-d H:i:s'),
+                'version' => $tag,
+                'sha' => $hash,
             ]));
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')
             ->text($tag);
@@ -145,7 +140,7 @@ class BuildCommands extends AbstractCommands
         // Collect and execute list of commands set on local runner.yml.
         $commands = $this->getConfig()->get('toolkit.build.dist.commands');
         if (!empty($commands)) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
         // Remove 'unwanted' files from distribution.
@@ -168,9 +163,9 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-dev
      *
-     * @aliases tk-bdev
-     *
      * @option root Drupal root.
+     *
+     * @aliases tk-bdev
      */
     public function buildDev(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -213,7 +208,7 @@ class BuildCommands extends AbstractCommands
         // Collect and execute list of commands set on local runner.yml.
         $commands = $this->getConfig()->get('toolkit.build.dev.commands');
         if (!empty($commands)) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
         // Build and return task collection.
@@ -290,27 +285,29 @@ class BuildCommands extends AbstractCommands
      * @param array $options
      *   Additional options for the command.
      *
-     * @command toolkit:build-assets
-     *
-     * @option default-theme theme where to build assets.
-     * @option validate or validate=fix to check or fix scss files.
-     *
-     * @aliases tba, tk-assets
-     *
      * @return \Robo\Result|int
      *   The collection builder.
      *
+     * @command toolkit:build-assets
+     *
+     * @option default-theme      The theme where to build assets.
+     * @option build-npm-packages The packages to install.
+     * @option validate           Whether to validate or fix the scss.
+     * @option theme-task-runner  The runner to use, one of 'grunt' or 'gulp'.
+     *
+     * @aliases tba, tk-assets
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function buildAssets(array $options = [
-        'default-theme' => InputOption::VALUE_REQUIRED,
-        'build-npm-packages' => InputOption::VALUE_OPTIONAL,
-        'build-npm-mode' => InputOption::VALUE_OPTIONAL,
-        'validate' => InputOption::VALUE_OPTIONAL,
-        'theme-task-runner' => InputOption::VALUE_OPTIONAL,
+    public function buildAssets(ConsoleIO $io, array $options = [
+        'default-theme' => InputOption::VALUE_OPTIONAL,
+        'custom-code-folder' => InputOption::VALUE_REQUIRED,
+        'build-npm-packages' => InputOption::VALUE_REQUIRED,
+        'validate' => InputOption::VALUE_REQUIRED,
+        'theme-task-runner' => InputOption::VALUE_REQUIRED,
     ])
     {
-        if (!empty($options['default-theme'])) {
+        if (empty($options['default-theme'])) {
             // No parameter sent, check for configuration.
             if (file_exists('config/sync/system.theme.yml')) {
                 $parseSystemTheme = Yaml::parseFile('config/sync/system.theme.yml');
@@ -327,7 +324,7 @@ class BuildCommands extends AbstractCommands
         // Search Theme.
         $finder = new Finder();
         $finder->directories()
-            ->in($this->getConfig()->get('toolkit.build.custom-code-folder'))
+            ->in($options['custom-code-folder'])
             ->name($options['default-theme']);
 
         if ($finder->hasResults()) {
@@ -343,18 +340,15 @@ class BuildCommands extends AbstractCommands
                 $fix = $options['validate'] === 'fix' ? '--fix' : '';
                 $collection->taskExecStack()
                     ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint ' . $fix . ' "' . $theme_dir .  '/**/*.{css,scss,sass}" --config ./vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json')
+                    ->exec('npx stylelint "' . $theme_dir . '/**/*.{css,scss,sass}" --config vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json ' . $fix)
                     ->stopOnFail();
                 // Run and return task collection.
                 return $collection->run();
             } else {
-                // Build task collection.
-                $collection = $this->collectionBuilder();
-
-                if ($options['theme-task-runner'] == 'gulp') {
+                if ($options['theme-task-runner'] === 'gulp') {
                     $taskRunnerConfigFile = 'gulpfile.js';
-                    $this->io()->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
-                } elseif ($options['theme-task-runner'] == 'grunt') {
+                    $io->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
+                } elseif ($options['theme-task-runner'] === 'grunt') {
                     $taskRunnerConfigFile = 'Gruntfile.js';
                     $collection = $this->collectionBuilder();
                     $collection->taskExecStack()
@@ -365,22 +359,23 @@ class BuildCommands extends AbstractCommands
                 } else {
                     $themeTaskRunner = $options['theme-task-runner'];
                     $this->say("$themeTaskRunner is not a supported 'theme-task-runner'. The supported plugins are 'gulp' and 'grunt' (Recommended).");
-                    return;
+                    return 0;
                 }
 
                 // Check if 'theme-task-runner' file exists.
                 // Create a new one from source if doesn't exist.
                 $files = scandir($theme_dir);
                 if (!in_array($taskRunnerConfigFile, $files)) {
+                    $dir = Toolkit::getToolkitRoot() . '/resources/assets';
                     $collection->taskExecStack()
-                        ->exec('cp vendor/ec-europa/toolkit/src/ThemeTaskRunnerConfig/' . $taskRunnerConfigFile . ' ' . $theme_dir . '/' . $taskRunnerConfigFile)
+                        ->exec("cp $dir/$taskRunnerConfigFile $theme_dir/$taskRunnerConfigFile")
                         ->stopOnFail();
                 }
 
                 $collection->taskExecStack()
                     ->dir($theme_dir)
                     ->exec('npm init -y --scope')
-                    ->exec('npm install ' . $options['build-npm-packages'] . ' --save-dev')
+                    ->exec("npm install {$options['build-npm-packages']} --save-dev")
                     ->exec('./node_modules/.bin/' . $options['theme-task-runner'])
                     ->stopOnFail();
 
@@ -388,8 +383,9 @@ class BuildCommands extends AbstractCommands
                 return $collection->run();
             }
         } else {
-            $this->say("The theme " . $options['default-theme'] . "  couldn't be found on the lib/ folder.");
+            $this->say("The theme '{$options['default-theme']}' couldn't be found on the '{$options['custom-code-folder']}' folder.");
             return 0;
         }
     }
+
 }

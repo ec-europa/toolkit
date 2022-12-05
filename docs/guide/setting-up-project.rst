@@ -1,4 +1,3 @@
-
 Setting up a project
 ====================
 
@@ -16,7 +15,7 @@ for you automatically.
 
 .. code-block::
 
-   composer create-project ec-europa/subsite --stability=dev <dg-name>-<project-id>-reference dev-release/8.x
+   composer create-project ec-europa/subsite --stability=dev <dg-name>-<project-id>-reference dev-release/9.x
    docker-compose up -d
    docker-compose exec web vendor/bin/run
 
@@ -31,19 +30,3 @@ To install locally a project running Toolkit 4 you should run the following comm
    docker-compose up -d
    docker-compose exec web composer install
    docker-compose exec web vendor/bin/run
-
-Other topics
-^^^^^^^^^^^^
-
-
-* Setting up a project
-* `Configuring a project </docs/configuring-project.md>`_
-* `Installing the project </docs/installing-project.md>`_
-* `Testing the project </docs/testing-project.md>`_
-* `Using Docker environment </docs/docker-environment.md>`_
-* `Continuous integration </docs/continuous-integration.md>`_
-* `Available tasks </docs/available-tasks.md>`_
-* `Building assets </docs/building-assets.md>`_
-* `Git Hooks </docs/git-hooks.md>`_
-* `Update Project Documentation </docs/project-documentation.md>`_
-* `Changelog </CHANGELOG.md>`_

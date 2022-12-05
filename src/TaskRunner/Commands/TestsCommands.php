@@ -4,42 +4,39 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use NuvoleWeb\Robo\Task as NuvoleWebTasks;
-use OpenEuropa\TaskRunner\Contract\FilesystemAwareInterface;
-use OpenEuropa\TaskRunner\Tasks as TaskRunnerTasks;
-use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
-use OpenEuropa\TaskRunner\Traits as TaskRunnerTraits;
+use EcEuropa\Toolkit\Website;
+use Robo\Contract\VerbosityThresholdInterface;
+use Robo\Exception\AbortTasksException;
 use Robo\Exception\TaskException;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class TestsCommands.
  */
-class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
+class TestsCommands extends AbstractCommands
 {
-    use NuvoleWebTasks\Config\loadTasks;
-    use TaskRunnerTasks\CollectionFactory\loadTasks;
-    use TaskRunnerTraits\ConfigurationTokensTrait;
-    use TaskRunnerTraits\FilesystemAwareTrait;
-    use loadTasks;
 
     /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
     {
-        return __DIR__ . '/../../../config/commands/test.yml';
+        return Toolkit::getToolkitRoot() . '/config/commands/test.yml';
     }
 
     /**
      * Setup PHP code sniffer.
      *
+     * Check configurations at config/default.yml - 'toolkit.test.phpcs'.
+     *
      * @command toolkit:setup-phpcs
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitSetupPhpcs()
     {
@@ -88,7 +85,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $element->setAttribute('value', 'p');
         $root->appendChild($element);
         // Handle show sniffs.
-        if (!empty($config->get('toolkit.test.phpcs.show_sniffs'))) {
+        if ($config->get('toolkit.test.phpcs.show_sniffs') === true) {
             $element = $phpcs_xml->createElement('arg');
             $element->setAttribute('value', 's');
             $root->appendChild($element);
@@ -97,12 +94,9 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         $root->appendChild($phpcs_xml->createComment(' Files to check. '));
         if (!empty($files = $config->get('toolkit.test.phpcs.files'))) {
             $files = is_string($files) ? explode(',', $files) : $files;
+            Toolkit::filterFolders($files);
             foreach ($files as $file) {
-                if (file_exists($file)) {
-                    $root->appendChild($phpcs_xml->createElement('file', $file));
-                } else {
-                    $this->writeln("The path '$file' was not found, ignoring.");
-                }
+                $root->appendChild($phpcs_xml->createElement('file', $file));
             }
         } else {
             $root->appendChild($phpcs_xml->createElement('file', '.'));
@@ -127,25 +121,17 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @aliases tk-phpcs
      *
-     * @see runPhpcs()
+     * @see toolkitRunPhpcs()
      */
-    public function toolkitPhpcs()
+    public function toolkitTestPhpcs()
     {
         $mode = $this->getConfig()->get('toolkit.test.phpcs.mode', 'phpcs');
         if ($mode === 'grumphp') {
             $this->say('Executing PHPcs within GrumPHP.');
-            return $this->runGrumphp();
+            return $this->toolkitRunGrumphp();
         } else {
-            $result = 0;
             $this->say('Executing PHPcs.');
-            $code = $this->runPhpcs();
-            $result += $code->getExitCode();
-
-            $this->say('Executing PHPmd.');
-            $code = $this->toolkitPhpmd();
-            $result += $code->getExitCode();
-
-            return $result;
+            return $this->toolkitRunPhpcs();
         }
     }
 
@@ -156,42 +142,49 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @command toolkit:test-phpmd
      *
+     * @option config          The config file.
+     * @option format          The format to use.
+     * @option ignore_patterns An array with ignore patterns.
+     * @option triggered_by    An array with extensions to check.
+     * @option files           An array with paths to check.
+     *
      * @aliases tk-phpmd
      */
-    public function toolkitPhpmd()
+    public function toolkitTestPhpmd(array $options = [
+        'config' => InputOption::VALUE_REQUIRED,
+        'format' => InputOption::VALUE_REQUIRED,
+        'ignore_patterns' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'triggered_by' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'files' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+    ])
     {
-        $config = $this->getConfig();
-        $config_file = $config->get('toolkit.test.phpmd.config');
+        $tasks = $execOptions = [];
+        Toolkit::ensureArray($options['files']);
+        Toolkit::ensureArray($options['ignore_patterns']);
+        Toolkit::ensureArray($options['triggered_by']);
 
-        if (!file_exists($config_file)) {
+        if (!file_exists($options['config'])) {
             $this->output->writeln('Could not find the ruleset file, the default will be created in the project root.');
-            copy(__DIR__ . '/../../../resources/phpmd.xml', $config_file);
+            $tasks[] = $this->taskFilesystemStack()
+                ->copy(Toolkit::getToolkitRoot() . '/resources/phpmd.xml', $options['config']);
         }
 
-        $phpmd_bin = $this->getBin('phpmd');
-        $exclusions = (array) $config->get('toolkit.test.phpmd.ignore_patterns');
-        $extensions = (array) $config->get('toolkit.test.phpmd.triggered_by');
-        $files = (array) $config->get('toolkit.test.phpmd.files');
-        $format = $config->get('toolkit.test.phpmd.format');
-        $options = '';
+        if (!empty($options['ignore_patterns'])) {
+            Toolkit::filterFolders($options['ignore_patterns']);
+            $execOptions['exclude'] = implode(',', $options['ignore_patterns']);
+        }
+        if (!empty($options['triggered_by'])) {
+            $execOptions['suffixes'] = implode(',', $options['triggered_by']);
+        }
 
-        if (!empty($exclusions)) {
-            $options .= '--exclude "' . implode(',', $exclusions) . '" ';
-        }
-        if (!empty($extensions)) {
-            $options .= '--suffixes "' . implode(',', $extensions) . '"';
-        }
-        if (!empty($files)) {
-            foreach ($files as $key => $file) {
-                if (!file_exists($file)) {
-                    $this->writeln("The path '$file' was not found, ignoring.");
-                    unset($files[$key]);
-                }
-            }
-            $files = implode(',', $files);
-        }
-        return $this->taskExec("$phpmd_bin $files $format $config_file $options")
-            ->run();
+        Toolkit::filterFolders($options['files']);
+        $files = implode(',', $options['files']);
+
+        $tasks[] = $this->taskExec($this->getBin('phpmd'))
+            ->args([$files, $options['format'], $options['config']])
+            ->options($execOptions);
+
+        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
@@ -201,7 +194,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @deprecated
      */
-    public function runGrumphp()
+    protected function toolkitRunGrumphp()
     {
         $bin = $this->getBin('grumphp');
         $grumphpFile = './grumphp.yml.dist';
@@ -243,43 +236,18 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     /**
      * Run PHP code sniffer.
      *
-     * @code
-     * toolkit:
-     *   test:
-     *     phpcs:
-     *       mode: phpcs || grumphp
-     *       config: phpcs.xml
-     *       ignore_annotations: 0
-     *       show_sniffs: 0
-     *       standards:
-     *         - ./vendor/drupal/coder/coder_sniffer/Drupal
-     *         - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
-     *         - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
-     *       ignore_patterns:
-     *         - vendor/
-     *         - web/
-     *         - node_modules/
-     *       triggered_by:
-     *         - php
-     *         - module
-     *         - inc
-     *         - theme
-     *         - install
-     *         - yml
-     *       files:
-     *         - ./lib
-     * @endcode
+     * Check configurations at config/default.yml - 'toolkit.test.phpcs'.
      */
-    public function runPhpcs()
+    protected function toolkitRunPhpcs()
     {
         $config = $this->getConfig();
         $phpcs_bin = $this->getBin('phpcs');
         $config_file = $config->get('toolkit.test.phpcs.config');
 
-        $this->checkPhpCsRequirements();
+        $this->toolkitCheckPhpcsRequirements();
 
         $options = '';
-        if (!empty($config->get('toolkit.test.phpcs.ignore_annotations'))) {
+        if ($config->get('toolkit.test.phpcs.ignore_annotations') === true) {
             $options .= ' --ignore-annotations';
         }
         return $this->taskExec("$phpcs_bin --standard=$config_file$options")
@@ -290,16 +258,18 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      * Make sure that the config file exists and configuration is correct.
      *
      * @command toolkit:check-phpcs-requirements
-     *
-     * @return \Robo\ResultData|void
-     *   No return if all is ok, return 1 if fails.
      */
-    public function checkPhpCsRequirements()
+    public function toolkitCheckPhpcsRequirements()
     {
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
         if (!file_exists($config_file)) {
             $this->say('Calling toolkit:setup-phpcs.');
             $this->toolkitSetupPhpcs();
+        }
+
+        // Skip standards check for Toolkit.
+        if (getcwd() === Toolkit::getToolkitRoot()) {
+            return;
         }
 
         // Make sure the required standards are present.
@@ -316,84 +286,147 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             }
         }
         if ($diff = array_diff($standards, $rules)) {
-            $this->say("The following standards are missing, please add them to the configuration file '$config_file'.\n" . implode("\n", $diff));
-            exit;
+            throw new AbortTasksException("The following standards are missing, please add them to the configuration file '$config_file'.\n" . implode("\n", $diff));
         }
+    }
+
+    /**
+     * Run PHPStan.
+     *
+     * Check configurations at config/default.yml - 'toolkit.test.phpstan'.
+     *
+     * @command toolkit:test-phpstan
+     *
+     * @option config       The path to the config file.
+     * @option level        The level of rule options.
+     * @option files        The files to check.
+     * @option memory-limit The PHP memory limit.
+     * @option options      Extra options for the command without -- (only options with no value).
+     *
+     * @aliases tk-phpstan
+     *
+     * @usage --memory-limit='4G' --options='debug'
+     */
+    public function toolkitTestPhpstan(array $options = [
+        'config' => InputOption::VALUE_REQUIRED,
+        'level' => InputOption::VALUE_REQUIRED,
+        'files' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'memory-limit' => InputOption::VALUE_OPTIONAL,
+        'options' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        $config = $this->getConfig();
+        // Only run if we find a Drupal installation.
+        if (!file_exists($config->get('drupal.root'))) {
+            $this->say('Could not find a Drupal installation, skipping.');
+            return 0;
+        }
+        $tasks = [];
+        Toolkit::filterFolders($options['files']);
+        $ignores = $config->get('toolkit.test.phpstan.ignores');
+        Toolkit::filterFolders($ignores);
+        if (!$options['memory-limit']) {
+            $options['memory-limit'] = ini_get('memory_limit');
+        }
+
+        // If the config file is not found, generate a new one.
+        if (!file_exists($options['config'])) {
+            $config_content = [
+                'parameters' => [
+                    'drupal' => [
+                        'drupal_root' => getcwd() . '/' . $config->get('drupal.root'),
+                    ],
+                    'level' => $options['level'],
+                    'paths' => array_values($options['files']),
+                    'excludePaths' => $ignores,
+                ],
+            ];
+            $tasks[] = $this->taskWriteToFile($options['config'])
+                ->text(Yaml::dump($config_content, 10, 2));
+        }
+
+        $exec = $this->taskExec($this->getBin('phpstan'))
+            ->arg('analyse')
+            ->options([
+                'memory-limit' => $options['memory-limit'],
+                'configuration' => $options['config']
+            ], '=');
+
+        if (!empty($options['options'])) {
+            $extraOptions = array_fill_keys(explode(' ', $options['options']), null);
+            $exec->options($extraOptions);
+        }
+
+        $tasks[] = $exec;
+        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
      * Run Behat tests.
      *
-     * Additional commands could run before and/or after the Behat tests. Such
-     * commands should be described in configuration files in this way:
-     *
-     * @code
-     * toolkit:
-     *   test:
-     *     behat:
-     *       profile: "default"
-     *       commands:
-     *         before:
-     *           - task: exec
-     *             command: ls -la
-     *           - ...
-     *         after:
-     *           - task: exec
-     *             command: whoami
-     *           - ...
-     * @endcode
+     * Check configurations at config/default.yml - 'toolkit.test.behat'.
+     * Accept commands to run before and/or after the Behat tests.
      *
      * @command toolkit:test-behat
      *
      * @aliases tb, tk-behat
      *
-     * @option from     From behat.yml.dist config file.
-     * @option to       To behat.yml config file.
+     * @option from     The dist config file (behat.yml.dist).
+     * @option to       The destination config file (behat.yml).
      * @option profile  The profile to execute.
      * @option suite    The suite to execute, default runs all suites of profile.
+     * @option options  Extra options for the command without -- (only options with no value).
+     *
+     * @usage --profile='prod' --options='strict stop-on-failure'
      */
-    public function toolkitBehat(array $options = [
+    public function toolkitTestBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
         'to' => InputOption::VALUE_OPTIONAL,
         'profile' => InputOption::VALUE_OPTIONAL,
         'suite' => InputOption::VALUE_OPTIONAL,
+        'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
         $tasks = [];
 
         if (Toolkit::isCiCd()) {
-            $this->taskExecStack()
-                ->exec($this->getBin('run') . ' toolkit:install-dependencies')
-                ->run();
+            $this->taskExec($this->getBin('run') . ' toolkit:install-dependencies')->run();
         }
 
         $behatBin = $this->getBin('behat');
         $defaultProfile = $this->getConfig()->get('toolkit.test.behat.profile');
+        $execOpts = [
+            'profile' => !empty($options['profile']) ? $options['profile'] : $defaultProfile,
+        ];
 
-        $profile = (!empty($options['profile'])) ? $options['profile'] : $defaultProfile;
-        $suite = (!empty($options['suite'])) ? $options['suite'] : '';
-        $suiteParameter = ($suite) ? ' --suite=' . $suite : '';
+        if (!empty($options['suite'])) {
+            $execOpts['suite'] = $options['suite'];
+        }
+        if (!empty($options['options'])) {
+            $extraOptions = array_fill_keys(explode(' ', $options['options']), null);
+            $execOpts = array_merge($execOpts, $extraOptions);
+        }
 
         // Execute a list of commands to run before tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.before')) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
-        $this->taskProcessConfigFile($options['from'], $options['to'])->run();
+        $this->taskProcess($options['from'], $options['to'])->run();
 
-        $result = $this->taskExec("$behatBin --dry-run --profile=$profile $suiteParameter")
-            ->silent(true)->run()->getMessage();
-
-        if (strpos(trim($result), 'No scenarios') !== false) {
-            $this->say("No Scenarios found for profile $profile $suiteParameter, please create at least one Scenario.");
+        $result = $this->taskExec($behatBin)->options($execOpts + ['dry-run' => null], '=')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        if (str_contains(trim($result), 'No scenarios')) {
+            $this->say("No Scenarios found for profile {$execOpts['profile']}, please create at least one Scenario.");
             return new ResultData(1);
         }
 
-        $tasks[] = $this->taskExec("$behatBin --profile=$profile $suiteParameter");
+        $tasks[] = $this->taskExec($behatBin)->options($execOpts, '=');
 
         // Execute a list of commands to run after tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.after')) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+            $tasks[] = $this->taskExecute($commands);
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -402,39 +435,27 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
     /**
      * Run PHPUnit tests.
      *
-     * Additional commands could run before and/or after the PHPUnit tests. Such
-     * commands should be described in configuration files in this way:
-     *
-     * @code
-     * phpunit:
-     *   options: '--log-junit report.xml'
-     *   commands:
-     *     before:
-     *       - task: exec
-     *         command: ls -la
-     *       - ...
-     *     after:
-     *       - task: exec
-     *         command: whoami
-     *       - ...
-     * @endcode
+     * Check configurations at config/default.yml - 'toolkit.test.phpunit'.
+     * Accept commands to run before and/or after the PHPUnit tests.
      *
      * @command toolkit:test-phpunit
      *
      * @aliases tp, tk-phpunit
      *
-     * @option from   From phpunit.xml.dist config file.
-     * @option to     To phpunit.xml config file.
+     * @option execution The execution type (default or parallel).
+     * @option from      The dist config file (phpunit.xml.dist).
+     * @option to        The destination config file (phpunit.xml).
      */
-    public function toolkitPhpUnit(array $options = [
-        'from' => InputOption::VALUE_OPTIONAL,
-        'to' => InputOption::VALUE_OPTIONAL,
+    public function toolkitTestPhpunit(array $options = [
+        'execution' => InputOption::VALUE_REQUIRED,
+        'from' => InputOption::VALUE_REQUIRED,
+        'to' => InputOption::VALUE_REQUIRED,
     ])
     {
         $tasks = [];
 
         if (file_exists($options['from'])) {
-            $this->taskProcessConfigFile($options['from'], $options['to'])->run();
+            $this->taskProcess($options['from'], $options['to'])->run();
         }
 
         if (!file_exists($options['to'])) {
@@ -442,16 +463,17 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
             return $this->collectionBuilder()->addTaskList($tasks);
         }
 
+        $phpunit_config = $this->getConfig()->get('toolkit.test.phpunit');
+
         // Execute a list of commands to run before tests.
-        if ($commands = $this->getConfig()->get('phpunit.commands.before')) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+        if (!empty($phpunit_config['commands']['before'])) {
+            $tasks[] = $this->taskExecute($phpunit_config['commands']['before']);
         }
 
-        $execution_mode = $this->getConfig()->get('toolkit.test.phpunit.execution');
-        $options = $this->getConfig()->get('toolkit.test.phpunit.options');
+        $options = $phpunit_config['options'];
         $phpunit_bin = $this->getBin('phpunit');
 
-        if ($execution_mode == 'parallel') {
+        if ($phpunit_config['execution'] == 'parallel') {
             $result = $this->taskExec("$phpunit_bin --list-suites")
                 ->silent(true)
                 ->printOutput(false)
@@ -472,8 +494,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
         }
 
         // Execute a list of commands to run after tests.
-        if ($commands = $this->getConfig()->get('phpunit.commands.after')) {
-            $tasks[] = $this->taskCollectionFactory($commands);
+        if (!empty($phpunit_config['commands']['after'])) {
+            $tasks[] = $this->taskExecute($phpunit_config['commands']['after']);
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -486,260 +508,12 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
      *
      * @aliases tk-phpcbf
      */
-    public function toolkitPhpcbf()
+    public function toolkitRunPhpcbf()
     {
         $phpcbf_bin = $this->getBin('phpcbf');
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
-        $this->checkPhpCsRequirements();
+        $this->toolkitCheckPhpcsRequirements();
         return $this->taskExec("$phpcbf_bin --standard=$config_file")->run();
     }
 
-    /**
-     * Run lint YAML.
-     *
-     * Override the default include and exclude patterns in configuration files:
-     *
-     * @code
-     * toolkit:
-     *   lint:
-     *     yaml:
-     *       pattern: [ '*.yml', '*.yaml', '*.yml.dist', '*.yaml.dist' ]
-     *       include: [ 'lib/' ]
-     *       exclude: [ 'vendor/', 'web/', 'node_modules/' ]
-     * @endcode
-     *
-     * @command toolkit:lint-yaml
-     *
-     * @aliases tly, tk-yaml
-     */
-    public function toolkitLintYaml()
-    {
-        $tasks = [];
-        $pattern = $this->getConfig()->get('toolkit.lint.yaml.pattern');
-        $includes = $this->getConfig()->get('toolkit.lint.yaml.include');
-        $excludes = $this->getConfig()->get('toolkit.lint.yaml.exclude');
-
-        $this->say('Pattern: ' . implode(', ', $pattern));
-        $this->say('Include: ' . implode(', ', $includes));
-        $this->say('Exclude: ' . implode(', ', $excludes));
-
-        $finder = (new Finder())
-            ->files()->followLinks()
-            ->ignoreVCS(false)
-            ->ignoreDotFiles(false);
-        foreach ($pattern as $name) {
-            $finder->name($name);
-        }
-        foreach ($includes as $include) {
-            $finder->in($include);
-        }
-        foreach ($excludes as $exclude) {
-            $finder->notPath($exclude);
-        }
-
-        // Get the yml files in the root of the project.
-        $root_finder = (new Finder())
-            ->files()->followLinks()
-            ->ignoreVCS(false)
-            ->ignoreDotFiles(false)
-            ->in('.')->depth(0);
-        foreach ($pattern as $name) {
-            $root_finder->name($name);
-        }
-
-        $finder_files = array_merge(
-            array_keys(iterator_to_array($finder)),
-            array_keys(iterator_to_array($root_finder))
-        );
-
-        $this->say('Found ' . count($finder_files) . ' files to lint.');
-        $chunk = array_chunk($finder_files, 600);
-        foreach ($chunk as $files) {
-            echo 'Processing ' . count($files) . ' files.' . PHP_EOL;
-            // Prepare arguments.
-            $arg = implode(' ', $files);
-            $tasks[] = $this->taskExec($this->getBin('yaml-lint') . " -q $arg")
-                ->printMetadata(false);
-        }
-
-        return $this->collectionBuilder()->addTaskList($tasks);
-    }
-
-    /**
-     * Run lint PHP.
-     *
-     * Override the default include and exclude patterns in configuration files:
-     *
-     * @code
-     * toolkit:
-     *   lint:
-     *     php:
-     *       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
-     *       exclude: [ 'vendor/', 'web/' ]
-     * @endcode
-     *
-     * @command toolkit:lint-php
-     *
-     * @aliases tlp, tk-php
-     */
-    public function toolkitLintPhp()
-    {
-        $excludes = $this->getConfig()->get('toolkit.lint.php.exclude', []);
-        $extensions = $this->getConfig()->get('toolkit.lint.php.extensions');
-
-        $this->say('Extensions: ' . implode(', ', $extensions));
-        $this->say('Exclude: ' . implode(', ', $excludes));
-
-        $opts = [];
-        foreach ($excludes as $exclude) {
-            $opts[] = "--exclude $exclude";
-        }
-
-        if ($extensions) {
-            $opts[] = '-e ' . implode(',', $extensions);
-        }
-        // Prepare options.
-        $opts_string = implode(' ', $opts);
-        $task = $this->taskExec($this->getBin('parallel-lint') . " $opts_string .");
-        return $this->collectionBuilder()->addTaskList([$task]);
-    }
-
-    /**
-     * Run Blackfire.
-     *
-     * @command toolkit:run-blackfire
-     *
-     * @aliases tbf, tk-bfire
-     */
-    public function toolkitBlackfire()
-    {
-        $base_url = $this->getConfig()->get('drupal.base_url');
-        $project_id = $this->getConfig()->get('toolkit.project_id');
-        $problems = [];
-        if (!getenv('BLACKFIRE_SERVER_ID') || !getenv('BLACKFIRE_SERVER_TOKEN')) {
-            $problems[] = 'Missing environment variables: BLACKFIRE_SERVER_ID, BLACKFIRE_SERVER_TOKEN, skipping.';
-        }
-        if (!getenv('BLACKFIRE_CLIENT_ID') || !getenv('BLACKFIRE_CLIENT_TOKEN')) {
-            $problems[] = 'Missing environment variables: BLACKFIRE_CLIENT_ID, BLACKFIRE_CLIENT_TOKEN, skipping.';
-        }
-
-        // Confirm that blackfire is properly installed.
-        $test = $this->taskExec('which blackfire')->silent(true)
-            ->run()->getMessage();
-        if (strpos($test, 'not found') !== false) {
-            $problems[] = 'The Blackfire is not installed, skipping.';
-        }
-
-        // Make sure that the blackfire agent is properly configured.
-        $config = $this->taskExec('cat /etc/blackfire/agent | grep server-id=')
-            ->silent(true)->run()->getMessage();
-        if ($config === 'server-id=') {
-            $this->taskExec('blackfire agent:config')->run();
-            $this->taskExec('service blackfire-agent restart')->run();
-        }
-
-        if (!empty($problems)) {
-            $this->say("Problems found:\n" . implode("\n", $problems));
-            return new ResultData(0);
-        }
-
-        $command = "blackfire --json curl $base_url";
-
-        // Get the list of pages to check and prevent duplicates.
-        $pages = $this->getConfig()->get('toolkit.test.blackfire.pages');
-        $pages = array_unique($pages);
-
-        // Limit the pages up to 10 items.
-        $pages = array_slice((array) $pages, 0, 10);
-        foreach ($pages as $page) {
-            $this->say("Checking page: {$base_url}{$page}");
-
-            $raw = $this->taskExec($command . $page)
-                ->silent(true)->run()->getMessage();
-            $result = json_decode($raw, true);
-
-            if (empty($result['_links']['graph_url']['href'])) {
-                $this->say('Something went wrong, please contact the QA team.');
-                return new ResultData(0);
-            }
-
-            $data = [];
-            $data['graph'] = $result['_links']['graph_url']['href'];
-            $data['timeline'] = $result['_links']['timeline_url']['href'];
-            $data['recommendation'] = $data['graph'] . '?settings%5BtabPane%5D=recommendations';
-            $data['cpu_time'] = $result['envelope']['cpu'] . 'ms';
-            $data['wall_time'] = $result['envelope']['wt'] . 'ms';
-            $data['io_wait'] = $result['envelope']['io'] . 'ms';
-            $data['memory'] = ToolCommands::formatBytes($result['envelope']['pmu']);
-            $data['sql'] = sprintf(
-                "%sms %srq",
-                $result['arguments']['io.db.query']['*']['wt'],
-                $result['arguments']['io.db.query']['*']['ct']
-            );
-            $data['network'] = sprintf(
-                '%s %s %s',
-                !empty($result['envelope']['nw']) ? ToolCommands::formatBytes($result['envelope']['nw']) : 'n/a',
-                !empty($result['envelope']['nw_in']) ? ToolCommands::formatBytes($result['envelope']['nw_in']) : 'n/a',
-                !empty($result['envelope']['nw_out']) ? ToolCommands::formatBytes($result['envelope']['nw_out']) : 'n/a'
-            );
-
-            // Print the relevant information.
-            $msg = sprintf(
-                "Memory:\t\t%s\nWall Time:\t%s\nI/O Wait:\t%s\nCPU Time:\t%s\nNetwork:\t%s\nSQL:\t\t%s",
-                $data['memory'],
-                $data['wall_time'],
-                $data['io_wait'],
-                $data['cpu_time'],
-                $data['network'],
-                $data['sql']
-            );
-            $this->writeln($msg);
-
-            // Handle repo name.
-            if (empty($repo = getenv('DRONE_REPO'))) {
-                $repo = getenv('CI_PROJECT_NAME');
-            }
-            if (empty($ci_url = getenv('DRONE_BUILD_LINK'))) {
-                $ci_url = getenv('CI_PIPELINE_URL');
-            }
-
-            // Send payload to QA website.
-            $url = Toolkit::getQaWebsiteUrl();
-            if (!empty($repo)) {
-                $payload = [
-                    '_links' => ['type' => [
-                        'href' => $url . '/rest/type/node/blackfire',
-                    ]],
-                    'type' => [['target_id' => 'blackfire']],
-                    'title' => [['value' => "Profiling: $project_id"]],
-                    'body' => [['value' => $raw]],
-                    'field_blackfire_repository' => [['value' => $repo]],
-                    'field_blackfire_page' => [['value' => $page]],
-                    'field_blackfire_ci_cd_url' => [['value' => $ci_url]],
-                    'field_blackfire_graph_url' => [['value' => $data['graph']]],
-                    'field_blackfire_timeline_url' => [['value' => $data['timeline']]],
-                    'field_blackfire_recomendations' => [['value' => $data['recommendation']]],
-                    'field_blackfire_memory' => [['value' => $data['memory']]],
-                    'field_blackfire_wall_time' => [['value' => $data['wall_time']]],
-                    'field_blackfire_io_wait' => [['value' => $data['io_wait']]],
-                    'field_blackfire_cpu_time' => [['value' => $data['cpu_time']]],
-                    'field_blackfire_network' => [['value' => $data['network']]],
-                    'field_blackfire_sql' => [['value' => $data['sql']]],
-                    'field_blackfire_commit_hash' => [['value' => getenv('DRONE_COMMIT') ?? '']],
-                    'field_blackfire_commit_link' => [['value' => getenv('DRONE_PULL_REQUEST') ?? '']],
-                    'field_blackfire_pr' => [['value' => getenv('DRONE_COMMIT_LINK') ?? '']],
-                ];
-                $basicAuth = (new ToolCommands())->getQaApiBasicAuth();
-                $payload_response = ToolCommands::postQaContent($payload, $basicAuth);
-                if (!empty($payload_response) && $payload_response === '201') {
-                    $this->writeln("Payload sent to QA website: $payload_response");
-                } else {
-                    $this->writeln('Fail to send the payload, HTTP code: ' . $payload_response);
-                }
-                $this->writeln('');
-            }
-        }
-
-        return new ResultData(0);
-    }
 }

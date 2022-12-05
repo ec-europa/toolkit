@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests;
 
+use EcEuropa\Toolkit\TaskRunner\Runner;
+use EcEuropa\Toolkit\Website;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -14,38 +19,169 @@ use Symfony\Component\Yaml\Yaml;
 abstract class AbstractTest extends TestCase
 {
     /**
+     * A Filesystem object.
+     *
+     * @var Filesystem
+     */
+    public Filesystem $fs;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+        $this->fs = new Filesystem();
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
     {
         if (!is_dir($this->getSandboxRoot())) {
-            mkdir($this->getSandboxRoot());
+            $this->fs->mkdir($this->getSandboxRoot());
         }
-        $filesystem = new Filesystem();
-        $filesystem->chmod($this->getSandboxRoot(), 0777, umask(), true);
-        $filesystem->remove(glob($this->getSandboxRoot() . '/*'));
-        $filesystem->copy($this->getFixtureFilepath('samples/sample-dump.sql'), $this->getSandboxFilepath('dump.sql'));
-        $filesystem->copy($this->getFixtureFilepath('samples/sample-config.yml'), $this->getSandboxFilepath('config.yml'));
+        $this->fs->chmod($this->getSandboxRoot(), 0777, umask(), true);
+
+        self::setUpMock();
     }
 
     /**
-     * Helper function to assert contain / not contain expectations.
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        $this->fs->remove(glob($this->getSandboxRoot() . '/{,.}[!.,!..]*', GLOB_BRACE));
+    }
+
+    /**
+     * Helper function to do dynamic assertions.
      *
      * @param string $content
      *   Content to test.
      * @param array $expected
      *   Content expected.
      */
-    protected function assertContainsNotContains($content, array $expected)
+    protected function assertDynamic(string $content, array $expected)
     {
         if (!empty($expected['contains'])) {
             $this->assertContains($this->trimEachLine($expected['contains']), [$this->trimEachLine($content)]);
-            $this->assertEquals(substr_count($this->trimEachLine($content), $this->trimEachLine($expected['contains'])), 1, 'String found more than once.');
+            $this->assertEquals(
+                1,
+                substr_count($this->trimEachLine($content), $this->trimEachLine($expected['contains'])),
+                'String found more than once.'
+            );
         }
 
         if (!empty($expected['not_contains'])) {
-            $this->assertNotContains($this->trimEachLine($expected['not_contains']), $this->trimEachLine($content));
+            $this->assertNotContains($this->trimEachLine($expected['not_contains']), [$this->trimEachLine($content)]);
         }
+
+        if (!empty($expected['string'])) {
+            $this->assertStringContainsString($this->trimEachLine($expected['string']), $this->trimEachLine($content));
+        }
+
+        if (!empty($expected['file_expected']) && !empty($expected['file_actual'])) {
+            $this->assertFileEquals($expected['file_expected'], $expected['file_actual']);
+        }
+    }
+
+    /**
+     * Prepare given resources.
+     *
+     * Currently, accepts:
+     * ```
+     * - from: source.yml
+     *   to: destination.yml
+     * - mkdir: test-folder
+     * - touch: test-folder/touched.txt
+     * - file: test.txt
+     *   content: |
+     *     Some content to add
+     * ```
+     *
+     * @param array $resources
+     *   An array with resources to process.
+     */
+    protected function prepareResources(array $resources)
+    {
+        foreach ($resources as $resource) {
+            if (isset($resource['from'], $resource['to'])) {
+                $this->fs->copy(
+                    $this->getFixtureFilepath('samples/' . $resource['from']),
+                    $this->getSandboxFilepath($resource['to'])
+                );
+            } elseif (isset($resource['mkdir'])) {
+                $this->fs->mkdir($this->getSandboxFilepath($resource['mkdir']));
+            } elseif (isset($resource['touch'])) {
+                $this->fs->touch($this->getSandboxFilepath($resource['touch']));
+            } elseif (isset($resource['file'], $resource['content'])) {
+                $this->fs->dumpFile(
+                    $this->getSandboxFilepath($resource['file']),
+                    $resource['content']
+                );
+            }
+        }
+    }
+
+    /**
+     * Execute given command.
+     *
+     * @param string $command
+     *   The command to execute.
+     * @param bool $simulate
+     *   Whether use --simulate.
+     * @param bool $output
+     *   Whether to output.
+     *
+     * @return array
+     *   An array keyed by 'code' and 'output'.
+     */
+    public function runCommand(string $command, bool $simulate = true, bool $output = true): array
+    {
+        $simulation = $simulate ? ' --simulate' : '';
+        $outputObject = $output ? new BufferedOutput() : new NullOutput();
+
+        $input = new StringInput($command . $simulation . ' --working-dir=' . $this->getSandboxRoot());
+        $runner = new Runner($this->getClassLoader(), $input, $outputObject);
+
+        return [
+            'code' => $runner->run(),
+            'output' => $output ? $outputObject->fetch() : '',
+        ];
+    }
+
+    /**
+     * Helper function to debug the expectations and the content before assert.
+     *
+     * @param string $content
+     *   Content to test.
+     * @param array $expectations
+     *   Array with expectations.
+     */
+    protected function debugExpectations(string $content, array $expectations)
+    {
+        $debug = "\n-- Content --\n$content\n-- End Content --\n";
+        foreach ($expectations as $expectation) {
+            if (!empty($expectation['contains'])) {
+                $debug .= "-- Contains --\n{$expectation['contains']}\n-- End Contains --\n";
+            }
+            if (!empty($expectation['not_contains'])) {
+                $debug .= "-- NotContains --\n{$expectation['not_contains']}\n-- End NotContains --\n";
+            }
+            if (!empty($expectation['string'])) {
+                $debug .= "-- String --\n{$expectation['string']}\n-- End String --\n";
+            }
+            if (!empty($expectation['file_expected']) && !empty($expectation['file_actual'])) {
+                $debug .= "-- Files equal - expected --\n";
+                $debug .= file_get_contents($expectation['file_expected']);
+                $debug .= "\n-- END expected --\n-- Files equal - actual --\n";
+                $debug .= file_get_contents($expectation['file_actual']);
+                $debug .= "\n-- END actual --\n";
+            }
+        }
+        echo $debug;
     }
 
     /**
@@ -57,9 +193,9 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   Trimmed text.
      */
-    protected function trimEachLine($text)
+    protected function trimEachLine(string $text): string
     {
-        return implode(PHP_EOL, array_map('trim', explode(PHP_EOL, $text)));
+        return trim(implode(PHP_EOL, array_map('trim', explode(PHP_EOL, $text))));
     }
 
     /**
@@ -76,10 +212,10 @@ abstract class AbstractTest extends TestCase
     /**
      * Get fixture root.
      *
-     * @return mixed
-     *   A set of test data.
+     * @return string
+     *   The filepath of fixtures.
      */
-    protected function getFixtureRoot()
+    protected function getFixtureRoot(): string
     {
         return __DIR__ . '/fixtures';
     }
@@ -91,9 +227,9 @@ abstract class AbstractTest extends TestCase
      *   A name of Sandbox.
      *
      * @return string
-     *   The filepath of the sandbox.
+     *   The filepath of the sandbox file.
      */
-    protected function getFixtureFilepath($name)
+    protected function getFixtureFilepath(string $name): string
     {
         return $this->getFixtureRoot() . '/' . $name;
     }
@@ -104,10 +240,10 @@ abstract class AbstractTest extends TestCase
      * @param string $filepath
      *   File path.
      *
-     * @return mixed
+     * @return mixed|string
      *   A set of test data.
      */
-    protected function getFixtureContent($filepath)
+    protected function getFixtureContent(string $filepath)
     {
         return Yaml::parse(file_get_contents($this->getFixtureFilepath($filepath)));
     }
@@ -119,9 +255,9 @@ abstract class AbstractTest extends TestCase
      *   A name of Sandbox.
      *
      * @return string
-     *   The filepath of the sandbox.
+     *   The filepath of the sandbox file.
      */
-    protected function getSandboxFilepath($name)
+    protected function getSandboxFilepath(string $name): string
     {
         return $this->getSandboxRoot() . '/' . $name;
     }
@@ -132,8 +268,33 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   The filepath of sandbox.
      */
-    protected function getSandboxRoot()
+    protected function getSandboxRoot(): string
     {
         return __DIR__ . '/sandbox';
     }
+
+    /**
+     * Set up the mock server.
+     *
+     * To access the mock directly in the browser, make sure the port is exposed in the docker-compose.yml
+     * file and access for example: http://localhost:8080/tests/mock/api/v1/package-reviews.
+     */
+    public static function setUpMock()
+    {
+        Website::setUrl(self::getMockBaseUrl() . '/tests/mock');
+    }
+
+    /**
+     * Return the mock base url.
+     *
+     * @return string
+     *   The mock base url, defaults to web:8080.
+     */
+    public static function getMockBaseUrl(): string
+    {
+        return !empty(getenv('VIRTUAL_HOST'))
+            ? (string) getenv('VIRTUAL_HOST')
+            : 'web:8080';
+    }
+
 }

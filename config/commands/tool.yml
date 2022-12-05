@@ -1,9 +1,12 @@
 command:
   toolkit:
-    notifications:
+    code-review:
       options:
-        endpoint: ${toolkit.tool.notifications.endpoint}
-    whitelist-components:
+        phpcs: false
+        opts-review: false
+        lint-php: false
+        lint-yaml: false
+        phpstan: false
+    install-dependencies:
       options:
-        endpoint: ${toolkit.tool.whitelist-components.endpoint}
-        blocker: ${toolkit.tool.whitelist-components.blocker}
+        print: false

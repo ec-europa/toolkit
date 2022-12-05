@@ -1,0 +1,27 @@
+name: 'Release pipeline'
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  Documentation:
+    runs-on: ubuntu-latest
+    container: fpfis/httpd-php:8.1-ci
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Validate composer
+        run: composer validate
+
+      - name: Composer
+        run: composer install --prefer-dist --no-ansi --no-interaction
+
+      - name: Generate documentation
+        run: ./vendor/bin/run toolkit:generate-documentation --token=${{ secrets.API_TOKEN }} --push || echo "skip"

@@ -1,4 +1,3 @@
-
 Git hooks
 =========
 
@@ -9,9 +8,8 @@ Toolkit provides a way to activate or deactivate git hooks.
 
 By default, Toolkit provides three hooks:
 
-
 * pre-commit: Run the PHPcs against the modified files.
-* prepare-commit-msg: Check if the commit message mets the conditions.
+* prepare-commit-msg: Check if the commit message meets the conditions.
 * pre-push: Run a set of linters and checks.
 
 Configuration
@@ -56,7 +54,7 @@ How to use
 List available hooks
 ^^^^^^^^^^^^^^^^^^^^
 
-To list the available commands, execute the following command:
+To list the available hooks, execute the following command:
 
 .. code-block::
 
@@ -70,11 +68,12 @@ To list the available commands, execute the following command:
    +------------------------------+------------------+-------------+---------------+
 
 Labels:
+
 ``Hook`` - Represents the name of the hook.
 
 ``Active by config`` - Whether the hook is active in configuration.
 
-``Hooks exists`` - Whether the hook is enable under ``.git/hooks`` folder.
+``Hooks exists`` - Whether the hook is enabled under ``.git/hooks`` folder.
 
 ``Modified file`` - Whether the hook is not the same as in the ``resources/git/hooks`` folder.
 
@@ -123,14 +122,14 @@ Example of the ``prepare-commit-msg`` hook (receives two extra arguments).
 The command ``toolkit:hooks-run`` will transform the hook name and look for a
 callback in the format ``runHookName``.
 
-Example for hook ``prepare-commit-msg``\ , toolkit will look for a callback
+Example for hook ``prepare-commit-msg``, toolkit will look for a callback
 named ``runPrepareCommitMsg()``.
 
 The callback method is responsible to retrieve the arguments
 with ``$this->input()->getArguments()``.
 
 For more details check the Commands class
-at ``EcEuropa\Toolkit\TaskRunner\Commands\GitHookCommands``
+at ``EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands``
 
 Extending the git hooks
 -----------------------
@@ -142,14 +141,14 @@ To do so, you need to
 
 * Create the hook under your ``resources/git/hooks`` folder.
 * Add the hook name to your active hooks under ``toolkit.hooks.active``.
-* Create a new class extending the ``GitHookCommands`` class and define the
+* Create a new class extending the ``GitHooksCommands`` class and define the
   ``run`` callback for the hook.
 
 Create the hook
 ^^^^^^^^^^^^^^^
 
-Add the hook that you want to the ``resources/git/hooks``\ , in this example we will
-use the hook ``commit-msg``\ , so we add the file ``resources/git/hooks/commit-msg``.
+Add the hook that you want to the ``resources/git/hooks``, in this example we will
+use the hook ``commit-msg``, so we add the file ``resources/git/hooks/commit-msg``.
 
 .. code-block:: shell
 
@@ -159,7 +158,7 @@ use the hook ``commit-msg``\ , so we add the file ``resources/git/hooks/commit-m
 Add the hook to the active hooks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In your ``runner.yml``\ , extend the Toolkit configuration to add your custom hook.
+In your ``runner.yml``, extend the Toolkit configuration to add your custom hook.
 
 Do not forget to copy the existing ones (in case you want to use them),
 otherwise your configuration will override the default provided by Toolkit.
@@ -174,7 +173,7 @@ otherwise your configuration will override the default provided by Toolkit.
          - pre-push
          - commit-msg
 
-Create a class extending the GitHookCommands
+Create a class extending the GitHooksCommands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Is in this class that you will define the callback for your hook.
@@ -187,10 +186,10 @@ Add your class under ``src/TaskRunner/Commands``.
 
    namespace Digit\Qa\TaskRunner\Commands;
 
-   use EcEuropa\Toolkit\TaskRunner\Commands\GitHookCommands;
+   use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
    use Robo\ResultData;
 
-   class QaGitHookCommands extends GitHookCommands
+   class QaGitHooksCommands extends GitHooksCommands
    {
        public function runCommitMsg()
        {
@@ -217,19 +216,3 @@ List the available commands, your custom hook should be available.
    | prepare-commit-msg (toolkit) | Yes              | No          | No            |
    | commit-msg (digit-qa)        | Yes              | No          | No            |
    +------------------------------+------------------+-------------+---------------+
-
-Other topics
-^^^^^^^^^^^^
-
-
-* `Setting up a project </docs/setting-up-project.md>`_
-* `Configuring a project </docs/configuring-project.md>`_
-* `Installing the project </docs/installing-project.md>`_
-* `Testing the project </docs/testing-project.md>`_
-* `Using Docker environment </docs/docker-environment.md>`_
-* `Continuous integration </docs/continuous-integration.md>`_
-* `Available tasks </docs/available-tasks.md>`_
-* `Building assets </docs/building-assets.md>`_
-* Git Hooks
-* `Update Project Documentation </docs/project-documentation.md>`_
-* `Changelog </CHANGELOG.md>`_

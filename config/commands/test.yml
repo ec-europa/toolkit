@@ -4,8 +4,24 @@ command:
       options:
         from: ${toolkit.test.behat.from}
         to: ${toolkit.test.behat.to}
+        profile: ${toolkit.test.behat.profile}
+        options: ${toolkit.test.behat.options}
     test-phpunit:
       options:
         execution: ${toolkit.test.phpunit.execution}
         from: ${toolkit.test.phpunit.from}
         to: ${toolkit.test.phpunit.to}
+    test-phpmd:
+      options:
+        config: ${toolkit.test.phpmd.config}
+        format: ${toolkit.test.phpmd.format}
+        ignore_patterns: ${toolkit.test.phpmd.ignore_patterns}
+        triggered_by: ${toolkit.test.phpmd.triggered_by}
+        files: ${toolkit.test.phpmd.files}
+    test-phpstan:
+      options:
+        config: ${toolkit.test.phpstan.config}
+        level: ${toolkit.test.phpstan.level}
+        files: ${toolkit.test.phpstan.files}
+        memory-limit: ${toolkit.test.phpstan.memory_limit}
+        options: ${toolkit.test.phpstan.options}

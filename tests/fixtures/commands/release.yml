@@ -1,0 +1,135 @@
+- command: 'toolkit:version-write ""'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: "[ERROR] You must provide a valid version as first argument."
+
+- command: 'toolkit:version-write 9.5.0'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: "[ERROR] Could not find the file src/Toolkit.php."
+
+- command: 'toolkit:version-write 9.5.0'
+  configuration: []
+  resources:
+    - from: sample-config.yml
+      to: src/Toolkit.php
+    - from: sample-config.yml
+      to: phpdoc.dist.xml
+    - from: sample-config.yml
+      to: tests/fixtures/commands/tool.yml
+  expectations:
+    - contains: |
+        [Simulator] Simulating File\Replace('src/Toolkit.php')
+          ->regex('#VERSION = '[^']*'#')
+          ->to('VERSION = '9.5.0'')
+        [Simulator] Simulating File\Replace('phpdoc.dist.xml')
+          ->regex('#<version number="[^"]*">#')
+          ->to('<version number="9.5.0">')
+        [Simulator] Simulating File\Replace('tests/fixtures/commands/tool.yml')
+          ->regex('#Toolkit version   OK \([0-9.]+\)#')
+          ->to('Toolkit version   OK (9.5.0)')
+        [Simulator] Simulating File\Replace('tests/fixtures/commands/tool.yml')
+          ->regex('#Current version: [0-9.]+#')
+          ->to('Current version: 9.5.0')
+
+- command: 'toolkit:version-write 9.5.0'
+  configuration: []
+  resources:
+    - from: sample-config.yml
+      to: src/Toolkit.php
+  expectations:
+    - contains: |
+        [WARNING] Could not find the file phpdoc.dist.xml, ignoring.
+
+        [WARNING] Could not find the file tests/fixtures/commands/tool.yml, ignoring.
+
+        [Simulator] Simulating File\Replace('src/Toolkit.php')
+          ->regex('#VERSION = '[^']*'#')
+          ->to('VERSION = '9.5.0'')
+
+- command: 'toolkit:changelog-write ""'
+  configuration: []
+  resources:
+    - from: sample-changelog.md
+      to: CHANGELOG.md
+  expectations:
+    - contains: "[ERROR] You must provide a valid version as first argument."
+
+- command: 'toolkit:changelog-write 9.4.0'
+  configuration: []
+  resources:
+    - from: sample-changelog.md
+      to: CHANGELOG.md
+  expectations:
+    - contains: |
+        [ERROR] The given version 9.4.0 do not satisfies the version 9.5.0 found in the
+                CHANGELOG.md file.
+
+- command: 'toolkit:changelog-write 9.5.0'
+  configuration: []
+  resources:
+    - from: sample-changelog.md
+      to: CHANGELOG.md
+  expectations:
+    - contains: |
+        [ERROR] The given version 9.5.0 do not satisfies the version 9.5.0 found in the
+                CHANGELOG.md file.
+
+- command: 'toolkit:changelog-write 9.6.0'
+  configuration: []
+  resources:
+    - from: sample-changelog.md
+      to: CHANGELOG.md
+  expectations:
+    - contains: |
+        [Simulator] Running git log 9.5.0...release/9.x --pretty='%s##%an##%ae' --reverse
+        [Simulator] Simulating Development\Changelog('CHANGELOG.md')
+          ->setHeader('# Toolkit change log
+
+          ')
+          ->version('9.6.0')
+          ->setBody('## Version 9.6.0
+
+
+          ')
+
+- command: 'toolkit:changelog-write 9.6.0 --show-pr --show-name --full-link'
+  configuration: []
+  resources:
+    - from: sample-changelog.md
+      to: CHANGELOG.md
+  expectations:
+    - contains: |
+        [Simulator] Running git log 9.5.0...release/9.x --pretty='%s##%an##%ae' --reverse
+        [Simulator] Simulating Development\Changelog('CHANGELOG.md')
+          ->setHeader('# Toolkit change log
+
+          ')
+          ->version('9.6.0')
+          ->setBody('## Version 9.6.0 ... ')
+
+- command: 'toolkit:prepare-release 9.6.0'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->args(array (
+            0 => 'toolkit:version-write',
+            1 => '9.6.0',
+          ))
+        [Simulator] Running ./vendor/bin/run 'toolkit:version-write' 9.6.0
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->args(array (
+            0 => 'toolkit:changelog-write',
+            1 => '9.6.0',
+          ))
+        [Simulator] Running ./vendor/bin/run 'toolkit:changelog-write' 9.6.0
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:generate-commands-list')
+        [Simulator] Running ./vendor/bin/run 'toolkit:generate-commands-list'
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:generate-documentation')
+        [Simulator] Running ./vendor/bin/run 'toolkit:generate-documentation'

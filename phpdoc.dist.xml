@@ -9,7 +9,7 @@
     <paths>
         <output>docs</output>
     </paths>
-    <version number="3.0.0">
+    <version number="9.2.0">
         <folder>latest</folder>
         <api>
             <source dsn=".">
@@ -32,6 +32,10 @@
                 <ignore-tag>extends</ignore-tag>
                 <ignore-tag>implements</ignore-tag>
             </ignore-tags>
+            <markers>
+                <marker>TODO</marker>
+                <marker>FIXME</marker>
+            </markers>
             <default-package-name>Toolkit</default-package-name>
         </api>
         <guide>

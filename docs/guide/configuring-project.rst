@@ -1,4 +1,3 @@
-
 Configuring a project
 =====================
 
@@ -16,49 +15,46 @@ Find more information on Docker Compose extension mechanism on
 
 The following configuration parameters are provided as environment variables in the ``./.env`` file:
 
-.. list-table::
-   :header-rows: 1
-
-   * - Name
-     - Description
-   * - ``DRUPAL_DATABASE_NAME``
-     - Database name
-   * - ``DRUPAL_DATABASE_USERNAME``
-     - Database username
-   * - ``DRUPAL_DATABASE_PASSWORD``
-     - Database password
-   * - ``DRUPAL_DATABASE_PREFIX``
-     - Database prefix
-   * - ``DRUPAL_DATABASE_HOST``
-     - Database host
-   * - ``DRUPAL_DATABASE_PORT``
-     - Database port
-   * - ``DRUPAL_SPARQL_HOSTNAME``
-     - SPARQL hostname
-   * - ``DRUPAL_SPARQL_PORT``
-     - SPARQL port
-   * - ``DRUPAL_CAS_HOSTNAME``
-     - EULogin hostname, use ``ecas.ec.europa.eu`` for production
-   * - ``DRUPAL_CAS_PORT``
-     - EULogin port, use ``443`` for production
-   * - ``DRUPAL_ACCOUNT_USERNAME``
-     - Drupal admin account, defaults to ``admin`` if empty
-   * - ``DRUPAL_ACCOUNT_PASSWORD``
-     - Drupal admin password, defaults to random string if empty
-   * - ``DRUPAL_BASE_URL``
-     - Drupal site base URL, used to setup Behat tests
-   * - ``DRUPAL_WEBTOOLS_ANALYTICS_SITE_ID``
-     - Drupal site unique identifier
-   * - ``DRUPAL_WEBTOOLS_ANALYTICS_SITE_PATH``
-     - The domain + root path without protocol.
-
++-----------------------------------+----------------------------------------------------------+
+|Name                               |Description                                               |
++===================================+==========================================================+
+|DRUPAL_DATABASE_NAME               |Database name                                             |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_DATABASE_USERNAME           |Database username                                         |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_DATABASE_PASSWORD           |Database password                                         |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_DATABASE_PREFIX             |Database prefix                                           |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_DATABASE_HOST               |Database host                                             |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_DATABASE_PORT               |Database port                                             |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_SPARQL_HOSTNAME             |SPARQL hostname                                           |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_SPARQL_PORT                 |SPARQL port                                               |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_CAS_HOSTNAME                |EULogin hostname, use ``ecas.ec.europa.eu`` for production|
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_CAS_PORT                    |EULogin port, use ``443`` for production                  |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_ACCOUNT_USERNAME            |Drupal admin account, defaults to ``admin`` if empty      |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_ACCOUNT_PASSWORD            |Drupal admin password, defaults to random string if empty |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_BASE_URL                    |Drupal site base URL, used to setup Behat tests           |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_WEBTOOLS_ANALYTICS_SITE_ID  | Drupal site unique identifier                            |
++-----------------------------------+----------------------------------------------------------+
+|DRUPAL_WEBTOOLS_ANALYTICS_SITE_PATH|The domain + root path without protocol.                  |
++-----------------------------------+----------------------------------------------------------+
 
 Environment variables will be loaded by Docker Compose when running ``docker-compose up -d``.
 
 Subsite configuration
 ^^^^^^^^^^^^^^^^^^^^^
 
-By default, subsite configuration go into file ``runner.yml.dist``\ , see bellow an example.
+By default, subsite configuration go into file ``runner.yml.dist``, see bellow an example.
 
 .. code-block::
 
@@ -80,28 +76,3 @@ By default, subsite configuration go into file ``runner.yml.dist``\ , see bellow
      host: "http://selenium"
      port: "4444"
      browser: "chrome"
-
-Clone configuration
-^^^^^^^^^^^^^^^^^^^
-
-Toolkit will load the credentials necessary to clone your subsite from your environment, so make sure you have in your env the following variables:
-
-
-* ASDA_USER
-* ASDA_PASSWORD
-
-Other topics
-^^^^^^^^^^^^
-
-
-* `Setting up a project </docs/setting-up-project.md>`_
-* Configuring a project
-* `Installing the project </docs/installing-project.md>`_
-* `Testing the project </docs/testing-project.md>`_
-* `Using Docker environment </docs/docker-environment.md>`_
-* `Continuous integration </docs/continuous-integration.md>`_
-* `Available tasks </docs/available-tasks.md>`_
-* `Building assets </docs/building-assets.md>`_
-* `Git Hooks </docs/git-hooks.md>`_
-* `Update Project Documentation </docs/project-documentation.md>`_
-* `Changelog </CHANGELOG.md>`_

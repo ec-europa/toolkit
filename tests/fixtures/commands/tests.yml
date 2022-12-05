@@ -1,0 +1,205 @@
+- command: 'toolkit:test-phpstan'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: ">  Could not find a Drupal installation, skipping."
+
+- command: 'toolkit:test-phpstan'
+  configuration: []
+  resources:
+    - mkdir: web
+  expectations:
+    - contains: |
+        [Simulator] Simulating File\Write('phpstan.neon')
+          ->text('parameters: ... ')
+        [Simulator] Simulating Exec('./vendor/bin/phpstan')
+          ->arg('analyse')
+          ->options(array (
+            'memory-limit' => '4G',
+            'configuration' => 'phpstan.neon',
+          ), '=')
+        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=4G --configuration=phpstan.neon
+
+- command: 'toolkit:test-phpstan --memory-limit=512M'
+  configuration: []
+  resources:
+    - mkdir: web
+  expectations:
+    - contains: |
+        [Simulator] Simulating File\Write('phpstan.neon')
+          ->text('parameters: ... ')
+        [Simulator] Simulating Exec('./vendor/bin/phpstan')
+          ->arg('analyse')
+          ->options(array (
+            'memory-limit' => '512M',
+            'configuration' => 'phpstan.neon',
+          ), '=')
+        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=512M --configuration=phpstan.neon
+
+- command: 'toolkit:test-phpstan'
+  configuration:
+    toolkit:
+      test:
+        phpstan:
+          config: fake
+          level: 3
+          files: [ test.php, test2.php ]
+          memory-limit: 512M
+          options: debug
+  resources:
+    - mkdir: web
+    - from: sample-config.yml
+      to: test.php
+    - from: sample-config.yml
+      to: test2.php
+  expectations:
+    - contains: |
+        [Simulator] Simulating File\Write('fake')
+          ->text('parameters: ... ')
+        [Simulator] Simulating Exec('./vendor/bin/phpstan')
+          ->arg('analyse')
+          ->options(array (
+            'memory-limit' => '4G',
+            'configuration' => 'fake',
+          ), '=')
+          ->options(array (
+            'debug' => NULL,
+          ))
+        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=4G --configuration=fake --debug
+
+- command: 'toolkit:test-phpstan --memory-limit=512M --config=fake --level=3'
+  configuration: []
+  resources:
+    - mkdir: web
+    - from: sample-config.yml
+      to: test.php
+    - from: sample-config.yml
+      to: fake
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/phpstan')
+          ->arg('analyse')
+          ->options(array (
+            'memory-limit' => '512M',
+            'configuration' => 'fake',
+          ), '=')
+        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=512M --configuration=fake
+
+- command: 'toolkit:setup-phpcs'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating File\Write('phpcs.xml')
+          ->text('<?xml version="1.0" encoding="UTF-8"?> ... ')
+
+- command: 'toolkit:test-phpcs'
+  configuration: []
+  resources:
+    - from: sample-phpcs.xml
+      to: phpcs.xml
+  expectations:
+    - contains: |
+        >  Executing PHPcs.
+        [Simulator] Simulating Exec('./vendor/bin/phpcs --standard=phpcs.xml')
+        [Simulator] Running ./vendor/bin/phpcs --standard=phpcs.xml
+
+- command: 'toolkit:test-phpmd'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        Could not find the ruleset file, the default will be created in the project root.
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->copy('/test/toolkit/resources/phpmd.xml', 'phpmd.xml')
+        [Simulator] Simulating Exec('./vendor/bin/phpmd')
+          ->args(array (
+            0 => '',
+            1 => 'ansi',
+            2 => 'phpmd.xml',
+          ))
+          ->options(array (
+            'exclude' => '',
+            'suffixes' => 'php,module,inc,theme,install',
+          ))
+        [Simulator] Running ./vendor/bin/phpmd '' ansi phpmd.xml --exclude --suffixes 'php,module,inc,theme,install'
+
+- command: 'toolkit:test-phpmd'
+  configuration: []
+  resources:
+    - mkdir: src
+    - mkdir: vendor
+    - from: sample-phpmd.xml
+      to: phpmd.xml
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/phpmd')
+          ->args(array (
+            0 => 'src',
+            1 => 'ansi',
+            2 => 'phpmd.xml',
+          ))
+          ->options(array ( ... ))
+        [Simulator] Running ./vendor/bin/phpmd src ansi phpmd.xml --exclude vendor/ --suffixes 'php,module,inc,theme,install'
+
+- command: 'toolkit:check-phpcs-requirements'
+  configuration: []
+  resources:
+    - from: sample-phpcs-wrong.xml
+      to: phpcs.xml
+  expectations:
+    - contains: |
+        [error]  The following standards are missing, please add them to the configuration file 'phpcs.xml'.
+        ./vendor/drupal/coder/coder_sniffer/Drupal
+        ./vendor/drupal/coder/coder_sniffer/DrupalPractice
+        ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+
+- command: 'toolkit:check-phpcs-requirements'
+  configuration: []
+  resources:
+    - from: sample-phpcs.xml
+      to: phpcs.xml
+  expectations:
+    - not_contains: "[error]  The following standards are missing, please add them to the configuration file"
+
+- command: 'toolkit:test-behat'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:install-dependencies')
+        [Simulator] Running ./vendor/bin/run toolkit:install-dependencies
+        [Simulator] Simulating EcEuropa\Toolkit\Task\File\Process('behat.yml.dist', 'behat.yml')
+        [Simulator] Running ./vendor/bin/behat --profile=default --strict --dry-run
+        [Simulator] Simulating Exec('./vendor/bin/behat')
+          ->options(array (
+            'profile' => 'default',
+            'strict' => NULL,
+          ), '=')
+        [Simulator] Running ./vendor/bin/behat --profile=default --strict
+
+- command: 'toolkit:test-phpunit'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: ">  PHUnit configuration not found, skipping."
+
+- command: 'toolkit:test-phpunit'
+  configuration: []
+  resources:
+    - from: sample-phpunit.xml.dist
+      to: phpunit.xml
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/phpunit ')
+        [Simulator] Running ./vendor/bin/phpunit
+
+- command: 'toolkit:run-phpcbf'
+  configuration: []
+  resources:
+    - from: sample-phpcs.xml
+      to: phpcs.xml
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/phpcbf --standard=phpcs.xml')
+        [Simulator] Running ./vendor/bin/phpcbf --standard=phpcs.xml

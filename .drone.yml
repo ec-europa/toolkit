@@ -15,10 +15,18 @@ matrix:
     - lowest
     - highest
 
+services:
+  web:
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    environment: &env
+      - DOCUMENT_ROOT=/test/toolkit
+
 pipeline:
   composer-install:
     group: composer
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    secrets: [ github_api_token, gitlab_api_token, composer_auth ]
+    environment: *env
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -31,6 +39,8 @@ pipeline:
   composer-update-lowest:
     group: composer
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    secrets: [ github_api_token, gitlab_api_token, composer_auth ]
+    environment: *env
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -43,29 +53,37 @@ pipeline:
   phpcs:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    environment: *env
     commands:
-      - ./vendor/bin/phpcs -i
-      - ./vendor/bin/phpcs -p
+      - ./run toolkit:test-phpcs
+
+  phpmd:
+    group: test
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    environment: *env
+    commands:
+      - ./run toolkit:test-phpmd --files=src/,tests/
 
   phpunit:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    secrets: [ qa_api_basic_auth, github_api_token, gitlab_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass ]
+    environment: *env
     commands:
-      - ./vendor/bin/phpunit
+      - ./run toolkit:test-phpunit
 
   lint-yaml:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, composer_auth ]
+    environment: *env
     commands:
-      - CONFIG_FOLDER=$(if test -d config; then find config -type f -name "*.yml"; fi)
-      - if ! [ -z "$CONFIG_FOLDER" ]; then ./vendor/bin/yaml-lint $CONFIG_FOLDER; fi
-      - LIB_FOLDER=$(if test -d lib; then find lib -type f -name "*.yml"; fi)
-      - if ! [ -z "$LIB_FOLDER" ]; then ./vendor/bin/yaml-lint $LIB_FOLDER; fi
+      - ./run toolkit:lint-yaml
 
   lint-php:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, composer_auth ]
+    environment: *env
     commands:
-      - ./vendor/bin/parallel-lint --exclude web --exclude vendor -e module -e inc -e theme -e install -e php .
+      - ./run toolkit:lint-php

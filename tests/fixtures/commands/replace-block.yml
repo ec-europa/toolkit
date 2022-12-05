@@ -1,0 +1,46 @@
+- command: 'test:clean-block'
+  resources:
+    - from: sample-replace-block.txt
+      to: test.txt
+  expectations:
+    - contains: |
+        # First title
+
+        {start}{end}
+
+        # Second title
+
+        Content
+    - not_contains: "This text should be removed"
+
+- command: 'test:replace-block'
+  resources:
+    - from: sample-replace-block.txt
+      to: test.txt
+  expectations:
+    - contains: |
+        # First title
+
+        {start}
+        This content is new
+        {end}
+
+        # Second title
+
+        Content
+    - not_contains: "This text should be removed"
+
+- command: 'test:replace-block-start-end'
+  resources:
+    - from: sample-replace-block.txt
+      to: test.txt
+  expectations:
+    - contains: |
+        # First title
+
+        This content is new
+
+        # Second title
+
+        Content
+    - not_contains: "This text should be removed"

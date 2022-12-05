@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit;
 
+use Robo\Robo;
+
 /**
  * Provides default Toolkit class.
  */
@@ -12,7 +14,7 @@ final class Toolkit
     /**
      * Constant holding the current version.
      */
-    public const VERSION = '9.0.0';
+    public const VERSION = '9.2.0';
 
     /**
      * Returns the Toolkit root.
@@ -22,7 +24,7 @@ final class Toolkit
      */
     public static function getToolkitRoot(): string
     {
-        return __DIR__ . '/../';
+        return realpath(__DIR__ . '/../');
     }
 
     /**
@@ -33,19 +35,7 @@ final class Toolkit
      */
     public static function getProjectRoot(): string
     {
-        return __DIR__ . '/../../../../';
-    }
-
-    /**
-     * Returns the QA base url.
-     *
-     * @return string
-     *   The base url.
-     */
-    public static function getQaWebsiteUrl(): string
-    {
-        $url = getenv('QA_WEBSITE_URL');
-        return !empty($url) ? $url : 'https://webgate.ec.europa.eu/fpfis/qa';
+        return realpath(__DIR__ . '/../../../../');
     }
 
     /**
@@ -106,4 +96,50 @@ final class Toolkit
         $pass = getenv('NEXTCLOUD_PASS');
         return !empty($pass) && $pass !== '${env.NEXTCLOUD_PASS}' ? $pass : '';
     }
+
+    /**
+     * Remove un-existing folders from given array.
+     *
+     * @param array $files
+     *   The folders to check.
+     */
+    public static function filterFolders(array &$files)
+    {
+        $files = array_filter($files, function ($folder) {
+            return file_exists($folder);
+        });
+    }
+
+    /**
+     * If given content is a string, it will be exploded by given separator.
+     *
+     * @param mixed $data
+     *   If the data is a string it will be exploded by comma.
+     * @param string $sep
+     *   The separator to explode the string.
+     */
+    public static function ensureArray(mixed &$data, string $sep = ',')
+    {
+        if (is_string($data)) {
+            $data = array_map('trim', explode($sep, $data));
+        }
+    }
+
+    /**
+     * Return the current Robo version.
+     *
+     * @return string
+     *   A string with the Robo version, empty string if could not find the version,
+     */
+    public static function getRoboVersion()
+    {
+        $version = '';
+        if (defined('Robo::VERSION')) {
+            $version = constant('Robo::VERSION');
+        } elseif (method_exists(Robo::class, 'version')) {
+            $version = Robo::version();
+        }
+        return $version;
+    }
+
 }
