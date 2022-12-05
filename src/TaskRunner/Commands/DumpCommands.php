@@ -46,28 +46,75 @@ class DumpCommands extends AbstractCommands
         'dumpfile' => InputOption::VALUE_REQUIRED,
     ])
     {
-        $tasks = [];
+        $config = $this->getConfig();
+        if ($config->get('toolkit.clone.asda_dump_type') === 'dumper') {
+            $options['dumpfile'] = 'dumper.gz';
+        }
         $tmp_folder = $this->tmpDirectory();
         if (!file_exists("$tmp_folder/{$options['dumpfile']}")) {
             $this->say("'$tmp_folder/{$options['dumpfile']}' file not found, use the command 'toolkit:download-dump'.");
             return 1;
         }
+        $tasks = [];
 
-        // Unzip and dump database file.
+        // Recreate the database.
         $drush_bin = $this->getBin('drush');
         $tasks[] = $this->taskExec($drush_bin)->arg('sql-drop')->rawArg('-y');
         $tasks[] = $this->taskExec($drush_bin)->arg('sql-create')->rawArg('-y');
-        $tasks[] = $this->taskExecStack()
-            ->stopOnFail()
-            ->silent(true)
-            ->exec(sprintf(
+
+        $database = getenv('DRUPAL_DATABASE_NAME');
+        $dump_type = $this->getConfig()->get('toolkit.clone.asda_dump_type');
+        if ($dump_type === 'dumper') {
+            // This is a temporary workaround while we do not have the
+            // myloader in the docker images.
+            $tasks[] = $this->taskExecStack()
+                ->stopOnFail()
+                ->exec(Toolkit::getToolkitRoot() . 'resources/scripts/dumper-install.sh');
+
+            // Clean up and extract the dump.
+            $tasks[] = $this->taskExecStack()
+                ->stopOnFail()
+                ->silent(true)
+                ->exec("rm -rf $tmp_folder/dumper")
+                ->exec("mkdir $tmp_folder/dumper")
+                ->exec("tar -xf $tmp_folder/{$options['dumpfile']} -C $tmp_folder/dumper");
+
+            // Rename the dump files to match the current database.
+            $tasks[] = $this->taskExecStack()
+                ->stopOnFail()
+                ->exec(Toolkit::getToolkitRoot() . "resources/scripts/dumper-prepare-db.sh $database $tmp_folder/dumper");
+
+            $options = [
+                '--host ' . getenv('DRUPAL_DATABASE_HOST'),
+                "--database $database",
+                '--user ' . getenv('DRUPAL_DATABASE_USERNAME'),
+                getenv('DRUPAL_DATABASE_PASSWORD') ? '--password ' . getenv('DRUPAL_DATABASE_PASSWORD') : '',
+                '--threads 8',
+                '--max-threads-per-table 8',
+                '--innodb-optimize-keys',
+                '--purge-mode DROP',
+                '--compress-protocol',
+                '--skip-definer',
+                '--verbose 3',
+                "--directory $tmp_folder/dumper"
+            ];
+            $command = 'myloader ' . implode(' ', $options);
+        } else {
+            $command = sprintf(
                 "gunzip < %s | mysql -u%s%s -h%s %s",
                 "$tmp_folder/{$options['dumpfile']}",
                 getenv('DRUPAL_DATABASE_USERNAME'),
                 getenv('DRUPAL_DATABASE_PASSWORD') ? ' -p' . getenv('DRUPAL_DATABASE_PASSWORD') : '',
                 getenv('DRUPAL_DATABASE_HOST'),
-                getenv('DRUPAL_DATABASE_NAME'),
-            ));
+                $database,
+            );
+        }
+
+        $tasks[] = $this->taskExecStack()
+            ->stopOnFail()
+            ->silent(true)
+            ->exec($command);
+
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
     }
@@ -125,7 +172,7 @@ class DumpCommands extends AbstractCommands
         $config = $this->getConfig();
         $project_id = $config->get('toolkit.project_id');
         $asda_type = $config->get('toolkit.clone.asda_type', 'nextcloud');
-        $asda_services = (array) $config->get('toolkit.clone.asda_services', 'mysql');
+        $asda_services = $this->getAsdaServices();
         $vendor = $config->get('toolkit.clone.asda_vendor');
         $source = $config->get('toolkit.clone.asda_source');
         $tmp_folder = $this->tmpDirectory();
@@ -394,6 +441,29 @@ class DumpCommands extends AbstractCommands
             }
         }
         return $tmp_folder;
+    }
+
+    /**
+     * Returns the defined asda services.
+     *
+     * If dumper is defined the mysql services will be replaced.
+     *
+     * @return array
+     *   An array with the services.
+     */
+    private function getAsdaServices(): array
+    {
+        $config = $this->getConfig();
+        $services = (array) $config->get('toolkit.clone.asda_services', 'mysql');
+        // Replace the 'mysql' service with the 'dumper' if defined.
+        if ($config->get('toolkit.clone.asda_dump_type') === 'dumper') {
+            $services[] = 'dumper';
+            $key = array_search('mysql', $services);
+            if ($key !== false) {
+                unset($services[$key]);
+            }
+        }
+        return $services;
     }
 
 }
