@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\Tests\Features\Commands {
 
     use EcEuropa\Toolkit\TaskRunner\Commands\DrupalCommands;
-    use EcEuropa\Toolkit\TaskRunner\Runner;
     use EcEuropa\Toolkit\Tests\AbstractTest;
-    use Symfony\Component\Console\Input\StringInput;
-    use Symfony\Component\Console\Output\BufferedOutput;
     use Symfony\Component\Yaml\Yaml;
 
     /**
@@ -31,20 +28,31 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
         }
 
         /**
-         * Test Toolkit very own "drupal:settings-setup" command.
+         * Data provider for testDrupalSettingsSetup.
+         *
+         * @return array
+         *   An array of test data arrays with assertions.
+         */
+        public function dataProviderSettings()
+        {
+            return $this->getFixtureContent('commands/drupal-settings.yml');
+        }
+
+        /**
+         * Test Toolkit drupal commands.
          *
          * @param array $config
          *   A configuration array.
-         * @param mixed $initial_default_settings
-         *   A initial default settings.
-         * @param mixed $initial_settings
-         *   A initial settings.
-         * @param array $expected
+         * @param mixed $initialDefaultSettings
+         *   An initial default settings.
+         * @param mixed $initialSettings
+         *   An initial settings.
+         * @param array $expectations
          *   Test assertions.
          *
          * @dataProvider dataProvider
          */
-        public function testDrupalSettingsSetup(array $config, $initial_default_settings, $initial_settings, array $expected)
+        public function testDrupalCommands(string $command, array $config, mixed $initialDefaultSettings, mixed $initialSettings, array $expectations)
         {
             // Setup configuration file.
             if (!empty($config)) {
@@ -53,29 +61,73 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
 
             // Setup test directory.
             $root = $config['drupal']['root'] ?? 'web';
-            $sites_subdir = $config['drupal']['site']['sites_subdir'] ?? 'default';
-            $settings_root = $this->getSandboxRoot() . '/' . $root . '/sites/' . $sites_subdir;
-            mkdir($settings_root, 0777, true);
+            $sitesSubdir = $config['drupal']['site']['sites_subdir'] ?? 'default';
+            $settingsRoot = $this->getSandboxRoot() . '/' . $root . '/sites/' . $sitesSubdir;
+            mkdir($settingsRoot, 0777, true);
 
             // Setup initial default.settings.php and settings.php, if any.
-            file_put_contents($settings_root . '/default.settings.php', $initial_default_settings);
+            if ($initialDefaultSettings !== null) {
+                $this->fs->dumpFile($settingsRoot . '/default.settings.php', $initialDefaultSettings);
+            }
 
             // Setup settings.php file, if test case requires it.
-            if ($initial_settings) {
-                file_put_contents($settings_root . '/settings.php', $initial_settings);
+            if ($initialSettings !== null) {
+                $this->fs->dumpFile($settingsRoot . '/settings.php', $initialSettings);
             }
 
             // Run command.
-            $input = new StringInput('drupal:settings-setup --working-dir=' . $this->getSandboxRoot());
-            $runner = new Runner($this->getClassLoader(), $input, new BufferedOutput());
-            $runner->run();
-
+            $result = $this->runCommand($command);
+            //$this->debugExpectations($result['output'], $expectations);
             // Assert expectations.
-            foreach ($expected as $row) {
-                $content = file_get_contents($this->getSandboxFilepath($row['file']));
-                $this->assertDynamic($content, $row);
+            foreach ($expectations as $expectation) {
+                $this->assertDynamic($result['output'], $expectation);
             }
         }
+
+        /**
+         * Test Toolkit very own "drupal:settings-setup" command.
+         *
+         * @param array $config
+         *   A configuration array.
+         * @param mixed $initialDefaultSettings
+         *   An initial default settings.
+         * @param mixed $initialSettings
+         *   An initial settings.
+         * @param array $expectations
+         *   Test assertions.
+         *
+         * @dataProvider dataProviderSettings
+         */
+//        public function testDrupalCommandsOutputFile(string $command, array $config, mixed $initialDefaultSettings, mixed $initialSettings, array $expectations)
+//        {
+//            // Setup configuration file.
+//            if (!empty($config)) {
+//                $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+//            }
+//
+//            // Setup test directory.
+//            $root = $config['drupal']['root'] ?? 'web';
+//            $sitesSubdir = $config['drupal']['site']['sites_subdir'] ?? 'default';
+//            $settingsRoot = $this->getSandboxRoot() . '/' . $root . '/sites/' . $sitesSubdir;
+//            mkdir($settingsRoot, 0777, true);
+//
+//            // Setup initial default.settings.php and settings.php, if any.
+//            file_put_contents($settingsRoot . '/default.settings.php', $initialDefaultSettings);
+//
+//            // Setup settings.php file, if test case requires it.
+//            if ($initialSettings) {
+//                file_put_contents($settingsRoot . '/settings.php', $initialSettings);
+//            }
+//
+//            // Run command.
+//            $this->runCommand($command, false);
+//
+//            // Assert expectations.
+//            foreach ($expectations as $expectation) {
+//                $content = file_get_contents($this->getSandboxFilepath($expectation['file']));
+//                $this->assertDynamic($content, $expectation);
+//            }
+//        }
 
         public function testConfigurationFileExists()
         {

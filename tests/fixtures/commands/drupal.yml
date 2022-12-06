@@ -1,140 +1,313 @@
-#@command drupal:settings-setup
-#@command drupal:permissions-setup
-#@command drupal:drush-setup
-#@command drupal:site-install
-#@command drupal:site-pre-install
-#@command drupal:site-post-install
-#@command drupal:disable-cache
-#@command drupal:upgrade-status
-- configuration: []
-  initial_default_settings: |
-    <?php
-    $foo = 'bar';
+- command: 'drupal:settings-setup'
+  configuration: []
+  initial_default_settings: ~
   initial_settings: ~
   expectations:
-    - file: "web/sites/default/settings.php"
+    - file: 'web/sites/default/settings.php'
       contains: |
-        <?php
-        $foo = 'bar';
-
-        // Start Toolkit settings block.
-
-        $databases['default']['default'] = array (
-          'database' => getenv('DRUPAL_DATABASE_NAME'),
-          'username' => getenv('DRUPAL_DATABASE_USERNAME'),
-          'password' => getenv('DRUPAL_DATABASE_PASSWORD'),
-          'prefix' => getenv('DRUPAL_DATABASE_PREFIX'),
-          'host' => getenv('DRUPAL_DATABASE_HOST'),
-          'port' => getenv('DRUPAL_DATABASE_PORT'),
-          'namespace' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? 'Drupal\\Core\\Database\\Driver\\' . getenv('DRUPAL_DATABASE_DRIVER') : 'Drupal\\Core\\Database\\Driver\\mysql',
-          'driver' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? getenv('DRUPAL_DATABASE_DRIVER') : 'mysql',
-        );
-
-        // Location of the site configuration files, relative to the site root.
-        $settings['config_sync_directory'] = '../config/sync';
-
-        $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : 'YWJj';
-        $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
-        $settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') !== FALSE ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp';
-
-
-
-        // Load environment development override configuration, if available.
-        // Keep this code block at the end of this file to take full effect.
-        if (file_exists($app_root . '/' . $site_path . '/settings.override.php')) {
-          include $app_root . '/' . $site_path . '/settings.override.php';
-        }
-
-        // End Toolkit settings block.
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->copy('web/sites/default/default.settings.php', 'web/sites/default/settings.php')
+        [Simulator] Simulating File\Replace('web/sites/default/settings.php')
+          ->regex('/^\n\/\/ Start Toolkit settings block\..*?\/\/ End Too ... ttings block\.\n/sm')
+          ->to('')
+        [Simulator] Simulating File\Write('web/sites/default/settings.php')
+          ->append()
+          ->text(' ... ')
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->chmod('web/sites/default', 509, 0, 1)
       not_contains: ~
 
-- configuration:
+- command: 'drupal:settings-setup --root=website'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: 'web/sites/default/settings.php'
+      contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->copy('website/sites/default/default.settings.php', 'website/sites/default/settings.php')
+        [Simulator] Simulating File\Replace('website/sites/default/settings.php')
+          ->regex('/^\n\/\/ Start Toolkit settings block\..*?\/\/ End Too ... ttings block\.\n/sm')
+          ->to('')
+        [Simulator] Simulating File\Write('website/sites/default/settings.php')
+          ->append()
+          ->text(' ... ')
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->chmod('website/sites/default', 509, 0, 1)
+      not_contains: ~
+
+- command: 'drupal:settings-setup --sites-subdir=sub_dir'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: 'web/sites/default/settings.php'
+      contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        ->copy('web/sites/default/default.settings.php', 'web/sites/sub_dir/settings.php')
+        [Simulator] Simulating File\Replace('web/sites/sub_dir/settings.php')
+        ->regex('/^\n\/\/ Start Toolkit settings block\..*?\/\/ End Too ... ttings block\.\n/sm')
+        ->to('')
+        [Simulator] Simulating File\Write('web/sites/sub_dir/settings.php')
+        ->append()
+        ->text(' ... ')
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        ->chmod('web/sites/sub_dir', 509, 0, 1)
+      not_contains: ~
+
+- command: 'drupal:settings-setup --force'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: 'web/sites/default/settings.php'
+      contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->copy('web/sites/default/default.settings.php', 'web/sites/default/settings.php')
+        [Simulator] Simulating File\Replace('web/sites/default/settings.php')
+          ->regex('/^\n\/\/ Start Toolkit settings block\..*?\/\/ End Too ... ttings block\.\n/sm')
+          ->to('')
+        [Simulator] Simulating File\Write('web/sites/default/settings.php')
+          ->append()
+          ->text(' ... ')
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->chmod('web/sites/default', 509, 0, 1)
+      not_contains: ~
+
+- command: 'drupal:settings-setup --skip-permissions-setup'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: 'web/sites/default/settings.php'
+      contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->copy('web/sites/default/default.settings.php', 'web/sites/default/settings.php')
+        [Simulator] Simulating File\Replace('web/sites/default/settings.php')
+          ->regex('/^\n\/\/ Start Toolkit settings block\..*?\/\/ End Too ... ttings block\.\n/sm')
+          ->to('')
+        [Simulator] Simulating File\Write('web/sites/default/settings.php')
+          ->append()
+          ->text(' ... ')
+      not_contains: ~
+
+- command: 'drupal:permissions-setup'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->chmod('web/sites/default', 509, 0, 1)
+      not_contains: ~
+
+- command: 'drupal:permissions-setup --root=website --sites-subdir=websitesubdir'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->chmod('website/sites/websitesubdir', 509, 0, 1)
+      not_contains: ~
+
+- command: 'drupal:permissions-setup'
+  configuration:
     drupal:
-      additional_settings: |
-        $config['cas.settings']['server']['hostname'] = getenv('CAS_HOSTNAME');
-        $config['cas.settings']['server']['port'] = getenv('CAS_PORT');
-  initial_default_settings: |
-    <?php
-    $foo = 'bar';
-  initial_settings: ~
-  expectations:
-    - file: "web/sites/default/settings.php"
-      contains: |
-        <?php
-        $foo = 'bar';
-
-        // Start Toolkit settings block.
-
-        $databases['default']['default'] = array (
-        'database' => getenv('DRUPAL_DATABASE_NAME'),
-        'username' => getenv('DRUPAL_DATABASE_USERNAME'),
-        'password' => getenv('DRUPAL_DATABASE_PASSWORD'),
-        'prefix' => getenv('DRUPAL_DATABASE_PREFIX'),
-        'host' => getenv('DRUPAL_DATABASE_HOST'),
-        'port' => getenv('DRUPAL_DATABASE_PORT'),
-        'namespace' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? 'Drupal\\Core\\Database\\Driver\\' . getenv('DRUPAL_DATABASE_DRIVER') : 'Drupal\\Core\\Database\\Driver\\mysql',
-        'driver' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? getenv('DRUPAL_DATABASE_DRIVER') : 'mysql',
-        );
-
-        // Location of the site configuration files, relative to the site root.
-        $settings['config_sync_directory'] = '../config/sync';
-
-        $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : 'YWJj';
-        $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
-        $settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') !== FALSE ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp';
-
-        $config['cas.settings']['server']['hostname'] = getenv('CAS_HOSTNAME');
-        $config['cas.settings']['server']['port'] = getenv('CAS_PORT');
-
-        // Load environment development override configuration, if available.
-        // Keep this code block at the end of this file to take full effect.
-        if (file_exists($app_root . '/' . $site_path . '/settings.override.php')) {
-        include $app_root . '/' . $site_path . '/settings.override.php';
-        }
-
-        // End Toolkit settings block.
-      not_contains: ~
-
-- configuration: []
-  initial_default_settings: |
-    <?php
-    $hash = '';
+      site:
+        sites_subdir: 'sites_subdir'
+  initial_default_settings: ~
   initial_settings: |
     <?php
-    $hash = '12345';
+    $foo = 'bar';
   expectations:
-    - file: "web/sites/default/settings.php"
+    - file: ~
       contains: |
-        <?php
-        $hash = '12345';
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->chmod('web/sites/sites_subdir', 509, 0, 1)
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->chmod('web/sites/sites_subdir/settings.php', 436)
+      not_contains: ~
 
-        // Start Toolkit settings block.
+- command: 'drupal:disable-cache'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        [Simulator] Simulating Exec('./vendor/bin/drush')
+          ->rawArg('-y')
+          ->args(array ( ... ))
+        [Simulator] Running ./vendor/bin/drush -y config-set system.performance css.preprocess 0
+        [Simulator] Simulating Exec('./vendor/bin/drush')
+          ->rawArg('-y')
+          ->args(array ( ... ))
+        [Simulator] Running ./vendor/bin/drush -y config-set system.performance js.preprocess 0
+        [Simulator] Simulating Exec('./vendor/bin/drush')
+          ->arg('cache:rebuild')
+        [Simulator] Running ./vendor/bin/drush 'cache:rebuild'
+      not_contains: ~
 
-        $databases['default']['default'] = array (
-          'database' => getenv('DRUPAL_DATABASE_NAME'),
-          'username' => getenv('DRUPAL_DATABASE_USERNAME'),
-          'password' => getenv('DRUPAL_DATABASE_PASSWORD'),
-          'prefix' => getenv('DRUPAL_DATABASE_PREFIX'),
-          'host' => getenv('DRUPAL_DATABASE_HOST'),
-          'port' => getenv('DRUPAL_DATABASE_PORT'),
-          'namespace' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? 'Drupal\\Core\\Database\\Driver\\' . getenv('DRUPAL_DATABASE_DRIVER') : 'Drupal\\Core\\Database\\Driver\\mysql',
-          'driver' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? getenv('DRUPAL_DATABASE_DRIVER') : 'mysql',
-        );
+- command: 'drupal:drush-setup'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        [Simulator] Simulating File\Write('web/drush/drush.yml')
+            ->text('options:
+            uri: 'http://web:8080/web'
+        ')
+      not_contains: ~
 
-        // Location of the site configuration files, relative to the site root.
-        $settings['config_sync_directory'] = '../config/sync';
+- command: 'drupal:drush-setup --config-dir=website/drush'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        [Simulator] Simulating File\Write('website/drush/drush.yml')
+            ->text('options:
+            uri: 'http://web:8080/web'
+        ')
+      not_contains: ~
 
-        $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : 'YWJj';
-        $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
-        $settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') !== FALSE ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp';
+- command: 'drupal:site-install'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
+        ))
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        ->chmod('web/sites/default', 509, 0, 1)
+        [Simulator] Simulating Exec('./vendor/bin/drush')
+        ->args(array (
+        0 => 'site:install',
+        1 => 'minimal',
+        ))
+        ->options(array ( ... ), '=')
+        ->option('-y')
+        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --db-url='mysql://mysql:3306' -y
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
+        ))
+      not_contains: ~
 
+- command: 'drupal:site-install
+              --root=website
+              --base-url=base
+              --site-name="The site name"
+              --site-mail=info@example.org
+              --account-mail=user@example.org
+              --account-name=user
+              --sites-subdir=web
+              --site-profile=minimal
+              --site-update=true
+              --site-locale=fr
+              --account-name=superadmin
+              --account-password=12345
+              --account-mail=superadmin@example.org
+              --database-type=type
+              --database-scheme=mysql
+              --database-user=root
+              --database-password=1234
+              --database-host=mysql
+              --database-port=3333
+              --database-name=test'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
+        ))
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->chmod('website/sites/web', 509, 0, 1)
+        [Simulator] Simulating Exec('./vendor/bin/drush')
+          ->args(array (
+            0 => 'site:install',
+            1 => 'minimal',
+          ))
+            ->options(array ( ... ), '=')
+            ->option('-y')
+        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/website/ --site-name='The site name' --site-mail=info@example.org --locale=fr --account-mail=superadmin@example.org --account-name=superadmin --account-pass=12345 --sites-subdir=web --db-url='mysql://root:1234@mysql:3333/test' -y
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
+        ))
+      not_contains: ~
 
+- command: 'drupal:site-install --existing-config --skip-permissions-setup'
+  configuration:
+    drupal:
+      site:
+        generate_db_url: ~
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
+        ))
+        [Simulator] Simulating Exec('./vendor/bin/drush')
+          ->args(array (
+            0 => 'site:install',
+            1 => 'minimal',
+          ))
+            ->options(array ( ... ), '=')
+            ->option('-y')
+        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --existing-config -y
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
+        ))
+      not_contains: ~
 
-        // Load environment development override configuration, if available.
-        // Keep this code block at the end of this file to take full effect.
-        if (file_exists($app_root . '/' . $site_path . '/settings.override.php')) {
-          include $app_root . '/' . $site_path . '/settings.override.php';
-        }
+- command: 'drupal:site-pre-install'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
+        ))
+      not_contains: ~
 
-        // End Toolkit settings block.
+- command: 'drupal:site-post-install'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
+        ))
+      not_contains: ~
+
+- command: 'drupal:upgrade-status'
+  configuration: []
+  initial_default_settings: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        >  Preparing the project to run upgrade_status.
+        [Simulator] Simulating Composer\RequireDependency(null)
+        ->dependency('drupal/upgrade_status', '^3')
+        ->dev()
+        [Simulator] Simulating Composer\RequireDependency(null)
+        ->dependency('drupal/core-dev')
+        ->dev()
+        [Simulator] Simulating Exec('./vendor/bin/drush en upgrade_status -y')
+        [Simulator] Running ./vendor/bin/drush en upgrade_status -y
+        [Simulator] Simulating ExecStack()
+        ->exec('./vendor/bin/drush us-a --all')
+        ->printOutput()
+        ->silent(1)
+        [error]  Invalid version string ""
       not_contains: ~
