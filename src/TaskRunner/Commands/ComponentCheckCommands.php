@@ -395,7 +395,7 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->recommendedFailed = true;
             }
 
-            $this->say("See the list of recommended packages at https://webgate.ec.europa.eu/fpfis/qa/requirements.");
+            $this->say("See the list of recommended packages at\nhttps://webgate.ec.europa.eu/fpfis/qa/requirements.");
             $this->recommendedFailedCount = count($diffRecommended);
         }
 

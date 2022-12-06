@@ -20,7 +20,8 @@
         ================================
 
         Package drupal/redis is recommended but is not present on the project.
-        >  See the list of recommended packages at https://webgate.ec.europa.eu/fpfis/qa/requirements.
+        >  See the list of recommended packages at
+        https://webgate.ec.europa.eu/fpfis/qa/requirements.
         >  This step is in reporting mode, skipping.
 
         Checking Insecure components.
@@ -76,7 +77,8 @@
         [ERROR] Failed the components check, please verify the report and update the
         project.
 
-        See the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.
+        See the list of packages at
+        https://webgate.ec.europa.eu/fpfis/qa/package-reviews.
 
         ! [NOTE] It is possible to bypass the insecure and outdated check:
         !
@@ -129,7 +131,8 @@
         Package drupal/redis is recommended but is not present on the project.
         Package drupal/seckit is recommended but is not present on the project.
         Package drush/drush is recommended but is not present on the project.
-        >  See the list of recommended packages at https://webgate.ec.europa.eu/fpfis/qa/requirements.
+        >  See the list of recommended packages at
+        https://webgate.ec.europa.eu/fpfis/qa/requirements.
         >  This step is in reporting mode, skipping.
 
         Checking Insecure components.
@@ -185,7 +188,8 @@
         [ERROR] Failed the components check, please verify the report and update the
         project.
 
-        See the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.
+        See the list of packages at
+        https://webgate.ec.europa.eu/fpfis/qa/package-reviews.
 
         ! [NOTE] It is possible to bypass the insecure and outdated check:
         !
@@ -233,7 +237,8 @@
         ================================
 
         Package drupal/redis is recommended but is not present on the project.
-        >  See the list of recommended packages at https://webgate.ec.europa.eu/fpfis/qa/requirements.
+        >  See the list of recommended packages at
+        https://webgate.ec.europa.eu/fpfis/qa/requirements.
         >  This step is in reporting mode, skipping.
 
         Checking Insecure components.
