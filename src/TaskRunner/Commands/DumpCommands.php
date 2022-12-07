@@ -86,6 +86,48 @@ class DumpCommands extends AbstractCommands
     }
 
     /**
+     * Export the local snapshot.
+     *
+     * This command should be only used with the corporate docker image fpfis/httpd-php.
+     *
+     * @param array $options
+     *   Command options.
+     *
+     * @return \Robo\Collection\CollectionBuilder|int
+     *   Collection builder.
+     *
+     * @command toolkit:create-dump
+     *
+     * @option dumpfile The dump file name.
+     */
+    public function toolkitCreateDump(ConsoleIO $io, array $options = [
+        'dumpfile' => InputOption::VALUE_REQUIRED,
+    ])
+    {
+        $mydumper = $this->getConfig()->get('toolkit.clone.mydumper');
+        if (!file_exists($mydumper)) {
+            $io->error('The export script was not found, you must run on the corporate docker image.');
+            return ResultData::EXITCODE_ERROR;
+        }
+
+        if ($ext = pathinfo($options['dumpfile'], PATHINFO_EXTENSION)) {
+            if ($ext !== 'tar') {
+                $options['dumpfile'] = str_replace('.' . $ext, '', $options['dumpfile']);
+            }
+        }
+        $dump_file = $this->tmpDirectory() . '/' . $options['dumpfile'];
+        $tasks = [];
+        if (file_exists($options['dumpfile'])) {
+            $tasks[] = $this->taskFilesystemStack()->remove($dump_file);
+        }
+
+        $tasks[] = $this->taskExec($mydumper)->arg($dump_file);
+
+        // Build and return task collection.
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
      * Download ASDA snapshot.
      *
      * @codingStandardsIgnoreStart Generic.Commenting.DocComment.TagsNotGrouped

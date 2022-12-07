@@ -135,6 +135,45 @@
           ->silent(1)
           ->exec('mysql -uroot -hmysql drupal < ./mysql.tar')
 
+- command: 'toolkit:create-dump'
+  configuration:
+    toolkit:
+      tmp_folder: .
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('/scripts/backupdb.sh')
+          ->arg('./mysql')
+        [Simulator] Running /scripts/backupdb.sh ./mysql
+
+- command: 'toolkit:create-dump --dumpfile=mysql.gz'
+  configuration:
+    toolkit:
+      tmp_folder: .
+  resources:
+    - from: sample-dump.sql.gz
+      to: mysql.gz
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('/scripts/backupdb.sh')
+          ->arg('./mysql')
+        [Simulator] Running /scripts/backupdb.sh ./mysql
+
+- command: 'toolkit:create-dump --dumpfile=mysql.tar'
+  configuration:
+    toolkit:
+      tmp_folder: .
+  resources:
+    - from: sample-dump.sql.gz
+      to: mysql.tar
+  expectations:
+    - contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->remove('./mysql.tar')
+        [Simulator] Simulating Exec('/scripts/backupdb.sh')
+        ->arg('./mysql.tar')
+        [Simulator] Running /scripts/backupdb.sh ./mysql.tar
+
 - command: 'toolkit:download-dump'
   configuration:
     toolkit:

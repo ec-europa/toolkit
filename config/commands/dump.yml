@@ -4,3 +4,6 @@ command:
       options:
         dumpfile: ${toolkit.clone.dumpfile}
         myloader: false
+    create-dump:
+      options:
+        dumpfile: ${toolkit.clone.dumpfile}
