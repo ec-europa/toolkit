@@ -678,7 +678,7 @@ class ToolCommands extends AbstractCommands
      * Returns the .opts.yml file content.
      *
      * @return array|false
-     *   False if file do not exist.
+     *   An array with the content or false if the file do not exist.
      *
      * @throws ParseException
      *   If the file could not be read or the YAML is not valid.
