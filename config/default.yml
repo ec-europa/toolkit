@@ -46,8 +46,8 @@ toolkit:
   clean:
     config_file: 'config/sync/core.extension.yml'
   clone:
-    # Use 'default' for dump using mysql, 'dumper' for dump using mydumper.
-    asda_dump_type: 'default'
+    dumpfile: 'mysql.gz'
+    # Nextcloud supports the following services: mysql, virtuoso, solr.
     asda_services: 'mysql'
     asda_type: 'nextcloud'
     asda_url: 'webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project_id}'
@@ -55,6 +55,8 @@ toolkit:
     nextcloud_admin: false
     asda_vendor: 'ec-europa'
     asda_source: 'reference'
+    myloader: '/scripts/importdb.sh'
+    mydumper: '/scripts/backupdb.sh'
   components:
     outdated:
       check: true

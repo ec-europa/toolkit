@@ -6,7 +6,6 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Exception\AbortTasksException;
 use Robo\Exception\TaskException;

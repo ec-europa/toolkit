@@ -2,4 +2,5 @@ command:
   toolkit:
     install-dump:
       options:
-        dumpfile: 'mysql.gz'
+        dumpfile: ${toolkit.clone.dumpfile}
+        myloader: false

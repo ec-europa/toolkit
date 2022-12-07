@@ -13,6 +13,7 @@ use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -87,9 +88,9 @@ class ToolCommands extends AbstractCommands
     public function optsReview(ConsoleIO $io)
     {
         $reviewOk = true;
-        $opts = '.opts.yml';
-        if (!file_exists($opts)) {
-            $io->say("The file '$opts' was not found, skipping.");
+        $parseOptsFile = self::parseOptsYml();
+        if (!$parseOptsFile) {
+            $io->say("The file '.opts.yml' was not found, skipping.");
             return ResultData::EXITCODE_OK;
         }
         $project_id = $this->getConfig()->get('toolkit.project_id');
@@ -102,8 +103,6 @@ class ToolCommands extends AbstractCommands
             $io->error('Failed to get constraints from the endpoint.');
             return ResultData::EXITCODE_ERROR;
         }
-
-        $parseOptsFile = Yaml::parseFile($opts);
 
         // Check for invalid php_version value, if given version is 8.0 as float when converted to string will be 8
         // and will cause issues like in docker images.
@@ -145,11 +144,11 @@ class ToolCommands extends AbstractCommands
         }
 
         if (!$reviewOk) {
-            $io->error("Failed the '$opts' file review. Please contact the QA team.");
+            $io->error("Failed the '.opts.yml' file review. Please contact the QA team.");
             return ResultData::EXITCODE_ERROR;
         }
 
-        $io->say("Review '$opts' file - Ok.");
+        $io->say("Review '.opts.yml' file - Ok.");
         return ResultData::EXITCODE_OK;
     }
 
@@ -673,6 +672,24 @@ class ToolCommands extends AbstractCommands
         }
         $table->render();
         return $return;
+    }
+
+    /**
+     * Returns the .opts.yml file content.
+     *
+     * @return array|false
+     *   False if file do not exist.
+     *
+     * @throws ParseException
+     *   If the file could not be read or the YAML is not valid.
+     */
+    public static function parseOptsYml()
+    {
+        $opts = '.opts.yml';
+        if (!file_exists($opts)) {
+            return false;
+        }
+        return (array) Yaml::parseFile($opts);
     }
 
 }
