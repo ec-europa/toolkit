@@ -41,22 +41,28 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
         /**
          * Test Toolkit drupal commands.
          *
+         * @param string $command
+         *   A command.
          * @param array $config
          *   A configuration array.
-         * @param mixed $initialDefaultSettings
-         *   An initial default settings.
-         * @param mixed $initialSettings
+         * @param string|null $tokens
+         *   Tokens to set in the commit message.
+         * @param string|null $initialSettings
          *   An initial settings.
          * @param array $expectations
          *   Test assertions.
          *
          * @dataProvider dataProvider
          */
-        public function testDrupalCommands(string $command, array $config, mixed $initialDefaultSettings, mixed $initialSettings, array $expectations)
+        public function testDrupalCommands(string $command, array $config = [], string $tokens = null, string $initialSettings = null, array $expectations = [])
         {
             // Setup configuration file.
             if (!empty($config)) {
                 $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+            }
+
+            if ($tokens !== null) {
+                putenv('CI_COMMIT_MESSAGE="' . $tokens . '"');
             }
 
             // Setup test directory.
@@ -65,13 +71,8 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
             $settingsRoot = $this->getSandboxRoot() . '/' . $root . '/sites/' . $sitesSubdir;
             mkdir($settingsRoot, 0777, true);
 
-            // Setup initial default.settings.php and settings.php, if any.
-            if ($initialDefaultSettings !== null) {
-                $this->fs->dumpFile($settingsRoot . '/default.settings.php', $initialDefaultSettings);
-            }
-
             // Setup settings.php file, if test case requires it.
-            if ($initialSettings !== null) {
+            if (!empty($initialSettings)) {
                 $this->fs->dumpFile($settingsRoot . '/settings.php', $initialSettings);
             }
 
@@ -98,36 +99,36 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
          *
          * @dataProvider dataProviderSettings
          */
-//        public function testDrupalCommandsOutputFile(string $command, array $config, mixed $initialDefaultSettings, mixed $initialSettings, array $expectations)
-//        {
-//            // Setup configuration file.
-//            if (!empty($config)) {
-//                $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
-//            }
-//
-//            // Setup test directory.
-//            $root = $config['drupal']['root'] ?? 'web';
-//            $sitesSubdir = $config['drupal']['site']['sites_subdir'] ?? 'default';
-//            $settingsRoot = $this->getSandboxRoot() . '/' . $root . '/sites/' . $sitesSubdir;
-//            mkdir($settingsRoot, 0777, true);
-//
-//            // Setup initial default.settings.php and settings.php, if any.
-//            file_put_contents($settingsRoot . '/default.settings.php', $initialDefaultSettings);
-//
-//            // Setup settings.php file, if test case requires it.
-//            if ($initialSettings) {
-//                file_put_contents($settingsRoot . '/settings.php', $initialSettings);
-//            }
-//
-//            // Run command.
-//            $this->runCommand($command, false);
-//
-//            // Assert expectations.
-//            foreach ($expectations as $expectation) {
-//                $content = file_get_contents($this->getSandboxFilepath($expectation['file']));
-//                $this->assertDynamic($content, $expectation);
-//            }
-//        }
+        public function testDrupalCommandsOutputFile(string $command, array $config, mixed $initialDefaultSettings, mixed $initialSettings, array $expectations)
+        {
+            // Setup configuration file.
+            if (!empty($config)) {
+                $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+            }
+
+            // Setup test directory.
+            $root = $config['drupal']['root'] ?? 'web';
+            $sitesSubdir = $config['drupal']['site']['sites_subdir'] ?? 'default';
+            $settingsRoot = $this->getSandboxRoot() . '/' . $root . '/sites/' . $sitesSubdir;
+            mkdir($settingsRoot, 0777, true);
+
+            // Setup initial default.settings.php and settings.php, if any.
+            file_put_contents($settingsRoot . '/default.settings.php', $initialDefaultSettings);
+
+            // Setup settings.php file, if test case requires it.
+            if ($initialSettings) {
+                file_put_contents($settingsRoot . '/settings.php', $initialSettings);
+            }
+
+            // Run command.
+            $this->runCommand($command, false);
+
+            // Assert expectations.
+            foreach ($expectations as $expectation) {
+                $content = file_get_contents($this->getSandboxFilepath($expectation['file']));
+                $this->assertDynamic($content, $expectation);
+            }
+        }
 
         public function testConfigurationFileExists()
         {

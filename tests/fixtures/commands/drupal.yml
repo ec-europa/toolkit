@@ -1,6 +1,6 @@
 - command: 'drupal:settings-setup'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: 'web/sites/default/settings.php'
@@ -19,7 +19,7 @@
 
 - command: 'drupal:settings-setup --root=website'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: 'web/sites/default/settings.php'
@@ -38,7 +38,7 @@
 
 - command: 'drupal:settings-setup --sites-subdir=sub_dir'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: 'web/sites/default/settings.php'
@@ -57,7 +57,7 @@
 
 - command: 'drupal:settings-setup --force'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: 'web/sites/default/settings.php'
@@ -76,7 +76,7 @@
 
 - command: 'drupal:settings-setup --skip-permissions-setup'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: 'web/sites/default/settings.php'
@@ -93,7 +93,7 @@
 
 - command: 'drupal:permissions-setup'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: ~
@@ -104,7 +104,7 @@
 
 - command: 'drupal:permissions-setup --root=website --sites-subdir=websitesubdir'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: ~
@@ -118,7 +118,7 @@
     drupal:
       site:
         sites_subdir: 'sites_subdir'
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: |
     <?php
     $foo = 'bar';
@@ -133,7 +133,7 @@
 
 - command: 'drupal:disable-cache'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: ~
@@ -153,7 +153,7 @@
 
 - command: 'drupal:drush-setup'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: ~
@@ -166,7 +166,7 @@
 
 - command: 'drupal:drush-setup --config-dir=website/drush'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: ~
@@ -179,7 +179,7 @@
 
 - command: 'drupal:site-install'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: ~
@@ -222,7 +222,7 @@
               --database-port=3333
               --database-name=test'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: ~
@@ -248,7 +248,7 @@
     drupal:
       site:
         generate_db_url: ~
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: ~
@@ -269,7 +269,31 @@
 
 - command: 'drupal:site-pre-install'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
+        ))
+      not_contains: ~
+
+- command: 'drupal:site-pre-install'
+  configuration:
+    drupal:
+        pre_install:
+          - { task: 'process', source: 'behat.yml.dist', destination: 'behat.yml' }
+  tokens: ~
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: |
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
+      not_contains: ~
+
+- command: 'drupal:site-post-install'
+  configuration: []
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: ~
@@ -279,19 +303,23 @@
       not_contains: ~
 
 - command: 'drupal:site-post-install'
-  configuration: []
-  initial_default_settings: ~
+  configuration:
+    drupal:
+       post_install:
+         - './vendor/bin/drush en views -y'
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: ~
       contains: |
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
+          0 => './vendor/bin/drush en views -y',
         ))
       not_contains: ~
 
 - command: 'drupal:upgrade-status'
   configuration: []
-  initial_default_settings: ~
+  tokens: ~
   initial_settings: ~
   expectations:
     - file: ~
@@ -311,3 +339,26 @@
         ->silent(1)
         [error]  Invalid version string ""
       not_contains: ~
+
+- command: 'drupal:upgrade-status'
+  configuration: []
+  tokens: '[skip_d9c]'
+  initial_settings: ~
+  expectations:
+    - file: ~
+      contains: ~
+      not_contains: |
+        >  Preparing the project to run upgrade_status.
+        [Simulator] Simulating Composer\RequireDependency(null)
+        ->dependency('drupal/upgrade_status', '^3')
+        ->dev()
+        [Simulator] Simulating Composer\RequireDependency(null)
+        ->dependency('drupal/core-dev')
+        ->dev()
+        [Simulator] Simulating Exec('./vendor/bin/drush en upgrade_status -y')
+        [Simulator] Running ./vendor/bin/drush en upgrade_status -y
+        [Simulator] Simulating ExecStack()
+        ->exec('./vendor/bin/drush us-a --all')
+        ->printOutput()
+        ->silent(1)
+        [error]  Invalid version string ""
