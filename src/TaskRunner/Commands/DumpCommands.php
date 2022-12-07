@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
-use Consolidation\Config\Config;
-use Consolidation\Config\Loader\ConfigProcessor;
-use Consolidation\Config\Loader\YamlConfigLoader;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
+use Robo\Collection\CollectionBuilder;
 use Robo\Contract\VerbosityThresholdInterface;
+use Robo\Task\Base\ExecStack;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Provides commands to download and install dump files.
- *
- * @SuppressWarnings(PHPMD.CyclomaticComplexity)
- * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 class DumpCommands extends AbstractCommands
 {
@@ -47,9 +43,9 @@ class DumpCommands extends AbstractCommands
     ])
     {
         $tasks = [];
-        $tmp_folder = $this->tmpDirectory();
-        if (!file_exists("$tmp_folder/{$options['dumpfile']}")) {
-            $this->say("'$tmp_folder/{$options['dumpfile']}' file not found, use the command 'toolkit:download-dump'.");
+        $dump = $this->tmpDirectory() . '/' . $options['dumpfile'];
+        if (!file_exists($dump)) {
+            $this->say("'$dump' file not found, use the command 'toolkit:download-dump'.");
             return 1;
         }
 
@@ -57,17 +53,8 @@ class DumpCommands extends AbstractCommands
         $drush_bin = $this->getBin('drush');
         $tasks[] = $this->taskExec($drush_bin)->arg('sql-drop')->rawArg('-y');
         $tasks[] = $this->taskExec($drush_bin)->arg('sql-create')->rawArg('-y');
-        $tasks[] = $this->taskExecStack()
-            ->stopOnFail()
-            ->silent(true)
-            ->exec(sprintf(
-                "gunzip < %s | mysql -u%s%s -h%s %s",
-                "$tmp_folder/{$options['dumpfile']}",
-                getenv('DRUPAL_DATABASE_USERNAME'),
-                getenv('DRUPAL_DATABASE_PASSWORD') ? ' -p' . getenv('DRUPAL_DATABASE_PASSWORD') : '',
-                getenv('DRUPAL_DATABASE_HOST'),
-                getenv('DRUPAL_DATABASE_NAME'),
-            ));
+        $tasks[] = $this->taskImportDatabase($dump);
+
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
     }
@@ -297,22 +284,7 @@ class DumpCommands extends AbstractCommands
         $filename = trim(explode('  ', $latest)[1]);
 
         // Display information about ASDA creation date.
-        preg_match('/(\d{8})(?:-)?(\d{4})(\d{2})?/', $filename, $matches);
-        $date = !empty($matches) ? date_parse_from_format('YmdHis', $matches[1] . $matches[2] . ($matches[3] ?? '00')) : [];
-        if (
-            !empty($date) &&
-            is_integer($date['hour']) &&
-            is_integer($date['minute']) &&
-            is_integer($date['month']) &&
-            is_integer($date['day']) &&
-            is_integer($date['year'])
-        ) {
-            $timestamp = mktime($date['hour'], $date['minute'], $date['second'], $date['month'], $date['day'], $date['year']);
-            $output = sprintf('%02d %s %d at %02d:%02d', $date['day'], date('M', $timestamp), $date['year'], $date['hour'], $date['minute']);
-        } else {
-            $output = $filename;
-        }
-        $output = strtoupper($service) . " DATE: $output";
+        $output = strtoupper($service) . ' DATE: ' . $this->getAsdaDate($filename);
         $separator = str_repeat('=', strlen($output));
         $this->writeln("\n<info>$output\n$separator</info>\n");
 
@@ -394,6 +366,62 @@ class DumpCommands extends AbstractCommands
             }
         }
         return $tmp_folder;
+    }
+
+    /**
+     * Returns a human-readable date of the ASDA dump.
+     *
+     * @param string $filename
+     *   The dump filename that contains the date.
+     *
+     * @return string
+     *   The formatted date, fallback to filename if no date is found.
+     */
+    private function getAsdaDate(string $filename): string
+    {
+        preg_match('/(\d{8})(?:-)?(\d{4})(\d{2})?/', $filename, $matches);
+        $date = !empty($matches) ? date_parse_from_format('YmdHis', $matches[1] . $matches[2] . ($matches[3] ?? '00')) : [];
+        if (
+            !empty($date) &&
+            is_integer($date['hour']) &&
+            is_integer($date['minute']) &&
+            is_integer($date['month']) &&
+            is_integer($date['day']) &&
+            is_integer($date['year'])
+        ) {
+            $timestamp = mktime($date['hour'], $date['minute'], $date['second'], $date['month'], $date['day'], $date['year']);
+            $output = sprintf('%02d %s %d at %02d:%02d', $date['day'], date('M', $timestamp), $date['year'], $date['hour'], $date['minute']);
+        } else {
+            $output = $filename;
+        }
+        return $output;
+    }
+
+    /**
+     * Import given dump file, gunzip is used if dump ends with .gz.
+     *
+     * @param string $dump
+     *   The path to the dump file.
+     *
+     * @return CollectionBuilder|ExecStack
+     */
+    private function taskImportDatabase(string $dump)
+    {
+        $mysql = sprintf(
+            'mysql -u%s%s -h%s %s',
+            getenv('DRUPAL_DATABASE_USERNAME'),
+            getenv('DRUPAL_DATABASE_PASSWORD') ? ' -p' . getenv('DRUPAL_DATABASE_PASSWORD') : '',
+            getenv('DRUPAL_DATABASE_HOST'),
+            getenv('DRUPAL_DATABASE_NAME'),
+        );
+        if (str_ends_with($dump, '.gz')) {
+            $command = "gunzip < $dump | $mysql";
+        } else {
+            $command = "$mysql < $dump";
+        }
+
+        return $this->taskExecStack()->stopOnFail()->silent(true)
+            ->exec($command);
     }
 
 }

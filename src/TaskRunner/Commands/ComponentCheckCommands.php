@@ -170,11 +170,11 @@ class ComponentCheckCommands extends AbstractCommands
             (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipInsecure && $this->insecureFailed)
         ) {
-            $msg = [
+            $io->error([
                 'Failed the components check, please verify the report and update the project.',
-                'See the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.',
-            ];
-            $io->error($msg);
+                'See the list of packages at',
+                'https://webgate.ec.europa.eu/fpfis/qa/package-reviews.',
+            ]);
             $status = 1;
         }
 
@@ -395,7 +395,7 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->recommendedFailed = true;
             }
 
-            $this->say("See the list of recommended packages at https://webgate.ec.europa.eu/fpfis/qa/requirements.");
+            $this->say("See the list of recommended packages at\nhttps://webgate.ec.europa.eu/fpfis/qa/requirements.");
             $this->recommendedFailedCount = count($diffRecommended);
         }
 
