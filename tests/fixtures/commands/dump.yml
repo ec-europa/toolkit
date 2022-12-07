@@ -185,11 +185,11 @@
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/drush')
           ->arg('sql-drop')
-          ->rawArg('-y')
+          ->option('-y')
         [Simulator] Running ./vendor/bin/drush sql-drop -y
         [Simulator] Simulating Exec('./vendor/bin/drush')
           ->arg('sql-create')
-          ->rawArg('-y')
+          ->option('-y')
         [Simulator] Running ./vendor/bin/drush sql-create -y
         [Simulator] Simulating ExecStack()
           ->stopOnFail()
