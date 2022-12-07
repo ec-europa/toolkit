@@ -89,7 +89,7 @@ class ToolCommands extends AbstractCommands
     {
         $reviewOk = true;
         $parseOptsFile = self::parseOptsYml();
-        if (!$parseOptsFile) {
+        if ($parseOptsFile === false) {
             $io->say("The file '.opts.yml' was not found, skipping.");
             return ResultData::EXITCODE_OK;
         }

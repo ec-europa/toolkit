@@ -211,14 +211,12 @@ class DumpCommands extends AbstractCommands
             }
             $question = 'A newer dump was found, would you like to download?';
             if (!Toolkit::isCiCd() && $options['yes'] === InputOption::VALUE_NONE) {
-                $answer = $this->confirm($question);
+                if (!$this->confirm($question)) {
+                    $this->say('Skipping download');
+                    continue;
+                }
             } else {
                 $this->say($question . ' (y/n) Y');
-                $answer = true;
-            }
-            if (!$answer) {
-                $this->say('Skipping download');
-                continue;
             }
             $this->say('Starting download');
             if ($asda_type === 'nextcloud') {
@@ -227,7 +225,6 @@ class DumpCommands extends AbstractCommands
                 $tasks = $this->asdaProcessFile($download_link, $service);
             }
         }
-
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
     }
