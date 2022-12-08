@@ -91,8 +91,7 @@
   tokens: ~
   resources: []
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->chmod('web/sites/default', 509, 0, 1)
 
@@ -101,8 +100,7 @@
   tokens: ~
   resources: []
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->chmod('website/sites/websitesubdir', 509, 0, 1)
 
@@ -117,8 +115,7 @@
     - mkdir: /web/sites/sites_subdir/
     - touch: /web/sites/sites_subdir/settings.php
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->chmod('web/sites/sites_subdir', 509, 0, 1)
         [Simulator] Simulating Filesystem\FilesystemStack()
@@ -129,8 +126,7 @@
   tokens: ~
   resources: []
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating Exec('./vendor/bin/drush')
           ->rawArg('-y')
           ->args(array ( ... ))
@@ -148,8 +144,7 @@
   tokens: ~
   resources: []
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating File\Write('web/drush/drush.yml')
             ->text('options:
             uri: 'http://web:8080/web'
@@ -160,8 +155,7 @@
   tokens: ~
   resources: []
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating File\Write('website/drush/drush.yml')
             ->text('options:
             uri: 'http://web:8080/web'
@@ -172,8 +166,7 @@
   tokens: ~
   resources: []
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
         [Simulator] Simulating Filesystem\FilesystemStack()
@@ -214,8 +207,7 @@
   tokens: ~
   resources: []
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
         [Simulator] Simulating Filesystem\FilesystemStack()
@@ -239,8 +231,7 @@
   tokens: ~
   resources: []
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
         [Simulator] Simulating Exec('./vendor/bin/drush')
@@ -259,8 +250,7 @@
   tokens: ~
   resources: []
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
 
@@ -272,8 +262,7 @@
   tokens: ~
   resources: []
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
 
 - command: 'drupal:site-post-install'
@@ -281,8 +270,7 @@
   tokens: ~
   resources: []
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
 
@@ -294,8 +282,7 @@
   tokens: ~
   resources: []
   expectations:
-    - file: ~
-      contains: |
+    - contains: |
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
           0 => './vendor/bin/drush en views -y',
         ))
@@ -345,18 +332,4 @@
   tokens: '[skip_d9c]'
   resources: []
   expectations:
-    - not_contains: |
-        >  Preparing the project to run upgrade_status.
-        [Simulator] Simulating Composer\RequireDependency(null)
-          ->dependency('drupal/upgrade_status', '^3')
-          ->dev()
-        [Simulator] Simulating Composer\RequireDependency(null)
-          ->dependency('drupal/core-dev')
-          ->dev()
-        [Simulator] Simulating Exec('./vendor/bin/drush en upgrade_status -y')
-        [Simulator] Running ./vendor/bin/drush en upgrade_status -y
-        [Simulator] Simulating ExecStack()
-          ->exec('./vendor/bin/drush us-a --all')
-          ->printOutput()
-          ->silent(1)
-        [error]  Invalid version string ""
+    - not_contains: 'Preparing the project to run upgrade_status'

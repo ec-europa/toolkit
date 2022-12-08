@@ -45,7 +45,6 @@
         }
 
         // End Toolkit settings block.
-      not_contains: ~
 
 - command: 'drupal:settings-setup'
   configuration:
@@ -98,7 +97,6 @@
         }
 
         // End Toolkit settings block.
-      not_contains: ~
 
 - command: 'drupal:settings-setup'
   configuration:
@@ -150,4 +148,3 @@
         }
 
         // End Toolkit settings block.
-      not_contains: ~

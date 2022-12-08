@@ -89,7 +89,7 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
          *
          * @dataProvider dataProviderSettings
          */
-        public function testDrupalCommandsOutputFile(string $command, array $config, array $resources = [], array $expectations = [])
+        public function testDrupalSettingsSetupCommands(string $command, array $config, array $resources = [], array $expectations = [])
         {
             // Setup configuration file.
             if (!empty($config)) {
