@@ -163,7 +163,7 @@
     - from: sample-config.yml
       to: dummy-copy.yml
   expectations:
-    - string: |
+    - string_contains: |
         [EcEuropa\Toolkit\Task\Command\ConfigurationCommand] A command must have a "task" to execute, use: {"task":"exec","command":"echo '{  }' > dummy.yml"}
         [Exec] Running echo '{  }' > dummy.yml
     - file_expected: dummy.yml
