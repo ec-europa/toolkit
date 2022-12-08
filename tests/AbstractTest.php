@@ -78,8 +78,12 @@ abstract class AbstractTest extends TestCase
             $this->assertNotContains($this->trimEachLine($expected['not_contains']), [$this->trimEachLine($content)]);
         }
 
-        if (!empty($expected['string'])) {
-            $this->assertStringContainsString($this->trimEachLine($expected['string']), $this->trimEachLine($content));
+        if (!empty($expected['string_contains'])) {
+            $this->assertStringContainsString($this->trimEachLine($expected['string_contains']), $this->trimEachLine($content));
+        }
+
+        if (!empty($expected['not_string_contains'])) {
+            $this->assertStringNotContainsString($this->trimEachLine($expected['not_string_contains']), $this->trimEachLine($content));
         }
 
         if (!empty($expected['file_expected']) && !empty($expected['file_actual'])) {
@@ -170,8 +174,11 @@ abstract class AbstractTest extends TestCase
             if (!empty($expectation['not_contains'])) {
                 $debug .= "-- NotContains --\n{$expectation['not_contains']}\n-- End NotContains --\n";
             }
-            if (!empty($expectation['string'])) {
-                $debug .= "-- String --\n{$expectation['string']}\n-- End String --\n";
+            if (!empty($expectation['string_contains'])) {
+                $debug .= "-- String --\n{$expectation['string_contains']}\n-- End String --\n";
+            }
+            if (!empty($expectation['not_string_contains'])) {
+                $debug .= "-- NotString --\n{$expectation['not_string_contains']}\n-- End NotString --\n";
             }
             if (!empty($expectation['file_expected']) && !empty($expectation['file_actual'])) {
                 $debug .= "-- Files equal - expected --\n";
