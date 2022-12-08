@@ -178,7 +178,7 @@
         ')
       not_contains: ~
 
-- command: 'drupal:site-install'
+- command: 'drupal:site-install --database-user=root --database-password=1234 --database-name=db'
   configuration: []
   tokens: ~
   resources: []
@@ -196,7 +196,7 @@
           ))
             ->options(array ( ... ), '=')
             ->option('-y')
-        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --db-url='mysql://:@mysql:3306/' -y
+        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --db-url='mysql://root:1234@mysql:3306/db' -y
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
       not_contains: ~
