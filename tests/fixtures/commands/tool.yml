@@ -192,7 +192,7 @@
   configuration: []
   resources: []
   expectations:
-    - not_contains: "Installing dependencies"
+    - not_string_contains: "Installing dependencies"
 
 - command: toolkit:install-dependencies
   configuration: []
