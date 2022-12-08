@@ -332,4 +332,4 @@
   tokens: '[skip_d9c]'
   resources: []
   expectations:
-    - not_contains: 'Preparing the project to run upgrade_status'
+    - not_string_contains: 'Preparing the project to run upgrade_status'
