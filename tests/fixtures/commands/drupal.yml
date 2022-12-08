@@ -196,7 +196,7 @@
           ))
             ->options(array ( ... ), '=')
             ->option('-y')
-        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --db-url='mysql://mysql:3306' -y
+        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --db-url='mysql://:@mysql:3306/' -y
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
       not_contains: ~
