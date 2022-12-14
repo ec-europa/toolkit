@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Toolkit Runner.
  *
- * @@SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Runner
 {
@@ -200,9 +200,6 @@ class Runner
         // Re-build configuration.
         $processor = new ConfigProcessor();
         $context = $default_config->getContext(ConfigOverlay::DEFAULT_CONTEXT);
-        $default_config->addContext(ConfigOverlay::DEFAULT_CONTEXT, $context);
-        $processor->add($default_config->export());
-
         if (!empty($config_file)) {
             // Allow some configurations to be overridden. If a given property is
             // defined on a project level it will replace the default values
@@ -213,9 +210,13 @@ class Runner
                     $context->set($override, $value);
                 }
             }
-            $processor->add($current_config->export());
         }
 
+        $default_config->addContext(ConfigOverlay::DEFAULT_CONTEXT, $context);
+        $processor->add($default_config->export());
+        if (isset($current_config)) {
+            $processor->add($current_config->export());
+        }
         // Import newly built configuration.
         $this->config->replace($processor->export());
 
