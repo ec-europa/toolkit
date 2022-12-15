@@ -244,7 +244,6 @@ final class DockerCommands extends AbstractCommands
         $isServiceImagesUpdated = false;
         foreach ($websiteRequirements['defaults'] as $key => $default) {
             $defaultServiceName = $default['service'];
-            // $dcServiceImage = $dcContent->services->{$defaultServiceName}->image ?? null;
             $dcDefaultService = $dcContent->services->{$defaultServiceName} ?? null;
             if ($dcDefaultService === null) {
                 if ($this->addServiceToDcContent($default, $dcContent)) {
@@ -278,7 +277,7 @@ final class DockerCommands extends AbstractCommands
         return $isServiceImagesUpdated ? $dcContent : null;
     }
 
-    private function addServiceToDcContent(array $defaultWebsiteRequirements, object &$dcContent): bool
+    private function addServiceToDcContent(array $defaultWebsiteRequirements, object $dcContent): bool
     {
         $defaultServiceConfig = $this->getConfig()->get('docker.default_services.' . $defaultWebsiteRequirements['service'] . '.resource');
         if ($defaultServiceConfig === null) {
