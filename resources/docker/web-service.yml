@@ -1,0 +1,19 @@
+# web
+image: fpfis/httpd-php:8.1-dev
+working_dir: ${PWD}
+ports:
+  - '8080:8080'
+volumes:
+  - ${PWD}:${PWD}
+environment:
+  DOCUMENT_ROOT: ${PWD}
+  NEXTCLOUD_USER:
+  NEXTCLOUD_PASS:
+  GITHUB_API_TOKEN:
+  GITLAB_API_TOKEN:
+  QA_API_BASIC_AUTH:
+  QA_WEBSITE_URL:
+  XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
+  PHP_IDE_CONFIG: 'serverName=Docker'
+env_file:
+  - .env

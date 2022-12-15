@@ -1,0 +1,8 @@
+# selenium
+image: selenium/standalone-chrome:4.1.3-20220405
+environment:
+  - DISPLAY=:99
+ports:
+  - '5900:5900'
+expose:
+  - 4444

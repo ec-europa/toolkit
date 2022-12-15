@@ -1,0 +1,6 @@
+# mysql
+image: percona/percona-server:8.0
+environment:
+  MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+volumes:
+  - mysql:/var/lib/mysql
