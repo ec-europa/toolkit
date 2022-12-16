@@ -12,20 +12,23 @@ use Robo\ResultData;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Provides commands to download and install dump files.
+ * Provides commands to update docker-compose.yml based on project's configurations.
  */
 final class DockerCommands extends AbstractCommands
 {
-    private const MAP_SERVICES_TO_VERSIONS = [
-        'php_version' => 'web',
-        'mysql_version' => 'mysql',
-        'selenium_version' => 'selenium',
-        'solr_version' => 'solr',
-    ];
-
     private const OPTS_YML_FILE = '.opts.yml';
     private const DC_YML_FILE = 'docker-compose.yml';
+    private const DC_YML_FILE_PREVIOUS = 'docker-compose.yml.prev';
     private const DEV_SUFFIX = '-dev';
+
+    /**
+     * @var object|null
+     */
+    private ?object $optsFileContent = null;
+    /**
+     * @var array|string[]
+     */
+    private array $projectInfo = [];
 
     /**
      * Update docker-compose.yml file based on project's configurations.
@@ -50,9 +53,13 @@ final class DockerCommands extends AbstractCommands
             $this->copyDockerComposeDefaultToProject();
         }
 
-        $dockerComposeContent = file_exists(self::OPTS_YML_FILE)
-            ? $this->getDcContentUpdateFromOptsFile()
-            : $this->getDcContentUpdateFromRequirements($projectId);
+        $this->optsFileContent = file_exists(self::OPTS_YML_FILE)
+            ? Yaml::parseFile(self::OPTS_YML_FILE, Yaml::PARSE_OBJECT_FOR_MAP)
+            : null;
+
+        $this->projectInfo = $this->getWebsiteProjectInformation($projectId);
+
+        $dockerComposeContent = $this->getDcContentUpdateFromOptsFile();
 
         if ($dockerComposeContent !== null) {
             $this->updateDockerComposeFile($dockerComposeContent);
@@ -75,7 +82,7 @@ final class DockerCommands extends AbstractCommands
         $dockerComposeDefault = Toolkit::getToolkitRoot() . '/resources/docker/default.yml';
 
         $this->taskFilesystemStack()
-            ->copy($dockerComposeDefault, $this->getWorkingDir() . '/docker-compose.yml')
+            ->copy($dockerComposeDefault, $this->getWorkingDir() . '/' . self::DC_YML_FILE)
             ->run();
     }
 
@@ -87,7 +94,7 @@ final class DockerCommands extends AbstractCommands
         $yaml = str_ireplace(' null', '', Yaml::dump($dcContent, 10, 2, Yaml::DUMP_OBJECT_AS_MAP));
 
         $this->taskFilesystemStack()
-            ->copy(self::DC_YML_FILE, 'docker-compose.yml.prev')
+            ->copy(self::DC_YML_FILE, self::DC_YML_FILE_PREVIOUS)
             ->run();
 
         file_put_contents(self::DC_YML_FILE, $yaml);
@@ -97,10 +104,10 @@ final class DockerCommands extends AbstractCommands
 
     /**
      * @param string $projectId
-     * @return array
+     * @return array|string[]
      * @throws Exception
      */
-    private function getProjectInformation(string $projectId): array
+    private function getWebsiteProjectInformation(string $projectId): array
     {
         $data = Website::projectInformation($projectId);
         if (!$data) {
@@ -113,16 +120,17 @@ final class DockerCommands extends AbstractCommands
         ];
     }
 
+    /**
+     * @return array
+     * @throws Exception
+     */
     private function getWebsiteRequirements(): array
     {
         $data = Website::requirements();
         if (empty($data)) {
-            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
-            return [];
+            throw new Exception('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
         }
-        // atenção, no opts yaml tem que permitir o 'minimum'
 
-        // Apenas usa este default se nao existir no .opts.yml
         // In future the endpoint for 'toolkit-requirements' will be changed to deliver the 'defaults' and 'requirements'
         $data = [
             'defaults' => [
@@ -159,21 +167,6 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * @param  string $projectId
-     * @return array
-     * @throws Exception
-     */
-    private function getAllServicesVersionRequirements(string $projectId): array
-    {
-        $websiteRequirements = $this->getWebsiteRequirements();
-        $projectInfo = $this->getProjectInformation($projectId);
-
-        return !empty($projectInfo)
-            ? array_merge($websiteRequirements['defaults'], $projectInfo)
-            : $websiteRequirements;
-    }
-
-    /**
      * @param  string $version
      * @return string
      */
@@ -185,42 +178,32 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * @param string $projectId
-     * @param array $options
      * @return object|null
      * @throws Exception
      */
-    private function getDcContentUpdateFromRequirements(string $projectId): ?object
+    private function getDcContentUpdateFromOptsFile(): ?object
     {
-        // Update using:
-        //  - Versions currently on the client production (from endpoint only php_version)
-        //  - Requirements Quality Assurance minimum versions (min 8)
-        //
-        //  Note: Always use the newer version from requirements or projects production version
-
-        $this->writeln("The file .opts.yml was not found.");
-        $this->writeln("docker-compose.yml will be updated using versions on the client production, requirements or default values on Quality Assurance.");
-
         $dcContent = Yaml::parseFile(self::DC_YML_FILE, Yaml::PARSE_OBJECT_FOR_MAP);
-        $requirementVersions = $this->getAllServicesVersionRequirements($projectId);
 
+        $websiteRequirements = $this->getWebsiteRequirements();
         $isServiceImagesUpdated = false;
-        foreach ($requirementVersions as $key => $version) {
-            if (!isset(self::MAP_SERVICES_TO_VERSIONS[$key])) {
+        foreach ($websiteRequirements['defaults'] as $key => $default) {
+            $defaultServiceName = $default['service'];
+            $requiredVersion = $websiteRequirements['requirements'][$key] ?? null;
+            $dcDefaultService = $dcContent->services->{$defaultServiceName} ?? null;
+            if ($dcDefaultService === null) {
+                if ($this->addServiceToDcContent($key, $default, $requiredVersion, $dcContent)) {
+                    $isServiceImagesUpdated = true;
+                }
+
                 continue;
             }
 
-            $serviceName = $options[self::MAP_SERVICES_TO_VERSIONS[$key]];
-            $serviceImage = $dcContent->services->{$serviceName}->image ?? null;
-            if ($serviceImage === null) {
-                continue;
-            }
+            $dcServiceImage = $dcContent->services->{$defaultServiceName}->image;
+            $serviceImage = $this->updateServiceImage($key, $default, $requiredVersion);
 
-            $dcServiceVersion = explode(':', (string) $serviceImage);
-
-            if (version_compare($dcServiceVersion[1], $version, '<')) {
-                $dcContent->services->{$serviceName}->image =
-                    substr_replace($serviceImage, ':' . $version, strpos($serviceImage, ':'));
+            if ($dcServiceImage !== $serviceImage) {
+                $dcContent->services->{$defaultServiceName}->image = $serviceImage;
 
                 $isServiceImagesUpdated = true;
             }
@@ -230,72 +213,74 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * @return object|null
+     * @param string $websiteRequirementKey
+     * @param array $defaultWebsiteRequirement
+     * @param string|null $requiredVersion
+     * @param object $dcContent
+     * @return bool
      */
-    private function getDcContentUpdateFromOptsFile(): ?object
-    {
-        // If a version is provided in .opts.yml then this one must be used.
-        // A message should be displayed if the versions are non-compliant or outdated.
+    private function addServiceToDcContent(
+        string $websiteRequirementKey,
+        array $defaultWebsiteRequirement,
+        ?string $requiredVersion,
+        object $dcContent,
+    ): bool {
+        $service = $defaultWebsiteRequirement['service'];
+        $dockerServiceConfig = $this->getConfig()->get('docker.services.' . $service);
 
-        $dcContent = Yaml::parseFile(self::DC_YML_FILE, Yaml::PARSE_OBJECT_FOR_MAP);
-        $opts = Yaml::parseFile(self::OPTS_YML_FILE, Yaml::PARSE_OBJECT_FOR_MAP);
+        $isDefaultService = filter_var($dockerServiceConfig['default'], FILTER_VALIDATE_BOOLEAN);
+        $isServiceExistOnOptsFile = isset($this->optsFileContent) && isset($this->optsFileContent->{$websiteRequirementKey});
 
-        $websiteRequirements = $this->getWebsiteRequirements();
-        $isServiceImagesUpdated = false;
-        foreach ($websiteRequirements['defaults'] as $key => $default) {
-            $defaultServiceName = $default['service'];
-            $dcDefaultService = $dcContent->services->{$defaultServiceName} ?? null;
-            if ($dcDefaultService === null) {
-                if ($this->addServiceToDcContent($default, $dcContent)) {
-                    $isServiceImagesUpdated = true;
-                }
-
-                continue;
-            }
-
-            if (!isset($opts->{$key})) {
-                continue;
-            }
-
-            $dcServiceImage = $dcContent->services->{$defaultServiceName}->image;
-
-            $optsServiceVersion = $key === 'php_version' ? $opts->{$key} . self::DEV_SUFFIX : $opts->{$key};
-            $optsServiceImage = $default['image'] . ':' . $optsServiceVersion;
-
-            if ($dcServiceImage !== $optsServiceImage) {
-                $requirements = $websiteRequirements['requirements'][$key] ?? null;
-                if ($requirements !== null && version_compare($optsServiceVersion, $requirements, '<')) {
-                    $this->writeln("The $key={$opts->{$key}} version is non-compliant or outdated with our requirements.");
-                }
-
-                $dcContent->services->{$defaultServiceName}->image = $optsServiceImage;
-
-                $isServiceImagesUpdated = true;
-            }
-        }
-
-        return $isServiceImagesUpdated ? $dcContent : null;
-    }
-
-    private function addServiceToDcContent(array $defaultWebsiteRequirements, object $dcContent): bool
-    {
-        $defaultServiceConfig = $this->getConfig()->get('docker.default_services.' . $defaultWebsiteRequirements['service'] . '.resource');
-        if ($defaultServiceConfig === null) {
+        if (!$isDefaultService && !$isServiceExistOnOptsFile) {
             return false;
         }
 
-        $fileName = Toolkit::getToolkitRoot() . $defaultServiceConfig;
-        $service = Yaml::parseFile($fileName, Yaml::PARSE_OBJECT_FOR_MAP);
-        $service->image = $this->updateServiceWithLatestImage($defaultWebsiteRequirements);
+        $fileName = Toolkit::getToolkitRoot() . $dockerServiceConfig['resource'];
+        $serviceContent = Yaml::parseFile($fileName, Yaml::PARSE_OBJECT_FOR_MAP);
+        $serviceContent->image = $this->updateServiceImage($websiteRequirementKey, $defaultWebsiteRequirement, $requiredVersion);
 
-        $dcContent->services->{$defaultWebsiteRequirements['service']} = $service;
+        $dcContent->services->{$service} = $serviceContent;
 
         return true;
     }
 
-    private function updateServiceWithLatestImage(array $defaultWebsiteRequirements): string
+    /**
+     * @param string $serviceImage
+     * @param string $serviceVersion
+     * @return string
+     */
+    private function updateServiceWithLatestImage(string $serviceImage, string $serviceVersion): string
     {
-        return $defaultWebsiteRequirements['image'] . ':' . $defaultWebsiteRequirements['version'];
+        return $serviceImage . ':' . $serviceVersion;
+    }
+
+    /**
+     * @param string $websiteRequirementKey
+     * @param array $defaultWebsiteRequirement
+     * @param string|null $requiredVersion
+     * @return string
+     */
+    private function updateServiceImage(
+        string $websiteRequirementKey,
+        array $defaultWebsiteRequirement,
+        ?string $requiredVersion
+    ): string {
+        if (isset($this->optsFileContent) && isset($this->optsFileContent->{$websiteRequirementKey})) {
+            $optsServiceVersion = $this->optsFileContent->{$websiteRequirementKey};
+            $version = $websiteRequirementKey === 'php_version'
+                ? $optsServiceVersion . self::DEV_SUFFIX
+                : $optsServiceVersion;
+
+            if (isset($requiredVersion) && version_compare($optsServiceVersion, $requiredVersion, '<')) {
+                $this->writeln("The $websiteRequirementKey=$optsServiceVersion version is non-compliant or outdated with our requirements.");
+            }
+        } elseif (!empty($this->projectInfo) && isset($this->projectInfo[$websiteRequirementKey])) {
+            $version = $this->projectInfo[$websiteRequirementKey];
+        } else {
+            $version = $defaultWebsiteRequirement['version'];
+        }
+
+        return $this->updateServiceWithLatestImage($defaultWebsiteRequirement['image'], (string) $version);
     }
 
 }

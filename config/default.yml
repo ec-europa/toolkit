@@ -2,13 +2,19 @@ runner:
   bin_dir: './vendor/bin'
   bin_node_dir: './node_modules/.bin'
 docker:
-  default_services:
+  services:
     web:
+      default: 'true'
       resource: '/resources/docker/web-service.yml'
     mysql:
+      default: 'true'
       resource: '/resources/docker/mysql-service.yml'
     selenium:
+      default: 'true'
       resource: '/resources/docker/selenium-service.yml'
+    solr:
+      default: 'false'
+      resource: '/resources/docker/solr-service.yml'
 drupal:
   root: 'web'
   base_url: 'http://web:8080/web'
