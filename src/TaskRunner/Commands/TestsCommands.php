@@ -315,6 +315,8 @@ class TestsCommands extends AbstractCommands
         'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
+        Toolkit::ensureArray($options['files']);
+
         $config = $this->getConfig();
         // Only run if we find a Drupal installation.
         if (!file_exists($config->get('drupal.root'))) {
