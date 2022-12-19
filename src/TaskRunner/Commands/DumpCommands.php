@@ -357,8 +357,9 @@ class DumpCommands extends AbstractCommands
 
         // Download the file.
         $this->generateAsdaWgetInputFile("$link/$filename", "$tmp_folder/$service.txt", true);
+        $extension = str_ends_with($filename, '.gz') ? 'gz' : 'tar';
         $tasks[] = $this
-            ->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service.gz", '.sql.gz,.tar.gz,.tar');
+            ->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service.$extension", '.sql.gz,.tar.gz,.tar');
 
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
