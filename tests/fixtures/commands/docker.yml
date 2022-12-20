@@ -1,0 +1,5 @@
+- command: 'docker:refresh-configuration'
+  configuration: []
+  resources: []
+  expectations:
+      - contains: The configuration toolkit.project_id value is not valid.

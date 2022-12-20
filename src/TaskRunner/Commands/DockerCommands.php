@@ -47,10 +47,9 @@ final class DockerCommands extends AbstractCommands
         $dcContent = Yaml::parseFile(self::DC_YML_FILE);
         $dcServiceImages = $this->getServicesImagesFromDockerCompose($dcContent);
 
-        $projectInfo = $this->getWebsiteProjectInformation($projectId);
-
         $websiteRequirements = $this->getWebsiteRequirements();
         $requirementsServiceImage = $this->getServicesVersionsFromRequirements($websiteRequirements['defaults']);
+        $projectInfo = $this->getWebsiteProjectInformation($projectId);
 
         $requirements = array_merge($requirementsServiceImage, $projectInfo);
 
@@ -58,21 +57,23 @@ final class DockerCommands extends AbstractCommands
             ? Yaml::parseFile(self::OPTS_YML_FILE)
             : [];
 
-        $finalImages = $this->getFinalImages($requirements, $websiteRequirements, $optsFileContent);
+        $finalServicesImages = $this->getFinalImages($requirements, $websiteRequirements, $optsFileContent);
         $warningMessages = $this->getWarningMessages($optsFileContent, $websiteRequirements);
 
         ksort($dcServiceImages);
-        ksort($finalImages);
+        ksort($finalServicesImages);
 
-        if ($dcServiceImages === $finalImages) {
-            $this->writeln("$dockerCompose file is already updated.");
+        if ($dcServiceImages === $finalServicesImages) {
+            $this->writeWarningMessages($warningMessages);
+            $this->writeln("<info>$dockerCompose file is already updated.</info>");
 
             return ResultData::EXITCODE_OK;
         }
 
         $this->backupDockerComposeFile();
+        $this->updateDockerComposeFile($dcContent, $finalServicesImages);
         $this->writeWarningMessages($warningMessages);
-        $this->updateDockerComposeFile($dcContent, $finalImages);
+        $this->writeln("<info>$dockerCompose file updated with success.</info>");
 
         return ResultData::EXITCODE_OK;
     }
@@ -120,7 +121,7 @@ final class DockerCommands extends AbstractCommands
     {
         $data = Website::projectInformation($projectId);
         if (!$data) {
-            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.'); // @todo isto
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
             return [];
         }
 
@@ -181,6 +182,10 @@ final class DockerCommands extends AbstractCommands
      */
     private function extractMajorMinorVersion(string $version): string
     {
+        if (strlen($version) < 3) {
+            return $version;
+        }
+
         preg_match('/^(\d+)\.(\d+)/', $version, $matches);
 
         return $matches[1] . '.' . $matches[2];
@@ -193,8 +198,7 @@ final class DockerCommands extends AbstractCommands
      */
     private function backupDockerComposeFile(): void
     {
-        $root = $this->getWorkingDir();
-        $this->writeln("<info>Backup docker-compose.yml file to docker-compose.yml.prev in $root</info>");
+        $this->say('Backup ' . self::DC_YML_FILE . ' file to ' . self::DC_YML_FILE_PREVIOUS . ' in ' . $this->getWorkingDir());
         $this->taskFilesystemStack()
             ->copy(self::DC_YML_FILE, self::DC_YML_FILE_PREVIOUS)
             ->run();
@@ -204,16 +208,17 @@ final class DockerCommands extends AbstractCommands
      * Update docker-compose.yml
      *
      * @param array $dcContent
-     * @param array $images
+     * @param array $finalServicesImages
      *
      * @return void
      */
-    private function updateDockerComposeFile(array $dcContent, array $images): void
+    private function updateDockerComposeFile(array $dcContent, array $finalServicesImages): void
     {
-        $root = $this->getWorkingDir();
-        $this->output->writeln("<info>Updating docker-compose.yml file in $root</info>");
+        $this->say('Updating ' . self::DC_YML_FILE . ' file in ' . $this->getWorkingDir());
 
-        foreach ($images as $service => $image) {
+        $dcContent['services'] = $this->removeUnusedDcServices($dcContent['services'], $finalServicesImages);
+
+        foreach ($finalServicesImages as $service => $image) {
             if (empty($dcContent['services'][$service])) {
                 $dcContent['services'][$service] = $this->getServiceDetailsFromResources($service);
             }
@@ -224,8 +229,6 @@ final class DockerCommands extends AbstractCommands
         $yaml = str_ireplace(' null', '', Yaml::dump($dcContent, 10, 2, Yaml::DUMP_OBJECT_AS_MAP));
 
         file_put_contents(self::DC_YML_FILE, $yaml);
-
-        $this->writeln("docker-compose.yml file updated with success.");
     }
 
     /**
@@ -316,7 +319,7 @@ final class DockerCommands extends AbstractCommands
 
             $finalVersion = $isServiceExistOnOptsFile ? $optsFileContent[$service] : $version;
             $image = $websiteRequirements['defaults'][$service]['image'];
-            $finalImages[$defaultService] = $this->getServiceImage($service, $image, $finalVersion);
+            $finalImages[$defaultService] = $this->getServiceImage($service, $image, (string) $finalVersion);
         }
 
         return $finalImages;
@@ -339,12 +342,32 @@ final class DockerCommands extends AbstractCommands
                 continue;
             }
 
-            if (version_compare($version, $minRequiredVersion, '<')) {
-                $warningMessages[] = "The $service=$version version is non-compliant or outdated with our requirements.";
+            if (version_compare((string) $version, (string) $minRequiredVersion, '<')) {
+                $warningMessages[] = "<error>The $service=$version version is non-compliant or outdated with our requirements.</error>";
             }
         }
 
         return $warningMessages;
+    }
+
+    /**
+     * Remove services that do not exist in project info, requirements or .opts.yml
+     *
+     * @param array $dcServices
+     * @param array $finalServicesImages
+     *
+     * @return array
+     */
+    private function removeUnusedDcServices(array $dcServices, array $finalServicesImages): array
+    {
+        $dcServicesNames = array_keys($dcServices);
+        $finalServicesNames = array_keys($finalServicesImages);
+        $servicesToRemove = array_diff($dcServicesNames, $finalServicesNames);
+        foreach ($servicesToRemove as $service) {
+            unset($dcServices[$service]);
+        }
+
+        return $dcServices;
     }
 
 }
