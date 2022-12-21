@@ -39,6 +39,7 @@
     "ignorePatterns": [
         "vendor/*",
         "config/*",
+        "resources/docker",
         "tests/fixtures"
     ],
     "overrides": [
