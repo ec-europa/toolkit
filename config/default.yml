@@ -2,6 +2,8 @@ runner:
   bin_dir: './vendor/bin'
   bin_node_dir: './node_modules/.bin'
 docker:
+  resource:
+    default: '/resources/docker/default.yml'
   services:
     web:
       default: 'true'

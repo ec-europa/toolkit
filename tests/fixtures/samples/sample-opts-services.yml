@@ -1,0 +1,4 @@
+php_version: '8.2'
+mysql_version: 5.7
+selenium_version: 1234-12345678
+solr_version: '8'

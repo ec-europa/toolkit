@@ -34,13 +34,13 @@ final class DockerCommands extends AbstractCommands
     {
         $projectId = $this->getConfig()->get('toolkit.project_id');
         if (empty($projectId)) {
-            $this->writeln('The configuration toolkit.project_id value is not valid.');
+            $this->writeln('<error>The configuration toolkit.project_id value is not valid.</error>');
             return ResultData::EXITCODE_ERROR;
         }
 
         $dockerCompose = self::DC_YML_FILE;
         if (!file_exists($dockerCompose)) {
-            $this->writeln("The file $dockerCompose was not found, creating it.");
+            $this->say("The file $dockerCompose was not found, creating it.");
             $this->copyDockerComposeDefaultToProject();
         }
 
@@ -85,7 +85,7 @@ final class DockerCommands extends AbstractCommands
      */
     private function copyDockerComposeDefaultToProject(): void
     {
-        $dockerComposeDefault = Toolkit::getToolkitRoot() . '/resources/docker/default.yml';
+        $dockerComposeDefault = Toolkit::getToolkitRoot() . $this->getConfig()->get('docker.resource.default');
 
         $this->taskFilesystemStack()
             ->copy($dockerComposeDefault, $this->getWorkingDir() . '/' . self::DC_YML_FILE)
