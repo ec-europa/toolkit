@@ -27,12 +27,12 @@ final class DockerCommands extends AbstractCommands
      * This command allows developers to update the docker-compose.yml file taking in consideration:
      * - The service versions on the .opts.yml file (php_version, mysql_version, selenium_version, solr_version).
      * - The service versions currently on client's production.
-     * - Quality Assurance minimum version requirements and defaults.
+     * - Quality Assurance minimum version requirements and defaults (https://webgate.ec.europa.eu/fpfis/qa/requirements).
      *
      * Notes:
      *  If a version is provided in .opts.yml, this one must be used (a warning message is displayed if the versions are non-compliant or outdated with Quality Assurance requirements)
      *  If no opts.yml is provided, the newer version from QA requirements or project production version will be used.
-     *  In case of some information is not available, the images will be updated based on Quality Assurance default values for php, mysql, selenium.
+     *  In case of some information is not available, the images will be updated based on Quality Assurance default values.
      *
      * @return int
      *
