@@ -18,6 +18,8 @@ See bellow current list of available commands:
    config                            Dumps the current or given configuration.
    help                              Display help for a command
    list                              List commands
+  docker
+   docker:refresh-configuration      [dk-rc] Update docker-compose.yml file based on project's configurations.
   drupal
    drupal:disable-cache              Disable aggregation and clear cache.
    drupal:drush-setup                Write Drush configuration file at "${drupal.root}/drush/drush.yml".

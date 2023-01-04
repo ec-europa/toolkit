@@ -1,0 +1,12 @@
+version: '2'
+services:
+  mysql:
+    image: percona/percona-server:8.0
+    command: --innodb-log-file_size=2G --max-allowed-packet=1G --innodb-buffer-pool-size=512M --wait-timeout=31536000
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - mysql:/var/lib/mysql
+
+volumes:
+  mysql:
