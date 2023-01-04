@@ -1,12 +1,12 @@
 # web
 image: fpfis/httpd-php:8.1-dev
-working_dir: ${PWD}
+working_dir: /var/www/html
 ports:
   - '8080:8080'
 volumes:
   - ${PWD}:${PWD}
+  - ${HOME}/.config/composer/auth.json:/root/.config/composer/auth.json
 environment:
-  DOCUMENT_ROOT: ${PWD}
   NEXTCLOUD_USER:
   NEXTCLOUD_PASS:
   GITHUB_API_TOKEN:

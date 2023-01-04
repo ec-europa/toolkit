@@ -12,13 +12,13 @@
         services:
           web:
             image: 'fpfis/httpd-php:8.1-dev'
-            working_dir: '${PWD}'
+            working_dir: /var/www/html
             ports:
               - '8080:8080'
             volumes:
               - '${PWD}:${PWD}'
+              - '${HOME}/.config/composer/auth.json:/root/.config/composer/auth.json'
             environment:
-              DOCUMENT_ROOT: '${PWD}'
               NEXTCLOUD_USER:
               NEXTCLOUD_PASS:
               GITHUB_API_TOKEN:
@@ -31,6 +31,7 @@
               - .env
           mysql:
             image: 'percona/percona-server:5.7'
+            command: '--innodb-log-file_size=2G --max-allowed-packet=1G --innodb-buffer-pool-size=512M --wait-timeout=31536000'
             environment:
               MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
             volumes:
@@ -60,6 +61,7 @@
         services:
           mysql:
             image: 'percona/percona-server:5.7'
+            command: '--innodb-log-file_size=2G --max-allowed-packet=1G --innodb-buffer-pool-size=512M --wait-timeout=31536000'
             environment:
               MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
             volumes:
@@ -74,13 +76,13 @@
               - 4444
           web:
             image: 'fpfis/httpd-php:8.1-dev'
-            working_dir: '${PWD}'
+            working_dir: /var/www/html
             ports:
               - '8080:8080'
             volumes:
               - '${PWD}:${PWD}'
+              - '${HOME}/.config/composer/auth.json:/root/.config/composer/auth.json'
             environment:
-              DOCUMENT_ROOT: '${PWD}'
               NEXTCLOUD_USER:
               NEXTCLOUD_PASS:
               GITHUB_API_TOKEN:
@@ -108,13 +110,13 @@
         services:
           web:
             image: 'fpfis/httpd-php:8.1-dev'
-            working_dir: '${PWD}'
+            working_dir: /var/www/html
             ports:
               - '8080:8080'
             volumes:
               - '${PWD}:${PWD}'
+              - '${HOME}/.config/composer/auth.json:/root/.config/composer/auth.json'
             environment:
-              DOCUMENT_ROOT: '${PWD}'
               NEXTCLOUD_USER:
               NEXTCLOUD_PASS:
               GITHUB_API_TOKEN:
@@ -127,6 +129,7 @@
               - .env
           mysql:
             image: 'percona/percona-server:5.7'
+            command: '--innodb-log-file_size=2G --max-allowed-packet=1G --innodb-buffer-pool-size=512M --wait-timeout=31536000'
             environment:
               MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
             volumes:
@@ -158,13 +161,13 @@
         services:
           web:
             image: 'fpfis/httpd-php:7.0-dev'
-            working_dir: '${PWD}'
+            working_dir: /var/www/html
             ports:
               - '8080:8080'
             volumes:
               - '${PWD}:${PWD}'
+              - '${HOME}/.config/composer/auth.json:/root/.config/composer/auth.json'
             environment:
-              DOCUMENT_ROOT: '${PWD}'
               NEXTCLOUD_USER:
               NEXTCLOUD_PASS:
               GITHUB_API_TOKEN:
@@ -177,6 +180,7 @@
               - .env
           mysql:
             image: 'percona/percona-server:5.7'
+            command: '--innodb-log-file_size=2G --max-allowed-packet=1G --innodb-buffer-pool-size=512M --wait-timeout=31536000'
             environment:
               MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
             volumes:
@@ -208,13 +212,13 @@
         services:
           web:
             image: 'fpfis/httpd-php:8.2-dev'
-            working_dir: '${PWD}'
+            working_dir: /var/www/html
             ports:
               - '8080:8080'
             volumes:
               - '${PWD}:${PWD}'
+              - '${HOME}/.config/composer/auth.json:/root/.config/composer/auth.json'
             environment:
-              DOCUMENT_ROOT: '${PWD}'
               NEXTCLOUD_USER:
               NEXTCLOUD_PASS:
               GITHUB_API_TOKEN:
@@ -227,6 +231,7 @@
               - .env
           mysql:
             image: 'percona/percona-server:5.7'
+            command: '--innodb-log-file_size=2G --max-allowed-packet=1G --innodb-buffer-pool-size=512M --wait-timeout=31536000'
             environment:
               MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
             volumes:
@@ -258,13 +263,13 @@
         services:
           web:
             image: 'fpfis/httpd-php:8.1-dev'
-            working_dir: '${PWD}'
+            working_dir: /var/www/html
             ports:
               - '8080:8080'
             volumes:
               - '${PWD}:${PWD}'
+              - '${HOME}/.config/composer/auth.json:/root/.config/composer/auth.json'
             environment:
-              DOCUMENT_ROOT: '${PWD}'
               NEXTCLOUD_USER:
               NEXTCLOUD_PASS:
               GITHUB_API_TOKEN:
@@ -277,6 +282,7 @@
               - .env
           mysql:
             image: 'percona/percona-server:5.7'
+            command: '--innodb-log-file_size=2G --max-allowed-packet=1G --innodb-buffer-pool-size=512M --wait-timeout=31536000'
             environment:
               MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
             volumes:
