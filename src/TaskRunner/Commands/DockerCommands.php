@@ -143,34 +143,7 @@ final class DockerCommands extends AbstractCommands
             throw new Exception('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
         }
 
-        // In future the endpoint for 'toolkit-requirements' will be changed to deliver the 'defaults' and 'requirements'
-        return [
-            'defaults' => [
-                'php_version' => [
-                    'image' => 'fpfis/httpd-php',
-                    'version' => '8.1',
-                    'service' => 'web',
-                ],
-                'mysql_version' => [
-                    'image' => 'percona/percona-server',
-                    'version' => '5.7',
-                    'service' => 'mysql',
-                ],
-                'selenium_version' => [
-                    'image' => 'selenium/standalone-chrome',
-                    'version' => '4.1.3-20220405',
-                    'service' => 'selenium',
-                ],
-                'solr_version' => [
-                    'image' => 'solr',
-                    'version' => '8',
-                    'service' => 'solr',
-                ],
-            ],
-            'requirements' => [
-                'php_version' => $data['php_version'],
-            ]
-        ];
+        return $data;
     }
 
     /**
