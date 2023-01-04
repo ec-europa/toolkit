@@ -49,6 +49,8 @@ class LintCommands extends AbstractCommands
         'force' => false,
     ])
     {
+        Toolkit::ensureArray($options['ignores']);
+
         $actions = false;
         $config = $options['config'];
         if ($options['force'] && file_exists($config)) {
@@ -157,6 +159,8 @@ class LintCommands extends AbstractCommands
         'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
+        Toolkit::ensureArray($options['extensions']);
+
         return $this->toolkitRunEsLint($options['config'], $options['extensions'], $options['options']);
     }
 
@@ -181,6 +185,8 @@ class LintCommands extends AbstractCommands
         'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
+        Toolkit::ensureArray($options['extensions']);
+
         return $this->toolkitRunEsLint($options['config'], $options['extensions'], $options['options']);
     }
 
@@ -237,6 +243,9 @@ class LintCommands extends AbstractCommands
         'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
+        Toolkit::ensureArray($options['extensions']);
+        Toolkit::ensureArray($options['exclude']);
+
         $task = $this->taskExec($this->getBin('parallel-lint'));
         foreach ($options['exclude'] as $exclude) {
             $task->option('exclude', $exclude);

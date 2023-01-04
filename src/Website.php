@@ -38,7 +38,7 @@ class Website
      * @param string $url
      *   The url to use.
      */
-    public static function setUrl(string $url)
+    public static function setUrl(string $url): void
     {
         self::$url = $url;
     }
@@ -93,6 +93,7 @@ class Website
      *   The endpoint content, or empty string if no session is generated.
      *
      * @throws Exception
+     *   If the request fails.
      *
      * @SuppressWarnings(PHPMD.MissingImport)
      */
@@ -217,6 +218,7 @@ class Website
      *   An array with the Project information, false if fails.
      *
      * @throws Exception
+     *   If the request fails.
      */
     public static function projectInformation(string $project_id)
     {
@@ -226,8 +228,11 @@ class Website
         if (!empty($GLOBALS['projects'][$project_id])) {
             return $GLOBALS['projects'][$project_id];
         }
+        if (empty($auth = self::basicAuth())) {
+            return false;
+        }
         $endpoint = "/api/v1/project/ec-europa/$project_id-reference/information";
-        $response = self::get(self::url() . $endpoint, self::basicAuth());
+        $response = self::get(self::url() . $endpoint, $auth);
         $data = json_decode($response, true);
         $data = reset($data);
         if (!empty($data['name']) && $data['name'] === "$project_id-reference") {
@@ -248,6 +253,7 @@ class Website
      *   An array with the constraints, false if fails.
      *
      * @throws Exception
+     *   If the request fails.
      */
     public static function projectConstraints(string $project_id)
     {
@@ -256,8 +262,11 @@ class Website
         } elseif (!empty($GLOBALS['constraints'])) {
             return $GLOBALS['constraints'];
         }
+        if (empty($auth = self::basicAuth())) {
+            return false;
+        }
         $endpoint = '/api/v1/project/ec-europa/' . $project_id . '-reference/information/constraints';
-        $response = self::get(self::url() . $endpoint, self::basicAuth());
+        $response = self::get(self::url() . $endpoint, $auth);
         $data = json_decode($response, true);
         if (empty($data) || !isset($data['constraints'])) {
             return false;
@@ -271,6 +280,7 @@ class Website
      *
      * @return array|false|mixed
      * @throws Exception
+     *   If the request fails.
      */
     public static function requirements()
     {
@@ -280,7 +290,10 @@ class Website
         if (!empty($GLOBALS['requirements'])) {
             return $GLOBALS['requirements'];
         }
-        $response = self::get(self::url() . '/api/v1/toolkit-requirements', self::basicAuth());
+        if (empty($auth = self::basicAuth())) {
+            return false;
+        }
+        $response = self::get(self::url() . '/api/v1/toolkit-requirements', $auth);
         if (empty($response)) {
             return false;
         }
