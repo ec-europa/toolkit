@@ -50,8 +50,6 @@ operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
 
 - [Alex Verbruggen](https://github.com/verbruggenalex): Maintainer - Quality Assurance
 - [Joao Santos](https://github.com/jonhy81): Maintainer - Quality Assurance
+- [Miguel Martins](https://github.com/zarabatana): Maintainer - Quality Assurance
+- [Joao Silva](https://github.com/joaocsilva): Maintainer - Quality Assurance
 </details>
-
-[https://webgate.ec.europa.eu/CITnet/jira]: https://webgate.ec.europa.eu/CITnet/jira/secure/RapidBoard.jspa?rapidView=581
-[verbruggenalex]: https://github.com/verbruggenalex
-[jonhy81]: https://github.com/jonhy81
