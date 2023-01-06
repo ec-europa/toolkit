@@ -2,7 +2,7 @@
   "_comment_git_wrapper": "Master branch of git-wrapper has a fix for backwards compatibility with older versions of git. Revert to stable when 1.7.1 is released.",
   "require": {
     "cpliakas/git-wrapper": "^1.7",
-    "cweagans/composer-patches": "^1.7.2",
+    "cweagans/composer-patches": "^1.0",
     "drupal/phingdrushtask": "^1.1",
     "drupol/phingbehattask": "^1.2.0",
     "drush/drush": "^8.4.11",
@@ -11,7 +11,7 @@
     "ext-tidy": "*",
     "ext-xml": "*",
     "guzzlehttp/guzzle": "^6.5.8",
-    "kasperg/phing-github": "dev-feature/import",
+    "kasperg/phing-github": "^1.0",
     "pear/archive_tar": "^1.4.14",
     "pear/versioncontrol_git": "dev-master",
     "pfrenssen/phpcs-pre-push": "1.0",
@@ -35,11 +35,11 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/verbruggenalex/composer-patches.git"
+      "url": "https://git.fpfis.tech.ec.europa.eu/digit/quality-assurance/public/composer-patches.git"
     },
     {
       "type": "vcs",
-      "url": "https://github.com/verbruggenalex/phing-github.git"
+      "url": "https://git.fpfis.tech.ec.europa.eu/digit/quality-assurance/public/phing-github.git"
     },
     {
       "type": "vcs",
