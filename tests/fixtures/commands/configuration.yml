@@ -1,3 +1,77 @@
+- command: 'config'
+  configuration: []
+  resources:
+    - file: config/runner/toolkit.yml
+      content: |
+        toolkit:
+          clone:
+            asda_type: cloud
+            asda_vendor: vendor
+            asda_url: 'https://url.for.dumps/dumps'
+            nextcloud_url: nextcloud.url/files
+    - file: config/runner/docker.yml
+      content: |
+        docker:
+          resource:
+            default: default.yml
+          services:
+            web:
+              resource: web.yml
+            mysql:
+              resource: mysql.yml
+            selenium:
+              resource: selenium.yml
+            solr:
+              resource: solr.yml
+  expectations:
+    - string_contains: |
+        clone:
+          asda_services: mysql
+          asda_type: cloud
+          asda_url: 'https://url.for.dumps/dumps'
+          nextcloud_url: nextcloud.url/files
+          nextcloud_admin: false
+          asda_vendor: vendor
+          asda_source: reference
+    - string_contains: |
+        docker:
+          resource:
+            default: default.yml
+          services:
+            web:
+              default: 'true'
+              resource: web.yml
+            mysql:
+              default: 'true'
+              resource: mysql.yml
+            selenium:
+              default: 'true'
+              resource: selenium.yml
+            solr:
+              default: 'false'
+              resource: solr.yml
+
+- command: 'config docker'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        resource:
+          default: /resources/docker/default.yml
+        services:
+          web:
+            default: 'true'
+            resource: /resources/docker/web-service.yml
+          mysql:
+            default: 'true'
+            resource: /resources/docker/mysql-service.yml
+          selenium:
+            default: 'true'
+            resource: /resources/docker/selenium-service.yml
+          solr:
+            default: 'false'
+            resource: /resources/docker/solr-service.yml
+
 - command: 'config runner'
   configuration: []
   resources: []

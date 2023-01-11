@@ -380,6 +380,10 @@ class Runner
     private function loadConfigurationFromDirFiles(ConfigInterface $config, bool $isToolkitRoot = true, ?string $fallbackConfigDir = null): void
     {
         $configDir = $config->get(self::CONFIG_DIR_KEY, $fallbackConfigDir);
+        if (empty($configDir)) {
+            return;
+        }
+
         $configDir = $isToolkitRoot
             ? Toolkit::getToolkitRoot() . '/' . $configDir
             : realpath($configDir);
