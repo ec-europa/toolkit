@@ -33,7 +33,7 @@ class Runner
 
     public const APPLICATION_NAME = 'Toolkit Runner';
     public const REPOSITORY = 'ec-europa/toolkit';
-    public const RUNNER_CONFIG_DIR = 'runner.config_dir';
+    public const CONFIG_DIR_KEY = 'runner.config_dir';
 
     /**
      * The input.
@@ -191,6 +191,7 @@ class Runner
         // Load Toolkit default configuration.
         $defaultConfig = Robo::createConfiguration([Toolkit::getToolkitRoot() . '/config/default.yml']);
         $defaultConfig->set('runner.working_dir', $workingDir);
+        $this->loadConfigurationFromDirFiles($defaultConfig);
 
         // Re-build configuration.
         $context = $defaultConfig->getContext(ConfigOverlay::DEFAULT_CONTEXT);
@@ -323,7 +324,7 @@ class Runner
     }
 
     /**
-     * Get current runner configurations.
+     * Get current configurations.
      *
      * @param string $workingDir
      * @param ConfigInterface $defaultConfig
@@ -339,26 +340,20 @@ class Runner
             $configFile = $workingDir . '/runner.yml.dist';
         }
 
-        $defaultRunnerConfigDir = $defaultConfig->get(self::RUNNER_CONFIG_DIR);
-        $defaultRunnerConfigDirFiles = $this->getConfigDirFiles($defaultRunnerConfigDir);
-        if (empty($configFile) && empty($defaultRunnerConfigDirFiles)) {
+        $defaultConfigDir = $defaultConfig->get(self::CONFIG_DIR_KEY);
+        $configDirFilesPaths = $this->getConfigDirFilesPaths((string) realpath($defaultConfigDir));
+        if (empty($configFile) && empty($configDirFilesPaths)) {
             return null;
         }
 
         if (!empty($configFile)) {
             $currentConfig = Robo::createConfiguration([realpath($configFile)]);
-
-            $runnerConfigDir = $currentConfig->get(self::RUNNER_CONFIG_DIR, $defaultRunnerConfigDir);
-            $runnerConfigFiles = $this->getConfigDirFiles($runnerConfigDir);
-
-            if (!empty($runnerConfigFiles)) {
-                Robo::loadConfiguration($runnerConfigFiles, $currentConfig);
-            }
+            $this->loadConfigurationFromDirFiles($currentConfig, false, $defaultConfigDir);
 
             return $currentConfig;
         }
 
-        return Robo::createConfiguration($defaultRunnerConfigDirFiles);
+        return Robo::createConfiguration($configDirFilesPaths);
     }
 
     /**
@@ -368,9 +363,33 @@ class Runner
      *
      * @return string[]
      */
-    private function getConfigDirFiles(string $runnerConfigDir): array
+    private function getConfigDirFilesPaths(string $runnerConfigDir): array
     {
-        return glob(realpath($runnerConfigDir) . '/*.yml');
+        return glob($runnerConfigDir . '/*.yml');
+    }
+
+    /**
+     * Load configuration from dir files.
+     *
+     * @param ConfigInterface $config
+     * @param bool $isToolkitRoot
+     * @param string|null $fallbackConfigDir
+     *
+     * @return void
+     */
+    private function loadConfigurationFromDirFiles(ConfigInterface $config, bool $isToolkitRoot = true, ?string $fallbackConfigDir = null): void
+    {
+        $configDir = $config->get(self::CONFIG_DIR_KEY, $fallbackConfigDir);
+        $configDir = $isToolkitRoot
+            ? Toolkit::getToolkitRoot() . '/' . $configDir
+            : realpath($configDir);
+
+        $configFilesPaths = $this->getConfigDirFilesPaths((string) $configDir);
+        if (empty($configFilesPaths)) {
+            return;
+        }
+
+        Robo::loadConfiguration($configFilesPaths, $config);
     }
 
 }

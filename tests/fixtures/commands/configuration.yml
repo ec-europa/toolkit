@@ -5,6 +5,7 @@
     - contains: |
         bin_dir: ./vendor/bin
         bin_node_dir: ./node_modules/.bin
+        config_dir: ./config/runner
         working_dir: /test/toolkit/tests/sandbox
 
 - command: 'config drupal.site'
