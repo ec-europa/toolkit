@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
 use EcEuropa\Toolkit\Tests\AbstractTest;
