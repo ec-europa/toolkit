@@ -227,3 +227,5 @@ toolkit:
         - toolkit:lint-php
         - toolkit:opts-review
 commands: [ ]
+symlink_project:
+  ignore: [ '.idea', 'vendor' ]
