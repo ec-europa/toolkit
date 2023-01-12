@@ -174,11 +174,11 @@ class ComponentCheckCommands extends AbstractCommands
             (!$this->skipAbandoned && $this->abandonedFailed) ||
             (!$this->skipInsecure && $this->insecureFailed)
         ) {
-            $msg = [
+            $io->error([
                 'Failed the components check, please verify the report and update the project.',
-                'See the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.',
-            ];
-            $io->error($msg);
+                'See the list of packages at',
+                'https://webgate.ec.europa.eu/fpfis/qa/package-reviews.',
+            ]);
             $status = 1;
         }
 
