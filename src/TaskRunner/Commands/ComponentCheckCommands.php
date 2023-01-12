@@ -19,10 +19,12 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $recommendedFailed = false;
     protected bool $insecureFailed = false;
     protected bool $outdatedFailed = false;
+    protected bool $abandonedFailed = false;
     protected bool $devVersionFailed = false;
     protected bool $devCompRequireFailed = false;
     protected bool $drushRequireFailed = false;
     protected bool $skipOutdated = false;
+    protected bool $skipAbandoned = false;
     protected bool $skipInsecure = false;
     protected bool $skipRecommended = true;
     protected int $recommendedFailedCount = 0;
@@ -84,6 +86,7 @@ class ComponentCheckCommands extends AbstractCommands
             'Recommended',
             'Insecure',
             'Outdated',
+            'Abandoned',
         ];
         foreach ($checks as $check) {
             $io->title("Checking $check components.");
@@ -168,13 +171,14 @@ class ComponentCheckCommands extends AbstractCommands
             $this->devCompRequireFailed ||
             $this->drushRequireFailed ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
+            (!$this->skipAbandoned && $this->abandonedFailed) ||
             (!$this->skipInsecure && $this->insecureFailed)
         ) {
-            $io->error([
+            $msg = [
                 'Failed the components check, please verify the report and update the project.',
-                'See the list of packages at',
-                'https://webgate.ec.europa.eu/fpfis/qa/package-reviews.',
-            ]);
+                'See the list of packages at https://webgate.ec.europa.eu/fpfis/qa/package-reviews.',
+            ];
+            $io->error($msg);
             $status = 1;
         }
 
@@ -208,12 +212,14 @@ class ComponentCheckCommands extends AbstractCommands
 
         $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
         $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
+        $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
 
         $io->definitionList(
             ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
             ['Recommended module check' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
             ['Insecure module check' => $this->getFailedOrPassed($this->insecureFailed) . $skipInsecure],
             ['Outdated module check' => $this->getFailedOrPassed($this->outdatedFailed) . $skipOutdated],
+            ['Abandoned module check' => $this->getFailedOrPassed($this->abandonedFailed) . $skipAbandoned],
             ['Dev module check' => $this->getFailedOrPassed($this->devVersionFailed)],
             ['Evaluation module check' => $this->getFailedOrPassed($this->commandFailed)],
             ['Dev module in require-dev check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
@@ -395,7 +401,7 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->recommendedFailed = true;
             }
 
-            $this->say("See the list of recommended packages at\nhttps://webgate.ec.europa.eu/fpfis/qa/requirements.");
+            $this->say("See the list of recommended packages at https://webgate.ec.europa.eu/fpfis/qa/requirements.");
             $this->recommendedFailedCount = count($diffRecommended);
         }
 
@@ -488,14 +494,18 @@ class ComponentCheckCommands extends AbstractCommands
         if (!empty($outdatedPackages['installed'])) {
             if (is_array($outdatedPackages)) {
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
-                    if (!array_key_exists('latest', $outdatedPackage)) {
-                        $this->writeln("Package {$outdatedPackage['name']} does not provide information about last version.");
-                    } elseif (array_key_exists('warning', $outdatedPackage)) {
-                        $this->writeln($outdatedPackage['warning']);
-                        $this->outdatedFailed = true;
-                    } else {
-                        $this->writeln("Package {$outdatedPackage['name']} with version installed {$outdatedPackage["version"]} is outdated, please update to last version - {$outdatedPackage['latest']}");
-                        $this->outdatedFailed = true;
+
+                    // Exclude abandoned packages.
+                    if ($outdatedPackage['abandoned'] == FALSE) {
+                        if (!array_key_exists('latest', $outdatedPackage)) {
+                            $this->writeln("Package {$outdatedPackage['name']} does not provide information about last version.");
+                        } elseif (array_key_exists('warning', $outdatedPackage)) {
+                            $this->writeln($outdatedPackage['warning']);
+                            $this->outdatedFailed = true;
+                        } else {
+                            $this->writeln("Package {$outdatedPackage['name']} with version installed {$outdatedPackage["version"]} is outdated, please update to last version - {$outdatedPackage['latest']}");
+                            $this->outdatedFailed = true;
+                        }
                     }
                 }
             }
@@ -503,6 +513,36 @@ class ComponentCheckCommands extends AbstractCommands
 
         if (!$this->outdatedFailed) {
             $this->say('Outdated components check passed.');
+        }
+    }
+
+    /**
+     * Helper function to check component's review information.
+     *
+     */
+    protected function componentAbandoned()
+    {
+        $result = $this->taskExec('composer outdated --direct --minor-only --format=json')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+
+        $outdatedPackages = json_decode($result, true);
+
+        if (!empty($outdatedPackages['installed'])) {
+            if (is_array($outdatedPackages)) {
+                foreach ($outdatedPackages['installed'] as $outdatedPackage) {
+
+                    // Only show abandoned packages.
+                    if ($outdatedPackage['abandoned'] != FALSE) {
+                        $this->writeln($outdatedPackage['warning']);
+                        $this->abandonedFailed = true;
+                    }
+                }
+            }
+        }
+
+        if (!$this->abandonedFailed) {
+            $this->say('Abandoned components check passed.');
         }
     }
 
