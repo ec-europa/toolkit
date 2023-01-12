@@ -517,6 +517,9 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Helper function to check component's review information.
+     * 
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function componentAbandoned()
     {
