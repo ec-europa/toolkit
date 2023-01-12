@@ -22,7 +22,7 @@ class SymlinkProjectCommandsTest extends AbstractTest
     }
 
     /**
-     * Test Toolkit drupal commands.
+     * Test the drupal:symlink-project command.
      *
      * @param string $command
      *   A command.
@@ -39,8 +39,7 @@ class SymlinkProjectCommandsTest extends AbstractTest
     {
         // Setup configuration file.
         if (!empty($config)) {
-            $c = Yaml::dump($config);
-            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), $c);
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
         }
 
         $this->prepareResources($resources);

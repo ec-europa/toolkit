@@ -35,8 +35,6 @@ class SymlinkProjectCommands extends AbstractCommands
     /**
      * Validate command drupal:symlink-project.
      *
-     * @param CommandData $commandData
-     *
      * @hook validate drupal:symlink-project
      *
      * @throws \Exception
@@ -45,6 +43,7 @@ class SymlinkProjectCommands extends AbstractCommands
     public function symlinkProjectValidate(): void
     {
         $composer = $this->getComposer();
+        // Check if the project name is present.
         if (empty($composer['name'])) {
             throw new Exception('Could not find the project name in the composer.json file.');
         }
@@ -60,7 +59,7 @@ class SymlinkProjectCommands extends AbstractCommands
     }
 
     /**
-     * Symlink project as module, theme or profile.
+     * Symlink project as module, theme or profile in the proper directory.
      *
      * @param array $options
      *   Command options.
@@ -89,6 +88,7 @@ class SymlinkProjectCommands extends AbstractCommands
         // Clean up project's folder.
         $task->remove($destination)->mkdir($destination);
 
+        // Gather files to symlink excluding the ignores.
         $ignore = array_merge([$options['root']], $options['ignore']);
         $symlinks = $this->scanDir($workingDir, $ignore);
 
