@@ -494,9 +494,8 @@ class ComponentCheckCommands extends AbstractCommands
         if (!empty($outdatedPackages['installed'])) {
             if (is_array($outdatedPackages)) {
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
-
                     // Exclude abandoned packages.
-                    if ($outdatedPackage['abandoned'] == FALSE) {
+                    if ($outdatedPackage['abandoned'] == false) {
                         if (!array_key_exists('latest', $outdatedPackage)) {
                             $this->writeln("Package {$outdatedPackage['name']} does not provide information about last version.");
                         } elseif (array_key_exists('warning', $outdatedPackage)) {
@@ -518,7 +517,6 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Helper function to check component's review information.
-     *
      */
     protected function componentAbandoned()
     {
@@ -531,9 +529,8 @@ class ComponentCheckCommands extends AbstractCommands
         if (!empty($outdatedPackages['installed'])) {
             if (is_array($outdatedPackages)) {
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
-
                     // Only show abandoned packages.
-                    if ($outdatedPackage['abandoned'] != FALSE) {
+                    if ($outdatedPackage['abandoned'] != false) {
                         $this->writeln($outdatedPackage['warning']);
                         $this->abandonedFailed = true;
                     }
