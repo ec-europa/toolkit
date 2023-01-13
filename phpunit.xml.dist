@@ -37,6 +37,7 @@
 <!--            <file>tests/Features/Commands/InstallCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/LintCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ReleaseCommandsTest.php</file>-->
+<!--            <file>tests/Features/Commands/SymlinkProjectCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/TestsCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ToolCommandsTest.php</file>-->
 

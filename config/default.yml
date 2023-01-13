@@ -2,3 +2,5 @@ runner:
   bin_dir: './vendor/bin'
   bin_node_dir: './node_modules/.bin'
   config_dir: './config/runner'
+symlink_project:
+  ignore: [ '.idea', 'vendor' ]

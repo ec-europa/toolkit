@@ -1,0 +1,6 @@
+command:
+  drupal:
+    symlink-project:
+      options:
+        root: ${drupal.root}
+        ignore: ${symlink_project.ignore}

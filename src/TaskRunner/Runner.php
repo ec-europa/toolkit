@@ -108,6 +108,7 @@ class Runner
         'toolkit.hooks.active',
         'toolkit.hooks.prepare-commit-msg.conditions',
         'toolkit.hooks.pre-push.commands',
+        'symlink_project.ignore',
     ];
 
     /**
