@@ -35,7 +35,7 @@
         ================
 
         ----------------- ---------------------
-        PHP version       OK (8.1.13)
+        PHP version       OK (8.1.14)
         Toolkit version   OK (9.2.0)
         Drupal version    FAIL (not found) ()
         ----------------- ---------------------
@@ -65,7 +65,7 @@
         ================
 
         ----------------- -------------
-        PHP version       OK (8.1.13)
+        PHP version       OK (8.1.14)
         Toolkit version   OK (9.2.0)
         Drupal version    OK (9.4.8)
         ----------------- -------------

@@ -1,0 +1,16 @@
+docker:
+  resource:
+    default: '/resources/docker/default.yml'
+  services:
+    web:
+      default: 'true'
+      resource: '/resources/docker/web-service.yml'
+    mysql:
+      default: 'true'
+      resource: '/resources/docker/mysql-service.yml'
+    selenium:
+      default: 'true'
+      resource: '/resources/docker/selenium-service.yml'
+    solr:
+      default: 'false'
+      resource: '/resources/docker/solr-service.yml'
