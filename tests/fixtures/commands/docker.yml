@@ -1,0 +1,67 @@
+- command: 'docker:refresh-configuration'
+  configuration: []
+  resources: []
+  expectations:
+      - contains: The configuration toolkit.project_id value is not valid.
+
+- command: 'docker:refresh-configuration'
+  configuration:
+    toolkit:
+      project_id: digit-qa
+  resources: []
+  expectations:
+    - contains: |
+        >  The file docker-compose.yml was not found, creating it.
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        ->copy('/test/toolkit/resources/docker/default.yml', '/test/toolkit/tests/sandbox/docker-compose.yml')
+        [error]  File "docker-compose.yml" does not exist.
+
+- command: 'docker:refresh-configuration'
+  configuration:
+    toolkit:
+      project_id: digit-qa
+  resources:
+    - from: 'sample-docker-default.yml'
+      to: 'docker-compose.yml'
+  expectations:
+    - contains: |
+        >  Backup docker-compose.yml file to docker-compose.yml.prev in /test/toolkit/tests/sandbox
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        ->copy('docker-compose.yml', 'docker-compose.yml.prev')
+        >  Updating docker-compose.yml file in /test/toolkit/tests/sandbox
+        docker-compose.yml file updated with success.
+
+- command: 'docker:refresh-configuration'
+  configuration:
+    toolkit:
+      project_id: digit-qa
+  resources:
+    - from: 'sample-docker-default.yml'
+      to: 'docker-compose.yml'
+    - from: 'sample-opts.yml'
+      to: '.opts.yml'
+  expectations:
+    - contains: |
+        >  Backup docker-compose.yml file to docker-compose.yml.prev in /test/toolkit/tests/sandbox
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        ->copy('docker-compose.yml', 'docker-compose.yml.prev')
+        >  Updating docker-compose.yml file in /test/toolkit/tests/sandbox
+        docker-compose.yml file updated with success.
+
+- command: 'docker:refresh-configuration'
+  configuration:
+    toolkit:
+      project_id: digit-qa
+  resources:
+    - from: 'sample-docker-default.yml'
+      to: 'docker-compose.yml'
+    - from: 'sample-opts-outdated-services.yml'
+      to: '.opts.yml'
+  expectations:
+    - contains: |
+        >  Backup docker-compose.yml file to docker-compose.yml.prev in /test/toolkit/tests/sandbox
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        ->copy('docker-compose.yml', 'docker-compose.yml.prev')
+        >  Updating docker-compose.yml file in /test/toolkit/tests/sandbox
+        The php_version=7.0 version is non-compliant or outdated with our requirements.
+        docker-compose.yml file updated with success.

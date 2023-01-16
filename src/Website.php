@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit;
 
+use Exception;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -37,7 +38,7 @@ class Website
      * @param string $url
      *   The url to use.
      */
-    public static function setUrl(string $url)
+    public static function setUrl(string $url): void
     {
         self::$url = $url;
     }
@@ -91,7 +92,8 @@ class Website
      * @return string
      *   The endpoint content, or empty string if no session is generated.
      *
-     * @throws \Exception
+     * @throws Exception
+     *   If the request fails.
      *
      * @SuppressWarnings(PHPMD.MissingImport)
      */
@@ -127,14 +129,14 @@ class Website
                 default:
                     if ($basicAuth === '') {
                         $message = 'Curl request to endpoint "%s" returned a %u.';
-                        throw new \Exception(sprintf($message, $url, $statusCode));
+                        throw new Exception(sprintf($message, $url, $statusCode));
                     }
                     // If we tried with authentication, retry without.
                     $content = self::get($url);
             }
         }
         if ($result === false) {
-            throw new \Exception(sprintf('Curl request to endpoint "%s" failed.', $url));
+            throw new Exception(sprintf('Curl request to endpoint "%s" failed.', $url));
         }
         curl_close($curl);
 
@@ -182,7 +184,7 @@ class Website
      * @return string
      *   The endpoint response code, or empty string if no session is generated.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function post(array $fields, string $auth): string
     {
@@ -215,7 +217,8 @@ class Website
      * @return false|array
      *   An array with the Project information, false if fails.
      *
-     * @throws \Exception
+     * @throws Exception
+     *   If the request fails.
      */
     public static function projectInformation(string $project_id)
     {
@@ -225,8 +228,11 @@ class Website
         if (!empty($GLOBALS['projects'][$project_id])) {
             return $GLOBALS['projects'][$project_id];
         }
+        if (empty($auth = self::basicAuth())) {
+            return false;
+        }
         $endpoint = "/api/v1/project/ec-europa/$project_id-reference/information";
-        $response = self::get(self::url() . $endpoint, self::basicAuth());
+        $response = self::get(self::url() . $endpoint, $auth);
         $data = json_decode($response, true);
         $data = reset($data);
         if (!empty($data['name']) && $data['name'] === "$project_id-reference") {
@@ -246,7 +252,8 @@ class Website
      * @return false|array
      *   An array with the constraints, false if fails.
      *
-     * @throws \Exception
+     * @throws Exception
+     *   If the request fails.
      */
     public static function projectConstraints(string $project_id)
     {
@@ -255,8 +262,11 @@ class Website
         } elseif (!empty($GLOBALS['constraints'])) {
             return $GLOBALS['constraints'];
         }
+        if (empty($auth = self::basicAuth())) {
+            return false;
+        }
         $endpoint = '/api/v1/project/ec-europa/' . $project_id . '-reference/information/constraints';
-        $response = self::get(self::url() . $endpoint, self::basicAuth());
+        $response = self::get(self::url() . $endpoint, $auth);
         $data = json_decode($response, true);
         if (empty($data) || !isset($data['constraints'])) {
             return false;
@@ -267,6 +277,10 @@ class Website
 
     /**
      * Returns the toolkit requirements from the endpoint.
+     *
+     * @return array|false|mixed
+     * @throws Exception
+     *   If the request fails.
      */
     public static function requirements()
     {
@@ -276,7 +290,10 @@ class Website
         if (!empty($GLOBALS['requirements'])) {
             return $GLOBALS['requirements'];
         }
-        $response = self::get(self::url() . '/api/v1/toolkit-requirements', self::basicAuth());
+        if (empty($auth = self::basicAuth())) {
+            return false;
+        }
+        $response = self::get(self::url() . '/api/v1/toolkit-requirements', $auth);
         if (empty($response)) {
             return false;
         }

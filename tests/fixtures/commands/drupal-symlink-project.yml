@@ -1,0 +1,53 @@
+- command: 'drupal:symlink-project'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: '[error]  The /test/toolkit/tests/sandbox/composer.json was not found.'
+
+- command: 'drupal:symlink-project'
+  configuration:
+    drupal:
+      root: 'web'
+    symlink_project:
+      ignore: [ '.idea', 'vendor', 'ignored.txt' ]
+  resources:
+    - touch: example.txt
+    - touch: example2.txt
+    - touch: ignored.txt
+    - mkdir: .git
+    - file: composer.json
+      content: |
+        { "name": "drupal/example", "type": "drupal-module" }
+  expectations:
+    - contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->remove('/test/toolkit/tests/sandbox/web/modules/custom/example')
+          ->mkdir('/test/toolkit/tests/sandbox/web/modules/custom/example')
+          ->symlink('/test/toolkit/tests/sandbox/composer.json', '/test/toolkit/tests/sandbox/web/modules/custom/example/composer.json')
+          ->symlink('/test/toolkit/tests/sandbox/example.txt', '/test/toolkit/tests/sandbox/web/modules/custom/example/example.txt')
+          ->symlink('/test/toolkit/tests/sandbox/example2.txt', '/test/toolkit/tests/sandbox/web/modules/custom/example/example2.txt')
+          ->symlink('/test/toolkit/tests/sandbox/runner.yml', '/test/toolkit/tests/sandbox/web/modules/custom/example/runner.yml')
+    - not_contains: 'ignored.txt'
+    - not_contains: '.git'
+
+- command: 'drupal:symlink-project'
+  configuration:
+    drupal:
+      root: 'build'
+    symlink_project:
+      ignore: [ '.idea', 'vendor', 'ignored.txt' ]
+  resources:
+    - touch: example.txt
+    - touch: example2.txt
+    - file: composer.json
+      content: |
+        { "name": "drupal/example", "type": "drupal-theme" }
+  expectations:
+    - contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->remove('/test/toolkit/tests/sandbox/build/themes/custom/example')
+          ->mkdir('/test/toolkit/tests/sandbox/build/themes/custom/example')
+          ->symlink('/test/toolkit/tests/sandbox/composer.json', '/test/toolkit/tests/sandbox/build/themes/custom/example/composer.json')
+          ->symlink('/test/toolkit/tests/sandbox/example.txt', '/test/toolkit/tests/sandbox/build/themes/custom/example/example.txt')
+          ->symlink('/test/toolkit/tests/sandbox/example2.txt', '/test/toolkit/tests/sandbox/build/themes/custom/example/example2.txt')
+          ->symlink('/test/toolkit/tests/sandbox/runner.yml', '/test/toolkit/tests/sandbox/build/themes/custom/example/runner.yml')

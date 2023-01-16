@@ -432,11 +432,7 @@ class ToolCommands extends AbstractCommands
      */
     public function toolkitVendorList(ConsoleIO $io)
     {
-        if (empty(Website::basicAuth())) {
-            return ResultData::EXITCODE_ERROR;
-        }
-        $data = Website::requirements();
-        if (empty($data)) {
+        if (empty($data = Website::requirements())) {
             $io->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
             return ResultData::EXITCODE_ERROR;
         }

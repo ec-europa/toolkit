@@ -29,6 +29,7 @@
 <!--            <file>tests/Features/Commands/BuildCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ComponentCheckCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ConfigurationCommandsTest.php</file>-->
+<!--            <file>tests/Features/Commands/DockerCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/DocumentationCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/DrupalCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/DumpCommandsTest.php</file>-->
@@ -36,6 +37,7 @@
 <!--            <file>tests/Features/Commands/InstallCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/LintCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ReleaseCommandsTest.php</file>-->
+<!--            <file>tests/Features/Commands/SymlinkProjectCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/TestsCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/ToolCommandsTest.php</file>-->
 
