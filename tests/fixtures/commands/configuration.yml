@@ -26,6 +26,7 @@
   expectations:
     - string_contains: |
         clone:
+          dumpfile: mysql.gz
           asda_services: mysql
           asda_type: cloud
           asda_url: 'https://url.for.dumps/dumps'
@@ -33,6 +34,8 @@
           nextcloud_admin: false
           asda_vendor: vendor
           asda_source: reference
+          myloader: /scripts/importdb.sh
+          mydumper: /scripts/backupdb.sh
     - string_contains: |
         docker:
           resource:
