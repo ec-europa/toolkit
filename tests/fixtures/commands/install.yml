@@ -26,7 +26,8 @@
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/run')
           ->arg('toolkit:install-dump')
-        [Simulator] Running ./vendor/bin/run 'toolkit:install-dump'
+          ->option('dumpfile', 'mysql.gz', '=')
+        [Simulator] Running ./vendor/bin/run 'toolkit:install-dump' --dumpfile=mysql.gz
         [Simulator] Simulating Exec('./vendor/bin/run')
           ->arg('toolkit:run-deploy')
         [Simulator] Running ./vendor/bin/run 'toolkit:run-deploy'
