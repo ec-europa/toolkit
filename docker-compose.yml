@@ -1,7 +1,7 @@
 version: '2'
 services:
   web:
-    image: registry.fpfis.eu/fpfis/httpd-php:8.1-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:8.2-ci
     working_dir: /test/toolkit
     ports:
       # Use port "8080:8080" to access the mock in the browser OR to use xdebug.
