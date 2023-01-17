@@ -6,11 +6,9 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use EcEuropa\Toolkit\Website;
 use Robo\Exception\TaskException;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Commands to lint the source code and interact with ESLint.

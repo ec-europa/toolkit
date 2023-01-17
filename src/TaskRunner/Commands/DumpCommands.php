@@ -6,9 +6,9 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use Robo\Collection\CollectionBuilder;
 use Robo\Contract\VerbosityThresholdInterface;
-use Robo\Task\Base\ExecStack;
+use Robo\ResultData;
+use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -37,23 +37,88 @@ class DumpCommands extends AbstractCommands
      * @command toolkit:install-dump
      *
      * @option dumpfile The dump file name.
+     * @option myloader If set, MyLoader will be used to import the database.
      */
-    public function toolkitInstallDump(array $options = [
+    public function toolkitInstallDump(ConsoleIO $io, array $options = [
+        'dumpfile' => InputOption::VALUE_REQUIRED,
+        'myloader' => InputOption::VALUE_NONE,
+    ])
+    {
+        $config = $this->getConfig();
+        $myloader = $config->get('toolkit.clone.myloader');
+        $opts = ToolCommands::parseOptsYml();
+        $is_myloader = $options['myloader'] || (isset($opts['mydumper']) && $opts['mydumper']);
+
+        if ($is_myloader) {
+            // The myloader should only be used with docker.
+            if (!file_exists($myloader)) {
+                $io->error('The import script was not found, to use MyLoader you must run on the corporate docker image.');
+                return ResultData::EXITCODE_ERROR;
+            }
+            if (!str_ends_with($options['dumpfile'], '.tar')) {
+                $io->error('To use MyLoader the dumpfile must be a .tar file.');
+                return ResultData::EXITCODE_ERROR;
+            }
+        }
+        $dump_file = $this->tmpDirectory() . '/' . $options['dumpfile'];
+        if (!file_exists($dump_file)) {
+            $io->error("'$dump_file' file not found, use the command 'toolkit:download-dump'.");
+            return ResultData::EXITCODE_ERROR;
+        }
+        $tasks = [];
+
+        $drush_bin = $this->getBin('drush');
+        // Recreate the database.
+        $tasks[] = $this->taskExec($drush_bin)->arg('sql-drop')->option('-y');
+        $tasks[] = $this->taskExec($drush_bin)->arg('sql-create')->option('-y');
+
+        if ($is_myloader) {
+            $tasks[] = $this->taskExec($myloader)->arg($dump_file);
+        } else {
+            $tasks[] = $this->taskImportDatabase($dump_file);
+        }
+
+        // Build and return task collection.
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Export the local snapshot.
+     *
+     * This command should be only used with the corporate docker image fpfis/httpd-php.
+     *
+     * @param array $options
+     *   Command options.
+     *
+     * @return \Robo\Collection\CollectionBuilder|int
+     *   Collection builder.
+     *
+     * @command toolkit:create-dump
+     *
+     * @option dumpfile The dump file name.
+     */
+    public function toolkitCreateDump(ConsoleIO $io, array $options = [
         'dumpfile' => InputOption::VALUE_REQUIRED,
     ])
     {
-        $tasks = [];
-        $dump = $this->tmpDirectory() . '/' . $options['dumpfile'];
-        if (!file_exists($dump)) {
-            $this->say("'$dump' file not found, use the command 'toolkit:download-dump'.");
-            return 1;
+        $mydumper = $this->getConfig()->get('toolkit.clone.mydumper');
+        if (!file_exists($mydumper)) {
+            $io->error('The export script was not found, you must run on the corporate docker image.');
+            return ResultData::EXITCODE_ERROR;
         }
 
-        // Unzip and dump database file.
-        $drush_bin = $this->getBin('drush');
-        $tasks[] = $this->taskExec($drush_bin)->arg('sql-drop')->rawArg('-y');
-        $tasks[] = $this->taskExec($drush_bin)->arg('sql-create')->rawArg('-y');
-        $tasks[] = $this->taskImportDatabase($dump);
+        if ($ext = pathinfo($options['dumpfile'], PATHINFO_EXTENSION)) {
+            if ($ext !== 'tar') {
+                $options['dumpfile'] = str_replace('.' . $ext, '', $options['dumpfile']);
+            }
+        }
+        $dump_file = $this->tmpDirectory() . '/' . $options['dumpfile'];
+        $tasks = [];
+        if (file_exists($options['dumpfile'])) {
+            $tasks[] = $this->taskFilesystemStack()->remove($dump_file);
+        }
+
+        $tasks[] = $this->taskExec($mydumper)->arg($dump_file);
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -112,10 +177,13 @@ class DumpCommands extends AbstractCommands
         $config = $this->getConfig();
         $project_id = $config->get('toolkit.project_id');
         $asda_type = $config->get('toolkit.clone.asda_type', 'nextcloud');
-        $asda_services = (array) $config->get('toolkit.clone.asda_services', 'mysql');
+        $asda_services = $config->get('toolkit.clone.asda_services', 'mysql');
+        Toolkit::ensureArray($asda_services);
         $vendor = $config->get('toolkit.clone.asda_vendor');
         $source = $config->get('toolkit.clone.asda_source');
         $tmp_folder = $this->tmpDirectory();
+        $opts = ToolCommands::parseOptsYml();
+        $is_mydumper = isset($opts['mydumper']) && $opts['mydumper'];
         $is_admin = !($options['is-admin'] === InputOption::VALUE_NONE) || $config->get('toolkit.clone.nextcloud_admin');
         if (Toolkit::isCiCd()) {
             $is_admin = true;
@@ -163,40 +231,39 @@ class DumpCommands extends AbstractCommands
 
         foreach ($asda_services as $service) {
             $this->say("Checking service '$service'");
+            $dump = $tmp_folder . '/' . $service . ($is_mydumper ? '.tar' : '.gz');
             // Check if the dump is already downloaded.
-            if (file_exists("$tmp_folder/$service.gz")) {
-                $this->say("File found '$tmp_folder/$service.gz', checking server for newer dump");
-                if ($this->checkForNewerDump($download_link, $service)) {
-                    $question = "A newer dump was found, would you like to download?";
-                    if (!Toolkit::isCiCd() && $options['yes'] === InputOption::VALUE_NONE) {
-                        $answer = $this->confirm($question);
-                    } else {
-                        $this->say($question . ' (y/n) Y');
-                        $answer = true;
-                    }
-                    if ($answer) {
-                        $this->say('Starting download');
-                        if ($asda_type === 'nextcloud') {
-                            $tasks = array_merge($tasks, $this->asdaProcessFile("$download_link/$service", $service));
-                        } else {
-                            $tasks = $this->asdaProcessFile($download_link, $service);
-                        }
-                    } else {
-                        $this->say('Skipping download');
-                    }
-                } else {
-                    $this->say('Local dump is up-to-date');
-                }
-            } else {
+            if (!file_exists($dump)) {
                 $this->say('Starting download');
                 if ($asda_type === 'nextcloud') {
                     $tasks = array_merge($tasks, $this->asdaProcessFile("$download_link/$service", $service));
                 } else {
                     $tasks = $this->asdaProcessFile($download_link, $service);
                 }
+                continue;
+            }
+
+            $this->say("File found '$dump', checking server for newer dump");
+            if (!$this->checkForNewerDump($download_link, $service)) {
+                $this->say('Local dump is up-to-date');
+                continue;
+            }
+            $question = 'A newer dump was found, would you like to download?';
+            if (!Toolkit::isCiCd() && $options['yes'] === InputOption::VALUE_NONE) {
+                if (!$this->confirm($question)) {
+                    $this->say('Skipping download');
+                    continue;
+                }
+            } else {
+                $this->say($question . ' (y/n) Y');
+            }
+            $this->say('Starting download');
+            if ($asda_type === 'nextcloud') {
+                $tasks = array_merge($tasks, $this->asdaProcessFile("$download_link/$service", $service));
+            } else {
+                $tasks = $this->asdaProcessFile($download_link, $service);
             }
         }
-
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
     }
@@ -213,7 +280,7 @@ class DumpCommands extends AbstractCommands
      *   Return true if sha1 from local is different from the server,
      *   False is case of error or no local file exists.
      */
-    private function checkForNewerDump(string $link, string $service)
+    private function checkForNewerDump(string $link, string $service): bool
     {
         $config = $this->getConfig();
         $tmp_folder = $this->tmpDirectory();
@@ -290,8 +357,9 @@ class DumpCommands extends AbstractCommands
 
         // Download the file.
         $this->generateAsdaWgetInputFile("$link/$filename", "$tmp_folder/$service.txt", true);
+        $extension = str_ends_with($filename, '.gz') ? 'gz' : 'tar';
         $tasks[] = $this
-            ->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service.gz", '.sql.gz,.tar.gz');
+            ->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service.$extension", '.sql.gz,.tar.gz,.tar');
 
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
@@ -303,7 +371,7 @@ class DumpCommands extends AbstractCommands
     }
 
     /**
-     * Create file containing a url for usage in wget --input-file argument.
+     * Create a file containing the url to be used by wget --input-file option.
      *
      * @param string $url
      *   Url to fill in the temp file.
@@ -403,7 +471,7 @@ class DumpCommands extends AbstractCommands
      * @param string $dump
      *   The path to the dump file.
      *
-     * @return CollectionBuilder|ExecStack
+     * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Base\ExecStack
      */
     private function taskImportDatabase(string $dump)
     {
