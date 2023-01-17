@@ -32,6 +32,21 @@
           ->arg('toolkit:run-deploy')
         [Simulator] Running ./vendor/bin/run 'toolkit:run-deploy'
 
+- command: 'toolkit:install-clone --dumpfile=dump.sql'
+  configuration: []
+  resources:
+    from: sample-dump.sql.gz
+    to: dump.sql
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:install-dump')
+          ->option('dumpfile', 'dump.sql', '=')
+        [Simulator] Running ./vendor/bin/run 'toolkit:install-dump' --dumpfile=dump.sql
+        [Simulator] Simulating Exec('./vendor/bin/run')
+        ->arg('toolkit:run-deploy')
+        [Simulator] Running ./vendor/bin/run 'toolkit:run-deploy'
+
 - command: 'toolkit:run-deploy'
   configuration: []
   resources: []
