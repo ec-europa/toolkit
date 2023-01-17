@@ -64,11 +64,11 @@
         Required checks:
         ================
 
-        ----------------- -----------
+        ----------------- ------------
         PHP version       OK (8.2.1)
         Toolkit version   OK (9.2.0)
         Drupal version    OK (9.4.8)
-        ----------------- -----------
+        ----------------- ------------
 
 - command: toolkit:fix-permissions
   configuration: []
