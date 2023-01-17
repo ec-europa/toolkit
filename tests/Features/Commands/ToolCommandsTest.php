@@ -51,7 +51,7 @@ class ToolCommandsTest extends AbstractTest
 
         // Run command.
         $result = $this->runCommand($command);
-        $this->debugExpectations($result['output'], $expectations);
+//        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
             $this->assertDynamic($result['output'], $expectation);
