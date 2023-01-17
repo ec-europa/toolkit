@@ -5,7 +5,7 @@ command:
         config-file: ${toolkit.clean.config_file}
     install-clone:
       options:
-        dumpfile: 'mysql.gz'
+        dumpfile: ${toolkit.clone.dumpfile}
     run-deploy:
       options:
         sequence-file: ${toolkit.deploy.sequence_file}
