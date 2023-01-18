@@ -159,15 +159,15 @@ class ReplaceBlock extends BaseTask
      */
     public function run()
     {
-        $error_message = 'You must provide a {key} value.';
+        $error_message = "You must provide a '%s' value.";
         if (empty($this->filename)) {
-            return Result::error($this, $error_message, ['key' => 'filename']);
+            return Result::error($this, sprintf($error_message, 'filename'));
         }
         if (empty($this->start)) {
-            return Result::error($this, $error_message, ['key' => 'start']);
+            return Result::error($this, sprintf($error_message, 'start'));
         }
         if (empty($this->end)) {
-            return Result::error($this, $error_message, ['key' => 'end']);
+            return Result::error($this, sprintf($error_message, 'end'));
         }
 
         $pattern = '~(' . preg_quote($this->start) . ')(.+?)(' . preg_quote($this->end) . ')~s';
@@ -181,7 +181,7 @@ class ReplaceBlock extends BaseTask
         $result = preg_replace($pattern, $this->content, $file, -1, $count);
         if ($count > 0) {
             if (file_put_contents($this->filename, $result) === false) {
-                return Result::error($this, 'Error writing to file {filename}.', ['filename' => $this->filename]);
+                return Result::error($this, sprintf('Error writing to file %s.', $this->filename));
             }
             $this->printTaskSuccess('{filename} updated. {count} items replaced', ['filename' => $this->filename, 'count' => $count]);
         } else {

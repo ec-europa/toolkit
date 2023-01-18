@@ -117,9 +117,7 @@ class Process extends BaseTask implements BuilderAwareInterface
     public function run()
     {
         if (!$this->loadContent()) {
-            return Result::error($this, 'File {source} does not exist', [
-                'source' => $this->source,
-            ]);
+            return Result::error($this, sprintf('File %s does not exist.', $this->source));
         }
 
         if ($this->source !== $this->destination) {
