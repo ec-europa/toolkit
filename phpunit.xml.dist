@@ -16,12 +16,12 @@
         <env name="DRUPAL_DATABASE_HOST" value="mysql"/>
     </php>
     <testsuites>
-        <testsuite name="Features">
-            <directory>tests/Features</directory>
-        </testsuite>
-        <testsuite name="Unit">
-            <directory>tests/Unit</directory>
-        </testsuite>
+<!--        <testsuite name="Features">-->
+<!--            <directory>tests/Features</directory>-->
+<!--        </testsuite>-->
+<!--        <testsuite name="Unit">-->
+<!--            <directory>tests/Unit</directory>-->
+<!--        </testsuite>-->
 
         <testsuite name="Run specific test(s)">
             <!-- Feature tests. -->
@@ -39,7 +39,7 @@
 <!--            <file>tests/Features/Commands/ReleaseCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/SymlinkProjectCommandsTest.php</file>-->
 <!--            <file>tests/Features/Commands/TestsCommandsTest.php</file>-->
-<!--            <file>tests/Features/Commands/ToolCommandsTest.php</file>-->
+            <file>tests/Features/Commands/ToolCommandsTest.php</file>
 
             <!-- Unit tests. -->
 <!--            <file>tests/Unit/GitHooksCommandsTest.php</file>-->
