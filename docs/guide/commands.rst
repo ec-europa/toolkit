@@ -136,6 +136,8 @@ list of available tasks is:
 +---------------+------------------------------------------------------------------------+
 | copy          | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
 +---------------+------------------------------------------------------------------------+
+| copyDir       | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
++---------------+------------------------------------------------------------------------+
 | chmod         | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
 +---------------+------------------------------------------------------------------------+
 | chgrp         | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |

@@ -40,6 +40,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
         'mkdir' => ['required' => 'dir', 'defaults' => 'mode'],
         'touch' => ['required' => 'file', 'defaults' => ['time', 'atime']],
         'copy' => ['required' => ['from', 'to'], 'defaults' => 'force'],
+        'copy-dir' => ['required' => ['from', 'to']],
         'rename' => ['required' => ['from', 'to'], 'defaults' => 'force'],
         'chmod' => [
             'required' => ['file', 'permissions'],
@@ -121,6 +122,9 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                 }
                 return $this->collectionBuilder()->taskFilesystemStack()
                     ->copy($task['from'], $task['to'], $task['force']);
+
+            case 'copy-dir':
+                return $this->collectionBuilder()->taskCopyDir([$task['from'] => $task['to']]);
 
             case 'chmod':
                 return $this->collectionBuilder()->taskFilesystemStack()
@@ -289,8 +293,6 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Report missing parameter, this stops the execution.
      *
-     * @param string $param
-     *   The missing parameter.
      * @param string $task
      *   The task being checked.
      *
