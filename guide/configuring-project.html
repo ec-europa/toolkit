@@ -233,7 +233,63 @@ toolkit:
 selenium:
   host: &quot;http://selenium&quot;
   port: &quot;4444&quot;
-  browser: &quot;chrome&quot;</code></pre>
+  browser: &quot;chrome&quot;
+</code></pre>
+</div>
+<div class="section" id="splitting-subsite-configuration-into-multiple-files">
+<h2>Splitting subsite configuration into multiple files</h2>
+<p>Each subsite configuration can be splited into independent Yaml files instead of defining everything inside <code>runner.yml.dist</code> file.</p>
+<p>By default, the configuration files directory is defined to be <code>PROJECT_ROOT/config/runner</code></p>
+<pre><code class="language- " >runner:
+  config_dir: &#039;./config/runner&#039;
+</code></pre>
+<p>To change the directory configuration, copy the above configuration and paste it inside <code>runner.yml.dist</code> and change <code>config_dir</code> value.</p>
+<p>Every configuration block inside <code>runner.yml.dist</code> (drupal, toolkit, selenium, etc...) can be moved to <code>config_dir</code> directory.</p>
+<p>As example, taking the subsite configurations:</p>
+<pre><code class="language- " >runner.yml.dist file with custom directory defined
+===================================================
+
+  runner:
+    config_dir: &#039;./my-custom-dir&#039;
+
+
+Config directory
+=================
+
+~/PROJECT_ROOT/my-custom-dir $
+  drupal.yml
+  toolkit.yml
+  selenium.yml
+
+
+drupal.yml file
+===============
+
+  drupal:
+    root: &quot;web&quot;
+    base_url: ${env.DRUPAL_BASE_URL}
+    site:
+      profile: &quot;standard&quot;
+      name: &quot;Drupal website configuration goes here!&quot;
+      generate_db_url: false
+    account:
+      name: ${env.DRUPAL_ACCOUNT_USERNAME}
+      password: ${env.DRUPAL_ACCOUNT_PASSWORD}
+
+toolkit.yml file
+===============
+
+  toolkit:
+    project_id: &#039;PROJECTID&#039;
+
+
+selenium.yml file
+===============
+
+  selenium:
+    host: &quot;http://selenium&quot;
+    port: &quot;4444&quot;
+    browser: &quot;chrome&quot;</code></pre>
 </div>
 
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">

@@ -136,7 +136,7 @@
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    TestsCommands
+    SymlinkProjectCommands
 
         <span class="phpdocumentor-element__extends">
         extends <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html"><abbr title="\EcEuropa\Toolkit\TaskRunner\AbstractCommands">AbstractCommands</abbr></a>
@@ -153,13 +153,13 @@
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/SymlinkProjectCommands.php"><a href="files/src-taskrunner-commands-symlinkprojectcommands.html"><abbr title="src/TaskRunner/Commands/SymlinkProjectCommands.php">SymlinkProjectCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">19</span>
+    <span class="phpdocumentor-element-found-in__line">13</span>
 
     </aside>
 
-            <p class="phpdocumentor-summary">Class TestsCommands.</p>
+            <p class="phpdocumentor-summary">Class AbstractCommands.</p>
 
 
 
@@ -175,8 +175,15 @@
 </h3>
 
 <dl class="phpdocumentor-table-of-contents">
-                        <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
+                    <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#property_types">$types</a>
+    <span>
+                        &nbsp;: array&lt;string|int, string&gt;            </span>
+</dt>
+<dd>A mapping of Drupal project type to directory.</dd>
+
+                <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
@@ -197,60 +204,18 @@
 <dd>Command initialization.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitCheckPhpcsRequirements">toolkitCheckPhpcsRequirements()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_symlinkProject">symlinkProject()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
 </dt>
-<dd>Make sure that the config file exists and configuration is correct.</dd>
+<dd>Symlink project as module, theme or profile in the proper directory.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitRunPhpcbf">toolkitRunPhpcbf()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_symlinkProjectValidate">symlinkProjectValidate()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: void    </span>
 </dt>
-<dd>Run PHP code autofixing.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitSetupPhpcs">toolkitSetupPhpcs()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Setup PHP code sniffer.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestBehat">toolkitTestBehat()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Run Behat tests.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestPhpcs">toolkitTestPhpcs()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Run PHP code sniffer.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestPhpmd">toolkitTestPhpmd()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Run PHPMD.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestPhpstan">toolkitTestPhpstan()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Run PHPStan.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestPhpunit">toolkitTestPhpunit()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Run PHPUnit tests.</dd>
+<dd>Validate command drupal:symlink-project.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a>
@@ -315,19 +280,19 @@
 </dt>
 <dd>Replace block in a file.</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitRunGrumphp">toolkitRunGrumphp()</a>
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_getComposer">getComposer()</a>
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
-<dd>Run PHP code sniffer within GrumPHP.</dd>
+<dd></dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitRunPhpcs">toolkitRunPhpcs()</a>
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_scanDir">scanDir()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Run PHP code sniffer.</dd>
+<dd></dd>
 
         </dl>
 
@@ -336,11 +301,50 @@
         
 
         
+    <section class="phpdocumentor-properties">
+        <h3 class="phpdocumentor-elements__header" id="properties">
+            Properties
+            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+        </h3>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_types">
+        $types
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#property_types" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/SymlinkProjectCommands.php"><a href="files/src-taskrunner-commands-symlinkprojectcommands.html"><abbr title="src/TaskRunner/Commands/SymlinkProjectCommands.php">SymlinkProjectCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">21</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">A mapping of Drupal project type to directory.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, string&gt;</span>
+    <span class="phpdocumentor-signature__name">$types</span>
+     = <span class="phpdocumentor-signature__default-value">[&#039;drupal-module&#039; =&gt; &#039;modules/custom&#039;, &#039;drupal-theme&#039; =&gt; &#039;themes/custom&#039;, &#039;drupal-profile&#039; =&gt; &#039;profiles/custom&#039;]</span></code>
+
+    
+    
+    
+
+</article>
+            </section>
 
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
                     <article
         class="phpdocumentor-element
@@ -350,12 +354,12 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_getConfigurationFile">
         getConfigurationFile()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/SymlinkProjectCommands.php"><a href="files/src-taskrunner-commands-symlinkprojectcommands.html"><abbr title="src/TaskRunner/Commands/SymlinkProjectCommands.php">SymlinkProjectCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">25</span>
+    <span class="phpdocumentor-element-found-in__line">30</span>
 
     </aside>
 
@@ -464,208 +468,33 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_toolkitCheckPhpcsRequirements">
-        toolkitCheckPhpcsRequirements()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitCheckPhpcsRequirements" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_symlinkProject">
+        symlinkProject()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_symlinkProject" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/SymlinkProjectCommands.php"><a href="files/src-taskrunner-commands-symlinkprojectcommands.html"><abbr title="src/TaskRunner/Commands/SymlinkProjectCommands.php">SymlinkProjectCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">261</span>
+    <span class="phpdocumentor-element-found-in__line">75</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Make sure that the config file exists and configuration is correct.</p>
+        <p class="phpdocumentor-summary">Symlink project as module, theme or profile in the proper directory.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitCheckPhpcsRequirements</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">symlinkProject</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;ignore&#039; =&gt; InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
 
     
-    
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:check-phpcs-requirements</p>
-</section>
-
-                                    </dd>
-                        </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_toolkitRunPhpcbf">
-        toolkitRunPhpcbf()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitRunPhpcbf" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">512</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Run PHP code autofixing.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitRunPhpcbf</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-    
-    
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:run-phpcbf</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tk-phpcbf</p>
-</section>
-
-                                    </dd>
-                        </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_toolkitSetupPhpcs">
-        toolkitSetupPhpcs()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitSetupPhpcs" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">40</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Setup PHP code sniffer.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitSetupPhpcs</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-        <section class="phpdocumentor-description"><p>Check configurations at config/default.yml - 'toolkit.test.phpcs'.</p>
-</section>
-
-    
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:setup-phpcs</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
-</section>
-
-                                    </dd>
-                        </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_toolkitTestBehat">
-        toolkitTestBehat()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestBehat" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">383</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Run Behat tests.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitTestBehat</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;from&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;to&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;profile&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;suite&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;options&#039; =&gt; InputOption::VALUE_OPTIONAL]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-        <section class="phpdocumentor-description"><p>Check configurations at config/default.yml - 'toolkit.test.behat'.
-Accept commands to run before and/or after the Behat tests.</p>
-</section>
-
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$options</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;from&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;to&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;profile&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;suite&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;options&#039; =&gt; InputOption::VALUE_OPTIONAL]</span>            </dt>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;ignore&#039; =&gt; InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
+                    <section class="phpdocumentor-description"><p>Command options.</p>
+</section>
 
             </dd>
             </dl>
@@ -681,16 +510,7 @@ Accept commands to run before and/or after the Behat tests.</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>toolkit:test-behat</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tb, tk-behat</p>
+                                                 <section class="phpdocumentor-description"><p>drupal:symlink-project</p>
 </section>
 
                                     </dd>
@@ -699,7 +519,7 @@ Accept commands to run before and/or after the Behat tests.</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>from     The dist config file (behat.yml.dist).</p>
+                                                 <section class="phpdocumentor-description"><p>root   Drupal root.</p>
 </section>
 
                                     </dd>
@@ -708,52 +528,18 @@ Accept commands to run before and/or after the Behat tests.</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>to       The destination config file (behat.yml).</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>profile  The profile to execute.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>suite    The suite to execute, default runs all suites of profile.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>options  Extra options for the command without -- (only options with no value).</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">usage</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>--profile='prod' --options='strict stop-on-failure'</p>
+                                                 <section class="phpdocumentor-description"><p>ignore List of files to ignore.</p>
 </section>
 
                                     </dd>
                         </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
+    <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
             &mdash;
-        
+            <section class="phpdocumentor-description"><p>Collection builder.</p>
+</section>
+
     
 </article>
                     <article
@@ -762,22 +548,22 @@ Accept commands to run before and/or after the Behat tests.</p>
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_toolkitTestPhpcs">
-        toolkitTestPhpcs()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestPhpcs" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_symlinkProjectValidate">
+        symlinkProjectValidate()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_symlinkProjectValidate" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/SymlinkProjectCommands.php"><a href="files/src-taskrunner-commands-symlinkprojectcommands.html"><abbr title="src/TaskRunner/Commands/SymlinkProjectCommands.php">SymlinkProjectCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">125</span>
+    <span class="phpdocumentor-element-found-in__line">43</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Run PHP code sniffer.</p>
+        <p class="phpdocumentor-summary">Validate command drupal:symlink-project.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitTestPhpcs</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">symlinkProjectValidate</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     
     
@@ -788,372 +574,28 @@ Accept commands to run before and/or after the Behat tests.</p>
     </h5>
     <dl class="phpdocumentor-tag-list">
                                     <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
+                    <span class="phpdocumentor-tag__name">hook</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>toolkit:test-phpcs</p>
+                                                 <section class="phpdocumentor-description"><p>validate drupal:symlink-project</p>
 </section>
 
                                     </dd>
                                                 <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
+                    <span class="phpdocumentor-tag__name">throws</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tk-phpcs</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">see</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                    <span class="phpdocumentor-tag-link"><abbr title="\EcEuropa\Toolkit\TaskRunner\Commands\toolkitRunPhpcs()">toolkitRunPhpcs()</abbr></span>
-                                        
-                                             
-                                    </dd>
-                        </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_toolkitTestPhpmd">
-        toolkitTestPhpmd()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestPhpmd" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">152</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Run PHPMD.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitTestPhpmd</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;config&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;format&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;ignore_patterns&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;triggered_by&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;files&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-        <section class="phpdocumentor-description"><p>Check configurations at config/default.yml - 'toolkit.test.phpmd'.</p>
-</section>
-
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;config&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;format&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;ignore_patterns&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;triggered_by&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;files&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:test-phpmd</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>config          The config file.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>format          The format to use.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>ignore_patterns An array with ignore patterns.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>triggered_by    An array with extensions to check.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>files           An array with paths to check.</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tk-phpmd</p>
+                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
+                                                            
+                                                 <section class="phpdocumentor-description"><p>Thrown when some configuration is missing or is wrong.</p>
 </section>
 
                                     </dd>
                         </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_toolkitTestPhpstan">
-        toolkitTestPhpstan()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestPhpstan" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">309</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Run PHPStan.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitTestPhpstan</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;config&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;level&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;files&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;memory-limit&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;options&#039; =&gt; InputOption::VALUE_OPTIONAL]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-        <section class="phpdocumentor-description"><p>Check configurations at config/default.yml - 'toolkit.test.phpstan'.</p>
-</section>
-
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;config&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;level&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;files&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;memory-limit&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;options&#039; =&gt; InputOption::VALUE_OPTIONAL]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:test-phpstan</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>config       The path to the config file.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>level        The level of rule options.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>files        The files to check.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>memory-limit The PHP memory limit.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>options      Extra options for the command without -- (only options with no value).</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tk-phpstan</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">usage</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>--memory-limit='4G' --options='debug'</p>
-</section>
-
-                                    </dd>
-                        </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_toolkitTestPhpunit">
-        toolkitTestPhpunit()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestPhpunit" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">450</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Run PHPUnit tests.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitTestPhpunit</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;execution&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;from&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;to&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-        <section class="phpdocumentor-description"><p>Check configurations at config/default.yml - 'toolkit.test.phpunit'.
-Accept commands to run before and/or after the PHPUnit tests.</p>
-</section>
-
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;execution&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;from&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;to&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:test-phpunit</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tp, tk-phpunit</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>execution The execution type (default or parallel).</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>from      The dist config file (phpunit.xml.dist).</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>to        The destination config file (phpunit.xml).</p>
-</section>
-
-                                    </dd>
-                        </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
+    <span class="phpdocumentor-signature__response_type">void</span>
             &mdash;
         
     
@@ -1606,50 +1048,29 @@ Accept commands to run before and/or after the PHPUnit tests.</p>
                     <article
         class="phpdocumentor-element
             -method
-            -protected
-            -deprecated                                            "
+            -private
+                                                        "
 >
-    <h4 class="phpdocumentor-element__name" id="method_toolkitRunGrumphp">
-        toolkitRunGrumphp()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitRunGrumphp" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_getComposer">
+        getComposer()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_getComposer" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/SymlinkProjectCommands.php"><a href="files/src-taskrunner-commands-symlinkprojectcommands.html"><abbr title="src/TaskRunner/Commands/SymlinkProjectCommands.php">SymlinkProjectCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">196</span>
+    <span class="phpdocumentor-element-found-in__line">102</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Run PHP code sniffer within GrumPHP.</p>
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">getComposer</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
-    <code class="phpdocumentor-code phpdocumentor-signature -deprecated">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-                    <span class="phpdocumentor-signature__name">toolkitRunGrumphp</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+        <section class="phpdocumentor-description"></section>
 
     
     
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Robo\Exception\TaskException">TaskException</abbr></span>
-                                                            
-                                             
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">deprecated</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                             
-                                    </dd>
-                        </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
@@ -1660,34 +1081,51 @@ Accept commands to run before and/or after the PHPUnit tests.</p>
                     <article
         class="phpdocumentor-element
             -method
-            -protected
+            -private
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_toolkitRunPhpcs">
-        toolkitRunPhpcs()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitRunPhpcs" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_scanDir">
+        scanDir()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_scanDir" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/SymlinkProjectCommands.php"><a href="files/src-taskrunner-commands-symlinkprojectcommands.html"><abbr title="src/TaskRunner/Commands/SymlinkProjectCommands.php">SymlinkProjectCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">240</span>
+    <span class="phpdocumentor-element-found-in__line">111</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Run PHP code sniffer.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-                    <span class="phpdocumentor-signature__name">toolkitRunPhpcs</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-        <section class="phpdocumentor-description"><p>Check configurations at config/default.yml - 'toolkit.test.phpcs'.</p>
-</section>
-
     
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">scanDir</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$directory</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$ignore</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$directory</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$ignore</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">[]</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
+    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             &mdash;
         
     
@@ -1770,7 +1208,7 @@ Accept commands to run before and/or after the PHPUnit tests.</p>
 </section>
             </div>
         </div>
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

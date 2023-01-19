@@ -411,6 +411,106 @@ Search.appendIndex(
             "summary": "Dumps\u0020the\u0020current\u0020or\u0020given\u0020configuration.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ConfigurationCommands.html#method_config"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands",
+            "name": "DockerCommands",
+            "summary": "Provides\u0020commands\u0020to\u0020update\u0020docker\u002Dcompose.yml\u0020based\u0020on\u0020project\u0027s\u0020configurations.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AdockerRefreshConfiguration\u0028\u0029",
+            "name": "dockerRefreshConfiguration",
+            "summary": "Update\u0020docker\u002Dcompose.yml\u0020file\u0020based\u0020on\u0020project\u0027s\u0020configurations.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_dockerRefreshConfiguration"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AcopyDockerComposeDefaultToProject\u0028\u0029",
+            "name": "copyDockerComposeDefaultToProject",
+            "summary": "Copy\u0020.\/resources\/docker\/default.yml\u0020file\u0020to\u0020docker\u002Dcompose.yml\u0020inside\u0020project\u0020root\u0020directory",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_copyDockerComposeDefaultToProject"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetServicesImagesFromDockerCompose\u0028\u0029",
+            "name": "getServicesImagesFromDockerCompose",
+            "summary": "Get\u0020array\u0020of\u0020services\u0020with\u0020images\u0020and\u0020versions\u0020from\u0020docker\u002Dcompose.yml",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServicesImagesFromDockerCompose"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetWebsiteProjectInformation\u0028\u0029",
+            "name": "getWebsiteProjectInformation",
+            "summary": "Returns\u0020the\u0020Project\u0027s\u0020php\u0020service\u0020version\u0020information\u0020from\u0020the\u0020endpoint.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWebsiteProjectInformation"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetWebsiteRequirements\u0028\u0029",
+            "name": "getWebsiteRequirements",
+            "summary": "Returns\u0020the\u0020toolkit\u0020requirements\u0020from\u0020the\u0020endpoint.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWebsiteRequirements"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AextractMajorMinorVersion\u0028\u0029",
+            "name": "extractMajorMinorVersion",
+            "summary": "Converts\u0020from\u0020semantic\u0020version\u0020to\u0020\u0022major.minor\u0022\u0020version",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_extractMajorMinorVersion"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AbackupDockerComposeFile\u0028\u0029",
+            "name": "backupDockerComposeFile",
+            "summary": "Backup\u0020current\u0020docker\u002Dcompose.yml\u0020to\u0020docker\u002Dcompose.yml.prev",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_backupDockerComposeFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AupdateDockerComposeFile\u0028\u0029",
+            "name": "updateDockerComposeFile",
+            "summary": "Update\u0020docker\u002Dcompose.yml",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_updateDockerComposeFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetServiceDetailsFromResources\u0028\u0029",
+            "name": "getServiceDetailsFromResources",
+            "summary": "Return\u0020the\u0020details\u0020for\u0020a\u0020service\u0020from\u0020.\/resources\/docker",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServiceDetailsFromResources"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetServicesVersionsFromRequirements\u0028\u0029",
+            "name": "getServicesVersionsFromRequirements",
+            "summary": "Get\u0020final\u0020services\u0020names\u0020with\u0020versions\u0020from\u0020requirements",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServicesVersionsFromRequirements"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AwriteWarningMessages\u0028\u0029",
+            "name": "writeWarningMessages",
+            "summary": "Write\u0020all\u0020available\u0020warning\u0020messages",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_writeWarningMessages"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetServiceImage\u0028\u0029",
+            "name": "getServiceImage",
+            "summary": "Get\u0020service\u0020image\u0020with\u0020version",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServiceImage"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetFinalImages\u0028\u0029",
+            "name": "getFinalImages",
+            "summary": "Get\u0020final\u0020images\u0020to\u0020update\u0020docker\u002Dcompose.yml",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getFinalImages"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetWarningMessages\u0028\u0029",
+            "name": "getWarningMessages",
+            "summary": "Get\u0020warning\u0020messages\u0020for\u0020versions\u0020on\u0020.opts.yml\u0020that\u0020not\u0020respect\u0020the\u0020minimum\u0020requirements",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWarningMessages"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AremoveUnusedDcServices\u0028\u0029",
+            "name": "removeUnusedDcServices",
+            "summary": "Remove\u0020services\u0020that\u0020do\u0020not\u0020exist\u0020in\u0020project\u0020info,\u0020requirements\u0020or\u0020.opts.yml",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_removeUnusedDcServices"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AOPTS_YML_FILE",
+            "name": "OPTS_YML_FILE",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#constant_OPTS_YML_FILE"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003ADC_YML_FILE",
+            "name": "DC_YML_FILE",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#constant_DC_YML_FILE"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003ADC_YML_FILE_PREVIOUS",
+            "name": "DC_YML_FILE_PREVIOUS",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#constant_DC_YML_FILE_PREVIOUS"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003ADEV_SUFFIX",
+            "name": "DEV_SUFFIX",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#constant_DEV_SUFFIX"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands",
             "name": "DocumentationCommands",
             "summary": "Class\u0020AbstractCommands.",
@@ -586,6 +686,11 @@ Search.appendIndex(
             "summary": "Import\u0020the\u0020production\u0020snapshot.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_toolkitInstallDump"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AtoolkitCreateDump\u0028\u0029",
+            "name": "toolkitCreateDump",
+            "summary": "Export\u0020the\u0020local\u0020snapshot.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_toolkitCreateDump"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AtoolkitDownloadDump\u0028\u0029",
             "name": "toolkitDownloadDump",
             "summary": "Download\u0020ASDA\u0020snapshot.",
@@ -603,7 +708,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AgenerateAsdaWgetInputFile\u0028\u0029",
             "name": "generateAsdaWgetInputFile",
-            "summary": "Create\u0020file\u0020containing\u0020a\u0020url\u0020for\u0020usage\u0020in\u0020wget\u0020\u002D\u002Dinput\u002Dfile\u0020argument.",
+            "summary": "Create\u0020a\u0020file\u0020containing\u0020the\u0020url\u0020to\u0020be\u0020used\u0020by\u0020wget\u0020\u002D\u002Dinput\u002Dfile\u0020option.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_generateAsdaWgetInputFile"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AwgetDownloadFile\u0028\u0029",
@@ -615,6 +720,16 @@ Search.appendIndex(
             "name": "tmpDirectory",
             "summary": "Return\u0020the\u0020tmp\u0020folder\u0020path,\u0020folder\u0020is\u0020created\u0020if\u0020missing.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_tmpDirectory"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AgetAsdaDate\u0028\u0029",
+            "name": "getAsdaDate",
+            "summary": "Returns\u0020a\u0020human\u002Dreadable\u0020date\u0020of\u0020the\u0020ASDA\u0020dump.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_getAsdaDate"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AtaskImportDatabase\u0028\u0029",
+            "name": "taskImportDatabase",
+            "summary": "Import\u0020given\u0020dump\u0020file,\u0020gunzip\u0020is\u0020used\u0020if\u0020dump\u0020ends\u0020with\u0020.gz.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_taskImportDatabase"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHooksCommands",
             "name": "GitHooksCommands",
@@ -801,6 +916,41 @@ Search.appendIndex(
             "summary": "The\u0020Toolkit\u0020repo\u0020url.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_repo"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands",
+            "name": "SymlinkProjectCommands",
+            "summary": "Class\u0020AbstractCommands.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands\u003A\u003AgetConfigurationFile\u0028\u0029",
+            "name": "getConfigurationFile",
+            "summary": "Path\u0020to\u0020YAML\u0020configuration\u0020file\u0020containing\u0020command\u0020defaults.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_getConfigurationFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands\u003A\u003AsymlinkProjectValidate\u0028\u0029",
+            "name": "symlinkProjectValidate",
+            "summary": "Validate\u0020command\u0020drupal\u003Asymlink\u002Dproject.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_symlinkProjectValidate"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands\u003A\u003AsymlinkProject\u0028\u0029",
+            "name": "symlinkProject",
+            "summary": "Symlink\u0020project\u0020as\u0020module,\u0020theme\u0020or\u0020profile\u0020in\u0020the\u0020proper\u0020directory.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_symlinkProject"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands\u003A\u003AgetComposer\u0028\u0029",
+            "name": "getComposer",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_getComposer"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands\u003A\u003AscanDir\u0028\u0029",
+            "name": "scanDir",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_scanDir"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands\u003A\u003A\u0024types",
+            "name": "types",
+            "summary": "A\u0020mapping\u0020of\u0020Drupal\u0020project\u0020type\u0020to\u0020directory.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#property_types"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands",
             "name": "TestsCommands",
             "summary": "Class\u0020TestsCommands.",
@@ -931,6 +1081,11 @@ Search.appendIndex(
             "summary": "Install\u0020packages\u0020present\u0020in\u0020the\u0020opts.yml\u0020file\u0020under\u0020extra_pkgs\u0020section.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_toolkitInstallDependencies"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AparseOptsYml\u0028\u0029",
+            "name": "parseOptsYml",
+            "summary": "Returns\u0020the\u0020.opts.yml\u0020file\u0020content.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_parseOptsYml"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Inject\\ConfigForCommand",
             "name": "ConfigForCommand",
             "summary": "This\u0020class\u0020is\u0020based\u0020on\u0020\\Consolidation\\Config\\Inject\\ConfigForCommand.",
@@ -1046,6 +1201,21 @@ Search.appendIndex(
             "summary": "Register\u0020commands\u0020in\u0020the\u0020runner.yml\u0020under\u0020\u0027commands\u003A\u0027.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_registerConfigurationCommands"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AgetCurrentConfig\u0028\u0029",
+            "name": "getCurrentConfig",
+            "summary": "Get\u0020current\u0020configurations.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_getCurrentConfig"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AgetConfigDirFilesPaths\u0028\u0029",
+            "name": "getConfigDirFilesPaths",
+            "summary": "Get\u0020runner\u0020config\u0020directory\u0020files.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_getConfigDirFilesPaths"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AloadConfigurationFromDirFiles\u0028\u0029",
+            "name": "loadConfigurationFromDirFiles",
+            "summary": "Load\u0020configuration\u0020from\u0020dir\u0020files.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_loadConfigurationFromDirFiles"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AAPPLICATION_NAME",
             "name": "APPLICATION_NAME",
             "summary": "",
@@ -1055,6 +1225,11 @@ Search.appendIndex(
             "name": "REPOSITORY",
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#constant_REPOSITORY"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003ACONFIG_DIR_KEY",
+            "name": "CONFIG_DIR_KEY",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#constant_CONFIG_DIR_KEY"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003A\u0024input",
             "name": "input",
