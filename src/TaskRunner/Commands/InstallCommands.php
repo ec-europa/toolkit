@@ -57,22 +57,31 @@ class InstallCommands extends AbstractCommands
     /**
      * Install a clone website.
      *
+     * @param array $options
+     *   Command options.
+     *
      * @command toolkit:install-clone
+     *
+     * @option dumpfile The dump file name.
      *
      * @aliases tk-iclone
      *
      * @return \Robo\Collection\CollectionBuilder
      *   Collection builder.
      */
-    public function toolkitInstallClone()
+    public function toolkitInstallClone(array $options = [
+        'dumpfile' => InputOption::VALUE_REQUIRED,
+    ])
     {
         $tasks = [];
         $runner_bin = $this->getBin('run');
 
-        $tasks[] = $this->taskExec($runner_bin)->arg('toolkit:install-dump');
+        $tasks[] = $this->taskExec($runner_bin)
+            ->arg('toolkit:install-dump')
+            ->option('dumpfile', $options['dumpfile'], '=');
         $tasks[] = $this->taskExec($runner_bin)->arg('toolkit:run-deploy');
 
-        // Collect and execute list of commands set on local runner.yml.s
+        // Collect and execute list of commands set on local runner.yml.
         if (!empty($commands = $this->getConfig()->get('toolkit.install.clone.commands'))) {
             $tasks[] = $this->taskExecute($commands);
         }
@@ -91,14 +100,14 @@ class InstallCommands extends AbstractCommands
      * @param array $options
      *   Command options.
      *
-     * @return \Robo\Collection\CollectionBuilder
-     *   Collection builder.
-     *
      * @command toolkit:run-deploy
      *
      * @option sequence-file The file that holds the deployment sequence.
      * @option sequence-key  The key under which the commands are defined.
      * @option config-file   The config file that triggers the config import.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   Collection builder.
      */
     public function toolkitRunDeploy(array $options = [
         'sequence-file' => InputOption::VALUE_REQUIRED,
