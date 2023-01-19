@@ -28,6 +28,7 @@ See bellow current list of available commands:
    drupal:site-install               [drupal:si|dsi] Install target site.
    drupal:site-post-install          Run Drupal post-install commands.
    drupal:site-pre-install           Run Drupal pre-install commands.
+   drupal:symlink-project            Symlink project as module, theme or profile in the proper directory.
    drupal:upgrade-status             [tdus] Check project compatibility for Drupal 9/10 upgrade.
   toolkit
    toolkit:build-assets              [tba|tk-assets] Build theme assets (Css and Js).
@@ -39,6 +40,7 @@ See bellow current list of available commands:
    toolkit:code-review               This command will execute all the testing tools.
    toolkit:complock-check            Check if 'composer.lock' exists on the project root folder.
    toolkit:component-check           Check composer.json for components that are not whitelisted/blacklisted.
+   toolkit:create-dump               Export the local snapshot.
    toolkit:download-dump             Download ASDA snapshot.
    toolkit:fix-permissions           Run script to fix permissions (experimental).
    toolkit:hooks-delete-all          Remove all existing hooks, this will ignore active hooks list.
