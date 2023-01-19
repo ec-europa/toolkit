@@ -3,6 +3,9 @@ command:
     install-clean:
       options:
         config-file: ${toolkit.clean.config_file}
+    install-clone:
+      options:
+        dumpfile: ${toolkit.clone.dumpfile}
     run-deploy:
       options:
         sequence-file: ${toolkit.deploy.sequence_file}

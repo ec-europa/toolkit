@@ -1,3 +1,80 @@
+- command: 'config'
+  configuration: []
+  resources:
+    - file: config/runner/toolkit.yml
+      content: |
+        toolkit:
+          clone:
+            asda_type: cloud
+            asda_vendor: vendor
+            asda_url: 'https://url.for.dumps/dumps'
+            nextcloud_url: nextcloud.url/files
+    - file: config/runner/docker.yml
+      content: |
+        docker:
+          resource:
+            default: default.yml
+          services:
+            web:
+              resource: web.yml
+            mysql:
+              resource: mysql.yml
+            selenium:
+              resource: selenium.yml
+            solr:
+              resource: solr.yml
+  expectations:
+    - string_contains: |
+        clone:
+          dumpfile: mysql.gz
+          asda_services: mysql
+          asda_type: cloud
+          asda_url: 'https://url.for.dumps/dumps'
+          nextcloud_url: nextcloud.url/files
+          nextcloud_admin: false
+          asda_vendor: vendor
+          asda_source: reference
+          myloader: /scripts/importdb.sh
+          mydumper: /scripts/backupdb.sh
+    - string_contains: |
+        docker:
+          resource:
+            default: default.yml
+          services:
+            web:
+              default: 'true'
+              resource: web.yml
+            mysql:
+              default: 'true'
+              resource: mysql.yml
+            selenium:
+              default: 'true'
+              resource: selenium.yml
+            solr:
+              default: 'false'
+              resource: solr.yml
+
+- command: 'config docker'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        resource:
+          default: /resources/docker/default.yml
+        services:
+          web:
+            default: 'true'
+            resource: /resources/docker/web-service.yml
+          mysql:
+            default: 'true'
+            resource: /resources/docker/mysql-service.yml
+          selenium:
+            default: 'true'
+            resource: /resources/docker/selenium-service.yml
+          solr:
+            default: 'false'
+            resource: /resources/docker/solr-service.yml
+
 - command: 'config runner'
   configuration: []
   resources: []
@@ -5,6 +82,7 @@
     - contains: |
         bin_dir: ./vendor/bin
         bin_node_dir: ./node_modules/.bin
+        config_dir: ./config/runner
         working_dir: /test/toolkit/tests/sandbox
 
 - command: 'config drupal.site'
@@ -95,6 +173,7 @@
         - { task: copy, from: test.txt, to: test-2.txt }
         - { task: copy, from: test.txt, to: test-3.txt }
         - { task: copy, from: test.txt, to: test-4.txt }
+        - { task: copy-dir, from: test, to: test-folder-copied }
         - { task: chmod, file: test-2.txt, permissions: '0775' }
         - { task: chgrp, file: test-2.txt, group: root }
         - { task: chown, file: test-2.txt, user: root }
@@ -113,6 +192,7 @@
         [Filesystem\FilesystemStack] _copy ["test.txt","test-2.txt",false]
         [Filesystem\FilesystemStack] _copy ["test.txt","test-3.txt",false]
         [Filesystem\FilesystemStack] _copy ["test.txt","test-4.txt",false]
+        [Filesystem\CopyDir] Copied from test to test-folder-copied
         [Filesystem\FilesystemStack] _chmod ["test-2.txt","0775",0,false]
         [Filesystem\FilesystemStack] _chgrp ["test-2.txt","root",false]
         [Filesystem\FilesystemStack] _chown ["test-2.txt","root",false]

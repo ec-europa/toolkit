@@ -16,29 +16,54 @@
   configuration: []
   resources: []
   expectations:
-    - contains: |
-        >  Checking Toolkit requirements:
+    php8.1:
+      - contains: |
+          >  Checking Toolkit requirements:
 
 
-        Checking connections:
-        =====================
+          Checking connections:
+          =====================
 
-        ------------------------- ----------
-        QA Endpoint access        OK
-        GitHub oauth access       OK (200)
-        GitLab oauth access       OK (200)
-        ASDA configuration        OK
-        NEXTCLOUD configuration   OK
-        ------------------------- ----------
+          ------------------------- ----------
+          QA Endpoint access        OK
+          GitHub oauth access       OK (200)
+          GitLab oauth access       OK (200)
+          ASDA configuration        OK
+          NEXTCLOUD configuration   OK
+          ------------------------- ----------
 
-        Required checks:
-        ================
+          Required checks:
+          ================
 
-        ----------------- ---------------------
-        PHP version       OK (8.1.13)
-        Toolkit version   OK (9.2.0)
-        Drupal version    FAIL (not found) ()
-        ----------------- ---------------------
+          ----------------- ---------------------
+          PHP version       OK (8.1.14)
+          Toolkit version   OK (9.2.0)
+          Drupal version    FAIL (not found) ()
+          ----------------- ---------------------
+    php8.2:
+      - contains: |
+          >  Checking Toolkit requirements:
+
+
+          Checking connections:
+          =====================
+
+          ------------------------- ----------
+          QA Endpoint access        OK
+          GitHub oauth access       OK (200)
+          GitLab oauth access       OK (200)
+          ASDA configuration        OK
+          NEXTCLOUD configuration   OK
+          ------------------------- ----------
+
+          Required checks:
+          ================
+
+          ----------------- ---------------------
+          PHP version       OK (8.2.1)
+          Toolkit version   OK (9.2.0)
+          Drupal version    FAIL (not found) ()
+          ----------------- ---------------------
 
 - command: toolkit:requirements
   configuration: []
@@ -46,29 +71,54 @@
     - from: sample-composer.lock
       to: composer.lock
   expectations:
-    - contains: |
-        >  Checking Toolkit requirements:
+    php8.1:
+      - contains: |
+          >  Checking Toolkit requirements:
 
 
-        Checking connections:
-        =====================
+          Checking connections:
+          =====================
 
-        ------------------------- ----------
-        QA Endpoint access        OK
-        GitHub oauth access       OK (200)
-        GitLab oauth access       OK (200)
-        ASDA configuration        OK
-        NEXTCLOUD configuration   OK
-        ------------------------- ----------
+          ------------------------- ----------
+          QA Endpoint access        OK
+          GitHub oauth access       OK (200)
+          GitLab oauth access       OK (200)
+          ASDA configuration        OK
+          NEXTCLOUD configuration   OK
+          ------------------------- ----------
 
-        Required checks:
-        ================
+          Required checks:
+          ================
 
-        ----------------- -------------
-        PHP version       OK (8.1.13)
-        Toolkit version   OK (9.2.0)
-        Drupal version    OK (9.4.8)
-        ----------------- -------------
+          ----------------- -------------
+          PHP version       OK (8.1.14)
+          Toolkit version   OK (9.2.0)
+          Drupal version    OK (9.4.8)
+          ----------------- -------------
+    php8.2:
+      - contains: |
+          >  Checking Toolkit requirements:
+
+
+          Checking connections:
+          =====================
+
+          ------------------------- ----------
+          QA Endpoint access        OK
+          GitHub oauth access       OK (200)
+          GitLab oauth access       OK (200)
+          ASDA configuration        OK
+          NEXTCLOUD configuration   OK
+          ------------------------- ----------
+
+          Required checks:
+          ================
+
+          ----------------- ------------
+          PHP version       OK (8.2.1)
+          Toolkit version   OK (9.2.0)
+          Drupal version    OK (9.4.8)
+          ----------------- ------------
 
 - command: toolkit:fix-permissions
   configuration: []

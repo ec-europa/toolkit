@@ -76,3 +76,68 @@ By default, subsite configuration go into file ``runner.yml.dist``, see bellow a
      host: "http://selenium"
      port: "4444"
      browser: "chrome"
+
+Splitting subsite configuration into multiple files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each subsite configuration can be splited into independent Yaml files instead of defining everything inside ``runner.yml.dist`` file.
+
+By default, the configuration files directory is defined to be ``PROJECT_ROOT/config/runner``
+
+.. code-block::
+
+   runner:
+     config_dir: './config/runner'
+
+To change the directory configuration, copy the above configuration and paste it inside ``runner.yml.dist`` and change ``config_dir`` value.
+
+Every configuration block inside ``runner.yml.dist`` (drupal, toolkit, selenium, etc...) can be moved to ``config_dir`` directory.
+
+As example, taking the subsite configurations:
+
+.. code-block::
+
+   runner.yml.dist file with custom directory defined
+   ===================================================
+
+     runner:
+       config_dir: './my-custom-dir'
+
+
+   Config directory
+   =================
+
+   ~/PROJECT_ROOT/my-custom-dir $
+     drupal.yml
+     toolkit.yml
+     selenium.yml
+
+
+   drupal.yml file
+   ===============
+
+     drupal:
+       root: "web"
+       base_url: ${env.DRUPAL_BASE_URL}
+       site:
+         profile: "standard"
+         name: "Drupal website configuration goes here!"
+         generate_db_url: false
+       account:
+         name: ${env.DRUPAL_ACCOUNT_USERNAME}
+         password: ${env.DRUPAL_ACCOUNT_PASSWORD}
+
+   toolkit.yml file
+   ===============
+
+     toolkit:
+       project_id: 'PROJECTID'
+
+
+   selenium.yml file
+   ===============
+
+     selenium:
+       host: "http://selenium"
+       port: "4444"
+       browser: "chrome"

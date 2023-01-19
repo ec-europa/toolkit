@@ -1,0 +1,40 @@
+drupal:
+  root: 'web'
+  base_url: 'http://web:8080/web'
+  virtual_host: 'http://web:8080/web'
+  root_absolute: ~
+  # Drupal site information.
+  site:
+    name: 'Site name'
+    mail: 'info@example.org'
+    profile: 'minimal'
+    update: 'false'
+    locale: 'en'
+    sites_subdir: 'default'
+    existing_config: 'false'
+    generate_db_url: 'false'
+    skip_permissions_setup: 'false'
+    settings_override_file: 'settings.override.php'
+  # Drupal Administrator account information.
+  account:
+    name: 'admin'
+    password: 'admin'
+    mail: 'admin@example.org'
+  # Drupal database settings.
+  database:
+    scheme: 'mysql'
+    host: 'mysql'
+    port: '3306'
+    name: ''
+    user: ''
+    password: ''
+  # Following lines will be converted in PHP and appended to default.settings.php.
+  settings: [ ]
+  drush:
+    options:
+      uri: '${drupal.base_url}'
+  # List of shell commands to be before and after the site installation.
+  # You can use same syntax as the "commands:", check the documentation for more.
+  # Configuration token replacement is supported too.
+  pre_install: [ ]
+  post_install: [ ]
