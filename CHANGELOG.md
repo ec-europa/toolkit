@@ -1,5 +1,19 @@
 # Toolkit change log
 
+## Version 9.3.0
+  - DQA-5410: Improve load of database during clone install.
+  - DQA-5473: Tests for DrupalCommands.
+  - DQA-5760: Fix overridden configurations not working.
+  - DQA-5643: Apply to 'ensureArray' all tasks.
+  - DQA-5484: Better error handling.
+  - DQA-5743: Create task to self-update docker-compose.yml.
+  - DQA-5317: Allow multiple config files to be loaded.
+  - DQA-5885: Add command drupal:symlink-project.
+  - DQA-4768: Allow myloader to be used.
+  - DQA-5913: PHP 8.2 support.
+  - DQA-5945: Allow option dumpfile in install-clone command.
+  - DQA-5946: Add config command copy-dir.
+
 ## Version 9.2.0
   - DQA-5384: Improve test coverage for toolkit.
   - DQA-5102: Set outdated as soft block.
