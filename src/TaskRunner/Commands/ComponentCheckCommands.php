@@ -6,6 +6,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use EcEuropa\Toolkit\TaskRunner\Commands\DrupalPackageCommands;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Symfony\ConsoleIO;
@@ -238,10 +239,15 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function validateComponent(array $package, array $modules)
     {
-        // Only validate module components for this time.
-        if (!isset($package['type']) || $package['type'] !== 'drupal-module') {
-            return;
-        }
+
+        // Only validate module components for this time
+        // (desactivated ro extend the check to all vendors selected on
+        // QA Website).
+        //
+        //  if (!isset($package['type']) || $package['type'] !== 'drupal-module') {
+        //    return;
+        //  }
+
         $config = $this->getConfig();
         $packageName = $package['name'];
         $hasBeenQaEd = isset($modules[$packageName]);
@@ -311,9 +317,6 @@ class ComponentCheckCommands extends AbstractCommands
      * @param array $modules The modules list.
      *
      * @throws \Robo\Exception\TaskException
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function componentMandatory(array $modules)
     {
@@ -376,9 +379,6 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @param array $modules The modules list.
      * @param array $packages The packages to validate.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function componentRecommended(array $modules, array $packages)
     {
@@ -454,7 +454,8 @@ class ComponentCheckCommands extends AbstractCommands
                     continue;
                 }
             }
-            $historyTerms = $this->getPackageDetails($name, $package['version'], '8.x');
+            $drupalPackage = new DrupalPackageCommands();
+            $historyTerms = $drupalPackage->getPackageDetails($name, $package['version'], '8.x');
             if (!empty($historyTerms) && (empty($historyTerms['terms']) || !in_array('insecure', $historyTerms['terms']))) {
                 $messages[] = "$msg (Confirmation failed, ignored)";
                 continue;
@@ -479,9 +480,6 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Helper function to check component's review information.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function componentOutdated()
     {
@@ -490,7 +488,6 @@ class ComponentCheckCommands extends AbstractCommands
             ->run()->getMessage();
 
         $outdatedPackages = json_decode($result, true);
-
         if (!empty($outdatedPackages['installed'])) {
             if (is_array($outdatedPackages)) {
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
@@ -517,9 +514,6 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Helper function to check component's review information.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function componentAbandoned()
     {
@@ -528,7 +522,6 @@ class ComponentCheckCommands extends AbstractCommands
             ->run()->getMessage();
 
         $outdatedPackages = json_decode($result, true);
-
         if (!empty($outdatedPackages['installed'])) {
             if (is_array($outdatedPackages)) {
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
@@ -544,66 +537,6 @@ class ComponentCheckCommands extends AbstractCommands
         if (!$this->abandonedFailed) {
             $this->say('Abandoned components check passed.');
         }
-    }
-
-    /**
-     * Call release history of d.org to confirm security alert.
-     *
-     * @param string $package
-     *   The package to check.
-     * @param string $version
-     *   The version to check.
-     * @param string $core
-     *   The package core version.
-     *
-     * @return array|int
-     *   Array with package info from d.org, 1
-     *   if no release history found.
-     */
-    protected function getPackageDetails(string $package, string $version, string $core)
-    {
-        $name = explode('/', $package)[1];
-        // Drupal core is an exception, we should use '/drupal/current'.
-        if ($package === 'drupal/core') {
-            $url = 'https://updates.drupal.org/release-history/drupal/current';
-        } else {
-            $url = 'https://updates.drupal.org/release-history/' . $name . '/' . $core;
-        }
-
-        $releaseHistory = $fullReleaseHistory = [];
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type' => 'application/hal+json']);
-        $result = curl_exec($curl);
-
-        if ($result !== false) {
-            $fullReleaseHistory[$name] = simplexml_load_string($result);
-            $terms = [];
-            foreach ($fullReleaseHistory[$name]->releases as $release) {
-                foreach ($release as $releaseItem) {
-                    $versionTmp = str_replace($core . '-', '', (string) $releaseItem->version);
-
-                    if (!is_null($version) && Semver::satisfies($versionTmp, $version)) {
-                        foreach ($releaseItem->terms as $term) {
-                            foreach ($term as $termItem) {
-                                $terms[] = strtolower((string) $termItem->value);
-                            }
-                        }
-
-                        $releaseHistory = [
-                            'name' => $name,
-                            'version' => (string) $releaseItem->versions,
-                            'terms' => $terms,
-                            'date' => (string) $releaseItem->date,
-                        ];
-                    }
-                }
-            }
-            return $releaseHistory;
-        }
-
-        $this->say('No release history found.');
-        return 1;
     }
 
     /**
