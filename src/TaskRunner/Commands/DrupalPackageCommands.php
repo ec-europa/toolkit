@@ -6,7 +6,8 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
 
-class DrupalPackageCommands {
+class DrupalPackageCommands
+{
 
     /**
      * Call release history of d.org to confirm security alert.
@@ -67,4 +68,5 @@ class DrupalPackageCommands {
         $this->say('No release history found.');
         return 1;
     }
+
 }
