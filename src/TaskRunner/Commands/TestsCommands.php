@@ -528,7 +528,7 @@ class TestsCommands extends AbstractCommands
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
         preg_match_all('/ - (.+)/', $result, $matches);
-        $parallel = $this->taskParallelExec();
+        $parallel = $this->taskParallelExec()->printOutput();
         if (!empty($matches[1])) {
             $opts = ' ';
             if (!empty($options['options'])) {
