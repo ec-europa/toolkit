@@ -178,7 +178,7 @@
           ))
             ->options(array ( ... ), '=')
             ->option('-y')
-        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --db-url='mysql://root:1234@mysql:3306/db' -y
+        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/DrupalCommandsTest/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --db-url='mysql://root:1234@mysql:3306/db' -y
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
 
@@ -219,7 +219,7 @@
           ))
             ->options(array ( ... ), '=')
             ->option('-y')
-        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/website/ --site-name='The site name' --site-mail=info@example.org --locale=fr --account-mail=superadmin@example.org --account-name=superadmin --account-pass=12345 --sites-subdir=web --db-url='mysql://root:1234@mysql:3333/test' -y
+        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/DrupalCommandsTest/website/ --site-name='The site name' --site-mail=info@example.org --locale=fr --account-mail=superadmin@example.org --account-name=superadmin --account-pass=12345 --sites-subdir=web --db-url='mysql://root:1234@mysql:3333/test' -y
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
 
@@ -241,7 +241,7 @@
           ))
             ->options(array ( ... ), '=')
             ->option('-y')
-        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --existing-config -y
+        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/DrupalCommandsTest/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --existing-config -y
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
 

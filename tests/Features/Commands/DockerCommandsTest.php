@@ -74,6 +74,7 @@ class DockerCommandsTest extends AbstractTest
      * Test Toolkit docker commands output docker-composer.yml content.
      *
      * @param string $command
+     *   A command.
      * @param array $config
      *   A configuration array.
      * @param array $resources
