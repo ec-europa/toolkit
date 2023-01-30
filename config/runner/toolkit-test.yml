@@ -18,6 +18,7 @@ toolkit:
       covers: ~
       uses: ~
       filter: ~
+      printer: EcEuropa\Toolkit\Tests\TestDurationPrinter
       commands:
         before: [ ]
         after: [ ]

@@ -2,7 +2,7 @@
   configuration: []
   resources: []
   expectations:
-    - contains: '[error]  The /test/toolkit/tests/sandbox/composer.json was not found.'
+    - contains: '[error]  The /test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/composer.json was not found.'
 
 - command: 'drupal:symlink-project'
   configuration:
@@ -21,12 +21,12 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('/test/toolkit/tests/sandbox/web/modules/custom/example')
-          ->mkdir('/test/toolkit/tests/sandbox/web/modules/custom/example')
-          ->symlink('/test/toolkit/tests/sandbox/composer.json', '/test/toolkit/tests/sandbox/web/modules/custom/example/composer.json')
-          ->symlink('/test/toolkit/tests/sandbox/example.txt', '/test/toolkit/tests/sandbox/web/modules/custom/example/example.txt')
-          ->symlink('/test/toolkit/tests/sandbox/example2.txt', '/test/toolkit/tests/sandbox/web/modules/custom/example/example2.txt')
-          ->symlink('/test/toolkit/tests/sandbox/runner.yml', '/test/toolkit/tests/sandbox/web/modules/custom/example/runner.yml')
+          ->remove('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... ules/custom/example')
+          ->mkdir('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... ules/custom/example')
+          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/composer.json', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... ample/composer.json')
+          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/example.txt', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... example/example.txt')
+          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/example2.txt', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... xample/example2.txt')
+          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/runner.yml', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... /example/runner.yml')
     - not_contains: 'ignored.txt'
     - not_contains: '.git'
 
@@ -45,9 +45,9 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('/test/toolkit/tests/sandbox/build/themes/custom/example')
-          ->mkdir('/test/toolkit/tests/sandbox/build/themes/custom/example')
-          ->symlink('/test/toolkit/tests/sandbox/composer.json', '/test/toolkit/tests/sandbox/build/themes/custom/example/composer.json')
-          ->symlink('/test/toolkit/tests/sandbox/example.txt', '/test/toolkit/tests/sandbox/build/themes/custom/example/example.txt')
-          ->symlink('/test/toolkit/tests/sandbox/example2.txt', '/test/toolkit/tests/sandbox/build/themes/custom/example/example2.txt')
-          ->symlink('/test/toolkit/tests/sandbox/runner.yml', '/test/toolkit/tests/sandbox/build/themes/custom/example/runner.yml')
+          ->remove('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... emes/custom/example')
+          ->mkdir('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... emes/custom/example')
+          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/composer.json', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... ample/composer.json')
+          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/example.txt', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... example/example.txt')
+          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/example2.txt', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... xample/example2.txt')
+          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/runner.yml', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... /example/runner.yml')

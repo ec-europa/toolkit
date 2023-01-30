@@ -97,7 +97,7 @@ class ConfigurationCommandsTest extends AbstractTest
         $input = new StringInput('test:run --working-dir=' . $this->getSandboxRoot());
 
         $runner = new Runner($this->getClassLoader(), $input, (new NullOutput()));
-        $runner->getConfig()->set('runner.bin_dir', '../../.');
+        $runner->getConfig()->set('runner.bin_dir', '../../../.');
         $code = $runner->run();
 
         // Asserts.

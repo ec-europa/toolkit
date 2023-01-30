@@ -216,7 +216,12 @@
   expectations:
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/phpunit')
-          ->options(array ( ... ), '=')
+          ->options(array (
+            'process-isolation' => NULL,
+            'debug' => NULL,
+          ), '=')
+        ->option('group', 'abc', '=')
+        ->option('filter', 'Test', '=')
         [Simulator] Running ./vendor/bin/phpunit --process-isolation --debug --group=abc --filter=Test
 
 - command: 'toolkit:run-phpcbf'
