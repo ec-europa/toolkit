@@ -16,56 +16,56 @@
         <env name="DRUPAL_DATABASE_HOST" value="mysql"/>
     </php>
     <testsuites>
-        <testsuite name="Unit group 1">
+        <testsuite name="Unit GitHooks">
             <file>tests/Unit/GitHooksCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Unit group 2">
+        <testsuite name="Unit Mock">
             <file>tests/Unit/MockTest.php</file>
         </testsuite>
-        <testsuite name="Unit group 3">
+        <testsuite name="Unit ReplaceBlock">
             <file>tests/Unit/ReplaceBlockTest.php</file>
         </testsuite>
-        <testsuite name="Group 1">
+        <testsuite name="Blackfire and Build">
             <file>tests/Features/Commands/BlackfireCommandsTest.php</file>
             <file>tests/Features/Commands/BuildCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 2">
+        <testsuite name="ComponentCheck">
             <file>tests/Features/Commands/ComponentCheckCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 3">
+        <testsuite name="Configuration">
             <file>tests/Features/Commands/ConfigurationCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 4">
+        <testsuite name="Docker">
             <file>tests/Features/Commands/DockerCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 5">
+        <testsuite name="Documentation">
             <file>tests/Features/Commands/DocumentationCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 6">
+        <testsuite name="Drupal">
             <file>tests/Features/Commands/DrupalCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 7">
+        <testsuite name="Dump">
             <file>tests/Features/Commands/DumpCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 8">
+        <testsuite name="GitHooks">
             <file>tests/Features/Commands/GitHooksCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 9">
+        <testsuite name="Install">
             <file>tests/Features/Commands/InstallCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 10">
+        <testsuite name="Lint">
             <file>tests/Features/Commands/LintCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 11">
+        <testsuite name="Release">
             <file>tests/Features/Commands/ReleaseCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 12">
+        <testsuite name="SymlinkProject">
             <file>tests/Features/Commands/SymlinkProjectCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 13">
+        <testsuite name="Tests">
             <file>tests/Features/Commands/TestsCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Group 14">
+        <testsuite name="Tool">
             <file>tests/Features/Commands/ToolCommandsTest.php</file>
         </testsuite>
     </testsuites>

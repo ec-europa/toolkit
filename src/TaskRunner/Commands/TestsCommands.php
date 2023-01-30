@@ -452,7 +452,7 @@ class TestsCommands extends AbstractCommands
      * @option uses      Only runs tests annotated with "@uses <name>".
      * @option filter    Filter which tests to run.
      * @option options   Extra options for the command without -- (only options with no value).
-     * @option printer   If set, the execution time of each test will be printed.
+     * @option printer   If set, use printer defined in config toolkit.test.phpunit.printer.
      *
      * @usage --options='stop-on-error process-isolation do-not-cache-result'
      * @usage --group=Example
