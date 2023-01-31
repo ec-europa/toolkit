@@ -9,7 +9,7 @@
         Checking Mandatory components.
         ==============================
 
-        [Simulator] Running ./vendor/bin/drush status --format=json
+         [Simulator] Running ./vendor/bin/drush status --format=json
         >  Website not installed, using config/sync/core.extension.yml file.
         >  Config file not found at config/sync/core.extension.yml.
         Package dropsolid_purge is mandatory and is not present on the project.
@@ -27,21 +27,34 @@
         Checking Insecure components.
         =============================
 
-        [Simulator] Running ./vendor/bin/drush pm:security --format=json
-        [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+         [Simulator] Running ./vendor/bin/drush pm:security --format=json
+         [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
         >  Insecure components check passed.
 
         Checking Outdated components.
         =============================
 
-        [Simulator] Running composer outdated --direct --minor-only --format=json
+         [Simulator] Running composer outdated --direct --minor-only --format=json
         >  Outdated components check passed.
+
+        Checking Abandoned components.
+        ==============================
+
+         [Simulator] Running composer outdated --direct --minor-only --format=json
+        >  Abandoned components check passed.
 
         Checking evaluation status components.
         ======================================
 
         The use of drupal/codesnippet:1.8 is restricted. Contact QA Team.
+        Package drupal/core:9.4.8 has not been reviewed by QA.
+        Package drupal/core-composer-scaffold:9.4.8 has not been reviewed by QA.
+        Package drupal/gin:3.0-beta5 has not been reviewed by QA.
         The use of drupal/github_connect:2.0.0-alpha1 is restricted. Contact QA Team.
+        Package drupal/purge_drush:3.4 has not been reviewed by QA.
+        Package drupal/purge_processor_cron:3.4 has not been reviewed by QA.
+        Package drupal/purge_processor_lateruntime:3.4 has not been reviewed by QA.
+        Package drupal/purge_queuer_coretags:3.4 has not been reviewed by QA.
         The use of drupal/responsive_tables_filter:1.17 is restricted. Contact QA Team.
         The use of drupal/restui:1.21 is rejected. Contact QA Team.
 
@@ -63,44 +76,45 @@
         Results:
         ========
 
-        --------------------------------- -----------
-        Mandatory module check            failed
-        Recommended module check          1 warning
-        Insecure module check             passed
-        Outdated module check             passed
-        Dev module check                  passed
-        Evaluation module check           failed
-        Dev module in require-dev check   passed
-        Drush require section check       passed
-        --------------------------------- -----------
+         --------------------------------- -----------
+          Mandatory module check            failed
+          Recommended module check          1 warning
+          Insecure module check             passed
+          Outdated module check             passed
+          Abandoned module check            passed
+          Dev module check                  passed
+          Evaluation module check           failed
+          Dev module in require-dev check   passed
+          Drush require section check       passed
+         --------------------------------- -----------
 
-        [ERROR] Failed the components check, please verify the report and update the
-        project.
+         [ERROR] Failed the components check, please verify the report and update the
+                 project.
 
-        See the list of packages at
+                 See the list of packages at
 
-        https://webgate.ec.europa.eu/fpfis/qa/package-reviews.
+                 https://webgate.ec.europa.eu/fpfis/qa/package-reviews.
 
-        ! [NOTE] It is possible to bypass the insecure and outdated check:
-        !
-        !        - Insecure check:
-        !
-        !           - by providing a token in the commit message: [SKIP-INSECURE]
-        !
-        !        - Outdated check:
-        !
-        !           - by providing a token in the commit message: [SKIP-OUTDATED]
-        !
-        !           - Or, update the configuration in the runner.yml.dist as shown
-        !        below:
-        !
-        !                toolkit:
-        !
-        !                  components:
-        !
-        !                    outdated:
-        !
-        !                      check: false
+         ! [NOTE] It is possible to bypass the insecure and outdated check:
+         !
+         !        - Insecure check:
+         !
+         !           - by providing a token in the commit message: [SKIP-INSECURE]
+         !
+         !        - Outdated check:
+         !
+         !           - by providing a token in the commit message: [SKIP-OUTDATED]
+         !
+         !           - Or, update the configuration in the runner.yml.dist as shown
+         !        below:
+         !
+         !                toolkit:
+         !
+         !                  components:
+         !
+         !                    outdated:
+         !
+         !                      check: false
 
 - command: 'toolkit:component-check --test-command'
   configuration:
@@ -118,7 +132,7 @@
         Checking Mandatory components.
         ==============================
 
-        [Simulator] Running ./vendor/bin/drush status --format=json
+         [Simulator] Running ./vendor/bin/drush status --format=json
         >  Website not installed, using config/sync/core.extension.yml file.
         >  Config file not found at config/sync/core.extension.yml.
         Package dropsolid_purge is mandatory and is not present on the project.
@@ -139,15 +153,21 @@
         Checking Insecure components.
         =============================
 
-        [Simulator] Running ./vendor/bin/drush pm:security --format=json
-        [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+         [Simulator] Running ./vendor/bin/drush pm:security --format=json
+         [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
         >  Insecure components check passed.
 
         Checking Outdated components.
         =============================
 
-        [Simulator] Running composer outdated --direct --minor-only --format=json
+         [Simulator] Running composer outdated --direct --minor-only --format=json
         >  Outdated components check passed.
+
+        Checking Abandoned components.
+        ==============================
+
+         [Simulator] Running composer outdated --direct --minor-only --format=json
+        >  Abandoned components check passed.
 
         Checking evaluation status components.
         ======================================
@@ -175,44 +195,45 @@
         Results:
         ========
 
-        --------------------------------- -------------------
-        Mandatory module check            failed
-        Recommended module check          4 warnings
-        Insecure module check             passed (Skipping)
-        Outdated module check             passed (Skipping)
-        Dev module check                  failed
-        Evaluation module check           failed
-        Dev module in require-dev check   passed
-        Drush require section check       passed
-        --------------------------------- -------------------
+         --------------------------------- -------------------
+          Mandatory module check            failed
+          Recommended module check          4 warnings
+          Insecure module check             passed (Skipping)
+          Outdated module check             passed (Skipping)
+          Abandoned module check            passed
+          Dev module check                  failed
+          Evaluation module check           failed
+          Dev module in require-dev check   passed
+          Drush require section check       passed
+         --------------------------------- -------------------
 
-        [ERROR] Failed the components check, please verify the report and update the
-        project.
+         [ERROR] Failed the components check, please verify the report and update the
+                 project.
 
-        See the list of packages at
+                 See the list of packages at
 
-        https://webgate.ec.europa.eu/fpfis/qa/package-reviews.
+                 https://webgate.ec.europa.eu/fpfis/qa/package-reviews.
 
-        ! [NOTE] It is possible to bypass the insecure and outdated check:
-        !
-        !        - Insecure check:
-        !
-        !           - by providing a token in the commit message: [SKIP-INSECURE]
-        !
-        !        - Outdated check:
-        !
-        !           - by providing a token in the commit message: [SKIP-OUTDATED]
-        !
-        !           - Or, update the configuration in the runner.yml.dist as shown
-        !        below:
-        !
-        !                toolkit:
-        !
-        !                  components:
-        !
-        !                    outdated:
-        !
-        !                      check: false
+         ! [NOTE] It is possible to bypass the insecure and outdated check:
+         !
+         !        - Insecure check:
+         !
+         !           - by providing a token in the commit message: [SKIP-INSECURE]
+         !
+         !        - Outdated check:
+         !
+         !           - by providing a token in the commit message: [SKIP-OUTDATED]
+         !
+         !           - Or, update the configuration in the runner.yml.dist as shown
+         !        below:
+         !
+         !                toolkit:
+         !
+         !                  components:
+         !
+         !                    outdated:
+         !
+         !                      check: false
 
 - command: 'toolkit:component-check'
   configuration:
@@ -231,7 +252,7 @@
         Checking Mandatory components.
         ==============================
 
-        [Simulator] Running ./vendor/bin/drush status --format=json
+         [Simulator] Running ./vendor/bin/drush status --format=json
         >  Website not installed, using core.extensions-good.yml file.
         >  Mandatory components check passed.
 
@@ -246,20 +267,32 @@
         Checking Insecure components.
         =============================
 
-        [Simulator] Running ./vendor/bin/drush pm:security --format=json
-        [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+         [Simulator] Running ./vendor/bin/drush pm:security --format=json
+         [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
         >  Insecure components check passed.
 
         Checking Outdated components.
         =============================
 
-        [Simulator] Running composer outdated --direct --minor-only --format=json
+         [Simulator] Running composer outdated --direct --minor-only --format=json
         >  Outdated components check passed.
+
+        Checking Abandoned components.
+        ==============================
+
+         [Simulator] Running composer outdated --direct --minor-only --format=json
+        >  Abandoned components check passed.
 
         Checking evaluation status components.
         ======================================
 
-        >  Evaluation module check passed.
+        Package drupal/core:9.4.8 has not been reviewed by QA.
+        Package drupal/core-composer-scaffold:9.4.8 has not been reviewed by QA.
+        Package drupal/gin:3.0-beta5 has not been reviewed by QA.
+        Package drupal/purge_drush:3.4 has not been reviewed by QA.
+        Package drupal/purge_processor_cron:3.4 has not been reviewed by QA.
+        Package drupal/purge_processor_lateruntime:3.4 has not been reviewed by QA.
+        Package drupal/purge_queuer_coretags:3.4 has not been reviewed by QA.
 
         Checking dev components.
         ========================
@@ -279,15 +312,42 @@
         Results:
         ========
 
-        --------------------------------- -----------
-        Mandatory module check            passed
-        Recommended module check          1 warning
-        Insecure module check             passed
-        Outdated module check             passed
-        Dev module check                  passed
-        Evaluation module check           passed
-        Dev module in require-dev check   passed
-        Drush require section check       passed
-        --------------------------------- -----------
+         --------------------------------- -----------
+          Mandatory module check            passed
+          Recommended module check          1 warning
+          Insecure module check             passed
+          Outdated module check             passed
+          Abandoned module check            passed
+          Dev module check                  passed
+          Evaluation module check           failed
+          Dev module in require-dev check   passed
+          Drush require section check       passed
+         --------------------------------- -----------
 
-        [OK] Components checked, nothing to report.
+         [ERROR] Failed the components check, please verify the report and update the
+                 project.
+
+                 See the list of packages at
+
+                 https://webgate.ec.europa.eu/fpfis/qa/package-reviews.
+
+         ! [NOTE] It is possible to bypass the insecure and outdated check:
+         !
+         !        - Insecure check:
+         !
+         !           - by providing a token in the commit message: [SKIP-INSECURE]
+         !
+         !        - Outdated check:
+         !
+         !           - by providing a token in the commit message: [SKIP-OUTDATED]
+         !
+         !           - Or, update the configuration in the runner.yml.dist as shown
+         !        below:
+         !
+         !                toolkit:
+         !
+         !                  components:
+         !
+         !                    outdated:
+         !
+         !                      check: false
