@@ -6,7 +6,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
-use EcEuropa\Toolkit\TaskRunner\Commands\DrupalPackageCommands;
+use EcEuropa\Toolkit\DrupalReleaseHistory;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Symfony\ConsoleIO;
@@ -454,8 +454,8 @@ class ComponentCheckCommands extends AbstractCommands
                     continue;
                 }
             }
-            $drupalPackage = new DrupalPackageCommands();
-            $historyTerms = $drupalPackage->getPackageDetails($name, $package['version'], '8.x');
+            $drupalReleaseHistory = new DrupalReleaseHistory();
+            $historyTerms = $drupalReleaseHistory->getPackageDetails($name, $package['version'], '8.x');
             if (!empty($historyTerms) && (empty($historyTerms['terms']) || !in_array('insecure', $historyTerms['terms']))) {
                 $messages[] = "$msg (Confirmation failed, ignored)";
                 continue;

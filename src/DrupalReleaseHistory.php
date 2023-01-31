@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace EcEuropa\Toolkit\TaskRunner\Commands;
+namespace EcEuropa\Toolkit;
 
 use Composer\Semver\Semver;
 
-class DrupalPackageCommands
+class DrupalReleaseHistory
 {
 
     /**
