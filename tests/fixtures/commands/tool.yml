@@ -90,11 +90,11 @@
           Required checks:
           ================
 
-          ----------------- -------------
+          ----------------- ------------------
           PHP version       OK (8.1.14)
           Toolkit version   OK (10.0.0-beta)
           Drupal version    OK (9.4.8)
-          ----------------- -------------
+          ----------------- ------------------
     php8.2:
       - contains: |
           >  Checking Toolkit requirements:
@@ -114,11 +114,11 @@
           Required checks:
           ================
 
-          ----------------- ------------
+          ----------------- ------------------
           PHP version       OK (8.2.1)
           Toolkit version   OK (10.0.0-beta)
           Drupal version    OK (9.4.8)
-          ----------------- ------------
+          ----------------- ------------------
 
 - command: toolkit:fix-permissions
   configuration: []
@@ -148,7 +148,7 @@
 
           [WARNING] Failed to get Toolkit version from composer.lock.
 
-        Minimum version: ^9.0
+        Minimum version: ^10.0
         Current version: 10.0.0-beta
         Version check: OK
 
@@ -161,7 +161,7 @@
     - contains: |
         >  Checking Toolkit version:
 
-        Minimum version: ^9.0
+        Minimum version: ^10.0
         Current version: 10.0.0-beta
         Version check: OK
 
