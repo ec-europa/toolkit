@@ -329,6 +329,13 @@
 </dt>
 <dd>Run PHP code sniffer.</dd>
 
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestPhpunitParallelTask">toolkitTestPhpunitParallelTask()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Returns the task to execute PHPUnit in parallel.</dd>
+
         </dl>
 
 
@@ -519,7 +526,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">512</span>
+    <span class="phpdocumentor-element-found-in__line">564</span>
 
     </aside>
 
@@ -1073,7 +1080,7 @@ Accept commands to run before and/or after the Behat tests.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">450</span>
+    <span class="phpdocumentor-element-found-in__line">462</span>
 
     </aside>
 
@@ -1081,7 +1088,7 @@ Accept commands to run before and/or after the Behat tests.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitTestPhpunit</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;execution&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;from&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;to&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">toolkitTestPhpunit</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;execution&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;from&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;to&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;testsuite&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;group&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;covers&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;uses&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;filter&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;options&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;printer&#039; =&gt; InputOption::VALUE_NONE]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"><p>Check configurations at config/default.yml - 'toolkit.test.phpunit'.
 Accept commands to run before and/or after the PHPUnit tests.</p>
@@ -1092,7 +1099,7 @@ Accept commands to run before and/or after the PHPUnit tests.</p>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$options</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;execution&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;from&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;to&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;execution&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;from&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;to&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;testsuite&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;group&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;covers&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;uses&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;filter&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;options&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;printer&#039; =&gt; InputOption::VALUE_NONE]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"></section>
 
@@ -1147,6 +1154,96 @@ Accept commands to run before and/or after the PHPUnit tests.</p>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
                                                  <section class="phpdocumentor-description"><p>to        The destination config file (phpunit.xml).</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>testsuite Filter which testsuite to run.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>group     Only runs tests from the specified group(s).</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>covers    Only runs tests annotated with &quot;@covers <name>&quot;.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>uses      Only runs tests annotated with &quot;@uses <name>&quot;.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>filter    Filter which tests to run.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>options   Extra options for the command without -- (only options with no value).</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>printer   If set, use printer defined in config toolkit.test.phpunit.printer.</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">usage</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>--options='stop-on-error process-isolation do-not-cache-result'</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">usage</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>--group=Example</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
 </section>
 
                                     </dd>
@@ -1684,6 +1781,51 @@ Accept commands to run before and/or after the PHPUnit tests.</p>
 </section>
 
     
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_toolkitTestPhpunitParallelTask">
+        toolkitTestPhpunitParallelTask()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestPhpunitParallelTask" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/TestsCommands.php"><a href="files/src-taskrunner-commands-testscommands.html"><abbr title="src/TaskRunner/Commands/TestsCommands.php">TestsCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">524</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns the task to execute PHPUnit in parallel.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">toolkitTestPhpunitParallelTask</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$options</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The options passed to the command test-phpunit.</p>
+</section>
+
+            </dd>
+            </dl>
+
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>

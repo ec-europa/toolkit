@@ -1006,6 +1006,11 @@ Search.appendIndex(
             "summary": "Run\u0020PHPUnit\u0020tests.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestPhpunit"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitTestPhpunitParallelTask\u0028\u0029",
+            "name": "toolkitTestPhpunitParallelTask",
+            "summary": "Returns\u0020the\u0020task\u0020to\u0020execute\u0020PHPUnit\u0020in\u0020parallel.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-TestsCommands.html#method_toolkitTestPhpunitParallelTask"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\TestsCommands\u003A\u003AtoolkitRunPhpcbf\u0028\u0029",
             "name": "toolkitRunPhpcbf",
             "summary": "Run\u0020PHP\u0020code\u0020autofixing.",
