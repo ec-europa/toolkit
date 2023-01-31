@@ -446,60 +446,112 @@ class TestsCommands extends AbstractCommands
      * @option execution The execution type (default or parallel).
      * @option from      The dist config file (phpunit.xml.dist).
      * @option to        The destination config file (phpunit.xml).
+     * @option testsuite Filter which testsuite to run.
+     * @option group     Only runs tests from the specified group(s).
+     * @option covers    Only runs tests annotated with "@covers <name>".
+     * @option uses      Only runs tests annotated with "@uses <name>".
+     * @option filter    Filter which tests to run.
+     * @option options   Extra options for the command without -- (only options with no value).
+     * @option printer   If set, use printer defined in config toolkit.test.phpunit.printer.
+     *
+     * @usage --options='stop-on-error process-isolation do-not-cache-result'
+     * @usage --group=Example
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitTestPhpunit(array $options = [
         'execution' => InputOption::VALUE_REQUIRED,
         'from' => InputOption::VALUE_REQUIRED,
         'to' => InputOption::VALUE_REQUIRED,
+        'testsuite' => InputOption::VALUE_REQUIRED,
+        'group' => InputOption::VALUE_REQUIRED,
+        'covers' => InputOption::VALUE_REQUIRED,
+        'uses' => InputOption::VALUE_REQUIRED,
+        'filter' => InputOption::VALUE_REQUIRED,
+        'options' => InputOption::VALUE_REQUIRED,
+        'printer' => InputOption::VALUE_NONE,
     ])
     {
-        $tasks = [];
-
-        if (file_exists($options['from'])) {
+        if (!file_exists($options['to'])) {
+            if (!file_exists($options['from'])) {
+                $this->say('PHUnit configuration not found, skipping.');
+                return $this->collectionBuilder()->addTaskList([]);
+            }
             $this->taskProcess($options['from'], $options['to'])->run();
         }
-
-        if (!file_exists($options['to'])) {
-            $this->say('PHUnit configuration not found, skipping.');
-            return $this->collectionBuilder()->addTaskList($tasks);
-        }
-
-        $phpunit_config = $this->getConfig()->get('toolkit.test.phpunit');
+        $tasks = [];
+        $phpunitConfig = $this->getConfig()->get('toolkit.test.phpunit');
 
         // Execute a list of commands to run before tests.
-        if (!empty($phpunit_config['commands']['before'])) {
-            $tasks[] = $this->taskExecute($phpunit_config['commands']['before']);
+        if (!empty($phpunitConfig['commands']['before'])) {
+            $tasks[] = $this->taskExecute($phpunitConfig['commands']['before']);
         }
 
-        $options = $phpunit_config['options'];
-        $phpunit_bin = $this->getBin('phpunit');
-
-        if ($phpunit_config['execution'] == 'parallel') {
-            $result = $this->taskExec("$phpunit_bin --list-suites")
-                ->silent(true)
-                ->printOutput(false)
-                ->run()
-                ->getMessage();
-
-            $suites = preg_grep('/^( - [\w\-]+)/', explode("\n", $result));
-
-            $tasks[] = $parallel = $this->taskParallelExec();
-            foreach ($suites as $suite) {
-                $suite = str_replace('- ', '', trim($suite));
-                if (strlen($suite) > 2) {
-                    $parallel->process("$phpunit_bin --testsuite=$suite $options");
+        if ($options['execution'] == 'parallel') {
+            $tasks[] = $this->toolkitTestPhpunitParallelTask($options);
+        } else {
+            $task = $this->taskExec($this->getBin('phpunit'));
+            if (!empty($options['options'])) {
+                $options['options'] = str_replace('--', '', $options['options']);
+                $opts = array_fill_keys(explode(' ', $options['options']), null);
+                $task->options($opts, '=');
+            }
+            foreach (['testsuite', 'group', 'covers', 'uses', 'filter'] as $item) {
+                if ($options[$item]) {
+                    $task->option($item, $options[$item], '=');
                 }
             }
-        } else {
-            $tasks[] = $this->taskExec("$phpunit_bin $options");
+            if ($options['printer'] === true) {
+                $task->option('printer', $phpunitConfig['printer'], '=');
+            }
+            $tasks[] = $task;
         }
 
         // Execute a list of commands to run after tests.
-        if (!empty($phpunit_config['commands']['after'])) {
-            $tasks[] = $this->taskExecute($phpunit_config['commands']['after']);
+        if (!empty($phpunitConfig['commands']['after'])) {
+            $tasks[] = $this->taskExecute($phpunitConfig['commands']['after']);
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Returns the task to execute PHPUnit in parallel.
+     *
+     * @param array $options
+     *   The options passed to the command test-phpunit.
+     */
+    private function toolkitTestPhpunitParallelTask(array $options)
+    {
+        $phpunitBin = $this->getBin('phpunit');
+        $result = $this->taskExec($phpunitBin)->option('list-suites')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        preg_match_all('/ - (.+)/', $result, $matches);
+        $parallel = $this->taskParallelExec()->printOutput();
+        if (!empty($matches[1])) {
+            $opts = ' ';
+            if (!empty($options['options'])) {
+                $options['options'] = str_replace('--', '', $options['options']);
+                $opts .= '--' . implode(' --', explode(' ', $options['options']));
+            }
+            foreach (['testsuite', 'group', 'covers', 'uses', 'filter'] as $item) {
+                if ($options[$item]) {
+                    $opts .= " --$item=$options[$item]";
+                }
+            }
+            if ($options['printer'] === true) {
+                $opts .= " --printer=" . $this->getConfig()->get('toolkit.test.phpunit.printer');
+            }
+            foreach ($matches[1] as $suite) {
+                if (strlen($suite) > 2) {
+                    $parallel->process("$phpunitBin --testsuite='$suite'$opts");
+                }
+            }
+        } else {
+            $this->writeln('No items found.');
+        }
+        return $parallel;
     }
 
     /**

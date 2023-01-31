@@ -83,7 +83,7 @@
         bin_dir: ./vendor/bin
         bin_node_dir: ./node_modules/.bin
         config_dir: ./config/runner
-        working_dir: /test/toolkit/tests/sandbox
+        working_dir: /test/toolkit/tests/sandbox/ConfigurationCommandsTest
 
 - command: 'config drupal.site'
   configuration: []
@@ -133,7 +133,7 @@
                 --simulate                       Run in simulated mode (show what would have happened).
                 --progress-delay=PROGRESS-DELAY  Number of seconds before progress bar is displayed in long-running task collections. Default: 2s. [default: 2]
             -D, --define=DEFINE                  Define a configuration item value. (multiple values allowed)
-                --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox"]
+                --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox/ConfigurationCommandsTest"]
             -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
           Help:
@@ -158,7 +158,7 @@
                 --simulate                       Run in simulated mode (show what would have happened).
                 --progress-delay=PROGRESS-DELAY  Number of seconds before progress bar is displayed in long-running task collections. Default: 2s. [default: 2]
             -D, --define=DEFINE                  Define a configuration item value. (multiple values allowed)
-                --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox"]
+                --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox/ConfigurationCommandsTest"]
             -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
           Help:
