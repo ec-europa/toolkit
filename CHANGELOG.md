@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 10.0.0-beta
+
+
 ## Version 9.4.0
   - DQA-6028: Allow options in command test-phpunit.
 
