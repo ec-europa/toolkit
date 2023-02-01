@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 9.4.0
+  - DQA-6028: Allow options in command test-phpunit.
+
 ## Version 9.3.0
   - DQA-5410: Improve load of database during clone install.
   - DQA-5473: Tests for DrupalCommands.
