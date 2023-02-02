@@ -248,3 +248,18 @@
         [Exec] Running echo '{  }' > dummy.yml
     - file_expected: dummy.yml
       file_actual: dummy-copy.yml
+
+- command: 'test:drush'
+  configuration:
+    commands:
+      test:drush:
+        - { task: drush, command: config:import, arguments: [ -y ] }
+        - { task: drush, command: cache:rebuild }
+  resources:
+    - from: sample-config.yml
+      to: dummy-copy.yml
+    - from: sample-bin
+      to: vendor/bin/drush
+  expectations:
+    - string_contains: "[Exec] Running ./vendor/bin/drush config:import -y"
+    - string_contains: "[Exec] Running ./vendor/bin/drush cache:rebuild"
