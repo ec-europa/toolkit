@@ -59,6 +59,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
         'run' => ['required' => 'command'],
 //        'process-php' => ['required' => ['source', 'destination'], 'defaults' => 'override'],
         'exec' => ['required' => 'command'],
+        'drush' => ['required' => 'command'],
         'replace-block' => [
             'required' => ['filename', 'start', 'end'],
             'defaults' => ['content', 'excludeStartEnd'],
@@ -185,10 +186,24 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                     $taskExec->args($task['arguments']);
                 }
                 if (!empty($task['options'])) {
-                    $taskExec->options($task['options']);
+                    $taskExec->options($task['options'], '=');
                 }
                 if (!empty($task['dir'])) {
                     $taskExec->dir($task['dir']);
+                }
+                $this->prepareOutput($taskExec);
+                return $taskExec;
+
+            case 'drush':
+                /* @var \Robo\Task\Base\Exec $taskExec */
+                $taskExec = $this->collectionBuilder()
+                    ->taskExec($this->getConfig()->get('runner.bin_dir') . '/drush')
+                    ->rawArg($task['command']);
+                if (!empty($task['arguments'])) {
+                    $taskExec->args($task['arguments']);
+                }
+                if (!empty($task['options'])) {
+                    $taskExec->options($task['options'], '=');
                 }
                 $this->prepareOutput($taskExec);
                 return $taskExec;
