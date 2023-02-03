@@ -141,34 +141,9 @@ Procfile          text
 *.wbmp            binary
 *.webp            binary
 
-# Audio
-*.kar             binary
-*.m4a             binary
-*.mid             binary
-*.midi            binary
-*.mp3             binary
-*.ogg             binary
-*.ra              binary
-
-# Video
-*.3gpp            binary
-*.3gp             binary
-*.as              binary
-*.asf             binary
-*.asx             binary
-*.avi             binary
-*.fla             binary
-*.flv             binary
-*.m4v             binary
-*.mng             binary
-*.mov             binary
-*.mp4             binary
-*.mpeg            binary
-*.mpg             binary
-*.ogv             binary
-*.swc             binary
-*.swf             binary
-*.webm            binary
+# Scripts
+*.fish     text eol=lf
+*.zsh      text eol=lf
 
 # Archives
 *.7z              binary
@@ -177,13 +152,6 @@ Procfile          text
 *.rar             binary
 *.tar             binary
 *.zip             binary
-
-# Fonts
-*.ttf             binary
-*.eot             binary
-*.otf             binary
-*.woff            binary
-*.woff2           binary
 
 # Executables
 *.exe             binary
@@ -194,3 +162,14 @@ Procfile          text
 
 # Ignore files (like .npmignore or .gitignore)
 *.*ignore         text
+
+# Text files where line endings should be preserved
+*.patch    -text
+
+#
+# Exclude files from exporting
+#
+
+.gitattributes export-ignore
+.gitignore     export-ignore
+.gitkeep       export-ignore
