@@ -25,9 +25,7 @@
 !docs/
 !docs/**
 !resources/
-; !resources/*
 !resources/**
-; !resources/**/*
 !src
 !src/**
 !tests/
