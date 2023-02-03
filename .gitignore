@@ -18,9 +18,12 @@
 !phpunit.xml.dist
 
 # Directories to be tracked
-!.github/*
+!.github/workflows/
+!.github/workflows/**
 !config/*
 !docs/*
 !resources/*
-!src/*
+!src**
 !tests/*
+
+!docs/
