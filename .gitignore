@@ -1,7 +1,7 @@
 # Ignore all files
 *
 
-# Files to be tracked
+# Root files to be tracked
 !.drone.yml
 !.editorconfig
 !.eslintrc.json
@@ -18,12 +18,27 @@
 !phpunit.xml.dist
 
 # Directories to be tracked
-!.github/workflows/
-!.github/workflows/**
+!.github/
+!.github/*
+!.github/**
+!.github/**/*
+!config/
 !config/*
-!docs/*
-!resources/*
-!src**
-!tests/*
-
+!config/**
+!config/**/*
 !docs/
+!docs/*
+!docs/**
+!docs/**/*
+!resources/
+!resources/*
+!resources/**
+!resources/**/*
+!src
+!src/*
+!src/**
+!src/**/*
+!tests/
+!tests/*
+!tests/**
+!tests/**/*
