@@ -1,7 +1,7 @@
-# Ignore everything
+# Ignore all files
 *
 
-# But not these files...
+# Files to be tracked
 !.drone.yml
 !.editorconfig
 !.eslintrc.json
@@ -17,11 +17,10 @@
 !phpmd.xml
 !phpunit.xml.dist
 
-# etc...
-
-# ...even if they are in subdirectories
-!*/
-
-# if the files to be tracked are in subdirectories
-!*/a/b/file1.txt
-!*/a/b/c/*
+# Directories to be tracked
+!.github/*
+!config/*
+!docs/*
+!resources/*
+!src/*
+!tests/*
