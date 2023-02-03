@@ -40,6 +40,7 @@
           Toolkit version   OK (9.4.0)
           Drupal version    FAIL (not found) ()
           ----------------- ---------------------
+
     php8.2:
       - contains: |
           >  Checking Toolkit requirements:
@@ -48,22 +49,22 @@
           Checking connections:
           =====================
 
-          ------------------------- ----------
-          QA Endpoint access        OK
-          GitHub oauth access       OK (200)
-          GitLab oauth access       OK (200)
-          ASDA configuration        OK
-          NEXTCLOUD configuration   OK
-          ------------------------- ----------
+           ------------------------- -----------------------------------------------------------------
+            QA Endpoint access        OK
+            GitHub oauth access       OK (200) - No private data
+            GitLab oauth access       OK (200)
+            ASDA configuration        FAIL (Missing environment variable(s): ASDA_USER ASDA_PASSWORD)
+            NEXTCLOUD configuration   OK
+           ------------------------- -----------------------------------------------------------------
 
           Required checks:
           ================
 
-          ----------------- ---------------------
-          PHP version       OK (8.2.1)
-          Toolkit version   OK (9.4.0)
-          Drupal version    FAIL (not found) ()
-          ----------------- ---------------------
+           ----------------- ---------------------
+            PHP version       OK (8.1.14)
+            Toolkit version   OK (9.4.0)
+            Drupal version    FAIL (not found) ()
+           ----------------- ---------------------
 
 - command: toolkit:requirements
   configuration: []
@@ -79,22 +80,24 @@
           Checking connections:
           =====================
 
-          ------------------------- ----------
-          QA Endpoint access        OK
-          GitHub oauth access       OK (200)
-          GitLab oauth access       OK (200)
-          ASDA configuration        OK
-          NEXTCLOUD configuration   OK
-          ------------------------- ----------
+           ------------------------- -----------------------------------------------------------------
+            QA Endpoint access        OK
+            GitHub oauth access       OK (200) - No private data
+            GitLab oauth access       OK (200)
+            ASDA configuration        FAIL (Missing environment variable(s): ASDA_USER ASDA_PASSWORD)
+            NEXTCLOUD configuration   OK
+           ------------------------- -----------------------------------------------------------------
 
           Required checks:
           ================
 
-          ----------------- -------------
-          PHP version       OK (8.1.14)
-          Toolkit version   OK (9.4.0)
-          Drupal version    OK (9.4.8)
-          ----------------- -------------
+           ----------------- -------------
+            PHP version       OK (8.1.14)
+            Toolkit version   OK (9.4.0)
+            Drupal version    OK (9.4.8)
+           ----------------- -------------
+
+
     php8.2:
       - contains: |
           >  Checking Toolkit requirements:
