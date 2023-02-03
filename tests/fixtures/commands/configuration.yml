@@ -248,3 +248,13 @@
         [Exec] Running echo '{  }' > dummy.yml
     - file_expected: dummy.yml
       file_actual: dummy-copy.yml
+
+- command: 'toolkit:install-clean'
+  configuration:
+    commands:
+      toolkit:install-clean:
+        - echo 'This command is overridden'
+  resources: []
+  expectations:
+    - string_contains: |
+        [Exec] Running echo 'This command is overridden'
