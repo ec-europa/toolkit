@@ -1,25 +1,27 @@
-/vendor/
-/dist/
-/tests/sandbox
-/composer.lock
-/.idea/
-/.tmp/
-/runner.yml
-/phpunit.xml
-/docker-compose.*.yml
-.phpunit.result.cache
-*.sql
-phpda.*
-.phpdoc*
-node_modules/
-.prettierignore
-package.json
-package-lock.json
-/docs_tmp/
+# Ignore everything
+*
 
-# Documentation folder exclusions.
-!docs/
-docs/*
-!docs/guide/
-docs/guide/*
-!docs/guide/*.rst
+# But not these files...
+!.drone.yml
+!.editorconfig
+!.eslintrc.json
+!.gitignore
+!CHANGELOG.md
+!CONTRIBUTING.md
+!LICENSE.txt
+!README.md
+!composer.json
+!docker-compose.yml
+!phpcs.xml
+!phpdoc.dist.xml
+!phpmd.xml
+!phpunit.xml.dist
+
+# etc...
+
+# ...even if they are in subdirectories
+!*/
+
+# if the files to be tracked are in subdirectories
+!*/a/b/file1.txt
+!*/a/b/c/*
