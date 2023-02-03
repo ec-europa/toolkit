@@ -19,26 +19,16 @@
 
 # Directories to be tracked
 !.github/
-!.github/*
 !.github/**
-!.github/**/*
 !config/
-!config/*
 !config/**
-!config/**/*
 !docs/
-!docs/*
 !docs/**
-!docs/**/*
 !resources/
-!resources/*
+; !resources/*
 !resources/**
-!resources/**/*
+; !resources/**/*
 !src
-!src/*
 !src/**
-!src/**/*
 !tests/
-!tests/*
 !tests/**
-!tests/**/*
