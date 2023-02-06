@@ -1,32 +1,25 @@
-# Ignore all files
-*
+/vendor/
+/dist/
+/tests/sandbox
+/composer.lock
+/.idea/
+/.tmp/
+/runner.yml
+/phpunit.xml
+/docker-compose.*.yml
+.phpunit.result.cache
+*.sql
+phpda.*
+.phpdoc*
+node_modules/
+.prettierignore
+package.json
+package-lock.json
+/docs_tmp/
 
-# Root files to be tracked
-!.drone.yml
-!.editorconfig
-!.eslintrc.json
-!.gitignore
-!CHANGELOG.md
-!CONTRIBUTING.md
-!LICENSE.txt
-!README.md
-!composer.json
-!docker-compose.yml
-!phpcs.xml
-!phpdoc.dist.xml
-!phpmd.xml
-!phpunit.xml.dist
-
-# Directories to be tracked
-!.github/
-!.github/**
-!config/
-!config/**
+# Documentation folder exclusions.
 !docs/
-!docs/**
-!resources/
-!resources/**
-!src
-!src/**
-!tests/
-!tests/**
+docs/*
+!docs/guide/
+docs/guide/*
+!docs/guide/*.rst
