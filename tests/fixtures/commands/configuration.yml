@@ -292,3 +292,13 @@
         [EcEuropa\Toolkit\Task\File\Process] Creating phpunit.xml
         [Filesystem\FilesystemStack] _copy ["phpunit.xml.dist","phpunit.xml",true]
         [File\Replace] phpunit.xml unchanged. 0 items replaced
+
+- command: 'toolkit:install-clean'
+  configuration:
+    commands:
+      toolkit:install-clean:
+        - echo 'This command is overridden'
+  resources: []
+  expectations:
+    - string_contains: |
+        [Exec] Running echo 'This command is overridden'

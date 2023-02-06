@@ -14,6 +14,7 @@ use EcEuropa\Toolkit\Toolkit;
 use League\Container\Container;
 use Psr\Container\ContainerInterface;
 use Robo\Application;
+use Robo\ClassDiscovery\RelativeNamespaceDiscovery;
 use Robo\Common\ConfigAwareTrait;
 use Robo\Config\Config;
 use Robo\Robo;
@@ -147,8 +148,24 @@ class Runner
      */
     public function run()
     {
+        $classes = $this->discoverCommandClasses();
+        $this->runner->registerCommandClasses($this->application, $classes);
         $this->registerConfigurationCommands();
         return $this->runner->run($this->input, $this->output, $this->application);
+    }
+
+    /**
+     * Discover Command classes.
+     *
+     * @return array|string[]
+     *   An array with the Command classes.
+     */
+    private function discoverCommandClasses()
+    {
+        return (new RelativeNamespaceDiscovery($this->classLoader))
+            ->setRelativeNamespace('TaskRunner\Commands')
+            ->setSearchPattern('/.*Commands\.php$/')
+            ->getClasses();
     }
 
     /**
@@ -252,7 +269,6 @@ class Runner
         // Passing an array as RoboClass will avoid Robo from processing a RoboFile.
         $this->runner = new RoboRunner(['']);
         $this->runner
-            ->setRelativePluginNamespace('TaskRunner')
             ->setClassLoader($this->classLoader)
             ->setConfigurationFilename(Toolkit::getToolkitRoot() . '/config/default.yml')
             ->setSelfUpdateRepository(self::REPOSITORY)
@@ -298,10 +314,10 @@ class Runner
             // Check for options if the 'tasks' property exists.
             if (isset($tasks['tasks'])) {
                 if (isset($tasks['aliases']) || !empty($aliases)) {
-                    $aliases = array_merge(
+                    $aliases = array_filter(array_merge(
                         $aliases,
-                        array_map('trim', explode(',', $tasks['aliases'] ?? []))
-                    );
+                        array_map('trim', explode(',', $tasks['aliases'] ?? ''))
+                    ));
                     $command->setAliases($aliases);
                 }
                 if (isset($tasks['description'])) {
