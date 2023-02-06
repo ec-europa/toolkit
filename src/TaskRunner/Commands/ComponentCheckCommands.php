@@ -232,10 +232,6 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function validateComponent(array $package, array $modules)
     {
-        // Only validate module components for this time.
-        if (!isset($package['type']) || $package['type'] !== 'drupal-module') {
-            return;
-        }
         $config = $this->getConfig();
         $packageName = $package['name'];
         $hasBeenQaEd = isset($modules[$packageName]);
