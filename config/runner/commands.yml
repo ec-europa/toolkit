@@ -1,1 +1,21 @@
-commands: [ ]
+commands:
+  toolkit:setup-behat:
+    description: 'Setup the Behat file.'
+    tasks:
+      - { task: process, source: behat.yml.dist, destination: behat.yml }
+
+  toolkit:setup-phpunit:
+    description: 'Setup the PHPUnit file.'
+    tasks:
+      - { task: process, source: phpunit.xml.dist, destination: phpunit.xml }
+
+  drupal:config-import:
+    description: 'Run the Drupal config import.'
+    tasks:
+      - { task: drush, command: config:import, arguments: [ -y ] }
+      - { task: drush, command: cache:rebuild }
+
+  toolkit:import-config:
+    description: '[DEPRECATED] Run the Drupal config import.'
+    tasks:
+      - { task: run, command: drupal:config-import }
