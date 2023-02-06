@@ -21,6 +21,7 @@ See bellow current list of available commands:
   docker
    docker:refresh-configuration      [dk-rc] Update docker-compose.yml file based on project's configurations.
   drupal
+   drupal:config-import              Run the Drupal config import.
    drupal:disable-cache              Disable aggregation and clear cache.
    drupal:drush-setup                Write Drush configuration file at "${drupal.root}/drush/drush.yml".
    drupal:permissions-setup          Setup Drupal permissions.
@@ -48,7 +49,7 @@ See bellow current list of available commands:
    toolkit:hooks-enable              Enable the git hooks defined in the configuration or in given option.
    toolkit:hooks-list                List available hooks and its status.
    toolkit:hooks-run                 Run a specific hook.
-   toolkit:import-config             [tk-ic] Import config.
+   toolkit:import-config             [DEPRECATED] Run the Drupal config import.
    toolkit:install-clean             [tk-iclean] Install a clean website.
    toolkit:install-clone             [tk-iclone] Install a clone website.
    toolkit:install-dependencies      Install packages present in the opts.yml file under extra_pkgs section.
@@ -61,9 +62,11 @@ See bellow current list of available commands:
    toolkit:run-blackfire             [tbf|tk-bfire] Run Blackfire.
    toolkit:run-deploy                Run deployment sequence.
    toolkit:run-phpcbf                [tk-phpcbf] Run PHP code autofixing.
+   toolkit:setup-behat               Setup the Behat file.
    toolkit:setup-blackfire-behat     Copy the needed resources to run Behat with Blackfire.
    toolkit:setup-eslint              Setup the ESLint configurations and dependencies.
    toolkit:setup-phpcs               Setup PHP code sniffer.
+   toolkit:setup-phpunit             Setup the PHPUnit file.
    toolkit:test-behat                [tb|tk-behat] Run Behat tests.
    toolkit:test-phpcs                [tk-phpcs] Run PHP code sniffer.
    toolkit:test-phpmd                [tk-phpmd] Run PHPMD.
@@ -158,9 +161,11 @@ list of available tasks is:
 +---------------+------------------------------------------------------------------------+
 | append        | `Write with append() <https://robo.li/tasks/File/#write>`_             |
 +---------------+------------------------------------------------------------------------+
-| run           | Runner tasks                                                           |
+| run           | Executes a Runner task                                                 |
 +---------------+------------------------------------------------------------------------+
 | exec          | `Exec <https://robo.li/tasks/Base/#exec>`_                             |
++---------------+------------------------------------------------------------------------+
+| drush         | Executes a Drush command                                               |
 +---------------+------------------------------------------------------------------------+
 | replace-block | `ReplaceBlock </src/Task/File/ReplaceBlock.php>`_                      |
 +---------------+------------------------------------------------------------------------+
