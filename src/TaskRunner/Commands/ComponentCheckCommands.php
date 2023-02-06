@@ -240,13 +240,10 @@ class ComponentCheckCommands extends AbstractCommands
     protected function validateComponent(array $package, array $modules)
     {
 
-        // Only validate module components for this time
-        // (desactivated ro extend the check to all vendors selected on
-        // QA Website).
-        //
-        //  if (!isset($package['type']) || $package['type'] !== 'drupal-module') {
-        //    return;
-        //  }
+        // Only validate module components for this time.
+        if (!isset($package['type']) || $package['type'] !== 'drupal-module') {
+            return;
+        }
 
         $config = $this->getConfig();
         $packageName = $package['name'];
@@ -491,6 +488,7 @@ class ComponentCheckCommands extends AbstractCommands
         if (!empty($outdatedPackages['installed'])) {
             if (is_array($outdatedPackages)) {
                 foreach ($outdatedPackages['installed'] as $outdatedPackage) {
+
                     // Exclude abandoned packages.
                     if ($outdatedPackage['abandoned'] == false) {
                         if (!array_key_exists('latest', $outdatedPackage)) {
@@ -504,6 +502,9 @@ class ComponentCheckCommands extends AbstractCommands
                         }
                     }
                 }
+
+                // Make result available outside function.
+                $this->installed = $outdatedPackages['installed'];;
             }
         }
 
@@ -517,23 +518,14 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentAbandoned()
     {
-        $result = $this->taskExec('composer outdated --direct --minor-only --format=json')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
+        foreach ($this->installed as $outdatedPackage) {
 
-        $outdatedPackages = json_decode($result, true);
-        if (!empty($outdatedPackages['installed'])) {
-            if (is_array($outdatedPackages)) {
-                foreach ($outdatedPackages['installed'] as $outdatedPackage) {
-                    // Only show abandoned packages.
-                    if ($outdatedPackage['abandoned'] != false) {
-                        $this->writeln($outdatedPackage['warning']);
-                        $this->abandonedFailed = true;
-                    }
-                }
+            // Only show abandoned packages.
+            if ($outdatedPackage['abandoned'] != false) {
+                $this->writeln($outdatedPackage['warning']);
+                $this->abandonedFailed = true;
             }
         }
-
         if (!$this->abandonedFailed) {
             $this->say('Abandoned components check passed.');
         }
