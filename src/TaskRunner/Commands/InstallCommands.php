@@ -165,26 +165,4 @@ class InstallCommands extends AbstractCommands
         return $this->collectionBuilder()->addTaskList($tasks);
     }
 
-    /**
-     * Import config.
-     *
-     * @command toolkit:import-config
-     *
-     * @aliases tk-ic
-     *
-     * @return \Robo\Collection\CollectionBuilder
-     *   Collection builder.
-     */
-    public function toolkitImportConfig()
-    {
-        $tasks = [];
-
-        $drush_bin = $this->getBin('drush');
-        $tasks[] = $this->taskExec($drush_bin)->arg('config:import')->rawArg('-y');
-        $tasks[] = $this->taskExec($drush_bin)->arg('cache:rebuild');
-
-        // Build and return task collection.
-        return $this->collectionBuilder()->addTaskList($tasks);
-    }
-
 }

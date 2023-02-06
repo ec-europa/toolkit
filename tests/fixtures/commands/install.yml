@@ -100,16 +100,3 @@
         [Simulator] Running ./vendor/bin/drush updatedb -y
         [Simulator] Simulating Exec('./vendor/bin/drush state:set system.maintenance_mode 0 ... t-format=integer -y')
         [Simulator] Running ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
-
-- command: 'toolkit:import-config'
-  configuration: []
-  resources: []
-  expectations:
-    - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('config:import')
-          ->rawArg('-y')
-        [Simulator] Running ./vendor/bin/drush 'config:import' -y
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('cache:rebuild')
-        [Simulator] Running ./vendor/bin/drush 'cache:rebuild'
