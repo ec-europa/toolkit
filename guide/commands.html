@@ -142,6 +142,7 @@
  docker
   docker:refresh-configuration      [dk-rc] Update docker-compose.yml file based on project&#039;s configurations.
  drupal
+  drupal:config-import              Run the Drupal config import.
   drupal:disable-cache              Disable aggregation and clear cache.
   drupal:drush-setup                Write Drush configuration file at &quot;${drupal.root}/drush/drush.yml&quot;.
   drupal:permissions-setup          Setup Drupal permissions.
@@ -169,7 +170,7 @@
   toolkit:hooks-enable              Enable the git hooks defined in the configuration or in given option.
   toolkit:hooks-list                List available hooks and its status.
   toolkit:hooks-run                 Run a specific hook.
-  toolkit:import-config             [tk-ic] Import config.
+  toolkit:import-config             [DEPRECATED] Run the Drupal config import.
   toolkit:install-clean             [tk-iclean] Install a clean website.
   toolkit:install-clone             [tk-iclone] Install a clone website.
   toolkit:install-dependencies      Install packages present in the opts.yml file under extra_pkgs section.
@@ -182,9 +183,11 @@
   toolkit:run-blackfire             [tbf|tk-bfire] Run Blackfire.
   toolkit:run-deploy                Run deployment sequence.
   toolkit:run-phpcbf                [tk-phpcbf] Run PHP code autofixing.
+  toolkit:setup-behat               Setup the Behat file.
   toolkit:setup-blackfire-behat     Copy the needed resources to run Behat with Blackfire.
   toolkit:setup-eslint              Setup the ESLint configurations and dependencies.
   toolkit:setup-phpcs               Setup PHP code sniffer.
+  toolkit:setup-phpunit             Setup the PHPUnit file.
   toolkit:test-behat                [tb|tk-behat] Run Behat tests.
   toolkit:test-phpcs                [tk-phpcs] Run PHP code sniffer.
   toolkit:test-phpmd                [tk-phpmd] Run PHPMD.
@@ -300,11 +303,15 @@ list of available tasks is:</p>
                             </tr>
                     <tr>
                                     <td>run</td>
-                                    <td>Runner tasks</td>
+                                    <td>Executes a Runner task</td>
                             </tr>
                     <tr>
                                     <td>exec</td>
                                     <td><a href="https://robo.li/tasks/Base/#exec">Exec</a></td>
+                            </tr>
+                    <tr>
+                                    <td>drush</td>
+                                    <td>Executes a Drush command</td>
                             </tr>
                     <tr>
                                     <td>replace-block</td>

@@ -821,11 +821,6 @@ Search.appendIndex(
             "summary": "Run\u0020deployment\u0020sequence.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitRunDeploy"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\InstallCommands\u003A\u003AtoolkitImportConfig\u0028\u0029",
-            "name": "toolkitImportConfig",
-            "summary": "Import\u0020config.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitImportConfig"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LintCommands",
             "name": "LintCommands",
             "summary": "Commands\u0020to\u0020lint\u0020the\u0020source\u0020code\u0020and\u0020interact\u0020with\u0020ESLint.",
@@ -1175,6 +1170,11 @@ Search.appendIndex(
             "name": "run",
             "summary": "Execute\u0020the\u0020Runner.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_run"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AdiscoverCommandClasses\u0028\u0029",
+            "name": "discoverCommandClasses",
+            "summary": "Discover\u0020Command\u0020classes.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_discoverCommandClasses"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AgetWorkingDir\u0028\u0029",
             "name": "getWorkingDir",
