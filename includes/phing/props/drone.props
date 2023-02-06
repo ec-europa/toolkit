@@ -1,0 +1,11 @@
+# ------------------------------------------------------------------------------
+# Default properties for toolkit pipeline on Drone:
+# https://github.com/ec-europa/ne-pipelines/blob/master/drone/toolkit.yml
+# ------------------------------------------------------------------------------
+
+db.host = mysql
+solr.host = solr
+behat.wd_host.url = http://selenium:4444/wd/hub
+share.path = /cache
+project.db.file = ./dump.sql
+project.url.base = http://web:8080

@@ -1,0 +1,29 @@
+# ------------------------------------------------------------------------------
+# These are the toolkit paths that should not be altered. Altering paths here 
+# have a good chance of breaking things.
+# ------------------------------------------------------------------------------
+
+# Toolkit directories.
+# -----------------------
+
+toolkit.dir = ${phing.dir.core}
+toolkit.dir.incl = ${toolkit.dir}/includes
+toolkit.dir.incl.composer = ${toolkit.dir.incl}/composer
+toolkit.dir.incl.docker = ${toolkit.dir.incl}/docker
+toolkit.dir.incl.drush = ${toolkit.dir.incl}/drush
+toolkit.dir.incl.git = ${toolkit.dir.incl}/git
+toolkit.dir.incl.git.hooks = ${toolkit.dir.incl.git}/hooks
+toolkit.dir.incl.phing = ${toolkit.dir.incl}/phing
+toolkit.dir.incl.phing.build = ${toolkit.dir.incl.phing}/build
+toolkit.dir.incl.phing.props = ${toolkit.dir.incl.phing}/props
+toolkit.dir.incl.phing.src = ${toolkit.dir.incl.phing}/src
+toolkit.dir.incl.templates = ${toolkit.dir.incl}/templates
+toolkit.dir.vendor = ${toolkit.dir}/vendor
+
+# Toolkit binaries.
+# --------------------
+toolkit.dir.bin = ${toolkit.dir}/bin
+toolkit.dir.bin.drush = ${toolkit.dir.bin}/drush
+toolkit.dir.bin.phing = ${toolkit.dir.bin}/phing
+
+

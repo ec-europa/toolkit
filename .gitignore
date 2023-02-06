@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /vendor/
 /dist/
 /tests/sandbox
@@ -23,3 +24,31 @@ docs/*
 !docs/guide/
 docs/guide/*
 !docs/guide/*.rst
+=======
+# Ignore metadata from common editors and IDEs.
+*.sublime-project
+*.sublime-workspace
+.idea/
+nbproject/
+.DS_Store
+
+# Ignore local configuration.
+build.develop.props
+tests/behat.yml
+tests/phpunit.xml
+
+# Ignore build artifacts.
+/build/
+/composer.lock
+.tmp
+toolkit
+vendor
+bin
+build.project.xml
+lib/
+phpcs-ruleset.xml
+resources/
+tests/
+/backstop_data/
+/backstop.json
+>>>>>>> master

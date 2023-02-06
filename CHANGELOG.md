@@ -1,4 +1,19 @@
 # Toolkit change log
+## Version 3.0.10
+  * New phing target to set variable with drush by use of ${variable-name} and ${variable-value} properties.
+  * New phing target to loop over all phing properties starting with devel.vars. and set them accordingly with another new target
+  * Removes all variables from settings.php
+  * Removes cache-reset-target since it is obsolete with this functionality
+  * Include maillog_send to the dev variables to avoid sending emails
+  * Bug fix to project info target
+  * update upgrade documentation step to use a previous composer.json that does not include the URL tokens which impede on the upgrade process
+  * run the toolkit-generate-project-info step inside of the toolkit-starterkit-upgrade target at the end
+  * override the files if generating project info
+  * added project.install.modules for usage on existing toolkit projects
+  * build.dist new default value to match with project.id
+
+## Version 3.0.9
+  * Several improvements and stable version.
 
 ## Version 9.4.0
   - DQA-6028: Allow options in command test-phpunit.
@@ -47,6 +62,7 @@
   - DQA-5289: Display warning for abandoned packages.
   - DQA-5371: Do not execute phpmd together with phpcs.
 
+<<<<<<< HEAD
 ## Version 9.1.0
   - DQA-5203: Changelog.
   - DQA-5203: Add missing tests.
@@ -109,6 +125,43 @@
   - DQA-4899: Add fresh documentation.
   - DQA-4899: Add section getting started.
   - DQA-4899: Reallocate documentation in a specific folder.
+=======
+### Improvements
+  * [MULTISITE-17744] - Toolkit is re-architectured into a separated composer package
+  * [MULTISITE-17744] - Toolkit is re-architectured to support both platform and subsites
+  * [MULTISITE-17365] - Toolkit is re-architectured to categorize build files into a better structure
+  * [MULTISITE-18484] - Development modules are moved to resources/devel.make
+  * [MULTISITE-18485] - Phing will look for composer.bin if the setting is incorrect
+  * [MULTISITE-18306] - Phing help command is customized to improve the display and descriptions
+  * [MULTISITE-18315] - Package downloads now all use same helper target and are automatically cached
+  * [MULTISITE-18315] - ASDA download is simplified. Credentials can only be set through build properties
+  * [MULTISITE-18486] - Devops modules are now included in the build to avoid missing modules
+  * [MULTISITE-18487] - Files directories are created now with the ensuring of htaccess files
+  * [MULTISITE-17365] - All drush targets have been aggregated into a single helper file build/help/drush.xml
+  * [MULTISITE-16459] - Drush registry rebuild target will download itself if not available yet
+  * [MULTISITE-17365] - Platform rebuilds will automatically backup and restore subsite by default
+  * [MULTISITE-18488] - Platform version file is generated on the fly and informs user on latest available version
+  * [MULTISITE-18318] - New target to validate build properties has been introduced to ensure minimum required properties
+  * [MULTISITE-18096] - Github helper target has been introduced to upload release packages to the repository
+  * [MULTISITE-18349] - Subsite starterkit 2.x targets have been deprecated and mapped to new ones
+  * [MULTISITE-18340] - Drush generates aliases on installation process to improve multisite support
+  * [MULTISITE-18196] - EC Europa theme build has been added in a separate build file
+  * [MULTISITE-17744] - Installation process support created for composer create-project command
+  * [MULTISITE-18096] - Test folder has been made independent to allow test package releases
+  * [MULTISITE-18490] - Composer hooks now run phing targets defined in the build properties
+  * [MULTISITE-18494] - General fixes for CI integration
+  * [MULTISITE-18489] - Temporary files folder has been renamed from ./tmp to ./.tmp to decrease visibility
+  * [MULTISITE-18520] - Improved user guide
+  * [MULTISITE-18525] - Integration with Git hooks system
+  * [MULTISITE-18563] - Integration with PHPUnit tests
+  * [MULTISITE-18579] - Integration with Drone CI pipeline
+  * [MULTISITE-17096] - Build dist now uses new symlink system. Lib folder structure will match dist folder structure
+  * [MULTISITE-17624] - New build property introduced to select a solr module and accompanied core
+  * [MULTISITE-18248] - Docker environment has been introduced, still experimental!
+
+### Security
+  * [NESTF-31] - New phing task introduced to validate the make files according to Drupal's security advisory
+>>>>>>> master
 
 ## Version 9.0.0
   - DQA-0000: Update support email and README;

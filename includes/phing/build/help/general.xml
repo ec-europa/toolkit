@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="general" description="General helper targets that can be used by multiple projects." default="">
+
+    <target name="cache-clear-all" description="Delete all files stored in cache."
+        depends="
+            cache-clear-global,
+            cache-clear-local">
+        <echo msg="Finished clearing all caches." />
+    </target>
+
+    <target name="cache-clear-global" hidden="true" description="Delete all files stored in global cache.">
+        <if>
+            <available file="${share.path.global}" type="dir" />
+            <then>
+                <delete failonerror="false">
+                    <fileset dir="${share.path.global}" includes="**" />
+                </delete>
+            </then>
+        </if>
+    </target>
+
+    <target name="cache-clear-local" hidden="true" description="Delete all files stored in local cache.">
+        <if>
+            <available file="${project.tmp.dir}" type="dir" />
+            <then>
+                <delete failonerror="false">
+                    <fileset dir="${project.tmp.dir}" includes="**" />
+                </delete>
+            </then>
+        </if>
+    </target>
+
+    <target name="folder-copy" description="Copy a folder to a destination." hidden="true">
+        <copy todir="${copy.destination.path}" haltonerror="${build.haltonerror.dir.copy}">
+            <fileset dir="${copy.source.path}" defaultexcludes="false" />
+        </copy>
+    </target>
+
+    <target name="folder-delete" description="Delete a folder." hidden="true">
+        <if>
+            <os family="unix" />
+            <then>
+                <echo msg="Deleting folder ${folder.to.delete}." />
+                <exec
+                    command='rm -rf "${folder.to.delete}"'
+                    dir="${project.basedir}"
+                    passthru="true"
+                    checkreturn="true"
+                />
+            </then>
+            <else>
+                <echo msg="Deleting folder ${folder.to.delete}." />
+                <delete dir="${folder.to.delete}" includeemptydirs="true" failonerror="false" />
+            </else>
+        </if>
+    </target>
+
+    <target name="folder-unprotect" description="Open up filesystem permissions on folder." hidden="true">
+        <if>
+            <available file="${folder.to.unprotect}" type="dir" />
+            <then>
+                <chmod mode="0777" failonerror="true" verbose="false" quiet="true">
+                    <fileset dir="${folder.to.unprotect}" />
+                </chmod>
+            </then>
+        </if>
+    </target>
+
+    <target name="package-download" description="Download package with curl." hidden="true">
+        <if>
+            <available file="${package-cache-location}/${package-name}" type="file" />
+            <then>
+                <echo msg="Package ${package-name} already downloaded." />
+            </then>
+            <else>
+                <trycatch>
+                    <try>
+                        <mkdir dir="${package-cache-location}" />
+                        <echo msg="Starting download for package ${package-name}." />
+                        <exec command="curl -L -o ${package-cache-location}/${package-name} ${package-download-location}/${package-name}" passthru="true" checkreturn="true" />
+                        <echo msg="Successfully downloaded package ${package-name}." />
+                    </try>
+                    <catch>
+                        <fail msg="Failed downloading package ${package-name}." />
+                    </catch>
+                </trycatch>
+            </else>
+        </if>
+    </target>
+
+    <target name="package-download-unpack" description="Download a package and unpack it into location." hidden="true"
+        depends="
+            package-download,
+            package-unpack">
+        <echo msg="Package ${package-name} successfully unpacked." />
+    </target>
+
+    <target name="package-version-set" description="Set version file hash in the build folder." hidden="true">
+        <exec command="git rev-parse --is-inside-work-tree" outputproperty="is.repository" />
+        <if>
+            <equals arg1="${is.repository}" arg2="true" />
+            <then>
+                <property name="version.file" value="${build.${build-type}.dir}/.commit" override="true" />
+
+                <exec command="git rev-parse --verify HEAD" outputproperty="package.version" />
+                <touch file="${version.file}" />
+                <echo file="${version.file}" append="false">${package.version}</echo>
+
+                <echo msg="Package version is set to ${package.version}." level="info"/>
+            </then>
+            <else>
+                <echo msg="Package version is not set. Please set up your git repository." level="warning"/>
+            </else>
+        </if>
+    </target>
+
+    <target name="package-unpack" description="Unpack package with tar zxf." hidden="true">
+        <if>
+            <not>
+                <available file="${package-extract-location}" type="dir" />
+            </not>
+            <then>
+                <mkdir dir="${package-extract-location}" />
+            </then>
+        </if>
+        <if>
+            <not>
+                <isset property="${package-extract-options}" />
+            </not>
+            <then>
+                <property name="package-extract-options" value="" />
+            </then>
+        </if>
+        <trycatch>
+            <try>
+                <if>
+                    <os family="unix" />
+                    <then>
+                        <echo msg="Unpacking ${package-name} into ${package-extract-location}." />
+                        <exec command='tar xzf "${package-cache-location}/${package-name}" ${package-extract-options} -C "${package-extract-location}"' dir="${project.basedir}" passthru="true" checkreturn="true" />
+                    </then>
+                    <else>
+                        <untar file="${package-cache-location}/${package-name}" todir="${package-extract-location}" />
+                    </else>
+                </if>
+            </try>
+            <catch>
+                <delete file="${package-cache-location}/${package-name}" failonerror="true" />
+                <phingcall target="package-download-unpack" />
+            </catch>
+        </trycatch>
+    </target>
+
+    <target name="reset-filesystem-permissions" description="Reset filesystem permissions for local/ephemeral use." hidden="true">
+        <if>
+            <available file="${build.subsite.dir}" type="dir" />
+            <then>
+                <echo msg="${build.subsite.dir} folder found, enforce folder permission reset." />
+                <exec command="chmod -R 0777 ${build.platform.dir}/${build.subsite.dir.files}"/>
+                <exec command="chmod -R 0777 ${build.platform.dir}/${build.subsite.dir.tmp}"/>
+                <exec command="chmod 755 ${build.subsite.dir}" />
+                <exec command="chmod 444 ${build.subsite.dir}/settings.php" />
+            </then>
+            <else>
+                <echo msg="${build.platform.dir} folder not found, skipping permission reset." />
+            </else>
+        </if>
+    </target>
+
+</project>

@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="toolkit" description="Contains all Toolkit helper targets."  default="">
+
+    <target name="build-toolkit" description="Initializes toolkit and project directories."
+        hidden="true"
+        depends="
+            toolkit-binary-link,
+            toolkit-structure-generate">
+        <echo msg="Toolkit successfully initialized." />
+    </target>
+
+    <target name="toolkit-append-props" description="Append the contents of a properties file to build.default.props." hidden="true">
+        <php expression='str_replace("${project.basedir}", ".", "${props-file-path}");' returnProperty="props-file-path-relative" />
+        <append destFile="${project.basedir}/build.default.props" text="# Toolkit location: ${props-file-path-relative}${line.separator}" />
+        <append destFile="${project.basedir}/build.default.props" file="${props-file-path}" />
+    </target>
+
+    <target name="toolkit-binary-link" description="Provide project with toolkit binary at root level.">
+        <echo msg="Provide project with starterkit binary at root level." />
+        <relsym link="${project.basedir}/toolkit" target="${toolkit.dir.bin}" overwrite="true" />
+    </target>
+
+    <target name="toolkit-default-props" description="Provide project with an overview of all default build properties." hidden="true">
+        <echo msg="Providing project with a build.default.props file." />
+        <exec command="> ${project.basedir}/build.default.props" />
+        <foreach param="props-file-name" absparam="props-file-path" target="toolkit-append-props">
+            <fileset dir="${toolkit.dir.incl.phing}">
+                <include name="**/*.props" />
+                <exclude name="**/required.props" />
+                <exclude name="**/forbidden.props" />
+                <exclude name="**/deprecated.props" />
+            </fileset>
+        </foreach>
+    </target>
+
+    <target name="toolkit-hooks-composer" description="Echo the composer hook phing targets for use in bash script." hidden="true">
+        <echoproperties prefix="composer.hook." />
+    </target>
+
+    <target name="toolkit-hooks-git-delete" description="Delete all git hooks." hidden="true">
+        <if>
+            <available file="${project.basedir}/.git/hooks" type="dir" />
+            <then>
+                <foreach param="hook-name" absparam="abshook-name" target="toolkit-hooks-git-delete-hook">
+                    <fileset dir="${project.basedir}/.git/hooks">
+                        <type type="file" />
+                        <depth max="1" />
+                        <depth min="0" />
+                    </fileset>
+                </foreach>
+            </then>
+            <else>
+                <echo msg="No git hooks directory detected at: ${project.basedir}/.git/hooks" level="warning" />
+            </else>
+        </if>
+    </target>
+
+    <target name="toolkit-hooks-git-delete-hook" description="Delete a single git hook." hidden="true">
+        <if>
+            <available file="${project.basedir}/.git/hooks" type="dir" />
+            <then>
+                <exec command="rm ${project.basedir}/.git/hooks/${hook-name}" />
+                <echo msg="Git hook ${hook-name} is inactivated." level="warning" />
+            </then>
+        </if>
+    </target>
+
+    <target name="toolkit-hooks-git-update" description="Update all git hooks.">
+        <if>
+            <available file="${project.basedir}/.git/hooks" type="dir" />
+            <then>
+                <foreach param="hook-name" absparam="abshook-name" target="toolkit-hooks-git-update-hook">
+                    <fileset dir="${project.basedir}/resources/git/hooks">
+                        <include name="applypatch-msg, commit-msg, post-applypatch, post-checkout, post-commit, post-merge, post-receive, post-rewrite, post-update, pre-applypatch, pre-auto-gc, pre-commit, prepare-commit-msg, pre-push, pre-rebase, pre-receive, push-to-checkout, rebase, sendemail-validate, update" />
+                        <include name="*/*" />
+                        <type type="file" />
+                        <depth max="2" />
+                        <depth min="1" />
+                    </fileset>
+                    <mapper type="regexp" from="(.*?)/(.*?)" to="\1"/>
+                </foreach>
+            </then>
+        </if>
+    </target>
+
+    <target name="toolkit-hooks-git-update-hook" description="Update a single git hook." hidden="true">
+        <if>
+            <available file="${project.basedir}/.git/hooks" type="dir" />
+            <then>
+                <exec command="ls -Am -I .gitkeep ${project.basedir}/resources/git/hooks/${hook-name}" outputproperty="hook-directory-contents" error="/dev/null" />
+                <exec command="rm ${project.basedir}/.git/hooks/${hook-name}" />
+                <exec command="ln -s ${toolkit.dir.incl.git}/execute.sh ${project.basedir}/.git/hooks/${hook-name}"  />
+                <echo msg="Git hook ${hook-name} is active for: ${hook-directory-contents}." level="warning" />
+            </then>
+        </if>
+    </target>
+
+    <target name="toolkit-markdown-generate" description="Generate documentation md files for toolkit." hidden="true">
+        <docgen buildfile="${project.basedir}/build.xml" />
+    </target>
+
+    <target name="toolkit-clean" description="Remove example code from /lib folder." hidden="true">
+        <delete dir="${lib.dir.modules.custom}/example_module" includeemptydirs="true" failonerror="false" />
+        <delete dir="${lib.dir.modules.features}/myproject_core" includeemptydirs="true" failonerror="false" />
+        <delete dir="${lib.dir.source}/MyGroup" includeemptydirs="true" failonerror="false" />
+        <delete dir="${lib.dir.themes}/example_theme" includeemptydirs="true" failonerror="false" />
+    </target>
+
+    <target name="toolkit-starterkit-upgrade" hidden="true" description="Perform upgrade tasks for upgrading from 2.x to 3.x.">
+        <if>
+            <available file="${project.basedir}/build.package.xml" type="file" />
+            <then>
+                <!-- Delete starterkit folders. -->
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${project.basedir}/bin" />
+                </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${project.basedir}/docs" />
+                </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${project.basedir}/src" />
+                </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${resources.dir}/cloudformation" />
+                </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${resources.dir}/codedeploy" />
+                </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${resources.dir}/composer" />
+                </phingcall>
+                <phingcall target="folder-delete">
+                    <property name="folder.to.delete" value="${tests.dir}" />
+                </phingcall>
+                <!-- Delete starterkit files. -->
+                <delete quiet="true">
+                    <fileset dir="${project.basedir}">
+                        <include name="CHANGELOG.md" />
+                        <include name="LICENSE.md" />
+                        <include name="README.md" />
+                        <include name="appspec.yml" />
+                        <include name="build.clone.xml" />
+                        <include name="build.package.xml" />
+                        <include name="build.properties.dist" />
+                        <include name="build.test.xml" />
+                        <include name="composer.lock" />
+                        <include name="phpcs-ruleset.xml" />
+                    </fileset>
+                </delete>
+
+                <!-- Copy the tests over theirs. -->
+                <copy todir="${tests.dir}" overwrite="true" haltonerror="false">
+                    <fileset dir="${toolkit.dir.incl.templates}/subsite/tests">
+                        <include name="**" />
+                    </fileset>
+                </copy>
+
+                <exec command="curl -L -o ${project.tmp.dir}/composer.json https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/composer.json" />
+                <trycatch>
+                    <try>
+                        <exec command="diff ${resources.dir.composer.json} ${project.tmp.dir}/composer.json" passthru="true" checkreturn="true" />
+                        <copy file="${toolkit.dir.incl.templates}/subsite/resources/composer.json" tofile="${resources.dir.composer.json}" />
+                        <copy file="${toolkit.dir.incl.templates}/subsite/resources/composer.lock" tofile="${resources.dir.composer.lock}" />
+                    </try>
+                    <catch>
+                        <echo msg="Custom ${resources.dir.composer.json} file detected. Not overwriting with toolkit 3.x version." level="warning" />
+                    </catch>
+                </trycatch>
+
+                <!-- Copy new site.make if it matches starterkit 2.x master. -->
+                <exec command="curl -L -o ${project.tmp.dir}/site.make https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/resources/site.make" />
+
+                <trycatch>
+                    <try>
+                        <exec command="diff ${resources.dir.site.make} ${project.tmp.dir}/site.make" passthru="true" checkreturn="true" />
+                        <copy file="${toolkit.dir.incl.templates}/subsite/resources/site.make" tofile="${resources.dir.site.make}" />
+                    </try>
+                    <catch>
+                        <echo msg="Custom ${resources.dir.site.make} file detected. Not overwriting with toolkit 3.x version." level="warning" />
+                    </catch>
+                </trycatch>
+
+                <!-- Copy new .gitignore if it matches starterkit 2.x master. -->
+                <exec command="curl -L -o ${project.tmp.dir}/.gitignore https://raw.githubusercontent.com/ec-europa/subsite-starterkit/master/.gitignore" />
+
+                <trycatch>
+                    <try>
+                        <exec command="diff ${project.basedir}/.gitignore ${project.tmp.dir}/.gitignore" passthru="true" checkreturn="true" />
+                        <copy file="${toolkit.dir.incl.templates}/subsite/resources/.gitignore" tofile="${project.basedir}/.gitignore" />
+                    </try>
+                    <catch>
+                        <echo msg="Custom .gitignore file detected. Not overwriting with toolkit 3.x version." level="warning" />
+                    </catch>
+                </trycatch>
+
+                <!-- Move subsite resources to new location. -->
+                <move file="build.properties" tofile="build.project.props" overwrite="true" haltonerror="false" />
+                <move file="${resources.dir}/phpcs-custom.xml" tofile="phpcs-ruleset.xml" overwrite="true" haltonerror="false" />
+                <move file="${resources.dir}/build.custom.xml" tofile="build.project.xml" overwrite="true" haltonerror="false" />
+                <copy file="${toolkit.dir.incl.templates}/subsite/.jenkinsfile" tofile="${project.basedir}/.jenkinsfile" />
+                <copy file="${toolkit.dir.incl.templates}/subsite/resources/devel.make" tofile="${resources.dir.devel.make}" />
+
+                <!-- Copy cause move can not handle symlinks -->
+                <mkdir dir="lib-backup" />
+                <copy todir="lib-backup" haltonerror="true">
+                    <fileset dir="${lib.dir}">
+                        <include name="**" />
+                    </fileset>
+                </copy>
+                <delete dir="${lib.dir}" />
+
+                <mkdir dir="${lib.dir.libraries}" />
+                <mkdir dir="${lib.dir.modules.custom}" />
+                <mkdir dir="${lib.dir.modules.features}" />
+                <mkdir dir="${lib.dir.themes}" />
+                <mkdir dir="${lib.dir.source}" />
+                <if>
+                    <available file="lib-backup/modules/custom" type="dir" />
+                    <then>
+                        <copy todir="${lib.dir.modules.custom}" haltonerror="false">
+                            <fileset dir="lib-backup/modules/custom">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/modules/custom" quiet="true" />
+                    </then>
+                </if>
+                <if>
+                    <available file="lib-backup/modules" type="dir" />
+                    <then>
+                        <copy todir="${lib.dir.modules.custom}" haltonerror="false">
+                            <fileset dir="lib-backup/modules">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/modules" quiet="true" />
+                    </then>
+                </if>
+                <if>
+                    <available file="lib-backup/features/custom" type="dir" />
+                    <then>
+                        <copy todir="${lib.dir.modules.features}" haltonerror="false">
+                            <fileset dir="lib-backup/features/custom">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/features/custom" quiet="true" />
+                    </then>
+                </if>
+                <if>
+                    <available file="lib-backup/features" type="dir" />
+                    <then>
+                        <copy todir="${lib.dir.modules.features}" haltonerror="false">
+                            <fileset dir="lib-backup/features">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/features" quiet="true" />
+                    </then>
+                </if>
+                <if>
+                    <available file="lib-backup/themes" type="dir" />
+                    <then>
+                        <copy todir="${lib.dir.themes}" haltonerror="false">
+                            <fileset dir="lib-backup/themes">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/themes" quiet="true" />
+                    </then>
+                </if>
+                <if>
+                    <available file="lib-backup/libraries" type="dir" />
+                    <then>
+                        <copy todir="${lib.dir.libraries}" haltonerror="false">
+                            <fileset dir="lib-backup/libraries">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/libraries" quiet="true" />
+                    </then>
+                </if>
+                <if>
+                    <available file="lib-backup/src" type="dir" />
+                    <then>
+                        <copy todir="${lib.dir.source}" haltonerror="false">
+                            <fileset dir="lib-backup/src">
+                                <include name="**" />
+                            </fileset>
+                        </copy>
+                        <delete dir="lib-backup/src" quiet="true" />
+                    </then>
+                </if>
+            </then>
+        </if>
+        <delete dir="lib-backup" />
+        <phingcall target="toolkit-generate-project-info" />
+    </target>
+
+    <target name="toolkit-structure-generate" description="Create the lib directory structure." hidden="true">
+        <if>
+            <and>
+                <not>
+                    <available file="${lib.dir}" type="dir" />
+                </not>
+                <!-- <equals arg1="${project.basedir}" arg2="${toolkit.dir}" /> -->
+            </and>
+            <then>
+                <phingcall target="toolkit-templates-copy">
+                    <property name="project-type" value="${project.type}" override="true" />
+                </phingcall>
+            </then>
+            <elseif>
+                <available file="${lib.dir}" type="dir" />
+                <then>
+                    <echo msg="Project structure exists already." />
+                </then>
+            </elseif>
+            <else>
+                <input propertyName="project-type" message="What type of project do you want to create?" validargs="profile,subsite" />
+                <phingcall target="toolkit-templates-copy">
+                    <property name="project-type" value="${project-type}" override="true" />
+                </phingcall>
+            </else>
+        </if>
+    </target>
+
+    <target name="toolkit-templates-copy" description="Copies template files to your project for toolkit integration." hidden="true">
+        <echo msg="Ensuring the presence of build.xml and Jenkinsfile." />
+        <copy file="${toolkit.dir.incl.phing.props}/main.props" tofile="${project.basedir}/build.default.props" overwrite="true" />
+        <copy todir="${project.basedir}">
+            <fileset dir="${toolkit.dir.incl.templates}/${project-type}" />
+        </copy>
+        <echo msg="Project structure for ${project-type} created." />
+    </target>
+
+    <target name="toolkit-generate-project-info" description="Copies template files to your project for toolkit integration with inventory details." hidden="true">
+        <exec command="basename -s .git `git config --get remote.origin.url`" outputProperty="project-id" />
+        <exec command="grep ${project-id} ${toolkit.dir.incl.templates}/project/inventory.csv | head -1" outputProperty="project-details" />
+        <if>
+            <not>
+                <equals arg1="${project-details}" arg2="" />
+            </not>
+            <then>
+                <exec command="echo ${project-details} | cut -d',' -f1" outputProperty="project.id" />
+                <exec command="echo ${project-details} | cut -d',' -f2" outputProperty="project.name" />
+                <exec command="echo ${project-details} | cut -d',' -f3" outputProperty="project.url.repository" />
+                <exec command="echo ${project-details} | cut -d',' -f4" outputProperty="backtrac.id.static" />
+                <exec command="echo ${project-details} | cut -d',' -f5" outputProperty="backtrac.id.dynamic" />
+                <exec command="echo ${project-details} | cut -d',' -f6" outputProperty="project.url.production" />
+                <exec command="echo ${project-details} | cut -d',' -f7" outputProperty="project.url.playground" />
+                <copy todir="${project.basedir}" overwrite="true">
+                    <fileset dir="${toolkit.dir.incl.templates}/subsite">
+                        <include name="README.md" />
+                        <include name="composer.json" />
+                        <include name="build.project.props" />
+                    </fileset>
+                    <filterchain>
+                        <replacetokens begintoken="${" endtoken="}">
+                            <token key="PROJECT_ID" value="${project.id}" />
+                            <token key="PROJECT_DESCRIPTION" value="${project.name}" />
+                            <token key="PROJECT_INSTALL_MODULES" value="${project.install.modules}" />
+                            <token key="PRODUCTION_URL" value="${project.url.production}" />
+                            <token key="REPOSITORY_URL" value="${project.url.repository}" />
+                            <token key="BACKTRAC_ID_STATIC" value="${backtrac.id.static}" />
+                            <token key="BACKTRAC_ID_DYNAMIC" value="${backtrac.id.dynamic}" />
+                        </replacetokens>
+                    </filterchain>
+                </copy>
+                <echo msg="Project information generated in README.md, composer.json and build.project.props." />
+            </then>
+        </if>
+    </target>
+
+</project>

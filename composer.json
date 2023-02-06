@@ -1,5 +1,6 @@
 {
     "name": "ec-europa/toolkit",
+<<<<<<< HEAD
     "description": "Toolkit packaged for Drupal 9.",
     "license": "EUPL-1.2",
     "type": "library",
@@ -57,6 +58,12 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "phpstan/extension-installer": true
         }
+=======
+    "description": "NextEuropa Toolkit packaged for composer",
+    "license": "EUPL-1.1",
+    "require": {
+      "ec-europa/php-docker-infra": "~0.1"
+>>>>>>> master
     },
     "scripts": {
         "toolkit-update-phpcs-config": "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs'",

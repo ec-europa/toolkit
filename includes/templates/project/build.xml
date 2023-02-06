@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="custom" default="help">
+
+    <property name="toolkit.root" value="${project.basedir}/vendor/ec-europa/toolkit" />
+    <import file="${toolkit.root}/build.xml" />
+
+</project>
