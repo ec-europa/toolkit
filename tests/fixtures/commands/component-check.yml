@@ -9,7 +9,7 @@
         Checking Mandatory components.
         ==============================
 
-         [Simulator] Running ./vendor/bin/drush status --format=json
+        [Simulator] Running ./vendor/bin/drush status --format=json
         >  Website not installed, using config/sync/core.extension.yml file.
         >  Config file not found at config/sync/core.extension.yml.
         Package dropsolid_purge is mandatory and is not present on the project.
@@ -27,14 +27,14 @@
         Checking Insecure components.
         =============================
 
-         [Simulator] Running ./vendor/bin/drush pm:security --format=json
-         [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+        [Simulator] Running ./vendor/bin/drush pm:security --format=json
+        [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
         >  Insecure components check passed.
 
         Checking Outdated components.
         =============================
 
-         [Simulator] Running composer outdated --direct --minor-only --format=json
+        [Simulator] Running composer outdated --direct --minor-only --format=json
         >  Outdated components check passed.
 
         Checking Abandoned components.
@@ -124,7 +124,7 @@
         Checking Mandatory components.
         ==============================
 
-         [Simulator] Running ./vendor/bin/drush status --format=json
+        [Simulator] Running ./vendor/bin/drush status --format=json
         >  Website not installed, using config/sync/core.extension.yml file.
         >  Config file not found at config/sync/core.extension.yml.
         Package dropsolid_purge is mandatory and is not present on the project.
@@ -145,14 +145,14 @@
         Checking Insecure components.
         =============================
 
-         [Simulator] Running ./vendor/bin/drush pm:security --format=json
-         [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+        [Simulator] Running ./vendor/bin/drush pm:security --format=json
+        [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
         >  Insecure components check passed.
 
         Checking Outdated components.
         =============================
 
-         [Simulator] Running composer outdated --direct --minor-only --format=json
+        [Simulator] Running composer outdated --direct --minor-only --format=json
         >  Outdated components check passed.
 
         Checking Abandoned components.
@@ -243,7 +243,7 @@
         Checking Mandatory components.
         ==============================
 
-         [Simulator] Running ./vendor/bin/drush status --format=json
+        [Simulator] Running ./vendor/bin/drush status --format=json
         >  Website not installed, using core.extensions-good.yml file.
         >  Mandatory components check passed.
 
@@ -258,14 +258,14 @@
         Checking Insecure components.
         =============================
 
-         [Simulator] Running ./vendor/bin/drush pm:security --format=json
-         [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+        [Simulator] Running ./vendor/bin/drush pm:security --format=json
+        [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
         >  Insecure components check passed.
 
         Checking Outdated components.
         =============================
 
-         [Simulator] Running composer outdated --direct --minor-only --format=json
+        [Simulator] Running composer outdated --direct --minor-only --format=json
         >  Outdated components check passed.
 
         Checking Abandoned components.
