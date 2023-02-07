@@ -41,7 +41,14 @@
         ======================================
 
         The use of drupal/codesnippet:1.8 is restricted. Contact QA Team.
+        Package drupal/core:9.4.8 has not been reviewed by QA.
+        Package drupal/core-composer-scaffold:9.4.8 has not been reviewed by QA.
+        Package drupal/gin:3.0-beta5 has not been reviewed by QA.
         The use of drupal/github_connect:2.0.0-alpha1 is restricted. Contact QA Team.
+        Package drupal/purge_drush:3.4 has not been reviewed by QA.
+        Package drupal/purge_processor_cron:3.4 has not been reviewed by QA.
+        Package drupal/purge_processor_lateruntime:3.4 has not been reviewed by QA.
+        Package drupal/purge_queuer_coretags:3.4 has not been reviewed by QA.
         The use of drupal/responsive_tables_filter:1.17 is restricted. Contact QA Team.
         The use of drupal/restui:1.21 is rejected. Contact QA Team.
 
@@ -259,7 +266,13 @@
         Checking evaluation status components.
         ======================================
 
-        >  Evaluation module check passed.
+        Package drupal/core:9.4.8 has not been reviewed by QA.
+        Package drupal/core-composer-scaffold:9.4.8 has not been reviewed by QA.
+        Package drupal/gin:3.0-beta5 has not been reviewed by QA.
+        Package drupal/purge_drush:3.4 has not been reviewed by QA.
+        Package drupal/purge_processor_cron:3.4 has not been reviewed by QA.
+        Package drupal/purge_processor_lateruntime:3.4 has not been reviewed by QA.
+        Package drupal/purge_queuer_coretags:3.4 has not been reviewed by QA.
 
         Checking dev components.
         ========================
@@ -285,9 +298,35 @@
         Insecure module check             passed
         Outdated module check             passed
         Dev module check                  passed
-        Evaluation module check           passed
+        Evaluation module check           failed
         Dev module in require-dev check   passed
         Drush require section check       passed
         --------------------------------- -----------
 
-        [OK] Components checked, nothing to report.
+        [ERROR] Failed the components check, please verify the report and update the   
+        project.
+
+        See the list of packages at
+ 
+        https://webgate.ec.europa.eu/fpfis/qa/package-reviews. 
+
+        ! [NOTE] It is possible to bypass the insecure and outdated check:
+        !   
+        !        - Insecure check:   
+        !     
+        !           - by providing a token in the commit message: [SKIP-INSECURE]
+        !
+        !        - Outdated check:   
+        !
+        !           - by providing a token in the commit message: [SKIP-OUTDATED]
+        !
+        !           - Or, update the configuration in the runner.yml.dist as shown
+        !        below:
+        !   
+        !                toolkit:
+        !
+        !                  components: 
+        !     
+        !                    outdated:    
+        !
+        !                      check: false
