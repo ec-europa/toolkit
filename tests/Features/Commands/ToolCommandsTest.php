@@ -106,22 +106,4 @@ class ToolCommandsTest extends AbstractTest
         $this->assertFileExists((new ToolCommands())->getConfigurationFile());
     }
 
-    /**
-     * Converts from semantic version to "major.minor" version
-     *
-     * @param string $version
-     *
-     * @return string
-     */
-    private function extractMajorMinorVersion(string $version): string
-    {
-        if (strlen($version) < 3) {
-            return $version;
-        }
-
-        preg_match('/^(\d+)\.(\d+)/', $version, $matches);
-
-        return $matches[1] . '.' . $matches[2];
-    }
-
 }
