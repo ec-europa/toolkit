@@ -171,6 +171,9 @@ Procfile          text
 # Exclude files from exporting
 #
 
+.drone.yml         export-ignore
+.editorconfig      export-ignore
+.eslintrc.json     export-ignore
 .gitattributes     export-ignore
 .gitignore         export-ignore
 .gitkeep           export-ignore
