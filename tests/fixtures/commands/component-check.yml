@@ -21,7 +21,7 @@
 
         Package drupal/redis is recommended but is not present on the project.
         >  See the list of recommended packages at
-        https://digit-dqa.prd.fpfis.tech.ec.europa.eu/requirements.
+        https://digit-dqa.fpfis.tech.ec.europa.eu/requirements.
         >  This step is in reporting mode, skipping.
 
         Checking Insecure components.
@@ -85,7 +85,7 @@
 
                  See the list of packages at
 
-                 https://digit-dqa.prd.fpfis.tech.ec.europa.eu/package-reviews.
+                 https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews.
 
          ! [NOTE] It is possible to bypass the insecure and outdated check:
          !
@@ -139,7 +139,7 @@
         Package drupal/seckit is recommended but is not present on the project.
         Package drush/drush is recommended but is not present on the project.
         >  See the list of recommended packages at
-        https://digit-dqa.prd.fpfis.tech.ec.europa.eu/requirements.
+        https://digit-dqa.fpfis.tech.ec.europa.eu/requirements.
         >  This step is in reporting mode, skipping.
 
         Checking Insecure components.
@@ -203,7 +203,7 @@
 
                  See the list of packages at
 
-                 https://digit-dqa.prd.fpfis.tech.ec.europa.eu/package-reviews.
+                 https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews.
 
          ! [NOTE] It is possible to bypass the insecure and outdated check:
          !
@@ -252,7 +252,7 @@
 
         Package drupal/redis is recommended but is not present on the project.
         >  See the list of recommended packages at
-        https://digit-dqa.prd.fpfis.tech.ec.europa.eu/requirements.
+        https://digit-dqa.fpfis.tech.ec.europa.eu/requirements.
         >  This step is in reporting mode, skipping.
 
         Checking Insecure components.
