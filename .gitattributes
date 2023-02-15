@@ -31,7 +31,6 @@
 *.scm             text
 *.scss            text diff=css
 *.sh              text eol=lf
-.husky/*          text eol=lf
 *.sql             text
 *.styl            text
 *.tag             text
@@ -167,10 +166,7 @@ Procfile          text
 # Text files where line endings should be preserved
 *.patch           -text
 
-#
 # Exclude files from exporting
-#
-
 .drone.yml         export-ignore
 .editorconfig      export-ignore
 .eslintrc.json     export-ignore
