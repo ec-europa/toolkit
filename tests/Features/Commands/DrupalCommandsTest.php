@@ -80,6 +80,7 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
          * Test Toolkit very own "drupal:settings-setup" command.
          *
          * @param string $command
+         *   A command.
          * @param array $config
          *   A configuration array.
          * @param array $resources

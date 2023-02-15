@@ -83,7 +83,7 @@
         bin_dir: ./vendor/bin
         bin_node_dir: ./node_modules/.bin
         config_dir: ./config/runner
-        working_dir: /test/toolkit/tests/sandbox
+        working_dir: /test/toolkit/tests/sandbox/ConfigurationCommandsTest
 
 - command: 'config drupal.site'
   configuration: []
@@ -133,7 +133,7 @@
                 --simulate                       Run in simulated mode (show what would have happened).
                 --progress-delay=PROGRESS-DELAY  Number of seconds before progress bar is displayed in long-running task collections. Default: 2s. [default: 2]
             -D, --define=DEFINE                  Define a configuration item value. (multiple values allowed)
-                --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox"]
+                --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox/ConfigurationCommandsTest"]
             -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
           Help:
@@ -158,7 +158,7 @@
                 --simulate                       Run in simulated mode (show what would have happened).
                 --progress-delay=PROGRESS-DELAY  Number of seconds before progress bar is displayed in long-running task collections. Default: 2s. [default: 2]
             -D, --define=DEFINE                  Define a configuration item value. (multiple values allowed)
-                --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox"]
+                --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox/ConfigurationCommandsTest"]
             -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
           Help:
@@ -248,3 +248,57 @@
         [Exec] Running echo '{  }' > dummy.yml
     - file_expected: dummy.yml
       file_actual: dummy-copy.yml
+
+- command: 'test:drush'
+  configuration:
+    commands:
+      test:drush:
+        - { task: drush, command: config:import, arguments: [ -y ] }
+        - { task: drush, command: cache:rebuild }
+  resources:
+    - from: sample-bin
+      to: vendor/bin/drush
+  expectations:
+    - string_contains: "[Exec] Running ./vendor/bin/drush config:import -y"
+    - string_contains: "[Exec] Running ./vendor/bin/drush cache:rebuild"
+
+- command: 'drupal:config-import'
+  configuration: []
+  resources:
+    - from: sample-bin
+      to: vendor/bin/drush
+  expectations:
+    - string_contains: "[Exec] Running ./vendor/bin/drush config:import -y"
+    - string_contains: "[Exec] Running ./vendor/bin/drush cache:rebuild"
+
+- command: 'toolkit:setup-behat'
+  configuration: []
+  resources:
+    - from: sample-behat.yml.dist
+      to: behat.yml.dist
+  expectations:
+    - contains: |
+        [EcEuropa\Toolkit\Task\File\Process] Creating behat.yml
+        [Filesystem\FilesystemStack] _copy ["behat.yml.dist","behat.yml",true]
+        [File\Replace] behat.yml updated. 9 items replaced
+
+- command: 'toolkit:setup-phpunit'
+  configuration: []
+  resources:
+    - from: sample-phpunit.xml.dist
+      to: phpunit.xml.dist
+  expectations:
+    - contains: |
+        [EcEuropa\Toolkit\Task\File\Process] Creating phpunit.xml
+        [Filesystem\FilesystemStack] _copy ["phpunit.xml.dist","phpunit.xml",true]
+        [File\Replace] phpunit.xml unchanged. 0 items replaced
+
+- command: 'toolkit:install-clean'
+  configuration:
+    commands:
+      toolkit:install-clean:
+        - echo 'This command is overridden'
+  resources: []
+  expectations:
+    - string_contains: |
+        [Exec] Running echo 'This command is overridden'

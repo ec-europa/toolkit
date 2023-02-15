@@ -191,8 +191,38 @@
       to: phpunit.xml
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/phpunit ')
+        [Simulator] Simulating Exec('./vendor/bin/phpunit')
         [Simulator] Running ./vendor/bin/phpunit
+
+- command: 'toolkit:test-phpunit --options="process-isolation debug"'
+  configuration: []
+  resources:
+    - from: sample-phpunit.xml.dist
+      to: phpunit.xml
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/phpunit')
+          ->options(array (
+            'process-isolation' => NULL,
+            'debug' => NULL,
+          ), '=')
+        [Simulator] Running ./vendor/bin/phpunit --process-isolation --debug
+
+- command: 'toolkit:test-phpunit --options="process-isolation debug" --filter=Test --group=abc'
+  configuration: []
+  resources:
+    - from: sample-phpunit.xml.dist
+      to: phpunit.xml
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/phpunit')
+          ->options(array (
+            'process-isolation' => NULL,
+            'debug' => NULL,
+          ), '=')
+        ->option('group', 'abc', '=')
+        ->option('filter', 'Test', '=')
+        [Simulator] Running ./vendor/bin/phpunit --process-isolation --debug --group=abc --filter=Test
 
 - command: 'toolkit:run-phpcbf'
   configuration: []

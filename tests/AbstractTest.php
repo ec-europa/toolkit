@@ -277,7 +277,19 @@ abstract class AbstractTest extends TestCase
      */
     protected function getSandboxRoot(): string
     {
-        return __DIR__ . '/sandbox';
+        return __DIR__ . '/sandbox/' . $this->getClassName();
+    }
+
+    /**
+     * Returns the current class name.
+     *
+     * @return string
+     *   The class name.
+     */
+    protected function getClassName(): string
+    {
+        $class = explode('\\', static::class);
+        return (string) end($class);
     }
 
     /**

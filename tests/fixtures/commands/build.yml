@@ -127,7 +127,7 @@
     - contains: |
         [Simulator] Simulating ExecStack()
           ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
-          ->exec('npx stylelint "/test/toolkit/tests/sandbox/code/theme/ ... lelintrc.json --fix')
+          ->exec('npx stylelint "/test/toolkit/tests/sandbox/BuildComman ... lelintrc.json --fix')
           ->stopOnFail()
 
 - command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code --theme-task-runner=gulp --build-npm-packages=gulp-cli'
@@ -143,7 +143,7 @@
           ->exec('cp /test/toolkit/resources/assets/gulpfile.js /test/to ... e/theme/gulpfile.js')
           ->stopOnFail()
         [Simulator] Simulating ExecStack()
-          ->dir('/test/toolkit/tests/sandbox/code/theme')
+          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
           ->exec('npm init -y --scope')
           ->exec('npm install gulp-cli --save-dev')
           ->exec('./node_modules/.bin/gulp')
@@ -157,7 +157,7 @@
   expectations:
     - contains: |
         [Simulator] Simulating ExecStack()
-          ->dir('/test/toolkit/tests/sandbox/code/theme')
+          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
           ->exec('sudo apt-get update')
           ->exec('sudo apt-get install ruby-sass -y')
           ->stopOnFail()
@@ -165,7 +165,7 @@
           ->exec('cp /test/toolkit/resources/assets/Gruntfile.js /test/t ... /theme/Gruntfile.js')
           ->stopOnFail()
         [Simulator] Simulating ExecStack()
-          ->dir('/test/toolkit/tests/sandbox/code/theme')
+          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
           ->exec('npm init -y --scope')
           ->exec('npm install grunt grunt-contrib-jshint grunt-contrib-w ... b-uglify --save-dev')
           ->exec('./node_modules/.bin/grunt')

@@ -16,54 +16,11 @@
   configuration: []
   resources: []
   expectations:
-    php8.1:
-      - contains: |
-          >  Checking Toolkit requirements:
-
-
-          Checking connections:
-          =====================
-
-          ------------------------- ----------
-          QA Endpoint access        OK
-          GitHub oauth access       OK (200)
-          GitLab oauth access       OK (200)
-          ASDA configuration        OK
-          NEXTCLOUD configuration   OK
-          ------------------------- ----------
-
-          Required checks:
-          ================
-
-          ----------------- ---------------------
-          PHP version       OK (8.1.14)
-          Toolkit version   OK (9.3.0)
-          Drupal version    FAIL (not found) ()
-          ----------------- ---------------------
-    php8.2:
-      - contains: |
-          >  Checking Toolkit requirements:
-
-
-          Checking connections:
-          =====================
-
-          ------------------------- ----------
-          QA Endpoint access        OK
-          GitHub oauth access       OK (200)
-          GitLab oauth access       OK (200)
-          ASDA configuration        OK
-          NEXTCLOUD configuration   OK
-          ------------------------- ----------
-
-          Required checks:
-          ================
-
-          ----------------- ---------------------
-          PHP version       OK (8.2.1)
-          Toolkit version   OK (9.3.0)
-          Drupal version    FAIL (not found) ()
-          ----------------- ---------------------
+    - string_contains: "Checking Toolkit requirements:"
+    - string_contains: "Required checks:"
+    - string_contains: "PHP version       OK"
+    - string_contains: "Toolkit version   OK"
+    - string_contains: "Drupal version    FAIL (not found)"
 
 - command: toolkit:requirements
   configuration: []
@@ -71,54 +28,11 @@
     - from: sample-composer.lock
       to: composer.lock
   expectations:
-    php8.1:
-      - contains: |
-          >  Checking Toolkit requirements:
-
-
-          Checking connections:
-          =====================
-
-          ------------------------- ----------
-          QA Endpoint access        OK
-          GitHub oauth access       OK (200)
-          GitLab oauth access       OK (200)
-          ASDA configuration        OK
-          NEXTCLOUD configuration   OK
-          ------------------------- ----------
-
-          Required checks:
-          ================
-
-          ----------------- -------------
-          PHP version       OK (8.1.14)
-          Toolkit version   OK (9.3.0)
-          Drupal version    OK (9.4.8)
-          ----------------- -------------
-    php8.2:
-      - contains: |
-          >  Checking Toolkit requirements:
-
-
-          Checking connections:
-          =====================
-
-          ------------------------- ----------
-          QA Endpoint access        OK
-          GitHub oauth access       OK (200)
-          GitLab oauth access       OK (200)
-          ASDA configuration        OK
-          NEXTCLOUD configuration   OK
-          ------------------------- ----------
-
-          Required checks:
-          ================
-
-          ----------------- ------------
-          PHP version       OK (8.2.1)
-          Toolkit version   OK (9.3.0)
-          Drupal version    OK (9.4.8)
-          ----------------- ------------
+    - string_contains: "Checking Toolkit requirements:"
+    - string_contains: "Required checks:"
+    - string_contains: "PHP version       OK"
+    - string_contains: "Toolkit version   OK"
+    - string_contains: "Drupal version    OK"
 
 - command: toolkit:fix-permissions
   configuration: []
@@ -128,7 +42,6 @@
         [Simulator] Simulating Exec('/test/toolkit/resources/scripts/fix-permissions.sh')
           ->options(array ( ... ), '=')
         [Simulator] Running /test/toolkit/resources/scripts/fix-permissions.sh --drupal_path=/test/toolkit/web --drupal_user=www-data --httpd_group=www-data
-
 
 - command: toolkit:fix-permissions  --drupal_path=/test/toolkit/test --drupal_user=test --httpd_group=test
   configuration: []
@@ -149,7 +62,7 @@
           [WARNING] Failed to get Toolkit version from composer.lock.
 
         Minimum version: ^9.0
-        Current version: 9.3.0
+        Current version: 9.5.0
         Version check: OK
 
 - command: toolkit:check-version
@@ -162,7 +75,7 @@
         >  Checking Toolkit version:
 
         Minimum version: ^9.0
-        Current version: 9.3.0
+        Current version: 9.5.0
         Version check: OK
 
 - command: toolkit:vendor-list

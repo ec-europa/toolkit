@@ -1,5 +1,14 @@
 # Toolkit change log
 
+## Version 9.5.0
+  - DQA-6103: Add configuration command to run drush commands.
+  - DQA-6085: Rename toolkit:import-config into drupal:config-import.
+  - DQA-6128: Update constraint for consolidation/annotated-command.
+  - DQA-6138: Configuration commands are not overriding defaults.
+
+## Version 9.4.0
+  - DQA-6028: Allow options in command test-phpunit.
+
 ## Version 9.3.0
   - DQA-5410: Improve load of database during clone install.
   - DQA-5473: Tests for DrupalCommands.

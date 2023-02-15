@@ -71,7 +71,7 @@ pipeline:
     secrets: [ qa_api_basic_auth, github_api_token, gitlab_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass ]
     environment: *env
     commands:
-      - ./run toolkit:test-phpunit
+      - ./run toolkit:test-phpunit --execution=parallel
 
   lint-yaml:
     group: test

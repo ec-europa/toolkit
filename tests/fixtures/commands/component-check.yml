@@ -37,6 +37,11 @@
         [Simulator] Running composer outdated --direct --minor-only --format=json
         >  Outdated components check passed.
 
+        Checking Abandoned components.
+        ==============================
+
+        >  Abandoned components check passed.
+
         Checking evaluation status components.
         ======================================
 
@@ -63,44 +68,45 @@
         Results:
         ========
 
-        --------------------------------- -----------
-        Mandatory module check            failed
-        Recommended module check          1 warning
-        Insecure module check             passed
-        Outdated module check             passed
-        Dev module check                  passed
-        Evaluation module check           failed
-        Dev module in require-dev check   passed
-        Drush require section check       passed
-        --------------------------------- -----------
+         --------------------------------- -----------
+          Mandatory module check            failed
+          Recommended module check          1 warning
+          Insecure module check             passed
+          Outdated module check             passed
+          Abandoned module check            passed
+          Dev module check                  passed
+          Evaluation module check           failed
+          Dev module in require-dev check   passed
+          Drush require section check       passed
+         --------------------------------- -----------
 
-        [ERROR] Failed the components check, please verify the report and update the
-        project.
+         [ERROR] Failed the components check, please verify the report and update the
+                 project.
 
-        See the list of packages at
+                 See the list of packages at
 
-        https://digit-dqa.prd.fpfis.tech.ec.europa.eu/package-reviews.
+                 https://digit-dqa.prd.fpfis.tech.ec.europa.eu/package-reviews.
 
-        ! [NOTE] It is possible to bypass the insecure and outdated check:
-        !
-        !        - Insecure check:
-        !
-        !           - by providing a token in the commit message: [SKIP-INSECURE]
-        !
-        !        - Outdated check:
-        !
-        !           - by providing a token in the commit message: [SKIP-OUTDATED]
-        !
-        !           - Or, update the configuration in the runner.yml.dist as shown
-        !        below:
-        !
-        !                toolkit:
-        !
-        !                  components:
-        !
-        !                    outdated:
-        !
-        !                      check: false
+         ! [NOTE] It is possible to bypass the insecure and outdated check:
+         !
+         !        - Insecure check:
+         !
+         !           - by providing a token in the commit message: [SKIP-INSECURE]
+         !
+         !        - Outdated check:
+         !
+         !           - by providing a token in the commit message: [SKIP-OUTDATED]
+         !
+         !           - Or, update the configuration in the runner.yml.dist as shown
+         !        below:
+         !
+         !                toolkit:
+         !
+         !                  components:
+         !
+         !                    outdated:
+         !
+         !                      check: false
 
 - command: 'toolkit:component-check --test-command'
   configuration:
@@ -149,6 +155,11 @@
         [Simulator] Running composer outdated --direct --minor-only --format=json
         >  Outdated components check passed.
 
+        Checking Abandoned components.
+        ==============================
+
+        >  Abandoned components check passed.
+
         Checking evaluation status components.
         ======================================
 
@@ -175,44 +186,45 @@
         Results:
         ========
 
-        --------------------------------- -------------------
-        Mandatory module check            failed
-        Recommended module check          4 warnings
-        Insecure module check             passed (Skipping)
-        Outdated module check             passed (Skipping)
-        Dev module check                  failed
-        Evaluation module check           failed
-        Dev module in require-dev check   passed
-        Drush require section check       passed
-        --------------------------------- -------------------
+         --------------------------------- -------------------
+          Mandatory module check            failed
+          Recommended module check          4 warnings
+          Insecure module check             passed (Skipping)
+          Outdated module check             passed (Skipping)
+          Abandoned module check            passed
+          Dev module check                  failed
+          Evaluation module check           failed
+          Dev module in require-dev check   passed
+          Drush require section check       passed
+         --------------------------------- -------------------
 
-        [ERROR] Failed the components check, please verify the report and update the
-        project.
+         [ERROR] Failed the components check, please verify the report and update the
+                 project.
 
-        See the list of packages at
+                 See the list of packages at
 
-        https://digit-dqa.prd.fpfis.tech.ec.europa.eu/package-reviews.
+                 https://digit-dqa.prd.fpfis.tech.ec.europa.eu/package-reviews.
 
-        ! [NOTE] It is possible to bypass the insecure and outdated check:
-        !
-        !        - Insecure check:
-        !
-        !           - by providing a token in the commit message: [SKIP-INSECURE]
-        !
-        !        - Outdated check:
-        !
-        !           - by providing a token in the commit message: [SKIP-OUTDATED]
-        !
-        !           - Or, update the configuration in the runner.yml.dist as shown
-        !        below:
-        !
-        !                toolkit:
-        !
-        !                  components:
-        !
-        !                    outdated:
-        !
-        !                      check: false
+         ! [NOTE] It is possible to bypass the insecure and outdated check:
+         !
+         !        - Insecure check:
+         !
+         !           - by providing a token in the commit message: [SKIP-INSECURE]
+         !
+         !        - Outdated check:
+         !
+         !           - by providing a token in the commit message: [SKIP-OUTDATED]
+         !
+         !           - Or, update the configuration in the runner.yml.dist as shown
+         !        below:
+         !
+         !                toolkit:
+         !
+         !                  components:
+         !
+         !                    outdated:
+         !
+         !                      check: false
 
 - command: 'toolkit:component-check'
   configuration:
@@ -256,6 +268,11 @@
         [Simulator] Running composer outdated --direct --minor-only --format=json
         >  Outdated components check passed.
 
+        Checking Abandoned components.
+        ==============================
+
+        >  Abandoned components check passed.
+
         Checking evaluation status components.
         ======================================
 
@@ -279,15 +296,16 @@
         Results:
         ========
 
-        --------------------------------- -----------
-        Mandatory module check            passed
-        Recommended module check          1 warning
-        Insecure module check             passed
-        Outdated module check             passed
-        Dev module check                  passed
-        Evaluation module check           passed
-        Dev module in require-dev check   passed
-        Drush require section check       passed
-        --------------------------------- -----------
+         --------------------------------- -----------
+         Mandatory module check            passed
+         Recommended module check          1 warning
+         Insecure module check             passed
+         Outdated module check             passed
+         Abandoned module check            passed
+         Dev module check                  passed
+         Evaluation module check           passed
+         Dev module in require-dev check   passed
+         Drush require section check       passed
+         --------------------------------- -----------
 
-        [OK] Components checked, nothing to report.
+         [OK] Components checked, nothing to report.
