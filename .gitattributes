@@ -143,8 +143,8 @@ Procfile          text
 *.webp            binary
 
 # Scripts
-*.fish     text eol=lf
-*.zsh      text eol=lf
+*.fish            text eol=lf
+*.zsh             text eol=lf
 
 # Archives
 *.7z              binary
@@ -165,7 +165,7 @@ Procfile          text
 *.*ignore         text
 
 # Text files where line endings should be preserved
-*.patch    -text
+*.patch           -text
 
 #
 # Exclude files from exporting
@@ -183,4 +183,4 @@ docker-compose.yml export-ignore
 phpcs.xml          export-ignore
 phpdoc.dist.xml    export-ignore
 phpmd.xml          export-ignore
-phpunit.xml.dist.  export-ignore
+phpunit.xml.dist   export-ignore
