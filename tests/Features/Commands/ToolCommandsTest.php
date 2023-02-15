@@ -52,11 +52,6 @@ class ToolCommandsTest extends AbstractTest
         // Run command.
         $result = $this->runCommand($command);
 
-        if ($command === 'toolkit:requirements') {
-            $phpVersion = $this->extractMajorMinorVersion((string) phpversion());
-            $expectations = $expectations['php' . $phpVersion];
-        }
-
 //        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
