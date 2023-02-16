@@ -34,7 +34,7 @@
         Checking Outdated components.
         =============================
 
-        [Simulator] Running composer outdated --direct --minor-only --format=json
+        [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --format=json
         >  Outdated components check passed.
 
         Checking Abandoned components.
@@ -152,7 +152,7 @@
         Checking Outdated components.
         =============================
 
-        [Simulator] Running composer outdated --direct --minor-only --format=json
+        [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --format=json
         >  Outdated components check passed.
 
         Checking Abandoned components.
@@ -265,7 +265,7 @@
         Checking Outdated components.
         =============================
 
-        [Simulator] Running composer outdated --direct --minor-only --format=json
+        [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --format=json
         >  Outdated components check passed.
 
         Checking Abandoned components.
@@ -307,5 +307,5 @@
          Dev module in require-dev check   passed
          Drush require section check       passed
          --------------------------------- -----------
-    
+
          [OK] Components checked, nothing to report.
