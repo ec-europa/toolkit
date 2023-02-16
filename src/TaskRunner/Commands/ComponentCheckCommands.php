@@ -480,7 +480,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentOutdated()
     {
-        $result = $this->taskExec('composer outdated --direct --minor-only --format=json')
+        $result = $this->taskExec('composer outdated --no-dev --locked --direct --minor-only --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
 
