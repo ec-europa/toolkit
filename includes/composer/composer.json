@@ -4,7 +4,7 @@
     "cpliakas/git-wrapper": "^1.7",
     "cweagans/composer-patches": "^1.0",
     "drupal/phingdrushtask": "^1.1",
-    "drupol/phingbehattask": "^1.2.0",
+    "drupol/phingbehattask": "^1.2.1",
     "drush/drush": "^8.4.11",
     "ext-json": "*",
     "ext-phar": "*",
