@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4f380f798f8209babba85e7f3381b8c",
+    "content-hash": "f4a7a021ee477b7729066eff41ffc21a",
     "packages": [
         {
             "name": "composer/semver",
@@ -590,16 +590,16 @@
         },
         {
             "name": "drupol/phingbehattask",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupol/phingbehattask.git",
-                "reference": "582ad620ae1d166d39df782e4c2728729c62a9df"
+                "reference": "2ca04cd86e19b2a3444c77a864aeafb449c8ade9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupol/phingbehattask/zipball/582ad620ae1d166d39df782e4c2728729c62a9df",
-                "reference": "582ad620ae1d166d39df782e4c2728729c62a9df",
+                "url": "https://api.github.com/repos/drupol/phingbehattask/zipball/2ca04cd86e19b2a3444c77a864aeafb449c8ade9",
+                "reference": "2ca04cd86e19b2a3444c77a864aeafb449c8ade9",
                 "shasum": ""
             },
             "require": {
@@ -644,7 +644,7 @@
                 "phing",
                 "test"
             ],
-            "time": "2018-10-15T10:22:34+00:00"
+            "time": "2023-02-17T07:48:42+00:00"
         },
         {
             "name": "drush/drush",
@@ -1312,16 +1312,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.15.2",
+            "version": "v4.15.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "f59bbe44bf7d96f24f3e2b4ddc21cd52c1d2adbc"
+                "reference": "570e980a201d8ed0236b0a62ddf2c9cbb2034039"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/f59bbe44bf7d96f24f3e2b4ddc21cd52c1d2adbc",
-                "reference": "f59bbe44bf7d96f24f3e2b4ddc21cd52c1d2adbc",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/570e980a201d8ed0236b0a62ddf2c9cbb2034039",
+                "reference": "570e980a201d8ed0236b0a62ddf2c9cbb2034039",
                 "shasum": ""
             },
             "require": {
@@ -1360,7 +1360,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2022-11-12T15:38:23+00:00"
+            "time": "2023-01-16T22:05:37+00:00"
         },
         {
             "name": "pear/archive_tar",
@@ -1965,16 +1965,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.11.10",
+            "version": "v0.11.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "e9eadffbed9c9deb5426fd107faae0452bf20a36"
+                "reference": "52cb7c47d403c31c0adc9bf7710fc355f93c20f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/e9eadffbed9c9deb5426fd107faae0452bf20a36",
-                "reference": "e9eadffbed9c9deb5426fd107faae0452bf20a36",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/52cb7c47d403c31c0adc9bf7710fc355f93c20f7",
+                "reference": "52cb7c47d403c31c0adc9bf7710fc355f93c20f7",
                 "shasum": ""
             },
             "require": {
@@ -2033,7 +2033,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2022-12-23T17:47:18+00:00"
+            "time": "2023-01-29T21:24:40+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
