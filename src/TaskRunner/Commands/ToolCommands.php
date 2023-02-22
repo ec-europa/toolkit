@@ -174,7 +174,7 @@ class ToolCommands extends AbstractCommands
         }
         $data = Website::requirements();
         if (empty($data)) {
-            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
             return 1;
         }
         if (!isset($data['toolkit'])) {
@@ -362,7 +362,7 @@ class ToolCommands extends AbstractCommands
                 }
             }
         } else {
-            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
         }
 
         $version_check = Semver::satisfies($toolkit_version, $min_version) ? 'OK' : 'FAIL';
@@ -433,7 +433,7 @@ class ToolCommands extends AbstractCommands
     public function toolkitVendorList(ConsoleIO $io)
     {
         if (empty($data = Website::requirements())) {
-            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
             return ResultData::EXITCODE_ERROR;
         }
         if (!isset($data['vendor_list'])) {

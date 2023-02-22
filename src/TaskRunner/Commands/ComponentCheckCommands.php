@@ -50,7 +50,7 @@ class ComponentCheckCommands extends AbstractCommands
         if (!empty($options['endpoint'])) {
             Website::setUrl($options['endpoint']);
         }
-        if (empty($basicAuth = Website::basicAuth())) {
+        if (empty($auth = Website::apiAuth())) {
             return 1;
         }
 
@@ -70,7 +70,7 @@ class ComponentCheckCommands extends AbstractCommands
 
         $status = 0;
         $endpoint = Website::url();
-        $result = Website::get($endpoint . '/api/v1/package-reviews?version=8.x', $basicAuth);
+        $result = Website::get($endpoint . '/api/v1/package-reviews?version=8.x', $auth);
         $data = json_decode($result, true);
         $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 

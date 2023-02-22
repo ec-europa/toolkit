@@ -121,8 +121,8 @@ class BlackfireCommands extends AbstractCommands
 
             // Send payload to QA website.
             $url = Website::url();
-            if (empty($basicAuth = Website::basicAuth())) {
-                $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            if (empty($basicAuth = Website::apiAuth())) {
+                $this->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
                 return new ResultData(0);
             }
             if (!empty($repo)) {
