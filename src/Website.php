@@ -50,10 +50,10 @@ class Website
     }
 
     /**
-     * Return the API AUTH value.
+     * Return the API Authorization instance.
      *
      * @return AuthorizationInterface|null
-     *   The API authentication value or empty string if fails.
+     *   The API authorization instance or empty string if fails.
      */
     public static function apiAuth(): AuthorizationInterface|null
     {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit;
 
 /**
- * Authorization for QA api.
+ * Authorization factory for QA api.
  */
 class AuthorizationFactory
 {
