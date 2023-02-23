@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit;
 
 /**
- * Authorization Token for QA api.
+ * Authorization Basic for QA api.
  */
 class AuthorizationBasic implements AuthorizationInterface
 {
@@ -16,7 +16,7 @@ class AuthorizationBasic implements AuthorizationInterface
         $this->value = $value;
     }
 
-    public function getHeader(): string
+    public function getAuthorizationHeader(): string
     {
         return 'Authorization: Basic ' . $this->value;
     }

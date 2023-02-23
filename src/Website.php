@@ -83,7 +83,7 @@ class Website
      * @param string $url
      *   The QA endpoint url.
      * @param AuthorizationInterface|null $auth
-     *   The basic auth.
+     *   The authorization instance or null.
      *
      * @return string
      *   The endpoint content, or empty string if no session is generated.
@@ -106,7 +106,7 @@ class Website
         curl_setopt($curl, CURLOPT_TIMEOUT, 120);
         if ($auth instanceof AuthorizationInterface) {
             $header = [
-                $auth->getHeader(),
+                $auth->getAuthorizationHeader(),
                 "X-CSRF-Token: $token",
             ];
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
@@ -174,15 +174,15 @@ class Website
      *
      * @param array $fields
      *   Data to send.
-     * @param string $auth
-     *   The Basic auth.
+     * @param AuthorizationInterface $auth
+     *   The authorization instance.
      *
      * @return string
      *   The endpoint response code, or empty string if no session is generated.
      *
      * @throws Exception
      */
-    public static function post(array $fields, string $auth): string
+    public static function post(array $fields, AuthorizationInterface $auth): string
     {
         if (!($token = self::getSessionToken())) {
             return '';
@@ -196,7 +196,7 @@ class Website
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/hal+json',
             "X-CSRF-Token: $token",
-            "Authorization: Basic $auth",
+            $auth->getAuthorizationHeader()
         ]);
         curl_exec($ch);
         $code = (string) curl_getinfo($ch, CURLINFO_HTTP_CODE);

@@ -121,7 +121,7 @@ class BlackfireCommands extends AbstractCommands
 
             // Send payload to QA website.
             $url = Website::url();
-            if (empty($basicAuth = Website::apiAuth())) {
+            if (empty($auth = Website::apiAuth())) {
                 $this->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
                 return new ResultData(0);
             }
@@ -151,7 +151,7 @@ class BlackfireCommands extends AbstractCommands
                     'field_blackfire_commit_link' => [['value' => getenv('DRONE_PULL_REQUEST') ?? '']],
                     'field_blackfire_pr' => [['value' => getenv('DRONE_COMMIT_LINK') ?? '']],
                 ];
-                $payload_response = Website::post($payload, $basicAuth);
+                $payload_response = Website::post($payload, $auth);
                 if (!empty($payload_response) && $payload_response === '201') {
                     $this->writeln("Payload sent to QA website: $payload_response");
                 } else {

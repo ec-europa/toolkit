@@ -16,7 +16,7 @@ class AuthorizationToken implements AuthorizationInterface
         $this->value = $value;
     }
 
-    public function getHeader(): string
+    public function getAuthorizationHeader(): string
     {
         return 'qa-user-auth-token: ' . $this->value;
     }
