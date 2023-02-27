@@ -311,28 +311,25 @@ class Runner
 
             $command = $commandFactory->createCommand($commandInfo, $commandClass)
                 ->setName($name);
-            // Check for options if the 'tasks' property exists.
-            if (isset($tasks['tasks'])) {
-                if (isset($tasks['aliases']) || !empty($aliases)) {
-                    $aliases = array_filter(array_merge(
-                        $aliases,
-                        array_map('trim', explode(',', $tasks['aliases'] ?? ''))
-                    ));
-                    $command->setAliases($aliases);
-                }
-                if (isset($tasks['description'])) {
-                    $command->setDescription($tasks['description']);
-                }
-                if (isset($tasks['help'])) {
-                    $command->setHelp($tasks['help']);
-                }
-                if (isset($tasks['hidden'])) {
-                    $command->setHidden((bool) $tasks['hidden']);
-                }
-                if (isset($tasks['usage'])) {
-                    foreach ((array) $tasks['usage'] as $usage) {
-                        $command->addUsage($usage);
-                    }
+            if (isset($tasks['aliases']) || !empty($aliases)) {
+                $aliases = array_filter(array_merge(
+                    $aliases,
+                    array_map('trim', explode(',', $tasks['aliases'] ?? ''))
+                ));
+                $command->setAliases($aliases);
+            }
+            if (isset($tasks['description'])) {
+                $command->setDescription($tasks['description']);
+            }
+            if (isset($tasks['help'])) {
+                $command->setHelp($tasks['help']);
+            }
+            if (isset($tasks['hidden'])) {
+                $command->setHidden((bool) $tasks['hidden']);
+            }
+            if (isset($tasks['usage'])) {
+                foreach ((array) $tasks['usage'] as $usage) {
+                    $command->addUsage($usage);
                 }
             }
 
