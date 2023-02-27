@@ -37,6 +37,8 @@ toolkit:
         - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
         - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
       ignore_patterns:
+        - ${toolkit.build.dist.root}/
+        - .cache/
         - vendor/
         - web/
         - node_modules/
@@ -59,6 +61,8 @@ toolkit:
       config: phpmd.xml
       format: ansi
       ignore_patterns:
+        - ${toolkit.build.dist.root}/
+        - .cache/
         - vendor/
         - web/
         - node_modules/
@@ -75,20 +79,20 @@ toolkit:
     phpstan:
       config: phpstan.neon
       level: '1'
-      files: [ 'lib', 'src' ]
-      ignores: [ 'vendor' ]
+      files: [ lib, src ]
+      ignores: [ ${toolkit.build.dist.root}, .cache, vendor ]
       memory_limit: ''
       options: ''
   lint:
     eslint:
       config: .eslintrc.json
       packages: 'eslint-config-drupal eslint-plugin-yml'
-      ignores: [ 'vendor/*', 'web/*', 'dist/*' ]
+      ignores: [ '${toolkit.build.dist.root}/*', '.cache/*', 'vendor/*', 'web/*', 'dist/*' ]
       extensions_yaml: [ '.yml', '.yaml' ]
       options_yaml: ''
       extensions_js: [ '.js' ]
       options_js: ''
     php:
       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
-      exclude: [ 'vendor/', 'web/' ]
+      exclude: [ '${toolkit.build.dist.root}/', '.cache/', 'vendor/', 'web/' ]
       options: ''
