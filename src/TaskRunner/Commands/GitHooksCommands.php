@@ -298,6 +298,10 @@ class GitHooksCommands extends AbstractCommands
         // The arg1 is the file that contains the commit message.
         // NOTE: Do not use the arg2 because it is not updated when new
         // message is typed to the commit.
+        if (!file_exists($args['arg1'])) {
+            $io->error("File '{$args['arg1']}' not found.");
+            return ResultData::EXITCODE_ERROR;
+        }
         $message = trim(file_get_contents($args['arg1']));
         $config = $this->getConfig()->get('toolkit.hooks');
         $conditions = $config['prepare-commit-msg']['conditions'];

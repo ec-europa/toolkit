@@ -174,7 +174,7 @@ class ToolCommands extends AbstractCommands
         }
         $data = Website::requirements();
         if (empty($data)) {
-            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
             return 1;
         }
         if (!isset($data['toolkit'])) {
@@ -198,60 +198,6 @@ class ToolCommands extends AbstractCommands
             $drupal_check = Semver::satisfies($drupal_version, $data['drupal']) ? 'OK' : 'FAIL';
         }
 
-        // Handle GitHub.
-        if (empty($token = getenv('GITHUB_API_TOKEN'))) {
-            $github_check = 'FAIL (Missing environment variable: GITHUB_API_TOKEN)';
-        } else {
-            $curl = curl_init('https://api.github.com/user');
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, ["Authorization: Token $token"]);
-            curl_setopt($curl, CURLOPT_USERAGENT, 'Quality Assurance');
-            $result = curl_exec($curl);
-            $result = (array) json_decode($result);
-            $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            curl_close($curl);
-            if ($code === 200) {
-                if (isset($result['private_gists'])) {
-                    $github_check = "OK ($code)";
-                } else {
-                    $github_check = "OK ($code) - No private data";
-                }
-            } else {
-                $github_check = "FAIL ($code) " . trim($result['message']);
-            }
-        }
-
-        // Handle GitLab.
-        if (empty($token = getenv('GITLAB_API_TOKEN'))) {
-            $gitlab_check = 'FAIL (Missing environment variable: GITLAB_API_TOKEN)';
-        } else {
-            $curl = curl_init('https://git.fpfis.tech.ec.europa.eu/api/v4/users?username=qa-dashboard-api');
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, ["PRIVATE-TOKEN: $token"]);
-            curl_setopt($curl, CURLOPT_USERAGENT, 'Quality Assurance');
-            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-            $result = curl_exec($curl);
-            $result = (array) json_decode($result);
-            $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            curl_close($curl);
-            if ($code === 200) {
-                $gitlab_check = "OK ($code)";
-            } else {
-                $gitlab_check = "FAIL ($code) " . trim($result['message']);
-            }
-        }
-
-        // Handle ASDA.
-        $asda_user = Toolkit::getAsdaUser();
-        $asda_pass = Toolkit::getAsdaPass();
-        if (!empty($asda_user) && !empty($asda_pass)) {
-            $asda_check = 'OK';
-        } else {
-            $asda_check = 'FAIL (Missing environment variable(s):';
-            $asda_check .= empty($asda_user) ? ' ASDA_USER' : '';
-            $asda_check .= empty($asda_pass) ? ' ASDA_PASSWORD' : '';
-            $asda_check .= ')';
-        }
         // Handle NEXTCLOUD.
         $nc_user = Toolkit::getNExtcloudUser();
         $nc_pass = Toolkit::getNExtcloudPass();
@@ -267,9 +213,6 @@ class ToolCommands extends AbstractCommands
         $io->title('Checking connections:');
         $io->definitionList(
             ['QA Endpoint access' => $endpoint_check],
-            ['GitHub oauth access' => $github_check],
-            ['GitLab oauth access' => $gitlab_check],
-            ['ASDA configuration' => $asda_check],
             ['NEXTCLOUD configuration' => $nextcloud_check],
         );
 
@@ -362,7 +305,7 @@ class ToolCommands extends AbstractCommands
                 }
             }
         } else {
-            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
         }
 
         $version_check = Semver::satisfies($toolkit_version, $min_version) ? 'OK' : 'FAIL';
@@ -433,7 +376,7 @@ class ToolCommands extends AbstractCommands
     public function toolkitVendorList(ConsoleIO $io)
     {
         if (empty($data = Website::requirements())) {
-            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
             return ResultData::EXITCODE_ERROR;
         }
         if (!isset($data['vendor_list'])) {

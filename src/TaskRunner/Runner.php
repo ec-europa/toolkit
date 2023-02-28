@@ -14,6 +14,7 @@ use EcEuropa\Toolkit\Toolkit;
 use League\Container\Container;
 use Psr\Container\ContainerInterface;
 use Robo\Application;
+use Robo\ClassDiscovery\RelativeNamespaceDiscovery;
 use Robo\Common\ConfigAwareTrait;
 use Robo\Config\Config;
 use Robo\Robo;
@@ -147,8 +148,24 @@ class Runner
      */
     public function run()
     {
+        $classes = $this->discoverCommandClasses();
+        $this->runner->registerCommandClasses($this->application, $classes);
         $this->registerConfigurationCommands();
         return $this->runner->run($this->input, $this->output, $this->application);
+    }
+
+    /**
+     * Discover Command classes.
+     *
+     * @return array|string[]
+     *   An array with the Command classes.
+     */
+    private function discoverCommandClasses()
+    {
+        return (new RelativeNamespaceDiscovery($this->classLoader))
+            ->setRelativeNamespace('TaskRunner\Commands')
+            ->setSearchPattern('/.*Commands\.php$/')
+            ->getClasses();
     }
 
     /**
@@ -214,6 +231,14 @@ class Runner
             $processor->add($currentConfig->export());
         }
 
+        // Allow runner.yml to override configurations. Is recommended to keep
+        // this out of VCS control to allow local config customizations.
+        if (file_exists($workingDir . '/runner.yml')) {
+            $configOverride = new Config();
+            Robo::loadConfiguration([$workingDir . '/runner.yml'], $configOverride);
+            $processor->add($configOverride->export());
+        }
+
         // Import newly built configuration.
         $this->config->replace($processor->export());
 
@@ -252,7 +277,6 @@ class Runner
         // Passing an array as RoboClass will avoid Robo from processing a RoboFile.
         $this->runner = new RoboRunner(['']);
         $this->runner
-            ->setRelativePluginNamespace('TaskRunner')
             ->setClassLoader($this->classLoader)
             ->setConfigurationFilename(Toolkit::getToolkitRoot() . '/config/default.yml')
             ->setSelfUpdateRepository(self::REPOSITORY)
@@ -291,32 +315,28 @@ class Runner
             }
 
             $commandInfo = $commandFactory->createCommandInfo($commandClass, 'execute');
-            $commandInfo->addAnnotation('tasks', $tasks['tasks'] ?? $tasks);
 
             $command = $commandFactory->createCommand($commandInfo, $commandClass)
                 ->setName($name);
-            // Check for options if the 'tasks' property exists.
-            if (isset($tasks['tasks'])) {
-                if (isset($tasks['aliases']) || !empty($aliases)) {
-                    $aliases = array_merge(
-                        $aliases,
-                        array_map('trim', explode(',', $tasks['aliases'] ?? []))
-                    );
-                    $command->setAliases($aliases);
-                }
-                if (isset($tasks['description'])) {
-                    $command->setDescription($tasks['description']);
-                }
-                if (isset($tasks['help'])) {
-                    $command->setHelp($tasks['help']);
-                }
-                if (isset($tasks['hidden'])) {
-                    $command->setHidden((bool) $tasks['hidden']);
-                }
-                if (isset($tasks['usage'])) {
-                    foreach ((array) $tasks['usage'] as $usage) {
-                        $command->addUsage($usage);
-                    }
+            if (isset($tasks['aliases']) || !empty($aliases)) {
+                $aliases = array_filter(array_merge(
+                    $aliases,
+                    array_map('trim', explode(',', $tasks['aliases'] ?? ''))
+                ));
+                $command->setAliases($aliases);
+            }
+            if (isset($tasks['description'])) {
+                $command->setDescription($tasks['description']);
+            }
+            if (isset($tasks['help'])) {
+                $command->setHelp($tasks['help']);
+            }
+            if (isset($tasks['hidden'])) {
+                $command->setHidden((bool) $tasks['hidden']);
+            }
+            if (isset($tasks['usage'])) {
+                foreach ((array) $tasks['usage'] as $usage) {
+                    $command->addUsage($usage);
                 }
             }
 
@@ -335,9 +355,7 @@ class Runner
     private function getCurrentConfig(string $workingDir, ConfigInterface $defaultConfig): ?ConfigInterface
     {
         $configFile = '';
-        if (file_exists($workingDir . '/runner.yml')) {
-            $configFile = $workingDir . '/runner.yml';
-        } elseif (file_exists($workingDir . '/runner.yml.dist')) {
+        if (file_exists($workingDir . '/runner.yml.dist')) {
             $configFile = $workingDir . '/runner.yml.dist';
         }
 
