@@ -21,10 +21,8 @@ class ConfigurationCommands extends AbstractCommands
     public function execute()
     {
         $name = $this->input()->getArgument('command');
-        /* @var \Consolidation\AnnotatedCommand\AnnotatedCommand $command */
-        $command = Robo::application()->get($name);
-        $commandDefinition = $this->getConfig()->get("commands.$name");
-        $tasks = $commandDefinition['tasks'] ?? $commandDefinition;
+        $command = $this->getConfig()->get("commands.$name");
+        $tasks = $command['tasks'] ?? $command;
         return $this->taskExecute($tasks);
     }
 
