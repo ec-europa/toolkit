@@ -14,7 +14,7 @@ class TestCommands extends \EcEuropa\Toolkit\TaskRunner\AbstractCommands
      */
     public function getConfigurationFile(): string
     {
-        return __DIR__ . '/../../fixtures/config/test_command_default_config.yml';
+        return 'test_command_default_config.yml';
     }
 
     #[Command(name: 'test_command')]

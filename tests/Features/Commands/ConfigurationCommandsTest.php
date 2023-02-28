@@ -147,79 +147,18 @@ class ConfigurationCommandsTest extends AbstractTest
      */
     public function testConfigOverride(): void
     {
-        $runnerDistConfig = [
-            'foo' => [
-                'bar' => 'baz',
-                'qux' => [
-                    'key1' => 'value1',
-                    'key2' => 'value2',
-                ],
-                'action' => 'Color me ${color}'
-            ],
-            'test' => [
-                'command' => [
-                    'config' => 'overridden in runner.yml.dist',
-                ],
-            ],
-        ];
-        $this->fs->dumpFile($this->getSandboxFilepath('runner.yml.dist'), Yaml::dump($runnerDistConfig));
-        $arbitraryYamlConfig = [
-            'color' => 'red',
-            'test' => [
-                'command' => [
-                    'config' => 'overridden in config/runner/colors.yml',
-                ],
-            ],
-        ];
-        $this->fs->dumpFile($this->getSandboxFilepath('config/runner/colors.yml'), Yaml::dump($arbitraryYamlConfig));
-        $runnerConfig = [
-            'foo' => [
-                'qux' => [
-                    'key1' => 'value999',
-                ],
-            ],
-            'color' => 'yellow',
-            'test' => [
-                'command' => [
-                    'config' => 'overridden in runner.yml',
-                ],
-            ],
-        ];
-        $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($runnerConfig));
-
-        $expectedFooConfig = <<<YAML
-        bar: baz
-        qux:
-          key1: value999
-          key2: value2
-        action: 'Color me yellow'
-        YAML;
-        $result = $this->runCommand('config foo', false);
-        $this->assertSame($expectedFooConfig, trim($result['output']));
-
-        $result = $this->runCommand('config color', false);
-        $this->assertSame('yellow', trim($result['output']));
-
-        $expectedCommandConfig = <<<YAML
-        command:
-          config: 'overridden in runner.yml'
-        YAML;
-        $result = $this->runCommand('config test', false);
-        $this->assertSame($expectedCommandConfig, trim($result['output']));
-
-        // Remove runner.yml and test again.
-        $this->fs->remove($this->getSandboxFilepath('runner.yml'), Yaml::dump($runnerConfig));
-        $expectedFooConfig = <<<YAML
-        bar: baz
-        qux:
-          key1: value1
-          key2: value2
-        YAML;
-        $result = $this->runCommand('config foo', false);
-        $this->assertSame($expectedFooConfig, trim($result['output']));
-
-        $result = $this->runCommand('config color', false);
-        $this->assertSame('red', trim($result['output']));
+        // Cascade create config files in this order:
+        // - default command configuration file;
+        // - runner.yml.dist;
+        // - files in the `runner.config_dir` directory;
+        // - runner.yml;
+        foreach ($this->getFixtureContent('commands/config-overrides.yml') as $file => $data) {
+            $this->fs->dumpFile($this->getSandboxFilepath($file), Yaml::dump($data['config']));
+            foreach ($data['expectation'] as $configKey => $output) {
+                $result = $this->runCommand("config $configKey", false);
+                $this->assertSame(trim($output), trim($result['output']));
+            }
+        }
     }
 
 }

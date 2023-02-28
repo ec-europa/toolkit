@@ -1,0 +1,84 @@
+test_command_default_config.yml:
+  config:
+    test_config:
+      no_override: 1
+      overridden_in_runner_yml_dist: 1
+      overridden_in_colors_yml: 1
+      overridden_in_runner_yml: 1
+  expectation:
+    test_config: |
+      no_override: 1
+      overridden_in_runner_yml_dist: 1
+      overridden_in_colors_yml: 1
+      overridden_in_runner_yml: 1
+
+runner.yml.dist:
+  config:
+    foo:
+      bar: baz
+      qux:
+        key1: value1
+        key2: value2
+    action: Color me ${color}
+    test_config:
+      overridden_in_runner_yml_dist: 2
+  expectation:
+    foo: |
+      bar: baz
+      qux:
+        key1: value1
+        key2: value2
+    test_config: |
+      no_override: 1
+      overridden_in_runner_yml_dist: 2
+      overridden_in_colors_yml: 1
+      overridden_in_runner_yml: 1
+
+config/runner/colors.yml:
+  config:
+    foo:
+      qux:
+        key1: 'value changed in config/runner/colors.yml'
+    color: red
+    action: 'Color me ${color}'
+    test_config:
+      overridden_in_colors_yml: 3
+  expectation:
+    foo: |
+      bar: baz
+      qux:
+        key1: 'value changed in config/runner/colors.yml'
+        key2: value2
+    color: |
+      red
+    action: |
+      'Color me red'
+    test_config: |
+      no_override: 1
+      overridden_in_runner_yml_dist: 2
+      overridden_in_colors_yml: 3
+      overridden_in_runner_yml: 1
+
+runner.yml:
+  config:
+    foo:
+      qux:
+        key1: 'value changed in runner.yml'
+    color: yellow
+    test_config:
+      overridden_in_runner_yml: 4
+  expectation:
+    foo: |
+      bar: baz
+      qux:
+        key1: 'value changed in runner.yml'
+        key2: value2
+    color: |
+      yellow
+    action: |
+      'Color me yellow'
+    test_config: |
+      no_override: 1
+      overridden_in_runner_yml_dist: 2
+      overridden_in_colors_yml: 3
+      overridden_in_runner_yml: 4
