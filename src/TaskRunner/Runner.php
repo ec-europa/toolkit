@@ -231,6 +231,14 @@ class Runner
             $processor->add($currentConfig->export());
         }
 
+        // Allow runner.yml to override configurations. Is recommended to keep
+        // this out of VCS control to allow local config customizations.
+        if (file_exists($workingDir . '/runner.yml')) {
+            $configOverride = new Config();
+            Robo::loadConfiguration([$workingDir . '/runner.yml'], $configOverride);
+            $processor->add($configOverride->export());
+        }
+
         // Import newly built configuration.
         $this->config->replace($processor->export());
 
@@ -346,22 +354,19 @@ class Runner
      */
     private function getCurrentConfig(string $workingDir, ConfigInterface $defaultConfig): ?ConfigInterface
     {
-        $configFiles = [];
+        $configFile = '';
         if (file_exists($workingDir . '/runner.yml.dist')) {
-            $configFiles[] = realpath($workingDir . '/runner.yml.dist');
-        }
-        if (file_exists($workingDir . '/runner.yml')) {
-            $configFiles[] = realpath($workingDir . '/runner.yml');
+            $configFile = $workingDir . '/runner.yml.dist';
         }
 
         $defaultConfigDir = $defaultConfig->get(self::CONFIG_DIR_KEY);
         $configDirFilesPaths = $this->getConfigDirFilesPaths((string) realpath($defaultConfigDir));
-        if (empty($configFiles) && empty($configDirFilesPaths)) {
+        if (empty($configFile) && empty($configDirFilesPaths)) {
             return null;
         }
 
-        if (!empty($configFiles)) {
-            $currentConfig = Robo::createConfiguration($configFiles);
+        if (!empty($configFile)) {
+            $currentConfig = Robo::createConfiguration([realpath($configFile)]);
             $this->loadConfigurationFromDirFiles($currentConfig, false, $defaultConfigDir);
 
             return $currentConfig;
