@@ -182,6 +182,21 @@ class ConfigurationCommandsTest extends AbstractTest
 
         $result = $this->runCommand('config color', false);
         $this->assertSame('yellow', trim($result['output']));
+
+        // Remove runner.yml and test again.
+        $this->fs->remove($this->getSandboxFilepath('runner.yml'), Yaml::dump($runnerConfig));
+        $expectedFooConfig = <<<YAML
+        bar: baz
+        qux:
+          key1: value1
+          key2: value2
+        YAML;
+        $result = $this->runCommand('config foo', false);
+        $this->assertSame($expectedFooConfig, trim($result['output']));
+
+        $result = $this->runCommand('config color', false);
+        $this->assertSame('red', trim($result['output']));
+
     }
 
 }
