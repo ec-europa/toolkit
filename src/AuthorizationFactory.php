@@ -9,7 +9,6 @@ namespace EcEuropa\Toolkit;
  */
 class AuthorizationFactory
 {
-
     public static function create(string $type, string $value): AuthorizationInterface
     {
         switch ($type) {

@@ -6,6 +6,5 @@ namespace EcEuropa\Toolkit;
 
 interface AuthorizationInterface
 {
-
     public function getAuthorizationHeader(): string;
 }
