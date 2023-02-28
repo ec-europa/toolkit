@@ -196,7 +196,6 @@ class ConfigurationCommandsTest extends AbstractTest
 
         $result = $this->runCommand('config color', false);
         $this->assertSame('red', trim($result['output']));
-
     }
 
 }
