@@ -354,19 +354,19 @@ class Runner
      */
     private function getCurrentConfig(string $workingDir, ConfigInterface $defaultConfig): ?ConfigInterface
     {
-        $configFiles = [];
+        $configFile = '';
         if (file_exists($workingDir . '/runner.yml.dist')) {
-            $configFiles[] = $workingDir . '/runner.yml.dist';
+            $configFile = $workingDir . '/runner.yml.dist';
         }
 
         $defaultConfigDir = $defaultConfig->get(self::CONFIG_DIR_KEY);
         $configDirFilesPaths = $this->getConfigDirFilesPaths((string) realpath($defaultConfigDir));
-        if (empty($configFiles) && empty($configDirFilesPaths)) {
+        if (empty($configFile) && empty($configDirFilesPaths)) {
             return null;
         }
 
-        if (!empty($configFiles)) {
-            $currentConfig = Robo::createConfiguration($configFiles);
+        if (!empty($configFile)) {
+            $currentConfig = Robo::createConfiguration([realpath($configFile)]);
             $this->loadConfigurationFromDirFiles($currentConfig, false, $defaultConfigDir);
 
             return $currentConfig;
