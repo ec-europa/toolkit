@@ -154,6 +154,7 @@ class ConfigurationCommandsTest extends AbstractTest
                     'key1' => 'value1',
                     'key2' => 'value2',
                 ],
+                'action' => 'Color me ${color}'
             ],
         ];
         $this->fs->dumpFile($this->getSandboxFilepath('runner.yml.dist'), Yaml::dump($runnerDistConfig));
@@ -176,6 +177,7 @@ class ConfigurationCommandsTest extends AbstractTest
         qux:
           key1: value999
           key2: value2
+        action: 'Color me yellow'
         YAML;
         $result = $this->runCommand('config foo', false);
         $this->assertSame($expectedFooConfig, trim($result['output']));
