@@ -302,3 +302,19 @@
   expectations:
     - string_contains: |
         [Exec] Running echo 'This command is overridden'
+
+- command: 'config drupal'
+  configuration: []
+  resources:
+    - file: runner.yml.dist
+      content: |
+        drupal:
+          root: 'web'
+          base_url: 'http://web:8080'
+    - file: runner.yml
+      content: |
+        drupal:
+          root: 'build'
+  expectations:
+    - string_contains: "root: build"
+    - string_contains: "base_url: 'http://web:8080'"
