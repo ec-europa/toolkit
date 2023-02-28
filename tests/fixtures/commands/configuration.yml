@@ -248,3 +248,73 @@
         [Exec] Running echo '{  }' > dummy.yml
     - file_expected: dummy.yml
       file_actual: dummy-copy.yml
+
+- command: 'test:drush'
+  configuration:
+    commands:
+      test:drush:
+        - { task: drush, command: config:import, arguments: [ -y ] }
+        - { task: drush, command: cache:rebuild }
+  resources:
+    - from: sample-bin
+      to: vendor/bin/drush
+  expectations:
+    - string_contains: "[Exec] Running ./vendor/bin/drush config:import -y"
+    - string_contains: "[Exec] Running ./vendor/bin/drush cache:rebuild"
+
+- command: 'drupal:config-import'
+  configuration: []
+  resources:
+    - from: sample-bin
+      to: vendor/bin/drush
+  expectations:
+    - string_contains: "[Exec] Running ./vendor/bin/drush config:import -y"
+    - string_contains: "[Exec] Running ./vendor/bin/drush cache:rebuild"
+
+- command: 'toolkit:setup-behat'
+  configuration: []
+  resources:
+    - from: sample-behat.yml.dist
+      to: behat.yml.dist
+  expectations:
+    - contains: |
+        [EcEuropa\Toolkit\Task\File\Process] Creating behat.yml
+        [Filesystem\FilesystemStack] _copy ["behat.yml.dist","behat.yml",true]
+        [File\Replace] behat.yml updated. 9 items replaced
+
+- command: 'toolkit:setup-phpunit'
+  configuration: []
+  resources:
+    - from: sample-phpunit.xml.dist
+      to: phpunit.xml.dist
+  expectations:
+    - contains: |
+        [EcEuropa\Toolkit\Task\File\Process] Creating phpunit.xml
+        [Filesystem\FilesystemStack] _copy ["phpunit.xml.dist","phpunit.xml",true]
+        [File\Replace] phpunit.xml unchanged. 0 items replaced
+
+- command: 'toolkit:install-clean'
+  configuration:
+    commands:
+      toolkit:install-clean:
+        - echo 'This command is overridden'
+  resources: []
+  expectations:
+    - string_contains: |
+        [Exec] Running echo 'This command is overridden'
+
+- command: 'config drupal'
+  configuration: []
+  resources:
+    - file: runner.yml.dist
+      content: |
+        drupal:
+          root: 'web'
+          base_url: 'http://web:8080'
+    - file: runner.yml
+      content: |
+        drupal:
+          root: 'build'
+  expectations:
+    - string_contains: "root: build"
+    - string_contains: "base_url: 'http://web:8080'"

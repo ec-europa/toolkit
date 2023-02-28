@@ -14,7 +14,7 @@ final class Toolkit
     /**
      * Constant holding the current version.
      */
-    public const VERSION = '10.0.0-beta';
+    public const VERSION = '10.0.0-beta1';
 
     /**
      * Returns the Toolkit root.

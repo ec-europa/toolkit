@@ -18,7 +18,7 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "behat/behat": "^3.7",
-        "consolidation/annotated-command": "^4.5 <4.5.7",
+        "consolidation/annotated-command": "^4.7.0",
         "consolidation/robo": "^3.0 || ^4.0",
         "cweagans/composer-patches": "^1.4 || ^1.7",
         "drush/drush": "^10.0.0 || ^11.0.4",
