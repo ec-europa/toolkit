@@ -20,5 +20,4 @@ class AuthorizationToken implements AuthorizationInterface
     {
         return 'qa-user-auth-token: ' . $this->value;
     }
-
 }

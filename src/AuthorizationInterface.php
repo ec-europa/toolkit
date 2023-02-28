@@ -8,5 +8,4 @@ interface AuthorizationInterface
 {
 
     public function getAuthorizationHeader(): string;
-
 }

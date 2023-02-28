@@ -20,5 +20,4 @@ class AuthorizationFactory
                 return new AuthorizationToken($value);
         }
     }
-
 }

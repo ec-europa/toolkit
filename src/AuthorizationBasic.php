@@ -20,5 +20,4 @@ class AuthorizationBasic implements AuthorizationInterface
     {
         return 'Authorization: Basic ' . $this->value;
     }
-
 }
