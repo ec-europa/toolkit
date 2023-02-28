@@ -170,6 +170,13 @@
 </h3>
 
 <dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -constant -protected">
+    <a href="classes/EcEuropa-Toolkit-Website.html#constant_AUTHENTICATION_ENV_KEYS">AUTHENTICATION_ENV_KEYS</a>
+    <span>
+        &nbsp;= [&#039;auth&#039; =&gt; &#039;QA_API_AUTH_TOKEN&#039;, &#039;basic&#039; =&gt; &#039;QA_API_BASIC_AUTH&#039;]                            </span>
+</dt>
+<dd></dd>
+
                     <dt class="phpdocumentor-table-of-contents__entry -property -protected">
     <a href="classes/EcEuropa-Toolkit-Website.html#property_url">$url</a>
     <span>
@@ -178,11 +185,11 @@
 <dd>The default base url.</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-Website.html#method_basicAuth">basicAuth()</a>
+    <a href="classes/EcEuropa-Toolkit-Website.html#method_apiAuth">apiAuth()</a>
     <span>
-                                &nbsp;: string    </span>
+                                &nbsp;: <a href="classes/EcEuropa-Toolkit-AuthorizationInterface.html"><abbr title="\EcEuropa\Toolkit\AuthorizationInterface">AuthorizationInterface</abbr></a>|null    </span>
 </dt>
-<dd>Return the QA API BASIC AUTH from token or from questions.</dd>
+<dd>Return the API Authorization instance.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-Website.html#method_get">get()</a>
@@ -245,6 +252,41 @@
 
 
         
+    <section class="phpdocumentor-constants">
+        <h3 class="phpdocumentor-elements__header" id="constants">
+            Constants
+            <a href="classes/EcEuropa-Toolkit-Website.html#constants" class="headerlink"><i class="fas fa-link"></i></a>
+        </h3>
+                    <article class="phpdocumentor-element -constant -protected ">
+    <h4 class="phpdocumentor-element__name" id="constant_AUTHENTICATION_ENV_KEYS">
+        AUTHENTICATION_ENV_KEYS
+        <a href="classes/EcEuropa-Toolkit-Website.html#constant_AUTHENTICATION_ENV_KEYS" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">18</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">AUTHENTICATION_ENV_KEYS</span>
+    = <span class="phpdocumentor-signature__default-value">[&#039;auth&#039; =&gt; &#039;QA_API_AUTH_TOKEN&#039;, &#039;basic&#039; =&gt; &#039;QA_API_BASIC_AUTH&#039;]</span>
+</code>
+
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+            </section>
 
         
     <section class="phpdocumentor-properties">
@@ -268,7 +310,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">28</span>
 
     </aside>
 
@@ -298,31 +340,31 @@
             -public
                                     -static                    "
 >
-    <h4 class="phpdocumentor-element__name" id="method_basicAuth">
-        basicAuth()
-        <a href="classes/EcEuropa-Toolkit-Website.html#method_basicAuth" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_apiAuth">
+        apiAuth()
+        <a href="classes/EcEuropa-Toolkit-Website.html#method_apiAuth" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">52</span>
+    <span class="phpdocumentor-element-found-in__line">58</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Return the QA API BASIC AUTH from token or from questions.</p>
+        <p class="phpdocumentor-summary">Return the API Authorization instance.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">basicAuth</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">apiAuth</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/EcEuropa-Toolkit-AuthorizationInterface.html"><abbr title="\EcEuropa\Toolkit\AuthorizationInterface">AuthorizationInterface</abbr></a>|null</span></code>
 
     
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
+    <span class="phpdocumentor-signature__response_type"><a href="classes/EcEuropa-Toolkit-AuthorizationInterface.html"><abbr title="\EcEuropa\Toolkit\AuthorizationInterface">AuthorizationInterface</abbr></a>|null</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>The Basic auth or empty string if fails.</p>
+            <section class="phpdocumentor-description"><p>The API authorization instance or empty string if fails.</p>
 </section>
 
     
@@ -340,7 +382,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">100</span>
+    <span class="phpdocumentor-element-found-in__line">96</span>
 
     </aside>
 
@@ -348,7 +390,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">get</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$url</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$basicAuth</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">get</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$url</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/EcEuropa-Toolkit-AuthorizationInterface.html"><abbr title="\EcEuropa\Toolkit\AuthorizationInterface">AuthorizationInterface</abbr></a>|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$auth</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
         <section class="phpdocumentor-description"><p>This function is made publicly available as a static function for other
 projects to call. Then we have to maintain less code.</p>
@@ -366,11 +408,11 @@ projects to call. Then we have to maintain less code.</p>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$basicAuth</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
+                <span class="phpdocumentor-signature__argument__name">$auth</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/EcEuropa-Toolkit-AuthorizationInterface.html"><abbr title="\EcEuropa\Toolkit\AuthorizationInterface">AuthorizationInterface</abbr></a>|null</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The basic auth.</p>
+                    <section class="phpdocumentor-description"><p>The authorization instance or null.</p>
 </section>
 
             </dd>
@@ -424,7 +466,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">152</span>
+    <span class="phpdocumentor-element-found-in__line">148</span>
 
     </aside>
 
@@ -459,7 +501,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">189</span>
+    <span class="phpdocumentor-element-found-in__line">185</span>
 
     </aside>
 
@@ -467,7 +509,7 @@ projects to call. Then we have to maintain less code.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">post</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$fields</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$auth</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">post</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$fields</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/EcEuropa-Toolkit-AuthorizationInterface.html"><abbr title="\EcEuropa\Toolkit\AuthorizationInterface">AuthorizationInterface</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$auth</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
@@ -483,10 +525,10 @@ projects to call. Then we have to maintain less code.</p>
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$auth</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/EcEuropa-Toolkit-AuthorizationInterface.html"><abbr title="\EcEuropa\Toolkit\AuthorizationInterface">AuthorizationInterface</abbr></a></span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The Basic auth.</p>
+                    <section class="phpdocumentor-description"><p>The authorization instance.</p>
 </section>
 
             </dd>
@@ -529,7 +571,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">258</span>
+    <span class="phpdocumentor-element-found-in__line">254</span>
 
     </aside>
 
@@ -592,7 +634,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">223</span>
+    <span class="phpdocumentor-element-found-in__line">219</span>
 
     </aside>
 
@@ -655,7 +697,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">285</span>
+    <span class="phpdocumentor-element-found-in__line">281</span>
 
     </aside>
 
@@ -704,7 +746,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">41</span>
+    <span class="phpdocumentor-element-found-in__line">47</span>
 
     </aside>
 
@@ -749,7 +791,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">30</span>
+    <span class="phpdocumentor-element-found-in__line">36</span>
 
     </aside>
 

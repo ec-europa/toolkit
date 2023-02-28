@@ -155,7 +155,7 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">15</span>
+    <span class="phpdocumentor-element-found-in__line">16</span>
 
     </aside>
 
@@ -176,6 +176,13 @@
 
 <dl class="phpdocumentor-table-of-contents">
                     <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_abandonedFailed">$abandonedFailed</a>
+    <span>
+                        &nbsp;: bool            </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_commandFailed">$commandFailed</a>
     <span>
                         &nbsp;: bool            </span>
@@ -239,6 +246,13 @@
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_skipAbandoned">$skipAbandoned</a>
+    <span>
+                        &nbsp;: bool            </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_skipInsecure">$skipInsecure</a>
     <span>
                         &nbsp;: bool            </span>
@@ -286,6 +300,13 @@
                                 &nbsp;: mixed    </span>
 </dt>
 <dd>Command initialization.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentAbandoned">componentAbandoned()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Helper function to check component&#039;s review information.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentInsecure">componentInsecure()</a>
@@ -349,13 +370,6 @@
                                 &nbsp;: string    </span>
 </dt>
 <dd>Return the path to given bin from node packages.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getPackageDetails">getPackageDetails()</a>
-    <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;|int    </span>
-</dt>
-<dd>Call release history of d.org to confirm security alert.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isSimulating">isSimulating()</a>
@@ -439,6 +453,40 @@
             -protected
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="property_abandonedFailed">
+        $abandonedFailed
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_abandonedFailed" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">23</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type">bool</span>
+    <span class="phpdocumentor-signature__name">$abandonedFailed</span>
+     = <span class="phpdocumentor-signature__default-value">false</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -protected
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="property_commandFailed">
         $commandFailed
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_commandFailed" class="headerlink"><i class="fas fa-link"></i></a>
@@ -448,7 +496,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">18</span>
 
     </aside>
 
@@ -482,7 +530,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">23</span>
+    <span class="phpdocumentor-element-found-in__line">25</span>
 
     </aside>
 
@@ -516,7 +564,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">24</span>
 
     </aside>
 
@@ -550,7 +598,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">26</span>
 
     </aside>
 
@@ -584,7 +632,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">20</span>
+    <span class="phpdocumentor-element-found-in__line">21</span>
 
     </aside>
 
@@ -618,7 +666,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">18</span>
+    <span class="phpdocumentor-element-found-in__line">19</span>
 
     </aside>
 
@@ -652,7 +700,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">21</span>
+    <span class="phpdocumentor-element-found-in__line">22</span>
 
     </aside>
 
@@ -686,7 +734,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">19</span>
+    <span class="phpdocumentor-element-found-in__line">20</span>
 
     </aside>
 
@@ -720,7 +768,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">28</span>
+    <span class="phpdocumentor-element-found-in__line">31</span>
 
     </aside>
 
@@ -745,6 +793,40 @@
             -protected
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="property_skipAbandoned">
+        $skipAbandoned
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_skipAbandoned" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">28</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type">bool</span>
+    <span class="phpdocumentor-signature__name">$skipAbandoned</span>
+     = <span class="phpdocumentor-signature__default-value">false</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -protected
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="property_skipInsecure">
         $skipInsecure
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_skipInsecure" class="headerlink"><i class="fas fa-link"></i></a>
@@ -754,7 +836,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">26</span>
+    <span class="phpdocumentor-element-found-in__line">29</span>
 
     </aside>
 
@@ -788,7 +870,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">25</span>
+    <span class="phpdocumentor-element-found-in__line">27</span>
 
     </aside>
 
@@ -822,7 +904,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">27</span>
+    <span class="phpdocumentor-element-found-in__line">30</span>
 
     </aside>
 
@@ -860,7 +942,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">42</span>
+    <span class="phpdocumentor-element-found-in__line">45</span>
 
     </aside>
 
@@ -1083,6 +1165,39 @@
             -protected
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_componentAbandoned">
+        componentAbandoned()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentAbandoned" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">518</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Helper function to check component&#039;s review information.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                    <span class="phpdocumentor-signature__name">componentAbandoned</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_componentInsecure">
         componentInsecure()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentInsecure" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1090,7 +1205,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">417</span>
+    <span class="phpdocumentor-element-found-in__line">420</span>
 
     </aside>
 
@@ -1167,7 +1282,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">312</span>
+    <span class="phpdocumentor-element-found-in__line">318</span>
 
     </aside>
 
@@ -1205,24 +1320,6 @@
                                                             
                                              
                                     </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
-</section>
-
-                                    </dd>
                         </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
@@ -1244,7 +1341,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">480</span>
+    <span class="phpdocumentor-element-found-in__line">481</span>
 
     </aside>
 
@@ -1257,30 +1354,6 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
-</section>
-
-                                    </dd>
-                        </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
@@ -1301,7 +1374,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">377</span>
+    <span class="phpdocumentor-element-found-in__line">380</span>
 
     </aside>
 
@@ -1335,30 +1408,6 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
-</section>
-
-                                    </dd>
-                        </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
@@ -1638,72 +1687,6 @@
             -protected
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_getPackageDetails">
-        getPackageDetails()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getPackageDetails" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">523</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Call release history of d.org to confirm security alert.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-                    <span class="phpdocumentor-signature__name">getPackageDetails</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$package</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$core</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|int</span></code>
-
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$package</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The package to check.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$version</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The version to check.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$core</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The package core version.</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|int</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Array with package info from d.org, 1
-if no release history found.</p>
-</section>
-
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -protected
-                                                        "
->
     <h4 class="phpdocumentor-element__name" id="method_isSimulating">
         isSimulating()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isSimulating" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1746,7 +1729,7 @@ if no release history found.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">205</span>
+    <span class="phpdocumentor-element-found-in__line">210</span>
 
     </aside>
 
@@ -1934,7 +1917,7 @@ if no release history found.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">233</span>
+    <span class="phpdocumentor-element-found-in__line">240</span>
 
     </aside>
 
@@ -2012,7 +1995,7 @@ if no release history found.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">613</span>
+    <span class="phpdocumentor-element-found-in__line">579</span>
 
     </aside>
 
@@ -2057,7 +2040,7 @@ if no release history found.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">602</span>
+    <span class="phpdocumentor-element-found-in__line">568</span>
 
     </aside>
 
@@ -2090,7 +2073,7 @@ if no release history found.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ComponentCheckCommands.php"><a href="files/src-taskrunner-commands-componentcheckcommands.html"><abbr title="src/TaskRunner/Commands/ComponentCheckCommands.php">ComponentCheckCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">575</span>
+    <span class="phpdocumentor-element-found-in__line">541</span>
 
     </aside>
 

@@ -1,6 +1,76 @@
 Search.appendIndex(
     [
                 {
+            "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationBasic",
+            "name": "AuthorizationBasic",
+            "summary": "Authorization\u0020Basic\u0020for\u0020QA\u0020api.",
+            "url": "classes/EcEuropa-Toolkit-AuthorizationBasic.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationBasic\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-AuthorizationBasic.html#method___construct"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationBasic\u003A\u003AgetAuthorizationHeader\u0028\u0029",
+            "name": "getAuthorizationHeader",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-AuthorizationBasic.html#method_getAuthorizationHeader"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationBasic\u003A\u003A\u0024value",
+            "name": "value",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-AuthorizationBasic.html#property_value"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationFactory",
+            "name": "AuthorizationFactory",
+            "summary": "Authorization\u0020factory\u0020for\u0020QA\u0020api.",
+            "url": "classes/EcEuropa-Toolkit-AuthorizationFactory.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationFactory\u003A\u003Acreate\u0028\u0029",
+            "name": "create",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-AuthorizationFactory.html#method_create"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationInterface",
+            "name": "AuthorizationInterface",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-AuthorizationInterface.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationInterface\u003A\u003AgetAuthorizationHeader\u0028\u0029",
+            "name": "getAuthorizationHeader",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-AuthorizationInterface.html#method_getAuthorizationHeader"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationToken",
+            "name": "AuthorizationToken",
+            "summary": "Authorization\u0020Token\u0020for\u0020QA\u0020api.",
+            "url": "classes/EcEuropa-Toolkit-AuthorizationToken.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationToken\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-AuthorizationToken.html#method___construct"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationToken\u003A\u003AgetAuthorizationHeader\u0028\u0029",
+            "name": "getAuthorizationHeader",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-AuthorizationToken.html#method_getAuthorizationHeader"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationToken\u003A\u003A\u0024value",
+            "name": "value",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-AuthorizationToken.html#property_value"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\DrupalReleaseHistory",
+            "name": "DrupalReleaseHistory",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-DrupalReleaseHistory.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\DrupalReleaseHistory\u003A\u003AgetPackageDetails\u0028\u0029",
+            "name": "getPackageDetails",
+            "summary": "Call\u0020release\u0020history\u0020of\u0020d.org\u0020to\u0020confirm\u0020security\u0020alert.",
+            "url": "classes/EcEuropa-Toolkit-DrupalReleaseHistory.html#method_getPackageDetails"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Task\\Command\\ConfigurationCommand",
             "name": "ConfigurationCommand",
             "summary": "Execute\u0020the\u0020tasks\u0020from\u0020a\u0020Configuration\u0020command.",
@@ -316,10 +386,10 @@ Search.appendIndex(
             "summary": "Helper\u0020function\u0020to\u0020check\u0020component\u0027s\u0020review\u0020information.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentOutdated"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AgetPackageDetails\u0028\u0029",
-            "name": "getPackageDetails",
-            "summary": "Call\u0020release\u0020history\u0020of\u0020d.org\u0020to\u0020confirm\u0020security\u0020alert.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getPackageDetails"
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentAbandoned\u0028\u0029",
+            "name": "componentAbandoned",
+            "summary": "Helper\u0020function\u0020to\u0020check\u0020component\u0027s\u0020review\u0020information.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentAbandoned"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AtestPackages\u0028\u0029",
             "name": "testPackages",
@@ -361,6 +431,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_outdatedFailed"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024abandonedFailed",
+            "name": "abandonedFailed",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_abandonedFailed"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024devVersionFailed",
             "name": "devVersionFailed",
             "summary": "",
@@ -380,6 +455,11 @@ Search.appendIndex(
             "name": "skipOutdated",
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_skipOutdated"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024skipAbandoned",
+            "name": "skipAbandoned",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_skipAbandoned"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024skipInsecure",
             "name": "skipInsecure",
@@ -1351,10 +1431,10 @@ Search.appendIndex(
             "summary": "Set\u0020the\u0020url\u0020to\u0020be\u0020used.",
             "url": "classes/EcEuropa-Toolkit-Website.html#method_setUrl"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Website\u003A\u003AbasicAuth\u0028\u0029",
-            "name": "basicAuth",
-            "summary": "Return\u0020the\u0020QA\u0020API\u0020BASIC\u0020AUTH\u0020from\u0020token\u0020or\u0020from\u0020questions.",
-            "url": "classes/EcEuropa-Toolkit-Website.html#method_basicAuth"
+            "fqsen": "\\EcEuropa\\Toolkit\\Website\u003A\u003AapiAuth\u0028\u0029",
+            "name": "apiAuth",
+            "summary": "Return\u0020the\u0020API\u0020Authorization\u0020instance.",
+            "url": "classes/EcEuropa-Toolkit-Website.html#method_apiAuth"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Website\u003A\u003Aget\u0028\u0029",
             "name": "get",
@@ -1386,10 +1466,25 @@ Search.appendIndex(
             "summary": "Returns\u0020the\u0020toolkit\u0020requirements\u0020from\u0020the\u0020endpoint.",
             "url": "classes/EcEuropa-Toolkit-Website.html#method_requirements"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Website\u003A\u003AAUTHENTICATION_ENV_KEYS",
+            "name": "AUTHENTICATION_ENV_KEYS",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-Website.html#constant_AUTHENTICATION_ENV_KEYS"
+        },                {
             "fqsen": "\\",
             "name": "\\",
             "summary": "",
             "url": "namespaces/default.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit",
+            "name": "Toolkit",
+            "summary": "",
+            "url": "namespaces/eceuropa-toolkit.html"
+        },                {
+            "fqsen": "\\EcEuropa",
+            "name": "EcEuropa",
+            "summary": "",
+            "url": "namespaces/eceuropa.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Task\\Command",
             "name": "Command",
@@ -1420,15 +1515,5 @@ Search.appendIndex(
             "name": "Inject",
             "summary": "",
             "url": "namespaces/eceuropa-toolkit-taskrunner-inject.html"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit",
-            "name": "Toolkit",
-            "summary": "",
-            "url": "namespaces/eceuropa-toolkit.html"
-        },                {
-            "fqsen": "\\EcEuropa",
-            "name": "EcEuropa",
-            "summary": "",
-            "url": "namespaces/eceuropa.html"
         }            ]
 );
