@@ -12,6 +12,7 @@ services:
       ASDA_USER:
       ASDA_PASSWORD:
       QA_API_BASIC_AUTH:
+      QA_API_AUTH_TOKEN:
       XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
       PHP_IDE_CONFIG: "serverName=Docker"
       VIRTUAL_HOST: web:8080

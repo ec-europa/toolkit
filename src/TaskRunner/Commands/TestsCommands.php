@@ -769,8 +769,8 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
                     'field_blackfire_commit_link' => [['value' => getenv('DRONE_PULL_REQUEST') ?? '']],
                     'field_blackfire_pr' => [['value' => getenv('DRONE_COMMIT_LINK') ?? '']],
                 ];
-                $basicAuth = (new ToolCommands())->getQaApiBasicAuth();
-                $payload_response = ToolCommands::postQaContent($payload, $basicAuth);
+                $auth = (new ToolCommands())->apiAuth();
+                $payload_response = ToolCommands::postQaContent($payload, $auth);
                 if (!empty($payload_response) && $payload_response === '201') {
                     $this->writeln("Payload sent to QA website: $payload_response");
                 } else {

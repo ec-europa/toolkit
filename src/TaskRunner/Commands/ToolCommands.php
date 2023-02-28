@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
+use EcEuropa\Toolkit\AuthorizationFactory;
+use EcEuropa\Toolkit\AuthorizationInterface;
 use EcEuropa\Toolkit\Toolkit;
 use OpenEuropa\TaskRunner\Tasks\ProcessConfigFile\loadTasks;
 use Robo\Contract\VerbosityThresholdInterface;
@@ -22,6 +24,11 @@ use Symfony\Component\Yaml\Yaml;
 class ToolCommands extends AbstractCommands
 {
     use loadTasks;
+
+    protected const AUTHENTICATION_ENV_KEYS = [
+        'auth' => 'QA_API_AUTH_TOKEN',
+        'basic' => 'QA_API_BASIC_AUTH',
+    ];
 
     /**
      * {@inheritdoc}
@@ -96,7 +103,7 @@ class ToolCommands extends AbstractCommands
         'test-command' => false,
     ])
     {
-        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+        if (empty($auth = $this->apiAuth())) {
             return 1;
         }
 
@@ -123,7 +130,7 @@ class ToolCommands extends AbstractCommands
         }
 
         $status = 0;
-        $result = self::getQaEndpointContent($endpoint . '/api/v1/package-reviews?version=8.x', $basicAuth);
+        $result = self::getQaEndpointContent($endpoint . '/api/v1/package-reviews?version=8.x', $auth);
         $data = json_decode($result, true);
         $modules = (array) array_filter(array_combine(array_column($data, 'name'), $data));
 
@@ -171,10 +178,10 @@ class ToolCommands extends AbstractCommands
 
         // Get vendor list from 'api/v1/toolkit-requirements' endpoint.
         $tkReqsEndpoint = $endpoint . '/api/v1/toolkit-requirements';
-        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+        if (empty($auth = $this->apiAuth())) {
             return 1;
         }
-        $resultTkReqsEndpoint = self::getQaEndpointContent($tkReqsEndpoint, $basicAuth);
+        $resultTkReqsEndpoint = self::getQaEndpointContent($tkReqsEndpoint, $auth);
         $dataTkReqsEndpoint = json_decode($resultTkReqsEndpoint, true);
         $vendorList = $dataTkReqsEndpoint['vendor_list'] ?? [];
 
@@ -594,14 +601,14 @@ class ToolCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.MissingImport)
      *
      * @param string $url The QA endpoint url.
-     * @param string $basicAuth The basic auth.
+     * @param AuthorizationInterface|null $auth The authorization instance or null.
      *
      * @return string
      *   The endpoint content, or empty string if no session is generated.
      *
      * @throws \Exception
      */
-    public static function getQaEndpointContent(string $url, string $basicAuth = ''): string
+    public static function getQaEndpointContent(string $url, AuthorizationInterface $auth = null): string
     {
         if (!($token = self::getQaSessionToken())) {
             return '';
@@ -611,9 +618,9 @@ class ToolCommands extends AbstractCommands
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        if ($basicAuth !== '') {
+        if ($auth instanceof AuthorizationInterface) {
             $header = [
-                "Authorization: Basic $basicAuth",
+                $auth->getAuthorizationHeader(),
                 "X-CSRF-Token: $token",
             ];
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
@@ -629,7 +636,7 @@ class ToolCommands extends AbstractCommands
                     break;
                 // Upon other status codes.
                 default:
-                    if ($basicAuth === '') {
+                    if (!$auth instanceof AuthorizationInterface) {
                         throw new \Exception(sprintf('Curl request to endpoint "%s" returned a %u.', $url, $statusCode));
                     }
                     // If we tried with authentication, retry without.
@@ -680,15 +687,15 @@ class ToolCommands extends AbstractCommands
      *
      * @param array $fields
      *   Data to send.
-     * @param string $auth
-     *   The Basic auth.
+     * @param AuthorizationInterface $auth
+     *   The authorization instance.
      *
      * @return string
      *   The endpoint response code, or empty string if no session is generated.
      *
      * @throws \Exception
      */
-    public static function postQaContent(array $fields, string $auth): string
+    public static function postQaContent(array $fields, AuthorizationInterface $auth): string
     {
         $url = Toolkit::getQaWebsiteUrl();
         if (!($token = self::getQaSessionToken())) {
@@ -701,7 +708,7 @@ class ToolCommands extends AbstractCommands
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/hal+json',
             "X-CSRF-Token: $token",
-            "Authorization: Basic $auth",
+            $auth->getAuthorizationHeader(),
         ]);
         curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -816,13 +823,13 @@ class ToolCommands extends AbstractCommands
     public function optsReview()
     {
         if (file_exists('.opts.yml')) {
-            if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+            if (empty($auth = $this->apiAuth())) {
                 return 1;
             }
             $project_id = $this->getConfig()->get('toolkit.project_id');
             $url = Toolkit::getQaWebsiteUrl();
             $url .= '/api/v1/project/ec-europa/' . $project_id . '-reference/information/constraints';
-            $result = self::getQaEndpointContent($url, $basicAuth);
+            $result = self::getQaEndpointContent($url, $auth);
             $result = json_decode($result, true);
             if (!isset($result['constraints'])) {
                 $this->io()->error('Failed to get constraints from the endpoint.');
@@ -1028,10 +1035,10 @@ class ToolCommands extends AbstractCommands
         $php_check = $toolkit_check = $drupal_check = $endpoint_check = $nextcloud_check = $asda_check = 'FAIL';
         $php_version = $toolkit_version = $drupal_version = '';
 
-        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+        if (empty($auth = $this->apiAuth())) {
             return 1;
         }
-        $result = self::getQaEndpointContent($options['endpoint'], $basicAuth);
+        $result = self::getQaEndpointContent($options['endpoint'], $auth);
         if ($result) {
             $endpoint_check = 'OK';
             $data = json_decode($result, true);
@@ -1200,13 +1207,13 @@ class ToolCommands extends AbstractCommands
 
         $url = Toolkit::getQaWebsiteUrl();
         $endpoint = $url . '/api/v1/toolkit-requirements';
-        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+        if (empty($auth = $this->apiAuth())) {
             return 1;
         }
         $toolkit_version = Toolkit::VERSION;
         $min_version = '';
 
-        $result = self::getQaEndpointContent($endpoint, $basicAuth);
+        $result = self::getQaEndpointContent($endpoint, $auth);
         $min_version = '';
 
         if (!($composer_version = self::getPackagePropertyFromComposer('ec-europa/toolkit'))) {
@@ -1229,7 +1236,7 @@ class ToolCommands extends AbstractCommands
                 }
             }
         } else {
-            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
         }
 
         $version_check = Semver::satisfies($toolkit_version, $min_version) ? 'OK' : 'FAIL';
@@ -1299,10 +1306,10 @@ class ToolCommands extends AbstractCommands
     {
         $url = Toolkit::getQaWebsiteUrl();
         $endpoint = $url . '/api/v1/toolkit-requirements';
-        if (empty($basicAuth = $this->getQaApiBasicAuth())) {
+        if (empty($auth = $this->apiAuth())) {
             return 1;
         }
-        $result = self::getQaEndpointContent($endpoint, $basicAuth);
+        $result = self::getQaEndpointContent($endpoint, $auth);
 
         if ($result) {
             $data = json_decode($result, true);
@@ -1315,41 +1322,30 @@ class ToolCommands extends AbstractCommands
             $this->writeln($vendorList);
             return 0;
         }
-        $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+        $this->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
         return 1;
     }
 
     /**
-     * Return the QA API BASIC AUTH from token or from questions.
+     * Return the API Authorization instance.
      *
-     * @return string
-     *   The Basic auth or empty string if fails.
+     * @return AuthorizationInterface|null
+     *   The API authorization instance or empty string if fails.
      */
-    public function getQaApiBasicAuth(): string
+    public function apiAuth()
     {
-        if (!empty($GLOBALS['basic_auth'])) {
-            return $GLOBALS['basic_auth'];
-        }
-        $auth = getenv('QA_API_BASIC_AUTH');
-        if (empty($auth)) {
-            $this->say('Missing env var QA_API_BASIC_AUTH, asking for access.');
-            if (empty($user = $this->ask('Please insert your username:'))) {
-                $this->writeln('<error>The username cannot be empty!</error>');
-                return '';
+        foreach (self::AUTHENTICATION_ENV_KEYS as $authType => $authenticationEnv) {
+            if (!empty($auth = getenv($authenticationEnv))) {
+                return AuthorizationFactory::create($authType, $auth);
             }
-            if (empty($pass = $this->ask('Please insert your password:', true))) {
-                $this->writeln('<error>The password cannot be empty!</error>');
-                return '';
-            }
-            $auth = base64_encode("$user:$pass");
-            $this->writeln([
-                'Your token has been generated, please add it to your environment variables.',
-                '    export QA_API_BASIC_AUTH="' . $auth . '"',
-            ]);
-            $GLOBALS['basic_auth'] = $auth;
         }
 
-        return $auth;
+        $this->writeln([
+            'Missing env var QA_API_AUTH_TOKEN.',
+            'Please access your profile page on QA Website and on "Authentication Token" tab, generate a "QA User Authentication Token"',
+            'Please add your token to your environment variables.',
+            '    export QA_API_AUTH_TOKEN="YOUR_AUTHENTICATION_TOKEN"',
+        ]);
     }
 
     /**
@@ -1488,7 +1484,7 @@ class ToolCommands extends AbstractCommands
         }
         $url = Toolkit::getQaWebsiteUrl();
         $endpoint = "$url/api/v1/project/ec-europa/$project_id-reference/information";
-        $project = self::getQaEndpointContent($endpoint, $this->getQaApiBasicAuth());
+        $project = self::getQaEndpointContent($endpoint, $this->apiAuth());
         $project = json_decode($project, true);
         $project = reset($project);
         if (!empty($project['name']) && $project['name'] === "$project_id-reference") {
