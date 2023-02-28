@@ -156,10 +156,20 @@ class ConfigurationCommandsTest extends AbstractTest
                 ],
                 'action' => 'Color me ${color}'
             ],
+            'test' => [
+                'command' => [
+                    'config' => 'overridden in runner.yml.dist',
+                ],
+            ],
         ];
         $this->fs->dumpFile($this->getSandboxFilepath('runner.yml.dist'), Yaml::dump($runnerDistConfig));
         $arbitraryYamlConfig = [
             'color' => 'red',
+            'test' => [
+                'command' => [
+                    'config' => 'overridden in config/runner/colors.yml',
+                ],
+            ],
         ];
         $this->fs->dumpFile($this->getSandboxFilepath('config/runner/colors.yml'), Yaml::dump($arbitraryYamlConfig));
         $runnerConfig = [
@@ -169,6 +179,11 @@ class ConfigurationCommandsTest extends AbstractTest
                 ],
             ],
             'color' => 'yellow',
+            'test' => [
+                'command' => [
+                    'config' => 'overridden in runner.yml',
+                ],
+            ],
         ];
         $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($runnerConfig));
 
@@ -184,6 +199,13 @@ class ConfigurationCommandsTest extends AbstractTest
 
         $result = $this->runCommand('config color', false);
         $this->assertSame('yellow', trim($result['output']));
+
+        $expectedCommandConfig = <<<YAML
+        command:
+          config: 'overridden in runner.yml'
+        YAML;
+        $result = $this->runCommand('config test', false);
+        $this->assertSame($expectedCommandConfig, trim($result['output']));
 
         // Remove runner.yml and test again.
         $this->fs->remove($this->getSandboxFilepath('runner.yml'), Yaml::dump($runnerConfig));
