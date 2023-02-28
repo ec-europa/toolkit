@@ -1,5 +1,16 @@
 # Toolkit change log
 
+## Version 9.6.0
+  - DQA-6074: Create .gitattributes file for toolkit.
+  - DQA-5407: Monitor abandoned components.
+  - DQA-6133: Component check to use options no-dev & locked.
+  - DQA-6261: Include support for key_auth in toolkit.
+  - DQA-6344: ConfigurationCommands when overriding commands.
+  - DQA-6355: Requirements remove api calls.
+  - DQA-5962: Delayed task list to allow command hooks to run before.
+  - DQA-6359: Load both runner.yml and runner.yml.dist files.
+  - DQA-5962: Allow runner.yml to override all other configs.
+
 ## Version 9.5.0
   - DQA-6103: Add configuration command to run drush commands.
   - DQA-6085: Rename toolkit:import-config into drupal:config-import.
