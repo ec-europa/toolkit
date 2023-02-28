@@ -158,7 +158,7 @@ class ConfigurationCommandsTest extends AbstractTest
         ];
         $this->fs->dumpFile($this->getSandboxFilepath('runner.yml.dist'), Yaml::dump($runnerDistConfig));
         $arbitraryYamlConfig = [
-           'color' => 'red',
+            'color' => 'red',
         ];
         $this->fs->dumpFile($this->getSandboxFilepath('config/runner/colors.yml'), Yaml::dump($arbitraryYamlConfig));
         $runnerConfig = [
@@ -183,4 +183,5 @@ class ConfigurationCommandsTest extends AbstractTest
         $result = $this->runCommand('config color', false);
         $this->assertSame('yellow', trim($result['output']));
     }
+
 }
