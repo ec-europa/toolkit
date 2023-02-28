@@ -307,7 +307,6 @@ class Runner
             }
 
             $commandInfo = $commandFactory->createCommandInfo($commandClass, 'execute');
-            $commandInfo->addAnnotation('tasks', $tasks['tasks'] ?? $tasks);
 
             $command = $commandFactory->createCommand($commandInfo, $commandClass)
                 ->setName($name);
