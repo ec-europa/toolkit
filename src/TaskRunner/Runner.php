@@ -231,6 +231,12 @@ class Runner
             $processor->add($currentConfig->export());
         }
 
+        // Allow runner.yml to override configurations. Is recommended to keep
+        // this out of VCS control to allow local config customizations.
+        $configOverride = new Config();
+        Robo::loadConfiguration([$workingDir . '/runner.yml'], $configOverride);
+        $processor->add($configOverride->export());
+
         // Import newly built configuration.
         $this->config->replace($processor->export());
 
@@ -348,10 +354,7 @@ class Runner
     {
         $configFiles = [];
         if (file_exists($workingDir . '/runner.yml.dist')) {
-            $configFiles[] = realpath($workingDir . '/runner.yml.dist');
-        }
-        if (file_exists($workingDir . '/runner.yml')) {
-            $configFiles[] = realpath($workingDir . '/runner.yml');
+            $configFiles[] = $workingDir . '/runner.yml.dist';
         }
 
         $defaultConfigDir = $defaultConfig->get(self::CONFIG_DIR_KEY);
