@@ -7,7 +7,9 @@ namespace EcEuropa\Toolkit\TaskRunner;
 use Composer\Autoload\ClassLoader;
 use Consolidation\Config\ConfigInterface;
 use Consolidation\Config\Loader\ConfigProcessor;
+use Consolidation\Config\Loader\YamlConfigLoader;
 use Consolidation\Config\Util\ConfigOverlay;
+use Dflydev\DotAccessData\Util;
 use EcEuropa\Toolkit\TaskRunner\Commands\ConfigurationCommands;
 use EcEuropa\Toolkit\TaskRunner\Inject\ConfigForCommand;
 use EcEuropa\Toolkit\Toolkit;
@@ -135,7 +137,6 @@ class Runner
         // Create application.
         $this
             ->prepareApplication()
-            ->prepareConfigurations()
             ->prepareContainer()
             ->prepareRunner();
     }
@@ -150,6 +151,13 @@ class Runner
     {
         $classes = $this->discoverCommandClasses();
         $this->runner->registerCommandClasses($this->application, $classes);
+
+        // At this point we are ready to prepare and process the configuration.
+        // It's important to do the processing here as the in the next step, in
+        // order to register dynamic commands, we need the full configuration to
+        // be already processed/resolved and tokens replaced.
+        $this->processConfiguration($classes);
+
         $this->registerConfigurationCommands();
         return $this->runner->run($this->input, $this->output, $this->application);
     }
@@ -199,50 +207,79 @@ class Runner
     }
 
     /**
-     * Create the configurations and process overrides.
+     * Merges commands default configuration and processes tokens.
      *
-     * @return $this
+     * @param string[] $commandClasses
      */
-    private function prepareConfigurations()
+    private function processConfiguration(array $commandClasses): void
     {
         $workingDir = realpath($this->workingDir);
-        // Load Toolkit default configuration.
-        $defaultConfig = Robo::createConfiguration([Toolkit::getToolkitRoot() . '/config/default.yml']);
-        $defaultConfig->set('runner.working_dir', $workingDir);
-        $this->loadConfigurationFromDirFiles($defaultConfig);
-
-        // Re-build configuration.
-        $context = $defaultConfig->getContext(ConfigOverlay::DEFAULT_CONTEXT);
-
         $processor = new ConfigProcessor();
-        $processor->add($defaultConfig->export());
+        $loader = new YamlConfigLoader();
 
-        $currentConfig = $this->getCurrentConfig($workingDir, $defaultConfig);
-        if (isset($currentConfig)) {
-            // Allow some configurations to be overridden. If a given property is
-            // defined on a project level it will replace the default values
-            // instead of merge.
-            foreach ($this->overrides as $override) {
-                if ($value = $currentConfig->get($override)) {
-                    $context->set($override, $value);
-                }
+        // Init configuration.
+        $processor->add(['runner' => ['working_dir' => $workingDir]]);
+
+        // Add Toolkit default configuration.
+        $processor->extend($loader->load(Toolkit::getToolkitRoot() . '/config/default.yml'));
+
+        // Add commands default configuration.
+        foreach ($commandClasses as $commandClass) {
+            // Commands were already registered as container services and
+            // instantiated, in \Robo\Runner::instantiateCommandClass().
+            // @see \Robo\Runner::instantiateCommandClass()
+            $serviceId = "{$commandClass}Commands";
+            /* @var \OpenEuropa\TaskRunner\Commands\AbstractCommands $command */
+            $command = $this->container->get($serviceId);
+            $processor->extend($loader->load($command->getConfigurationFile()));
+        }
+
+        // Add project default configuration. Projects are storing configuration
+        // in the following YAML files:
+        // - `runner.yml.dist`: Located in the project's root directory;
+        // - YAML files located in the project's ./config/runner directory. The
+        //   location of this directory can be customized by overriding the
+        //   value of `runner.config_dir` in the `runner.yml.dist` file;
+        // - `runner.yml`: Typically, this file is not under VCS control, (added
+        //   in .gitignore) and allows developers to override any configuration
+        //   from previous files.
+        $projectConfigArray = $loader->load("$workingDir/runner.yml.dist")->export();
+        if ($configDir = $this->getProjectConfigDir($projectConfigArray, $processor, $workingDir)) {
+            foreach (glob("$configDir/*.yml") as $yamlFile) {
+                $projectConfigArray = Util::mergeAssocArray($projectConfigArray, $loader->load($yamlFile)->export());
             }
-
-            $processor->add($currentConfig->export());
         }
+        $projectConfigArray = Util::mergeAssocArray($projectConfigArray, $loader->load("$workingDir/runner.yml")->export());
+        $projectConfig = new Config($projectConfigArray);
 
-        // Allow runner.yml to override configurations. Is recommended to keep
-        // this out of VCS control to allow local config customizations.
-        if (file_exists($workingDir . '/runner.yml')) {
-            $configOverride = new Config();
-            Robo::loadConfiguration([$workingDir . '/runner.yml'], $configOverride);
-            $processor->add($configOverride->export());
+        // Allow some configurations to be overridden. If a given property is
+        // defined on a project level it will replace the default values instead
+        // of merge.
+        $context = $projectConfig->getContext(ConfigOverlay::DEFAULT_CONTEXT);
+        foreach ($this->overrides as $override) {
+            if ($value = $projectConfig->get($override)) {
+                $context->set($override, $value);
+            }
         }
+        $processor->add($projectConfig->export());
 
-        // Import newly built configuration.
-        $this->config->replace($processor->export());
+        // Process token replacements.
+        $this->getConfig()->replace($processor->export());
+    }
 
-        return $this;
+    /**
+     * Returns the absolute project level config directory path or false.
+     *
+     * @param array $config
+     * @param \Consolidation\Config\Loader\ConfigProcessor $processor
+     * @param string $workDir
+     *
+     * @return string|false
+     */
+    private function getProjectConfigDir(array $config, ConfigProcessor $processor, string $workDir): string|false
+    {
+        $dir = $relativePath = $config['runner']['config_dir'] ?? (clone $processor)->export()['runner']['config_dir'];
+        return realpath(str_starts_with($dir, DIRECTORY_SEPARATOR) ? $dir : "$workDir/$dir");
     }
 
     /**
@@ -342,77 +379,6 @@ class Runner
 
             $this->application->add($command);
         }
-    }
-
-    /**
-     * Get current configurations.
-     *
-     * @param string $workingDir
-     * @param ConfigInterface $defaultConfig
-     *
-     * @return ConfigInterface|null
-     */
-    private function getCurrentConfig(string $workingDir, ConfigInterface $defaultConfig): ?ConfigInterface
-    {
-        $configFile = '';
-        if (file_exists($workingDir . '/runner.yml.dist')) {
-            $configFile = $workingDir . '/runner.yml.dist';
-        }
-
-        $defaultConfigDir = $defaultConfig->get(self::CONFIG_DIR_KEY);
-        $configDirFilesPaths = $this->getConfigDirFilesPaths((string) realpath($defaultConfigDir));
-        if (empty($configFile) && empty($configDirFilesPaths)) {
-            return null;
-        }
-
-        if (!empty($configFile)) {
-            $currentConfig = Robo::createConfiguration([realpath($configFile)]);
-            $this->loadConfigurationFromDirFiles($currentConfig, false, $defaultConfigDir);
-
-            return $currentConfig;
-        }
-
-        return Robo::createConfiguration($configDirFilesPaths);
-    }
-
-    /**
-     * Get runner config directory files.
-     *
-     * @param string $runnerConfigDir
-     *
-     * @return string[]
-     */
-    private function getConfigDirFilesPaths(string $runnerConfigDir): array
-    {
-        return glob($runnerConfigDir . '/*.yml');
-    }
-
-    /**
-     * Load configuration from dir files.
-     *
-     * @param ConfigInterface $config
-     * @param bool $isToolkitRoot
-     * @param string|null $fallbackConfigDir
-     *
-     * @return void
-     */
-    private function loadConfigurationFromDirFiles(ConfigInterface $config, bool $isToolkitRoot = true, ?string $fallbackConfigDir = null): void
-    {
-        $configDir = $config->get(self::CONFIG_DIR_KEY, $fallbackConfigDir);
-        if (empty($configDir)) {
-            return;
-        }
-
-        $configDir = $isToolkitRoot
-            ? Toolkit::getToolkitRoot() . '/' . $configDir
-            : realpath($configDir);
-
-        $configFilesPaths = $this->getConfigDirFilesPaths((string) $configDir);
-        if (empty($configFilesPaths)) {
-            return;
-        }
-
-        Robo::loadConfiguration($configFilesPaths, $config);
     }
 
 }
