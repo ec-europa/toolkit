@@ -318,3 +318,19 @@
   expectations:
     - string_contains: "root: build"
     - string_contains: "base_url: 'http://web:8080'"
+
+- command: 'config action'
+  configuration: []
+  resources:
+    - file: runner.yml.dist
+      content: |
+        color: red
+        action: 'Color is ${color}'
+    - file: runner.yml
+      content: |
+        color: yellow
+    - file: config/runner/colors.yml
+      content: |
+        color: blue
+  expectations:
+    - string_contains: "Color is yellow"
