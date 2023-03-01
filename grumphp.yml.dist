@@ -28,7 +28,6 @@ grumphp:
           The commit message must start with the JIRA issue number: /[A-Z]+\-\d+/
           The JIRA issue number must be followed by a colon and space: /[A-Z]+\-\d+:\s[^\s]/
           The subject must start with capital letter: /[A-Z]+\-\d+:\s[A-Z][a-z]*/
-          The commit message must end with a period: /\.$/
       case_insensitive: false
       multiline: true
       additional_modifiers: ''
