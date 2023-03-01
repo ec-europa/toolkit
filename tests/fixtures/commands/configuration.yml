@@ -329,10 +329,8 @@
     - file: runner.yml
       content: |
         color: yellow
-        action: 'Color is ${color}'
     - file: config/runner/colors.yml
       content: |
         color: blue
-        action: 'Color is ${color}'
   expectations:
     - string_contains: "Color is yellow"
