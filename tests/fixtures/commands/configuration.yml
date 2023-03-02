@@ -335,16 +335,42 @@
   expectations:
     - string_contains: "Color is yellow"
 
-- command: 'config toolkit.test.phpcs.files'
+- command: 'config toolkit.test.phpcs'
   configuration: []
   resources: []
   expectations:
     - contains: |
-        - ./lib
-        - ./resources
-        - ./src
+        mode: phpcs
+        config: phpcs.xml
+        ignore_annotations: false
+        show_sniffs: false
+        standards:
+          - ./vendor/drupal/coder/coder_sniffer/Drupal
+          - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
+          - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+        ignore_patterns:
+          - dist/
+          - .cache/
+          - vendor/
+          - web/
+          - node_modules/
+          - config/
+          - '*.min.css'
+          - '*.min.js'
+        triggered_by:
+          - php
+          - module
+          - inc
+          - theme
+          - profile
+          - install
+          - yml
+        files:
+          - ./lib
+          - ./resources
+          - ./src
 
-- command: 'config toolkit.test.phpcs.files'
+- command: 'config toolkit.test.phpcs'
   configuration: []
   resources:
     - file: runner.yml.dist
@@ -357,9 +383,35 @@
                 - file2
   expectations:
     - contains: |
-        - file1
-        - file2
-    - not_string_contains: src
+        mode: phpcs
+        config: phpcs.xml
+        ignore_annotations: false
+        show_sniffs: false
+        standards:
+          - ./vendor/drupal/coder/coder_sniffer/Drupal
+          - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
+          - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+        ignore_patterns:
+          - dist/
+          - .cache/
+          - vendor/
+          - web/
+          - node_modules/
+          - config/
+          - '*.min.css'
+          - '*.min.js'
+        triggered_by:
+          - php
+          - module
+          - inc
+          - theme
+          - profile
+          - install
+          - yml
+        files:
+          - file1
+          - file2
+    - not_string_contains: ./src
 
 - command: 'toolkit:test-behat --simulate'
   configuration: []
