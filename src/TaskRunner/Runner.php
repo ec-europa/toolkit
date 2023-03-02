@@ -279,7 +279,7 @@ class Runner
         $projectConfigLoaded = new Data($projectConfig);
         foreach ($this->overrides as $override) {
             if ($value = $projectConfigLoaded->get($override, null)) {
-                $this->config->set($override, $value);
+                $this->config->setDefault($override, $value);
             }
         }
 
