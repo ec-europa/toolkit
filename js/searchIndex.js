@@ -251,11 +251,6 @@ Search.appendIndex(
             "summary": "Path\u0020to\u0020YAML\u0020configuration\u0020file\u0020containing\u0020command\u0020defaults.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AinitializeRuntimeConfiguration\u0028\u0029",
-            "name": "initializeRuntimeConfiguration",
-            "summary": "Command\u0020initialization.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_initializeRuntimeConfiguration"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AgetBin\u0028\u0029",
             "name": "getBin",
             "summary": "Validate\u0020and\u0020return\u0020the\u0020path\u0020to\u0020given\u0020bin.",
@@ -1266,6 +1261,11 @@ Search.appendIndex(
             "summary": "Create\u0020and\u0020prepare\u0020the\u0020Application.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_prepareApplication"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AparseConfigFiles\u0028\u0029",
+            "name": "parseConfigFiles",
+            "summary": "Recursively\u0020merge\u0020config\u0020files.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_parseConfigFiles"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AprepareConfigurations\u0028\u0029",
             "name": "prepareConfigurations",
             "summary": "Create\u0020the\u0020configurations\u0020and\u0020process\u0020overrides.",
@@ -1286,20 +1286,10 @@ Search.appendIndex(
             "summary": "Register\u0020commands\u0020in\u0020the\u0020runner.yml\u0020under\u0020\u0027commands\u003A\u0027.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_registerConfigurationCommands"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AgetCurrentConfig\u0028\u0029",
-            "name": "getCurrentConfig",
-            "summary": "Get\u0020current\u0020configurations.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_getCurrentConfig"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AgetConfigDirFilesPaths\u0028\u0029",
             "name": "getConfigDirFilesPaths",
             "summary": "Get\u0020runner\u0020config\u0020directory\u0020files.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_getConfigDirFilesPaths"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AloadConfigurationFromDirFiles\u0028\u0029",
-            "name": "loadConfigurationFromDirFiles",
-            "summary": "Load\u0020configuration\u0020from\u0020dir\u0020files.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_loadConfigurationFromDirFiles"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AAPPLICATION_NAME",
             "name": "APPLICATION_NAME",
@@ -1310,11 +1300,6 @@ Search.appendIndex(
             "name": "REPOSITORY",
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#constant_REPOSITORY"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003ACONFIG_DIR_KEY",
-            "name": "CONFIG_DIR_KEY",
-            "summary": "",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#constant_CONFIG_DIR_KEY"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003A\u0024input",
             "name": "input",
@@ -1350,6 +1335,11 @@ Search.appendIndex(
             "name": "workingDir",
             "summary": "The\u0020current\u0020working\u0020directory.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#property_workingDir"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003A\u0024commandClasses",
+            "name": "commandClasses",
+            "summary": "The\u0020loaded\u0020command\u0020classes.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#property_commandClasses"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003A\u0024overrides",
             "name": "overrides",

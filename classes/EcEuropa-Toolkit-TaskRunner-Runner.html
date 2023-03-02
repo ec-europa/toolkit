@@ -197,13 +197,6 @@
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#constant_CONFIG_DIR_KEY">CONFIG_DIR_KEY</a>
-    <span>
-        &nbsp;= &#039;runner.config_dir&#039;                            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#constant_REPOSITORY">REPOSITORY</a>
     <span>
         &nbsp;= &#039;ec-europa/toolkit&#039;                            </span>
@@ -223,6 +216,13 @@
                         &nbsp;: <abbr title="\Composer\Autoload\ClassLoader">ClassLoader</abbr>            </span>
 </dt>
 <dd>The autoloader class.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#property_commandClasses">$commandClasses</a>
+    <span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
+</dt>
+<dd>The loaded command classes.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#property_container">$container</a>
@@ -248,7 +248,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#property_overrides">$overrides</a>
     <span>
-                        &nbsp;: array&lt;string|int, string&gt;            </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
 <dd>Configurations that can be replaced by a project.</dd>
 
@@ -295,13 +295,6 @@
 <dd>Get runner config directory files.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_getCurrentConfig">getCurrentConfig()</a>
-    <span>
-                                &nbsp;: <abbr title="\Consolidation\Config\ConfigInterface">ConfigInterface</abbr>|null    </span>
-</dt>
-<dd>Get current configurations.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_getWorkingDir">getWorkingDir()</a>
     <span>
                                 &nbsp;: string    </span>
@@ -309,11 +302,11 @@
 <dd>Returns the current working directory.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_loadConfigurationFromDirFiles">loadConfigurationFromDirFiles()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_parseConfigFiles">parseConfigFiles()</a>
     <span>
-                                &nbsp;: void    </span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Load configuration from dir files.</dd>
+<dd>Recursively merge config files.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_prepareApplication">prepareApplication()</a>
@@ -390,35 +383,6 @@
 
 </article>
                     <article class="phpdocumentor-element -constant -public ">
-    <h4 class="phpdocumentor-element__name" id="constant_CONFIG_DIR_KEY">
-        CONFIG_DIR_KEY
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#constant_CONFIG_DIR_KEY" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">37</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-signature phpdocumentor-code ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">CONFIG_DIR_KEY</span>
-    = <span class="phpdocumentor-signature__default-value">&#039;runner.config_dir&#039;</span>
-</code>
-
-
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
-    
-
-</article>
-                    <article class="phpdocumentor-element -constant -public ">
     <h4 class="phpdocumentor-element__name" id="constant_REPOSITORY">
         REPOSITORY
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#constant_REPOSITORY" class="headerlink"><i class="fas fa-link"></i></a>
@@ -471,7 +435,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">79</span>
+    <span class="phpdocumentor-element-found-in__line">78</span>
 
     </aside>
 
@@ -504,7 +468,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">58</span>
+    <span class="phpdocumentor-element-found-in__line">57</span>
 
     </aside>
 
@@ -528,6 +492,39 @@
             -private
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="property_commandClasses">
+        $commandClasses
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#property_commandClasses" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">92</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">The loaded command classes.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+    <span class="phpdocumentor-signature__name">$commandClasses</span>
+    </code>
+
+    
+    
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -private
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="property_container">
         $container
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#property_container" class="headerlink"><i class="fas fa-link"></i></a>
@@ -537,7 +534,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">72</span>
+    <span class="phpdocumentor-element-found-in__line">71</span>
 
     </aside>
 
@@ -570,7 +567,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">44</span>
+    <span class="phpdocumentor-element-found-in__line">43</span>
 
     </aside>
 
@@ -603,7 +600,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">51</span>
+    <span class="phpdocumentor-element-found-in__line">50</span>
 
     </aside>
 
@@ -636,7 +633,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">93</span>
+    <span class="phpdocumentor-element-found-in__line">99</span>
 
     </aside>
 
@@ -644,7 +641,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-        <span class="phpdocumentor-signature__type">array&lt;string|int, string&gt;</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$overrides</span>
      = <span class="phpdocumentor-signature__default-value">[&#039;toolkit.build.dist.keep&#039;, &#039;toolkit.test.phpcs.standards&#039;, &#039;toolkit.test.phpcs.ignore_patterns&#039;, &#039;toolkit.test.phpcs.triggered_by&#039;, &#039;toolkit.test.phpcs.files&#039;, &#039;toolkit.test.phpmd.ignore_patterns&#039;, &#039;toolkit.test.phpmd.triggered_by&#039;, &#039;toolkit.test.phpmd.files&#039;, &#039;toolkit.test.phpstan.files&#039;, &#039;toolkit.test.phpstan.ignores&#039;, &#039;toolkit.lint.eslint.ignores&#039;, &#039;toolkit.lint.eslint.extensions_yaml&#039;, &#039;toolkit.lint.eslint.extensions_js&#039;, &#039;toolkit.lint.php.extensions&#039;, &#039;toolkit.lint.php.exclude&#039;, &#039;toolkit.hooks.active&#039;, &#039;toolkit.hooks.prepare-commit-msg.conditions&#039;, &#039;toolkit.hooks.pre-push.commands&#039;, &#039;symlink_project.ignore&#039;]</span></code>
 
@@ -669,7 +666,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">65</span>
+    <span class="phpdocumentor-element-found-in__line">64</span>
 
     </aside>
 
@@ -702,7 +699,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">86</span>
+    <span class="phpdocumentor-element-found-in__line">85</span>
 
     </aside>
 
@@ -739,7 +736,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">125</span>
+    <span class="phpdocumentor-element-found-in__line">131</span>
 
     </aside>
 
@@ -802,7 +799,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">149</span>
+    <span class="phpdocumentor-element-found-in__line">154</span>
 
     </aside>
 
@@ -837,7 +834,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">163</span>
+    <span class="phpdocumentor-element-found-in__line">169</span>
 
     </aside>
 
@@ -872,7 +869,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">385</span>
+    <span class="phpdocumentor-element-found-in__line">395</span>
 
     </aside>
 
@@ -908,56 +905,6 @@
             -private
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_getCurrentConfig">
-        getCurrentConfig()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_getCurrentConfig" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">355</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Get current configurations.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">getCurrentConfig</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$workingDir</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Consolidation\Config\ConfigInterface">ConfigInterface</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$defaultConfig</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Consolidation\Config\ConfigInterface">ConfigInterface</abbr>|null</span></code>
-
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$workingDir</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$defaultConfig</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Consolidation\Config\ConfigInterface">ConfigInterface</abbr></span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><abbr title="\Consolidation\Config\ConfigInterface">ConfigInterface</abbr>|null</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
     <h4 class="phpdocumentor-element__name" id="method_getWorkingDir">
         getWorkingDir()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_getWorkingDir" class="headerlink"><i class="fas fa-link"></i></a>
@@ -965,7 +912,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">176</span>
+    <span class="phpdocumentor-element-found-in__line">182</span>
 
     </aside>
 
@@ -991,53 +938,50 @@
             -private
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_loadConfigurationFromDirFiles">
-        loadConfigurationFromDirFiles()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_loadConfigurationFromDirFiles" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_parseConfigFiles">
+        parseConfigFiles()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_parseConfigFiles" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">399</span>
+    <span class="phpdocumentor-element-found-in__line">215</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Load configuration from dir files.</p>
+        <p class="phpdocumentor-summary">Recursively merge config files.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">loadConfigurationFromDirFiles</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Consolidation\Config\ConfigInterface">ConfigInterface</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$config</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$isToolkitRoot</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">true</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$fallbackConfigDir</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+                    <span class="phpdocumentor-signature__name">parseConfigFiles</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$files</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$config</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$config</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Consolidation\Config\ConfigInterface">ConfigInterface</abbr></span>
+                <span class="phpdocumentor-signature__argument__name">$files</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The file paths to fetch the configs.</p>
+</section>
+
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$isToolkitRoot</span>
-                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">true</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$fallbackConfigDir</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string|null</span>
+                <span class="phpdocumentor-signature__argument__name">$config</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;|null</span>
                  = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The given, the new configs will be merged.</p>
+</section>
+
             </dd>
             </dl>
 
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">void</span>
+    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             &mdash;
         
     
@@ -1055,7 +999,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">186</span>
+    <span class="phpdocumentor-element-found-in__line">192</span>
 
     </aside>
 
@@ -1088,7 +1032,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">206</span>
+    <span class="phpdocumentor-element-found-in__line">232</span>
 
     </aside>
 
@@ -1121,7 +1065,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">253</span>
+    <span class="phpdocumentor-element-found-in__line">294</span>
 
     </aside>
 
@@ -1154,7 +1098,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">275</span>
+    <span class="phpdocumentor-element-found-in__line">316</span>
 
     </aside>
 
@@ -1187,7 +1131,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Runner.php"><a href="files/src-taskrunner-runner.html"><abbr title="src/TaskRunner/Runner.php">Runner.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">293</span>
+    <span class="phpdocumentor-element-found-in__line">334</span>
 
     </aside>
 
