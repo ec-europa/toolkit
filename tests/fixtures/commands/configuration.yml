@@ -334,3 +334,29 @@
         color: blue
   expectations:
     - string_contains: "Color is yellow"
+
+- command: 'config toolkit.test.phpcs.files'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        - ./lib
+        - ./resources
+        - ./src
+
+- command: 'config toolkit.test.phpcs.files'
+  configuration: []
+  resources:
+    - file: runner.yml.dist
+      content: |
+        toolkit:
+          test:
+            phpcs:
+              files:
+                - file1
+                - file2
+  expectations:
+    - contains: |
+        - file1
+        - file2
+    - not_string_contains: src
