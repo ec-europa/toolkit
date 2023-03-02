@@ -17,7 +17,7 @@ grumphp:
         - Generic.Files.LineLength
     git_commit_message:
       allow_empty_message: false
-      enforce_capitalized_subject: true
+      enforce_capitalized_subject: false
       enforce_no_subject_punctuations: false
       enforce_no_subject_trailing_period: false
       enforce_single_lined_subject: true
@@ -25,7 +25,9 @@ grumphp:
       max_body_width: 72
       max_subject_width: 60
       matchers:
-          Must contain JIRA issue number: /[A-Z]+\-\d+:/
-      case_insensitive: true
+          The commit message must start with the JIRA issue number: /[A-Z]+\-\d+/
+          The JIRA issue number must be followed by a colon and space: /[A-Z]+\-\d+:\s[^\s]/
+          The subject must start with capital letter: /[A-Z]+\-\d+:\s[A-Z][a-z]*/
+      case_insensitive: false
       multiline: true
       additional_modifiers: ''
