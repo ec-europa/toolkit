@@ -318,3 +318,91 @@
   expectations:
     - string_contains: "root: build"
     - string_contains: "base_url: 'http://web:8080'"
+
+- command: 'config action'
+  configuration: []
+  resources:
+    - file: runner.yml.dist
+      content: |
+        color: red
+        action: 'Color is ${color}'
+    - file: runner.yml
+      content: |
+        color: yellow
+    - file: config/runner/colors.yml
+      content: |
+        color: blue
+  expectations:
+    - string_contains: "Color is yellow"
+
+- command: 'config toolkit.test.phpcs.files'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        - ./lib
+        - ./resources
+        - ./src
+
+- command: 'config toolkit.test.phpcs.files'
+  configuration: []
+  resources:
+    - file: runner.yml.dist
+      content: |
+        toolkit:
+          test:
+            phpcs:
+              files:
+                - file1
+                - file2
+  expectations:
+    - contains: |
+        - file1
+        - file2
+    - not_string_contains: src
+
+- command: 'toolkit:test-behat --simulate'
+  configuration: []
+  resources:
+    - file: runner.yml.dist
+      content: |
+        toolkit:
+          test:
+            behat:
+              from: test-behat.yml.dist
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:install-dependencies')
+        [Simulator] Running ./vendor/bin/run toolkit:install-dependencies
+        [Simulator] Simulating EcEuropa\Toolkit\Task\File\Process('test-behat.yml.dist', 'behat.yml')
+        [Simulator] Running ./vendor/bin/behat --profile=default --strict --dry-run
+        [Simulator] Simulating Exec('./vendor/bin/behat')
+          ->options(array (
+            'profile' => 'default',
+            'strict' => NULL,
+          ), '=')
+        [Simulator] Running ./vendor/bin/behat --profile=default --strict
+
+- command: 'toolkit:test-behat --simulate'
+  configuration: []
+  resources:
+    - touch: test-behat.yml.dist
+    - file: runner.yml.dist
+      content: |
+        command:
+          toolkit:
+            test-behat:
+              options:
+                from: test-behat.yml.dist
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:install-dependencies')
+        [Simulator] Running ./vendor/bin/run toolkit:install-dependencies
+        [Simulator] Simulating EcEuropa\Toolkit\Task\File\Process('test-behat.yml.dist', 'behat.yml')
+        [Simulator] Running ./vendor/bin/behat --profile=default --strict --dry-run
+        [Simulator] Simulating Exec('./vendor/bin/behat')
+          ->options(array (
+            'profile' => 'default',
+            'strict' => NULL,
+          ), '=')
+        [Simulator] Running ./vendor/bin/behat --profile=default --strict

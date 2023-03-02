@@ -105,9 +105,9 @@ final class Toolkit
      */
     public static function filterFolders(array &$files)
     {
-        $files = array_filter($files, function ($folder) {
+        $files = array_values(array_filter($files, function ($folder) {
             return file_exists($folder);
-        });
+        }));
     }
 
     /**

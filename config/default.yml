@@ -1,6 +1,8 @@
 runner:
   bin_dir: './vendor/bin'
   bin_node_dir: './node_modules/.bin'
+  # This property cannot contain a reference to a variable as it will
+  # not be processed before the load of configurations in given directory.
   config_dir: './config/runner'
 symlink_project:
   ignore: [ '.idea', 'vendor' ]
