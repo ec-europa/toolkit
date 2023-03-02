@@ -135,7 +135,6 @@ class Runner
         // Create application.
         $this
             ->prepareApplication()
-            ->prepareConfigurations()
             ->prepareContainer()
             ->prepareRunner();
     }
@@ -150,6 +149,7 @@ class Runner
     {
         $classes = $this->discoverCommandClasses();
         $this->runner->registerCommandClasses($this->application, $classes);
+        $this->prepareConfigurations();
         $this->registerConfigurationCommands();
         return $this->runner->run($this->input, $this->output, $this->application);
     }
@@ -237,7 +237,7 @@ class Runner
         $projectConfig = [];
         // Load the Project configuration.
         if (file_exists($workingDir . '/runner.yml.dist')) {
-            $projectConfig = $this->parseConfigFiles([$workingDir . '/runner.yml.dist']);
+            $projectConfig = $this->parseConfigFiles([$workingDir . '/runner.yml.dist'], $projectConfig);
         }
 
         // Check if the project has dynamic configs.
