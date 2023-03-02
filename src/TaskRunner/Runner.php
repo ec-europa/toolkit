@@ -34,7 +34,6 @@ class Runner
 
     public const APPLICATION_NAME = 'Toolkit Runner';
     public const REPOSITORY = 'ec-europa/toolkit';
-    public const CONFIG_DIR_KEY = 'runner.config_dir';
 
     /**
      * The input.
@@ -84,6 +83,13 @@ class Runner
      * @var mixed
      */
     private $workingDir;
+
+    /**
+     * The loaded command classes.
+     *
+     * @var array
+     */
+    private array $commandClasses;
 
     /**
      * Configurations that can be replaced by a project.
@@ -147,8 +153,8 @@ class Runner
      */
     public function run()
     {
-        $classes = $this->discoverCommandClasses();
-        $this->runner->registerCommandClasses($this->application, $classes);
+        $this->commandClasses = $this->discoverCommandClasses();
+        $this->runner->registerCommandClasses($this->application, $this->commandClasses);
         $this->prepareConfigurations();
         $this->registerConfigurationCommands();
         return $this->runner->run($this->input, $this->output, $this->application);
@@ -232,6 +238,12 @@ class Runner
         $tkConfigDir = Toolkit::getToolkitRoot() . '/' . $config['runner']['config_dir'];
         $files = $this->getConfigDirFilesPaths($tkConfigDir);
         $config = $this->parseConfigFiles($files, $config);
+
+        // Get the command options configurations from loaded command classes.
+        foreach ($this->commandClasses as $commandClass) {
+            $f = $this->runner->getContainer()->get("{$commandClass}Commands")->getConfigurationFile() ?? '';
+            $config = $this->parseConfigFiles([$f], $config);
+        }
 
         // Save the project configurations separately to allow the overrides.
         $projectConfig = [];
