@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner;
 
 use Composer\Autoload\ClassLoader;
-use Consolidation\Config\ConfigInterface;
-use Consolidation\Config\Loader\ConfigProcessor;
-use Consolidation\Config\Util\ConfigOverlay;
+use Dflydev\DotAccessData\Data;
 use EcEuropa\Toolkit\TaskRunner\Commands\ConfigurationCommands;
 use EcEuropa\Toolkit\TaskRunner\Inject\ConfigForCommand;
 use EcEuropa\Toolkit\Toolkit;
+use Grasmash\Expander\Expander;
 use League\Container\Container;
 use Psr\Container\ContainerInterface;
 use Robo\Application;
@@ -22,6 +21,7 @@ use Robo\Runner as RoboRunner;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Toolkit Runner.
@@ -34,7 +34,6 @@ class Runner
 
     public const APPLICATION_NAME = 'Toolkit Runner';
     public const REPOSITORY = 'ec-europa/toolkit';
-    public const CONFIG_DIR_KEY = 'runner.config_dir';
 
     /**
      * The input.
@@ -86,11 +85,18 @@ class Runner
     private $workingDir;
 
     /**
+     * The loaded command classes.
+     *
+     * @var array
+     */
+    private array $commandClasses;
+
+    /**
      * Configurations that can be replaced by a project.
      *
      * @var string[]
      */
-    private $overrides = [
+    private array $overrides = [
         'toolkit.build.dist.keep',
         'toolkit.test.phpcs.standards',
         'toolkit.test.phpcs.ignore_patterns',
@@ -135,7 +141,6 @@ class Runner
         // Create application.
         $this
             ->prepareApplication()
-            ->prepareConfigurations()
             ->prepareContainer()
             ->prepareRunner();
     }
@@ -148,8 +153,9 @@ class Runner
      */
     public function run()
     {
-        $classes = $this->discoverCommandClasses();
-        $this->runner->registerCommandClasses($this->application, $classes);
+        $this->commandClasses = $this->discoverCommandClasses();
+        $this->runner->registerCommandClasses($this->application, $this->commandClasses);
+        $this->prepareConfigurations();
         $this->registerConfigurationCommands();
         return $this->runner->run($this->input, $this->output, $this->application);
     }
@@ -199,6 +205,26 @@ class Runner
     }
 
     /**
+     * Recursively merge config files.
+     *
+     * @param array $files
+     *   The file paths to fetch the configs.
+     * @param array|null $config
+     *   The given, the new configs will be merged.
+     */
+    private function parseConfigFiles(array $files, array $config = null): array
+    {
+        $config = $config ?? [];
+        foreach ($files as $file) {
+            $content = Yaml::parseFile($file);
+            if (!empty($content) && is_array($content)) {
+                $config = array_replace_recursive($config, $content);
+            }
+        }
+        return $config;
+    }
+
+    /**
      * Create the configurations and process overrides.
      *
      * @return $this
@@ -206,41 +232,56 @@ class Runner
     private function prepareConfigurations()
     {
         $workingDir = realpath($this->workingDir);
-        // Load Toolkit default configuration.
-        $defaultConfig = Robo::createConfiguration([Toolkit::getToolkitRoot() . '/config/default.yml']);
-        $defaultConfig->set('runner.working_dir', $workingDir);
-        $this->loadConfigurationFromDirFiles($defaultConfig);
+        // Load the Toolkit default configurations.
+        $config = $this->parseConfigFiles([Toolkit::getToolkitRoot() . '/config/default.yml']);
+        $config['runner']['working_dir'] = $workingDir;
+        $tkConfigDir = Toolkit::getToolkitRoot() . '/' . $config['runner']['config_dir'];
+        $files = $this->getConfigDirFilesPaths($tkConfigDir);
+        $config = $this->parseConfigFiles($files, $config);
 
-        // Re-build configuration.
-        $context = $defaultConfig->getContext(ConfigOverlay::DEFAULT_CONTEXT);
+        // Get the command options configurations from loaded command classes.
+        foreach ($this->commandClasses as $commandClass) {
+            $f = $this->runner->getContainer()->get("{$commandClass}Commands")->getConfigurationFile() ?? '';
+            $config = $this->parseConfigFiles([$f], $config);
+        }
 
-        $processor = new ConfigProcessor();
-        $processor->add($defaultConfig->export());
+        // Save the project configurations separately to allow the overrides.
+        $projectConfig = [];
+        // Load the Project configuration.
+        if (file_exists($workingDir . '/runner.yml.dist')) {
+            $projectConfig = $this->parseConfigFiles([$workingDir . '/runner.yml.dist'], $projectConfig);
+        }
 
-        $currentConfig = $this->getCurrentConfig($workingDir, $defaultConfig);
-        if (isset($currentConfig)) {
-            // Allow some configurations to be overridden. If a given property is
-            // defined on a project level it will replace the default values
-            // instead of merge.
-            foreach ($this->overrides as $override) {
-                if ($value = $currentConfig->get($override)) {
-                    $context->set($override, $value);
-                }
+        // Check if the project has dynamic configs.
+        $projectConfigDir = $workingDir . '/' . ($projectConfig['runner']['config_dir'] ?? $config['runner']['config_dir']);
+        if ($tkConfigDir !== $projectConfigDir) {
+            if (!empty($files = $this->getConfigDirFilesPaths($projectConfigDir))) {
+                $projectConfig = $this->parseConfigFiles($files, $projectConfig);
             }
-
-            $processor->add($currentConfig->export());
         }
 
-        // Allow runner.yml to override configurations. Is recommended to keep
-        // this out of VCS control to allow local config customizations.
+        // Usually the runner.yml is used for local development and is not committed
+        // to the repo, load it as last so it can override values properly.
         if (file_exists($workingDir . '/runner.yml')) {
-            $configOverride = new Config();
-            Robo::loadConfiguration([$workingDir . '/runner.yml'], $configOverride);
-            $processor->add($configOverride->export());
+            $projectConfig = $this->parseConfigFiles([$workingDir . '/runner.yml'], $projectConfig);
         }
 
-        // Import newly built configuration.
-        $this->config->replace($processor->export());
+        // Merge the toolkit and project configurations.
+        $config = array_replace_recursive($config, $projectConfig);
+
+        $expander = new Expander();
+        $result = $expander->expandArrayProperties($config);
+        $this->config->replace($result);
+
+        // Allow some configurations to be overridden. If a given property is
+        // defined on a project level it will replace the default values
+        // instead of merge.
+        $projectConfigLoaded = new Data($projectConfig);
+        foreach ($this->overrides as $override) {
+            if ($value = $projectConfigLoaded->get($override, null)) {
+                $this->config->setDefault($override, $value);
+            }
+        }
 
         return $this;
     }
@@ -345,37 +386,6 @@ class Runner
     }
 
     /**
-     * Get current configurations.
-     *
-     * @param string $workingDir
-     * @param ConfigInterface $defaultConfig
-     *
-     * @return ConfigInterface|null
-     */
-    private function getCurrentConfig(string $workingDir, ConfigInterface $defaultConfig): ?ConfigInterface
-    {
-        $configFile = '';
-        if (file_exists($workingDir . '/runner.yml.dist')) {
-            $configFile = $workingDir . '/runner.yml.dist';
-        }
-
-        $defaultConfigDir = $defaultConfig->get(self::CONFIG_DIR_KEY);
-        $configDirFilesPaths = $this->getConfigDirFilesPaths((string) realpath($defaultConfigDir));
-        if (empty($configFile) && empty($configDirFilesPaths)) {
-            return null;
-        }
-
-        if (!empty($configFile)) {
-            $currentConfig = Robo::createConfiguration([realpath($configFile)]);
-            $this->loadConfigurationFromDirFiles($currentConfig, false, $defaultConfigDir);
-
-            return $currentConfig;
-        }
-
-        return Robo::createConfiguration($configDirFilesPaths);
-    }
-
-    /**
      * Get runner config directory files.
      *
      * @param string $runnerConfigDir
@@ -384,35 +394,7 @@ class Runner
      */
     private function getConfigDirFilesPaths(string $runnerConfigDir): array
     {
-        return glob($runnerConfigDir . '/*.yml');
-    }
-
-    /**
-     * Load configuration from dir files.
-     *
-     * @param ConfigInterface $config
-     * @param bool $isToolkitRoot
-     * @param string|null $fallbackConfigDir
-     *
-     * @return void
-     */
-    private function loadConfigurationFromDirFiles(ConfigInterface $config, bool $isToolkitRoot = true, ?string $fallbackConfigDir = null): void
-    {
-        $configDir = $config->get(self::CONFIG_DIR_KEY, $fallbackConfigDir);
-        if (empty($configDir)) {
-            return;
-        }
-
-        $configDir = $isToolkitRoot
-            ? Toolkit::getToolkitRoot() . '/' . $configDir
-            : realpath($configDir);
-
-        $configFilesPaths = $this->getConfigDirFilesPaths((string) $configDir);
-        if (empty($configFilesPaths)) {
-            return;
-        }
-
-        Robo::loadConfiguration($configFilesPaths, $config);
+        return glob($runnerConfigDir . '/*.yml') ?? [];
     }
 
 }
