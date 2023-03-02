@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 9.6.1
+  - DQA-5962: Refactor configurations load.
+
 ## Version 9.6.0
   - DQA-6074: Create .gitattributes file for toolkit.
   - DQA-5407: Monitor abandoned components.
