@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 9.7.1
+  - DQA-0: Prevent gitattributes from ignoring nested files.
+  - DQA-0: Apply branch condition in drone.
+
 ## Version 9.6.1
   - DQA-5962: Refactor configurations load.
 
