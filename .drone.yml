@@ -2,6 +2,8 @@ clone:
   git:
     image: registry.fpfis.eu/drone-plugins/git:next
 
+branches: [ feature/*, release/* ]
+
 workspace:
   base: /test
   path: toolkit

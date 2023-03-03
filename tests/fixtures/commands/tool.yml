@@ -62,7 +62,7 @@
           [WARNING] Failed to get Toolkit version from composer.lock.
 
         Minimum version: ^10.0
-        Current version: 10.0.0-beta2
+        Current version: 10.0.0-beta3
         Version check: OK
 
 - command: toolkit:check-version
@@ -75,7 +75,7 @@
         >  Checking Toolkit version:
 
         Minimum version: ^10.0
-        Current version: 10.0.0-beta2
+        Current version: 10.0.0-beta3
         Version check: OK
 
 - command: toolkit:vendor-list
