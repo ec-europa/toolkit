@@ -198,4 +198,24 @@ class ConfigurationCommandsTest extends AbstractTest
         $this->assertSame('red', trim($result['output']));
     }
 
+    /**
+     * Tests configuration overriding scenarios.
+     */
+    public function testConfigOverrideScenarios(): void
+    {
+        // Cascade create config files in this order:
+        // - default command configuration file;
+        // - runner.yml.dist;
+        // - files in the `runner.config_dir` directory;
+        // - runner.yml;
+        // The configuration is also altered in code, see
+        foreach ($this->getFixtureContent('commands/config-overrides.yml') as $file => $data) {
+            $this->fs->dumpFile($this->getSandboxFilepath($file), Yaml::dump($data['config']));
+            foreach ($data['expectation'] as $configKey => $output) {
+                $result = $this->runCommand("config $configKey", false);
+                $this->assertSame(trim($output), trim($result['output']));
+            }
+        }
+    }
+
 }
