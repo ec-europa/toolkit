@@ -243,7 +243,7 @@ class ReleaseCommands extends AbstractCommands
         }
         // Try to get username from email.
         if (preg_match('#^[0-9]+\+(.+)@users.noreply.github.com$#', $email, $matches)) {
-            $name = '@' . $matches[1] ?? '';
+            $name = '@' . ($matches[1] ?? '');
         }
 
         $log = '  - ' . trim($message, '.') . '.';

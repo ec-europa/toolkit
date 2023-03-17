@@ -294,14 +294,12 @@ class ToolCommands extends AbstractCommands
                 $io->writeln('Invalid data returned from the endpoint.');
             } else {
                 $min_version = $data['toolkit'];
-                if ($toolkit_version) {
-                    $major = '' . intval(substr($toolkit_version, 0, 2));
-                    $min_versions = array_filter(explode('|', $min_version), function ($v) use ($major) {
-                        return str_contains(substr($v, 0, 2), $major);
-                    });
-                    if (count($min_versions) === 1) {
-                        $min_version = end($min_versions);
-                    }
+                $major = '' . intval(substr($toolkit_version, 0, 2));
+                $min_versions = array_filter(explode('|', $min_version), function ($v) use ($major) {
+                    return str_contains(substr($v, 0, 2), $major);
+                });
+                if (count($min_versions) === 1) {
+                    $min_version = end($min_versions);
                 }
             }
         } else {

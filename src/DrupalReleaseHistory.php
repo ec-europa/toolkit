@@ -46,7 +46,7 @@ class DrupalReleaseHistory
                 foreach ($release as $releaseItem) {
                     $versionTmp = str_replace($core . '-', '', (string) $releaseItem->version);
 
-                    if (!is_null($version) && Semver::satisfies($versionTmp, $version)) {
+                    if (Semver::satisfies($versionTmp, $version)) {
                         foreach ($releaseItem->terms as $term) {
                             foreach ($term as $termItem) {
                                 $terms[] = strtolower((string) $termItem->value);

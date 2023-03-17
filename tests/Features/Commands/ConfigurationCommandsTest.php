@@ -6,7 +6,6 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use EcEuropa\Toolkit\Tests\AbstractTest;
-use EcEuropa\Toolkit\Toolkit;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Yaml\Yaml;
@@ -55,14 +54,6 @@ class ConfigurationCommandsTest extends AbstractTest
 
         // Run command.
         $result = $this->runCommand($command, false);
-
-        if ($command === 'help example:full') {
-            if (str_starts_with(Toolkit::getRoboVersion(), '4')) {
-                $expectations = $expectations['robo4'];
-            } else {
-                $expectations = $expectations['robo3'];
-            }
-        }
 
 //        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
@@ -184,7 +175,7 @@ class ConfigurationCommandsTest extends AbstractTest
         $this->assertSame('yellow', trim($result['output']));
 
         // Remove runner.yml and test again.
-        $this->fs->remove($this->getSandboxFilepath('runner.yml'), Yaml::dump($runnerConfig));
+        $this->fs->remove($this->getSandboxFilepath('runner.yml'));
         $expectedFooConfig = <<<YAML
         bar: baz
         qux:

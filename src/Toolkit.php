@@ -125,21 +125,4 @@ final class Toolkit
         }
     }
 
-    /**
-     * Return the current Robo version.
-     *
-     * @return string
-     *   A string with the Robo version, empty string if could not find the version,
-     */
-    public static function getRoboVersion()
-    {
-        $version = '';
-        if (defined('Robo::VERSION')) {
-            $version = constant('Robo::VERSION');
-        } elseif (method_exists(Robo::class, 'version')) {
-            $version = Robo::version();
-        }
-        return $version;
-    }
-
 }
