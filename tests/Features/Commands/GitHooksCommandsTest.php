@@ -6,7 +6,6 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
 use EcEuropa\Toolkit\Tests\AbstractTest;
-use EcEuropa\Toolkit\Toolkit;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -62,14 +61,6 @@ class GitHooksCommandsTest extends AbstractTest
 
         // Run command.
         $result = $this->runCommand($command);
-
-        if ($command === 'toolkit:hooks-run') {
-            if (str_starts_with(Toolkit::getRoboVersion(), '4')) {
-                $expectations = $expectations['robo4'];
-            } else {
-                $expectations = $expectations['robo3'];
-            }
-        }
 
 //        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
