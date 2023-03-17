@@ -10,6 +10,7 @@ use Consolidation\Config\Loader\YamlConfigLoader;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class ToolkitCommands.
@@ -121,13 +122,8 @@ class InstallCommands extends AbstractCommands
         $has_sequence = file_exists($options['sequence-file']);
 
         if ($has_sequence) {
-            $config = new Config();
-            $loader = new YamlConfigLoader();
-            $processor = new ConfigProcessor();
-            $processor->extend($loader->load($options['sequence-file']));
-            $config->replace($processor->export());
-            $sequence = $config->get($options['sequence-key']);
-
+            $content = Yaml::parseFile($options['sequence-file']);
+            $sequence = $content[$options['sequence-key']] ?? [];
             if (!empty($sequence)) {
                 $sequence = $sequence['default'] ?? $sequence;
                 $this->say("Running custom deploy sequence '{$options['sequence-key']}' from sequence file '{$options['sequence-file']}'.");
