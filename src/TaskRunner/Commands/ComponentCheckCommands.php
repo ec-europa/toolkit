@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
-use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\DrupalReleaseHistory;
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Symfony\ConsoleIO;
@@ -29,6 +29,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $skipInsecure = false;
     protected bool $skipRecommended = true;
     protected int $recommendedFailedCount = 0;
+    protected array $installed;
 
     /**
      * Check composer.json for components that are not whitelisted/blacklisted.
@@ -453,6 +454,10 @@ class ComponentCheckCommands extends AbstractCommands
             }
             $drupalReleaseHistory = new DrupalReleaseHistory();
             $historyTerms = $drupalReleaseHistory->getPackageDetails($name, $package['version'], '8.x');
+            if ($historyTerms === 1) {
+                $this->say("No release history found for package $name.");
+                continue;
+            }
             if (!empty($historyTerms) && (empty($historyTerms['terms']) || !in_array('insecure', $historyTerms['terms']))) {
                 $messages[] = "$msg (Confirmation failed, ignored)";
                 continue;
@@ -517,7 +522,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentAbandoned()
     {
-        $installedPackages = isset($this->installed) ? $this->installed : '';
+        $installedPackages = $this->installed ?? [];
         if (!empty($installedPackages)) {
             foreach ($installedPackages as $outdatedPackage) {
                 // Only show abandoned packages.
