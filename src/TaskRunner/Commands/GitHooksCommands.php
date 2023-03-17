@@ -70,7 +70,8 @@ class GitHooksCommands extends AbstractCommands
 
         $dir = $this->getWorkingDir();
         foreach ($hooks as $hook) {
-            if ($this->_copy($available_hooks[$hook], $dir . '/.git/hooks/' . $hook)) {
+            $copy = $this->_copy($available_hooks[$hook], $dir . '/.git/hooks/' . $hook);
+            if ($copy->getExitCode() === ResultData::EXITCODE_OK) {
                 $this->_chmod($dir . '/.git/hooks/' . $hook, 0755);
             }
         }
@@ -225,7 +226,7 @@ class GitHooksCommands extends AbstractCommands
         // Check if the method exists in other classes that are instance
         // of this. The first to be found is used.
         foreach (get_declared_classes() as $class) {
-            if ($class instanceof $this && method_exists($class, $method)) {
+            if (get_parent_class($class) === self::class && method_exists($class, $method)) {
                 return (new $class())->$method();
             }
         }
@@ -241,7 +242,7 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Hook: Executes the PHPcs against the modified files.
      */
-    private function runPreCommit()
+    public function runPreCommit()
     {
         $phpcs = $this->getBin('phpcs');
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
@@ -310,9 +311,9 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Hook: Executes the prepare-commit-msg conditions.
      */
-    private function runPrepareCommitMsg()
+    public function runPrepareCommitMsg()
     {
-        $io = $this->io ?? new ConsoleIO($this->input(), $this->output());
+        $io = new ConsoleIO($this->input(), $this->output());
         $args = $this->input()->getArguments();
         // The arg1 is the file that contains the commit message.
         // NOTE: Do not use the arg2 because it is not updated when new
@@ -345,7 +346,7 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Hook: Executes the pre-push commands.
      */
-    private function runPrePush()
+    public function runPrePush()
     {
         $exit = 0;
         $runner_bin = $this->getBin('run');
