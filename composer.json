@@ -25,6 +25,7 @@
         "ec-europa/qa-automation": "^9.0",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "jakeasmith/http_build_url": "^1.0",
+        "league/container": "^4.1.1",
         "mglaman/phpstan-drupal": "^1.1",
         "php-parallel-lint/php-parallel-lint": "^1.3",
         "phpmd/phpmd": "^2.12",
