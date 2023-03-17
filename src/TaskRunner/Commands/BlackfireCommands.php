@@ -126,6 +126,9 @@ class BlackfireCommands extends AbstractCommands
                 return new ResultData(0);
             }
             if (!empty($repo)) {
+                $commit = !empty(getenv('DRONE_COMMIT')) ? getenv('DRONE_COMMIT') : '';
+                $link = !empty(getenv('DRONE_PULL_REQUEST')) ? getenv('DRONE_PULL_REQUEST') : '';
+                $pull_request = !empty(getenv('DRONE_COMMIT_LINK')) ? getenv('DRONE_COMMIT_LINK') : '';
                 $payload = [
                     '_links' => [
                         'type' => [
@@ -147,9 +150,9 @@ class BlackfireCommands extends AbstractCommands
                     'field_blackfire_cpu_time' => [['value' => $data['cpu_time']]],
                     'field_blackfire_network' => [['value' => $data['network']]],
                     'field_blackfire_sql' => [['value' => $data['sql']]],
-                    'field_blackfire_commit_hash' => [['value' => getenv('DRONE_COMMIT') ?? '']],
-                    'field_blackfire_commit_link' => [['value' => getenv('DRONE_PULL_REQUEST') ?? '']],
-                    'field_blackfire_pr' => [['value' => getenv('DRONE_COMMIT_LINK') ?? '']],
+                    'field_blackfire_commit_hash' => [['value' => $commit]],
+                    'field_blackfire_commit_link' => [['value' => $link]],
+                    'field_blackfire_pr' => [['value' => $pull_request]],
                 ];
                 $payload_response = Website::post($payload, $auth);
                 if (!empty($payload_response) && $payload_response === '201') {

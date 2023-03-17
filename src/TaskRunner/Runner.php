@@ -11,7 +11,7 @@ use EcEuropa\Toolkit\TaskRunner\Inject\ConfigForCommand;
 use EcEuropa\Toolkit\Toolkit;
 use Grasmash\Expander\Expander;
 use League\Container\Container;
-use Psr\Container\ContainerInterface;
+use League\Container\DefinitionContainerInterface;
 use Robo\Application;
 use Robo\ClassDiscovery\RelativeNamespaceDiscovery;
 use Robo\Common\ConfigAwareTrait;
@@ -59,14 +59,14 @@ class Runner
     /**
      * The Robo Runner.
      *
-     * @var \Robo\Runner
+     * @var RoboRunner
      */
     private $runner;
 
     /**
      * The container.
      *
-     * @var Container|ContainerInterface|null
+     * @var Container|DefinitionContainerInterface|null
      */
     private $container;
 
@@ -368,7 +368,10 @@ class Runner
      */
     private function getConfigDirFilesPaths(string $runnerConfigDir): array
     {
-        return glob($runnerConfigDir . '/*.yml') ?? [];
+        if ($paths = glob($runnerConfigDir . '/*.yml')) {
+            return $paths;
+        }
+        return [];
     }
 
 }

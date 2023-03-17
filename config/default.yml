@@ -16,6 +16,7 @@ overrides:
   - toolkit.test.phpmd.triggered_by
   - toolkit.test.phpmd.files
   - toolkit.test.phpstan.includes
+  - toolkit.test.phpstan.ignore_errors
   - toolkit.test.phpstan.files
   - toolkit.test.phpstan.ignores
   - toolkit.lint.eslint.ignores

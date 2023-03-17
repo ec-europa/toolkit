@@ -403,7 +403,7 @@ class DumpCommands extends AbstractCommands
      * @param bool $silent
      *   Whether show or not output from task.
      *
-     * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Base\Exec
+     * @return \Robo\Task\Base\Exec
      */
     private function wgetDownloadFile(string $tmp, string $destination, string $accept = null, bool $silent = false)
     {
@@ -471,7 +471,7 @@ class DumpCommands extends AbstractCommands
      * @param string $dump
      *   The path to the dump file.
      *
-     * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Base\ExecStack
+     * @return \Robo\Task\Base\ExecStack
      */
     private function taskImportDatabase(string $dump)
     {

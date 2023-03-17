@@ -29,7 +29,7 @@ class ConfigForCommand implements EventSubscriberInterface
     /**
      * The application.
      *
-     * @var \Symfony\Component\Console\Application
+     * @var \Symfony\Component\Console\Application|null
      */
     protected $application;
 

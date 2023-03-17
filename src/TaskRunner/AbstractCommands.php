@@ -102,7 +102,7 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
      * @return bool
      *   True if using --simulate, false otherwise.
      */
-    protected function isSimulating()
+    protected function isSimulating(): bool
     {
         return (bool) $this->input()->getOption('simulate');
     }
