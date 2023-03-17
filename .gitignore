@@ -6,6 +6,7 @@
 /.tmp/
 /runner.yml
 /phpunit.xml
+/phpstan.neon
 /docker-compose.*.yml
 .phpunit.result.cache
 *.sql

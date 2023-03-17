@@ -90,3 +90,10 @@ pipeline:
     environment: *env
     commands:
       - ./run toolkit:lint-php
+
+  phpstan:
+    group: test
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    environment: *env
+    commands:
+      - ./run toolkit:test-phpstan

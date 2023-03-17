@@ -65,7 +65,6 @@ class DrupalReleaseHistory
             return $releaseHistory;
         }
 
-        $this->say('No release history found.');
         return 1;
     }
 

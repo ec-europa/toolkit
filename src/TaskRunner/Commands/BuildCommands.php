@@ -328,6 +328,7 @@ class BuildCommands extends AbstractCommands
             ->name($options['default-theme']);
 
         if ($finder->hasResults()) {
+            $theme_dir = '';
             foreach ($finder as $directory) {
                 $theme_dir = $directory->getRealPath();
             }

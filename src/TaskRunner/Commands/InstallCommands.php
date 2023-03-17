@@ -125,7 +125,7 @@ class InstallCommands extends AbstractCommands
             $loader = new YamlConfigLoader();
             $processor = new ConfigProcessor();
             $processor->extend($loader->load($options['sequence-file']));
-            $config->import($processor->export());
+            $config->replace($processor->export());
             $sequence = $config->get($options['sequence-key']);
 
             if (!empty($sequence)) {
