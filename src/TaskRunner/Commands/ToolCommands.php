@@ -542,17 +542,19 @@ class ToolCommands extends AbstractCommands
     ])
     {
         $return = 0;
+        if (!$this->getConfig()->get('toolkit.install_dependencies')) {
+            return $return;
+        }
         if (!file_exists('.opts.yml')) {
             return $return;
         }
-        $io->title('Installing dependencies');
         $opts = Yaml::parseFile('.opts.yml');
         $packages = $opts['extra_pkgs'] ?? [];
         if (empty($packages)) {
-            $io->writeln('No packages found, skipping.');
             return $return;
         }
 
+        $io->title('Installing dependencies');
         $print = $options['print'] === true;
         $verbose = $print ? VerbosityThresholdInterface::VERBOSITY_NORMAL : VerbosityThresholdInterface::VERBOSITY_DEBUG;
         $data = $install = [];

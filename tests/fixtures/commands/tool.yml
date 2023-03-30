@@ -163,11 +163,17 @@
     - from: 'sample-opts-broken.yml'
       to: '.opts.yml'
   expectations:
-    - contains: |
-        Installing dependencies
-        =======================
+    - not_string_contains: "Installing dependencies"
 
-        No packages found, skipping.
+- command: toolkit:install-dependencies
+  configuration:
+    toolkit:
+      install_dependencies: false
+  resources:
+    - from: 'sample-opts.yml'
+      to: '.opts.yml'
+  expectations:
+    - not_string_contains: "Installing dependencies"
 
 - command: toolkit:install-dependencies
   configuration: []
