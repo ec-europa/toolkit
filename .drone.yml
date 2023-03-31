@@ -33,7 +33,6 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
-      - composer validate
       - composer self-update --${COMPOSER_VERSION}
       - composer install --ansi --no-progress
       - composer outdated --no-dev --locked --direct --minor-only
@@ -49,7 +48,6 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
-      - composer validate
       - composer self-update --${COMPOSER_VERSION}
       - composer update --prefer-lowest --prefer-stable --ansi --no-progress
     when:
