@@ -471,6 +471,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_recommendedFailedCount"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024installed",
+            "name": "installed",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_installed"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ConfigurationCommands",
             "name": "ConfigurationCommands",
             "summary": "Configuration\u0020commands\u0020are\u0020defined\u0020in\u0020the\u0020runner.yml\u0020file\u0020under\u0020\u0027commands\u003A\u0027.",
@@ -1341,11 +1346,6 @@ Search.appendIndex(
             "summary": "The\u0020loaded\u0020command\u0020classes.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#property_commandClasses"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003A\u0024overrides",
-            "name": "overrides",
-            "summary": "Configurations\u0020that\u0020can\u0020be\u0020replaced\u0020by\u0020a\u0020project.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#property_overrides"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Toolkit",
             "name": "Toolkit",
             "summary": "Provides\u0020default\u0020Toolkit\u0020class.",
@@ -1395,11 +1395,6 @@ Search.appendIndex(
             "name": "ensureArray",
             "summary": "If\u0020given\u0020content\u0020is\u0020a\u0020string,\u0020it\u0020will\u0020be\u0020exploded\u0020by\u0020given\u0020separator.",
             "url": "classes/EcEuropa-Toolkit-Toolkit.html#method_ensureArray"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Toolkit\u003A\u003AgetRoboVersion\u0028\u0029",
-            "name": "getRoboVersion",
-            "summary": "Return\u0020the\u0020current\u0020Robo\u0020version.",
-            "url": "classes/EcEuropa-Toolkit-Toolkit.html#method_getRoboVersion"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Toolkit\u003A\u003AVERSION",
             "name": "VERSION",
