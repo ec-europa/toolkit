@@ -1,5 +1,11 @@
 # Toolkit change log
 
+## Version 9.8.0
+  - DQA-6404: Git pre-commit re-use phpcs.xml file.
+  - DQA-6403: PHPStan allow to run in standalone.
+  - DQA-6544: Refactor command run-deploy to not use Robo config.
+  - DQA-6602: Control install-dependencies in config.
+
 ## Version 9.7.1
   - DQA-0: Prevent gitattributes from ignoring nested files.
   - DQA-0: Apply branch condition in drone.
