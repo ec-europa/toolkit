@@ -11,7 +11,7 @@ use EcEuropa\Toolkit\TaskRunner\Inject\ConfigForCommand;
 use EcEuropa\Toolkit\Toolkit;
 use Grasmash\Expander\Expander;
 use League\Container\Container;
-use Psr\Container\ContainerInterface;
+use League\Container\DefinitionContainerInterface;
 use Robo\Application;
 use Robo\ClassDiscovery\RelativeNamespaceDiscovery;
 use Robo\Common\ConfigAwareTrait;
@@ -59,14 +59,14 @@ class Runner
     /**
      * The Robo Runner.
      *
-     * @var \Robo\Runner
+     * @var RoboRunner
      */
     private $runner;
 
     /**
      * The container.
      *
-     * @var Container|ContainerInterface|null
+     * @var Container|DefinitionContainerInterface|null
      */
     private $container;
 
@@ -90,33 +90,6 @@ class Runner
      * @var array
      */
     private array $commandClasses;
-
-    /**
-     * Configurations that can be replaced by a project.
-     *
-     * @var string[]
-     */
-    private array $overrides = [
-        'toolkit.build.dist.keep',
-        'toolkit.test.phpcs.standards',
-        'toolkit.test.phpcs.ignore_patterns',
-        'toolkit.test.phpcs.triggered_by',
-        'toolkit.test.phpcs.files',
-        'toolkit.test.phpmd.ignore_patterns',
-        'toolkit.test.phpmd.triggered_by',
-        'toolkit.test.phpmd.files',
-        'toolkit.test.phpstan.files',
-        'toolkit.test.phpstan.ignores',
-        'toolkit.lint.eslint.ignores',
-        'toolkit.lint.eslint.extensions_yaml',
-        'toolkit.lint.eslint.extensions_js',
-        'toolkit.lint.php.extensions',
-        'toolkit.lint.php.exclude',
-        'toolkit.hooks.active',
-        'toolkit.hooks.prepare-commit-msg.conditions',
-        'toolkit.hooks.pre-push.commands',
-        'symlink_project.ignore',
-    ];
 
     /**
      * Initialize the Toolkit Runner.
@@ -238,6 +211,7 @@ class Runner
         $tkConfigDir = Toolkit::getToolkitRoot() . '/' . $config['runner']['config_dir'];
         $files = $this->getConfigDirFilesPaths($tkConfigDir);
         $config = $this->parseConfigFiles($files, $config);
+        $overrides = $config['overrides'];
 
         // Get the command options configurations from loaded command classes.
         foreach ($this->commandClasses as $commandClass) {
@@ -277,7 +251,7 @@ class Runner
         // defined on a project level it will replace the default values
         // instead of merge.
         $projectConfigLoaded = new Data($projectConfig);
-        foreach ($this->overrides as $override) {
+        foreach ($overrides as $override) {
             if ($value = $projectConfigLoaded->get($override, null)) {
                 $this->config->setDefault($override, $value);
             }
@@ -394,7 +368,10 @@ class Runner
      */
     private function getConfigDirFilesPaths(string $runnerConfigDir): array
     {
-        return glob($runnerConfigDir . '/*.yml') ?? [];
+        if ($paths = glob($runnerConfigDir . '/*.yml')) {
+            return $paths;
+        }
+        return [];
     }
 
 }

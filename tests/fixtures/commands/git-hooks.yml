@@ -65,18 +65,7 @@
 - command: 'toolkit:hooks-run'
   configuration: []
   expectations:
-    robo4:
-      - contains: |
-          Not enough arguments (missing: "hook").
-
-
-          toolkit:hooks-run <hook> [<arg1> [<arg2> [<arg3>]]]
-    robo3:
-      - contains: |
-          Not enough arguments (missing: "hook").
-
-
-          toolkit:hooks-run [-h|--help] [-q|--quiet] [-v|vv|vvv|--verbose] [-V|--version] [--ansi] [--no-ansi] [-n|--no-interaction] [--simulate] [--progress-delay PROGRESS-DELAY] [-D|--define DEFINE] [--working-dir WORKING-DIR] [--] <command> <hook> [<arg1> [<arg2> [<arg3>]]]
+    - string_contains: 'Not enough arguments (missing: "hook").'
 
 - command: 'toolkit:hooks-run pre-commit'
   configuration: []

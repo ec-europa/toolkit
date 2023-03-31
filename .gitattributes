@@ -180,3 +180,4 @@ Procfile          text
 /phpdoc.dist.xml    export-ignore
 /phpmd.xml          export-ignore
 /phpunit.xml.dist   export-ignore
+/runner.yml.dist    export-ignore

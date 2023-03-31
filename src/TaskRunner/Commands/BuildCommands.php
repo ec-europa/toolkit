@@ -83,7 +83,7 @@ class BuildCommands extends AbstractCommands
 
         // Run production-friendly "composer install" packages.
         $tasks[] = $this->taskComposerInstall('composer')
-            ->env('COMPOSER_MIRROR_PATH_REPOS', 1)
+            ->env('COMPOSER_MIRROR_PATH_REPOS', '1')
             ->workingDir($options['dist-root'])
             ->optimizeAutoloader()
             ->noDev();
@@ -328,6 +328,7 @@ class BuildCommands extends AbstractCommands
             ->name($options['default-theme']);
 
         if ($finder->hasResults()) {
+            $theme_dir = '';
             foreach ($finder as $directory) {
                 $theme_dir = $directory->getRealPath();
             }

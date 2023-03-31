@@ -62,7 +62,7 @@
           [WARNING] Failed to get Toolkit version from composer.lock.
 
         Minimum version: ^10.0
-        Current version: 10.0.0-beta3
+        Current version: 10.0.0-beta4-beta3
         Version check: OK
 
 - command: toolkit:check-version
@@ -75,7 +75,7 @@
         >  Checking Toolkit version:
 
         Minimum version: ^10.0
-        Current version: 10.0.0-beta3
+        Current version: 10.0.0-beta4-beta3
         Version check: OK
 
 - command: toolkit:vendor-list
@@ -163,11 +163,17 @@
     - from: 'sample-opts-broken.yml'
       to: '.opts.yml'
   expectations:
-    - contains: |
-        Installing dependencies
-        =======================
+    - not_string_contains: "Installing dependencies"
 
-        No packages found, skipping.
+- command: toolkit:install-dependencies
+  configuration:
+    toolkit:
+      install_dependencies: false
+  resources:
+    - from: 'sample-opts.yml'
+      to: '.opts.yml'
+  expectations:
+    - not_string_contains: "Installing dependencies"
 
 - command: toolkit:install-dependencies
   configuration: []

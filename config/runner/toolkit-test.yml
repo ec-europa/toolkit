@@ -79,6 +79,11 @@ toolkit:
     phpstan:
       config: phpstan.neon
       level: '1'
+      includes:
+        - vendor/mglaman/phpstan-drupal/rules.neon
+        - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+      ignore_errors:
+        - "#^Unsafe usage of new static#"
       files: [ lib, src ]
       ignores: [ ${toolkit.build.dist.root}, .cache, vendor ]
       memory_limit: ''
