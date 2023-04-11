@@ -54,8 +54,8 @@ class BuildCommands extends AbstractCommands
      * @option root      Drupal root.
      * @option dist-root Distribution package root.
      * @option keep      Comma separated list of files and folders to keep.
-     * @option tag       (deprecated) Version tag for manifest.
-     * @option sha       (deprecated) Commit hash for manifest.
+     * @option tag       Version tag for manifest.
+     * @option sha       Commit hash for manifest.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -65,8 +65,8 @@ class BuildCommands extends AbstractCommands
         'dist-root' => InputOption::VALUE_REQUIRED,
         'keep' => InputOption::VALUE_REQUIRED,
         'remove' => InputOption::VALUE_REQUIRED,
-        'tag' => InputOption::VALUE_OPTIONAL,
-        'sha' => InputOption::VALUE_OPTIONAL,
+        'tag' => InputOption::VALUE_REQUIRED,
+        'sha' => InputOption::VALUE_REQUIRED,
     ])
     {
         $tasks = [];
@@ -102,8 +102,8 @@ class BuildCommands extends AbstractCommands
             ->exec("find {$options['dist-root']} -maxdepth 1 $keep -exec rm -rf {} +");
 
         // Prepare sha and tag variables.
-        $tag = $options['tag'] ?? $this->getGitTag();
-        $hash = $options['sha'] ?? $this->getGitCommitHash();
+        $tag = !empty($options['tag']) ? $options['tag'] : '';
+        $hash = !empty($options['sha']) ? $options['sha'] : '';
 
         // Write manifest.json and VERSION.txt files.
         $drupal_profile = '';
@@ -255,28 +255,6 @@ class BuildCommands extends AbstractCommands
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
-    }
-
-    /**
-     * Returns the current Git tag.
-     *
-     * @return string
-     *   Current Git tag.
-     */
-    protected function getGitTag(): string
-    {
-        return trim(Robo::getContainer()->get('repository')->run('describe', ['--tags']));
-    }
-
-    /**
-     * Returns the current Git commit hash.
-     *
-     * @return string
-     *   Current Git hash.
-     */
-    protected function getGitCommitHash(): string
-    {
-        return Robo::getContainer()->get('repository')->getHead()->getCommitHash();
     }
 
     /**

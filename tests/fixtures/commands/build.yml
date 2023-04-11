@@ -63,6 +63,38 @@
         [Simulator] Simulating ExecStack()
           ->exec('find dist -maxdepth 3 -type f \( -name "CHANGELOG.txt" \) -exec rm -rf {} +')
 
+- command: 'toolkit:build-dist'
+  configuration:
+    toolkit:
+      project_id: toolkit
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->remove('dist')
+          ->mkdir('dist')
+        [Simulator] Simulating ExecStack()
+        ->stopOnFail()
+        ->exec('git archive HEAD | tar -x -C dist')
+        [Simulator] Simulating Composer\Install('composer')
+          ->env('COMPOSER_MIRROR_PATH_REPOS', '1')
+          ->workingDir('dist')
+          ->optimizeAutoloader()
+          ->noDev()
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
+          ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "web" ! - ... " -exec rm -rf {} +')
+        [Simulator] Simulating File\Write('dist/manifest.json')
+          ->text('{"drupal_profile":"minimal","project_id":"toolkit","dr ... rsion":"","sha":""}')
+        [Simulator] Simulating File\Write('dist/web/VERSION.txt')
+          ->text('')
+        [Simulator] Simulating ExecStack()
+          ->exec('find dist -maxdepth 3 -type f \( -name "CHANGELOG.txt" ... ) -exec rm -rf {} +')
+
 - command: 'toolkit:build-dev'
   configuration: []
   resources: []
