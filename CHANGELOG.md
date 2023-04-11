@@ -1,5 +1,10 @@
 # Toolkit change log
 
+## Version 9.8.1
+  - DQA-0: Fix version check to allow version without dot.
+  - DQA-6651: Command build-dist make tag and sha optional.
+  - DQA-6694: PHPStan drupal root dynamic & missing ruleset.
+
 ## Version 9.8.0
   - DQA-6404: Git pre-commit re-use phpcs.xml file.
   - DQA-6403: PHPStan allow to run in standalone.
