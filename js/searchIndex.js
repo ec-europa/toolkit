@@ -326,16 +326,6 @@ Search.appendIndex(
             "summary": "Build\u0020site\u0020for\u0020local\u0020development\u0020from\u0020scratch\u0020with\u0020a\u0020clean\u0020git.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDevReset"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003AgetGitTag\u0028\u0029",
-            "name": "getGitTag",
-            "summary": "Returns\u0020the\u0020current\u0020Git\u0020tag.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getGitTag"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003AgetGitCommitHash\u0028\u0029",
-            "name": "getGitCommitHash",
-            "summary": "Returns\u0020the\u0020current\u0020Git\u0020commit\u0020hash.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getGitCommitHash"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003AbuildAssets\u0028\u0029",
             "name": "buildAssets",
             "summary": "Build\u0020theme\u0020assets\u0020\u0028Css\u0020and\u0020Js\u0029.",

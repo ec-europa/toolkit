@@ -239,20 +239,6 @@
 <dd>{@inheritdoc}</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getGitCommitHash">getGitCommitHash()</a>
-    <span>
-                                &nbsp;: string    </span>
-</dt>
-<dd>Returns the current Git commit hash.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getGitTag">getGitTag()</a>
-    <span>
-                                &nbsp;: string    </span>
-</dt>
-<dd>Returns the current Git tag.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getNodeBin">getNodeBin()</a>
     <span>
                                 &nbsp;: string    </span>
@@ -320,7 +306,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">302</span>
+    <span class="phpdocumentor-element-found-in__line">280</span>
 
     </aside>
 
@@ -612,7 +598,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">buildDist</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;dist-root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;keep&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;remove&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;tag&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;sha&#039; =&gt; InputOption::VALUE_OPTIONAL]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
+                    <span class="phpdocumentor-signature__name">buildDist</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;dist-root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;keep&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;remove&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;tag&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;sha&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
 
         <section class="phpdocumentor-description"><p>This will create the distribution package intended to be deployed.
 The folder structure will match the following:</p>
@@ -633,7 +619,7 @@ The folder structure will match the following:</p>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$options</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;dist-root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;keep&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;remove&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;tag&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;sha&#039; =&gt; InputOption::VALUE_OPTIONAL]</span>            </dt>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;dist-root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;keep&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;remove&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;tag&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;sha&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>Command options.</p>
 </section>
@@ -697,7 +683,7 @@ The folder structure will match the following:</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>tag       (deprecated) Version tag for manifest.</p>
+                                                 <section class="phpdocumentor-description"><p>tag       Version tag for manifest.</p>
 </section>
 
                                     </dd>
@@ -706,7 +692,7 @@ The folder structure will match the following:</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>sha       (deprecated) Commit hash for manifest.</p>
+                                                 <section class="phpdocumentor-description"><p>sha       Commit hash for manifest.</p>
 </section>
 
                                     </dd>
@@ -963,76 +949,6 @@ The folder structure will match the following:</p>
     <span class="phpdocumentor-signature__response_type">mixed</span>
             &mdash;
         
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getGitCommitHash">
-        getGitCommitHash()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getGitCommitHash" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">277</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Returns the current Git commit hash.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-                    <span class="phpdocumentor-signature__name">getGitCommitHash</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
-
-    
-    
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Current Git hash.</p>
-</section>
-
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getGitTag">
-        getGitTag()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getGitTag" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">266</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Returns the current Git tag.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-                    <span class="phpdocumentor-signature__name">getGitTag</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
-
-    
-    
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Current Git tag.</p>
-</section>
-
     
 </article>
                     <article
