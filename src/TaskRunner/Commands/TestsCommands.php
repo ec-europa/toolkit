@@ -340,7 +340,7 @@ class TestsCommands extends AbstractCommands
                 ],
             ];
             if (file_exists($config->get('drupal.root'))) {
-                $config_content['parameters']['drupal']['drupal_root'] = getcwd() . '/' . $config->get('drupal.root');
+                $config_content['parameters']['drupal']['drupal_root'] = '%currentWorkingDirectory%/' . $config->get('drupal.root');
             }
             $tasks[] = $this->taskWriteToFile($options['config'])
                 ->text(Yaml::dump($config_content, 10, 2));
