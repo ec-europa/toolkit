@@ -296,7 +296,7 @@ class ToolCommands extends AbstractCommands
                 $min_version = $data['toolkit'];
                 $major = substr($toolkit_version, 0, strpos($toolkit_version, '.'));
                 $min_versions = array_filter(explode('|', $min_version), function ($v) use ($major) {
-                    return str_contains(substr($v, 0, strpos($v, '.')), $major);
+                    return str_contains(substr($v, 0, strpos($v, '.') ?: null), $major);
                 });
                 if (count($min_versions) === 1) {
                     $min_version = end($min_versions);

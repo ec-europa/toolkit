@@ -27,11 +27,11 @@ echo '
         }
     },
     "requirements": {
-        "php_version": "7.4"
+        "php_version": "8.0"
     },
-    "php_version": "7.4",
-    "toolkit": "^3.6.6|^8.6.17|^9.0|^10.0",
-    "drupal": "^7.91|^9.3.22|^9.4.7",
+    "php_version": "8.0",
+    "toolkit": "^3.7.1|^8.6.17|^9.0|^10",
+    "drupal": "^7.91|>=9.4.10 <9.5.0|^9.5.2|^10.0.2",
     "vendor_list": [
         "drupal",
         "vlucas"

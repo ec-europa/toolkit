@@ -1,17 +1,22 @@
 # Toolkit change log
 
+## Version 9.8.1
+  - DQA-6717: Fix version check to allow version without dot.
+  - DQA-6651: Command build-dist make tag and sha optional.
+  - DQA-6694: PHPStan drupal root dynamic & missing ruleset.
+
 ## Version 9.8.0 | 10.0.0-beta4
-- DQA-6404: Git pre-commit re-use phpcs.xml file.
-- DQA-6403: PHPStan allow to run in standalone.
-- DQA-6544: Refactor command run-deploy to not use Robo config.
-- DQA-6602: Control install-dependencies in config.
+  - DQA-6404: Git pre-commit re-use phpcs.xml file.
+  - DQA-6403: PHPStan allow to run in standalone.
+  - DQA-6544: Refactor command run-deploy to not use Robo config.
+  - DQA-6602: Control install-dependencies in config.
 
 ## Version 9.7.1 | 10.0.0-beta3
-- DQA-0: Prevent gitattributes from ignoring nested files.
-- DQA-0: Apply branch condition in drone.
+  - DQA-0: Prevent gitattributes from ignoring nested files.
+  - DQA-0: Apply branch condition in drone.
 
 ## Version 9.6.1 | 10.0.0-beta2
-- DQA-5962: Refactor configurations load.
+  - DQA-5962: Refactor configurations load.
 
 ## Version 9.6.0 | 10.0.0-beta1
   - DQA-6074: Create .gitattributes file for toolkit.
