@@ -1,6 +1,6 @@
 # Toolkit change log
 
-## Version 9.8.1
+## Version 9.8.1 | 10.0.0-beta5
   - DQA-6717: Fix version check to allow version without dot.
   - DQA-6651: Command build-dist make tag and sha optional.
   - DQA-6694: PHPStan drupal root dynamic & missing ruleset.
