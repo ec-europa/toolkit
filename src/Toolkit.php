@@ -12,7 +12,7 @@ final class Toolkit
     /**
      * Constant holding the current version.
      */
-    public const VERSION = '8.6.23';
+    public const VERSION = '8.7.1';
 
     /**
      * Returns the QA base url.
