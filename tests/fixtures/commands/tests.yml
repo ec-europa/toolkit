@@ -4,7 +4,7 @@
   expectations:
     - contains: |
         [Simulator] Simulating File\Write('phpstan.neon')
-          ->text('includes: {  } ... ')
+          ->text('parameters: ... ')
         [Simulator] Simulating Exec('./vendor/bin/phpstan')
           ->arg('analyse')
           ->options(array (
@@ -20,7 +20,7 @@
   expectations:
     - contains: |
         [Simulator] Simulating File\Write('phpstan.neon')
-          ->text('includes: {  } ... ')
+          ->text('parameters: ... ')
         [Simulator] Simulating Exec('./vendor/bin/phpstan')
           ->arg('analyse')
           ->options(array (
@@ -48,7 +48,7 @@
   expectations:
     - contains: |
         [Simulator] Simulating File\Write('fake')
-          ->text('includes: {  } ... ')
+          ->text('parameters: ... ')
         [Simulator] Simulating Exec('./vendor/bin/phpstan')
           ->arg('analyse')
           ->options(array (
