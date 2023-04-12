@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use Composer\InstalledVersions;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\Contract\VerbosityThresholdInterface;
@@ -331,7 +332,6 @@ class TestsCommands extends AbstractCommands
         // If the config file is not found, generate a new one.
         if (!file_exists($options['config'])) {
             $config_content = [
-                'includes' => $includes,
                 'parameters' => [
                     'level' => $options['level'],
                     'paths' => array_values($options['files']),
@@ -339,6 +339,9 @@ class TestsCommands extends AbstractCommands
                     'ignoreErrors' => $ignoreErrors,
                 ],
             ];
+            if (!InstalledVersions::isInstalled('phpstan/extension-installer')) {
+                $config_content['includes'] = $includes;
+            }
             if (file_exists($config->get('drupal.root'))) {
                 $config_content['parameters']['drupal']['drupal_root'] = '%currentWorkingDirectory%/' . $config->get('drupal.root');
             }
