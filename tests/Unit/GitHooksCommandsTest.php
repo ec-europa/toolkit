@@ -45,7 +45,7 @@ class GitHooksCommandsTest extends TestCase
         $result = $method->invoke(new GitHooksCommands(), Toolkit::getToolkitRoot() . '/resources/git/hooks');
         $this->assertArrayHasKey('pre-commit', $result);
         $this->assertArrayHasKey('pre-push', $result);
-        $this->assertArrayHasKey('prepare-commit-msg', $result);
+        $this->assertArrayHasKey('commit-msg', $result);
 
         // Test no parameters.
         $this->expectException(ArgumentCountError::class);

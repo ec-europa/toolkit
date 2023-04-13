@@ -5,7 +5,7 @@
 # with a non-zero status, the commit is aborted.
 #
 # This hook will enforce the conditions defined in the configuration
-# toolkit.hooks.prepare-commit-msg.conditions.
+# toolkit.hooks.commit-msg.conditions.
 #
 
 ./vendor/bin/run toolkit:hooks-run `basename "$0"` $1 $2

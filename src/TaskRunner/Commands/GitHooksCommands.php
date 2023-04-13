@@ -309,9 +309,9 @@ class GitHooksCommands extends AbstractCommands
     }
 
     /**
-     * Hook: Executes the prepare-commit-msg conditions.
+     * Hook: Executes the commit-msg conditions.
      */
-    private function runPrepareCommitMsg()
+    private function runCommitMsg()
     {
         $io = new ConsoleIO($this->input(), $this->output());
         $args = $this->input()->getArguments();
@@ -324,7 +324,7 @@ class GitHooksCommands extends AbstractCommands
         }
         $message = trim(file_get_contents($args['arg1']));
         $config = $this->getConfig()->get('toolkit.hooks');
-        $conditions = $config['prepare-commit-msg']['conditions'];
+        $conditions = $config['commit-msg']['conditions'];
         $problems = [];
         foreach ($conditions as $condition) {
             preg_match($condition['regex'], $message, $matches);
@@ -334,8 +334,8 @@ class GitHooksCommands extends AbstractCommands
         }
         if (!empty($problems)) {
             $io->error(array_merge(['The commit message validation failed with the following problems:'], $problems));
-            if (!empty($config['prepare-commit-msg']['example'])) {
-                $io->say("Example: {$config['prepare-commit-msg']['example']}");
+            if (!empty($config['commit-msg']['example'])) {
+                $io->say("Example: {$config['commit-msg']['example']}");
             }
             return ResultData::EXITCODE_ERROR;
         }
