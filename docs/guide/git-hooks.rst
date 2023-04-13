@@ -188,14 +188,15 @@ Add your class under ``src/TaskRunner/Commands``.
 
    use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
    use Robo\ResultData;
+   use Robo\Symfony\ConsoleIO;
 
    class QaGitHooksCommands extends GitHooksCommands
    {
-       public function runCommitMsg()
+       public function runCommitMsg($io)
        {
-         $args = $this->input()->getArguments();
+         $args = $io->input()->getArguments();
          $commit_message = trim(file_get_contents($args['arg1']));
-         $this->io()->say("Commit message: $commit_message");
+         $io->say("Commit message: $commit_message");
          return ResultData::EXITCODE_OK;
        }
    }

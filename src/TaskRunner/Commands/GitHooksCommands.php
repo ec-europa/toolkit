@@ -227,7 +227,7 @@ class GitHooksCommands extends AbstractCommands
         // of this. The first to be found is used.
         foreach (get_declared_classes() as $class) {
             if (get_parent_class($class) === self::class && method_exists($class, $method)) {
-                return (new $class())->$method();
+                return (new $class())->$method($io);
             }
         }
 
@@ -242,7 +242,7 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Hook: Executes the PHPcs against the modified files.
      */
-    public function runPreCommit()
+    private function runPreCommit()
     {
         $phpcs = $this->getBin('phpcs');
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
@@ -311,7 +311,7 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Hook: Executes the prepare-commit-msg conditions.
      */
-    public function runPrepareCommitMsg()
+    private function runPrepareCommitMsg()
     {
         $io = new ConsoleIO($this->input(), $this->output());
         $args = $this->input()->getArguments();
@@ -346,7 +346,7 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Hook: Executes the pre-push commands.
      */
-    public function runPrePush()
+    private function runPrePush()
     {
         $exit = 0;
         $runner_bin = $this->getBin('run');
