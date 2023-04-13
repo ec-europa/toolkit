@@ -125,8 +125,8 @@ callback in the format ``runHookName``.
 Example for hook ``prepare-commit-msg``, toolkit will look for a callback
 named ``runPrepareCommitMsg()``.
 
-The callback method is responsible to retrieve the arguments
-with ``$this->input()->getArguments()``.
+The callback method will receive the ConsoleIO as argument and can get the
+arguments with ``$io->input()->getArguments()``.
 
 For more details check the Commands class
 at ``EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands``
