@@ -189,8 +189,11 @@ class ToolCommands extends AbstractCommands
         $php_check = ($isValid >= 0) ? 'OK' : 'FAIL';
 
         // Handle Toolkit version.
-        $toolkit_version = Toolkit::VERSION;
-        $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
+        if (!($toolkit_version = self::getPackagePropertyFromComposer('ec-europa/toolkit', 'version', 'packages-dev'))) {
+            $toolkit_check = 'FAIL (not found)';
+        } else {
+            $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
+        }
         // Handle Drupal version.
         if (!($drupal_version = self::getPackagePropertyFromComposer('drupal/core'))) {
             $drupal_check = 'FAIL (not found)';
