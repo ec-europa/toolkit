@@ -25,6 +25,18 @@
 - command: toolkit:requirements
   configuration: []
   resources:
+    - from: sample-composer-toolkit-outdated.lock
+      to: composer.lock
+  expectations:
+    - string_contains: "Checking Toolkit requirements:"
+    - string_contains: "Required checks:"
+    - string_contains: "PHP version       OK"
+    - string_contains: "Toolkit version   FAIL"
+    - string_contains: "Drupal version    OK"
+
+- command: toolkit:requirements
+  configuration: []
+  resources:
     - from: sample-composer-toolkit-in-require.lock
       to: composer.lock
   expectations:
@@ -73,7 +85,7 @@
 
           [WARNING] Failed to get Toolkit version from composer.lock.
 
-        Minimum version: ^9.0
+        Minimum version: ^9.6
         Current version: 9.8.1
         Version check: OK
 
@@ -86,7 +98,7 @@
     - contains: |
         >  Checking Toolkit version:
 
-        Minimum version: ^9.0
+        Minimum version: ^9.6
         Current version: 9.8.1
         Version check: OK
 
