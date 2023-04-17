@@ -284,7 +284,10 @@ class DumpCommands extends AbstractCommands
     {
         $config = $this->getConfig();
         $tmp_folder = $this->tmpDirectory();
-        if (!file_exists("$tmp_folder/$service.gz")) {
+        $opts = ToolCommands::parseOptsYml();
+        $ext = isset($opts['mydumper']) && $opts['mydumper'] ? '.tar' : '.gz';
+        $dump = "$tmp_folder/$service$ext";
+        if (!file_exists($dump)) {
             return false;
         }
         if ($config->get('toolkit.clone.asda_type') === 'nextcloud') {
@@ -313,7 +316,7 @@ class DumpCommands extends AbstractCommands
             ->run();
 
         // Compare with the local dump.
-        if ($sha1 !== sha1_file("$tmp_folder/$service.gz")) {
+        if ($sha1 !== sha1_file($dump)) {
             return true;
         }
         return false;
