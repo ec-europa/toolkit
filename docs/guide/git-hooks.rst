@@ -194,7 +194,7 @@ Add your class under ``src/TaskRunner/Commands``.
 
    class QaGitHooksCommands extends AbstractGitHooks
    {
-       public function runPrepareCommitMsg(Console $io)
+       public function runCommitMsg(Console $io)
        {
          $args = $io->input()->getArguments();
          $commit_message = trim(file_get_contents($args['arg1']));
