@@ -141,7 +141,7 @@ To do so, you need to
 
 * Create the hook under your ``resources/git/hooks`` folder.
 * Add the hook name to your active hooks under ``toolkit.hooks.active``.
-* Create a new class extending the ``GitHooksCommands`` class and define the
+* Create a new class extending the ``AbstractGitHooks`` class and define the
   ``run`` callback for the hook.
 
 Create the hook
@@ -173,10 +173,12 @@ otherwise your configuration will override the default provided by Toolkit.
          - pre-push
          - prepare-commit-msg
 
-Create a class extending the GitHooksCommands
+Create a class extending the AbstractGitHooks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Is in this class that you will define the callback for your hook.
+
+In this class you can also override existing hook callbacks.
 
 Add your class under ``src/TaskRunner/Commands``.
 
@@ -186,13 +188,13 @@ Add your class under ``src/TaskRunner/Commands``.
 
    namespace Digit\Qa\TaskRunner\Commands;
 
-   use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
+   use EcEuropa\Toolkit\TaskRunner\AbstractGitHooks;
    use Robo\ResultData;
    use Robo\Symfony\ConsoleIO;
 
-   class QaGitHooksCommands extends GitHooksCommands
+   class QaGitHooksCommands extends AbstractGitHooks
    {
-       public function runPrepareCommitMsg($io)
+       public function runPrepareCommitMsg(Console $io)
        {
          $args = $io->input()->getArguments();
          $commit_message = trim(file_get_contents($args['arg1']));
