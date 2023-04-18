@@ -62,6 +62,24 @@
         | prepare-commit-msg (toolkit) | Yes              | No          | No            |
         +------------------------------+------------------+-------------+---------------+
 
+- command: 'toolkit:hooks-list'
+  configuration:
+    toolkit:
+      project_id: toolkit
+      hooks:
+        active:
+          - commit-msg
+          - pre-commit
+  expectations:
+    - contains: |
+        +------------------------------+------------------+-------------+---------------+
+        | Hook                         | Active by config | Hook exists | Modified file |
+        +------------------------------+------------------+-------------+---------------+
+        | pre-commit (toolkit)         | Yes              | Yes         | Yes           |
+        | pre-push (toolkit)           | No               | Yes         | Yes           |
+        | prepare-commit-msg (toolkit) | No               | No          | No            |
+        +------------------------------+------------------+-------------+---------------+
+
 - command: 'toolkit:hooks-run'
   configuration: []
   expectations:

@@ -224,10 +224,10 @@ class GitHooksCommands extends AbstractCommands
         $method = $this->convertHookToMethod($hook);
 
         // Check if the method exists in other classes that are instance
-        // of this. The first to be found is used.
+        // of TaskRunner\AbstractGitHooks. The first to be found is used.
         foreach (get_declared_classes() as $class) {
-            if (get_parent_class($class) === self::class && method_exists($class, $method)) {
-                return (new $class())->$method();
+            if (get_parent_class($class) === 'EcEuropa\Toolkit\TaskRunner\AbstractGitHooks' && method_exists($class, $method)) {
+                return (new $class())->$method($io);
             }
         }
 
@@ -236,13 +236,13 @@ class GitHooksCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        return $this->$method();
+        return $this->$method($io);
     }
 
     /**
      * Hook: Executes the PHPcs against the modified files.
      */
-    public function runPreCommit()
+    private function runPreCommit(ConsoleIO $io)
     {
         $phpcs = $this->getBin('phpcs');
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
@@ -311,9 +311,8 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Hook: Executes the prepare-commit-msg conditions.
      */
-    public function runPrepareCommitMsg()
+    private function runPrepareCommitMsg(ConsoleIO $io)
     {
-        $io = new ConsoleIO($this->input(), $this->output());
         $args = $this->input()->getArguments();
         // The arg1 is the file that contains the commit message.
         // NOTE: Do not use the arg2 because it is not updated when new
@@ -346,7 +345,7 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Hook: Executes the pre-push commands.
      */
-    public function runPrePush()
+    private function runPrePush(ConsoleIO $io)
     {
         $exit = 0;
         $runner_bin = $this->getBin('run');

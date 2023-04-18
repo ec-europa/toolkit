@@ -125,8 +125,8 @@ callback in the format ``runHookName``.
 Example for hook ``prepare-commit-msg``, toolkit will look for a callback
 named ``runPrepareCommitMsg()``.
 
-The callback method is responsible to retrieve the arguments
-with ``$this->input()->getArguments()``.
+The callback method will receive the ConsoleIO as argument and can get the
+arguments with ``$io->input()->getArguments()``.
 
 For more details check the Commands class
 at ``EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands``
@@ -141,7 +141,7 @@ To do so, you need to
 
 * Create the hook under your ``resources/git/hooks`` folder.
 * Add the hook name to your active hooks under ``toolkit.hooks.active``.
-* Create a new class extending the ``GitHooksCommands`` class and define the
+* Create a new class extending the ``AbstractGitHooks`` class and define the
   ``run`` callback for the hook.
 
 Create the hook
@@ -173,10 +173,12 @@ otherwise your configuration will override the default provided by Toolkit.
          - pre-push
          - commit-msg
 
-Create a class extending the GitHooksCommands
+Create a class extending the AbstractGitHooks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Is in this class that you will define the callback for your hook.
+
+In this class you can also override existing hook callbacks.
 
 Add your class under ``src/TaskRunner/Commands``.
 
@@ -186,16 +188,17 @@ Add your class under ``src/TaskRunner/Commands``.
 
    namespace Digit\Qa\TaskRunner\Commands;
 
-   use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
+   use EcEuropa\Toolkit\TaskRunner\AbstractGitHooks;
    use Robo\ResultData;
+   use Robo\Symfony\ConsoleIO;
 
-   class QaGitHooksCommands extends GitHooksCommands
+   class QaGitHooksCommands extends AbstractGitHooks
    {
-       public function runCommitMsg()
+       public function runCommitMsg(Console $io)
        {
-         $args = $this->input()->getArguments();
+         $args = $io->input()->getArguments();
          $commit_message = trim(file_get_contents($args['arg1']));
-         $this->io()->say("Commit message: $commit_message");
+         $io->say("Commit message: $commit_message");
          return ResultData::EXITCODE_OK;
        }
    }
