@@ -100,7 +100,7 @@ The following examples describes how to use a single or multiple files to have t
     toolkit:
        project_id: 'site-id'
 
-**Example using multiple files under ``config/runner`` directory:**
+**Example using multiple files under** ``config/runner`` **directory:**
 
 .. code-block::
 
@@ -112,7 +112,7 @@ The following examples describes how to use a single or multiple files to have t
     toolkit:
        project_id: 'site-id'
 
-**Example using multiple files under ``config/custom`` directory:**
+**Example using multiple files under** ``config/custom`` **directory:**
 
 .. code-block::
 
