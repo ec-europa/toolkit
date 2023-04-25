@@ -490,11 +490,12 @@ class ComponentCheckCommands extends AbstractCommands
             ->run()->getMessage();
 
         $outdatedPackages = json_decode($result, true);
-        if (!empty($outdatedPackages['installed'])) {
+        // Using the option --locked, we must check for the "locked" key.
+        if (!empty($outdatedPackages['locked'])) {
             if (is_array($outdatedPackages)) {
-                foreach ($outdatedPackages['installed'] as $outdatedPackage) {
-                    // Exclude abandoned packages.
-                    if ($outdatedPackage['abandoned'] == false) {
+                foreach ($outdatedPackages['locked'] as $outdatedPackage) {
+                    // Exclude abandoned packages, see $this->componentAbandoned().
+                    if ($outdatedPackage['abandoned'] === false) {
                         if (!array_key_exists('latest', $outdatedPackage)) {
                             $this->writeln("Package {$outdatedPackage['name']} does not provide information about last version.");
                         } elseif (array_key_exists('warning', $outdatedPackage)) {
@@ -508,7 +509,7 @@ class ComponentCheckCommands extends AbstractCommands
                 }
 
                 // Make result available outside function.
-                $this->installed = $outdatedPackages['installed'];
+                $this->installed = $outdatedPackages['locked'];
             }
         }
 
