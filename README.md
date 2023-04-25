@@ -21,7 +21,6 @@ composer require --dev ec-europa/toolkit:^9
 - [Configuring a project](/docs/guide/configuring-project.rst)
 - [Installing the project](/docs/guide/installing-project.rst)
 - [Testing the project](/docs/guide/testing-project.rst)
-- [Using Docker environment](/docs/guide/docker-environment.rst)
 - [Continuous integration](/docs/guide/continuous-integration.rst)
 - [Building assets](/docs/guide/building-assets.rst)
 - [Commands](/docs/guide/commands.rst)
