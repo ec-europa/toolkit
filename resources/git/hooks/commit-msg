@@ -8,9 +8,11 @@
 # toolkit.hooks.commit-msg.conditions.
 #
 
+# Detect docker-compose or docker compose.
+DC=$(docker compose version 2>/dev/null | grep -q 'version' && echo 'docker compose' || echo 'docker-compose')
 # Check if running corporate docker image fpfis/httpd-php.
-SERVICE=$(docker compose ps 2>/dev/null | grep 'fpfis/httpd-php' | awk '{ print $4 }')
+SERVICE=$($DC ps 2>/dev/null | grep 'fpfis/httpd-php' | awk '{ print $4 }')
 # Prefix with the docker compose exec if running docker.
-PREFIX=$([ "$SERVICE" ] && echo "docker compose exec -T $SERVICE ./vendor/bin/run" || echo './vendor/bin/run')
+PREFIX=$([ "$SERVICE" ] && echo "$DC exec -T $SERVICE ./vendor/bin/run" || echo './vendor/bin/run')
 # Call the hook.
 $PREFIX toolkit:hooks-run `basename "$0"` "$1" "$2"
