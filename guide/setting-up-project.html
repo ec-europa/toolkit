@@ -139,17 +139,17 @@ an existing project:</p>
 <p>To instantiate a new project to running as a subsite you only have to execute one command which will perform multiple steps
 for you automatically.</p>
 <pre><code class="language- " >composer create-project ec-europa/subsite --stability=dev &lt;dg-name&gt;-&lt;project-id&gt;-reference dev-release/9.x
-docker-compose up -d
-docker-compose exec web vendor/bin/run
+docker compose up -d
+docker compose exec web vendor/bin/run
 </code></pre>
 </div>
 <div class="section" id="from-existent-project-from-repository">
 <h3>From existent project from repository</h3>
-<p>To install locally a project running Toolkit 4 you should run the following commands:</p>
+<p>To install locally a project running Toolkit you should run the following commands:</p>
 <pre><code class="language- " >git clone git@github.com:ec-europa/&lt;repository-name&gt;.git
-docker-compose up -d
-docker-compose exec web composer install
-docker-compose exec web vendor/bin/run</code></pre>
+docker compose up -d
+docker compose exec web composer install
+docker compose exec web vendor/bin/run</code></pre>
 </div>
 </div>
 

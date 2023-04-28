@@ -213,83 +213,109 @@ If a service is defined in both files, Docker Compose merges the configurations.
 </table>
 <p>Environment variables will be loaded by Docker Compose when running <code>docker-compose up -d</code>.</p>
 </div>
-<div class="section" id="subsite-configuration">
-<h2>Subsite configuration</h2>
-<p>By default, subsite configuration go into file <code>runner.yml.dist</code>, see bellow an example.</p>
-<pre><code class="language- " >drupal:
-  root: &quot;web&quot;
-  base_url: ${env.DRUPAL_BASE_URL}
-  site:
-    profile: &quot;standard&quot;
-    name: &quot;Drupal website configuration goes here!&quot;
-    generate_db_url: false
-  account:
-    name: ${env.DRUPAL_ACCOUNT_USERNAME}
-    password: ${env.DRUPAL_ACCOUNT_PASSWORD}
+<div class="section" id="toolkit-configuration">
+<h2>Toolkit configuration</h2>
+<p>Toolkit uses the <a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a> and
+<a href="https://robo.li/">Robo</a>, make sure to read the documentation.</p>
+<p>The configurations are split into multiple files under the <code>config</code> directory and they are loaded
+in the following order:</p>
 
+
+<ul>
+    <li>
+            <code>config/default.yml</code>
+        </li>
+    <li>
+            All files in <code>config/runner</code>
+        </li>
+    <li>
+            All commands options defined in the Command files with the method <code>getConfigurationFile()</code>
+        </li>
+</ul>
+<p>Because the configurations are merged, if two different config files provides the same key, they will be merged.
+For example, a configuration providing an array with 3 elements, a project would not be able to override and
+provide only one element. To avoid this, Toolkit has a set of defined configurations that will behave in a
+different way allowing projects to completely override the config.
+These overriding configurations are located in the <code>config/default.yml</code> file under <code>overrides</code> key.</p>
+</div>
+<div class="section" id="project-configuration">
+<h2>Project configuration</h2>
+<p>A project inherit the same configurations as Toolkit (described above).</p>
+<p>To override the default configurations, projects can provide the configurations with the <code>runner.yml.dist</code> file,
+or/and under the <code>config/runner</code> directory (by default). This directory can be changed (in the <code>runner.yml.dist</code>
+only) by specifying a custom path in the config key <code>runner.config_dir</code>.
+Local or development configurations should use the <code>runner.yml</code> file, this file should not be committed and
+will be loaded as last configuration.</p>
+<p>The configurations are loaded in the following order:</p>
+
+
+<ul>
+    <li>
+            <code>runner.yml.dist</code>
+        </li>
+    <li>
+            <code>config/runner</code> directory (or other defined in <code>runner.yml.dist</code>)
+        </li>
+    <li>
+            <code>runner.yml</code>
+        </li>
+</ul>
+<p>The following examples describes how to use a single or multiple files to have the same configuration.</p>
+<p><strong>Example using a single file:</strong></p>
+<pre><code class="language- " ># runner.yml.dist
+drupal:
+   root: &#039;web&#039;
 toolkit:
-  project_id: &#039;PROJECTID&#039;
+   project_id: &#039;site-id&#039;
+</code></pre>
+<p><strong>Example using multiple files under</strong><code>config/runner</code><strong>directory:</strong></p>
+<pre><code class="language- " ># config/runner/drupal.yml
+drupal:
+   root: &#039;web&#039;
 
-selenium:
-  host: &quot;http://selenium&quot;
-  port: &quot;4444&quot;
-  browser: &quot;chrome&quot;
+# config/runner/toolkit.yml
+toolkit:
+   project_id: &#039;site-id&#039;
+</code></pre>
+<p><strong>Example using multiple files under</strong><code>config/custom</code><strong>directory:</strong></p>
+<pre><code class="language- " ># runner.yml.dist
+runner:
+    config_dir: config/custom
+
+# config/custom/config.yml
+drupal:
+   root: &#039;web&#039;
+toolkit:
+   project_id: &#039;site-id&#039;
 </code></pre>
 </div>
-<div class="section" id="splitting-subsite-configuration-into-multiple-files">
-<h2>Splitting subsite configuration into multiple files</h2>
-<p>Each subsite configuration can be splited into independent Yaml files instead of defining everything inside <code>runner.yml.dist</code> file.</p>
-<p>By default, the configuration files directory is defined to be <code>PROJECT_ROOT/config/runner</code></p>
-<pre><code class="language- " >runner:
-  config_dir: &#039;./config/runner&#039;
+<div class="section" id="runtime-configuration">
+<h2>Runtime configuration</h2>
+<p>There are multiple ways to provide runtime configurations.</p>
+<p><strong>Override a configuration value in runtime</strong></p>
+<pre><code class="language- " >/** @hook pre-command-event * */
+public function hook() {
+  // Load configuration.
+  $config = $this-&gt;getConfig();
+  // Override a config value.
+  $config-&gt;set(&#039;drupal.site.name&#039;, &#039;Test website&#039;);
+  // Import newly built configuration.
+  $this-&gt;config-&gt;replace($config-&gt;export());
+}
 </code></pre>
-<p>To change the directory configuration, copy the above configuration and paste it inside <code>runner.yml.dist</code> and change <code>config_dir</code> value.</p>
-<p>Every configuration block inside <code>runner.yml.dist</code> (drupal, toolkit, selenium, etc...) can be moved to <code>config_dir</code> directory.</p>
-<p>As example, taking the subsite configurations:</p>
-<pre><code class="language- " >runner.yml.dist file with custom directory defined
-===================================================
-
-  runner:
-    config_dir: &#039;./my-custom-dir&#039;
-
-
-Config directory
-=================
-
-~/PROJECT_ROOT/my-custom-dir $
-  drupal.yml
-  toolkit.yml
-  selenium.yml
-
-
-drupal.yml file
-===============
-
-  drupal:
-    root: &quot;web&quot;
-    base_url: ${env.DRUPAL_BASE_URL}
-    site:
-      profile: &quot;standard&quot;
-      name: &quot;Drupal website configuration goes here!&quot;
-      generate_db_url: false
-    account:
-      name: ${env.DRUPAL_ACCOUNT_USERNAME}
-      password: ${env.DRUPAL_ACCOUNT_PASSWORD}
-
-toolkit.yml file
-===============
-
-  toolkit:
-    project_id: &#039;PROJECTID&#039;
-
-
-selenium.yml file
-===============
-
-  selenium:
-    host: &quot;http://selenium&quot;
-    port: &quot;4444&quot;
-    browser: &quot;chrome&quot;</code></pre>
+<p><strong>Override a specific command option</strong></p>
+<pre><code class="language- " >/** @hook init toolkit:test-behat */
+public function hook(InputInterface $input, AnnotationData $annotationData) {
+  $input-&gt;setOption(&#039;from&#039;, &#039;behat.yml.example&#039;);
+}
+</code></pre>
+<p><strong>Override a command option for all commands that has a specific option</strong></p>
+<pre><code class="language- " >/** @hook init * */
+public function hook(InputInterface $input, AnnotationData $annotationData) {
+  if ($input-&gt;hasOption(&#039;from&#039;)) {
+    $input-&gt;setOption(&#039;from&#039;, &#039;behat.yml.example&#039;);
+  }
+}</code></pre>
 </div>
 
                 <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">

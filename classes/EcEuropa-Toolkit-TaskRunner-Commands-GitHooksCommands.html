@@ -239,27 +239,6 @@
 </dt>
 <dd>Run a specific hook.</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runPreCommit">runPreCommit()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Hook: Executes the PHPcs against the modified files.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runPrepareCommitMsg">runPrepareCommitMsg()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Hook: Executes the prepare-commit-msg conditions.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runPrePush">runPrePush()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Hook: Executes the pre-push commands.</dd>
-
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a>
     <span>
@@ -343,6 +322,27 @@
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Return the hooks present in given directory.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runCommitMsg">runCommitMsg()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Hook: Executes the commit-msg conditions.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runPreCommit">runPreCommit()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Hook: Executes the PHPcs against the modified files.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runPrePush">runPrePush()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Hook: Executes the pre-push commands.</dd>
 
         </dl>
 
@@ -828,105 +828,6 @@
                     <article
         class="phpdocumentor-element
             -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_runPreCommit">
-        runPreCommit()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runPreCommit" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitHooksCommands.php"><a href="files/src-taskrunner-commands-githookscommands.html"><abbr title="src/TaskRunner/Commands/GitHooksCommands.php">GitHooksCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">245</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Hook: Executes the PHPcs against the modified files.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">runPreCommit</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-    
-    
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_runPrepareCommitMsg">
-        runPrepareCommitMsg()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runPrepareCommitMsg" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitHooksCommands.php"><a href="files/src-taskrunner-commands-githookscommands.html"><abbr title="src/TaskRunner/Commands/GitHooksCommands.php">GitHooksCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">314</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Hook: Executes the prepare-commit-msg conditions.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">runPrepareCommitMsg</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-    
-    
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_runPrePush">
-        runPrePush()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runPrePush" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitHooksCommands.php"><a href="files/src-taskrunner-commands-githookscommands.html"><abbr title="src/TaskRunner/Commands/GitHooksCommands.php">GitHooksCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">349</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Hook: Executes the pre-push commands.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">runPrePush</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-    
-    
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
             -protected
                                                         "
 >
@@ -1382,7 +1283,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitHooksCommands.php"><a href="files/src-taskrunner-commands-githookscommands.html"><abbr title="src/TaskRunner/Commands/GitHooksCommands.php">GitHooksCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">414</span>
+    <span class="phpdocumentor-element-found-in__line">413</span>
 
     </aside>
 
@@ -1430,7 +1331,7 @@ runPrePush, FALSE if empty hook provided.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitHooksCommands.php"><a href="files/src-taskrunner-commands-githookscommands.html"><abbr title="src/TaskRunner/Commands/GitHooksCommands.php">GitHooksCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">367</span>
+    <span class="phpdocumentor-element-found-in__line">366</span>
 
     </aside>
 
@@ -1465,7 +1366,7 @@ runPrePush, FALSE if empty hook provided.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitHooksCommands.php"><a href="files/src-taskrunner-commands-githookscommands.html"><abbr title="src/TaskRunner/Commands/GitHooksCommands.php">GitHooksCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">384</span>
+    <span class="phpdocumentor-element-found-in__line">383</span>
 
     </aside>
 
@@ -1497,6 +1398,138 @@ runPrePush, FALSE if empty hook provided.</p>
             <section class="phpdocumentor-description"><p>An array keyed by hook name and path as value, false if do not exist.</p>
 </section>
 
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_runCommitMsg">
+        runCommitMsg()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runCommitMsg" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitHooksCommands.php"><a href="files/src-taskrunner-commands-githookscommands.html"><abbr title="src/TaskRunner/Commands/GitHooksCommands.php">GitHooksCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">314</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Hook: Executes the commit-msg conditions.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">runCommitMsg</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_runPreCommit">
+        runPreCommit()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runPreCommit" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitHooksCommands.php"><a href="files/src-taskrunner-commands-githookscommands.html"><abbr title="src/TaskRunner/Commands/GitHooksCommands.php">GitHooksCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">245</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Hook: Executes the PHPcs against the modified files.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">runPreCommit</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_runPrePush">
+        runPrePush()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runPrePush" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitHooksCommands.php"><a href="files/src-taskrunner-commands-githookscommands.html"><abbr title="src/TaskRunner/Commands/GitHooksCommands.php">GitHooksCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">348</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Hook: Executes the pre-push commands.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">runPrePush</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+        
     
 </article>
             </section>

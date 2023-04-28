@@ -209,16 +209,47 @@ PSR-4 namespacing set the autoload in the composer.json file.</p>
 </code></pre>
 <p>Create your command class under <code>src/TaskRunner/Commands</code> that will extend the abstract Toolkit command, like:</p>
 <pre><code class="language- " >&lt;?php
-
 namespace My\Project\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 
 class ExampleCommands extends AbstractCommands {
+  /** @command example:first-command */
+  public function commandOne() { }
+}
+</code></pre>
+<p>For more detail, check the <a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a>
+documentation.</p>
+</div>
+<div class="section" id="passing-default-options-for-a-command">
+<h2>Passing default options for a command</h2>
+<p>You can pass default values for the command options, for that you
+need to define a configuration file, and import it as shown below.</p>
+<pre><code class="language- " ># config/commands/config.yml
+commands:
+  example:
+    first-command:
+      options:
+        output: false
+</code></pre>
+<pre><code class="language- " >&lt;?php
+namespace My\Project\TaskRunner\Commands;
+
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use Symfony\Component\Console\Input\InputOption;
+
+class ExampleCommands extends AbstractCommands {
+  public function getConfigurationFile() {
+    return __DIR__ . &#039;/../../../config/commands/config.yml&#039;;
+  }
+
   /**
    * @command example:first-command
+   * @option output This is a test option
    */
-  public function commandOne() { }
+  public function commandOne($options = [
+    &#039;output&#039; =&gt; InputOption::VALUE_REQUIRED
+  ]) { }
 }
 </code></pre>
 </div>

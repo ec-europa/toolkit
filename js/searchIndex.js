@@ -286,6 +286,11 @@ Search.appendIndex(
             "summary": "Returns\u0020the\u0020current\u0020working\u0020directory.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractGitHooks",
+            "name": "AbstractGitHooks",
+            "summary": "Projects\u0020should\u0020extend\u0020this\u0020class\u0020to\u0020override\u0020or\u0020extend\u0020the\u0020GitHooks\u0020feature.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractGitHooks.html"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BlackfireCommands",
             "name": "BlackfireCommands",
             "summary": "Commands\u0020to\u0020interact\u0020with\u0020the\u0020Blackfire.",
@@ -841,10 +846,10 @@ Search.appendIndex(
             "summary": "Hook\u003A\u0020Executes\u0020the\u0020PHPcs\u0020against\u0020the\u0020modified\u0020files.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runPreCommit"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHooksCommands\u003A\u003ArunPrepareCommitMsg\u0028\u0029",
-            "name": "runPrepareCommitMsg",
-            "summary": "Hook\u003A\u0020Executes\u0020the\u0020prepare\u002Dcommit\u002Dmsg\u0020conditions.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runPrepareCommitMsg"
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHooksCommands\u003A\u003ArunCommitMsg\u0028\u0029",
+            "name": "runCommitMsg",
+            "summary": "Hook\u003A\u0020Executes\u0020the\u0020commit\u002Dmsg\u0020conditions.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_runCommitMsg"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHooksCommands\u003A\u003ArunPrePush\u0028\u0029",
             "name": "runPrePush",
