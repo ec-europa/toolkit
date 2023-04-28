@@ -1,9 +1,11 @@
 #!/bin/sh
 #
-# Called by "git commit" with no arguments. The hook should exit with non-zero
-# status after issuing an appropriate message if it wants to stop the commit.
+# Called by "git commit" with the name of the file that has the commit message,
+# followed by the description of the commit message's source. If the hook fails
+# with a non-zero status, the commit is aborted.
 #
-# This hook should execute the PHPcs against the modified files.
+# This hook will enforce the conditions defined in the configuration
+# toolkit.hooks.commit-msg.conditions.
 #
 
 # Check if running corporate docker image fpfis/httpd-php.

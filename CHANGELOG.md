@@ -1,5 +1,15 @@
 # Toolkit change log
 
+## Version 9.9.0 | 10.0.0-beta6
+  - DQA-6736: PHPStan do not use includes if phpstan/extension-installer exist.
+  - DQA-6762: Toolkit requirements should not use constant to validate version.
+  - DQA-6670: GitHooks pass $io to extending class methods.
+  - DQA-6677: Use git hook commit-msg instead of prepare-commit-msg.
+  - DQA-6795: Consider mydumper in checkForNewerDump.
+  - DQA-6808: GitHooks identify if running docker.
+  - DQA-6792: Document how configuration works.
+  - DQA-6759: Fix outdated packages command.
+
 ## Version 9.8.1 | 10.0.0-beta5
   - DQA-6717: Fix version check to allow version without dot.
   - DQA-6651: Command build-dist make tag and sha optional.

@@ -16,17 +16,17 @@ for you automatically.
 .. code-block::
 
    composer create-project ec-europa/subsite --stability=dev <dg-name>-<project-id>-reference dev-release/9.x
-   docker-compose up -d
-   docker-compose exec web vendor/bin/run
+   docker compose up -d
+   docker compose exec web vendor/bin/run
 
 From existent project from repository
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To install locally a project running Toolkit 4 you should run the following commands:
+To install locally a project running Toolkit you should run the following commands:
 
 .. code-block::
 
    git clone git@github.com:ec-europa/<repository-name>.git
-   docker-compose up -d
-   docker-compose exec web composer install
-   docker-compose exec web vendor/bin/run
+   docker compose up -d
+   docker compose exec web composer install
+   docker compose exec web vendor/bin/run

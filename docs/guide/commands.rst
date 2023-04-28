@@ -84,30 +84,67 @@ PSR-4 namespacing set the autoload in the composer.json file.
 
 .. code-block::
 
- {
-   "autoload": {
-     "psr-4": {
-       "My\\Project\\": "./src/"
-     }
-   }
- }
+    {
+      "autoload": {
+        "psr-4": {
+          "My\\Project\\": "./src/"
+        }
+      }
+    }
 
 Create your command class under ``src/TaskRunner/Commands`` that will extend the abstract Toolkit command, like:
 
 .. code-block::
 
- <?php
+    <?php
+    namespace My\Project\TaskRunner\Commands;
 
- namespace My\Project\TaskRunner\Commands;
+    use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 
- use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+    class ExampleCommands extends AbstractCommands {
+      /** @command example:first-command */
+      public function commandOne() { }
+    }
 
- class ExampleCommands extends AbstractCommands {
-   /**
-    * @command example:first-command
-    */
-   public function commandOne() { }
- }
+For more detail, check the `consolidation/annotated-command <https://github.com/consolidation/annotated-command#hooks>`_
+documentation.
+
+Passing default options for a command
+----
+
+You can pass default values for the command options, for that you
+need to define a configuration file, and import it as shown below.
+
+.. code-block::
+
+    # config/commands/config.yml
+    commands:
+      example:
+        first-command:
+          options:
+            output: false
+
+.. code-block::
+
+    <?php
+    namespace My\Project\TaskRunner\Commands;
+
+    use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+    use Symfony\Component\Console\Input\InputOption;
+
+    class ExampleCommands extends AbstractCommands {
+      public function getConfigurationFile() {
+        return __DIR__ . '/../../../config/commands/config.yml';
+      }
+
+      /**
+       * @command example:first-command
+       * @option output This is a test option
+       */
+      public function commandOne($options = [
+        'output' => InputOption::VALUE_REQUIRED
+      ]) { }
+    }
 
 Creating configuration commands
 ----
@@ -116,18 +153,18 @@ Configuration commands are created in the configuration file ``runner.yml``, lik
 
 .. code-block:: yaml
 
-   commands:
-     drupal:setup-test:
-       - { task: process, source: behat.yml.dist, destination: behat.yml }
+    commands:
+      drupal:setup-test:
+        - { task: process, source: behat.yml.dist, destination: behat.yml }
 
-     drupal:setup-test2:
-       aliases: test
-       description: 'Setup the behat file'
-       help: 'Some help text'
-       hidden: false
-       usage: '--simulate'
-       tasks:
-         - { task: process, source: behat.yml.dist, destination: behat.yml }
+      drupal:setup-test2:
+        aliases: test
+        description: 'Setup the behat file'
+        help: 'Some help text'
+        hidden: false
+        usage: '--simulate'
+        tasks:
+          - { task: process, source: behat.yml.dist, destination: behat.yml }
 
 The configuration commands are a mapping to the `Robo Tasks <https://robo.li/#tasks>`_, the
 list of available tasks is:

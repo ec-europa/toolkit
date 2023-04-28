@@ -19,8 +19,32 @@
     - string_contains: "Checking Toolkit requirements:"
     - string_contains: "Required checks:"
     - string_contains: "PHP version       OK"
-    - string_contains: "Toolkit version   OK"
+    - string_contains: "Toolkit version   FAIL (not found)"
     - string_contains: "Drupal version    FAIL (not found)"
+
+- command: toolkit:requirements
+  configuration: []
+  resources:
+    - from: sample-composer-toolkit-outdated.lock
+      to: composer.lock
+  expectations:
+    - string_contains: "Checking Toolkit requirements:"
+    - string_contains: "Required checks:"
+    - string_contains: "PHP version       OK"
+    - string_contains: "Toolkit version   FAIL"
+    - string_contains: "Drupal version    OK"
+
+- command: toolkit:requirements
+  configuration: []
+  resources:
+    - from: sample-composer-toolkit-in-require.lock
+      to: composer.lock
+  expectations:
+    - string_contains: "Checking Toolkit requirements:"
+    - string_contains: "Required checks:"
+    - string_contains: "PHP version       OK"
+    - string_contains: "Toolkit version   FAIL (not found)"
+    - string_contains: "Drupal version    OK"
 
 - command: toolkit:requirements
   configuration: []

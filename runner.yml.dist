@@ -1,6 +1,6 @@
 toolkit:
   hooks:
-    prepare-commit-msg:
+    commit-msg:
       example: 'ABC-123: The commit message'
       conditions:
         - message: 'The commit message must start with the JIRA issue number.'
