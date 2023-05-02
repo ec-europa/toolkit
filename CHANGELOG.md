@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 9.9.1
+  - DQA-6871: GitHooks detect docker-compose VS docker compose.
+  - DQA-6930: Toolkit allow to skip abandoned components.
+
 ## Version 9.9.0
   - DQA-6736: PHPStan do not use includes if phpstan/extension-installer exist.
   - DQA-6762: Toolkit requirements should not use constant to validate version.
