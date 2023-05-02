@@ -31,3 +31,4 @@ toolkit:
         - '#^Parameter \#1 \$roboClass of class Robo\\Runner constructor expects string\|null, array<int, string> given\.#'
         - message: '#^Negated boolean expression is always false\.#'
           path: src/TaskRunner/AbstractCommands.php
+        - '#^Call to deprecated method registerCommandClass\(\) of class Robo\\Runner#'

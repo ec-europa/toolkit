@@ -13,6 +13,11 @@ use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Command class for toolkit:component-check
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class ComponentCheckCommands extends AbstractCommands
 {
     protected bool $commandFailed = false;
