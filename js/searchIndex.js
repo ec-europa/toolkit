@@ -338,7 +338,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands",
             "name": "ComponentCheckCommands",
-            "summary": "Class\u0020AbstractCommands.",
+            "summary": "Command\u0020class\u0020for\u0020toolkit\u003Acomponent\u002Dcheck",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentCheck\u0028\u0029",
