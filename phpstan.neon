@@ -1,0 +1,22 @@
+parameters:
+  level: 5
+  paths:
+    - src
+  excludePaths:
+    - vendor
+  reportUnmatchedIgnoredErrors: false
+  ignoreErrors:
+    - '#^Call to deprecated method toolkitRunGrumphp#'
+    - '#^Call to an undefined method Robo\\Collection\\CollectionBuilder::task#'
+    - '#^Call to an undefined method Robo\\Collection\\CollectionBuilder\|Robo\\Task\\Filesystem\\FilesystemStack::task#'
+    - '#^Call to an undefined method Consolidation\\Config\\ConfigInterface::replace\(\)#'
+    - '#^Parameter \#2 \$defaultFallback of method Consolidation\\Config\\ConfigInterface::get\(\) expects string\|null, array given#'
+    - '#^Call to an undefined method DOMNode::getElementsByTagName\(\)#'
+    - '#^Parameter \#1 \$roboClass of class Robo\\Runner constructor expects string\|null, array<int, string> given\.#'
+    - '#^Parameter \#1 \$roboClass of class Robo\\Runner constructor expects string\|null, array<int, string> giveasdassan\.#'
+    -
+      message: '#^Negated boolean expression is always false\.#'
+      path: src/TaskRunner/AbstractCommands.php
+    - '#^Call to deprecated method registerCommandClass\(\) of class Robo\\Runner#'
+includes:
+  - vendor/phpstan/phpstan-deprecation-rules/rules.neon

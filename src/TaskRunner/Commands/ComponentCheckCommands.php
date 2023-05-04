@@ -13,6 +13,11 @@ use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Command class for toolkit:component-check
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class ComponentCheckCommands extends AbstractCommands
 {
     protected bool $commandFailed = false;
@@ -58,6 +63,9 @@ class ComponentCheckCommands extends AbstractCommands
         $commitTokens = ToolCommands::getCommitTokens();
         if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
             $this->skipOutdated = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
+            $this->skipAbandoned = true;
         }
         if (isset($commitTokens['skipInsecure'])) {
             $this->skipInsecure = true;
@@ -189,16 +197,17 @@ class ComponentCheckCommands extends AbstractCommands
             $io->success('Components checked, nothing to report.');
         } else {
             $io->note([
-                'It is possible to bypass the insecure and outdated check:',
-                '- Insecure check:',
-                '   - by providing a token in the commit message: [SKIP-INSECURE]',
-                '- Outdated check:',
-                '   - by providing a token in the commit message: [SKIP-OUTDATED]',
-                '   - Or, update the configuration in the runner.yml.dist as shown below: ',
-                '        toolkit:',
-                '          components:',
-                '            outdated:',
-                '              check: false',
+                'It is possible to bypass the insecure, outdated and abandoned check:',
+                '- Using commit message to skip Insecure and/or Outdated check:',
+                '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
+                '',
+                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated or Abandoned: ',
+                '   toolkit:',
+                '     components:',
+                '       outdated:',
+                '         check: false',
+                '       abandoned:',
+                '         check: false',
             ]);
         }
 
