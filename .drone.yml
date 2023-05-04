@@ -1,0 +1,9 @@
+workspace:
+  base: /test
+  path: toolkit
+
+pipeline:
+  default-message:
+    image: alpine:latest
+    commands:
+      - echo -e "Generating documentation."
