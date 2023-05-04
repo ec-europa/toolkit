@@ -15,3 +15,6 @@ toolkit:
         - toolkit:test-phpmd
         - toolkit:lint-php
         - toolkit:test-phpstan
+  test:
+    phpunit:
+      options: 'fail-on-incomplete fail-on-risky fail-on-skipped fail-on-warning'

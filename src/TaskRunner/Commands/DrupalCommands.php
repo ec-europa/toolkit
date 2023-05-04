@@ -555,6 +555,12 @@ class DrupalCommands extends AbstractCommands
 \$settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
 \$settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') !== FALSE ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp';
 
+// Reverse proxy
+if (intval(getenv('DRUPAL_REVERSE_PROXY_ENABLE')) === 1) {
+  \$settings["reverse_proxy"] = (bool) getenv('DRUPAL_REVERSE_PROXY_ENABLE');
+  \$settings["reverse_proxy_addresses"] = explode(',', getenv('DRUPAL_REVERSE_PROXY_ADDRESSES'));
+}
+
 {$additionalSettings}
 
 // Load environment development override configuration, if available.

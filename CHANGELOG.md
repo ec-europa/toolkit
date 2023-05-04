@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 9.9.2
+  - DQA-6954: Remove sudo references.
+  - DQA-6889: runner.yml.dist - forcing reverse proxy settings for all repo.
+
 ## Version 9.9.1 | 10.0.0-beta7
   - DQA-6871: GitHooks detect docker-compose VS docker compose.
   - DQA-6930: Toolkit allow to skip abandoned components.
