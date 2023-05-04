@@ -114,7 +114,7 @@
           - { task: process, source: behat.yml.dist, destination: behat.yml }
   resources: []
   expectations:
-    - str_contains: |
+    - string_contains: |
         Description:
           Setup the behat file
 
@@ -122,7 +122,7 @@
           example:full
           full
           example:full --simulate
-    - str_contains: |
+    - string_contains: |
         Help:
           Some help text
 
