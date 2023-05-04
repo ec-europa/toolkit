@@ -1,6 +1,6 @@
 # Toolkit change log
 
-## Version 9.9.2
+## Version 9.9.2 | 10.0.0-beta8
   - DQA-6954: Remove sudo references.
   - DQA-6889: runner.yml.dist - forcing reverse proxy settings for all repo.
 
