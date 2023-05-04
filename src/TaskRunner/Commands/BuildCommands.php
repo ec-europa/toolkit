@@ -332,8 +332,8 @@ class BuildCommands extends AbstractCommands
                     $collection = $this->collectionBuilder();
                     $collection->taskExecStack()
                         ->dir($theme_dir)
-                        ->exec('sudo apt-get update')
-                        ->exec('sudo apt-get install ruby-sass -y')
+                        ->exec('apt-get update')
+                        ->exec('apt-get install ruby-sass -y')
                         ->stopOnFail();
                 } else {
                     $themeTaskRunner = $options['theme-task-runner'];
