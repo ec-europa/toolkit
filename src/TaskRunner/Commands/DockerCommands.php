@@ -133,7 +133,7 @@ final class DockerCommands extends AbstractCommands
     {
         $data = Website::projectInformation($projectId);
         if (!$data) {
-            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
             return [];
         }
 
@@ -152,7 +152,7 @@ final class DockerCommands extends AbstractCommands
     {
         $data = Website::requirements();
         if (empty($data)) {
-            throw new Exception('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            throw new Exception('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
         }
 
         return $data;

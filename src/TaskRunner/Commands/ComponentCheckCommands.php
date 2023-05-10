@@ -5,14 +5,19 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
-use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\DrupalReleaseHistory;
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Command class for toolkit:component-check
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class ComponentCheckCommands extends AbstractCommands
 {
     protected bool $commandFailed = false;
@@ -29,6 +34,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $skipInsecure = false;
     protected bool $skipRecommended = true;
     protected int $recommendedFailedCount = 0;
+    protected array $installed;
 
     /**
      * Check composer.json for components that are not whitelisted/blacklisted.
@@ -50,13 +56,16 @@ class ComponentCheckCommands extends AbstractCommands
         if (!empty($options['endpoint'])) {
             Website::setUrl($options['endpoint']);
         }
-        if (empty($basicAuth = Website::basicAuth())) {
+        if (empty($auth = Website::apiAuth())) {
             return 1;
         }
 
         $commitTokens = ToolCommands::getCommitTokens();
         if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
             $this->skipOutdated = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
+            $this->skipAbandoned = true;
         }
         if (isset($commitTokens['skipInsecure'])) {
             $this->skipInsecure = true;
@@ -70,7 +79,7 @@ class ComponentCheckCommands extends AbstractCommands
 
         $status = 0;
         $endpoint = Website::url();
-        $result = Website::get($endpoint . '/api/v1/package-reviews?version=8.x', $basicAuth);
+        $result = Website::get($endpoint . '/api/v1/package-reviews?version=8.x', $auth);
         $data = json_decode($result, true);
         $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 
@@ -188,16 +197,17 @@ class ComponentCheckCommands extends AbstractCommands
             $io->success('Components checked, nothing to report.');
         } else {
             $io->note([
-                'It is possible to bypass the insecure and outdated check:',
-                '- Insecure check:',
-                '   - by providing a token in the commit message: [SKIP-INSECURE]',
-                '- Outdated check:',
-                '   - by providing a token in the commit message: [SKIP-OUTDATED]',
-                '   - Or, update the configuration in the runner.yml.dist as shown below: ',
-                '        toolkit:',
-                '          components:',
-                '            outdated:',
-                '              check: false',
+                'It is possible to bypass the insecure, outdated and abandoned check:',
+                '- Using commit message to skip Insecure and/or Outdated check:',
+                '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
+                '',
+                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated or Abandoned: ',
+                '   toolkit:',
+                '     components:',
+                '       outdated:',
+                '         check: false',
+                '       abandoned:',
+                '         check: false',
             ]);
         }
 
@@ -453,6 +463,10 @@ class ComponentCheckCommands extends AbstractCommands
             }
             $drupalReleaseHistory = new DrupalReleaseHistory();
             $historyTerms = $drupalReleaseHistory->getPackageDetails($name, $package['version'], '8.x');
+            if ($historyTerms === 1) {
+                $this->say("No release history found for package $name.");
+                continue;
+            }
             if (!empty($historyTerms) && (empty($historyTerms['terms']) || !in_array('insecure', $historyTerms['terms']))) {
                 $messages[] = "$msg (Confirmation failed, ignored)";
                 continue;
@@ -480,16 +494,17 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentOutdated()
     {
-        $result = $this->taskExec('composer outdated --direct --minor-only --format=json')
+        $result = $this->taskExec('composer outdated --no-dev --locked --direct --minor-only --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
 
         $outdatedPackages = json_decode($result, true);
-        if (!empty($outdatedPackages['installed'])) {
+        // Using the option --locked, we must check for the "locked" key.
+        if (!empty($outdatedPackages['locked'])) {
             if (is_array($outdatedPackages)) {
-                foreach ($outdatedPackages['installed'] as $outdatedPackage) {
-                    // Exclude abandoned packages.
-                    if ($outdatedPackage['abandoned'] == false) {
+                foreach ($outdatedPackages['locked'] as $outdatedPackage) {
+                    // Exclude abandoned packages, see $this->componentAbandoned().
+                    if ($outdatedPackage['abandoned'] === false) {
                         if (!array_key_exists('latest', $outdatedPackage)) {
                             $this->writeln("Package {$outdatedPackage['name']} does not provide information about last version.");
                         } elseif (array_key_exists('warning', $outdatedPackage)) {
@@ -503,7 +518,7 @@ class ComponentCheckCommands extends AbstractCommands
                 }
 
                 // Make result available outside function.
-                $this->installed = $outdatedPackages['installed'];
+                $this->installed = $outdatedPackages['locked'];
             }
         }
 
@@ -517,7 +532,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentAbandoned()
     {
-        $installedPackages = isset($this->installed) ? $this->installed : '';
+        $installedPackages = $this->installed ?? [];
         if (!empty($installedPackages)) {
             foreach ($installedPackages as $outdatedPackage) {
                 // Only show abandoned packages.

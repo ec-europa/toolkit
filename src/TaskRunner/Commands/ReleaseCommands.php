@@ -117,14 +117,14 @@ class ReleaseCommands extends AbstractCommands
         // Get the latest version from the changelog.
         $changelog_latest = $this->getLatestChangelogVersion();
         $is_first_log = empty($changelog_latest);
-        if ($is_first_log && empty($changelog_latest)) {
+        if ($is_first_log) {
             $io->error("You must provide a 'from' value, could not find latest version in the $this->changelog file.");
             return ResultData::EXITCODE_ERROR;
         }
         if (empty($from)) {
             $from = $changelog_latest;
         }
-        if (!$is_first_log && !Semver::satisfies($version, '>' . $from)) {
+        if (!Semver::satisfies($version, '>' . $from)) {
             $io->error("The given version $version do not satisfies the version $from found in the $this->changelog file.");
             return ResultData::EXITCODE_ERROR;
         }
@@ -243,7 +243,7 @@ class ReleaseCommands extends AbstractCommands
         }
         // Try to get username from email.
         if (preg_match('#^[0-9]+\+(.+)@users.noreply.github.com$#', $email, $matches)) {
-            $name = '@' . $matches[1] ?? '';
+            $name = '@' . ($matches[1] ?? '');
         }
 
         $log = '  - ' . trim($message, '.') . '.';

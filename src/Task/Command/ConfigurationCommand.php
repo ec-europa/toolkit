@@ -97,8 +97,6 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * @param $task
      *   The task to execute.
      *
-     * @return CollectionBuilder
-     *
      * @throws TaskException
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)

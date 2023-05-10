@@ -1,6 +1,30 @@
 runner:
   bin_dir: './vendor/bin'
   bin_node_dir: './node_modules/.bin'
+  # This property cannot contain a reference to a variable as it will
+  # not be processed before the load of configurations in given directory.
   config_dir: './config/runner'
 symlink_project:
   ignore: [ '.idea', 'vendor' ]
+overrides:
+  - toolkit.build.dist.keep
+  - toolkit.test.phpcs.standards
+  - toolkit.test.phpcs.ignore_patterns
+  - toolkit.test.phpcs.triggered_by
+  - toolkit.test.phpcs.files
+  - toolkit.test.phpmd.ignore_patterns
+  - toolkit.test.phpmd.triggered_by
+  - toolkit.test.phpmd.files
+  - toolkit.test.phpstan.includes
+  - toolkit.test.phpstan.ignore_errors
+  - toolkit.test.phpstan.files
+  - toolkit.test.phpstan.ignores
+  - toolkit.lint.eslint.ignores
+  - toolkit.lint.eslint.extensions_yaml
+  - toolkit.lint.eslint.extensions_js
+  - toolkit.lint.php.extensions
+  - toolkit.lint.php.exclude
+  - toolkit.hooks.active
+  - toolkit.hooks.commit-msg.conditions
+  - toolkit.hooks.pre-push.commands
+  - symlink_project.ignore

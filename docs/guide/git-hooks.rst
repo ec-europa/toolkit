@@ -9,7 +9,7 @@ Toolkit provides a way to activate or deactivate git hooks.
 By default, Toolkit provides three hooks:
 
 * pre-commit: Run the PHPcs against the modified files.
-* prepare-commit-msg: Check if the commit message meets the conditions.
+* commit-msg: Check if the commit message meets the conditions.
 * pre-push: Run a set of linters and checks.
 
 Configuration
@@ -27,10 +27,10 @@ The default configurations can be found in the runner configurations under ``too
          # Check for modified files and run PHPcs.
          - pre-commit
          # Check if the commit message is properly formatted.
-         - prepare-commit-msg
+         - commit-msg
          # Run the PHPcs and linters (configurable).
          - pre-push
-       prepare-commit-msg:
+       commit-msg:
          example: 'ABC-123: The commit message.'
          conditions:
            - message: "The commit message must start with the JIRA issue number."
@@ -59,13 +59,13 @@ To list the available hooks, execute the following command:
 .. code-block::
 
    > ./vendor/bin/run toolkit:hooks-list
-   +------------------------------+------------------+-------------+---------------+
-   | Hook                         | Active by config | Hook exists | Modified file |
-   +------------------------------+------------------+-------------+---------------+
-   | pre-commit (toolkit)         | Yes              | No          | No            |
-   | pre-push (toolkit)           | Yes              | No          | No            |
-   | prepare-commit-msg (toolkit) | Yes              | No          | No            |
-   +------------------------------+------------------+-------------+---------------+
+   +----------------------+------------------+-------------+---------------+
+   | Hook                 | Active by config | Hook exists | Modified file |
+   +----------------------+------------------+-------------+---------------+
+   | commit-msg (toolkit) | Yes              | No          | No            |
+   | pre-commit (toolkit) | Yes              | No          | No            |
+   | pre-push (toolkit)   | Yes              | No          | No            |
+   +----------------------+------------------+-------------+---------------+
 
 Labels:
 
@@ -125,8 +125,8 @@ callback in the format ``runHookName``.
 Example for hook ``prepare-commit-msg``, toolkit will look for a callback
 named ``runPrepareCommitMsg()``.
 
-The callback method is responsible to retrieve the arguments
-with ``$this->input()->getArguments()``.
+The callback method will receive the ConsoleIO as argument and can get the
+arguments with ``$io->input()->getArguments()``.
 
 For more details check the Commands class
 at ``EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands``
@@ -141,14 +141,14 @@ To do so, you need to
 
 * Create the hook under your ``resources/git/hooks`` folder.
 * Add the hook name to your active hooks under ``toolkit.hooks.active``.
-* Create a new class extending the ``GitHooksCommands`` class and define the
+* Create a new class extending the ``AbstractGitHooks`` class and define the
   ``run`` callback for the hook.
 
 Create the hook
 ^^^^^^^^^^^^^^^
 
 Add the hook that you want to the ``resources/git/hooks``, in this example we will
-use the hook ``commit-msg``, so we add the file ``resources/git/hooks/commit-msg``.
+use the hook ``prepare-commit-msg``, so we add the file ``resources/git/hooks/prepare-commit-msg``.
 
 .. code-block:: shell
 
@@ -169,14 +169,16 @@ otherwise your configuration will override the default provided by Toolkit.
      hooks:
        active:
          - pre-commit
-         - prepare-commit-msg
-         - pre-push
          - commit-msg
+         - pre-push
+         - prepare-commit-msg
 
-Create a class extending the GitHooksCommands
+Create a class extending the AbstractGitHooks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Is in this class that you will define the callback for your hook.
+
+In this class you can also override existing hook callbacks.
 
 Add your class under ``src/TaskRunner/Commands``.
 
@@ -186,16 +188,17 @@ Add your class under ``src/TaskRunner/Commands``.
 
    namespace Digit\Qa\TaskRunner\Commands;
 
-   use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
+   use EcEuropa\Toolkit\TaskRunner\AbstractGitHooks;
    use Robo\ResultData;
+   use Robo\Symfony\ConsoleIO;
 
-   class QaGitHooksCommands extends GitHooksCommands
+   class QaGitHooksCommands extends AbstractGitHooks
    {
-       public function runCommitMsg()
+       public function runCommitMsg(Console $io)
        {
-         $args = $this->input()->getArguments();
+         $args = $io->input()->getArguments();
          $commit_message = trim(file_get_contents($args['arg1']));
-         $this->io()->say("Commit message: $commit_message");
+         $io->say("Commit message: $commit_message");
          return ResultData::EXITCODE_OK;
        }
    }
@@ -208,11 +211,11 @@ List the available commands, your custom hook should be available.
 .. code-block::
 
    > ./vendor/bin/run toolkit:hooks-list
-   +------------------------------+------------------+-------------+---------------+
-   | Hook                         | Active by config | Hook exists | Modified file |
-   +------------------------------+------------------+-------------+---------------+
-   | pre-commit (toolkit)         | Yes              | No          | No            |
-   | pre-push (toolkit)           | Yes              | No          | No            |
-   | prepare-commit-msg (toolkit) | Yes              | No          | No            |
-   | commit-msg (digit-qa)        | Yes              | No          | No            |
-   +------------------------------+------------------+-------------+---------------+
+   +-------------------------------+------------------+-------------+---------------+
+   | Hook                          | Active by config | Hook exists | Modified file |
+   +-------------------------------+------------------+-------------+---------------+
+   | commit-msg (toolkit)          | Yes              | No          | No            |
+   | pre-commit (toolkit)          | Yes              | No          | No            |
+   | pre-push (toolkit)            | Yes              | No          | No            |
+   | prepare-commit-msg (digit-qa) | Yes              | No          | No            |
+   +-------------------------------+------------------+-------------+---------------+

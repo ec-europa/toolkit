@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use Composer\InstalledVersions;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\Contract\VerbosityThresholdInterface;
@@ -315,33 +316,35 @@ class TestsCommands extends AbstractCommands
     ])
     {
         Toolkit::ensureArray($options['files']);
+        Toolkit::filterFolders($options['files']);
 
         $config = $this->getConfig();
-        // Only run if we find a Drupal installation.
-        if (!file_exists($config->get('drupal.root'))) {
-            $this->say('Could not find a Drupal installation, skipping.');
-            return 0;
-        }
-        $tasks = [];
-        Toolkit::filterFolders($options['files']);
+        $ignoreErrors = $config->get('toolkit.test.phpstan.ignore_errors');
+        $includes = $config->get('toolkit.test.phpstan.includes');
+        Toolkit::filterFolders($includes);
         $ignores = $config->get('toolkit.test.phpstan.ignores');
         Toolkit::filterFolders($ignores);
         if (!$options['memory-limit']) {
             $options['memory-limit'] = ini_get('memory_limit');
         }
+        $tasks = [];
 
         // If the config file is not found, generate a new one.
         if (!file_exists($options['config'])) {
             $config_content = [
                 'parameters' => [
-                    'drupal' => [
-                        'drupal_root' => getcwd() . '/' . $config->get('drupal.root'),
-                    ],
                     'level' => $options['level'],
                     'paths' => array_values($options['files']),
                     'excludePaths' => $ignores,
+                    'ignoreErrors' => $ignoreErrors,
                 ],
             ];
+            if (!InstalledVersions::isInstalled('phpstan/extension-installer')) {
+                $config_content['includes'] = $includes;
+            }
+            if (file_exists($config->get('drupal.root'))) {
+                $config_content['parameters']['drupal']['drupal_root'] = '%currentWorkingDirectory%/' . $config->get('drupal.root');
+            }
             $tasks[] = $this->taskWriteToFile($options['config'])
                 ->text(Yaml::dump($config_content, 10, 2));
         }

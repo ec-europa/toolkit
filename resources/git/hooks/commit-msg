@@ -1,12 +1,11 @@
 #!/bin/sh
 #
-# Called by "git push" after it has checked the remote status, but before
-# anything has been pushed. Receives two arguments, the name of the remote,
-# followed by the remote url. If this script exits with a non-zero status
-# nothing will be pushed.
+# Called by "git commit" with the name of the file that has the commit message,
+# followed by the description of the commit message's source. If the hook fails
+# with a non-zero status, the commit is aborted.
 #
-# This hook will execute the commands defined in the configuration
-# toolkit.hooks.pre-push.commands.
+# This hook will enforce the conditions defined in the configuration
+# toolkit.hooks.commit-msg.conditions.
 #
 
 # Detect docker-compose or docker compose.

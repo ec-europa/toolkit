@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use DOMDocument;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\ResultData;
@@ -69,7 +70,8 @@ class GitHooksCommands extends AbstractCommands
 
         $dir = $this->getWorkingDir();
         foreach ($hooks as $hook) {
-            if ($this->_copy($available_hooks[$hook], $dir . '/.git/hooks/' . $hook)) {
+            $copy = $this->_copy($available_hooks[$hook], $dir . '/.git/hooks/' . $hook);
+            if ($copy->getExitCode() === ResultData::EXITCODE_OK) {
                 $this->_chmod($dir . '/.git/hooks/' . $hook, 0755);
             }
         }
@@ -222,10 +224,10 @@ class GitHooksCommands extends AbstractCommands
         $method = $this->convertHookToMethod($hook);
 
         // Check if the method exists in other classes that are instance
-        // of this. The first to be found is used.
+        // of TaskRunner\AbstractGitHooks. The first to be found is used.
         foreach (get_declared_classes() as $class) {
-            if ($class instanceof $this && method_exists($class, $method)) {
-                return (new $class())->$method();
+            if (get_parent_class($class) === 'EcEuropa\Toolkit\TaskRunner\AbstractGitHooks' && method_exists($class, $method)) {
+                return (new $class())->$method($io);
             }
         }
 
@@ -234,13 +236,13 @@ class GitHooksCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        return $this->$method();
+        return $this->$method($io);
     }
 
     /**
      * Hook: Executes the PHPcs against the modified files.
      */
-    private function runPreCommit()
+    private function runPreCommit(ConsoleIO $io)
     {
         $phpcs = $this->getBin('phpcs');
         $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
@@ -262,18 +264,36 @@ class GitHooksCommands extends AbstractCommands
 
         // If a config file exists, PHPcs will automatically load it and use
         // the files in there, the workaround here is to regenerate the config
-        // file with the modified files and save a backup of the existing
-        // config to restore later.
+        // file with the modified files.
         if (file_exists($config_file)) {
+            $dom = new DOMDocument();
+            $dom->load($config_file);
+            $root = $dom->firstChild;
+            // Backup the config file and replace the files in it.
             rename($config_file, $config_file . '.backup');
-        }
-        // Setup the ruleset with the files to check.
-        $files_setup = implode(',', $diff);
-        $this->taskExec($this->getBin('run'))
-            ->arg('toolkit:setup-phpcs')
-            ->rawArg("-Dtoolkit.test.phpcs.files=$files_setup")
-            ->run();
 
+            // Remove files.
+            $files = $root->getElementsByTagName('file');
+            $len = $files->length;
+            for ($i = 0; $i < $len; $i++) {
+                $file = $files->item(0);
+                $file->parentNode->removeChild($file);
+            }
+
+            // Add diff files.
+            foreach ($diff as $item) {
+                $dom->firstChild->appendChild($dom->createElement('file', $item));
+            }
+
+            $this->taskWriteToFile($config_file)->text($dom->saveXML())->run();
+        } else {
+            // Setup the ruleset with the files to check.
+            $files_setup = implode(',', $diff);
+            $this->taskExec($this->getBin('run'))
+                ->arg('toolkit:setup-phpcs')
+                ->rawArg("-Dtoolkit.test.phpcs.files=$files_setup")
+                ->run();
+        }
         // Execute the command.
         $result = $this->taskExec($phpcs)->option('standard', $config_file, '=')->run();
 
@@ -289,18 +309,21 @@ class GitHooksCommands extends AbstractCommands
     }
 
     /**
-     * Hook: Executes the prepare-commit-msg conditions.
+     * Hook: Executes the commit-msg conditions.
      */
-    private function runPrepareCommitMsg()
+    private function runCommitMsg(ConsoleIO $io)
     {
-        $io = $this->io ?? new ConsoleIO($this->input(), $this->output());
         $args = $this->input()->getArguments();
         // The arg1 is the file that contains the commit message.
         // NOTE: Do not use the arg2 because it is not updated when new
         // message is typed to the commit.
+        if (!file_exists($args['arg1'])) {
+            $io->error("File '{$args['arg1']}' not found.");
+            return ResultData::EXITCODE_ERROR;
+        }
         $message = trim(file_get_contents($args['arg1']));
         $config = $this->getConfig()->get('toolkit.hooks');
-        $conditions = $config['prepare-commit-msg']['conditions'];
+        $conditions = $config['commit-msg']['conditions'];
         $problems = [];
         foreach ($conditions as $condition) {
             preg_match($condition['regex'], $message, $matches);
@@ -309,12 +332,9 @@ class GitHooksCommands extends AbstractCommands
             }
         }
         if (!empty($problems)) {
-            $io->say('The commit message validation failed with the following problems:');
-            foreach ($problems as $problem) {
-                $io->writeln($problem);
-            }
-            if (!empty($config['prepare-commit-msg']['example'])) {
-                $io->say("Example: {$config['prepare-commit-msg']['example']}");
+            $io->error(array_merge(['The commit message validation failed with the following problems:'], $problems));
+            if (!empty($config['commit-msg']['example'])) {
+                $io->say("Example: {$config['commit-msg']['example']}");
             }
             return ResultData::EXITCODE_ERROR;
         }
@@ -325,7 +345,7 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Hook: Executes the pre-push commands.
      */
-    private function runPrePush()
+    private function runPrePush(ConsoleIO $io)
     {
         $exit = 0;
         $runner_bin = $this->getBin('run');

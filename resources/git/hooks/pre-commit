@@ -3,7 +3,14 @@
 # Called by "git commit" with no arguments. The hook should exit with non-zero
 # status after issuing an appropriate message if it wants to stop the commit.
 #
-# This hook should execute the PHPcs agaisnt the modified files.
+# This hook should execute the PHPcs against the modified files.
 #
 
-./vendor/bin/run toolkit:hooks-run `basename "$0"`
+# Detect docker-compose or docker compose.
+DC=$(docker compose version 2>/dev/null | grep -q 'version' && echo 'docker compose' || echo 'docker-compose')
+# Check if running corporate docker image fpfis/httpd-php.
+SERVICE=$($DC ps 2>/dev/null | grep 'fpfis/httpd-php' | awk '{ print $4 }')
+# Prefix with the docker compose exec if running docker.
+PREFIX=$([ "$SERVICE" ] && echo "$DC exec -T $SERVICE ./vendor/bin/run" || echo './vendor/bin/run')
+# Call the hook.
+$PREFIX toolkit:hooks-run `basename "$0"` "$1" "$2"
