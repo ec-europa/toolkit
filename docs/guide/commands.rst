@@ -14,9 +14,10 @@ See bellow current list of available commands:
 .. code-block::
 
  Available commands:
+   completion                        Dump the shell completion script
    config                            Dumps the current or given configuration.
-   help                              Displays help for a command
-   list                              Lists commands
+   help                              Display help for a command
+   list                              List commands
   docker
    docker:refresh-configuration      [dk-rc] Update docker-compose.yml file based on project's configurations.
   drupal

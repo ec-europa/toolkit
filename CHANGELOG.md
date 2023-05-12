@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 9.9.3
+  - DQA-6996: Fix regression with php lint.
+
 ## Version 9.9.2
   - DQA-6954: Remove sudo references.
   - DQA-6889: runner.yml.dist - forcing reverse proxy settings for all repo.
