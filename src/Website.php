@@ -30,12 +30,15 @@ class Website
     /**
      * Returns the QA website base url.
      *
+     * If the environment variable QA_WEBSITE_URL exists, it will be used.
+     *
      * @return string
      *   The base url.
      */
     public static function url(): string
     {
-        return self::$url;
+        $url = getenv('QA_WEBSITE_URL');
+        return !empty($url) ? $url : self::$url;
     }
 
     /**
