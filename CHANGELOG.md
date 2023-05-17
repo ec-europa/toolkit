@@ -3,7 +3,7 @@
 ## Version 9.9.4
   - DQA-7005: Toolkit website url.
   - DQA-7025: Toolkit follow redirects in all website calls.
-  - DQA-7043: Add --endpoint option to all target that connect to our API.
+  - DQA-7043: Fix missing --endpoint option to all target that connect to our API.
 
 ## Version 9.9.3
   - DQA-6996: Fix regression with php lint.
