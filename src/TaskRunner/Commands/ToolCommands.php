@@ -82,11 +82,18 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:opts-review
      *
+     * @option endpoint The endpoint to use to connect to QA Website.
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function optsReview(ConsoleIO $io)
+    public function optsReview(ConsoleIO $io, array $options = [
+        'endpoint' => InputOption::VALUE_REQUIRED,
+    ])
     {
+        if (!empty($options['endpoint'])) {
+            Website::setUrl($options['endpoint']);
+        }
         $reviewOk = true;
         $parseOptsFile = self::parseOptsYml();
         if ($parseOptsFile === false) {
@@ -157,14 +164,14 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:requirements
      *
-     * @option endpoint The endpoint to get the requirements.
+     * @option endpoint The endpoint to use to connect to QA Website.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function toolkitRequirements(ConsoleIO $io, array $options = [
-        'endpoint' => InputOption::VALUE_OPTIONAL,
+        'endpoint' => InputOption::VALUE_REQUIRED,
     ])
     {
         $this->say("Checking Toolkit requirements:\n");
