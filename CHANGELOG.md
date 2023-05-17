@@ -1,8 +1,8 @@
 # Toolkit change log
 
 ## Version 9.9.4
-  - DQA-7005: Toolkit website url.
-  - DQA-7025: Toolkit follow redirects in all website calls.
+  - DQA-7005: Fix regression with QA_WEBSITE_URL override.
+  - DQA-7025: Fix curl redirection behaviour.
   - DQA-7043: Fix missing --endpoint option to all target that connect to our API.
 
 ## Version 9.9.3
