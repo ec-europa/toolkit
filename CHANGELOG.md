@@ -1,12 +1,10 @@
 # Toolkit change log
 
-## Version 9.9.4
-- DQA-7005: Fix regression with QA_WEBSITE_URL override.
-- DQA-7025: Fix curl redirection behaviour.
-- DQA-7043: Fix missing --endpoint option to all target that connect to our API.
-
-## Version 9.9.3 | 10.0.0-beta9
+## Version 9.9.3 & 9.9.4 | 10.0.0-beta9
   - DQA-6996: Fix regression with php lint.
+  - DQA-7005: Fix regression with QA_WEBSITE_URL override.
+  - DQA-7025: Fix curl redirection behaviour.
+  - DQA-7043: Fix missing --endpoint option to all target that connect to our API.
 
 ## Version 9.9.2 | 10.0.0-beta8
   - DQA-6954: Remove sudo references.
