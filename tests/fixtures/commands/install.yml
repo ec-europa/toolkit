@@ -54,6 +54,9 @@
     - contains: |
         >  Sequence file '.opts.yml' does not exist, running default set of deployment commands.
         [Simulator] Simulating Exec('./vendor/bin/drush')
+          ->arg('cache:rebuild')
+        [Simulator] Running ./vendor/bin/drush 'cache:rebuild'
+        [Simulator] Simulating Exec('./vendor/bin/drush')
           ->args(array (
             0 => 'state:set',
             1 => 'system.maintenance_mode',
