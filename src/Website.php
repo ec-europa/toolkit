@@ -30,12 +30,15 @@ class Website
     /**
      * Returns the QA website base url.
      *
+     * If the environment variable QA_WEBSITE_URL exists, it will be used.
+     *
      * @return string
      *   The base url.
      */
     public static function url(): string
     {
-        return self::$url;
+        $url = getenv('QA_WEBSITE_URL');
+        return !empty($url) ? $url : self::$url;
     }
 
     /**
@@ -102,6 +105,7 @@ class Website
         $content = '';
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 120);
         curl_setopt($curl, CURLOPT_TIMEOUT, 120);
         if ($auth instanceof AuthorizationInterface) {
@@ -191,6 +195,7 @@ class Website
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields, JSON_UNESCAPED_SLASHES));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
         curl_setopt($ch, CURLOPT_TIMEOUT, 120);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [

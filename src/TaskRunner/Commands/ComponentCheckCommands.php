@@ -41,7 +41,7 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @command toolkit:component-check
      *
-     * @option endpoint     (Deprecated) Specify an endpoint to use.
+     * @option endpoint     The endpoint to use to connect to QA Website.
      * @option test-command If set the command will load test packages.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -49,7 +49,7 @@ class ComponentCheckCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function componentCheck(ConsoleIO $io, array $options = [
-        'endpoint' => InputOption::VALUE_OPTIONAL,
+        'endpoint' => InputOption::VALUE_REQUIRED,
         'test-command' => false,
     ])
     {

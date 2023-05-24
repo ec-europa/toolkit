@@ -145,6 +145,7 @@ class InstallCommands extends AbstractCommands
 
         // Default deployment sequence.
         $drush_bin = $this->getBin('drush');
+        $tasks[] = $this->taskExec($drush_bin)->arg('cache:rebuild');
         $tasks[] = $this->taskExec($drush_bin)->args(['state:set', 'system.maintenance_mode', 1])
             ->option('input-format', 'integer', '=')
             ->rawArg('-y');

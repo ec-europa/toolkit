@@ -258,7 +258,12 @@ class LintCommands extends AbstractCommands
             }
         }
 
-        return $this->collectionBuilder()->addTask($task->rawArg('.'));
+        $result = $task->rawArg('.')->run();
+        if ($result->getExitCode() === 254) {
+            return ResultData::EXITCODE_OK;
+        }
+
+        return $result->getExitCode();
     }
 
 }
