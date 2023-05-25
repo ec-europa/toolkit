@@ -17,7 +17,7 @@ echo '
         "screenshot": "/fpfis/qa/sites/default/files/screenshots/digit-qa-reference.png",
         "dg_agency": "DIGIT",
         "type": "Drupal 9",
-        "homepage": "https://webgate.ec.europa.eu/fpfis/qa",
+        "homepage": "https://digit-dqa.fpfis.tech.ec.europa.eu",
         "production_version": "6.1.0",
         "profile": "minimal",
         "status": "Live",
