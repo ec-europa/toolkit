@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 9.10.0
+  - DQA-7047: Deploy commands run drush cr as first.
+  - DQA-5985: Update default value of toolkit to match the new environment.
+
 ## Version 9.9.4
   - DQA-7005: Fix regression with QA_WEBSITE_URL override.
   - DQA-7025: Fix curl redirection behaviour.
