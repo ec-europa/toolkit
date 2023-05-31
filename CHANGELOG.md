@@ -1,6 +1,6 @@
 # Toolkit change log
 
-# Version 9.10.0
+# Version 9.10.0 | 10.0.0
   - DQA-7047: Deploy commands run drush cr as first.
   - DQA-5985: Update default value of toolkit to match the new environment.
 
