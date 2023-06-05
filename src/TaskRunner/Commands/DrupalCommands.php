@@ -8,6 +8,10 @@ use Composer\Semver\Semver;
 use Consolidation\AnnotatedCommand\CommandData;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
+use EcEuropa\Toolkit\Website;
+use Robo\Contract\VerbosityThresholdInterface;
+use Robo\ResultData;
+use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
@@ -508,6 +512,58 @@ class DrupalCommands extends AbstractCommands
         }
 
         return $qaCompatibilityResult;
+    }
+
+    /**
+     * Command to check the forbidden permissions.
+     *
+     * @param array $options
+     *   Command options.
+     *
+     * @command drupal:check-permissions
+     *
+     * @option endpoint The endpoint to use to connect to QA Website.
+     */
+    public function drupalCheckPermissions(ConsoleIO $io, array $options = [
+        'endpoint' => InputOption::VALUE_REQUIRED,
+    ]): int
+    {
+        if (!empty($options['endpoint'])) {
+            Website::setUrl($options['endpoint']);
+        }
+        if (empty($auth = Website::apiAuth())) {
+            return ResultData::EXITCODE_ERROR;
+        }
+        $result = Website::get(Website::url() . '/api/v1/forbidden-permissions', $auth);
+        $data = json_decode($result, TRUE);
+        if (empty($data) || !isset($data['forbidden_permissions'])) {
+            return ResultData::EXITCODE_ERROR;
+        }
+        $forbiddenPermissions = $data['forbidden_permissions'];
+
+        $permissions = $this->taskExec($this->getBin('drush'))
+            ->arg('role:list')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        $permissions = Yaml::parse($permissions);
+
+        $fail = FALSE;
+        foreach ($permissions as $perm => $data) {
+            if (!empty($data['perms'])) {
+                foreach ($data['perms'] as $permission) {
+                    if (in_array($permission, $forbiddenPermissions)) {
+                        $io->say(sprintf(
+                            "The role '%s' contains a forbidden permission '%s'",
+                            $data['label'],
+                            $permission
+                        ));
+                        $fail = TRUE;
+                    }
+                }
+            }
+        }
+
+        return $fail ? ResultData::EXITCODE_ERROR : ResultData::EXITCODE_OK;
     }
 
     /**
