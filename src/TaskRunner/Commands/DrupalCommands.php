@@ -535,30 +535,27 @@ class DrupalCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
         $result = Website::get(Website::url() . '/api/v1/forbidden-permissions', $auth);
-        $data = json_decode($result, TRUE);
+        $data = json_decode($result, true);
         if (empty($data) || !isset($data['forbidden_permissions'])) {
             return ResultData::EXITCODE_ERROR;
         }
-        $forbiddenPermissions = $data['forbidden_permissions'];
 
         $permissions = $this->taskExec($this->getBin('drush'))
             ->arg('role:list')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
-        $permissions = Yaml::parse($permissions);
+        $permissions = (array) Yaml::parse($permissions);
 
-        $fail = FALSE;
-        foreach ($permissions as $perm => $data) {
-            if (!empty($data['perms'])) {
-                foreach ($data['perms'] as $permission) {
-                    if (in_array($permission, $forbiddenPermissions)) {
-                        $io->say(sprintf(
-                            "The role '%s' contains a forbidden permission '%s'",
-                            $data['label'],
-                            $permission
-                        ));
-                        $fail = TRUE;
-                    }
+        $fail = false;
+        foreach ($permissions as $data) {
+            foreach ($data['perms'] ?? [] as $permission) {
+                if (in_array($permission, $data['forbidden_permissions'])) {
+                    $io->say(sprintf(
+                        "The role '%s' contains a forbidden permission '%s'",
+                        $data['label'],
+                        $permission
+                    ));
+                    $fail = true;
                 }
             }
         }
