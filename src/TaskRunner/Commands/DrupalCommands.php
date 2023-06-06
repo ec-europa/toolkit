@@ -524,13 +524,16 @@ class DrupalCommands extends AbstractCommands
      *
      * @option endpoint The endpoint to use to connect to QA Website.
      * @option blocker  If given and in case of error the command will fail.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function drupalCheckPermissions(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
         'blocker' => InputOption::VALUE_NONE,
     ]): int
     {
-        $blocker = $options['blocker'] === true ?: $this->getConfig()->get('drupal.permissions.blocker');
+        $blocker = $options['blocker'] === true || $this->getConfig()->get('drupal.permissions.blocker');
         if (!empty($options['endpoint'])) {
             Website::setUrl($options['endpoint']);
         }
