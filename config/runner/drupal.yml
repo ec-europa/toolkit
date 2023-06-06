@@ -33,6 +33,9 @@ drupal:
   drush:
     options:
       uri: '${drupal.base_url}'
+  # Control whether the command drupal:check-permissions will exit on failure.
+  permissions:
+    blocker: true
   # List of shell commands to be before and after the site installation.
   # You can use same syntax as the "commands:", check the documentation for more.
   # Configuration token replacement is supported too.

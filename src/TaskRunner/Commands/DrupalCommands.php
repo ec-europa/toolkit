@@ -523,36 +523,40 @@ class DrupalCommands extends AbstractCommands
      * @command drupal:check-permissions
      *
      * @option endpoint The endpoint to use to connect to QA Website.
+     * @option blocker  If given and in case of error the command will fail.
      */
     public function drupalCheckPermissions(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
+        'blocker' => InputOption::VALUE_NONE,
     ]): int
     {
+        $blocker = $options['blocker'] === true ?: $this->getConfig()->get('drupal.permissions.blocker');
         if (!empty($options['endpoint'])) {
             Website::setUrl($options['endpoint']);
         }
         if (empty($auth = Website::apiAuth())) {
             return ResultData::EXITCODE_ERROR;
         }
-        $result = Website::get(Website::url() . '/api/v1/forbidden-permissions', $auth);
-        $data = json_decode($result, true);
+        $data = Website::get(Website::url() . '/api/v1/forbidden-permissions', $auth);
+        $data = json_decode($data, true);
         if (empty($data) || !isset($data['forbidden_permissions'])) {
             return ResultData::EXITCODE_ERROR;
         }
+        $forbiddenPermissions = $data['forbidden_permissions'];
 
-        $permissions = $this->taskExec($this->getBin('drush'))
+        $roles = $this->taskExec($this->getBin('drush'))
             ->arg('role:list')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
-        $permissions = (array) Yaml::parse($permissions);
+        $roles = (array) Yaml::parse($roles);
 
         $fail = false;
-        foreach ($permissions as $data) {
-            foreach ($data['perms'] ?? [] as $permission) {
-                if (in_array($permission, $data['forbidden_permissions'])) {
+        foreach ($roles as $role) {
+            foreach ($role['perms'] ?? [] as $permission) {
+                if (in_array($permission, $forbiddenPermissions)) {
                     $io->say(sprintf(
                         "The role '%s' contains a forbidden permission '%s'",
-                        $data['label'],
+                        $role['label'],
                         $permission
                     ));
                     $fail = true;
@@ -560,7 +564,7 @@ class DrupalCommands extends AbstractCommands
             }
         }
 
-        return $fail ? ResultData::EXITCODE_ERROR : ResultData::EXITCODE_OK;
+        return $fail && $blocker ? ResultData::EXITCODE_ERROR : ResultData::EXITCODE_OK;
     }
 
     /**
