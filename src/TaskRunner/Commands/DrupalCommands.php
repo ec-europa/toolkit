@@ -147,7 +147,7 @@ class DrupalCommands extends AbstractCommands
 
         $tasks = [
             // Note that the chmod() method takes decimal values.
-            $this->taskFilesystemStack()->chmod($subdirPath, octdec('775'), 0000, true),
+            $this->taskFilesystemStack()->chmod($subdirPath, octdec('775')),
         ];
 
         if (file_exists($subdirPath . '/settings.php')) {
