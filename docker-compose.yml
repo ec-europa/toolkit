@@ -18,6 +18,7 @@ services:
       ASDA_USER:
       ASDA_PASSWORD:
       QA_API_BASIC_AUTH:
+      QA_API_AUTH_TOKEN:
       GITHUB_API_TOKEN:
       GITLAB_API_TOKEN:
       XDEBUG_CONFIG: client_host=host.docker.internal

@@ -82,11 +82,18 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:opts-review
      *
+     * @option endpoint The endpoint to use to connect to QA Website.
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function optsReview(ConsoleIO $io)
+    public function optsReview(ConsoleIO $io, array $options = [
+        'endpoint' => InputOption::VALUE_REQUIRED,
+    ])
     {
+        if (!empty($options['endpoint'])) {
+            Website::setUrl($options['endpoint']);
+        }
         $reviewOk = true;
         $parseOptsFile = self::parseOptsYml();
         if ($parseOptsFile === false) {
@@ -157,14 +164,14 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:requirements
      *
-     * @option endpoint The endpoint to get the requirements.
+     * @option endpoint The endpoint to use to connect to QA Website.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function toolkitRequirements(ConsoleIO $io, array $options = [
-        'endpoint' => InputOption::VALUE_OPTIONAL,
+        'endpoint' => InputOption::VALUE_REQUIRED,
     ])
     {
         $this->say("Checking Toolkit requirements:\n");
@@ -174,7 +181,7 @@ class ToolCommands extends AbstractCommands
         }
         $data = Website::requirements();
         if (empty($data)) {
-            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
             return 1;
         }
         if (!isset($data['toolkit'])) {
@@ -189,8 +196,11 @@ class ToolCommands extends AbstractCommands
         $php_check = ($isValid >= 0) ? 'OK' : 'FAIL';
 
         // Handle Toolkit version.
-        $toolkit_version = Toolkit::VERSION;
-        $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
+        if (!($toolkit_version = self::getPackagePropertyFromComposer('ec-europa/toolkit', 'version', 'packages-dev'))) {
+            $toolkit_check = 'FAIL (not found)';
+        } else {
+            $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
+        }
         // Handle Drupal version.
         if (!($drupal_version = self::getPackagePropertyFromComposer('drupal/core'))) {
             $drupal_check = 'FAIL (not found)';
@@ -198,60 +208,6 @@ class ToolCommands extends AbstractCommands
             $drupal_check = Semver::satisfies($drupal_version, $data['drupal']) ? 'OK' : 'FAIL';
         }
 
-        // Handle GitHub.
-        if (empty($token = getenv('GITHUB_API_TOKEN'))) {
-            $github_check = 'FAIL (Missing environment variable: GITHUB_API_TOKEN)';
-        } else {
-            $curl = curl_init('https://api.github.com/user');
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, ["Authorization: Token $token"]);
-            curl_setopt($curl, CURLOPT_USERAGENT, 'Quality Assurance');
-            $result = curl_exec($curl);
-            $result = (array) json_decode($result);
-            $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            curl_close($curl);
-            if ($code === 200) {
-                if (isset($result['private_gists'])) {
-                    $github_check = "OK ($code)";
-                } else {
-                    $github_check = "OK ($code) - No private data";
-                }
-            } else {
-                $github_check = "FAIL ($code) " . trim($result['message']);
-            }
-        }
-
-        // Handle GitLab.
-        if (empty($token = getenv('GITLAB_API_TOKEN'))) {
-            $gitlab_check = 'FAIL (Missing environment variable: GITLAB_API_TOKEN)';
-        } else {
-            $curl = curl_init('https://git.fpfis.tech.ec.europa.eu/api/v4/users?username=qa-dashboard-api');
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, ["PRIVATE-TOKEN: $token"]);
-            curl_setopt($curl, CURLOPT_USERAGENT, 'Quality Assurance');
-            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-            $result = curl_exec($curl);
-            $result = (array) json_decode($result);
-            $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            curl_close($curl);
-            if ($code === 200) {
-                $gitlab_check = "OK ($code)";
-            } else {
-                $gitlab_check = "FAIL ($code) " . trim($result['message']);
-            }
-        }
-
-        // Handle ASDA.
-        $asda_user = Toolkit::getAsdaUser();
-        $asda_pass = Toolkit::getAsdaPass();
-        if (!empty($asda_user) && !empty($asda_pass)) {
-            $asda_check = 'OK';
-        } else {
-            $asda_check = 'FAIL (Missing environment variable(s):';
-            $asda_check .= empty($asda_user) ? ' ASDA_USER' : '';
-            $asda_check .= empty($asda_pass) ? ' ASDA_PASSWORD' : '';
-            $asda_check .= ')';
-        }
         // Handle NEXTCLOUD.
         $nc_user = Toolkit::getNExtcloudUser();
         $nc_pass = Toolkit::getNExtcloudPass();
@@ -267,9 +223,6 @@ class ToolCommands extends AbstractCommands
         $io->title('Checking connections:');
         $io->definitionList(
             ['QA Endpoint access' => $endpoint_check],
-            ['GitHub oauth access' => $github_check],
-            ['GitLab oauth access' => $gitlab_check],
-            ['ASDA configuration' => $asda_check],
             ['NEXTCLOUD configuration' => $nextcloud_check],
         );
 
@@ -351,18 +304,16 @@ class ToolCommands extends AbstractCommands
                 $io->writeln('Invalid data returned from the endpoint.');
             } else {
                 $min_version = $data['toolkit'];
-                if ($toolkit_version) {
-                    $major = '' . intval(substr($toolkit_version, 0, 2));
-                    $min_versions = array_filter(explode('|', $min_version), function ($v) use ($major) {
-                        return str_contains(substr($v, 0, 2), $major);
-                    });
-                    if (count($min_versions) === 1) {
-                        $min_version = end($min_versions);
-                    }
+                $major = substr($toolkit_version, 0, strpos($toolkit_version, '.'));
+                $min_versions = array_filter(explode('|', $min_version), function ($v) use ($major) {
+                    return str_contains(substr($v, 0, strpos($v, '.') ?: null), $major);
+                });
+                if (count($min_versions) === 1) {
+                    $min_version = end($min_versions);
                 }
             }
         } else {
-            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
         }
 
         $version_check = Semver::satisfies($toolkit_version, $min_version) ? 'OK' : 'FAIL';
@@ -433,7 +384,7 @@ class ToolCommands extends AbstractCommands
     public function toolkitVendorList(ConsoleIO $io)
     {
         if (empty($data = Website::requirements())) {
-            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $io->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
             return ResultData::EXITCODE_ERROR;
         }
         if (!isset($data['vendor_list'])) {
@@ -601,17 +552,19 @@ class ToolCommands extends AbstractCommands
     ])
     {
         $return = 0;
+        if (!$this->getConfig()->get('toolkit.install_dependencies')) {
+            return $return;
+        }
         if (!file_exists('.opts.yml')) {
             return $return;
         }
-        $io->title('Installing dependencies');
         $opts = Yaml::parseFile('.opts.yml');
         $packages = $opts['extra_pkgs'] ?? [];
         if (empty($packages)) {
-            $io->writeln('No packages found, skipping.');
             return $return;
         }
 
+        $io->title('Installing dependencies');
         $print = $options['print'] === true;
         $verbose = $print ? VerbosityThresholdInterface::VERBOSITY_NORMAL : VerbosityThresholdInterface::VERBOSITY_DEBUG;
         $data = $install = [];

@@ -167,16 +167,17 @@ Procfile          text
 *.patch           -text
 
 # Exclude files from exporting
-.drone.yml         export-ignore
-.editorconfig      export-ignore
-.eslintrc.json     export-ignore
-.gitattributes     export-ignore
-.gitignore         export-ignore
-.gitkeep           export-ignore
-.github/           export-ignore
-tests/             export-ignore
-docker-compose.yml export-ignore
-phpcs.xml          export-ignore
-phpdoc.dist.xml    export-ignore
-phpmd.xml          export-ignore
-phpunit.xml.dist   export-ignore
+/.drone.yml         export-ignore
+/.editorconfig      export-ignore
+/.eslintrc.json     export-ignore
+/.gitattributes     export-ignore
+/.gitignore         export-ignore
+/.gitkeep           export-ignore
+/.github/           export-ignore
+/tests/             export-ignore
+/docker-compose.yml export-ignore
+/phpcs.xml          export-ignore
+/phpdoc.dist.xml    export-ignore
+/phpmd.xml          export-ignore
+/phpunit.xml.dist   export-ignore
+/runner.yml.dist    export-ignore

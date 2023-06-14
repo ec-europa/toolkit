@@ -27,7 +27,7 @@ final class DockerCommands extends AbstractCommands
      * This command allows developers to update the docker-compose.yml file taking in consideration:
      * - The service versions on the .opts.yml file (php_version, mysql_version, selenium_version, solr_version).
      * - The service versions currently on client's production.
-     * - Quality Assurance minimum version requirements and defaults (https://webgate.ec.europa.eu/fpfis/qa/requirements).
+     * - Quality Assurance minimum version requirements and defaults (https://digit-dqa.fpfis.tech.ec.europa.eu/requirements).
      *
      * Notes:
      *  If a version is provided in .opts.yml, this one must be used (a warning message is displayed if the versions are non-compliant or outdated with Quality Assurance requirements)
@@ -133,7 +133,7 @@ final class DockerCommands extends AbstractCommands
     {
         $data = Website::projectInformation($projectId);
         if (!$data) {
-            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            $this->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
             return [];
         }
 
@@ -152,7 +152,7 @@ final class DockerCommands extends AbstractCommands
     {
         $data = Website::requirements();
         if (empty($data)) {
-            throw new Exception('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            throw new Exception('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
         }
 
         return $data;

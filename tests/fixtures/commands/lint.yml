@@ -119,11 +119,13 @@
   expectations:
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/parallel-lint')
+          ->option('exclude', 'dist/')
+          ->option('exclude', '.cache/')
           ->option('exclude', 'vendor/')
           ->option('exclude', 'web/')
           ->option('-e', 'php,module,inc,theme,install')
           ->rawArg('.')
-        [Simulator] Running ./vendor/bin/parallel-lint --exclude vendor/ --exclude web/ -e 'php,module,inc,theme,install' .
+        [Simulator] Running ./vendor/bin/parallel-lint --exclude dist/ --exclude .cache/ --exclude vendor/ --exclude web/ -e 'php,module,inc,theme,install' .
 
 - command: 'toolkit:lint-php --options=show-deprecated'
   configuration: []
@@ -131,9 +133,11 @@
   expectations:
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/parallel-lint')
+          ->option('exclude', 'dist/')
+          ->option('exclude', '.cache/')
           ->option('exclude', 'vendor/')
           ->option('exclude', 'web/')
           ->option('-e', 'php,module,inc,theme,install')
           ->option('show-deprecated')
           ->rawArg('.')
-        [Simulator] Running ./vendor/bin/parallel-lint --exclude vendor/ --exclude web/ -e 'php,module,inc,theme,install' --show-deprecated .
+        [Simulator] Running ./vendor/bin/parallel-lint --exclude dist/ --exclude .cache/ --exclude vendor/ --exclude web/ -e 'php,module,inc,theme,install' --show-deprecated .

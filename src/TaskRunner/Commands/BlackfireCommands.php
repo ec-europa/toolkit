@@ -8,6 +8,8 @@ use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
 use Robo\ResultData;
+use Robo\Symfony\ConsoleIO;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -21,14 +23,21 @@ class BlackfireCommands extends AbstractCommands
      *
      * @command toolkit:run-blackfire
      *
+     * @option endpoint The endpoint to use to connect to QA Website.
+     *
      * @aliases tbf, tk-bfire
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function toolkitRunBlackfire()
+    public function toolkitRunBlackfire(ConsoleIO $io, array $options = [
+        'endpoint' => InputOption::VALUE_REQUIRED,
+    ])
     {
+        if (!empty($options['endpoint'])) {
+            Website::setUrl($options['endpoint']);
+        }
         $base_url = $this->getConfig()->get('drupal.base_url');
         $project_id = $this->getConfig()->get('toolkit.project_id');
         $problems = [];
@@ -55,7 +64,7 @@ class BlackfireCommands extends AbstractCommands
         }
 
         if (!empty($problems)) {
-            $this->say("Problems found:\n" . implode("\n", $problems));
+            $io->say("Problems found:\n" . implode("\n", $problems));
             return new ResultData(0);
         }
 
@@ -68,14 +77,14 @@ class BlackfireCommands extends AbstractCommands
         // Limit the pages up to 10 items.
         $pages = array_slice((array) $pages, 0, 10);
         foreach ($pages as $page) {
-            $this->say("Checking page: {$base_url}{$page}");
+            $io->say("Checking page: {$base_url}{$page}");
 
             $raw = $this->taskExec($command . $page)
                 ->silent(true)->run()->getMessage();
             $result = json_decode($raw, true);
 
             if (empty($result['_links']['graph_url']['href'])) {
-                $this->say('Something went wrong, please contact the QA team.');
+                $io->say('Something went wrong, please contact the QA team.');
                 return new ResultData(0);
             }
 
@@ -109,7 +118,7 @@ class BlackfireCommands extends AbstractCommands
                 $data['network'],
                 $data['sql']
             );
-            $this->writeln($msg);
+            $io->writeln($msg);
 
             // Handle repo name.
             if (empty($repo = getenv('DRONE_REPO'))) {
@@ -121,11 +130,14 @@ class BlackfireCommands extends AbstractCommands
 
             // Send payload to QA website.
             $url = Website::url();
-            if (empty($basicAuth = Website::basicAuth())) {
-                $this->writeln('Failed to connect to the endpoint. Required env var QA_API_BASIC_AUTH.');
+            if (empty($auth = Website::apiAuth())) {
+                $io->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
                 return new ResultData(0);
             }
             if (!empty($repo)) {
+                $commit = !empty(getenv('DRONE_COMMIT')) ? getenv('DRONE_COMMIT') : '';
+                $link = !empty(getenv('DRONE_PULL_REQUEST')) ? getenv('DRONE_PULL_REQUEST') : '';
+                $pull_request = !empty(getenv('DRONE_COMMIT_LINK')) ? getenv('DRONE_COMMIT_LINK') : '';
                 $payload = [
                     '_links' => [
                         'type' => [
@@ -147,17 +159,17 @@ class BlackfireCommands extends AbstractCommands
                     'field_blackfire_cpu_time' => [['value' => $data['cpu_time']]],
                     'field_blackfire_network' => [['value' => $data['network']]],
                     'field_blackfire_sql' => [['value' => $data['sql']]],
-                    'field_blackfire_commit_hash' => [['value' => getenv('DRONE_COMMIT') ?? '']],
-                    'field_blackfire_commit_link' => [['value' => getenv('DRONE_PULL_REQUEST') ?? '']],
-                    'field_blackfire_pr' => [['value' => getenv('DRONE_COMMIT_LINK') ?? '']],
+                    'field_blackfire_commit_hash' => [['value' => $commit]],
+                    'field_blackfire_commit_link' => [['value' => $link]],
+                    'field_blackfire_pr' => [['value' => $pull_request]],
                 ];
-                $payload_response = Website::post($payload, $basicAuth);
+                $payload_response = Website::post($payload, $auth);
                 if (!empty($payload_response) && $payload_response === '201') {
-                    $this->writeln("Payload sent to QA website: $payload_response");
+                    $io->writeln("Payload sent to QA website: $payload_response");
                 } else {
-                    $this->writeln('Fail to send the payload, HTTP code: ' . $payload_response);
+                    $io->writeln('Fail to send the payload, HTTP code: ' . $payload_response);
                 }
-                $this->writeln('');
+                $io->writeln('');
             }
         }
 

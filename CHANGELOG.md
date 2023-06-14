@@ -1,5 +1,64 @@
 # Toolkit change log
 
+## Version 9.10.0
+  - DQA-7047: Deploy commands run drush cr as first.
+  - DQA-5985: Update default value of toolkit to match the new environment.
+
+## Version 9.9.4
+  - DQA-7005: Fix regression with QA_WEBSITE_URL override.
+  - DQA-7025: Fix curl redirection behaviour.
+  - DQA-7043: Fix missing --endpoint option to all target that connect to our API.
+
+## Version 9.9.3
+  - DQA-6996: Fix regression with php lint.
+
+## Version 9.9.2
+  - DQA-6954: Remove sudo references.
+  - DQA-6889: runner.yml.dist - forcing reverse proxy settings for all repo.
+
+## Version 9.9.1
+  - DQA-6871: GitHooks detect docker-compose VS docker compose.
+  - DQA-6930: Toolkit allow to skip abandoned components.
+
+## Version 9.9.0
+  - DQA-6736: PHPStan do not use includes if phpstan/extension-installer exist.
+  - DQA-6762: Toolkit requirements should not use constant to validate version.
+  - DQA-6670: GitHooks pass $io to extending class methods.
+  - DQA-6677: Use git hook commit-msg instead of prepare-commit-msg.
+  - DQA-6795: Consider mydumper in checkForNewerDump.
+  - DQA-6808: GitHooks identify if running docker.
+  - DQA-6792: Document how configuration works.
+  - DQA-6759: Fix outdated packages command.
+
+## Version 9.8.1
+  - DQA-6717: Fix version check to allow version without dot.
+  - DQA-6651: Command build-dist make tag and sha optional.
+  - DQA-6694: PHPStan drupal root dynamic & missing ruleset.
+
+## Version 9.8.0
+  - DQA-6404: Git pre-commit re-use phpcs.xml file.
+  - DQA-6403: PHPStan allow to run in standalone.
+  - DQA-6544: Refactor command run-deploy to not use Robo config.
+  - DQA-6602: Control install-dependencies in config.
+
+## Version 9.7.1
+  - DQA-0: Prevent gitattributes from ignoring nested files.
+  - DQA-0: Apply branch condition in drone.
+
+## Version 9.6.1
+  - DQA-5962: Refactor configurations load.
+
+## Version 9.6.0
+  - DQA-6074: Create .gitattributes file for toolkit.
+  - DQA-5407: Monitor abandoned components.
+  - DQA-6133: Component check to use options no-dev & locked.
+  - DQA-6261: Include support for key_auth in toolkit.
+  - DQA-6344: ConfigurationCommands when overriding commands.
+  - DQA-6355: Requirements remove api calls.
+  - DQA-5962: Delayed task list to allow command hooks to run before.
+  - DQA-6359: Load both runner.yml and runner.yml.dist files.
+  - DQA-5962: Allow runner.yml to override all other configs.
+
 ## Version 9.5.0
   - DQA-6103: Add configuration command to run drush commands.
   - DQA-6085: Rename toolkit:import-config into drupal:config-import.

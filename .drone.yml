@@ -2,6 +2,8 @@ clone:
   git:
     image: registry.fpfis.eu/drone-plugins/git:next
 
+branches: [ feature/*, release/* ]
+
 workspace:
   base: /test
   path: toolkit
@@ -32,7 +34,8 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
       - composer self-update --${COMPOSER_VERSION}
-      - composer install --ansi --no-suggest --no-progress
+      - composer install --ansi --no-progress
+      - composer outdated --no-dev --locked --direct --minor-only
     when:
       matrix:
         COMPOSER_BOUNDARY: highest
@@ -46,7 +49,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
       - composer self-update --${COMPOSER_VERSION}
-      - composer update --prefer-lowest --prefer-stable --ansi --no-suggest --no-progress
+      - composer update --prefer-lowest --prefer-stable --ansi --no-progress
     when:
       matrix:
         COMPOSER_BOUNDARY: lowest
@@ -68,7 +71,7 @@ pipeline:
   phpunit:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
-    secrets: [ qa_api_basic_auth, github_api_token, gitlab_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass ]
+    secrets: [ qa_api_basic_auth, qa_api_auth_token, github_api_token, gitlab_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass ]
     environment: *env
     commands:
       - ./run toolkit:test-phpunit --execution=parallel
@@ -88,3 +91,10 @@ pipeline:
     environment: *env
     commands:
       - ./run toolkit:lint-php
+
+  phpstan:
+    group: test
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    environment: *env
+    commands:
+      - ./run toolkit:test-phpstan

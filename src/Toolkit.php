@@ -14,7 +14,7 @@ final class Toolkit
     /**
      * Constant holding the current version.
      */
-    public const VERSION = '9.5.0';
+    public const VERSION = '9.10.0';
 
     /**
      * Returns the Toolkit root.
@@ -105,9 +105,9 @@ final class Toolkit
      */
     public static function filterFolders(array &$files)
     {
-        $files = array_filter($files, function ($folder) {
+        $files = array_values(array_filter($files, function ($folder) {
             return file_exists($folder);
-        });
+        }));
     }
 
     /**
@@ -123,23 +123,6 @@ final class Toolkit
         if (is_string($data)) {
             $data = array_map('trim', explode($sep, $data));
         }
-    }
-
-    /**
-     * Return the current Robo version.
-     *
-     * @return string
-     *   A string with the Robo version, empty string if could not find the version,
-     */
-    public static function getRoboVersion()
-    {
-        $version = '';
-        if (defined('Robo::VERSION')) {
-            $version = constant('Robo::VERSION');
-        } elseif (method_exists(Robo::class, 'version')) {
-            $version = Robo::version();
-        }
-        return $version;
     }
 
 }

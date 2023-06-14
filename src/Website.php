@@ -14,22 +14,31 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class Website
 {
+
+    protected const AUTHENTICATION_ENV_KEYS = [
+        'auth' => 'QA_API_AUTH_TOKEN',
+        'basic' => 'QA_API_BASIC_AUTH',
+    ];
+
     /**
      * The default base url.
      *
      * @var string
      */
-    protected static string $url = 'https://webgate.ec.europa.eu/fpfis/qa';
+    protected static string $url = 'https://digit-dqa.fpfis.tech.ec.europa.eu';
 
     /**
      * Returns the QA website base url.
+     *
+     * If the environment variable QA_WEBSITE_URL exists, it will be used.
      *
      * @return string
      *   The base url.
      */
     public static function url(): string
     {
-        return self::$url;
+        $url = getenv('QA_WEBSITE_URL');
+        return !empty($url) ? $url : self::$url;
     }
 
     /**
@@ -44,38 +53,28 @@ class Website
     }
 
     /**
-     * Return the QA API BASIC AUTH from token or from questions.
+     * Return the API Authorization instance.
      *
-     * @return string
-     *   The Basic auth or empty string if fails.
+     * @return AuthorizationInterface|null
+     *   The API authorization instance or empty string if fails.
      */
-    public static function basicAuth(): string
+    public static function apiAuth(): AuthorizationInterface|null
     {
-        if (!empty($GLOBALS['basic_auth'])) {
-            return $GLOBALS['basic_auth'];
+        foreach (self::AUTHENTICATION_ENV_KEYS as $authType => $authenticationEnv) {
+            if (!empty($auth = getenv($authenticationEnv))) {
+                return AuthorizationFactory::create($authType, $auth);
+            }
         }
 
-        $auth = getenv('QA_API_BASIC_AUTH');
-        if (empty($auth)) {
-            $io = new SymfonyStyle(new ArgvInput(), new ConsoleOutput());
-            $io->writeln('Missing env var QA_API_BASIC_AUTH, asking for access.');
-            if (empty($user = $io->ask('Please insert your username:'))) {
-                $io->writeln('<error>The username cannot be empty!</error>');
-                return '';
-            }
-            if (empty($pass = $io->askHidden('Please insert your password:'))) {
-                $io->writeln('<error>The password cannot be empty!</error>');
-                return '';
-            }
-            $auth = base64_encode("$user:$pass");
-            $io->writeln([
-                'Your token has been generated, please add it to your environment variables.',
-                '    export QA_API_BASIC_AUTH="' . $auth . '"',
-            ]);
-            $GLOBALS['basic_auth'] = $auth;
-        }
+        $io = new SymfonyStyle(new ArgvInput(), new ConsoleOutput());
+        $io->writeln([
+            'Missing env var QA_API_AUTH_TOKEN.',
+            'Please access your profile page on QA Website and on "Authentication Token" tab, generate a "QA User Authentication Token"',
+            'Please add your token to your environment variables.',
+            '    export QA_API_AUTH_TOKEN="YOUR_AUTHENTICATION_TOKEN"',
+        ]);
 
-        return $auth;
+        return null;
     }
 
     /**
@@ -86,8 +85,8 @@ class Website
      *
      * @param string $url
      *   The QA endpoint url.
-     * @param string $basicAuth
-     *   The basic auth.
+     * @param AuthorizationInterface|null $auth
+     *   The authorization instance or null.
      *
      * @return string
      *   The endpoint content, or empty string if no session is generated.
@@ -97,7 +96,7 @@ class Website
      *
      * @SuppressWarnings(PHPMD.MissingImport)
      */
-    public static function get(string $url, string $basicAuth = ''): string
+    public static function get(string $url, AuthorizationInterface $auth = null): string
     {
         if (!($token = self::getSessionToken())) {
             return '';
@@ -106,11 +105,12 @@ class Website
         $content = '';
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 120);
         curl_setopt($curl, CURLOPT_TIMEOUT, 120);
-        if ($basicAuth !== '') {
+        if ($auth instanceof AuthorizationInterface) {
             $header = [
-                "Authorization: Basic $basicAuth",
+                $auth->getAuthorizationHeader(),
                 "X-CSRF-Token: $token",
             ];
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
@@ -127,7 +127,7 @@ class Website
 
                 // Upon other status codes.
                 default:
-                    if ($basicAuth === '') {
+                    if (!$auth instanceof AuthorizationInterface) {
                         $message = 'Curl request to endpoint "%s" returned a %u.';
                         throw new Exception(sprintf($message, $url, $statusCode));
                     }
@@ -178,15 +178,15 @@ class Website
      *
      * @param array $fields
      *   Data to send.
-     * @param string $auth
-     *   The Basic auth.
+     * @param AuthorizationInterface $auth
+     *   The authorization instance.
      *
      * @return string
      *   The endpoint response code, or empty string if no session is generated.
      *
      * @throws Exception
      */
-    public static function post(array $fields, string $auth): string
+    public static function post(array $fields, AuthorizationInterface $auth): string
     {
         if (!($token = self::getSessionToken())) {
             return '';
@@ -195,12 +195,13 @@ class Website
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields, JSON_UNESCAPED_SLASHES));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
         curl_setopt($ch, CURLOPT_TIMEOUT, 120);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/hal+json',
             "X-CSRF-Token: $token",
-            "Authorization: Basic $auth",
+            $auth->getAuthorizationHeader()
         ]);
         curl_exec($ch);
         $code = (string) curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -228,7 +229,7 @@ class Website
         if (!empty($GLOBALS['projects'][$project_id])) {
             return $GLOBALS['projects'][$project_id];
         }
-        if (empty($auth = self::basicAuth())) {
+        if (empty($auth = self::apiAuth())) {
             return false;
         }
         $endpoint = "/api/v1/project/ec-europa/$project_id-reference/information";
@@ -262,7 +263,7 @@ class Website
         } elseif (!empty($GLOBALS['constraints'])) {
             return $GLOBALS['constraints'];
         }
-        if (empty($auth = self::basicAuth())) {
+        if (empty($auth = self::apiAuth())) {
             return false;
         }
         $endpoint = '/api/v1/project/ec-europa/' . $project_id . '-reference/information/constraints';
@@ -290,7 +291,7 @@ class Website
         if (!empty($GLOBALS['requirements'])) {
             return $GLOBALS['requirements'];
         }
-        if (empty($auth = self::basicAuth())) {
+        if (empty($auth = self::apiAuth())) {
             return false;
         }
         $response = self::get(self::url() . '/api/v1/toolkit-requirements', $auth);

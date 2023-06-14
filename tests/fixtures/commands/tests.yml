@@ -2,13 +2,6 @@
   configuration: []
   resources: []
   expectations:
-    - contains: ">  Could not find a Drupal installation, skipping."
-
-- command: 'toolkit:test-phpstan'
-  configuration: []
-  resources:
-    - mkdir: web
-  expectations:
     - contains: |
         [Simulator] Simulating File\Write('phpstan.neon')
           ->text('parameters: ... ')

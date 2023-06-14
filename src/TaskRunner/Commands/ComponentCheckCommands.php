@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
+use EcEuropa\Toolkit\DrupalReleaseHistory;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
@@ -12,6 +13,11 @@ use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Command class for toolkit:component-check
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class ComponentCheckCommands extends AbstractCommands
 {
     protected bool $commandFailed = false;
@@ -19,20 +25,23 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $recommendedFailed = false;
     protected bool $insecureFailed = false;
     protected bool $outdatedFailed = false;
+    protected bool $abandonedFailed = false;
     protected bool $devVersionFailed = false;
     protected bool $devCompRequireFailed = false;
     protected bool $drushRequireFailed = false;
     protected bool $skipOutdated = false;
+    protected bool $skipAbandoned = false;
     protected bool $skipInsecure = false;
     protected bool $skipRecommended = true;
     protected int $recommendedFailedCount = 0;
+    protected array $installed;
 
     /**
      * Check composer.json for components that are not whitelisted/blacklisted.
      *
      * @command toolkit:component-check
      *
-     * @option endpoint     (Deprecated) Specify an endpoint to use.
+     * @option endpoint     The endpoint to use to connect to QA Website.
      * @option test-command If set the command will load test packages.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -40,20 +49,23 @@ class ComponentCheckCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function componentCheck(ConsoleIO $io, array $options = [
-        'endpoint' => InputOption::VALUE_OPTIONAL,
+        'endpoint' => InputOption::VALUE_REQUIRED,
         'test-command' => false,
     ])
     {
         if (!empty($options['endpoint'])) {
             Website::setUrl($options['endpoint']);
         }
-        if (empty($basicAuth = Website::basicAuth())) {
+        if (empty($auth = Website::apiAuth())) {
             return 1;
         }
 
         $commitTokens = ToolCommands::getCommitTokens();
         if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
             $this->skipOutdated = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
+            $this->skipAbandoned = true;
         }
         if (isset($commitTokens['skipInsecure'])) {
             $this->skipInsecure = true;
@@ -67,12 +79,12 @@ class ComponentCheckCommands extends AbstractCommands
 
         $status = 0;
         $endpoint = Website::url();
-        $result = Website::get($endpoint . '/api/v1/package-reviews?version=8.x', $basicAuth);
+        $result = Website::get($endpoint . '/api/v1/package-reviews?version=8.x', $auth);
         $data = json_decode($result, true);
         $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 
         // To test this command execute it with the --test-command option:
-        // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://webgate.ec.europa.eu/fpfis/qa"
+        // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://digit-dqa.fpfis.tech.ec.europa.eu"
         // Then we provide an array in the packages that fails on each type of validation.
         if ($options['test-command']) {
             $composerLock['packages'] = $this->testPackages();
@@ -84,6 +96,7 @@ class ComponentCheckCommands extends AbstractCommands
             'Recommended',
             'Insecure',
             'Outdated',
+            'Abandoned',
         ];
         foreach ($checks as $check) {
             $io->title("Checking $check components.");
@@ -168,12 +181,13 @@ class ComponentCheckCommands extends AbstractCommands
             $this->devCompRequireFailed ||
             $this->drushRequireFailed ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
+            (!$this->skipAbandoned && $this->abandonedFailed) ||
             (!$this->skipInsecure && $this->insecureFailed)
         ) {
             $io->error([
                 'Failed the components check, please verify the report and update the project.',
                 'See the list of packages at',
-                'https://webgate.ec.europa.eu/fpfis/qa/package-reviews.',
+                'https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews.',
             ]);
             $status = 1;
         }
@@ -183,16 +197,17 @@ class ComponentCheckCommands extends AbstractCommands
             $io->success('Components checked, nothing to report.');
         } else {
             $io->note([
-                'It is possible to bypass the insecure and outdated check:',
-                '- Insecure check:',
-                '   - by providing a token in the commit message: [SKIP-INSECURE]',
-                '- Outdated check:',
-                '   - by providing a token in the commit message: [SKIP-OUTDATED]',
-                '   - Or, update the configuration in the runner.yml.dist as shown below: ',
-                '        toolkit:',
-                '          components:',
-                '            outdated:',
-                '              check: false',
+                'It is possible to bypass the insecure, outdated and abandoned check:',
+                '- Using commit message to skip Insecure and/or Outdated check:',
+                '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
+                '',
+                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated or Abandoned: ',
+                '   toolkit:',
+                '     components:',
+                '       outdated:',
+                '         check: false',
+                '       abandoned:',
+                '         check: false',
             ]);
         }
 
@@ -208,12 +223,14 @@ class ComponentCheckCommands extends AbstractCommands
 
         $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
         $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
+        $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
 
         $io->definitionList(
             ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
             ['Recommended module check' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
             ['Insecure module check' => $this->getFailedOrPassed($this->insecureFailed) . $skipInsecure],
             ['Outdated module check' => $this->getFailedOrPassed($this->outdatedFailed) . $skipOutdated],
+            ['Abandoned module check' => $this->getFailedOrPassed($this->abandonedFailed) . $skipAbandoned],
             ['Dev module check' => $this->getFailedOrPassed($this->devVersionFailed)],
             ['Evaluation module check' => $this->getFailedOrPassed($this->commandFailed)],
             ['Dev module in require-dev check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
@@ -301,9 +318,6 @@ class ComponentCheckCommands extends AbstractCommands
      * @param array $modules The modules list.
      *
      * @throws \Robo\Exception\TaskException
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function componentMandatory(array $modules)
     {
@@ -366,9 +380,6 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @param array $modules The modules list.
      * @param array $packages The packages to validate.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function componentRecommended(array $modules, array $packages)
     {
@@ -391,7 +402,7 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->recommendedFailed = true;
             }
 
-            $this->say("See the list of recommended packages at\nhttps://webgate.ec.europa.eu/fpfis/qa/requirements.");
+            $this->say("See the list of recommended packages at\nhttps://digit-dqa.fpfis.tech.ec.europa.eu/requirements.");
             $this->recommendedFailedCount = count($diffRecommended);
         }
 
@@ -444,7 +455,12 @@ class ComponentCheckCommands extends AbstractCommands
                     continue;
                 }
             }
-            $historyTerms = $this->getPackageDetails($name, $package['version'], '8.x');
+            $drupalReleaseHistory = new DrupalReleaseHistory();
+            $historyTerms = $drupalReleaseHistory->getPackageDetails($name, $package['version'], '8.x');
+            if ($historyTerms === 1) {
+                $this->say("No release history found for package $name.");
+                continue;
+            }
             if (!empty($historyTerms) && (empty($historyTerms['terms']) || !in_array('insecure', $historyTerms['terms']))) {
                 $messages[] = "$msg (Confirmation failed, ignored)";
                 continue;
@@ -469,31 +485,34 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Helper function to check component's review information.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function componentOutdated()
     {
-        $result = $this->taskExec('composer outdated --direct --minor-only --format=json')
+        $result = $this->taskExec('composer outdated --no-dev --locked --direct --minor-only --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
 
         $outdatedPackages = json_decode($result, true);
-
-        if (!empty($outdatedPackages['installed'])) {
+        // Using the option --locked, we must check for the "locked" key.
+        if (!empty($outdatedPackages['locked'])) {
             if (is_array($outdatedPackages)) {
-                foreach ($outdatedPackages['installed'] as $outdatedPackage) {
-                    if (!array_key_exists('latest', $outdatedPackage)) {
-                        $this->writeln("Package {$outdatedPackage['name']} does not provide information about last version.");
-                    } elseif (array_key_exists('warning', $outdatedPackage)) {
-                        $this->writeln($outdatedPackage['warning']);
-                        $this->outdatedFailed = true;
-                    } else {
-                        $this->writeln("Package {$outdatedPackage['name']} with version installed {$outdatedPackage["version"]} is outdated, please update to last version - {$outdatedPackage['latest']}");
-                        $this->outdatedFailed = true;
+                foreach ($outdatedPackages['locked'] as $outdatedPackage) {
+                    // Exclude abandoned packages, see $this->componentAbandoned().
+                    if ($outdatedPackage['abandoned'] === false) {
+                        if (!array_key_exists('latest', $outdatedPackage)) {
+                            $this->writeln("Package {$outdatedPackage['name']} does not provide information about last version.");
+                        } elseif (array_key_exists('warning', $outdatedPackage)) {
+                            $this->writeln($outdatedPackage['warning']);
+                            $this->outdatedFailed = true;
+                        } else {
+                            $this->writeln("Package {$outdatedPackage['name']} with version installed {$outdatedPackage["version"]} is outdated, please update to last version - {$outdatedPackage['latest']}");
+                            $this->outdatedFailed = true;
+                        }
                     }
                 }
+
+                // Make result available outside function.
+                $this->installed = $outdatedPackages['locked'];
             }
         }
 
@@ -503,63 +522,23 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
-     * Call release history of d.org to confirm security alert.
-     *
-     * @param string $package
-     *   The package to check.
-     * @param string $version
-     *   The version to check.
-     * @param string $core
-     *   The package core version.
-     *
-     * @return array|int
-     *   Array with package info from d.org, 1
-     *   if no release history found.
+     * Helper function to check component's review information.
      */
-    protected function getPackageDetails(string $package, string $version, string $core)
+    protected function componentAbandoned()
     {
-        $name = explode('/', $package)[1];
-        // Drupal core is an exception, we should use '/drupal/current'.
-        if ($package === 'drupal/core') {
-            $url = 'https://updates.drupal.org/release-history/drupal/current';
-        } else {
-            $url = 'https://updates.drupal.org/release-history/' . $name . '/' . $core;
-        }
-
-        $releaseHistory = $fullReleaseHistory = [];
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type' => 'application/hal+json']);
-        $result = curl_exec($curl);
-
-        if ($result !== false) {
-            $fullReleaseHistory[$name] = simplexml_load_string($result);
-            $terms = [];
-            foreach ($fullReleaseHistory[$name]->releases as $release) {
-                foreach ($release as $releaseItem) {
-                    $versionTmp = str_replace($core . '-', '', (string) $releaseItem->version);
-
-                    if (!is_null($version) && Semver::satisfies($versionTmp, $version)) {
-                        foreach ($releaseItem->terms as $term) {
-                            foreach ($term as $termItem) {
-                                $terms[] = strtolower((string) $termItem->value);
-                            }
-                        }
-
-                        $releaseHistory = [
-                            'name' => $name,
-                            'version' => (string) $releaseItem->versions,
-                            'terms' => $terms,
-                            'date' => (string) $releaseItem->date,
-                        ];
-                    }
+        $installedPackages = $this->installed ?? [];
+        if (!empty($installedPackages)) {
+            foreach ($installedPackages as $outdatedPackage) {
+                // Only show abandoned packages.
+                if ($outdatedPackage['abandoned'] != false) {
+                    $this->writeln($outdatedPackage['warning']);
+                    $this->abandonedFailed = true;
                 }
             }
-            return $releaseHistory;
         }
-
-        $this->say('No release history found.');
-        return 1;
+        if (!$this->abandonedFailed) {
+            $this->say('Abandoned components check passed.');
+        }
     }
 
     /**

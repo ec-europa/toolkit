@@ -114,55 +114,17 @@
           - { task: process, source: behat.yml.dist, destination: behat.yml }
   resources: []
   expectations:
-    robo4:
-      - contains: |
-          Description:
-            Setup the behat file
+    - string_contains: |
+        Description:
+          Setup the behat file
 
-          Usage:
-            example:full
-            full
-            example:full --simulate
-
-          Options:
-            -h, --help                           Display help for the given command. When no command is given display help for the list command
-            -q, --quiet                          Do not output any message
-            -V, --version                        Display this application version
-                --ansi|--no-ansi                 Force (or disable --no-ansi) ANSI output
-            -n, --no-interaction                 Do not ask any interactive question
-                --simulate                       Run in simulated mode (show what would have happened).
-                --progress-delay=PROGRESS-DELAY  Number of seconds before progress bar is displayed in long-running task collections. Default: 2s. [default: 2]
-            -D, --define=DEFINE                  Define a configuration item value. (multiple values allowed)
-                --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox/ConfigurationCommandsTest"]
-            -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
-
-          Help:
-            Some help text
-    robo3:
-      - contains: |
-          Description:
-            Setup the behat file
-
-          Usage:
-            example:full
-            full
-            example:full --simulate
-
-          Options:
-            -h, --help                           Display this help message
-            -q, --quiet                          Do not output any message
-            -V, --version                        Display this application version
-                --ansi                           Force ANSI output
-                --no-ansi                        Disable ANSI output
-            -n, --no-interaction                 Do not ask any interactive question
-                --simulate                       Run in simulated mode (show what would have happened).
-                --progress-delay=PROGRESS-DELAY  Number of seconds before progress bar is displayed in long-running task collections. Default: 2s. [default: 2]
-            -D, --define=DEFINE                  Define a configuration item value. (multiple values allowed)
-                --working-dir=WORKING-DIR        Working directory, defaults to current working directory. [default: "/test/toolkit/tests/sandbox/ConfigurationCommandsTest"]
-            -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
-
-          Help:
-            Some help text
+        Usage:
+          example:full
+          full
+          example:full --simulate
+    - string_contains: |
+        Help:
+          Some help text
 
 - command: 'test:tasks'
   configuration:
@@ -302,3 +264,159 @@
   expectations:
     - string_contains: |
         [Exec] Running echo 'This command is overridden'
+
+- command: 'config drupal'
+  configuration: []
+  resources:
+    - file: runner.yml.dist
+      content: |
+        drupal:
+          root: 'web'
+          base_url: 'http://web:8080'
+    - file: runner.yml
+      content: |
+        drupal:
+          root: 'build'
+  expectations:
+    - string_contains: "root: build"
+    - string_contains: "base_url: 'http://web:8080'"
+
+- command: 'config action'
+  configuration: []
+  resources:
+    - file: runner.yml.dist
+      content: |
+        color: red
+        action: 'Color is ${color}'
+    - file: runner.yml
+      content: |
+        color: yellow
+    - file: config/runner/colors.yml
+      content: |
+        color: blue
+  expectations:
+    - string_contains: "Color is yellow"
+
+- command: 'config toolkit.test.phpcs'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        mode: phpcs
+        config: phpcs.xml
+        ignore_annotations: false
+        show_sniffs: false
+        standards:
+          - ./vendor/drupal/coder/coder_sniffer/Drupal
+          - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
+          - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+        ignore_patterns:
+          - dist/
+          - .cache/
+          - vendor/
+          - web/
+          - node_modules/
+          - config/
+          - '*.min.css'
+          - '*.min.js'
+        triggered_by:
+          - php
+          - module
+          - inc
+          - theme
+          - profile
+          - install
+          - yml
+        files:
+          - ./lib
+          - ./resources
+          - ./src
+
+- command: 'config toolkit.test.phpcs'
+  configuration: []
+  resources:
+    - file: runner.yml.dist
+      content: |
+        toolkit:
+          test:
+            phpcs:
+              files:
+                - file1
+                - file2
+  expectations:
+    - contains: |
+        mode: phpcs
+        config: phpcs.xml
+        ignore_annotations: false
+        show_sniffs: false
+        standards:
+          - ./vendor/drupal/coder/coder_sniffer/Drupal
+          - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
+          - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+        ignore_patterns:
+          - dist/
+          - .cache/
+          - vendor/
+          - web/
+          - node_modules/
+          - config/
+          - '*.min.css'
+          - '*.min.js'
+        triggered_by:
+          - php
+          - module
+          - inc
+          - theme
+          - profile
+          - install
+          - yml
+        files:
+          - file1
+          - file2
+    - not_string_contains: ./src
+
+- command: 'toolkit:test-behat --simulate'
+  configuration: []
+  resources:
+    - file: runner.yml.dist
+      content: |
+        toolkit:
+          test:
+            behat:
+              from: test-behat.yml.dist
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:install-dependencies')
+        [Simulator] Running ./vendor/bin/run toolkit:install-dependencies
+        [Simulator] Simulating EcEuropa\Toolkit\Task\File\Process('test-behat.yml.dist', 'behat.yml')
+        [Simulator] Running ./vendor/bin/behat --profile=default --strict --dry-run
+        [Simulator] Simulating Exec('./vendor/bin/behat')
+          ->options(array (
+            'profile' => 'default',
+            'strict' => NULL,
+          ), '=')
+        [Simulator] Running ./vendor/bin/behat --profile=default --strict
+
+- command: 'toolkit:test-behat --simulate'
+  configuration: []
+  resources:
+    - touch: test-behat.yml.dist
+    - file: runner.yml.dist
+      content: |
+        command:
+          toolkit:
+            test-behat:
+              options:
+                from: test-behat.yml.dist
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:install-dependencies')
+        [Simulator] Running ./vendor/bin/run toolkit:install-dependencies
+        [Simulator] Simulating EcEuropa\Toolkit\Task\File\Process('test-behat.yml.dist', 'behat.yml')
+        [Simulator] Running ./vendor/bin/behat --profile=default --strict --dry-run
+        [Simulator] Simulating Exec('./vendor/bin/behat')
+          ->options(array (
+            'profile' => 'default',
+            'strict' => NULL,
+          ), '=')
+        [Simulator] Running ./vendor/bin/behat --profile=default --strict
