@@ -14,7 +14,7 @@
           ->append()
           ->text(' ... ')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('web/sites/default', 509, 0, 1)
+          ->chmod('web/sites/default', 509)
 
 - command: 'drupal:settings-setup --root=website'
   configuration: []
@@ -32,7 +32,7 @@
           ->append()
           ->text(' ... ')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('website/sites/default', 509, 0, 1)
+          ->chmod('website/sites/default', 509)
 
 - command: 'drupal:settings-setup --sites-subdir=sub_dir'
   configuration: []
@@ -50,7 +50,7 @@
         ->append()
         ->text(' ... ')
         [Simulator] Simulating Filesystem\FilesystemStack()
-        ->chmod('web/sites/sub_dir', 509, 0, 1)
+        ->chmod('web/sites/sub_dir', 509)
 
 - command: 'drupal:settings-setup --force'
   configuration: []
@@ -68,7 +68,7 @@
           ->append()
           ->text(' ... ')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('web/sites/default', 509, 0, 1)
+          ->chmod('web/sites/default', 509)
 
 - command: 'drupal:settings-setup --skip-permissions-setup'
   configuration: []
@@ -93,7 +93,7 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('web/sites/default', 509, 0, 1)
+          ->chmod('web/sites/default', 509)
 
 - command: 'drupal:permissions-setup --root=website --sites-subdir=websitesubdir'
   configuration: []
@@ -102,7 +102,7 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('website/sites/websitesubdir', 509, 0, 1)
+          ->chmod('website/sites/websitesubdir', 509)
 
 - command: 'drupal:permissions-setup'
   configuration:
@@ -117,7 +117,7 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('web/sites/sites_subdir', 509, 0, 1)
+          ->chmod('web/sites/sites_subdir', 509)
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->chmod('web/sites/sites_subdir/settings.php', 436)
 
@@ -170,7 +170,7 @@
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('web/sites/default', 509, 0, 1)
+          ->chmod('web/sites/default', 509)
         [Simulator] Simulating Exec('./vendor/bin/drush')
           ->args(array (
             0 => 'site:install',
@@ -211,7 +211,7 @@
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('website/sites/web', 509, 0, 1)
+          ->chmod('website/sites/web', 509)
         [Simulator] Simulating Exec('./vendor/bin/drush')
           ->args(array (
             0 => 'site:install',
