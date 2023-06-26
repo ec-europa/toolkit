@@ -41,6 +41,8 @@ class GitHooksCommands extends AbstractCommands
      *
      * @option hooks The hooks to enable (default: toolkit.hooks.active)
      *
+     * @aliases tk-hen
+     *
      * @usage --hooks=pre-push
      */
     public function hooksEnable(ConsoleIO $io, array $options = [
@@ -90,6 +92,8 @@ class GitHooksCommands extends AbstractCommands
      *
      * @command toolkit:hooks-disable
      *
+     * @aliases tk-hdis
+     *
      * @option hooks The hooks to disable (default: toolkit.git.hooks)
      */
     public function hooksDisable(ConsoleIO $io, array $options = [
@@ -120,6 +124,8 @@ class GitHooksCommands extends AbstractCommands
      * Remove all existing hooks, this will ignore active hooks list.
      *
      * @command toolkit:hooks-delete-all
+     *
+     * @aliases tk-hdel
      */
     public function hooksDeleteAll(ConsoleIO $io)
     {
@@ -143,6 +149,8 @@ class GitHooksCommands extends AbstractCommands
      * List available hooks and its status.
      *
      * @command toolkit:hooks-list
+     *
+     * @aliases tk-hlist
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -205,6 +213,8 @@ class GitHooksCommands extends AbstractCommands
      *   The exit code.
      *
      * @command toolkit:hooks-run
+     *
+     * @aliases tk-hrun
      */
     // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassAfterLastUsed
     public function hooksRun(ConsoleIO $io, string $hook, $arg1 = '', $arg2 = '', $arg3 = '')

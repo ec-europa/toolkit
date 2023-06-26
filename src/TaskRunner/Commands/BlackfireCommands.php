@@ -25,7 +25,7 @@ class BlackfireCommands extends AbstractCommands
      *
      * @option endpoint The endpoint to use to connect to QA Website.
      *
-     * @aliases tbf, tk-bfire
+     * @aliases tk-bfire, tbf
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
