@@ -243,19 +243,20 @@ class Runner
         // Merge the toolkit and project configurations.
         $config = array_replace_recursive($config, $projectConfig);
 
-        $expander = new Expander();
-        $result = $expander->expandArrayProperties($config);
-        $this->config->replace($result);
-
         // Allow some configurations to be overridden. If a given property is
         // defined on a project level it will replace the default values
         // instead of merge.
         $projectConfigLoaded = new Data($projectConfig);
+        $configLoaded = new Data($config);
         foreach ($overrides as $override) {
             if ($value = $projectConfigLoaded->get($override, null)) {
-                $this->config->setDefault($override, $value);
+                $configLoaded->set($override, $value);
             }
         }
+
+        // Expand the config placeholders and update the config.
+        $result = (new Expander())->expandArrayProperties($configLoaded->export());
+        $this->config->replace($result);
 
         return $this;
     }
