@@ -104,10 +104,11 @@ class Website
 
         $content = '';
         $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 120);
         curl_setopt($curl, CURLOPT_TIMEOUT, 120);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Toolkit');
         if ($auth instanceof AuthorizationInterface) {
             $header = [
                 $auth->getAuthorizationHeader(),
@@ -160,7 +161,7 @@ class Website
             CURLOPT_FOLLOWLOCATION => true,   // follow redirects
             CURLOPT_MAXREDIRS      => 10,     // stop after 10 redirects
             CURLOPT_ENCODING       => '',     // handle compressed
-            CURLOPT_USERAGENT      => 'Quality Assurance pipeline', // name of client
+            CURLOPT_USERAGENT      => 'Toolkit', // name of client
             CURLOPT_AUTOREFERER    => true,   // set referrer on redirect
             CURLOPT_CONNECTTIMEOUT => 120,    // time-out on connect
             CURLOPT_TIMEOUT        => 120,    // time-out on response
@@ -198,6 +199,7 @@ class Website
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
         curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Toolkit');
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/hal+json',
             "X-CSRF-Token: $token",

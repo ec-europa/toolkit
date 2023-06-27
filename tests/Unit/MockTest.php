@@ -76,7 +76,7 @@ class MockTest extends TestCase
     private function call($url)
     {
         $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($curl);
         if ($result === false) {
             throw new \Exception(sprintf('Curl request to endpoint "%s" failed.', $url));
