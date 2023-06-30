@@ -373,13 +373,13 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:test-behat
      *
-     * @aliases tb, tk-behat
-     *
      * @option from     The dist config file (behat.yml.dist).
      * @option to       The destination config file (behat.yml).
      * @option profile  The profile to execute.
      * @option suite    The suite to execute, default runs all suites of profile.
      * @option options  Extra options for the command without -- (only options with no value).
+     *
+     * @aliases tk-behat, tb
      *
      * @usage --profile='prod' --options='strict stop-on-failure'
      */
@@ -444,8 +444,6 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:test-phpunit
      *
-     * @aliases tp, tk-phpunit
-     *
      * @option execution The execution type (default or parallel).
      * @option from      The dist config file (phpunit.xml.dist).
      * @option to        The destination config file (phpunit.xml).
@@ -456,6 +454,8 @@ class TestsCommands extends AbstractCommands
      * @option filter    Filter which tests to run.
      * @option options   Extra options for the command without -- (only options with no value).
      * @option printer   If set, use printer defined in config toolkit.test.phpunit.printer.
+     *
+     * @aliases tk-phpunit tp
      *
      * @usage --options='stop-on-error process-isolation do-not-cache-result'
      * @usage --group=Example

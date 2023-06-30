@@ -1,6 +1,16 @@
 # Toolkit change log
 
-# Version 9.10.0 | 10.0.0
+## Version 9.11.0
+- DQA-6750: Command to check drupal permissions.
+- DQA-6750: Control blocker of drupal:check-permissions.
+- DQA-7006: Duplicated options when running toolkit:lint-php.
+- DQA-6154: Component check - remove limitation of checking drupal module only.
+- DQA-6681: Command drupal:permissions-setup should not apply permissions recursively.
+- DQA-7280: Support Drush12.
+- DQA-7333: Add aliases to commands.
+- DQA-7296: Add user-agent to the Toolkit api calls.
+
+## Version 9.10.0 | 10.0.0
   - DQA-7047: Deploy commands run drush cr as first.
   - DQA-5985: Update default value of toolkit to match the new environment.
 

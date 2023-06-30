@@ -147,7 +147,7 @@ class LintCommands extends AbstractCommands
      * @option extensions The extensions to check.
      * @option options    Extra options for the command without -- (only options with no value).
      *
-     * @aliases tly, tk-yaml
+     * @aliases tk-yaml, tly
      *
      * @usage --extensions='.yml' --options='fix no-eslintrc'
      */
@@ -173,7 +173,7 @@ class LintCommands extends AbstractCommands
      * @option extensions The extensions to check.
      * @option options    Extra options for the command without -- (only options with no value).
      *
-     * @aliases tljs, tk-js
+     * @aliases tk-js, tljs
      *
      * @usage --extensions='.js' --options='fix no-eslintrc'
      */
@@ -233,7 +233,7 @@ class LintCommands extends AbstractCommands
      * @option extensions The extensions to check.
      * @option options    Extra options for the command without -- (only options with no value).
      *
-     * @aliases tlp, tk-php
+     * @aliases tk-php, tlp
      */
     public function toolkitLintPhp(array $options = [
         'extensions' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,

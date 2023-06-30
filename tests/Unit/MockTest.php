@@ -22,11 +22,11 @@ class MockTest extends TestCase
         return [
             [200, '/tests/mock/api/v1/toolkit-requirements'],
             [200, '/tests/mock/api/v1/package-reviews'],
-            [200, '/tests/mock/api/v1/package-reviews'],
             [200, '/tests/mock/api/v1/package-reviews?version=8.x'],
             [200, '/tests/mock/api/v1/package-reviews?version=7.x'],
             [200, '/tests/mock/api/v1/project/ec-europa/digit-qa-reference/information'],
             [200, '/tests/mock/api/v1/project/ec-europa/toolkit-reference/information/constraints'],
+            [200, '/tests/mock/api/v1/forbidden-permissions'],
             [404, '/tests/mock/api/v1/fake'],
         ];
     }
@@ -76,7 +76,7 @@ class MockTest extends TestCase
     private function call($url)
     {
         $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($curl);
         if ($result === false) {
             throw new \Exception(sprintf('Curl request to endpoint "%s" failed.', $url));

@@ -35,7 +35,7 @@ class DrupalReleaseHistory
 
         $releaseHistory = $fullReleaseHistory = [];
         $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type' => 'application/hal+json']);
         $result = curl_exec($curl);
 

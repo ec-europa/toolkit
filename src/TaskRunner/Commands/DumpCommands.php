@@ -38,6 +38,8 @@ class DumpCommands extends AbstractCommands
      *
      * @option dumpfile The dump file name.
      * @option myloader If set, MyLoader will be used to import the database.
+     *
+     * @aliases tk-idump
      */
     public function toolkitInstallDump(ConsoleIO $io, array $options = [
         'dumpfile' => InputOption::VALUE_REQUIRED,
@@ -96,6 +98,8 @@ class DumpCommands extends AbstractCommands
      * @command toolkit:create-dump
      *
      * @option dumpfile The dump file name.
+     *
+     * @aliases tk-cdump
      */
     public function toolkitCreateDump(ConsoleIO $io, array $options = [
         'dumpfile' => InputOption::VALUE_REQUIRED,
@@ -161,6 +165,8 @@ class DumpCommands extends AbstractCommands
      *
      * @option is-admin For nextcloud admin user.
      * @option yes      Skip the question to download newer dump.
+     *
+     * @aliases tk-ddump
      *
      * @return \Robo\Collection\CollectionBuilder
      *   Collection builder.

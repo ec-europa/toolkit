@@ -49,13 +49,13 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-dist
      *
-     * @aliases tk-bdist
-     *
      * @option root      Drupal root.
      * @option dist-root Distribution package root.
      * @option keep      Comma separated list of files and folders to keep.
      * @option tag       Version tag for manifest.
      * @option sha       Commit hash for manifest.
+     *
+     * @aliases tk-bdist
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -228,6 +228,8 @@ class BuildCommands extends AbstractCommands
      *
      * @option root Drupal root.
      * @option yes  Skip the question.
+     *
+     * @aliases tk-bdev-reset
      */
     public function buildDevReset(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -273,7 +275,7 @@ class BuildCommands extends AbstractCommands
      * @option validate           Whether to validate or fix the scss.
      * @option theme-task-runner  The runner to use, one of 'grunt' or 'gulp'.
      *
-     * @aliases tba, tk-assets
+     * @aliases tk-bassets, tk-assets, tba
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
