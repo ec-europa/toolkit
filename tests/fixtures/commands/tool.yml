@@ -85,8 +85,8 @@
 
           [WARNING] Failed to get Toolkit version from composer.lock.
 
-        Minimum version: ^9.6
-        Current version: 9.11.0
+        Minimum version: ^10
+        Current version: 10.1.0
         Version check: OK
 
 - command: toolkit:check-version
@@ -98,8 +98,8 @@
     - contains: |
         >  Checking Toolkit version:
 
-        Minimum version: ^9.6
-        Current version: 9.11.0
+        Minimum version: ^10
+        Current version: 10.1.0
         Version check: OK
 
 - command: toolkit:vendor-list
