@@ -155,7 +155,7 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">21</span>
 
     </aside>
 
@@ -190,6 +190,13 @@
 <dd>Comment starting the Toolkit settings block.</dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_drupalCheckPermissions">drupalCheckPermissions()</a>
+    <span>
+                                &nbsp;: int    </span>
+</dt>
+<dd>Command to check the forbidden permissions.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_drupalDisableCache">drupalDisableCache()</a>
     <span>
                                 &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
@@ -378,7 +385,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">28</span>
 
     </aside>
 
@@ -411,7 +418,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">31</span>
+    <span class="phpdocumentor-element-found-in__line">35</span>
 
     </aside>
 
@@ -441,6 +448,110 @@
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_drupalCheckPermissions">
+        drupalCheckPermissions()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_drupalCheckPermissions" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">531</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Command to check the forbidden permissions.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">drupalCheckPermissions</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;endpoint&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;blocker&#039; =&gt; InputOption::VALUE_NONE]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$options</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;endpoint&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;blocker&#039; =&gt; InputOption::VALUE_NONE]</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>Command options.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">command</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>drupal:check-permissions</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>endpoint The endpoint to use to connect to QA Website.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>blocker  If given and in case of error the command will fail.</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
+</section>
+
+                                    </dd>
+                        </dl>
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">int</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_drupalDisableCache">
         drupalDisableCache()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_drupalDisableCache" class="headerlink"><i class="fas fa-link"></i></a>
@@ -448,7 +559,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">425</span>
+    <span class="phpdocumentor-element-found-in__line">429</span>
 
     </aside>
 
@@ -498,7 +609,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">215</span>
+    <span class="phpdocumentor-element-found-in__line">219</span>
 
     </aside>
 
@@ -584,7 +695,7 @@ uri: &quot;${drupal.base_url}&quot;</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">137</span>
+    <span class="phpdocumentor-element-found-in__line">141</span>
 
     </aside>
 
@@ -662,7 +773,7 @@ uri: &quot;${drupal.base_url}&quot;</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">87</span>
+    <span class="phpdocumentor-element-found-in__line">91</span>
 
     </aside>
 
@@ -790,7 +901,7 @@ cookie_domain: '.europa.eu'</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">260</span>
+    <span class="phpdocumentor-element-found-in__line">264</span>
 
     </aside>
 
@@ -1022,7 +1133,7 @@ provided in local runner.yml.dist/runner.yml files.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">168</span>
+    <span class="phpdocumentor-element-found-in__line">172</span>
 
     </aside>
 
@@ -1091,7 +1202,7 @@ or is not writeable.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">406</span>
+    <span class="phpdocumentor-element-found-in__line">410</span>
 
     </aside>
 
@@ -1173,7 +1284,7 @@ string-only commands will be substituted with this value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">372</span>
+    <span class="phpdocumentor-element-found-in__line">376</span>
 
     </aside>
 
@@ -1255,7 +1366,7 @@ string-only commands will be substituted with this value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">450</span>
+    <span class="phpdocumentor-element-found-in__line">454</span>
 
     </aside>
 
@@ -1330,7 +1441,7 @@ string-only commands will be substituted with this value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">36</span>
+    <span class="phpdocumentor-element-found-in__line">40</span>
 
     </aside>
 
@@ -1664,7 +1775,7 @@ string-only commands will be substituted with this value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">519</span>
+    <span class="phpdocumentor-element-found-in__line">579</span>
 
     </aside>
 
@@ -1699,7 +1810,7 @@ string-only commands will be substituted with this value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">530</span>
+    <span class="phpdocumentor-element-found-in__line">590</span>
 
     </aside>
 
@@ -1769,7 +1880,7 @@ string-only commands will be substituted with this value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalCommands.php"><a href="files/src-taskrunner-commands-drupalcommands.html"><abbr title="src/TaskRunner/Commands/DrupalCommands.php">DrupalCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">340</span>
+    <span class="phpdocumentor-element-found-in__line">344</span>
 
     </aside>
 

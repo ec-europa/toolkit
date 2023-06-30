@@ -726,6 +726,11 @@ Search.appendIndex(
             "summary": "Check\u0020project\u0020compatibility\u0020for\u0020Drupal\u00209\/10\u0020upgrade.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_drupalUpgradeStatus"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalCommands\u003A\u003AdrupalCheckPermissions\u0028\u0029",
+            "name": "drupalCheckPermissions",
+            "summary": "Command\u0020to\u0020check\u0020the\u0020forbidden\u0020permissions.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_drupalCheckPermissions"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalCommands\u003A\u003AgetSettingsBlockRegex\u0028\u0029",
             "name": "getSettingsBlockRegex",
             "summary": "Remove\u0020settings\u0020block\u0020from\u0020given\u0020content.",
