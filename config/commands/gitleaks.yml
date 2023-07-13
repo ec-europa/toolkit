@@ -1,0 +1,7 @@
+command:
+  toolkit:
+    run-gitleaks:
+      options:
+        tag: ${gitleaks.tag}
+        os: ${gitleaks.os}
+        options: ${gitleaks.options}
