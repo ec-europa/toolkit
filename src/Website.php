@@ -294,7 +294,17 @@ class Website
         if (empty($auth = self::apiAuth())) {
             return false;
         }
-        $response = self::get(self::url() . '/api/v1/toolkit-requirements', $auth);
+
+        try {
+            $response = self::get(self::url() . '/api/v1/toolkit-requirements', $auth);
+        } catch (\Exception) {
+            $response = '';
+        }
+
+        // If the request fails, try the mock.
+        if (empty($response) && Mock::download()) {
+            $response = Mock::getEndpointContent('api/v1/toolkit-requirements');
+        }
         if (empty($response)) {
             return false;
         }
