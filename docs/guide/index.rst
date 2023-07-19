@@ -12,6 +12,9 @@ Index
     commands
     building-assets
     git-hooks
-    project-documentation
+    toolkit-documentation
+    how-to
+    requirements
+    components
 
 .. |phpdoc| replace:: phpDocumentor
