@@ -36,7 +36,7 @@ class ConfigForCommand implements EventSubscriberInterface
     /**
      * Construct new ConfigForCommand.
      *
-     * @param ConfigInterface $config
+     * @param \Consolidation\Config\ConfigInterface $config
      *   The configuration.
      */
     public function __construct(ConfigInterface $config)
@@ -47,7 +47,7 @@ class ConfigForCommand implements EventSubscriberInterface
     /**
      * Set application.
      *
-     * @param Application $application
+     * @param \Symfony\Component\Console\Application $application
      *   The application.
      */
     public function setApplication(Application $application)

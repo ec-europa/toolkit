@@ -13,7 +13,6 @@ use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -629,7 +628,7 @@ class ToolCommands extends AbstractCommands
      * @return array|false
      *   An array with the content or false if the file do not exist.
      *
-     * @throws ParseException
+     * @throws \Symfony\Component\Yaml\Exception\ParseException
      *   If the file could not be read or the YAML is not valid.
      */
     public static function parseOptsYml()

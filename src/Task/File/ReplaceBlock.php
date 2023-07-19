@@ -84,7 +84,7 @@ class ReplaceBlock extends BaseTask
      *
      * @return $this
      *
-     * @throws TaskException
+     * @throws \Robo\Exception\TaskException
      */
     public function filename(string $filename)
     {
@@ -154,8 +154,6 @@ class ReplaceBlock extends BaseTask
 
     /**
      * Run the task.
-     *
-     * @return Result
      */
     public function run()
     {

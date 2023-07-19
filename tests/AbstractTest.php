@@ -21,7 +21,7 @@ abstract class AbstractTest extends TestCase
     /**
      * A Filesystem object.
      *
-     * @var Filesystem
+     * @var \Symfony\Component\Filesystem\Filesystem
      */
     public Filesystem $fs;
 
