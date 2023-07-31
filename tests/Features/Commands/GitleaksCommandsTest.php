@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
-use EcEuropa\Toolkit\TaskRunner\Commands\DocumentationCommands;
 use EcEuropa\Toolkit\TaskRunner\Commands\GitleaksCommands;
 use EcEuropa\Toolkit\Tests\AbstractTest;
 
