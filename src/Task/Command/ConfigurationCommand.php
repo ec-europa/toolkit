@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Task\Command;
 
-use EcEuropa\Toolkit\Task\File\ReplaceBlock;
-use Robo\Collection\CollectionBuilder;
 use Robo\Common\BuilderAwareTrait;
 use Robo\Contract\BuilderAwareInterface;
 use Robo\Exception\TaskException;
@@ -97,7 +95,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * @param $task
      *   The task to execute.
      *
-     * @throws TaskException
+     * @throws \Robo\Exception\TaskException
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -207,7 +205,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                 return $taskExec;
 
             case 'replace-block':
-                /* @var ReplaceBlock $task */
+                /* @var \EcEuropa\Toolkit\Task\File\ReplaceBlock $task */
                 $replaceBlock = $this->collectionBuilder()
                     ->taskReplaceBlock($task['filename'])
                     ->start($task['start']);
@@ -247,7 +245,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::availableTasks
      * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::paramDefaultValue()
      *
-     * @throws TaskException
+     * @throws \Robo\Exception\TaskException
      */
     private function validateAndEnsureParameters(&$task)
     {
@@ -295,7 +293,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * @param string $task
      *   The task being checked.
      *
-     * @throws TaskException
+     * @throws \Robo\Exception\TaskException
      */
     private function throwParamException(string $param, string $task)
     {
@@ -309,7 +307,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * @param string $task
      *   The task being checked.
      *
-     * @throws TaskException
+     * @throws \Robo\Exception\TaskException
      */
     private function throwInvalidTaskException(string $task)
     {

@@ -8,7 +8,6 @@ use EcEuropa\Toolkit\Toolkit;
 use Robo\Common\ConfigAwareTrait;
 use Robo\Contract\ConfigAwareInterface;
 use Robo\Exception\TaskException;
-use Robo\Robo;
 use Robo\Tasks;
 
 /**
@@ -41,7 +40,7 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
      * @return string
      *   The bin path.
      *
-     * @throws TaskException
+     * @throws \Robo\Exception\TaskException
      */
     protected function getBin(string $name): string
     {
@@ -73,7 +72,7 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
      * @return string
      *   The bin path.
      *
-     * @throws TaskException
+     * @throws \Robo\Exception\TaskException
      */
     protected function getNodeBin(string $name): string
     {

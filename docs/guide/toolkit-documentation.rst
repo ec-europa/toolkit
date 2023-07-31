@@ -1,4 +1,4 @@
-Update Project Documentation
+Toolkit Documentation
 ============================
 
 To generate the Toolkit documentation you can make use of the ``toolkit:generate-documentation``

@@ -25,7 +25,7 @@ composer require --dev ec-europa/toolkit:^9
 - [Building assets](/docs/guide/building-assets.rst)
 - [Commands](/docs/guide/commands.rst)
 - [Git Hooks](/docs/guide/git-hooks.rst)
-- [Update Project Documentation](/docs/guide/project-documentation.rst)
+- [Toolkit Documentation](/docs/guide/toolkit-documentation.rst)
 - [Changelog](/CHANGELOG.md)
 
 To have more details about this package, please check the [full documentation](https://ec-europa.github.io/toolkit/).

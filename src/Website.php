@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit;
 
-use Exception;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -91,7 +90,7 @@ class Website
      * @return string
      *   The endpoint content, or empty string if no session is generated.
      *
-     * @throws Exception
+     * @throws \Exception
      *   If the request fails.
      *
      * @SuppressWarnings(PHPMD.MissingImport)
@@ -130,14 +129,14 @@ class Website
                 default:
                     if (!$auth instanceof AuthorizationInterface) {
                         $message = 'Curl request to endpoint "%s" returned a %u.';
-                        throw new Exception(sprintf($message, $url, $statusCode));
+                        throw new \Exception(sprintf($message, $url, $statusCode));
                     }
                     // If we tried with authentication, retry without.
                     $content = self::get($url);
             }
         }
         if ($result === false) {
-            throw new Exception(sprintf('Curl request to endpoint "%s" failed.', $url));
+            throw new \Exception(sprintf('Curl request to endpoint "%s" failed.', $url));
         }
         curl_close($curl);
 
@@ -157,14 +156,14 @@ class Website
         }
         $options = [
             CURLOPT_RETURNTRANSFER => true,   // return web page
-            CURLOPT_HEADER         => false,  // don't return headers
+            CURLOPT_HEADER => false,  // don't return headers
             CURLOPT_FOLLOWLOCATION => true,   // follow redirects
-            CURLOPT_MAXREDIRS      => 10,     // stop after 10 redirects
-            CURLOPT_ENCODING       => '',     // handle compressed
-            CURLOPT_USERAGENT      => 'Toolkit', // name of client
-            CURLOPT_AUTOREFERER    => true,   // set referrer on redirect
+            CURLOPT_MAXREDIRS => 10,     // stop after 10 redirects
+            CURLOPT_ENCODING => '',     // handle compressed
+            CURLOPT_USERAGENT => 'Toolkit', // name of client
+            CURLOPT_AUTOREFERER => true,   // set referrer on redirect
             CURLOPT_CONNECTTIMEOUT => 120,    // time-out on connect
-            CURLOPT_TIMEOUT        => 120,    // time-out on response
+            CURLOPT_TIMEOUT => 120,    // time-out on response
         ];
         $ch = curl_init(self::url() . '/session/token');
         curl_setopt_array($ch, $options);
@@ -185,7 +184,7 @@ class Website
      * @return string
      *   The endpoint response code, or empty string if no session is generated.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public static function post(array $fields, AuthorizationInterface $auth): string
     {
@@ -220,7 +219,7 @@ class Website
      * @return false|array
      *   An array with the Project information, false if fails.
      *
-     * @throws Exception
+     * @throws \Exception
      *   If the request fails.
      */
     public static function projectInformation(string $project_id)
@@ -255,7 +254,7 @@ class Website
      * @return false|array
      *   An array with the constraints, false if fails.
      *
-     * @throws Exception
+     * @throws \Exception
      *   If the request fails.
      */
     public static function projectConstraints(string $project_id)
@@ -281,8 +280,7 @@ class Website
     /**
      * Returns the toolkit requirements from the endpoint.
      *
-     * @return array|false|mixed
-     * @throws Exception
+     * @throws \Exception
      *   If the request fails.
      */
     public static function requirements()

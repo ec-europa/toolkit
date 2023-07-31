@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit;
 
-use Robo\Robo;
-
 /**
  * Provides default Toolkit class.
  */
