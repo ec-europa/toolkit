@@ -1,0 +1,5 @@
+gitleaks:
+  repo: https://github.com/gitleaks/gitleaks
+  tag: 8.17.0
+  os: linux_x64
+  options: '--no-banner -v'

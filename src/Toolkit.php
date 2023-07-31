@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit;
 
-use Robo\Robo;
-
 /**
  * Provides default Toolkit class.
  */
@@ -14,7 +12,7 @@ final class Toolkit
     /**
      * Constant holding the current version.
      */
-    public const VERSION = '10.1.0';
+    public const VERSION = '10.2.0';
 
     /**
      * Returns the Toolkit root.

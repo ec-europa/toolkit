@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
-use Consolidation\AnnotatedCommand\CommandData;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use PHPUnit\Util\Exception;
 use Symfony\Component\Console\Input\InputOption;
 
 class SymlinkProjectCommands extends AbstractCommands
@@ -45,16 +43,16 @@ class SymlinkProjectCommands extends AbstractCommands
         $composer = $this->getComposer();
         // Check if the project name is present.
         if (empty($composer['name'])) {
-            throw new Exception('Could not find the project name in the composer.json file.');
+            throw new \Exception('Could not find the project name in the composer.json file.');
         }
         // Check if the project_id is valid.
         $project = explode('/', $composer['name']);
         if (empty($project[1]) || !is_array($project)) {
-            throw new Exception('Could not find the project id in the composer.json file.');
+            throw new \Exception('Could not find the project id in the composer.json file.');
         }
         // Check if the project type is valid.
         if (empty($composer['type']) || !isset($this->types[$composer['type']])) {
-            throw new Exception("The project type '{$composer['type']}' is not valid.");
+            throw new \Exception("The project type '{$composer['type']}' is not valid.");
         }
     }
 
@@ -103,7 +101,7 @@ class SymlinkProjectCommands extends AbstractCommands
     {
         $composer = $this->getWorkingDir() . '/composer.json';
         if (!file_exists($composer)) {
-            throw new Exception("The $composer was not found.");
+            throw new \Exception("The $composer was not found.");
         }
         return json_decode(file_get_contents($composer), true);
     }

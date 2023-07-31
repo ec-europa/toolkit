@@ -6,7 +6,6 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use Robo\Exception\AbortTasksException;
-use Robo\Robo;
 use Symfony\Component\Yaml\Yaml;
 
 /**

@@ -7,7 +7,6 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
-use Exception;
 use Robo\ResultData;
 use Symfony\Component\Yaml\Yaml;
 
@@ -40,7 +39,7 @@ final class DockerCommands extends AbstractCommands
      *
      * @aliases dk-rc
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function dockerRefreshConfiguration(): int
     {
@@ -127,7 +126,7 @@ final class DockerCommands extends AbstractCommands
      * @param string $projectId
      *
      * @return array|string[]
-     * @throws Exception
+     * @throws \Exception
      */
     private function getWebsiteProjectInformation(string $projectId): array
     {
@@ -146,13 +145,13 @@ final class DockerCommands extends AbstractCommands
      * Returns the toolkit requirements from the endpoint.
      *
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     private function getWebsiteRequirements(): array
     {
         $data = Website::requirements();
         if (empty($data)) {
-            throw new Exception('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
+            throw new \Exception('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
         }
 
         return $data;

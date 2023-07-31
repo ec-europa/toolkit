@@ -68,5 +68,8 @@
         <testsuite name="Tool">
             <file>tests/Features/Commands/ToolCommandsTest.php</file>
         </testsuite>
+        <testsuite name="Gitleaks">
+            <file>tests/Features/Commands/GitleaksCommandsTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>

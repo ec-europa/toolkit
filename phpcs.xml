@@ -306,4 +306,10 @@
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
 
+    <rule ref="Drupal.Classes.UnusedUseStatement"/>
+    <rule ref="Drupal.Classes.FullyQualifiedNamespace"/>
+    <rule ref="Drupal.Classes.UseLeadingBackslash"/>
+    <rule ref="Drupal.Files.EndFileNewline"/>
+    <rule ref="Drupal.Commenting.DataTypeNamespace.DataTypeNamespace"/>
+
 </ruleset>
