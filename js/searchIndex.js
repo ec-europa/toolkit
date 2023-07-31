@@ -471,6 +471,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_installed"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024io",
+            "name": "io",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_io"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ConfigurationCommands",
             "name": "ConfigurationCommands",
             "summary": "Configuration\u0020commands\u0020are\u0020defined\u0020in\u0020the\u0020runner.yml\u0020file\u0020under\u0020\u0027commands\u003A\u0027.",
@@ -875,6 +880,41 @@ Search.appendIndex(
             "name": "convertHookToMethod",
             "summary": "Converts\u0020a\u0020hook\u0020name\u0020to\u0020method\u0020name.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitHooksCommands.html#method_convertHookToMethod"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands",
+            "name": "GitleaksCommands",
+            "summary": "Class\u0020AbstractCommands.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003AgetConfigurationFile\u0028\u0029",
+            "name": "getConfigurationFile",
+            "summary": "Path\u0020to\u0020YAML\u0020configuration\u0020file\u0020containing\u0020command\u0020defaults.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_getConfigurationFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003AtoolkitRunGitleaks\u0028\u0029",
+            "name": "toolkitRunGitleaks",
+            "summary": "Executes\u0020the\u0020Gitleaks.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_toolkitRunGitleaks"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003Adownload\u0028\u0029",
+            "name": "download",
+            "summary": "Download\u0020the\u0020Gitleaks\u0020binary\u0020from\u0020the\u0020GitHub\u0020releases\u0020page.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_download"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003A\u0024repo",
+            "name": "repo",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_repo"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003A\u0024tag",
+            "name": "tag",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_tag"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003A\u0024os",
+            "name": "os",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_os"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\InstallCommands",
             "name": "InstallCommands",
