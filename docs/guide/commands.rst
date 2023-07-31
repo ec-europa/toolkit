@@ -62,6 +62,7 @@ See bellow current list of available commands:
    toolkit:requirements              Check the Toolkit Requirements.
    toolkit:run-blackfire             [tk-bfire|tbf] Run Blackfire.
    toolkit:run-deploy                Run deployment sequence.
+   toolkit:run-gitleaks              [tk-gitleaks] Executes the Gitleaks.
    toolkit:run-phpcbf                [tk-phpcbf] Run PHP code autofixing.
    toolkit:setup-behat               Setup the Behat file.
    toolkit:setup-blackfire-behat     Copy the needed resources to run Behat with Blackfire.

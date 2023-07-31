@@ -1,5 +1,11 @@
 # Toolkit change log
 
+## Version 9.12.0
+  - DQA-7395: Replace security-checker with composer audit.
+  - DQA-6756: Create example section in the toolkit documentation.
+  - DQA-7460: Toolkit phpcs improvements.
+  - DQA-6751: Create target to check credentials.
+
 ## Version 9.11.0
   - DQA-6750: Command to check drupal permissions.
   - DQA-6750: Control blocker of drupal:check-permissions.
