@@ -9,7 +9,6 @@ use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Exception\AbortTasksException;
-use Robo\Exception\TaskException;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
@@ -190,7 +189,7 @@ class TestsCommands extends AbstractCommands
     /**
      * Run PHP code sniffer within GrumPHP.
      *
-     * @throws TaskException
+     * @throws \Robo\Exception\TaskException
      *
      * @deprecated
      */

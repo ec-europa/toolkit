@@ -25,14 +25,14 @@ class DrupalCommands extends AbstractCommands
      *
      * @var string
      */
-    protected $blockEnd = '// End Toolkit settings block.';
+    protected string $blockEnd = '// End Toolkit settings block.';
 
     /**
      * Comment starting the Toolkit settings block.
      *
      * @var string
      */
-    protected $blockStart = '// Start Toolkit settings block.';
+    protected string $blockStart = '// Start Toolkit settings block.';
 
     /**
      * {@inheritdoc}
@@ -161,7 +161,7 @@ class DrupalCommands extends AbstractCommands
     /**
      * Validate command drupal:site-install.
      *
-     * @param CommandData $commandData
+     * @param \Consolidation\AnnotatedCommand\CommandData $commandData
      *
      * @hook validate drupal:site-install
      *

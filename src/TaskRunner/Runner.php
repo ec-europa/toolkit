@@ -11,8 +11,6 @@ use EcEuropa\Toolkit\TaskRunner\Inject\ConfigForCommand;
 use EcEuropa\Toolkit\Toolkit;
 use Grasmash\Expander\Expander;
 use League\Container\Container;
-use League\Container\DefinitionContainerInterface;
-use Robo\Application;
 use Robo\ClassDiscovery\RelativeNamespaceDiscovery;
 use Robo\Common\ConfigAwareTrait;
 use Robo\Config\Config;
@@ -38,42 +36,42 @@ class Runner
     /**
      * The input.
      *
-     * @var InputInterface
+     * @var \Symfony\Component\Console\Input\InputInterface
      */
     private $input;
 
     /**
      * The output.
      *
-     * @var OutputInterface
+     * @var \Symfony\Component\Console\Output\OutputInterface
      */
     private $output;
 
     /**
      * The autoloader class.
      *
-     * @var ClassLoader
+     * @var \Composer\Autoload\ClassLoader
      */
     private $classLoader;
 
     /**
      * The Robo Runner.
      *
-     * @var RoboRunner
+     * @var \Robo\Runner
      */
     private $runner;
 
     /**
      * The container.
      *
-     * @var Container|DefinitionContainerInterface|null
+     * @var \League\Container\Container|\League\Container\DefinitionContainerInterface|null
      */
     private $container;
 
     /**
      * The Robo Application.
      *
-     * @var Application
+     * @var \Robo\Application
      */
     private $application;
 
@@ -94,11 +92,11 @@ class Runner
     /**
      * Initialize the Toolkit Runner.
      *
-     * @param ClassLoader $classLoader
+     * @param \Composer\Autoload\ClassLoader $classLoader
      *   The autoload file.
-     * @param InputInterface $input
+     * @param \Symfony\Component\Console\Input\InputInterface $input
      *   The input from CLI arguments.
-     * @param OutputInterface $output
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      *   The CLI output.
      */
     public function __construct(ClassLoader $classLoader, InputInterface $input, OutputInterface $output)
