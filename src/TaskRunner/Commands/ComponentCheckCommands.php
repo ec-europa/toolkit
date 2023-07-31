@@ -35,6 +35,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $skipRecommended = true;
     protected int $recommendedFailedCount = 0;
     protected array $installed;
+    protected $io;
 
     /**
      * Check composer.json for components that are not whitelisted/blacklisted.
@@ -59,7 +60,7 @@ class ComponentCheckCommands extends AbstractCommands
         if (empty($auth = Website::apiAuth())) {
             return 1;
         }
-
+        $this->io = $io;
         $commitTokens = ToolCommands::getCommitTokens();
         if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
             $this->skipOutdated = true;
@@ -424,25 +425,38 @@ class ComponentCheckCommands extends AbstractCommands
     protected function componentInsecure(array $modules)
     {
         $packages = [];
-        $drush_result = $this->taskExec($this->getBin('drush') . ' pm:security --format=json')
+        $drupalReleaseHistory = new DrupalReleaseHistory();
+
+        $exec = $this->taskExec($this->getBin('drush') . ' pm:security --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
-        $drush_result = trim($drush_result);
-        if (!empty($drush_result) && $drush_result !== '[]') {
-            $data = json_decode($drush_result, true);
-            if (!empty($data) && is_array($data)) {
-                $packages = $data;
+            ->run();
+        if (!empty($exec->getExitCode()) && $exec->getExitCode() !== 3) {
+            $this->io->error(['Failed to run: pm:security', $exec->getMessage()]);
+        } else {
+            $result = trim($exec->getMessage());
+            if (!empty($result) && $result !== '[]') {
+                $data = json_decode($result, true);
+                if (!empty($data) && is_array($data)) {
+                    $packages = $data;
+                }
             }
         }
 
-        $sc_result = $this->taskExec($this->getBin('security-checker') . ' security:check --no-dev --format=json')
+        $exec = $this->taskExec('composer audit --no-dev --locked --no-scripts --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
-        $sc_result = trim($sc_result);
-        if (!empty($sc_result) && $sc_result !== '[]') {
-            $data = json_decode($sc_result, true);
-            if (!empty($data) && is_array($data)) {
-                $packages = array_merge($packages, $data);
+            ->run();
+        $result = trim($exec->getMessage());
+        if (!empty($result) && $result !== '[]') {
+            $data = json_decode($result, true);
+            if (!empty($data['advisories']) && is_array($data['advisories'])) {
+                // Each package might have multiple issues, we take the first.
+                foreach ($data['advisories'] as $advisory) {
+                    $packageName = $advisory[0]['packageName'];
+                    if (!isset($packages[$packageName])) {
+                        $packages[] = $advisory[0];
+                        $packages[$packageName]['version'] = ToolCommands::getPackagePropertyFromComposer($packageName);
+                    }
+                }
             }
         }
 
@@ -455,7 +469,6 @@ class ComponentCheckCommands extends AbstractCommands
                     continue;
                 }
             }
-            $drupalReleaseHistory = new DrupalReleaseHistory();
             $historyTerms = $drupalReleaseHistory->getPackageDetails($name, $package['version'], '8.x');
             if ($historyTerms === 1) {
                 $this->say("No release history found for package $name.");
@@ -488,7 +501,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentOutdated()
     {
-        $result = $this->taskExec('composer outdated --no-dev --locked --direct --minor-only --format=json')
+        $result = $this->taskExec('composer outdated --no-dev --locked --direct --minor-only --no-scripts --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
 

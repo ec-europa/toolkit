@@ -28,13 +28,13 @@
         =============================
 
         [Simulator] Running ./vendor/bin/drush pm:security --format=json
-        [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+        [Simulator] Running composer audit --no-dev --locked --no-scripts --format=json
         >  Insecure components check passed.
 
         Checking Outdated components.
         =============================
 
-        [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --format=json
+        [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --no-scripts --format=json
         >  Outdated components check passed.
 
         Checking Abandoned components.
@@ -155,13 +155,13 @@
         =============================
 
         [Simulator] Running ./vendor/bin/drush pm:security --format=json
-        [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+        [Simulator] Running composer audit --no-dev --locked --no-scripts --format=json
         >  Insecure components check passed.
 
         Checking Outdated components.
         =============================
 
-        [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --format=json
+        [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --no-scripts --format=json
         >  Outdated components check passed.
 
         Checking Abandoned components.
@@ -278,13 +278,13 @@
         =============================
 
         [Simulator] Running ./vendor/bin/drush pm:security --format=json
-        [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+        [Simulator] Running composer audit --no-dev --locked --no-scripts --format=json
         >  Insecure components check passed.
 
         Checking Outdated components.
         =============================
 
-        [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --format=json
+        [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --no-scripts --format=json
         >  Outdated components check passed.
 
         Checking Abandoned components.
@@ -393,13 +393,13 @@
         =============================
 
         [Simulator] Running ./vendor/bin/drush pm:security --format=json
-        [Simulator] Running ./vendor/bin/security-checker security:check --no-dev --format=json
+        [Simulator] Running composer audit --no-dev --locked --no-scripts --format=json
         >  Insecure components check passed.
 
         Checking Outdated components.
         =============================
 
-        [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --format=json
+        [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --no-scripts --format=json
         >  Outdated components check passed.
 
         Checking Abandoned components.
