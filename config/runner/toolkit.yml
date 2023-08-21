@@ -36,6 +36,7 @@ toolkit:
         - composer.lock
         - composer.json
       remove:
+        - CHANGELOG.md
         - CHANGELOG.txt
         - COPYRIGHT.txt
         - INSTALL.mysql.txt
@@ -50,6 +51,9 @@ toolkit:
       commands: [ ]
     dev:
       commands: [ ]
+    htaccess:
+      block:
+        file-match: '(README\.(md|txt)|CHANGELOG\.(md|txt))$'
     custom-code-folder: 'lib'
     npm:
       theme-task-runner: grunt
