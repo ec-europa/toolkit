@@ -93,7 +93,7 @@
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')
           ->text('')
         [Simulator] Simulating ExecStack()
-          ->exec('find dist -maxdepth 3 -type f \( -name "CHANGELOG.txt" ... ) -exec rm -rf {} +')
+          ->exec('find dist -maxdepth 3 -type f \( -name "CHANGELOG.md"  ... ) -exec rm -rf {} +')
 
 - command: 'toolkit:build-dev'
   configuration: []

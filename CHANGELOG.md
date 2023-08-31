@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 9.13.0
+  - DQA-7528: Allow to block access to files in htaccess.
+  - DQA-7379: Force max-age in Cache-Control headers.
+
 ## Version 9.12.0 | 10.2.0
   - DQA-7395: Replace security-checker with composer audit.
   - DQA-6756: Create example section in the toolkit documentation.

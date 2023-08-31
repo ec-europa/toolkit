@@ -18,6 +18,20 @@ class BuildCommands extends AbstractCommands
 {
 
     /**
+     * Comment starting the Toolkit block.
+     *
+     * @var string
+     */
+    protected string $blockStart = '# Start Toolkit block.';
+
+    /**
+     * Comment ending the Toolkit block.
+     *
+     * @var string
+     */
+    protected string $blockEnd = '# End Toolkit block.';
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFile()
@@ -127,17 +141,17 @@ class BuildCommands extends AbstractCommands
                 'version' => $tag,
                 'sha' => $hash,
             ]));
-        $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/' . $options['root'] . '/VERSION.txt')
+        $tasks[] = $this->taskWriteToFile("{$options['dist-root']}/{$options['root']}/VERSION.txt")
             ->text($tag);
 
         // Copy and process drush.yml file.
         if (file_exists('resources/Drush/drush.yml.dist')) {
             $tasks[] = $this->taskFilesystemStack()
-                ->copy('resources/Drush/drush.yml.dist', $options['dist-root'] . '/web/sites/all/drush/drush.yml');
+                ->copy('resources/Drush/drush.yml.dist', "{$options['dist-root']}/{$options['root']}/sites/all/drush/drush.yml");
         }
 
         // Collect and execute list of commands set on local runner.yml.
-        $commands = $this->getConfig()->get('toolkit.build.dist.commands');
+        $commands = $config->get('toolkit.build.dist.commands');
         if (!empty($commands)) {
             $tasks[] = $this->taskExecute($commands);
         }
@@ -145,7 +159,10 @@ class BuildCommands extends AbstractCommands
         // Remove 'unwanted' files from distribution.
         $remove = '-name "' . implode('" -o -name "', explode(',', $options['remove'])) . '"';
         $tasks[] = $this->taskExecStack()
-            ->exec("find dist -maxdepth 3 -type f \( $remove \) -exec rm -rf {} +");
+            ->exec("find {$options['dist-root']} -maxdepth 3 -type f \( $remove \) -exec rm -rf {} +");
+
+        // Add custom block to .htaccess file.
+        $tasks[] = $this->getHtaccessTask("{$options['dist-root']}/{$options['root']}");
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -209,6 +226,9 @@ class BuildCommands extends AbstractCommands
         if (!empty($commands)) {
             $tasks[] = $this->taskExecute($commands);
         }
+
+        // Add custom block to .htaccess file.
+        $tasks[] = $this->getHtaccessTask($root);
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -366,6 +386,55 @@ class BuildCommands extends AbstractCommands
             $this->say("The theme '{$options['default-theme']}' couldn't be found on the '{$options['custom-code-folder']}' folder.");
             return 0;
         }
+    }
+
+    /**
+     * Returns the task for adding custom block to htaccess file.
+     *
+     * @param string $root
+     *   The drupal root where the .htaccess file is.
+     */
+    private function getHtaccessTask(string $root) {
+        return $this->collectionBuilder()->addCode(function () use ($root) {
+            $htaccess = "$root/.htaccess";
+            if (!file_exists($htaccess)) {
+                return;
+            }
+            $htaccessBlock = $this->getHtaccessBlock();
+            if (empty($htaccessBlock)) {
+                return;
+            }
+            // Clean up.
+            $this->taskReplaceBlock($htaccess)->excludeStartEnd()
+                ->start(PHP_EOL . $this->blockStart)->end($this->blockEnd)
+                ->content('')->run();
+
+            // Append Toolkit block to htaccess file.
+            $this->taskWriteToFile($htaccess)->append()->text($htaccessBlock)->run();
+        });
+    }
+
+    /**
+     * Returns the block for the htaccess file.
+     */
+    private function getHtaccessBlock(): string {
+        $fileMatch = $this->getConfig()->get('toolkit.build.htaccess.block.file-match');
+        if (empty($fileMatch)) {
+            return '';
+        }
+        return <<< EOF
+
+{$this->blockStart}
+<FilesMatch "$fileMatch">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+  </IfModule>
+</FilesMatch>
+{$this->blockEnd}
+EOF;
     }
 
 }
