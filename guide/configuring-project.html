@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-                    <title>Toolkit</title>
+            <title>Toolkit</title>
     
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
             <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/template.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.css">
                 <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
         <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+        <script src="js/template.js"></script>
         <script src="js/search.js"></script>
         <script defer src="js/searchIndex.js"></script>
     </head>
@@ -53,55 +54,55 @@
 <label class="phpdocumentor-sidebar__menu-icon" for="sidebar-button">
     Menu
 </label>
-<aside class="phpdocumentor-column -four phpdocumentor-sidebar">
+<aside class="phpdocumentor-column -three phpdocumentor-sidebar">
                     <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
+            <h2 class="phpdocumentor-sidebar__category-header">index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/setting-up-project.html" class="">Setting up a project</a>
+    <a href="guide/setting-up-project.html#setting-up-a-project" class="">Setting up a project</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/configuring-project.html" class="-active">Configuring a project</a>
+    <a href="guide/configuring-project.html#configuring-a-project" class="">Configuring a project</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/installing-project.html" class="">Installing a project</a>
+    <a href="guide/installing-project.html#installing-a-project" class="">Installing a project</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/testing-project.html" class="">Testing the project</a>
+    <a href="guide/testing-project.html#testing-the-project" class="">Testing the project</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/continuous-integration.html" class="">Continuous integration</a>
+    <a href="guide/continuous-integration.html#continuous-integration" class="">Continuous integration</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/commands.html" class="">Commands</a>
+    <a href="guide/commands.html#commands" class="">Commands</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/building-assets.html" class="">Building assets</a>
+    <a href="guide/building-assets.html#building-assets" class="">Building assets</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/git-hooks.html" class="">Git hooks</a>
+    <a href="guide/git-hooks.html#git-hooks" class="">Git hooks</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/toolkit-documentation.html" class="">Toolkit Documentation</a>
+    <a href="guide/toolkit-documentation.html#toolkit-documentation" class="">Toolkit Documentation</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/how-to.html" class="">How-to</a>
+    <a href="guide/how-to.html#how-to" class="">How-to</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/requirements.html" class="">Requirements</a>
+    <a href="guide/requirements.html#requirements" class="">Requirements</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/components.html" class="">Components</a>
+    <a href="guide/components.html#components" class="">Components</a>
 </h4>
 
                         </section>
@@ -139,20 +140,22 @@
     </section>
 </aside>
 
-            <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <div class="section" id="configuring-a-project">
-<h1>Configuring a project</h1>
-<div class="section" id="environment-configuration">
-<h2>Environment configuration</h2>
-<p>By default, Docker Compose reads two files, a <code>docker-compose.yml</code> and an optional <code>docker-compose.override.yml</code> file.
+            <div class="phpdocumentor-column -nine phpdocumentor-content">
+                                        <div class="section" id="configuring-a-project">
+    <h1>Configuring a project</h1>
+
+            <div class="section" id="environment-configuration">
+    <h2>Environment configuration</h2>
+
+            <p>By default, Docker Compose reads two files, a <code>docker-compose.yml</code> and an optional <code>docker-compose.override.yml</code> file.
 By convention, the <code>docker-compose.yml</code> contains your base configuration and it&#039;s provided by default.
 The override file, as its name implies, can contain configuration overrides for existing services or entirely new
 services.
 If a service is defined in both files, Docker Compose merges the configurations.</p>
-<p>Find more information on Docker Compose extension mechanism on
+            <p>Find more information on Docker Compose extension mechanism on
 <a href="https://docs.docker.com/compose/extends/">the official Docker Compose documentation</a>.</p>
-<p>The following configuration parameters are provided as environment variables in the <code>./.env</code> file:</p>
-<table>
+            <p>The following configuration parameters are provided as environment variables in the <code>./.env</code> file:</p>
+            <table>
             <thead>
                             <tr>
                                             <th>Name</th>
@@ -162,135 +165,134 @@ If a service is defined in both files, Docker Compose merges the configurations.
     
     <tbody>
                     <tr>
-                                    <td>DRUPAL_DATABASE_NAME</td>
-                                    <td>Database name</td>
+                                <td>DRUPAL_DATABASE_NAME</td>
+                                <td>Database name</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_DATABASE_USERNAME</td>
-                                    <td>Database username</td>
+                                <td>DRUPAL_DATABASE_USERNAME</td>
+                                <td>Database username</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_DATABASE_PASSWORD</td>
-                                    <td>Database password</td>
+                                <td>DRUPAL_DATABASE_PASSWORD</td>
+                                <td>Database password</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_DATABASE_PREFIX</td>
-                                    <td>Database prefix</td>
+                                <td>DRUPAL_DATABASE_PREFIX</td>
+                                <td>Database prefix</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_DATABASE_HOST</td>
-                                    <td>Database host</td>
+                                <td>DRUPAL_DATABASE_HOST</td>
+                                <td>Database host</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_DATABASE_PORT</td>
-                                    <td>Database port</td>
+                                <td>DRUPAL_DATABASE_PORT</td>
+                                <td>Database port</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_SPARQL_HOSTNAME</td>
-                                    <td>SPARQL hostname</td>
+                                <td>DRUPAL_SPARQL_HOSTNAME</td>
+                                <td>SPARQL hostname</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_SPARQL_PORT</td>
-                                    <td>SPARQL port</td>
+                                <td>DRUPAL_SPARQL_PORT</td>
+                                <td>SPARQL port</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_CAS_HOSTNAME</td>
-                                    <td>EULogin hostname, use <code>ecas.ec.europa.eu</code> for production</td>
+                                <td>DRUPAL_CAS_HOSTNAME</td>
+                                <td>EULogin hostname, use <code>ecas.ec.europa.eu</code> for production</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_CAS_PORT</td>
-                                    <td>EULogin port, use <code>443</code> for production</td>
+                                <td>DRUPAL_CAS_PORT</td>
+                                <td>EULogin port, use <code>443</code> for production</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_ACCOUNT_USERNAME</td>
-                                    <td>Drupal admin account, defaults to <code>admin</code> if empty</td>
+                                <td>DRUPAL_ACCOUNT_USERNAME</td>
+                                <td>Drupal admin account, defaults to <code>admin</code> if empty</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_ACCOUNT_PASSWORD</td>
-                                    <td>Drupal admin password, defaults to random string if empty</td>
+                                <td>DRUPAL_ACCOUNT_PASSWORD</td>
+                                <td>Drupal admin password, defaults to random string if empty</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_BASE_URL</td>
-                                    <td>Drupal site base URL, used to setup Behat tests</td>
+                                <td>DRUPAL_BASE_URL</td>
+                                <td>Drupal site base URL, used to setup Behat tests</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_WEBTOOLS_ANALYTICS_SITE_ID</td>
-                                    <td>Drupal site unique identifier</td>
+                                <td>DRUPAL_WEBTOOLS_ANALYTICS_SITE_ID</td>
+                                <td>Drupal site unique identifier</td>
                             </tr>
                     <tr>
-                                    <td>DRUPAL_WEBTOOLS_ANALYTICS_SITE_PATH</td>
-                                    <td>The domain + root path without protocol.</td>
+                                <td>DRUPAL_WEBTOOLS_ANALYTICS_SITE_PATH</td>
+                                <td>The domain + root path without protocol.</td>
                             </tr>
             </tbody>
 </table>
-<p>Environment variables will be loaded by Docker Compose when running <code>docker-compose up -d</code>.</p>
-</div>
-<div class="section" id="toolkit-configuration">
-<h2>Toolkit configuration</h2>
-<p>Toolkit uses the <a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a> and
-<a href="https://robo.li/">Robo</a>, make sure to read the documentation.</p>
-<p>The configurations are split into multiple files under the <code>config</code> directory and they are loaded
-in the following order:</p>
 
+            <p>Environment variables will be loaded by Docker Compose when running <code>docker-compose up -d</code>.</p>
+    </div>
+
+            <div class="section" id="toolkit-configuration">
+    <h2>Toolkit configuration</h2>
+
+            <p>Toolkit uses the <a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a> and
+<a href="https://robo.li/">Robo</a>, make sure to read the documentation.</p>
+            <p>The configurations are split into multiple files under the <code>config</code> directory and they are loaded
+in the following order:</p>
+            
 
 <ul>
-    <li>
-            <code>config/default.yml</code>
-        </li>
-    <li>
-            All files in <code>config/runner</code>
-        </li>
-    <li>
-            All commands options defined in the Command files with the method <code>getConfigurationFile()</code>
-        </li>
+    <li class="dash"><code>config/default.yml</code></li>
+
+    <li class="dash">All files in <code>config/runner</code></li>
+
+    <li class="dash">All commands options defined in the Command files with the method <code>getConfigurationFile()</code></li>
+
 </ul>
-<p>Because the configurations are merged, if two different config files provides the same key, they will be merged.
+
+            <p>Because the configurations are merged, if two different config files provides the same key, they will be merged.
 For example, a configuration providing an array with 3 elements, a project would not be able to override and
 provide only one element. To avoid this, Toolkit has a set of defined configurations that will behave in a
 different way allowing projects to completely override the config.
 These overriding configurations are located in the <code>config/default.yml</code> file under <code>overrides</code> key.</p>
-</div>
-<div class="section" id="project-configuration">
-<h2>Project configuration</h2>
-<p>A project inherit the same configurations as Toolkit (described above).</p>
-<p>To override the default configurations, projects can provide the configurations with the <code>runner.yml.dist</code> file,
+    </div>
+
+            <div class="section" id="project-configuration">
+    <h2>Project configuration</h2>
+
+            <p>A project inherit the same configurations as Toolkit (described above).</p>
+            <p>To override the default configurations, projects can provide the configurations with the <code>runner.yml.dist</code> file,
 or/and under the <code>config/runner</code> directory (by default). This directory can be changed (in the <code>runner.yml.dist</code>
 only) by specifying a custom path in the config key <code>runner.config_dir</code>.
 Local or development configurations should use the <code>runner.yml</code> file, this file should not be committed and
 will be loaded as last configuration.</p>
-<p>The configurations are loaded in the following order:</p>
-
+            <p>The configurations are loaded in the following order:</p>
+            
 
 <ul>
-    <li>
-            <code>runner.yml.dist</code>
-        </li>
-    <li>
-            <code>config/runner</code> directory (or other defined in <code>runner.yml.dist</code>)
-        </li>
-    <li>
-            <code>runner.yml</code>
-        </li>
+    <li class="dash"><code>runner.yml.dist</code></li>
+
+    <li class="dash"><code>config/runner</code> directory (or other defined in <code>runner.yml.dist</code>)</li>
+
+    <li class="dash"><code>runner.yml</code></li>
+
 </ul>
-<p>The following examples describes how to use a single or multiple files to have the same configuration.</p>
-<p><strong>Example using a single file:</strong></p>
-<pre><code class="language- " ># runner.yml.dist
+
+            <p>The following examples describes how to use a single or multiple files to have the same configuration.</p>
+            <p><strong>Example using a single file:</strong></p>
+            <pre><code class="language-"># runner.yml.dist
 drupal:
    root: &#039;web&#039;
 toolkit:
-   project_id: &#039;site-id&#039;
-</code></pre>
-<p><strong>Example using multiple files under</strong><code>config/runner</code><strong>directory:</strong></p>
-<pre><code class="language- " ># config/runner/drupal.yml
+   project_id: &#039;site-id&#039;</code></pre>
+            <p><strong>Example using multiple files under</strong><code>config/runner</code><strong>directory:</strong></p>
+            <pre><code class="language-"># config/runner/drupal.yml
 drupal:
    root: &#039;web&#039;
 
 # config/runner/toolkit.yml
 toolkit:
-   project_id: &#039;site-id&#039;
-</code></pre>
-<p><strong>Example using multiple files under</strong><code>config/custom</code><strong>directory:</strong></p>
-<pre><code class="language- " ># runner.yml.dist
+   project_id: &#039;site-id&#039;</code></pre>
+            <p><strong>Example using multiple files under</strong><code>config/custom</code><strong>directory:</strong></p>
+            <pre><code class="language-"># runner.yml.dist
 runner:
     config_dir: config/custom
 
@@ -298,14 +300,15 @@ runner:
 drupal:
    root: &#039;web&#039;
 toolkit:
-   project_id: &#039;site-id&#039;
-</code></pre>
-</div>
-<div class="section" id="runtime-configuration">
-<h2>Runtime configuration</h2>
-<p>There are multiple ways to provide runtime configurations.</p>
-<p><strong>Override a configuration value in runtime</strong></p>
-<pre><code class="language- " >/** @hook pre-command-event * */
+   project_id: &#039;site-id&#039;</code></pre>
+    </div>
+
+            <div class="section" id="runtime-configuration">
+    <h2>Runtime configuration</h2>
+
+            <p>There are multiple ways to provide runtime configurations.</p>
+            <p><strong>Override a configuration value in runtime</strong></p>
+            <pre><code class="language-">/** @hook pre-command-event * */
 public function hook() {
   // Load configuration.
   $config = $this-&gt;getConfig();
@@ -313,24 +316,25 @@ public function hook() {
   $config-&gt;set(&#039;drupal.site.name&#039;, &#039;Test website&#039;);
   // Import newly built configuration.
   $this-&gt;config-&gt;replace($config-&gt;export());
-}
-</code></pre>
-<p><strong>Override a specific command option</strong></p>
-<pre><code class="language- " >/** @hook init toolkit:test-behat */
+}</code></pre>
+            <p><strong>Override a specific command option</strong></p>
+            <pre><code class="language-">/** @hook init toolkit:test-behat */
 public function hook(InputInterface $input, AnnotationData $annotationData) {
   $input-&gt;setOption(&#039;from&#039;, &#039;behat.yml.example&#039;);
-}
-</code></pre>
-<p><strong>Override a command option for all commands that has a specific option</strong></p>
-<pre><code class="language- " >/** @hook init * */
+}</code></pre>
+            <p><strong>Override a command option for all commands that has a specific option</strong></p>
+            <pre><code class="language-">/** @hook init * */
 public function hook(InputInterface $input, AnnotationData $annotationData) {
   if ($input-&gt;hasOption(&#039;from&#039;)) {
     $input-&gt;setOption(&#039;from&#039;, &#039;behat.yml.example&#039;);
   }
 }</code></pre>
-</div>
+    </div>
 
-                <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
+    </div>
+
+                            </div>
+            <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
             <h2 class="phpdocumentor-search-results__title">Search results</h2>
@@ -341,9 +345,8 @@ public function hook(InputInterface $input, AnnotationData $annotationData) {
         </section>
     </section>
 </section>
-            </div>
         </div>
-        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="guide/configuring-project.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

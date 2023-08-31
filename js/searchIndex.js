@@ -336,6 +336,26 @@ Search.appendIndex(
             "summary": "Build\u0020theme\u0020assets\u0020\u0028Css\u0020and\u0020Js\u0029.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildAssets"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003AgetHtaccessTask\u0028\u0029",
+            "name": "getHtaccessTask",
+            "summary": "Returns\u0020the\u0020task\u0020for\u0020adding\u0020custom\u0020block\u0020to\u0020htaccess\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getHtaccessTask"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003AgetHtaccessBlock\u0028\u0029",
+            "name": "getHtaccessBlock",
+            "summary": "Returns\u0020the\u0020block\u0020for\u0020the\u0020htaccess\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getHtaccessBlock"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003A\u0024blockStart",
+            "name": "blockStart",
+            "summary": "Comment\u0020starting\u0020the\u0020Toolkit\u0020block.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#property_blockStart"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003A\u0024blockEnd",
+            "name": "blockEnd",
+            "summary": "Comment\u0020ending\u0020the\u0020Toolkit\u0020block.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#property_blockEnd"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands",
             "name": "ComponentCheckCommands",
             "summary": "Command\u0020class\u0020for\u0020toolkit\u003Acomponent\u002Dcheck",

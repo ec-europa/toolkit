@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-                    <title>Toolkit</title>
+            <title>Toolkit</title>
     
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
             <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/template.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.css">
                 <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
         <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+        <script src="js/template.js"></script>
         <script src="js/search.js"></script>
         <script defer src="js/searchIndex.js"></script>
     </head>
@@ -53,55 +54,55 @@
 <label class="phpdocumentor-sidebar__menu-icon" for="sidebar-button">
     Menu
 </label>
-<aside class="phpdocumentor-column -four phpdocumentor-sidebar">
+<aside class="phpdocumentor-column -three phpdocumentor-sidebar">
                     <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
+            <h2 class="phpdocumentor-sidebar__category-header">index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/setting-up-project.html" class="">Setting up a project</a>
+    <a href="guide/setting-up-project.html#setting-up-a-project" class="">Setting up a project</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/configuring-project.html" class="">Configuring a project</a>
+    <a href="guide/configuring-project.html#configuring-a-project" class="">Configuring a project</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/installing-project.html" class="">Installing a project</a>
+    <a href="guide/installing-project.html#installing-a-project" class="">Installing a project</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/testing-project.html" class="">Testing the project</a>
+    <a href="guide/testing-project.html#testing-the-project" class="">Testing the project</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/continuous-integration.html" class="">Continuous integration</a>
+    <a href="guide/continuous-integration.html#continuous-integration" class="">Continuous integration</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/commands.html" class="-active">Commands</a>
+    <a href="guide/commands.html#commands" class="">Commands</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/building-assets.html" class="">Building assets</a>
+    <a href="guide/building-assets.html#building-assets" class="">Building assets</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/git-hooks.html" class="">Git hooks</a>
+    <a href="guide/git-hooks.html#git-hooks" class="">Git hooks</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/toolkit-documentation.html" class="">Toolkit Documentation</a>
+    <a href="guide/toolkit-documentation.html#toolkit-documentation" class="">Toolkit Documentation</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/how-to.html" class="">How-to</a>
+    <a href="guide/how-to.html#how-to" class="">How-to</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/requirements.html" class="">Requirements</a>
+    <a href="guide/requirements.html#requirements" class="">Requirements</a>
 </h4>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
-    <a href="guide/components.html" class="">Components</a>
+    <a href="guide/components.html#components" class="">Components</a>
 </h4>
 
                         </section>
@@ -139,14 +140,14 @@
     </section>
 </aside>
 
-            <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <div class="section" id="commands">
-<h1>Commands</h1>
-<p>To list all available tasks, please run:</p>
-<pre><code class="language- " >docker-composer exec web ./vendor/bin/run
-</code></pre>
-<p>See bellow current list of available commands:</p>
-<pre><code class="language- " >Available commands:
+            <div class="phpdocumentor-column -nine phpdocumentor-content">
+                                        <div class="section" id="commands">
+    <h1>Commands</h1>
+
+            <p>To list all available tasks, please run:</p>
+            <pre><code class="language-">docker-composer exec web ./vendor/bin/run</code></pre>
+            <p>See bellow current list of available commands:</p>
+            <pre><code class="language-">Available commands:
   completion                        Dump the shell completion script
   config                            Dumps the current or given configuration.
   help                              Display help for a command
@@ -207,22 +208,21 @@
   toolkit:test-phpmd                [tk-phpmd] Run PHPMD.
   toolkit:test-phpstan              [tk-phpstan] Run PHPStan.
   toolkit:test-phpunit              [tk-phpunit|tp] Run PHPUnit tests.
-  toolkit:vendor-list               Check &#039;Vendor&#039; packages being monitored.
-</code></pre>
-<div class="section" id="creating-custom-commands">
-<h2>Creating custom commands</h2>
-<p>To provide custom commands, make sure that your classes are loaded, for example using
+  toolkit:vendor-list               Check &#039;Vendor&#039; packages being monitored.</code></pre>
+            <div class="section" id="creating-custom-commands">
+    <h2>Creating custom commands</h2>
+
+            <p>To provide custom commands, make sure that your classes are loaded, for example using
 PSR-4 namespacing set the autoload in the composer.json file.</p>
-<pre><code class="language- " >{
+            <pre><code class="language-">{
   &quot;autoload&quot;: {
     &quot;psr-4&quot;: {
       &quot;My\\Project\\&quot;: &quot;./src/&quot;
     }
   }
-}
-</code></pre>
-<p>Create your command class under <code>src/TaskRunner/Commands</code> that will extend the abstract Toolkit command, like:</p>
-<pre><code class="language- " >&lt;?php
+}</code></pre>
+            <p>Create your command class under <code>src/TaskRunner/Commands</code> that will extend the abstract Toolkit command, like:</p>
+            <pre><code class="language-">&lt;?php
 namespace My\Project\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
@@ -230,23 +230,23 @@ use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 class ExampleCommands extends AbstractCommands {
   /** @command example:first-command */
   public function commandOne() { }
-}
-</code></pre>
-<p>For more detail, check the <a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a>
+}</code></pre>
+            <p>For more detail, check the <a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a>
 documentation.</p>
-</div>
-<div class="section" id="passing-default-options-for-a-command">
-<h2>Passing default options for a command</h2>
-<p>You can pass default values for the command options, for that you
+    </div>
+
+            <div class="section" id="passing-default-options-for-a-command">
+    <h2>Passing default options for a command</h2>
+
+            <p>You can pass default values for the command options, for that you
 need to define a configuration file, and import it as shown below.</p>
-<pre><code class="language- " ># config/commands/config.yml
+            <pre><code class="language-"># config/commands/config.yml
 commands:
   example:
     first-command:
       options:
-        output: false
-</code></pre>
-<pre><code class="language- " >&lt;?php
+        output: false</code></pre>
+            <pre><code class="language-">&lt;?php
 namespace My\Project\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
@@ -264,13 +264,14 @@ class ExampleCommands extends AbstractCommands {
   public function commandOne($options = [
     &#039;output&#039; =&gt; InputOption::VALUE_REQUIRED
   ]) { }
-}
-</code></pre>
-</div>
-<div class="section" id="creating-configuration-commands">
-<h2>Creating configuration commands</h2>
-<p>Configuration commands are created in the configuration file <code>runner.yml</code>, like shown below:</p>
-<pre><code class="language-yaml " >commands:
+}</code></pre>
+    </div>
+
+            <div class="section" id="creating-configuration-commands">
+    <h2>Creating configuration commands</h2>
+
+            <p>Configuration commands are created in the configuration file <code>runner.yml</code>, like shown below:</p>
+            <pre><code class="language-yaml">commands:
   drupal:setup-test:
     - { task: process, source: behat.yml.dist, destination: behat.yml }
 
@@ -281,11 +282,10 @@ class ExampleCommands extends AbstractCommands {
     hidden: false
     usage: &#039;--simulate&#039;
     tasks:
-      - { task: process, source: behat.yml.dist, destination: behat.yml }
-</code></pre>
-<p>The configuration commands are a mapping to the <a href="https://robo.li/#tasks">Robo Tasks</a>, the
+      - { task: process, source: behat.yml.dist, destination: behat.yml }</code></pre>
+            <p>The configuration commands are a mapping to the <a href="https://robo.li/#tasks">Robo Tasks</a>, the
 list of available tasks is:</p>
-<table>
+            <table>
             <thead>
                             <tr>
                                             <th>Task</th>
@@ -295,78 +295,82 @@ list of available tasks is:</p>
     
     <tbody>
                     <tr>
-                                    <td>mkdir</td>
-                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                                <td>mkdir</td>
+                                <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
                             </tr>
                     <tr>
-                                    <td>touch</td>
-                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                                <td>touch</td>
+                                <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
                             </tr>
                     <tr>
-                                    <td>copy</td>
-                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                                <td>copy</td>
+                                <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
                             </tr>
                     <tr>
-                                    <td>copyDir</td>
-                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                                <td>copyDir</td>
+                                <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
                             </tr>
                     <tr>
-                                    <td>chmod</td>
-                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                                <td>chmod</td>
+                                <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
                             </tr>
                     <tr>
-                                    <td>chgrp</td>
-                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                                <td>chgrp</td>
+                                <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
                             </tr>
                     <tr>
-                                    <td>chown</td>
-                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                                <td>chown</td>
+                                <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
                             </tr>
                     <tr>
-                                    <td>remove</td>
-                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                                <td>remove</td>
+                                <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
                             </tr>
                     <tr>
-                                    <td>rename</td>
-                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                                <td>rename</td>
+                                <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
                             </tr>
                     <tr>
-                                    <td>symlink</td>
-                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                                <td>symlink</td>
+                                <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
                             </tr>
                     <tr>
-                                    <td>mirror</td>
-                                    <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+                                <td>mirror</td>
+                                <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
                             </tr>
                     <tr>
-                                    <td>process</td>
-                                    <td><a href="src/Task/File/Process.php">Process</a></td>
+                                <td>process</td>
+                                <td>Process</td>
                             </tr>
                     <tr>
-                                    <td>append</td>
-                                    <td><a href="https://robo.li/tasks/File/#write">Write with append()</a></td>
+                                <td>append</td>
+                                <td><a href="https://robo.li/tasks/File/#write">Write with append()</a></td>
                             </tr>
                     <tr>
-                                    <td>run</td>
-                                    <td>Executes a Runner task</td>
+                                <td>run</td>
+                                <td>Executes a Runner task</td>
                             </tr>
                     <tr>
-                                    <td>exec</td>
-                                    <td><a href="https://robo.li/tasks/Base/#exec">Exec</a></td>
+                                <td>exec</td>
+                                <td><a href="https://robo.li/tasks/Base/#exec">Exec</a></td>
                             </tr>
                     <tr>
-                                    <td>drush</td>
-                                    <td>Executes a Drush command</td>
+                                <td>drush</td>
+                                <td>Executes a Drush command</td>
                             </tr>
                     <tr>
-                                    <td>replace-block</td>
-                                    <td><a href="src/Task/File/ReplaceBlock.php">ReplaceBlock</a></td>
+                                <td>replace-block</td>
+                                <td>ReplaceBlock</td>
                             </tr>
             </tbody>
 </table>
-</div>
 
-                <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
+    </div>
+
+    </div>
+
+                            </div>
+            <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
             <h2 class="phpdocumentor-search-results__title">Search results</h2>
@@ -377,9 +381,8 @@ list of available tasks is:</p>
         </section>
     </section>
 </section>
-            </div>
         </div>
-        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="guide/commands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
