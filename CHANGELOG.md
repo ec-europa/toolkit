@@ -1,6 +1,6 @@
 # Toolkit change log
 
-## Version 9.13.0
+## Version 9.13.0 | 10.3.0
   - DQA-7528: Allow to block access to files in htaccess.
   - DQA-7379: Force max-age in Cache-Control headers.
 
