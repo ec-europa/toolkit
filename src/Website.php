@@ -224,6 +224,7 @@ class Website
      */
     public static function projectInformation(string $project_id)
     {
+        $project_id = "$project_id-reference";
         if (!isset($GLOBALS['projects'])) {
             $GLOBALS['projects'] = [];
         }
@@ -233,11 +234,23 @@ class Website
         if (empty($auth = self::apiAuth())) {
             return false;
         }
-        $endpoint = "/api/v1/project/ec-europa/$project_id-reference/information";
-        $response = self::get(self::url() . $endpoint, $auth);
+        $endpoint = "api/v1/project/ec-europa/$project_id/information";
+        try {
+            $response = self::get(self::url() . '/' . $endpoint, $auth);
+        } catch (\Exception) {
+            $response = '';
+        }
+        // If the request fails, try the mock if we are on CI.
+        if (empty($response) && Toolkit::isCiCd() && Mock::download()) {
+            $endpoint = str_replace($project_id, 'toolkit', $endpoint);
+            $response = Mock::getEndpointContent($endpoint);
+        }
+        if (empty($response)) {
+            return false;
+        }
         $data = json_decode($response, true);
         $data = reset($data);
-        if (!empty($data['name']) && $data['name'] === "$project_id-reference") {
+        if (!empty($data['name']) && $data['name'] === $project_id) {
             $GLOBALS['projects'][$project_id] = $data;
             return $data;
         }
@@ -267,8 +280,22 @@ class Website
         if (empty($auth = self::apiAuth())) {
             return false;
         }
-        $endpoint = '/api/v1/project/ec-europa/' . $project_id . '-reference/information/constraints';
-        $response = self::get(self::url() . $endpoint, $auth);
+        $project_id = "$project_id-reference";
+        $endpoint = "api/v1/project/ec-europa/$project_id/information/constraints";
+        try {
+            $response = self::get(self::url() . '/' . $endpoint, $auth);
+        } catch (\Exception) {
+            $response = '';
+        }
+        // If the request fails, try the mock if we are on CI.
+        if (empty($response) && Toolkit::isCiCd() && Mock::download()) {
+            $endpoint = str_replace($project_id, 'toolkit', $endpoint);
+            $response = Mock::getEndpointContent($endpoint);
+        }
+        if (empty($response)) {
+            return false;
+        }
+
         $data = json_decode($response, true);
         if (empty($data) || !isset($data['constraints'])) {
             return false;
@@ -295,15 +322,16 @@ class Website
             return false;
         }
 
+        $endpoint = 'api/v1/toolkit-requirements';
         try {
-            $response = self::get(self::url() . '/api/v1/toolkit-requirements', $auth);
+            $response = self::get(self::url() . '/' . $endpoint, $auth);
         } catch (\Exception) {
             $response = '';
         }
 
-        // If the request fails, try the mock.
-        if (empty($response) && Mock::download()) {
-            $response = Mock::getEndpointContent('api/v1/toolkit-requirements');
+        // If the request fails, try the mock if we are on CI.
+        if (empty($response) && Toolkit::isCiCd() && Mock::download()) {
+            $response = Mock::getEndpointContent($endpoint);
         }
         if (empty($response)) {
             return false;

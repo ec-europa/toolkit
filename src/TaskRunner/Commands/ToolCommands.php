@@ -99,16 +99,6 @@ class ToolCommands extends AbstractCommands
             $io->say("The file '.opts.yml' was not found, skipping.");
             return ResultData::EXITCODE_OK;
         }
-        $project_id = $this->getConfig()->get('toolkit.project_id');
-        if (empty($project_id)) {
-            $io->say('The configuration toolkit.project_id value is not valid.');
-            return ResultData::EXITCODE_ERROR;
-        }
-        $forbiddenCommands = Website::projectConstraints($project_id);
-        if (empty($forbiddenCommands)) {
-            $io->error('Failed to get constraints from the endpoint.');
-            return ResultData::EXITCODE_ERROR;
-        }
 
         // Check for invalid php_version value, if given version is 8.0 as float when converted to string will be 8
         // and will cause issues like in docker images.
@@ -125,6 +115,18 @@ class ToolCommands extends AbstractCommands
         }
         if (empty($parseOptsFile['upgrade_commands']['default']) && empty($parseOptsFile['upgrade_commands']['append'])) {
             $io->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
+            return ResultData::EXITCODE_ERROR;
+        }
+
+        $project_id = $this->getConfig()->get('toolkit.project_id');
+        if (empty($project_id)) {
+            $io->say('The configuration toolkit.project_id value is not valid.');
+            return ResultData::EXITCODE_ERROR;
+        }
+
+        $forbiddenCommands = Website::projectConstraints($project_id);
+        if (empty($forbiddenCommands)) {
+            $io->error('Failed to get constraints from the endpoint.');
             return ResultData::EXITCODE_ERROR;
         }
         // Gather all the commands, ignore the 'ephemeral' commands.
