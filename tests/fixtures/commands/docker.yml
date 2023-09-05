@@ -1,13 +1,14 @@
 - command: 'docker:refresh-configuration'
-  configuration: []
+  configuration:
+    toolkit:
+      project_id:
   resources: []
   expectations:
       - contains: The configuration toolkit.project_id value is not valid.
 
 - command: 'docker:refresh-configuration'
   configuration:
-    toolkit:
-      project_id: digit-qa
+    toolkit: []
   resources: []
   expectations:
     - contains: |
@@ -18,8 +19,7 @@
 
 - command: 'docker:refresh-configuration'
   configuration:
-    toolkit:
-      project_id: digit-qa
+    toolkit: []
   resources:
     - from: 'sample-docker-default.yml'
       to: 'docker-compose.yml'
@@ -30,11 +30,10 @@
         ->copy('docker-compose.yml', 'docker-compose.yml.prev')
         >  Updating docker-compose.yml file in /test/toolkit/tests/sandbox/DockerCommandsTest
         docker-compose.yml file updated with success.
-
+#
 - command: 'docker:refresh-configuration'
   configuration:
-    toolkit:
-      project_id: digit-qa
+    toolkit: []
   resources:
     - from: 'sample-docker-default.yml'
       to: 'docker-compose.yml'
@@ -50,8 +49,7 @@
 
 - command: 'docker:refresh-configuration'
   configuration:
-    toolkit:
-      project_id: digit-qa
+    toolkit: []
   resources:
     - from: 'sample-docker-default.yml'
       to: 'docker-compose.yml'

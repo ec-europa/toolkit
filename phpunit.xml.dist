@@ -19,9 +19,6 @@
         <testsuite name="Unit GitHooks">
             <file>tests/Unit/GitHooksCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Unit Mock">
-            <file>tests/Unit/MockTest.php</file>
-        </testsuite>
         <testsuite name="Unit ReplaceBlock">
             <file>tests/Unit/ReplaceBlockTest.php</file>
         </testsuite>

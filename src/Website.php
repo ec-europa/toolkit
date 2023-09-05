@@ -235,22 +235,9 @@ class Website
             return false;
         }
         $endpoint = "api/v1/project/ec-europa/$project_id/information";
-        try {
-            $response = self::get(self::url() . '/' . $endpoint, $auth);
-        } catch (\Exception) {
-            $response = '';
-        }
-        // If the request fails, try the mock if we are on CI.
-        if (empty($response) && Toolkit::isCiCd() && Mock::download()) {
-            $endpoint = str_replace($project_id, 'toolkit', $endpoint);
-            $response = Mock::getEndpointContent($endpoint);
-        }
-        if (empty($response)) {
-            return false;
-        }
-        $data = json_decode($response, true);
-        $data = reset($data);
-        if (!empty($data['name']) && $data['name'] === $project_id) {
+        $data = self::getWithMockFallback(self::url() . '/' . $endpoint, $auth);
+        if (!empty($data)) {
+            $data = reset($data);
             $GLOBALS['projects'][$project_id] = $data;
             return $data;
         }
@@ -282,21 +269,7 @@ class Website
         }
         $project_id = "$project_id-reference";
         $endpoint = "api/v1/project/ec-europa/$project_id/information/constraints";
-        try {
-            $response = self::get(self::url() . '/' . $endpoint, $auth);
-        } catch (\Exception) {
-            $response = '';
-        }
-        // If the request fails, try the mock if we are on CI.
-        if (empty($response) && Toolkit::isCiCd() && Mock::download()) {
-            $endpoint = str_replace($project_id, 'toolkit', $endpoint);
-            $response = Mock::getEndpointContent($endpoint);
-        }
-        if (empty($response)) {
-            return false;
-        }
-
-        $data = json_decode($response, true);
+        $data = self::getWithMockFallback(self::url() . '/' . $endpoint, $auth);
         if (empty($data) || !isset($data['constraints'])) {
             return false;
         }
@@ -321,24 +294,58 @@ class Website
         if (empty($auth = self::apiAuth())) {
             return false;
         }
+        $data = self::getWithMockFallback(self::url() . '/api/v1/toolkit-requirements', $auth);
+        $GLOBALS['requirements'] = $data;
+        return $data;
+    }
 
-        $endpoint = 'api/v1/toolkit-requirements';
+    /**
+     * Returns the packages reviews from the endpoint.
+     */
+    public static function packages()
+    {
+        if (empty($auth = self::apiAuth())) {
+            return false;
+        }
+        $data = self::getWithMockFallback(self::url() . '/api/v1/package-reviews?version=8.x', $auth);
+        return empty($data) ? false : $data;
+    }
+
+    /**
+     * Returns content from given endpoint and fallback to mock if possible.
+     *
+     * This should only be executed on CI.
+     *
+     * @param string $url
+     *    The QA endpoint url.
+     * @param AuthorizationInterface|null $auth
+     *    The authorization instance or null.
+     */
+    public static function getWithMockFallback(string $url, AuthorizationInterface $auth = null)
+    {
         try {
-            $response = self::get(self::url() . '/' . $endpoint, $auth);
+            $response = self::get($url, $auth);
         } catch (\Exception) {
             $response = '';
         }
 
         // If the request fails, try the mock if we are on CI.
-        if (empty($response) && Toolkit::isCiCd() && Mock::download()) {
+        if (empty($response) && Mock::download()) {
+            // Remove the base url from the endpoint.
+            $endpoint = str_replace(self::url() . '/', '', $url);
+            // Replace any project_id in the url.
+            $endpoint = preg_replace('#/[a-zA-Z\-]+-reference/#', '/toolkit/', $endpoint);
+            // Remove any query string from the url.
+            if (str_contains($endpoint, '?')) {
+                $endpoint = strstr($endpoint, '?', true);
+            }
             $response = Mock::getEndpointContent($endpoint);
         }
         if (empty($response)) {
             return false;
         }
-        $data = json_decode($response, true);
-        $GLOBALS['requirements'] = $data;
-        return $data;
+
+        return json_decode($response, true);
     }
 
 }

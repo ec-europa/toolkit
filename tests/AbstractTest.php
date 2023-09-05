@@ -300,7 +300,8 @@ abstract class AbstractTest extends TestCase
      */
     public static function setUpMock()
     {
-        Website::setUrl(self::getMockBaseUrl() . '/tests/mock');
+        $url = getenv('VIRTUAL_HOST');
+        Website::setUrl(!empty($url) ? $url : 'http://web:8080');
     }
 
     /**

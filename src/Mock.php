@@ -20,6 +20,9 @@ final class Mock
      */
     public static function download(): bool
     {
+        if (!Toolkit::isCiCd()) {
+            return false;
+        }
         $mockDir = getenv('TOOLKIT_MOCK_DIR') ?: 'mock';
         if (file_exists($mockDir)) {
             return true;
@@ -48,6 +51,9 @@ final class Mock
      */
     public static function getEndpointContent(string $endpoint)
     {
+        if (!Toolkit::isCiCd()) {
+            return false;
+        }
         $mockDir = getenv('TOOLKIT_MOCK_DIR') ?: 'mock';
         if (!file_exists($mockDir)) {
             throw new \Exception("Mock not found at '$mockDir'.");

@@ -31,7 +31,7 @@
     - string_contains: "Checking Toolkit requirements:"
     - string_contains: "Required checks:"
     - string_contains: "PHP version       OK"
-    - string_contains: "Toolkit version   FAIL"
+    - string_contains: "Toolkit version   FAIL (9.10.0)"
     - string_contains: "Drupal version    OK"
 
 - command: toolkit:requirements
@@ -85,7 +85,7 @@
 
           [WARNING] Failed to get Toolkit version from composer.lock.
 
-        Minimum version: ^9.6
+        Minimum version: ^9.11
         Current version: 9.13.0
         Version check: OK
 
@@ -98,7 +98,7 @@
     - contains: |
         >  Checking Toolkit version:
 
-        Minimum version: ^9.6
+        Minimum version: ^9.11
         Current version: 9.13.0
         Version check: OK
 
@@ -110,7 +110,9 @@
         Vendors being monitored:
         ========================
 
+        behat
         drupal
+        phpunit
         vlucas
 
 - command: toolkit:code-review

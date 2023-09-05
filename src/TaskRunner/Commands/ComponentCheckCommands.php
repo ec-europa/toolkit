@@ -6,9 +6,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
 use EcEuropa\Toolkit\DrupalReleaseHistory;
-use EcEuropa\Toolkit\Mock;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
-use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Symfony\ConsoleIO;
@@ -59,7 +57,7 @@ class ComponentCheckCommands extends AbstractCommands
         if (!empty($options['endpoint'])) {
             Website::setUrl($options['endpoint']);
         }
-        if (empty($auth = Website::apiAuth())) {
+        if (empty(Website::apiAuth())) {
             return 1;
         }
         $this->io = $io;
@@ -81,22 +79,11 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         $status = 0;
-        $endpoint = 'api/v1/package-reviews';
-        try {
-            $response = Website::get(Website::url() . '/' . $endpoint . '?version=8.x', $auth);
-        } catch (\Exception) {
-            $response = '';
-        }
-        // If the request fails, try the mock if we are on CI.
-        if (empty($response) && Toolkit::isCiCd() && Mock::download()) {
-            $response = Mock::getEndpointContent($endpoint);
-        }
-        if (empty($response)) {
-            $io->error('Failed to connect to the endpoint ' . Website::url() . '/' . $endpoint);
+        $data = Website::packages();
+        if (empty($data)) {
+            $io->error('Failed to connect to the endpoint ' . Website::url() . '/api/v1/package-reviews');
             return 1;
         }
-
-        $data = json_decode($response, true);
         $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 
         // To test this command execute it with the --test-command option:
