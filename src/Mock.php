@@ -30,7 +30,7 @@ final class Mock
         if (empty($repo = getenv('TOOLKIT_MOCK_REPO'))) {
             throw new \Exception('Missing env var TOOLKIT_MOCK_REPO.');
         }
-        $branch = getenv('TOOLKIT_MOCK_BRANCH') ?: 'mock';
+        $branch = getenv('TOOLKIT_MOCK_BRANCH') ?: '0.0.2';
         $command = "git clone --depth 1 --branch $branch $repo $mockDir";
         $process = Process::fromShellCommandline($command);
         $process->run();
