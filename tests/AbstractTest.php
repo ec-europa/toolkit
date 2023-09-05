@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\Tests;
 
 use EcEuropa\Toolkit\TaskRunner\Runner;
-use EcEuropa\Toolkit\Website;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;

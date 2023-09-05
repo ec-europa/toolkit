@@ -30,7 +30,7 @@
         ->copy('docker-compose.yml', 'docker-compose.yml.prev')
         >  Updating docker-compose.yml file in /test/toolkit/tests/sandbox/DockerCommandsTest
         docker-compose.yml file updated with success.
-#
+
 - command: 'docker:refresh-configuration'
   configuration:
     toolkit: []
