@@ -75,8 +75,6 @@ pipeline:
     environment: *env
     commands:
       - ./run toolkit:test-phpunit --execution=parallel
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
 
   lint-yaml:
     group: test
