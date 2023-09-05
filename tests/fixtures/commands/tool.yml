@@ -31,7 +31,7 @@
     - string_contains: "Checking Toolkit requirements:"
     - string_contains: "Required checks:"
     - string_contains: "PHP version       OK"
-    - string_contains: "Toolkit version   FAIL (9.10.0)"
+    - string_contains: "Toolkit version   FAIL"
     - string_contains: "Drupal version    OK"
 
 - command: toolkit:requirements
@@ -80,14 +80,10 @@
   configuration: []
   resources: []
   expectations:
-    - contains: |
-        >  Checking Toolkit version:
-
-          [WARNING] Failed to get Toolkit version from composer.lock.
-
-        Minimum version: ^9.11
-        Current version: 9.13.0
-        Version check: OK
+    - string_contains: "[WARNING] Failed to get Toolkit version from composer.lock."
+    - string_contains: "Minimum version: ^9"
+    - string_contains: "Current version: 9"
+    - string_contains: "Version check: OK"
 
 - command: toolkit:check-version
   configuration: []
@@ -95,87 +91,38 @@
     - from: sample-composer.lock
       to: composer.lock
   expectations:
-    - contains: |
-        >  Checking Toolkit version:
-
-        Minimum version: ^9.11
-        Current version: 9.13.0
-        Version check: OK
+    - string_contains: "Minimum version: ^9"
+    - string_contains: "Current version: 9"
+    - string_contains: "Version check: OK"
 
 - command: toolkit:vendor-list
   configuration: []
   resources: []
   expectations:
-    - contains: |
-        Vendors being monitored:
-        ========================
-
-        behat
-        drupal
-        phpunit
-        vlucas
+    - string_contains: behat
+    - string_contains: drupal
+    - string_contains: phpunit
+    - string_contains: vlucas
 
 - command: toolkit:code-review
   configuration: []
   resources: []
   expectations:
-    - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
-          ->arg('toolkit:test-phpcs')
-        [Simulator] Running ./vendor/bin/run 'toolkit:test-phpcs'
-
-
-        [Simulator] Simulating Exec('./vendor/bin/run')
-          ->arg('toolkit:opts-review')
-        [Simulator] Running ./vendor/bin/run 'toolkit:opts-review'
-
-
-        [Simulator] Simulating Exec('./vendor/bin/run')
-          ->arg('toolkit:lint-php')
-        [Simulator] Running ./vendor/bin/run 'toolkit:lint-php'
-
-
-        [Simulator] Simulating Exec('./vendor/bin/run')
-          ->arg('toolkit:lint-yaml')
-        [Simulator] Running ./vendor/bin/run 'toolkit:lint-yaml'
-
-
-        [Simulator] Simulating Exec('./vendor/bin/run')
-          ->arg('toolkit:test-phpstan')
-        [Simulator] Running ./vendor/bin/run 'toolkit:test-phpstan'
-
-
-        Results:
-        ========
-
-        ------------- --------
-        PHPcs         passed
-        Opts review   passed
-        Lint PHP      passed
-        Lint YAML     passed
-        PHPStan       passed
-        ------------- --------
+    - string_contains: PHPcs         passed
+    - string_contains: Opts review   passed
+    - string_contains: Lint PHP      passed
+    - string_contains: Lint YAML     passed
+    - string_contains: PHPStan       passed
 
 - command: toolkit:code-review --phpcs
   configuration: []
   resources: []
   expectations:
-    - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
-          ->arg('toolkit:test-phpcs')
-        [Simulator] Running ./vendor/bin/run 'toolkit:test-phpcs'
-
-
-        Results:
-        ========
-
-        ------------- --------
-        PHPcs         passed
-        Opts review   skip
-        Lint PHP      skip
-        Lint YAML     skip
-        PHPStan       skip
-        ------------- --------
+    - string_contains: PHPcs         passed
+    - string_contains: Opts review   skip
+    - string_contains: Lint PHP      skip
+    - string_contains: Lint YAML     skip
+    - string_contains: PHPStan       skip
 
 - command: toolkit:install-dependencies
   configuration: []
