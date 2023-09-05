@@ -11,6 +11,7 @@
     bootstrap                   = "vendor/autoload.php">
     <php>
         <env name="CI" value="true"/>
+        <env name="QA_WEBSITE_URL" value="http://web:8080" force="true"/>
         <env name="DRUPAL_DATABASE_NAME" value="drupal"/>
         <env name="DRUPAL_DATABASE_USERNAME" value="root"/>
         <env name="DRUPAL_DATABASE_HOST" value="mysql"/>

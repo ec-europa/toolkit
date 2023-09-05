@@ -43,8 +43,6 @@ abstract class AbstractTest extends TestCase
             $this->fs->mkdir($this->getSandboxRoot());
         }
         $this->fs->chmod($this->getSandboxRoot(), 0777, umask(), true);
-
-        self::setUpMock();
     }
 
     /**
@@ -290,18 +288,6 @@ abstract class AbstractTest extends TestCase
     {
         $class = explode('\\', static::class);
         return (string) end($class);
-    }
-
-    /**
-     * Set up the mock server.
-     *
-     * To access the mock directly in the browser, make sure the port is exposed in the docker-compose.yml
-     * file and access for example: http://localhost:8080/tests/mock/api/v1/package-reviews.
-     */
-    public static function setUpMock()
-    {
-        $url = getenv('VIRTUAL_HOST');
-        Website::setUrl(!empty($url) ? $url : 'http://web:8080');
     }
 
     /**
