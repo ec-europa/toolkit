@@ -182,7 +182,7 @@ class ToolCommands extends AbstractCommands
         }
         $data = Website::requirements();
         if (empty($data)) {
-            $io->error('Failed to connect to the endpoint' . Website::url() . '/api/v1/toolkit-requirements');
+            $io->error('Failed to connect to the endpoint ' . Website::url() . '/api/v1/toolkit-requirements');
             return 1;
         }
         if (!isset($data['toolkit'])) {

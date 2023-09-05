@@ -13,7 +13,6 @@
         >  Website not installed, using config/sync/core.extension.yml file.
         >  Config file not found at config/sync/core.extension.yml.
         Package dropsolid_purge is mandatory and is not present on the project.
-        Package nexteuropa_dashboard_agent is mandatory and is not present on the project.
         Package oe_dashboard_agent is mandatory and is not present on the project.
 
         Checking Recommended components.
@@ -42,25 +41,10 @@
         Checking evaluation status components.
         ======================================
 
-        Package drupal/autologout:1.4 does not meet the whitelist version constraint: ^4.5.
-        Package drupal/better_exposed_filters:6.0.2 does not meet the whitelist version constraint: ^3.6.
-        Package drupal/cas_attributes:2.0.0-beta3 does not meet the whitelist version constraint: ^1.0-rc3.
         The use of drupal/codesnippet:1.8 is restricted. Contact QA Team.
-        Package drupal/coffee:1.2 does not meet the whitelist version constraint: ^2.3.
-        Package drupal/conditional_fields:4.0.0-alpha1 does not meet the whitelist version constraint: ^3.0-alpha2.
-        Package drupal/ctools:4.0.1 does not meet the whitelist version constraint: ^1.15.
         The use of drupal/github_connect:2.0.0-alpha1 is restricted. Contact QA Team.
-        Package drupal/purge:3.4 does not meet the whitelist version constraint: ^1.7.
-        The use of drupal/queue_ui:3.1.2 is rejected. Contact QA Team.
         The use of drupal/responsive_tables_filter:1.17 is restricted. Contact QA Team.
         The use of drupal/restui:1.21 is rejected. Contact QA Team.
-        Package drupal/seckit:2.0.0 does not meet the whitelist version constraint: ^1.11.
-        The use of drupal/simple_timeline:1.2 is rejected. Contact QA Team.
-        Package drupal/smart_trim:1.3 does not meet the whitelist version constraint: ^1.5.
-        Package drupal/views_accordion:2.0.0 does not meet the whitelist version constraint: ^1.6.
-        Package drupal/views_bulk_operations:4.2.1 does not meet the whitelist version constraint: ^3.5.
-        Package drupal/views_data_export:1.2 does not meet the whitelist version constraint: ^3.2.
-        Package drupal/weight:3.3 does not meet the whitelist version constraint: ^2.3.
 
         Checking dev components.
         ========================
@@ -164,7 +148,7 @@
     - from: sample-composer.lock
       to: composer.lock
   expectations:
-    - string_contains: Mandatory module check            failed
+    - string_contains: Mandatory module check            passed
     - string_contains: Recommended module check          passed
     - string_contains: Insecure module check             passed
     - string_contains: Outdated module check             passed

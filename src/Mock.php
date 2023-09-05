@@ -58,7 +58,7 @@ final class Mock
         if (!file_exists($mockDir)) {
             throw new \Exception("Mock not found at '$mockDir'.");
         }
-        $endpointFile = "$mockDir/mock/$endpoint.json";
+        $endpointFile = "$mockDir/$endpoint.json";
         if (!file_exists($endpointFile)) {
             throw new \Exception("No file found for endpoint '$endpoint'.");
         }
