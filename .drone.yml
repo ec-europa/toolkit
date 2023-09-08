@@ -71,7 +71,7 @@ pipeline:
   phpunit:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
-    secrets: [ qa_api_basic_auth, qa_api_auth_token, github_api_token, gitlab_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass ]
+    secrets: [ qa_api_basic_auth, qa_api_auth_token, github_api_token, gitlab_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass, toolkit_mock_repo ]
     environment: *env
     commands:
       - ./run toolkit:test-phpunit --execution=parallel

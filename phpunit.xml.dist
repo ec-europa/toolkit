@@ -11,6 +11,8 @@
     bootstrap                   = "vendor/autoload.php">
     <php>
         <env name="CI" value="true"/>
+        <env name="QA_WEBSITE_URL" value="http://web:8080" force="true"/>
+        <env name="TOOLKIT_MOCK_BRANCH" value="0.0.2"/>
         <env name="DRUPAL_DATABASE_NAME" value="drupal"/>
         <env name="DRUPAL_DATABASE_USERNAME" value="root"/>
         <env name="DRUPAL_DATABASE_HOST" value="mysql"/>
@@ -18,9 +20,6 @@
     <testsuites>
         <testsuite name="Unit GitHooks">
             <file>tests/Unit/GitHooksCommandsTest.php</file>
-        </testsuite>
-        <testsuite name="Unit Mock">
-            <file>tests/Unit/MockTest.php</file>
         </testsuite>
         <testsuite name="Unit ReplaceBlock">
             <file>tests/Unit/ReplaceBlockTest.php</file>
