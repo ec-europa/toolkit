@@ -22,7 +22,7 @@
           ->stopOnFail()
           ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
         [Simulator] Simulating File\Write('dist/manifest.json')
-          ->text('{"drupal_profile":"minimal","project_id":null,"drupal_ ... .0","sha":"aBcDeF"}')
+          ->text('{"drupal_profile":"minimal","project_id":"toolkit","dr ... .0","sha":"aBcDeF"}')
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')
           ->text('1.0.0')
         [Simulator] Simulating ExecStack()

@@ -57,7 +57,7 @@ class ComponentCheckCommands extends AbstractCommands
         if (!empty($options['endpoint'])) {
             Website::setUrl($options['endpoint']);
         }
-        if (empty($auth = Website::apiAuth())) {
+        if (empty(Website::apiAuth())) {
             return 1;
         }
         $this->io = $io;
@@ -79,9 +79,11 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         $status = 0;
-        $endpoint = Website::url();
-        $result = Website::get($endpoint . '/api/v1/package-reviews?version=8.x', $auth);
-        $data = json_decode($result, true);
+        $data = Website::packages();
+        if (empty($data)) {
+            $io->error('Failed to connect to the endpoint ' . Website::url() . '/api/v1/package-reviews');
+            return 1;
+        }
         $modules = array_filter(array_combine(array_column($data, 'name'), $data));
 
         // To test this command execute it with the --test-command option:

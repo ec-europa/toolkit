@@ -16,6 +16,7 @@ node_modules/
 package.json
 package-lock.json
 /docs_tmp/
+/mock
 
 # Documentation folder exclusions.
 !docs/

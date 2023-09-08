@@ -8,7 +8,7 @@
     "packages": [
         {
             "name": "drupal/core",
-            "version": "9.4.11",
+            "version": "9.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
@@ -227,7 +227,7 @@
     "packages-dev": [
         {
             "name": "ec-europa/toolkit",
-            "version": "9.1.0",
+            "version": "9.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/toolkit.git",

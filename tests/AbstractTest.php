@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\Tests;
 
 use EcEuropa\Toolkit\TaskRunner\Runner;
-use EcEuropa\Toolkit\Website;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -43,8 +42,6 @@ abstract class AbstractTest extends TestCase
             $this->fs->mkdir($this->getSandboxRoot());
         }
         $this->fs->chmod($this->getSandboxRoot(), 0777, umask(), true);
-
-        self::setUpMock();
     }
 
     /**
@@ -290,17 +287,6 @@ abstract class AbstractTest extends TestCase
     {
         $class = explode('\\', static::class);
         return (string) end($class);
-    }
-
-    /**
-     * Set up the mock server.
-     *
-     * To access the mock directly in the browser, make sure the port is exposed in the docker-compose.yml
-     * file and access for example: http://localhost:8080/tests/mock/api/v1/package-reviews.
-     */
-    public static function setUpMock()
-    {
-        Website::setUrl(self::getMockBaseUrl() . '/tests/mock');
     }
 
     /**

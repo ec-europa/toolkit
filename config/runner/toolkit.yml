@@ -1,4 +1,5 @@
 toolkit:
+  project_id: toolkit
   tmp_folder: '/cache'
   clean:
     config_file: 'config/sync/core.extension.yml'
