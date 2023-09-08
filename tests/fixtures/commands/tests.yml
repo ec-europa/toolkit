@@ -111,11 +111,8 @@
             1 => 'ansi',
             2 => 'phpmd.xml',
           ))
-          ->options(array (
-            'exclude' => '',
-            'suffixes' => 'php,module,inc,theme,install',
-          ))
-        [Simulator] Running ./vendor/bin/phpmd '' ansi phpmd.xml --exclude --suffixes 'php,module,inc,theme,install'
+          ->options(array ( ... ))
+        [Simulator] Running ./vendor/bin/phpmd '' ansi phpmd.xml --exclude 'dist/,.cache/,vendor/,web/,node_modules/,config/' --suffixes 'php,module,inc,theme,install'
 
 - command: 'toolkit:test-phpmd'
   configuration: []
@@ -133,7 +130,7 @@
             2 => 'phpmd.xml',
           ))
           ->options(array ( ... ))
-        [Simulator] Running ./vendor/bin/phpmd src ansi phpmd.xml --exclude vendor/ --suffixes 'php,module,inc,theme,install'
+        [Simulator] Running ./vendor/bin/phpmd src ansi phpmd.xml --exclude 'dist/,.cache/,vendor/,web/,node_modules/,config/' --suffixes 'php,module,inc,theme,install'
 
 - command: 'toolkit:check-phpcs-requirements'
   configuration: []
