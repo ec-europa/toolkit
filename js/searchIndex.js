@@ -71,6 +71,21 @@ Search.appendIndex(
             "summary": "Call\u0020release\u0020history\u0020of\u0020d.org\u0020to\u0020confirm\u0020security\u0020alert.",
             "url": "classes/EcEuropa-Toolkit-DrupalReleaseHistory.html#method_getPackageDetails"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Mock",
+            "name": "Mock",
+            "summary": "Toolkit\u0020mock\u0020class.",
+            "url": "classes/EcEuropa-Toolkit-Mock.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Mock\u003A\u003Adownload\u0028\u0029",
+            "name": "download",
+            "summary": "Downloads\u0020the\u0020mock\u0020from\u0020the\u0020repo.",
+            "url": "classes/EcEuropa-Toolkit-Mock.html#method_download"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Mock\u003A\u003AgetEndpointContent\u0028\u0029",
+            "name": "getEndpointContent",
+            "summary": "Returns\u0020the\u0020content\u0020of\u0020the\u0020endpoint\u0020from\u0020the\u0020mock.",
+            "url": "classes/EcEuropa-Toolkit-Mock.html#method_getEndpointContent"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Task\\Command\\ConfigurationCommand",
             "name": "ConfigurationCommand",
             "summary": "Execute\u0020the\u0020tasks\u0020from\u0020a\u0020Configuration\u0020command.",
@@ -1510,6 +1525,16 @@ Search.appendIndex(
             "name": "requirements",
             "summary": "Returns\u0020the\u0020toolkit\u0020requirements\u0020from\u0020the\u0020endpoint.",
             "url": "classes/EcEuropa-Toolkit-Website.html#method_requirements"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Website\u003A\u003Apackages\u0028\u0029",
+            "name": "packages",
+            "summary": "Returns\u0020the\u0020packages\u0020reviews\u0020from\u0020the\u0020endpoint.",
+            "url": "classes/EcEuropa-Toolkit-Website.html#method_packages"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Website\u003A\u003AgetWithMockFallback\u0028\u0029",
+            "name": "getWithMockFallback",
+            "summary": "Returns\u0020content\u0020from\u0020given\u0020endpoint\u0020and\u0020fallback\u0020to\u0020mock\u0020if\u0020possible.",
+            "url": "classes/EcEuropa-Toolkit-Website.html#method_getWithMockFallback"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Website\u003A\u003AAUTHENTICATION_ENV_KEYS",
             "name": "AUTHENTICATION_ENV_KEYS",
