@@ -451,18 +451,17 @@ class ComponentCheckCommands extends AbstractCommands
             if (!empty($data['advisories']) && is_array($data['advisories'])) {
                 // Each package might have multiple issues, we take the first.
                 foreach ($data['advisories'] as $advisory) {
-                    $packageName = $advisory[0]['packageName'];
-                    if (!isset($packages[$packageName])) {
-                        $packages[] = $advisory[0];
-                        $packages[$packageName]['version'] = ToolCommands::getPackagePropertyFromComposer($packageName);
-                    }
+                    $firstAdvisory = array_pop($advisory);
+                    $packageName = $firstAdvisory['packageName'];
+                    $packages[$packageName]['title'] = $firstAdvisory['title'];
+                    $packages[$packageName]['version'] = ToolCommands::getPackagePropertyFromComposer($packageName);
                 }
             }
         }
 
         $messages = [];
         foreach ($packages as $name => $package) {
-            $msg = "Package $name has a security update, please update to a safe version.";
+            $msg = "Package $name has a security update, please update to a safe version. (" . $package['title'] . ")";
             if (!empty($modules[$name]['secure'])) {
                 if (Semver::satisfies($package['version'], $modules[$name]['secure'])) {
                     $messages[] = "$msg (Version marked as secure)";
