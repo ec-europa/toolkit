@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 9.13.1
+  - DQA-7826: Hotfix for components security check.
+
 ## Version 9.13.0
   - DQA-7528: Allow to block access to files in htaccess.
   - DQA-7379: Force max-age in Cache-Control headers.
