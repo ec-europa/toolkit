@@ -21,9 +21,9 @@ class BlackfireCommandsTest extends AbstractTest
      * @return array
      *   An array of test data arrays with assertions.
      */
-    public function dataProvider()
+    public static function dataProvider()
     {
-        return $this->getFixtureContent('commands/blackfire.yml');
+        return self::getFixtureContent('commands/blackfire.yml');
     }
 
     /**
@@ -55,7 +55,7 @@ class BlackfireCommandsTest extends AbstractTest
 
         // Run command.
         $result = $this->runCommand($command);
-//        $this->debugExpectations($result['output'], $expectations);
+        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
             $this->assertDynamic($result['output'], $expectation);

@@ -32,7 +32,7 @@
         "phpmd/phpmd": "^2.12",
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^9.5 || ^10.0",
         "squizlabs/php_codesniffer": "^3.7"
     },
     "suggest": {
