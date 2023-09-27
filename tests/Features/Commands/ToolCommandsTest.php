@@ -22,9 +22,9 @@ class ToolCommandsTest extends AbstractTest
      * @return array
      *   An array of test data arrays with assertions.
      */
-    public function dataProvider()
+    public static function dataProvider()
     {
-        return $this->getFixtureContent('commands/tool.yml');
+        return self::getFixtureContent('commands/tool.yml');
     }
 
     /**
@@ -52,7 +52,7 @@ class ToolCommandsTest extends AbstractTest
         // Run command.
         $result = $this->runCommand($command);
 
-//        $this->debugExpectations($result['output'], $expectations);
+        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
             $this->assertDynamic($result['output'], $expectation);
@@ -65,9 +65,9 @@ class ToolCommandsTest extends AbstractTest
      * @return array
      *   An array of test data arrays with assertions.
      */
-    public function dataProviderOptsReview()
+    public static function dataProviderOptsReview()
     {
-        return $this->getFixtureContent('commands/opts-review.yml');
+        return self::getFixtureContent('commands/opts-review.yml');
     }
 
     /**
@@ -94,7 +94,7 @@ class ToolCommandsTest extends AbstractTest
 
         // Run command.
         $result = $this->runCommand($command);
-//        $this->debugExpectations($result['output'], $expectations);
+        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
             $this->assertDynamic($result['output'], $expectation);
