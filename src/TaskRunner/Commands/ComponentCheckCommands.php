@@ -252,6 +252,10 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function validateComponent(array $package, array $modules)
     {
+        // Ignore if the package is a metapackage.
+        if ($package['type'] === 'metapackage') {
+            return;
+        }
         $config = $this->getConfig();
         $packageName = $package['name'];
         $hasBeenQaEd = isset($modules[$packageName]);
