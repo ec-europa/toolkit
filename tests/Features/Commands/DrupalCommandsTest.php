@@ -22,9 +22,9 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
          * @return array
          *   An array of test data arrays with assertions.
          */
-        public function dataProvider()
+        public static function dataProvider()
         {
-            return $this->getFixtureContent('commands/drupal.yml');
+            return self::getFixtureContent('commands/drupal.yml');
         }
 
         /**
@@ -33,9 +33,9 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
          * @return array
          *   An array of test data arrays with assertions.
          */
-        public function dataProviderSettings()
+        public static function dataProviderSettings()
         {
-            return $this->getFixtureContent('commands/drupal-settings-setup.yml');
+            return self::getFixtureContent('commands/drupal-settings-setup.yml');
         }
 
         /**
@@ -69,7 +69,7 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
 
             // Run command.
             $result = $this->runCommand($command);
-//        $this->debugExpectations($result['output'], $expectations);
+        $this->debugExpectations($result['output'], $expectations);
             // Assert expectations.
             foreach ($expectations as $expectation) {
                 $this->assertDynamic($result['output'], $expectation);

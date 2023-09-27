@@ -16,9 +16,9 @@ class ReplaceBlockTest extends AbstractTest
      * @return array
      *   An array of test data arrays with assertions.
      */
-    public function dataProvider()
+    public static function dataProvider()
     {
-        return $this->getFixtureContent('commands/replace-block.yml');
+        return self::getFixtureContent('commands/replace-block.yml');
     }
 
     /**
