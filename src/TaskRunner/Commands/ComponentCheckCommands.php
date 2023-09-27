@@ -453,7 +453,7 @@ class ComponentCheckCommands extends AbstractCommands
             if (!empty($data['advisories']) && is_array($data['advisories'])) {
                 // Each package might have multiple issues, we take the first.
                 foreach ($data['advisories'] as $advisory) {
-                    $firstAdvisory = array_pop($advisory);
+                    $firstAdvisory = array_shift($advisory);
                     $packageName = $firstAdvisory['packageName'];
                     $packages[$packageName]['title'] = $firstAdvisory['title'];
                     $packages[$packageName]['version'] = ToolCommands::getPackagePropertyFromComposer($packageName);
