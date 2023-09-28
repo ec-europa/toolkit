@@ -169,7 +169,6 @@ class TestsCommands extends AbstractCommands
         }
 
         if (!empty($options['ignore_patterns'])) {
-            Toolkit::filterFolders($options['ignore_patterns']);
             $execOptions['exclude'] = implode(',', $options['ignore_patterns']);
         }
         if (!empty($options['triggered_by'])) {

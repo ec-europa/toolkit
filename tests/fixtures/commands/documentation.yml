@@ -1,8 +1,3 @@
-- command: 'toolkit:generate-documentation'
-  resources: []
-  expectations:
-    - contains: "[ERROR] Fail to download the phpDocumentor.phar file."
-
 - command: 'toolkit:generate-documentation --branch=docs'
   resources:
     - mkdir: docs

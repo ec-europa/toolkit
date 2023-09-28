@@ -1,5 +1,11 @@
 # Toolkit change log
 
+## Version 9.14.0
+- DQA-7830: Switch array_pop to array_shift in Toolkit secure check.
+- DQA-7713: Add support to phpunit/phpunit 10.
+- DQA-7674: Update qa-automation for Drupal 10.
+- DQA-7414: Ignore metapackage packages in component-check.
+
 ## Version 9.13.1 | 10.3.1
 - DQA-7826: Hotfix for components security check.
 

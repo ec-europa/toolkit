@@ -22,9 +22,9 @@ class DockerCommandsTest extends AbstractTest
      * @return array
      *   An array of test data arrays with assertions.
      */
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
-        return $this->getFixtureContent('commands/docker.yml');
+        return self::getFixtureContent('commands/docker.yml');
     }
 
     /**
@@ -33,9 +33,9 @@ class DockerCommandsTest extends AbstractTest
      * @return array
      *   An array of test data arrays with assertions.
      */
-    public function dataProviderDockerComposeContent(): array
+    public static function dataProviderDockerComposeContent(): array
     {
-        return $this->getFixtureContent('commands/docker-compose-content.yml');
+        return self::getFixtureContent('commands/docker-compose-content.yml');
     }
 
     /**

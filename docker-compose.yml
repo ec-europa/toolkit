@@ -19,6 +19,9 @@ services:
       ASDA_PASSWORD:
       QA_API_BASIC_AUTH:
       QA_API_AUTH_TOKEN:
+      QA_WEBSITE_URL:
+      TOOLKIT_MOCK_REPO:
+      TOOLKIT_MOCK_BRANCH: 0.0.2
       GITHUB_API_TOKEN:
       GITLAB_API_TOKEN:
       XDEBUG_CONFIG: client_host=host.docker.internal

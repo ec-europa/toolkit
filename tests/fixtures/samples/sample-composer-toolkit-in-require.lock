@@ -8,7 +8,7 @@
     "packages": [
         {
             "name": "ec-europa/toolkit",
-            "version": "9.1.0",
+            "version": "9.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/toolkit.git",
@@ -72,7 +72,7 @@
         },
         {
             "name": "drupal/core",
-            "version": "9.4.11",
+            "version": "9.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
@@ -239,7 +239,7 @@
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "9.4.11",
+            "version": "9.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",

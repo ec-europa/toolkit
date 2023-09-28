@@ -7,7 +7,8 @@
 /runner.yml
 /phpunit.xml
 /docker-compose.*.yml
-.phpunit.result.cache
+/.phpunit.result.cache
+/.phpunit.cache/
 *.sql
 phpda.*
 .phpdoc*
@@ -16,6 +17,7 @@ node_modules/
 package.json
 package-lock.json
 /docs_tmp/
+/mock
 
 # Documentation folder exclusions.
 !docs/

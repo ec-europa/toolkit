@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\Tests;
 
 use EcEuropa\Toolkit\TaskRunner\Runner;
-use EcEuropa\Toolkit\Website;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -43,8 +42,6 @@ abstract class AbstractTest extends TestCase
             $this->fs->mkdir($this->getSandboxRoot());
         }
         $this->fs->chmod($this->getSandboxRoot(), 0777, umask(), true);
-
-        self::setUpMock();
     }
 
     /**
@@ -159,6 +156,8 @@ abstract class AbstractTest extends TestCase
     /**
      * Helper function to debug the expectations and the content before assert.
      *
+     * To debug, set the variable TOOLKIT_DEBUG_EXPECTATIONS to true in the phpunit.xml file.
+     *
      * @param string $content
      *   Content to test.
      * @param array $expectations
@@ -166,29 +165,32 @@ abstract class AbstractTest extends TestCase
      */
     protected function debugExpectations(string $content, array $expectations)
     {
-        $debug = "\n-- Content --\n$content\n-- End Content --\n";
+        if (!getenv('TOOLKIT_DEBUG_EXPECTATIONS')) {
+            return;
+        }
+        $output = "\n-- Content --\n$content\n-- End Content --\n";
         foreach ($expectations as $expectation) {
             if (!empty($expectation['contains'])) {
-                $debug .= "-- Contains --\n{$expectation['contains']}\n-- End Contains --\n";
+                $output .= "-- Contains --\n{$expectation['contains']}\n-- End Contains --\n";
             }
             if (!empty($expectation['not_contains'])) {
-                $debug .= "-- NotContains --\n{$expectation['not_contains']}\n-- End NotContains --\n";
+                $output .= "-- NotContains --\n{$expectation['not_contains']}\n-- End NotContains --\n";
             }
             if (!empty($expectation['string_contains'])) {
-                $debug .= "-- String --\n{$expectation['string_contains']}\n-- End String --\n";
+                $output .= "-- String --\n{$expectation['string_contains']}\n-- End String --\n";
             }
             if (!empty($expectation['not_string_contains'])) {
-                $debug .= "-- NotString --\n{$expectation['not_string_contains']}\n-- End NotString --\n";
+                $output .= "-- NotString --\n{$expectation['not_string_contains']}\n-- End NotString --\n";
             }
             if (!empty($expectation['file_expected']) && !empty($expectation['file_actual'])) {
-                $debug .= "-- Files equal - expected --\n";
-                $debug .= file_get_contents($expectation['file_expected']);
-                $debug .= "\n-- END expected --\n-- Files equal - actual --\n";
-                $debug .= file_get_contents($expectation['file_actual']);
-                $debug .= "\n-- END actual --\n";
+                $output .= "-- Files equal - expected --\n";
+                $output .= file_get_contents($expectation['file_expected']);
+                $output .= "\n-- END expected --\n-- Files equal - actual --\n";
+                $output .= file_get_contents($expectation['file_actual']);
+                $output .= "\n-- END actual --\n";
             }
         }
-        echo $debug;
+        echo $output;
     }
 
     /**
@@ -222,7 +224,7 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   The filepath of fixtures.
      */
-    protected function getFixtureRoot(): string
+    protected static function getFixtureRoot(): string
     {
         return __DIR__ . '/fixtures';
     }
@@ -236,9 +238,9 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   The filepath of the sandbox file.
      */
-    protected function getFixtureFilepath(string $name): string
+    protected static function getFixtureFilepath(string $name): string
     {
-        return $this->getFixtureRoot() . '/' . $name;
+        return self::getFixtureRoot() . '/' . $name;
     }
 
     /**
@@ -250,9 +252,9 @@ abstract class AbstractTest extends TestCase
      * @return mixed|string
      *   A set of test data.
      */
-    protected function getFixtureContent(string $filepath)
+    protected static function getFixtureContent(string $filepath)
     {
-        return Yaml::parse(file_get_contents($this->getFixtureFilepath($filepath)));
+        return Yaml::parse(file_get_contents(self::getFixtureFilepath($filepath)));
     }
 
     /**
@@ -264,9 +266,9 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   The filepath of the sandbox file.
      */
-    protected function getSandboxFilepath(string $name): string
+    protected static function getSandboxFilepath(string $name): string
     {
-        return $this->getSandboxRoot() . '/' . $name;
+        return self::getSandboxRoot() . '/' . $name;
     }
 
     /**
@@ -275,9 +277,9 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   The filepath of sandbox.
      */
-    protected function getSandboxRoot(): string
+    protected static function getSandboxRoot(): string
     {
-        return __DIR__ . '/sandbox/' . $this->getClassName();
+        return __DIR__ . '/sandbox/' . self::getClassName();
     }
 
     /**
@@ -286,34 +288,10 @@ abstract class AbstractTest extends TestCase
      * @return string
      *   The class name.
      */
-    protected function getClassName(): string
+    protected static function getClassName(): string
     {
         $class = explode('\\', static::class);
         return (string) end($class);
-    }
-
-    /**
-     * Set up the mock server.
-     *
-     * To access the mock directly in the browser, make sure the port is exposed in the docker-compose.yml
-     * file and access for example: http://localhost:8080/tests/mock/api/v1/package-reviews.
-     */
-    public static function setUpMock()
-    {
-        Website::setUrl(self::getMockBaseUrl() . '/tests/mock');
-    }
-
-    /**
-     * Return the mock base url.
-     *
-     * @return string
-     *   The mock base url, defaults to web:8080.
-     */
-    public static function getMockBaseUrl(): string
-    {
-        return !empty(getenv('VIRTUAL_HOST'))
-            ? (string) getenv('VIRTUAL_HOST')
-            : 'web:8080';
     }
 
 }
