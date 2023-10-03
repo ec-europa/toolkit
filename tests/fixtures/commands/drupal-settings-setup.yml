@@ -27,6 +27,9 @@
           'port' => getenv('DRUPAL_DATABASE_PORT'),
           'namespace' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? 'Drupal\\Core\\Database\\Driver\\' . getenv('DRUPAL_DATABASE_DRIVER') : 'Drupal\\Core\\Database\\Driver\\mysql',
           'driver' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? getenv('DRUPAL_DATABASE_DRIVER') : 'mysql',
+          'init_commands' => array (
+            'isolation_level' => 'SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+          ),
         );
 
         // Location of the site configuration files, relative to the site root.
@@ -87,6 +90,9 @@
           'port' => getenv('DRUPAL_DATABASE_PORT'),
           'namespace' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? 'Drupal\\Core\\Database\\Driver\\' . getenv('DRUPAL_DATABASE_DRIVER') : 'Drupal\\Core\\Database\\Driver\\mysql',
           'driver' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? getenv('DRUPAL_DATABASE_DRIVER') : 'mysql',
+          'init_commands' => array (
+            'isolation_level' => 'SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+          ),
         );
 
         // Location of the site configuration files, relative to the site root.
@@ -148,6 +154,9 @@
           'port' => getenv('DRUPAL_DATABASE_PORT'),
           'namespace' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? 'Drupal\\Core\\Database\\Driver\\' . getenv('DRUPAL_DATABASE_DRIVER') : 'Drupal\\Core\\Database\\Driver\\mysql',
           'driver' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? getenv('DRUPAL_DATABASE_DRIVER') : 'mysql',
+          'init_commands' => array (
+            'isolation_level' => 'SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+          ),
         );
 
         // Location of the site configuration files, relative to the site root.
