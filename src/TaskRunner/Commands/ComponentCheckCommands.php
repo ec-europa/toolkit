@@ -131,7 +131,6 @@ class ComponentCheckCommands extends AbstractCommands
         }
         $io->newLine();
 
-
         $io->title('Checking dev components.');
         foreach ($composerLock['packages'] as $package) {
             $typeBypass = in_array($package['type'], [
@@ -576,32 +575,34 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentUnsupported()
     {
-        $exec = $this->taskExec($this->getBin('drush') . ' pm:list --status=enabled --no-core --fields=name,project,version --format=json')
+        $include = "\Drupal::moduleHandler()->loadInclude('update', 'compare.inc')";
+        $command = "update_calculate_project_data(\Drupal::keyValueExpirable('update_available_releases')->getAll())";
+        $command = "$include ; echo json_encode($command)";
+        $exec = $this->taskExec($this->getBin('drush') . ' eval "' . $command . '"')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
-        $modules = json_decode($exec, true);
-        if (!empty($modules)) {
-            // Get modules information.
-            $include = "\Drupal::moduleHandler()->loadInclude('update', 'compare.inc')";
-            $command = "update_calculate_project_data(\Drupal::keyValueExpirable('update_available_releases')->getAll())";
-            $command = "$include ; echo json_encode($command)";
-            $exec = $this->taskExec($this->getBin('drush') . ' eval "' . $command . '"')
-                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-                ->run()->getMessage();
-            $releases = json_decode($exec, true);
-            if (!empty($releases)) {
-                $unsupported = array_filter($releases, function ($item) {
-                    return $item['status'] === 3;
-                });
-                if (empty($unsupported)) {
-                    $this->say('Unsupported components check passed.');
-                    return;
-                }
-                $this->unsupportedFailed = true;
-                foreach ($unsupported as $item) {
-                    $this->writeln(sprintf("Package %s with version installed %s is not supported. Update to the recommended version %s", $item['name'], $item['existing_version'], $item['recommended']));
-                }
-            }
+        if (empty($exec)) {
+            $this->writeln('Failed to get the available releases.');
+            return;
+        }
+
+        $releases = json_decode($exec, true);
+        // Filter by unsupported, @see \Drupal\update\UpdateManagerInterface::NOT_SUPPORTED.
+        $unsupported = array_filter($releases, function ($item) {
+            return $item['status'] === 3;
+        });
+        if (empty($unsupported)) {
+            $this->say('Unsupported components check passed.');
+            return;
+        }
+        $this->unsupportedFailed = true;
+        foreach ($unsupported as $item) {
+            $this->writeln(sprintf(
+                "Package %s with version installed %s is not supported. Update to the recommended version %s",
+                $item['name'],
+                $item['existing_version'],
+                $item['recommended']
+            ));
         }
     }
 
