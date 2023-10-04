@@ -26,11 +26,13 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $insecureFailed = false;
     protected bool $outdatedFailed = false;
     protected bool $abandonedFailed = false;
+    protected bool $unsupportedFailed = false;
     protected bool $devVersionFailed = false;
     protected bool $devCompRequireFailed = false;
     protected bool $drushRequireFailed = false;
     protected bool $skipOutdated = false;
     protected bool $skipAbandoned = false;
+    protected bool $skipUnsupported = false;
     protected bool $skipInsecure = false;
     protected bool $skipRecommended = true;
     protected int $recommendedFailedCount = 0;
@@ -68,6 +70,9 @@ class ComponentCheckCommands extends AbstractCommands
         if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
             $this->skipAbandoned = true;
         }
+        if (!$this->getConfig()->get('toolkit.components.unsupported.check')) {
+            $this->skipUnsupported = true;
+        }
         if (isset($commitTokens['skipInsecure'])) {
             $this->skipInsecure = true;
         }
@@ -100,6 +105,7 @@ class ComponentCheckCommands extends AbstractCommands
             'Insecure',
             'Outdated',
             'Abandoned',
+            'Unsupported',
         ];
         foreach ($checks as $check) {
             $io->title("Checking $check components.");
@@ -124,6 +130,7 @@ class ComponentCheckCommands extends AbstractCommands
             $this->say('Evaluation module check passed.');
         }
         $io->newLine();
+
 
         $io->title('Checking dev components.');
         foreach ($composerLock['packages'] as $package) {
@@ -179,12 +186,13 @@ class ComponentCheckCommands extends AbstractCommands
         if (
             $this->commandFailed ||
             $this->mandatoryFailed ||
-            (!$this->skipRecommended && $this->recommendedFailed) ||
             $this->devVersionFailed ||
             $this->devCompRequireFailed ||
             $this->drushRequireFailed ||
+            (!$this->skipRecommended && $this->recommendedFailed) ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipAbandoned && $this->abandonedFailed) ||
+            (!$this->skipUnsupported && $this->unsupportedFailed) ||
             (!$this->skipInsecure && $this->insecureFailed)
         ) {
             $io->error([
@@ -200,16 +208,18 @@ class ComponentCheckCommands extends AbstractCommands
             $io->success('Components checked, nothing to report.');
         } else {
             $io->note([
-                'It is possible to bypass the insecure, outdated and abandoned check:',
+                'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
                 '- Using commit message to skip Insecure and/or Outdated check:',
                 '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
                 '',
-                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated or Abandoned: ',
+                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
                 '   toolkit:',
                 '     components:',
                 '       outdated:',
                 '         check: false',
                 '       abandoned:',
+                '         check: false',
+                '       unsupported:',
                 '         check: false',
             ]);
         }
@@ -227,6 +237,7 @@ class ComponentCheckCommands extends AbstractCommands
         $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
         $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
         $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
+        $skipUnsupported = ($this->skipUnsupported) ? ' (Skipping)' : '';
 
         $io->definitionList(
             ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
@@ -234,6 +245,7 @@ class ComponentCheckCommands extends AbstractCommands
             ['Insecure module check' => $this->getFailedOrPassed($this->insecureFailed) . $skipInsecure],
             ['Outdated module check' => $this->getFailedOrPassed($this->outdatedFailed) . $skipOutdated],
             ['Abandoned module check' => $this->getFailedOrPassed($this->abandonedFailed) . $skipAbandoned],
+            ['Unsupported module check' => $this->getFailedOrPassed($this->unsupportedFailed) . $skipUnsupported],
             ['Dev module check' => $this->getFailedOrPassed($this->devVersionFailed)],
             ['Evaluation module check' => $this->getFailedOrPassed($this->commandFailed)],
             ['Dev module in require-dev check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
@@ -308,7 +320,7 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         if ($wasNotRejected) {
-            $constraints = [ 'whitelist' => false, 'blacklist' => true ];
+            $constraints = ['whitelist' => false, 'blacklist' => true];
             foreach ($constraints as $constraint => $result) {
                 $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
                 if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
@@ -540,7 +552,7 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
-     * Helper function to check component's review information.
+     * Helper function to check Abandoned components.
      */
     protected function componentAbandoned()
     {
@@ -556,6 +568,40 @@ class ComponentCheckCommands extends AbstractCommands
         }
         if (!$this->abandonedFailed) {
             $this->say('Abandoned components check passed.');
+        }
+    }
+
+    /**
+     * Helper function to check Unsupported components.
+     */
+    protected function componentUnsupported()
+    {
+        $exec = $this->taskExec($this->getBin('drush') . ' pm:list --status=enabled --no-core --fields=name,project,version --format=json')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        $modules = json_decode($exec, true);
+        if (!empty($modules)) {
+            // Get modules information.
+            $include = "\Drupal::moduleHandler()->loadInclude('update', 'compare.inc')";
+            $command = "update_calculate_project_data(\Drupal::keyValueExpirable('update_available_releases')->getAll())";
+            $command = "$include ; echo json_encode($command)";
+            $exec = $this->taskExec($this->getBin('drush') . ' eval "' . $command . '"')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
+            $releases = json_decode($exec, true);
+            if (!empty($releases)) {
+                $unsupported = array_filter($releases, function ($item) {
+                    return $item['status'] === 3;
+                });
+                if (empty($unsupported)) {
+                    $this->say('Unsupported components check passed.');
+                    return;
+                }
+                $this->unsupportedFailed = true;
+                foreach ($unsupported as $item) {
+                    $this->writeln(sprintf("Package %s with version installed %s is not supported. Update to the recommended version %s", $item['name'], $item['existing_version'], $item['recommended']));
+                }
+            }
         }
     }
 

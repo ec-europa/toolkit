@@ -38,6 +38,11 @@
 
         >  Abandoned components check passed.
 
+        Checking Unsupported components.
+        ================================
+
+        [Simulator] Running ./vendor/bin/drush pm:list --status=enabled --no-core --fields=name,project,version --format=json
+
         Checking evaluation status components.
         ======================================
 
@@ -70,6 +75,7 @@
         Insecure module check             passed
         Outdated module check             passed
         Abandoned module check            passed
+        Unsupported module check          passed
         Dev module check                  passed
         Evaluation module check           failed
         Dev module in require-dev check   passed
@@ -83,7 +89,8 @@
 
         https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews.
 
-        ! [NOTE] It is possible to bypass the insecure, outdated and abandoned check:
+        ! [NOTE] It is possible to bypass the insecure, outdated, abandoned and
+        !        unsupported checks:
         !
         !        - Using commit message to skip Insecure and/or Outdated check:
         !
@@ -92,7 +99,7 @@
         !
         !
         !        - Using the configuration in the runner.yml.dist as shown below to
-        !        skip Outdated or Abandoned:
+        !        skip Outdated, Abandoned or Unsupported:
         !
         !           toolkit:
         !
@@ -105,6 +112,10 @@
         !               abandoned:
         !
         !                 check: false
+        !
+        !               unsupported:
+        !
+        !                 check: false
 
 - command: 'toolkit:component-check'
   configuration:
@@ -114,6 +125,8 @@
           check: false
         abandoned:
           check: false
+        unsupported:
+          check: false
   tokens: ''
   resources:
     - from: sample-composer.lock
@@ -121,6 +134,7 @@
   expectations:
     - string_contains: Abandoned module check            passed (Skipping)
     - string_contains: Outdated module check             passed (Skipping)
+    - string_contains: Unsupported module check          passed (Skipping)
 
 - command: 'toolkit:component-check --test-command'
   configuration:
@@ -153,6 +167,7 @@
     - string_contains: Insecure module check             passed
     - string_contains: Outdated module check             passed
     - string_contains: Abandoned module check            passed
+    - string_contains: Unsupported module check          passed
     - string_contains: Dev module check                  passed
     - string_contains: Evaluation module check           failed
     - string_contains: Dev module in require-dev check   passed

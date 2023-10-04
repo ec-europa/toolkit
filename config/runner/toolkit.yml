@@ -20,6 +20,8 @@ toolkit:
       check: true
     abandoned:
       check: true
+    unsupported:
+      check: true
   deploy:
     config_file: 'config/sync/core.extension.yml'
     sequence_file: '.opts.yml'
