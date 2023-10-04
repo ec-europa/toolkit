@@ -41,7 +41,8 @@
         Checking Unsupported components.
         ================================
 
-        [Simulator] Running ./vendor/bin/drush pm:list --status=enabled --no-core --fields=name,project,version --format=json
+        [Simulator] Running ./vendor/bin/drush eval "\Drupal::moduleHandler()->loadInclude('update', 'compare.inc') ; echo json_encode(update_calculate_project_data(\Drupal::keyValueExpirable('update_available_releases')->getAll()))"
+        Failed to get the available releases.
 
         Checking evaluation status components.
         ======================================
