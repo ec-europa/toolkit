@@ -45,6 +45,7 @@
         The use of drupal/github_connect:2.0.0-alpha1 is restricted. Contact QA Team.
         The use of drupal/responsive_tables_filter:1.17 is restricted. Contact QA Team.
         The use of drupal/restui:1.21 is rejected. Contact QA Team.
+        Package drupal/foo:1.0.0 has not been reviewed by QA.
 
         Checking dev components.
         ========================
@@ -157,3 +158,16 @@
     - string_contains: Evaluation module check           failed
     - string_contains: Dev module in require-dev check   passed
     - string_contains: Drush require section check       passed
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-internal-dependency.lock
+      to: composer.lock
+  expectations:
+    - contains: |
+        Checking evaluation status components.
+        ======================================
+
+        >  Evaluation module check passed.
