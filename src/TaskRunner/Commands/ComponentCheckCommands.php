@@ -256,6 +256,11 @@ class ComponentCheckCommands extends AbstractCommands
         if ($package['type'] === 'metapackage') {
             return;
         }
+        // Ignore if the package is a dependency hosted inside the project.
+        // @see https://getcomposer.org/doc/05-repositories.md#path
+        if (!empty($package['transport-options']['relative'])) {
+            return;
+        }
         $config = $this->getConfig();
         $packageName = $package['name'];
         $hasBeenQaEd = isset($modules[$packageName]);
