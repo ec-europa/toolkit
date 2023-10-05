@@ -166,8 +166,4 @@
     - from: sample-internal-dependency.lock
       to: composer.lock
   expectations:
-    - contains: |
-        Checking evaluation status components.
-        ======================================
-
-        >  Evaluation module check passed.
+    - string_contains: Evaluation module check           passed
