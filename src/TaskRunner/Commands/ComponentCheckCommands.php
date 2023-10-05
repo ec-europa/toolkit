@@ -502,7 +502,7 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
-     * Helper function to check component's review information.
+     * Helper function to check Outdated components.
      */
     protected function componentOutdated()
     {
@@ -510,28 +510,41 @@ class ComponentCheckCommands extends AbstractCommands
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
 
-        $outdatedPackages = json_decode($result, true);
+        $packages = json_decode($result, true);
         // Using the option --locked, we must check for the "locked" key.
-        if (!empty($outdatedPackages['locked'])) {
-            if (is_array($outdatedPackages)) {
-                foreach ($outdatedPackages['locked'] as $outdatedPackage) {
-                    // Exclude abandoned packages, see $this->componentAbandoned().
-                    if ($outdatedPackage['abandoned'] === false) {
-                        if (!array_key_exists('latest', $outdatedPackage)) {
-                            $this->writeln("Package {$outdatedPackage['name']} does not provide information about last version.");
-                        } elseif (array_key_exists('warning', $outdatedPackage)) {
-                            $this->writeln($outdatedPackage['warning']);
-                            $this->outdatedFailed = true;
-                        } else {
-                            $this->writeln("Package {$outdatedPackage['name']} with version installed {$outdatedPackage["version"]} is outdated, please update to last version - {$outdatedPackage['latest']}");
-                            $this->outdatedFailed = true;
-                        }
-                    }
+        if (is_array($packages) && !empty($packages['locked'])) {
+            $ignores = $this->getConfig()->get('toolkit.components.outdated.ignores');
+            if (!empty($ignores)) {
+                $ignores = array_combine(
+                    array_column($ignores, 'name'),
+                    array_column($ignores, 'version')
+                );
+            }
+
+            foreach ($packages['locked'] as $package) {
+                // Exclude abandoned packages, see $this->componentAbandoned().
+                if ($package['abandoned']) {
+                    continue;
+                }
+                // Check for ignores and compare versions.
+                if (!empty($ignores) && isset($ignores[$package['name']]) && $package['version'] === $ignores[$package['name']]) {
+                    $this->writeln("Package {$package['name']} with version installed {$package['version']} skipped by config.");
+                    continue;
                 }
 
-                // Make result available outside function.
-                $this->installed = $outdatedPackages['locked'];
+                if (!array_key_exists('latest', $package)) {
+                    $this->writeln("Package {$package['name']} does not provide information about last version.");
+                } elseif (array_key_exists('warning', $package)) {
+                    $this->writeln($package['warning']);
+                    $this->outdatedFailed = true;
+                } else {
+                    $this->writeln("Package {$package['name']} with version installed {$package['version']} is outdated, please update to last version - {$package['latest']}");
+                    $this->outdatedFailed = true;
+                }
             }
+
+            // Make result available outside function.
+            $this->installed = $packages['locked'];
         }
 
         if (!$this->outdatedFailed) {
@@ -540,16 +553,16 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
-     * Helper function to check component's review information.
+     * Helper function to check Abandoned components.
      */
     protected function componentAbandoned()
     {
-        $installedPackages = $this->installed ?? [];
-        if (!empty($installedPackages)) {
-            foreach ($installedPackages as $outdatedPackage) {
+        $packages = $this->installed ?? [];
+        if (!empty($packages)) {
+            foreach ($packages as $package) {
                 // Only show abandoned packages.
-                if ($outdatedPackage['abandoned'] != false) {
-                    $this->writeln($outdatedPackage['warning']);
+                if ($package['abandoned'] != false) {
+                    $this->writeln($package['warning']);
                     $this->abandonedFailed = true;
                 }
             }
