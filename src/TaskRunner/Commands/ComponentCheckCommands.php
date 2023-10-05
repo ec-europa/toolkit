@@ -503,6 +503,8 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Helper function to check Outdated components.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function componentOutdated()
     {
