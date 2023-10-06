@@ -1,0 +1,47 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "bbc6e1d25b65e8da751f3c6e081e1a85",
+    "packages": [
+        {
+            "name": "drupal/foo",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/foo.git",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/foo-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "2a67dc2c1953dced0bdf0ff25e5c60784ee01781"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10"
+            },
+            "type": "drupal-module",
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "John Doe",
+                    "homepage": "https://www.drupal.org/user/123"
+                }
+            ],
+            "description": "Doesn't exist",
+            "homepage": "https://www.drupal.org/project/foo",
+            "support": {
+                "source": "https://git.drupalcode.org/project/foo"
+            },
+            "transport-options": {
+                "relative": true
+            }
+        }
+    ]
+}

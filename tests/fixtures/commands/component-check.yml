@@ -157,3 +157,12 @@
     - string_contains: Evaluation module check           failed
     - string_contains: Dev module in require-dev check   passed
     - string_contains: Drush require section check       passed
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-internal-dependency.lock
+      to: composer.lock
+  expectations:
+    - string_contains: Evaluation module check           passed
