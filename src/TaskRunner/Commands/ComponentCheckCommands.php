@@ -28,7 +28,6 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $abandonedFailed = false;
     protected bool $devVersionFailed = false;
     protected bool $devCompRequireFailed = false;
-    protected bool $drushRequireFailed = false;
     protected bool $skipOutdated = false;
     protected bool $skipAbandoned = false;
     protected bool $skipInsecure = false;
@@ -160,19 +159,6 @@ class ComponentCheckCommands extends AbstractCommands
         }
         $io->newLine();
 
-        $io->title('Checking require section for Drush.');
-        if (ToolCommands::getPackagePropertyFromComposer('drush/drush', 'version', 'packages-dev')) {
-            $this->drushRequireFailed = true;
-            $io->warning("Package 'drush/drush' cannot be used in require-dev, must be on require section.");
-        }
-
-        if (!$this->drushRequireFailed) {
-            if (ToolCommands::getPackagePropertyFromComposer('drush/drush', 'version', 'packages')) {
-                $this->say('Drush require section check passed.');
-            }
-        }
-        $io->newLine();
-
         $this->printComponentResults($io);
 
         // If the validation fail, return according to the blocker.
@@ -182,7 +168,6 @@ class ComponentCheckCommands extends AbstractCommands
             (!$this->skipRecommended && $this->recommendedFailed) ||
             $this->devVersionFailed ||
             $this->devCompRequireFailed ||
-            $this->drushRequireFailed ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipAbandoned && $this->abandonedFailed) ||
             (!$this->skipInsecure && $this->insecureFailed)
@@ -237,7 +222,6 @@ class ComponentCheckCommands extends AbstractCommands
             ['Dev module check' => $this->getFailedOrPassed($this->devVersionFailed)],
             ['Evaluation module check' => $this->getFailedOrPassed($this->commandFailed)],
             ['Dev module in require-dev check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
-            ['Drush require section check' => $this->getFailedOrPassed($this->drushRequireFailed)],
         );
     }
 
