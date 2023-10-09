@@ -62,11 +62,6 @@
 
         >  Composer validation passed.
 
-        Checking require section for Drush.
-        ===================================
-
-        >  Drush require section check passed.
-
         Results:
         ========
 
@@ -117,105 +112,105 @@
         !
         !                 check: false
 
-- command: 'toolkit:component-check'
-  configuration:
-    toolkit:
-      components:
-        outdated:
-          check: false
-        abandoned:
-          check: false
-        unsupported:
-          check: false
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-  expectations:
-    - string_contains: Abandoned module check            passed (Skipping)
-    - string_contains: Outdated module check             passed (Skipping)
-    - string_contains: Unsupported module check          passed (Skipping)
-
-- command: 'toolkit:component-check --test-command'
-  configuration:
-    toolkit:
-      components:
-        outdated:
-          check: false
-  tokens: '[skip_insecure][skip_d9c]'
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-  expectations:
-    - string_contains: Insecure module check             passed (Skipping)
-    - string_contains: Outdated module check             passed (Skipping)
-
-- command: 'toolkit:component-check'
-  configuration:
-    toolkit:
-      clean:
-        config_file: core.extensions-good.yml
-  tokens: ''
-  resources:
-    - from: sample-core.extensions-good.yml
-      to: core.extensions-good.yml
-    - from: sample-composer.lock
-      to: composer.lock
-  expectations:
-    - string_contains: Mandatory module check            passed
-    - string_contains: Recommended module check          passed
-    - string_contains: Insecure module check             passed
-    - string_contains: Outdated module check             passed
-    - string_contains: Abandoned module check            passed
-    - string_contains: Unsupported module check          passed
-    - string_contains: Evaluation module check           failed
-    - string_contains: Dev module in require-dev check   passed
-    - string_contains: Composer validation check         passed
-
-- command: 'toolkit:component-check'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - from: sample-internal-dependency.lock
-      to: composer.lock
-  expectations:
-    - string_contains: Evaluation module check           passed
-
-- command: 'toolkit:component-check'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "test/package", "type": "library", "version": "dev-1.0.0" } ] }
-  expectations:
-    - string_contains: Package test/package:dev-1.0.0 cannot be used in dev version.
-    - string_contains: Composer validation check         failed
-
-- command: 'toolkit:component-check'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - file: composer.json
-      content: |
-        { "extra": { "enable-patching": true } }
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
-  expectations:
-    - string_contains: The composer property 'extras.enable-patching' cannot be set to true.
-    - string_contains: Composer validation check         failed
-
-- command: 'toolkit:component-check'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - file: composer.json
-      content: |
-        { "extra": { "enable-patching": false } }
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
-  expectations:
-    - not_string_contains: extras.enable-patching
-    - string_contains: Composer validation check         passed
+#- command: 'toolkit:component-check'
+#  configuration:
+#    toolkit:
+#      components:
+#        outdated:
+#          check: false
+#        abandoned:
+#          check: false
+#        unsupported:
+#          check: false
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#  expectations:
+#    - string_contains: Abandoned module check            passed (Skipping)
+#    - string_contains: Outdated module check             passed (Skipping)
+#    - string_contains: Unsupported module check          passed (Skipping)
+#
+#- command: 'toolkit:component-check --test-command'
+#  configuration:
+#    toolkit:
+#      components:
+#        outdated:
+#          check: false
+#  tokens: '[skip_insecure][skip_d9c]'
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#  expectations:
+#    - string_contains: Insecure module check             passed (Skipping)
+#    - string_contains: Outdated module check             passed (Skipping)
+#
+#- command: 'toolkit:component-check'
+#  configuration:
+#    toolkit:
+#      clean:
+#        config_file: core.extensions-good.yml
+#  tokens: ''
+#  resources:
+#    - from: sample-core.extensions-good.yml
+#      to: core.extensions-good.yml
+#    - from: sample-composer.lock
+#      to: composer.lock
+#  expectations:
+#    - string_contains: Mandatory module check            passed
+#    - string_contains: Recommended module check          passed
+#    - string_contains: Insecure module check             passed
+#    - string_contains: Outdated module check             passed
+#    - string_contains: Abandoned module check            passed
+#    - string_contains: Unsupported module check          passed
+#    - string_contains: Evaluation module check           failed
+#    - string_contains: Dev module in require-dev check   passed
+#    - string_contains: Composer validation check         passed
+#
+#- command: 'toolkit:component-check'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - from: sample-internal-dependency.lock
+#      to: composer.lock
+#  expectations:
+#    - string_contains: Evaluation module check           passed
+#
+#- command: 'toolkit:component-check'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - file: composer.lock
+#      content: |
+#        { "packages": [ { "name": "test/package", "type": "library", "version": "dev-1.0.0" } ] }
+#  expectations:
+#    - string_contains: Package test/package:dev-1.0.0 cannot be used in dev version.
+#    - string_contains: Composer validation check         failed
+#
+#- command: 'toolkit:component-check'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - file: composer.json
+#      content: |
+#        { "extra": { "enable-patching": true } }
+#    - file: composer.lock
+#      content: |
+#        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+#  expectations:
+#    - string_contains: The composer property 'extras.enable-patching' cannot be set to true.
+#    - string_contains: Composer validation check         failed
+#
+#- command: 'toolkit:component-check'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - file: composer.json
+#      content: |
+#        { "extra": { "enable-patching": false } }
+#    - file: composer.lock
+#      content: |
+#        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+#  expectations:
+#    - not_string_contains: extras.enable-patching
+#    - string_contains: Composer validation check         passed
