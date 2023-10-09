@@ -18,18 +18,13 @@ matrix:
     - lowest
     - highest
 
-services:
-  web:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
-    environment: &env
-      - DOCUMENT_ROOT=/test/toolkit
-
 pipeline:
   composer-install:
     group: composer
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, gitlab_api_token, composer_auth ]
-    environment: *env
+    environment: &env
+      - DOCUMENT_ROOT=/test/toolkit
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
