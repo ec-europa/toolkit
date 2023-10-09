@@ -26,8 +26,8 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $insecureFailed = false;
     protected bool $outdatedFailed = false;
     protected bool $abandonedFailed = false;
-    protected bool $devVersionFailed = false;
     protected bool $devCompRequireFailed = false;
+    protected bool $composerFailed = false;
     protected bool $drushRequireFailed = false;
     protected bool $skipOutdated = false;
     protected bool $skipAbandoned = false;
@@ -38,7 +38,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected $io;
 
     /**
-     * Check composer.json for components that are not whitelisted/blacklisted.
+     * Check composer for components that are not whitelisted/blacklisted.
      *
      * @command toolkit:component-check
      *
@@ -125,23 +125,6 @@ class ComponentCheckCommands extends AbstractCommands
         }
         $io->newLine();
 
-        $io->title('Checking dev components.');
-        foreach ($composerLock['packages'] as $package) {
-            $typeBypass = in_array($package['type'], [
-                'drupal-custom-module',
-                'drupal-custom-theme',
-                'drupal-custom-profile',
-            ]);
-            if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
-                $this->devVersionFailed = true;
-                $this->writeln("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
-            }
-        }
-        if (!$this->devVersionFailed) {
-            $this->say('Dev components check passed.');
-        }
-        $io->newLine();
-
         $io->title('Checking dev components in require section.');
         $devPackages = array_filter(
             array_column($modules, 'dev_component', 'name'),
@@ -157,6 +140,32 @@ class ComponentCheckCommands extends AbstractCommands
         }
         if (!$this->devCompRequireFailed) {
             $this->say('Dev components in require section check passed');
+        }
+        $io->newLine();
+
+        $io->title('Validating composer.');
+        foreach ($composerLock['packages'] as $package) {
+            $typeBypass = in_array($package['type'], [
+                'drupal-custom-module',
+                'drupal-custom-theme',
+                'drupal-custom-profile',
+            ]);
+            if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
+                $this->composerFailed = true;
+                $this->writeln("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
+            }
+        }
+        $composer = $this->getWorkingDir() . '/composer.json';
+        if (file_exists($composer)) {
+            $composerArray = json_decode(file_get_contents($composer), true);
+            if (!empty($composerArray['extra']['enable-patching'])) {
+                $this->composerFailed = true;
+                $this->writeln("The composer property 'extras.enable-patching' cannot be set to true.");
+            }
+        }
+
+        if (!$this->composerFailed) {
+            $this->say('Composer validation passed.');
         }
         $io->newLine();
 
@@ -180,7 +189,7 @@ class ComponentCheckCommands extends AbstractCommands
             $this->commandFailed ||
             $this->mandatoryFailed ||
             (!$this->skipRecommended && $this->recommendedFailed) ||
-            $this->devVersionFailed ||
+            $this->composerFailed ||
             $this->devCompRequireFailed ||
             $this->drushRequireFailed ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
@@ -234,9 +243,9 @@ class ComponentCheckCommands extends AbstractCommands
             ['Insecure module check' => $this->getFailedOrPassed($this->insecureFailed) . $skipInsecure],
             ['Outdated module check' => $this->getFailedOrPassed($this->outdatedFailed) . $skipOutdated],
             ['Abandoned module check' => $this->getFailedOrPassed($this->abandonedFailed) . $skipAbandoned],
-            ['Dev module check' => $this->getFailedOrPassed($this->devVersionFailed)],
             ['Evaluation module check' => $this->getFailedOrPassed($this->commandFailed)],
             ['Dev module in require-dev check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
+            ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
             ['Drush require section check' => $this->getFailedOrPassed($this->drushRequireFailed)],
         );
     }
