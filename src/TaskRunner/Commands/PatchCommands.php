@@ -80,6 +80,10 @@ class PatchCommands extends AbstractCommands
         foreach ($downloads as $download) {
             $tasks[] = $this->collectionBuilder()->addCode(function () use ($io, $dir, $download) {
                 $io->writeln($download);
+                // Avoid downloads in simulation mode.
+                if ($this->isSimulating()) {
+                    return;
+                }
                 $filename = basename($download);
                 try {
                     file_put_contents("$dir/$filename", file_get_contents($download));

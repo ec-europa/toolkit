@@ -34,7 +34,7 @@
   expectations:
     - string_contains: test-package.patch
     - string_contains: another-package-1.patch
-    - string_not_contains: local.patch
+    - not_string_contains: local.patch
 
 - command: 'toolkit:patch-list'
   configuration: []
@@ -56,4 +56,4 @@
   expectations:
     - string_contains: test-package.patch
     - string_contains: another-package-1.patch
-    - string_not_contains: local.patch
+    - not_string_contains: local.patch
