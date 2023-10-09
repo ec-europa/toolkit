@@ -62,11 +62,6 @@
 
         >  Dev components in require section check passed
 
-        Checking require section for Drush.
-        ===================================
-
-        >  Drush require section check passed.
-
         Results:
         ========
 
@@ -80,7 +75,6 @@
         Dev module check                  passed
         Evaluation module check           failed
         Dev module in require-dev check   passed
-        Drush require section check       passed
         --------------------------------- --------
 
         [ERROR] Failed the components check, please verify the report and update the
@@ -172,7 +166,6 @@
     - string_contains: Dev module check                  passed
     - string_contains: Evaluation module check           failed
     - string_contains: Dev module in require-dev check   passed
-    - string_contains: Drush require section check       passed
 
 - command: 'toolkit:component-check'
   configuration: []
