@@ -182,9 +182,15 @@
   resources:
     - file: composer.lock
       content: |
-        { "packages": [ { "name": "test/package", "type": "library", "version": "dev-1.0.0" } ] }
+        { "packages": [
+          { "name": "test/package", "type": "library", "version": "dev-1.0.0" },
+          { "name": "test/package2", "type": "library", "version": "1.0.0-dev" },
+          { "name": "test/module", "type": "drupal-custom-module", "version": "1.0.0-dev" }
+        ] }
   expectations:
     - string_contains: Package test/package:dev-1.0.0 cannot be used in dev version.
+    - string_contains: Package test/package2:1.0.0-dev cannot be used in dev version.
+    - not_string_contains: Package test/module:1.0.0-dev cannot be used in dev version.
     - string_contains: Composer validation check         failed
 
 - command: 'toolkit:component-check'
@@ -214,3 +220,34 @@
   expectations:
     - not_string_contains: extras.enable-patching
     - string_contains: Composer validation check         passed
+
+- command: 'toolkit:component-check'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
+    - file: composer.json
+      content: |
+        {
+          "name": "toolkit",
+          "extra": {
+            "patches": {
+              "test/package": [ "http://example.com/test-package.patch" ],
+              "local/package": [ "./resources/local.patch" ],
+              "drupal/package": [
+                "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
+                "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
+                "http://drupal.org/files/issues/2023-01-01/12345-3.patch"
+              ]
+            }
+          }
+        }
+  expectations:
+    - string_contains: test-package.patch is not valid
+    - not_string_contains: local.patch is not valid
+    - not_string_contains: 12345-1.patch is not valid
+    - not_string_contains: 12345-2.patch is not valid
+    - not_string_contains: 12345-3.patch is not valid
+    - string_contains: Composer validation check         failed

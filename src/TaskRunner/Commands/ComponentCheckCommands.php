@@ -163,9 +163,22 @@ class ComponentCheckCommands extends AbstractCommands
         $composer = $this->getWorkingDir() . '/composer.json';
         if (file_exists($composer)) {
             $composerArray = json_decode(file_get_contents($composer), true);
+            // Do not allow setting enable-patching.
             if (!empty($composerArray['extra']['enable-patching'])) {
                 $this->composerFailed = true;
                 $this->writeln("The composer property 'extras.enable-patching' cannot be set to true.");
+            }
+            // Do not allow remote patches from outside drupal.org.
+            if (!empty($composerArray['extra']['patches'])) {
+                foreach ($composerArray['extra']['patches'] as $packagePatches) {
+                    foreach ($packagePatches as $patch) {
+                        $hostname = parse_url($patch, PHP_URL_HOST);
+                        if ($hostname && !str_ends_with($hostname, 'drupal.org')) {
+                            $this->writeln("The patch $patch is not valid, only local and drupal.org patches are allowed.");
+                            $this->composerFailed = true;
+                        }
+                    }
+                }
             }
         }
 
