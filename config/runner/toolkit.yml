@@ -18,7 +18,13 @@ toolkit:
   components:
     outdated:
       check: true
+      # Ignore packages in specific version, example:
+      # - name: drupal/webform
+      #   version: 1.1.1
+      ignores: [ ]
     abandoned:
+      check: true
+    unsupported:
       check: true
   deploy:
     config_file: 'config/sync/core.extension.yml'
