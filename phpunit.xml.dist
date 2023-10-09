@@ -54,6 +54,9 @@
         <testsuite name="Lint">
             <file>tests/Features/Commands/LintCommandsTest.php</file>
         </testsuite>
+        <testsuite name="Patch">
+            <file>tests/Features/Commands/PatchCommandsTest.php</file>
+        </testsuite>
         <testsuite name="Release">
             <file>tests/Features/Commands/ReleaseCommandsTest.php</file>
         </testsuite>

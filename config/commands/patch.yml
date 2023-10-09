@@ -1,0 +1,9 @@
+command:
+  toolkit:
+    patch-download:
+      options:
+        dir: ${toolkit.patches.dir}
+        composer: ${toolkit.patches.composer}
+    patch-list:
+      options:
+        composer: ${toolkit.patches.composer}
