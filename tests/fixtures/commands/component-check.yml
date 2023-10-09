@@ -94,7 +94,7 @@
         !
         !
         !        - Using the configuration in the runner.yml.dist as shown below to
-        !        skip Outdated, Abandoned or Unsupported:
+        !        skip Outdated, Abandoned, Unsupported or Composer:
         !
         !           toolkit:
         !
@@ -111,6 +111,10 @@
         !               unsupported:
         !
         !                 check: false
+        !
+        !               composer:
+        !
+        !                 check: false
 
 - command: 'toolkit:component-check'
   configuration:
@@ -122,6 +126,8 @@
           check: false
         unsupported:
           check: false
+        composer:
+          check: false
   tokens: ''
   resources:
     - from: sample-composer.lock
@@ -130,6 +136,7 @@
     - string_contains: Abandoned module check            passed (Skipping)
     - string_contains: Outdated module check             passed (Skipping)
     - string_contains: Unsupported module check          passed (Skipping)
+    - string_contains: Composer validation check         passed (Skipping)
 
 - command: 'toolkit:component-check --test-command'
   configuration:
@@ -251,3 +258,38 @@
     - not_string_contains: 12345-2.patch is not valid
     - not_string_contains: 12345-3.patch is not valid
     - string_contains: Composer validation check         failed
+
+- command: 'toolkit:component-check'
+  configuration:
+    toolkit:
+      components:
+        composer:
+          check: false
+  tokens: ''
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
+    - file: composer.json
+      content: |
+        {
+          "name": "toolkit",
+          "extra": {
+            "patches": {
+              "test/package": [ "http://example.com/test-package.patch" ],
+              "local/package": [ "./resources/local.patch" ],
+              "drupal/package": [
+                "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
+                "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
+                "http://drupal.org/files/issues/2023-01-01/12345-3.patch"
+              ]
+            }
+          }
+        }
+  expectations:
+    - string_contains: test-package.patch is not valid
+    - not_string_contains: local.patch is not valid
+    - not_string_contains: 12345-1.patch is not valid
+    - not_string_contains: 12345-2.patch is not valid
+    - not_string_contains: 12345-3.patch is not valid
+    - string_contains: Composer validation check         failed (Skipping)

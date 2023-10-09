@@ -34,6 +34,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $skipUnsupported = false;
     protected bool $skipInsecure = false;
     protected bool $skipRecommended = true;
+    protected bool $skipComposer = false;
     protected int $recommendedFailedCount = 0;
     protected array $installed;
     protected $io;
@@ -62,19 +63,7 @@ class ComponentCheckCommands extends AbstractCommands
             return 1;
         }
         $this->io = $io;
-        $commitTokens = ToolCommands::getCommitTokens();
-        if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
-            $this->skipOutdated = true;
-        }
-        if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
-            $this->skipAbandoned = true;
-        }
-        if (!$this->getConfig()->get('toolkit.components.unsupported.check')) {
-            $this->skipUnsupported = true;
-        }
-        if (isset($commitTokens['skipInsecure'])) {
-            $this->skipInsecure = true;
-        }
+        $this->prepareSkips();
 
         $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
         if (!isset($composerLock['packages'])) {
@@ -181,7 +170,6 @@ class ComponentCheckCommands extends AbstractCommands
                 }
             }
         }
-
         if (!$this->composerFailed) {
             $this->say('Composer validation passed.');
         }
@@ -193,8 +181,8 @@ class ComponentCheckCommands extends AbstractCommands
         if (
             $this->commandFailed ||
             $this->mandatoryFailed ||
-            $this->composerFailed ||
             $this->devCompRequireFailed ||
+            (!$this->skipComposer && $this->composerFailed) ||
             (!$this->skipRecommended && $this->recommendedFailed) ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipAbandoned && $this->abandonedFailed) ||
@@ -218,7 +206,7 @@ class ComponentCheckCommands extends AbstractCommands
                 '- Using commit message to skip Insecure and/or Outdated check:',
                 '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
                 '',
-                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
+                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned, Unsupported or Composer: ',
                 '   toolkit:',
                 '     components:',
                 '       outdated:',
@@ -227,10 +215,35 @@ class ComponentCheckCommands extends AbstractCommands
                 '         check: false',
                 '       unsupported:',
                 '         check: false',
+                '       composer:',
+                '         check: false',
             ]);
         }
 
         return $status;
+    }
+
+    /**
+     * Prepare the overrides from config and commit message.
+     */
+    protected function prepareSkips(): void
+    {
+        $commitTokens = ToolCommands::getCommitTokens();
+        if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
+            $this->skipOutdated = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
+            $this->skipAbandoned = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.unsupported.check')) {
+            $this->skipUnsupported = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.composer.check')) {
+            $this->skipComposer = true;
+        }
+        if (isset($commitTokens['skipInsecure'])) {
+            $this->skipInsecure = true;
+        }
     }
 
     /**
@@ -244,6 +257,7 @@ class ComponentCheckCommands extends AbstractCommands
         $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
         $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
         $skipUnsupported = ($this->skipUnsupported) ? ' (Skipping)' : '';
+        $skipComposer = ($this->skipComposer) ? ' (Skipping)' : '';
 
         $io->definitionList(
             ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
@@ -254,7 +268,7 @@ class ComponentCheckCommands extends AbstractCommands
             ['Unsupported module check' => $this->getFailedOrPassed($this->unsupportedFailed) . $skipUnsupported],
             ['Evaluation module check' => $this->getFailedOrPassed($this->commandFailed)],
             ['Dev module in require-dev check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
-            ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
+            ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed) . $skipComposer],
         );
     }
 
