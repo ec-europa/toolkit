@@ -23,6 +23,8 @@ pipeline:
     group: composer
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, gitlab_api_token, composer_auth ]
+    environment: &env
+      - DOCUMENT_ROOT=/test/toolkit
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -37,6 +39,7 @@ pipeline:
     group: composer
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, gitlab_api_token, composer_auth ]
+    environment: *env
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -49,12 +52,14 @@ pipeline:
   phpcs:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    environment: *env
     commands:
       - ./run toolkit:test-phpcs
 
   phpmd:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    environment: *env
     commands:
       - ./run toolkit:test-phpmd --files=src/,tests/
 
@@ -62,6 +67,7 @@ pipeline:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ qa_api_basic_auth, qa_api_auth_token, github_api_token, gitlab_api_token, composer_auth, asda_user, asda_password, nextcloud_user, nextcloud_pass, toolkit_mock_repo ]
+    environment: *env
     commands:
       - ./run toolkit:test-phpunit --execution=parallel
 
@@ -69,6 +75,7 @@ pipeline:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, composer_auth ]
+    environment: *env
     commands:
       - ./run toolkit:lint-yaml
 
@@ -76,11 +83,13 @@ pipeline:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, composer_auth ]
+    environment: *env
     commands:
       - ./run toolkit:lint-php
 
   phpstan:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    environment: *env
     commands:
       - ./run toolkit:test-phpstan
