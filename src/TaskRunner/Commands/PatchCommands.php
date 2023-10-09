@@ -14,6 +14,8 @@ use Symfony\Component\Console\Input\InputOption;
  * Commands for patch download and list.
  *
  * phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassAfterLastUsed
+ *
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
 class PatchCommands extends AbstractCommands
 {
