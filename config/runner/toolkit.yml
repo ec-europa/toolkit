@@ -65,6 +65,9 @@ toolkit:
     - 1.x
     - 2.x
   install_dependencies: true
+  patches:
+    dir: resources/patches
+    composer: composer.json
   hooks:
     # A relative path from the project root where the hooks are located.
     dir: 'resources/git/hooks'
