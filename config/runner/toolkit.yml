@@ -18,8 +18,16 @@ toolkit:
   components:
     outdated:
       check: true
+      # Ignore packages in specific version, example:
+      # - name: drupal/webform
+      #   version: 1.1.1
+      ignores: [ ]
     abandoned:
       check: true
+    unsupported:
+      check: true
+    composer:
+      drupal_patches: true
   deploy:
     config_file: 'config/sync/core.extension.yml'
     sequence_file: '.opts.yml'
@@ -65,6 +73,9 @@ toolkit:
     - 1.x
     - 2.x
   install_dependencies: true
+  patches:
+    dir: resources/patches
+    composer: composer.json
   hooks:
     # A relative path from the project root where the hooks are located.
     dir: 'resources/git/hooks'

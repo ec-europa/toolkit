@@ -26,11 +26,12 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $insecureFailed = false;
     protected bool $outdatedFailed = false;
     protected bool $abandonedFailed = false;
-    protected bool $devVersionFailed = false;
+    protected bool $unsupportedFailed = false;
+    protected bool $composerFailed = false;
     protected bool $devCompRequireFailed = false;
-    protected bool $drushRequireFailed = false;
     protected bool $skipOutdated = false;
     protected bool $skipAbandoned = false;
+    protected bool $skipUnsupported = false;
     protected bool $skipInsecure = false;
     protected bool $skipRecommended = true;
     protected int $recommendedFailedCount = 0;
@@ -38,7 +39,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected $io;
 
     /**
-     * Check composer.json for components that are not whitelisted/blacklisted.
+     * Check composer for components that are not whitelisted/blacklisted.
      *
      * @command toolkit:component-check
      *
@@ -61,16 +62,7 @@ class ComponentCheckCommands extends AbstractCommands
             return 1;
         }
         $this->io = $io;
-        $commitTokens = ToolCommands::getCommitTokens();
-        if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
-            $this->skipOutdated = true;
-        }
-        if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
-            $this->skipAbandoned = true;
-        }
-        if (isset($commitTokens['skipInsecure'])) {
-            $this->skipInsecure = true;
-        }
+        $this->prepareSkips();
 
         $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
         if (!isset($composerLock['packages'])) {
@@ -100,6 +92,7 @@ class ComponentCheckCommands extends AbstractCommands
             'Insecure',
             'Outdated',
             'Abandoned',
+            'Unsupported',
         ];
         foreach ($checks as $check) {
             $io->title("Checking $check components.");
@@ -125,23 +118,6 @@ class ComponentCheckCommands extends AbstractCommands
         }
         $io->newLine();
 
-        $io->title('Checking dev components.');
-        foreach ($composerLock['packages'] as $package) {
-            $typeBypass = in_array($package['type'], [
-                'drupal-custom-module',
-                'drupal-custom-theme',
-                'drupal-custom-profile',
-            ]);
-            if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
-                $this->devVersionFailed = true;
-                $this->writeln("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
-            }
-        }
-        if (!$this->devVersionFailed) {
-            $this->say('Dev components check passed.');
-        }
-        $io->newLine();
-
         $io->title('Checking dev components in require section.');
         $devPackages = array_filter(
             array_column($modules, 'dev_component', 'name'),
@@ -160,16 +136,43 @@ class ComponentCheckCommands extends AbstractCommands
         }
         $io->newLine();
 
-        $io->title('Checking require section for Drush.');
-        if (ToolCommands::getPackagePropertyFromComposer('drush/drush', 'version', 'packages-dev')) {
-            $this->drushRequireFailed = true;
-            $io->warning("Package 'drush/drush' cannot be used in require-dev, must be on require section.");
-        }
-
-        if (!$this->drushRequireFailed) {
-            if (ToolCommands::getPackagePropertyFromComposer('drush/drush', 'version', 'packages')) {
-                $this->say('Drush require section check passed.');
+        $io->title('Validating composer.');
+        foreach ($composerLock['packages'] as $package) {
+            $typeBypass = in_array($package['type'], [
+                'drupal-custom-module',
+                'drupal-custom-theme',
+                'drupal-custom-profile',
+            ]);
+            if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
+                $this->composerFailed = true;
+                $this->writeln("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
             }
+        }
+        $composer = $this->getWorkingDir() . '/composer.json';
+        if (file_exists($composer)) {
+            $composerArray = json_decode(file_get_contents($composer), true);
+            // Do not allow setting enable-patching.
+            if (!empty($composerArray['extra']['enable-patching'])) {
+                $this->composerFailed = true;
+                $this->writeln("The composer property 'extras.enable-patching' cannot be set to true.");
+            }
+            // Do not allow remote patches. Check if patches from drupal.org are allowed.
+            if (!empty($composerArray['extra']['patches'])) {
+                $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
+                foreach ($composerArray['extra']['patches'] as $packagePatches) {
+                    foreach ($packagePatches as $patch) {
+                        $hostname = parse_url($patch, PHP_URL_HOST);
+                        $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
+                        if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
+                            $this->writeln("The patch '$patch' is not valid.");
+                            $this->composerFailed = true;
+                        }
+                    }
+                }
+            }
+        }
+        if (!$this->composerFailed) {
+            $this->say('Composer validation passed.');
         }
         $io->newLine();
 
@@ -179,12 +182,12 @@ class ComponentCheckCommands extends AbstractCommands
         if (
             $this->commandFailed ||
             $this->mandatoryFailed ||
-            (!$this->skipRecommended && $this->recommendedFailed) ||
-            $this->devVersionFailed ||
             $this->devCompRequireFailed ||
-            $this->drushRequireFailed ||
+            $this->composerFailed ||
+            (!$this->skipRecommended && $this->recommendedFailed) ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipAbandoned && $this->abandonedFailed) ||
+            (!$this->skipUnsupported && $this->unsupportedFailed) ||
             (!$this->skipInsecure && $this->insecureFailed)
         ) {
             $io->error([
@@ -200,21 +203,43 @@ class ComponentCheckCommands extends AbstractCommands
             $io->success('Components checked, nothing to report.');
         } else {
             $io->note([
-                'It is possible to bypass the insecure, outdated and abandoned check:',
+                'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
                 '- Using commit message to skip Insecure and/or Outdated check:',
                 '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
                 '',
-                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated or Abandoned: ',
+                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
                 '   toolkit:',
                 '     components:',
                 '       outdated:',
                 '         check: false',
                 '       abandoned:',
                 '         check: false',
+                '       unsupported:',
+                '         check: false',
             ]);
         }
 
         return $status;
+    }
+
+    /**
+     * Prepare the overrides from config and commit message.
+     */
+    protected function prepareSkips(): void
+    {
+        $commitTokens = ToolCommands::getCommitTokens();
+        if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
+            $this->skipOutdated = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
+            $this->skipAbandoned = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.unsupported.check')) {
+            $this->skipUnsupported = true;
+        }
+        if (isset($commitTokens['skipInsecure'])) {
+            $this->skipInsecure = true;
+        }
     }
 
     /**
@@ -227,6 +252,7 @@ class ComponentCheckCommands extends AbstractCommands
         $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
         $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
         $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
+        $skipUnsupported = ($this->skipUnsupported) ? ' (Skipping)' : '';
 
         $io->definitionList(
             ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
@@ -234,10 +260,10 @@ class ComponentCheckCommands extends AbstractCommands
             ['Insecure module check' => $this->getFailedOrPassed($this->insecureFailed) . $skipInsecure],
             ['Outdated module check' => $this->getFailedOrPassed($this->outdatedFailed) . $skipOutdated],
             ['Abandoned module check' => $this->getFailedOrPassed($this->abandonedFailed) . $skipAbandoned],
-            ['Dev module check' => $this->getFailedOrPassed($this->devVersionFailed)],
+            ['Unsupported module check' => $this->getFailedOrPassed($this->unsupportedFailed) . $skipUnsupported],
             ['Evaluation module check' => $this->getFailedOrPassed($this->commandFailed)],
             ['Dev module in require-dev check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
-            ['Drush require section check' => $this->getFailedOrPassed($this->drushRequireFailed)],
+            ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
         );
     }
 
@@ -254,6 +280,11 @@ class ComponentCheckCommands extends AbstractCommands
     {
         // Ignore if the package is a metapackage.
         if ($package['type'] === 'metapackage') {
+            return;
+        }
+        // Ignore if the package is a dependency hosted inside the project.
+        // @see https://getcomposer.org/doc/05-repositories.md#path
+        if (!empty($package['transport-options']['relative'])) {
             return;
         }
         $config = $this->getConfig();
@@ -308,7 +339,7 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         if ($wasNotRejected) {
-            $constraints = [ 'whitelist' => false, 'blacklist' => true ];
+            $constraints = ['whitelist' => false, 'blacklist' => true];
             foreach ($constraints as $constraint => $result) {
                 $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
                 if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
@@ -502,7 +533,9 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
-     * Helper function to check component's review information.
+     * Helper function to check Outdated components.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function componentOutdated()
     {
@@ -510,28 +543,41 @@ class ComponentCheckCommands extends AbstractCommands
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
 
-        $outdatedPackages = json_decode($result, true);
+        $packages = json_decode($result, true);
         // Using the option --locked, we must check for the "locked" key.
-        if (!empty($outdatedPackages['locked'])) {
-            if (is_array($outdatedPackages)) {
-                foreach ($outdatedPackages['locked'] as $outdatedPackage) {
-                    // Exclude abandoned packages, see $this->componentAbandoned().
-                    if ($outdatedPackage['abandoned'] === false) {
-                        if (!array_key_exists('latest', $outdatedPackage)) {
-                            $this->writeln("Package {$outdatedPackage['name']} does not provide information about last version.");
-                        } elseif (array_key_exists('warning', $outdatedPackage)) {
-                            $this->writeln($outdatedPackage['warning']);
-                            $this->outdatedFailed = true;
-                        } else {
-                            $this->writeln("Package {$outdatedPackage['name']} with version installed {$outdatedPackage["version"]} is outdated, please update to last version - {$outdatedPackage['latest']}");
-                            $this->outdatedFailed = true;
-                        }
-                    }
+        if (is_array($packages) && !empty($packages['locked'])) {
+            $ignores = $this->getConfig()->get('toolkit.components.outdated.ignores');
+            if (!empty($ignores)) {
+                $ignores = array_combine(
+                    array_column($ignores, 'name'),
+                    array_column($ignores, 'version')
+                );
+            }
+
+            foreach ($packages['locked'] as $package) {
+                // Exclude abandoned packages, see $this->componentAbandoned().
+                if ($package['abandoned']) {
+                    continue;
+                }
+                // Check for ignores and compare versions.
+                if (!empty($ignores) && isset($ignores[$package['name']]) && $package['version'] === $ignores[$package['name']]) {
+                    $this->writeln("Package {$package['name']} with version installed {$package['version']} skipped by config.");
+                    continue;
                 }
 
-                // Make result available outside function.
-                $this->installed = $outdatedPackages['locked'];
+                if (!array_key_exists('latest', $package)) {
+                    $this->writeln("Package {$package['name']} does not provide information about last version.");
+                } elseif (array_key_exists('warning', $package)) {
+                    $this->writeln($package['warning']);
+                    $this->outdatedFailed = true;
+                } else {
+                    $this->writeln("Package {$package['name']} with version installed {$package['version']} is outdated, please update to last version - {$package['latest']}");
+                    $this->outdatedFailed = true;
+                }
             }
+
+            // Make result available outside function.
+            $this->installed = $packages['locked'];
         }
 
         if (!$this->outdatedFailed) {
@@ -540,22 +586,58 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
-     * Helper function to check component's review information.
+     * Helper function to check Abandoned components.
      */
     protected function componentAbandoned()
     {
-        $installedPackages = $this->installed ?? [];
-        if (!empty($installedPackages)) {
-            foreach ($installedPackages as $outdatedPackage) {
+        $packages = $this->installed ?? [];
+        if (!empty($packages)) {
+            foreach ($packages as $package) {
                 // Only show abandoned packages.
-                if ($outdatedPackage['abandoned'] != false) {
-                    $this->writeln($outdatedPackage['warning']);
+                if ($package['abandoned'] != false) {
+                    $this->writeln($package['warning']);
                     $this->abandonedFailed = true;
                 }
             }
         }
         if (!$this->abandonedFailed) {
             $this->say('Abandoned components check passed.');
+        }
+    }
+
+    /**
+     * Helper function to check Unsupported components.
+     */
+    protected function componentUnsupported()
+    {
+        $include = "\Drupal::moduleHandler()->loadInclude('update', 'compare.inc')";
+        $command = "update_calculate_project_data(\Drupal::keyValueExpirable('update_available_releases')->getAll())";
+        $command = "$include ; echo json_encode($command)";
+        $exec = $this->taskExec($this->getBin('drush') . ' eval "' . $command . '"')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        if (empty($exec)) {
+            $this->writeln('Failed to get the available releases.');
+            return;
+        }
+
+        $releases = json_decode($exec, true);
+        // Filter by unsupported, @see \Drupal\update\UpdateManagerInterface::NOT_SUPPORTED.
+        $unsupported = array_filter($releases, function ($item) {
+            return $item['status'] === 3;
+        });
+        if (empty($unsupported)) {
+            $this->say('Unsupported components check passed.');
+            return;
+        }
+        $this->unsupportedFailed = true;
+        foreach ($unsupported as $item) {
+            $this->writeln(sprintf(
+                "Package %s with version installed %s is not supported. Update to the recommended version %s",
+                $item['name'],
+                $item['existing_version'],
+                $item['recommended']
+            ));
         }
     }
 

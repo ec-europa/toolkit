@@ -1,5 +1,5 @@
 - command: 'toolkit:component-check'
-  configuration: []
+  configuration: [ ]
   tokens: ''
   resources:
     - from: sample-composer.lock
@@ -38,6 +38,12 @@
 
         >  Abandoned components check passed.
 
+        Checking Unsupported components.
+        ================================
+
+        [Simulator] Running ./vendor/bin/drush eval "\Drupal::moduleHandler()->loadInclude('update', 'compare.inc') ; echo json_encode(update_calculate_project_data(\Drupal::keyValueExpirable('update_available_releases')->getAll()))"
+        Failed to get the available releases.
+
         Checking evaluation status components.
         ======================================
 
@@ -46,20 +52,15 @@
         The use of drupal/responsive_tables_filter:1.17 is restricted. Contact QA Team.
         The use of drupal/restui:1.21 is rejected. Contact QA Team.
 
-        Checking dev components.
-        ========================
-
-        >  Dev components check passed.
-
         Checking dev components in require section.
         ===========================================
 
         >  Dev components in require section check passed
 
-        Checking require section for Drush.
-        ===================================
+        Validating composer.
+        ====================
 
-        >  Drush require section check passed.
+        >  Composer validation passed.
 
         Results:
         ========
@@ -70,10 +71,10 @@
         Insecure module check             passed
         Outdated module check             passed
         Abandoned module check            passed
-        Dev module check                  passed
+        Unsupported module check          passed
         Evaluation module check           failed
         Dev module in require-dev check   passed
-        Drush require section check       passed
+        Composer validation check         passed
         --------------------------------- --------
 
         [ERROR] Failed the components check, please verify the report and update the
@@ -83,7 +84,8 @@
 
         https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews.
 
-        ! [NOTE] It is possible to bypass the insecure, outdated and abandoned check:
+        ! [NOTE] It is possible to bypass the insecure, outdated, abandoned and
+        !        unsupported checks:
         !
         !        - Using commit message to skip Insecure and/or Outdated check:
         !
@@ -92,7 +94,7 @@
         !
         !
         !        - Using the configuration in the runner.yml.dist as shown below to
-        !        skip Outdated or Abandoned:
+        !        skip Outdated, Abandoned or Unsupported:
         !
         !           toolkit:
         !
@@ -105,6 +107,10 @@
         !               abandoned:
         !
         !                 check: false
+        !
+        !               unsupported:
+        !
+        !                 check: false
 
 - command: 'toolkit:component-check'
   configuration:
@@ -114,6 +120,8 @@
           check: false
         abandoned:
           check: false
+        unsupported:
+          check: false
   tokens: ''
   resources:
     - from: sample-composer.lock
@@ -121,6 +129,7 @@
   expectations:
     - string_contains: Abandoned module check            passed (Skipping)
     - string_contains: Outdated module check             passed (Skipping)
+    - string_contains: Unsupported module check          passed (Skipping)
 
 - command: 'toolkit:component-check --test-command'
   configuration:
@@ -153,7 +162,129 @@
     - string_contains: Insecure module check             passed
     - string_contains: Outdated module check             passed
     - string_contains: Abandoned module check            passed
-    - string_contains: Dev module check                  passed
+    - string_contains: Unsupported module check          passed
     - string_contains: Evaluation module check           failed
     - string_contains: Dev module in require-dev check   passed
-    - string_contains: Drush require section check       passed
+    - string_contains: Composer validation check         passed
+
+- command: 'toolkit:component-check'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - from: sample-internal-dependency.lock
+      to: composer.lock
+  expectations:
+    - string_contains: Evaluation module check           passed
+
+- command: 'toolkit:component-check'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "test/package", "type": "library", "version": "dev-1.0.0" },
+          { "name": "test/package2", "type": "library", "version": "1.0.0-dev" },
+          { "name": "test/module", "type": "drupal-custom-module", "version": "1.0.0-dev" }
+        ] }
+  expectations:
+    - string_contains: Package test/package:dev-1.0.0 cannot be used in dev version.
+    - string_contains: Package test/package2:1.0.0-dev cannot be used in dev version.
+    - not_string_contains: Package test/module:1.0.0-dev cannot be used in dev version.
+    - string_contains: Composer validation check         failed
+
+- command: 'toolkit:component-check'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.json
+      content: |
+        { "extra": { "enable-patching": true } }
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+  expectations:
+    - string_contains: The composer property 'extras.enable-patching' cannot be set to true.
+    - string_contains: Composer validation check         failed
+
+- command: 'toolkit:component-check'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.json
+      content: |
+        { "extra": { "enable-patching": false } }
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+  expectations:
+    - not_string_contains: extras.enable-patching
+    - string_contains: Composer validation check         passed
+
+- command: 'toolkit:component-check'
+  configuration:
+    toolkit:
+      components:
+        composer:
+          drupal_patches: true
+  tokens: ''
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
+    - file: composer.json
+      content: |
+        {
+          "name": "toolkit",
+          "extra": {
+            "patches": {
+              "local/package": [ "./resources/local.patch" ],
+              "drupal/package": [
+                "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
+                "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
+                "http://drupal.org/files/issues/2023-01-01/12345-3.patch"
+              ]
+            }
+          }
+        }
+  expectations:
+    - not_string_contains: The patch './resources/local.patch' is not valid
+    - not_string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
+    - not_string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
+    - not_string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
+    - string_contains: Composer validation check         passed
+
+- command: 'toolkit:component-check'
+  configuration:
+    toolkit:
+      components:
+        composer:
+          drupal_patches: false
+  tokens: ''
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
+    - file: composer.json
+      content: |
+        {
+          "name": "toolkit",
+          "extra": {
+            "patches": {
+              "local/package": [ "./resources/local.patch" ],
+              "web/package": [ "http://example.com/test-package.patch" ],
+              "drupal/package": [
+                "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
+                "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
+                "http://drupal.org/files/issues/2023-01-01/12345-3.patch"
+              ]
+            }
+          }
+        }
+  expectations:
+    - not_string_contains: The patch './resources/local.patch' is not valid
+    - string_contains: The patch 'http://example.com/test-package.patch' is not valid
+    - string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
+    - string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
+    - string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
+    - string_contains: Composer validation check         failed
