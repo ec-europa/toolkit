@@ -213,12 +213,40 @@
   resources:
     - file: composer.json
       content: |
-        { "extra": { "enable-patching": false } }
+        { "extra": { "enable-patching": false, "composer-exit-on-patch-failure": true } }
     - file: composer.lock
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
     - not_string_contains: extras.enable-patching
+    - string_contains: Composer validation check         passed
+
+- command: 'toolkit:component-check'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.json
+      content: |
+        { "extra": { "composer-exit-on-patch-failure": false } }
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+  expectations:
+    - string_contains: The composer property 'extras.composer-exit-on-patch-failure' must be set to true.
+    - string_contains: Composer validation check         failed
+
+- command: 'toolkit:component-check'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.json
+      content: |
+        { "extra": { "composer-exit-on-patch-failure": true } }
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+  expectations:
+    - not_string_contains: extras.composer-exit-on-patch-failure
     - string_contains: Composer validation check         passed
 
 - command: 'toolkit:component-check'
@@ -237,6 +265,7 @@
         {
           "name": "toolkit",
           "extra": {
+            "composer-exit-on-patch-failure": true,
             "patches": {
               "local/package": [ "./resources/local.patch" ],
               "drupal/package": [
@@ -270,6 +299,7 @@
         {
           "name": "toolkit",
           "extra": {
+            "composer-exit-on-patch-failure": true,
             "patches": {
               "local/package": [ "./resources/local.patch" ],
               "web/package": [ "http://example.com/test-package.patch" ],
