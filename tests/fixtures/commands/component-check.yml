@@ -94,7 +94,7 @@
         !
         !
         !        - Using the configuration in the runner.yml.dist as shown below to
-        !        skip Outdated, Abandoned, Unsupported or Composer:
+        !        skip Outdated, Abandoned or Unsupported:
         !
         !           toolkit:
         !
@@ -109,10 +109,6 @@
         !                 check: false
         !
         !               unsupported:
-        !
-        !                 check: false
-        !
-        !               composer:
         !
         !                 check: false
 

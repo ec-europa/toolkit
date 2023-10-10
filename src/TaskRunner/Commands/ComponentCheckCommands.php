@@ -207,7 +207,7 @@ class ComponentCheckCommands extends AbstractCommands
                 '- Using commit message to skip Insecure and/or Outdated check:',
                 '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
                 '',
-                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned, Unsupported or Composer: ',
+                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
                 '   toolkit:',
                 '     components:',
                 '       outdated:',
@@ -215,8 +215,6 @@ class ComponentCheckCommands extends AbstractCommands
                 '       abandoned:',
                 '         check: false',
                 '       unsupported:',
-                '         check: false',
-                '       composer:',
                 '         check: false',
             ]);
         }
