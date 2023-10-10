@@ -26,6 +26,8 @@ toolkit:
       check: true
     unsupported:
       check: true
+    composer:
+      drupal_patches: true
   deploy:
     config_file: 'config/sync/core.extension.yml'
     sequence_file: '.opts.yml'

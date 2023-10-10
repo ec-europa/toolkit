@@ -62,19 +62,7 @@ class ComponentCheckCommands extends AbstractCommands
             return 1;
         }
         $this->io = $io;
-        $commitTokens = ToolCommands::getCommitTokens();
-        if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
-            $this->skipOutdated = true;
-        }
-        if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
-            $this->skipAbandoned = true;
-        }
-        if (!$this->getConfig()->get('toolkit.components.unsupported.check')) {
-            $this->skipUnsupported = true;
-        }
-        if (isset($commitTokens['skipInsecure'])) {
-            $this->skipInsecure = true;
-        }
+        $this->prepareSkips();
 
         $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
         if (!isset($composerLock['packages'])) {
@@ -163,12 +151,26 @@ class ComponentCheckCommands extends AbstractCommands
         $composer = $this->getWorkingDir() . '/composer.json';
         if (file_exists($composer)) {
             $composerArray = json_decode(file_get_contents($composer), true);
+            // Do not allow setting enable-patching.
             if (!empty($composerArray['extra']['enable-patching'])) {
                 $this->composerFailed = true;
                 $this->writeln("The composer property 'extras.enable-patching' cannot be set to true.");
             }
+            // Do not allow remote patches. Check if patches from drupal.org are allowed.
+            if (!empty($composerArray['extra']['patches'])) {
+                $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
+                foreach ($composerArray['extra']['patches'] as $packagePatches) {
+                    foreach ($packagePatches as $patch) {
+                        $hostname = parse_url($patch, PHP_URL_HOST);
+                        $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
+                        if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
+                            $this->writeln("The patch '$patch' is not valid.");
+                            $this->composerFailed = true;
+                        }
+                    }
+                }
+            }
         }
-
         if (!$this->composerFailed) {
             $this->say('Composer validation passed.');
         }
@@ -180,8 +182,8 @@ class ComponentCheckCommands extends AbstractCommands
         if (
             $this->commandFailed ||
             $this->mandatoryFailed ||
-            $this->composerFailed ||
             $this->devCompRequireFailed ||
+            $this->composerFailed ||
             (!$this->skipRecommended && $this->recommendedFailed) ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipAbandoned && $this->abandonedFailed) ||
@@ -218,6 +220,26 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         return $status;
+    }
+
+    /**
+     * Prepare the overrides from config and commit message.
+     */
+    protected function prepareSkips(): void
+    {
+        $commitTokens = ToolCommands::getCommitTokens();
+        if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
+            $this->skipOutdated = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
+            $this->skipAbandoned = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.unsupported.check')) {
+            $this->skipUnsupported = true;
+        }
+        if (isset($commitTokens['skipInsecure'])) {
+            $this->skipInsecure = true;
+        }
     }
 
     /**
