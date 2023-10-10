@@ -157,13 +157,15 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->composerFailed = true;
                 $this->writeln("The composer property 'extras.enable-patching' cannot be set to true.");
             }
-            // Do not allow remote patches from outside drupal.org.
+            // Do not allow remote patches. Check if patches from drupal.org are allowed.
             if (!empty($composerArray['extra']['patches'])) {
+                $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
                 foreach ($composerArray['extra']['patches'] as $packagePatches) {
                     foreach ($packagePatches as $patch) {
                         $hostname = parse_url($patch, PHP_URL_HOST);
-                        if ($hostname && !str_ends_with($hostname, 'drupal.org')) {
-                            $this->writeln("The patch $patch is not valid, only local and drupal.org patches are allowed.");
+                        $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
+                        if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
+                            $this->writeln("The patch '$patch' is not valid.");
                             $this->composerFailed = true;
                         }
                     }
@@ -182,7 +184,7 @@ class ComponentCheckCommands extends AbstractCommands
             $this->commandFailed ||
             $this->mandatoryFailed ||
             $this->devCompRequireFailed ||
-            (!$this->skipComposer && $this->composerFailed) ||
+            $this->composerFailed ||
             (!$this->skipRecommended && $this->recommendedFailed) ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipAbandoned && $this->abandonedFailed) ||
@@ -237,9 +239,6 @@ class ComponentCheckCommands extends AbstractCommands
         }
         if (!$this->getConfig()->get('toolkit.components.unsupported.check')) {
             $this->skipUnsupported = true;
-        }
-        if (!$this->getConfig()->get('toolkit.components.composer.check')) {
-            $this->skipComposer = true;
         }
         if (isset($commitTokens['skipInsecure'])) {
             $this->skipInsecure = true;

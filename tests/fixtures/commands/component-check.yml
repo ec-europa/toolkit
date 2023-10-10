@@ -126,8 +126,6 @@
           check: false
         unsupported:
           check: false
-        composer:
-          check: false
   tokens: ''
   resources:
     - from: sample-composer.lock
@@ -136,7 +134,6 @@
     - string_contains: Abandoned module check            passed (Skipping)
     - string_contains: Outdated module check             passed (Skipping)
     - string_contains: Unsupported module check          passed (Skipping)
-    - string_contains: Composer validation check         passed (Skipping)
 
 - command: 'toolkit:component-check --test-command'
   configuration:
@@ -229,7 +226,11 @@
     - string_contains: Composer validation check         passed
 
 - command: 'toolkit:component-check'
-  configuration: [ ]
+  configuration:
+    toolkit:
+      components:
+        composer:
+          drupal_patches: true
   tokens: ''
   resources:
     - file: composer.lock
@@ -241,7 +242,6 @@
           "name": "toolkit",
           "extra": {
             "patches": {
-              "test/package": [ "http://example.com/test-package.patch" ],
               "local/package": [ "./resources/local.patch" ],
               "drupal/package": [
                 "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
@@ -252,19 +252,18 @@
           }
         }
   expectations:
-    - string_contains: test-package.patch is not valid
-    - not_string_contains: local.patch is not valid
-    - not_string_contains: 12345-1.patch is not valid
-    - not_string_contains: 12345-2.patch is not valid
-    - not_string_contains: 12345-3.patch is not valid
-    - string_contains: Composer validation check         failed
+    - not_string_contains: The patch './resources/local.patch' is not valid
+    - not_string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
+    - not_string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
+    - not_string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
+    - string_contains: Composer validation check         passed
 
 - command: 'toolkit:component-check'
   configuration:
     toolkit:
       components:
         composer:
-          check: false
+          drupal_patches: false
   tokens: ''
   resources:
     - file: composer.lock
@@ -276,8 +275,8 @@
           "name": "toolkit",
           "extra": {
             "patches": {
-              "test/package": [ "http://example.com/test-package.patch" ],
               "local/package": [ "./resources/local.patch" ],
+              "web/package": [ "http://example.com/test-package.patch" ],
               "drupal/package": [
                 "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
                 "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
@@ -287,9 +286,9 @@
           }
         }
   expectations:
-    - string_contains: test-package.patch is not valid
-    - not_string_contains: local.patch is not valid
-    - not_string_contains: 12345-1.patch is not valid
-    - not_string_contains: 12345-2.patch is not valid
-    - not_string_contains: 12345-3.patch is not valid
-    - string_contains: Composer validation check         failed (Skipping)
+    - not_string_contains: The patch './resources/local.patch' is not valid
+    - string_contains: The patch 'http://example.com/test-package.patch' is not valid
+    - string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
+    - string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
+    - string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
+    - string_contains: Composer validation check         failed
