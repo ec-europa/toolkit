@@ -105,6 +105,7 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
             // Assert expectations.
             foreach ($expectations as $expectation) {
                 $content = file_get_contents($this->getSandboxFilepath($expectation['file']));
+                $this->debugExpectations($content, $expectations);
                 $this->assertDynamic($content, $expectation);
             }
         }
