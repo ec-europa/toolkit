@@ -209,6 +209,9 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @param array $packages
      *   The packages to validate.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function validateComposer(array $packages)
     {
