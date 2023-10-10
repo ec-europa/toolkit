@@ -136,45 +136,7 @@ class ComponentCheckCommands extends AbstractCommands
         }
         $io->newLine();
 
-        $io->title('Validating composer.');
-        foreach ($composerLock['packages'] as $package) {
-            $typeBypass = in_array($package['type'], [
-                'drupal-custom-module',
-                'drupal-custom-theme',
-                'drupal-custom-profile',
-            ]);
-            if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
-                $this->composerFailed = true;
-                $this->writeln("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
-            }
-        }
-        $composer = $this->getWorkingDir() . '/composer.json';
-        if (file_exists($composer)) {
-            $composerArray = json_decode(file_get_contents($composer), true);
-            // Do not allow setting enable-patching.
-            if (!empty($composerArray['extra']['enable-patching'])) {
-                $this->composerFailed = true;
-                $this->writeln("The composer property 'extras.enable-patching' cannot be set to true.");
-            }
-            // Do not allow remote patches. Check if patches from drupal.org are allowed.
-            if (!empty($composerArray['extra']['patches'])) {
-                $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
-                foreach ($composerArray['extra']['patches'] as $packagePatches) {
-                    foreach ($packagePatches as $patch) {
-                        $hostname = parse_url($patch, PHP_URL_HOST);
-                        $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
-                        if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
-                            $this->writeln("The patch '$patch' is not valid.");
-                            $this->composerFailed = true;
-                        }
-                    }
-                }
-            }
-        }
-        if (!$this->composerFailed) {
-            $this->say('Composer validation passed.');
-        }
-        $io->newLine();
+        $this->validateComposer($composerLock['packages']);
 
         $this->printComponentResults($io);
 
@@ -240,6 +202,66 @@ class ComponentCheckCommands extends AbstractCommands
         if (isset($commitTokens['skipInsecure'])) {
             $this->skipInsecure = true;
         }
+    }
+
+    /**
+     * Validate composer packages.
+     *
+     * @param array $packages
+     *   The packages to validate.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    protected function validateComposer(array $packages)
+    {
+        $this->io->title('Validating composer.');
+
+        // Check packages used in dev version.
+        foreach ($packages as $package) {
+            $typeBypass = in_array($package['type'], [
+                'drupal-custom-module',
+                'drupal-custom-theme',
+                'drupal-custom-profile',
+            ]);
+            if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
+                $this->composerFailed = true;
+                $this->writeln("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
+            }
+        }
+        $composer = $this->getWorkingDir() . '/composer.json';
+        if (file_exists($composer)) {
+            $composerArray = json_decode(file_get_contents($composer), true);
+            // Do not allow setting enable-patching.
+            if (!empty($composerArray['extra']['enable-patching'])) {
+                $this->composerFailed = true;
+                $this->writeln("The composer property 'extras.enable-patching' cannot be set to true.");
+            }
+            // Enforce setting composer-exit-on-patch-failure.
+            if (empty($composerArray['extra']['composer-exit-on-patch-failure'])) {
+                $this->composerFailed = true;
+                $this->writeln("The composer property 'extras.composer-exit-on-patch-failure' must be set to true.");
+            }
+
+            // Do not allow remote patches. Check if patches from drupal.org are allowed.
+            if (!empty($composerArray['extra']['patches'])) {
+                $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
+                foreach ($composerArray['extra']['patches'] as $packagePatches) {
+                    foreach ($packagePatches as $patch) {
+                        $hostname = parse_url($patch, PHP_URL_HOST);
+                        $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
+                        if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
+                            $this->writeln("The patch '$patch' is not valid.");
+                            $this->composerFailed = true;
+                        }
+                    }
+                }
+            }
+        }
+        if (!$this->composerFailed) {
+            $this->say('Composer validation passed.');
+        }
+        $this->io->newLine();
     }
 
     /**
