@@ -13,6 +13,20 @@ final class Mock
 {
 
     /**
+     * The default mock tag to use to download and local directory.
+     *
+     * @var string
+     */
+    private static string $defaultTag = '0.0.2';
+
+    /**
+     * The directory to download the mock to.
+     *
+     * @var string
+     */
+    private static string $directory = '.toolkit-mock';
+
+    /**
      * Downloads the mock from the repo.
      *
      * @throws \Exception
@@ -23,15 +37,13 @@ final class Mock
         if (!Toolkit::isCiCd()) {
             return false;
         }
-        $mockDir = getenv('TOOLKIT_MOCK_DIR') ?: 'mock';
+        $tag = self::tag();
+        $mockDir = self::$directory . '/' . $tag;
         if (file_exists($mockDir)) {
             return true;
         }
-        if (empty($repo = getenv('TOOLKIT_MOCK_REPO'))) {
-            throw new \Exception('Missing env var TOOLKIT_MOCK_REPO.');
-        }
-        $branch = getenv('TOOLKIT_MOCK_BRANCH') ?: '0.0.2';
-        $command = "git clone --depth 1 --branch $branch $repo $mockDir";
+        $repo = self::repo();
+        $command = "git clone --depth 1 --branch $tag $repo $mockDir";
         $process = Process::fromShellCommandline($command);
         $process->run();
         if ($process->getExitCode()) {
@@ -54,7 +66,8 @@ final class Mock
         if (!Toolkit::isCiCd()) {
             return false;
         }
-        $mockDir = getenv('TOOLKIT_MOCK_DIR') ?: 'mock';
+        $tag = self::tag();
+        $mockDir = self::$directory . '/' . $tag;
         if (!file_exists($mockDir)) {
             throw new \Exception("Mock not found at '$mockDir'.");
         }
@@ -63,6 +76,31 @@ final class Mock
             throw new \Exception("No file found for endpoint '$endpoint'.");
         }
         return file_get_contents($endpointFile);
+    }
+
+    /**
+     * Returns the repository url.
+     *
+     * @throws \Exception
+     *   If missing env var TOOLKIT_MOCK_REPO.
+     */
+    public static function repo(): string
+    {
+        if (empty($repo = getenv('TOOLKIT_MOCK_REPO'))) {
+            throw new \Exception('Missing env var TOOLKIT_MOCK_REPO.');
+        }
+        return (string) $repo;
+    }
+
+    /**
+     * Returns the tag to use.
+     */
+    public static function tag(): string
+    {
+        if (!empty($tag = getenv('TOOLKIT_MOCK_TAG'))) {
+            return (string) $tag;
+        }
+        return self::$defaultTag;
     }
 
 }
