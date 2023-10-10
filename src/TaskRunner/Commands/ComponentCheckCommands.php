@@ -34,7 +34,6 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $skipUnsupported = false;
     protected bool $skipInsecure = false;
     protected bool $skipRecommended = true;
-    protected bool $skipComposer = false;
     protected int $recommendedFailedCount = 0;
     protected array $installed;
     protected $io;
@@ -256,7 +255,6 @@ class ComponentCheckCommands extends AbstractCommands
         $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
         $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
         $skipUnsupported = ($this->skipUnsupported) ? ' (Skipping)' : '';
-        $skipComposer = ($this->skipComposer) ? ' (Skipping)' : '';
 
         $io->definitionList(
             ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
@@ -267,7 +265,7 @@ class ComponentCheckCommands extends AbstractCommands
             ['Unsupported module check' => $this->getFailedOrPassed($this->unsupportedFailed) . $skipUnsupported],
             ['Evaluation module check' => $this->getFailedOrPassed($this->commandFailed)],
             ['Dev module in require-dev check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
-            ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed) . $skipComposer],
+            ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
         );
     }
 
