@@ -38,6 +38,7 @@ class GitHooksCommandsTest extends AbstractTest
         // Create dummy hooks.
         $this->fs->touch($this->getSandboxFilepath('.git/hooks/pre-commit'));
         $this->fs->touch($this->getSandboxFilepath('.git/hooks/pre-push'));
+        $this->fs->touch($this->getSandboxFilepath('.git/hooks/commit-msg'));
     }
 
     /**
@@ -47,17 +48,21 @@ class GitHooksCommandsTest extends AbstractTest
      *   A command.
      * @param array $config
      *   A configuration.
+     * @param array $resources
+     *    Resources needed for the test
      * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testGitHooks(string $command, array $config = [], array $expectations = [])
+    public function testGitHooks(string $command, array $config = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
         if (!empty($config)) {
             $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
         }
+
+        $this->prepareResources($resources);
 
         // Run command.
         $result = $this->runCommand($command);
