@@ -4,6 +4,9 @@
   resources:
     - from: sample-composer.lock
       to: composer.lock
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
   expectations:
     - contains: |
         Checking Mandatory components.
@@ -44,23 +47,26 @@
         [Simulator] Running ./vendor/bin/drush eval "\Drupal::moduleHandler()->loadInclude('update', 'compare.inc') ; echo json_encode(update_calculate_project_data(\Drupal::keyValueExpirable('update_available_releases')->getAll()))"
         Failed to get the available releases.
 
-        Checking evaluation status components.
-        ======================================
+        Checking Evaluation components.
+        ===============================
 
         The use of drupal/codesnippet:1.8 is restricted. Contact QA Team.
         The use of drupal/github_connect:2.0.0-alpha1 is restricted. Contact QA Team.
         The use of drupal/responsive_tables_filter:1.17 is restricted. Contact QA Team.
         The use of drupal/restui:1.21 is rejected. Contact QA Team.
 
-        Checking dev components in require section.
-        ===========================================
 
-        >  Dev components in require section check passed
+        Checking Development components.
+        ================================
 
-        Validating composer.
-        ====================
+        >  Development components check passed.
 
-        >  Composer validation passed.
+
+        Checking Composer components.
+        =============================
+
+        >  Composer validation check passed.
+
 
         Results:
         ========
@@ -126,6 +132,7 @@
   resources:
     - from: sample-composer.lock
       to: composer.lock
+    - touch: composer.json
   expectations:
     - string_contains: Abandoned module check            passed (Skipping)
     - string_contains: Outdated module check             passed (Skipping)
@@ -139,6 +146,7 @@
           check: false
   tokens: '[skip_insecure][skip_d9c]'
   resources:
+    - touch: composer.json
     - from: sample-composer.lock
       to: composer.lock
   expectations:
@@ -154,6 +162,9 @@
   resources:
     - from: sample-core.extensions-good.yml
       to: core.extensions-good.yml
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
     - from: sample-composer.lock
       to: composer.lock
   expectations:
@@ -171,6 +182,9 @@
   configuration: [ ]
   tokens: ''
   resources:
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
     - from: sample-internal-dependency.lock
       to: composer.lock
   expectations:
@@ -180,6 +194,9 @@
   configuration: [ ]
   tokens: ''
   resources:
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
     - file: composer.lock
       content: |
         { "packages": [
@@ -204,7 +221,7 @@
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
-    - string_contains: The composer property 'extras.enable-patching' cannot be set to true.
+    - string_contains: The composer property 'extra.enable-patching' cannot be set to true.
     - string_contains: Composer validation check         failed
 
 - command: 'toolkit:component-check'
@@ -218,7 +235,7 @@
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
-    - not_string_contains: extras.enable-patching
+    - not_string_contains: extra.enable-patching
     - string_contains: Composer validation check         passed
 
 - command: 'toolkit:component-check'
@@ -232,7 +249,7 @@
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
-    - string_contains: The composer property 'extras.composer-exit-on-patch-failure' must be set to true.
+    - string_contains: The composer property 'extra.composer-exit-on-patch-failure' must be set to true.
     - string_contains: Composer validation check         failed
 
 - command: 'toolkit:component-check'
@@ -246,7 +263,7 @@
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
-    - not_string_contains: extras.composer-exit-on-patch-failure
+    - not_string_contains: extra.composer-exit-on-patch-failure
     - string_contains: Composer validation check         passed
 
 - command: 'toolkit:component-check'

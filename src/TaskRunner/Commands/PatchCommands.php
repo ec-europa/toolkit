@@ -97,25 +97,11 @@ class PatchCommands extends AbstractCommands
     }
 
     /**
-     * Returns the composer.json content.
-     */
-    private function getComposer()
-    {
-        $composer = $this->input()->getOption('composer');
-        $file = $this->getWorkingDir() . '/' . trim($composer, '/');
-        if (!file_exists($file)) {
-            $this->writeln("The file '$file' not found.");
-            return ResultData::EXITCODE_OK;
-        }
-        return json_decode(file_get_contents($file), true);
-    }
-
-    /**
      * Returns the patches to be downloaded.
      */
     private function getPatches(): array
     {
-        $composer = $this->getComposer();
+        $composer = $this->getComposerJson();
         $patches = $composer['extra']['patches'] ?? [];
         // Check if there's any patch.
         if (empty($patches)) {
