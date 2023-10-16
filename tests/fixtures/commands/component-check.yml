@@ -4,6 +4,9 @@
   resources:
     - from: sample-composer.lock
       to: composer.lock
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
   expectations:
     - contains: |
         Checking Mandatory components.
@@ -44,38 +47,41 @@
         [Simulator] Running ./vendor/bin/drush eval "\Drupal::moduleHandler()->loadInclude('update', 'compare.inc') ; echo json_encode(update_calculate_project_data(\Drupal::keyValueExpirable('update_available_releases')->getAll()))"
         Failed to get the available releases.
 
-        Checking evaluation status components.
-        ======================================
+        Checking Evaluation components.
+        ===============================
 
         The use of drupal/codesnippet:1.8 is restricted. Contact QA Team.
         The use of drupal/github_connect:2.0.0-alpha1 is restricted. Contact QA Team.
         The use of drupal/responsive_tables_filter:1.17 is restricted. Contact QA Team.
         The use of drupal/restui:1.21 is rejected. Contact QA Team.
 
-        Checking dev components in require section.
-        ===========================================
 
-        >  Dev components in require section check passed
+        Checking Development components.
+        ================================
 
-        Validating composer.
-        ====================
+        >  Development components check passed.
 
-        >  Composer validation passed.
+
+        Checking Composer components.
+        =============================
+
+        >  Composer validation check passed.
+
 
         Results:
         ========
 
-        --------------------------------- --------
-        Mandatory module check            failed
-        Recommended module check          passed
-        Insecure module check             passed
-        Outdated module check             passed
-        Abandoned module check            passed
-        Unsupported module check          passed
-        Evaluation module check           failed
-        Dev module in require-dev check   passed
-        Composer validation check         passed
-        --------------------------------- --------
+        --------------------------- --------
+         Mandatory module check      failed
+         Recommended module check    passed
+         Insecure module check       passed
+         Outdated module check       passed
+         Abandoned module check      passed
+         Unsupported module check    passed
+         Evaluation module check     failed
+         Development module check    passed
+         Composer validation check   passed
+        --------------------------- --------
 
         [ERROR] Failed the components check, please verify the report and update the
         project.
@@ -124,12 +130,13 @@
           check: false
   tokens: ''
   resources:
+    - touch: composer.json
     - from: sample-composer.lock
       to: composer.lock
   expectations:
-    - string_contains: Abandoned module check            passed (Skipping)
-    - string_contains: Outdated module check             passed (Skipping)
-    - string_contains: Unsupported module check          passed (Skipping)
+    - string_contains: Abandoned module check      passed (Skipping)
+    - string_contains: Outdated module check       passed (Skipping)
+    - string_contains: Unsupported module check    passed (Skipping)
 
 - command: 'toolkit:component-check --test-command'
   configuration:
@@ -139,11 +146,12 @@
           check: false
   tokens: '[skip_insecure][skip_d9c]'
   resources:
+    - touch: composer.json
     - from: sample-composer.lock
       to: composer.lock
   expectations:
-    - string_contains: Insecure module check             passed (Skipping)
-    - string_contains: Outdated module check             passed (Skipping)
+    - string_contains: Insecure module check       passed (Skipping)
+    - string_contains: Outdated module check       passed (Skipping)
 
 - command: 'toolkit:component-check'
   configuration:
@@ -154,32 +162,39 @@
   resources:
     - from: sample-core.extensions-good.yml
       to: core.extensions-good.yml
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
     - from: sample-composer.lock
       to: composer.lock
   expectations:
-    - string_contains: Mandatory module check            passed
-    - string_contains: Recommended module check          passed
-    - string_contains: Insecure module check             passed
-    - string_contains: Outdated module check             passed
-    - string_contains: Abandoned module check            passed
-    - string_contains: Unsupported module check          passed
-    - string_contains: Evaluation module check           failed
-    - string_contains: Dev module in require-dev check   passed
-    - string_contains: Composer validation check         passed
+    - string_contains: Mandatory module check      passed
+    - string_contains: Recommended module check    passed
+    - string_contains: Insecure module check       passed
+    - string_contains: Outdated module check       passed
+    - string_contains: Abandoned module check      passed
+    - string_contains: Unsupported module check    passed
+    - string_contains: Evaluation module check     failed
+    - string_contains: Development module check    passed
+    - string_contains: Composer validation check   passed
 
 - command: 'toolkit:component-check'
   configuration: [ ]
   tokens: ''
   resources:
+    - touch: composer.json
     - from: sample-internal-dependency.lock
       to: composer.lock
   expectations:
-    - string_contains: Evaluation module check           passed
+    - string_contains: Evaluation module check     passed
 
 - command: 'toolkit:component-check'
   configuration: [ ]
   tokens: ''
   resources:
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
     - file: composer.lock
       content: |
         { "packages": [
@@ -191,7 +206,7 @@
     - string_contains: Package test/package:dev-1.0.0 cannot be used in dev version.
     - string_contains: Package test/package2:1.0.0-dev cannot be used in dev version.
     - not_string_contains: Package test/module:1.0.0-dev cannot be used in dev version.
-    - string_contains: Composer validation check         failed
+    - string_contains: Composer validation check   failed
 
 - command: 'toolkit:component-check'
   configuration: [ ]
@@ -204,8 +219,8 @@
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
-    - string_contains: The composer property 'extras.enable-patching' cannot be set to true.
-    - string_contains: Composer validation check         failed
+    - string_contains: The composer property 'extra.enable-patching' cannot be set to true.
+    - string_contains: Composer validation check   failed
 
 - command: 'toolkit:component-check'
   configuration: [ ]
@@ -218,8 +233,8 @@
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
-    - not_string_contains: extras.enable-patching
-    - string_contains: Composer validation check         passed
+    - not_string_contains: extra.enable-patching
+    - string_contains: Composer validation check   passed
 
 - command: 'toolkit:component-check'
   configuration: [ ]
@@ -232,8 +247,8 @@
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
-    - string_contains: The composer property 'extras.composer-exit-on-patch-failure' must be set to true.
-    - string_contains: Composer validation check         failed
+    - string_contains: The composer property 'extra.composer-exit-on-patch-failure' must be set to true.
+    - string_contains: Composer validation check   failed
 
 - command: 'toolkit:component-check'
   configuration: [ ]
@@ -246,8 +261,8 @@
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
-    - not_string_contains: extras.composer-exit-on-patch-failure
-    - string_contains: Composer validation check         passed
+    - not_string_contains: extra.composer-exit-on-patch-failure
+    - string_contains: Composer validation check   passed
 
 - command: 'toolkit:component-check'
   configuration:
@@ -281,7 +296,7 @@
     - not_string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
     - not_string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
     - not_string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
-    - string_contains: Composer validation check         passed
+    - string_contains: Composer validation check   passed
 
 - command: 'toolkit:component-check'
   configuration:
@@ -317,4 +332,99 @@
     - string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
     - string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
     - string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
-    - string_contains: Composer validation check         failed
+    - string_contains: Composer validation check   failed
+
+- command: 'toolkit:component-check'
+  configuration:
+    toolkit:
+      project_id: digit-dqa
+  tokens: ''
+  resources:
+    - touch: composer.json
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "drupal/codesnippet", "type": "drupal-module", "version": "1.0.0" } ] }
+  expectations:
+    - string_contains: The package drupal/codesnippet is authorised for the project digit-dqa
+
+- command: 'toolkit:component-check'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - touch: composer.json
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
+    - file: .toolkit-mock/0.0.2/api/v1/project/ec-europa/toolkit/information.json
+      content: |
+        [ { "type": "Drupal 9" ,"profile": "minimal" } ]
+    - file: .toolkit-mock/0.0.2/api/v1/toolkit-requirements.json
+      content: |
+        { "php_version":"8.0", "toolkit": "^3.7.2|^9.11|^10.1", "drupal": "^7.96|^9.5.8|^10.0.9", "vendor_list": [ "drupal" ] }
+    - file: .toolkit-mock/0.0.2/api/v1/package-reviews.json
+      content: |
+        [ {
+          "type": "drupal-module",
+          "machine_name": "pipeline",
+          "name": "drupal/pipeline",
+          "full_name": "drupal/pipeline",
+          "version_drupal": "8.x-1.0-alpha3",
+          "version": "^1.0-alpha3",
+          "whitelist": "^1.0-alpha3",
+          "blacklist": false,
+          "secure": false,
+          "status": "rejected",
+          "restricted_use": "1",
+          "allowed_profiles": "minimal",
+          "allowed_project_types": "Drupal 9",
+          "mandatory": "0",
+          "mandatory_date": false,
+          "core": "8.x",
+          "cores": "8.x",
+          "usage": "Free",
+          "nid": "10889",
+          "dev_component": "false"
+        } ]
+  expectations:
+    - string_contains: The package drupal/pipeline is authorised for the type of project Drupal 9
+
+- command: 'toolkit:component-check'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - touch: composer.json
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
+    - file: .toolkit-mock/0.0.2/api/v1/project/ec-europa/toolkit/information.json
+      content: |
+        [ { "type": "Drupal 9" ,"profile": "minimal" } ]
+    - file: .toolkit-mock/0.0.2/api/v1/toolkit-requirements.json
+      content: |
+        { "php_version":"8.0", "toolkit": "^3.7.2|^9.11|^10.1", "drupal": "^7.96|^9.5.8|^10.0.9", "vendor_list": [ "drupal" ] }
+    - file: .toolkit-mock/0.0.2/api/v1/package-reviews.json
+      content: |
+        [ {
+          "type": "drupal-module",
+          "machine_name": "pipeline",
+          "name": "drupal/pipeline",
+          "full_name": "drupal/pipeline",
+          "version_drupal": "8.x-1.0-alpha3",
+          "version": "^1.0-alpha3",
+          "whitelist": "^1.0-alpha3",
+          "blacklist": false,
+          "secure": false,
+          "status": "rejected",
+          "restricted_use": "1",
+          "allowed_profiles": "minimal",
+          "allowed_project_types": false,
+          "mandatory": "0",
+          "mandatory_date": false,
+          "core": "8.x",
+          "cores": "8.x",
+          "usage": "Free",
+          "nid": "10889",
+          "dev_component": "false"
+        } ]
+  expectations:
+    - string_contains: The package drupal/pipeline is authorised for the profile minimal

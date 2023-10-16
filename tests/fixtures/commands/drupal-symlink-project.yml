@@ -2,7 +2,7 @@
   configuration: []
   resources: []
   expectations:
-    - contains: '[error]  The /test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/composer.json was not found.'
+    - contains: "[error]  The '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/composer.json' was not found."
 
 - command: 'drupal:symlink-project'
   configuration:

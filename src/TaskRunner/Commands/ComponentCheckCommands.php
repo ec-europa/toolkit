@@ -20,7 +20,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ComponentCheckCommands extends AbstractCommands
 {
-    protected bool $commandFailed = false;
+    protected bool $evaluationFailed = false;
     protected bool $mandatoryFailed = false;
     protected bool $recommendedFailed = false;
     protected bool $insecureFailed = false;
@@ -37,6 +37,8 @@ class ComponentCheckCommands extends AbstractCommands
     protected int $recommendedFailedCount = 0;
     protected array $installed;
     protected $io;
+    protected array $composerLock;
+    protected array $packageReviews;
 
     /**
      * Check composer for components that are not whitelisted/blacklisted.
@@ -48,7 +50,6 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function componentCheck(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
@@ -64,25 +65,24 @@ class ComponentCheckCommands extends AbstractCommands
         $this->io = $io;
         $this->prepareSkips();
 
-        $composerLock = file_exists('composer.lock') ? json_decode(file_get_contents('composer.lock'), true) : false;
-        if (!isset($composerLock['packages'])) {
+        $this->composerLock = $this->getComposerLock();
+        if (!isset($this->composerLock['packages'])) {
             $io->error('No packages found in the composer.lock file.');
             return 1;
         }
 
-        $status = 0;
         $data = Website::packages();
         if (empty($data)) {
             $io->error('Failed to connect to the endpoint ' . Website::url() . '/api/v1/package-reviews');
             return 1;
         }
-        $modules = array_filter(array_combine(array_column($data, 'name'), $data));
+        $this->packageReviews = array_filter(array_combine(array_column($data, 'name'), $data));
 
         // To test this command execute it with the --test-command option:
         // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://digit-dqa.fpfis.tech.ec.europa.eu"
         // Then we provide an array in the packages that fails on each type of validation.
         if ($options['test-command']) {
-            $composerLock['packages'] = $this->testPackages();
+            $this->composerLock['packages'] = $this->testPackages();
         }
 
         // Execute all checks.
@@ -93,56 +93,23 @@ class ComponentCheckCommands extends AbstractCommands
             'Outdated',
             'Abandoned',
             'Unsupported',
+            'Evaluation',
+            'Development',
+            'Composer',
         ];
         foreach ($checks as $check) {
             $io->title("Checking $check components.");
             $fct = "component$check";
-            $this->{$fct}($modules, $composerLock['packages']);
+            $this->{$fct}();
             $io->newLine();
         }
-
-        // Get vendor list.
-        $dataTkReqsEndpoint = Website::requirements();
-        $vendorList = $dataTkReqsEndpoint['vendor_list'] ?? [];
-
-        $io->title('Checking evaluation status components.');
-        // Proceed with 'blocker' option. Loop over the packages.
-        foreach ($composerLock['packages'] as $package) {
-            // Check if vendor belongs to the monitored vendor list.
-            if (in_array(explode('/', $package['name'])['0'], $vendorList)) {
-                $this->validateComponent($package, $modules);
-            }
-        }
-        if ($this->commandFailed === false) {
-            $this->say('Evaluation module check passed.');
-        }
-        $io->newLine();
-
-        $io->title('Checking dev components in require section.');
-        $devPackages = array_filter(
-            array_column($modules, 'dev_component', 'name'),
-            function ($value) {
-                return $value == 'true';
-            }
-        );
-        foreach ($devPackages as $packageName => $package) {
-            if (ToolCommands::getPackagePropertyFromComposer($packageName, 'version', 'packages')) {
-                $this->devCompRequireFailed = true;
-                $io->warning("Package $packageName cannot be used on require section, must be on require-dev section.");
-            }
-        }
-        if (!$this->devCompRequireFailed) {
-            $this->say('Dev components in require section check passed');
-        }
-        $io->newLine();
-
-        $this->validateComposer($composerLock['packages']);
 
         $this->printComponentResults($io);
 
         // If the validation fail, return according to the blocker.
+        $status = 0;
         if (
-            $this->commandFailed ||
+            $this->evaluationFailed ||
             $this->mandatoryFailed ||
             $this->devCompRequireFailed ||
             $this->composerFailed ||
@@ -207,18 +174,15 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Validate composer packages.
      *
-     * @param array $packages
-     *   The packages to validate.
-     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function validateComposer(array $packages)
+    protected function componentComposer()
     {
-        $this->io->title('Validating composer.');
+        $composerJson = $this->getComposerJson();
 
         // Check packages used in dev version.
-        foreach ($packages as $package) {
+        foreach ($this->composerLock['packages'] as $package) {
             $typeBypass = in_array($package['type'], [
                 'drupal-custom-module',
                 'drupal-custom-theme',
@@ -229,37 +193,35 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->writeln("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
             }
         }
-        $composer = $this->getWorkingDir() . '/composer.json';
-        if (file_exists($composer)) {
-            $composerArray = json_decode(file_get_contents($composer), true);
-            // Do not allow setting enable-patching.
-            if (!empty($composerArray['extra']['enable-patching'])) {
-                $this->composerFailed = true;
-                $this->writeln("The composer property 'extras.enable-patching' cannot be set to true.");
-            }
-            // Enforce setting composer-exit-on-patch-failure.
-            if (empty($composerArray['extra']['composer-exit-on-patch-failure'])) {
-                $this->composerFailed = true;
-                $this->writeln("The composer property 'extras.composer-exit-on-patch-failure' must be set to true.");
-            }
 
-            // Do not allow remote patches. Check if patches from drupal.org are allowed.
-            if (!empty($composerArray['extra']['patches'])) {
-                $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
-                foreach ($composerArray['extra']['patches'] as $packagePatches) {
-                    foreach ($packagePatches as $patch) {
-                        $hostname = parse_url($patch, PHP_URL_HOST);
-                        $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
-                        if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
-                            $this->writeln("The patch '$patch' is not valid.");
-                            $this->composerFailed = true;
-                        }
+        // Do not allow setting enable-patching.
+        if (!empty($composerJson['extra']['enable-patching'])) {
+            $this->composerFailed = true;
+            $this->writeln("The composer property 'extra.enable-patching' cannot be set to true.");
+        }
+
+        // Enforce setting composer-exit-on-patch-failure.
+        if (empty($composerJson['extra']['composer-exit-on-patch-failure'])) {
+            $this->composerFailed = true;
+            $this->writeln("The composer property 'extra.composer-exit-on-patch-failure' must be set to true.");
+        }
+
+        // Do not allow remote patches. Check if patches from drupal.org are allowed.
+        if (!empty($composerJson['extra']['patches'])) {
+            $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
+            foreach ($composerJson['extra']['patches'] as $packagePatches) {
+                foreach ($packagePatches as $patch) {
+                    $hostname = parse_url($patch, PHP_URL_HOST);
+                    $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
+                    if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
+                        $this->writeln("The patch '$patch' is not valid.");
+                        $this->composerFailed = true;
                     }
                 }
             }
         }
         if (!$this->composerFailed) {
-            $this->say('Composer validation passed.');
+            $this->say('Composer validation check passed.');
         }
         $this->io->newLine();
     }
@@ -283,8 +245,8 @@ class ComponentCheckCommands extends AbstractCommands
             ['Outdated module check' => $this->getFailedOrPassed($this->outdatedFailed) . $skipOutdated],
             ['Abandoned module check' => $this->getFailedOrPassed($this->abandonedFailed) . $skipAbandoned],
             ['Unsupported module check' => $this->getFailedOrPassed($this->unsupportedFailed) . $skipUnsupported],
-            ['Evaluation module check' => $this->getFailedOrPassed($this->commandFailed)],
-            ['Dev module in require-dev check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
+            ['Evaluation module check' => $this->getFailedOrPassed($this->evaluationFailed)],
+            ['Development module check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
             ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
         );
     }
@@ -293,12 +255,11 @@ class ComponentCheckCommands extends AbstractCommands
      * Helper function to validate the component.
      *
      * @param array $package The package to validate.
-     * @param array $modules The modules list.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function validateComponent(array $package, array $modules)
+    protected function validateComponent(array $package)
     {
         // Ignore if the package is a metapackage.
         if ($package['type'] === 'metapackage') {
@@ -310,6 +271,7 @@ class ComponentCheckCommands extends AbstractCommands
             return;
         }
         $config = $this->getConfig();
+        $modules = $this->packageReviews;
         $packageName = $package['name'];
         $hasBeenQaEd = isset($modules[$packageName]);
         $wasRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
@@ -324,7 +286,7 @@ class ComponentCheckCommands extends AbstractCommands
         // If module was not reviewed yet.
         if (!$hasBeenQaEd) {
             $this->writeln("Package $packageName:$packageVersion has not been reviewed by QA.");
-            $this->commandFailed = true;
+            $this->evaluationFailed = true;
         }
 
         // If module was rejected.
@@ -332,6 +294,9 @@ class ComponentCheckCommands extends AbstractCommands
             $projectId = $config->get('toolkit.project_id');
             // Check if the module is allowed for this project id.
             $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
+            if ($allowedInProject) {
+                $this->writeln("The package $packageName is authorised for the project $projectId");
+            }
 
             // Check if the module is allowed for this type of project.
             if (!$allowedInProject && !empty($allowedProjectTypes)) {
@@ -339,6 +304,7 @@ class ComponentCheckCommands extends AbstractCommands
                 // Load the project from the website.
                 $project = Website::projectInformation($projectId);
                 if (in_array($project['type'], $allowedProjectTypes)) {
+                    $this->writeln("The package $packageName is authorised for the type of project {$project['type']}");
                     $allowedInProject = true;
                 }
             }
@@ -349,6 +315,7 @@ class ComponentCheckCommands extends AbstractCommands
                 // Load the project from the website.
                 $project = Website::projectInformation($projectId);
                 if (in_array($project['profile'], $allowedProfiles)) {
+                    $this->writeln("The package $packageName is authorised for the profile {$project['profile']}");
                     $allowedInProject = true;
                 }
             }
@@ -356,7 +323,7 @@ class ComponentCheckCommands extends AbstractCommands
             // If module was not allowed in project.
             if (!$allowedInProject) {
                 $this->writeln("The use of $packageName:$packageVersion is {$modules[$packageName]['status']}. Contact QA Team.");
-                $this->commandFailed = true;
+                $this->evaluationFailed = true;
             }
         }
 
@@ -366,7 +333,7 @@ class ComponentCheckCommands extends AbstractCommands
                 $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
                 if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
                     $this->writeln("Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.");
-                    $this->commandFailed = true;
+                    $this->evaluationFailed = true;
                 }
             }
         }
@@ -374,12 +341,8 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Helper function to check component's review information.
-     *
-     * @param array $modules The modules list.
-     *
-     * @throws \Robo\Exception\TaskException
      */
-    protected function componentMandatory(array $modules)
+    protected function componentMandatory()
     {
         $enabledPackages = $mandatoryPackages = [];
         $drushBin = $this->getBin('drush');
@@ -414,8 +377,8 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         // Get mandatory packages.
-        if (!empty($modules)) {
-            $mandatoryPackages = array_values(array_filter($modules, function ($item) {
+        if (!empty($this->packageReviews)) {
+            $mandatoryPackages = array_values(array_filter($this->packageReviews, function ($item) {
                 return $item['mandatory'] === '1';
             }));
         }
@@ -437,18 +400,15 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Helper function to check component's review information.
-     *
-     * @param array $modules The modules list.
-     * @param array $packages The packages to validate.
      */
-    protected function componentRecommended(array $modules, array $packages)
+    protected function componentRecommended()
     {
         $recommendedPackages = [];
         // Get project packages.
-        $projectPackages = array_column($packages, 'name');
+        $projectPackages = array_column($this->composerLock['packages'], 'name');
         // Get recommended packages.
-        if (!empty($modules)) {
-            $recommendedPackages = array_values(array_filter($modules, function ($item) {
+        if (!empty($this->packageReviews)) {
+            $recommendedPackages = array_values(array_filter($this->packageReviews, function ($item) {
                 return strtolower($item['usage']) === 'recommended';
             }));
         }
@@ -474,14 +434,12 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Helper function to check component's review information.
      *
-     * @param array $modules The modules list.
-     *
      * @throws \Robo\Exception\TaskException
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function componentInsecure(array $modules)
+    protected function componentInsecure()
     {
         $packages = [];
         $drupalReleaseHistory = new DrupalReleaseHistory();
@@ -521,8 +479,8 @@ class ComponentCheckCommands extends AbstractCommands
         $messages = [];
         foreach ($packages as $name => $package) {
             $msg = "Package $name has a security update, please update to a safe version. (" . $package['title'] . ")";
-            if (!empty($modules[$name]['secure'])) {
-                if (Semver::satisfies($package['version'], $modules[$name]['secure'])) {
+            if (!empty($this->packageReviews[$name]['secure'])) {
+                if (Semver::satisfies($package['version'], $this->packageReviews[$name]['secure'])) {
                     $messages[] = "$msg (Version marked as secure)";
                     continue;
                 }
@@ -661,6 +619,51 @@ class ComponentCheckCommands extends AbstractCommands
                 $item['recommended']
             ));
         }
+    }
+
+    /**
+     * Helper function to check Evaluation components.
+     */
+    protected function componentEvaluation()
+    {
+        // Get vendor list.
+        $dataTkReqsEndpoint = Website::requirements();
+        $vendorList = $dataTkReqsEndpoint['vendor_list'] ?? [];
+
+        // Proceed with 'blocker' option. Loop over the packages.
+        foreach ($this->composerLock['packages'] as $package) {
+            // Check if vendor belongs to the monitored vendor list.
+            if (in_array(explode('/', $package['name'])['0'], $vendorList)) {
+                $this->validateComponent($package);
+            }
+        }
+        if ($this->evaluationFailed === false) {
+            $this->say('Evaluation module check passed.');
+        }
+        $this->io->newLine();
+    }
+
+    /**
+     * Helper function to check Development components.
+     */
+    protected function componentDevelopment()
+    {
+        $devPackages = array_filter(
+            array_column($this->packageReviews, 'dev_component', 'name'),
+            function ($value) {
+                return $value == 'true';
+            }
+        );
+        foreach (array_keys($devPackages) as $packageName) {
+            if (ToolCommands::getPackagePropertyFromComposer($packageName, 'version', 'packages')) {
+                $this->devCompRequireFailed = true;
+                $this->io->warning("Package $packageName cannot be used on require section, must be on require-dev section.");
+            }
+        }
+        if (!$this->devCompRequireFailed) {
+            $this->say('Development components check passed.');
+        }
+        $this->io->newLine();
     }
 
     /**

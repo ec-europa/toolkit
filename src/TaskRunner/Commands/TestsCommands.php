@@ -209,14 +209,11 @@ class TestsCommands extends AbstractCommands
             }
         }
 
-        $composerFile = './composer.json';
-        if (file_exists($composerFile)) {
-            $composerArray = json_decode(file_get_contents($composerFile), true);
-            if (isset($composerArray['extra']['grumphp']['config-default-path'])) {
-                $configDefaultPath = $composerArray['extra']['grumphp']['config-default-path'];
-                $this->say('You should remove the following from your composer.json extra array:');
-                echo "\n\"grumphp\": {\n    \"config-default-path\": \"$configDefaultPath\"\n}\n\n";
-            }
+        $composer = $this->getComposerJson();
+        if (isset($composer['extra']['grumphp']['config-default-path'])) {
+            $configDefaultPath = $composer['extra']['grumphp']['config-default-path'];
+            $this->say('You should remove the following from your composer.json extra array:');
+            echo "\n\"grumphp\": {\n    \"config-default-path\": \"$configDefaultPath\"\n}\n\n";
         }
 
         if ($containsQaConventions) {

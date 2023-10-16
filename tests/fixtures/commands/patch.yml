@@ -2,8 +2,7 @@
   configuration: []
   resources: []
   expectations:
-      - string_contains: The section 'extra.patches' is empty.
-      - string_contains: Nothing to download.
+    - contains: "[error]  The '/test/toolkit/tests/sandbox/PatchCommandsTest/composer.json' was not found."
 
 - command: 'toolkit:patch-download'
   configuration: []

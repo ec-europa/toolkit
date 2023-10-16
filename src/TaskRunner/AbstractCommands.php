@@ -128,4 +128,28 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
         return (string) $this->input->getParameterOption('--working-dir', getcwd());
     }
 
+    /**
+     * Returns the composer.json parsed content.
+     */
+    public function getComposerJson(): array
+    {
+        $file = $this->getWorkingDir() . '/composer.json';
+        if (!file_exists($file)) {
+            throw new \Exception("The '$file' was not found.");
+        }
+        return (array) json_decode(file_get_contents($file), true);
+    }
+
+    /**
+     * Returns the composer.lock parsed content.
+     */
+    public function getComposerLock(): array
+    {
+        $file = $this->getWorkingDir() . '/composer.lock';
+        if (!file_exists($file)) {
+            throw new \Exception("The '$file' was not found.");
+        }
+        return (array) json_decode(file_get_contents($file), true);
+    }
+
 }
