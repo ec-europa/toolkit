@@ -130,9 +130,9 @@
           check: false
   tokens: ''
   resources:
+    - touch: composer.json
     - from: sample-composer.lock
       to: composer.lock
-    - touch: composer.json
   expectations:
     - string_contains: Abandoned module check      passed (Skipping)
     - string_contains: Outdated module check       passed (Skipping)
@@ -182,9 +182,7 @@
   configuration: [ ]
   tokens: ''
   resources:
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+    - touch: composer.json
     - from: sample-internal-dependency.lock
       to: composer.lock
   expectations:
@@ -342,12 +340,10 @@
       project_id: digit-dqa
   tokens: ''
   resources:
+    - touch: composer.json
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/codesnippet", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: composer.json
-      content: |
-        { "name": "toolkit" }
   expectations:
     - string_contains: The package drupal/codesnippet is authorised for the project digit-dqa
 
@@ -355,12 +351,10 @@
   configuration: [ ]
   tokens: ''
   resources:
+    - touch: composer.json
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: composer.json
-      content: |
-        { "name": "toolkit" }
     - file: .toolkit-mock/0.0.2/api/v1/project/ec-europa/toolkit/information.json
       content: |
         [ { "type": "Drupal 9" ,"profile": "minimal" } ]
@@ -398,12 +392,10 @@
   configuration: [ ]
   tokens: ''
   resources:
+    - touch: composer.json
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: composer.json
-      content: |
-        { "name": "toolkit" }
     - file: .toolkit-mock/0.0.2/api/v1/project/ec-europa/toolkit/information.json
       content: |
         [ { "type": "Drupal 9" ,"profile": "minimal" } ]
