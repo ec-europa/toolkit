@@ -37,7 +37,6 @@ class ComponentCheckCommands extends AbstractCommands
     protected int $recommendedFailedCount = 0;
     protected array $installed;
     protected $io;
-
     protected array $composerLock;
     protected array $packageReviews;
 
@@ -247,7 +246,7 @@ class ComponentCheckCommands extends AbstractCommands
             ['Abandoned module check' => $this->getFailedOrPassed($this->abandonedFailed) . $skipAbandoned],
             ['Unsupported module check' => $this->getFailedOrPassed($this->unsupportedFailed) . $skipUnsupported],
             ['Evaluation module check' => $this->getFailedOrPassed($this->evaluationFailed)],
-            ['Dev module in require-dev check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
+            ['Development module check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
             ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
         );
     }
@@ -295,6 +294,9 @@ class ComponentCheckCommands extends AbstractCommands
             $projectId = $config->get('toolkit.project_id');
             // Check if the module is allowed for this project id.
             $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
+            if ($allowedInProject) {
+                $this->writeln("The package $packageName is authorised for the project $projectId");
+            }
 
             // Check if the module is allowed for this type of project.
             if (!$allowedInProject && !empty($allowedProjectTypes)) {
@@ -302,6 +304,7 @@ class ComponentCheckCommands extends AbstractCommands
                 // Load the project from the website.
                 $project = Website::projectInformation($projectId);
                 if (in_array($project['type'], $allowedProjectTypes)) {
+                    $this->writeln("The package $packageName is authorised for the type of project {$project['type']}");
                     $allowedInProject = true;
                 }
             }
@@ -312,6 +315,7 @@ class ComponentCheckCommands extends AbstractCommands
                 // Load the project from the website.
                 $project = Website::projectInformation($projectId);
                 if (in_array($project['profile'], $allowedProfiles)) {
+                    $this->writeln("The package $packageName is authorised for the profile {$project['profile']}");
                     $allowedInProject = true;
                 }
             }
@@ -337,8 +341,6 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Helper function to check component's review information.
-     *
-     * @throws \Robo\Exception\TaskException
      */
     protected function componentMandatory()
     {
