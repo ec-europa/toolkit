@@ -41,7 +41,7 @@ See bellow current list of available commands:
    toolkit:check-version             Check the Toolkit version.
    toolkit:code-review               This command will execute all the testing tools.
    toolkit:complock-check            Check if 'composer.lock' exists on the project root folder.
-   toolkit:component-check           Check composer.json for components that are not whitelisted/blacklisted.
+   toolkit:component-check           Check composer for components that are not whitelisted/blacklisted.
    toolkit:create-dump               [tk-cdump] Export the local snapshot.
    toolkit:download-dump             [tk-ddump] Download ASDA snapshot.
    toolkit:fix-permissions           Run script to fix permissions (experimental).
@@ -59,6 +59,8 @@ See bellow current list of available commands:
    toolkit:lint-php                  [tk-php|tlp] Run lint PHP.
    toolkit:lint-yaml                 [tk-yaml|tly] Run lint YAML.
    toolkit:opts-review               Check project's .opts.yml file for forbidden commands.
+   toolkit:patch-download            [tk-pd] Download remote patches into a local directory.
+   toolkit:patch-list                [tk-pl] Download remote patches into a local directory.
    toolkit:requirements              Check the Toolkit Requirements.
    toolkit:run-blackfire             [tk-bfire|tbf] Run Blackfire.
    toolkit:run-deploy                Run deployment sequence.

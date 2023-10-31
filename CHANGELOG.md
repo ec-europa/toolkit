@@ -1,5 +1,20 @@
 # Toolkit change log
 
+## Version 9.15.0
+  - DQA-7938: Don't check for approval for dependencies inside project codebase.
+  - DQA-7662: Report unsupported modules.
+  - DQA-7759: Add new option to allow skip specific outdated component.
+  - DQA-7953: Remove dedicated drush check.
+  - DQA-7760: Create task to convert remote patches into local patches.
+  - DQA-7744: Force extra.enable-patching set to false.
+  - DQA-7745: Prevent use of remote patches from untrusted sources.
+  - DQA-7967: Force extra.composer-exit-on-patch-failure set to true.
+  - DQA-7577: Set DB transaction isolation level to READ COMMITTED.
+  - DQA-7735: Toolkit mock to use tag in mock-dir.
+  - DQA-7954: Improve commit message conditions.
+  - DQA-7989: Component check improvements.
+  - DQA-8010: Detail component check command information.
+
 ## Version 9.14.0
   - DQA-7830: Switch array_pop to array_shift in Toolkit secure check.
   - DQA-7713: Add support to phpunit/phpunit 10.
