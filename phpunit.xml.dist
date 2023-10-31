@@ -10,7 +10,6 @@
     <php>
         <env name="CI" value="true"/>
         <env name="QA_WEBSITE_URL" value="http://web:8080" force="true"/>
-        <env name="TOOLKIT_MOCK_BRANCH" value="0.0.2"/>
         <env name="TOOLKIT_DEBUG_EXPECTATIONS" value="false"/>
         <env name="DRUPAL_DATABASE_NAME" value="drupal"/>
         <env name="DRUPAL_DATABASE_USERNAME" value="root"/>
@@ -53,6 +52,9 @@
         </testsuite>
         <testsuite name="Lint">
             <file>tests/Features/Commands/LintCommandsTest.php</file>
+        </testsuite>
+        <testsuite name="Patch">
+            <file>tests/Features/Commands/PatchCommandsTest.php</file>
         </testsuite>
         <testsuite name="Release">
             <file>tests/Features/Commands/ReleaseCommandsTest.php</file>

@@ -4,79 +4,57 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
-use EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands;
 use EcEuropa\Toolkit\Tests\AbstractTest;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Test Toolkit GitHooks commands.
+ * Test Toolkit patch commands.
  *
- * @group git-hooks
+ * @group patch
  */
-class GitHooksCommandsTest extends AbstractTest
+class PatchCommandsTest extends AbstractTest
 {
 
     /**
-     * Data provider for testGitHooks.
+     * Data provider for testPatch.
      *
      * @return array
      *   An array of test data arrays with assertions.
      */
     public static function dataProvider()
     {
-        return self::getFixtureContent('commands/git-hooks.yml');
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // Create .git/hooks folder.
-        $this->fs->mkdir($this->getSandboxFilepath('.git'));
-        $this->fs->mkdir($this->getSandboxFilepath('.git/hooks'));
-
-        // Create dummy hooks.
-        $this->fs->touch($this->getSandboxFilepath('.git/hooks/pre-commit'));
-        $this->fs->touch($this->getSandboxFilepath('.git/hooks/pre-push'));
-        $this->fs->touch($this->getSandboxFilepath('.git/hooks/commit-msg'));
+        return self::getFixtureContent('commands/patch.yml');
     }
 
     /**
-     * Test GitHooksCommands commands.
+     * Test PatchCommands commands.
      *
      * @param string $command
      *   A command.
      * @param array $config
      *   A configuration.
      * @param array $resources
-     *    Resources needed for the test
+     *   Resources needed for the test.
      * @param array $expectations
      *   Tests expected.
      *
      * @dataProvider dataProvider
      */
-    public function testGitHooks(string $command, array $config = [], array $resources = [], array $expectations = [])
+    public function testPatch(string $command, array $config = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
         if (!empty($config)) {
             $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
         }
-
         $this->prepareResources($resources);
 
         // Run command.
         $result = $this->runCommand($command);
-
         $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
             $this->assertDynamic($result['output'], $expectation);
         }
-    }
-
-    public function testConfigurationFileExists()
-    {
-        $this->assertFileExists((new GitHooksCommands())->getConfigurationFile());
     }
 
 }

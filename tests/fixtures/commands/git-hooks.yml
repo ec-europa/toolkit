@@ -1,5 +1,6 @@
 - command: 'toolkit:hooks-enable'
-  configuration: []
+  configuration: [ ]
+  resources: [ ]
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
@@ -16,35 +17,43 @@
           ->chmod('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-push', 493, 0, )
 
 - command: 'toolkit:hooks-enable --hooks=pre-commit'
-  configuration: []
+  configuration: [ ]
+  resources: [ ]
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->copy('/test/toolkit/resources/git/hooks/pre-commit', '/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit')
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->chmod('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit', 493, 0, )
+    - not_string_contains: commit-msg
+    - not_string_contains: pre-push
 
 - command: 'toolkit:hooks-disable'
-  configuration: []
+  configuration: [ ]
+  resources: [ ]
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->remove('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit')
-        >  The hook 'commit-msg' was not found, skipping.
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->remove('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/commit-msg')
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->remove('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-push')
 
 - command: 'toolkit:hooks-disable --hooks=pre-commit'
-  configuration: []
+  configuration: [ ]
+  resources: [ ]
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->remove('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit')
 
 - command: 'toolkit:hooks-delete-all'
-  configuration: []
+  configuration: [ ]
+  resources: [ ]
   expectations:
     - contains: |
+        >  The hook commit-msg was deleted.
         >  The hook pre-commit was deleted.
         >  The hook pre-push was deleted.
 
@@ -52,12 +61,13 @@
   configuration:
     toolkit:
       project_id: toolkit
+  resources: [ ]
   expectations:
     - contains: |
         +----------------------+------------------+-------------+---------------+
         | Hook                 | Active by config | Hook exists | Modified file |
         +----------------------+------------------+-------------+---------------+
-        | commit-msg (toolkit) | Yes              | No          | No            |
+        | commit-msg (toolkit) | Yes              | Yes         | Yes           |
         | pre-commit (toolkit) | Yes              | Yes         | Yes           |
         | pre-push (toolkit)   | Yes              | Yes         | Yes           |
         +----------------------+------------------+-------------+---------------+
@@ -70,12 +80,13 @@
         active:
           - commit-msg
           - pre-commit
+  resources: [ ]
   expectations:
     - contains: |
         +----------------------+------------------+-------------+---------------+
         | Hook                 | Active by config | Hook exists | Modified file |
         +----------------------+------------------+-------------+---------------+
-        | commit-msg (toolkit) | Yes              | No          | No            |
+        | commit-msg (toolkit) | Yes              | Yes         | Yes           |
         | pre-commit (toolkit) | Yes              | Yes         | Yes           |
         | pre-push (toolkit)   | No               | Yes         | Yes           |
         +----------------------+------------------+-------------+---------------+
@@ -88,23 +99,26 @@
         active:
           - commit-msg
           - pre-commit
+  resources: [ ]
   expectations:
     - contains: |
         +----------------------+------------------+-------------+---------------+
         | Hook                 | Active by config | Hook exists | Modified file |
         +----------------------+------------------+-------------+---------------+
-        | commit-msg (toolkit) | Yes              | No          | No            |
+        | commit-msg (toolkit) | Yes              | Yes         | Yes           |
         | pre-commit (toolkit) | Yes              | Yes         | Yes           |
         | pre-push (toolkit)   | No               | Yes         | Yes           |
         +----------------------+------------------+-------------+---------------+
 
 - command: 'toolkit:hooks-run'
-  configuration: []
+  configuration: [ ]
+  resources: [ ]
   expectations:
     - string_contains: 'Not enough arguments (missing: "hook").'
 
 - command: 'toolkit:hooks-run pre-commit'
-  configuration: []
+  configuration: [ ]
+  resources: [ ]
   expectations:
     - contains: |
         [Simulator] Simulating Exec('git')
@@ -118,7 +132,8 @@
         [Simulator] Running git diff --diff-filter=M --name-only --cached
 
 - command: 'toolkit:hooks-run pre-push'
-  configuration: []
+  configuration: [ ]
+  resources: [ ]
   expectations:
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/run')
@@ -134,8 +149,122 @@
           ->arg('toolkit:opts-review')
         [Simulator] Running ./vendor/bin/run 'toolkit:opts-review'
 
+- command: 'toolkit:hooks-run pre-push'
+  configuration:
+    toolkit:
+      hooks:
+        pre-push:
+          commands:
+            - toolkit:test-phpmd
+  resources: [ ]
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:test-phpmd')
+        [Simulator] Running ./vendor/bin/run 'toolkit:test-phpmd'
+    - not_string_contains: toolkit:test-phpcs
+    - not_string_contains: toolkit:lint-php
+    - not_string_contains: toolkit:opts-review
+
 - command: 'toolkit:hooks-run prepare-commit-msg'
-  configuration: []
+  configuration: [ ]
+  resources: [ ]
   expectations:
     - contains: |
         >  The hook 'prepare-commit-msg' does not exist or is not enabled.
+
+- command: 'toolkit:hooks-run commit-msg .COMMIT_MSG'
+  configuration: [ ]
+  resources:
+    - file: .COMMIT_MSG
+      content: "AB1C-123: Message ok."
+  expectations:
+    - not_string_contains: ERROR
+
+- command: 'toolkit:hooks-run commit-msg .COMMIT_MSG'
+  configuration: [ ]
+  resources:
+    - file: .COMMIT_MSG
+      content: "Commit message"
+  expectations:
+    - string_contains: ERROR
+    - string_contains: The commit message must start with the JIRA issue number.
+    - string_contains: The JIRA issue number must be followed by a colon and space.
+    - string_contains: The subject must start with capital letter.
+    - string_contains: The commit message must end with a period.
+
+- command: 'toolkit:hooks-run commit-msg .COMMIT_MSG'
+  configuration: [ ]
+  resources:
+    - file: .COMMIT_MSG
+      content: "AB1C-A: Commit message."
+  expectations:
+    - string_contains: ERROR
+    - string_contains: The commit message must start with the JIRA issue number.
+    - string_contains: The JIRA issue number must be followed by a colon and space.
+    - string_contains: The subject must start with capital letter.
+    - not_string_contains: The commit message must end with a period.
+
+- command: 'toolkit:hooks-run commit-msg .COMMIT_MSG'
+  configuration: [ ]
+  resources:
+    - file: .COMMIT_MSG
+      content: "AB1C-123 Commit message."
+  expectations:
+    - string_contains: ERROR
+    - not_string_contains: The commit message must start with the JIRA issue number.
+    - string_contains: The JIRA issue number must be followed by a colon and space.
+    - string_contains: The subject must start with capital letter.
+    - not_string_contains: The commit message must end with a period.
+
+- command: 'toolkit:hooks-run commit-msg .COMMIT_MSG'
+  configuration: [ ]
+  resources:
+    - file: .COMMIT_MSG
+      content: "AB1C-123: commit message."
+  expectations:
+    - string_contains: ERROR
+    - not_string_contains: The commit message must start with the JIRA issue number.
+    - not_string_contains: The JIRA issue number must be followed by a colon and space.
+    - string_contains: The subject must start with capital letter.
+    - not_string_contains: The commit message must end with a period.
+
+- command: 'toolkit:hooks-run commit-msg .COMMIT_MSG'
+  configuration: [ ]
+  resources:
+    - file: .COMMIT_MSG
+      content: "AB1C-123: Commit message"
+  expectations:
+    - string_contains: ERROR
+    - not_string_contains: The commit message must start with the JIRA issue number.
+    - not_string_contains: The JIRA issue number must be followed by a colon and space.
+    - not_string_contains: The subject must start with capital letter.
+    - string_contains: The commit message must end with a period.
+
+- command: 'toolkit:hooks-run commit-msg .COMMIT_MSG'
+  configuration:
+    toolkit:
+      hooks:
+        commit-msg:
+          conditions:
+            - message: 'The commit message cannot be empty'
+              regex: /^[A-Za-z]+/
+  resources:
+    - file: .COMMIT_MSG
+      content: "commit message"
+  expectations:
+    - not_string_contains: ERROR
+
+- command: 'toolkit:hooks-run commit-msg .COMMIT_MSG'
+  configuration:
+    toolkit:
+      hooks:
+        commit-msg:
+          conditions:
+            - message: 'The commit message cannot be empty'
+              regex: /^[A-Za-z]+/
+  resources:
+    - touch: .COMMIT_MSG
+  expectations:
+    - string_contains: ERROR
+    - string_contains: The commit message cannot be empty

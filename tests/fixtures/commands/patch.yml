@@ -1,0 +1,58 @@
+- command: 'toolkit:patch-download'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: "[error]  The '/test/toolkit/tests/sandbox/PatchCommandsTest/composer.json' was not found."
+
+- command: 'toolkit:patch-download'
+  configuration: []
+  resources:
+    - file: composer.json
+      content: |
+        {"name": "toolkit","extra": {"patches": {"test/package": []}}}
+  expectations:
+    - string_contains: Nothing to download.
+
+- command: 'toolkit:patch-download'
+  configuration: []
+  resources:
+    - file: composer.json
+      content: |
+        {
+          "name": "toolkit",
+          "extra": {
+            "patches": {
+              "test/package": ["http://example.com/test-package.patch"],
+              "another/package": {
+                "Patch 1": "http://example.com/another-package-1.patch",
+                "Patch 2": "./resources/local.patch"
+              }
+            }
+          }
+        }
+  expectations:
+    - string_contains: test-package.patch
+    - string_contains: another-package-1.patch
+    - not_string_contains: local.patch
+
+- command: 'toolkit:patch-list'
+  configuration: []
+  resources:
+    - file: composer.json
+      content: |
+        {
+          "name": "toolkit",
+          "extra": {
+            "patches": {
+              "test/package": ["http://example.com/test-package.patch"],
+              "another/package": {
+                "Patch 1": "http://example.com/another-package-1.patch",
+                "Patch 2": "./resources/local.patch"
+              }
+            }
+          }
+        }
+  expectations:
+    - string_contains: test-package.patch
+    - string_contains: another-package-1.patch
+    - not_string_contains: local.patch

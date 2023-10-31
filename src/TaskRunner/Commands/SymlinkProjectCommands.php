@@ -40,7 +40,7 @@ class SymlinkProjectCommands extends AbstractCommands
      */
     public function symlinkProjectValidate(): void
     {
-        $composer = $this->getComposer();
+        $composer = $this->getComposerJson();
         // Check if the project name is present.
         if (empty($composer['name'])) {
             throw new \Exception('Could not find the project name in the composer.json file.');
@@ -77,7 +77,7 @@ class SymlinkProjectCommands extends AbstractCommands
     {
         Toolkit::ensureArray($options['ignore']);
         $workingDir = $this->getConfig()->get('runner.working_dir');
-        $composer = $this->getComposer();
+        $composer = $this->getComposerJson();
         $projectId = explode('/', $composer['name'])[1];
         $projectType = $this->types[$composer['type']];
         $destination = $workingDir . '/' . $options['root'] . '/' . $projectType . '/' . $projectId;
@@ -95,15 +95,6 @@ class SymlinkProjectCommands extends AbstractCommands
         }
 
         return $this->collectionBuilder()->addTask($task);
-    }
-
-    private function getComposer()
-    {
-        $composer = $this->getWorkingDir() . '/composer.json';
-        if (!file_exists($composer)) {
-            throw new \Exception("The $composer was not found.");
-        }
-        return json_decode(file_get_contents($composer), true);
     }
 
     private function scanDir(string $directory, array $ignore = []): array
