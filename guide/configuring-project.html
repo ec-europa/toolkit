@@ -156,75 +156,74 @@ If a service is defined in both files, Docker Compose merges the configurations.
 <a href="https://docs.docker.com/compose/extends/">the official Docker Compose documentation</a>.</p>
             <p>The following configuration parameters are provided as environment variables in the <code>./.env</code> file:</p>
             <table>
-            <thead>
-                            <tr>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                    </tr>
-                    </thead>
-    
+                <thead>
+            <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                    </tr>
+        </thead>
     <tbody>
-                    <tr>
-                                <td>DRUPAL_DATABASE_NAME</td>
-                                <td>Database name</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_DATABASE_USERNAME</td>
-                                <td>Database username</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_DATABASE_PASSWORD</td>
-                                <td>Database password</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_DATABASE_PREFIX</td>
-                                <td>Database prefix</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_DATABASE_HOST</td>
-                                <td>Database host</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_DATABASE_PORT</td>
-                                <td>Database port</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_SPARQL_HOSTNAME</td>
-                                <td>SPARQL hostname</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_SPARQL_PORT</td>
-                                <td>SPARQL port</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_CAS_HOSTNAME</td>
-                                <td>EULogin hostname, use <code>ecas.ec.europa.eu</code> for production</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_CAS_PORT</td>
-                                <td>EULogin port, use <code>443</code> for production</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_ACCOUNT_USERNAME</td>
-                                <td>Drupal admin account, defaults to <code>admin</code> if empty</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_ACCOUNT_PASSWORD</td>
-                                <td>Drupal admin password, defaults to random string if empty</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_BASE_URL</td>
-                                <td>Drupal site base URL, used to setup Behat tests</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_WEBTOOLS_ANALYTICS_SITE_ID</td>
-                                <td>Drupal site unique identifier</td>
-                            </tr>
-                    <tr>
-                                <td>DRUPAL_WEBTOOLS_ANALYTICS_SITE_PATH</td>
-                                <td>The domain + root path without protocol.</td>
-                            </tr>
-            </tbody>
+    <tr>
+            <td>DRUPAL_DATABASE_NAME</td>
+            <td>Database name</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_DATABASE_USERNAME</td>
+            <td>Database username</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_DATABASE_PASSWORD</td>
+            <td>Database password</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_DATABASE_PREFIX</td>
+            <td>Database prefix</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_DATABASE_HOST</td>
+            <td>Database host</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_DATABASE_PORT</td>
+            <td>Database port</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_SPARQL_HOSTNAME</td>
+            <td>SPARQL hostname</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_SPARQL_PORT</td>
+            <td>SPARQL port</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_CAS_HOSTNAME</td>
+            <td>EULogin hostname, use <code>ecas.ec.europa.eu</code> for production</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_CAS_PORT</td>
+            <td>EULogin port, use <code>443</code> for production</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_ACCOUNT_USERNAME</td>
+            <td>Drupal admin account, defaults to <code>admin</code> if empty</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_ACCOUNT_PASSWORD</td>
+            <td>Drupal admin password, defaults to random string if empty</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_BASE_URL</td>
+            <td>Drupal site base URL, used to setup Behat tests</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_WEBTOOLS_ANALYTICS_SITE_ID</td>
+            <td>Drupal site unique identifier</td>
+    </tr>
+    <tr>
+            <td>DRUPAL_WEBTOOLS_ANALYTICS_SITE_PATH</td>
+            <td>The domain + root path without protocol.</td>
+    </tr>
+</tbody>
 </table>
 
             <p>Environment variables will be loaded by Docker Compose when running <code>docker-compose up -d</code>.</p>

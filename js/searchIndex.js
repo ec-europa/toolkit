@@ -86,6 +86,26 @@ Search.appendIndex(
             "summary": "Returns\u0020the\u0020content\u0020of\u0020the\u0020endpoint\u0020from\u0020the\u0020mock.",
             "url": "classes/EcEuropa-Toolkit-Mock.html#method_getEndpointContent"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Mock\u003A\u003Arepo\u0028\u0029",
+            "name": "repo",
+            "summary": "Returns\u0020the\u0020repository\u0020url.",
+            "url": "classes/EcEuropa-Toolkit-Mock.html#method_repo"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Mock\u003A\u003Atag\u0028\u0029",
+            "name": "tag",
+            "summary": "Returns\u0020the\u0020tag\u0020to\u0020use.",
+            "url": "classes/EcEuropa-Toolkit-Mock.html#method_tag"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Mock\u003A\u003A\u0024defaultTag",
+            "name": "defaultTag",
+            "summary": "The\u0020default\u0020mock\u0020tag\u0020to\u0020use\u0020to\u0020download\u0020and\u0020local\u0020directory.",
+            "url": "classes/EcEuropa-Toolkit-Mock.html#property_defaultTag"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Mock\u003A\u003A\u0024directory",
+            "name": "directory",
+            "summary": "The\u0020directory\u0020to\u0020download\u0020the\u0020mock\u0020to.",
+            "url": "classes/EcEuropa-Toolkit-Mock.html#property_directory"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Task\\Command\\ConfigurationCommand",
             "name": "ConfigurationCommand",
             "summary": "Execute\u0020the\u0020tasks\u0020from\u0020a\u0020Configuration\u0020command.",
@@ -301,6 +321,16 @@ Search.appendIndex(
             "summary": "Returns\u0020the\u0020current\u0020working\u0020directory.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AgetComposerJson\u0028\u0029",
+            "name": "getComposerJson",
+            "summary": "Returns\u0020the\u0020composer.json\u0020parsed\u0020content.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerJson"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AgetComposerLock\u0028\u0029",
+            "name": "getComposerLock",
+            "summary": "Returns\u0020the\u0020composer.lock\u0020parsed\u0020content.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerLock"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractGitHooks",
             "name": "AbstractGitHooks",
             "summary": "Projects\u0020should\u0020extend\u0020this\u0020class\u0020to\u0020override\u0020or\u0020extend\u0020the\u0020GitHooks\u0020feature.",
@@ -378,8 +408,18 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentCheck\u0028\u0029",
             "name": "componentCheck",
-            "summary": "Check\u0020composer.json\u0020for\u0020components\u0020that\u0020are\u0020not\u0020whitelisted\/blacklisted.",
+            "summary": "Check\u0020composer\u0020for\u0020components\u0020that\u0020are\u0020not\u0020whitelisted\/blacklisted.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentCheck"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AprepareSkips\u0028\u0029",
+            "name": "prepareSkips",
+            "summary": "Prepare\u0020the\u0020overrides\u0020from\u0020config\u0020and\u0020commit\u0020message.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_prepareSkips"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentComposer\u0028\u0029",
+            "name": "componentComposer",
+            "summary": "Validate\u0020composer\u0020packages.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentComposer"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AprintComponentResults\u0028\u0029",
             "name": "printComponentResults",
@@ -408,13 +448,28 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentOutdated\u0028\u0029",
             "name": "componentOutdated",
-            "summary": "Helper\u0020function\u0020to\u0020check\u0020component\u0027s\u0020review\u0020information.",
+            "summary": "Helper\u0020function\u0020to\u0020check\u0020Outdated\u0020components.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentOutdated"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentAbandoned\u0028\u0029",
             "name": "componentAbandoned",
-            "summary": "Helper\u0020function\u0020to\u0020check\u0020component\u0027s\u0020review\u0020information.",
+            "summary": "Helper\u0020function\u0020to\u0020check\u0020Abandoned\u0020components.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentAbandoned"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentUnsupported\u0028\u0029",
+            "name": "componentUnsupported",
+            "summary": "Helper\u0020function\u0020to\u0020check\u0020Unsupported\u0020components.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentUnsupported"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentEvaluation\u0028\u0029",
+            "name": "componentEvaluation",
+            "summary": "Helper\u0020function\u0020to\u0020check\u0020Evaluation\u0020components.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentEvaluation"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentDevelopment\u0028\u0029",
+            "name": "componentDevelopment",
+            "summary": "Helper\u0020function\u0020to\u0020check\u0020Development\u0020components.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentDevelopment"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AtestPackages\u0028\u0029",
             "name": "testPackages",
@@ -431,10 +486,10 @@ Search.appendIndex(
             "summary": "If\u0020given\u0020bool\u0020is\u0020TRUE\u0020\u0027failed\u0027\u0020is\u0020return,\u0020otherwise\u0020\u0027passed\u0027.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getFailedOrPassed"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024commandFailed",
-            "name": "commandFailed",
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024evaluationFailed",
+            "name": "evaluationFailed",
             "summary": "",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_commandFailed"
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_evaluationFailed"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024mandatoryFailed",
             "name": "mandatoryFailed",
@@ -461,20 +516,20 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_abandonedFailed"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024devVersionFailed",
-            "name": "devVersionFailed",
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024unsupportedFailed",
+            "name": "unsupportedFailed",
             "summary": "",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_devVersionFailed"
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_unsupportedFailed"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024composerFailed",
+            "name": "composerFailed",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_composerFailed"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024devCompRequireFailed",
             "name": "devCompRequireFailed",
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_devCompRequireFailed"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024drushRequireFailed",
-            "name": "drushRequireFailed",
-            "summary": "",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_drushRequireFailed"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024skipOutdated",
             "name": "skipOutdated",
@@ -485,6 +540,11 @@ Search.appendIndex(
             "name": "skipAbandoned",
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_skipAbandoned"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024skipUnsupported",
+            "name": "skipUnsupported",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_skipUnsupported"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024skipInsecure",
             "name": "skipInsecure",
@@ -510,6 +570,16 @@ Search.appendIndex(
             "name": "io",
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_io"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024composerLock",
+            "name": "composerLock",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_composerLock"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024packageReviews",
+            "name": "packageReviews",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_packageReviews"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ConfigurationCommands",
             "name": "ConfigurationCommands",
@@ -1016,6 +1086,31 @@ Search.appendIndex(
             "summary": "Run\u0020lint\u0020PHP.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintPhp"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands",
+            "name": "PatchCommands",
+            "summary": "Commands\u0020for\u0020patch\u0020download\u0020and\u0020list.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands\u003A\u003AgetConfigurationFile\u0028\u0029",
+            "name": "getConfigurationFile",
+            "summary": "Path\u0020to\u0020YAML\u0020configuration\u0020file\u0020containing\u0020command\u0020defaults.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_getConfigurationFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands\u003A\u003AtoolkitPatchList\u0028\u0029",
+            "name": "toolkitPatchList",
+            "summary": "Download\u0020remote\u0020patches\u0020into\u0020a\u0020local\u0020directory.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_toolkitPatchList"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands\u003A\u003AtoolkitPatchDownload\u0028\u0029",
+            "name": "toolkitPatchDownload",
+            "summary": "Download\u0020remote\u0020patches\u0020into\u0020a\u0020local\u0020directory.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_toolkitPatchDownload"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands\u003A\u003AgetPatches\u0028\u0029",
+            "name": "getPatches",
+            "summary": "Returns\u0020the\u0020patches\u0020to\u0020be\u0020downloaded.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_getPatches"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands",
             "name": "ReleaseCommands",
             "summary": "Class\u0020AbstractCommands.",
@@ -1085,11 +1180,6 @@ Search.appendIndex(
             "name": "symlinkProject",
             "summary": "Symlink\u0020project\u0020as\u0020module,\u0020theme\u0020or\u0020profile\u0020in\u0020the\u0020proper\u0020directory.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_symlinkProject"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands\u003A\u003AgetComposer\u0028\u0029",
-            "name": "getComposer",
-            "summary": "",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_getComposer"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands\u003A\u003AscanDir\u0028\u0029",
             "name": "scanDir",

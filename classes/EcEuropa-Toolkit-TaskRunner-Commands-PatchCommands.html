@@ -150,7 +150,7 @@
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    BuildCommands
+    PatchCommands
 
         <span class="phpdocumentor-element__extends">
         extends <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html"><abbr title="\EcEuropa\Toolkit\TaskRunner\AbstractCommands">AbstractCommands</abbr></a>
@@ -172,22 +172,40 @@
 </div>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/PatchCommands.php"><a href="files/src-taskrunner-commands-patchcommands.html"><abbr title="src/TaskRunner/Commands/PatchCommands.php">PatchCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">20</span>
 
     </aside>
 
-            <p class="phpdocumentor-summary">Provides commands to build a site for development and a production artifact.</p>
+            <p class="phpdocumentor-summary">Commands for patch download and list.</p>
+
+    <section class="phpdocumentor-description"><p>phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassAfterLastUsed</p>
+</section>
 
 
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#tags" class="headerlink"><i class="fas fa-link"></i></a>
 
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.UnusedFormalParameter)</p>
+</section>
+
+                                    </dd>
+                                            </dl>
 
 
 
 <h3 id="toc">
     Table of Contents
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h3>
 
@@ -199,62 +217,13 @@
 
 
 
-<h4 id="toc-properties">
-    Properties
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
-
-</h4>
-<dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#property_blockEnd">$blockEnd</a>
-    <span>
-                        &nbsp;: string            </span>
-</dt>
-<dd>Comment ending the Toolkit block.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#property_blockStart">$blockStart</a>
-    <span>
-                        &nbsp;: string            </span>
-</dt>
-<dd>Comment starting the Toolkit block.</dd>
-
-    </dl>
 
 <h4 id="toc-methods">
     Methods
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildAssets">buildAssets()</a>
-    <span>
-                                &nbsp;: <abbr title="\Robo\Result">Result</abbr>|int    </span>
-</dt>
-<dd>Build theme assets (Css and Js).</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDev">buildDev()</a>
-    <span>
-                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
-</dt>
-<dd>Build site for local development.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDevReset">buildDevReset()</a>
-    <span>
-                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
-</dt>
-<dd>Build site for local development from scratch with a clean git.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDist">buildDist()</a>
-    <span>
-                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
-</dt>
-<dd>Build the distribution package.</dd>
-
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerJson">getComposerJson()</a>
     <span>
@@ -270,7 +239,7 @@
 <dd>Returns the composer.lock parsed content.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
@@ -282,6 +251,20 @@
                                 &nbsp;: string    </span>
 </dt>
 <dd>Returns the current working directory.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_toolkitPatchDownload">toolkitPatchDownload()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Download remote patches into a local directory.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_toolkitPatchList">toolkitPatchList()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Download remote patches into a local directory.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a>
@@ -347,18 +330,11 @@
 <dd>Replace block in a file.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getHtaccessBlock">getHtaccessBlock()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_getPatches">getPatches()</a>
     <span>
-                                &nbsp;: string    </span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Returns the block for the htaccess file.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getHtaccessTask">getHtaccessTask()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Returns the task for adding custom block to htaccess file.</dd>
+<dd>Returns the patches to be downloaded.</dd>
 
     </dl>
 
@@ -368,551 +344,13 @@
         
 
         
-    <section class="phpdocumentor-properties">
-        <h3 class="phpdocumentor-elements__header" id="properties">
-            Properties
-            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
-
-        </h3>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_blockEnd">
-        $blockEnd
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#property_blockEnd" class="headerlink"><i class="fas fa-link"></i></a>
-
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">32</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Comment ending the Toolkit block.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">string</span>
-    <span class="phpdocumentor-signature__name">$blockEnd</span>
-     = <span class="phpdocumentor-signature__default-value">&#039;# End Toolkit block.&#039;</span></code>
-
-    
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_blockStart">
-        $blockStart
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#property_blockStart" class="headerlink"><i class="fas fa-link"></i></a>
-
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">25</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Comment starting the Toolkit block.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">string</span>
-    <span class="phpdocumentor-signature__name">$blockStart</span>
-     = <span class="phpdocumentor-signature__default-value">&#039;# Start Toolkit block.&#039;</span></code>
-
-    
-    
-    
-
-</article>
-            </section>
 
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_buildAssets">
-        buildAssets()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildAssets" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">301</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Build theme assets (Css and Js).</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">buildAssets</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;default-theme&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;custom-code-folder&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;build-npm-packages&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;validate&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;theme-task-runner&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Result">Result</abbr>|int</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$io</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;default-theme&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;custom-code-folder&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;build-npm-packages&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;validate&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;theme-task-runner&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Additional options for the command.</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildAssets#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:build-assets</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>default-theme      The theme where to build assets.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>build-npm-packages The packages to install.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>validate           Whether to validate or fix the scss.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>theme-task-runner  The runner to use, one of 'grunt' or 'gulp'.</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tk-bassets, tk-assets, tba</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
-</section>
-
-                                    </dd>
-                                            </dl>
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Result">Result</abbr>|int</span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>The collection builder.</p>
-</section>
-
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_buildDev">
-        buildDev()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDev" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">186</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Build site for local development.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">buildDev</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;root&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;root&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Command options.</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDev#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:build-dev</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>root Drupal root.</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tk-bdev</p>
-</section>
-
-                                    </dd>
-                                            </dl>
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>Collection builder.</p>
-</section>
-
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_buildDevReset">
-        buildDevReset()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDevReset" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">253</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Build site for local development from scratch with a clean git.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">buildDevReset</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;yes&#039; =&gt; InputOption::VALUE_OPTIONAL]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;yes&#039; =&gt; InputOption::VALUE_OPTIONAL]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Command options.</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDevReset#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:build-dev-reset</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>root Drupal root.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>yes  Skip the question.</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tk-bdev-reset</p>
-</section>
-
-                                    </dd>
-                                            </dl>
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>Collection builder.</p>
-</section>
-
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_buildDist">
-        buildDist()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDist" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">76</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Build the distribution package.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">buildDist</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;dist-root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;keep&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;remove&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;tag&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;sha&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-        <section class="phpdocumentor-description"><p>This will create the distribution package intended to be deployed.
-The folder structure will match the following:</p>
-<ul>
-<li>./dist</li>
-<li>./dist/composer.json</li>
-<li>./dist/composer.lock</li>
-<li>./dist/manifest.json</li>
-<li>./dist/config</li>
-<li>./dist/vendor</li>
-<li>./dist/web</li>
-<li>./dist/web/VERSION.txt</li>
-</ul>
-</section>
-
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;dist-root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;keep&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;remove&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;tag&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;sha&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Command options.</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDist#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:build-dist</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>root      Drupal root.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>dist-root Distribution package root.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>keep      Comma separated list of files and folders to keep.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tag       Version tag for manifest.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>sha       Commit hash for manifest.</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tk-bdist</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
-</section>
-
-                                    </dd>
-                                            </dl>
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>Collection builder.</p>
-</section>
-
-            </section>
-
-</article>
                     <article
         class="phpdocumentor-element
             -method
@@ -993,13 +431,13 @@ The folder structure will match the following:</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_getConfigurationFile">
         getConfigurationFile()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/PatchCommands.php"><a href="files/src-taskrunner-commands-patchcommands.html"><abbr title="src/TaskRunner/Commands/PatchCommands.php">PatchCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">37</span>
+    <span class="phpdocumentor-element-found-in__line">26</span>
 
     </aside>
 
@@ -1060,6 +498,200 @@ The folder structure will match the following:</p>
 
             </section>
 
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_toolkitPatchDownload">
+        toolkitPatchDownload()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_toolkitPatchDownload" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/PatchCommands.php"><a href="files/src-taskrunner-commands-patchcommands.html"><abbr title="src/TaskRunner/Commands/PatchCommands.php">PatchCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">63</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Download remote patches into a local directory.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">toolkitPatchDownload</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;dir&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;package&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;composer&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$options</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;dir&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;package&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;composer&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_toolkitPatchDownload#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">command</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>toolkit:patch-download</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>dir      The destination directory to save the patches.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>package  Download patches for given package.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>composer The composer.json file.</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">aliases</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>tk-pd</p>
+<p>phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch</p>
+</section>
+
+                                    </dd>
+                                            </dl>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_toolkitPatchList">
+        toolkitPatchList()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_toolkitPatchList" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/PatchCommands.php"><a href="files/src-taskrunner-commands-patchcommands.html"><abbr title="src/TaskRunner/Commands/PatchCommands.php">PatchCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">41</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Download remote patches into a local directory.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">toolkitPatchList</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;package&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;composer&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$options</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;package&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;composer&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_toolkitPatchList#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">command</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>toolkit:patch-list</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>package  Download patches for given package.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>composer The composer.json relative path.</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">aliases</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>tk-pl</p>
+</section>
+
+                                    </dd>
+                                            </dl>
+
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -1539,23 +1171,23 @@ The folder structure will match the following:</p>
             -private
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_getHtaccessBlock">
-        getHtaccessBlock()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getHtaccessBlock" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_getPatches">
+        getPatches()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_getPatches" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/PatchCommands.php"><a href="files/src-taskrunner-commands-patchcommands.html"><abbr title="src/TaskRunner/Commands/PatchCommands.php">PatchCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">420</span>
+    <span class="phpdocumentor-element-found-in__line">102</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Returns the block for the htaccess file.</p>
+        <p class="phpdocumentor-summary">Returns the patches to be downloaded.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">getHtaccessBlock</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+                    <span class="phpdocumentor-signature__name">getPatches</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -1565,53 +1197,9 @@ The folder structure will match the following:</p>
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">string</span>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             </section>
 
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getHtaccessTask">
-        getHtaccessTask()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getHtaccessTask" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">397</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Returns the task for adding custom block to htaccess file.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">getHtaccessTask</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$root</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$root</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The drupal root where the .htaccess file is.</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-
-    
 </article>
             </section>
 
@@ -1619,7 +1207,7 @@ The folder structure will match the following:</p>
     <div class="phpdocumentor-modal-bg" data-exit-button></div>
     <div class="phpdocumentor-modal-container">
         <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/TaskRunner/Commands/BuildCommands.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/TaskRunner/Commands/PatchCommands.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
         </div>
         <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
     </div>
@@ -1718,30 +1306,20 @@ The folder structure will match the following:</p>
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#toc-properties">Properties</a></li>
-                                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#toc-methods">Methods</a></li>
+                                                                                <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#toc-methods">Methods</a></li>
                                     </ul>
             </li>
             
-                            <li class="phpdocumentor-on-this-page-section__title">Properties</li>
-                <li>
-                    <ul class="phpdocumentor-list -clean">
-                                                    <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#property_blockEnd">$blockEnd<a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html"></li>
-                                                    <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#property_blockStart">$blockStart<a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html"></li>
-                                            </ul>
-                </li>
             
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildAssets">buildAssets()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDev">buildDev()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDevReset">buildDevReset()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDist">buildDist()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerJson">getComposerJson()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerLock">getComposerLock()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_toolkitPatchDownload">toolkitPatchDownload()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_toolkitPatchList">toolkitPatchList()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBinPath">getBinPath()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigValue">getConfigValue()</a></li>
@@ -1751,8 +1329,7 @@ The folder structure will match the following:</p>
                                             <li><a href="classes/EcEuropa-Toolkit-Task-Command-Tasks.html#method_taskExecute">taskExecute()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskProcess">taskProcess()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskReplaceBlock">taskReplaceBlock()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getHtaccessBlock">getHtaccessBlock()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getHtaccessTask">getHtaccessTask()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_getPatches">getPatches()</a></li>
                                     </ul>
             </li>
                     </ul>
@@ -1772,7 +1349,7 @@ The folder structure will match the following:</p>
     </section>
 </section>
         </div>
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
