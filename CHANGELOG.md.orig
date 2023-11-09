@@ -1,9 +1,13 @@
 # Toolkit change log
 
-## Version 9.15.1 | 10.5.1
+<<<<<<< HEAD
+## Version 9.15.0 | 10.5.0
+=======
+## Version 9.15.1
   - DQA-8186: Component check enable update module.
 
-## Version 9.15.0 | 10.5.0
+## Version 9.15.0
+>>>>>>> 967cb283ea72d450ba91a0f37e6353aa777af514
   - DQA-7938: Don't check for approval for dependencies inside project codebase.
   - DQA-7662: Report unsupported modules.
   - DQA-7759: Add new option to allow skip specific outdated component.
