@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 9.15.1
+  - DQA-8186: Component check enable update module.
+
 ## Version 9.15.0
   - DQA-7938: Don't check for approval for dependencies inside project codebase.
   - DQA-7662: Report unsupported modules.
