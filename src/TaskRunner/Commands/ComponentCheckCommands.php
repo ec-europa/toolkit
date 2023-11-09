@@ -39,6 +39,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected $io;
     protected array $composerLock;
     protected array $packageReviews;
+    protected bool $forcedUpdateModule = false;
 
     /**
      * Check composer for components that are not whitelisted/blacklisted.
@@ -590,34 +591,30 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentUnsupported()
     {
-        $include = "\Drupal::moduleHandler()->loadInclude('update', 'compare.inc')";
-        $command = "update_calculate_project_data(\Drupal::keyValueExpirable('update_available_releases')->getAll())";
-        $command = "$include ; echo json_encode($command)";
-        $exec = $this->taskExec($this->getBin('drush') . ' eval "' . $command . '"')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
-        if (empty($exec)) {
+        if (empty($releases = $this->getReleases())) {
             $this->writeln('Failed to get the available releases.');
             return;
         }
-
-        $releases = json_decode($exec, true);
         // Filter by unsupported, @see \Drupal\update\UpdateManagerInterface::NOT_SUPPORTED.
         $unsupported = array_filter($releases, function ($item) {
             return $item['status'] === 3;
         });
         if (empty($unsupported)) {
             $this->say('Unsupported components check passed.');
-            return;
+        } else {
+            $this->unsupportedFailed = true;
+            foreach ($unsupported as $item) {
+                $this->writeln(sprintf(
+                    "Package %s with version installed %s is not supported. Update to the recommended version %s",
+                    $item['name'],
+                    $item['existing_version'],
+                    $item['recommended']
+                ));
+            }
         }
-        $this->unsupportedFailed = true;
-        foreach ($unsupported as $item) {
-            $this->writeln(sprintf(
-                "Package %s with version installed %s is not supported. Update to the recommended version %s",
-                $item['name'],
-                $item['existing_version'],
-                $item['recommended']
-            ));
+
+        if ($this->forcedUpdateModule) {
+            $this->_exec($this->getBin('drush') . ' pm:uninstall update -y');
         }
     }
 
@@ -694,6 +691,32 @@ class ComponentCheckCommands extends AbstractCommands
                 ],
             ],
         ];
+    }
+
+    /**
+     * Returns the modules releases.
+     *
+     * If the update module is not enabled, it will be enabled, and later disabled.
+     */
+    private function getReleases(): array
+    {
+        $include = "\Drupal::moduleHandler()->loadInclude('update', 'compare.inc')";
+        $command = "update_calculate_project_data(\Drupal::keyValueExpirable('update_available_releases')->getAll())";
+        $command = "$include ; echo json_encode($command)";
+        $exec = $this->taskExec($this->getBin('drush') . ' eval "' . $command . '"')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        if (empty($exec) || str_contains($exec, 'Call to undefined function')) {
+            // Attempt to enable the module only once.
+            if ($this->forcedUpdateModule) {
+                return [];
+            }
+            $this->_exec($this->getBin('drush') . ' en update -y');
+            $this->forcedUpdateModule = true;
+            return $this->getReleases();
+        }
+
+        return json_decode($exec, true);
     }
 
     /**
