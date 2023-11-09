@@ -476,6 +476,11 @@ Search.appendIndex(
             "summary": "Returns\u0020a\u0020list\u0020of\u0020packages\u0020to\u0020test.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_testPackages"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AgetReleases\u0028\u0029",
+            "name": "getReleases",
+            "summary": "Returns\u0020the\u0020modules\u0020releases.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getReleases"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AgetRecommendedWarningMessage\u0028\u0029",
             "name": "getRecommendedWarningMessage",
             "summary": "Returns\u0020the\u0020recommended\u0020components\u0020warning\u0020message.",
@@ -580,6 +585,11 @@ Search.appendIndex(
             "name": "packageReviews",
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_packageReviews"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024forcedUpdateModule",
+            "name": "forcedUpdateModule",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_forcedUpdateModule"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ConfigurationCommands",
             "name": "ConfigurationCommands",
