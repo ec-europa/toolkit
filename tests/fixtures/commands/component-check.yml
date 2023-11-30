@@ -13,8 +13,8 @@
         ==============================
 
         [Simulator] Running ./vendor/bin/drush status --format=json
-        >  Website not installed, using config/sync/core.extension.yml file.
-        >  Config file not found at config/sync/core.extension.yml.
+        Website not installed, using config/sync/core.extension.yml file.
+        Config file not found at config/sync/core.extension.yml.
         Package dropsolid_purge is mandatory and is not present on the project.
         Package oe_dashboard_agent is mandatory and is not present on the project.
 
@@ -26,7 +26,8 @@
         Checking Insecure components.
         =============================
 
-        [Simulator] Running ./vendor/bin/drush pm:security --format=json
+        [Simulator] Running ./vendor/bin/drush status --format=json
+        Website not installed, skipping pm:security.
         [Simulator] Running composer audit --no-dev --locked --no-scripts --format=json
         >  Insecure components check passed.
 
@@ -44,11 +45,8 @@
         Checking Unsupported components.
         ================================
 
-        [Simulator] Running ./vendor/bin/drush eval "\Drupal::moduleHandler()->loadInclude('update', 'compare.inc') ; echo json_encode(update_calculate_project_data(\Drupal::keyValueExpirable('update_available_releases')->getAll()))"
-        [Simulator] Simulating Exec('./vendor/bin/drush en update -y')
-        [Simulator] Running ./vendor/bin/drush en update -y
-        [Simulator] Running ./vendor/bin/drush eval "\Drupal::moduleHandler()->loadInclude('update', 'compare.inc') ; echo json_encode(update_calculate_project_data(\Drupal::keyValueExpirable('update_available_releases')->getAll()))"
-        Failed to get the available releases.
+        [Simulator] Running ./vendor/bin/drush status --format=json
+        Website not installed, skipping.
 
         Checking Evaluation components.
         ===============================
