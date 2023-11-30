@@ -346,27 +346,18 @@ class ComponentCheckCommands extends AbstractCommands
     protected function componentMandatory()
     {
         $enabledPackages = $mandatoryPackages = [];
-        $drushBin = $this->getBin('drush');
-        // Check if the website is installed.
-        $result = $this->taskExec($drushBin . ' status --format=json')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
-        $status = json_decode($result, true);
-        if (empty($status['db-name'])) {
+        if (!$this->isWebsiteInstalled()) {
             $config_file = $this->getConfig()->get('toolkit.clean.config_file');
-            $this->say("Website not installed, using $config_file file.");
+            $this->writeln("Website not installed, using $config_file file.");
             if (file_exists($config_file)) {
                 $config = Yaml::parseFile($config_file);
-                $enabledPackages = array_keys(array_merge(
-                    $config['module'] ?? [],
-                    $config['theme'] ?? []
-                ));
+                $enabledPackages = array_keys(array_merge($config['module'] ?? [], $config['theme'] ?? []));
             } else {
-                $this->say("Config file not found at $config_file.");
+                $this->writeln("Config file not found at $config_file.");
             }
         } else {
             // Get enabled packages.
-            $result = $this->taskExec($drushBin . ' pm-list --fields=status --format=json')
+            $result = $this->taskExec($this->getBin('drush') . ' pm-list --fields=status --format=json')
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                 ->run()->getMessage();
             $projPackages = json_decode($result, true);
@@ -445,19 +436,23 @@ class ComponentCheckCommands extends AbstractCommands
         $packages = [];
         $drupalReleaseHistory = new DrupalReleaseHistory();
 
-        $exec = $this->taskExec($this->getBin('drush') . ' pm:security --format=json')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run();
-        if (!empty($exec->getExitCode()) && $exec->getExitCode() !== 3) {
-            $this->io->error(['Failed to run: pm:security', $exec->getMessage()]);
-        } else {
-            $result = trim($exec->getMessage());
-            if (!empty($result) && $result !== '[]') {
-                $data = json_decode($result, true);
-                if (!empty($data) && is_array($data)) {
-                    $packages = $data;
+        if ($this->isWebsiteInstalled()) {
+            $exec = $this->taskExec($this->getBin('drush') . ' pm:security --format=json')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run();
+            if (!empty($exec->getExitCode()) && $exec->getExitCode() !== 3) {
+                $this->io->error(['Failed to run: pm:security', $exec->getMessage()]);
+            } else {
+                $result = trim($exec->getMessage());
+                if (!empty($result) && $result !== '[]') {
+                    $data = json_decode($result, true);
+                    if (!empty($data) && is_array($data)) {
+                        $packages = $data;
+                    }
                 }
             }
+        } else {
+            $this->writeln('Website not installed, skipping pm:security.');
         }
 
         $exec = $this->taskExec('composer audit --no-dev --locked --no-scripts --format=json')
@@ -591,6 +586,10 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentUnsupported()
     {
+        if (!$this->isWebsiteInstalled()) {
+            $this->writeln('Website not installed, skipping.');
+            return;
+        }
         if (empty($releases = $this->getReleases())) {
             $this->writeln('Failed to get the available releases.');
             return;

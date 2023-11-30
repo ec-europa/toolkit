@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\TaskRunner;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\Common\ConfigAwareTrait;
 use Robo\Contract\ConfigAwareInterface;
+use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Exception\TaskException;
 use Robo\Tasks;
 
@@ -150,6 +151,22 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
             throw new \Exception("The '$file' was not found.");
         }
         return (array) json_decode(file_get_contents($file), true);
+    }
+
+    /**
+     * Check if the website is installed.
+     */
+    public function isWebsiteInstalled(): bool
+    {
+        $drushBin = $this->getBin('drush');
+        $result = $this->taskExec($drushBin . ' status --format=json')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        if (empty($result)) {
+            return false;
+        }
+        $status = json_decode($result, true);
+        return !empty($status['bootstrap']) && $status['bootstrap'] === 'Successful';
     }
 
 }
