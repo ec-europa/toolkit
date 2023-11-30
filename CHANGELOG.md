@@ -1,6 +1,6 @@
 # Toolkit change log
 
-## Version 9.16.0
+## Version 9.16.0 | 10.6.0
   - DQA-8308: Check if the website is installed before using drush.
 
 ## Version 9.15.1 | 10.5.1
