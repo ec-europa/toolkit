@@ -331,6 +331,11 @@ Search.appendIndex(
             "summary": "Returns\u0020the\u0020composer.lock\u0020parsed\u0020content.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerLock"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AisWebsiteInstalled\u0028\u0029",
+            "name": "isWebsiteInstalled",
+            "summary": "Check\u0020if\u0020the\u0020website\u0020is\u0020installed.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isWebsiteInstalled"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractGitHooks",
             "name": "AbstractGitHooks",
             "summary": "Projects\u0020should\u0020extend\u0020this\u0020class\u0020to\u0020override\u0020or\u0020extend\u0020the\u0020GitHooks\u0020feature.",
