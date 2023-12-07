@@ -29,11 +29,11 @@ class PatchCommands extends AbstractCommands
     }
 
     /**
-     * Download remote patches into a local directory.
+     * Lists remote patches from the root composer.json.
      *
      * @command toolkit:patch-list
      *
-     * @option package  Download patches for given package.
+     * @option package  List patches for given package.
      * @option composer The composer.json relative path.
      *
      * @aliases tk-pl
