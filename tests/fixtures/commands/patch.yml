@@ -56,3 +56,80 @@
     - string_contains: test-package.patch
     - string_contains: another-package-1.patch
     - not_string_contains: local.patch
+
+- command: 'toolkit:patch-list --dependencies'
+  configuration: []
+  resources:
+    - file: composer.json
+      content: |
+        { "name": "toolkit", "extra": { "patches": {
+          "test/package": ["http://example.com/test-package.patch"]
+        } } }
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "cweagans/composer-patches", "type": "library", "version": "2.0.0-beta1" },
+          {
+            "name": "another/package",
+            "type": "library",
+            "version": "1.0.0",
+            "extra": { "patches": { "dependency/package": { "Patch": "http://example.com/dependency-package.patch" } } }
+          }
+        ] }
+  expectations:
+    - contains: |
+        http://example.com/test-package.patch
+        http://example.com/dependency-package.patch
+
+- command: 'toolkit:patch-list'
+  configuration:
+    toolkit:
+      patches:
+        dependencies: true
+  resources:
+    - file: composer.json
+      content: |
+        { "name": "toolkit", "extra": { "patches": {
+          "test/package": ["http://example.com/test-package.patch"]
+        } } }
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "cweagans/composer-patches", "type": "library", "version": "2.0.0-beta1" },
+          {
+            "name": "another/package",
+            "type": "library",
+            "version": "1.0.0",
+            "extra": { "patches": { "dependency/package": { "Patch": "http://example.com/dependency-package.patch" } } }
+          }
+        ] }
+  expectations:
+    - contains: |
+        http://example.com/test-package.patch
+        http://example.com/dependency-package.patch
+
+- command: 'toolkit:patch-list'
+  configuration: []
+  resources:
+    - file: composer.json
+      content: |
+        { "name": "toolkit", "extra": { "patches": {
+          "test/package": ["http://example.com/test-package.patch"]
+        } } }
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "cweagans/composer-patches", "version": "2.0.0-beta1" },
+          {
+            "name": "another/package",
+            "type": "library",
+            "version": "1.0.0",
+            "extra": { "patches": { "dependency/package": { "Patch": "http://example.com/dependency-package.patch" } } }
+          }
+        ] }
+  expectations:
+    - string_contains: |
+        [WARNING] When using cweagans/composer-patches in version 2 is advised to use
+        --dependencies option.
+    - string_contains: test-package.patch
+    - not_string_contains: dependency-package.patch
