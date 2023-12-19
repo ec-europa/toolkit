@@ -4,6 +4,8 @@ command:
       options:
         dir: ${toolkit.patches.dir}
         composer: ${toolkit.patches.composer}
+        dependencies: ${toolkit.patches.dependencies}
     patch-list:
       options:
         composer: ${toolkit.patches.composer}
+        dependencies: ${toolkit.patches.dependencies}

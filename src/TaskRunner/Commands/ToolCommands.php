@@ -358,11 +358,16 @@ class ToolCommands extends AbstractCommands
         }
         if ($composer) {
             if (is_null($section)) {
+                $index = false;
                 $type = 'packages-dev';
-                $index = array_search($package, array_column($composer[$type], 'name'));
+                if (!empty($composer[$type])) {
+                    $index = array_search($package, array_column($composer[$type], 'name'));
+                }
                 if ($index === false) {
                     $type = 'packages';
-                    $index = array_search($package, array_column($composer[$type], 'name'));
+                    if (!empty($composer[$type])) {
+                        $index = array_search($package, array_column($composer[$type], 'name'));
+                    }
                 }
                 if ($index !== false && isset($composer[$type][$index][$prop])) {
                     return $composer[$type][$index][$prop];

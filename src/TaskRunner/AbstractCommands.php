@@ -132,9 +132,9 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     /**
      * Returns the composer.json parsed content.
      */
-    public function getComposerJson(): array
+    public function getComposerJson(string $filename = 'composer.json'): array
     {
-        $file = $this->getWorkingDir() . '/composer.json';
+        $file = $this->getWorkingDir() . '/' . $filename;
         if (!file_exists($file)) {
             throw new \Exception("The '$file' was not found.");
         }
@@ -144,9 +144,9 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     /**
      * Returns the composer.lock parsed content.
      */
-    public function getComposerLock(): array
+    public function getComposerLock(string $filename = 'composer.lock'): array
     {
-        $file = $this->getWorkingDir() . '/composer.lock';
+        $file = $this->getWorkingDir() . '/' . $filename;
         if (!file_exists($file)) {
             throw new \Exception("The '$file' was not found.");
         }
