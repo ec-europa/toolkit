@@ -46,7 +46,7 @@
         }
 
         // Dropsolid requires a value to be set for max-age.
-        $config['cache.page.max_age'] = 21600;
+        $config['system.performance']['cache']['page']['max_age'] = 21600;
 
 
 
@@ -109,7 +109,7 @@
         }
 
         // Dropsolid requires a value to be set for max-age.
-        $config['cache.page.max_age'] = 21600;
+        $config['system.performance']['cache']['page']['max_age'] = 21600;
 
         $config['cas.settings']['server']['hostname'] = getenv('CAS_HOSTNAME');
         $config['cas.settings']['server']['port'] = getenv('CAS_PORT');
@@ -173,7 +173,7 @@
         }
 
         // Dropsolid requires a value to be set for max-age.
-        $config['cache.page.max_age'] = 21600;
+        $config['system.performance']['cache']['page']['max_age'] = 21600;
 
 
 

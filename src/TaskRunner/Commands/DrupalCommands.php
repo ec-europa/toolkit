@@ -625,7 +625,7 @@ if (intval(getenv('DRUPAL_REVERSE_PROXY_ENABLE')) === 1) {
 }
 
 // Dropsolid requires a value to be set for max-age.
-\$config['cache.page.max_age'] = 21600;
+\$config['system.performance']['cache']['page']['max_age'] = 21600;
 
 {$additionalSettings}
 

@@ -76,6 +76,9 @@ toolkit:
   patches:
     dir: resources/patches
     composer: composer.json
+    # Set to true when using cweagans/composer-patches:^2, this will
+    # allow patches from dependencies to be listed and downloaded.
+    dependencies: false
   hooks:
     # A relative path from the project root where the hooks are located.
     dir: 'resources/git/hooks'
