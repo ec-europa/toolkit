@@ -141,8 +141,8 @@ class ToolCommands extends AbstractCommands
         }
         $commands = array_unique(array_merge($commands, $parseOptsFile['upgrade_commands']['default'] ?? $parseOptsFile['upgrade_commands']));
         foreach ($commands as $command) {
-            $command = str_replace('\\', '', $command);
-            $parsedCommand = preg_split('/[\s;&|]/', $command, 0, PREG_SPLIT_NO_EMPTY);
+            $cleanCommand = str_replace(['"', "'", '\\'], '', $command);
+            $parsedCommand = preg_split('/[\s;&|]/', $cleanCommand, 0, PREG_SPLIT_NO_EMPTY);
             foreach ($forbiddenCommands as $forbiddenCommand) {
                 if (in_array($forbiddenCommand, $parsedCommand)) {
                     $io->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
