@@ -98,11 +98,12 @@ To enable auto build of assets you should extend the tasks ``build-dev`` and ``b
 Extending functionality
 -----------------------
 
-Add a custom 'gulpfile.js' file
+Custom file like 'gulpfile.js' or 'Gruntfile.js'
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-It's possible to use a custom gulpfile on the theme root folder.
+It's possible to use a custom gulpfile or Gruntfile on the theme root folder.
 If the file do not exists, toolkit will create one using the default template.
+After creation please check the 'gulpfile.js' or 'Gruntfile.js' file to be sure that is pointed to the right path.
 
 Install additional npm packages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
