@@ -81,7 +81,7 @@
   expectations:
     - contains: |
         >  The php_version should be wrapped with upper-quotes like "php_version: '8.0'".
-        >  The command './vendor/bin/drush uli' is not allowed. Please remove it from 'upgrade_commands' section.
+        >  The command './vendor/bin/drush u\li' is not allowed. Please remove it from 'upgrade_commands' section.
         >  The command './vendor/bin/drush uli|echo' is not allowed. Please remove it from 'upgrade_commands' section.
         >  The command './vendor/bin/drush uli;echo' is not allowed. Please remove it from 'upgrade_commands' section.
         >  The command './vendor/bin/drush uli&echo' is not allowed. Please remove it from 'upgrade_commands' section.
@@ -89,5 +89,6 @@
         >  The command 'echo&curl https://www.example.com' is not allowed. Please remove it from 'upgrade_commands' section.
         >  The command 'echo|curl https://www.example.com' is not allowed. Please remove it from 'upgrade_commands' section.
         >  The command 'echo&&curl https://www.example.com' is not allowed. Please remove it from 'upgrade_commands' section.
+        >  The command './vendor/bin/drush 'site:install' -y' is not allowed. Please remove it from 'upgrade_commands' section.
 
         [ERROR] Failed the '.opts.yml' file review. Please contact the QA team.

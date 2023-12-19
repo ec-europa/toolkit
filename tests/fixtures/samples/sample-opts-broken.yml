@@ -3,6 +3,7 @@ upgrade_commands:
     - ./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer -y
     - ./vendor/bin/drush config:import -y
     - ./vendor/bin/drush updatedb -y
+    - ./vendor/bin/drush 'site:install' -y
     - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
   append:
     production:

@@ -241,6 +241,9 @@ class Runner
         // Merge the toolkit and project configurations.
         $config = array_replace_recursive($config, $projectConfig);
 
+        // Set the absolute drupal root.
+        $config['drupal']['root_absolute'] = Toolkit::getProjectRoot() . '/' . $config['drupal']['root'];
+
         // Allow some configurations to be overridden. If a given property is
         // defined on a project level it will replace the default values
         // instead of merge.
