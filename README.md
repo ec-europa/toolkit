@@ -1,6 +1,3 @@
-> [!CAUTION]
-> This branch is unsupported! Please use [release/10.x](/ec-europa/toolkit/tree/release/10.x).
-
 # Toolkit
 
 The Toolkit is a composer package designed to speed up the development of Drupal websites in Drupal 9+. Its main core is the robo based build system that builds your development environments, deploy and test your code.

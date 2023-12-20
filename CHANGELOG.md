@@ -1,6 +1,6 @@
 # Toolkit change log
 
-## Version 9.17.0
+## Version 9.17.0 | 10.7.0
 - DQA-8360: Set the config drupal.root_absolute.
 - DQA-8373: Opts-review should ignore upper-quotes.
 - DQA-7379: Set correct cache max_age.
