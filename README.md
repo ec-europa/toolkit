@@ -1,4 +1,5 @@
-## This branch is deprecated and will be removed, for Drupal 9 projects use branch release/8.x
+> [!CAUTION]
+> This branch is unsupported! Please use [release/10.x](/ec-europa/toolkit/tree/release/10.x).
 
 # NextEuropa Toolkit
 
