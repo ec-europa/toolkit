@@ -141,8 +141,8 @@ class ToolCommands extends AbstractCommands
         }
         $commands = array_unique(array_merge($commands, $parseOptsFile['upgrade_commands']['default'] ?? $parseOptsFile['upgrade_commands']));
         foreach ($commands as $command) {
-            $command = str_replace('\\', '', $command);
-            $parsedCommand = preg_split('/[\s;&|]/', $command, 0, PREG_SPLIT_NO_EMPTY);
+            $cleanCommand = str_replace(['"', "'", '\\'], '', $command);
+            $parsedCommand = preg_split('/[\s;&|]/', $cleanCommand, 0, PREG_SPLIT_NO_EMPTY);
             foreach ($forbiddenCommands as $forbiddenCommand) {
                 if (in_array($forbiddenCommand, $parsedCommand)) {
                     $io->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
@@ -358,11 +358,16 @@ class ToolCommands extends AbstractCommands
         }
         if ($composer) {
             if (is_null($section)) {
+                $index = false;
                 $type = 'packages-dev';
-                $index = array_search($package, array_column($composer[$type], 'name'));
+                if (!empty($composer[$type])) {
+                    $index = array_search($package, array_column($composer[$type], 'name'));
+                }
                 if ($index === false) {
                     $type = 'packages';
-                    $index = array_search($package, array_column($composer[$type], 'name'));
+                    if (!empty($composer[$type])) {
+                        $index = array_search($package, array_column($composer[$type], 'name'));
+                    }
                 }
                 if ($index !== false && isset($composer[$type][$index][$prop])) {
                     return $composer[$type][$index][$prop];

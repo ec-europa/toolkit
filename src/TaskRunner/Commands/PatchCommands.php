@@ -20,6 +20,8 @@ use Symfony\Component\Console\Input\InputOption;
 class PatchCommands extends AbstractCommands
 {
 
+    protected $options;
+
     /**
      * {@inheritdoc}
      */
@@ -33,16 +35,20 @@ class PatchCommands extends AbstractCommands
      *
      * @command toolkit:patch-list
      *
-     * @option package  List patches for given package.
-     * @option composer The composer.json relative path.
+     * @option package      List patches for given package.
+     * @option composer     The composer.json relative path.
+     * @option dependencies Look for patches defined by dependencies.
      *
      * @aliases tk-pl
      */
     public function toolkitPatchList(ConsoleIO $io, array $options = [
         'package' => InputOption::VALUE_REQUIRED,
         'composer' => InputOption::VALUE_REQUIRED,
+        'dependencies' => InputOption::VALUE_NONE,
     ])
     {
+        $this->io = $io;
+        $this->options = $options;
         $io->writeln($this->getPatches());
         return ResultData::EXITCODE_OK;
     }
@@ -52,9 +58,10 @@ class PatchCommands extends AbstractCommands
      *
      * @command toolkit:patch-download
      *
-     * @option dir      The destination directory to save the patches.
-     * @option package  Download patches for given package.
-     * @option composer The composer.json file.
+     * @option dir          The destination directory to save the patches.
+     * @option package      Download patches for given package.
+     * @option composer     The composer.json file.
+     * @option dependencies Look for patches defined by dependencies.
      *
      * @aliases tk-pd
      *
@@ -64,8 +71,11 @@ class PatchCommands extends AbstractCommands
         'dir' => InputOption::VALUE_REQUIRED,
         'package' => InputOption::VALUE_REQUIRED,
         'composer' => InputOption::VALUE_REQUIRED,
+        'dependencies' => InputOption::VALUE_NONE,
     ])
     {
+        $this->io = $io;
+        $this->options = $options;
         if (empty($downloads = $this->getPatches())) {
             $this->writeln('Nothing to download.');
             return ResultData::EXITCODE_OK;
@@ -98,11 +108,24 @@ class PatchCommands extends AbstractCommands
 
     /**
      * Returns the patches to be downloaded.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     private function getPatches(): array
     {
-        $composer = $this->getComposerJson();
+        // Notify when using cweagans/composer-patches in version 2 and
+        // not using option to include patches from dependencies.
+        $fromDependencies = (bool) $this->options['dependencies'];
+        if ($fromDependencies !== true && $this->isComposerPatchesVersion2()) {
+            $this->io->warning('When using cweagans/composer-patches in version 2 is advised to use --dependencies option.');
+        }
+
+        $composer = $this->getComposerJson($this->options['composer']);
         $patches = $composer['extra']['patches'] ?? [];
+        if ($fromDependencies === true && !empty($depPatches = $this->getDependenciesPatches())) {
+            $patches = array_merge($patches, $depPatches);
+        }
         // Check if there's any patch.
         if (empty($patches)) {
             $this->writeln("The section 'extra.patches' is empty.");
@@ -110,25 +133,56 @@ class PatchCommands extends AbstractCommands
         }
 
         $downloads = [];
-        $package = $this->input()->getOption('package');
-        if (!empty($package)) {
-            if (empty($patches[$package])) {
-                $this->writeln("The given package '$package' does not contain any patch.");
+        if (!empty($this->options['package'])) {
+            if (empty($patches[$this->options['package']])) {
+                $this->writeln("The given package '{$this->options['package']}' does not contain any patch.");
                 return [];
             }
-            $patches = [$package => $composer['extra']['patches'][$package]];
+            $patches = [$this->options['package'] => $composer['extra']['patches'][$this->options['package']]];
         }
 
         foreach ($patches as $packagePatches) {
             foreach ($packagePatches as $patch) {
                 // Make sure it is a remote patch.
-                if (str_starts_with($patch, 'http')) {
+                if (is_string($patch) && str_starts_with($patch, 'http')) {
                     $downloads[] = $patch;
                 }
             }
         }
 
         return $downloads;
+    }
+
+    /**
+     * Check if project is using the version 2 of package cweagans/composer-patches.
+     */
+    private function isComposerPatchesVersion2(): bool
+    {
+        $version = ToolCommands::getPackagePropertyFromComposer('cweagans/composer-patches');
+        return !empty($version) && str_starts_with($version, '2.');
+    }
+
+    /**
+     * Returns the patches from dependencies.
+     */
+    private function getDependenciesPatches(): array
+    {
+        $patches = [];
+        $composer = $this->getComposerLock();
+        foreach (['packages', 'packages-dev'] as $packages) {
+            if (!isset($composer[$packages])) {
+                continue;
+            }
+            foreach ($composer[$packages] as $package) {
+                if (!empty($package['extra']['patches'])) {
+                    foreach ($package['extra']['patches'] as $packageName => $packagePatches) {
+                        $patches[$packageName] = $packagePatches;
+                    }
+                }
+            }
+        }
+
+        return $patches;
     }
 
 }
