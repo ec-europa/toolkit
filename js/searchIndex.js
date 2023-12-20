@@ -1113,7 +1113,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands\u003A\u003AtoolkitPatchList\u0028\u0029",
             "name": "toolkitPatchList",
-            "summary": "Download\u0020remote\u0020patches\u0020into\u0020a\u0020local\u0020directory.",
+            "summary": "Lists\u0020remote\u0020patches\u0020from\u0020the\u0020root\u0020composer.json.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_toolkitPatchList"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands\u003A\u003AtoolkitPatchDownload\u0028\u0029",
@@ -1125,6 +1125,21 @@ Search.appendIndex(
             "name": "getPatches",
             "summary": "Returns\u0020the\u0020patches\u0020to\u0020be\u0020downloaded.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_getPatches"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands\u003A\u003AisComposerPatchesVersion2\u0028\u0029",
+            "name": "isComposerPatchesVersion2",
+            "summary": "Check\u0020if\u0020project\u0020is\u0020using\u0020the\u0020version\u00202\u0020of\u0020package\u0020cweagans\/composer\u002Dpatches.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_isComposerPatchesVersion2"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands\u003A\u003AgetDependenciesPatches\u0028\u0029",
+            "name": "getDependenciesPatches",
+            "summary": "Returns\u0020the\u0020patches\u0020from\u0020dependencies.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#method_getDependenciesPatches"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands\u003A\u003A\u0024options",
+            "name": "options",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#property_options"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands",
             "name": "ReleaseCommands",
