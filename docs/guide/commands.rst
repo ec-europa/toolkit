@@ -60,7 +60,7 @@ See bellow current list of available commands:
    toolkit:lint-yaml                 [tk-yaml|tly] Run lint YAML.
    toolkit:opts-review               Check project's .opts.yml file for forbidden commands.
    toolkit:patch-download            [tk-pd] Download remote patches into a local directory.
-   toolkit:patch-list                [tk-pl] Download remote patches into a local directory.
+   toolkit:patch-list                [tk-pl] Lists remote patches from the root composer.json.
    toolkit:requirements              Check the Toolkit Requirements.
    toolkit:run-blackfire             [tk-bfire|tbf] Run Blackfire.
    toolkit:run-deploy                Run deployment sequence.
