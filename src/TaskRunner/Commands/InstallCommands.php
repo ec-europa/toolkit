@@ -146,11 +146,10 @@ class InstallCommands extends AbstractCommands
         $tasks[] = $this->taskExec($drush_bin)->args(['state:set', 'system.maintenance_mode', 1])
             ->option('input-format', 'integer', '=')
             ->rawArg('-y');
-        $tasks[] = $this->taskExec($drush_bin)->arg('updatedb')->option('no-post-updates')->rawArg('-y');
-        $tasks[] = $this->taskExec($drush_bin)->arg('updatedb')->rawArg('-y');
         if ($has_config) {
             $tasks[] = $this->taskExec($drush_bin)->arg('config:import')->rawArg('-y');
         }
+        $tasks[] = $this->taskExec($drush_bin)->arg('deploy')->rawArg('-y');
         $tasks[] = $this->taskExec($drush_bin)->args(['state:set', 'system.maintenance_mode', 0])
             ->option('input-format', 'integer', '=')
             ->rawArg('-y');
