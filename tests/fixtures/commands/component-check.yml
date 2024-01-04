@@ -463,5 +463,5 @@
   expectations:
     - not_string_contains: ./allowed-script-01.sh
     - not_string_contains: ./allowed-script-02.sh
-    - string_contains: DrupalComposer\\DrupalScaffold\\Plugin::scaffold
-    - string_contains: Subsite\\composer\\SetupWizard::setup
+    - string_contains: DrupalComposer\DrupalScaffold\Plugin::scaffold
+    - string_contains: Subsite\composer\SetupWizard::setup
