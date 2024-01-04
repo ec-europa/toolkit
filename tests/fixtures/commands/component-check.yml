@@ -431,7 +431,16 @@
     - string_contains: The package drupal/pipeline is authorised for the profile minimal
 
 - command: 'toolkit:component-check'
-  configuration: [ ]
+  configuration:
+    toolkit:
+      components:
+        composer:
+          scripts:
+            forbidden:
+              post-root-package-install:
+                - "Subsite\\composer\\SetupWizard::setup"
+              post-install-cmd:
+                - "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
   tokens: ''
   resources:
     - from: sample-composer.lock
@@ -439,16 +448,17 @@
     - file: composer.json
       content: |
         {
-            "scripts": {
-                "post-install-cmd": [
-                    "./allowed-script-01.sh",
-                    "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
-                ],
-                "post-root-package-install": [
-                    "./allowed-script-02.sh",
-                    "Subsite\\composer\\SetupWizard::setup"
-                ]
-            }
+          "name": "toolkit",
+          "scripts": {
+            "post-install-cmd": [
+              "./allowed-script-01.sh",
+              "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+            ],
+            "post-root-package-install": [
+              "./allowed-script-02.sh",
+              "Subsite\\composer\\SetupWizard::setup"
+            ]
+          }
         }
   expectations:
     - not_string_contains: ./allowed-script-01.sh
