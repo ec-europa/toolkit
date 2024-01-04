@@ -222,27 +222,20 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
 
-        // Make sure that the forbidden/obsolete script is not present in the 'scripts' section.
+        // Make sure that the forbidden/obsolete script is not present in the 'scripts' section of composer.json file.
         if (isset($composerJson['scripts'])) {
-            // Forbidden/obsolete scripts.
-            $forbidden_scripts = [
-                'post-root-package-install' => [
-                    "Subsite\\composer\\SetupWizard::setup"
-                ],
-                'post-install-cmd' => [
-                    "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
-                ],
-            ];
-            // Common error message.
-            $error_message = 'The obsolete invocation of %script is present in composer.json %level scripts. Please remove.';
-            // Loop to find the script.
-            foreach ($forbidden_scripts as $level => $scripts) {
+            // Get forbidden/obsolete scripts from config.
+            $forbiddenScripts = $this->getConfig()->get('toolkit.components.composer.scripts.forbidden');
+            // Define common error message.
+            $commonErrorMessage = 'The obsolete invocation of %s is present in composer.json %s scripts. Please remove.';
+            // Detect forbidden scripts in composer.json.
+            foreach ($forbiddenScripts as $level => $scripts) {
                 foreach ($scripts as $script) {
                     if (
                         isset($composerJson['scripts'][$level])
                         && in_array($script, $composerJson['scripts'][$level])
                     ) {
-                        $this->io->error(str_replace(['%script', '%level'], [$script, $level], $error_message));
+                        $this->io->error(sprintf($commonErrorMessage, $script, $level));
                         $this->composerFailed = true;
                     }
                 }
