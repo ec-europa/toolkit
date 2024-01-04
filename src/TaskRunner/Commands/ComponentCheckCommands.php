@@ -222,22 +222,31 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
 
-        // Check if the specified part is present in the 'scripts' section.
-        $scripts = $composerJson['scripts'] ?? [];
-        if (
-            isset($scripts['post-root-package-install'])
-            && in_array("Subsite\\composer\\SetupWizard::setup", $scripts['post-root-package-install'])
-        ) {
-            $this->io->error('The obsolete invocation of Subsite\\composer\\SetupWizard::setup is present in composer.json post-root-package-install scripts. Please remove.');
-            $this->composerFailed = true;
-        }
-
-        if (
-            isset($scripts['post-install-cmd'])
-            && in_array("DrupalComposer\\DrupalScaffold\\Plugin::scaffold", $scripts['post-install-cmd'])
-        ) {
-            $this->io->error('The obsolete invocation of DrupalComposer\\DrupalScaffold\\Plugin::scaffold is present in composer.json post-install-cmd scripts. Please remove.');
-            $this->composerFailed = true;
+        // Make sure that the forbidden/obsolete script is not present in the 'scripts' section.
+        if (isset($composerJson['scripts'])) {
+            // Forbidden/obsolete scripts.
+            $forbidden_scripts = [
+                'post-root-package-install' => [
+                    "Subsite\\composer\\SetupWizard::setup"
+                ],
+                'post-install-cmd' => [
+                    "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+                ],
+            ];
+            // Common error message.
+            $error_message = 'The obsolete invocation of %script is present in composer.json %level scripts. Please remove.';
+            // Loop to find the script.
+            foreach ($forbidden_scripts as $level => $scripts) {
+                foreach ($scripts as $script) {
+                    if (
+                        isset($composerJson['scripts'][$level])
+                        && in_array($script, $composerJson['scripts'][$level])
+                    ) {
+                        $this->io->error(str_replace(['%script', '%level'], [$script, $level], $error_message));
+                        $this->composerFailed = true;
+                    }
+                }
+            }
         }
 
         if (!$this->composerFailed) {
