@@ -429,3 +429,27 @@
         } ]
   expectations:
     - string_contains: The package drupal/pipeline is authorised for the profile minimal
+
+- command: 'toolkit:component-check'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.json
+      content: |
+        {
+            "scripts": {
+                "post-install-cmd": [
+                    "./allowed-script-01.sh",
+                    "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+                ],
+                "post-root-package-install": [
+                    "./allowed-script-02.sh",
+                    "Subsite\\composer\\SetupWizard::setup"
+                ]
+            }
+        }
+  expectations:
+    - not_string_contains: ./allowed-script-01.sh
+    - not_string_contains: ./allowed-script-02.sh
+    - string_contains: DrupalComposer\\DrupalScaffold\\Plugin::scaffold
+    - string_contains: Subsite\\composer\\SetupWizard::setup
