@@ -434,6 +434,8 @@
   configuration: [ ]
   tokens: ''
   resources:
+    - from: sample-composer.lock
+      to: composer.lock
     - file: composer.json
       content: |
         {
