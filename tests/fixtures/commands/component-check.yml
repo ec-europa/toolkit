@@ -431,16 +431,7 @@
     - string_contains: The package drupal/pipeline is authorised for the profile minimal
 
 - command: 'toolkit:component-check'
-  configuration:
-    toolkit:
-      components:
-        composer:
-          scripts:
-            forbidden:
-              post-root-package-install:
-                - "Subsite\\composer\\SetupWizard::setup"
-              post-install-cmd:
-                - "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+  configuration: []
   tokens: ''
   resources:
     - from: sample-composer.lock
@@ -450,18 +441,58 @@
         {
           "name": "toolkit",
           "scripts": {
-            "post-install-cmd": [
-              "./allowed-script-01.sh",
-              "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
-            ],
             "post-root-package-install": [
-              "./allowed-script-02.sh",
+              "./allowed-script-01.sh",
               "Subsite\\composer\\SetupWizard::setup"
+            ],
+            "post-install-cmd": [
+              "./allowed-script-02.sh",
+              "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
             ]
           }
         }
   expectations:
     - not_string_contains: ./allowed-script-01.sh
     - not_string_contains: ./allowed-script-02.sh
+    - string_contains: DrupalComposer\DrupalScaffold\Plugin::scaffold
+    - string_contains: Subsite\composer\SetupWizard::setup
+
+- command: 'toolkit:component-check'
+  configuration:
+    toolkit:
+      components:
+        composer:
+          scripts:
+            forbidden:
+              post-root-package-install:
+                - "Subsite\\composer\\SetupWizard::setup"
+                - "./forbidden-script-01.sh"
+              post-install-cmd:
+                - "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+                - "./forbidden-script-02.sh"
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        {
+          "name": "toolkit",
+          "scripts": {
+            "post-root-package-install": [
+              "./allowed-script-01.sh",
+              "Subsite\\composer\\SetupWizard::setup"
+            ],
+            "post-install-cmd": [
+              "./allowed-script-02.sh",
+              "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+            ]
+          }
+        }
+  expectations:
+    - not_string_contains: ./allowed-script-01.sh
+    - not_string_contains: ./allowed-script-02.sh
+    - not_string_contains: ./forbidden-script-01.sh
+    - not_string_contains: ./forbidden-script-02.sh
     - string_contains: DrupalComposer\DrupalScaffold\Plugin::scaffold
     - string_contains: Subsite\composer\SetupWizard::setup

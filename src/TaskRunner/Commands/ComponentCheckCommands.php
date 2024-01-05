@@ -225,17 +225,17 @@ class ComponentCheckCommands extends AbstractCommands
         // Make sure that the forbidden/obsolete script is not present in the 'scripts' section of composer.json file.
         if (isset($composerJson['scripts'])) {
             // Get forbidden/obsolete scripts from config.
-            $forbiddenScripts = $this->getConfig()->get('toolkit.components.composer.scripts.forbidden');
+            $scripts = $this->getConfig()->get('toolkit.components.composer.scripts.forbidden');
             // Define common error message.
-            $commonErrorMessage = 'The obsolete invocation of %s is present in composer.json %s scripts. Please remove.';
+            $error = 'The obsolete invocation of %s is present in composer.json %s scripts. Please remove.';
             // Detect forbidden scripts in composer.json.
-            foreach ($forbiddenScripts as $level => $scripts) {
+            foreach ($scripts as $level => $scripts) {
                 foreach ($scripts as $script) {
                     if (
                         isset($composerJson['scripts'][$level])
                         && in_array($script, $composerJson['scripts'][$level])
                     ) {
-                        $this->io->error(sprintf($commonErrorMessage, $script, $level));
+                        $this->io->error(sprintf($error, $script, $level));
                         $this->composerFailed = true;
                     }
                 }
