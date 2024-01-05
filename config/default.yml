@@ -28,12 +28,5 @@ overrides:
   - toolkit.hooks.commit-msg.conditions
   - toolkit.hooks.pre-push.commands
   - symlink_project.ignore
-toolkit:
-  components:
-    composer:
-      scripts:
-        forbidden:
-          post-root-package-install:
-            - "Subsite\\composer\\SetupWizard::setup"
-          post-install-cmd:
-            - "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+forbidden_overrides:
+  - toolkit.composer.scripts.forbidden

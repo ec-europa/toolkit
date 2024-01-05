@@ -28,6 +28,12 @@ toolkit:
       check: true
     composer:
       drupal_patches: true
+      scripts:
+        forbidden:
+          post-root-package-install:
+            - "Subsite\\composer\\SetupWizard::setup"
+          post-install-cmd:
+            - "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
   deploy:
     config_file: 'config/sync/core.extension.yml'
     sequence_file: '.opts.yml'
