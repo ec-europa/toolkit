@@ -97,6 +97,7 @@ class ComponentCheckCommands extends AbstractCommands
             'Evaluation',
             'Development',
             'Composer',
+            'Configuration',
         ];
         foreach ($checks as $check) {
             $io->title("Checking $check components.");
@@ -170,6 +171,30 @@ class ComponentCheckCommands extends AbstractCommands
         if (isset($commitTokens['skipInsecure'])) {
             $this->skipInsecure = true;
         }
+    }
+
+    /**
+     * Validate project configuration.
+     */
+    protected function componentConfiguration()
+    {
+        // Make sure forbidden files does not exist.
+        // (because of deprecation or another reason)
+        // Get forbidden/deprecated files from configuration.
+        $files = $this->getConfig()->get('toolkit.forbidden_files');
+        // Detect forbidden files in project.
+        foreach ($files as $file) {
+            if (file_exists($this->getWorkingDir() . '/'.$file['name'])) {
+                $this->composerFailed = true;
+                $this->io->error($file['error']);
+            }
+        }
+
+        if (!$this->composerFailed) {
+            $this->say('Project configuration validation check passed.');
+        }
+        $this->io->newLine();
+
     }
 
     /**

@@ -69,6 +69,12 @@
         >  Composer validation check passed.
 
 
+        Checking Configuration components.
+        ==================================
+
+        >  Project configuration validation check passed.
+
+
         Results:
         ========
 
@@ -429,3 +435,18 @@
         } ]
   expectations:
     - string_contains: The package drupal/pipeline is authorised for the profile minimal
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - touch: composer.json
+    - touch: .env
+    - touch: grumphp.yml.dist
+    - touch: allowed-file.ext
+  expectations:
+    - not_string_contains: allowed-file.ext
+    - string_contains: grumphp.yml.dist file detected
+    - string_contains: .env file detected
