@@ -51,6 +51,7 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveClassLength)
      */
     public function componentCheck(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
@@ -184,7 +185,7 @@ class ComponentCheckCommands extends AbstractCommands
         $files = $this->getConfig()->get('toolkit.forbidden_files');
         // Detect forbidden files in project.
         foreach ($files as $file) {
-            if (file_exists($this->getWorkingDir() . '/'.$file['name'])) {
+            if (file_exists($this->getWorkingDir() . '/' . $file['name'])) {
                 $this->composerFailed = true;
                 $this->io->error($file['error']);
             }
@@ -194,7 +195,6 @@ class ComponentCheckCommands extends AbstractCommands
             $this->say('Project configuration validation check passed.');
         }
         $this->io->newLine();
-
     }
 
     /**
