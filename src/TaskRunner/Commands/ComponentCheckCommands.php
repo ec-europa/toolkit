@@ -6,6 +6,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
 use EcEuropa\Toolkit\DrupalReleaseHistory;
+use EcEuropa\Toolkit\Helpers\ProjectInfo;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
@@ -185,6 +186,15 @@ class ComponentCheckCommands extends AbstractCommands
         $files = $this->getConfig()->get('toolkit.forbidden_files');
         // Detect forbidden files in project.
         foreach ($files as $file) {
+            // Check if the file must be forbidden under the condition.
+            if (!empty($file['condition_callback'])) {
+                list($class, $method) = explode('::', $file['condition_callback']);
+                if (class_exists($class) && method_exists($class, $method)) {
+                    // Invoke the callback method and if the condition is not met then don't forbid the file.
+                    if((new $class())->$method() === FALSE)
+                        continue;
+                }
+            }
             if (file_exists($this->getWorkingDir() . '/' . $file['name'])) {
                 $this->composerFailed = true;
                 $this->io->error($file['error']);
@@ -370,27 +380,20 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentMandatory()
     {
-        $enabledPackages = $mandatoryPackages = [];
+        $projectInfo = new ProjectInfo();
+        $enabledModules = $mandatoryPackages = [];
         if (!$this->isWebsiteInstalled()) {
             $config_file = $this->getConfig()->get('toolkit.clean.config_file');
             $this->writeln("Website not installed, using $config_file file.");
             if (file_exists($config_file)) {
                 $config = Yaml::parseFile($config_file);
-                $enabledPackages = array_keys(array_merge($config['module'] ?? [], $config['theme'] ?? []));
+                $enabledModules = array_keys(array_merge($config['module'] ?? [], $config['theme'] ?? []));
             } else {
                 $this->writeln("Config file not found at $config_file.");
             }
         } else {
             // Get enabled packages.
-            $result = $this->taskExec($this->getBin('drush') . ' pm-list --fields=status --format=json')
-                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-                ->run()->getMessage();
-            $projPackages = json_decode($result, true);
-            if (!empty($projPackages)) {
-                $enabledPackages = array_keys(array_filter($projPackages, function ($item) {
-                    return $item['status'] === 'Enabled';
-                }));
-            }
+            $enabledModules = $projectInfo->GetEnabledDrupalModules();
         }
 
         // Get mandatory packages.
@@ -400,7 +403,7 @@ class ComponentCheckCommands extends AbstractCommands
             }));
         }
 
-        $diffMandatory = array_diff(array_column($mandatoryPackages, 'machine_name'), $enabledPackages);
+        $diffMandatory = array_diff(array_column($mandatoryPackages, 'machine_name'), $enabledModules);
         if (!empty($diffMandatory)) {
             foreach ($diffMandatory as $notPresent) {
                 $index = array_search($notPresent, array_column($mandatoryPackages, 'machine_name'));
