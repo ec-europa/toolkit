@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EcEuropa\Toolkit\Helpers;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use Robo\Contract\VerbosityThresholdInterface;
 
 class ProjectInfo extends AbstractCommands
 {
+
     /**
      * Helper function to get enabled Drupal modules.
      */
-    public function GetEnabledDrupalModules() {
+    public function getEnabledDrupalModules() {
         $enabledModules = [];
         $result = $this->taskExec($this->getBin('drush') . ' pm-list --fields=status --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
@@ -22,4 +26,5 @@ class ProjectInfo extends AbstractCommands
         }
         return $enabledModules;
     }
+
 }

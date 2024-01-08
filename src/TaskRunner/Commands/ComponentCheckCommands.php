@@ -191,8 +191,9 @@ class ComponentCheckCommands extends AbstractCommands
                 list($class, $method) = explode('::', $file['condition_callback']);
                 if (class_exists($class) && method_exists($class, $method)) {
                     // Invoke the callback method and if the condition is not met then don't forbid the file.
-                    if((new $class())->$method() === FALSE)
+                    if ((new $class())->$method() === false) {
                         continue;
+                    }
                 }
             }
             if (file_exists($this->getWorkingDir() . '/' . $file['name'])) {
@@ -393,7 +394,7 @@ class ComponentCheckCommands extends AbstractCommands
             }
         } else {
             // Get enabled packages.
-            $enabledModules = $projectInfo->GetEnabledDrupalModules();
+            $enabledModules = $projectInfo->getEnabledDrupalModules();
         }
 
         // Get mandatory packages.
