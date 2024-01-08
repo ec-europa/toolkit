@@ -440,13 +440,16 @@
   configuration: []
   tokens: ''
   resources:
-    - from: sample-composer.lock
-      to: composer.lock
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "phpro/grumphp", "type": "composer-plugin", "version": "v2.4.0" }
+        ] }
     - touch: composer.json
     - touch: .env
     - touch: grumphp.yml.dist
     - touch: allowed-file.ext
   expectations:
     - not_string_contains: allowed-file.ext
-    - string_contains: grumphp.yml.dist file detected
+    - not_string_contains: grumphp.yml.dist file detected
     - string_contains: .env file detected
