@@ -48,10 +48,13 @@ final class DockerCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        $dcContent = $this->getDockerComposeYml('say');
-        if (empty($dcContent)) {
+        // TODO: Move it to AbstractCommands.php::getDockerComposeYml.
+        $dockerCompose = self::DC_YML_FILE;
+        if (!file_exists($dockerCompose)) {
+            $this->say("The file $dockerCompose was not found, creating it.");
             $this->copyDockerComposeDefaultToProject();
         }
+        $dcContent = Yaml::parseFile(self::DC_YML_FILE);
 
         $dcServiceImages = $this->getServicesImagesFromDockerCompose($dcContent);
 
