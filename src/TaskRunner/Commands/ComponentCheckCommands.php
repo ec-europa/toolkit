@@ -28,6 +28,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $abandonedFailed = false;
     protected bool $unsupportedFailed = false;
     protected bool $composerFailed = false;
+    protected bool $dockerComposeFailed = false;
     protected bool $devCompRequireFailed = false;
     protected bool $skipOutdated = false;
     protected bool $skipAbandoned = false;
@@ -98,7 +99,7 @@ class ComponentCheckCommands extends AbstractCommands
             'Evaluation',
             'Development',
             'Composer',
-            'DockerCompose'
+            'DockerCompose',
         ];
         foreach ($checks as $check) {
             $io->title("Checking $check components.");
@@ -116,6 +117,7 @@ class ComponentCheckCommands extends AbstractCommands
             $this->mandatoryFailed ||
             $this->devCompRequireFailed ||
             $this->composerFailed ||
+            $this->dockerComposeFailed ||
             (!$this->skipRecommended && $this->recommendedFailed) ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipAbandoned && $this->abandonedFailed) ||
@@ -243,15 +245,14 @@ class ComponentCheckCommands extends AbstractCommands
             $envVariables = $dockerCompose['services']['web']['environment'];
             foreach ($vars as $varName) {
                 if (array_key_exists($varName, $envVariables)) {
-                    $this->composerFailed = true;
+                    $this->dockerComposeFailed = true;
                     $this->io->error('Fiorbidden environmental variable detected in ' . self::DC_YML_FILE . ': ' . $varName . '. Please remove it.');
                 }
             }
         }
 
-
-        if (!$this->composerFailed) {
-            $this->say('Project configuration validation check passed.');
+        if (!$this->dockerComposeFailed) {
+            $this->say('Docker compose validation check passed.');
         }
         $this->io->newLine();
     }
@@ -278,6 +279,7 @@ class ComponentCheckCommands extends AbstractCommands
             ['Evaluation module check' => $this->getFailedOrPassed($this->evaluationFailed)],
             ['Development module check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
             ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
+            ['Docker compose validation check' => $this->getFailedOrPassed($this->dockerComposeFailed)],
         );
     }
 

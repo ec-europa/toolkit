@@ -160,7 +160,7 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
                     return [];
             }
         }
-        return Yaml::parseFile($file);
+        return (array) Yaml::parseFile($file);
     }
 
     /**
