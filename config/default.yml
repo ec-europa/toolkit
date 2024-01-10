@@ -28,5 +28,3 @@ overrides:
   - toolkit.hooks.commit-msg.conditions
   - toolkit.hooks.pre-push.commands
   - symlink_project.ignore
-forbidden_overrides:
-  - toolkit.composer.scripts.forbidden
