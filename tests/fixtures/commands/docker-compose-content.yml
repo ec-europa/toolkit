@@ -23,7 +23,6 @@
               NEXTCLOUD_PASS:
               GITHUB_API_TOKEN:
               GITLAB_API_TOKEN:
-              QA_API_BASIC_AUTH:
               QA_API_AUTH_TOKEN:
               QA_WEBSITE_URL:
               XDEBUG_CONFIG: 'remote_host=host.docker.internal remote_port=9003 remote_enable=1'
@@ -123,7 +122,6 @@
               NEXTCLOUD_PASS:
               GITHUB_API_TOKEN:
               GITLAB_API_TOKEN:
-              QA_API_BASIC_AUTH:
               QA_API_AUTH_TOKEN:
               QA_WEBSITE_URL:
               XDEBUG_CONFIG: 'remote_host=host.docker.internal remote_port=9003 remote_enable=1'
@@ -175,7 +173,6 @@
               NEXTCLOUD_PASS:
               GITHUB_API_TOKEN:
               GITLAB_API_TOKEN:
-              QA_API_BASIC_AUTH:
               QA_API_AUTH_TOKEN:
               QA_WEBSITE_URL:
               XDEBUG_CONFIG: 'remote_host=host.docker.internal remote_port=9003 remote_enable=1'
@@ -227,7 +224,6 @@
               NEXTCLOUD_PASS:
               GITHUB_API_TOKEN:
               GITLAB_API_TOKEN:
-              QA_API_BASIC_AUTH:
               QA_API_AUTH_TOKEN:
               QA_WEBSITE_URL:
               XDEBUG_CONFIG: 'remote_host=host.docker.internal remote_port=9003 remote_enable=1'
@@ -279,7 +275,6 @@
               NEXTCLOUD_PASS:
               GITHUB_API_TOKEN:
               GITLAB_API_TOKEN:
-              QA_API_BASIC_AUTH:
               QA_API_AUTH_TOKEN:
               QA_WEBSITE_URL:
               XDEBUG_CONFIG: 'remote_host=host.docker.internal remote_port=9003 remote_enable=1'
