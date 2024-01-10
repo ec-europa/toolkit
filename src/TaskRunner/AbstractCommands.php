@@ -10,6 +10,7 @@ use Robo\Contract\ConfigAwareInterface;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Exception\TaskException;
 use Robo\Tasks;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class AbstractCommands.
@@ -19,6 +20,8 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     use ConfigAwareTrait;
     use \EcEuropa\Toolkit\Task\File\Tasks;
     use \EcEuropa\Toolkit\Task\Command\Tasks;
+
+    protected const DC_YML_FILE = 'docker-compose.yml';
 
     /**
      * Path to YAML configuration file containing command defaults.
@@ -139,6 +142,25 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
             throw new \Exception("The '$file' was not found.");
         }
         return (array) json_decode(file_get_contents($file), true);
+    }
+
+    /**
+     * Returns the docker-compose.yml parsed content.
+     */
+    public function getDockerComposeYml($error_type = null, string $filename = self::DC_YML_FILE): array
+    {
+        $file = $this->getWorkingDir() . '/' . $filename;
+        if (!file_exists($file)) {
+            switch ($error_type) {
+                case 'exception':
+                    throw new \Exception("The '$file' was not found.");
+
+                case 'say':
+                    $this->say("The file $file was not found, creating it.");
+                    return [];
+            }
+        }
+        return Yaml::parseFile($file);
     }
 
     /**

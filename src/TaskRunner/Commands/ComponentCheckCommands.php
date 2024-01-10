@@ -97,6 +97,7 @@ class ComponentCheckCommands extends AbstractCommands
             'Evaluation',
             'Development',
             'Composer',
+            'DockerCompose'
         ];
         foreach ($checks as $check) {
             $io->title("Checking $check components.");
@@ -223,6 +224,33 @@ class ComponentCheckCommands extends AbstractCommands
         }
         if (!$this->composerFailed) {
             $this->say('Composer validation check passed.');
+        }
+        $this->io->newLine();
+    }
+
+    /**
+     * Validate docker-compose.yml.
+     */
+    protected function componentDockerCompose()
+    {
+        // Get docker-compose.yml
+        $dockerCompose = $this->getDockerComposeYml('exception');
+        // Get forbidden/obsolete scripts from config.
+        $vars = $this->getConfig()->get('toolkit.components.docker_compose.environment_variables.forbidden');
+        // Find forbidden/obsolete variables.
+        if (isset($dockerCompose['services']['web']['environment'])) {
+            $envVariables = $dockerCompose['services']['web']['environment'];
+            foreach ($vars as $varName) {
+                if (array_key_exists($varName, $envVariables)) {
+                    $this->composerFailed = true;
+                    $this->io->error('Fiorbidden environmental variable detected in ' . self::DC_YML_FILE . ': ' . $varName . '. Please remove it.');
+                }
+            }
+        }
+
+
+        if (!$this->composerFailed) {
+            $this->say('Project configuration validation check passed.');
         }
         $this->io->newLine();
     }
