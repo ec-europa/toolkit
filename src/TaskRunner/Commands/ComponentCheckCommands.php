@@ -29,6 +29,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $abandonedFailed = false;
     protected bool $unsupportedFailed = false;
     protected bool $composerFailed = false;
+    protected bool $configurationFailed = false;
     protected bool $devCompRequireFailed = false;
     protected bool $skipOutdated = false;
     protected bool $skipAbandoned = false;
@@ -117,6 +118,7 @@ class ComponentCheckCommands extends AbstractCommands
             $this->mandatoryFailed ||
             $this->devCompRequireFailed ||
             $this->composerFailed ||
+            $this->configurationFailed ||
             (!$this->skipRecommended && $this->recommendedFailed) ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipAbandoned && $this->abandonedFailed) ||
@@ -197,12 +199,12 @@ class ComponentCheckCommands extends AbstractCommands
                 }
             }
             if (file_exists($this->getWorkingDir() . '/' . $file['name'])) {
-                $this->composerFailed = true;
+                $this->configurationFailed = true;
                 $this->io->error($file['error']);
             }
         }
 
-        if (!$this->composerFailed) {
+        if (!$this->configurationFailed) {
             $this->say('Project configuration validation check passed.');
         }
         $this->io->newLine();
@@ -285,6 +287,7 @@ class ComponentCheckCommands extends AbstractCommands
             ['Evaluation module check' => $this->getFailedOrPassed($this->evaluationFailed)],
             ['Development module check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
             ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
+            ['Project configuration validation check' => $this->getFailedOrPassed($this->configurationFailed)],
         );
     }
 
