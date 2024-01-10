@@ -15,9 +15,6 @@ services:
       VIRTUAL_HOST: localhost:8080
       NEXTCLOUD_USER:
       NEXTCLOUD_PASS:
-      ASDA_USER:
-      ASDA_PASSWORD:
-      QA_API_BASIC_AUTH:
       QA_API_AUTH_TOKEN:
       QA_WEBSITE_URL:
       TOOLKIT_MOCK_REPO:
