@@ -121,7 +121,7 @@ class PatchCommands extends AbstractCommands
             $this->io->warning('When using cweagans/composer-patches in version 2 is advised to use --dependencies option.');
         }
 
-        $composer = $this->getComposerJson($this->options['composer']);
+        $composer = $this->getJson($this->options['composer']);
         $patches = $composer['extra']['patches'] ?? [];
         if ($fromDependencies === true && !empty($depPatches = $this->getDependenciesPatches())) {
             $patches = array_merge($patches, $depPatches);
@@ -168,7 +168,7 @@ class PatchCommands extends AbstractCommands
     private function getDependenciesPatches(): array
     {
         $patches = [];
-        $composer = $this->getComposerLock();
+        $composer = $this->getJson('composer.lock');
         foreach (['packages', 'packages-dev'] as $packages) {
             if (!isset($composer[$packages])) {
                 continue;

@@ -68,7 +68,7 @@ class ComponentCheckCommands extends AbstractCommands
         $this->io = $io;
         $this->prepareSkips();
 
-        $this->composerLock = $this->getComposerLock();
+        $this->composerLock = $this->getJson('composer.lock');
         if (!isset($this->composerLock['packages'])) {
             $io->error('No packages found in the composer.lock file.');
             return 1;
@@ -184,7 +184,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentComposer()
     {
-        $composerJson = $this->getComposerJson();
+        $composerJson = $this->getJson('composer.json');
 
         // Check packages used in dev version.
         foreach ($this->composerLock['packages'] as $package) {
@@ -237,7 +237,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected function componentDockerCompose()
     {
         // Get docker-compose.yml
-        $dockerCompose = $this->getDockerComposeYml('exception');
+        $dockerCompose = $this->getYml(self::DC_YML_FILE);
         // Get forbidden/obsolete scripts from config.
         $vars = $this->getConfig()->get('toolkit.components.docker_compose.environment_variables.forbidden');
         // Find forbidden/obsolete variables.

@@ -209,7 +209,7 @@ class TestsCommands extends AbstractCommands
             }
         }
 
-        $composer = $this->getComposerJson();
+        $composer = $this->getJson('composer.json');
         if (isset($composer['extra']['grumphp']['config-default-path'])) {
             $configDefaultPath = $composer['extra']['grumphp']['config-default-path'];
             $this->say('You should remove the following from your composer.json extra array:');

@@ -16,6 +16,7 @@ use Symfony\Component\Yaml\Yaml;
 final class DockerCommands extends AbstractCommands
 {
     private const OPTS_YML_FILE = '.opts.yml';
+    protected const DC_YML_FILE = 'docker-compose.yml';
     private const DC_YML_FILE_PREVIOUS = 'docker-compose.yml.prev';
     private const DEV_SUFFIX = '-dev';
 
@@ -48,13 +49,12 @@ final class DockerCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        // TODO: Move it to AbstractCommands.php::getDockerComposeYml.
         $dockerCompose = self::DC_YML_FILE;
         if (!file_exists($dockerCompose)) {
             $this->say("The file $dockerCompose was not found, creating it.");
             $this->copyDockerComposeDefaultToProject();
         }
-        $dcContent = Yaml::parseFile(self::DC_YML_FILE);
+        $dcContent = $this->getYml(self::DC_YML_FILE);
 
         $dcServiceImages = $this->getServicesImagesFromDockerCompose($dcContent);
 
