@@ -8,9 +8,10 @@ use EcEuropa\Toolkit\TaskRunner\Commands\ToolCommands;
 
 class ForbiddenFilesConditions
 {
-
+    /**
+     * If grumphp package is not present in a project, then grumphp config file must not be present.
+     */
     public static function grumpPhpisNotInstalled() {
-        // If grumphp package is not present in a project, then grumphp config file must not be present.
         $version = ToolCommands::getPackagePropertyFromComposer('phpro/grumphp');
         if (empty($version)) {
             return true;
