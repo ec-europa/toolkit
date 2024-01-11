@@ -16,7 +16,6 @@ use Symfony\Component\Yaml\Yaml;
 final class DockerCommands extends AbstractCommands
 {
     private const OPTS_YML_FILE = '.opts.yml';
-    protected const DC_YML_FILE = 'docker-compose.yml';
     private const DC_YML_FILE_PREVIOUS = 'docker-compose.yml.prev';
     private const DEV_SUFFIX = '-dev';
 
