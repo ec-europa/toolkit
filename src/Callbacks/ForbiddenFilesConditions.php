@@ -8,6 +8,7 @@ use EcEuropa\Toolkit\TaskRunner\Commands\ToolCommands;
 
 class ForbiddenFilesConditions
 {
+
     /**
      * If grumphp package is not present in a project, then grumphp config file must not be present.
      */
