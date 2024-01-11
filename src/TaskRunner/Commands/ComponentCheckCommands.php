@@ -6,7 +6,6 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
 use EcEuropa\Toolkit\DrupalReleaseHistory;
-use EcEuropa\Toolkit\Helpers\ProjectInfo;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
@@ -182,7 +181,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentConfiguration()
     {
-        // Make sure forbidden files does not exist.
+        // Make sure forbidden files do not exist.
         // (because of deprecation or another reason)
         // Get forbidden/deprecated files from configuration.
         $files = $this->getConfig()->get('toolkit.forbidden_files');
@@ -384,7 +383,6 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentMandatory()
     {
-        $projectInfo = new ProjectInfo();
         $enabledModules = $mandatoryPackages = [];
         if (!$this->isWebsiteInstalled()) {
             $config_file = $this->getConfig()->get('toolkit.clean.config_file');
@@ -396,8 +394,11 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->writeln("Config file not found at $config_file.");
             }
         } else {
-            // Get enabled packages.
-            $enabledModules = $projectInfo->getEnabledDrupalModules();
+            // Get enabled modules.
+            $result = $this->taskExec($this->getBin('drush') . ' pm-list --status=enabled --format=json')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
+            $enabledModules = array_keys(json_decode($result, true));
         }
 
         // Get mandatory packages.
