@@ -484,3 +484,45 @@
     - string_contains: ASDA_USER
     - string_contains: ASDA_PASSWORD
     - string_contains: QA_API_BASIC_AUTH
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - touch: composer.json
+    - file: .env
+      content: |
+        NEXTCLOUD_USER=
+        NEXTCLOUD_PASS=
+        ASDA_USER=
+        ASDA_PASSWORD=
+        QA_API_BASIC_AUTH=
+  expectations:
+    - not_string_contains: NEXTCLOUD_USER
+    - not_string_contains: NEXTCLOUD_PASS
+    - string_contains: ASDA_USER
+    - string_contains: ASDA_PASSWORD
+    - string_contains: QA_API_BASIC_AUTH
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - touch: composer.json
+    - file: .env.dist
+      content: |
+        NEXTCLOUD_USER=
+        NEXTCLOUD_PASS=
+        ASDA_USER=
+        ASDA_PASSWORD=
+        QA_API_BASIC_AUTH=
+  expectations:
+    - not_string_contains: NEXTCLOUD_USER
+    - not_string_contains: NEXTCLOUD_PASS
+    - string_contains: ASDA_USER
+    - string_contains: ASDA_PASSWORD
+    - string_contains: QA_API_BASIC_AUTH
