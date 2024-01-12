@@ -10,7 +10,6 @@ use Robo\Contract\ConfigAwareInterface;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Exception\TaskException;
 use Robo\Tasks;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class AbstractCommands.
