@@ -53,7 +53,7 @@ final class DockerCommands extends AbstractCommands
             $this->say("The file $dockerCompose was not found, creating it.");
             $this->copyDockerComposeDefaultToProject();
         }
-        $dcContent = $this->getYml(self::DC_YML_FILE);
+        $dcContent = Yaml::parseFile(self::DC_YML_FILE);
 
         $dcServiceImages = $this->getServicesImagesFromDockerCompose($dcContent);
 

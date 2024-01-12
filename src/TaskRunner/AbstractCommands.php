@@ -145,14 +145,6 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     }
 
     /**
-     * Returns the YML parsed content.
-     */
-    public function getYml(string $filename): array
-    {
-        return (array) Yaml::parseFile($filename);
-    }
-
-    /**
      * Check if the website is installed.
      */
     public function isWebsiteInstalled(): bool

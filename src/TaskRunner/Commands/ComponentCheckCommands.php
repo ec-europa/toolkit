@@ -237,11 +237,11 @@ class ComponentCheckCommands extends AbstractCommands
     protected function componentDockerCompose()
     {
         // Get docker-compose.yml
-        $dockerCompose = $this->getYml(self::DC_YML_FILE);
+        $dockerCompose = Yaml::parseFile(self::DC_YML_FILE);
         // Get forbidden/obsolete scripts from config.
         $vars = $this->getConfig()->get('toolkit.components.docker_compose.environment_variables.forbidden');
         // Find forbidden/obsolete variables.
-        if (isset($dockerCompose['services']['web']['environment'])) {
+        if (!empty($dockerCompose['services']['web']['environment'])) {
             $envVariables = $dockerCompose['services']['web']['environment'];
             foreach ($vars as $varName) {
                 if (array_key_exists($varName, $envVariables)) {
