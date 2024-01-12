@@ -236,29 +236,39 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentDockerCompose()
     {
+        // Get forbidden/obsolete vars from config.
+        $forbiddenVars = $this->getConfig()->get('toolkit.components.docker_compose.environment_variables.forbidden');
+        // Check if forbidden env variables are not already here.
+        foreach ($forbiddenVars as $varName) {
+            if (getenv($varName) !== false) {
+                $this->dockerComposeFailed = true;
+                $this->io->error('Fiorbidden environment variable "' . $varName . '" detected in the container. Please locate the source of that variable and remove it.');
+            }
+        }
+
         // Files that contain env variables.
         $fileNames = [self::DC_YML_FILE, '.env', '.env.dist'];
-        $setEnvVariables = [];
+        $setEnvVars = [];
         // Parse files content.
         foreach ($fileNames as $filename) {
             if (is_file($filename)) {
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
                 if ($ext && $ext == 'yml') {
-                    $setEnvVariables[$filename] = Yaml::parseFile($filename);
+                    $setEnvVars[$filename] = Yaml::parseFile($filename);
                     // TODO: If service "web" has different name it will not work. Think of something dynamic.
-                    if (!empty($setEnvVariables[$filename]['services']['web']['environment'])) {
-                        $setEnvVariables[$filename] = $setEnvVariables[$filename]['services']['web']['environment'];
+                    if (!empty($setEnvVars[$filename]['services']['web']['environment'])) {
+                        $setEnvVars[$filename] = $setEnvVars[$filename]['services']['web']['environment'];
                     }
                 }
                 else {
-                    $setEnvVariables[$filename] = parse_ini_file($filename);
+                    $setEnvVars[$filename] = parse_ini_file($filename);
                 }
             }
         }
         // Find forbidden/obsolete variables.
-        if (!empty($setEnvVariables)) {
-            foreach ($setEnvVariables as $key => $envVariables) {
-                $this->findForbiddenVariables($key, $envVariables);
+        if (!empty($setEnvVars)) {
+            foreach ($setEnvVars as $key => $envVars) {
+                $this->findForbiddenVariables($key, $envVars, $forbiddenVars);
             }
         }
 
@@ -271,14 +281,12 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Find forbidden/obsolete variables in config files.
      */
-    protected function findForbiddenVariables(string $file, array $envVariables)
+    protected function findForbiddenVariables(string $file, array $envVars, array $forbiddenVars)
     {
-        // Get forbidden/obsolete vars from config.
-        $vars = $this->getConfig()->get('toolkit.components.docker_compose.environment_variables.forbidden');
-        foreach ($vars as $varName) {
-            if (array_key_exists($varName, $envVariables)) {
+        foreach ($forbiddenVars as $varName) {
+            if (array_key_exists($varName, $envVars)) {
                 $this->dockerComposeFailed = true;
-                $this->io->error('Fiorbidden environmental variable detected in ' . $file . ' file: ' . $varName . '. Please remove it.');
+                $this->io->error('Fiorbidden environment variable detected in ' . $file . ' file: ' . $varName . '. Please remove it.');
             }
         }
     }
