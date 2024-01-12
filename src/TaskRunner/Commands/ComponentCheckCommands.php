@@ -233,23 +233,18 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Validate docker-compose.yml.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function componentDockerCompose()
     {
-        // Get forbidden/obsolete vars from config.
-        $forbiddenVars = $this->getConfig()->get('toolkit.components.docker_compose.environment_variables.forbidden');
-        // Check if forbidden env variables are not already here.
-        foreach ($forbiddenVars as $varName) {
-            if (getenv($varName) !== false) {
-                $this->dockerComposeFailed = true;
-                $this->io->error('Fiorbidden environment variable "' . $varName . '" detected in the container. Please locate the source of that variable and remove it.');
-            }
-        }
-
-        // Files that contain env variables.
         $fileNames = [self::DC_YML_FILE, '.env', '.env.dist'];
         $setEnvVars = [];
-        // Parse files content.
+        // Get forbidden/obsolete vars from config.
+        $forbiddenVars = $this->getConfig()->get('toolkit.components.docker_compose.environment_variables.forbidden');
+
+        // Parse files that contain env variables into sets.
         foreach ($fileNames as $filename) {
             if (is_file($filename)) {
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
@@ -259,16 +254,27 @@ class ComponentCheckCommands extends AbstractCommands
                     if (!empty($setEnvVars[$filename]['services']['web']['environment'])) {
                         $setEnvVars[$filename] = $setEnvVars[$filename]['services']['web']['environment'];
                     }
-                }
-                else {
+                } else {
                     $setEnvVars[$filename] = parse_ini_file($filename);
                 }
             }
         }
-        // Find forbidden/obsolete variables.
-        if (!empty($setEnvVars)) {
-            foreach ($setEnvVars as $key => $envVars) {
-                $this->findForbiddenVariables($key, $envVars, $forbiddenVars);
+
+        // Detect forbidden variables.
+        foreach ($forbiddenVars as $varName) {
+            // Check if forbidden env variables are not already here.
+            if (getenv($varName) !== false) {
+                $this->dockerComposeFailed = true;
+                $this->io->error('Fiorbidden environment variable "' . $varName . '" detected in the container. Please locate the source of that variable and remove it.');
+            }
+            // Find forbidden/obsolete variables in parsed files.
+            if (!empty($setEnvVars)) {
+                foreach ($setEnvVars as $filename => $envVars) {
+                    if (array_key_exists($varName, $envVars)) {
+                        $this->dockerComposeFailed = true;
+                        $this->io->error('Fiorbidden environment variable detected in ' . $filename . ' file: ' . $varName . '. Please remove it.');
+                    }
+                }
             }
         }
 
@@ -276,19 +282,6 @@ class ComponentCheckCommands extends AbstractCommands
             $this->say('Docker compose validation check passed.');
         }
         $this->io->newLine();
-    }
-
-    /**
-     * Find forbidden/obsolete variables in config files.
-     */
-    protected function findForbiddenVariables(string $file, array $envVars, array $forbiddenVars)
-    {
-        foreach ($forbiddenVars as $varName) {
-            if (array_key_exists($varName, $envVars)) {
-                $this->dockerComposeFailed = true;
-                $this->io->error('Fiorbidden environment variable detected in ' . $file . ' file: ' . $varName . '. Please remove it.');
-            }
-        }
     }
 
     /**
