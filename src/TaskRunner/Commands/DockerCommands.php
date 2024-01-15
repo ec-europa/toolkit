@@ -16,7 +16,6 @@ use Symfony\Component\Yaml\Yaml;
 final class DockerCommands extends AbstractCommands
 {
     private const OPTS_YML_FILE = '.opts.yml';
-    private const DC_YML_FILE = 'docker-compose.yml';
     private const DC_YML_FILE_PREVIOUS = 'docker-compose.yml.prev';
     private const DEV_SUFFIX = '-dev';
 
@@ -54,8 +53,8 @@ final class DockerCommands extends AbstractCommands
             $this->say("The file $dockerCompose was not found, creating it.");
             $this->copyDockerComposeDefaultToProject();
         }
-
         $dcContent = Yaml::parseFile(self::DC_YML_FILE);
+
         $dcServiceImages = $this->getServicesImagesFromDockerCompose($dcContent);
 
         $websiteRequirements = $this->getWebsiteRequirements();
@@ -76,7 +75,7 @@ final class DockerCommands extends AbstractCommands
 
         if ($dcServiceImages === $finalServicesImages) {
             $this->writeWarningMessages($warningMessages);
-            $this->writeln("<info>$dockerCompose file is already updated.</info>");
+            $this->writeln("<info>" . self::DC_YML_FILE . " file is already updated.</info>");
 
             return ResultData::EXITCODE_OK;
         }
@@ -84,7 +83,7 @@ final class DockerCommands extends AbstractCommands
         $this->backupDockerComposeFile();
         $this->updateDockerComposeFile($dcContent, $finalServicesImages);
         $this->writeWarningMessages($warningMessages);
-        $this->writeln("<info>$dockerCompose file updated with success.</info>");
+        $this->writeln("<info>" . self::DC_YML_FILE . " file updated with success.</info>");
 
         return ResultData::EXITCODE_OK;
     }

@@ -34,6 +34,12 @@ toolkit:
       check: true
     composer:
       drupal_patches: true
+    docker_compose:
+      environment_variables:
+        forbidden:
+          - ASDA_USER
+          - ASDA_PASSWORD
+          - QA_API_BASIC_AUTH
   deploy:
     config_file: 'config/sync/core.extension.yml'
     sequence_file: '.opts.yml'

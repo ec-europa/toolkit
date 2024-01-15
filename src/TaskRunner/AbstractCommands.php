@@ -20,6 +20,8 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     use \EcEuropa\Toolkit\Task\File\Tasks;
     use \EcEuropa\Toolkit\Task\Command\Tasks;
 
+    protected const DC_YML_FILE = 'docker-compose.yml';
+
     /**
      * Path to YAML configuration file containing command defaults.
      *
@@ -130,21 +132,9 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     }
 
     /**
-     * Returns the composer.json parsed content.
+     * Returns the JSON parsed content.
      */
-    public function getComposerJson(string $filename = 'composer.json'): array
-    {
-        $file = $this->getWorkingDir() . '/' . $filename;
-        if (!file_exists($file)) {
-            throw new \Exception("The '$file' was not found.");
-        }
-        return (array) json_decode(file_get_contents($file), true);
-    }
-
-    /**
-     * Returns the composer.lock parsed content.
-     */
-    public function getComposerLock(string $filename = 'composer.lock'): array
+    public function getJson(string $filename): array
     {
         $file = $this->getWorkingDir() . '/' . $filename;
         if (!file_exists($file)) {

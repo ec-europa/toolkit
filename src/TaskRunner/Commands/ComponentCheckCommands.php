@@ -68,7 +68,7 @@ class ComponentCheckCommands extends AbstractCommands
         $this->io = $io;
         $this->prepareSkips();
 
-        $this->composerLock = $this->getComposerLock();
+        $this->composerLock = $this->getJson('composer.lock');
         if (!isset($this->composerLock['packages'])) {
             $io->error('No packages found in the composer.lock file.');
             return 1;
@@ -200,6 +200,9 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
 
+        // Forbid deprecated environment variables.
+        $this->validateEnvironmentVariables();
+
         if (!$this->configurationFailed) {
             $this->say('Project configuration validation check passed.');
         }
@@ -214,7 +217,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentComposer()
     {
-        $composerJson = $this->getComposerJson();
+        $composerJson = $this->getJson('composer.json');
 
         // Check packages used in dev version.
         foreach ($this->composerLock['packages'] as $package) {
@@ -259,6 +262,54 @@ class ComponentCheckCommands extends AbstractCommands
             $this->say('Composer validation check passed.');
         }
         $this->io->newLine();
+    }
+
+    /**
+     * Component Configuration Helper - Validate environment variables.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    protected function validateEnvironmentVariables()
+    {
+        $fileNames = [self::DC_YML_FILE, '.env', '.env.dist'];
+        $setEnvVars = [];
+        // Get forbidden/obsolete vars from config.
+        $forbiddenVars = $this->getConfig()->get('toolkit.components.docker_compose.environment_variables.forbidden');
+
+        // Parse files that contain env variables into sets.
+        foreach ($fileNames as $filename) {
+            if (is_file($filename)) {
+                $ext = pathinfo($filename, PATHINFO_EXTENSION);
+                if ($ext && $ext == 'yml') {
+                    $setEnvVars[$filename] = Yaml::parseFile($filename);
+                    // TODO: If service "web" has different name it will not work. Think of something dynamic.
+                    if (!empty($setEnvVars[$filename]['services']['web']['environment'])) {
+                        $setEnvVars[$filename] = $setEnvVars[$filename]['services']['web']['environment'];
+                    }
+                } else {
+                    $setEnvVars[$filename] = parse_ini_file($filename);
+                }
+            }
+        }
+
+        // Detect forbidden variables.
+        foreach ($forbiddenVars as $varName) {
+            // Check if forbidden env variables are not already here.
+            if (getenv($varName) !== false) {
+                $this->configurationFailed = true;
+                $this->io->error('Fiorbidden environment variable "' . $varName . '" detected in the container. Please locate the source of that variable and remove it.');
+            }
+            // Find forbidden/obsolete variables in parsed files.
+            if (!empty($setEnvVars)) {
+                foreach ($setEnvVars as $filename => $envVars) {
+                    if (array_key_exists($varName, $envVars)) {
+                        $this->configurationFailed = true;
+                        $this->io->error('Fiorbidden environment variable detected in ' . $filename . ' file: ' . $varName . '. Please remove it.');
+                    }
+                }
+            }
+        }
     }
 
     /**
