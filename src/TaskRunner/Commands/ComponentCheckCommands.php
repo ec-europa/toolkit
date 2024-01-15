@@ -188,13 +188,10 @@ class ComponentCheckCommands extends AbstractCommands
         // Detect forbidden files in project.
         foreach ($files as $file) {
             // Check if the file must be forbidden under the condition.
-            if (!empty($file['condition_callback'])) {
-                list($class, $method) = explode('::', $file['condition_callback']);
-                if (class_exists($class) && method_exists($class, $method)) {
-                    // Invoke the callback method and if the condition is not met then don't forbid the file.
-                    if ((new $class())->$method() === false) {
-                        continue;
-                    }
+            if (!empty($file['condition_callback']) && is_callable($file['condition_callback'])) {
+                // Invoke the callback method and if the condition is not met then don't forbid the file.
+                if (call_user_func_array($file['condition_callback'], []) === false) {
+                    continue;
                 }
             }
             if (file_exists($this->getWorkingDir() . '/' . $file['name'])) {
