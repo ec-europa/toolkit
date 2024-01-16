@@ -28,6 +28,12 @@ toolkit:
       check: true
     composer:
       drupal_patches: true
+      scripts:
+        forbidden:
+          post-root-package-install:
+            - "Subsite\\composer\\SetupWizard::setup"
+          post-install-cmd:
+            - "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
   deploy:
     sequence_file: '.opts.yml'
     sequence_key: 'upgrade_commands'
