@@ -102,7 +102,6 @@ class InstallCommands extends AbstractCommands
      *
      * @option sequence-file The file that holds the deployment sequence.
      * @option sequence-key  The key under which the commands are defined.
-     * @option config-file   The config file that triggers the config import.
      *
      * @return \Robo\Collection\CollectionBuilder
      *   Collection builder.
@@ -110,12 +109,10 @@ class InstallCommands extends AbstractCommands
     public function toolkitRunDeploy(array $options = [
         'sequence-file' => InputOption::VALUE_REQUIRED,
         'sequence-key' => InputOption::VALUE_REQUIRED,
-        'config-file' => InputOption::VALUE_REQUIRED,
     ])
     {
         $tasks = [];
 
-        $has_config = file_exists($options['config-file']);
         $has_sequence = file_exists($options['sequence-file']);
 
         if ($has_sequence) {
@@ -142,19 +139,7 @@ class InstallCommands extends AbstractCommands
 
         // Default deployment sequence.
         $drush_bin = $this->getBin('drush');
-        $tasks[] = $this->taskExec($drush_bin)->arg('cache:rebuild');
-        $tasks[] = $this->taskExec($drush_bin)->args(['state:set', 'system.maintenance_mode', 1])
-            ->option('input-format', 'integer', '=')
-            ->rawArg('-y');
-        $tasks[] = $this->taskExec($drush_bin)->arg('updatedb')->option('no-post-updates')->rawArg('-y');
-        $tasks[] = $this->taskExec($drush_bin)->arg('updatedb')->rawArg('-y');
-        if ($has_config) {
-            $tasks[] = $this->taskExec($drush_bin)->arg('config:import')->rawArg('-y');
-        }
-        $tasks[] = $this->taskExec($drush_bin)->args(['state:set', 'system.maintenance_mode', 0])
-            ->option('input-format', 'integer', '=')
-            ->rawArg('-y');
-        $tasks[] = $this->taskExec($drush_bin)->arg('cache:rebuild');
+        $tasks[] = $this->taskExec($drush_bin)->arg('deploy')->rawArg('-y');
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }

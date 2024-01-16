@@ -54,40 +54,11 @@
     - contains: |
         >  Sequence file '.opts.yml' does not exist, running default set of deployment commands.
         [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('cache:rebuild')
-        [Simulator] Running ./vendor/bin/drush 'cache:rebuild'
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->args(array (
-            0 => 'state:set',
-            1 => 'system.maintenance_mode',
-            2 => 1,
-          ))
-          ->option('input-format', 'integer', '=')
+          ->arg('deploy')
           ->rawArg('-y')
-        [Simulator] Running ./vendor/bin/drush 'state:set' system.maintenance_mode 1 --input-format=integer -y
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('updatedb')
-          ->option('no-post-updates')
-          ->rawArg('-y')
-        [Simulator] Running ./vendor/bin/drush updatedb --no-post-updates -y
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('updatedb')
-          ->rawArg('-y')
-        [Simulator] Running ./vendor/bin/drush updatedb -y
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->args(array (
-            0 => 'state:set',
-            1 => 'system.maintenance_mode',
-            2 => 0,
-          ))
-          ->option('input-format', 'integer', '=')
-          ->rawArg('-y')
-        [Simulator] Running ./vendor/bin/drush 'state:set' system.maintenance_mode 0 --input-format=integer -y
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('cache:rebuild')
-        [Simulator] Running ./vendor/bin/drush 'cache:rebuild'
+        [Simulator] Running ./vendor/bin/drush deploy -y
 
-- command: 'toolkit:run-deploy --config-file=.opts.yml'
+- command: 'toolkit:run-deploy'
   configuration: []
   resources:
     - from: 'sample-opts.yml'

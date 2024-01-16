@@ -35,7 +35,6 @@ toolkit:
           post-install-cmd:
             - "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
   deploy:
-    config_file: 'config/sync/core.extension.yml'
     sequence_file: '.opts.yml'
     sequence_key: 'upgrade_commands'
   install:
