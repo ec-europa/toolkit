@@ -190,7 +190,7 @@ class ComponentCheckCommands extends AbstractCommands
             // Check if the file must be forbidden under the condition.
             if (!empty($file['condition_callback']) && is_callable($file['condition_callback'])) {
                 // Invoke the callback method and if the condition is not met then don't forbid the file.
-                if (call_user_func_array($file['condition_callback'], []) === false) {
+                if (call_user_func($file['condition_callback']) === false) {
                     continue;
                 }
             }
