@@ -286,7 +286,7 @@ class ComponentCheckCommands extends AbstractCommands
                     $parsed_yaml = Yaml::parseFile($filename);
                     // Loop through all the services looking for environment variables.
                     if (!empty($parsed_yaml['services'])) {
-                        foreach($parsed_yaml['services'] as $service_name => $service_settings) {
+                        foreach ($parsed_yaml['services'] as $service_name => $service_settings) {
                             if (!empty($service_settings['environment'])) {
                                 // Add environment variables set for check.
                                 $envVarsSet[$filename . '_' . $service_name] = $service_settings['environment'];
