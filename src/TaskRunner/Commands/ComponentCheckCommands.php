@@ -273,7 +273,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected function validateEnvironmentVariables()
     {
         $fileNames = [self::DC_YML_FILE, '.env', '.env.dist'];
-        $setEnvVars = [];
+        $envVarsSet = [];
         // Get forbidden/obsolete vars from config.
         $forbiddenVars = $this->getConfig()->get('toolkit.components.docker_compose.environment_variables.forbidden');
 
@@ -281,14 +281,22 @@ class ComponentCheckCommands extends AbstractCommands
         foreach ($fileNames as $filename) {
             if (is_file($filename)) {
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
+                // Yamls.
                 if ($ext && $ext == 'yml') {
-                    $setEnvVars[$filename] = Yaml::parseFile($filename);
-                    // TODO: If service "web" has different name it will not work. Think of something dynamic.
-                    if (!empty($setEnvVars[$filename]['services']['web']['environment'])) {
-                        $setEnvVars[$filename] = $setEnvVars[$filename]['services']['web']['environment'];
+                    $parsed_yaml = Yaml::parseFile($filename);
+                    // Loop through all the services looking for environment variables.
+                    if (!empty($parsed_yaml['services'])) {
+                        foreach($parsed_yaml['services'] as $service_name => $service_settings) {
+                            if (!empty($service_settings['environment'])) {
+                                // Add environment variables set for check.
+                                $envVarsSet[$filename . '_' . $service_name] = $service_settings['environment'];
+                            }
+                        }
                     }
+                // Ini files.
                 } else {
-                    $setEnvVars[$filename] = parse_ini_file($filename);
+                    // Add environment variables set for check.
+                    $envVarsSet[$filename] = parse_ini_file($filename);
                 }
             }
         }
@@ -301,8 +309,8 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->io->error('Fiorbidden environment variable "' . $varName . '" detected in the container. Please locate the source of that variable and remove it.');
             }
             // Find forbidden/obsolete variables in parsed files.
-            if (!empty($setEnvVars)) {
-                foreach ($setEnvVars as $filename => $envVars) {
+            if (!empty($envVarsSet)) {
+                foreach ($envVarsSet as $filename => $envVars) {
                     if (array_key_exists($varName, $envVars)) {
                         $this->configurationFailed = true;
                         $this->io->error('Fiorbidden environment variable detected in ' . $filename . ' file: ' . $varName . '. Please remove it.');
