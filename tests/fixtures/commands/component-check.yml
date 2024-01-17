@@ -2,8 +2,6 @@
   configuration: [ ]
   tokens: ''
   resources:
-    - from: 'sample-docker-default.yml'
-      to: 'docker-compose.yml'
     - from: sample-composer.lock
       to: composer.lock
     - file: composer.json
@@ -140,8 +138,6 @@
           check: false
   tokens: ''
   resources:
-    - from: 'sample-docker-default.yml'
-      to: 'docker-compose.yml'
     - touch: composer.json
     - from: sample-composer.lock
       to: composer.lock
@@ -158,8 +154,6 @@
           check: false
   tokens: '[skip_insecure][skip_d9c]'
   resources:
-    - from: 'sample-docker-default.yml'
-      to: 'docker-compose.yml'
     - touch: composer.json
     - from: sample-composer.lock
       to: composer.lock
@@ -174,8 +168,6 @@
         config_file: core.extensions-good.yml
   tokens: ''
   resources:
-    - from: 'sample-docker-default.yml'
-      to: 'docker-compose.yml'
     - from: sample-core.extensions-good.yml
       to: core.extensions-good.yml
     - file: composer.json
@@ -198,8 +190,6 @@
   configuration: [ ]
   tokens: ''
   resources:
-    - from: 'sample-docker-default.yml'
-      to: 'docker-compose.yml'
     - touch: composer.json
     - from: sample-internal-dependency.lock
       to: composer.lock
@@ -210,8 +200,6 @@
   configuration: [ ]
   tokens: ''
   resources:
-    - from: 'sample-docker-default.yml'
-      to: 'docker-compose.yml'
     - file: composer.json
       content: |
         { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
@@ -232,8 +220,6 @@
   configuration: [ ]
   tokens: ''
   resources:
-    - from: 'sample-docker-default.yml'
-      to: 'docker-compose.yml'
     - file: composer.json
       content: |
         { "extra": { "enable-patching": true } }
@@ -248,8 +234,6 @@
   configuration: [ ]
   tokens: ''
   resources:
-    - from: 'sample-docker-default.yml'
-      to: 'docker-compose.yml'
     - file: composer.json
       content: |
         { "extra": { "enable-patching": false, "composer-exit-on-patch-failure": true } }
@@ -264,8 +248,6 @@
   configuration: [ ]
   tokens: ''
   resources:
-    - from: 'sample-docker-default.yml'
-      to: 'docker-compose.yml'
     - file: composer.json
       content: |
         { "extra": { "composer-exit-on-patch-failure": false } }
@@ -280,8 +262,6 @@
   configuration: [ ]
   tokens: ''
   resources:
-    - from: 'sample-docker-default.yml'
-      to: 'docker-compose.yml'
     - file: composer.json
       content: |
         { "extra": { "composer-exit-on-patch-failure": true } }
@@ -300,8 +280,6 @@
           drupal_patches: true
   tokens: ''
   resources:
-    - from: 'sample-docker-default.yml'
-      to: 'docker-compose.yml'
     - file: composer.lock
       content: |
         { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
@@ -336,8 +314,6 @@
           drupal_patches: false
   tokens: ''
   resources:
-    - from: 'sample-docker-default.yml'
-      to: 'docker-compose.yml'
     - file: composer.lock
       content: |
         { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
