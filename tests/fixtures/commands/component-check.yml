@@ -72,7 +72,7 @@
         Checking Configuration components.
         ==================================
 
-        >  Project configuration validation check passed.
+        >  Project configuration check passed.
 
 
         Results:
@@ -88,7 +88,7 @@
          Evaluation module check                  failed
          Development module check                 passed
          Composer validation check                passed
-         Project configuration validation check   passed
+         Project configuration check   passed
         ---------------------------------------- --------
 
         [ERROR] Failed the components check, please verify the report and update the

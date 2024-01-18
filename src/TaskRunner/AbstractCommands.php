@@ -20,8 +20,6 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     use \EcEuropa\Toolkit\Task\File\Tasks;
     use \EcEuropa\Toolkit\Task\Command\Tasks;
 
-    protected const DC_YML_FILE = 'docker-compose.yml';
-
     /**
      * Path to YAML configuration file containing command defaults.
      *

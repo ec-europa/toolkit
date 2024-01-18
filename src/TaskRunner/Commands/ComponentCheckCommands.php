@@ -204,7 +204,7 @@ class ComponentCheckCommands extends AbstractCommands
         $this->validateEnvironmentVariables();
 
         if (!$this->configurationFailed) {
-            $this->say('Project configuration validation check passed.');
+            $this->say('Project configuration check passed.');
         }
         $this->io->newLine();
     }
@@ -293,7 +293,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function validateEnvironmentVariables()
     {
-        $fileNames = [self::DC_YML_FILE, '.env', '.env.dist'];
+        $fileNames = [DockerCommands::DC_YML_FILE, '.env', '.env.dist'];
         $envVarsSet = [];
         // Get forbidden/obsolete vars from config.
         $forbiddenVars = $this->getConfig()->get('toolkit.components.docker_compose.environment_variables.forbidden');
@@ -327,14 +327,14 @@ class ComponentCheckCommands extends AbstractCommands
             // Check if forbidden env variables are not already here.
             if (getenv($varName) !== false) {
                 $this->configurationFailed = true;
-                $this->io->error('Fiorbidden environment variable "' . $varName . '" detected in the container. Please locate the source of that variable and remove it.');
+                $this->io->error('Forbidden environment variable "' . $varName . '" detected in the container. Please locate the source of that variable and remove it.');
             }
             // Find forbidden/obsolete variables in parsed files.
             if (!empty($envVarsSet)) {
                 foreach ($envVarsSet as $filename => $envVars) {
                     if (array_key_exists($varName, $envVars)) {
                         $this->configurationFailed = true;
-                        $this->io->error('Fiorbidden environment variable detected in ' . $filename . ' file: ' . $varName . '. Please remove it.');
+                        $this->io->error('Forbidden environment variable detected in ' . $filename . ' file: ' . $varName . '. Please remove it.');
                     }
                 }
             }
@@ -363,7 +363,7 @@ class ComponentCheckCommands extends AbstractCommands
             ['Evaluation module check' => $this->getFailedOrPassed($this->evaluationFailed)],
             ['Development module check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
             ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
-            ['Project configuration validation check' => $this->getFailedOrPassed($this->configurationFailed)],
+            ['Project configuration check' => $this->getFailedOrPassed($this->configurationFailed)],
         );
     }
 
