@@ -631,8 +631,7 @@ class ComponentCheckCommands extends AbstractCommands
                         $item['existing_version'],
                         $item['recommended']
                     ));
-                }
-                else {
+                } else {
                     $this->writeln(sprintf(
                         "Package %s is no longer supported, and is no longer available for download. Disabling everything included by this project is strongly recommended!",
                         $item['name']
