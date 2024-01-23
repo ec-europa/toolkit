@@ -713,12 +713,19 @@ class ComponentCheckCommands extends AbstractCommands
         } else {
             $this->unsupportedFailed = true;
             foreach ($unsupported as $item) {
-                $this->writeln(sprintf(
-                    "Package %s with version installed %s is not supported. Update to the recommended version %s",
-                    $item['name'],
-                    $item['existing_version'],
-                    $item['recommended']
-                ));
+                if (array_key_exists('recommended', $item)) {
+                    $this->writeln(sprintf(
+                        "Package %s with version installed %s is not supported. Update to the recommended version %s",
+                        $item['name'],
+                        $item['existing_version'],
+                        $item['recommended']
+                    ));
+                } else {
+                    $this->writeln(sprintf(
+                        "Package %s is no longer supported, and is no longer available for download. Disabling everything included by this project is strongly recommended!",
+                        $item['name']
+                    ));
+                }
             }
         }
 
