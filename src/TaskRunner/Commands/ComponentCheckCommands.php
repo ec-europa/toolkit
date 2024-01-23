@@ -28,6 +28,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $abandonedFailed = false;
     protected bool $unsupportedFailed = false;
     protected bool $composerFailed = false;
+    protected bool $configurationFailed = false;
     protected bool $devCompRequireFailed = false;
     protected bool $skipOutdated = false;
     protected bool $skipAbandoned = false;
@@ -51,6 +52,7 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function componentCheck(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
@@ -66,7 +68,7 @@ class ComponentCheckCommands extends AbstractCommands
         $this->io = $io;
         $this->prepareSkips();
 
-        $this->composerLock = $this->getComposerLock();
+        $this->composerLock = $this->getJson('composer.lock');
         if (!isset($this->composerLock['packages'])) {
             $io->error('No packages found in the composer.lock file.');
             return 1;
@@ -97,6 +99,7 @@ class ComponentCheckCommands extends AbstractCommands
             'Evaluation',
             'Development',
             'Composer',
+            'Configuration',
         ];
         foreach ($checks as $check) {
             $io->title("Checking $check components.");
@@ -114,6 +117,7 @@ class ComponentCheckCommands extends AbstractCommands
             $this->mandatoryFailed ||
             $this->devCompRequireFailed ||
             $this->composerFailed ||
+            $this->configurationFailed ||
             (!$this->skipRecommended && $this->recommendedFailed) ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipAbandoned && $this->abandonedFailed) ||
@@ -173,6 +177,39 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
+     * Validate project configuration.
+     */
+    protected function componentConfiguration()
+    {
+        // Make sure forbidden files do not exist.
+        // (because of deprecation or another reason)
+        // Get forbidden/deprecated files from configuration.
+        $files = $this->getConfig()->get('toolkit.forbidden_files');
+        // Detect forbidden files in project.
+        foreach ($files as $file) {
+            // Check if the file must be forbidden under the condition.
+            if (!empty($file['condition_callback']) && is_callable($file['condition_callback'])) {
+                // Invoke the callback method and if the condition is not met then don't forbid the file.
+                if (call_user_func($file['condition_callback']) === false) {
+                    continue;
+                }
+            }
+            if (file_exists($this->getWorkingDir() . '/' . $file['name'])) {
+                $this->configurationFailed = true;
+                $this->io->error($file['error']);
+            }
+        }
+
+        // Forbid deprecated environment variables.
+        $this->validateEnvironmentVariables();
+
+        if (!$this->configurationFailed) {
+            $this->say('Project configuration check passed.');
+        }
+        $this->io->newLine();
+    }
+
+    /**
      * Validate composer packages.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -180,7 +217,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentComposer()
     {
-        $composerJson = $this->getComposerJson();
+        $composerJson = $this->getJson('composer.json');
 
         // Check packages used in dev version.
         foreach ($this->composerLock['packages'] as $package) {
@@ -249,6 +286,62 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
+     * Component Configuration Helper - Validate environment variables.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    protected function validateEnvironmentVariables()
+    {
+        $fileNames = [DockerCommands::DC_YML_FILE, '.env', '.env.dist'];
+        $envVarsSet = [];
+        // Get forbidden/obsolete vars from config.
+        $forbiddenVars = $this->getConfig()->get('toolkit.components.docker_compose.environment_variables.forbidden');
+
+        // Parse files that contain env variables into sets.
+        foreach ($fileNames as $filename) {
+            if (is_file($filename)) {
+                $ext = pathinfo($filename, PATHINFO_EXTENSION);
+                // Yamls.
+                if ($ext && $ext == 'yml') {
+                    $parsed_yaml = Yaml::parseFile($filename);
+                    // Loop through all the services looking for environment variables.
+                    if (!empty($parsed_yaml['services'])) {
+                        foreach ($parsed_yaml['services'] as $service_name => $service_settings) {
+                            if (!empty($service_settings['environment'])) {
+                                // Add environment variables set for check.
+                                $envVarsSet[$filename . '_' . $service_name] = $service_settings['environment'];
+                            }
+                        }
+                    }
+                // Ini files.
+                } else {
+                    // Add environment variables set for check.
+                    $envVarsSet[$filename] = parse_ini_file($filename);
+                }
+            }
+        }
+
+        // Detect forbidden variables.
+        foreach ($forbiddenVars as $varName) {
+            // Check if forbidden env variables are not already here.
+            if (getenv($varName) !== false) {
+                $this->configurationFailed = true;
+                $this->io->error('Forbidden environment variable "' . $varName . '" detected in the container. Please locate the source of that variable and remove it.');
+            }
+            // Find forbidden/obsolete variables in parsed files.
+            if (!empty($envVarsSet)) {
+                foreach ($envVarsSet as $filename => $envVars) {
+                    if (array_key_exists($varName, $envVars)) {
+                        $this->configurationFailed = true;
+                        $this->io->error('Forbidden environment variable detected in ' . $filename . ' file: ' . $varName . '. Please remove it.');
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Print the component check results.
      */
     protected function printComponentResults(ConsoleIO $io)
@@ -270,6 +363,7 @@ class ComponentCheckCommands extends AbstractCommands
             ['Evaluation module check' => $this->getFailedOrPassed($this->evaluationFailed)],
             ['Development module check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
             ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
+            ['Project configuration check' => $this->getFailedOrPassed($this->configurationFailed)],
         );
     }
 
@@ -366,27 +460,22 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentMandatory()
     {
-        $enabledPackages = $mandatoryPackages = [];
+        $enabledModules = $mandatoryPackages = [];
         if (!$this->isWebsiteInstalled()) {
             $config_file = $this->getConfig()->get('toolkit.clean.config_file');
             $this->writeln("Website not installed, using $config_file file.");
             if (file_exists($config_file)) {
                 $config = Yaml::parseFile($config_file);
-                $enabledPackages = array_keys(array_merge($config['module'] ?? [], $config['theme'] ?? []));
+                $enabledModules = array_keys(array_merge($config['module'] ?? [], $config['theme'] ?? []));
             } else {
                 $this->writeln("Config file not found at $config_file.");
             }
         } else {
-            // Get enabled packages.
-            $result = $this->taskExec($this->getBin('drush') . ' pm-list --fields=status --format=json')
+            // Get enabled modules.
+            $result = $this->taskExec($this->getBin('drush') . ' pm-list --status=enabled --format=json')
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                 ->run()->getMessage();
-            $projPackages = json_decode($result, true);
-            if (!empty($projPackages)) {
-                $enabledPackages = array_keys(array_filter($projPackages, function ($item) {
-                    return $item['status'] === 'Enabled';
-                }));
-            }
+            $enabledModules = array_keys(json_decode($result, true));
         }
 
         // Get mandatory packages.
@@ -396,7 +485,7 @@ class ComponentCheckCommands extends AbstractCommands
             }));
         }
 
-        $diffMandatory = array_diff(array_column($mandatoryPackages, 'machine_name'), $enabledPackages);
+        $diffMandatory = array_diff(array_column($mandatoryPackages, 'machine_name'), $enabledModules);
         if (!empty($diffMandatory)) {
             foreach ($diffMandatory as $notPresent) {
                 $index = array_search($notPresent, array_column($mandatoryPackages, 'machine_name'));

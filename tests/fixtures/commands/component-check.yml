@@ -69,20 +69,27 @@
         >  Composer validation check passed.
 
 
+        Checking Configuration components.
+        ==================================
+
+        >  Project configuration check passed.
+
+
         Results:
         ========
 
-        --------------------------- --------
-         Mandatory module check      failed
-         Recommended module check    passed
-         Insecure module check       passed
-         Outdated module check       passed
-         Abandoned module check      passed
-         Unsupported module check    passed
-         Evaluation module check     failed
-         Development module check    passed
-         Composer validation check   passed
-        --------------------------- --------
+        ----------------------------- --------
+         Mandatory module check        failed
+         Recommended module check      passed
+         Insecure module check         passed
+         Outdated module check         passed
+         Abandoned module check        passed
+         Unsupported module check      passed
+         Evaluation module check       failed
+         Development module check      passed
+         Composer validation check     passed
+         Project configuration check   passed
+        ----------------------------- --------
 
         [ERROR] Failed the components check, please verify the report and update the
         project.
@@ -135,9 +142,9 @@
     - from: sample-composer.lock
       to: composer.lock
   expectations:
-    - string_contains: Abandoned module check      passed (Skipping)
-    - string_contains: Outdated module check       passed (Skipping)
-    - string_contains: Unsupported module check    passed (Skipping)
+    - string_contains: Abandoned module check        passed (Skipping)
+    - string_contains: Outdated module check         passed (Skipping)
+    - string_contains: Unsupported module check      passed (Skipping)
 
 - command: 'toolkit:component-check --test-command'
   configuration:
@@ -151,8 +158,8 @@
     - from: sample-composer.lock
       to: composer.lock
   expectations:
-    - string_contains: Insecure module check       passed (Skipping)
-    - string_contains: Outdated module check       passed (Skipping)
+    - string_contains: Insecure module check         passed (Skipping)
+    - string_contains: Outdated module check         passed (Skipping)
 
 - command: 'toolkit:component-check'
   configuration:
@@ -169,15 +176,15 @@
     - from: sample-composer.lock
       to: composer.lock
   expectations:
-    - string_contains: Mandatory module check      passed
-    - string_contains: Recommended module check    passed
-    - string_contains: Insecure module check       passed
-    - string_contains: Outdated module check       passed
-    - string_contains: Abandoned module check      passed
-    - string_contains: Unsupported module check    passed
-    - string_contains: Evaluation module check     failed
-    - string_contains: Development module check    passed
-    - string_contains: Composer validation check   passed
+    - string_contains: Mandatory module check        passed
+    - string_contains: Recommended module check      passed
+    - string_contains: Insecure module check         passed
+    - string_contains: Outdated module check         passed
+    - string_contains: Abandoned module check        passed
+    - string_contains: Unsupported module check      passed
+    - string_contains: Evaluation module check       failed
+    - string_contains: Development module check      passed
+    - string_contains: Composer validation check     passed
 
 - command: 'toolkit:component-check'
   configuration: [ ]
@@ -187,7 +194,7 @@
     - from: sample-internal-dependency.lock
       to: composer.lock
   expectations:
-    - string_contains: Evaluation module check     passed
+    - string_contains: Evaluation module check       passed
 
 - command: 'toolkit:component-check'
   configuration: [ ]
@@ -207,7 +214,7 @@
     - string_contains: Package test/package:dev-1.0.0 cannot be used in dev version.
     - string_contains: Package test/package2:1.0.0-dev cannot be used in dev version.
     - not_string_contains: Package test/module:1.0.0-dev cannot be used in dev version.
-    - string_contains: Composer validation check   failed
+    - string_contains: Composer validation check     failed
 
 - command: 'toolkit:component-check'
   configuration: [ ]
@@ -221,7 +228,7 @@
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
     - string_contains: The composer property 'extra.enable-patching' cannot be set to true.
-    - string_contains: Composer validation check   failed
+    - string_contains: Composer validation check     failed
 
 - command: 'toolkit:component-check'
   configuration: [ ]
@@ -235,7 +242,7 @@
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
     - not_string_contains: extra.enable-patching
-    - string_contains: Composer validation check   passed
+    - string_contains: Composer validation check     passed
 
 - command: 'toolkit:component-check'
   configuration: [ ]
@@ -249,7 +256,7 @@
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
     - string_contains: The composer property 'extra.composer-exit-on-patch-failure' must be set to true.
-    - string_contains: Composer validation check   failed
+    - string_contains: Composer validation check     failed
 
 - command: 'toolkit:component-check'
   configuration: [ ]
@@ -263,7 +270,7 @@
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
     - not_string_contains: extra.composer-exit-on-patch-failure
-    - string_contains: Composer validation check   passed
+    - string_contains: Composer validation check     passed
 
 - command: 'toolkit:component-check'
   configuration:
@@ -297,7 +304,7 @@
     - not_string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
     - not_string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
     - not_string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
-    - string_contains: Composer validation check   passed
+    - string_contains: Composer validation check     passed
 
 - command: 'toolkit:component-check'
   configuration:
@@ -333,7 +340,7 @@
     - string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
     - string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
     - string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
-    - string_contains: Composer validation check   failed
+    - string_contains: Composer validation check     failed
 
 - command: 'toolkit:component-check'
   configuration:
@@ -456,3 +463,87 @@
     - not_string_contains: ./allowed-script-02.sh
     - string_contains: DrupalComposer\DrupalScaffold\Plugin::scaffold
     - string_contains: Subsite\composer\SetupWizard::setup
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "phpro/grumphp", "type": "composer-plugin", "version": "v2.4.0" }
+        ] }
+    - touch: composer.json
+    - touch: .env
+    - touch: grumphp.yml.dist
+    - touch: allowed-file.ext
+  expectations:
+    - not_string_contains: allowed-file.ext
+    - not_string_contains: grumphp.yml.dist file detected
+    - string_contains: .env file detected
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - touch: composer.json
+    - file: docker-compose.yml
+      content: |
+        services:
+          web:
+            environment:
+              NEXTCLOUD_USER:
+              NEXTCLOUD_PASS:
+              ASDA_USER:
+              ASDA_PASSWORD:
+              QA_API_BASIC_AUTH:
+  expectations:
+    - not_string_contains: NEXTCLOUD_USER
+    - not_string_contains: NEXTCLOUD_PASS
+    - string_contains: ASDA_USER
+    - string_contains: ASDA_PASSWORD
+    - string_contains: QA_API_BASIC_AUTH
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - touch: composer.json
+    - file: .env
+      content: |
+        NEXTCLOUD_USER=
+        NEXTCLOUD_PASS=
+        ASDA_USER=
+        ASDA_PASSWORD=
+        QA_API_BASIC_AUTH=
+  expectations:
+    - not_string_contains: NEXTCLOUD_USER
+    - not_string_contains: NEXTCLOUD_PASS
+    - string_contains: ASDA_USER
+    - string_contains: ASDA_PASSWORD
+    - string_contains: QA_API_BASIC_AUTH
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - touch: composer.json
+    - file: .env.dist
+      content: |
+        NEXTCLOUD_USER=
+        NEXTCLOUD_PASS=
+        ASDA_USER=
+        ASDA_PASSWORD=
+        QA_API_BASIC_AUTH=
+  expectations:
+    - not_string_contains: NEXTCLOUD_USER
+    - not_string_contains: NEXTCLOUD_PASS
+    - string_contains: ASDA_USER
+    - string_contains: ASDA_PASSWORD
+    - string_contains: QA_API_BASIC_AUTH
