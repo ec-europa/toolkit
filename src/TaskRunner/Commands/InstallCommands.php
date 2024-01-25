@@ -102,6 +102,9 @@ class InstallCommands extends AbstractCommands
      *
      * @option sequence-file The file that holds the deployment sequence.
      * @option sequence-key  The key under which the commands are defined.
+     * @option append        Execute commands from a subsection of 'append'.
+     *
+     * @aliases tk-deploy
      *
      * @return \Robo\Collection\CollectionBuilder
      *   Collection builder.
@@ -109,6 +112,7 @@ class InstallCommands extends AbstractCommands
     public function toolkitRunDeploy(array $options = [
         'sequence-file' => InputOption::VALUE_REQUIRED,
         'sequence-key' => InputOption::VALUE_REQUIRED,
+        'append' => InputOption::VALUE_REQUIRED,
     ])
     {
         $tasks = [];
@@ -119,9 +123,14 @@ class InstallCommands extends AbstractCommands
             $content = Yaml::parseFile($options['sequence-file']);
             $sequence = $content[$options['sequence-key']] ?? [];
             if (!empty($sequence)) {
-                $sequence = $sequence['default'] ?? $sequence;
+                $commands = $sequence['default'] ?? $sequence;
                 $this->say("Running custom deploy sequence '{$options['sequence-key']}' from sequence file '{$options['sequence-file']}'.");
-                foreach ($sequence as $command) {
+
+                // Append extra commands if requested.
+                if (!empty($options['append']) && !empty($sequence['append'][$options['append']])) {
+                    $commands = array_merge($commands, $sequence['append'][$options['append']]);
+                }
+                foreach ($commands as $command) {
                     // Only execute strings. Opts.yml also supports append and
                     // default array to append or override the default commands.
                     // @see: https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides

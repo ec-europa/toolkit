@@ -74,3 +74,44 @@
         [Simulator] Running ./vendor/bin/drush updatedb -y
         [Simulator] Simulating Exec('./vendor/bin/drush state:set system.maintenance_mode 0 ... t-format=integer -y')
         [Simulator] Running ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
+
+- command: 'toolkit:run-deploy --append=acceptance'
+  configuration: []
+  resources:
+    - from: 'sample-opts.yml'
+      to: '.opts.yml'
+  expectations:
+    - contains: |
+        >  Running custom deploy sequence 'upgrade_commands' from sequence file '.opts.yml'.
+        [Simulator] Simulating Exec('./vendor/bin/drush state:set system.maintenance_mode 1 ... t-format=integer -y')
+        [Simulator] Running ./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer -y
+        [Simulator] Simulating Exec('./vendor/bin/drush config:import -y')
+        [Simulator] Running ./vendor/bin/drush config:import -y
+        [Simulator] Simulating Exec('./vendor/bin/drush updatedb -y')
+        [Simulator] Running ./vendor/bin/drush updatedb -y
+        [Simulator] Simulating Exec('./vendor/bin/drush state:set system.maintenance_mode 0 ... t-format=integer -y')
+        [Simulator] Running ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
+        [Simulator] Simulating Exec('./vendor/bin/drush cache:rebuild acceptance')
+        [Simulator] Running ./vendor/bin/drush cache:rebuild acceptance
+
+- command: 'toolkit:run-deploy'
+  configuration:
+    toolkit:
+      deploy:
+        append: production
+  resources:
+    - from: 'sample-opts.yml'
+      to: '.opts.yml'
+  expectations:
+    - contains: |
+        >  Running custom deploy sequence 'upgrade_commands' from sequence file '.opts.yml'.
+        [Simulator] Simulating Exec('./vendor/bin/drush state:set system.maintenance_mode 1 ... t-format=integer -y')
+        [Simulator] Running ./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer -y
+        [Simulator] Simulating Exec('./vendor/bin/drush config:import -y')
+        [Simulator] Running ./vendor/bin/drush config:import -y
+        [Simulator] Simulating Exec('./vendor/bin/drush updatedb -y')
+        [Simulator] Running ./vendor/bin/drush updatedb -y
+        [Simulator] Simulating Exec('./vendor/bin/drush state:set system.maintenance_mode 0 ... t-format=integer -y')
+        [Simulator] Running ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
+        [Simulator] Simulating Exec('./vendor/bin/drush cache:rebuild production')
+        [Simulator] Running ./vendor/bin/drush cache:rebuild production

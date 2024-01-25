@@ -10,3 +10,4 @@ command:
       options:
         sequence-file: ${toolkit.deploy.sequence_file}
         sequence-key: ${toolkit.deploy.sequence_key}
+        append: ${toolkit.deploy.append}

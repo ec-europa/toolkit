@@ -57,6 +57,7 @@ toolkit:
   deploy:
     sequence_file: '.opts.yml'
     sequence_key: 'upgrade_commands'
+    append: ~
   install:
     clone:
       commands: [ ]
