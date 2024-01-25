@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit;
 
+use Composer\InstalledVersions;
+
 /**
  * Provides default Toolkit class.
  */
@@ -15,6 +17,11 @@ final class Toolkit
     public const VERSION = '10.7.0';
 
     /**
+     * The Toolkit repository.
+     */
+    public const REPOSITORY = 'ec-europa/toolkit';
+
+    /**
      * Returns the Toolkit root.
      *
      * @return string
@@ -22,7 +29,7 @@ final class Toolkit
      */
     public static function getToolkitRoot(): string
     {
-        return realpath(__DIR__ . '/../');
+        return realpath(InstalledVersions::getInstallPath(self::REPOSITORY));
     }
 
     /**
@@ -33,7 +40,7 @@ final class Toolkit
      */
     public static function getProjectRoot(): string
     {
-        return realpath(__DIR__ . '/../../../../');
+        return realpath(InstalledVersions::getRootPackage()['install_path']);
     }
 
     /**
