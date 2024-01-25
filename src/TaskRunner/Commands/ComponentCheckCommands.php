@@ -396,8 +396,8 @@ class ComponentCheckCommands extends AbstractCommands
         $packageVersion = in_array($packageVersion, $config->get('toolkit.invalid-versions')) ? $package['version'] : $packageVersion;
 
         // Define vars.
-        $message = FALSE;
-        $messageType = FALSE;
+        $message = false;
+        $messageType = false;
 
         // If module was not reviewed yet.
         if (!$hasBeenQaEd) {
@@ -761,7 +761,7 @@ class ComponentCheckCommands extends AbstractCommands
             if (in_array(explode('/', $package['name'])['0'], $vendorList)) {
                 $validateComponent = $this->validateComponent($package);
                 if ($validateComponent) {
-                  $groupComponents[$validateComponent['1']][] = $validateComponent['0'];
+                    $groupComponents[$validateComponent['1']][] = $validateComponent['0'];
                 }
             }
         }
