@@ -399,10 +399,15 @@ class ComponentCheckCommands extends AbstractCommands
         // Exclude invalid.
         $packageVersion = in_array($packageVersion, $config->get('toolkit.invalid-versions')) ? $package['version'] : $packageVersion;
 
+        // Define vars.
+        $message = FALSE;
+        $messageType = FALSE;
+
         // If module was not reviewed yet.
         if (!$hasBeenQaEd) {
-            $this->writeln("Package $packageName:$packageVersion has not been reviewed by QA.");
             $this->evaluationFailed = true;
+            $message = "Package $packageName:$packageVersion has not been reviewed by QA.";
+            $messageType = 'Packages not reviewed:';
         }
 
         // If module was rejected.
@@ -411,7 +416,8 @@ class ComponentCheckCommands extends AbstractCommands
             // Check if the module is allowed for this project id.
             $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
             if ($allowedInProject) {
-                $this->writeln("The package $packageName is authorised for the project $projectId");
+                $message = "The package $packageName is authorised for the project $projectId";
+                $messageType = 'Packages authorised:';
             }
 
             // Check if the module is allowed for this type of project.
@@ -420,8 +426,9 @@ class ComponentCheckCommands extends AbstractCommands
                 // Load the project from the website.
                 $project = Website::projectInformation($projectId);
                 if (in_array($project['type'], $allowedProjectTypes)) {
-                    $this->writeln("The package $packageName is authorised for the type of project {$project['type']}");
                     $allowedInProject = true;
+                    $message = "The package $packageName is authorised for the type of project {$project['type']}";
+                    $messageType = 'Packages authorised:';
                 }
             }
 
@@ -430,16 +437,20 @@ class ComponentCheckCommands extends AbstractCommands
                 $allowedProfiles = array_map('trim', explode(',', $allowedProfiles));
                 // Load the project from the website.
                 $project = Website::projectInformation($projectId);
-                if (in_array($project['profile'], $allowedProfiles)) {
-                    $this->writeln("The package $packageName is authorised for the profile {$project['profile']}");
-                    $allowedInProject = true;
+                if (array_key_exists('profile', $project)) {
+                    if (in_array($project['profile'], $allowedProfiles)) {
+                        $allowedInProject = true;
+                        $message = "The package $packageName is authorised for the profile {$project['profile']}";
+                        $messageType = 'Packages authorised:';
+                    }
                 }
             }
 
             // If module was not allowed in project.
             if (!$allowedInProject) {
-                $this->writeln("The use of $packageName:$packageVersion is {$modules[$packageName]['status']}. Contact QA Team.");
                 $this->evaluationFailed = true;
+                $message = "The use of $packageName:$packageVersion is {$modules[$packageName]['status']}. Contact QA Team.";
+                $messageType = 'Packages rejected/restricted:';
             }
         }
 
@@ -448,10 +459,14 @@ class ComponentCheckCommands extends AbstractCommands
             foreach ($constraints as $constraint => $result) {
                 $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
                 if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
-                    $this->writeln("Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.");
                     $this->evaluationFailed = true;
+                    $message = "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.";
+                    $messageType = "Package's version constraints:";
                 }
             }
+        }
+        if ($message && $messageType) {
+            return [$message, $messageType];
         }
     }
 
@@ -744,10 +759,20 @@ class ComponentCheckCommands extends AbstractCommands
         $vendorList = $dataTkReqsEndpoint['vendor_list'] ?? [];
 
         // Proceed with 'blocker' option. Loop over the packages.
+        $groupComponents = [];
         foreach ($this->composerLock['packages'] as $package) {
             // Check if vendor belongs to the monitored vendor list.
             if (in_array(explode('/', $package['name'])['0'], $vendorList)) {
-                $this->validateComponent($package);
+                $validateComponent = $this->validateComponent($package);
+                if ($validateComponent) {
+                  $groupComponents[$validateComponent['1']][] = $validateComponent['0'];
+                }
+            }
+        }
+        foreach ($groupComponents as $groupComponent => $messages) {
+            $this->writeln($groupComponent);
+            foreach ($messages as $message) {
+                $this->writeln($message);
             }
         }
         if ($this->evaluationFailed === false) {
