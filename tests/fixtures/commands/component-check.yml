@@ -11,74 +11,74 @@
     - contains: |
         Checking Mandatory components.
         ==============================
-        
+
         [Simulator] Running ./vendor/bin/drush status --format=json
         Website not installed, using config/sync/core.extension.yml file.
         Config file not found at config/sync/core.extension.yml.
         Package dropsolid_purge is mandatory and is not present on the project.
         Package oe_dashboard_agent is mandatory and is not present on the project.
-        
+
         Checking Recommended components.
         ================================
-        
+
         >  This step is in reporting mode, skipping.
-        
+
         Checking Insecure components.
         =============================
-        
+
         [Simulator] Running ./vendor/bin/drush status --format=json
         Website not installed, skipping pm:security.
         [Simulator] Running composer audit --no-dev --locked --no-scripts --format=json
         >  Insecure components check passed.
-        
+
         Checking Outdated components.
         =============================
-        
+
         [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --no-scripts --format=json
         >  Outdated components check passed.
-        
+
         Checking Abandoned components.
         ==============================
-        
+
         >  Abandoned components check passed.
-        
+
         Checking Unsupported components.
         ================================
-        
+
         [Simulator] Running ./vendor/bin/drush status --format=json
         Website not installed, skipping.
-        
+
         Checking Evaluation components.
         ===============================
-      
+
         Packages rejected/restricted:
         The use of drupal/codesnippet:1.8 is restricted. Contact QA Team.
         The use of drupal/github_connect:2.0.0-alpha1 is restricted. Contact QA Team.
         The use of drupal/responsive_tables_filter:1.17 is restricted. Contact QA Team.
         The use of drupal/restui:1.21 is rejected. Contact QA Team.
-        
-        
+
+
         Checking Development components.
         ================================
-        
+
         >  Development components check passed.
-        
-        
+
+
         Checking Composer components.
         =============================
-        
+
         >  Composer validation check passed.
-        
-        
+
+
         Checking Configuration components.
         ==================================
-        
+
         >  Project configuration check passed.
-      
-      
+
+
         Results:
         ========
-        
+
         ----------------------------- --------
          Mandatory module check        failed
          Recommended module check      passed
@@ -91,14 +91,14 @@
          Composer validation check     passed
          Project configuration check   passed
         ----------------------------- --------
-        
+
         [ERROR] Failed the components check, please verify the report and update the
         project.
-        
+
         See the list of packages at
-        
+
         https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews.
-        
+
         ! [NOTE] It is possible to bypass the insecure, outdated, abandoned and
         !        unsupported checks:
         !
