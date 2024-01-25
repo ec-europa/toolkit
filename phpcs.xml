@@ -16,9 +16,7 @@
 
     <!-- Files to check. -->
     <file>src</file>
-    <file>tests/Unit</file>
-    <file>tests/Features</file>
-    <file>tests/AbstractTest.php</file>
+    <file>tests</file>
 
     <!-- Exclude patterns. -->
     <exclude-pattern>vendor/</exclude-pattern>
@@ -30,7 +28,9 @@
         <exclude name="Generic.Classes.OpeningBraceSameLine.BraceOnNewLine"/>
         <exclude name="Generic.CodeAnalysis.AssignmentInCondition.Found"/>
         <exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClass"/>
+        <exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassAfterLastUsed"/>
         <exclude name="Generic.Commenting.Todo.TaskFound"/>
+        <exclude name="Generic.Commenting.DocComment.ContentAfterOpen"/>
         <exclude name="Generic.Files.EndFileNoNewline.Found"/>
         <exclude name="Generic.Files.LowercasedFilename.NotFound"/>
         <exclude name="Generic.Files.LineLength.TooLong"/>
@@ -181,6 +181,9 @@
 
     <rule ref="Squiz.Arrays.ArrayBracketSpacing"/>
 
+    <rule ref="Squiz.Commenting.ClassComment.Missing" />
+    <rule ref="Squiz.Commenting.FunctionComment.Missing" />
+
     <rule ref="Squiz.ControlStructures.ForEachLoopDeclaration"/>
     <!-- Disable some error messages that we already cover. -->
     <rule ref="Squiz.ControlStructures.ForEachLoopDeclaration.AsNotLower">
@@ -267,9 +270,6 @@
     </rule>
 
     <rule ref="Squiz.Functions.MultiLineFunctionDeclaration"/>
-    <rule ref="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine">
-        <severity>0</severity>
-    </rule>
     <rule ref="Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace">
         <severity>0</severity>
     </rule>

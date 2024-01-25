@@ -7,6 +7,11 @@ namespace EcEuropa\Toolkit\Tests\Unit;
 use EcEuropa\Toolkit\Tests\AbstractTest;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Unit tests for Robo task replace-block.
+ *
+ * @group runner
+ */
 class ReplaceBlockTest extends AbstractTest
 {
 

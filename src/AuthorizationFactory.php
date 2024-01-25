@@ -10,6 +10,14 @@ namespace EcEuropa\Toolkit;
 class AuthorizationFactory
 {
 
+    /**
+     * Create a new Authorization.
+     *
+     * @param string $type
+     *   The type to create.
+     * @param string $value
+     *   The value to use.
+     */
     public static function create(string $type, string $value): AuthorizationInterface
     {
         switch ($type) {

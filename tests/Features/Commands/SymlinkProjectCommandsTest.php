@@ -7,6 +7,11 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands;
 use EcEuropa\Toolkit\Tests\AbstractTest;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Test Drupal symlink command.
+ *
+ * @group drupal
+ */
 class SymlinkProjectCommandsTest extends AbstractTest
 {
 

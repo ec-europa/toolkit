@@ -101,6 +101,9 @@ class ToolCommandsTest extends AbstractTest
         }
     }
 
+    /**
+     * Test if configuration file exists.
+     */
     public function testConfigurationFileExists()
     {
         $this->assertFileExists((new ToolCommands())->getConfigurationFile());

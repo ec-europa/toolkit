@@ -12,6 +12,9 @@ use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
 
+/**
+ * Provides commands to generate Toolkit documentation.
+ */
 class DocumentationCommands extends AbstractCommands
 {
 

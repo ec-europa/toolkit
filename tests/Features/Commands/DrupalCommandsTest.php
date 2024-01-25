@@ -110,6 +110,9 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
             }
         }
 
+        /**
+         * Test if configuration file exists.
+         */
         public function testConfigurationFileExists()
         {
             $this->assertFileExists((new DrupalCommands())->getConfigurationFile());
