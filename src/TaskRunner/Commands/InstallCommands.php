@@ -102,7 +102,6 @@ class InstallCommands extends AbstractCommands
      *
      * @option sequence-file The file that holds the deployment sequence.
      * @option sequence-key  The key under which the commands are defined.
-     * @option append        Execute commands from a subsection of 'append'.
      *
      * @aliases tk-deploy
      *
@@ -112,7 +111,6 @@ class InstallCommands extends AbstractCommands
     public function toolkitRunDeploy(array $options = [
         'sequence-file' => InputOption::VALUE_REQUIRED,
         'sequence-key' => InputOption::VALUE_REQUIRED,
-        'append' => InputOption::VALUE_REQUIRED,
     ])
     {
         $tasks = [];
@@ -127,8 +125,9 @@ class InstallCommands extends AbstractCommands
                 $this->say("Running custom deploy sequence '{$options['sequence-key']}' from sequence file '{$options['sequence-file']}'.");
 
                 // Append extra commands if requested.
-                if (!empty($options['append']) && !empty($sequence['append'][$options['append']])) {
-                    $commands = array_merge($commands, $sequence['append'][$options['append']]);
+                $env = getenv('FPFIS_ENVIRONMENT');
+                if (!empty($env) && !empty($sequence['append'][$env])) {
+                    $commands = array_merge($commands, $sequence['append'][$env]);
                 }
                 foreach ($commands as $command) {
                     // Only execute strings. Opts.yml also supports append and

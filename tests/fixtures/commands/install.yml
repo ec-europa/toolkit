@@ -1,5 +1,6 @@
 - command: 'toolkit:install-clean'
   configuration: []
+  variables: []
   resources: []
   expectations:
     - contains: |
@@ -9,6 +10,7 @@
 
 - command: 'toolkit:install-clean --config-file=core.extensions.yml'
   configuration: []
+  variables: []
   resources:
     - from: 'sample-core.extensions.yml'
       to: 'core.extensions.yml'
@@ -21,6 +23,7 @@
 
 - command: 'toolkit:install-clone'
   configuration: []
+  variables: []
   resources: []
   expectations:
     - contains: |
@@ -34,6 +37,7 @@
 
 - command: 'toolkit:install-clone --dumpfile=dump.sql'
   configuration: []
+  variables: []
   resources:
     from: sample-dump.sql.gz
     to: dump.sql
@@ -49,6 +53,7 @@
 
 - command: 'toolkit:run-deploy'
   configuration: []
+  variables: []
   resources: []
   expectations:
     - contains: |
@@ -60,6 +65,7 @@
 
 - command: 'toolkit:run-deploy'
   configuration: []
+  variables: []
   resources:
     - from: 'sample-opts.yml'
       to: '.opts.yml'
@@ -75,8 +81,10 @@
         [Simulator] Simulating Exec('./vendor/bin/drush state:set system.maintenance_mode 0 ... t-format=integer -y')
         [Simulator] Running ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
 
-- command: 'toolkit:run-deploy --append=acceptance'
+- command: 'toolkit:run-deploy'
   configuration: []
+  variables:
+    - FPFIS_ENVIRONMENT=acceptance
   resources:
     - from: 'sample-opts.yml'
       to: '.opts.yml'
@@ -95,10 +103,9 @@
         [Simulator] Running ./vendor/bin/drush cache:rebuild acceptance
 
 - command: 'toolkit:run-deploy'
-  configuration:
-    toolkit:
-      deploy:
-        append: production
+  configuration: []
+  variables:
+    - FPFIS_ENVIRONMENT=production
   resources:
     - from: 'sample-opts.yml'
       to: '.opts.yml'
