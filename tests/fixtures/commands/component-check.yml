@@ -79,16 +79,16 @@
         ========
 
         ----------------------------- --------
-         Mandatory module check        failed
-         Recommended module check      passed
-         Insecure module check         passed
-         Outdated module check         passed
-         Abandoned module check        passed
-         Unsupported module check      passed
-         Evaluation module check       failed
-         Development module check      passed
-         Composer validation check     passed
-         Project configuration check   passed
+        Mandatory module check        failed
+        Recommended module check      passed
+        Insecure module check         passed
+        Outdated module check         passed
+        Abandoned module check        passed
+        Unsupported module check      passed
+        Evaluation module check       failed
+        Development module check      passed
+        Composer validation check     passed
+        Project configuration check   passed
         ----------------------------- --------
 
         [ERROR] Failed the components check, please verify the report and update the
