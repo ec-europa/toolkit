@@ -31,7 +31,6 @@ class Runner
     use ConfigAwareTrait;
 
     public const APPLICATION_NAME = 'Toolkit Runner';
-    public const REPOSITORY = 'ec-europa/toolkit';
 
     /**
      * The input.
@@ -296,7 +295,7 @@ class Runner
         $this->runner
             ->setClassLoader($this->classLoader)
             ->setConfigurationFilename(Toolkit::getToolkitRoot() . '/config/default.yml')
-            ->setSelfUpdateRepository(self::REPOSITORY)
+            ->setSelfUpdateRepository(Toolkit::REPOSITORY)
             ->setContainer($this->container);
         return $this;
     }

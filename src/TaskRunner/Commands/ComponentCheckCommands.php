@@ -181,27 +181,23 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function componentConfiguration()
     {
-        // Make sure forbidden files do not exist.
-        // (because of deprecation or another reason)
-        // Get forbidden/deprecated files from configuration.
-        $files = $this->getConfig()->get('toolkit.forbidden_files');
-        // Detect forbidden files in project.
-        foreach ($files as $file) {
-            // Check if the file must be forbidden under the condition.
-            if (!empty($file['condition_callback']) && is_callable($file['condition_callback'])) {
-                // Invoke the callback method and if the condition is not met then don't forbid the file.
-                if (call_user_func($file['condition_callback']) === false) {
-                    continue;
-                }
-            }
-            if (file_exists($this->getWorkingDir() . '/' . $file['name'])) {
-                $this->configurationFailed = true;
-                $this->io->error($file['error']);
-            }
-        }
-
         // Forbid deprecated environment variables.
         $this->validateEnvironmentVariables();
+
+        // Dynamic validations.
+        $validations = $this->getConfig()->get('toolkit.components.configuration.validations');
+        foreach ($validations as $validation) {
+            $params = !empty($validation['params']) ? $validation['params'] : [];
+            $expectation = !isset($validation['expectation']) ? false : $validation['expectation'];
+            if (call_user_func_array($validation['callback'], $params) === $expectation) {
+                if (!empty($validation['blocker'])) {
+                    $this->io->error($validation['message']);
+                    $this->configurationFailed = true;
+                } else {
+                    $this->io->warning($validation['message']);
+                }
+            }
+        }
 
         if (!$this->configurationFailed) {
             $this->say('Project configuration check passed.');

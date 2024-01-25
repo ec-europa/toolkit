@@ -547,3 +547,22 @@
     - string_contains: ASDA_USER
     - string_contains: ASDA_PASSWORD
     - string_contains: QA_API_BASIC_AUTH
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - touch: composer.json
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
+        ] }
+    - file: phpstan.neon
+      content: |
+        parameters:
+          level: 5
+        includes:
+          - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+  expectations:
+    - string_contains: When using phpstan/extension-installer you should not manually include
