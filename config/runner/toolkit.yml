@@ -15,12 +15,6 @@ toolkit:
     asda_source: 'reference'
     myloader: '/scripts/importdb.sh'
     mydumper: '/scripts/backupdb.sh'
-  forbidden_files:
-    - name: ".env"
-      error: ".env file detected!\n In order to avoid loading .env file in ACC or PROD environments, please rename it to something like .env.dist\n The file belongs to your application. You should guarantee that is not being called into any point of your Drupal site. If you are only calling it in docker-compose.yml, it's recommended to drop entirely the file and declare the environment variables straight into docker-compose.yml file."
-    - name: "grumphp.yml.dist"
-      error: "The grumphp.yml.dist file was detected but the package is not being required by your project, please remove the file."
-      condition_callback: 'EcEuropa\Toolkit\Callbacks\ForbiddenFilesConditions::grumpPhpisNotInstalled'
   components:
     outdated:
       check: true
@@ -37,15 +31,29 @@ toolkit:
       scripts:
         forbidden:
           post-root-package-install:
-            - "Subsite\\composer\\SetupWizard::setup"
+            - 'Subsite\composer\SetupWizard::setup'
           post-install-cmd:
-            - "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+            - 'DrupalComposer\DrupalScaffold\Plugin::scaffold'
     docker_compose:
       environment_variables:
         forbidden:
           - ASDA_USER
           - ASDA_PASSWORD
           - QA_API_BASIC_AUTH
+    configuration:
+      validations:
+        - message: 'When using phpstan/extension-installer you should not manually include the extensions in the phpstan.neon file, please remove the includes.'
+          callback: 'EcEuropa\Toolkit\Callbacks\ConfigurationCallbacks::validatePhpStan'
+          blocker: true
+        - message: ".env file detected!\n In order to avoid loading .env file in ACC or PROD environments, please rename it to something like .env.dist\n The file belongs to your application. You should guarantee that is not being called into any point of your Drupal site. If you are only calling it in docker-compose.yml, it's recommended to drop entirely the file and declare the environment variables straight into docker-compose.yml file."
+          callback: 'file_exists'
+          params:
+            - .env
+          blocker: true
+          expectation: true
+        - message: 'The grumphp.yml.dist file was detected but the package is not being required by your project, please remove the file.'
+          callback: 'EcEuropa\Toolkit\Callbacks\ConfigurationCallbacks::grumpPhpIsNotInstalled'
+          blocker: true
   deploy:
     sequence_file: '.opts.yml'
     sequence_key: 'upgrade_commands'
