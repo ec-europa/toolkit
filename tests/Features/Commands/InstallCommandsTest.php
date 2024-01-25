@@ -34,6 +34,8 @@ class InstallCommandsTest extends AbstractTest
      *   A command.
      * @param array $config
      *   A configuration.
+     * @param array $envVars
+     *   Environment variables to set.
      * @param array $resources
      *   Resources needed for the test.
      * @param array $expectations
@@ -41,11 +43,16 @@ class InstallCommandsTest extends AbstractTest
      *
      * @dataProvider dataProvider
      */
-    public function testInstall(string $command, array $config = [], array $resources = [], array $expectations = [])
+    public function testInstall(string $command, array $config = [], array $envVars = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
         if (!empty($config)) {
             $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        }
+        if (!empty($envVars)) {
+            foreach ($envVars as $envVar) {
+                putenv($envVar);
+            }
         }
         $this->prepareResources($resources);
 
