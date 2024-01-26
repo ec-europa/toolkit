@@ -592,6 +592,7 @@ class DrupalCommands extends AbstractCommands
         $additionalSettings = $this->getConfig()->get('drupal.additional_settings', '');
         $additionalSettings = trim($additionalSettings);
         $hashSalt = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(random_bytes(55)));
+        $settingsOverrideFile = $this->getConfig()->get('drupal.site.settings_override_file', 'settings.override.php');
 
         return <<< EOF
 
@@ -631,8 +632,8 @@ if (intval(getenv('DRUPAL_REVERSE_PROXY_ENABLE')) === 1) {
 
 // Load environment development override configuration, if available.
 // Keep this code block at the end of this file to take full effect.
-if (file_exists(\$app_root . '/' . \$site_path . '/settings.override.php')) {
-  include \$app_root . '/' . \$site_path . '/settings.override.php';
+if (file_exists(\$app_root . '/' . \$site_path . '/$settingsOverrideFile')) {
+  include \$app_root . '/' . \$site_path . '/$settingsOverrideFile';
 }
 
 {$this->blockEnd}
