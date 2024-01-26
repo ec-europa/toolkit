@@ -6,6 +6,9 @@ namespace EcEuropa\Toolkit;
 
 use Composer\Semver\Semver;
 
+/**
+ * Helper to fetch drupal.org release-history information.
+ */
 class DrupalReleaseHistory
 {
 

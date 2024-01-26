@@ -8,6 +8,9 @@ use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * Provides command to symlink project as a package.
+ */
 class SymlinkProjectCommands extends AbstractCommands
 {
 
@@ -97,6 +100,14 @@ class SymlinkProjectCommands extends AbstractCommands
         return $this->collectionBuilder()->addTask($task);
     }
 
+    /**
+     * Scan given directory excluding specific folders.
+     *
+     * @param string $directory
+     *   The directory to scan.
+     * @param array $ignore
+     *   Extra folders to ignore.
+     */
     private function scanDir(string $directory, array $ignore = []): array
     {
         $ignore = array_merge(['.', '..', '.git'], $ignore);

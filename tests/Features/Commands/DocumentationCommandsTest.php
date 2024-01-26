@@ -51,6 +51,9 @@ class DocumentationCommandsTest extends AbstractTest
         }
     }
 
+    /**
+     * Test if configuration file exists.
+     */
     public function testConfigurationFileExists()
     {
         $this->assertFileExists((new DocumentationCommands())->getConfigurationFile());

@@ -27,6 +27,9 @@ class GitHooksCommandsTest extends AbstractTest
         return self::getFixtureContent('commands/git-hooks.yml');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -74,6 +77,9 @@ class GitHooksCommandsTest extends AbstractTest
         }
     }
 
+    /**
+     * Test if configuration file exists.
+     */
     public function testConfigurationFileExists()
     {
         $this->assertFileExists((new GitHooksCommands())->getConfigurationFile());

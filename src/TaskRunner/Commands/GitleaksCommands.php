@@ -10,6 +10,9 @@ use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * Provides command to interact with GitLeaks.
+ */
 class GitleaksCommands extends AbstractCommands
 {
 
@@ -17,6 +20,9 @@ class GitleaksCommands extends AbstractCommands
     protected string $tag;
     protected string $os;
 
+    /**
+     * {@inheritdoc}
+     */
     public function getConfigurationFile()
     {
         return Toolkit::getToolkitRoot() . '/config/commands/gitleaks.yml';
