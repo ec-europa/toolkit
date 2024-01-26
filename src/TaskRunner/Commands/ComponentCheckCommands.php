@@ -445,7 +445,7 @@ class ComponentCheckCommands extends AbstractCommands
             // If module was not allowed in project.
             if (!$allowedInProject) {
                 $this->evaluationFailed = true;
-                $message = "The use of $packageName:$packageVersion is {$modules[$packageName]['status']}. Contact QA Team.";
+                $message = "The use of $packageName:$packageVersion is {$modules[$packageName]['status']}.";
                 $messageType = 'Packages rejected/restricted:';
             }
         }
@@ -769,6 +769,9 @@ class ComponentCheckCommands extends AbstractCommands
             $this->writeln($groupComponent);
             foreach ($messages as $message) {
                 $this->writeln($message);
+            }
+            if ($groupComponent == 'Packages rejected/restricted:') {
+                $this->writeln('<options=reverse>In the case you want to use one of the modules listed as restricted, please open a ticket to Quality Assurance indicating the use case for evaluation and more information.</>');
             }
         }
         if ($this->evaluationFailed === false) {

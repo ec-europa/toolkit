@@ -52,10 +52,11 @@
         ===============================
 
         Packages rejected/restricted:
-        The use of drupal/codesnippet:1.8 is restricted. Contact QA Team.
-        The use of drupal/github_connect:2.0.0-alpha1 is restricted. Contact QA Team.
-        The use of drupal/responsive_tables_filter:1.17 is restricted. Contact QA Team.
-        The use of drupal/restui:1.21 is rejected. Contact QA Team.
+        The use of drupal/codesnippet:1.8 is restricted.
+        The use of drupal/github_connect:2.0.0-alpha1 is restricted.
+        The use of drupal/responsive_tables_filter:1.17 is restricted.
+        The use of drupal/restui:1.21 is rejected.
+        In the case you want to use one of the modules listed as restricted, please open a ticket to Quality Assurance indicating the use case for evaluation and more information.
 
 
         Checking Development components.
@@ -126,8 +127,6 @@
         !               unsupported:
         !
         !                 check: false
-
-
 
 - command: 'toolkit:component-check'
   configuration:
