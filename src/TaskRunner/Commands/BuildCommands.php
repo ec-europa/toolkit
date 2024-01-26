@@ -394,7 +394,8 @@ class BuildCommands extends AbstractCommands
      * @param string $root
      *   The drupal root where the .htaccess file is.
      */
-    private function getHtaccessTask(string $root) {
+    private function getHtaccessTask(string $root)
+    {
         return $this->collectionBuilder()->addCode(function () use ($root) {
             $htaccess = "$root/.htaccess";
             if (!file_exists($htaccess)) {
@@ -415,9 +416,10 @@ class BuildCommands extends AbstractCommands
     }
 
     /**
-     * Returns the block for the htaccess file.
+     * Returns the block for the .htaccess file.
      */
-    private function getHtaccessBlock(): string {
+    private function getHtaccessBlock(): string
+    {
         $fileMatch = $this->getConfig()->get('toolkit.build.htaccess.block.file-match');
         if (empty($fileMatch)) {
             return '';

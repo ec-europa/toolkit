@@ -216,7 +216,6 @@ class GitHooksCommands extends AbstractCommands
      *
      * @aliases tk-hrun
      */
-    // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassAfterLastUsed
     public function hooksRun(ConsoleIO $io, string $hook, $arg1 = '', $arg2 = '', $arg3 = '')
     {
         if (empty($hook)) {

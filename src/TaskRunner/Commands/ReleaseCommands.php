@@ -11,6 +11,9 @@ use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * Provides commands to generate Toolkit release.
+ */
 class ReleaseCommands extends AbstractCommands
 {
 

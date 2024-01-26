@@ -10,9 +10,17 @@ use EcEuropa\Toolkit\Toolkit;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 
+/**
+ * Unit tests for GitHooks commands.
+ *
+ * @group git-hooks
+ */
 class GitHooksCommandsTest extends TestCase
 {
 
+    /**
+     * Test method GitHooksCommands::convertHookToMethod().
+     */
     public function testConvertHookToMethod()
     {
         $method = new ReflectionMethod(
@@ -33,6 +41,9 @@ class GitHooksCommandsTest extends TestCase
         $this->assertFalse($method->invoke(new GitHooksCommands()));
     }
 
+    /**
+     * Test method GitHooksCommands::getHookFiles().
+     */
     public function testHookFiles()
     {
         $method = new ReflectionMethod(
