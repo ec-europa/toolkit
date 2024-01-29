@@ -481,8 +481,19 @@
     - touch: allowed-file.ext
   expectations:
     - not_string_contains: allowed-file.ext
-    - not_string_contains: grumphp.yml.dist file detected
-    - string_contains: .env file detected
+    - not_string_contains: grumphp.yml.dist file was detected
+    - string_contains: .env file was detected
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - touch: composer.json
+    - touch: grumphp.yml.dist
+  expectations:
+    - string_contains: grumphp.yml.dist file was detected
 
 - command: 'toolkit:component-check'
   configuration: []
