@@ -63,7 +63,7 @@ See bellow current list of available commands:
    toolkit:patch-list                [tk-pl] Lists remote patches from the root composer.json.
    toolkit:requirements              Check the Toolkit Requirements.
    toolkit:run-blackfire             [tk-bfire|tbf] Run Blackfire.
-   toolkit:run-deploy                Run deployment sequence.
+   toolkit:run-deploy                [tk-deploy] Run deployment sequence.
    toolkit:run-gitleaks              [tk-gitleaks] Executes the Gitleaks.
    toolkit:run-phpcbf                [tk-phpcbf] Run PHP code autofixing.
    toolkit:setup-behat               Setup the Behat file.

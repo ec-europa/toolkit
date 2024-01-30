@@ -1,5 +1,16 @@
 # Toolkit change log
 
+## Version 10.8.0
+  - DQA-7921: Align Toolkit default deployment commands with Drush standards.
+  - DQA-8113: Component check - Forbid deprecated scripts in composer.json.
+  - DQA-8575: Component-check (Unsupported) - Error when there is no reco….
+  - DQA-8115: Component check - Forbid deprecated configuration.
+  - DQA-8117: Detect PHPStan includes if using phpstan/extension-installer.
+  - DQA-8236: Allow to append commands for local development environment.
+  - DQA-8253: Setting drupal.site.settings_override_file ignored.
+  - DQA-8608: Toolkit phpcs ruleset improvements.
+  - DQA-8583: Module Evaluation error & group evaluation components.
+
 ## Version 9.17.0 | 10.7.0
 - DQA-8360: Set the config drupal.root_absolute.
 - DQA-8373: Opts-review should ignore upper-quotes.
