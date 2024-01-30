@@ -13,3 +13,5 @@ command:
         build-npm-packages: ${toolkit.build.npm.packages}
         validate: ${toolkit.scss.validate}
         theme-task-runner: ${toolkit.build.npm.theme-task-runner}
+        ecl-version: ${toolkit.build.ecl.version}
+        ecl-presets: ${toolkit.build.ecl.presets}

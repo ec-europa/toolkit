@@ -289,10 +289,11 @@ class BuildCommands extends AbstractCommands
      *
      * @command toolkit:build-assets
      *
-     * @option default-theme      The theme where to build assets.
-     * @option build-npm-packages The packages to install.
-     * @option validate           Whether to validate or fix the scss.
-     * @option theme-task-runner  The runner to use, one of 'grunt' or 'gulp'.
+     * @option default-theme          The theme where to build assets.
+     * @option build-npm-packages     The packages to install.
+     * @option validate               Whether to validate or fix the scss.
+     * @option theme-task-runner      The runner to use, one of 'grunt' or 'gulp'.
+     * @option ecl-builder=[COMMAND]  Compile using Europa Component Library (ECL).
      *
      * @aliases tk-bassets, tk-assets, tba
      *
@@ -304,6 +305,9 @@ class BuildCommands extends AbstractCommands
         'build-npm-packages' => InputOption::VALUE_REQUIRED,
         'validate' => InputOption::VALUE_REQUIRED,
         'theme-task-runner' => InputOption::VALUE_REQUIRED,
+        'ecl-presets' => InputOption::VALUE_REQUIRED,
+        'ecl-version' => InputOption::VALUE_REQUIRED,
+        'ecl-builder' => InputOption::VALUE_OPTIONAL,
     ])
     {
         if (empty($options['default-theme'])) {
@@ -331,6 +335,7 @@ class BuildCommands extends AbstractCommands
             foreach ($finder as $directory) {
                 $theme_dir = $directory->getRealPath();
             }
+            $files = scandir($theme_dir);
 
             // Build task collection.
             $collection = $this->collectionBuilder();
@@ -344,6 +349,8 @@ class BuildCommands extends AbstractCommands
                     ->stopOnFail();
                 // Run and return task collection.
                 return $collection->run();
+            } elseif ($options['ecl-builder']) {
+                $this->eclBuilder($options, $files, $theme_dir, $collection);
             } else {
                 if ($options['theme-task-runner'] === 'gulp') {
                     $taskRunnerConfigFile = 'gulpfile.js';
@@ -364,7 +371,6 @@ class BuildCommands extends AbstractCommands
 
                 // Check if 'theme-task-runner' file exists.
                 // Create a new one from source if doesn't exist.
-                $files = scandir($theme_dir);
                 if (!in_array($taskRunnerConfigFile, $files)) {
                     $dir = Toolkit::getToolkitRoot() . '/resources/assets';
                     $collection->taskExecStack()
@@ -378,14 +384,52 @@ class BuildCommands extends AbstractCommands
                     ->exec("npm install {$options['build-npm-packages']} --save-dev")
                     ->exec('./node_modules/.bin/' . $options['theme-task-runner'])
                     ->stopOnFail();
-
-                // Run and return task collection.
-                return $collection->run();
             }
+            // Run and return task collection.
+            return $collection->run();
         } else {
             $this->say("The theme '{$options['default-theme']}' couldn't be found on the '{$options['custom-code-folder']}' folder.");
             return 0;
         }
+    }
+
+    /**
+     * Ecl compiler and building commands.
+     */
+    public function eclBuilder($options, $files, $theme_dir, $collection)
+    {
+        $EcPresets = explode(' ', $options['ecl-presets']);
+        $dir = Toolkit::getToolkitRoot() . '/resources/assets';
+        if (!in_array('ecl-builder.config.js', $files)) {
+            $collection->taskExecStack()
+                ->dir($theme_dir)
+                // Copy config file.
+                ->exec("cp $dir/ecl-builder.config.js $theme_dir/ecl-builder.config.js")
+                ->stopOnFail();
+        }
+        $collection->taskExecStack()
+            ->exec('npm init -y --scope')
+            ->exec("npm i @ecl/builder@{$options['ecl-version']}")
+            ->stopOnFail();
+        foreach ($EcPresets as $ecPreset) {
+            $collection->taskExecStack()
+                ->dir($theme_dir)
+                ->exec("npm i @ecl/" . $ecPreset)
+                ->stopOnFail();
+        }
+        if ($options['ecl-builder'] != '1') {
+            $collection->taskExecStack()
+                ->dir($theme_dir)
+                ->exec("./node_modules/.bin/ecl-builder {$options['ecl-builder']}")
+                ->stopOnFail();
+        } else {
+            $collection->taskExecStack()
+                ->dir($theme_dir)
+                ->exec('./node_modules/.bin/ecl-builder')
+                ->stopOnFail();
+        }
+        // Run and return task collection.
+        return $collection->run();
     }
 
     /**
