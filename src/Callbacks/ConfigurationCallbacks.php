@@ -16,9 +16,13 @@ class ConfigurationCallbacks
     /**
      * If grumphp package is not present in a project, then grumphp config file must not be present.
      */
-    public static function grumpPhpIsNotInstalled(): bool
+    public static function validateGrumPhp(): bool
     {
-        return !ToolCommands::getPackagePropertyFromComposer('phpro/grumphp');
+        // Stop if the config file do not exist.
+        if (!file_exists('grumphp.yml.dist')) {
+            return true;
+        }
+        return !empty(ToolCommands::getPackagePropertyFromComposer('phpro/grumphp'));
     }
 
     /**
