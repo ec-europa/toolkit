@@ -149,13 +149,21 @@ class DocumentationCommands extends AbstractCommands
      *
      * @aliases tk-gcl
      */
-    public function toolkitGenerateCommandsList()
+    public function toolkitGenerateCommandsList(ConsoleIO $io)
     {
         // Get the available commands.
-        $commands = $this->taskExec($this->getBin('run'))
+        $commands = $this->taskExec($this->getBin('run') . ' --no-ansi')
             ->silent(true)->run()->getMessage();
+        if (empty($commands)) {
+            $io->error('Fail to load existing commands.');
+            return ResultData::EXITCODE_ERROR;
+        }
         // Remove the header part.
-        $commands = preg_replace('/((.|\n)*)(Available commands:)/', '\3', $commands);
+        $commands = strstr($commands, 'Available commands:');
+        if (empty($commands)) {
+            $io->error('Fail to load existing commands from output.');
+            return ResultData::EXITCODE_ERROR;
+        }
         // Add spaces to match the .rst format.
         $commands = preg_replace('/^/im', ' ', $commands);
 

@@ -6,6 +6,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use EcEuropa\Toolkit\Toolkit;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
@@ -29,14 +30,7 @@ class ReleaseCommands extends AbstractCommands
      *
      * @var string
      */
-    private string $releaseBranch = 'release/9.x';
-
-    /**
-     * The Toolkit repo url.
-     *
-     * @var string
-     */
-    private string $repo = 'https://github.com/ec-europa/toolkit';
+    private string $releaseBranch = 'release/10.x';
 
     /**
      * Write the specified version string into needed places.
@@ -80,9 +74,10 @@ class ReleaseCommands extends AbstractCommands
             $tasks[] = $this->taskReplaceInFile('tests/fixtures/commands/tool.yml')
                 ->regex('#Toolkit version   OK \([0-9.]+\)#')
                 ->to("Toolkit version   OK ($version)");
+            $major = explode('.', $version)[0];
             $tasks[] = $this->taskReplaceInFile('tests/fixtures/commands/tool.yml')
                 ->regex('#Current version: [0-9.]+#')
-                ->to("Current version: $version");
+                ->to("Current version: $major");
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -128,6 +123,10 @@ class ReleaseCommands extends AbstractCommands
             $from = $changelog_latest;
         }
         if (!Semver::satisfies($version, '>' . $from)) {
+            if (Semver::satisfies($version, '=' . $from)) {
+                $io->warning('Changelog file is already in the given version.');
+                return ResultData::EXITCODE_OK;
+            }
             $io->error("The given version $version do not satisfies the version $from found in the $this->changelog file.");
             return ResultData::EXITCODE_ERROR;
         }
@@ -136,7 +135,8 @@ class ReleaseCommands extends AbstractCommands
 
         if ($options['full-link'] === true) {
             $changelog[] = '';
-            $changelog[] = "**Full Changelog**: $this->repo/compare/$from...$version";
+            $repo = Toolkit::REPOSITORY;
+            $changelog[] = "**Full Changelog**: https://github.com/$repo/compare/$from...$version";
         }
 
         $body = implode(PHP_EOL, $changelog) . PHP_EOL;
@@ -182,7 +182,12 @@ class ReleaseCommands extends AbstractCommands
         }
         $content = file_get_contents($this->changelog);
         preg_match('/## Version (.*)/', $content, $match);
-        return !empty($match[1]) ? $match[1] : '';
+        $version = !empty($match[1]) ? $match[1] : '';
+        // Check if the changelog version contains two versions on it.
+        if (strpos($version, ' | ')) {
+            $version = explode(' | ', $version)[1];
+        }
+        return $version;
     }
 
     /**
@@ -251,10 +256,10 @@ class ReleaseCommands extends AbstractCommands
 
         $log = '  - ' . trim($message, '.') . '.';
         if ($options['show-name'] === true) {
-            $log .= ' by ' . $name;
+            $log .= " by $name";
         }
         if ($options['show-pr'] === true) {
-            $log .= ' in ' . $this->repo . "/pull/$pr";
+            $log .= ' in https://github.com/' . Toolkit::REPOSITORY . "/pull/$pr";
         }
 
         return $log;
