@@ -8,12 +8,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationBasic\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Constructs\u0020a\u0020new\u0020Authorization\u0020with\u0020Basic\u0020auth.",
             "url": "classes/EcEuropa-Toolkit-AuthorizationBasic.html#method___construct"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationBasic\u003A\u003AgetAuthorizationHeader\u0028\u0029",
             "name": "getAuthorizationHeader",
-            "summary": "",
+            "summary": "Returns\u0020the\u0020Authorization\u0020string\u0020for\u0020the\u0020header.",
             "url": "classes/EcEuropa-Toolkit-AuthorizationBasic.html#method_getAuthorizationHeader"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationBasic\u003A\u003A\u0024value",
@@ -28,17 +28,17 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationFactory\u003A\u003Acreate\u0028\u0029",
             "name": "create",
-            "summary": "",
+            "summary": "Create\u0020a\u0020new\u0020Authorization.",
             "url": "classes/EcEuropa-Toolkit-AuthorizationFactory.html#method_create"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationInterface",
             "name": "AuthorizationInterface",
-            "summary": "",
+            "summary": "Interface\u0020for\u0020Authorization\u0020classes.",
             "url": "classes/EcEuropa-Toolkit-AuthorizationInterface.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationInterface\u003A\u003AgetAuthorizationHeader\u0028\u0029",
             "name": "getAuthorizationHeader",
-            "summary": "",
+            "summary": "Returns\u0020the\u0020Authorization\u0020string\u0020for\u0020the\u0020header.",
             "url": "classes/EcEuropa-Toolkit-AuthorizationInterface.html#method_getAuthorizationHeader"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationToken",
@@ -48,12 +48,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationToken\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Constructs\u0020a\u0020new\u0020Authorization\u0020with\u0020token.",
             "url": "classes/EcEuropa-Toolkit-AuthorizationToken.html#method___construct"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationToken\u003A\u003AgetAuthorizationHeader\u0028\u0029",
             "name": "getAuthorizationHeader",
-            "summary": "",
+            "summary": "Returns\u0020the\u0020Authorization\u0020string\u0020for\u0020the\u0020header.",
             "url": "classes/EcEuropa-Toolkit-AuthorizationToken.html#method_getAuthorizationHeader"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\AuthorizationToken\u003A\u003A\u0024value",
@@ -61,9 +61,24 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-AuthorizationToken.html#property_value"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Callbacks\\ConfigurationCallbacks",
+            "name": "ConfigurationCallbacks",
+            "summary": "Class\u0020containing\u0020configuration\u0020check\u0020callbacks.",
+            "url": "classes/EcEuropa-Toolkit-Callbacks-ConfigurationCallbacks.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Callbacks\\ConfigurationCallbacks\u003A\u003AvalidateGrumPhp\u0028\u0029",
+            "name": "validateGrumPhp",
+            "summary": "If\u0020grumphp\u0020package\u0020is\u0020not\u0020present\u0020in\u0020a\u0020project,\u0020then\u0020grumphp\u0020config\u0020file\u0020must\u0020not\u0020be\u0020present.",
+            "url": "classes/EcEuropa-Toolkit-Callbacks-ConfigurationCallbacks.html#method_validateGrumPhp"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Callbacks\\ConfigurationCallbacks\u003A\u003AvalidatePhpStan\u0028\u0029",
+            "name": "validatePhpStan",
+            "summary": "If\u0020project\u0020is\u0020using\u0020phpstan\/extension\u002Dinstaller\u0020then\u0020should\u0020not\u0020manually\u0020include\u0020extensions.",
+            "url": "classes/EcEuropa-Toolkit-Callbacks-ConfigurationCallbacks.html#method_validatePhpStan"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\DrupalReleaseHistory",
             "name": "DrupalReleaseHistory",
-            "summary": "",
+            "summary": "Helper\u0020to\u0020fetch\u0020drupal.org\u0020release\u002Dhistory\u0020information.",
             "url": "classes/EcEuropa-Toolkit-DrupalReleaseHistory.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\DrupalReleaseHistory\u003A\u003AgetPackageDetails\u0028\u0029",
@@ -321,15 +336,10 @@ Search.appendIndex(
             "summary": "Returns\u0020the\u0020current\u0020working\u0020directory.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AgetComposerJson\u0028\u0029",
-            "name": "getComposerJson",
-            "summary": "Returns\u0020the\u0020composer.json\u0020parsed\u0020content.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerJson"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AgetComposerLock\u0028\u0029",
-            "name": "getComposerLock",
-            "summary": "Returns\u0020the\u0020composer.lock\u0020parsed\u0020content.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerLock"
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AgetJson\u0028\u0029",
+            "name": "getJson",
+            "summary": "Returns\u0020the\u0020JSON\u0020parsed\u0020content.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AisWebsiteInstalled\u0028\u0029",
             "name": "isWebsiteInstalled",
@@ -393,7 +403,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003AgetHtaccessBlock\u0028\u0029",
             "name": "getHtaccessBlock",
-            "summary": "Returns\u0020the\u0020block\u0020for\u0020the\u0020htaccess\u0020file.",
+            "summary": "Returns\u0020the\u0020block\u0020for\u0020the\u0020.htaccess\u0020file.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getHtaccessBlock"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003A\u0024blockStart",
@@ -421,10 +431,20 @@ Search.appendIndex(
             "summary": "Prepare\u0020the\u0020overrides\u0020from\u0020config\u0020and\u0020commit\u0020message.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_prepareSkips"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentConfiguration\u0028\u0029",
+            "name": "componentConfiguration",
+            "summary": "Validate\u0020project\u0020configuration.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentConfiguration"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentComposer\u0028\u0029",
             "name": "componentComposer",
             "summary": "Validate\u0020composer\u0020packages.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentComposer"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AvalidateEnvironmentVariables\u0028\u0029",
+            "name": "validateEnvironmentVariables",
+            "summary": "Component\u0020Configuration\u0020Helper\u0020\u002D\u0020Validate\u0020environment\u0020variables.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_validateEnvironmentVariables"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AprintComponentResults\u0028\u0029",
             "name": "printComponentResults",
@@ -535,6 +555,11 @@ Search.appendIndex(
             "name": "composerFailed",
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_composerFailed"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024configurationFailed",
+            "name": "configurationFailed",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_configurationFailed"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024devCompRequireFailed",
             "name": "devCompRequireFailed",
@@ -691,15 +716,15 @@ Search.appendIndex(
             "summary": "Remove\u0020services\u0020that\u0020do\u0020not\u0020exist\u0020in\u0020project\u0020info,\u0020requirements\u0020or\u0020.opts.yml",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_removeUnusedDcServices"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AOPTS_YML_FILE",
-            "name": "OPTS_YML_FILE",
-            "summary": "",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#constant_OPTS_YML_FILE"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003ADC_YML_FILE",
             "name": "DC_YML_FILE",
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#constant_DC_YML_FILE"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AOPTS_YML_FILE",
+            "name": "OPTS_YML_FILE",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#constant_OPTS_YML_FILE"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003ADC_YML_FILE_PREVIOUS",
             "name": "DC_YML_FILE_PREVIOUS",
@@ -713,7 +738,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands",
             "name": "DocumentationCommands",
-            "summary": "Class\u0020AbstractCommands.",
+            "summary": "Provides\u0020commands\u0020to\u0020generate\u0020Toolkit\u0020documentation.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DocumentationCommands.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DocumentationCommands\u003A\u003AgetConfigurationFile\u0028\u0029",
@@ -1003,7 +1028,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands",
             "name": "GitleaksCommands",
-            "summary": "Class\u0020AbstractCommands.",
+            "summary": "Provides\u0020command\u0020to\u0020interact\u0020with\u0020GitLeaks.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003AgetConfigurationFile\u0028\u0029",
@@ -1143,7 +1168,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands",
             "name": "ReleaseCommands",
-            "summary": "Class\u0020AbstractCommands.",
+            "summary": "Provides\u0020commands\u0020to\u0020generate\u0020Toolkit\u0020release.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003AtoolkitVersionWrite\u0028\u0029",
@@ -1186,14 +1211,9 @@ Search.appendIndex(
             "summary": "The\u0020release\u0020branch.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_releaseBranch"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003A\u0024repo",
-            "name": "repo",
-            "summary": "The\u0020Toolkit\u0020repo\u0020url.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_repo"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands",
             "name": "SymlinkProjectCommands",
-            "summary": "Class\u0020AbstractCommands.",
+            "summary": "Provides\u0020command\u0020to\u0020symlink\u0020project\u0020as\u0020a\u0020package.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands\u003A\u003AgetConfigurationFile\u0028\u0029",
@@ -1213,7 +1233,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands\u003A\u003AscanDir\u0028\u0029",
             "name": "scanDir",
-            "summary": "",
+            "summary": "Scan\u0020given\u0020directory\u0020excluding\u0020specific\u0020folders.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-SymlinkProjectCommands.html#method_scanDir"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\SymlinkProjectCommands\u003A\u003A\u0024types",
@@ -1496,11 +1516,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#constant_APPLICATION_NAME"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AREPOSITORY",
-            "name": "REPOSITORY",
-            "summary": "",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#constant_REPOSITORY"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003A\u0024input",
             "name": "input",
             "summary": "The\u0020input.",
@@ -1596,6 +1611,11 @@ Search.appendIndex(
             "summary": "Constant\u0020holding\u0020the\u0020current\u0020version.",
             "url": "classes/EcEuropa-Toolkit-Toolkit.html#constant_VERSION"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Toolkit\u003A\u003AREPOSITORY",
+            "name": "REPOSITORY",
+            "summary": "The\u0020Toolkit\u0020repository.",
+            "url": "classes/EcEuropa-Toolkit-Toolkit.html#constant_REPOSITORY"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Website",
             "name": "Website",
             "summary": "Handle\u0020communications\u0020with\u0020QA\u0020api.",
@@ -1675,6 +1695,11 @@ Search.appendIndex(
             "name": "EcEuropa",
             "summary": "",
             "url": "namespaces/eceuropa.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Callbacks",
+            "name": "Callbacks",
+            "summary": "",
+            "url": "namespaces/eceuropa-toolkit-callbacks.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Task\\Command",
             "name": "Command",

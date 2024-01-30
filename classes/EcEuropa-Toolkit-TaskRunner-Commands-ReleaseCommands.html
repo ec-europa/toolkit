@@ -174,11 +174,11 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">14</span>
+    <span class="phpdocumentor-element-found-in__line">18</span>
 
     </aside>
 
-            <p class="phpdocumentor-summary">Class AbstractCommands.</p>
+            <p class="phpdocumentor-summary">Provides commands to generate Toolkit release.</p>
 
 
 
@@ -219,13 +219,6 @@
 </dt>
 <dd>The release branch.</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_repo">$repo</a>
-    <span>
-                        &nbsp;: string            </span>
-</dt>
-<dd>The Toolkit repo url.</dd>
-
     </dl>
 
 <h4 id="toc-methods">
@@ -235,25 +228,18 @@
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerJson">getComposerJson()</a>
-    <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
-</dt>
-<dd>Returns the composer.json parsed content.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerLock">getComposerLock()</a>
-    <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
-</dt>
-<dd>Returns the composer.lock parsed content.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
 <dd>Path to YAML configuration file containing command defaults.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson">getJson()</a>
+    <span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
+</dt>
+<dd>Returns the JSON parsed content.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a>
@@ -405,7 +391,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">26</span>
 
     </aside>
 
@@ -439,7 +425,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">29</span>
+    <span class="phpdocumentor-element-found-in__line">33</span>
 
     </aside>
 
@@ -449,41 +435,7 @@
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$releaseBranch</span>
-     = <span class="phpdocumentor-signature__default-value">&#039;release/9.x&#039;</span></code>
-
-    
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_repo">
-        $repo
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_repo" class="headerlink"><i class="fas fa-link"></i></a>
-
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">36</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">The Toolkit repo url.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-        <span class="phpdocumentor-signature__type">string</span>
-    <span class="phpdocumentor-signature__name">$repo</span>
-     = <span class="phpdocumentor-signature__default-value">&#039;https://github.com/ec-europa/toolkit&#039;</span></code>
+     = <span class="phpdocumentor-signature__default-value">&#039;release/10.x&#039;</span></code>
 
     
     
@@ -498,98 +450,6 @@
             <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getComposerJson">
-        getComposerJson()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerJson" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">135</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Returns the composer.json parsed content.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getComposerJson</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$filename</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;composer.json&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$filename</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;composer.json&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getComposerLock">
-        getComposerLock()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerLock" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">147</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Returns the composer.lock parsed content.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getComposerLock</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$filename</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;composer.lock&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$filename</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;composer.lock&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-            </section>
-
-</article>
                     <article
         class="phpdocumentor-element
             -method
@@ -625,6 +485,52 @@
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">string</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getJson">
+        getJson()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">135</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns the JSON parsed content.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">getJson</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$filename</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$filename</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             </section>
 
 </article>
@@ -682,7 +588,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">159</span>
+    <span class="phpdocumentor-element-found-in__line">147</span>
 
     </aside>
 
@@ -718,7 +624,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">106</span>
+    <span class="phpdocumentor-element-found-in__line">104</span>
 
     </aside>
 
@@ -837,7 +743,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">158</span>
+    <span class="phpdocumentor-element-found-in__line">161</span>
 
     </aside>
 
@@ -904,7 +810,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">48</span>
+    <span class="phpdocumentor-element-found-in__line">45</span>
 
     </aside>
 
@@ -1450,7 +1356,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">175</span>
+    <span class="phpdocumentor-element-found-in__line">178</span>
 
     </aside>
 
@@ -1490,7 +1396,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">196</span>
+    <span class="phpdocumentor-element-found-in__line">204</span>
 
     </aside>
 
@@ -1551,7 +1457,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">233</span>
+    <span class="phpdocumentor-element-found-in__line">241</span>
 
     </aside>
 
@@ -1713,16 +1619,14 @@
                     <ul class="phpdocumentor-list -clean">
                                                     <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_changelog">$changelog<a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html"></li>
                                                     <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_releaseBranch">$releaseBranch<a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html"></li>
-                                                    <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_repo">$repo<a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html"></li>
                                             </ul>
                 </li>
             
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerJson">getComposerJson()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerLock">getComposerLock()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson">getJson()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isWebsiteInstalled">isWebsiteInstalled()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitChangelogWrite">toolkitChangelogWrite()</a></li>

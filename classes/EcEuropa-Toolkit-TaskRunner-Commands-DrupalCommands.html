@@ -298,25 +298,18 @@
 <dd>Check project compatibility for Drupal 9/10 upgrade.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerJson">getComposerJson()</a>
-    <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
-</dt>
-<dd>Returns the composer.json parsed content.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerLock">getComposerLock()</a>
-    <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
-</dt>
-<dd>Returns the composer.lock parsed content.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
 <dd>Path to YAML configuration file containing command defaults.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson">getJson()</a>
+    <span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
+</dt>
+<dd>Returns the JSON parsed content.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a>
@@ -1535,98 +1528,6 @@ string-only commands will be substituted with this value.</p>
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_getComposerJson">
-        getComposerJson()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerJson" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">135</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Returns the composer.json parsed content.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getComposerJson</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$filename</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;composer.json&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$filename</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;composer.json&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getComposerLock">
-        getComposerLock()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerLock" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">147</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Returns the composer.lock parsed content.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getComposerLock</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$filename</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;composer.lock&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$filename</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;composer.lock&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
     <h4 class="phpdocumentor-element__name" id="method_getConfigurationFile">
         getConfigurationFile()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1654,6 +1555,52 @@ string-only commands will be substituted with this value.</p>
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">string</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getJson">
+        getJson()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">135</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns the JSON parsed content.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">getJson</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$filename</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$filename</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             </section>
 
 </article>
@@ -1711,7 +1658,7 @@ string-only commands will be substituted with this value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">159</span>
+    <span class="phpdocumentor-element-found-in__line">147</span>
 
     </aside>
 
@@ -2469,9 +2416,8 @@ string-only commands will be substituted with this value.</p>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_drupalSitePostInstall">drupalSitePostInstall()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_drupalSitePreInstall">drupalSitePreInstall()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_drupalUpgradeStatus">drupalUpgradeStatus()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerJson">getComposerJson()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getComposerLock">getComposerLock()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson">getJson()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isWebsiteInstalled">isWebsiteInstalled()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a></li>
