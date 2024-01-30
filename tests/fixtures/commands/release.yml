@@ -32,7 +32,7 @@
           ->to('Toolkit version   OK (9.5.0)')
         [Simulator] Simulating File\Replace('tests/fixtures/commands/tool.yml')
           ->regex('#Current version: [0-9.]+#')
-          ->to('Current version: 9.5.0')
+          ->to('Current version: 9')
 
 - command: 'toolkit:version-write 9.5.0'
   configuration: []
@@ -74,8 +74,7 @@
       to: CHANGELOG.md
   expectations:
     - contains: |
-        [ERROR] The given version 9.5.0 do not satisfies the version 9.5.0 found in the
-                CHANGELOG.md file.
+        [WARNING] Changelog file is already in the given version.
 
 - command: 'toolkit:changelog-write 9.6.0'
   configuration: []
@@ -84,7 +83,7 @@
       to: CHANGELOG.md
   expectations:
     - contains: |
-        [Simulator] Running git log 9.5.0...release/9.x --pretty='%s##%an##%ae' --reverse
+        [Simulator] Running git log 9.5.0...release/10.x --pretty='%s##%an##%ae' --reverse
         [Simulator] Simulating Development\Changelog('CHANGELOG.md')
           ->setHeader('# Toolkit change log
 
@@ -102,7 +101,7 @@
       to: CHANGELOG.md
   expectations:
     - contains: |
-        [Simulator] Running git log 9.5.0...release/9.x --pretty='%s##%an##%ae' --reverse
+        [Simulator] Running git log 9.5.0...release/10.x --pretty='%s##%an##%ae' --reverse
         [Simulator] Simulating Development\Changelog('CHANGELOG.md')
           ->setHeader('# Toolkit change log
 

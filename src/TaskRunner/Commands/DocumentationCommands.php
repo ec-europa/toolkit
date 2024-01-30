@@ -151,6 +151,11 @@ class DocumentationCommands extends AbstractCommands
      */
     public function toolkitGenerateCommandsList(ConsoleIO $io)
     {
+        $commandsFile = 'docs/guide/commands.rst';
+        if (!file_exists($commandsFile)) {
+            $io->warning("The file $commandsFile could not be found.");
+            return ResultData::EXITCODE_OK;
+        }
         // Get the available commands.
         $commands = $this->taskExec($this->getBin('run') . ' --no-ansi')
             ->silent(true)->run()->getMessage();
@@ -169,7 +174,7 @@ class DocumentationCommands extends AbstractCommands
 
         $start = ".. toolkit-block-commands\n\n.. code-block::\n\n";
         $end = "\n\n.. toolkit-block-commands-end";
-        $task = $this->taskReplaceBlock('docs/guide/commands.rst')
+        $task = $this->taskReplaceBlock($commandsFile)
             ->start($start)->end($end)->content($commands);
         return $this->collectionBuilder()->addTask($task);
     }

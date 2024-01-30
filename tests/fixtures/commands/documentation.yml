@@ -103,12 +103,7 @@
   resources: []
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
-          ->silent(1)
-        [Simulator] Running ./vendor/bin/run
-        [error]    in task EcEuropa\Toolkit\Task\File\ReplaceBlock
-
-        The file docs/guide/commands.rst could not be found.
+        [WARNING] The file docs/guide/commands.rst could not be found.
 
 - command: 'toolkit:generate-commands-list'
   resources:
@@ -116,16 +111,8 @@
       to: docs/guide/commands.rst
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('./vendor/bin/run --no-ansi')
           ->silent(1)
-        [Simulator] Running ./vendor/bin/run
-        [Simulator] Simulating EcEuropa\Toolkit\Task\File\ReplaceBlock('docs/guide/commands.rst')
-        ->start('.. toolkit-block-commands
+        [Simulator] Running ./vendor/bin/run --no-ansi
 
-          .. code-block::
-
-        ')
-        ->end('
-
-          .. toolkit-block-commands-end')
-        ->content(' ')
+        [ERROR] Fail to load existing commands.
