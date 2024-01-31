@@ -6,7 +6,6 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
-use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -280,6 +279,7 @@ class BuildCommands extends AbstractCommands
 
     /**
      * Build theme assets (Css and Js).
+     * Install task runner, additional packages and execute.
      *
      * @param array $options
      *   Additional options for the command.
@@ -291,23 +291,19 @@ class BuildCommands extends AbstractCommands
      *
      * @option default-theme          The theme where to build assets.
      * @option build-npm-packages     The packages to install.
-     * @option validate               Whether to validate or fix the scss.
-     * @option theme-task-runner      The runner to use, one of 'grunt' or 'gulp'.
-     * @option ecl-builder=[COMMAND]  Compile using Europa Component Library (ECL).
+     * @option theme-task-runner      The task runner to use, one of 'grunt, gulp, ecl-builder'.
+     * @option execute=[TASK-RUNNER]  Execute the task runner (value required) e.g. execute=grunt.
+     * @option ecl-command=[COMMAND]  Append command from runner (Only ecl-buider).
      *
-     * @aliases tk-bassets, tk-assets, tba
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @aliases tk-assets, tba
      */
-    public function buildAssets(ConsoleIO $io, array $options = [
+    public function buildAssets(array $options = [
         'default-theme' => InputOption::VALUE_OPTIONAL,
         'custom-code-folder' => InputOption::VALUE_REQUIRED,
         'build-npm-packages' => InputOption::VALUE_REQUIRED,
-        'validate' => InputOption::VALUE_REQUIRED,
         'theme-task-runner' => InputOption::VALUE_REQUIRED,
-        'ecl-presets' => InputOption::VALUE_REQUIRED,
-        'ecl-version' => InputOption::VALUE_REQUIRED,
-        'ecl-builder' => InputOption::VALUE_OPTIONAL,
+        'execute' => InputOption::VALUE_REQUIRED,
+        'ecl-command' => InputOption::VALUE_OPTIONAL,
     ])
     {
         if (empty($options['default-theme'])) {
@@ -330,108 +326,88 @@ class BuildCommands extends AbstractCommands
             ->in($options['custom-code-folder'])
             ->name($options['default-theme']);
 
-        if ($finder->hasResults()) {
-            $theme_dir = '';
-            foreach ($finder as $directory) {
-                $theme_dir = $directory->getRealPath();
-            }
-            $files = scandir($theme_dir);
-
-            // Build task collection.
-            $collection = $this->collectionBuilder();
-
-            // Option to process validation test only.
-            if (in_array($options['validate'], ['check', 'fix'])) {
-                $fix = $options['validate'] === 'fix' ? '--fix' : '';
-                $collection->taskExecStack()
-                    ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
-                    ->exec('npx stylelint "' . $theme_dir . '/**/*.{css,scss,sass}" --config vendor/ec-europa/toolkit/config/stylelint/.stylelintrc.json ' . $fix)
-                    ->stopOnFail();
-                // Run and return task collection.
-                return $collection->run();
-            } elseif ($options['ecl-builder']) {
-                $this->eclBuilder($options, $files, $theme_dir, $collection);
-            } else {
-                if ($options['theme-task-runner'] === 'gulp') {
-                    $taskRunnerConfigFile = 'gulpfile.js';
-                    $io->warning("'Gulp' is being deprecated - use 'Grunt' instead!");
-                } elseif ($options['theme-task-runner'] === 'grunt') {
-                    $taskRunnerConfigFile = 'Gruntfile.js';
-                    $collection = $this->collectionBuilder();
-                    $collection->taskExecStack()
-                        ->dir($theme_dir)
-                        ->exec('apt-get update')
-                        ->exec('apt-get install ruby-sass -y')
-                        ->stopOnFail();
-                } else {
-                    $themeTaskRunner = $options['theme-task-runner'];
-                    $this->say("$themeTaskRunner is not a supported 'theme-task-runner'. The supported plugins are 'gulp' and 'grunt' (Recommended).");
-                    return 0;
-                }
-
-                // Check if 'theme-task-runner' file exists.
-                // Create a new one from source if doesn't exist.
-                if (!in_array($taskRunnerConfigFile, $files)) {
-                    $dir = Toolkit::getToolkitRoot() . '/resources/assets';
-                    $collection->taskExecStack()
-                        ->exec("cp $dir/$taskRunnerConfigFile $theme_dir/$taskRunnerConfigFile")
-                        ->stopOnFail();
-                }
-
-                $collection->taskExecStack()
-                    ->dir($theme_dir)
-                    ->exec('npm init -y --scope')
-                    ->exec("npm install {$options['build-npm-packages']} --save-dev")
-                    ->exec('./node_modules/.bin/' . $options['theme-task-runner'])
-                    ->stopOnFail();
-            }
-            // Run and return task collection.
-            return $collection->run();
-        } else {
+        if (!$finder->hasResults()) {
             $this->say("The theme '{$options['default-theme']}' couldn't be found on the '{$options['custom-code-folder']}' folder.");
             return 0;
         }
+        $theme_dir = '';
+        foreach ($finder as $directory) {
+            $theme_dir = $directory->getRealPath();
+        }
+        $files = scandir($theme_dir);
+        $taskRunners = explode(' ', $options['theme-task-runner']);
+        $allowedTaskRunners = [
+            'gulp' => 'gulpfile.js',
+            'grunt' => 'Gruntfile.js',
+            'ecl-builder' => 'ecl-builder.config.js',
+        ];
+        foreach ($taskRunners as $taskRunner) {
+            if (!in_array($taskRunner, array_keys($allowedTaskRunners))) {
+                $this->say("$taskRunner is not a supported 'theme-task-runner'. The supported plugins are 'gulp', 'grunt' and 'ecl-builder'.");
+                return 0;
+            }
+        }
+
+        // Build task collection.
+        $collection = $this->collectionBuilder();
+        if ($options['execute']) {
+            $this->buildAssetsExecute($allowedTaskRunners, $options, $files, $collection, $theme_dir);
+        } else {
+            $this->buildAssetsInstall($collection, $theme_dir, $allowedTaskRunners, $taskRunners, $files, $options);
+        }
+
+        // Run and return task collection.
+        return $collection->run();
     }
 
     /**
-     * Ecl compiler and building commands.
+     * Runs the toolkit:build-assets on execute mode.
      */
-    public function eclBuilder($options, $files, $theme_dir, $collection)
+    private function buildAssetsInstall($collection, $theme_dir, $allowedTaskRunners, $taskRunners, $files, $options)
     {
-        $EcPresets = explode(' ', $options['ecl-presets']);
-        $dir = Toolkit::getToolkitRoot() . '/resources/assets';
-        if (!in_array('ecl-builder.config.js', $files)) {
-            $collection->taskExecStack()
-                ->dir($theme_dir)
-                // Copy config file.
-                ->exec("cp $dir/ecl-builder.config.js $theme_dir/ecl-builder.config.js")
-                ->stopOnFail();
+        $collection->taskExecStack()
+            ->dir($theme_dir)
+            ->exec('apt-get update')
+            ->exec('apt-get install ruby-sass -y')
+            ->exec('npm init -y')
+            ->stopOnFail();
+
+        // Check if 'theme-task-runner' file exists.
+        // Create a new one from source if doesn't exist.
+        foreach ($allowedTaskRunners as $allowedTaskRunner => $configFile) {
+            if (in_array($allowedTaskRunner, $taskRunners) && !in_array($configFile, $files)) {
+                $dir = Toolkit::getToolkitRoot() . '/resources/assets';
+                $collection->taskExecStack()
+                    ->exec("cp $dir/$configFile $theme_dir/$configFile")
+                    ->stopOnFail();
+            }
         }
         $collection->taskExecStack()
             ->dir($theme_dir)
-            ->exec('npm init -y --scope')
-            ->exec("npm i @ecl/builder@{$options['ecl-version']} pikaday -y")
-            ->exec('npm i moment --save -y')
+            ->exec("npm install {$options['build-npm-packages']} --save-dev")
             ->stopOnFail();
-        foreach ($EcPresets as $ecPreset) {
-            $collection->taskExecStack()
-                ->dir($theme_dir)
-                ->exec("npm i @ecl/$ecPreset@{$options['ecl-version']}")
-                ->stopOnFail();
+    }
+
+    /**
+     * Runs the toolkit:build-assets on execute mode.
+     */
+    private function buildAssetsExecute($allowedTaskRunners, $options, $files, $collection, $theme_dir)
+    {
+        if (!in_array($allowedTaskRunners[$options['execute']], $files)) {
+            $this->say('Config file not found! Make sure you have run the target toolkit:build-assets before use the execute mode.');
+            return 0;
         }
-        if ($options['ecl-builder'] != '1') {
+        if ($options['ecl-command']) {
             $collection->taskExecStack()
                 ->dir($theme_dir)
-                ->exec("./node_modules/.bin/ecl-builder {$options['ecl-builder']}")
+                ->exec($this->getNodeBin($options['execute']) . " {$options['ecl-command']}")
                 ->stopOnFail();
         } else {
             $collection->taskExecStack()
                 ->dir($theme_dir)
-                ->exec('./node_modules/.bin/ecl-builder')
+                ->exec($this->getNodeBin($options['execute']))
                 ->stopOnFail();
         }
-        // Run and return task collection.
-        return $collection->run();
     }
 
     /**
