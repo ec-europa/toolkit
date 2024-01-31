@@ -150,38 +150,7 @@
   expectations:
     - contains: ">  The default-theme couldn't be found in the project. Skipping build."
 
-- command: 'toolkit:build-assets --default-theme=theme --validate=fix --custom-code-folder=code --theme-task-runner=gulp --build-npm-packages=gulp-cli'
-  configuration: []
-  resources:
-    - from: sample-package.json
-      to: code/theme/package.json
-  expectations:
-    - contains: |
-        [Simulator] Simulating ExecStack()
-          ->exec('npm i -D stylelint stylelint-config-standard stylelint-config-sass-guidelines')
-          ->exec('npx stylelint "/test/toolkit/tests/sandbox/BuildComman ... lelintrc.json --fix')
-          ->stopOnFail()
-
 - command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code --theme-task-runner=gulp --build-npm-packages=gulp-cli'
-  configuration: []
-  resources:
-    - from: sample-package.json
-      to: code/theme/package.json
-  expectations:
-    - contains: |
-        [WARNING] 'Gulp' is being deprecated - use 'Grunt' instead!
-
-        [Simulator] Simulating ExecStack()
-          ->exec('cp /test/toolkit/resources/assets/gulpfile.js /test/to ... e/theme/gulpfile.js')
-          ->stopOnFail()
-        [Simulator] Simulating ExecStack()
-          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          ->exec('npm init -y --scope')
-          ->exec('npm install gulp-cli --save-dev')
-          ->exec('./node_modules/.bin/gulp')
-          ->stopOnFail()
-
-- command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code'
   configuration: []
   resources:
     - from: sample-package.json
@@ -192,13 +161,21 @@
           ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
           ->exec('apt-get update')
           ->exec('apt-get install ruby-sass -y')
+          ->exec('npm init -y')
           ->stopOnFail()
         [Simulator] Simulating ExecStack()
-          ->exec('cp /test/toolkit/resources/assets/Gruntfile.js /test/t ... /theme/Gruntfile.js')
+          ->exec('cp /test/toolkit/resources/assets/gulpfile.js /test/to ... e/theme/gulpfile.js')
           ->stopOnFail()
         [Simulator] Simulating ExecStack()
           ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          ->exec('npm init -y --scope')
-          ->exec('npm install grunt grunt-contrib-jshint grunt-contrib-w ... b-uglify --save-dev')
-          ->exec('./node_modules/.bin/grunt')
+          ->exec('npm install gulp-cli --save-dev')
           ->stopOnFail()
+
+- command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code --execute=gulp'
+  configuration: []
+  resources:
+    - from: sample-package.json
+      to: code/theme/package.json
+  expectations:
+    - contains: |
+        >  Config file not found! Make sure you have run the target toolkit:build-assets before use the execute mode.
