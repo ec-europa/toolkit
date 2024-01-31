@@ -408,13 +408,15 @@ class BuildCommands extends AbstractCommands
                 ->stopOnFail();
         }
         $collection->taskExecStack()
+            ->dir($theme_dir)
             ->exec('npm init -y --scope')
-            ->exec("npm i @ecl/builder@{$options['ecl-version']}")
+            ->exec("npm i @ecl/builder@{$options['ecl-version']} pikaday -y")
+            ->exec('npm i moment --save -y')
             ->stopOnFail();
         foreach ($EcPresets as $ecPreset) {
             $collection->taskExecStack()
                 ->dir($theme_dir)
-                ->exec("npm i @ecl/" . $ecPreset)
+                ->exec("npm i @ecl/$ecPreset@{$options['ecl-version']}")
                 ->stopOnFail();
         }
         if ($options['ecl-builder'] != '1') {
