@@ -48,7 +48,7 @@ If the file do not exists, toolkit will create it using the default template.
 After creation please check the entry points and output for your css, scss and js files.
 Make sure that are pointed to the right path.
 
-Execution - Build theme assets
+Build theme assets (general)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Run the following command:
@@ -59,7 +59,7 @@ Run the following command:
 
 This will (re)generate the output file(s) defined on the config file(s).
 
-Execution - Ecl command
+Build theme assets (ecl-builder)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In case the chosen runner  is 'ecl-builder' and additional parameter should be provided:
@@ -67,10 +67,10 @@ In case the chosen runner  is 'ecl-builder' and additional parameter should be p
 
 .. code-block::
 
-   Check all the available commands:
+   // Check all the available commands:
    docker-compose exec web ./vendor/bin/run toolkit:build-assets --execute=ecl-builder
 
-   Execute an available command from the ecl-builder list:
+   // Execute an available command from the ecl-builder list:
    docker-compose exec web ./vendor/bin/run toolkit:build-assets --execute=ecl-builder --ecl-command=styles
 
 
@@ -81,8 +81,10 @@ The default theme can be specified in a parameter the parameter in the task call
 
 .. code-block::
 
-   docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
+  // Command line
+  docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
 
+  // File 'runner.yml.dist'
   toolkit:
     build:
       npm:
@@ -104,7 +106,7 @@ If for some reason your project is running custom code in other folder then ``li
 Enable build assets during CI
 -----------------------------
 
-To enable auto build of assets you should extend the tasks ``build-dev`` and ``build-dist``. See example bellow.
+To enable auto build of assets you should extend the tasks ``build-dev`` and ``build-dist``. See example below.
 
 .. code-block::
 
@@ -125,17 +127,17 @@ Install additional npm packages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Additional npm packages can be installed to extend the functionality.
-The package version can be added after the package name followed by '@':
+The package version can be added after the package name like the example below:
 
-@ecl/preset-ec@3.13.0
+.. code-block::
 
-or
+   @ecl/preset-ec@3.13.0
 
-grunt@1.6.1"
+   or
 
+   grunt@1.6.1"
 
-In order to do that add them in the file ``runner.yml.dist`` like the example bellow:
-
+To do it add them to the file 'runner.yml.dist':
 
 .. code-block::
 
