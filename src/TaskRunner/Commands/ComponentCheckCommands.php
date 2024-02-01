@@ -433,12 +433,20 @@ class ComponentCheckCommands extends AbstractCommands
                 $allowedProfiles = array_map('trim', explode(',', $allowedProfiles));
                 // Load the project from the website.
                 $project = Website::projectInformation($projectId);
-                if (array_key_exists('profile', $project)) {
-                    if (in_array($project['profile'], $allowedProfiles)) {
-                        $allowedInProject = true;
-                        $message = "The package $packageName is authorised for the profile {$project['profile']}";
-                        $messageType = 'Packages authorised:';
+                // Get the profile from the production environment.
+                $profile = '';
+                if (!empty($project['environments'])) {
+                    foreach ($project['environments'] as $environment) {
+                        if ($environment['type'] === 'Production') {
+                            $profile = $environment['profile'];
+                            break;
+                        }
                     }
+                }
+                if (in_array($profile, $allowedProfiles)) {
+                    $allowedInProject = true;
+                    $message = "The package $packageName is authorised for the profile $profile";
+                    $messageType = 'Packages authorised:';
                 }
             }
 

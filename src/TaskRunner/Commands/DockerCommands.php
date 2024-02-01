@@ -59,7 +59,7 @@ final class DockerCommands extends AbstractCommands
 
         $websiteRequirements = $this->getWebsiteRequirements();
         $requirementsServiceImage = $this->getServicesVersionsFromRequirements($websiteRequirements['defaults']);
-        $projectInfo = $this->getWebsiteProjectInformation($projectId);
+        $projectInfo = $this->getProjectPhpFromWebsite($projectId);
 
         $requirements = array_merge($requirementsServiceImage, $projectInfo);
 
@@ -127,7 +127,7 @@ final class DockerCommands extends AbstractCommands
      * @return array|string[]
      * @throws \Exception
      */
-    private function getWebsiteProjectInformation(string $projectId): array
+    private function getProjectPhpFromWebsite(string $projectId): array
     {
         $data = Website::projectInformation($projectId);
         if (!$data) {
@@ -135,9 +135,16 @@ final class DockerCommands extends AbstractCommands
             return [];
         }
 
-        return [
-            'php_version' => $data['php_version'],
-        ];
+        // Get the php version from the production environment.
+        if (!empty($project['environments'])) {
+            foreach ($project['environments'] as $environment) {
+                if ($environment['type'] === 'Production') {
+                    return ['php_version' => $data['php_version']];
+                }
+            }
+        }
+
+        return [];
     }
 
     /**

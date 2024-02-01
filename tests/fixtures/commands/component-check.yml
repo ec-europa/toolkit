@@ -16,7 +16,6 @@
         Website not installed, using config/sync/core.extension.yml file.
         Config file not found at config/sync/core.extension.yml.
         Package dropsolid_purge is mandatory and is not present on the project.
-        Package oe_dashboard_agent is mandatory and is not present on the project.
 
         Checking Recommended components.
         ================================
@@ -365,13 +364,13 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.2/api/v1/project/ec-europa/toolkit/information.json
+    - file: .toolkit-mock/0.0.3/api/v1/project/ec-europa/toolkit/information.json
       content: |
-        [ { "type": "Drupal 9" ,"profile": "minimal" } ]
-    - file: .toolkit-mock/0.0.2/api/v1/toolkit-requirements.json
+        [ { "name":"toolkit", "type": "Openeuropa", "environments": [{ "profile": "minimal", "type": "Production" }] }]
+    - file: .toolkit-mock/0.0.3/api/v1/toolkit-requirements.json
       content: |
-        { "php_version":"8.0", "toolkit": "^3.7.2|^9.11|^10.1", "drupal": "^7.96|^9.5.8|^10.0.9", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.2/api/v1/package-reviews.json
+        { "php_version":"8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
+    - file: .toolkit-mock/0.0.3/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -386,7 +385,7 @@
           "status": "rejected",
           "restricted_use": "1",
           "allowed_profiles": "minimal",
-          "allowed_project_types": "Drupal 9",
+          "allowed_project_types": "Openeuropa",
           "mandatory": "0",
           "mandatory_date": false,
           "core": "8.x",
@@ -396,7 +395,7 @@
           "dev_component": "false"
         } ]
   expectations:
-    - string_contains: The package drupal/pipeline is authorised for the type of project Drupal 9
+    - string_contains: The package drupal/pipeline is authorised for the type of project Openeuropa
 
 - command: 'toolkit:component-check'
   configuration: [ ]
@@ -406,13 +405,13 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.2/api/v1/project/ec-europa/toolkit/information.json
+    - file: .toolkit-mock/0.0.3/api/v1/project/ec-europa/toolkit/information.json
       content: |
-        [ { "type": "Drupal 9" ,"profile": "minimal" } ]
-    - file: .toolkit-mock/0.0.2/api/v1/toolkit-requirements.json
+        [ { "name": "toolkit", "type": "Openeuropa", "environments": [{ "profile":"minimal", "type":"Production" }] } ]
+    - file: .toolkit-mock/0.0.3/api/v1/toolkit-requirements.json
       content: |
-        { "php_version":"8.0", "toolkit": "^3.7.2|^9.11|^10.1", "drupal": "^7.96|^9.5.8|^10.0.9", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.2/api/v1/package-reviews.json
+        { "php_version": "8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
+    - file: .toolkit-mock/0.0.3/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",

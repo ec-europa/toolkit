@@ -13,4 +13,4 @@ upgrade_commands:
       - ./vendor/bin/drush cache:rebuild ephemeral
 extra_pkgs:
   - php8.1-zip
-php_version: '8.0'
+php_version: '8.1'

@@ -72,7 +72,7 @@
         },
         {
             "name": "drupal/core",
-            "version": "9.5.11",
+            "version": "10.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
@@ -239,7 +239,7 @@
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "9.5.11",
+            "version": "10.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
