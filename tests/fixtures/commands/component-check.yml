@@ -25,8 +25,6 @@
         Checking Insecure components.
         =============================
 
-        [Simulator] Running ./vendor/bin/drush status --format=json
-        Website not installed, skipping pm:security.
         [Simulator] Running composer audit --no-dev --locked --no-scripts --format=json
         >  Insecure components check passed.
 
