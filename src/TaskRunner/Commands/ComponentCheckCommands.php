@@ -431,18 +431,7 @@ class ComponentCheckCommands extends AbstractCommands
             // Check if the module is allowed for this profile.
             if (!$allowedInProject && !empty($allowedProfiles)) {
                 $allowedProfiles = array_map('trim', explode(',', $allowedProfiles));
-                // Load the project from the website.
-                $project = Website::projectInformation($projectId);
-                // Get the profile from the production environment.
-                $profile = '';
-                if (!empty($project['environments'])) {
-                    foreach ($project['environments'] as $environment) {
-                        if ($environment['type'] === 'Production') {
-                            $profile = $environment['profile'];
-                            break;
-                        }
-                    }
-                }
+                $profile = $this->getProjectProfile($projectId);
                 if (in_array($profile, $allowedProfiles)) {
                     $allowedInProject = true;
                     $message = "The package $packageName is authorised for the profile $profile";
@@ -884,6 +873,27 @@ class ComponentCheckCommands extends AbstractCommands
     private function getFailedOrPassed(bool $value): string
     {
         return $value ? 'failed' : 'passed';
+    }
+
+    /**
+     * Load given project from website and return the profile in the production env.
+     *
+     * @param string $projectId
+     *   The project to use in the endpoint.
+     */
+    private function getProjectProfile(string $projectId): string
+    {
+        // Load the project from the website.
+        $project = Website::projectInformation($projectId);
+        // Get the profile from the production environment.
+        if (!empty($project['environments'])) {
+            foreach ($project['environments'] as $env) {
+                if (!empty($env['profile']) && $env['type'] === 'Production') {
+                    return $env['profile'];
+                }
+            }
+        }
+        return '';
     }
 
 }
