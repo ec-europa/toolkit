@@ -556,26 +556,6 @@ class ComponentCheckCommands extends AbstractCommands
     {
         $packages = [];
         $drupalReleaseHistory = new DrupalReleaseHistory();
-
-        if ($this->isWebsiteInstalled()) {
-            $exec = $this->taskExec($this->getBin('drush') . ' pm:security --format=json')
-                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-                ->run();
-            if (!empty($exec->getExitCode()) && $exec->getExitCode() !== 3) {
-                $this->io->error(['Failed to run: pm:security', $exec->getMessage()]);
-            } else {
-                $result = trim($exec->getMessage());
-                if (!empty($result) && $result !== '[]') {
-                    $data = json_decode($result, true);
-                    if (!empty($data) && is_array($data)) {
-                        $packages = $data;
-                    }
-                }
-            }
-        } else {
-            $this->writeln('Website not installed, skipping pm:security.');
-        }
-
         $exec = $this->taskExec('composer audit --no-dev --locked --no-scripts --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run();
