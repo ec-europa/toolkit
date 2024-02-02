@@ -7,7 +7,6 @@
           clone:
             asda_type: cloud
             asda_vendor: vendor
-            asda_url: 'https://url.for.dumps/dumps'
             nextcloud_url: nextcloud.url/files
     - file: config/runner/docker.yml
       content: |
@@ -29,7 +28,6 @@
           dumpfile: mysql.gz
           asda_services: mysql
           asda_type: cloud
-          asda_url: 'https://url.for.dumps/dumps'
           nextcloud_url: nextcloud.url/files
           nextcloud_admin: false
           asda_vendor: vendor

@@ -129,11 +129,11 @@ class DumpCommands extends AbstractCommands
     }
 
     /**
-     * Download ASDA snapshot.
+     * Download database snapshot.
      *
      * @codingStandardsIgnoreStart Generic.Commenting.DocComment.TagsNotGrouped
      *
-     * Configuration for ASDA in NEXTCLOUD.
+     * Configuration for database snapshot in NEXTCLOUD.
      * - Environment variables: NEXTCLOUD_USER, NEXTCLOUD_PASS (EU Login).
      * - Runner variables:
      *
@@ -148,17 +148,6 @@ class DumpCommands extends AbstractCommands
      *     nextcloud_url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'
      * @endcode
      *
-     * Configuration for ASDA default.
-     * - Environment variables: ASDA_USER, ASDA_PASSWORD.
-     * - Runner variables:
-     *
-     * @code
-     * toolkit:
-     *   clone:
-     *     asda_type: 'default'
-     *     asda_url: 'webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project_id}'
-     * @endcode
-     *
      * @codingStandardsIgnoreEnd
      *
      * @command toolkit:download-dump
@@ -168,13 +157,10 @@ class DumpCommands extends AbstractCommands
      *
      * @aliases tk-ddump
      *
-     * @return \Robo\Collection\CollectionBuilder
-     *   Collection builder.
-     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function toolkitDownloadDump(array $options = [
+    public function toolkitDownloadDump(ConsoleIO $io, array $options = [
         'is-admin' => InputOption::VALUE_NONE,
         'yes' => InputOption::VALUE_NONE,
     ])
@@ -183,6 +169,12 @@ class DumpCommands extends AbstractCommands
         $config = $this->getConfig();
         $project_id = $config->get('toolkit.project_id');
         $asda_type = $config->get('toolkit.clone.asda_type', 'nextcloud');
+
+        if ($asda_type !== 'nextcloud') {
+            $io->error('The currently supported ASDA type is Nextcloud, please update your configuration at ${toolkit.clone.asda_type}.');
+            return ResultData::EXITCODE_ERROR;
+        }
+
         $asda_services = $config->get('toolkit.clone.asda_services', 'mysql');
         Toolkit::ensureArray($asda_services);
         $vendor = $config->get('toolkit.clone.asda_vendor');
@@ -195,44 +187,31 @@ class DumpCommands extends AbstractCommands
             $is_admin = true;
         }
 
-        $this->say("ASDA type is: $asda_type" . ($asda_type === 'default' ? ' (The legacy ASDA will be dropped on 1 June)' : ''));
+        $this->say("ASDA type is: $asda_type");
         $this->say('ASDA services: ' . implode(', ', $asda_services));
-
-        if ($asda_type === 'default') {
-            $user = Toolkit::getAsdaUser();
-            $password = Toolkit::getAsdaPass();
-            // Workaround, EWPP projects uses the ASDA_URL.
-            $url = getenv('ASDA_URL') ?: $config->get('toolkit.clone.asda_url');
-        } elseif ($asda_type === 'nextcloud') {
-            $user = Toolkit::getNextcloudUser();
-            $password = Toolkit::getNextcloudPass();
-            $url = $config->get('toolkit.clone.nextcloud_url');
-        } else {
-            $this->writeln('<error>Invalid value for variable ${toolkit.clone.asda_type}, use "default" or "nextcloud".</error>');
-            return $this->collectionBuilder()->addTaskList($tasks);
-        }
+        $user = Toolkit::getNextcloudUser();
+        $password = Toolkit::getNextcloudPass();
+        $url = $config->get('toolkit.clone.nextcloud_url');
 
         if (empty($user)) {
-            if (empty($user = $this->ask('Please insert your username?'))) {
-                $this->writeln('<error>The username cannot be empty!</error>');
+            if (empty($user = $this->ask('Please insert your username:'))) {
+                $io->error('The username cannot be empty!');
                 return $this->collectionBuilder()->addTaskList($tasks);
             }
         }
         if (empty($password)) {
             if (empty($password = $this->askHidden('Please insert your password:'))) {
-                $this->writeln('<error>The password cannot be empty!</error>');
+                $io->error('The password cannot be empty!');
                 return $this->collectionBuilder()->addTaskList($tasks);
             }
         }
 
         $url = str_replace(['http://', 'https://'], '', $url);
         $download_link = "https://$user:$password@$url";
-        if ($asda_type === 'nextcloud') {
-            if ($is_admin) {
-                $download_link .= "/$user/forDevelopment/$vendor/$project_id-$source";
-            } else {
-                $download_link .= "/$user/$project_id-$source";
-            }
+        if ($is_admin) {
+            $download_link .= "/$user/forDevelopment/$vendor/$project_id-$source";
+        } else {
+            $download_link .= "/$user/$project_id-$source";
         }
 
         foreach ($asda_services as $service) {
@@ -241,11 +220,7 @@ class DumpCommands extends AbstractCommands
             // Check if the dump is already downloaded.
             if (!file_exists($dump)) {
                 $this->say('Starting download');
-                if ($asda_type === 'nextcloud') {
-                    $tasks = array_merge($tasks, $this->asdaProcessFile("$download_link/$service", $service));
-                } else {
-                    $tasks = $this->asdaProcessFile($download_link, $service);
-                }
+                $tasks = array_merge($tasks, $this->asdaProcessFile("$download_link/$service", $service));
                 continue;
             }
 
@@ -264,11 +239,7 @@ class DumpCommands extends AbstractCommands
                 $this->say($question . ' (y/n) Y');
             }
             $this->say('Starting download');
-            if ($asda_type === 'nextcloud') {
-                $tasks = array_merge($tasks, $this->asdaProcessFile("$download_link/$service", $service));
-            } else {
-                $tasks = $this->asdaProcessFile($download_link, $service);
-            }
+            $tasks = array_merge($tasks, $this->asdaProcessFile("$download_link/$service", $service));
         }
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
