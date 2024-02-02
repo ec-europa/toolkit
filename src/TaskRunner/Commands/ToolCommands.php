@@ -441,6 +441,7 @@ class ToolCommands extends AbstractCommands
      * @option opts-review Execute the command toolkit:opts-review.
      * @option lint-php    Execute the command toolkit:lint-php.
      * @option lint-yaml   Execute the command toolkit:lint-yaml.
+     * @option lint-js     Execute the command toolkit:lint-js.
      * @option phpstan     Execute the command toolkit:test-phpstan.
      * @option phpmd       Execute the command toolkit:test-phpmd.
      * @option phpunit     Execute the command toolkit:test-phpunit.
