@@ -113,6 +113,20 @@
     - string_contains: Lint PHP      passed
     - string_contains: Lint YAML     passed
     - string_contains: PHPStan       passed
+    - string_contains: PHPMD         passed
+    - string_contains: PHPUnit       passed
+
+- command: toolkit:code-review --phpcs --opts-review --lint-php --lint-yaml --phpstan --phpmd --phpunit
+  configuration: []
+  resources: []
+  expectations:
+    - string_contains: PHPcs         passed
+    - string_contains: Opts review   passed
+    - string_contains: Lint PHP      passed
+    - string_contains: Lint YAML     passed
+    - string_contains: PHPStan       passed
+    - string_contains: PHPMD         passed
+    - string_contains: PHPUnit       passed
 
 - command: toolkit:code-review --phpcs
   configuration: []
@@ -123,6 +137,8 @@
     - string_contains: Lint PHP      skip
     - string_contains: Lint YAML     skip
     - string_contains: PHPStan       skip
+    - string_contains: PHPMD         skip
+    - string_contains: PHPUnit       skip
 
 - command: toolkit:install-dependencies
   configuration: []

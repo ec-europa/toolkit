@@ -427,7 +427,7 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * This command will execute all the testing tools.
+     * Execute all or specific tools for static testing.
      *
      * If no option is given, all the tests will be executed.
      *
@@ -438,6 +438,8 @@ class ToolCommands extends AbstractCommands
      * @option lint-php    Execute the command toolkit:lint-php.
      * @option lint-yaml   Execute the command toolkit:lint-yaml.
      * @option phpstan     Execute the command toolkit:test-phpstan.
+     * @option phpmd       Execute the command toolkit:test-phpmd.
+     * @option phpunit     Execute the command toolkit:test-phpunit.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -448,6 +450,8 @@ class ToolCommands extends AbstractCommands
         'lint-php' => InputOption::VALUE_NONE,
         'lint-yaml' => InputOption::VALUE_NONE,
         'phpstan' => InputOption::VALUE_NONE,
+        'phpmd' => InputOption::VALUE_NONE,
+        'phpunit' => InputOption::VALUE_NONE,
     ])
     {
         // If at least one option is given, use given options, else use all.
@@ -456,23 +460,26 @@ class ToolCommands extends AbstractCommands
         $lintPhp = $options['lint-php'] === true;
         $lintYaml = $options['lint-yaml'] === true;
         $phpStan = $options['phpstan'] === true;
+        $phpMd = $options['phpmd'] === true;
+        $phpUnit = $options['phpunit'] === true;
         $exit = 0;
 
-        if ($phpcs || $optsReview || $lintPhp || $lintYaml || $phpStan) {
+        if ($phpcs || $optsReview || $lintPhp || $lintYaml || $phpStan || $phpMd || $phpUnit) {
             // Run given checks.
             $runPhpcs = $phpcs;
             $runOptsReview = $optsReview;
             $runLintPhp = $lintPhp;
             $runLintYaml = $lintYaml;
             $runPhpStan = $phpStan;
+            $runPhpMd = $phpMd;
+            $runPhpUnit = $phpUnit;
         } else {
             // Run all checks.
-            $runPhpcs = $runOptsReview = $runLintPhp = $runLintYaml = $runPhpStan = true;
+            $runPhpcs = $runOptsReview = $runLintPhp = $runLintYaml = $runPhpStan = $runPhpMd = $runPhpUnit = true;
         }
         $run = $this->getBin('run');
         if ($runPhpcs) {
-            $code = $this->taskExec($run)->arg('toolkit:test-phpcs')
-                ->run()->getExitCode();
+            $code = $this->taskExec($run)->arg('toolkit:test-phpcs')->run()->getExitCode();
             $phpcsResult = ['PHPcs' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $io->newLine(2);
@@ -480,8 +487,7 @@ class ToolCommands extends AbstractCommands
             $phpcsResult = ['PHPcs' => 'skip'];
         }
         if ($runOptsReview) {
-            $code = $this->taskExec($run)->arg('toolkit:opts-review')
-                ->run()->getExitCode();
+            $code = $this->taskExec($run)->arg('toolkit:opts-review')->run()->getExitCode();
             $optsReviewResult = ['Opts review' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $io->newLine(2);
@@ -489,8 +495,7 @@ class ToolCommands extends AbstractCommands
             $optsReviewResult = ['Opts review' => 'skip'];
         }
         if ($runLintPhp) {
-            $code = $this->taskExec($run)->arg('toolkit:lint-php')
-                ->run()->getExitCode();
+            $code = $this->taskExec($run)->arg('toolkit:lint-php')->run()->getExitCode();
             $lintPhpResult = ['Lint PHP' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $io->newLine(2);
@@ -498,8 +503,7 @@ class ToolCommands extends AbstractCommands
             $lintPhpResult = ['Lint PHP' => 'skip'];
         }
         if ($runLintYaml) {
-            $code = $this->taskExec($run)->arg('toolkit:lint-yaml')
-                ->run()->getExitCode();
+            $code = $this->taskExec($run)->arg('toolkit:lint-yaml')->run()->getExitCode();
             $lintYamlResult = ['Lint YAML' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $io->newLine(2);
@@ -507,17 +511,32 @@ class ToolCommands extends AbstractCommands
             $lintYamlResult = ['Lint YAML' => 'skip'];
         }
         if ($runPhpStan) {
-            $code = $this->taskExec($run)->arg('toolkit:test-phpstan')
-                ->run()->getExitCode();
+            $code = $this->taskExec($run)->arg('toolkit:test-phpstan')->run()->getExitCode();
             $phpStanResult = ['PHPStan' => $code > 0 ? 'failed' : 'passed'];
             $exit += $code;
             $io->newLine(2);
         } else {
             $phpStanResult = ['PHPStan' => 'skip'];
         }
+        if ($runPhpMd) {
+            $code = $this->taskExec($run)->arg('toolkit:test-phpmd')->run()->getExitCode();
+            $phpMdResult = ['PHPMD' => $code > 0 ? 'failed' : 'passed'];
+            $exit += $code;
+            $io->newLine(2);
+        } else {
+            $phpMdResult = ['PHPMD' => 'skip'];
+        }
+        if ($runPhpUnit) {
+            $code = $this->taskExec($run)->arg('toolkit:test-phpunit')->run()->getExitCode();
+            $phpUnitResult = ['PHPUnit' => $code > 0 ? 'failed' : 'passed'];
+            $exit += $code;
+            $io->newLine(2);
+        } else {
+            $phpUnitResult = ['PHPUnit' => 'skip'];
+        }
 
         $io->title('Results:');
-        $io->definitionList($phpcsResult, $optsReviewResult, $lintPhpResult, $lintYamlResult, $phpStanResult);
+        $io->definitionList($phpcsResult, $optsReviewResult, $lintPhpResult, $lintYamlResult, $phpStanResult, $phpMdResult, $phpUnitResult);
 
         return new ResultData($exit);
     }
