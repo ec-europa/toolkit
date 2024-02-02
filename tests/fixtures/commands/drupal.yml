@@ -291,7 +291,7 @@
   configuration: []
   tokens: ~
   resources:
-    - from: sample-composer.lock
+    - from: sample-d9-composer.lock
       to: composer.lock
   expectations:
     - contains: |
