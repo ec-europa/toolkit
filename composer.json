@@ -1,6 +1,6 @@
 {
     "name": "ec-europa/toolkit",
-    "description": "Toolkit packaged for Drupal 9.",
+    "description": "Toolkit packaged for Drupal projects based on Robo.",
     "license": "EUPL-1.2",
     "type": "library",
     "homepage": "https://github.com/ec-europa/toolkit",
