@@ -449,6 +449,7 @@ class ToolCommands extends AbstractCommands
         'opts-review' => InputOption::VALUE_NONE,
         'lint-php' => InputOption::VALUE_NONE,
         'lint-yaml' => InputOption::VALUE_NONE,
+        'lint-js' => InputOption::VALUE_NONE,
         'phpstan' => InputOption::VALUE_NONE,
         'phpmd' => InputOption::VALUE_NONE,
         'phpunit' => InputOption::VALUE_NONE,
@@ -459,23 +460,25 @@ class ToolCommands extends AbstractCommands
         $optsReview = $options['opts-review'] === true;
         $lintPhp = $options['lint-php'] === true;
         $lintYaml = $options['lint-yaml'] === true;
+        $lintJs = $options['lint-js'] === true;
         $phpStan = $options['phpstan'] === true;
         $phpMd = $options['phpmd'] === true;
         $phpUnit = $options['phpunit'] === true;
         $exit = 0;
 
-        if ($phpcs || $optsReview || $lintPhp || $lintYaml || $phpStan || $phpMd || $phpUnit) {
+        if ($phpcs || $optsReview || $lintPhp || $lintYaml || $lintJs || $phpStan || $phpMd || $phpUnit) {
             // Run given checks.
             $runPhpcs = $phpcs;
             $runOptsReview = $optsReview;
             $runLintPhp = $lintPhp;
             $runLintYaml = $lintYaml;
+            $runLintJs = $lintJs;
             $runPhpStan = $phpStan;
             $runPhpMd = $phpMd;
             $runPhpUnit = $phpUnit;
         } else {
             // Run all checks.
-            $runPhpcs = $runOptsReview = $runLintPhp = $runLintYaml = $runPhpStan = $runPhpMd = $runPhpUnit = true;
+            $runPhpcs = $runOptsReview = $runLintPhp = $runLintYaml = $runLintJs = $runPhpStan = $runPhpMd = $runPhpUnit = true;
         }
         $run = $this->getBin('run');
         if ($runPhpcs) {
@@ -510,6 +513,14 @@ class ToolCommands extends AbstractCommands
         } else {
             $lintYamlResult = ['Lint YAML' => 'skip'];
         }
+        if ($runLintJs) {
+            $code = $this->taskExec($run)->arg('toolkit:lint-js')->run()->getExitCode();
+            $lintJsResult = ['Lint JS' => $code > 0 ? 'failed' : 'passed'];
+            $exit += $code;
+            $io->newLine(2);
+        } else {
+            $lintJsResult = ['Lint JS' => 'skip'];
+        }
         if ($runPhpStan) {
             $code = $this->taskExec($run)->arg('toolkit:test-phpstan')->run()->getExitCode();
             $phpStanResult = ['PHPStan' => $code > 0 ? 'failed' : 'passed'];
@@ -536,7 +547,7 @@ class ToolCommands extends AbstractCommands
         }
 
         $io->title('Results:');
-        $io->definitionList($phpcsResult, $optsReviewResult, $lintPhpResult, $lintYamlResult, $phpStanResult, $phpMdResult, $phpUnitResult);
+        $io->definitionList($phpcsResult, $optsReviewResult, $lintPhpResult, $lintYamlResult, $lintJsResult, $phpStanResult, $phpMdResult, $phpUnitResult);
 
         return new ResultData($exit);
     }

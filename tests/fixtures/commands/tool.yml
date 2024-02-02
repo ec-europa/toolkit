@@ -112,11 +112,12 @@
     - string_contains: Opts review   passed
     - string_contains: Lint PHP      passed
     - string_contains: Lint YAML     passed
+    - string_contains: Lint JS       passed
     - string_contains: PHPStan       passed
     - string_contains: PHPMD         passed
     - string_contains: PHPUnit       passed
 
-- command: toolkit:code-review --phpcs --opts-review --lint-php --lint-yaml --phpstan --phpmd --phpunit
+- command: toolkit:code-review --phpcs --opts-review --lint-php --lint-yaml --lint-js --phpstan --phpmd --phpunit
   configuration: []
   resources: []
   expectations:
@@ -124,6 +125,7 @@
     - string_contains: Opts review   passed
     - string_contains: Lint PHP      passed
     - string_contains: Lint YAML     passed
+    - string_contains: Lint JS       passed
     - string_contains: PHPStan       passed
     - string_contains: PHPMD         passed
     - string_contains: PHPUnit       passed
@@ -136,6 +138,7 @@
     - string_contains: Opts review   skip
     - string_contains: Lint PHP      skip
     - string_contains: Lint YAML     skip
+    - string_contains: Lint JS       skip
     - string_contains: PHPStan       skip
     - string_contains: PHPMD         skip
     - string_contains: PHPUnit       skip
