@@ -83,6 +83,8 @@ class ToolCommands extends AbstractCommands
      *
      * @option endpoint The endpoint to use to connect to QA Website.
      *
+     * @aliases tk-opts-review
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
@@ -166,6 +168,8 @@ class ToolCommands extends AbstractCommands
      * @command toolkit:requirements
      *
      * @option endpoint The endpoint to use to connect to QA Website.
+     *
+     * @aliases tk-req
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -456,14 +460,14 @@ class ToolCommands extends AbstractCommands
     ])
     {
         $tasks = [
-            'PHPcs' => ['cmd' => 'toolkit:test-phpcs', 'exec' => $options['phpcs'] === true],
-            'Opts review' => ['cmd' => 'toolkit:opts-review', 'exec' => $options['opts-review'] === true],
-            'Lint PHP' => ['cmd' => 'toolkit:lint-php', 'exec' => $options['lint-php'] === true],
-            'Lint YAML' => ['cmd' => 'toolkit:lint-yaml', 'exec' => $options['lint-yaml'] === true],
-            'Lint JS' => ['cmd' => 'toolkit:lint-js', 'exec' => $options['lint-js'] === true],
-            'PHPStan' => ['cmd' => 'toolkit:test-phpstan', 'exec' => $options['phpstan'] === true],
-            'PHPMD' => ['cmd' => 'toolkit:test-phpmd', 'exec' => $options['phpmd'] === true],
-            'PHPUnit' => ['cmd' => 'toolkit:test-phpunit', 'exec' => $options['phpunit'] === true],
+            'PHPcs' => ['cmd' => 'tk-phpcs', 'exec' => $options['phpcs'] === true, 'result' => []],
+            'Opts review' => ['cmd' => 'tk-opts-review', 'exec' => $options['opts-review'] === true, 'result' => []],
+            'Lint PHP' => ['cmd' => 'tk-lint-php', 'exec' => $options['lint-php'] === true, 'result' => []],
+            'Lint YAML' => ['cmd' => 'tk-lint-yaml', 'exec' => $options['lint-yaml'] === true, 'result' => []],
+            'Lint JS' => ['cmd' => 'tk-lint-js', 'exec' => $options['lint-js'] === true, 'result' => []],
+            'PHPStan' => ['cmd' => 'tk-phpstan', 'exec' => $options['phpstan'] === true, 'result' => []],
+            'PHPMD' => ['cmd' => 'tk-phpmd', 'exec' => $options['phpmd'] === true, 'result' => []],
+            'PHPUnit' => ['cmd' => 'tk-phpunit', 'exec' => $options['phpunit'] === true, 'result' => []],
         ];
         $exit = 0;
         $runAll = false;
