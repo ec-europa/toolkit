@@ -37,6 +37,7 @@ toolkit:
     docker_compose:
       environment_variables:
         forbidden:
+          - ASDA_URL
           - ASDA_USER
           - ASDA_PASSWORD
           - QA_API_BASIC_AUTH
