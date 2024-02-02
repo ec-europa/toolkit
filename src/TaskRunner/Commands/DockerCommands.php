@@ -138,8 +138,8 @@ final class DockerCommands extends AbstractCommands
         // Get the php version from the production environment.
         if (!empty($data['environments'])) {
             foreach ($data['environments'] as $env) {
-                if (!empty($data['php_version']) && $env['type'] === 'Production') {
-                    return ['php_version' => $data['php_version']];
+                if (!empty($env['php_version']) && $env['type'] === 'Production') {
+                    return ['php_version' => $env['php_version']];
                 }
             }
         }
