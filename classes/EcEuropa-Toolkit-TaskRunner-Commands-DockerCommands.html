@@ -366,6 +366,13 @@
 <dd>Get final images to update docker-compose.yml</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getProjectPhpFromWebsite">getProjectPhpFromWebsite()</a>
+    <span>
+                                &nbsp;: array&lt;string|int, mixed&gt;|array&lt;string|int, string&gt;    </span>
+</dt>
+<dd>Returns the Project&#039;s php service version information from the endpoint.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServiceDetailsFromResources">getServiceDetailsFromResources()</a>
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
@@ -399,13 +406,6 @@
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Get warning messages for versions on .opts.yml that not respect the minimum requirements</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWebsiteProjectInformation">getWebsiteProjectInformation()</a>
-    <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;|array&lt;string|int, string&gt;    </span>
-</dt>
-<dd>Returns the Project&#039;s php service version information from the endpoint.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWebsiteRequirements">getWebsiteRequirements()</a>
@@ -1295,7 +1295,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">182</span>
+    <span class="phpdocumentor-element-found-in__line">189</span>
 
     </aside>
 
@@ -1359,7 +1359,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">166</span>
+    <span class="phpdocumentor-element-found-in__line">173</span>
 
     </aside>
 
@@ -1405,7 +1405,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">289</span>
+    <span class="phpdocumentor-element-found-in__line">296</span>
 
     </aside>
 
@@ -1457,6 +1457,67 @@ In case of some information is not available, the images will be updated based o
             -private
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getProjectPhpFromWebsite">
+        getProjectPhpFromWebsite()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getProjectPhpFromWebsite" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">130</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns the Project&#039;s php service version information from the endpoint.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">getProjectPhpFromWebsite</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$projectId</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|array&lt;string|int, string&gt;</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$projectId</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getProjectPhpFromWebsite#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
+                                                            
+                                             
+                                    </dd>
+                                            </dl>
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|array&lt;string|int, string&gt;</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_getServiceDetailsFromResources">
         getServiceDetailsFromResources()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServiceDetailsFromResources" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1465,7 +1526,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">224</span>
+    <span class="phpdocumentor-element-found-in__line">231</span>
 
     </aside>
 
@@ -1511,7 +1572,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">271</span>
+    <span class="phpdocumentor-element-found-in__line">278</span>
 
     </aside>
 
@@ -1617,7 +1678,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">238</span>
+    <span class="phpdocumentor-element-found-in__line">245</span>
 
     </aside>
 
@@ -1663,7 +1724,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">319</span>
+    <span class="phpdocumentor-element-found-in__line">326</span>
 
     </aside>
 
@@ -1708,67 +1769,6 @@ In case of some information is not available, the images will be updated based o
             -private
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_getWebsiteProjectInformation">
-        getWebsiteProjectInformation()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWebsiteProjectInformation" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">130</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Returns the Project&#039;s php service version information from the endpoint.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">getWebsiteProjectInformation</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$projectId</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|array&lt;string|int, string&gt;</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$projectId</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWebsiteProjectInformation#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                             
-                                    </dd>
-                                            </dl>
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|array&lt;string|int, string&gt;</span>
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
     <h4 class="phpdocumentor-element__name" id="method_getWebsiteRequirements">
         getWebsiteRequirements()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWebsiteRequirements" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1777,7 +1777,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">149</span>
+    <span class="phpdocumentor-element-found-in__line">156</span>
 
     </aside>
 
@@ -1828,7 +1828,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">344</span>
+    <span class="phpdocumentor-element-found-in__line">351</span>
 
     </aside>
 
@@ -1881,7 +1881,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">198</span>
+    <span class="phpdocumentor-element-found-in__line">205</span>
 
     </aside>
 
@@ -1930,7 +1930,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">255</span>
+    <span class="phpdocumentor-element-found-in__line">262</span>
 
     </aside>
 
@@ -2099,12 +2099,12 @@ In case of some information is not available, the images will be updated based o
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_copyDockerComposeDefaultToProject">copyDockerComposeDefaultToProject()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_extractMajorMinorVersion">extractMajorMinorVersion()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getFinalImages">getFinalImages()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getProjectPhpFromWebsite">getProjectPhpFromWebsite()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServiceDetailsFromResources">getServiceDetailsFromResources()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServiceImage">getServiceImage()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServicesImagesFromDockerCompose">getServicesImagesFromDockerCompose()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServicesVersionsFromRequirements">getServicesVersionsFromRequirements()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWarningMessages">getWarningMessages()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWebsiteProjectInformation">getWebsiteProjectInformation()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWebsiteRequirements">getWebsiteRequirements()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_removeUnusedDcServices">removeUnusedDcServices()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_updateDockerComposeFile">updateDockerComposeFile()</a></li>

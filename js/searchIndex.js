@@ -516,6 +516,11 @@ Search.appendIndex(
             "summary": "If\u0020given\u0020bool\u0020is\u0020TRUE\u0020\u0027failed\u0027\u0020is\u0020return,\u0020otherwise\u0020\u0027passed\u0027.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getFailedOrPassed"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AgetProjectProfile\u0028\u0029",
+            "name": "getProjectProfile",
+            "summary": "Load\u0020given\u0020project\u0020from\u0020website\u0020and\u0020return\u0020the\u0020profile\u0020in\u0020the\u0020production\u0020env.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getProjectProfile"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024evaluationFailed",
             "name": "evaluationFailed",
             "summary": "",
@@ -656,10 +661,10 @@ Search.appendIndex(
             "summary": "Get\u0020array\u0020of\u0020services\u0020with\u0020images\u0020and\u0020versions\u0020from\u0020docker\u002Dcompose.yml",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServicesImagesFromDockerCompose"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetWebsiteProjectInformation\u0028\u0029",
-            "name": "getWebsiteProjectInformation",
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetProjectPhpFromWebsite\u0028\u0029",
+            "name": "getProjectPhpFromWebsite",
             "summary": "Returns\u0020the\u0020Project\u0027s\u0020php\u0020service\u0020version\u0020information\u0020from\u0020the\u0020endpoint.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWebsiteProjectInformation"
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getProjectPhpFromWebsite"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetWebsiteRequirements\u0028\u0029",
             "name": "getWebsiteRequirements",
