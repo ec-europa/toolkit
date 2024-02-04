@@ -23,7 +23,7 @@ You can check the `list of recommended modules <https://digit-dqa.fpfis.tech.ec.
 
 Insecure module check
 ----
-Uses the ``drush pm:security`` command in combination with ``composer audit`` command.
+Uses the command ``composer audit`` command.
 
 * It is possible to bypass this check using the environment variable ``QA_SKIP_INSECURE=true`` or by using the
 token ``[SKIP_INSECURE]`` in the commit message.

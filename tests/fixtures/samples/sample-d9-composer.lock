@@ -3283,7 +3283,7 @@
         },
         {
             "name": "drupal/core",
-            "version": "10.0.12",
+            "version": "9.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
@@ -3450,7 +3450,7 @@
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "10.0.12",
+            "version": "9.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -7983,7 +7983,7 @@
                 "phpstan/phpstan": "^1.3.0",
                 "phpstan/phpstan-phpunit": "^1.0.0",
                 "phpstan/phpstan-strict-rules": "^1.1.0",
-                "phpunit/phpunit": "^10.0.12"
+                "phpunit/phpunit": "^9.5.11"
             },
             "suggest": {
                 "ext-dom": "Required to use the XMLConverter and or the HTMLConverter classes",
@@ -13312,7 +13312,7 @@
                 "symfony/css-selector": "^4.4 || ^5.0 || ^6.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.5.22 || ^10.0.12",
+                "phpunit/phpunit": "^8.5.22 || ^9.5.11",
                 "symfony/error-handler": "^4.4 || ^5.0 || ^6.0",
                 "symfony/phpunit-bridge": "^5.4 || ^6.0"
             },
@@ -13437,7 +13437,7 @@
             },
             "require-dev": {
                 "mink/driver-testsuite": "dev-master",
-                "phpunit/phpunit": "^8.5.22 || ^10.0.12",
+                "phpunit/phpunit": "^8.5.22 || ^9.5.11",
                 "symfony/error-handler": "^4.4 || ^5.0"
             },
             "type": "mink-driver",
@@ -15195,7 +15195,7 @@
         },
         {
             "name": "drupal/core-dev",
-            "version": "10.0.12",
+            "version": "9.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-dev.git",
@@ -15594,7 +15594,7 @@
         },
         {
             "name": "ec-europa/toolkit",
-            "version": "10.5.0",
+            "version": "9.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/toolkit.git",

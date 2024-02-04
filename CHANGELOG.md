@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 10.8.1
+  - DQA-8659: Drop pm:security from component-check command.
+  - DQA-8654: Align project information endpoint with new Envs structure.
+
 ## Version 10.8.0
   - DQA-7921: Align Toolkit default deployment commands with Drush standards.
   - DQA-8113: Component check - Forbid deprecated scripts in composer.json.
