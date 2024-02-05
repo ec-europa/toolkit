@@ -4,9 +4,9 @@ Building assets
 Overview
 --------
 
-Toolkit provides a way to build theme assets with Gulp.js, Grunt.js, or/and Europa Component Library (ECL).
+Toolkit provides a way to build theme assets with Europa Component Library (ECL) and/or Gulp.js.
 
-By default, a config file is included and as well some npm packages in order to:
+By default, a config file is included as well as some npm packages in order to:
 
 * Look for Scss files and convert them into Css
 * Minify Css and Js
@@ -16,11 +16,13 @@ By default, a config file is included and as well some npm packages in order to:
 
 How to use
 ----------
-Installation
+Installation / Building theme assets (general)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Before execution, the installation needs to run.
-Add the chosen runners and packages to your runner.yml.dist
+If the desired packages are not yet installed,
+Toolkit will install it on the first run.
+Add the chosen runners and packages to your runner.yml.dist file
 like shown below:
 
 .. code-block::
@@ -28,8 +30,8 @@ like shown below:
   toolkit:
     build:
       npm:
-        theme-task-runner: ecl-builder
-        packages: @ecl/builder pikaday moment
+        theme-task-runner: ecl-builder gulp
+        packages: '@ecl/builder pikaday moment gulp gulp-concat gulp-sass gulp-clean-css gulp-minify'
 
 Command to run:
 
@@ -37,47 +39,41 @@ Command to run:
 
    docker-compose vendor/bin/run toolkit:build-assets
 
+
 Edit the config file in order to fit your needs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-('gulpfile.js', 'Gruntfile.js' or/and 'ecl-builder.config.js')
+('ecl-builder.config.js' and/or 'gulpfile.js')
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Depending on the chosen runners a config file(s) will be created on theme root folder.
-It's possible to edit this file after creation or replace it by another (with same name).
-If the file do not exists, toolkit will create it using the default template.
-After creation please check the entry points and output for your css, scss and js files.
+Depending on the chosen runners a config file will be created on the theme root folder.
+It's possible to edit this file after creation and run again the command 'toolkit:build-assets'.
+If the file does not exist, Toolkit will create it using the default template.
+After creation please check the entry and output points for your css, scss and js files.
 Make sure that are pointed to the right path.
 
-Build theme assets (general)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Run the following command:
-
-.. code-block::
-
-   docker-compose exec web ./vendor/bin/run toolkit:build-assets --execute=[RUNNER]
-
 This will (re)generate the output file(s) defined on the config file(s).
+
 
 Build theme assets (ecl-builder)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In case the chosen runner  is 'ecl-builder' and additional parameter should be provided:
+By default Toolkit compiles the Css and Js files, defined in the configuration file
+'ecl-builder.config.js' as entry and destination paths.
+The ecl-builder command used for this action is 'styles'. This the default command.
+
+To use other command listed on 'ecl-builder' options an additional parameter can be provided:
 '--ecl-command'
 
 .. code-block::
 
-   // Check all the available commands:
-   docker-compose exec web ./vendor/bin/run toolkit:build-assets --execute=ecl-builder
-
-   // Execute an available command from the ecl-builder list:
-   docker-compose exec web ./vendor/bin/run toolkit:build-assets --execute=ecl-builder --ecl-command=styles
+   // Execute an available command from the ecl-builder list - Get help:
+   docker-compose exec web ./vendor/bin/run toolkit:build-assets --ecl-command=help
 
 
 Define 'default-theme'
 ^^^^^^^^^^^^^^^^^^^
 
-The default theme can be specified in a parameter the parameter in the task call:
+The default theme can be specified in a parameter in the task call:
 
 .. code-block::
 
@@ -90,6 +86,7 @@ The default theme can be specified in a parameter the parameter in the task call
       npm:
         theme-task-runner: ecl-builder
         packages: @ecl/builder pikaday moment
+
 
 Define 'custom-code-folder'
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -116,26 +113,26 @@ To enable auto build of assets you should extend the tasks ``build-dev`` and ``b
        dev:
          commands:
          - ...
-         - ./vendor/bin/run toolkit:build-assets --execute=[RUNNER]
+         - ./vendor/bin/run toolkit:build-assets
        dist:
          commands:
          - ...
-         - ./vendor/bin/run toolkit:build-assets --execute=[RUNNER]
+         - ./vendor/bin/run toolkit:build-assets
 
 
 Install additional npm packages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Additional npm packages can be installed to extend the functionality.
-The package version can be added after the package name like the example below:
+The package version can be added after the package name like shown in the example below:
 
 .. code-block::
 
-   @ecl/preset-ec@3.13.0
+   '@ecl/preset-ec@3.13.0'
 
    or
 
-   grunt@1.6.1"
+   'gulp@4.0.1'
 
 To do it add them to the file 'runner.yml.dist':
 
@@ -144,4 +141,4 @@ To do it add them to the file 'runner.yml.dist':
    toolkit:
      build:
        npm:
-         packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify @ecl/preset-ec@3.13.0 grunt@1.6.1
+         packages: '``@ecl/preset-ec@3.13.0`` ``gulp@4.0.1`` gulp-sass gulp-concat gulp-clean-css gulp-minify'
