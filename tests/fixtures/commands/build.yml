@@ -159,23 +159,39 @@
     - contains: |
         [Simulator] Simulating ExecStack()
           ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          ->exec('apt-get update')
-          ->exec('apt-get install ruby-sass -y')
-          ->exec('npm init -y')
+          ->exec('npm list sass || npm install sass -y')
           ->stopOnFail()
         [Simulator] Simulating ExecStack()
           ->exec('cp /test/toolkit/resources/assets/gulpfile.js /test/to ... e/theme/gulpfile.js')
           ->stopOnFail()
         [Simulator] Simulating ExecStack()
           ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          ->exec('npm install gulp-cli --save-dev')
+          ->exec('npm list gulp-cli || npm install gulp-cli --save-dev')
+          ->stopOnFail()
+        [Simulator] Simulating ExecStack()
+          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+          ->exec('./node_modules/.bin/gulp')
           ->stopOnFail()
 
-- command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code --execute=gulp'
+- command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code'
   configuration: []
   resources:
     - from: sample-package.json
       to: code/theme/package.json
   expectations:
     - contains: |
-        >  Config file not found! Make sure you have run the target toolkit:build-assets before use the execute mode.
+        [Simulator] Simulating ExecStack()
+          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+          ->exec('npm list sass || npm install sass -y')
+          ->stopOnFail()
+        [Simulator] Simulating ExecStack()
+          ->exec('cp /test/toolkit/resources/assets/ecl-builder.config.j ... l-builder.config.js')
+          ->stopOnFail()
+        [Simulator] Simulating ExecStack()
+          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+          ->exec('npm list @ecl/builder @ecl/preset-ec @ecl/preset-eu @e ... et-reset --save-dev')
+          ->stopOnFail()
+        [Simulator] Simulating ExecStack()
+          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+          ->exec('./node_modules/.bin/ecl-builder styles')
+          ->stopOnFail()

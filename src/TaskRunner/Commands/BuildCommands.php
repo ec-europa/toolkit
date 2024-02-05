@@ -291,9 +291,8 @@ class BuildCommands extends AbstractCommands
      *
      * @option default-theme          The theme where to build assets.
      * @option build-npm-packages     The packages to install.
-     * @option theme-task-runner      The task runner to use, one of 'grunt, gulp, ecl-builder'.
-     * @option execute=[TASK-RUNNER]  Execute the task runner (value required) e.g. execute=grunt.
-     * @option ecl-command=[COMMAND]  Append command from runner (Only ecl-buider).
+     * @option theme-task-runner      The task runner to use: 'ecl-builder' or 'gulp' as alternative.
+     * @option ecl-command=[COMMAND]  Run 'ecl-builder' with an append command (use '--ecl-command=help' to see all options).
      *
      * @aliases tk-assets, tba
      */
@@ -302,8 +301,7 @@ class BuildCommands extends AbstractCommands
         'custom-code-folder' => InputOption::VALUE_REQUIRED,
         'build-npm-packages' => InputOption::VALUE_REQUIRED,
         'theme-task-runner' => InputOption::VALUE_REQUIRED,
-        'execute' => InputOption::VALUE_REQUIRED,
-        'ecl-command' => InputOption::VALUE_OPTIONAL,
+        'ecl-command' => InputOption::VALUE_REQUIRED,
     ])
     {
         if (empty($options['default-theme'])) {
@@ -338,23 +336,21 @@ class BuildCommands extends AbstractCommands
         $taskRunners = explode(' ', $options['theme-task-runner']);
         $allowedTaskRunners = [
             'gulp' => 'gulpfile.js',
+            // Deprecated 'grunt'.
             'grunt' => 'Gruntfile.js',
             'ecl-builder' => 'ecl-builder.config.js',
         ];
         foreach ($taskRunners as $taskRunner) {
             if (!in_array($taskRunner, array_keys($allowedTaskRunners))) {
-                $this->say("$taskRunner is not a supported 'theme-task-runner'. The supported plugins are 'gulp', 'grunt' and 'ecl-builder'.");
+                $this->say("$taskRunner is not a supported 'theme-task-runner'. The supported plugins are 'ecl-builder' or 'gulp'.");
                 return 0;
             }
         }
 
         // Build task collection.
         $collection = $this->collectionBuilder();
-        if ($options['execute']) {
-            $this->buildAssetsExecute($allowedTaskRunners, $options, $files, $collection, $theme_dir);
-        } else {
             $this->buildAssetsInstall($collection, $theme_dir, $allowedTaskRunners, $taskRunners, $files, $options);
-        }
+        $this->buildAssetsExecute($taskRunners, $options, $collection, $theme_dir);
 
         // Run and return task collection.
         return $collection->run();
@@ -365,11 +361,10 @@ class BuildCommands extends AbstractCommands
      */
     private function buildAssetsInstall($collection, $theme_dir, $allowedTaskRunners, $taskRunners, $files, $options)
     {
+        // Install Sass if not already installed.
         $collection->taskExecStack()
             ->dir($theme_dir)
-            ->exec('apt-get update')
-            ->exec('apt-get install ruby-sass -y')
-            ->exec('npm init -y')
+            ->exec("npm list sass || npm install sass -y")
             ->stopOnFail();
 
         // Check if 'theme-task-runner' file exists.
@@ -382,31 +377,50 @@ class BuildCommands extends AbstractCommands
                     ->stopOnFail();
             }
         }
+
+        // Install npm packages if are not installed.
         $collection->taskExecStack()
             ->dir($theme_dir)
-            ->exec("npm install {$options['build-npm-packages']} --save-dev")
+            ->exec("npm list {$options['build-npm-packages']} || npm install {$options['build-npm-packages']} --save-dev")
             ->stopOnFail();
     }
 
     /**
      * Runs the toolkit:build-assets on execute mode.
      */
-    private function buildAssetsExecute($allowedTaskRunners, $options, $files, $collection, $theme_dir)
+    private function buildAssetsExecute($taskRunners, $options, $collection, $theme_dir)
     {
-        if (!in_array($allowedTaskRunners[$options['execute']], $files)) {
-            $this->say('Config file not found! Make sure you have run the target toolkit:build-assets before use the execute mode.');
-            return 0;
+
+        // Move 'ecl-builder' to the arrays's beginning.
+        if (in_array('ecl-builder', $taskRunners)) {
+            array_unshift($taskRunners, 'ecl-builder');
+            $taskRunners = array_unique($taskRunners);
         }
-        if ($options['ecl-command']) {
-            $collection->taskExecStack()
-                ->dir($theme_dir)
-                ->exec($this->getNodeBin($options['execute']) . " {$options['ecl-command']}")
-                ->stopOnFail();
-        } else {
-            $collection->taskExecStack()
-                ->dir($theme_dir)
-                ->exec($this->getNodeBin($options['execute']))
-                ->stopOnFail();
+        foreach ($taskRunners as $taskRunner) {
+            if ($taskRunner == 'ecl-builder') {
+                // Append command for option 'ecl-command'.
+                if ($options['ecl-command']) {
+                    $collection->taskExecStack()
+                        ->dir($theme_dir)
+                        ->exec($this->getNodeBinPath($taskRunner) . " {$options['ecl-command']}")
+                        ->stopOnFail();
+
+                    // Don't check other commands/runners when using 'ecl-command'.
+                    break;
+                } else {
+                    // Process default command 'styles' to compile assets.
+                    $collection->taskExecStack()
+                        ->dir($theme_dir)
+                        ->exec($this->getNodeBinPath($taskRunner) . " styles")
+                        ->stopOnFail();
+                }
+            } else {
+                // Compile assets from runner.
+                $collection->taskExecStack()
+                    ->dir($theme_dir)
+                    ->exec($this->getNodeBinPath($taskRunner))
+                    ->stopOnFail();
+            }
         }
     }
 
