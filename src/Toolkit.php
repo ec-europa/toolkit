@@ -55,30 +55,6 @@ final class Toolkit
     }
 
     /**
-     * Returns the ASDA user.
-     *
-     * @return string
-     *   The ASDA user.
-     */
-    public static function getAsdaUser(): string
-    {
-        $user = getenv('ASDA_USER');
-        return !empty($user) && $user !== '${env.ASDA_USER}' ? $user : '';
-    }
-
-    /**
-     * Returns the ASDA password.
-     *
-     * @return string
-     *   The ASDA password.
-     */
-    public static function getAsdaPass(): string
-    {
-        $pass = getenv('ASDA_PASSWORD');
-        return !empty($pass) && $pass !== '${env.ASDA_PASSWORD}' ? $pass : '';
-    }
-
-    /**
      * Returns the NEXTCLOUD user.
      *
      * @return string

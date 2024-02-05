@@ -335,3 +335,14 @@
           ->printMetadata()
         [Simulator] Running wget -i ./mysql.txt -O ./mysql.gz -A '.sql.gz,.tar.gz,.tar' -P ./
         [Simulator] Running rm ./mysql-latest.sh1 ./mysql.txt
+
+- command: 'toolkit:download-dump'
+  configuration:
+    toolkit:
+      clone:
+        asda_type: 'default'
+  resources: []
+  expectations:
+    - string_contains: |
+        [ERROR] The currently supported ASDA type is Nextcloud, please update your
+        configuration at ${toolkit.clone.asda_type}.
