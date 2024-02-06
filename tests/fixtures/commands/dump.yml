@@ -372,7 +372,9 @@
           ->printMetadata()
         [Simulator] Running wget -i ./tmp.txt -O ./mysql.gz -A '.sql.gz,.tar.gz,.tar' -P ./
         [Simulator] Running rm ./tmp.txt
-        Custom : Could not fetch the file example.com/mysql.gz
+
+        [ERROR] Custom : Could not fetch the file example.com/mysql.gz
+
         [Simulator] Running rm ./mysql.gz
 
 - command: 'toolkit:download-dump'
@@ -397,7 +399,9 @@
           ->printMetadata()
         [Simulator] Running wget -i ./tmp.txt -O ./dump.gz -A '.sql.gz,.tar.gz,.tar' -P ./
         [Simulator] Running rm ./tmp.txt
-        Custom : Could not fetch the file example.com/dump.gz
+
+        [ERROR] Custom : Could not fetch the file example.com/dump.gz
+
         [Simulator] Running rm ./dump.gz
 
 - command: 'toolkit:download-dump'

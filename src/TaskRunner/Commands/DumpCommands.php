@@ -330,7 +330,7 @@ class DumpCommands extends AbstractCommands
             ->run();
 
         if (!file_exists($destination) || filesize($destination) === 0) {
-            $this->writeln("<error>Custom : Could not fetch the file $url/$dumpfile</error>");
+            $io->error("Custom : Could not fetch the file $url/$dumpfile");
             // Make sure the dumpfile is deleted if the download failed.
             $this->taskExec('rm')->arg($destination)
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
@@ -518,7 +518,7 @@ class DumpCommands extends AbstractCommands
     }
 
     /**
-     * Download the file present in the tmp file.
+     * Get the modified date from the remote file.
      *
      * @param string $tmp
      *   The temporary filename.
