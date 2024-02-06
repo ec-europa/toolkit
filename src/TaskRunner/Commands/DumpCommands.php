@@ -140,12 +140,27 @@ class DumpCommands extends AbstractCommands
      * @code
      * toolkit:
      *   clone:
-     *     asda_services:
-     *       - mysql
-     *       - solr
-     *       - virtuoso
-     *     asda_type: 'nextcloud'
-     *     nextcloud_url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'
+     *     type: 'nextcloud'
+     *     nextcloud:
+     *       url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'
+     *       services:
+     *         - mysql
+     *         - solr
+     *         - virtuoso
+     * @endcode
+     *
+     * Configuration for database snapshot in custom server.
+     * - Runner variables:
+     *
+     * @code
+     * toolkit:
+     *   clone:
+     *     type: 'custom'
+     *     dumpfile: dumpfile.sql.gz
+     *     custom:
+     *       url: example.com/databases
+     *       user: username
+     *       pass: secret-password
      * @endcode
      *
      * @codingStandardsIgnoreEnd
@@ -156,65 +171,75 @@ class DumpCommands extends AbstractCommands
      * @option yes      Skip the question to download newer dump.
      *
      * @aliases tk-ddump
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitDownloadDump(ConsoleIO $io, array $options = [
         'is-admin' => InputOption::VALUE_NONE,
         'yes' => InputOption::VALUE_NONE,
     ])
     {
-        $tasks = [];
-        $config = $this->getConfig();
-        $project_id = $config->get('toolkit.project_id');
-        $asda_type = $config->get('toolkit.clone.asda_type', 'nextcloud');
+        $type = $this->getConfig()->get('toolkit.clone.type', 'nextcloud');
+        $this->say("Download type is: $type");
+        if ($type === 'nextcloud') {
+            return $this->nextcloudDownloadDump($io, $options);
+        }
+        return $this->customDownloadDump($io, $options);
+    }
 
-        if ($asda_type !== 'nextcloud') {
-            $io->error('The currently supported ASDA type is Nextcloud, please update your configuration at ${toolkit.clone.asda_type}.');
-            return ResultData::EXITCODE_ERROR;
+    /**
+     * Download the available services from Nextcloud.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    private function nextcloudDownloadDump(ConsoleIO $io, array $options)
+    {
+        // Get the username and password, ask if not present.
+        if (empty($user = Toolkit::getNextcloudUser())) {
+            if (empty($user = $this->ask('Please insert your username:'))) {
+                $io->error('The username cannot be empty!');
+                return ResultData::EXITCODE_ERROR;
+            }
+        }
+        if (empty($password = Toolkit::getNextcloudPass())) {
+            if (empty($password = $this->askHidden('Please insert your password:'))) {
+                $io->error('The password cannot be empty!');
+                return ResultData::EXITCODE_ERROR;
+            }
         }
 
-        $asda_services = $config->get('toolkit.clone.asda_services', 'mysql');
-        Toolkit::ensureArray($asda_services);
-        $vendor = $config->get('toolkit.clone.asda_vendor');
-        $source = $config->get('toolkit.clone.asda_source');
+        $config = $this->getConfig();
         $tmp_folder = $this->tmpDirectory();
         $opts = ToolCommands::parseOptsYml();
         $is_mydumper = isset($opts['mydumper']) && $opts['mydumper'];
-        $is_admin = !($options['is-admin'] === InputOption::VALUE_NONE) || $config->get('toolkit.clone.nextcloud_admin');
+        $project_id = $config->get('toolkit.project_id');
+        $vendor = $config->get('toolkit.clone.nextcloud.vendor');
+        $source = $config->get('toolkit.clone.nextcloud.source');
+        $url = $config->get('toolkit.clone.nextcloud.url');
+        $services = $config->get('toolkit.clone.nextcloud.services', 'mysql');
+        Toolkit::ensureArray($services);
+
+        // Keep backwards compatibility.
+        $asda_services = $config->get('toolkit.clone.asda_services');
+        if (!empty($asda_services)) {
+            $io->warning('Using the config ${toolkit.clone.asda_services} is deprecated, please update to ${toolkit.clone.nextcloud.services}.');
+            $services = $asda_services;
+            Toolkit::ensureArray($services);
+        }
+
+        $is_admin = !($options['is-admin'] === InputOption::VALUE_NONE) || $config->get('toolkit.clone.nextcloud.admin');
         if (Toolkit::isCiCd()) {
             $is_admin = true;
         }
-
-        $this->say("ASDA type is: $asda_type");
-        $this->say('ASDA services: ' . implode(', ', $asda_services));
-        $user = Toolkit::getNextcloudUser();
-        $password = Toolkit::getNextcloudPass();
-        $url = $config->get('toolkit.clone.nextcloud_url');
-
-        if (empty($user)) {
-            if (empty($user = $this->ask('Please insert your username:'))) {
-                $io->error('The username cannot be empty!');
-                return $this->collectionBuilder()->addTaskList($tasks);
-            }
-        }
-        if (empty($password)) {
-            if (empty($password = $this->askHidden('Please insert your password:'))) {
-                $io->error('The password cannot be empty!');
-                return $this->collectionBuilder()->addTaskList($tasks);
-            }
-        }
-
-        $url = str_replace(['http://', 'https://'], '', $url);
-        $download_link = "https://$user:$password@$url";
         if ($is_admin) {
-            $download_link .= "/$user/forDevelopment/$vendor/$project_id-$source";
+            $url .= "/$user/forDevelopment/$vendor/$project_id-$source";
         } else {
-            $download_link .= "/$user/$project_id-$source";
+            $url .= "/$user/$project_id-$source";
         }
+        $download_link = $this->addAuthToUrl($url, $user, $password);
 
-        foreach ($asda_services as $service) {
+        $this->say('Download services: ' . implode(', ', $services));
+        $tasks = [];
+        foreach ($services as $service) {
             $this->say("Checking service '$service'");
             $dump = $tmp_folder . '/' . $service . ($is_mydumper ? '.tar' : '.gz');
             // Check if the dump is already downloaded.
@@ -225,7 +250,7 @@ class DumpCommands extends AbstractCommands
             }
 
             $this->say("File found '$dump', checking server for newer dump");
-            if (!$this->checkForNewerDump($download_link, $service)) {
+            if (!$this->nextcloudCheckNewerDump($download_link, $service)) {
                 $this->say('Local dump is up-to-date');
                 continue;
             }
@@ -241,12 +266,109 @@ class DumpCommands extends AbstractCommands
             $this->say('Starting download');
             $tasks = array_merge($tasks, $this->asdaProcessFile("$download_link/$service", $service));
         }
-        // Build and return task collection.
+
         return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
-     * Check if a newer dump exists on the server.
+     * Download the dumpfile from the custom server.
+     */
+    private function customDownloadDump(ConsoleIO $io, array $options)
+    {
+        $config = $this->getConfig();
+        if (empty($url = $config->get('toolkit.clone.custom.url'))) {
+            $io->error('When using custom dump download, you must provide a valid URL in ${toolkit.clone.custom.url}.');
+            return ResultData::EXITCODE_ERROR;
+        }
+        $dumpfile = $config->get('toolkit.clone.dumpfile');
+        $user = $config->get('toolkit.clone.custom.user', '') ?? '';
+        $password = $config->get('toolkit.clone.custom.pass', '') ?? '';
+        $tmp_folder = $this->tmpDirectory();
+
+        // The destination file.
+        $destination = "$tmp_folder/$dumpfile";
+
+        // Prepare the final URL containing the dumpfile, user and pass and save into a temp file.
+        $link = $this->addAuthToUrl($url, $user, $password);
+        $tmp_file = "$tmp_folder/tmp.txt";
+        $this->wgetGenerateInputFile("$link/$dumpfile", $tmp_file, true);
+
+        if (file_exists($destination)) {
+            $this->say("File found '$destination', checking server for newer dump");
+            if (!$this->customCheckNewerDump($tmp_file, $destination)) {
+                $this->say('Local dump is up-to-date');
+                // Remove temporary file.
+                $this->taskExec('rm')->arg($tmp_file)
+                    ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                    ->run();
+                return ResultData::EXITCODE_OK;
+            }
+
+            $question = 'A newer dump was found, would you like to download?';
+            if (!Toolkit::isCiCd() && $options['yes'] === InputOption::VALUE_NONE) {
+                if (!$this->confirm($question)) {
+                    $this->say('Skipping download');
+                    // Remove temporary file.
+                    $this->taskExec('rm')->arg($tmp_file)
+                        ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                        ->run();
+                    return ResultData::EXITCODE_OK;
+                }
+            } else {
+                $this->say($question . ' (y/n) Y');
+            }
+        }
+        $this->say('Starting download');
+
+        // Download the file.
+        $this->wgetDownloadFile($tmp_file, $destination, '.sql.gz,.tar.gz,.tar')
+            ->run();
+
+        // Remove temporary file.
+        $this->taskExec('rm')->arg($tmp_file)
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run();
+
+        if (!file_exists($destination) || filesize($destination) === 0) {
+            $this->writeln("<error>Custom : Could not fetch the file $url/$dumpfile</error>");
+            // Make sure the dumpfile is deleted if the download failed.
+            $this->taskExec('rm')->arg($destination)
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run();
+            return ResultData::EXITCODE_ERROR;
+        }
+
+        return ResultData::EXITCODE_OK;
+    }
+
+    /**
+     * Check if a newer dump exists on the Custom server.
+     *
+     * @param string $tmp_file
+     *   The tmp file containing the url for the remote file.
+     * @param string $dumpfile
+     *   The local dumpfile.
+     *
+     * @return bool
+     *   Return true if the modified date is different between local and remote dumps,
+     *   False is case of error or no local file exists.
+     */
+    private function customCheckNewerDump(string $tmp_file, string $dumpfile): bool
+    {
+        if (!file_exists($dumpfile)) {
+            return false;
+        }
+        $remote = $this->wgetGetFileModifiedDate($tmp_file);
+        if (empty($remote)) {
+            return false;
+        }
+        $remote = date(DATE_RFC2822, strtotime($remote));
+        $local = date(DATE_RFC2822, filemtime($dumpfile));
+        return strtotime($remote) !== strtotime($local);
+    }
+
+    /**
+     * Check if a newer dump exists on the Nextcloud server.
      *
      * @param string $link
      *   The link to the folder.
@@ -257,9 +379,8 @@ class DumpCommands extends AbstractCommands
      *   Return true if sha1 from local is different from the server,
      *   False is case of error or no local file exists.
      */
-    private function checkForNewerDump(string $link, string $service): bool
+    private function nextcloudCheckNewerDump(string $link, string $service): bool
     {
-        $config = $this->getConfig();
         $tmp_folder = $this->tmpDirectory();
         $opts = ToolCommands::parseOptsYml();
         $ext = isset($opts['mydumper']) && $opts['mydumper'] ? '.tar' : '.gz';
@@ -267,11 +388,9 @@ class DumpCommands extends AbstractCommands
         if (!file_exists($dump)) {
             return false;
         }
-        if ($config->get('toolkit.clone.asda_type') === 'nextcloud') {
-            $link .= "/$service";
-        }
+        $link .= "/$service";
         // Download the .sha file.
-        $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
+        $this->wgetGenerateInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
         $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1', true)
             ->run();
         if (!file_exists("$tmp_folder/$service-latest.sh1")) {
@@ -300,7 +419,7 @@ class DumpCommands extends AbstractCommands
     }
 
     /**
-     * Helper to download and process a ASDA file.
+     * Helper to download and process a Nextcloud dump file.
      *
      * @param string $link
      *   The link to the folder.
@@ -316,7 +435,7 @@ class DumpCommands extends AbstractCommands
         $tmp_folder = $this->tmpDirectory();
 
         // Download the .sha file.
-        $this->generateAsdaWgetInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
+        $this->wgetGenerateInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
         $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1', true)
             ->run();
         if (!file_exists("$tmp_folder/$service-latest.sh1")) {
@@ -336,10 +455,9 @@ class DumpCommands extends AbstractCommands
         $this->writeln("\n<info>$output\n$separator</info>\n");
 
         // Download the file.
-        $this->generateAsdaWgetInputFile("$link/$filename", "$tmp_folder/$service.txt", true);
+        $this->wgetGenerateInputFile("$link/$filename", "$tmp_folder/$service.txt", true);
         $extension = str_ends_with($filename, '.gz') ? 'gz' : 'tar';
-        $tasks[] = $this
-            ->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service.$extension", '.sql.gz,.tar.gz,.tar');
+        $tasks[] = $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service.$extension", '.sql.gz,.tar.gz,.tar');
 
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
@@ -360,7 +478,7 @@ class DumpCommands extends AbstractCommands
      * @param bool $silent
      *   Whether show or not output from task.
      */
-    private function generateAsdaWgetInputFile(string $url, string $tmp, bool $silent = false)
+    private function wgetGenerateInputFile(string $url, string $tmp, bool $silent = false)
     {
         $task = $this->taskFilesystemStack()
             ->taskWriteToFile($tmp)
@@ -397,6 +515,24 @@ class DumpCommands extends AbstractCommands
             $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG);
         }
         return $task;
+    }
+
+    /**
+     * Download the file present in the tmp file.
+     *
+     * @param string $tmp
+     *   The temporary filename.
+     */
+    private function wgetGetFileModifiedDate(string $tmp)
+    {
+        $response = $this->taskExec('wget')
+            ->option('-i', $tmp)
+            ->option('--server-response')
+            ->option('--spider')
+            ->rawArg('2>&1 | grep -i Last-Modified')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        return trim(str_replace('Last-Modified:', '', $response));
     }
 
     /**
@@ -470,6 +606,27 @@ class DumpCommands extends AbstractCommands
 
         return $this->taskExecStack()->stopOnFail()->silent(true)
             ->exec($command);
+    }
+
+    /**
+     * Prepare given URL to include the user and pass/token.
+     *
+     * @param string $url
+     *   The URL to process.
+     * @param string $user
+     *   The user to be added to the URL.
+     * @param string $pass
+     *   The password or token to be added to the URL.
+     */
+    private function addAuthToUrl(string $url, string $user, string $pass): string
+    {
+        // Just return the URL if no user and password are given.
+        if (empty($user) && empty($pass)) {
+            return $url;
+        }
+        $scheme = parse_url($url, PHP_URL_SCHEME) ?? 'https';
+        $url = str_replace("$scheme://", '', $url);
+        return "$scheme://$user:$pass@$url";
     }
 
 }

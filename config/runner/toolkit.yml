@@ -5,15 +5,20 @@ toolkit:
     config_file: 'config/sync/core.extension.yml'
   clone:
     dumpfile: 'mysql.gz'
-    # Nextcloud supports the following services: mysql, virtuoso, solr.
-    asda_services: 'mysql'
-    asda_type: 'nextcloud'
-    nextcloud_url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'
-    nextcloud_admin: false
-    asda_vendor: 'ec-europa'
-    asda_source: 'reference'
     myloader: '/scripts/importdb.sh'
     mydumper: '/scripts/backupdb.sh'
+    type: 'nextcloud'
+    nextcloud:
+      # Nextcloud supports the following services: mysql, virtuoso, solr.
+      services: 'mysql'
+      url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'
+      admin: false
+      vendor: 'ec-europa'
+      source: 'reference'
+    custom:
+      url: ~
+      user: ~
+      pass: ~
   components:
     outdated:
       check: true
