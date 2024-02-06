@@ -463,9 +463,9 @@ class ToolCommands extends AbstractCommands
         $tasks = [
             'PHPcs' => ['cmd' => 'tk-phpcs', 'exec' => $options['phpcs'] === true, 'result' => []],
             'Opts review' => ['cmd' => 'tk-opts-review', 'exec' => $options['opts-review'] === true, 'result' => []],
-            'Lint PHP' => ['cmd' => 'tk-lint-php', 'exec' => $options['lint-php'] === true, 'result' => []],
-            'Lint YAML' => ['cmd' => 'tk-lint-yaml', 'exec' => $options['lint-yaml'] === true, 'result' => []],
-            'Lint JS' => ['cmd' => 'tk-lint-js', 'exec' => $options['lint-js'] === true, 'result' => []],
+            'Lint PHP' => ['cmd' => 'tk-php', 'exec' => $options['lint-php'] === true, 'result' => []],
+            'Lint YAML' => ['cmd' => 'tk-yaml', 'exec' => $options['lint-yaml'] === true, 'result' => []],
+            'Lint JS' => ['cmd' => 'tk-js', 'exec' => $options['lint-js'] === true, 'result' => []],
             'PHPStan' => ['cmd' => 'tk-phpstan', 'exec' => $options['phpstan'] === true, 'result' => []],
             'PHPMD' => ['cmd' => 'tk-phpmd', 'exec' => $options['phpmd'] === true, 'result' => []],
             'PHPUnit' => ['cmd' => 'tk-phpunit', 'exec' => $options['phpunit'] === true, 'result' => []],

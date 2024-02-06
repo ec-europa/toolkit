@@ -206,8 +206,8 @@
       to: mysql-latest.sh1
   expectations:
     - contains: |
-        >  ASDA type is: nextcloud
-        >  ASDA services: mysql
+        >  Download type is: nextcloud
+        >  Download services: mysql
         >  Checking service 'mysql'
         >  Starting download
         [Simulator] Simulating Filesystem\FilesystemStack()
@@ -245,8 +245,12 @@
       to: solr-latest.sh1
   expectations:
     - contains: |
-        >  ASDA type is: nextcloud
-        >  ASDA services: mysql, virtuoso, solr
+        >  Download type is: nextcloud
+
+        [WARNING] Using the config ${toolkit.clone.asda_services} is deprecated, please
+        update to ${toolkit.clone.nextcloud.services}.
+
+        >  Download services: mysql, virtuoso, solr
         >  Checking service 'mysql'
         >  Starting download
         [Simulator] Simulating Filesystem\FilesystemStack()
@@ -311,8 +315,8 @@
       to: mysql.gz
   expectations:
     - contains: |
-        >  ASDA type is: nextcloud
-        >  ASDA services: mysql
+        >  Download type is: nextcloud
+        >  Download services: mysql
         >  Checking service 'mysql'
         >  File found './mysql.gz', checking server for newer dump
         [Simulator] Simulating Filesystem\FilesystemStack()
@@ -340,9 +344,82 @@
   configuration:
     toolkit:
       clone:
-        asda_type: 'default'
+        type: 'custom'
   resources: []
   expectations:
     - string_contains: |
-        [ERROR] The currently supported ASDA type is Nextcloud, please update your
-        configuration at ${toolkit.clone.asda_type}.
+        [ERROR] When using custom dump download, you must provide a valid URL in
+        ${toolkit.clone.custom.url}.
+
+- command: 'toolkit:download-dump'
+  configuration:
+    toolkit:
+      tmp_folder: .
+      clone:
+        type: 'custom'
+        custom:
+          url: example.com
+  resources: []
+  expectations:
+    - string_contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        >  Starting download
+        [Simulator] Simulating Exec('wget')
+          ->option('-i', './tmp.txt')
+          ->option('-O', './mysql.gz')
+          ->option('-A', '.sql.gz,.tar.gz,.tar')
+          ->option('-P', './')
+          ->printMetadata()
+        [Simulator] Running wget -i ./tmp.txt -O ./mysql.gz -A '.sql.gz,.tar.gz,.tar' -P ./
+        [Simulator] Running rm ./tmp.txt
+
+        [ERROR] Custom : Could not fetch the file example.com/mysql.gz
+
+        [Simulator] Running rm ./mysql.gz
+
+- command: 'toolkit:download-dump'
+  configuration:
+    toolkit:
+      tmp_folder: .
+      clone:
+        type: 'custom'
+        dumpfile: dump.gz
+        custom:
+          url: example.com
+  resources: []
+  expectations:
+    - string_contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        >  Starting download
+        [Simulator] Simulating Exec('wget')
+          ->option('-i', './tmp.txt')
+          ->option('-O', './dump.gz')
+          ->option('-A', '.sql.gz,.tar.gz,.tar')
+          ->option('-P', './')
+          ->printMetadata()
+        [Simulator] Running wget -i ./tmp.txt -O ./dump.gz -A '.sql.gz,.tar.gz,.tar' -P ./
+        [Simulator] Running rm ./tmp.txt
+
+        [ERROR] Custom : Could not fetch the file example.com/dump.gz
+
+        [Simulator] Running rm ./dump.gz
+
+- command: 'toolkit:download-dump'
+  configuration:
+    toolkit:
+      tmp_folder: .
+      clone:
+        type: 'custom'
+        custom:
+          url: example.com
+  resources:
+    - from: sample-dump.sql.gz
+      to: mysql.gz
+  expectations:
+    - string_contains: |
+        >  Download type is: custom
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        >  File found './mysql.gz', checking server for newer dump
+        [Simulator] Running wget -i ./tmp.txt --server-response --spider 2>&1 | grep -i Last-Modified
+        >  Local dump is up-to-date
+        [Simulator] Running rm ./tmp.txt

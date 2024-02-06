@@ -5,9 +5,10 @@
       content: |
         toolkit:
           clone:
-            asda_type: cloud
-            asda_vendor: vendor
-            nextcloud_url: nextcloud.url/files
+            type: cloud
+            nextcloud:
+              vendor: vendor
+              url: nextcloud.url/files
     - file: config/runner/docker.yml
       content: |
         docker:
@@ -26,14 +27,15 @@
     - string_contains: |
         clone:
           dumpfile: mysql.gz
-          asda_services: mysql
-          asda_type: cloud
-          nextcloud_url: nextcloud.url/files
-          nextcloud_admin: false
-          asda_vendor: vendor
-          asda_source: reference
           myloader: /scripts/importdb.sh
           mydumper: /scripts/backupdb.sh
+          type: cloud
+          nextcloud:
+            services: mysql
+            url: nextcloud.url/files
+            admin: false
+            vendor: vendor
+            source: reference
     - string_contains: |
         docker:
           resource:
