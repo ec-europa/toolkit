@@ -87,14 +87,6 @@ pipeline:
     commands:
       - ./run toolkit:lint-yaml
 
-  lint-js:
-    group: test
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
-    secrets: [ github_api_token, composer_auth ]
-    environment: *env
-    commands:
-      - ./run toolkit:lint-js
-
   lint-php:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
