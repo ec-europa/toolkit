@@ -22,7 +22,7 @@ matrix:
 pipeline:
   composer-install:
     group: composer
-    image: git.fpfis.tech.ec.europa.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, gitlab_api_token, composer_auth ]
     environment: &env
       - DOCUMENT_ROOT=/test/toolkit
@@ -38,7 +38,7 @@ pipeline:
 
   composer-update-lowest:
     group: composer
-    image: git.fpfis.tech.ec.europa.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, gitlab_api_token, composer_auth ]
     environment: *env
     volumes:
@@ -52,21 +52,21 @@ pipeline:
 
   phpcs:
     group: test
-    image: git.fpfis.tech.ec.europa.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     environment: *env
     commands:
       - ./run toolkit:test-phpcs
 
   phpmd:
     group: test
-    image: git.fpfis.tech.ec.europa.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     environment: *env
     commands:
       - ./run toolkit:test-phpmd --files=src/,tests/
 
   phpunit:
     group: test
-    image: git.fpfis.tech.ec.europa.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ qa_api_auth_token, github_api_token, gitlab_api_token, composer_auth, nextcloud_user, nextcloud_pass, toolkit_mock_repo ]
     environment: *env
     commands:
@@ -74,14 +74,14 @@ pipeline:
 
   phpstan:
     group: test
-    image: git.fpfis.tech.ec.europa.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     environment: *env
     commands:
       - ./run toolkit:test-phpstan
 
   lint-yaml:
     group: test
-    image: git.fpfis.tech.ec.europa.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, composer_auth ]
     environment: *env
     commands:
@@ -89,7 +89,7 @@ pipeline:
 
   lint-js:
     group: test
-    image: git.fpfis.tech.ec.europa.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, composer_auth ]
     environment: *env
     commands:
@@ -97,7 +97,7 @@ pipeline:
 
   lint-php:
     group: test
-    image: git.fpfis.tech.ec.europa.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
     secrets: [ github_api_token, composer_auth ]
     environment: *env
     commands:
