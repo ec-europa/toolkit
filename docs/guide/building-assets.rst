@@ -16,12 +16,10 @@ By default, a config file is included as well as some npm packages in order to:
 
 How to use
 ----------
-Installation / Building theme assets (general)
+Building theme assets (general)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Before execution, the installation needs to run.
-If the desired packages are not yet installed,
-Toolkit will install it on the first run.
+Toolkit will install all packages and create config files (if not exist) on the first run.
 Add the chosen runners and packages to your runner.yml.dist file
 like shown below:
 
@@ -32,6 +30,7 @@ like shown below:
       npm:
         theme-task-runner: ecl-builder gulp
         packages: '@ecl/builder pikaday moment gulp gulp-concat gulp-sass gulp-clean-css gulp-minify'
+        ecl-command: 'styles scripts'
 
 Command to run:
 
