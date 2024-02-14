@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
+use Dotenv\Dotenv;
 use EcEuropa\Toolkit\DrupalReleaseHistory;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Website;
@@ -313,7 +314,7 @@ class ComponentCheckCommands extends AbstractCommands
                 // Ini files.
                 } else {
                     // Add environment variables set for check.
-                    $envVarsSet[$filename] = parse_ini_file($filename);
+                    $envVarsSet[$filename] = Dotenv::parse(file_get_contents($filename));
                 }
             }
         }
