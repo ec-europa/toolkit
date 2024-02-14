@@ -342,12 +342,12 @@ class BuildCommands extends AbstractCommands
         foreach ($taskRunners as $taskRunner) {
             if (!in_array($taskRunner, array_keys($allowedTaskRunners))) {
                 $this->say("$taskRunner is not a supported 'theme-task-runner'. The supported plugins are 'ecl-builder' and 'gulp'.");
-                return 0;
+                return 1;
             }
         }
         $this->buildAssetsInstall($theme_dir, $allowedTaskRunners, $taskRunners, $files, $options);
         $this->buildAssetsCompile($taskRunners, $options, $theme_dir);
-        return 1;
+        return 0;
     }
 
     /**
@@ -356,42 +356,26 @@ class BuildCommands extends AbstractCommands
     private function buildAssetsInstall($theme_dir, $allowedTaskRunners, $taskRunners, $files, $options)
     {
         $collection = $this->collectionBuilder();
+        $stack = $collection->taskExecStack()->dir($theme_dir)->stopOnFail();
 
-        // Install npm if not already installed.
-        $collection->taskExec("npm -v || npm i npm")
-            ->dir($theme_dir)
-            ->run()
-            ->stopOnFail();
-
-        // Create 'package.json' file if not exists.
-        $collection->taskExec('[ -f package.json ] || npm init -y --scope')
-            ->dir($theme_dir)
-            ->run()
-            ->stopOnFail();
-
-        // Install Sass if not already installed.
-        $collection->taskExec("npm list sass || npm install sass -y")
-            ->dir($theme_dir)
-            ->run()
-            ->stopOnFail();
+        $stack->exec('npm -v || npm i npm')
+            ->exec('[ -f package.json ] || npm init -y --scope')
+            ->exec('npm list sass || npm install sass -y');
 
         // Check if 'theme-task-runner' file exists.
         // Create a new one from source if doesn't exist.
         foreach ($allowedTaskRunners as $allowedTaskRunner => $configFile) {
             if (in_array($allowedTaskRunner, $taskRunners) && !in_array($configFile, $files)) {
                 $dir = Toolkit::getToolkitRoot() . '/resources/assets';
-                $collection->taskExec("cp $dir/$configFile $theme_dir/$configFile")
-                    ->run()
-                    ->stopOnFail();
+                $stack->exec("cp $dir/$configFile $theme_dir/$configFile");
             }
         }
         foreach (explode(' ', $options['build-npm-packages']) as $package) {
             // Install npm package if are not installed.
-            $collection->taskExec("npm list $package || npm install $package --save-dev")
-                ->dir($theme_dir)
-                ->run()
-                ->stopOnFail();
+            $stack->exec("npm list $package || npm install $package --save-dev");
         }
+
+        $stack->run();
     }
 
     /**
@@ -401,7 +385,7 @@ class BuildCommands extends AbstractCommands
     {
         $collection = $this->collectionBuilder();
 
-        // Move 'ecl-builder' to the arrays's beginning.
+        // Move 'ecl-builder' to the array's beginning.
         if (in_array('ecl-builder', $taskRunners)) {
             array_unshift($taskRunners, 'ecl-builder');
             $taskRunners = array_unique($taskRunners);
