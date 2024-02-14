@@ -94,5 +94,3 @@ pipeline:
     environment: *env
     commands:
       - ./run toolkit:lint-php
-
-
