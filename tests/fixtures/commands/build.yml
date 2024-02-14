@@ -157,24 +157,14 @@
       to: code/theme/package.json
   expectations:
     - contains: |
-          [Simulator] Simulating Exec('npm -v || npm i npm')
-            ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          [Simulator] Running npm -v ||
-          npm i npm in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-          [Simulator] Simulating Exec('[ -f package.json ] || npm init -y --scope')
-            ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          [Simulator] Running [ -f package.json ] ||
-          npm init -y --scope in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-          [Simulator] Simulating Exec('npm list sass || npm install sass -y')
-            ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          [Simulator] Running npm list sass ||
-          npm install sass -y in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-          [Simulator] Simulating Exec('cp /test/toolkit/resources/assets/gulpfile.js /test/to ... e/theme/gulpfile.js')
-          [Simulator] Running cp /test/toolkit/resources/assets/gulpfile.js /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme/gulpfile.js
-          [Simulator] Simulating Exec('npm list gulp-cli || npm install gulp-cli --save-dev')
-            ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          [Simulator] Running npm list gulp-cli ||
-          npm install gulp-cli --save-dev in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating ExecStack()
+          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+          ->stopOnFail()
+          ->exec('npm -v || npm i npm')
+          ->exec('[ -f package.json ] || npm init -y --scope')
+          ->exec('npm list sass || npm install sass -y')
+          ->exec('cp /test/toolkit/resources/assets/gulpfile.js /test/to ... e/theme/gulpfile.js')
+          ->exec('npm list gulp-cli || npm install gulp-cli --save-dev')
           [Simulator] Simulating Exec('./node_modules/.bin/gulp')
             ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
           [Simulator] Running ./node_modules/.bin/gulp in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
@@ -186,36 +176,17 @@
       to: code/theme/package.json
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('npm -v || npm i npm')
+        [Simulator] Simulating ExecStack()
           ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running npm -v ||
-        npm i npm in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-        [Simulator] Simulating Exec('[ -f package.json ] || npm init -y --scope')
-          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running [ -f package.json ] ||
-        npm init -y --scope in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-        [Simulator] Simulating Exec('npm list sass || npm install sass -y')
-          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running npm list sass ||
-        npm install sass -y in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-        [Simulator] Simulating Exec('cp /test/toolkit/resources/assets/ecl-builder.config.j ... l-builder.config.js')
-        [Simulator] Running cp /test/toolkit/resources/assets/ecl-builder.config.js /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme/ecl-builder.config.js
-        [Simulator] Simulating Exec('npm list @ecl/builder || npm install @ecl/builder --save-dev')
-          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running npm list @ecl/builder ||
-        npm install @ecl/builder --save-dev in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-        [Simulator] Simulating Exec('npm list @ecl/preset-ec || npm install @ecl/preset-ec --save-dev')
-          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running npm list @ecl/preset-ec ||
-        npm install @ecl/preset-ec --save-dev in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-        [Simulator] Simulating Exec('npm list @ecl/preset-eu || npm install @ecl/preset-eu --save-dev')
-          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running npm list @ecl/preset-eu ||
-        npm install @ecl/preset-eu --save-dev in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-        [Simulator] Simulating Exec('npm list @ecl/preset-reset || npm install @ecl/preset-reset --save-dev')
-          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running npm list @ecl/preset-reset ||
-        npm install @ecl/preset-reset --save-dev in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+          ->stopOnFail()
+          ->exec('npm -v || npm i npm')
+          ->exec('[ -f package.json ] || npm init -y --scope')
+          ->exec('npm list sass || npm install sass -y')
+          ->exec('cp /test/toolkit/resources/assets/ecl-builder.config.j ... l-builder.config.js')
+          ->exec('npm list @ecl/builder || npm install @ecl/builder --save-dev')
+          ->exec('npm list @ecl/preset-ec || npm install @ecl/preset-ec --save-dev')
+          ->exec('npm list @ecl/preset-eu || npm install @ecl/preset-eu --save-dev')
+          ->exec('npm list @ecl/preset-reset || npm install @ecl/preset-reset --save-dev')
         [Simulator] Simulating Exec('./node_modules/.bin/ecl-builder styles')
           ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
         [Simulator] Running ./node_modules/.bin/ecl-builder styles in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
