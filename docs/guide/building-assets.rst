@@ -4,14 +4,33 @@ Building assets
 Overview
 --------
 
-Toolkit provides a way to build theme assets with Gulp.js.
+Toolkit provides a way to build theme assets with Europa Component Library (ECL) and/or Gulp.js.
 
-By default, a gulpfile is included and as well some npm packages in order to:
+By default, a config file is included as well as some npm packages in order to:
 
 * Look for Scss files and convert them into Css
 * Minify Css and Js
 * Merge files into one minimized file
 * Validate and fix scss files
+* Other options depending on the chosen runner
+
+How to use
+----------
+Building theme assets (general)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Toolkit will install all packages and create config files (if not exist) on the first run.
+Add the chosen runners and packages to your runner.yml.dist file
+like shown below:
+
+.. code-block::
+
+  toolkit:
+    build:
+      npm:
+        theme-task-runner: ecl-builder gulp
+        packages: '@ecl/builder pikaday moment gulp gulp-concat gulp-sass gulp-clean-css gulp-minify'
+        ecl-command: 'styles scripts'
 
 Command to run:
 
@@ -19,38 +38,54 @@ Command to run:
 
    docker-compose vendor/bin/run toolkit:build-assets
 
-How to use
-----------
 
-Source files
-^^^^^^^^^^^^
+Edit the config file in order to fit your needs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+('ecl-builder.config.js' and/or 'gulpfile.js')
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The folder structure for the source files should be aligned like this:
+Depending on the chosen runners a config file will be created on the theme root folder.
+It's possible to edit this file after creation and run again the command 'toolkit:build-assets'.
+If the file does not exist, Toolkit will create it using the default template.
+After creation please check the entry and output points for your css, scss and js files.
+Make sure that are pointed to the right path.
 
-* {your-theme-folder}/src/scss
-* {your-theme-folder}/src/js
+This will (re)generate the output file(s) defined on the config file(s).
 
-After this task is complete the generated folder '{your-theme}/assets' will look like this:
+
+Build theme assets (ecl-builder)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default Toolkit compiles the Css and Js files, defined in the configuration file
+'ecl-builder.config.js' as entry and destination paths.
+The ecl-builder command used for this action is 'styles'. This the default command.
+
+To use other command listed on 'ecl-builder' options an additional parameter can be provided:
+'--ecl-command'
 
 .. code-block::
 
-   /your-theme
-     /assets
-       /css
-         style.min.css
-       /js
-         script.min.js
+   // Execute an available command from the ecl-builder list - Get help:
+   docker-compose exec web ./vendor/bin/run toolkit:build-assets --ecl-command=help
 
-Note: The folder name ``assets`` is the default value provided, it can be override in the 'gulpfile.js'.
 
-Get 'default-theme'
+Define 'default-theme'
 ^^^^^^^^^^^^^^^^^^^
 
-If no config files are present in the project, the default theme can be specified in a parameter the parameter in the task call:
+The default theme can be specified in a parameter in the task call:
 
 .. code-block::
 
-   docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
+  // Command line
+  docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
+
+  // File 'runner.yml.dist'
+  toolkit:
+    build:
+      npm:
+        theme-task-runner: ecl-builder
+        packages: @ecl/builder pikaday moment
+
 
 Define 'custom-code-folder'
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -63,23 +98,11 @@ If for some reason your project is running custom code in other folder then ``li
      build:
        custom-code-folder: 'your_folder'
 
-Build theme assets
-^^^^^^^^^^^^^^^^^^
-
-Run the following command:
-
-.. code-block::
-
-   docker-compose exec web ./vendor/bin/run toolkit:build-assets
-   or
-   docker-compose exec web ./vendor/bin/run tba
-
-This will (re)generate the /assets folder.
 
 Enable build assets during CI
 -----------------------------
 
-To enable auto build of assets you should extend the tasks ``build-dev`` and ``build-dist``. See example bellow.
+To enable auto build of assets you should extend the tasks ``build-dev`` and ``build-dist``. See example below.
 
 .. code-block::
 
@@ -95,61 +118,26 @@ To enable auto build of assets you should extend the tasks ``build-dev`` and ``b
          - ...
          - ./vendor/bin/run toolkit:build-assets
 
-Extending functionality
------------------------
-
-Custom file like 'gulpfile.js' or 'Gruntfile.js'
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-It's possible to use a custom gulpfile or Gruntfile on the theme root folder.
-If the file do not exists, toolkit will create one using the default template.
-After creation please check the 'gulpfile.js' or 'Gruntfile.js' file to be sure that is pointed to the right path.
 
 Install additional npm packages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Additional npm packages can be installed to extend the functionality.
-In order to do that add them in the file ``runner.yml`` like the example bellow:
+The package version can be added after the package name like shown in the example below:
 
 .. code-block::
 
-   toolkit:
-     build:
-       npm:
-         packages: gulp gulp-sass gulp-concat gulp-clean-css gulp-minify
+   '@ecl/preset-ec@3.13.0'
 
-npm install --save-dev
-~~~~~~~~~~~~~~~~~~~~~~
-
-By default, the npm packages are installed with the option ``--save-dev`` and will appear in the devDependencies.
-To override this behavior add in the file ``runner.yml`` the following property:
-
-.. code-block::
-
-   toolkit:
-     build:
-       npm:
-        mode: (leave empty or add '--save-prod')
-
-Validate and fix scss files
----------------------------
-
-Check theme's scss files for issues
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Provides a report of violations.
-
-.. code-block::
-
-   docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=check
    or
-   docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate
 
-Automatically fix errors
-^^^^^^^^^^^^^^^^^^^^^^^^
+   'gulp@4.0.1'
 
-Automatically fix, where possible, violations reported.
+To do it add them to the file 'runner.yml.dist':
 
 .. code-block::
 
-   docker-compose exec web ./vendor/bin/run toolkit:build-assets --validate=fix
+   toolkit:
+     build:
+       npm:
+         packages: '``@ecl/preset-ec@3.13.0`` ``gulp@4.0.1`` gulp-sass gulp-concat gulp-clean-css gulp-minify'

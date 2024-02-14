@@ -11,5 +11,5 @@ command:
       options:
         custom-code-folder: ${toolkit.build.custom-code-folder}
         build-npm-packages: ${toolkit.build.npm.packages}
-        validate: ${toolkit.scss.validate}
         theme-task-runner: ${toolkit.build.npm.theme-task-runner}
+        ecl-command: ${toolkit.build.npm.ecl-command}
