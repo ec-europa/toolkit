@@ -304,17 +304,20 @@ class ComponentCheckCommands extends AbstractCommands
                     $parsed_yaml = Yaml::parseFile($filename);
                     // Loop through all the services looking for environment variables.
                     if (!empty($parsed_yaml['services'])) {
-                        foreach ($parsed_yaml['services'] as $service_name => $service_settings) {
-                            if (!empty($service_settings['environment'])) {
+                        foreach ($parsed_yaml['services'] as $serviceName => $serviceSettings) {
+                            if (!empty($serviceSettings['environment'])) {
                                 // Add environment variables set for check.
-                                $envVarsSet[$filename . '_' . $service_name] = $service_settings['environment'];
+                                $envVarsSet[$filename . '_' . $serviceName] = $serviceSettings['environment'];
                             }
                         }
                     }
                 // Ini files.
                 } else {
                     // Add environment variables set for check.
-                    $envVarsSet[$filename] = Dotenv::parse(file_get_contents($filename));
+                    $contentParsed = Dotenv::parse(file_get_contents($filename));
+                    if (is_array($contentParsed)) {
+                        $envVarsSet[$filename] = $contentParsed;
+                    }
                 }
             }
         }
