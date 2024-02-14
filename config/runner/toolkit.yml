@@ -95,8 +95,9 @@ toolkit:
         file-match: '(README\.(md|txt)|CHANGELOG\.(md|txt))$'
     custom-code-folder: 'lib'
     npm:
-      theme-task-runner: grunt
-      packages: grunt grunt-contrib-jshint grunt-contrib-watch grunt-contrib-sass grunt-contrib-clean grunt-contrib-uglify
+      theme-task-runner: ecl-builder
+      packages: '@ecl/builder @ecl/preset-ec @ecl/preset-eu @ecl/preset-reset'
+      ecl-command: 'styles scripts'
   scss:
     validate: 'false'
   invalid-versions:
