@@ -12,6 +12,7 @@ matrix:
   PHP_VERSION:
     - 8.1
     - 8.2
+    - 8.3
   COMPOSER_VERSION:
     - 2
   COMPOSER_BOUNDARY:
@@ -71,6 +72,13 @@ pipeline:
     commands:
       - ./run toolkit:test-phpunit --execution=parallel
 
+  phpstan:
+    group: test
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
+    environment: *env
+    commands:
+      - ./run toolkit:test-phpstan
+
   lint-yaml:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
@@ -86,10 +94,3 @@ pipeline:
     environment: *env
     commands:
       - ./run toolkit:lint-php
-
-  phpstan:
-    group: test
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION=8.1}-ci
-    environment: *env
-    commands:
-      - ./run toolkit:test-phpstan
