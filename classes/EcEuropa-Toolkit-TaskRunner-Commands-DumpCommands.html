@@ -244,9 +244,9 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_toolkitDownloadDump">toolkitDownloadDump()</a>
     <span>
-                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
+                                &nbsp;: mixed    </span>
 </dt>
-<dd>Download ASDA snapshot.</dd>
+<dd>Download database snapshot.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_toolkitInstallDump">toolkitInstallDump()</a>
@@ -319,25 +319,32 @@
 <dd>Replace block in a file.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_addAuthToUrl">addAuthToUrl()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Prepare given URL to include the user and pass/token.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_asdaProcessFile">asdaProcessFile()</a>
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Helper to download and process a ASDA file.</dd>
+<dd>Helper to download and process a Nextcloud dump file.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_checkForNewerDump">checkForNewerDump()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_customCheckNewerDump">customCheckNewerDump()</a>
     <span>
                                 &nbsp;: bool    </span>
 </dt>
-<dd>Check if a newer dump exists on the server.</dd>
+<dd>Check if a newer dump exists on the Custom server.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_generateAsdaWgetInputFile">generateAsdaWgetInputFile()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_customDownloadDump">customDownloadDump()</a>
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
-<dd>Create a file containing the url to be used by wget --input-file option.</dd>
+<dd>Download the dumpfile from the custom server.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_getAsdaDate">getAsdaDate()</a>
@@ -345,6 +352,20 @@
                                 &nbsp;: string    </span>
 </dt>
 <dd>Returns a human-readable date of the ASDA dump.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_nextcloudCheckNewerDump">nextcloudCheckNewerDump()</a>
+    <span>
+                                &nbsp;: bool    </span>
+</dt>
+<dd>Check if a newer dump exists on the Nextcloud server.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_nextcloudDownloadDump">nextcloudDownloadDump()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Download the available services from Nextcloud.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_taskImportDatabase">taskImportDatabase()</a>
@@ -366,6 +387,20 @@
                                 &nbsp;: <abbr title="\Robo\Task\Base\Exec">Exec</abbr>    </span>
 </dt>
 <dd>Download the file present in the tmp file.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_wgetGenerateInputFile">wgetGenerateInputFile()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Create a file containing the url to be used by wget --input-file option.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_wgetGetFileModifiedDate">wgetGetFileModifiedDate()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Get the modified date from the remote file.</dd>
 
     </dl>
 
@@ -649,21 +684,28 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">177</span>
+    <span class="phpdocumentor-element-found-in__line">175</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Download ASDA snapshot.</p>
+        <p class="phpdocumentor-summary">Download database snapshot.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitDownloadDump</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;is-admin&#039; =&gt; InputOption::VALUE_NONE, &#039;yes&#039; =&gt; InputOption::VALUE_NONE]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
+                    <span class="phpdocumentor-signature__name">toolkitDownloadDump</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;is-admin&#039; =&gt; InputOption::VALUE_NONE, &#039;yes&#039; =&gt; InputOption::VALUE_NONE]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$options</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
@@ -686,7 +728,7 @@
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
                                                  <section class="phpdocumentor-description"><p>Generic.Commenting.DocComment.TagsNotGrouped</p>
-<p>Configuration for ASDA in NEXTCLOUD.</p>
+<p>Configuration for database snapshot in NEXTCLOUD.</p>
 <ul>
 <li>Environment variables: NEXTCLOUD_USER, NEXTCLOUD_PASS (EU Login).</li>
 <li>Runner variables:</li>
@@ -701,12 +743,13 @@
                                                                                 
                                                  <section class="phpdocumentor-description"><p>toolkit:
 clone:
-asda_services:
+type: 'nextcloud'
+nextcloud:
+url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'
+services:
 - mysql
 - solr
-- virtuoso
-asda_type: 'nextcloud'
-nextcloud_url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'</p>
+- virtuoso</p>
 </section>
 
                                     </dd>
@@ -717,8 +760,12 @@ nextcloud_url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'</p>
                                                                                 
                                                  <section class="phpdocumentor-description"><p>toolkit:
 clone:
-asda_type: 'default'
-asda_url: 'webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project_id}'</p>
+type: 'custom'
+dumpfile: dumpfile.sql.gz
+custom:
+url: example.com/databases
+user: username
+pass: secret-password</p>
 </section>
 
                                     </dd>
@@ -727,9 +774,8 @@ asda_url: 'webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>Configuration for ASDA default.</p>
+                                                 <section class="phpdocumentor-description"><p>Configuration for database snapshot in custom server.</p>
 <ul>
-<li>Environment variables: ASDA_USER, ASDA_PASSWORD.</li>
 <li>Runner variables:</li>
 </ul>
 </section>
@@ -785,35 +831,9 @@ asda_url: 'webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project
 </section>
 
                                     </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
-</section>
-
-                                    </dd>
                                             </dl>
 
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>Collection builder.</p>
-</section>
-
-            </section>
-
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -1395,6 +1415,72 @@ asda_url: 'webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project
             -private
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_addAuthToUrl">
+        addAuthToUrl()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_addAuthToUrl" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">621</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Prepare given URL to include the user and pass/token.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">addAuthToUrl</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$url</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$user</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$pass</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$url</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The URL to process.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$user</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The user to be added to the URL.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$pass</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The password or token to be added to the URL.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">string</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_asdaProcessFile">
         asdaProcessFile()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_asdaProcessFile" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1403,11 +1489,11 @@ asda_url: 'webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">342</span>
+    <span class="phpdocumentor-element-found-in__line">432</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Helper to download and process a ASDA file.</p>
+        <p class="phpdocumentor-summary">Helper to download and process a Nextcloud dump file.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -1456,23 +1542,186 @@ asda_url: 'webgate.ec.europa.eu/fpfis/files-for/automate_dumps/${toolkit.project
             -private
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_checkForNewerDump">
-        checkForNewerDump()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_checkForNewerDump" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_customCheckNewerDump">
+        customCheckNewerDump()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_customCheckNewerDump" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">289</span>
+    <span class="phpdocumentor-element-found-in__line">356</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Check if a newer dump exists on the server.</p>
+        <p class="phpdocumentor-summary">Check if a newer dump exists on the Custom server.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">checkForNewerDump</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$link</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$service</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+                    <span class="phpdocumentor-signature__name">customCheckNewerDump</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tmp_file</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$dumpfile</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$tmp_file</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The tmp file containing the url for the remote file.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$dumpfile</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The local dumpfile.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Return true if the modified date is different between local and remote dumps,
+False is case of error or no local file exists.</p>
+</section>
+
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_customDownloadDump">
+        customDownloadDump()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_customDownloadDump" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">276</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Download the dumpfile from the custom server.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">customDownloadDump</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$options</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getAsdaDate">
+        getAsdaDate()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_getAsdaDate" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">564</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns a human-readable date of the ASDA dump.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">getAsdaDate</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$filename</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$filename</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The dump filename that contains the date.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">string</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>The formatted date, fallback to filename if no date is found.</p>
+</section>
+
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_nextcloudCheckNewerDump">
+        nextcloudCheckNewerDump()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_nextcloudCheckNewerDump" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">382</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Check if a newer dump exists on the Nextcloud server.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">nextcloudCheckNewerDump</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$link</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$service</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -1518,23 +1767,23 @@ False is case of error or no local file exists.</p>
             -private
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_generateAsdaWgetInputFile">
-        generateAsdaWgetInputFile()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_generateAsdaWgetInputFile" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_nextcloudDownloadDump">
+        nextcloudDownloadDump()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_nextcloudDownloadDump" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">392</span>
+    <span class="phpdocumentor-element-found-in__line">194</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Create a file containing the url to be used by wget --input-file option.</p>
+        <p class="phpdocumentor-summary">Download the available services from Nextcloud.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">generateAsdaWgetInputFile</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$url</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tmp</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$silent</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">nextcloudDownloadDump</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -1542,89 +1791,49 @@ False is case of error or no local file exists.</p>
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$url</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Url to fill in the temp file.</p>
-</section>
-
+                
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$tmp</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                <span class="phpdocumentor-signature__argument__name">$options</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The temporary filename.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$silent</span>
-                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">false</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Whether show or not output from task.</p>
-</section>
-
+                
             </dd>
             </dl>
 
     
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_nextcloudDownloadDump#tags" class="headerlink"><i class="fas fa-link"></i></a>
 
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getAsdaDate">
-        getAsdaDate()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_getAsdaDate" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">457</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Returns a human-readable date of the ASDA dump.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">getAsdaDate</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$filename</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$filename</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The dump filename that contains the date.</p>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
 </section>
 
-            </dd>
-            </dl>
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">string</span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>The formatted date, fallback to filename if no date is found.</p>
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
 </section>
 
-            </section>
+                                    </dd>
+                                            </dl>
 
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -1640,7 +1849,7 @@ False is case of error or no local file exists.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">485</span>
+    <span class="phpdocumentor-element-found-in__line">592</span>
 
     </aside>
 
@@ -1688,7 +1897,7 @@ False is case of error or no local file exists.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">437</span>
+    <span class="phpdocumentor-element-found-in__line">544</span>
 
     </aside>
 
@@ -1728,7 +1937,7 @@ False is case of error or no local file exists.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">417</span>
+    <span class="phpdocumentor-element-found-in__line">506</span>
 
     </aside>
 
@@ -1788,6 +1997,112 @@ False is case of error or no local file exists.</p>
         <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Task\Base\Exec">Exec</abbr></span>
             </section>
 
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_wgetGenerateInputFile">
+        wgetGenerateInputFile()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_wgetGenerateInputFile" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">481</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Create a file containing the url to be used by wget --input-file option.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">wgetGenerateInputFile</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$url</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tmp</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$silent</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$url</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>Url to fill in the temp file.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$tmp</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The temporary filename.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$silent</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">false</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>Whether show or not output from task.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_wgetGetFileModifiedDate">
+        wgetGetFileModifiedDate()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_wgetGetFileModifiedDate" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DumpCommands.php"><a href="files/src-taskrunner-commands-dumpcommands.html"><abbr title="src/TaskRunner/Commands/DumpCommands.php">DumpCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">526</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Get the modified date from the remote file.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">wgetGetFileModifiedDate</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tmp</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$tmp</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The temporary filename.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+    
 </article>
             </section>
 
@@ -1918,13 +2233,18 @@ False is case of error or no local file exists.</p>
                                             <li><a href="classes/EcEuropa-Toolkit-Task-Command-Tasks.html#method_taskExecute">taskExecute()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskProcess">taskProcess()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskReplaceBlock">taskReplaceBlock()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_addAuthToUrl">addAuthToUrl()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_asdaProcessFile">asdaProcessFile()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_checkForNewerDump">checkForNewerDump()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_generateAsdaWgetInputFile">generateAsdaWgetInputFile()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_customCheckNewerDump">customCheckNewerDump()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_customDownloadDump">customDownloadDump()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_getAsdaDate">getAsdaDate()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_nextcloudCheckNewerDump">nextcloudCheckNewerDump()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_nextcloudDownloadDump">nextcloudDownloadDump()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_taskImportDatabase">taskImportDatabase()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_tmpDirectory">tmpDirectory()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_wgetDownloadFile">wgetDownloadFile()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_wgetGenerateInputFile">wgetGenerateInputFile()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_wgetGetFileModifiedDate">wgetGetFileModifiedDate()</a></li>
                                     </ul>
             </li>
                     </ul>

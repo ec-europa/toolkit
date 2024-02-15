@@ -167,17 +167,17 @@
   drupal:symlink-project            Symlink project as module, theme or profile in the proper directory.
   drupal:upgrade-status             [tdus] Check project compatibility for Drupal 9/10 upgrade.
  toolkit
-  toolkit:build-assets              [tk-bassets|tk-assets|tba] Build theme assets (Css and Js).
+  toolkit:build-assets              [tk-assets|tba] Build theme assets (Css and Js).
   toolkit:build-dev                 [tk-bdev] Build site for local development.
   toolkit:build-dev-reset           [tk-bdev-reset] Build site for local development from scratch with a clean git.
   toolkit:build-dist                [tk-bdist] Build the distribution package.
   toolkit:check-phpcs-requirements  Make sure that the config file exists and configuration is correct.
   toolkit:check-version             Check the Toolkit version.
-  toolkit:code-review               This command will execute all the testing tools.
+  toolkit:code-review               Execute all or specific tools for static testing.
   toolkit:complock-check            Check if &#039;composer.lock&#039; exists on the project root folder.
   toolkit:component-check           Check composer for components that are not whitelisted/blacklisted.
   toolkit:create-dump               [tk-cdump] Export the local snapshot.
-  toolkit:download-dump             [tk-ddump] Download ASDA snapshot.
+  toolkit:download-dump             [tk-ddump] Download database snapshot.
   toolkit:fix-permissions           Run script to fix permissions (experimental).
   toolkit:hooks-delete-all          [tk-hdel] Remove all existing hooks, this will ignore active hooks list.
   toolkit:hooks-disable             [tk-hdis] Disable the git hooks.
@@ -192,10 +192,10 @@
   toolkit:lint-js                   [tk-js|tljs] Run lint JS.
   toolkit:lint-php                  [tk-php|tlp] Run lint PHP.
   toolkit:lint-yaml                 [tk-yaml|tly] Run lint YAML.
-  toolkit:opts-review               Check project&#039;s .opts.yml file for forbidden commands.
+  toolkit:opts-review               [tk-opts-review] Check project&#039;s .opts.yml file for forbidden commands.
   toolkit:patch-download            [tk-pd] Download remote patches into a local directory.
   toolkit:patch-list                [tk-pl] Lists remote patches from the root composer.json.
-  toolkit:requirements              Check the Toolkit Requirements.
+  toolkit:requirements              [tk-req] Check the Toolkit Requirements.
   toolkit:run-blackfire             [tk-bfire|tbf] Run Blackfire.
   toolkit:run-deploy                [tk-deploy] Run deployment sequence.
   toolkit:run-gitleaks              [tk-gitleaks] Executes the Gitleaks.

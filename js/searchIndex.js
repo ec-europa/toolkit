@@ -396,6 +396,16 @@ Search.appendIndex(
             "summary": "Build\u0020theme\u0020assets\u0020\u0028Css\u0020and\u0020Js\u0029.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildAssets"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003AbuildAssetsInstall\u0028\u0029",
+            "name": "buildAssetsInstall",
+            "summary": "Install\u0020necessary\u0020packages\u0020to\u0020run\u0020toolkit\u003Abuild\u002Dassets.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildAssetsInstall"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003AbuildAssetsCompile\u0028\u0029",
+            "name": "buildAssetsCompile",
+            "summary": "Launch\u0020task\u0020runner\u0028s\u0029\u0020to\u0020compile\u0020assets.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildAssetsCompile"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003AgetHtaccessTask\u0028\u0029",
             "name": "getHtaccessTask",
             "summary": "Returns\u0020the\u0020task\u0020for\u0020adding\u0020custom\u0020block\u0020to\u0020htaccess\u0020file.",
@@ -928,28 +938,48 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AtoolkitDownloadDump\u0028\u0029",
             "name": "toolkitDownloadDump",
-            "summary": "Download\u0020ASDA\u0020snapshot.",
+            "summary": "Download\u0020database\u0020snapshot.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_toolkitDownloadDump"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AcheckForNewerDump\u0028\u0029",
-            "name": "checkForNewerDump",
-            "summary": "Check\u0020if\u0020a\u0020newer\u0020dump\u0020exists\u0020on\u0020the\u0020server.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_checkForNewerDump"
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AnextcloudDownloadDump\u0028\u0029",
+            "name": "nextcloudDownloadDump",
+            "summary": "Download\u0020the\u0020available\u0020services\u0020from\u0020Nextcloud.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_nextcloudDownloadDump"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AcustomDownloadDump\u0028\u0029",
+            "name": "customDownloadDump",
+            "summary": "Download\u0020the\u0020dumpfile\u0020from\u0020the\u0020custom\u0020server.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_customDownloadDump"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AcustomCheckNewerDump\u0028\u0029",
+            "name": "customCheckNewerDump",
+            "summary": "Check\u0020if\u0020a\u0020newer\u0020dump\u0020exists\u0020on\u0020the\u0020Custom\u0020server.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_customCheckNewerDump"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AnextcloudCheckNewerDump\u0028\u0029",
+            "name": "nextcloudCheckNewerDump",
+            "summary": "Check\u0020if\u0020a\u0020newer\u0020dump\u0020exists\u0020on\u0020the\u0020Nextcloud\u0020server.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_nextcloudCheckNewerDump"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AasdaProcessFile\u0028\u0029",
             "name": "asdaProcessFile",
-            "summary": "Helper\u0020to\u0020download\u0020and\u0020process\u0020a\u0020ASDA\u0020file.",
+            "summary": "Helper\u0020to\u0020download\u0020and\u0020process\u0020a\u0020Nextcloud\u0020dump\u0020file.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_asdaProcessFile"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AgenerateAsdaWgetInputFile\u0028\u0029",
-            "name": "generateAsdaWgetInputFile",
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AwgetGenerateInputFile\u0028\u0029",
+            "name": "wgetGenerateInputFile",
             "summary": "Create\u0020a\u0020file\u0020containing\u0020the\u0020url\u0020to\u0020be\u0020used\u0020by\u0020wget\u0020\u002D\u002Dinput\u002Dfile\u0020option.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_generateAsdaWgetInputFile"
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_wgetGenerateInputFile"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AwgetDownloadFile\u0028\u0029",
             "name": "wgetDownloadFile",
             "summary": "Download\u0020the\u0020file\u0020present\u0020in\u0020the\u0020tmp\u0020file.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_wgetDownloadFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AwgetGetFileModifiedDate\u0028\u0029",
+            "name": "wgetGetFileModifiedDate",
+            "summary": "Get\u0020the\u0020modified\u0020date\u0020from\u0020the\u0020remote\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_wgetGetFileModifiedDate"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AtmpDirectory\u0028\u0029",
             "name": "tmpDirectory",
@@ -965,6 +995,11 @@ Search.appendIndex(
             "name": "taskImportDatabase",
             "summary": "Import\u0020given\u0020dump\u0020file,\u0020gunzip\u0020is\u0020used\u0020if\u0020dump\u0020ends\u0020with\u0020.gz.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_taskImportDatabase"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AaddAuthToUrl\u0028\u0029",
+            "name": "addAuthToUrl",
+            "summary": "Prepare\u0020given\u0020URL\u0020to\u0020include\u0020the\u0020user\u0020and\u0020pass\/token.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_addAuthToUrl"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHooksCommands",
             "name": "GitHooksCommands",
@@ -1368,7 +1403,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AtoolkitCodeReview\u0028\u0029",
             "name": "toolkitCodeReview",
-            "summary": "This\u0020command\u0020will\u0020execute\u0020all\u0020the\u0020testing\u0020tools.",
+            "summary": "Execute\u0020all\u0020or\u0020specific\u0020tools\u0020for\u0020static\u0020testing.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_toolkitCodeReview"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AformatBytes\u0028\u0029",
@@ -1580,16 +1615,6 @@ Search.appendIndex(
             "name": "isCiCd",
             "summary": "Returns\u0020whether\u0020is\u0020running\u0020in\u0020CI\/CD\u0020environment.",
             "url": "classes/EcEuropa-Toolkit-Toolkit.html#method_isCiCd"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Toolkit\u003A\u003AgetAsdaUser\u0028\u0029",
-            "name": "getAsdaUser",
-            "summary": "Returns\u0020the\u0020ASDA\u0020user.",
-            "url": "classes/EcEuropa-Toolkit-Toolkit.html#method_getAsdaUser"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\Toolkit\u003A\u003AgetAsdaPass\u0028\u0029",
-            "name": "getAsdaPass",
-            "summary": "Returns\u0020the\u0020ASDA\u0020password.",
-            "url": "classes/EcEuropa-Toolkit-Toolkit.html#method_getAsdaPass"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Toolkit\u003A\u003AgetNextcloudUser\u0028\u0029",
             "name": "getNextcloudUser",
