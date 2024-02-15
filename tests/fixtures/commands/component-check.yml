@@ -527,8 +527,11 @@
     - touch: composer.json
     - file: .env
       content: |
+        # Use special characters like `~/.bashrc` or (parentheses).
+        # This is the user for the Nextcloud.
         NEXTCLOUD_USER=
         NEXTCLOUD_PASS=
+        # This is the deprecated ASDA user.
         ASDA_USER=
         ASDA_PASSWORD=
         QA_API_BASIC_AUTH=

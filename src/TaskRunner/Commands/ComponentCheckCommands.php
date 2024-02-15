@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
+use Dotenv\Dotenv;
 use EcEuropa\Toolkit\DrupalReleaseHistory;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Website;
@@ -303,17 +304,20 @@ class ComponentCheckCommands extends AbstractCommands
                     $parsed_yaml = Yaml::parseFile($filename);
                     // Loop through all the services looking for environment variables.
                     if (!empty($parsed_yaml['services'])) {
-                        foreach ($parsed_yaml['services'] as $service_name => $service_settings) {
-                            if (!empty($service_settings['environment'])) {
+                        foreach ($parsed_yaml['services'] as $serviceName => $serviceSettings) {
+                            if (!empty($serviceSettings['environment'])) {
                                 // Add environment variables set for check.
-                                $envVarsSet[$filename . '_' . $service_name] = $service_settings['environment'];
+                                $envVarsSet[$filename . '_' . $serviceName] = $serviceSettings['environment'];
                             }
                         }
                     }
                 // Ini files.
                 } else {
                     // Add environment variables set for check.
-                    $envVarsSet[$filename] = parse_ini_file($filename);
+                    $contentParsed = Dotenv::parse(file_get_contents($filename));
+                    if (is_array($contentParsed)) {
+                        $envVarsSet[$filename] = $contentParsed;
+                    }
                 }
             }
         }
