@@ -1,5 +1,15 @@
 # Toolkit change log
 
+## Version 10.9.0
+  - DQA-8674: Include ASDA_URL in the list of forbidden variables.
+  - DQA-8699: Update toolkit information in composer and repository.
+  - DQA-8671: Update toolkit code-review command.
+  - DQA-8673: Remove old implementation for ASDA.
+  - DQA-8672: Add possibility to download-dump from other sources.
+  - DQA-6867: Integrate ECL Build with toolkit.
+  - DQA-8756: Fix .env and parse_ini_file issue.
+  - DQA-8739: Include PHP 8.3 support for toolkit.
+
 ## Version 10.8.1
   - DQA-8659: Drop pm:security from component-check command.
   - DQA-8654: Align project information endpoint with new Envs structure.

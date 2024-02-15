@@ -279,6 +279,7 @@ class BuildCommands extends AbstractCommands
 
     /**
      * Build theme assets (Css and Js).
+     *
      * Install task runner, additional packages and execute.
      *
      * @param array $options
