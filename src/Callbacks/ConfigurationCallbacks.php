@@ -22,7 +22,14 @@ class ConfigurationCallbacks
         if (!file_exists('grumphp.yml.dist')) {
             return true;
         }
-        return !empty(ToolCommands::getPackagePropertyFromComposer('phpro/grumphp'));
+        $grump_packages = ['phpro/grumphp', 'phpro/grumphp-shim'];
+        // Iterate through packages and check if they are installed.
+        foreach ($grump_packages as $grump_package) {
+            if (ToolCommands::isPackageInstalled($grump_package)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -32,7 +39,7 @@ class ConfigurationCallbacks
     {
         $file = 'phpstan.neon';
         // Stop if the config file do not exist or the package is not installed.
-        if (!file_exists($file) || !ToolCommands::getPackagePropertyFromComposer('phpstan/extension-installer')) {
+        if (!file_exists($file) || !ToolCommands::isPackageInstalled('phpstan/extension-installer')) {
             return true;
         }
         // Load the config file and check for the includes.

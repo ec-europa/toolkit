@@ -387,6 +387,20 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
+     * Helper to tell if package is installed.
+     *
+     * @param string $package
+     *   The package name to search.
+     *
+     * @return bool
+     *   True or false if not found.
+     */
+    public static function isPackageInstalled(string $package): bool
+    {
+        return !empty(ToolCommands::getPackagePropertyFromComposer($package));
+    }
+
+    /**
      * Check 'Vendor' packages being monitored.
      *
      * @command toolkit:vendor-list
