@@ -276,6 +276,25 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
 
+        // Check if not installed patches are present in composer.json
+        $installedPackages = $this->getJson('installed.json', 'vendor/composer/');
+        if (!empty($composerJson['config']['allow-plugins']) && !empty($installedPackages['packages'])) {
+            $composerPlugins = array_filter(
+                $installedPackages['packages'],
+                fn($package) => isset($package['type']) && $package['type'] === 'composer-plugin'
+            );
+            $missingPlugins = array_diff(
+                array_keys($composerJson['config']['allow-plugins']),
+                array_column($composerPlugins, 'name')
+            );
+            foreach ($missingPlugins as $missingPlugin) {
+                $this->io->error("Plugin not installed, please remove from composer.json config.allow-plugins: $missingPlugin.");
+                $this->composerFailed = true;
+            }
+        } else {
+            $this->say("installed.json not found. Make sure Composer has been run.\n");
+        }
+
         if (!$this->composerFailed) {
             $this->say('Composer validation check passed.');
         }
