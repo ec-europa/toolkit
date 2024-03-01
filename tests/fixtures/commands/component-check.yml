@@ -7,6 +7,8 @@
     - file: composer.json
       content: |
         { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - contains: |
         Checking Mandatory components.
@@ -140,6 +142,8 @@
     - touch: composer.json
     - from: sample-composer.lock
       to: composer.lock
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - string_contains: Abandoned module check        passed (Skipping)
     - string_contains: Outdated module check         passed (Skipping)
@@ -156,6 +160,8 @@
     - touch: composer.json
     - from: sample-composer.lock
       to: composer.lock
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - string_contains: Insecure module check         passed (Skipping)
     - string_contains: Outdated module check         passed (Skipping)
@@ -174,6 +180,8 @@
         { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
     - from: sample-composer.lock
       to: composer.lock
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - string_contains: Mandatory module check        passed
     - string_contains: Recommended module check      passed
@@ -192,6 +200,8 @@
     - touch: composer.json
     - from: sample-internal-dependency.lock
       to: composer.lock
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - string_contains: Evaluation module check       passed
 
@@ -209,6 +219,8 @@
           { "name": "test/package2", "type": "library", "version": "1.0.0-dev" },
           { "name": "test/module", "type": "drupal-custom-module", "version": "1.0.0-dev" }
         ] }
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - string_contains: Package test/package:dev-1.0.0 cannot be used in dev version.
     - string_contains: Package test/package2:1.0.0-dev cannot be used in dev version.
@@ -225,6 +237,8 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - string_contains: The composer property 'extra.enable-patching' cannot be set to true.
     - string_contains: Composer validation check     failed
@@ -239,6 +253,8 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - not_string_contains: extra.enable-patching
     - string_contains: Composer validation check     passed
@@ -253,6 +269,8 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - string_contains: The composer property 'extra.composer-exit-on-patch-failure' must be set to true.
     - string_contains: Composer validation check     failed
@@ -267,6 +285,8 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - not_string_contains: extra.composer-exit-on-patch-failure
     - string_contains: Composer validation check     passed
@@ -298,6 +318,8 @@
             }
           }
         }
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - not_string_contains: The patch './resources/local.patch' is not valid
     - not_string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
@@ -333,6 +355,8 @@
             }
           }
         }
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - not_string_contains: The patch './resources/local.patch' is not valid
     - string_contains: The patch 'http://example.com/test-package.patch' is not valid
@@ -351,6 +375,8 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/codesnippet", "type": "drupal-module", "version": "1.0.0" } ] }
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - string_contains: The package drupal/codesnippet is authorised for the project digit-dqa
 
@@ -392,6 +418,8 @@
           "nid": "10889",
           "dev_component": "false"
         } ]
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - string_contains: The package drupal/pipeline is authorised for the type of project Openeuropa
 
@@ -433,6 +461,8 @@
           "nid": "10889",
           "dev_component": "false"
         } ]
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - string_contains: The package drupal/pipeline is authorised for the profile minimal
 
@@ -457,6 +487,8 @@
             ]
           }
         }
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - not_string_contains: ./allowed-script-01.sh
     - not_string_contains: ./allowed-script-02.sh
@@ -476,6 +508,8 @@
     - touch: .env
     - touch: grumphp.yml.dist
     - touch: allowed-file.ext
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - not_string_contains: allowed-file.ext
     - not_string_contains: grumphp.yml.dist file was detected
@@ -489,6 +523,8 @@
       to: composer.lock
     - touch: composer.json
     - touch: grumphp.yml.dist
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - string_contains: grumphp.yml.dist file was detected
 
@@ -510,6 +546,8 @@
               ASDA_USER:
               ASDA_PASSWORD:
               QA_API_BASIC_AUTH:
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - not_string_contains: NEXTCLOUD_USER
     - not_string_contains: NEXTCLOUD_PASS
@@ -535,6 +573,8 @@
         ASDA_USER=
         ASDA_PASSWORD=
         QA_API_BASIC_AUTH=
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - not_string_contains: NEXTCLOUD_USER
     - not_string_contains: NEXTCLOUD_PASS
@@ -556,6 +596,8 @@
         ASDA_USER=
         ASDA_PASSWORD=
         QA_API_BASIC_AUTH=
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - not_string_contains: NEXTCLOUD_USER
     - not_string_contains: NEXTCLOUD_PASS
@@ -579,5 +621,29 @@
           level: 5
         includes:
           - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - mkdir: /vendor/composer/
+    - touch: /vendor/composer/installed.json
   expectations:
     - string_contains: When using phpstan/extension-installer you should not manually include
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
+        ] }
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "phpstan/extension-installer": true } } }
+    - mkdir: /vendor/composer/
+    - file: /vendor/composer/installed.json
+      content: |
+        { "packages": [
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
+        ] }
+  expectations:
+    - not_string_contains: "config.allow-plugins: cweagans/composer-patches"
+    - string_contains: "config.allow-plugins: phpstan/extension-installer"

@@ -291,8 +291,6 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->io->error("Plugin not installed, please remove from composer.json config.allow-plugins: $missingPlugin.");
                 $this->composerFailed = true;
             }
-        } else {
-            $this->say("installed.json not found. Make sure Composer has been run.\n");
         }
 
         if (!$this->composerFailed) {
