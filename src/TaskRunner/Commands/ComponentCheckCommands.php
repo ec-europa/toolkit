@@ -256,21 +256,23 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
 
-        // Make sure that the forbidden/obsolete script is not present in the 'scripts' section of composer.json file.
-        if (!empty($composerJson['scripts'])) {
-            // Get forbidden/obsolete scripts from config.
-            $forbiddenScripts = $this->getConfig()->get('toolkit.components.composer.scripts.forbidden');
-            // Define common error message.
-            $error = 'The obsolete invocation of %s is present in composer.json %s scripts. Please remove.';
-            // Detect forbidden scripts in composer.json.
-            foreach ($forbiddenScripts as $level => $scripts) {
-                if (!isset($composerJson['scripts'][$level])) {
-                    continue;
-                }
-                foreach ((array) $composerJson['scripts'][$level] as $script) {
-                    if (in_array($script, $scripts)) {
-                        $this->io->error(sprintf($error, $script, $level));
-                        $this->composerFailed = true;
+        // Make sure that the forbidden/obsolete entry is not present in the composer.json file.
+        // TODO: Handle wildecards in entry names.
+        $forbiddenEntries = $this->getConfig()->get('toolkit.components.composer.forbidden');
+        // Define common error message.
+        $error = 'The forbidden entry "%s" is present in "%s.%s" property of composer.json. Please remove.';
+        foreach ($forbiddenEntries as $entryName => $forbiddenValues) {
+            if (!empty($composerJson[$entryName])) {
+                // Detect forbidden scripts in composer.json.
+                foreach ($forbiddenValues as $key => $values) {
+                    if (!isset($composerJson[$entryName][$key])) {
+                        continue;
+                    }
+                    foreach ((array) $composerJson[$entryName][$key] as $value) {
+                        if (in_array($value, $values)) {
+                            $this->io->error(sprintf($error, $value, $entryName, $key));
+                            $this->composerFailed = true;
+                        }
                     }
                 }
             }

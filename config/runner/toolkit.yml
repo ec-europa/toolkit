@@ -32,12 +32,15 @@ toolkit:
       check: true
     composer:
       drupal_patches: true
-      scripts:
-        forbidden:
+      forbidden:
+        scripts:
           post-root-package-install:
             - 'Subsite\composer\SetupWizard::setup'
           post-install-cmd:
             - 'DrupalComposer\DrupalScaffold\Plugin::scaffold'
+        autoload:
+          classmap:
+            - 'scripts/composer/SetupWizard.php'
     docker_compose:
       environment_variables:
         forbidden:
