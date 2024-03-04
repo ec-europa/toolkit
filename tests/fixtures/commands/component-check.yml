@@ -633,11 +633,12 @@
     - file: composer.lock
       content: |
         { "packages": [
-          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" },
+          { "name": "dealerdirect/phpcodesniffer-composer-installer", "type": "composer-plugin", "version": "v1.0.0" }
         ] }
     - file: composer.json
       content: |
-        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "phpstan/extension-installer": true } } }
+        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
     - mkdir: /vendor/composer/
     - file: /vendor/composer/installed.json
       content: |
@@ -646,4 +647,5 @@
         ] }
   expectations:
     - not_string_contains: "config.allow-plugins: cweagans/composer-patches"
+    - not_string_contains: "config.allow-plugins: dealerdirect/phpcodesniffer-composer-installer"
     - string_contains: "config.allow-plugins: phpstan/extension-installer"
