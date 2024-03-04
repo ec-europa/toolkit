@@ -643,7 +643,8 @@
     - file: /vendor/composer/installed.json
       content: |
         { "packages": [
-          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" },
+          { "name": "dealerdirect/phpcodesniffer-composer-installer", "type": "composer-plugin", "version": "v1.0.0" }
         ] }
   expectations:
     - not_string_contains: "config.allow-plugins: cweagans/composer-patches"
