@@ -262,29 +262,27 @@ class ComponentCheckCommands extends AbstractCommands
         // Define common error message.
         $error = 'The forbidden entry "%s" is present in "%s.%s" property of composer.json. Please remove.';
         foreach ($forbiddenEntries as $entryName => $forbidden) {
-            if (!empty($composerJson[$entryName])) {
+            if (isset($composerJson[$entryName])) {
                 // Detect forbidden entries in composer.json.
                 foreach ($forbidden as $forbiddenKey => $forbiddenValues) {
                     if (!isset($composerJson[$entryName][$forbiddenKey])) {
                         continue;
                     }
-                    foreach ((array)$composerJson[$entryName][$forbiddenKey] as $composerKey => $composerValues) {
-                        if (is_numeric($composerKey)) {
-                            // Handle only values.
-                            if (in_array($composerValues, $forbiddenValues)) {
-                                $this->io->error(sprintf($error, $composerValues, $entryName, $forbiddenKey));
-                                $this->composerFailed = true;
-                            }
-                        }
-                        else {
-                            // Handle key, vaule pairs.
-                            if (isset($forbiddenValues[$composerKey]) && $forbiddenValues[$composerKey] === $composerValues) {
-                                if (!is_string($composerValues)) {
-                                    $composerValues = json_encode($composerValues);
-                                }
-                                $this->io->error(sprintf($error, $composerKey . ': ' . $composerValues, $entryName, $forbiddenKey));
-                                $this->composerFailed = true;
-                            }
+
+                    foreach ((array) $composerJson[$entryName][$forbiddenKey] as $composerKey => $composerValues) {
+                        $isNumericKey = is_numeric($composerKey);
+
+                        // Handle only values or key, value pairs.
+                        if (
+                            ($isNumericKey && in_array($composerValues, $forbiddenValues)) ||
+                            (!$isNumericKey && isset($forbiddenValues[$composerKey]) && $forbiddenValues[$composerKey] === $composerValues)
+                        ) {
+                            $errorMessage = $isNumericKey ?
+                                sprintf($error, $composerValues, $entryName, $forbiddenKey) :
+                                sprintf($error, $composerKey . ': ' . (is_string($composerValues) ? $composerValues : json_encode($composerValues)), $entryName, $forbiddenKey);
+
+                            $this->io->error($errorMessage);
+                            $this->composerFailed = true;
                         }
                     }
                 }
