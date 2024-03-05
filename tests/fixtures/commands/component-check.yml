@@ -485,6 +485,14 @@
               "./allowed-script-02.sh",
               "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
             ]
+          },
+          "autoload": {
+            "classmap": [
+              "scripts/composer/SetupWizard.php"
+            ],
+            "psr-4": {
+              "MyNotForbiddenVendor\\MyProject\\": "./src/"
+            }
           }
         }
     - mkdir: /vendor/composer/
@@ -492,8 +500,10 @@
   expectations:
     - not_string_contains: ./allowed-script-01.sh
     - not_string_contains: ./allowed-script-02.sh
+    - not_string_contains: 'MyNotForbiddenVendor\MyProject\: ./src/'
     - string_contains: DrupalComposer\DrupalScaffold\Plugin::scaffold
     - string_contains: Subsite\composer\SetupWizard::setup
+    - string_contains: scripts/composer/SetupWizard.php
 
 - command: 'toolkit:component-check'
   configuration: []

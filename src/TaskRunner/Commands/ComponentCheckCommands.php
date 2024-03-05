@@ -261,17 +261,30 @@ class ComponentCheckCommands extends AbstractCommands
         $forbiddenEntries = $this->getConfig()->get('toolkit.components.composer.forbidden');
         // Define common error message.
         $error = 'The forbidden entry "%s" is present in "%s.%s" property of composer.json. Please remove.';
-        foreach ($forbiddenEntries as $entryName => $forbiddenValues) {
+        foreach ($forbiddenEntries as $entryName => $forbidden) {
             if (!empty($composerJson[$entryName])) {
-                // Detect forbidden scripts in composer.json.
-                foreach ($forbiddenValues as $key => $values) {
-                    if (!isset($composerJson[$entryName][$key])) {
+                // Detect forbidden entries in composer.json.
+                foreach ($forbidden as $forbiddenKey => $forbiddenValues) {
+                    if (!isset($composerJson[$entryName][$forbiddenKey])) {
                         continue;
                     }
-                    foreach ((array) $composerJson[$entryName][$key] as $value) {
-                        if (in_array($value, $values)) {
-                            $this->io->error(sprintf($error, $value, $entryName, $key));
-                            $this->composerFailed = true;
+                    foreach ((array)$composerJson[$entryName][$forbiddenKey] as $composerKey => $composerValues) {
+                        if (is_numeric($composerKey)) {
+                            // Handle only values.
+                            if (in_array($composerValues, $forbiddenValues)) {
+                                $this->io->error(sprintf($error, $composerValues, $entryName, $forbiddenKey));
+                                $this->composerFailed = true;
+                            }
+                        }
+                        else {
+                            // Handle key, vaule pairs.
+                            if (isset($forbiddenValues[$composerKey]) && $forbiddenValues[$composerKey] === $composerValues) {
+                                if (!is_string($composerValues)) {
+                                    $composerValues = json_encode($composerValues);
+                                }
+                                $this->io->error(sprintf($error, $composerKey . ': ' . $composerValues, $entryName, $forbiddenKey));
+                                $this->composerFailed = true;
+                            }
                         }
                     }
                 }

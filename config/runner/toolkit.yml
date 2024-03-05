@@ -41,6 +41,11 @@ toolkit:
         autoload:
           classmap:
             - 'scripts/composer/SetupWizard.php'
+          # This is example how to forbid psr-4 autoload, and even more complex composer structures.
+          # psr-4:
+          #   MyVendor\MyProjectX\: ./src/
+          #   MyVendor\MyProject2\: ./src/
+          #   a: { b: c }
     docker_compose:
       environment_variables:
         forbidden:
