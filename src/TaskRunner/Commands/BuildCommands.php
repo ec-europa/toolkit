@@ -348,7 +348,28 @@ class BuildCommands extends AbstractCommands
         }
         $this->buildAssetsInstall($theme_dir, $allowedTaskRunners, $taskRunners, $files, $options);
         $this->buildAssetsCompile($taskRunners, $options, $theme_dir);
+        $this->copyAssetsToDist($theme_dir, $options['default-theme']);
         return 0;
+    }
+
+    /**
+     * Copy compiled assets to distribution.
+     *
+     * @param string $theme_dir
+     *     Source of the assets.
+     * @param string $default_theme
+     *     Default theme to build destination the path.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *    Collection builder.
+     */
+    private function copyAssetsToDist($theme_dir, $default_theme)
+    {
+        // Add a task to copy compiled assets to the dist folder.
+        $tasks[] = $this->taskFilesystemStack()
+            ->mirror("$theme_dir/dist", "dist/web/themes/custom/$default_theme/dist");
+        // Execute the tasks.
+        return $this->collectionBuilder()->addTaskList($tasks)->run();
     }
 
     /**

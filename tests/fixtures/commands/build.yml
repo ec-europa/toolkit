@@ -168,6 +168,8 @@
           [Simulator] Simulating Exec('./node_modules/.bin/gulp')
             ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
           [Simulator] Running ./node_modules/.bin/gulp in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+          [Simulator] Simulating Filesystem\FilesystemStack()
+            ->mirror('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme/dist', 'dist/web/themes/custom/theme/dist')
 
 - command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code'
   configuration: []
@@ -193,3 +195,5 @@
         [Simulator] Simulating Exec('./node_modules/.bin/ecl-builder scripts')
           ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
         [Simulator] Running ./node_modules/.bin/ecl-builder scripts in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->mirror('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme/dist', 'dist/web/themes/custom/theme/dist')
