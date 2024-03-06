@@ -22,10 +22,10 @@ class ConfigurationCallbacks
         if (!file_exists('grumphp.yml.dist')) {
             return true;
         }
-        $grump_packages = ['phpro/grumphp', 'phpro/grumphp-shim'];
+        $grumpPackages = ['phpro/grumphp', 'phpro/grumphp-shim'];
         // Iterate through packages and check if they are installed.
-        foreach ($grump_packages as $grump_package) {
-            if (ToolCommands::isPackageInstalled($grump_package)) {
+        foreach ($grumpPackages as $grumpPackage) {
+            if (ToolCommands::isPackageInstalled($grumpPackage)) {
                 return true;
             }
         }
