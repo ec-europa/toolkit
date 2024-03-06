@@ -290,7 +290,7 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         // Make sure not installed plugins are not present in composer.json
-        $installedPackages = $this->getJson('installed.json', 'vendor/composer/');
+        $installedPackages = $this->getJson('vendor/composer/installed.json');
         if (!empty($composerJson['config']['allow-plugins']) && !empty($installedPackages['packages'])) {
             $composerPlugins = array_filter(
                 $installedPackages['packages'],
