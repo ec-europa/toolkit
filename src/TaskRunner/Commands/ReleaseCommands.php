@@ -113,14 +113,13 @@ class ReleaseCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
         // Get the latest version from the changelog.
-        $changelog_latest = $this->getLatestChangelogVersion();
-        $is_first_log = empty($changelog_latest);
-        if ($is_first_log) {
+        $changelogLatest = $this->getLatestChangelogVersion();
+        if (empty($changelogLatest)) {
             $io->error("You must provide a 'from' value, could not find latest version in the $this->changelog file.");
             return ResultData::EXITCODE_ERROR;
         }
         if (empty($from)) {
-            $from = $changelog_latest;
+            $from = $changelogLatest;
         }
         if (!Semver::satisfies($version, '>' . $from)) {
             if (Semver::satisfies($version, '=' . $from)) {
@@ -160,12 +159,12 @@ class ReleaseCommands extends AbstractCommands
      */
     public function toolkitPrepareRelease(string $version)
     {
-        $runner_bin = $this->getBin('run');
+        $runnerBin = $this->getBin('run');
         return $this->collectionBuilder()->addTaskList([
-            $this->taskExec($runner_bin)->args(['toolkit:version-write', $version]),
-            $this->taskExec($runner_bin)->args(['toolkit:changelog-write', $version]),
-            $this->taskExec($runner_bin)->arg('toolkit:generate-commands-list'),
-            $this->taskExec($runner_bin)->arg('toolkit:generate-documentation'),
+            $this->taskExec($runnerBin)->args(['toolkit:version-write', $version]),
+            $this->taskExec($runnerBin)->args(['toolkit:changelog-write', $version]),
+            $this->taskExec($runnerBin)->arg('toolkit:generate-commands-list'),
+            $this->taskExec($runnerBin)->arg('toolkit:generate-documentation'),
         ]);
     }
 

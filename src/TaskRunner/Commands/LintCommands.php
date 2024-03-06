@@ -112,12 +112,12 @@ class LintCommands extends AbstractCommands
         ];
 
         // Check if we have a Drupal environment.
-        $drupal_core = './' . $options['drupal-root'] . '/core';
-        if (file_exists($drupal_core)) {
+        $drupalCore = './' . $options['drupal-root'] . '/core';
+        if (file_exists($drupalCore)) {
             // Add the drupal core eslint if it exists.
-            $drupal_eslint = './' . $options['drupal-root'] . '/core/.eslintrc.json';
-            if (file_exists($drupal_eslint)) {
-                $data['extends'] = $drupal_eslint;
+            $drupalEslint = './' . $options['drupal-root'] . '/core/.eslintrc.json';
+            if (file_exists($drupalEslint)) {
+                $data['extends'] = $drupalEslint;
             }
 
             // Copy the prettier configurations from Drupal or fallback to defaults.
