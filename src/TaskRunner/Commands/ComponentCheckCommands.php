@@ -338,24 +338,24 @@ class ComponentCheckCommands extends AbstractCommands
                 }
                 // Check for ignores and compare versions.
                 if (!empty($ignores) && isset($ignores[$package['name']]) && $package['version'] === $ignores[$package['name']]) {
-                    $this->writeln("Package {$package['name']} with version installed {$package['version']} skipped by config.");
+                    $io->writeln("Package {$package['name']} with version installed {$package['version']} skipped by config.");
                     continue;
                 }
 
                 if (!array_key_exists('latest', $package)) {
-                    $this->writeln("Package {$package['name']} does not provide information about last version.");
+                    $io->writeln("Package {$package['name']} does not provide information about last version.");
                 } elseif (array_key_exists('warning', $package)) {
-                    $this->writeln($package['warning']);
+                    $io->writeln($package['warning']);
                     $this->outdatedFailed = true;
                 } else {
-                    $this->writeln("Package {$package['name']} with version installed {$package['version']} is outdated, please update to last version - {$package['latest']}");
+                    $io->writeln("Package {$package['name']} with version installed {$package['version']} is outdated, please update to last version - {$package['latest']}");
                     $this->outdatedFailed = true;
                 }
             }
         }
 
         if (!$this->outdatedFailed) {
-            $this->say('Outdated components check passed.');
+            $io->say('Outdated components check passed.');
         }
     }
 
@@ -378,7 +378,7 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
         if (!$this->abandonedFailed) {
-            $this->say('Abandoned components check passed.');
+            $io->say('Abandoned components check passed.');
         }
     }
 
@@ -390,11 +390,11 @@ class ComponentCheckCommands extends AbstractCommands
     public function componentUnsupported(ConsoleIO $io)
     {
         if (!$this->isWebsiteInstalled()) {
-            $this->writeln('Website not installed, skipping.');
+            $io->writeln('Website not installed, skipping.');
             return;
         }
         if (empty($releases = $this->getReleases())) {
-            $this->writeln('Failed to get the available releases.');
+            $io->writeln('Failed to get the available releases.');
             return;
         }
         // Filter by unsupported, @see \Drupal\update\UpdateManagerInterface::NOT_SUPPORTED.
@@ -402,19 +402,19 @@ class ComponentCheckCommands extends AbstractCommands
             return $item['status'] === 3;
         });
         if (empty($unsupported)) {
-            $this->say('Unsupported components check passed.');
+            $io->say('Unsupported components check passed.');
         } else {
             $this->unsupportedFailed = true;
             foreach ($unsupported as $item) {
                 if (array_key_exists('recommended', $item)) {
-                    $this->writeln(sprintf(
+                    $io->writeln(sprintf(
                         "Package %s with version installed %s is not supported. Update to the recommended version %s",
                         $item['name'],
                         $item['existing_version'],
                         $item['recommended']
                     ));
                 } else {
-                    $this->writeln(sprintf(
+                    $io->writeln(sprintf(
                         "Package %s is no longer supported, and is no longer available for download. Disabling everything included by this project is strongly recommended!",
                         $item['name']
                     ));
@@ -431,6 +431,8 @@ class ComponentCheckCommands extends AbstractCommands
      * Check Evaluation components.
      *
      * @command check:evaluation
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function componentEvaluation(ConsoleIO $io)
     {

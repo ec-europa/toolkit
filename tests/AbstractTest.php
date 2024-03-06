@@ -170,6 +170,9 @@ abstract class AbstractTest extends TestCase
      *   Content to test.
      * @param array $expectations
      *   Array with expectations.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function debugExpectations(string $content, array $expectations)
     {
