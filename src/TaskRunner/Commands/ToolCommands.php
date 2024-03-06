@@ -231,10 +231,17 @@ class ToolCommands extends AbstractCommands
             ['QA Endpoint access' => $endpoint_check],
             ['NEXTCLOUD configuration' => $nextcloud_check],
         );
-        $latestToolkit = self::getPackageLatestVersion(Toolkit::REPOSITORY) ?? '';
-        $latestDrupal = self::getPackageLatestVersion('drupal/core') ?? '';
-        $toolkitExtra = $toolkit_version && !Semver::satisfies($toolkit_version, $latestToolkit) ? " <comment>($latestToolkit available)</>" : '';
-        $drupalExtra = $drupal_version && !Semver::satisfies($drupal_version, $latestDrupal) ? " <comment>($latestDrupal available)</>" : '';
+        $toolkitExtra = $drupalExtra = '';
+        if ($toolkit_version && $latestToolkit = self::getPackageLatestVersion(Toolkit::REPOSITORY)) {
+            if (!Semver::satisfies($toolkit_version, $latestToolkit)) {
+                $toolkitExtra = " <comment>($latestToolkit available)</>";
+            }
+        }
+        if ($drupal_version && $latestDrupal = self::getPackageLatestVersion('drupal/core')) {
+            if (!Semver::satisfies($drupal_version, $latestDrupal)) {
+                $drupalExtra = " <comment>($latestDrupal available)</>";
+            }
+        }
 
         $io->title('Required checks:');
         $io->definitionList(
@@ -401,7 +408,8 @@ class ToolCommands extends AbstractCommands
      */
     public static function getPackageLatestVersion(string $package)
     {
-        $process = Process::fromShellCommandline("composer outdated $package --format=json");
+        echo "Checking $package" . PHP_EOL;
+        $process = Process::fromShellCommandline("composer outdated $package --format=json", getcwd());
         $process->run();
         if ($process->getExitCode()) {
             return null;
