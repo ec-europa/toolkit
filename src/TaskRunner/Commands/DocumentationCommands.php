@@ -93,7 +93,7 @@ class DocumentationCommands extends AbstractCommands
         'push' => InputOption::VALUE_NONE,
     ])
     {
-        if ($options['push'] && empty($options['token']) || $options['token'] === '${env.GITHUB_API_TOKEN}') {
+        if ($options['push'] && (empty($options['token']) || $options['token'] === '${env.GITHUB_API_TOKEN}')) {
             $io->error('The env var GITHUB_API_TOKEN is required to push.');
             return ResultData::EXITCODE_ERROR;
         }
