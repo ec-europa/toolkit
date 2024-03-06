@@ -86,6 +86,14 @@ abstract class AbstractTest extends TestCase
         if (!empty($expected['file_expected']) && !empty($expected['file_actual'])) {
             $this->assertFileEquals($expected['file_expected'], $expected['file_actual']);
         }
+
+        if (array_key_exists('empty', $expected)) {
+            $this->assertEmpty($this->trimEachLine($content));
+        }
+
+        if (array_key_exists('not_empty', $expected)) {
+            $this->assertNotEmpty($this->trimEachLine($content));
+        }
     }
 
     /**
@@ -181,6 +189,12 @@ abstract class AbstractTest extends TestCase
             }
             if (!empty($expectation['not_string_contains'])) {
                 $output .= "-- NotString --\n{$expectation['not_string_contains']}\n-- End NotString --\n";
+            }
+            if (array_key_exists('empty', $expectation)) {
+                $output .= "-- Empty --\n-- End Empty --\n";
+            }
+            if (array_key_exists('not_empty', $expectation)) {
+                $output .= "-- NotEmpty --\n-- End NotEmpty --\n";
             }
             if (!empty($expectation['file_expected']) && !empty($expectation['file_actual'])) {
                 $output .= "-- Files equal - expected --\n";
