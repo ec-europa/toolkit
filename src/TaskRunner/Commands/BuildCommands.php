@@ -359,9 +359,6 @@ class BuildCommands extends AbstractCommands
      *     Source of the assets.
      * @param string $default_theme
      *     Default theme to build destination the path.
-     *
-     * @return \Robo\Collection\CollectionBuilder
-     *    Collection builder.
      */
     private function copyAssetsToDist($theme_dir, $default_theme)
     {
@@ -369,7 +366,7 @@ class BuildCommands extends AbstractCommands
         $tasks[] = $this->taskFilesystemStack()
             ->mirror("$theme_dir/dist", "dist/web/themes/custom/$default_theme/dist");
         // Execute the tasks.
-        return $this->collectionBuilder()->addTaskList($tasks)->run();
+        $this->collectionBuilder()->addTaskList($tasks)->run();
     }
 
     /**
