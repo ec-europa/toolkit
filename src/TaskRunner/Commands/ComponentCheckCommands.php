@@ -162,7 +162,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function prepareSkips(): void
     {
-        $commitTokens = \EcEuropa\Toolkit\TaskRunner\Commands\ToolCommands::getCommitTokens();
+        $commitTokens = ToolCommands::getCommitTokens();
         if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
             $this->skipOutdated = true;
         }
