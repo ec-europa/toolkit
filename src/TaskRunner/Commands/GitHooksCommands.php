@@ -57,11 +57,11 @@ class GitHooksCommands extends AbstractCommands
             $io->say('No active hooks to enable, run toolkit:hooks-list to list the available hooks.');
             return $return;
         }
-        $available_hooks = $this->getAvailableHooks();
+        $availableHooks = $this->getAvailableHooks();
 
         // Validate hooks.
         foreach ($hooks as $hook) {
-            if (!isset($available_hooks[$hook])) {
+            if (!isset($availableHooks[$hook])) {
                 $io->say("The hook '$hook' was not found.");
                 $return = ResultData::EXITCODE_ERROR;
             }
@@ -72,7 +72,7 @@ class GitHooksCommands extends AbstractCommands
 
         $dir = $this->getWorkingDir();
         foreach ($hooks as $hook) {
-            $copy = $this->_copy($available_hooks[$hook], $dir . '/.git/hooks/' . $hook);
+            $copy = $this->_copy($availableHooks[$hook], $dir . '/.git/hooks/' . $hook);
             if ($copy->getExitCode() === ResultData::EXITCODE_OK) {
                 $this->_chmod($dir . '/.git/hooks/' . $hook, 0755);
             }
@@ -158,31 +158,31 @@ class GitHooksCommands extends AbstractCommands
     public function hooksList(ConsoleIO $io)
     {
         $rows = [];
-        $git_hooks_dir = $this->getWorkingDir() . '/.git/hooks';
+        $hooksDir = $this->getWorkingDir() . '/.git/hooks';
         $config = $this->getConfig()->get('toolkit.hooks');
-        $project_id = $this->getConfig()->get('toolkit.project_id');
+        $projectId = $this->getConfig()->get('toolkit.project_id');
         $hooks = $this->getAvailableHooks();
-        foreach ($hooks as $hook => $file_path) {
-            $is_active = $is_enabled = $needs_update = false;
+        foreach ($hooks as $hook => $path) {
+            $isActive = $isEnabled = $needsUpdate = false;
             if (in_array($hook, $config['active'])) {
-                $is_active = true;
+                $isActive = true;
             }
-            if (file_exists($git_hooks_dir . '/' . $hook)) {
-                $is_enabled = true;
+            if (file_exists($hooksDir . '/' . $hook)) {
+                $isEnabled = true;
             }
             if (
-                $is_enabled &&
-                (sha1_file($file_path) !== sha1_file($git_hooks_dir . '/' . $hook) ||
-                    filesize($file_path) !== filesize($git_hooks_dir . '/' . $hook))
+                $isEnabled &&
+                (sha1_file($path) !== sha1_file($hooksDir . '/' . $hook) ||
+                    filesize($path) !== filesize($hooksDir . '/' . $hook))
             ) {
-                $needs_update = true;
+                $needsUpdate = true;
             }
-            $hook_origin = str_contains($file_path, 'ec-europa/toolkit') ? 'toolkit' : $project_id;
+            $origin = str_contains($path, 'ec-europa/toolkit') ? 'toolkit' : $projectId;
             $rows[] = [
-                "$hook ($hook_origin)",
-                $is_active ? 'Yes' : 'No',
-                $is_enabled ? 'Yes' : 'No',
-                $needs_update ? 'Yes' : 'No',
+                "$hook ($origin)",
+                $isActive ? 'Yes' : 'No',
+                $isEnabled ? 'Yes' : 'No',
+                $needsUpdate ? 'Yes' : 'No',
             ];
         }
 
@@ -224,8 +224,8 @@ class GitHooksCommands extends AbstractCommands
         }
 
         // Make sure the hook is enabled.
-        $enabled_hooks = $this->getHookFiles($this->getWorkingDir() . '/.git/hooks');
-        if (!isset($enabled_hooks[$hook])) {
+        $enabledHooks = $this->getHookFiles($this->getWorkingDir() . '/.git/hooks');
+        if (!isset($enabledHooks[$hook])) {
             $io->say("The hook '$hook' does not exist or is not enabled.");
             return ResultData::EXITCODE_ERROR;
         }
@@ -254,7 +254,7 @@ class GitHooksCommands extends AbstractCommands
     private function runPreCommit(ConsoleIO $io)
     {
         $phpcs = $this->getBin('phpcs');
-        $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
+        $configFile = $this->getConfig()->get('toolkit.test.phpcs.config');
 
         // Get the modified files, returns a list with a file per line.
         $diff = $this->taskExec('git')
@@ -274,12 +274,12 @@ class GitHooksCommands extends AbstractCommands
         // If a config file exists, PHPcs will automatically load it and use
         // the files in there, the workaround here is to regenerate the config
         // file with the modified files.
-        if (file_exists($config_file)) {
+        if (file_exists($configFile)) {
             $dom = new DOMDocument();
-            $dom->load($config_file);
+            $dom->load($configFile);
             $root = $dom->firstChild;
             // Backup the config file and replace the files in it.
-            rename($config_file, $config_file . '.backup');
+            rename($configFile, $configFile . '.backup');
 
             // Remove files.
             $files = $root->getElementsByTagName('file');
@@ -294,24 +294,24 @@ class GitHooksCommands extends AbstractCommands
                 $dom->firstChild->appendChild($dom->createElement('file', $item));
             }
 
-            $this->taskWriteToFile($config_file)->text($dom->saveXML())->run();
+            $this->taskWriteToFile($configFile)->text($dom->saveXML())->run();
         } else {
             // Setup the ruleset with the files to check.
-            $files_setup = implode(',', $diff);
+            $filesSetup = implode(',', $diff);
             $this->taskExec($this->getBin('run'))
                 ->arg('toolkit:setup-phpcs')
-                ->rawArg("-Dtoolkit.test.phpcs.files=$files_setup")
+                ->rawArg("-Dtoolkit.test.phpcs.files=$filesSetup")
                 ->run();
         }
         // Execute the command.
-        $result = $this->taskExec($phpcs)->option('standard', $config_file, '=')->run();
+        $result = $this->taskExec($phpcs)->option('standard', $configFile, '=')->run();
 
         // Restore the config file if it existed, otherwise remove the
         // generated config.
-        if (file_exists($config_file . '.backup')) {
-            rename($config_file . '.backup', $config_file);
+        if (file_exists($configFile . '.backup')) {
+            rename($configFile . '.backup', $configFile);
         } else {
-            $this->_remove($config_file);
+            $this->_remove($configFile);
         }
 
         return $result->getExitCode();
@@ -357,10 +357,10 @@ class GitHooksCommands extends AbstractCommands
     private function runPrePush(ConsoleIO $io)
     {
         $exit = 0;
-        $runner_bin = $this->getBin('run');
+        $runnerBin = $this->getBin('run');
         $commands = $this->getConfig()->get('toolkit.hooks.pre-push.commands');
         foreach ($commands as $test) {
-            $result = $this->taskExec($runner_bin)->arg($test)->run();
+            $result = $this->taskExec($runnerBin)->arg($test)->run();
             $exit += $result->getExitCode();
         }
         return $exit;
@@ -375,9 +375,9 @@ class GitHooksCommands extends AbstractCommands
     private function getAvailableHooks()
     {
         $dir = trim($this->getConfig()->get('toolkit.hooks.dir'), '/');
-        $toolkit_hooks = $this->getHookFiles(Toolkit::getToolkitRoot() . "/$dir");
-        $project_hooks = $this->getHookFiles($this->getWorkingDir() . "/$dir");
-        return array_merge($toolkit_hooks, $project_hooks);
+        $toolkitHooks = $this->getHookFiles(Toolkit::getToolkitRoot() . "/$dir");
+        $projectHooks = $this->getHookFiles($this->getWorkingDir() . "/$dir");
+        return array_merge($toolkitHooks, $projectHooks);
     }
 
     /**

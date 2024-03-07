@@ -157,15 +157,15 @@ class ReplaceBlock extends BaseTask
      */
     public function run()
     {
-        $error_message = "You must provide a '%s' value.";
+        $message = "You must provide a '%s' value.";
         if (empty($this->filename)) {
-            return Result::error($this, sprintf($error_message, 'filename'));
+            return Result::error($this, sprintf($message, 'filename'));
         }
         if (empty($this->start)) {
-            return Result::error($this, sprintf($error_message, 'start'));
+            return Result::error($this, sprintf($message, 'start'));
         }
         if (empty($this->end)) {
-            return Result::error($this, sprintf($error_message, 'end'));
+            return Result::error($this, sprintf($message, 'end'));
         }
 
         $pattern = '~(' . preg_quote($this->start) . ')(.+?)(' . preg_quote($this->end) . ')~s';
