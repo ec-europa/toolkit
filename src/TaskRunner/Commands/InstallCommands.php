@@ -42,8 +42,8 @@ class InstallCommands extends AbstractCommands
         'config-file' => InputOption::VALUE_REQUIRED,
     ])
     {
-        $runner_bin = $this->getBin('run');
-        $task = $this->taskExec($runner_bin)->arg('drupal:site-install');
+        $runnerBin = $this->getBin('run');
+        $task = $this->taskExec($runnerBin)->arg('drupal:site-install');
         if (!empty($options['config-file']) && file_exists($options['config-file'])) {
             $task->option('existing-config');
         }
@@ -72,12 +72,12 @@ class InstallCommands extends AbstractCommands
     ])
     {
         $tasks = [];
-        $runner_bin = $this->getBin('run');
+        $runnerBin = $this->getBin('run');
 
-        $tasks[] = $this->taskExec($runner_bin)
+        $tasks[] = $this->taskExec($runnerBin)
             ->arg('toolkit:install-dump')
             ->option('dumpfile', $options['dumpfile'], '=');
-        $tasks[] = $this->taskExec($runner_bin)->arg('toolkit:run-deploy');
+        $tasks[] = $this->taskExec($runnerBin)->arg('toolkit:run-deploy');
 
         // Collect and execute list of commands set on local runner.yml.
         if (!empty($commands = $this->getConfig()->get('toolkit.install.clone.commands'))) {
@@ -114,10 +114,7 @@ class InstallCommands extends AbstractCommands
     ])
     {
         $tasks = [];
-
-        $has_sequence = file_exists($options['sequence-file']);
-
-        if ($has_sequence) {
+        if (file_exists($options['sequence-file'])) {
             $content = Yaml::parseFile($options['sequence-file']);
             $sequence = $content[$options['sequence-key']] ?? [];
             if (!empty($sequence)) {
@@ -146,8 +143,8 @@ class InstallCommands extends AbstractCommands
         }
 
         // Default deployment sequence.
-        $drush_bin = $this->getBin('drush');
-        $tasks[] = $this->taskExec($drush_bin)->arg('deploy')->rawArg('-y');
+        $drushBin = $this->getBin('drush');
+        $tasks[] = $this->taskExec($drushBin)->arg('deploy')->rawArg('-y');
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }

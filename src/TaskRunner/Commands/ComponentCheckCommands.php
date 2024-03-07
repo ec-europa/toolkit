@@ -163,13 +163,13 @@ class ComponentCheckCommands extends AbstractCommands
         }
         $enabledModules = $mandatoryPackages = [];
         if (!$this->isWebsiteInstalled()) {
-            $config_file = $this->getConfig()->get('toolkit.clean.config_file');
-            $this->writeln("Website not installed, using $config_file file.");
-            if (file_exists($config_file)) {
-                $config = Yaml::parseFile($config_file);
+            $configFile = $this->getConfig()->get('toolkit.clean.config_file');
+            $this->writeln("Website not installed, using $configFile file.");
+            if (file_exists($configFile)) {
+                $config = Yaml::parseFile($configFile);
                 $enabledModules = array_keys(array_merge($config['module'] ?? [], $config['theme'] ?? []));
             } else {
-                $this->writeln("Config file not found at $config_file.");
+                $this->writeln("Config file not found at $configFile.");
             }
         } else {
             // Get enabled modules.
@@ -658,10 +658,10 @@ class ComponentCheckCommands extends AbstractCommands
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
                 // Yamls.
                 if ($ext && $ext == 'yml') {
-                    $parsed_yaml = Yaml::parseFile($filename);
+                    $parsedYaml = Yaml::parseFile($filename);
                     // Loop through all the services looking for environment variables.
-                    if (!empty($parsed_yaml['services'])) {
-                        foreach ($parsed_yaml['services'] as $serviceName => $serviceSettings) {
+                    if (!empty($parsedYaml['services'])) {
+                        foreach ($parsedYaml['services'] as $serviceName => $serviceSettings) {
                             if (!empty($serviceSettings['environment'])) {
                                 // Add environment variables set for check.
                                 $envVarsSet[$filename . '_' . $serviceName] = $serviceSettings['environment'];
