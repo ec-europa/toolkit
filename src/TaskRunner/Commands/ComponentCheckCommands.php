@@ -257,7 +257,6 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         // Make sure that the forbidden/obsolete entry is not present in the composer.json file.
-        // TODO: Handle wildecards in entry names.
         $forbiddenEntries = $this->getConfig()->get('toolkit.components.composer.forbidden');
         // Define common error message.
         $error = 'The forbidden entry "%s" is present in "%s.%s" property of composer.json. Please remove.';
