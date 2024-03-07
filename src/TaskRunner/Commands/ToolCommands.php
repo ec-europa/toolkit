@@ -13,6 +13,7 @@ use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -290,8 +291,6 @@ class ToolCommands extends AbstractCommands
      * Check the Toolkit version.
      *
      * @command toolkit:check-version
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitVersion(ConsoleIO $io)
     {
@@ -323,9 +322,10 @@ class ToolCommands extends AbstractCommands
 
         $versionCheck = Semver::satisfies($toolkitVersion, $minVersion) ? 'OK' : 'FAIL';
         $io->writeln(sprintf(
-            "Minimum version: %s\nCurrent version: %s\nVersion check: %s",
+            "Minimum version: %s\nCurrent version: %s\nLatest version: %s\nVersion check: %s",
             $minVersion,
             $toolkitVersion,
+            self::getPackageLatestVersion(Toolkit::REPOSITORY) ?? '<null>',
             $versionCheck
         ));
         if ($versionCheck === 'FAIL') {
@@ -384,6 +384,32 @@ class ToolCommands extends AbstractCommands
             }
         }
         return false;
+    }
+
+    /**
+     * Returns the latest version of given package.
+     *
+     * @param string $package
+     *   The package to get the latest version, i.e: ec-europa/toolkit.
+     *
+     * @return null|string
+     *   Returns the package version, or null if the package is not found.
+     */
+    public static function getPackageLatestVersion(string $package)
+    {
+        $process = Process::fromShellCommandline("composer outdated $package --format=json");
+        $process->run();
+        if ($process->getExitCode()) {
+            return null;
+        }
+        $result = trim($process->getOutput());
+        if (!empty($result) && $result !== '[]') {
+            $data = json_decode($result, true);
+            if (!empty($data['latest'])) {
+                return $data['latest'];
+            }
+        }
+        return null;
     }
 
     /**

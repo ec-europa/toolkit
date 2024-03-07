@@ -182,7 +182,7 @@ class ComponentCheckCommands extends AbstractCommands
         // Get mandatory packages.
         if (!empty($this->packageReviews)) {
             $mandatoryPackages = array_values(array_filter($this->packageReviews, function ($item) {
-                return $item['mandatory'] === '1';
+                return $item['mandatory'] === '1' && $item['type'] === 'drupal-module';
             }));
         }
 
@@ -656,7 +656,7 @@ class ComponentCheckCommands extends AbstractCommands
         foreach ($fileNames as $filename) {
             if (is_file($filename)) {
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
-                // Yamls.
+                // Yaml files.
                 if ($ext && $ext == 'yml') {
                     $parsedYaml = Yaml::parseFile($filename);
                     // Loop through all the services looking for environment variables.
@@ -668,7 +668,7 @@ class ComponentCheckCommands extends AbstractCommands
                             }
                         }
                     }
-                    // Ini files.
+                // Ini files.
                 } else {
                     // Add environment variables set for check.
                     $contentParsed = Dotenv::parse(file_get_contents($filename));
