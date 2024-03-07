@@ -162,7 +162,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     protected function prepareSkips(): void
     {
-        $commitTokens = ToolCommands::getCommitTokens();
+        $commitTokens = \EcEuropa\Toolkit\TaskRunner\Commands\ToolCommands::getCommitTokens();
         if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
             $this->skipOutdated = true;
         }
@@ -260,29 +260,24 @@ class ComponentCheckCommands extends AbstractCommands
         $forbiddenEntries = $this->getConfig()->get('toolkit.components.composer.forbidden');
         // Define common error message.
         $error = 'The forbidden entry "%s" is present in "%s.%s" property of composer.json. Please remove.';
-        foreach ($forbiddenEntries as $entryName => $forbidden) {
-            if (isset($composerJson[$entryName])) {
-                // Detect forbidden entries in composer.json.
-                foreach ($forbidden as $forbiddenKey => $forbiddenValues) {
-                    if (!isset($composerJson[$entryName][$forbiddenKey])) {
-                        continue;
-                    }
-
-                    foreach ((array) $composerJson[$entryName][$forbiddenKey] as $composerKey => $composerValues) {
-                        $isNumericKey = is_numeric($composerKey);
-
-                        // Handle only values or key, value pairs.
-                        if (
-                            ($isNumericKey && in_array($composerValues, $forbiddenValues)) ||
-                            (!$isNumericKey && isset($forbiddenValues[$composerKey]) && $forbiddenValues[$composerKey] === $composerValues)
-                        ) {
-                            $errorMessage = $isNumericKey ?
-                                sprintf($error, $composerValues, $entryName, $forbiddenKey) :
-                                sprintf($error, $composerKey . ': ' . (is_string($composerValues) ? $composerValues : json_encode($composerValues)), $entryName, $forbiddenKey);
-
-                            $this->io->error($errorMessage);
-                            $this->composerFailed = true;
-                        }
+        // Iterate over each forbidden entry and associated details.
+        foreach ($forbiddenEntries as $entryName => $forbiddenEntry) {
+            // Skip if the entry is not present in the composer.json file.
+            if (!isset($composerJson[$entryName])) {
+                continue;
+            }
+            // Detect forbidden entries in composer.json.
+            foreach ($forbiddenEntry as $forbiddenKey => $forbiddenValues) {
+                if (!isset($composerJson[$entryName][$forbiddenKey])) {
+                    continue;
+                }
+                foreach ((array) $composerJson[$entryName][$forbiddenKey] as $composerKey => $composerValue) {
+                    // Determine the check value based on whether it's an associative array or not.
+                    $check = (!is_numeric($composerKey) ? $composerKey : $composerValue);
+                    // If the check value is found in the forbidden values, display an error message.
+                    if (in_array($check, $forbiddenValues)) {
+                        $this->io->error(sprintf($error, $check, $entryName, $forbiddenKey));
+                        $this->composerFailed = true;
                     }
                 }
             }
