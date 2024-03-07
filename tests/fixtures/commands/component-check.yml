@@ -437,7 +437,14 @@
     - string_contains: The package drupal/pipeline is authorised for the profile minimal
 
 - command: 'toolkit:component-check'
-  configuration: []
+  configuration:
+    toolkit:
+      components:
+        composer:
+          forbidden:
+            autoload:
+              psr-4:
+                - 'MyForbiddenVendor\MyProject\'
   tokens: ''
   resources:
     - from: sample-composer.lock
@@ -461,14 +468,14 @@
               "scripts/composer/SetupWizard.php"
             ],
             "psr-4": {
-              "MyNotForbiddenVendor\\MyProject\\": "./src/"
+              "MyForbiddenVendor\\MyProject\\": "./src/"
             }
           }
         }
   expectations:
     - not_string_contains: ./allowed-script-01.sh
     - not_string_contains: ./allowed-script-02.sh
-    - not_string_contains: 'MyNotForbiddenVendor\MyProject\: ./src/'
+    - string_contains: MyForbiddenVendor\MyProject\
     - string_contains: DrupalComposer\DrupalScaffold\Plugin::scaffold
     - string_contains: Subsite\composer\SetupWizard::setup
     - string_contains: scripts/composer/SetupWizard.php
