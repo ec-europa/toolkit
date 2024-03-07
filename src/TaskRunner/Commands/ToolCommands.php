@@ -121,13 +121,13 @@ class ToolCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        $project_id = $this->getConfig()->get('toolkit.project_id');
-        if (empty($project_id)) {
+        $projectId = $this->getConfig()->get('toolkit.project_id');
+        if (empty($projectId)) {
             $io->say('The configuration toolkit.project_id value is not valid.');
             return ResultData::EXITCODE_ERROR;
         }
 
-        $forbiddenCommands = Website::projectConstraints($project_id);
+        $forbiddenCommands = Website::projectConstraints($projectId);
         if (empty($forbiddenCommands)) {
             $io->error('Failed to get constraints from the endpoint.');
             return ResultData::EXITCODE_ERROR;
@@ -194,63 +194,63 @@ class ToolCommands extends AbstractCommands
             $this->writeln('Invalid data returned from the endpoint.');
             return 1;
         }
-        $endpoint_check = 'OK';
+        $endpointCheck = 'OK';
 
         // Handle PHP version.
-        $php_version = phpversion();
-        $isValid = version_compare($php_version, $data['php_version']);
-        $php_check = ($isValid >= 0) ? 'OK' : 'FAIL';
+        $phpVersion = phpversion();
+        $isValid = version_compare($phpVersion, $data['php_version']);
+        $phpCheck = ($isValid >= 0) ? 'OK' : 'FAIL';
 
         // Handle Toolkit version.
-        if (!($toolkit_version = self::getPackagePropertyFromComposer('ec-europa/toolkit', 'version', 'packages-dev'))) {
-            $toolkit_check = 'FAIL (not found)';
+        if (!($toolkitVersion = self::getPackagePropertyFromComposer('ec-europa/toolkit', 'version', 'packages-dev'))) {
+            $toolkitCheck = 'FAIL (not found)';
         } else {
-            $toolkit_check = Semver::satisfies($toolkit_version, $data['toolkit']) ? 'OK' : 'FAIL';
+            $toolkitCheck = Semver::satisfies($toolkitVersion, $data['toolkit']) ? 'OK' : 'FAIL';
         }
         // Handle Drupal version.
-        if (!($drupal_version = self::getPackagePropertyFromComposer('drupal/core'))) {
-            $drupal_check = 'FAIL (not found)';
+        if (!($drupalVersion = self::getPackagePropertyFromComposer('drupal/core'))) {
+            $drupalCheck = 'FAIL (not found)';
         } else {
-            $drupal_check = Semver::satisfies($drupal_version, $data['drupal']) ? 'OK' : 'FAIL';
+            $drupalCheck = Semver::satisfies($drupalVersion, $data['drupal']) ? 'OK' : 'FAIL';
         }
 
         // Handle NEXTCLOUD.
-        $nc_user = Toolkit::getNExtcloudUser();
-        $nc_pass = Toolkit::getNExtcloudPass();
-        if (!empty($nc_user) && !empty($nc_pass)) {
-            $nextcloud_check = 'OK';
+        $ncUser = Toolkit::getNExtcloudUser();
+        $ncPass = Toolkit::getNExtcloudPass();
+        if (!empty($ncUser) && !empty($ncPass)) {
+            $nextcloudCheck = 'OK';
         } else {
-            $nextcloud_check = 'FAIL (Missing environment variable(s):';
-            $nextcloud_check .= empty($nc_user) ? ' NEXTCLOUD_USER' : '';
-            $nextcloud_check .= empty($nc_pass) ? ' NEXTCLOUD_PASS' : '';
-            $nextcloud_check .= ')';
+            $nextcloudCheck = 'FAIL (Missing environment variable(s):';
+            $nextcloudCheck .= empty($ncUser) ? ' NEXTCLOUD_USER' : '';
+            $nextcloudCheck .= empty($ncPass) ? ' NEXTCLOUD_PASS' : '';
+            $nextcloudCheck .= ')';
         }
 
         $io->title('Checking connections:');
         $io->definitionList(
-            ['QA Endpoint access' => $endpoint_check],
-            ['NEXTCLOUD configuration' => $nextcloud_check],
+            ['QA Endpoint access' => $endpointCheck],
+            ['NEXTCLOUD configuration' => $nextcloudCheck],
         );
         $toolkitExtra = $drupalExtra = '';
-        if ($toolkit_version && $latestToolkit = self::getPackageLatestVersion(Toolkit::REPOSITORY)) {
-            if (!Semver::satisfies($toolkit_version, $latestToolkit)) {
+        if ($toolkitVersion && $latestToolkit = self::getPackageLatestVersion(Toolkit::REPOSITORY)) {
+            if (!Semver::satisfies($toolkitVersion, $latestToolkit)) {
                 $toolkitExtra = " <comment>($latestToolkit available)</>";
             }
         }
-        if ($drupal_version && $latestDrupal = self::getPackageLatestVersion('drupal/core')) {
-            if (!Semver::satisfies($drupal_version, $latestDrupal)) {
+        if ($drupalVersion && $latestDrupal = self::getPackageLatestVersion('drupal/core')) {
+            if (!Semver::satisfies($drupalVersion, $latestDrupal)) {
                 $drupalExtra = " <comment>($latestDrupal available)</>";
             }
         }
 
         $io->title('Required checks:');
         $io->definitionList(
-            ['PHP version' => "$php_check ($php_version)"],
-            ['Toolkit version' => "$toolkit_check ($toolkit_version)$toolkitExtra"],
-            ['Drupal version' => "$drupal_check ($drupal_version)$drupalExtra"],
+            ['PHP version' => "$phpCheck ($phpVersion)"],
+            ['Toolkit version' => "$toolkitCheck ($toolkitVersion)$toolkitExtra"],
+            ['Drupal version' => "$drupalCheck ($drupalVersion)$drupalExtra"],
         );
 
-        if ($php_check !== 'OK' || $toolkit_check !== 'OK' || $drupal_check !== 'OK') {
+        if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $drupalCheck !== 'OK') {
             return 1;
         }
         return 0;
@@ -307,9 +307,9 @@ class ToolCommands extends AbstractCommands
     {
         $io->say("Checking Toolkit version:\n");
 
-        $toolkit_version = Toolkit::VERSION;
+        $toolkitVersion = Toolkit::VERSION;
         $data = Website::requirements();
-        $min_version = '';
+        $minVersion = '';
 
         if (!(self::getPackagePropertyFromComposer('ec-europa/toolkit'))) {
             $io->warning('Failed to get Toolkit version from composer.lock.');
@@ -318,28 +318,28 @@ class ToolCommands extends AbstractCommands
             if (!isset($data['toolkit'])) {
                 $io->writeln('Invalid data returned from the endpoint.');
             } else {
-                $min_version = $data['toolkit'];
-                $major = substr($toolkit_version, 0, strpos($toolkit_version, '.'));
-                $min_versions = array_filter(explode('|', $min_version), function ($v) use ($major) {
+                $minVersion = $data['toolkit'];
+                $major = substr($toolkitVersion, 0, strpos($toolkitVersion, '.'));
+                $minVersions = array_filter(explode('|', $minVersion), function ($v) use ($major) {
                     return str_contains(substr($v, 0, strpos($v, '.') ?: null), $major);
                 });
-                if (count($min_versions) === 1) {
-                    $min_version = end($min_versions);
+                if (count($minVersions) === 1) {
+                    $minVersion = end($minVersions);
                 }
             }
         } else {
             $io->writeln('Failed to connect to the endpoint. Required env var QA_API_AUTH_TOKEN.');
         }
 
-        $version_check = Semver::satisfies($toolkit_version, $min_version) ? 'OK' : 'FAIL';
+        $versionCheck = Semver::satisfies($toolkitVersion, $minVersion) ? 'OK' : 'FAIL';
         $io->writeln(sprintf(
             "Minimum version: %s\nCurrent version: %s\nLatest version: %s\nVersion check: %s",
-            $min_version,
-            $toolkit_version,
+            $minVersion,
+            $toolkitVersion,
             self::getPackageLatestVersion(Toolkit::REPOSITORY) ?? '<null>',
-            $version_check
+            $versionCheck
         ));
-        if ($version_check === 'FAIL') {
+        if ($versionCheck === 'FAIL') {
             return ResultData::EXITCODE_ERROR;
         }
         return ResultData::EXITCODE_OK;
