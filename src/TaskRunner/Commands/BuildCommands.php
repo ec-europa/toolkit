@@ -101,11 +101,11 @@ class BuildCommands extends AbstractCommands
             ->noDev();
 
         // Setup the site.
-        $runner_bin = $this->getBin('run');
+        $runnerBin = $this->getBin('run');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec($runner_bin . ' drupal:permissions-setup --root=' . $options['dist-root'] . '/' . $options['root'])
-            ->exec($runner_bin . ' drupal:settings-setup --root=' . $options['dist-root'] . '/' . $options['root']);
+            ->exec($runnerBin . ' drupal:permissions-setup --root=' . $options['dist-root'] . '/' . $options['root'])
+            ->exec($runnerBin . ' drupal:settings-setup --root=' . $options['dist-root'] . '/' . $options['root']);
 
         // Clean up non-required files.
         $keep = '! -name "' . $options['dist-root'] . '" ! -name "' . implode('" ! -name "', explode(',', $options['keep'])) . '"';
@@ -118,19 +118,19 @@ class BuildCommands extends AbstractCommands
         $hash = !empty($options['sha']) ? $options['sha'] : '';
 
         // Write manifest.json and VERSION.txt files.
-        $drupal_profile = '';
+        $drupalProfile = '';
         $config = $this->getConfig();
-        $config_file = $config->get('toolkit.clean.config_file');
-        if (file_exists($config_file) && ($yml = Yaml::parseFile($config_file))) {
+        $configFile = $config->get('toolkit.clean.config_file');
+        if (file_exists($configFile) && ($yml = Yaml::parseFile($configFile))) {
             if (!empty($yml['profile'])) {
-                $drupal_profile = $yml['profile'];
+                $drupalProfile = $yml['profile'];
             }
         } elseif (!empty($config->get('drupal.site.profile'))) {
-            $drupal_profile = $config->get('drupal.site.profile');
+            $drupalProfile = $config->get('drupal.site.profile');
         }
         $tasks[] = $this->taskWriteToFile($options['dist-root'] . '/manifest.json')
             ->text(json_encode([
-                'drupal_profile' => $drupal_profile,
+                'drupal_profile' => $drupalProfile,
                 'project_id' => $config->get('toolkit.project_id'),
                 'drupal_version' => ToolCommands::getPackagePropertyFromComposer('drupal/core'),
                 'php_version' => phpversion(),
@@ -190,11 +190,11 @@ class BuildCommands extends AbstractCommands
         $root = $options['root'];
 
         // Run site setup.
-        $runner_bin = $this->getBin('run');
+        $runnerBin = $this->getBin('run');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
-            ->exec("$runner_bin toolkit:install-dependencies")
-            ->exec("$runner_bin drupal:settings-setup --root=$root");
+            ->exec("$runnerBin toolkit:install-dependencies")
+            ->exec("$runnerBin drupal:settings-setup --root=$root");
 
         // Double check presence of required folders.
         $folders = [
@@ -328,11 +328,11 @@ class BuildCommands extends AbstractCommands
             $this->say("The theme '{$options['default-theme']}' couldn't be found on the '{$options['custom-code-folder']}' folder.");
             return 0;
         }
-        $theme_dir = '';
+        $themeDir = '';
         foreach ($finder as $directory) {
-            $theme_dir = $directory->getRealPath();
+            $themeDir = $directory->getRealPath();
         }
-        $files = scandir($theme_dir);
+        $files = scandir($themeDir);
         $taskRunners = explode(' ', $options['theme-task-runner']);
         $allowedTaskRunners = [
             'gulp' => 'gulpfile.js',
@@ -346,18 +346,18 @@ class BuildCommands extends AbstractCommands
                 return 1;
             }
         }
-        $this->buildAssetsInstall($theme_dir, $allowedTaskRunners, $taskRunners, $files, $options);
-        $this->buildAssetsCompile($taskRunners, $options, $theme_dir);
+        $this->buildAssetsInstall($themeDir, $allowedTaskRunners, $taskRunners, $files, $options);
+        $this->buildAssetsCompile($taskRunners, $options, $themeDir);
         return 0;
     }
 
     /**
      * Install necessary packages to run toolkit:build-assets.
      */
-    private function buildAssetsInstall($theme_dir, $allowedTaskRunners, $taskRunners, $files, $options)
+    private function buildAssetsInstall($themeDir, $allowedTaskRunners, $taskRunners, $files, $options)
     {
         $collection = $this->collectionBuilder();
-        $stack = $collection->taskExecStack()->dir($theme_dir)->stopOnFail();
+        $stack = $collection->taskExecStack()->dir($themeDir)->stopOnFail();
 
         $stack->exec('npm -v || npm i npm')
             ->exec('[ -f package.json ] || npm init -y --scope')
@@ -368,7 +368,7 @@ class BuildCommands extends AbstractCommands
         foreach ($allowedTaskRunners as $allowedTaskRunner => $configFile) {
             if (in_array($allowedTaskRunner, $taskRunners) && !in_array($configFile, $files)) {
                 $dir = Toolkit::getToolkitRoot() . '/resources/assets';
-                $stack->exec("cp $dir/$configFile $theme_dir/$configFile");
+                $stack->exec("cp $dir/$configFile $themeDir/$configFile");
             }
         }
         foreach (explode(' ', $options['build-npm-packages']) as $package) {
@@ -382,7 +382,7 @@ class BuildCommands extends AbstractCommands
     /**
      * Launch task runner(s) to compile assets.
      */
-    private function buildAssetsCompile($taskRunners, $options, $theme_dir,)
+    private function buildAssetsCompile($taskRunners, $options, $themeDir,)
     {
         $collection = $this->collectionBuilder();
 
@@ -400,14 +400,14 @@ class BuildCommands extends AbstractCommands
                 }
                 foreach (explode(' ', $options['ecl-command']) as $eclCommand) {
                     $collection->taskExec($this->getNodeBinPath($taskRunner) . " {$eclCommand}")
-                        ->dir($theme_dir)
+                        ->dir($themeDir)
                         ->run()
                         ->stopOnFail();
                 }
             } else {
                 // Compile assets using specified task runner.
                 $collection->taskExec($this->getNodeBinPath($taskRunner))
-                    ->dir($theme_dir)
+                    ->dir($themeDir)
                     ->run()
                     ->stopOnFail();
             }

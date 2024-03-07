@@ -40,77 +40,77 @@ class TestsCommands extends AbstractCommands
     public function toolkitSetupPhpcs()
     {
         $config = $this->getConfig();
-        $config_file = $config->get('toolkit.test.phpcs.config');
-        if (file_exists($config_file)) {
-            $this->taskExec('rm')->arg($config_file)->run();
+        $configFile = $config->get('toolkit.test.phpcs.config');
+        if (file_exists($configFile)) {
+            $this->taskExec('rm')->arg($configFile)->run();
         }
 
-        $phpcs_xml = new \DOMDocument('1.0', 'UTF-8');
-        $phpcs_xml->formatOutput = true;
+        $phpcsXml = new \DOMDocument('1.0', 'UTF-8');
+        $phpcsXml->formatOutput = true;
         // Root element.
-        $root = $phpcs_xml->createElement('ruleset');
+        $root = $phpcsXml->createElement('ruleset');
         $root->setAttribute('name', 'QA');
-        $phpcs_xml->appendChild($root);
-        $root->appendChild($phpcs_xml->createElement('description', 'QA PHPcs Ruleset'));
+        $phpcsXml->appendChild($root);
+        $root->appendChild($phpcsXml->createElement('description', 'QA PHPcs Ruleset'));
 
         // Handle standards.
-        $root->appendChild($phpcs_xml->createComment(' Standards. '));
+        $root->appendChild($phpcsXml->createComment(' Standards. '));
         if (!empty($standards = $config->get('toolkit.test.phpcs.standards'))) {
             foreach ($standards as $standard) {
-                $element = $phpcs_xml->createElement('rule');
+                $element = $phpcsXml->createElement('rule');
                 $element->setAttribute('ref', $standard);
                 $root->appendChild($element);
             }
         }
-        $root->appendChild($phpcs_xml->createComment(' Arguments. '));
+        $root->appendChild($phpcsXml->createComment(' Arguments. '));
         // Handle file extensions.
         if (!empty($extensions = $config->get('toolkit.test.phpcs.triggered_by'))) {
-            $element = $phpcs_xml->createElement('arg');
+            $element = $phpcsXml->createElement('arg');
             $element->setAttribute('name', 'extensions');
             $element->setAttribute('value', implode(',', array_values($extensions)));
             $root->appendChild($element);
         }
         // Handle argument report.
-        $element = $phpcs_xml->createElement('arg');
+        $element = $phpcsXml->createElement('arg');
         $element->setAttribute('name', 'report');
         $element->setAttribute('value', 'full');
         $root->appendChild($element);
         // Handle argument color.
-        $element = $phpcs_xml->createElement('arg');
+        $element = $phpcsXml->createElement('arg');
         $element->setAttribute('name', 'colors');
         $root->appendChild($element);
         // Handle argument progress.
-        $element = $phpcs_xml->createElement('arg');
+        $element = $phpcsXml->createElement('arg');
         $element->setAttribute('value', 'p');
         $root->appendChild($element);
         // Handle show sniffs.
         if ($config->get('toolkit.test.phpcs.show_sniffs') === true) {
-            $element = $phpcs_xml->createElement('arg');
+            $element = $phpcsXml->createElement('arg');
             $element->setAttribute('value', 's');
             $root->appendChild($element);
         }
         // Handle the files.
-        $root->appendChild($phpcs_xml->createComment(' Files to check. '));
+        $root->appendChild($phpcsXml->createComment(' Files to check. '));
         if (!empty($files = $config->get('toolkit.test.phpcs.files'))) {
             $files = is_string($files) ? explode(',', $files) : $files;
             Toolkit::filterFolders($files);
             foreach ($files as $file) {
-                $root->appendChild($phpcs_xml->createElement('file', $file));
+                $root->appendChild($phpcsXml->createElement('file', $file));
             }
         } else {
-            $root->appendChild($phpcs_xml->createElement('file', '.'));
+            $root->appendChild($phpcsXml->createElement('file', '.'));
         }
         // Handle exclude patterns.
-        $root->appendChild($phpcs_xml->createComment(' Exclude patterns. '));
+        $root->appendChild($phpcsXml->createComment(' Exclude patterns. '));
         if (!empty($ignores = $config->get('toolkit.test.phpcs.ignore_patterns'))) {
             foreach ($ignores as $ignore) {
-                $root->appendChild($phpcs_xml->createElement('exclude-pattern', $ignore));
+                $root->appendChild($phpcsXml->createElement('exclude-pattern', $ignore));
             }
         }
 
-        $root->appendChild($phpcs_xml->createComment(' Add your custom rules after this line. '));
-        $this->taskWriteToFile($config_file)
-            ->text($phpcs_xml->saveXML())->run();
+        $root->appendChild($phpcsXml->createComment(' Add your custom rules after this line. '));
+        $this->taskWriteToFile($configFile)
+            ->text($phpcsXml->saveXML())->run();
     }
 
     /**
@@ -236,8 +236,8 @@ class TestsCommands extends AbstractCommands
     protected function toolkitRunPhpcs()
     {
         $config = $this->getConfig();
-        $phpcs_bin = $this->getBin('phpcs');
-        $config_file = $config->get('toolkit.test.phpcs.config');
+        $phpcsBin = $this->getBin('phpcs');
+        $configFile = $config->get('toolkit.test.phpcs.config');
 
         $this->toolkitCheckPhpcsRequirements();
 
@@ -245,7 +245,7 @@ class TestsCommands extends AbstractCommands
         if ($config->get('toolkit.test.phpcs.ignore_annotations') === true) {
             $options .= ' --ignore-annotations';
         }
-        return $this->taskExec("$phpcs_bin --standard=$config_file$options")
+        return $this->taskExec("$phpcsBin --standard=$configFile$options")
             ->run();
     }
 
@@ -256,8 +256,8 @@ class TestsCommands extends AbstractCommands
      */
     public function toolkitCheckPhpcsRequirements()
     {
-        $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
-        if (!file_exists($config_file)) {
+        $configFile = $this->getConfig()->get('toolkit.test.phpcs.config');
+        if (!file_exists($configFile)) {
             $this->say('Calling toolkit:setup-phpcs.');
             $this->toolkitSetupPhpcs();
         }
@@ -274,14 +274,14 @@ class TestsCommands extends AbstractCommands
             './vendor/ec-europa/qa-automation/phpcs/QualityAssurance',
         ];
         $rules = [];
-        $data = simplexml_load_file($config_file);
+        $data = simplexml_load_file($configFile);
         foreach ($data->rule as $item) {
             if (isset($item['ref'])) {
                 $rules[] = (string) $item['ref'];
             }
         }
         if ($diff = array_diff($standards, $rules)) {
-            throw new AbortTasksException("The following standards are missing, please add them to the configuration file '$config_file'.\n" . implode("\n", $diff));
+            throw new AbortTasksException("The following standards are missing, please add them to the configuration file '$configFile'.\n" . implode("\n", $diff));
         }
     }
 
@@ -326,7 +326,7 @@ class TestsCommands extends AbstractCommands
 
         // If the config file is not found, generate a new one.
         if (!file_exists($options['config'])) {
-            $config_content = [
+            $configContent = [
                 'parameters' => [
                     'level' => $options['level'],
                     'paths' => array_values($options['files']),
@@ -335,13 +335,13 @@ class TestsCommands extends AbstractCommands
                 ],
             ];
             if (!InstalledVersions::isInstalled('phpstan/extension-installer')) {
-                $config_content['includes'] = $includes;
+                $configContent['includes'] = $includes;
             }
             if (file_exists($config->get('drupal.root'))) {
-                $config_content['parameters']['drupal']['drupal_root'] = '%currentWorkingDirectory%/' . $config->get('drupal.root');
+                $configContent['parameters']['drupal']['drupal_root'] = '%currentWorkingDirectory%/' . $config->get('drupal.root');
             }
             $tasks[] = $this->taskWriteToFile($options['config'])
-                ->text(Yaml::dump($config_content, 10, 2));
+                ->text(Yaml::dump($configContent, 10, 2));
         }
 
         $exec = $this->taskExec($this->getBin('phpstan'))
@@ -561,10 +561,10 @@ class TestsCommands extends AbstractCommands
      */
     public function toolkitRunPhpcbf()
     {
-        $phpcbf_bin = $this->getBin('phpcbf');
-        $config_file = $this->getConfig()->get('toolkit.test.phpcs.config');
+        $phpcbfBin = $this->getBin('phpcbf');
+        $configFile = $this->getConfig()->get('toolkit.test.phpcs.config');
         $this->toolkitCheckPhpcsRequirements();
-        return $this->taskExec("$phpcbf_bin --standard=$config_file")->run();
+        return $this->taskExec("$phpcbfBin --standard=$configFile")->run();
     }
 
 }
