@@ -213,7 +213,7 @@ class Website
     /**
      * Returns the Project information from the endpoint.
      *
-     * @param string $project_id
+     * @param string $projectId
      *   The project ID to use.
      *
      * @return false|array
@@ -222,23 +222,23 @@ class Website
      * @throws \Exception
      *   If the request fails.
      */
-    public static function projectInformation(string $project_id)
+    public static function projectInformation(string $projectId)
     {
-        $project_id = "$project_id-reference";
+        $projectId = "$projectId-reference";
         if (!isset($GLOBALS['projects'])) {
             $GLOBALS['projects'] = [];
         }
-        if (!empty($GLOBALS['projects'][$project_id])) {
-            return $GLOBALS['projects'][$project_id];
+        if (!empty($GLOBALS['projects'][$projectId])) {
+            return $GLOBALS['projects'][$projectId];
         }
         if (empty($auth = self::apiAuth())) {
             return false;
         }
-        $endpoint = "api/v1/project/ec-europa/$project_id/information";
+        $endpoint = "api/v1/project/ec-europa/$projectId/information";
         $data = self::getWithMockFallback(self::url() . '/' . $endpoint, $auth);
         if (!empty($data)) {
             $data = reset($data);
-            $GLOBALS['projects'][$project_id] = $data;
+            $GLOBALS['projects'][$projectId] = $data;
             return $data;
         }
 
@@ -248,7 +248,7 @@ class Website
     /**
      * Returns the Project constraints from the endpoint.
      *
-     * @param string $project_id
+     * @param string $projectId
      *   The project ID to use.
      *
      * @return false|array
@@ -257,7 +257,7 @@ class Website
      * @throws \Exception
      *   If the request fails.
      */
-    public static function projectConstraints(string $project_id)
+    public static function projectConstraints(string $projectId)
     {
         if (!isset($GLOBALS['constraints'])) {
             $GLOBALS['constraints'] = [];
@@ -267,8 +267,8 @@ class Website
         if (empty($auth = self::apiAuth())) {
             return false;
         }
-        $project_id = "$project_id-reference";
-        $endpoint = "api/v1/project/ec-europa/$project_id/information/constraints";
+        $projectId = "$projectId-reference";
+        $endpoint = "api/v1/project/ec-europa/$projectId/information/constraints";
         $data = self::getWithMockFallback(self::url() . '/' . $endpoint, $auth);
         if (empty($data) || !isset($data['constraints'])) {
             return false;

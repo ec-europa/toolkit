@@ -38,8 +38,8 @@ class BlackfireCommands extends AbstractCommands
         if (!empty($options['endpoint'])) {
             Website::setUrl($options['endpoint']);
         }
-        $base_url = $this->getConfig()->get('drupal.base_url');
-        $project_id = $this->getConfig()->get('toolkit.project_id');
+        $baseUrl = $this->getConfig()->get('drupal.base_url');
+        $projectId = $this->getConfig()->get('toolkit.project_id');
         $problems = [];
         if (!getenv('BLACKFIRE_SERVER_ID') || !getenv('BLACKFIRE_SERVER_TOKEN')) {
             $problems[] = 'Missing environment variables: BLACKFIRE_SERVER_ID, BLACKFIRE_SERVER_TOKEN, skipping.';
@@ -68,7 +68,7 @@ class BlackfireCommands extends AbstractCommands
             return new ResultData(0);
         }
 
-        $command = "blackfire --json curl $base_url";
+        $command = "blackfire --json curl $baseUrl";
 
         // Get the list of pages to check and prevent duplicates.
         $pages = $this->getConfig()->get('toolkit.test.blackfire.pages');
@@ -77,7 +77,7 @@ class BlackfireCommands extends AbstractCommands
         // Limit the pages up to 10 items.
         $pages = array_slice((array) $pages, 0, 10);
         foreach ($pages as $page) {
-            $io->say("Checking page: {$base_url}{$page}");
+            $io->say("Checking page: {$baseUrl}{$page}");
 
             $raw = $this->taskExec($command . $page)
                 ->silent(true)->run()->getMessage();
@@ -124,8 +124,8 @@ class BlackfireCommands extends AbstractCommands
             if (empty($repo = getenv('DRONE_REPO'))) {
                 $repo = getenv('CI_PROJECT_NAME');
             }
-            if (empty($ci_url = getenv('DRONE_BUILD_LINK'))) {
-                $ci_url = getenv('CI_PIPELINE_URL');
+            if (empty($ciUrl = getenv('DRONE_BUILD_LINK'))) {
+                $ciUrl = getenv('CI_PIPELINE_URL');
             }
 
             // Send payload to QA website.
@@ -137,7 +137,7 @@ class BlackfireCommands extends AbstractCommands
             if (!empty($repo)) {
                 $commit = !empty(getenv('DRONE_COMMIT')) ? getenv('DRONE_COMMIT') : '';
                 $link = !empty(getenv('DRONE_PULL_REQUEST')) ? getenv('DRONE_PULL_REQUEST') : '';
-                $pull_request = !empty(getenv('DRONE_COMMIT_LINK')) ? getenv('DRONE_COMMIT_LINK') : '';
+                $pullRequest = !empty(getenv('DRONE_COMMIT_LINK')) ? getenv('DRONE_COMMIT_LINK') : '';
                 $payload = [
                     '_links' => [
                         'type' => [
@@ -145,11 +145,11 @@ class BlackfireCommands extends AbstractCommands
                         ],
                     ],
                     'type' => [['target_id' => 'blackfire']],
-                    'title' => [['value' => "Profiling: $project_id"]],
+                    'title' => [['value' => "Profiling: $projectId"]],
                     'body' => [['value' => $raw]],
                     'field_blackfire_repository' => [['value' => $repo]],
                     'field_blackfire_page' => [['value' => $page]],
-                    'field_blackfire_ci_cd_url' => [['value' => $ci_url]],
+                    'field_blackfire_ci_cd_url' => [['value' => $ciUrl]],
                     'field_blackfire_graph_url' => [['value' => $data['graph']]],
                     'field_blackfire_timeline_url' => [['value' => $data['timeline']]],
                     'field_blackfire_recomendations' => [['value' => $data['recommendation']]],
@@ -161,13 +161,13 @@ class BlackfireCommands extends AbstractCommands
                     'field_blackfire_sql' => [['value' => $data['sql']]],
                     'field_blackfire_commit_hash' => [['value' => $commit]],
                     'field_blackfire_commit_link' => [['value' => $link]],
-                    'field_blackfire_pr' => [['value' => $pull_request]],
+                    'field_blackfire_pr' => [['value' => $pullRequest]],
                 ];
-                $payload_response = Website::post($payload, $auth);
-                if (!empty($payload_response) && $payload_response === '201') {
-                    $io->writeln("Payload sent to QA website: $payload_response");
+                $response = Website::post($payload, $auth);
+                if (!empty($response) && $response === '201') {
+                    $io->writeln("Payload sent to QA website: $response");
                 } else {
-                    $io->writeln('Fail to send the payload, HTTP code: ' . $payload_response);
+                    $io->writeln('Fail to send the payload, HTTP code: ' . $response);
                 }
                 $io->writeln('');
             }
@@ -190,7 +190,7 @@ class BlackfireCommands extends AbstractCommands
         }
 
         $from = $this->getConfig()->get('toolkit.test.behat.from');
-        $blackfire_dir = Toolkit::getToolkitRoot() . '/resources/Blackfire';
+        $blackfireDir = Toolkit::getToolkitRoot() . '/resources/Blackfire';
         $parseBehatYml = Yaml::parseFile($from);
         if (isset($parseBehatYml['blackfire'])) {
             $this->say('Blackfire profile was found, skipping.');
@@ -198,7 +198,7 @@ class BlackfireCommands extends AbstractCommands
             // Append the Blackfire profile to the behat.yml file.
             $this->taskWriteToFile($from)->append(true)
                 ->line('# Toolkit auto-generated profile for Blackfire.')
-                ->text(file_get_contents("$blackfire_dir/blackfire.behat.yml"))
+                ->text(file_get_contents("$blackfireDir/blackfire.behat.yml"))
                 ->line('# End Toolkit.')
                 ->run();
         }
@@ -207,14 +207,14 @@ class BlackfireCommands extends AbstractCommands
         if (file_exists('tests/features/blackfire.feature')) {
             $this->say('Blackfire test feature was found, skipping.');
         } else {
-            $this->_copy("$blackfire_dir/blackfire.feature", 'tests/features/blackfire.feature');
+            $this->_copy("$blackfireDir/blackfire.feature", 'tests/features/blackfire.feature');
         }
 
         // Add the Blackfire Context to the Context folder.
         if (file_exists('tests/Behat/BlackfireMinkContext.php')) {
             $this->say('Blackfire Mink context was found, skipping.');
         } else {
-            $this->_copy("$blackfire_dir/BlackfireMinkContext.php", 'tests/Behat/BlackfireMinkContext.php');
+            $this->_copy("$blackfireDir/BlackfireMinkContext.php", 'tests/Behat/BlackfireMinkContext.php');
         }
 
         return 0;
