@@ -523,7 +523,7 @@ class ComponentCheckCommands extends AbstractCommands
         // Get recommended packages.
         if (!empty($this->packageReviews)) {
             $recommendedPackages = array_values(array_filter($this->packageReviews, function ($item) {
-                return strtolower($item['usage']) === 'recommended';
+                return !empty($item['usage']) && strtolower($item['usage']) === 'recommended';
             }));
         }
 
