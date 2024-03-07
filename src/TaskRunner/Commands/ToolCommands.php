@@ -408,8 +408,7 @@ class ToolCommands extends AbstractCommands
      */
     public static function getPackageLatestVersion(string $package)
     {
-        echo "Checking $package" . PHP_EOL;
-        $process = Process::fromShellCommandline("composer outdated $package --format=json", getcwd());
+        $process = Process::fromShellCommandline("composer outdated $package --format=json");
         $process->run();
         if ($process->getExitCode()) {
             return null;
