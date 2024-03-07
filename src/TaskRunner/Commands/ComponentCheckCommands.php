@@ -493,7 +493,7 @@ class ComponentCheckCommands extends AbstractCommands
         // Get mandatory packages.
         if (!empty($this->packageReviews)) {
             $mandatoryPackages = array_values(array_filter($this->packageReviews, function ($item) {
-                return $item['mandatory'] === '1';
+                return $item['mandatory'] === '1' && $item['type'] === 'drupal-module';
             }));
         }
 
