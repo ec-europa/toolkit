@@ -96,23 +96,23 @@ class DrupalCommands extends AbstractCommands
     ])
     {
         // Get default.settings.php and settings.php paths.
-        $settings_default_path = $options['root'] . '/sites/default/default.settings.php';
-        $settings_path = $options['root'] . '/sites/' . $options['sites-subdir'] . '/settings.php';
+        $settingsDefaultPath = $options['root'] . '/sites/default/default.settings.php';
+        $settingsPath = $options['root'] . '/sites/' . $options['sites-subdir'] . '/settings.php';
         $tasks = [];
 
         // Copy default.settings.php on settings.php, if the latter does not exist.
-        if (!file_exists($settings_path)) {
+        if (!file_exists($settingsPath)) {
             $tasks[] = $this->taskFilesystemStack()
-                ->copy($settings_default_path, $settings_path);
+                ->copy($settingsDefaultPath, $settingsPath);
         }
 
         // Remove Toolkit settings block, if any.
-        $tasks[] = $this->taskReplaceInFile($settings_path)
+        $tasks[] = $this->taskReplaceInFile($settingsPath)
             ->regex($this->getSettingsBlockRegex())
             ->to('');
 
         // Append Toolkit settings block to settings.php file.
-        $tasks[] = $this->taskWriteToFile($settings_path)
+        $tasks[] = $this->taskWriteToFile($settingsPath)
             ->append()
             ->text($this->getToolkitSettingsBlock());
 
@@ -285,11 +285,11 @@ class DrupalCommands extends AbstractCommands
         'skip-permissions-setup' => false,
     ])
     {
-        $exec_args = [
+        $execArgs = [
             'site:install',
             $options['site-profile'],
         ];
-        $exec_options = [
+        $execOptions = [
             'root' => getcwd() . '/' . $options['root'] . '/',
             'site-name' => $options['site-name'],
             'site-mail' => $options['site-mail'],
@@ -300,8 +300,8 @@ class DrupalCommands extends AbstractCommands
             'sites-subdir' => $options['sites-subdir'],
         ];
 
-        if (!empty($db_url = $this->getConfig()->get('drupal.site.generate_db_url'))) {
-            $db_array = [
+        if (!empty($dbUrl = $this->getConfig()->get('drupal.site.generate_db_url'))) {
+            $dbArray = [
                 'scheme' => $options['database-scheme'],
                 'user' => $options['database-user'],
                 'pass' => $options['database-password'],
@@ -309,11 +309,11 @@ class DrupalCommands extends AbstractCommands
                 'port' => $options['database-port'],
                 'path' => $options['database-name'],
             ];
-            $exec_options['db-url'] = http_build_url($db_url, $db_array);
+            $execOptions['db-url'] = http_build_url($dbUrl, $dbArray);
         }
 
         if ($options['existing-config']) {
-            $exec_options['existing-config'] = null;
+            $execOptions['existing-config'] = null;
         }
 
         $tasks = [
@@ -324,8 +324,8 @@ class DrupalCommands extends AbstractCommands
         }
 
         $tasks[] = $this->taskExec($this->getBin('drush'))
-            ->args($exec_args)
-            ->options($exec_options, '=')
+            ->args($execArgs)
+            ->options($execOptions, '=')
             ->option('-y');
 
         $tasks[] = $this->drupalSitePostInstall($options);
@@ -430,12 +430,12 @@ class DrupalCommands extends AbstractCommands
     {
         $tasks = [];
 
-        $drush_bin = $this->getBin('drush');
-        $tasks[] = $this->taskExec($drush_bin)->rawArg('-y')
+        $drushBin = $this->getBin('drush');
+        $tasks[] = $this->taskExec($drushBin)->rawArg('-y')
             ->args(['config-set', 'system.performance', 'css.preprocess', '0']);
-        $tasks[] = $this->taskExec($drush_bin)->rawArg('-y')
+        $tasks[] = $this->taskExec($drushBin)->rawArg('-y')
             ->args(['config-set', 'system.performance', 'js.preprocess', '0']);
-        $tasks[] = $this->taskExec($drush_bin)->arg('cache:rebuild');
+        $tasks[] = $this->taskExec($drushBin)->arg('cache:rebuild');
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -503,11 +503,11 @@ class DrupalCommands extends AbstractCommands
             $this->say('Looks the project need some attention, please check the report above.');
             return $qaCompatibilityResult;
         }
-        $drupal_version = ToolCommands::getPackagePropertyFromComposer('drupal/core');
-        if (Semver::satisfies($drupal_version, '^8')) {
+        $drupalVersion = ToolCommands::getPackagePropertyFromComposer('drupal/core');
+        if (Semver::satisfies($drupalVersion, '^8')) {
             $this->say('Congrats, looks like your project is Drupal 9 compatible.');
         }
-        if (Semver::satisfies($drupal_version, '^9')) {
+        if (Semver::satisfies($drupalVersion, '^9')) {
             $this->say('Congrats, looks like your project is Drupal 10 compatible.');
         }
 

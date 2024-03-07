@@ -49,9 +49,9 @@ class DumpCommands extends AbstractCommands
         $config = $this->getConfig();
         $myloader = $config->get('toolkit.clone.myloader');
         $opts = ToolCommands::parseOptsYml();
-        $is_myloader = $options['myloader'] || (isset($opts['mydumper']) && $opts['mydumper']);
+        $isMyloader = $options['myloader'] || (isset($opts['mydumper']) && $opts['mydumper']);
 
-        if ($is_myloader) {
+        if ($isMyloader) {
             // The myloader should only be used with docker.
             if (!file_exists($myloader)) {
                 $io->error('The import script was not found, to use MyLoader you must run on the corporate docker image.');
@@ -62,22 +62,22 @@ class DumpCommands extends AbstractCommands
                 return ResultData::EXITCODE_ERROR;
             }
         }
-        $dump_file = $this->tmpDirectory() . '/' . $options['dumpfile'];
-        if (!file_exists($dump_file)) {
-            $io->error("'$dump_file' file not found, use the command 'toolkit:download-dump'.");
+        $dumpFile = $this->tmpDirectory() . '/' . $options['dumpfile'];
+        if (!file_exists($dumpFile)) {
+            $io->error("'$dumpFile' file not found, use the command 'toolkit:download-dump'.");
             return ResultData::EXITCODE_ERROR;
         }
         $tasks = [];
 
-        $drush_bin = $this->getBin('drush');
+        $drushBin = $this->getBin('drush');
         // Recreate the database.
-        $tasks[] = $this->taskExec($drush_bin)->arg('sql-drop')->option('-y');
-        $tasks[] = $this->taskExec($drush_bin)->arg('sql-create')->option('-y');
+        $tasks[] = $this->taskExec($drushBin)->arg('sql-drop')->option('-y');
+        $tasks[] = $this->taskExec($drushBin)->arg('sql-create')->option('-y');
 
-        if ($is_myloader) {
-            $tasks[] = $this->taskExec($myloader)->arg($dump_file);
+        if ($isMyloader) {
+            $tasks[] = $this->taskExec($myloader)->arg($dumpFile);
         } else {
-            $tasks[] = $this->taskImportDatabase($dump_file);
+            $tasks[] = $this->taskImportDatabase($dumpFile);
         }
 
         // Build and return task collection.
@@ -116,13 +116,13 @@ class DumpCommands extends AbstractCommands
                 $options['dumpfile'] = str_replace('.' . $ext, '', $options['dumpfile']);
             }
         }
-        $dump_file = $this->tmpDirectory() . '/' . $options['dumpfile'];
+        $dumpFile = $this->tmpDirectory() . '/' . $options['dumpfile'];
         $tasks = [];
         if (file_exists($options['dumpfile'])) {
-            $tasks[] = $this->taskFilesystemStack()->remove($dump_file);
+            $tasks[] = $this->taskFilesystemStack()->remove($dumpFile);
         }
 
-        $tasks[] = $this->taskExec($mydumper)->arg($dump_file);
+        $tasks[] = $this->taskExec($mydumper)->arg($dumpFile);
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -208,10 +208,10 @@ class DumpCommands extends AbstractCommands
         }
 
         $config = $this->getConfig();
-        $tmp_folder = $this->tmpDirectory();
+        $tmpFolder = $this->tmpDirectory();
         $opts = ToolCommands::parseOptsYml();
-        $is_mydumper = isset($opts['mydumper']) && $opts['mydumper'];
-        $project_id = $config->get('toolkit.project_id');
+        $isMydumper = isset($opts['mydumper']) && $opts['mydumper'];
+        $projectId = $config->get('toolkit.project_id');
         $vendor = $config->get('toolkit.clone.nextcloud.vendor');
         $source = $config->get('toolkit.clone.nextcloud.source');
         $url = $config->get('toolkit.clone.nextcloud.url');
@@ -219,38 +219,38 @@ class DumpCommands extends AbstractCommands
         Toolkit::ensureArray($services);
 
         // Keep backwards compatibility.
-        $asda_services = $config->get('toolkit.clone.asda_services');
-        if (!empty($asda_services)) {
+        $asdaServices = $config->get('toolkit.clone.asda_services');
+        if (!empty($asdaServices)) {
             $io->warning('Using the config ${toolkit.clone.asda_services} is deprecated, please update to ${toolkit.clone.nextcloud.services}.');
-            $services = $asda_services;
+            $services = $asdaServices;
             Toolkit::ensureArray($services);
         }
 
-        $is_admin = !($options['is-admin'] === InputOption::VALUE_NONE) || $config->get('toolkit.clone.nextcloud.admin');
+        $isAdmin = !($options['is-admin'] === InputOption::VALUE_NONE) || $config->get('toolkit.clone.nextcloud.admin');
         if (Toolkit::isCiCd()) {
-            $is_admin = true;
+            $isAdmin = true;
         }
-        if ($is_admin) {
-            $url .= "/$user/forDevelopment/$vendor/$project_id-$source";
+        if ($isAdmin) {
+            $url .= "/$user/forDevelopment/$vendor/$projectId-$source";
         } else {
-            $url .= "/$user/$project_id-$source";
+            $url .= "/$user/$projectId-$source";
         }
-        $download_link = $this->addAuthToUrl($url, $user, $password);
+        $downloadLink = $this->addAuthToUrl($url, $user, $password);
 
         $this->say('Download services: ' . implode(', ', $services));
         $tasks = [];
         foreach ($services as $service) {
             $this->say("Checking service '$service'");
-            $dump = $tmp_folder . '/' . $service . ($is_mydumper ? '.tar' : '.gz');
+            $dump = $tmpFolder . '/' . $service . ($isMydumper ? '.tar' : '.gz');
             // Check if the dump is already downloaded.
             if (!file_exists($dump)) {
                 $this->say('Starting download');
-                $tasks = array_merge($tasks, $this->asdaProcessFile("$download_link/$service", $service));
+                $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service));
                 continue;
             }
 
             $this->say("File found '$dump', checking server for newer dump");
-            if (!$this->nextcloudCheckNewerDump($download_link, $service)) {
+            if (!$this->nextcloudCheckNewerDump($downloadLink, $service)) {
                 $this->say('Local dump is up-to-date');
                 continue;
             }
@@ -264,7 +264,7 @@ class DumpCommands extends AbstractCommands
                 $this->say($question . ' (y/n) Y');
             }
             $this->say('Starting download');
-            $tasks = array_merge($tasks, $this->asdaProcessFile("$download_link/$service", $service));
+            $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service));
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -283,22 +283,22 @@ class DumpCommands extends AbstractCommands
         $dumpfile = $config->get('toolkit.clone.dumpfile');
         $user = $config->get('toolkit.clone.custom.user', '') ?? '';
         $password = $config->get('toolkit.clone.custom.pass', '') ?? '';
-        $tmp_folder = $this->tmpDirectory();
+        $tmpFolder = $this->tmpDirectory();
 
         // The destination file.
-        $destination = "$tmp_folder/$dumpfile";
+        $destination = "$tmpFolder/$dumpfile";
 
         // Prepare the final URL containing the dumpfile, user and pass and save into a temp file.
         $link = $this->addAuthToUrl($url, $user, $password);
-        $tmp_file = "$tmp_folder/tmp.txt";
-        $this->wgetGenerateInputFile("$link/$dumpfile", $tmp_file, true);
+        $tmpFile = "$tmpFolder/tmp.txt";
+        $this->wgetGenerateInputFile("$link/$dumpfile", $tmpFile, true);
 
         if (file_exists($destination)) {
             $this->say("File found '$destination', checking server for newer dump");
-            if (!$this->customCheckNewerDump($tmp_file, $destination)) {
+            if (!$this->customCheckNewerDump($tmpFile, $destination)) {
                 $this->say('Local dump is up-to-date');
                 // Remove temporary file.
-                $this->taskExec('rm')->arg($tmp_file)
+                $this->taskExec('rm')->arg($tmpFile)
                     ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                     ->run();
                 return ResultData::EXITCODE_OK;
@@ -309,7 +309,7 @@ class DumpCommands extends AbstractCommands
                 if (!$this->confirm($question)) {
                     $this->say('Skipping download');
                     // Remove temporary file.
-                    $this->taskExec('rm')->arg($tmp_file)
+                    $this->taskExec('rm')->arg($tmpFile)
                         ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                         ->run();
                     return ResultData::EXITCODE_OK;
@@ -321,11 +321,11 @@ class DumpCommands extends AbstractCommands
         $this->say('Starting download');
 
         // Download the file.
-        $this->wgetDownloadFile($tmp_file, $destination, '.sql.gz,.tar.gz,.tar')
+        $this->wgetDownloadFile($tmpFile, $destination, '.sql.gz,.tar.gz,.tar')
             ->run();
 
         // Remove temporary file.
-        $this->taskExec('rm')->arg($tmp_file)
+        $this->taskExec('rm')->arg($tmpFile)
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run();
 
@@ -344,7 +344,7 @@ class DumpCommands extends AbstractCommands
     /**
      * Check if a newer dump exists on the Custom server.
      *
-     * @param string $tmp_file
+     * @param string $tmpFile
      *   The tmp file containing the url for the remote file.
      * @param string $dumpfile
      *   The local dumpfile.
@@ -353,12 +353,12 @@ class DumpCommands extends AbstractCommands
      *   Return true if the modified date is different between local and remote dumps,
      *   False is case of error or no local file exists.
      */
-    private function customCheckNewerDump(string $tmp_file, string $dumpfile): bool
+    private function customCheckNewerDump(string $tmpFile, string $dumpfile): bool
     {
         if (!file_exists($dumpfile)) {
             return false;
         }
-        $remote = $this->wgetGetFileModifiedDate($tmp_file);
+        $remote = $this->wgetGetFileModifiedDate($tmpFile);
         if (empty($remote)) {
             return false;
         }
@@ -381,23 +381,23 @@ class DumpCommands extends AbstractCommands
      */
     private function nextcloudCheckNewerDump(string $link, string $service): bool
     {
-        $tmp_folder = $this->tmpDirectory();
+        $tmpFolder = $this->tmpDirectory();
         $opts = ToolCommands::parseOptsYml();
         $ext = isset($opts['mydumper']) && $opts['mydumper'] ? '.tar' : '.gz';
-        $dump = "$tmp_folder/$service$ext";
+        $dump = "$tmpFolder/$service$ext";
         if (!file_exists($dump)) {
             return false;
         }
         $link .= "/$service";
         // Download the .sha file.
-        $this->wgetGenerateInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
-        $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1', true)
+        $this->wgetGenerateInputFile("$link/latest.sh1", "$tmpFolder/$service.txt", true);
+        $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service-latest.sh1", '.sh1', true)
             ->run();
-        if (!file_exists("$tmp_folder/$service-latest.sh1")) {
+        if (!file_exists("$tmpFolder/$service-latest.sh1")) {
             $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
             return false;
         }
-        $latest = file_get_contents("$tmp_folder/$service-latest.sh1");
+        $latest = file_get_contents("$tmpFolder/$service-latest.sh1");
         if (empty($latest)) {
             $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
             return false;
@@ -407,8 +407,8 @@ class DumpCommands extends AbstractCommands
         // Remove temporary files.
         $this->taskExec('rm')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->arg("$tmp_folder/$service-latest.sh1")
-            ->arg("$tmp_folder/$service.txt")
+            ->arg("$tmpFolder/$service-latest.sh1")
+            ->arg("$tmpFolder/$service.txt")
             ->run();
 
         // Compare with the local dump.
@@ -432,17 +432,17 @@ class DumpCommands extends AbstractCommands
     private function asdaProcessFile(string $link, string $service)
     {
         $tasks = [];
-        $tmp_folder = $this->tmpDirectory();
+        $tmpFolder = $this->tmpDirectory();
 
         // Download the .sha file.
-        $this->wgetGenerateInputFile("$link/latest.sh1", "$tmp_folder/$service.txt", true);
-        $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service-latest.sh1", '.sh1', true)
+        $this->wgetGenerateInputFile("$link/latest.sh1", "$tmpFolder/$service.txt", true);
+        $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service-latest.sh1", '.sh1', true)
             ->run();
-        if (!file_exists("$tmp_folder/$service-latest.sh1")) {
+        if (!file_exists("$tmpFolder/$service-latest.sh1")) {
             $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
             return $tasks;
         }
-        $latest = file_get_contents("$tmp_folder/$service-latest.sh1");
+        $latest = file_get_contents("$tmpFolder/$service-latest.sh1");
         if (empty($latest)) {
             $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
             return $tasks;
@@ -455,15 +455,15 @@ class DumpCommands extends AbstractCommands
         $this->writeln("\n<info>$output\n$separator</info>\n");
 
         // Download the file.
-        $this->wgetGenerateInputFile("$link/$filename", "$tmp_folder/$service.txt", true);
+        $this->wgetGenerateInputFile("$link/$filename", "$tmpFolder/$service.txt", true);
         $extension = str_ends_with($filename, '.gz') ? 'gz' : 'tar';
-        $tasks[] = $this->wgetDownloadFile("$tmp_folder/$service.txt", "$tmp_folder/$service.$extension", '.sql.gz,.tar.gz,.tar');
+        $tasks[] = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar');
 
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->arg("$tmp_folder/$service-latest.sh1")
-            ->arg("$tmp_folder/$service.txt");
+            ->arg("$tmpFolder/$service-latest.sh1")
+            ->arg("$tmpFolder/$service.txt");
 
         return $tasks;
     }
@@ -543,13 +543,13 @@ class DumpCommands extends AbstractCommands
      */
     private function tmpDirectory(): string
     {
-        $tmp_folder = (string) $this->getConfig()->get('toolkit.tmp_folder');
-        if (!file_exists($tmp_folder)) {
-            if (!@mkdir($tmp_folder)) {
-                $tmp_folder = sys_get_temp_dir();
+        $tmpFolder = (string) $this->getConfig()->get('toolkit.tmp_folder');
+        if (!file_exists($tmpFolder)) {
+            if (!@mkdir($tmpFolder)) {
+                $tmpFolder = sys_get_temp_dir();
             }
         }
-        return $tmp_folder;
+        return $tmpFolder;
     }
 
     /**
