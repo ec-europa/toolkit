@@ -231,12 +231,23 @@ class ToolCommands extends AbstractCommands
             ['QA Endpoint access' => $endpointCheck],
             ['NEXTCLOUD configuration' => $nextcloudCheck],
         );
+        $toolkitExtra = $drupalExtra = '';
+        if ($toolkitVersion && $latestToolkit = self::getPackageLatestVersion(Toolkit::REPOSITORY)) {
+            if (!Semver::satisfies($toolkitVersion, $latestToolkit)) {
+                $toolkitExtra = " <comment>($latestToolkit available)</>";
+            }
+        }
+        if ($drupalVersion && $latestDrupal = self::getPackageLatestVersion('drupal/core')) {
+            if (!Semver::satisfies($drupalVersion, $latestDrupal)) {
+                $drupalExtra = " <comment>($latestDrupal available)</>";
+            }
+        }
 
         $io->title('Required checks:');
         $io->definitionList(
             ['PHP version' => "$phpCheck ($phpVersion)"],
-            ['Toolkit version' => "$toolkitCheck ($toolkitVersion)"],
-            ['Drupal version' => "$drupalCheck ($drupalVersion)"],
+            ['Toolkit version' => "$toolkitCheck ($toolkitVersion)$toolkitExtra"],
+            ['Drupal version' => "$drupalCheck ($drupalVersion)$drupalExtra"],
         );
 
         if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $drupalCheck !== 'OK') {
