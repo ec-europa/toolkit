@@ -37,6 +37,7 @@
         Checking Abandoned components.
         ==============================
 
+        [Simulator] Running composer outdated --no-dev --locked --direct --minor-only --no-scripts --format=json
         >  Abandoned components check passed.
 
         Checking Unsupported components.
@@ -437,6 +438,32 @@
     - string_contains: The package drupal/pipeline is authorised for the profile minimal
 
 - command: 'toolkit:component-check'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "ec-europa/toolkit" } ] }
+    - file: .toolkit-mock/0.0.3/api/v1/package-reviews.json
+      content: |
+        [ {
+          "type": "drupal-module",
+          "machine_name": "mandatory",
+          "name": "drupal/mandatory",
+          "full_name": "drupal/mandatory",
+          "mandatory": "1"
+        }, {
+          "type": "module",
+          "machine_name": "pipeline",
+          "name": "drupal/pipeline",
+          "full_name": "drupal/pipeline",
+          "mandatory": "1"
+        } ]
+  expectations:
+    - string_contains: Package mandatory is mandatory and is not present on the project
+    - not_string_contains: Package pipeline is mandatory and is not present on the project
+
+- command: 'toolkit:component-check'
   configuration:
     toolkit:
       components:
@@ -623,3 +650,125 @@
     - not_string_contains: "config.allow-plugins: cweagans/composer-patches"
     - not_string_contains: "config.allow-plugins: dealerdirect/phpcodesniffer-composer-installer"
     - string_contains: "config.allow-plugins: phpstan/extension-installer"
+
+- command: 'check:mandatory'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-core.extensions-good.yml
+      to: config/sync/core.extension.yml
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+  expectations:
+    - string_contains: Mandatory components check passed
+
+- command: 'check:recommended'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+  expectations:
+    - empty: ~
+
+- command: 'check:insecure'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+  expectations:
+    - string_contains: Insecure components check passed
+
+- command: 'check:outdated'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+  expectations:
+    - string_contains: Outdated components check passed
+
+- command: 'check:abandoned'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+  expectations:
+    - string_contains: Abandoned components check passed
+
+- command: 'check:unsupported'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+  expectations:
+    - string_contains: Website not installed, skipping
+
+- command: 'check:evaluation'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+  expectations:
+    - string_contains: Packages rejected/restricted
+
+- command: 'check:development'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+  expectations:
+    - string_contains: Development components check passed
+
+- command: 'check:configuration'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+  expectations:
+    - string_contains: Project configuration check passed
+
+- command: 'check:composer'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+  expectations:
+    - string_contains: Composer validation check passed

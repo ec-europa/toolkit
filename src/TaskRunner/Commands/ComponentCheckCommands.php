@@ -35,9 +35,9 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $skipAbandoned = false;
     protected bool $skipUnsupported = false;
     protected bool $skipInsecure = false;
-    protected bool $skipRecommended = true;
+    protected bool $skipRecommended = false;
     protected int $recommendedFailedCount = 0;
-    protected array $installed;
+    protected array $composerOutdated;
     protected $io;
     protected array $composerLock;
     protected array $packageReviews;
@@ -68,19 +68,12 @@ class ComponentCheckCommands extends AbstractCommands
         }
         $this->io = $io;
         $this->prepareSkips();
-
-        $this->composerLock = $this->getJson('composer.lock');
-        if (!isset($this->composerLock['packages'])) {
-            $io->error('No packages found in the composer.lock file.');
+        if (!$this->loadComposerLock()) {
             return 1;
         }
-
-        $data = Website::packages();
-        if (empty($data)) {
-            $io->error('Failed to connect to the endpoint ' . Website::url() . '/api/v1/package-reviews');
+        if (!$this->loadWebsitePackages()) {
             return 1;
         }
-        $this->packageReviews = array_filter(array_combine(array_column($data, 'name'), $data));
 
         // To test this command execute it with the --test-command option:
         // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://digit-dqa.fpfis.tech.ec.europa.eu"
@@ -105,7 +98,7 @@ class ComponentCheckCommands extends AbstractCommands
         foreach ($checks as $check) {
             $io->title("Checking $check components.");
             $fct = "component$check";
-            $this->{$fct}();
+            $this->{$fct}($io);
             $io->newLine();
         }
 
@@ -158,30 +151,366 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
-     * Prepare the overrides from config and commit message.
+     * Check mandatory components.
+     *
+     * @command check:mandatory
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    protected function prepareSkips(): void
+    public function componentMandatory(ConsoleIO $io)
     {
-        $commitTokens = ToolCommands::getCommitTokens();
-        if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
-            $this->skipOutdated = true;
+        $this->io = $io;
+        if (!$this->loadWebsitePackages()) {
+            return 1;
         }
-        if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
-            $this->skipAbandoned = true;
+        $enabledModules = $mandatoryPackages = [];
+        if (!$this->isWebsiteInstalled()) {
+            $configFile = $this->getConfig()->get('toolkit.clean.config_file');
+            $this->writeln("Website not installed, using $configFile file.");
+            if (file_exists($configFile)) {
+                $config = Yaml::parseFile($configFile);
+                $enabledModules = array_keys(array_merge($config['module'] ?? [], $config['theme'] ?? []));
+            } else {
+                $this->writeln("Config file not found at $configFile.");
+            }
+        } else {
+            // Get enabled modules.
+            $result = $this->taskExec($this->getBin('drush') . ' pm-list --status=enabled --format=json')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
+            $enabledModules = array_keys(json_decode($result, true));
         }
-        if (!$this->getConfig()->get('toolkit.components.unsupported.check')) {
-            $this->skipUnsupported = true;
+
+        // Get mandatory packages.
+        if (!empty($this->packageReviews)) {
+            $mandatoryPackages = array_values(array_filter($this->packageReviews, function ($item) {
+                return $item['mandatory'] === '1' && $item['type'] === 'drupal-module';
+            }));
         }
-        if (isset($commitTokens['skipInsecure'])) {
-            $this->skipInsecure = true;
+
+        $diffMandatory = array_diff(array_column($mandatoryPackages, 'machine_name'), $enabledModules);
+        if (!empty($diffMandatory)) {
+            foreach ($diffMandatory as $notPresent) {
+                $index = array_search($notPresent, array_column($mandatoryPackages, 'machine_name'));
+                $date = !empty($mandatoryPackages[$index]['mandatory_date']) ? ' (since ' . $mandatoryPackages[$index]['mandatory_date'] . ')' : '';
+                $this->writeln("Package $notPresent is mandatory$date and is not present on the project.");
+
+                $this->mandatoryFailed = true;
+            }
+        }
+        if (!$this->mandatoryFailed) {
+            $this->say('Mandatory components check passed.');
         }
     }
 
     /**
-     * Validate project configuration.
+     * Check recommended components.
+     *
+     * @command check:recommended
      */
-    protected function componentConfiguration()
+    public function componentRecommended(ConsoleIO $io)
     {
+        $this->io = $io;
+        if (!$this->loadComposerLock()) {
+            return 1;
+        }
+        $recommendedPackages = [];
+        // Get project packages.
+        $projectPackages = array_column($this->composerLock['packages'], 'name');
+        // Get recommended packages.
+        if (!empty($this->packageReviews)) {
+            $recommendedPackages = array_values(array_filter($this->packageReviews, function ($item) {
+                return !empty($item['usage']) && strtolower($item['usage']) === 'recommended';
+            }));
+        }
+
+        $diffRecommended = array_diff(array_column($recommendedPackages, 'name'), $projectPackages);
+        if (!empty($diffRecommended)) {
+            foreach ($diffRecommended as $notPresent) {
+                $index = array_search($notPresent, array_column($recommendedPackages, 'name'));
+                $date = !empty($recommendedPackages[$index]['mandatory_date']) ? ' (and will be mandatory at ' . $recommendedPackages[$index]['mandatory_date'] . ')' : '';
+                $this->writeln("Package $notPresent is recommended$date but is not present on the project.");
+                $this->recommendedFailed = true;
+            }
+
+            $this->say("See the list of recommended packages at\nhttps://digit-dqa.fpfis.tech.ec.europa.eu/requirements.");
+            $this->recommendedFailedCount = count($diffRecommended);
+        }
+
+        if ($this->skipRecommended) {
+            $this->say('This step is in reporting mode, skipping.');
+        }
+    }
+
+    /**
+     * Check insecure components.
+     *
+     * @command check:insecure
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    public function componentInsecure(ConsoleIO $io)
+    {
+        $this->io = $io;
+        $this->prepareSkips();
+        if (!$this->loadComposerLock()) {
+            return 1;
+        }
+        $packages = [];
+        $drupalReleaseHistory = new DrupalReleaseHistory();
+        $exec = $this->taskExec('composer audit --no-dev --locked --no-scripts --format=json')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run();
+        $result = trim($exec->getMessage());
+        if (!empty($result) && $result !== '[]') {
+            $data = json_decode($result, true);
+            if (!empty($data['advisories']) && is_array($data['advisories'])) {
+                // Each package might have multiple issues, we take the first.
+                foreach ($data['advisories'] as $advisory) {
+                    $firstAdvisory = array_shift($advisory);
+                    $packageName = $firstAdvisory['packageName'];
+                    $packages[$packageName]['title'] = $firstAdvisory['title'];
+                    $packages[$packageName]['version'] = ToolCommands::getPackagePropertyFromComposer($packageName);
+                }
+            }
+        }
+
+        $messages = [];
+        foreach ($packages as $name => $package) {
+            $msg = "Package $name has a security update, please update to a safe version. (" . $package['title'] . ")";
+            if (!empty($this->packageReviews[$name]['secure'])) {
+                if (Semver::satisfies($package['version'], $this->packageReviews[$name]['secure'])) {
+                    $messages[] = "$msg (Version marked as secure)";
+                    continue;
+                }
+            }
+            $historyTerms = $drupalReleaseHistory->getPackageDetails($name, $package['version'], '8.x');
+            if ($historyTerms === 1) {
+                $this->say("No release history found for package $name.");
+                continue;
+            }
+            if (!empty($historyTerms) && (empty($historyTerms['terms']) || !in_array('insecure', $historyTerms['terms']))) {
+                $messages[] = "$msg (Confirmation failed, ignored)";
+                continue;
+            }
+
+            $messages[] = $msg;
+            $this->insecureFailed = true;
+        }
+        if (!empty($messages)) {
+            $this->writeln($messages);
+        }
+
+        $fullSkip = getenv('QA_SKIP_INSECURE') !== false && getenv('QA_SKIP_INSECURE');
+        // Forcing skip due to issues with the security advisor date detection.
+        if ($fullSkip) {
+            $this->say('Globally skipping security check for components.');
+            $this->insecureFailed = false;
+        } elseif (!$this->insecureFailed) {
+            $this->say('Insecure components check passed.');
+        }
+    }
+
+    /**
+     * Check outdated components.
+     *
+     * @command check:outdated
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function componentOutdated(ConsoleIO $io)
+    {
+        $this->loadComposerOutdated();
+        // Using the option --locked, we must check for the "locked" key.
+        if (is_array($this->composerOutdated) && !empty($this->composerOutdated['locked'])) {
+            $ignores = $this->getConfig()->get('toolkit.components.outdated.ignores');
+            if (!empty($ignores)) {
+                $ignores = array_combine(
+                    array_column($ignores, 'name'),
+                    array_column($ignores, 'version')
+                );
+            }
+
+            foreach ($this->composerOutdated['locked'] as $package) {
+                // Exclude abandoned packages, see $this->componentAbandoned().
+                if ($package['abandoned']) {
+                    continue;
+                }
+                // Check for ignores and compare versions.
+                if (!empty($ignores) && isset($ignores[$package['name']]) && $package['version'] === $ignores[$package['name']]) {
+                    $io->writeln("Package {$package['name']} with version installed {$package['version']} skipped by config.");
+                    continue;
+                }
+
+                if (!array_key_exists('latest', $package)) {
+                    $io->writeln("Package {$package['name']} does not provide information about last version.");
+                } elseif (array_key_exists('warning', $package)) {
+                    $io->writeln($package['warning']);
+                    $this->outdatedFailed = true;
+                } else {
+                    $io->writeln("Package {$package['name']} with version installed {$package['version']} is outdated, please update to last version - {$package['latest']}");
+                    $this->outdatedFailed = true;
+                }
+            }
+        }
+
+        if (!$this->outdatedFailed) {
+            $io->say('Outdated components check passed.');
+        }
+    }
+
+    /**
+     * Check abandoned components.
+     *
+     * @command check:abandoned
+     */
+    public function componentAbandoned(ConsoleIO $io)
+    {
+        $this->loadComposerOutdated();
+        $packages = $this->composerOutdated['locked'] ?? [];
+        if (!empty($packages)) {
+            foreach ($packages as $package) {
+                // Only show abandoned packages.
+                if ($package['abandoned'] != false) {
+                    $this->writeln($package['warning']);
+                    $this->abandonedFailed = true;
+                }
+            }
+        }
+        if (!$this->abandonedFailed) {
+            $io->say('Abandoned components check passed.');
+        }
+    }
+
+    /**
+     * Check unsupported components.
+     *
+     * @command check:unsupported
+     */
+    public function componentUnsupported(ConsoleIO $io)
+    {
+        if (!$this->isWebsiteInstalled()) {
+            $io->writeln('Website not installed, skipping.');
+            return;
+        }
+        if (empty($releases = $this->getReleases())) {
+            $io->writeln('Failed to get the available releases.');
+            return;
+        }
+        // Filter by unsupported, @see \Drupal\update\UpdateManagerInterface::NOT_SUPPORTED.
+        $unsupported = array_filter($releases, function ($item) {
+            return $item['status'] === 3;
+        });
+        if (empty($unsupported)) {
+            $io->say('Unsupported components check passed.');
+        } else {
+            $this->unsupportedFailed = true;
+            foreach ($unsupported as $item) {
+                if (array_key_exists('recommended', $item)) {
+                    $io->writeln(sprintf(
+                        "Package %s with version installed %s is not supported. Update to the recommended version %s",
+                        $item['name'],
+                        $item['existing_version'],
+                        $item['recommended']
+                    ));
+                } else {
+                    $io->writeln(sprintf(
+                        "Package %s is no longer supported, and is no longer available for download. Disabling everything included by this project is strongly recommended!",
+                        $item['name']
+                    ));
+                }
+            }
+        }
+
+        if ($this->forcedUpdateModule) {
+            $this->_exec($this->getBin('drush') . ' pm:uninstall update -y');
+        }
+    }
+
+    /**
+     * Check Evaluation components.
+     *
+     * @command check:evaluation
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function componentEvaluation(ConsoleIO $io)
+    {
+        $this->io = $io;
+        if (!$this->loadComposerLock()) {
+            return 1;
+        }
+        if (!$this->loadWebsitePackages()) {
+            return 1;
+        }
+        // Get vendor list.
+        $dataTkReqsEndpoint = Website::requirements();
+        $vendorList = $dataTkReqsEndpoint['vendor_list'] ?? [];
+
+        // Proceed with 'blocker' option. Loop over the packages.
+        $groupComponents = [];
+        foreach ($this->composerLock['packages'] as $package) {
+            // Check if vendor belongs to the monitored vendor list.
+            if (in_array(explode('/', $package['name'])['0'], $vendorList)) {
+                $validateComponent = $this->validateComponent($package);
+                if ($validateComponent) {
+                    $groupComponents[$validateComponent['1']][] = $validateComponent['0'];
+                }
+            }
+        }
+        foreach ($groupComponents as $groupComponent => $messages) {
+            $this->writeln($groupComponent);
+            foreach ($messages as $message) {
+                $this->writeln($message);
+            }
+            if ($groupComponent == 'Packages rejected/restricted:') {
+                $this->writeln('<options=reverse>In the case you want to use one of the modules listed as restricted, please open a ticket to Quality Assurance indicating the use case for evaluation and more information.</>');
+            }
+        }
+        if ($this->evaluationFailed === false) {
+            $this->say('Evaluation module check passed.');
+        }
+        $this->io->newLine();
+    }
+
+    /**
+     * Check development components.
+     *
+     * @command check:development
+     */
+    public function componentDevelopment(ConsoleIO $io)
+    {
+        $this->io = $io;
+        if (!$this->loadWebsitePackages()) {
+            return 1;
+        }
+        $devPackages = array_filter(
+            array_column($this->packageReviews, 'dev_component', 'name'),
+            function ($value) {
+                return $value == 'true';
+            }
+        );
+        foreach (array_keys($devPackages) as $packageName) {
+            if (ToolCommands::getPackagePropertyFromComposer($packageName, 'version', 'packages')) {
+                $this->devCompRequireFailed = true;
+                $this->io->warning("Package $packageName cannot be used on require section, must be on require-dev section.");
+            }
+        }
+        if (!$this->devCompRequireFailed) {
+            $this->say('Development components check passed.');
+        }
+        $this->io->newLine();
+    }
+
+    /**
+     * Check project configuration.
+     *
+     * @command check:configuration
+     */
+    public function componentConfiguration(ConsoleIO $io)
+    {
+        $this->io = $io;
         // Forbid deprecated environment variables.
         $this->validateEnvironmentVariables();
 
@@ -207,13 +536,19 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
-     * Validate composer packages.
+     * Check composer packages.
+     *
+     * @command check:composer
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function componentComposer()
+    public function componentComposer(ConsoleIO $io)
     {
+        $this->io = $io;
+        if (!$this->loadComposerLock()) {
+            return 1;
+        }
         $composerJson = $this->getJson('composer.json');
 
         // Check packages used in dev version.
@@ -307,6 +642,29 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
+     * Prepare the overrides from config and commit message.
+     */
+    protected function prepareSkips(): void
+    {
+        $commitTokens = ToolCommands::getCommitTokens();
+        if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
+            $this->skipOutdated = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
+            $this->skipAbandoned = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.unsupported.check')) {
+            $this->skipUnsupported = true;
+        }
+        if (isset($commitTokens['skipInsecure'])) {
+            $this->skipInsecure = true;
+        }
+
+        // Always mark recommended as skip.
+        $this->skipRecommended = true;
+    }
+
+    /**
      * Component Configuration Helper - Validate environment variables.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -323,7 +681,7 @@ class ComponentCheckCommands extends AbstractCommands
         foreach ($fileNames as $filename) {
             if (is_file($filename)) {
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
-                // Yamls.
+                // Yaml files.
                 if ($ext && $ext == 'yml') {
                     $parsedYaml = Yaml::parseFile($filename);
                     // Loop through all the services looking for environment variables.
@@ -492,320 +850,51 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
-     * Helper function to check component's review information.
+     * Loads the composer lock packages.
      */
-    protected function componentMandatory()
+    private function loadComposerLock(): bool
     {
-        $enabledModules = $mandatoryPackages = [];
-        if (!$this->isWebsiteInstalled()) {
-            $configFile = $this->getConfig()->get('toolkit.clean.config_file');
-            $this->writeln("Website not installed, using $configFile file.");
-            if (file_exists($configFile)) {
-                $config = Yaml::parseFile($configFile);
-                $enabledModules = array_keys(array_merge($config['module'] ?? [], $config['theme'] ?? []));
-            } else {
-                $this->writeln("Config file not found at $configFile.");
-            }
-        } else {
-            // Get enabled modules.
-            $result = $this->taskExec($this->getBin('drush') . ' pm-list --status=enabled --format=json')
-                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-                ->run()->getMessage();
-            $enabledModules = array_keys(json_decode($result, true));
+        if (!empty($this->composerLock['packages'])) {
+            return true;
         }
-
-        // Get mandatory packages.
-        if (!empty($this->packageReviews)) {
-            $mandatoryPackages = array_values(array_filter($this->packageReviews, function ($item) {
-                return $item['mandatory'] === '1';
-            }));
+        $this->composerLock = $this->getJson('composer.lock');
+        if (!isset($this->composerLock['packages'])) {
+            $this->io->error('No packages found in the composer.lock file.');
+            return false;
         }
-
-        $diffMandatory = array_diff(array_column($mandatoryPackages, 'machine_name'), $enabledModules);
-        if (!empty($diffMandatory)) {
-            foreach ($diffMandatory as $notPresent) {
-                $index = array_search($notPresent, array_column($mandatoryPackages, 'machine_name'));
-                $date = !empty($mandatoryPackages[$index]['mandatory_date']) ? ' (since ' . $mandatoryPackages[$index]['mandatory_date'] . ')' : '';
-                $this->writeln("Package $notPresent is mandatory$date and is not present on the project.");
-
-                $this->mandatoryFailed = true;
-            }
-        }
-        if (!$this->mandatoryFailed) {
-            $this->say('Mandatory components check passed.');
-        }
+        return true;
     }
 
     /**
-     * Helper function to check component's review information.
+     * Loads the composer outdated results.
      */
-    protected function componentRecommended()
+    private function loadComposerOutdated(): bool
     {
-        $recommendedPackages = [];
-        // Get project packages.
-        $projectPackages = array_column($this->composerLock['packages'], 'name');
-        // Get recommended packages.
-        if (!empty($this->packageReviews)) {
-            $recommendedPackages = array_values(array_filter($this->packageReviews, function ($item) {
-                return strtolower($item['usage']) === 'recommended';
-            }));
+        if (!empty($this->composerOutdated)) {
+            return true;
         }
-
-        $diffRecommended = array_diff(array_column($recommendedPackages, 'name'), $projectPackages);
-        if (!empty($diffRecommended)) {
-            foreach ($diffRecommended as $notPresent) {
-                $index = array_search($notPresent, array_column($recommendedPackages, 'name'));
-                $date = !empty($recommendedPackages[$index]['mandatory_date']) ? ' (and will be mandatory at ' . $recommendedPackages[$index]['mandatory_date'] . ')' : '';
-                $this->writeln("Package $notPresent is recommended$date but is not present on the project.");
-                $this->recommendedFailed = true;
-            }
-
-            $this->say("See the list of recommended packages at\nhttps://digit-dqa.fpfis.tech.ec.europa.eu/requirements.");
-            $this->recommendedFailedCount = count($diffRecommended);
-        }
-
-        if ($this->skipRecommended) {
-            $this->say('This step is in reporting mode, skipping.');
-        }
-    }
-
-    /**
-     * Helper function to check component's review information.
-     *
-     * @throws \Robo\Exception\TaskException
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
-    protected function componentInsecure()
-    {
-        $packages = [];
-        $drupalReleaseHistory = new DrupalReleaseHistory();
-        $exec = $this->taskExec('composer audit --no-dev --locked --no-scripts --format=json')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run();
-        $result = trim($exec->getMessage());
-        if (!empty($result) && $result !== '[]') {
-            $data = json_decode($result, true);
-            if (!empty($data['advisories']) && is_array($data['advisories'])) {
-                // Each package might have multiple issues, we take the first.
-                foreach ($data['advisories'] as $advisory) {
-                    $firstAdvisory = array_shift($advisory);
-                    $packageName = $firstAdvisory['packageName'];
-                    $packages[$packageName]['title'] = $firstAdvisory['title'];
-                    $packages[$packageName]['version'] = ToolCommands::getPackagePropertyFromComposer($packageName);
-                }
-            }
-        }
-
-        $messages = [];
-        foreach ($packages as $name => $package) {
-            $msg = "Package $name has a security update, please update to a safe version. (" . $package['title'] . ")";
-            if (!empty($this->packageReviews[$name]['secure'])) {
-                if (Semver::satisfies($package['version'], $this->packageReviews[$name]['secure'])) {
-                    $messages[] = "$msg (Version marked as secure)";
-                    continue;
-                }
-            }
-            $historyTerms = $drupalReleaseHistory->getPackageDetails($name, $package['version'], '8.x');
-            if ($historyTerms === 1) {
-                $this->say("No release history found for package $name.");
-                continue;
-            }
-            if (!empty($historyTerms) && (empty($historyTerms['terms']) || !in_array('insecure', $historyTerms['terms']))) {
-                $messages[] = "$msg (Confirmation failed, ignored)";
-                continue;
-            }
-
-            $messages[] = $msg;
-            $this->insecureFailed = true;
-        }
-        if (!empty($messages)) {
-            $this->writeln($messages);
-        }
-
-        $fullSkip = getenv('QA_SKIP_INSECURE') !== false && getenv('QA_SKIP_INSECURE');
-        // Forcing skip due to issues with the security advisor date detection.
-        if ($fullSkip) {
-            $this->say('Globally skipping security check for components.');
-            $this->insecureFailed = false;
-        } elseif (!$this->insecureFailed) {
-            $this->say('Insecure components check passed.');
-        }
-    }
-
-    /**
-     * Helper function to check Outdated components.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     */
-    protected function componentOutdated()
-    {
         $result = $this->taskExec('composer outdated --no-dev --locked --direct --minor-only --no-scripts --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
-
-        $packages = json_decode($result, true);
-        // Using the option --locked, we must check for the "locked" key.
-        if (is_array($packages) && !empty($packages['locked'])) {
-            $ignores = $this->getConfig()->get('toolkit.components.outdated.ignores');
-            if (!empty($ignores)) {
-                $ignores = array_combine(
-                    array_column($ignores, 'name'),
-                    array_column($ignores, 'version')
-                );
-            }
-
-            foreach ($packages['locked'] as $package) {
-                // Exclude abandoned packages, see $this->componentAbandoned().
-                if ($package['abandoned']) {
-                    continue;
-                }
-                // Check for ignores and compare versions.
-                if (!empty($ignores) && isset($ignores[$package['name']]) && $package['version'] === $ignores[$package['name']]) {
-                    $this->writeln("Package {$package['name']} with version installed {$package['version']} skipped by config.");
-                    continue;
-                }
-
-                if (!array_key_exists('latest', $package)) {
-                    $this->writeln("Package {$package['name']} does not provide information about last version.");
-                } elseif (array_key_exists('warning', $package)) {
-                    $this->writeln($package['warning']);
-                    $this->outdatedFailed = true;
-                } else {
-                    $this->writeln("Package {$package['name']} with version installed {$package['version']} is outdated, please update to last version - {$package['latest']}");
-                    $this->outdatedFailed = true;
-                }
-            }
-
-            // Make result available outside function.
-            $this->installed = $packages['locked'];
-        }
-
-        if (!$this->outdatedFailed) {
-            $this->say('Outdated components check passed.');
-        }
+        $this->composerOutdated = json_decode($result, true) ?? [];
+        return true;
     }
 
     /**
-     * Helper function to check Abandoned components.
+     * Loads the packages from the website.
      */
-    protected function componentAbandoned()
+    private function loadWebsitePackages(): bool
     {
-        $packages = $this->installed ?? [];
-        if (!empty($packages)) {
-            foreach ($packages as $package) {
-                // Only show abandoned packages.
-                if ($package['abandoned'] != false) {
-                    $this->writeln($package['warning']);
-                    $this->abandonedFailed = true;
-                }
-            }
+        if (!empty($this->packageReviews)) {
+            return true;
         }
-        if (!$this->abandonedFailed) {
-            $this->say('Abandoned components check passed.');
+        $data = Website::packages();
+        if (empty($data)) {
+            $this->io->error('Failed to connect to the endpoint ' . Website::url() . '/api/v1/package-reviews');
+            return false;
         }
-    }
-
-    /**
-     * Helper function to check Unsupported components.
-     */
-    protected function componentUnsupported()
-    {
-        if (!$this->isWebsiteInstalled()) {
-            $this->writeln('Website not installed, skipping.');
-            return;
-        }
-        if (empty($releases = $this->getReleases())) {
-            $this->writeln('Failed to get the available releases.');
-            return;
-        }
-        // Filter by unsupported, @see \Drupal\update\UpdateManagerInterface::NOT_SUPPORTED.
-        $unsupported = array_filter($releases, function ($item) {
-            return $item['status'] === 3;
-        });
-        if (empty($unsupported)) {
-            $this->say('Unsupported components check passed.');
-        } else {
-            $this->unsupportedFailed = true;
-            foreach ($unsupported as $item) {
-                if (array_key_exists('recommended', $item)) {
-                    $this->writeln(sprintf(
-                        "Package %s with version installed %s is not supported. Update to the recommended version %s",
-                        $item['name'],
-                        $item['existing_version'],
-                        $item['recommended']
-                    ));
-                } else {
-                    $this->writeln(sprintf(
-                        "Package %s is no longer supported, and is no longer available for download. Disabling everything included by this project is strongly recommended!",
-                        $item['name']
-                    ));
-                }
-            }
-        }
-
-        if ($this->forcedUpdateModule) {
-            $this->_exec($this->getBin('drush') . ' pm:uninstall update -y');
-        }
-    }
-
-    /**
-     * Helper function to check Evaluation components.
-     */
-    protected function componentEvaluation()
-    {
-        // Get vendor list.
-        $dataTkReqsEndpoint = Website::requirements();
-        $vendorList = $dataTkReqsEndpoint['vendor_list'] ?? [];
-
-        // Proceed with 'blocker' option. Loop over the packages.
-        $groupComponents = [];
-        foreach ($this->composerLock['packages'] as $package) {
-            // Check if vendor belongs to the monitored vendor list.
-            if (in_array(explode('/', $package['name'])['0'], $vendorList)) {
-                $validateComponent = $this->validateComponent($package);
-                if ($validateComponent) {
-                    $groupComponents[$validateComponent['1']][] = $validateComponent['0'];
-                }
-            }
-        }
-        foreach ($groupComponents as $groupComponent => $messages) {
-            $this->writeln($groupComponent);
-            foreach ($messages as $message) {
-                $this->writeln($message);
-            }
-            if ($groupComponent == 'Packages rejected/restricted:') {
-                $this->writeln('<options=reverse>In the case you want to use one of the modules listed as restricted, please open a ticket to Quality Assurance indicating the use case for evaluation and more information.</>');
-            }
-        }
-        if ($this->evaluationFailed === false) {
-            $this->say('Evaluation module check passed.');
-        }
-        $this->io->newLine();
-    }
-
-    /**
-     * Helper function to check Development components.
-     */
-    protected function componentDevelopment()
-    {
-        $devPackages = array_filter(
-            array_column($this->packageReviews, 'dev_component', 'name'),
-            function ($value) {
-                return $value == 'true';
-            }
-        );
-        foreach (array_keys($devPackages) as $packageName) {
-            if (ToolCommands::getPackagePropertyFromComposer($packageName, 'version', 'packages')) {
-                $this->devCompRequireFailed = true;
-                $this->io->warning("Package $packageName cannot be used on require section, must be on require-dev section.");
-            }
-        }
-        if (!$this->devCompRequireFailed) {
-            $this->say('Development components check passed.');
-        }
-        $this->io->newLine();
+        $this->packageReviews = array_filter(array_combine(array_column($data, 'name'), $data));
+        return true;
     }
 
     /**
