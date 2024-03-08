@@ -32,8 +32,16 @@ toolkit:
       check: true
     composer:
       drupal_patches: true
-      scripts:
-        forbidden:
+      forbidden:
+        # It checks forbidden entries against VALUES if a KEY of an array in 'composer.json' is numeric, otherwise it checks against the KEY itself.
+        autoload:
+          classmap:
+            - 'scripts/composer/SetupWizard.php'
+          # Example of forbidden entry by non-numeric key:
+          # psr-4:
+          #   - 'MyVendor\MyProject\'
+          #   - 'MyVendor\MyProject2\'
+        scripts:
           post-root-package-install:
             - 'Subsite\composer\SetupWizard::setup'
           post-install-cmd:

@@ -464,7 +464,14 @@
     - not_string_contains: Package pipeline is mandatory and is not present on the project
 
 - command: 'toolkit:component-check'
-  configuration: []
+  configuration:
+    toolkit:
+      components:
+        composer:
+          forbidden:
+            autoload:
+              psr-4:
+                - 'MyForbiddenVendor\MyProject\'
   tokens: ''
   resources:
     - from: sample-composer.lock
@@ -482,13 +489,23 @@
               "./allowed-script-02.sh",
               "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
             ]
+          },
+          "autoload": {
+            "classmap": [
+              "scripts/composer/SetupWizard.php"
+            ],
+            "psr-4": {
+              "MyForbiddenVendor\\MyProject\\": "./src/"
+            }
           }
         }
   expectations:
     - not_string_contains: ./allowed-script-01.sh
     - not_string_contains: ./allowed-script-02.sh
+    - string_contains: MyForbiddenVendor\MyProject\
     - string_contains: DrupalComposer\DrupalScaffold\Plugin::scaffold
     - string_contains: Subsite\composer\SetupWizard::setup
+    - string_contains: scripts/composer/SetupWizard.php
 
 - command: 'toolkit:component-check'
   configuration: []
@@ -608,6 +625,31 @@
           - vendor/phpstan/phpstan-deprecation-rules/rules.neon
   expectations:
     - string_contains: When using phpstan/extension-installer you should not manually include
+
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: ''
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" },
+          { "name": "dealerdirect/phpcodesniffer-composer-installer", "type": "composer-plugin", "version": "v1.0.0" }
+        ] }
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
+    - mkdir: /vendor/composer/
+    - file: /vendor/composer/installed.json
+      content: |
+        { "packages": [
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" },
+          { "name": "dealerdirect/phpcodesniffer-composer-installer", "type": "composer-plugin", "version": "v1.0.0" }
+        ] }
+  expectations:
+    - not_string_contains: "config.allow-plugins: cweagans/composer-patches"
+    - not_string_contains: "config.allow-plugins: dealerdirect/phpcodesniffer-composer-installer"
+    - string_contains: "config.allow-plugins: phpstan/extension-installer"
 
 - command: 'check:mandatory'
   configuration: []

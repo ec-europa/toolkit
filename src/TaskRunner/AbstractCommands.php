@@ -132,11 +132,15 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     /**
      * Returns the JSON parsed content.
      */
-    public function getJson(string $filename): array
+    public function getJson(string $filename, $throwException = true): array
     {
         $file = $this->getWorkingDir() . '/' . $filename;
         if (!file_exists($file)) {
-            throw new \Exception("The '$file' was not found.");
+            if ($throwException) {
+                throw new \Exception("The '$file' was not found.");
+            } else {
+                return [];
+            }
         }
         return (array) json_decode(file_get_contents($file), true);
     }

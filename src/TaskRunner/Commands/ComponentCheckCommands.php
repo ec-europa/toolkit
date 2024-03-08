@@ -591,23 +591,47 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
 
-        // Make sure that the forbidden/obsolete script is not present in the 'scripts' section of composer.json file.
-        if (!empty($composerJson['scripts'])) {
-            // Get forbidden/obsolete scripts from config.
-            $forbiddenScripts = $this->getConfig()->get('toolkit.components.composer.scripts.forbidden');
-            // Define common error message.
-            $error = 'The obsolete invocation of %s is present in composer.json %s scripts. Please remove.';
-            // Detect forbidden scripts in composer.json.
-            foreach ($forbiddenScripts as $level => $scripts) {
-                if (!isset($composerJson['scripts'][$level])) {
+        // Make sure that the forbidden/obsolete entry is not present in the composer.json file.
+        $forbiddenEntries = $this->getConfig()->get('toolkit.components.composer.forbidden');
+        // Define common error message.
+        $error = 'The forbidden entry "%s" is present in "%s.%s" property of composer.json. Please remove.';
+        // Iterate over each forbidden entry and associated details.
+        foreach ($forbiddenEntries as $entryName => $forbiddenEntry) {
+            // Skip if the entry is not present in the composer.json file.
+            if (!isset($composerJson[$entryName])) {
+                continue;
+            }
+            // Detect forbidden entries in composer.json.
+            foreach ($forbiddenEntry as $forbiddenKey => $forbiddenValues) {
+                if (!isset($composerJson[$entryName][$forbiddenKey])) {
                     continue;
                 }
-                foreach ((array) $composerJson['scripts'][$level] as $script) {
-                    if (in_array($script, $scripts)) {
-                        $this->io->error(sprintf($error, $script, $level));
+                foreach ((array) $composerJson[$entryName][$forbiddenKey] as $composerKey => $composerValue) {
+                    // Determine the check value based on whether it's an associative array or not.
+                    $check = (!is_numeric($composerKey) ? $composerKey : $composerValue);
+                    // If the check value is found in the forbidden values, display an error message.
+                    if (in_array($check, $forbiddenValues)) {
+                        $this->io->error(sprintf($error, $check, $entryName, $forbiddenKey));
                         $this->composerFailed = true;
                     }
                 }
+            }
+        }
+
+        // Make sure not installed plugins are not present in composer.json
+        $installedPackages = $this->getJson('vendor/composer/installed.json', false);
+        if (!empty($composerJson['config']['allow-plugins']) && !empty($installedPackages['packages'])) {
+            $composerPlugins = array_filter(
+                $installedPackages['packages'],
+                fn($package) => isset($package['type']) && $package['type'] === 'composer-plugin'
+            );
+            $missingPlugins = array_diff(
+                array_keys($composerJson['config']['allow-plugins']),
+                array_column($composerPlugins, 'name')
+            );
+            foreach ($missingPlugins as $missingPlugin) {
+                $this->io->error("Plugin not installed, please remove from composer.json config.allow-plugins: $missingPlugin.");
+                $this->composerFailed = true;
             }
         }
 
