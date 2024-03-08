@@ -493,7 +493,7 @@ class ComponentCheckCommands extends AbstractCommands
         // Get mandatory packages.
         if (!empty($this->packageReviews)) {
             $mandatoryPackages = array_values(array_filter($this->packageReviews, function ($item) {
-                return $item['mandatory'] === '1';
+                return $item['mandatory'] === '1' && $item['type'] === 'drupal-module';
             }));
         }
 
@@ -523,7 +523,7 @@ class ComponentCheckCommands extends AbstractCommands
         // Get recommended packages.
         if (!empty($this->packageReviews)) {
             $recommendedPackages = array_values(array_filter($this->packageReviews, function ($item) {
-                return strtolower($item['usage']) === 'recommended';
+                return !empty($item['usage']) && strtolower($item['usage']) === 'recommended';
             }));
         }
 

@@ -437,6 +437,32 @@
     - string_contains: The package drupal/pipeline is authorised for the profile minimal
 
 - command: 'toolkit:component-check'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [ { "name": "ec-europa/toolkit" } ] }
+    - file: .toolkit-mock/0.0.3/api/v1/package-reviews.json
+      content: |
+        [ {
+          "type": "drupal-module",
+          "machine_name": "mandatory",
+          "name": "drupal/mandatory",
+          "full_name": "drupal/mandatory",
+          "mandatory": "1"
+        }, {
+          "type": "module",
+          "machine_name": "pipeline",
+          "name": "drupal/pipeline",
+          "full_name": "drupal/pipeline",
+          "mandatory": "1"
+        } ]
+  expectations:
+    - string_contains: Package mandatory is mandatory and is not present on the project
+    - not_string_contains: Package pipeline is mandatory and is not present on the project
+
+- command: 'toolkit:component-check'
   configuration: []
   tokens: ''
   resources:
