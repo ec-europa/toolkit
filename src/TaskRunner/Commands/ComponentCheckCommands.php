@@ -154,6 +154,8 @@ class ComponentCheckCommands extends AbstractCommands
      * Check mandatory components.
      *
      * @command check:mandatory
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function componentMandatory(ConsoleIO $io)
     {
@@ -209,7 +211,6 @@ class ComponentCheckCommands extends AbstractCommands
     public function componentRecommended(ConsoleIO $io)
     {
         $this->io = $io;
-//        $this->prepareSkips();
         if (!$this->loadComposerLock()) {
             return 1;
         }
@@ -219,7 +220,7 @@ class ComponentCheckCommands extends AbstractCommands
         // Get recommended packages.
         if (!empty($this->packageReviews)) {
             $recommendedPackages = array_values(array_filter($this->packageReviews, function ($item) {
-                return strtolower($item['usage']) === 'recommended';
+                return !empty($item['usage']) && strtolower($item['usage']) === 'recommended';
             }));
         }
 
