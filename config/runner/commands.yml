@@ -19,3 +19,8 @@ commands:
     description: '[DEPRECATED] Run the Drupal config import.'
     tasks:
       - { task: run, command: drupal:config-import }
+
+  toolkit:build-assets-dist:
+    description: 'Run the toolkit:build-assets for distribution'
+    tasks:
+      - { task: run, command: toolkit:build-assets, options: { custom-code-folder: "${toolkit.build.dist.root}/${drupal.root}/themes" } }

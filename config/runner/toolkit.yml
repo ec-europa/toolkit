@@ -95,6 +95,8 @@ toolkit:
         - MAINTAINERS.txt
         - UPDATE.txt
         - README.txt
+        - node_modules
+        - .sass-cache
       commands: [ ]
     dev:
       commands: [ ]

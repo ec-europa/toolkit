@@ -102,7 +102,7 @@ If for some reason your project is running custom code in other folder then ``li
 Enable build assets during CI
 -----------------------------
 
-To enable auto build of assets you should extend the tasks ``build-dev`` and ``build-dist``. See example below.
+To enable auto build of assets you should extend the tasks ``toolkit:build-dev`` and ``toolkit:build-dist``. See example below.
 
 .. code-block::
 
@@ -116,7 +116,7 @@ To enable auto build of assets you should extend the tasks ``build-dev`` and ``b
        dist:
          commands:
          - ...
-         - ./vendor/bin/run toolkit:build-assets
+         - ./vendor/bin/run toolkit:build-assets-dist
 
 
 Install additional npm packages
