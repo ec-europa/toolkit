@@ -678,4 +678,30 @@ class ToolCommands extends AbstractCommands
         return (array) Yaml::parseFile($opts);
     }
 
+    /**
+     * Display Toolkit notifications.
+     *
+     * @command toolkit:notifications
+     *
+     * @option endpoint The endpoint to use to connect to QA Website.
+     */
+    public function toolkitNotifications(ConsoleIO $io, array $options = [
+        'endpoint' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        if (!empty($options['endpoint'])) {
+            Website::setUrl($options['endpoint']);
+        }
+        if ($notifications = Website::notifications()) {
+            foreach ($notifications as $notification) {
+                $io->title($notification['title']);
+                $io->writeln($notification['notification']);
+                if (!empty($notification['url'])) {
+                    $io->writeln('See more at: ' . $notification['url']);
+                }
+                $io->newLine(2);
+            }
+        }
+    }
+
 }

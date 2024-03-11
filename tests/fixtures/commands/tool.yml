@@ -184,3 +184,30 @@
         +------------+-----------+
         | php8.1-zip | not found |
         +------------+-----------+
+
+- command: toolkit:notifications
+  configuration: []
+  resources:
+    - file: .toolkit-mock/0.0.4/api/v1/notifications.json
+      content: |
+        [{
+          "title": "Notification title 1",
+          "notification": "Description of notification 1"
+        },{
+          "title": "Notification title 2",
+          "notification": "Description of notification 2",
+          "url": "https://example.com/notification-2"
+        }]
+  expectations:
+    - contains: |
+        Notification title 1
+        ====================
+
+        Description of notification 1
+
+
+        Notification title 2
+        ====================
+
+        Description of notification 2
+        See more at: https://example.com/notification-2
