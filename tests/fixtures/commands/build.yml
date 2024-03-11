@@ -6,9 +6,8 @@
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->remove('dist')
           ->mkdir('dist')
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('git archive HEAD | tar -x -C dist')
+        [Simulator] Simulating Exec('git archive HEAD | tar -x -C dist')
+        [Simulator] Running git archive HEAD | tar -x -C dist
         [Simulator] Simulating Composer\Install('composer')
           ->env('COMPOSER_MIRROR_PATH_REPOS', '1')
           ->workingDir('dist')
@@ -18,15 +17,14 @@
           ->stopOnFail()
           ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
           ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
+        [Simulator] Simulating Exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
+        [Simulator] Running find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +
         [Simulator] Simulating File\Write('dist/manifest.json')
           ->text('{"drupal_profile":"minimal","project_id":"toolkit","dr ... .0","sha":"aBcDeF"}')
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')
           ->text('1.0.0')
-        [Simulator] Simulating ExecStack()
-          ->exec('find dist -maxdepth 3 -type f \( -name "CHANGELOG.txt" \) -exec rm -rf {} +')
+        [Simulator] Simulating Exec('find dist -maxdepth 5 \( -name "CHANGELOG.txt" \) -exec rm -rf {} +')
+        [Simulator] Running find dist -maxdepth 5 \( -name "CHANGELOG.txt" \) -exec rm -rf {} +
 
 - command: 'toolkit:build-dist --root=web --dist-root=dist --tag=1.0.0 --sha=aBcDeF --keep=vendor --remove=CHANGELOG.txt'
   configuration:
@@ -41,9 +39,8 @@
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->remove('dist')
           ->mkdir('dist')
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('git archive HEAD | tar -x -C dist')
+        [Simulator] Simulating Exec('git archive HEAD | tar -x -C dist')
+        [Simulator] Running git archive HEAD | tar -x -C dist
         [Simulator] Simulating Composer\Install('composer')
           ->env('COMPOSER_MIRROR_PATH_REPOS', '1')
           ->workingDir('dist')
@@ -53,15 +50,14 @@
           ->stopOnFail()
           ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
           ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
+        [Simulator] Simulating Exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
+        [Simulator] Running find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +
         [Simulator] Simulating File\Write('dist/manifest.json')
           ->text('{"drupal_profile":"test","project_id":"toolkit","drupa ... .0","sha":"aBcDeF"}')
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')
           ->text('1.0.0')
-        [Simulator] Simulating ExecStack()
-          ->exec('find dist -maxdepth 3 -type f \( -name "CHANGELOG.txt" \) -exec rm -rf {} +')
+        [Simulator] Simulating Exec('find dist -maxdepth 5 \( -name "CHANGELOG.txt" \) -exec rm -rf {} +')
+        [Simulator] Running find dist -maxdepth 5 \( -name "CHANGELOG.txt" \) -exec rm -rf {} +
 
 - command: 'toolkit:build-dist'
   configuration:
@@ -73,9 +69,8 @@
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->remove('dist')
           ->mkdir('dist')
-        [Simulator] Simulating ExecStack()
-        ->stopOnFail()
-        ->exec('git archive HEAD | tar -x -C dist')
+        [Simulator] Simulating Exec('git archive HEAD | tar -x -C dist')
+        [Simulator] Running git archive HEAD | tar -x -C dist
         [Simulator] Simulating Composer\Install('composer')
           ->env('COMPOSER_MIRROR_PATH_REPOS', '1')
           ->workingDir('dist')
@@ -85,15 +80,14 @@
           ->stopOnFail()
           ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
           ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->exec('find dist -maxdepth 1 ! -name "dist" ! -name "web" ! - ... " -exec rm -rf {} +')
+        [Simulator] Simulating Exec('find dist -maxdepth 1 ! -name "dist" ! -name "web" ! - ... " -exec rm -rf {} +')
+        [Simulator] Running find dist -maxdepth 1 ! -name "dist" ! -name "web" ! -name "config" ! -name "vendor" ! -name "composer.lock" ! -name "composer.json" -exec rm -rf {} +
         [Simulator] Simulating File\Write('dist/manifest.json')
           ->text('{"drupal_profile":"minimal","project_id":"toolkit","dr ... rsion":"","sha":""}')
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')
           ->text('')
-        [Simulator] Simulating ExecStack()
-          ->exec('find dist -maxdepth 3 -type f \( -name "CHANGELOG.md"  ... ) -exec rm -rf {} +')
+        [Simulator] Simulating Exec('find dist -maxdepth 5 \( -name "CHANGELOG.md" -o -name ... ) -exec rm -rf {} +')
+        [Simulator] Running find dist -maxdepth 5 \( -name "CHANGELOG.md" -o -name "CHANGELOG.txt" -o -name "COPYRIGHT.txt" -o -name "INSTALL.mysql.txt" -o -name "INSTALL.pgsql.txt" -o -name "install.php" -o -name "INSTALL.sqlite.txt" -o -name "INSTALL.txt" -o -name "LICENSE.txt" -o -name "MAINTAINERS.txt" -o -name "UPDATE.txt" -o -name "README.txt" -o -name "node_modules" -o -name ".sass-cache" \) -exec rm -rf {} +
 
 - command: 'toolkit:build-dev'
   configuration: []

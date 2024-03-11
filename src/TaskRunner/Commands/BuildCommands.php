@@ -89,9 +89,7 @@ class BuildCommands extends AbstractCommands
             ->mkdir($options['dist-root']);
 
         // Copy all (tracked) files to the dist folder.
-        $tasks[] = $this->taskExecStack()
-            ->stopOnFail()
-            ->exec('git archive HEAD | tar -x -C ' . $options['dist-root']);
+        $tasks[] = $this->taskExec('git archive HEAD | tar -x -C ' . $options['dist-root']);
 
         // Run production-friendly "composer install" packages.
         $tasks[] = $this->taskComposerInstall('composer')
@@ -109,9 +107,7 @@ class BuildCommands extends AbstractCommands
 
         // Clean up non-required files.
         $keep = '! -name "' . $options['dist-root'] . '" ! -name "' . implode('" ! -name "', explode(',', $options['keep'])) . '"';
-        $tasks[] = $this->taskExecStack()
-            ->stopOnFail()
-            ->exec("find {$options['dist-root']} -maxdepth 1 $keep -exec rm -rf {} +");
+        $tasks[] = $this->taskExec("find {$options['dist-root']} -maxdepth 1 $keep -exec rm -rf {} +");
 
         // Prepare sha and tag variables.
         $tag = !empty($options['tag']) ? $options['tag'] : '';
@@ -155,10 +151,9 @@ class BuildCommands extends AbstractCommands
             $tasks[] = $this->taskExecute($commands);
         }
 
-        // Remove 'unwanted' files from distribution.
+        // Remove 'unwanted' resources from distribution.
         $remove = '-name "' . implode('" -o -name "', explode(',', $options['remove'])) . '"';
-        $tasks[] = $this->taskExecStack()
-            ->exec("find {$options['dist-root']} -maxdepth 3 -type f \( $remove \) -exec rm -rf {} +");
+        $tasks[] = $this->taskExec("find {$options['dist-root']} -maxdepth 5 \( $remove \) -exec rm -rf {} +");
 
         // Add custom block to .htaccess file.
         $tasks[] = $this->getHtaccessTask("{$options['dist-root']}/{$options['root']}");
