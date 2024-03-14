@@ -635,6 +635,12 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
 
+        // Make sure the toolkit-composer-plugin is allowed.
+        if (empty($composerJson['config']['allow-plugins']['ec-europa/toolkit-composer-plugin'])) {
+            $this->io->error('Plugin ec-europa/toolkit-composer-plugin must be allowed in the config.allow-plugins section of the composer.json.');
+            $this->composerFailed = true;
+        }
+
         if (!$this->composerFailed) {
             $this->say('Composer validation check passed.');
         }

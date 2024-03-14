@@ -23,6 +23,7 @@
         "cweagans/composer-patches": "^1.7 || ^2.0",
         "drush/drush": "^10.0.0 || ^11.0.4 || ^12.0",
         "ec-europa/qa-automation": "^9.2.0",
+        "ec-europa/toolkit-composer-plugin": "*",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "jakeasmith/http_build_url": "^1.0",
         "league/container": "^4.1.1",
@@ -57,7 +58,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "cweagans/composer-patches": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ec-europa/toolkit-composer-plugin": true
         }
     },
     "scripts": {
@@ -70,5 +72,19 @@
             "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs,../../ec-europa/qa-automation/phpcs'",
             "php -r \"file_exists('vendor/bin/run') || (copy('run', 'vendor/bin/run') && chmod('vendor/bin/run', fileperms('run')));\""
         ]
-    }
+    },
+    "require-dev": {
+        "composer/composer": "^2.7"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "src/ComposerPlugin",
+            "options": {
+                "versions": {
+                    "ec-europa/toolkit-composer-plugin": "1.0.0"
+                }
+            }
+        }
+    ]
 }

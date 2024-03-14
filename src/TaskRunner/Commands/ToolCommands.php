@@ -684,11 +684,18 @@ class ToolCommands extends AbstractCommands
      * @command toolkit:notifications
      *
      * @option endpoint The endpoint to use to connect to QA Website.
+     *
+     * @aliases tk-notifications
      */
     public function toolkitNotifications(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_OPTIONAL,
     ])
     {
+        // This command is called from a composer-plugin, so we provide
+        // a way to bypass this execution by config.
+        if (!empty($this->getConfigValue('toolkit.skip_notifications'))) {
+            return ResultData::EXITCODE_OK;
+        }
         if (!empty($options['endpoint'])) {
             Website::setUrl($options['endpoint']);
         }
@@ -702,6 +709,7 @@ class ToolCommands extends AbstractCommands
                 $io->newLine(2);
             }
         }
+        return ResultData::EXITCODE_OK;
     }
 
 }

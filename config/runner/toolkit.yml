@@ -114,6 +114,7 @@ toolkit:
     - 1.x
     - 2.x
   install_dependencies: true
+  skip_notifications: false
   patches:
     dir: resources/patches
     composer: composer.json
