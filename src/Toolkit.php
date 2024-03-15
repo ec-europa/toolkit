@@ -51,7 +51,8 @@ final class Toolkit
      */
     public static function isCiCd(): bool
     {
-        return !empty(getenv('CI')) && getenv('CI') === 'true';
+        $ci = getenv('CI');
+        return !empty($ci) && ($ci === 'true' || $ci === 'drone');
     }
 
     /**
