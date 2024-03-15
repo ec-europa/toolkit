@@ -34,13 +34,13 @@ final class Mock
      */
     public static function download(): bool
     {
-        if (!Toolkit::isCiCd()) {
-            return false;
-        }
         $tag = self::tag();
         $mockDir = self::$directory . '/' . $tag;
         if (file_exists($mockDir)) {
             return true;
+        }
+        if (!Toolkit::isCiCd()) {
+            return false;
         }
         $repo = self::repo();
         $command = "git clone --depth 1 --branch $tag $repo $mockDir";
@@ -63,9 +63,6 @@ final class Mock
      */
     public static function getEndpointContent(string $endpoint)
     {
-        if (!Toolkit::isCiCd()) {
-            return false;
-        }
         $tag = self::tag();
         $mockDir = self::$directory . '/' . $tag;
         if (!file_exists($mockDir)) {
