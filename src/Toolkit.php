@@ -51,7 +51,7 @@ final class Toolkit
      */
     public static function isCiCd(): bool
     {
-        return !empty(getenv('CI'));
+        return !empty(getenv('CI')) && getenv('CI') === 'true';
     }
 
     /**

@@ -693,7 +693,11 @@ class ToolCommands extends AbstractCommands
     {
         // This command is called from a composer-plugin, so we provide
         // a way to bypass this execution by config.
-        if (!empty($this->getConfigValue('toolkit.skip_notifications'))) {
+        if (empty($this->getConfigValue('toolkit.notifications.show'))) {
+            return ResultData::EXITCODE_OK;
+        }
+        // Ignore this command on CI/CD.
+        if (Toolkit::isCiCd()) {
             return ResultData::EXITCODE_OK;
         }
         if (!empty($options['endpoint'])) {

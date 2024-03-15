@@ -74,9 +74,6 @@
             "php -r \"file_exists('vendor/bin/run') || (copy('run', 'vendor/bin/run') && chmod('vendor/bin/run', fileperms('run')));\""
         ]
     },
-    "require-dev": {
-        "composer/composer": "^2.7"
-    },
     "repositories": [
         {
             "type": "path",

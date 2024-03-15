@@ -68,21 +68,19 @@ class Notifications implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ScriptEvents::POST_INSTALL_CMD => 'printNotifications',
-            ScriptEvents::POST_UPDATE_CMD => 'printNotifications',
+            ScriptEvents::POST_INSTALL_CMD => 'show',
+            ScriptEvents::POST_UPDATE_CMD => 'show',
         ];
     }
 
     /**
      * Print the Toolkit notifications.
      */
-    public function printNotifications()
+    public function show()
     {
-        $this->io->write(sprintf('<info>%s</info>', 'Checking notifications'));
         $binDir = $this->composer->getConfig()->get('bin-dir') ?? 'vendor/bin';
-        $runner = "$binDir/run";
         $output = '';
-        $this->processExecutor->execute("$runner toolkit:notifications", $output);
+        $this->processExecutor->execute("$binDir/run toolkit:notifications", $output);
         if (!empty($output)) {
             $this->io->write($output);
         }
