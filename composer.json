@@ -84,5 +84,8 @@
                 }
             }
         }
-    ]
+    ],
+    "require-dev": {
+        "composer/composer": "^2.7"
+    }
 }
