@@ -23,7 +23,7 @@
         "cweagans/composer-patches": "^1.7 || ^2.0",
         "drush/drush": "^10.0.0 || ^11.0.4 || ^12.0",
         "ec-europa/qa-automation": "^9.2.0",
-        "ec-europa/toolkit-composer-plugin": "*",
+        "ec-europa/toolkit-composer-plugin": "^0.0.1",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "jakeasmith/http_build_url": "^1.0",
         "league/container": "^4.1.1",
@@ -36,8 +36,7 @@
         "phpunit/phpunit": "^9.5 || ^10.0",
         "squizlabs/php_codesniffer": "^3.7",
         "symfony/yaml": "^5.2 || ^6.0",
-        "vlucas/phpdotenv": "^5.6",
-        "wikimedia/composer-merge-plugin": "^2.1"
+        "vlucas/phpdotenv": "^5.6"
     },
     "suggest": {
         "drupal/console": "The Drupal CLI, tool to generate boilerplate code, interact with and debug Drupal."
@@ -54,20 +53,17 @@
     },
     "extra": {
         "enable-patching": true,
-        "composer-exit-on-patch-failure": true,
-        "merge-plugin": {
-            "require": [
-                "src/ComposerPlugin/composer.json"
-            ]
-        }
+        "composer-exit-on-patch-failure": true
     },
     "config": {
+        "gitlab-domains": [
+            "git.fpfis.tech.ec.europa.eu"
+        ],
         "sort-packages": true,
         "allow-plugins": {
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "ec-europa/toolkit-composer-plugin": true,
-            "wikimedia/composer-merge-plugin": true
+            "ec-europa/toolkit-composer-plugin": true
         }
     },
     "scripts": {
@@ -81,16 +77,10 @@
             "php -r \"file_exists('vendor/bin/run') || (copy('run', 'vendor/bin/run') && chmod('vendor/bin/run', fileperms('run')));\""
         ]
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "src/ComposerPlugin",
-            "options": {
-                "symlink": false
-            }
+    "repositories": {
+        "digit": {
+            "type": "composer",
+            "url": "https://git.fpfis.tech.ec.europa.eu/api/v4/group/7861/-/packages/composer/"
         }
-    ],
-    "require-dev": {
-        "composer/composer": "^2.7"
     }
 }
