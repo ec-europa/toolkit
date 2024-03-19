@@ -4,7 +4,7 @@
     "license": "EUPL-1.2",
     "type": "library",
     "homepage": "https://github.com/ec-europa/toolkit",
-    "minimum-stability": "beta",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "support": {
         "email": "DIGIT-NEXTEUROPA-QA@ec.europa.eu",

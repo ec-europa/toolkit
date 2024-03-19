@@ -3,7 +3,7 @@
     "description": "A Composer plugin for Toolkit",
     "type": "composer-plugin",
     "license": "EUPL-1.2",
-    "minimum-stability": "beta",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
