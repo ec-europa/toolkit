@@ -36,7 +36,8 @@
         "phpunit/phpunit": "^9.5 || ^10.0",
         "squizlabs/php_codesniffer": "^3.7",
         "symfony/yaml": "^5.2 || ^6.0",
-        "vlucas/phpdotenv": "^5.6"
+        "vlucas/phpdotenv": "^5.6",
+        "wikimedia/composer-merge-plugin": "^2.1"
     },
     "suggest": {
         "drupal/console": "The Drupal CLI, tool to generate boilerplate code, interact with and debug Drupal."
@@ -53,14 +54,20 @@
     },
     "extra": {
         "enable-patching": true,
-        "composer-exit-on-patch-failure": true
+        "composer-exit-on-patch-failure": true,
+        "merge-plugin": {
+            "require": [
+                "src/ComposerPlugin/composer.json"
+            ]
+        }
     },
     "config": {
         "sort-packages": true,
         "allow-plugins": {
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "ec-europa/toolkit-composer-plugin": true
+            "ec-europa/toolkit-composer-plugin": true,
+            "wikimedia/composer-merge-plugin": true
         }
     },
     "scripts": {
