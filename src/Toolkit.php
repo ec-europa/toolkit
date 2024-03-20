@@ -22,6 +22,13 @@ final class Toolkit
     public const REPOSITORY = 'ec-europa/toolkit';
 
     /**
+     * The Toolkit repository.
+     *
+     * TODO: This must be changed to ec-europa vendor.
+     */
+    public const PLUGIN = 'joaocsilva/toolkit-composer-plugin';
+
+    /**
      * Returns the Toolkit root.
      *
      * @return string
@@ -51,7 +58,8 @@ final class Toolkit
      */
     public static function isCiCd(): bool
     {
-        return !empty(getenv('CI'));
+        $ci = getenv('CI');
+        return !empty($ci) && ($ci === 'true' || $ci === 'drone');
     }
 
     /**

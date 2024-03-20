@@ -312,6 +312,15 @@ class Website
     }
 
     /**
+     * Returns the notifications from the endpoint.
+     */
+    public static function notifications()
+    {
+        $data = self::getWithMockFallback(self::url() . '/api/v1/notifications');
+        return empty($data) ? false : $data;
+    }
+
+    /**
      * Returns content from given endpoint and fallback to mock if possible.
      *
      * This should only be executed on CI.

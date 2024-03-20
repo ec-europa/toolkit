@@ -25,6 +25,7 @@
         "ec-europa/qa-automation": "^9.2.0",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "jakeasmith/http_build_url": "^1.0",
+        "joaocsilva/toolkit-composer-plugin": "^0.0.1",
         "league/container": "^4.1.1",
         "mglaman/phpstan-drupal": "^1.1",
         "pear/archive_tar": "^1.4",
@@ -57,7 +58,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "cweagans/composer-patches": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "joaocsilva/toolkit-composer-plugin": true
         }
     },
     "scripts": {

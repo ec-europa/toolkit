@@ -8,6 +8,7 @@ use Composer\Semver\Semver;
 use Dotenv\Dotenv;
 use EcEuropa\Toolkit\DrupalReleaseHistory;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Symfony\ConsoleIO;
@@ -542,6 +543,7 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function componentComposer(ConsoleIO $io)
     {
@@ -633,6 +635,12 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->io->error("Plugin not installed, please remove from composer.json config.allow-plugins: $missingPlugin.");
                 $this->composerFailed = true;
             }
+        }
+
+        // Make sure the toolkit-composer-plugin is allowed.
+        if (empty($composerJson['config']['allow-plugins'][Toolkit::PLUGIN])) {
+            $this->io->error('Plugin ' . Toolkit::PLUGIN . ' must be allowed in the config.allow-plugins section of the composer.json.');
+            $this->composerFailed = true;
         }
 
         if (!$this->composerFailed) {

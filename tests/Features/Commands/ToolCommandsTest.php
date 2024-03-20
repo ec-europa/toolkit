@@ -102,6 +102,55 @@ class ToolCommandsTest extends AbstractTest
     }
 
     /**
+     * Data provider for command toolkit:notifications.
+     *
+     * @return array
+     *   An array of test data arrays with assertions.
+     */
+    public static function dataProviderNotifications()
+    {
+        return self::getFixtureContent('commands/notifications.yml');
+    }
+
+    /**
+     * Test command toolkit:notifications.
+     *
+     * @param string $command
+     *   A command.
+     * @param array $config
+     *   A configuration.
+     * @param array $envVars
+     *   Environment variables to set.
+     * @param array $resources
+     *   Resources needed for the test.
+     * @param array $expectations
+     *   Tests expected.
+     *
+     * @dataProvider dataProviderNotifications
+     */
+    public function testNotifications(string $command, array $config = [], array $envVars = [], array $resources = [], array $expectations = [])
+    {
+        // Setup configuration file.
+        if (!empty($config)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        }
+        if (!empty($envVars)) {
+            foreach ($envVars as $envVar) {
+                putenv($envVar);
+            }
+        }
+        $this->prepareResources($resources);
+
+        // Run command.
+        $result = $this->runCommand($command);
+        $this->debugExpectations($result['output'], $expectations);
+        // Assert expectations.
+        foreach ($expectations as $expectation) {
+            $this->assertDynamic($result['output'], $expectation);
+        }
+    }
+
+    /**
      * Test if configuration file exists.
      */
     public function testConfigurationFileExists()
