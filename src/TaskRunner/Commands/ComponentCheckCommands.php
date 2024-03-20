@@ -542,7 +542,6 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function componentComposer(ConsoleIO $io)
     {
@@ -634,12 +633,6 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->io->error("Plugin not installed, please remove from composer.json config.allow-plugins: $missingPlugin.");
                 $this->composerFailed = true;
             }
-        }
-
-        // Make sure the toolkit-composer-plugin is allowed.
-        if (empty($composerJson['config']['allow-plugins']['ec-europa/toolkit-composer-plugin'])) {
-            $this->io->error('Plugin ec-europa/toolkit-composer-plugin must be allowed in the config.allow-plugins section of the composer.json.');
-            $this->composerFailed = true;
         }
 
         if (!$this->composerFailed) {
