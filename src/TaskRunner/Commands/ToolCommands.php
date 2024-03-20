@@ -678,42 +678,4 @@ class ToolCommands extends AbstractCommands
         return (array) Yaml::parseFile($opts);
     }
 
-    /**
-     * Display Toolkit notifications.
-     *
-     * @command toolkit:notifications
-     *
-     * @option endpoint The endpoint to use to connect to QA Website.
-     *
-     * @aliases tk-notifications
-     */
-    public function toolkitNotifications(ConsoleIO $io, array $options = [
-        'endpoint' => InputOption::VALUE_OPTIONAL,
-    ])
-    {
-        // This command is called from a composer-plugin, so we provide
-        // a way to bypass this execution by config.
-        if (empty($this->getConfigValue('toolkit.notifications.show'))) {
-            return ResultData::EXITCODE_OK;
-        }
-        // Ignore this command on CI/CD.
-        if (Toolkit::isCiCd()) {
-            return ResultData::EXITCODE_OK;
-        }
-        if (!empty($options['endpoint'])) {
-            Website::setUrl($options['endpoint']);
-        }
-        if ($notifications = Website::notifications()) {
-            foreach ($notifications as $notification) {
-                $io->title($notification['title']);
-                $io->writeln($notification['notification']);
-                if (!empty($notification['url'])) {
-                    $io->writeln('See more at: ' . $notification['url']);
-                }
-                $io->newLine(2);
-            }
-        }
-        return ResultData::EXITCODE_OK;
-    }
-
 }
