@@ -7,7 +7,9 @@
 
 - command: toolkit:notifications
   configuration: []
-  variables: []
+  variables:
+    - CI=false
+    - QA_WEBSITE_URL=http://ec-behat.com
   resources:
     - file: .toolkit-mock/0.0.4/api/v1/notifications.json
       content: |
@@ -38,7 +40,9 @@
     toolkit:
       notifications:
         show: false
-  variables: []
+  variables:
+    - CI=false
+    - QA_WEBSITE_URL=http://ec-behat.com
   resources:
     - file: .toolkit-mock/0.0.4/api/v1/notifications.json
       content: |
