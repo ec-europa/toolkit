@@ -4,7 +4,7 @@
     "license": "EUPL-1.2",
     "type": "library",
     "homepage": "https://github.com/ec-europa/toolkit",
-    "minimum-stability": "dev",
+    "minimum-stability": "beta",
     "prefer-stable": true,
     "support": {
         "email": "DIGIT-NEXTEUROPA-QA@ec.europa.eu",
@@ -35,7 +35,6 @@
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpunit/phpunit": "^9.5 || ^10.0",
         "squizlabs/php_codesniffer": "^3.7",
-        "symfony/yaml": "^5.2 || ^6.0",
         "vlucas/phpdotenv": "^5.6"
     },
     "suggest": {
