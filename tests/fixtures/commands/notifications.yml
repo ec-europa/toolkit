@@ -1,0 +1,55 @@
+- command: toolkit:notifications
+  configuration: []
+  variables: []
+  resources: []
+  expectations:
+    - empty: ~
+
+- command: toolkit:notifications
+  configuration: []
+  variables: []
+  resources:
+    - file: .toolkit-mock/0.0.4/api/v1/notifications.json
+      content: |
+        [{
+          "title": "Notification title 1",
+          "notification": "Description of notification 1"
+        },{
+          "title": "Notification title 2",
+          "notification": "Description of notification 2",
+          "url": "https://example.com/notification-2"
+        }]
+  expectations:
+    - contains: |
+        Notification title 1
+        ====================
+
+        Description of notification 1
+
+
+        Notification title 2
+        ====================
+
+        Description of notification 2
+        See more at: https://example.com/notification-2
+
+- command: toolkit:notifications
+  configuration:
+    toolkit:
+      notifications:
+        show: false
+  variables: []
+  resources:
+    - file: .toolkit-mock/0.0.4/api/v1/notifications.json
+      content: |
+        [{
+          "title": "Notification title 1",
+          "notification": "Description of notification 1"
+        },{
+          "title": "Notification title 2",
+          "notification": "Description of notification 2",
+          "url": "https://example.com/notification-2"
+        }]
+  expectations:
+    - empty: ~
+    - string_not_contains: Notification title 1
