@@ -300,6 +300,21 @@ class Website
     }
 
     /**
+     * Returns the forbidden environment variables from the endpoint.
+     *
+     * @throws \Exception
+     *   If the request fails.
+     */
+    public static function forbiddenEnvironmentVariables()
+    {
+        if (empty($auth = self::apiAuth())) {
+            return false;
+        }
+        $data = self::getWithMockFallback(self::url() . '/api/v1/config-forbidden-env-variables', $auth);
+        return $data['config_forbidden_env_variables'] ?? [];
+    }
+
+    /**
      * Returns the packages reviews from the endpoint.
      */
     public static function packages()

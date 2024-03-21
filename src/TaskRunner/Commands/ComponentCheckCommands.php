@@ -675,48 +675,48 @@ class ComponentCheckCommands extends AbstractCommands
         $fileNames = [DockerCommands::DC_YML_FILE, '.env', '.env.dist'];
         $envVarsSet = [];
         // Get forbidden/obsolete vars from config.
-        $forbiddenVars = $this->getConfig()->get('toolkit.components.docker_compose.environment_variables.forbidden');
-
-        // Parse files that contain env variables into sets.
-        foreach ($fileNames as $filename) {
-            if (is_file($filename)) {
-                $ext = pathinfo($filename, PATHINFO_EXTENSION);
-                // Yaml files.
-                if ($ext && $ext == 'yml') {
-                    $parsedYaml = Yaml::parseFile($filename);
-                    // Loop through all the services looking for environment variables.
-                    if (!empty($parsedYaml['services'])) {
-                        foreach ($parsedYaml['services'] as $serviceName => $serviceSettings) {
-                            if (!empty($serviceSettings['environment'])) {
-                                // Add environment variables set for check.
-                                $envVarsSet[$filename . '_' . $serviceName] = $serviceSettings['environment'];
+        $forbiddenVars = Website::forbiddenEnvironmentVariables();
+        if (!empty($forbiddenVars)) {
+            // Parse files that contain env variables into sets.
+            foreach ($fileNames as $filename) {
+                if (is_file($filename)) {
+                    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+                    // Yaml files.
+                    if ($ext && $ext == 'yml') {
+                        $parsedYaml = Yaml::parseFile($filename);
+                        // Loop through all the services looking for environment variables.
+                        if (!empty($parsedYaml['services'])) {
+                            foreach ($parsedYaml['services'] as $serviceName => $serviceSettings) {
+                                if (!empty($serviceSettings['environment'])) {
+                                    // Add environment variables set for check.
+                                    $envVarsSet[$filename . '_' . $serviceName] = $serviceSettings['environment'];
+                                }
                             }
                         }
-                    }
-                // Ini files.
-                } else {
-                    // Add environment variables set for check.
-                    $contentParsed = Dotenv::parse(file_get_contents($filename));
-                    if (is_array($contentParsed)) {
-                        $envVarsSet[$filename] = $contentParsed;
+                        // Ini files.
+                    } else {
+                        // Add environment variables set for check.
+                        $contentParsed = Dotenv::parse(file_get_contents($filename));
+                        if (is_array($contentParsed)) {
+                            $envVarsSet[$filename] = $contentParsed;
+                        }
                     }
                 }
             }
-        }
-
-        // Detect forbidden variables.
-        foreach ($forbiddenVars as $varName) {
-            // Check if forbidden env variables are not already here.
-            if (getenv($varName) !== false) {
-                $this->configurationFailed = true;
-                $this->io->error('Forbidden environment variable "' . $varName . '" detected in the container. Please locate the source of that variable and remove it.');
-            }
-            // Find forbidden/obsolete variables in parsed files.
-            if (!empty($envVarsSet)) {
-                foreach ($envVarsSet as $filename => $envVars) {
-                    if (array_key_exists($varName, $envVars)) {
-                        $this->configurationFailed = true;
-                        $this->io->error('Forbidden environment variable detected in ' . $filename . ' file: ' . $varName . '. Please remove it.');
+            // Detect forbidden variables.
+            foreach ($forbiddenVars as $varName) {
+                // Check if forbidden env variables are not already here.
+                if (getenv($varName) !== false) {
+                    $this->configurationFailed = true;
+                    $this->io->error('Forbidden environment variable "' . $varName . '" detected in the container. Please locate the source of that variable and remove it.');
+                }
+                // Find forbidden/obsolete variables in parsed files.
+                if (!empty($envVarsSet)) {
+                    foreach ($envVarsSet as $filename => $envVars) {
+                        if (array_key_exists($varName, $envVars)) {
+                            $this->configurationFailed = true;
+                            $this->io->error('Forbidden environment variable detected in ' . $filename . ' file: ' . $varName . '. Please remove it.');
+                        }
                     }
                 }
             }
