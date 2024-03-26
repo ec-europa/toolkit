@@ -6,6 +6,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
+use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
@@ -67,20 +68,35 @@ class InstallCommands extends AbstractCommands
      * @return \Robo\Collection\CollectionBuilder
      *   Collection builder.
      */
-    public function toolkitInstallClone(array $options = [
+    public function toolkitInstallClone(ConsoleIO $io, array $options = [
         'dumpfile' => InputOption::VALUE_REQUIRED,
     ])
     {
         $tasks = [];
         $runnerBin = $this->getBin('run');
 
+        $commands = $this->getConfig()->get('toolkit.install.clone.commands', []);
+        $beforeCommands = $commands['before'] ?? [];
+        $afterCommands = $commands['after'] ?? [];
+        unset($commands['before'], $commands['after']);
+
+        // Execute commands configured to run before main tasks.
+        if ($beforeCommands) {
+            $tasks[] = $this->taskExecute($beforeCommands);
+        }
+
         $tasks[] = $this->taskExec($runnerBin)
             ->arg('toolkit:install-dump')
             ->option('dumpfile', $options['dumpfile'], '=');
         $tasks[] = $this->taskExec($runnerBin)->arg('toolkit:run-deploy');
 
-        // Collect and execute list of commands set on local runner.yml.
-        if (!empty($commands = $this->getConfig()->get('toolkit.install.clone.commands'))) {
+        // Execute commands configured to run after main tasks.
+        if ($afterCommands) {
+            $tasks[] = $this->taskExecute($afterCommands);
+        }
+
+        if ($commands) {
+            $io->warning('Using the config ${toolkit.install.clone.commands} is deprecated, please update to ${toolkit.install.clone.commands.after}.');
             $tasks[] = $this->taskExecute($commands);
         }
 
