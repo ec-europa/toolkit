@@ -43,14 +43,28 @@ class InstallCommands extends AbstractCommands
         'config-file' => InputOption::VALUE_REQUIRED,
     ])
     {
+        $tasks = [];
+        $commands = $this->getConfig()->get('toolkit.install.clean.commands', []);
         $runnerBin = $this->getBin('run');
+
+        // Execute commands configured to run before the main task.
+        if (!empty($commands['before'])) {
+            $tasks[] = $this->taskExecute($commands['before']);
+        }
+
         $task = $this->taskExec($runnerBin)->arg('drupal:site-install');
         if (!empty($options['config-file']) && file_exists($options['config-file'])) {
             $task->option('existing-config');
         }
+        $tasks[] = $task;
+
+        // Execute commands configured to run after the main task.
+        if (!empty($commands['after'])) {
+            $tasks[] = $this->taskExecute($commands['after']);
+        }
 
         // Build and return task collection.
-        return $this->collectionBuilder()->addTask($task);
+        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
