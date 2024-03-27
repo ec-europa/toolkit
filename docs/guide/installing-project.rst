@@ -43,6 +43,27 @@ To install the site from existing configuration run:
    docker-compose exec web ./vendor/bin/run toolkit:build-dev
    docker-compose exec web ./vendor/bin/run toolkit:install-clean --existing-config
 
+Commands to run before/after clean installation
+"""""""""""""""""""""""""""""""""""""""""""""""
+
+Additional commands can be run before and/or after installing the clean site.
+Such commands should be defined in the configuration file ``runner.yml``:
+
+.. code-block:: yaml
+
+   toolkit:
+     install:
+       clean:
+         commands:
+           before:
+             - task: exec
+               command: ls -la
+             - ...
+           after:
+             - task: exec
+               command: whoami
+             - ...
+
 Clone installation
 ^^^^^^^^^^^^^^^^^^
 
@@ -67,16 +88,8 @@ project, so make sure you have the following variables in your environment:
    - ASDA_USER
    - ASDA_PASSWORD
 
-If you want to run extra commands after the ``toolkit:install-clone`` command you
-can configure the following in your ``runner.yml.dist`` file:
-
-.. code-block:: yaml
-
-   toolkit:
-     install:
-       clone:
-         commands:
-           - ./vendor/bin/drush status
+Commands part of clone installation
+"""""""""""""""""""""""""""""""""""
 
 When running the command toolkit:install-clone it will run the following sequence of
 commands after the database import:
@@ -93,3 +106,24 @@ These commands simulate the automated deployment that Drone provides through its
 alter these commands by providing a file named **.opts.yml** in the root of your project folder. For
 more detailed information on the contents of this **.opts.yml** file please refer to this
 page: https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides .
+
+Commands to run before/after clone installation
+"""""""""""""""""""""""""""""""""""""""""""""""
+
+Additional commands can be run before and/or after installing the cloned site.
+Such commands should be defined in the configuration file ``runner.yml``:
+
+.. code-block:: yaml
+
+   toolkit:
+     install:
+       clone:
+         commands:
+           before:
+             - task: exec
+               command: ls -la
+             - ...
+           after:
+             - task: exec
+               command: whoami
+             - ...
