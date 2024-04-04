@@ -332,4 +332,11 @@
   tokens: '[skip_d9c]'
   resources: []
   expectations:
-    - not_string_contains: 'Preparing the project to run upgrade_status'
+    - empty: ~
+
+- command: 'drupal:check-sanitisation-fields'
+  configuration: []
+  tokens: ~
+  resources: []
+  expectations:
+    - string_contains: Website not installed, skipping

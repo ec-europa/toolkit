@@ -571,6 +571,76 @@ class DrupalCommands extends AbstractCommands
     }
 
     /**
+     * Command to check fields for sanitisation.
+     *
+     * @param array $options
+     *   Command options.
+     *
+     * @command drupal:check-sanitisation-fields
+     *
+     * @option types    The field types to check.
+     * @option keywords The keywords to look into field names.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    public function drupalCheckSanitisationFields(ConsoleIO $io, array $options = [
+        'types' => InputOption::VALUE_REQUIRED,
+        'keywords' => InputOption::VALUE_REQUIRED,
+    ]): int
+    {
+        if (!$this->isWebsiteInstalled()) {
+            $io->writeln('Website not installed, skipping.');
+            return ResultData::EXITCODE_OK;
+        }
+        $command = "\Drupal::service('entity_field.manager')->getFieldMap()";
+        $result = $this->taskExec($this->getBin('drush') . ' eval "echo json_encode(' . $command . ')"')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        if (empty($result)) {
+            $io->writeln('No fields found, skipping.');
+            return ResultData::EXITCODE_OK;
+        }
+
+        $fieldNames = $fieldTypes = [];
+        $map = json_decode($result, true);
+        Toolkit::ensureArray($options['types']);
+        Toolkit::ensureArray($options['keywords']);
+        $keywordsRegex = implode('|', $options['keywords']);
+
+        // Skip the user fields if the drush User sanitize is present.
+        if (method_exists('\Drush\Drupal\Commands\sql\SanitizeUserTableCommands', 'sanitize')) {
+            unset($map['user']);
+        }
+        // Skip the comment fields if the drush Comments sanitize is present.
+        if (method_exists('\Drush\Drupal\Commands\sql\SanitizeCommentsCommands', 'sanitize')) {
+            unset($map['comment']);
+        }
+
+        foreach ($map as $entityType => $fields) {
+            foreach ($fields as $fieldName => $definition) {
+                if (!empty($definition['type']) && in_array($definition['type'], $options['types'])) {
+                    $fieldTypes[] = "$entityType-$fieldName ({$definition['type']})";
+                }
+                // For keyword fields we can skip the boolean type of fields as they do not contain
+                // any relevant information.
+                if (empty($definition['type']) || $definition['type'] === 'boolean') {
+                    continue;
+                }
+                if (preg_match('/' . $keywordsRegex . '/', $fieldName) > 0) {
+                    $fieldNames[] = "$entityType-$fieldName ({$definition['type']})";
+                }
+            }
+        }
+
+        $io->title('Field types that should be sanitised:');
+        $io->listing($fieldTypes);
+        $io->title('Fields that should be sanitised by their name:');
+        $io->listing($fieldNames);
+        return ResultData::EXITCODE_OK;
+    }
+
+    /**
      * Remove settings block from given content.
      *
      * @return string

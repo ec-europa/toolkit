@@ -41,3 +41,19 @@ drupal:
   # Configuration token replacement is supported too.
   pre_install: [ ]
   post_install: [ ]
+  sanitisation:
+    types:
+      - email
+      - address
+      - country
+      - password
+      - telephone
+    keywords:
+      - _country
+      - _email
+      - _mail
+      - _ip
+      - _address
+      - _password
+      - _token
+      - _auth
