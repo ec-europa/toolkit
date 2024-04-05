@@ -675,7 +675,8 @@ class ComponentCheckCommands extends AbstractCommands
         $fileNames = [DockerCommands::DC_YML_FILE, '.env', '.env.dist'];
         $envVarsSet = [];
         // Get forbidden/obsolete vars from config.
-        $forbiddenVars = Website::forbiddenEnvironmentVariables();
+        $toolkitReqs = Website::requirements();
+        $forbiddenVars = $toolkitReqs['forbidden_variables'] ?? [];
         if (!empty($forbiddenVars)) {
             // Parse files that contain env variables into sets.
             foreach ($fileNames as $filename) {
