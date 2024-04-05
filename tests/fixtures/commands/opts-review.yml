@@ -1,15 +1,11 @@
 - command: 'toolkit:opts-review'
-  configuration:
-    toolkit:
-      project_id: toolkit
+  configuration: []
   resources: []
   expectations:
     - contains: ">  The file '.opts.yml' was not found, skipping."
 
 - command: 'toolkit:opts-review'
-  configuration:
-    toolkit:
-      project_id: toolkit
+  configuration: []
   resources:
     - file: .opts.yml
       content: "php_version: 8.0"
@@ -19,9 +15,7 @@
         >  The project is using default deploy instructions.
 
 - command: 'toolkit:opts-review'
-  configuration:
-    toolkit:
-      project_id: toolkit
+  configuration: []
   resources:
     - file: .opts.yml
       content: "php_version: 8.1"
@@ -29,9 +23,7 @@
     - contains: ">  The project is using default deploy instructions."
 
 - command: 'toolkit:opts-review'
-  configuration:
-    toolkit:
-      project_id: toolkit
+  configuration: []
   resources:
     - file: .opts.yml
       content: "php_version: '8.0'"
@@ -39,9 +31,7 @@
     - contains: ">  The project is using default deploy instructions."
 
 - command: 'toolkit:opts-review'
-  configuration:
-    toolkit:
-      project_id: toolkit
+  configuration: []
   resources:
     - from: 'sample-opts.yml'
       to: '.opts.yml'
@@ -50,9 +40,7 @@
     - not_contains: ">  The php_version should be wrapped with upper-quotes"
 
 - command: 'toolkit:opts-review'
-  configuration:
-    toolkit:
-      project_id: toolkit
+  configuration: []
   resources:
     - from: 'sample-config.yml'
       to: '.opts.yml'
@@ -60,9 +48,7 @@
     - contains: ">  The project is using default deploy instructions."
 
 - command: 'toolkit:opts-review'
-  configuration:
-    toolkit:
-      project_id: toolkit
+  configuration: []
   resources:
     - from: 'sample-opts-broken-structure.yml'
       to: '.opts.yml'
@@ -72,9 +58,7 @@
         See the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override
 
 - command: 'toolkit:opts-review'
-  configuration:
-    toolkit:
-      project_id: toolkit
+  configuration: []
   resources:
     - from: 'sample-opts-broken.yml'
       to: '.opts.yml'
@@ -92,3 +76,14 @@
         >  The command './vendor/bin/drush 'site:install' -y' is not allowed. Please remove it from 'upgrade_commands' section.
 
         [ERROR] Failed the '.opts.yml' file review. Please contact the QA team.
+
+- command: 'toolkit:opts-review'
+  configuration: []
+  resources:
+    - file: .opts.yml
+      content: |
+        dump_options:
+          - DUMP_OPTS= "--skip-tables-key='cache_field cache_form'"
+          - SANITIZE_OPTS= "--allowlist-fields=field_biography --sanitize-password=no --sanitize-email=yes"
+  expectations:
+    - string_contains: Invalid syntax detected in dump_options section for the SANITIZE_OPTS.

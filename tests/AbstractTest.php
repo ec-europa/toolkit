@@ -69,30 +69,20 @@ abstract class AbstractTest extends TestCase
                 substr_count($this->trimEachLine($content), $this->trimEachLine($expected['contains'])),
                 'String found more than once.'
             );
-        }
-
-        if (!empty($expected['not_contains'])) {
+        } elseif (!empty($expected['not_contains'])) {
             $this->assertNotContains($this->trimEachLine($expected['not_contains']), [$this->trimEachLine($content)]);
-        }
-
-        if (!empty($expected['string_contains'])) {
+        } elseif (!empty($expected['string_contains'])) {
             $this->assertStringContainsString($this->trimEachLine($expected['string_contains']), $this->trimEachLine($content));
-        }
-
-        if (!empty($expected['not_string_contains'])) {
+        } elseif (!empty($expected['not_string_contains'])) {
             $this->assertStringNotContainsString($this->trimEachLine($expected['not_string_contains']), $this->trimEachLine($content));
-        }
-
-        if (!empty($expected['file_expected']) && !empty($expected['file_actual'])) {
+        } elseif (!empty($expected['file_expected']) && !empty($expected['file_actual'])) {
             $this->assertFileEquals($expected['file_expected'], $expected['file_actual']);
-        }
-
-        if (array_key_exists('empty', $expected)) {
+        } elseif (array_key_exists('empty', $expected)) {
             $this->assertEmpty($this->trimEachLine($content));
-        }
-
-        if (array_key_exists('not_empty', $expected)) {
+        } elseif (array_key_exists('not_empty', $expected)) {
             $this->assertNotEmpty($this->trimEachLine($content));
+        } else {
+            throw new \Exception('Unrecognised dynamic assertion ' . key($expected));
         }
     }
 
