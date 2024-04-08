@@ -340,3 +340,27 @@
   resources: []
   expectations:
     - string_contains: Website not installed, skipping
+
+- command: 'drupal:check-sanitisation-classes'
+  configuration: []
+  tokens: ~
+  resources:
+    - mkdir: lib/modules/toolkit_module/src/Commands
+  expectations:
+    - string_contains: '[ERROR] Could not find any class implementing the interface'
+
+- command: 'drupal:check-sanitisation-classes'
+  configuration: []
+  tokens: ~
+  resources:
+    - mkdir: lib/modules/toolkit_module/src/Commands
+    - file: lib/modules/toolkit_module/src/Commands/ToolkitSanitizeCommand.php
+      content: |
+        <?php
+        namespace Drupal\toolkit_module\Commands;
+        class ToolkitSanitizeCommand extends \Drush\Commands\DrushCommands implements \Drush\Drupal\Commands\sql\SanitizePluginInterface {
+          public function sanitize($result, \Consolidation\AnnotatedCommand\CommandData $commandData) {}
+          public function messages(array &$messages, \Symfony\Component\Console\Input\InputInterface $input) {}
+        }
+  expectations:
+    - string_contains: ToolkitSanitizeCommand

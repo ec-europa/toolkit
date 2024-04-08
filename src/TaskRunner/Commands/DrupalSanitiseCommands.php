@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use Composer\Autoload\ClassLoader;
+use Composer\ClassMapGenerator\ClassMapGenerator;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\Contract\VerbosityThresholdInterface;
@@ -92,6 +94,85 @@ class DrupalSanitiseCommands extends AbstractCommands
         $io->title('Fields that should be sanitised by their name:');
         $io->listing($fieldNames);
         return ResultData::EXITCODE_OK;
+    }
+
+    /**
+     * Command to check existence of Sanitisation classes.
+     *
+     * @command drupal:check-sanitisation-classes
+     */
+    public function drupalCheckSanitisationClasses(ConsoleIO $io)
+    {
+        $interface = '\Drush\Drupal\Commands\sql\SanitizePluginInterface';
+        if (!interface_exists($interface)) {
+            $io->warning("Interface class $interface was not found, skipping.");
+            return ResultData::EXITCODE_OK;
+        }
+        $src = $this->getConfig()->get('toolkit.build.custom-code-folder');
+        if (!file_exists($src)) {
+            $io->warning("The directory $src could not be found, skipping.");
+            return ResultData::EXITCODE_OK;
+        }
+
+        $sanitiseClasses = [];
+        $this->registerCustomClasses($src);
+        $map = ClassMapGenerator::createMap($src);
+        foreach (array_keys($map) as $class) {
+            // Check if the class implements the SanitizePluginInterface.
+            // Ignore errors thrown by some classes due to missing dependencies,
+            // Toolkit requires Drush and the drush commands classes do not throw any error.
+            try {
+                if (is_a($class, $interface, true)) {
+                    $sanitiseClasses[] = $class;
+                }
+                // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+            } catch (\Error $error) {
+                // Do nothing.
+            }
+        }
+        if (empty($sanitiseClasses)) {
+            $io->error("Could not find any class implementing the interface $interface.");
+            return ResultData::EXITCODE_ERROR;
+        }
+
+        $io->title('Classes for Sanitisation:');
+        $io->listing($sanitiseClasses);
+
+        return ResultData::EXITCODE_OK;
+    }
+
+    /**
+     * Register all classes in custom code directory folder that are not registered.
+     *
+     * This assumes the Drupal namespace \Drupal\[module].
+     *
+     * @param string $directory
+     *   The directory to search for classes.
+     */
+    private function registerCustomClasses(string $directory)
+    {
+        $registered = [];
+        $map = ClassMapGenerator::createMap($directory);
+        $loader = new ClassLoader();
+        foreach ($map as $class => $path) {
+            // Ignore if the class namespace do not start with Drupal or
+            // if is already registered.
+            if (!str_starts_with($class, 'Drupal\\') || class_exists($class)) {
+                continue;
+            }
+            $namespaceExploded = explode('\\', $class);
+            $namespacePrefix = $namespaceExploded[0] . '\\' . $namespaceExploded[1] . '\\';
+            // Skip if we already registered this namespace, we only need to
+            // register one namespace per module, avoid to register all classes
+            // inside the same namespace.
+            if (in_array($namespacePrefix, $registered)) {
+                continue;
+            }
+            $modulePath = strstr($path, $namespaceExploded[1], true) . $namespaceExploded[1];
+            $loader->addPsr4($namespacePrefix, $modulePath . '/src');
+            $registered[] = $namespacePrefix;
+        }
+        $loader->register();
     }
 
     /**
