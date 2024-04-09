@@ -23,8 +23,6 @@ final class Toolkit
 
     /**
      * The Toolkit repository.
-     *
-     * TODO: This must be changed to ec-europa vendor.
      */
     public const PLUGIN = 'ec-europa/toolkit-composer-plugin';
 
