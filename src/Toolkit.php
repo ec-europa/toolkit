@@ -22,7 +22,7 @@ final class Toolkit
     public const REPOSITORY = 'ec-europa/toolkit';
 
     /**
-     * The Toolkit repository.
+     * The Toolkit composer plugin repository.
      */
     public const PLUGIN = 'ec-europa/toolkit-composer-plugin';
 
