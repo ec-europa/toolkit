@@ -339,4 +339,81 @@
   tokens: ~
   resources: []
   expectations:
-    - string_contains: Website not installed, skipping
+    - contains: |
+        Field types that should be sanitised:
+        =====================================
+
+
+
+        Fields that should be sanitised by their name:
+        ==============================================
+
+        * node-field_test_token (string)
+
+- command: 'drupal:check-sanitisation-fields'
+  configuration:
+    drupal:
+      sanitisation:
+        types:
+          - address
+          - country
+          - email
+          - password
+          - telephone
+          - custom_type
+        keywords:
+          - _address
+          - _auth
+          - _country
+          - _email
+          - _ip
+          - _mail
+          - _password
+          - _token
+          - _new
+  tokens: ~
+  resources: []
+  expectations:
+    - string_contains: node-field_test_token (string)
+    - string_contains: node-field_test_new (string)
+    - string_contains: node-field_test_custom_type (custom_type)
+    - not_string_contains: user-email (email)
+    - not_string_contains: user-password (password)
+
+- command: 'drupal:check-sanitisation-fields'
+  configuration: []
+  tokens: ~
+  resources:
+    - file: .opts.yml
+      content: |
+        dump_options:
+          - SANITIZE_OPTS: "--sanitize-email=sanitised@localhost.localdomain"
+  expectations:
+    - string_contains: node-field_test_token (string)
+    - not_string_contains: user-email (email)
+
+- command: 'drupal:check-sanitisation-fields'
+  configuration: []
+  tokens: ~
+  resources:
+    - file: .opts.yml
+      content: |
+        dump_options:
+          - SANITIZE_OPTS: "--sanitize-email=no"
+  expectations:
+    - string_contains: node-field_test_token (string)
+    - string_contains: user-email (email)
+    - string_contains: user-password (password)
+
+- command: 'drupal:check-sanitisation-fields'
+  configuration: []
+  tokens: ~
+  resources:
+    - file: .opts.yml
+      content: |
+        dump_options:
+          - SANITIZE_OPTS: "--sanitize-password=no"
+  expectations:
+    - string_contains: node-field_test_token (string)
+    - string_contains: user-email (email)
+    - string_contains: user-password (password)

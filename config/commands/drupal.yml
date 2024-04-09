@@ -31,3 +31,4 @@ command:
       options:
         types: ${drupal.sanitisation.types}
         keywords: ${drupal.sanitisation.keywords}
+        types-ignore: ${drupal.sanitisation.types-ignore}

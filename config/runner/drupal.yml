@@ -43,17 +43,37 @@ drupal:
   post_install: [ ]
   sanitisation:
     types:
-      - email
       - address
       - country
+      - email
       - password
       - telephone
+    types-ignore:
+      - boolean
+      - changed
+      - created
+      - datetime
+      - decimal
+      - entity_reference
+      - entity_reference_revisions
+      - file
+      - file_uri
+      - float
+      - image
+      - integer
+      - language
+      - link
+      - path
+      - redirect_source
+      - timestamp
+      - uuid
+      - weight
     keywords:
+      - _address
+      - _auth
       - _country
       - _email
-      - _mail
       - _ip
-      - _address
+      - _mail
       - _password
       - _token
-      - _auth

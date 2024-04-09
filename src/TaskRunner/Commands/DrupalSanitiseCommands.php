@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
-use EcEuropa\Toolkit\Toolkit;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
@@ -39,31 +38,35 @@ class DrupalSanitiseCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function drupalCheckSanitisationFields(ConsoleIO $io, array $options = [
-        'types' => InputOption::VALUE_REQUIRED,
-        'keywords' => InputOption::VALUE_REQUIRED,
+        'types' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'keywords' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+        'types-ignore' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
     ]): int
     {
         $this->io = $io;
-        if (!$this->isWebsiteInstalled()) {
-            $io->writeln('Website not installed, skipping.');
-            return ResultData::EXITCODE_OK;
-        }
-        $command = "\Drupal::service('entity_field.manager')->getFieldMap()";
-        $result = $this->taskExec($this->getBin('drush') . ' eval "echo json_encode(' . $command . ')"')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
-        if (empty($result)) {
-            $io->writeln('No fields found, skipping.');
-            return ResultData::EXITCODE_OK;
+        // Add some fields for testing purposes.
+        if ($this->isSimulating()) {
+            $map = $this->testMap();
+        } else {
+            if (!$this->isWebsiteInstalled()) {
+                $io->writeln('Website not installed, skipping.');
+                return ResultData::EXITCODE_OK;
+            }
+            $command = "\Drupal::service('entity_field.manager')->getFieldMap()";
+            $result = $this->taskExec($this->getBin('drush') . ' eval "echo json_encode(' . $command . ')"')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
+            if (empty($result)) {
+                $io->writeln('No fields found, skipping.');
+                return ResultData::EXITCODE_OK;
+            }
+            $map = json_decode($result, true);
         }
 
         $fieldNames = $fieldTypes = [];
-        $map = json_decode($result, true);
-        Toolkit::ensureArray($options['types']);
-        Toolkit::ensureArray($options['keywords']);
         $keywordsRegex = implode('|', $options['keywords']);
 
-        // Skip the user fields if the drush User sanitize is present and no skips are present.
+        // Skip the user fields if the drush User sanitize is present and no skips are used.
         if ($this->areUserFieldsSanitised()) {
             unset($map['user']);
         }
@@ -74,8 +77,8 @@ class DrupalSanitiseCommands extends AbstractCommands
 
         foreach ($map as $entityType => $fields) {
             foreach ($fields as $fieldName => $definition) {
-                // Completely ignore the boolean type of fields as they do not contain any relevant data.
-                if (empty($definition['type']) || $definition['type'] === 'boolean') {
+                // Ignore specific types of fields as they do not contain any relevant data.
+                if (empty($definition['type']) || in_array($definition['type'], $options['types-ignore'])) {
                     continue;
                 }
                 if (in_array($definition['type'], $options['types'])) {
@@ -101,29 +104,31 @@ class DrupalSanitiseCommands extends AbstractCommands
      * ensure that the fields are not being ignored in the opts.yml file with the
      * options --sanitize-password and --sanitize-email.
      */
-    protected function areUserFieldsSanitised(): bool
+    public static function areUserFieldsSanitised(): bool
     {
         // Fail if the command is not found.
         if (!method_exists('\Drush\Drupal\Commands\sql\SanitizeUserTableCommands', 'sanitize')) {
             return false;
         }
         // Check if the mail and pass fields are being ignored.
-        $opts = ToolCommands::parseOptsYml();
-        // By default, the fields are sanitised, skip if not options are defined.
-        if (empty($value = $opts['dump_options'][0]['SANITIZE_OPTS'])) {
+        if (empty($opts = ToolCommands::parseOptsYml())) {
             return true;
         }
-
-        $return = true;
-        if (preg_match($this->optionPattern('sanitize-password'), $value)) {
-            $this->io->warning('Detected usage of --sanitize-password=no in .opts.yml file.');
-            $return = false;
+        // By default, the fields are sanitised, skip if not options are defined.
+        if (empty($opts['dump_options'][0]['SANITIZE_OPTS'])) {
+            return true;
         }
-        if (preg_match($this->optionPattern('sanitize-email'), $value)) {
-            $this->io->warning('Detected usage of --sanitize-email=no in .opts.yml file.');
-            $return = false;
+        $value = $opts['dump_options'][0]['SANITIZE_OPTS'];
+        if (preg_match(self::optionPattern('sanitize-password'), $value)) {
+            return false;
         }
-        return $return;
+        if (preg_match(self::optionPattern('sanitize-email'), $value)) {
+            return false;
+        }
+        if (str_contains($value, 'ignored-roles')) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -131,20 +136,42 @@ class DrupalSanitiseCommands extends AbstractCommands
      *
      * Validates the presence of the SanitizeCommentsCommands command.
      */
-    protected function areCommentFieldsSanitised(): bool
+    public static function areCommentFieldsSanitised(): bool
     {
         return method_exists('\Drush\Drupal\Commands\sql\SanitizeCommentsCommands', 'sanitize');
     }
 
     /**
-     * Prepare regex to check if option exists.
+     * Prepare regex to check if option exists with value "no".
      *
      * @param string $option
      *   The option name to check, i.e: sanitize-email.
      */
-    protected function optionPattern(string $option): string
+    public static function optionPattern(string $option): string
     {
         return '/(--' . $option . '?( |=|="|=\')no)/';
+    }
+
+    /**
+     * Returns a static field map for test purposes.
+     */
+    private function testMap(): array
+    {
+        return [
+            'user' => [
+                'location' => ['type' => 'address'],
+                'password' => ['type' => 'password'],
+                'email' => ['type' => 'email'],
+            ],
+            'node' => [
+                'field_test_email' => ['type' => 'boolean'],
+                'field_test_name' => ['type' => 'string'],
+                'field_test_token' => ['type' => 'string'],
+                'field_test_auth' => ['type' => 'boolean'],
+                'field_test_new' => ['type' => 'string'],
+                'field_test_custom_type' => ['type' => 'custom_type'],
+            ],
+        ];
     }
 
 }
