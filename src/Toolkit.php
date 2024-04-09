@@ -26,7 +26,7 @@ final class Toolkit
      *
      * TODO: This must be changed to ec-europa vendor.
      */
-    public const PLUGIN = 'joaocsilva/toolkit-composer-plugin';
+    public const PLUGIN = 'ec-europa/toolkit-composer-plugin';
 
     /**
      * Returns the Toolkit root.
