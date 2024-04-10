@@ -112,6 +112,22 @@ class ToolCommands extends AbstractCommands
             }
         }
 
+        // Check for wrong syntax used for SANITIZE_OPTS.
+        if (!empty($parseOptsFile['dump_options'])) {
+            foreach ($parseOptsFile['dump_options'] as $dumpOption) {
+                if (is_string($dumpOption) && str_contains($dumpOption, 'SANITIZE_OPTS=')) {
+                    $io->say('Invalid syntax detected in dump_options section for the SANITIZE_OPTS. Use:');
+                    $io->writeln(['dump_options:', '  - SANITIZE_OPTS: "--option=no"']);
+                    $reviewOk = false;
+                } elseif (is_array($dumpOption) && !empty($dumpOption['SANITIZE_OPTS'])) {
+                    if (!DrupalSanitiseCommands::areUserFieldsSanitised()) {
+                        $io->error('Detected forbidden usage of --sanitize-email=no and/or --sanitize-password=no');
+                        $reviewOk = false;
+                    }
+                }
+            }
+        }
+
         if (empty($parseOptsFile['upgrade_commands'])) {
             $io->say('The project is using default deploy instructions.');
             return $reviewOk ? ResultData::EXITCODE_OK : ResultData::EXITCODE_ERROR;

@@ -56,4 +56,4 @@
         }]
   expectations:
     - empty: ~
-    - string_not_contains: Notification title 1
+    - not_string_contains: Notification title 1
