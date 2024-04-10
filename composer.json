@@ -23,6 +23,7 @@
         "cweagans/composer-patches": "^1.7 || ^2.0",
         "drush/drush": "^10.0.0 || ^11.0.4 || ^12.0",
         "ec-europa/qa-automation": "^9.2.0",
+        "ec-europa/toolkit-composer-plugin": "^0.0.1",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "jakeasmith/http_build_url": "^1.0",
         "league/container": "^4.1.1",
@@ -57,7 +58,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "cweagans/composer-patches": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ec-europa/toolkit-composer-plugin": true
         }
     },
     "scripts": {
