@@ -22,6 +22,11 @@ final class Toolkit
     public const REPOSITORY = 'ec-europa/toolkit';
 
     /**
+     * The Toolkit composer plugin repository.
+     */
+    public const PLUGIN = 'ec-europa/toolkit-composer-plugin';
+
+    /**
      * Returns the Toolkit root.
      *
      * @return string
@@ -51,7 +56,8 @@ final class Toolkit
      */
     public static function isCiCd(): bool
     {
-        return !empty(getenv('CI'));
+        $ci = getenv('CI');
+        return !empty($ci) && ($ci === 'true' || $ci === 'drone');
     }
 
     /**
