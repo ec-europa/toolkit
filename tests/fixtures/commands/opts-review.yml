@@ -83,7 +83,56 @@
     - file: .opts.yml
       content: |
         dump_options:
-          - DUMP_OPTS= "--skip-tables-key='cache_field cache_form'"
-          - SANITIZE_OPTS= "--allowlist-fields=field_biography --sanitize-password=no --sanitize-email=yes"
+          - SANITIZE_OPTS: "--sanitize-email=sanitised@localhost.localdomain --sanitize-password=123"
+  expectations:
+    - string_contains: The project is using default deploy instructions.
+
+- command: 'toolkit:opts-review'
+  configuration: []
+  resources:
+    - file: .opts.yml
+      content: |
+        dump_options:
+          - SANITIZE_OPTS= "--sanitize-email=sanitised@localhost.localdomain"
   expectations:
     - string_contains: Invalid syntax detected in dump_options section for the SANITIZE_OPTS.
+
+- command: 'toolkit:opts-review'
+  configuration: []
+  resources:
+    - file: .opts.yml
+      content: |
+        dump_options:
+          - SANITIZE_OPTS: "--sanitize-password=no --sanitize-email=no"
+  expectations:
+    - string_contains: "[ERROR] Detected forbidden usage of --sanitize-email=no and"
+
+- command: 'toolkit:opts-review'
+  configuration: []
+  resources:
+    - file: .opts.yml
+      content: |
+        dump_options:
+          - SANITIZE_OPTS: "--sanitize-password no --sanitize-email no"
+  expectations:
+    - string_contains: "[ERROR] Detected forbidden usage of --sanitize-email=no and"
+
+- command: 'toolkit:opts-review'
+  configuration: []
+  resources:
+    - file: .opts.yml
+      content: |
+        dump_options:
+          - SANITIZE_OPTS: "--sanitize-password='no' --sanitize-email='no'"
+  expectations:
+    - string_contains: "[ERROR] Detected forbidden usage of --sanitize-email=no and"
+
+- command: 'toolkit:opts-review'
+  configuration: []
+  resources:
+    - file: .opts.yml
+      content: |
+        dump_options:
+          - SANITIZE_OPTS: '--sanitize-password="no" --sanitize-email="no"'
+  expectations:
+    - string_contains: "[ERROR] Detected forbidden usage of --sanitize-email=no and"

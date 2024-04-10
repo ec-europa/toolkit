@@ -119,6 +119,11 @@ class ToolCommands extends AbstractCommands
                     $io->say('Invalid syntax detected in dump_options section for the SANITIZE_OPTS. Use:');
                     $io->writeln(['dump_options:', '  - SANITIZE_OPTS: "--option=no"']);
                     $reviewOk = false;
+                } elseif (is_array($dumpOption) && !empty($dumpOption['SANITIZE_OPTS'])) {
+                    if (!DrupalSanitiseCommands::areUserFieldsSanitised()) {
+                        $io->error('Detected forbidden usage of --sanitize-email=no and/or --sanitize-password=no');
+                        $reviewOk = false;
+                    }
                 }
             }
         }
