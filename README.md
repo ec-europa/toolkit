@@ -2,7 +2,7 @@
 
 The Toolkit is a composer package designed to speed up the development of Drupal websites in Drupal 9+. Its main core is the robo based build system that builds your development environments, deploy and test your code.
 
-[![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/toolkit/status.svg?branch=release/9.x)](https://drone.fpfis.eu/ec-europa/toolkit) [![License](https://img.shields.io/badge/License-EUPL%201.1-blue.svg)](LICENSE)
+[![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/toolkit/status.svg?branch=release/10.x)](https://drone.fpfis.eu/ec-europa/toolkit) [![License](https://img.shields.io/badge/License-EUPL%201.1-blue.svg)](LICENSE)
 
 ## Prerequisites
 You need to have the following software installed on your local development environment:
@@ -14,7 +14,7 @@ You need to have the following software installed on your local development envi
 
 ```
 Toolkit is a developer package, make sure you install this in the dev section of your composer.json.
-composer require --dev ec-europa/toolkit:^9
+composer require --dev ec-europa/toolkit:^10
 ```
 
 - [Setting up a project](/docs/guide/setting-up-project.rst)
@@ -39,7 +39,7 @@ This project is licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2 - see th
 ## Maintainers
 This project is maintained by members of the Quality Assurance team who review
 incoming pull requests for this project. The board on which they
-operate can be found at [https://webgate.ec.europa.eu/CITnet/jira].
+operate can be found at [https://citnet.tech.ec.europa.eu/CITnet/jira/secure/RapidBoard.jspa?rapidView=9224].
 
 <details><summary><b>Contact list</b></summary>
 
