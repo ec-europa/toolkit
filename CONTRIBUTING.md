@@ -1,16 +1,16 @@
 # Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the owners of this repository before making a change. 
+email, or any other method with the owners of this repository before making a change.
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
 ## Contribute through pull-request
 
 1. Fork repository.
-2. Create the pull request against the branch release/4.x.
+2. Create the pull request against the branch release/10.x.
 3. Review by maintainers.
-4. Merged in release/4.x and released in newer tag.
+4. Merged in release/10.x and released in newer tag.
 
 ## Code of Conduct
 

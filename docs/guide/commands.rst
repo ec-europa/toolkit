@@ -170,41 +170,41 @@ Configuration commands are created in the configuration file ``runner.yml``, lik
         tasks:
           - { task: process, source: behat.yml.dist, destination: behat.yml }
 
-The configuration commands are a mapping to the `Robo Tasks <https://robo.li/#tasks>`_, the
+The configuration commands are a mapping to the `Robo Tasks <https://robo.li>`_, the
 list of available tasks is:
 
 +---------------+------------------------------------------------------------------------+
 | Task          | Robo Task                                                              |
 +===============+========================================================================+
-| mkdir         | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
+| mkdir         | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
-| touch         | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
+| touch         | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
-| copy          | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
+| copy          | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
-| copyDir       | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
+| copyDir       | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
-| chmod         | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
+| chmod         | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
-| chgrp         | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
+| chgrp         | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
-| chown         | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
+| chown         | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
-| remove        | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
+| remove        | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
-| rename        | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
+| rename        | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
-| symlink       | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
+| symlink       | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
-| mirror        | `FilesystemStack <https://robo.li/tasks/Filesystem/#filesystemstack>`_ |
+| mirror        | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
 | process       | `Process </src/Task/File/Process.php>`_                                |
 +---------------+------------------------------------------------------------------------+
-| append        | `Write with append() <https://robo.li/tasks/File/#write>`_             |
+| append        | `Write with append() <https://robo.li/tasks/File.html#write>`_         |
 +---------------+------------------------------------------------------------------------+
 | run           | Executes a Runner task                                                 |
 +---------------+------------------------------------------------------------------------+
-| exec          | `Exec <https://robo.li/tasks/Base/#exec>`_                             |
+| exec          | `Exec <https://robo.li/tasks/Base.html#exec>`_                         |
 +---------------+------------------------------------------------------------------------+
 | drush         | Executes a Drush command                                               |
 +---------------+------------------------------------------------------------------------+
