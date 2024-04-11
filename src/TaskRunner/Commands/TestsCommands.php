@@ -221,7 +221,7 @@ class TestsCommands extends AbstractCommands
         } else {
             $this->say('All Drupal projects in the ec-europa namespace need to use Quality Assurance provided standards.');
             $this->say('Your configuration has to import the resource vendor/ec-europa/qa-automation/dist/qa-conventions.yml.');
-            $this->say('For more information visit: https://ec-europa.github.io/toolkit/guide/testing-project.html#testing-the-project');
+            $this->say('For more information visit: https://ec-europa.github.io/toolkit/guide/testing-project.html#phpcs-testing');
             $this->say('Add the following lines to your grumphp.yml.dist:');
             echo "\nimports:\n  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }\n\n";
             return new ResultData(1);
