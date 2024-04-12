@@ -150,7 +150,7 @@
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    InstallCommands
+    DrupalSanitiseCommands
 
         <span class="phpdocumentor-element__extends">
         extends <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html"><abbr title="\EcEuropa\Toolkit\TaskRunner\AbstractCommands">AbstractCommands</abbr></a>
@@ -172,13 +172,13 @@
 </div>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/InstallCommands.php"><a href="files/src-taskrunner-commands-installcommands.html"><abbr title="src/TaskRunner/Commands/InstallCommands.php">InstallCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalSanitiseCommands.php"><a href="files/src-taskrunner-commands-drupalsanitisecommands.html"><abbr title="src/TaskRunner/Commands/DrupalSanitiseCommands.php">DrupalSanitiseCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">15</span>
+    <span class="phpdocumentor-element-found-in__line">18</span>
 
     </aside>
 
-            <p class="phpdocumentor-summary">Class ToolkitCommands.</p>
+            <p class="phpdocumentor-summary">Provides commands to check sanitisation fields.</p>
 
 
 
@@ -187,7 +187,7 @@
 
 <h3 id="toc">
     Table of Contents
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h3>
 
@@ -199,15 +199,57 @@
 
 
 
+<h4 id="toc-properties">
+    Properties
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#property_io">$io</a>
+    <span>
+                        &nbsp;: <abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>            </span>
+</dt>
+<dd>The Symfony Input Output.</dd>
+
+    </dl>
 
 <h4 id="toc-methods">
     Methods
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_areCommentFieldsSanitised">areCommentFieldsSanitised()</a>
+    <span>
+                                &nbsp;: bool    </span>
+</dt>
+<dd>Checks if the Comment fields are being sanitised.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_areUserFieldsSanitised">areUserFieldsSanitised()</a>
+    <span>
+                                &nbsp;: bool    </span>
+</dt>
+<dd>Checks if the User fields are being sanitised.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_drupalCheckSanitisationClasses">drupalCheckSanitisationClasses()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Command to check existence of Sanitisation classes.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_drupalCheckSanitisationFields">drupalCheckSanitisationFields()</a>
+    <span>
+                                &nbsp;: int    </span>
+</dt>
+<dd>Command to check fields for sanitisation.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
@@ -235,25 +277,11 @@
 <dd>Check if the website is installed.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClean">toolkitInstallClean()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_optionPattern">optionPattern()</a>
     <span>
-                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
+                                &nbsp;: string    </span>
 </dt>
-<dd>Install a clean website.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClone">toolkitInstallClone()</a>
-    <span>
-                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
-</dt>
-<dd>Install a clone website.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitRunDeploy">toolkitRunDeploy()</a>
-    <span>
-                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
-</dt>
-<dd>Run deployment sequence.</dd>
+<dd>Prepare regex to check if option exists with value &quot;no&quot;.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a>
@@ -318,6 +346,20 @@
 </dt>
 <dd>Replace block in a file.</dd>
 
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_registerCustomClasses">registerCustomClasses()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Register all classes in custom code directory folder that are not registered.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_testMap">testMap()</a>
+    <span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
+</dt>
+<dd>Returns a static field map for test purposes.</dd>
+
     </dl>
 
 
@@ -326,13 +368,297 @@
         
 
         
+    <section class="phpdocumentor-properties">
+        <h3 class="phpdocumentor-elements__header" id="properties">
+            Properties
+            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+
+        </h3>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_io">
+        $io
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#property_io" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalSanitiseCommands.php"><a href="files/src-taskrunner-commands-drupalsanitisecommands.html"><abbr title="src/TaskRunner/Commands/DrupalSanitiseCommands.php">DrupalSanitiseCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">26</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">The Symfony Input Output.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+    <span class="phpdocumentor-signature__name">$io</span>
+    </code>
+
+    
+    
+    
+
+</article>
+            </section>
 
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                    -static                    "
+>
+    <h4 class="phpdocumentor-element__name" id="method_areCommentFieldsSanitised">
+        areCommentFieldsSanitised()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_areCommentFieldsSanitised" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalSanitiseCommands.php"><a href="files/src-taskrunner-commands-drupalsanitisecommands.html"><abbr title="src/TaskRunner/Commands/DrupalSanitiseCommands.php">DrupalSanitiseCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">220</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Checks if the Comment fields are being sanitised.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">areCommentFieldsSanitised</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+        <section class="phpdocumentor-description"><p>Validates the presence of the SanitizeCommentsCommands command.</p>
+</section>
+
+    
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                    -static                    "
+>
+    <h4 class="phpdocumentor-element__name" id="method_areUserFieldsSanitised">
+        areUserFieldsSanitised()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_areUserFieldsSanitised" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalSanitiseCommands.php"><a href="files/src-taskrunner-commands-drupalsanitisecommands.html"><abbr title="src/TaskRunner/Commands/DrupalSanitiseCommands.php">DrupalSanitiseCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">188</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Checks if the User fields are being sanitised.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">areUserFieldsSanitised</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+        <section class="phpdocumentor-description"><p>Validates the presence of the SanitizeUserTableCommands command and
+ensure that the fields are not being ignored in the opts.yml file with the
+options --sanitize-password and --sanitize-email.</p>
+</section>
+
+    
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_drupalCheckSanitisationClasses">
+        drupalCheckSanitisationClasses()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_drupalCheckSanitisationClasses" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalSanitiseCommands.php"><a href="files/src-taskrunner-commands-drupalsanitisecommands.html"><abbr title="src/TaskRunner/Commands/DrupalSanitiseCommands.php">DrupalSanitiseCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">107</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Command to check existence of Sanitisation classes.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">drupalCheckSanitisationClasses</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_drupalCheckSanitisationClasses#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">command</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>drupal:check-sanitisation-classes</p>
+</section>
+
+                                    </dd>
+                                            </dl>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_drupalCheckSanitisationFields">
+        drupalCheckSanitisationFields()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_drupalCheckSanitisationFields" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalSanitiseCommands.php"><a href="files/src-taskrunner-commands-drupalsanitisecommands.html"><abbr title="src/TaskRunner/Commands/DrupalSanitiseCommands.php">DrupalSanitiseCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">42</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Command to check fields for sanitisation.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">drupalCheckSanitisationFields</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;types&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;keywords&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;types-ignore&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$options</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;types&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;keywords&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;types-ignore&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY]</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>Command options.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_drupalCheckSanitisationFields#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">command</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>drupal:check-sanitisation-fields</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>types    The field types to check.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>keywords The keywords to look into field names.</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
+</section>
+
+                                    </dd>
+                                            </dl>
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">int</span>
+            </section>
+
+</article>
                     <article
         class="phpdocumentor-element
             -method
@@ -341,13 +667,13 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_getConfigurationFile">
         getConfigurationFile()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/InstallCommands.php"><a href="files/src-taskrunner-commands-installcommands.html"><abbr title="src/TaskRunner/Commands/InstallCommands.php">InstallCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">21</span>
+    <span class="phpdocumentor-element-found-in__line">30</span>
 
     </aside>
 
@@ -359,7 +685,9 @@
 
     <div class="phpdocumentor-label-line">
         </div>
-    
+        <section class="phpdocumentor-description"><p>Command classes should implement this method.</p>
+</section>
+
     
     
 
@@ -502,25 +830,25 @@
         class="phpdocumentor-element
             -method
             -public
-                                                        "
+                                    -static                    "
 >
-    <h4 class="phpdocumentor-element__name" id="method_toolkitInstallClean">
-        toolkitInstallClean()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClean" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_optionPattern">
+        optionPattern()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_optionPattern" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/InstallCommands.php"><a href="files/src-taskrunner-commands-installcommands.html"><abbr title="src/TaskRunner/Commands/InstallCommands.php">InstallCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalSanitiseCommands.php"><a href="files/src-taskrunner-commands-drupalsanitisecommands.html"><abbr title="src/TaskRunner/Commands/DrupalSanitiseCommands.php">DrupalSanitiseCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">41</span>
+    <span class="phpdocumentor-element-found-in__line">231</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Install a clean website.</p>
+        <p class="phpdocumentor-summary">Prepare regex to check if option exists with value &quot;no&quot;.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitInstallClean</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;config-file&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">optionPattern</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$option</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -528,244 +856,21 @@
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;config-file&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
+                <span class="phpdocumentor-signature__argument__name">$option</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Command options.</p>
+                    <section class="phpdocumentor-description"><p>The option name to check, i.e: sanitize-email.</p>
 </section>
 
             </dd>
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClean#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:install-clean</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>config-file The path to the config file.</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tk-iclean</p>
-</section>
-
-                                    </dd>
-                                            </dl>
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>Collection builder.</p>
-</section>
-
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_toolkitInstallClone">
-        toolkitInstallClone()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClone" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/InstallCommands.php"><a href="files/src-taskrunner-commands-installcommands.html"><abbr title="src/TaskRunner/Commands/InstallCommands.php">InstallCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">70</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Install a clone website.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitInstallClone</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;dumpfile&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;dumpfile&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Command options.</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClone#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:install-clone</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>dumpfile The dump file name.</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tk-iclone</p>
-</section>
-
-                                    </dd>
-                                            </dl>
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>Collection builder.</p>
-</section>
-
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_toolkitRunDeploy">
-        toolkitRunDeploy()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitRunDeploy" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/InstallCommands.php"><a href="files/src-taskrunner-commands-installcommands.html"><abbr title="src/TaskRunner/Commands/InstallCommands.php">InstallCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">111</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Run deployment sequence.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitRunDeploy</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;sequence-file&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;sequence-key&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-        <section class="phpdocumentor-description"><p>This command will check for a file that holds the deployment sequence. If
-it is available it will run the commands defined in the yaml file under the
-selected key. If not we will run a standard set of deployment commands.</p>
-</section>
-
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;sequence-file&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;sequence-key&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Command options.</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitRunDeploy#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:run-deploy</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>sequence-file The file that holds the deployment sequence.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>sequence-key  The key under which the commands are defined.</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tk-deploy</p>
-</section>
-
-                                    </dd>
-                                            </dl>
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>Collection builder.</p>
-</section>
-
+        <span class="phpdocumentor-signature__response_type">string</span>
             </section>
 
 </article>
@@ -1241,13 +1346,95 @@ selected key. If not we will run a standard set of deployment commands.</p>
             </section>
 
 </article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_registerCustomClasses">
+        registerCustomClasses()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_registerCustomClasses" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalSanitiseCommands.php"><a href="files/src-taskrunner-commands-drupalsanitisecommands.html"><abbr title="src/TaskRunner/Commands/DrupalSanitiseCommands.php">DrupalSanitiseCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">155</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Register all classes in custom code directory folder that are not registered.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">registerCustomClasses</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$directory</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+        <section class="phpdocumentor-description"><p>This assumes the Drupal namespace \Drupal[module].</p>
+</section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$directory</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The directory to search for classes.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_testMap">
+        testMap()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_testMap" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DrupalSanitiseCommands.php"><a href="files/src-taskrunner-commands-drupalsanitisecommands.html"><abbr title="src/TaskRunner/Commands/DrupalSanitiseCommands.php">DrupalSanitiseCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">239</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns a static field map for test purposes.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">testMap</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+            </section>
+
+</article>
             </section>
 
         <div class="phpdocumentor-modal" id="source-view">
     <div class="phpdocumentor-modal-bg" data-exit-button></div>
     <div class="phpdocumentor-modal-container">
         <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/TaskRunner/Commands/InstallCommands.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/TaskRunner/Commands/DrupalSanitiseCommands.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
         </div>
         <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
     </div>
@@ -1346,21 +1533,30 @@ selected key. If not we will run a standard set of deployment commands.</p>
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                                                                <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#toc-methods">Methods</a></li>
+                                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#toc-methods">Methods</a></li>
                                     </ul>
             </li>
             
+                            <li class="phpdocumentor-on-this-page-section__title">Properties</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                                                    <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#property_io">$io<a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html"></li>
+                                            </ul>
+                </li>
             
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_areCommentFieldsSanitised">areCommentFieldsSanitised()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_areUserFieldsSanitised">areUserFieldsSanitised()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_drupalCheckSanitisationClasses">drupalCheckSanitisationClasses()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_drupalCheckSanitisationFields">drupalCheckSanitisationFields()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson">getJson()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isWebsiteInstalled">isWebsiteInstalled()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClean">toolkitInstallClean()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClone">toolkitInstallClone()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitRunDeploy">toolkitRunDeploy()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_optionPattern">optionPattern()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBinPath">getBinPath()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigValue">getConfigValue()</a></li>
@@ -1370,6 +1566,8 @@ selected key. If not we will run a standard set of deployment commands.</p>
                                             <li><a href="classes/EcEuropa-Toolkit-Task-Command-Tasks.html#method_taskExecute">taskExecute()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskProcess">taskProcess()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskReplaceBlock">taskReplaceBlock()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_registerCustomClasses">registerCustomClasses()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_testMap">testMap()</a></li>
                                     </ul>
             </li>
                     </ul>
@@ -1389,7 +1587,7 @@ selected key. If not we will run a standard set of deployment commands.</p>
     </section>
 </section>
         </div>
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

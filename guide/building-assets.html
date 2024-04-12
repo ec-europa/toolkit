@@ -242,7 +242,7 @@ toolkit:
             <div class="section" id="enable-build-assets-during-ci">
     <h2>Enable build assets during CI</h2>
 
-            <p>To enable auto build of assets you should extend the tasks <code>build-dev</code> and <code>build-dist</code>. See example below.</p>
+            <p>To enable auto build of assets you should extend the tasks <code>toolkit:build-dev</code> and <code>toolkit:build-dist</code>. See example below.</p>
             <pre><code class="language-">toolkit:
   project_id: &quot;my-project&quot;
   build:
@@ -253,7 +253,7 @@ toolkit:
     dist:
       commands:
       - ...
-      - ./vendor/bin/run toolkit:build-assets</code></pre>
+      - ./vendor/bin/run toolkit:build-assets-dist</code></pre>
             <div class="section" id="install-additional-npm-packages">
     <h3>Install additional npm packages</h3>
 

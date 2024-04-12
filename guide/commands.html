@@ -148,69 +148,84 @@
             <pre><code class="language-">docker-composer exec web ./vendor/bin/run</code></pre>
             <p>See bellow current list of available commands:</p>
             <pre><code class="language-">Available commands:
-  completion                        Dump the shell completion script
-  config                            Dumps the current or given configuration.
-  help                              Display help for a command
-  list                              List commands
+  completion                         Dump the shell completion script
+  config                             Dumps the current or given configuration.
+  help                               Display help for a command
+  list                               List commands
+ check
+  check:abandoned                    Check abandoned components.
+  check:composer                     Check composer packages.
+  check:configuration                Check project configuration.
+  check:development                  Check development components.
+  check:evaluation                   Check Evaluation components.
+  check:insecure                     Check insecure components.
+  check:mandatory                    Check mandatory components.
+  check:outdated                     Check outdated components.
+  check:recommended                  Check recommended components.
+  check:unsupported                  Check unsupported components.
  docker
-  docker:refresh-configuration      [dk-rc] Update docker-compose.yml file based on project&#039;s configurations.
+  docker:refresh-configuration       [dk-rc] Update docker-compose.yml file based on project&#039;s configurations.
  drupal
-  drupal:check-permissions          Command to check the forbidden permissions.
-  drupal:config-import              Run the Drupal config import.
-  drupal:disable-cache              Disable aggregation and clear cache.
-  drupal:drush-setup                Write Drush configuration file at &quot;${drupal.root}/drush/drush.yml&quot;.
-  drupal:permissions-setup          Setup Drupal permissions.
-  drupal:settings-setup             Setup Drupal settings.php file in compliance with Toolkit conventions.
-  drupal:site-install               [drupal:si|dsi] Install target site.
-  drupal:site-post-install          Run Drupal post-install commands.
-  drupal:site-pre-install           Run Drupal pre-install commands.
-  drupal:symlink-project            Symlink project as module, theme or profile in the proper directory.
-  drupal:upgrade-status             [tdus] Check project compatibility for Drupal 9/10 upgrade.
+  drupal:check-permissions           Command to check the forbidden permissions.
+  drupal:check-sanitisation-classes  Command to check existence of Sanitisation classes.
+  drupal:check-sanitisation-fields   Command to check fields for sanitisation.
+  drupal:config-import               Run the Drupal config import.
+  drupal:disable-cache               Disable aggregation and clear cache.
+  drupal:drush-setup                 Write Drush configuration file at &quot;${drupal.root}/drush/drush.yml&quot;.
+  drupal:permissions-setup           Setup Drupal permissions.
+  drupal:settings-setup              Setup Drupal settings.php file in compliance with Toolkit conventions.
+  drupal:site-install                [drupal:si|dsi] Install target site.
+  drupal:site-post-install           Run Drupal post-install commands.
+  drupal:site-pre-install            Run Drupal pre-install commands.
+  drupal:symlink-project             Symlink project as module, theme or profile in the proper directory.
+  drupal:upgrade-status              [tdus] Check project compatibility for Drupal 9/10 upgrade.
  toolkit
-  toolkit:build-assets              [tk-assets|tba] Build theme assets (Css and Js).
-  toolkit:build-dev                 [tk-bdev] Build site for local development.
-  toolkit:build-dev-reset           [tk-bdev-reset] Build site for local development from scratch with a clean git.
-  toolkit:build-dist                [tk-bdist] Build the distribution package.
-  toolkit:check-phpcs-requirements  Make sure that the config file exists and configuration is correct.
-  toolkit:check-version             Check the Toolkit version.
-  toolkit:code-review               Execute all or specific tools for static testing.
-  toolkit:complock-check            Check if &#039;composer.lock&#039; exists on the project root folder.
-  toolkit:component-check           Check composer for components that are not whitelisted/blacklisted.
-  toolkit:create-dump               [tk-cdump] Export the local snapshot.
-  toolkit:download-dump             [tk-ddump] Download database snapshot.
-  toolkit:fix-permissions           Run script to fix permissions (experimental).
-  toolkit:hooks-delete-all          [tk-hdel] Remove all existing hooks, this will ignore active hooks list.
-  toolkit:hooks-disable             [tk-hdis] Disable the git hooks.
-  toolkit:hooks-enable              [tk-hen] Enable the git hooks defined in the configuration or in given option.
-  toolkit:hooks-list                [tk-hlist] List available hooks and its status.
-  toolkit:hooks-run                 [tk-hrun] Run a specific hook.
-  toolkit:import-config             [DEPRECATED] Run the Drupal config import.
-  toolkit:install-clean             [tk-iclean] Install a clean website.
-  toolkit:install-clone             [tk-iclone] Install a clone website.
-  toolkit:install-dependencies      Install packages present in the opts.yml file under extra_pkgs section.
-  toolkit:install-dump              [tk-idump] Import the production snapshot.
-  toolkit:lint-js                   [tk-js|tljs] Run lint JS.
-  toolkit:lint-php                  [tk-php|tlp] Run lint PHP.
-  toolkit:lint-yaml                 [tk-yaml|tly] Run lint YAML.
-  toolkit:opts-review               [tk-opts-review] Check project&#039;s .opts.yml file for forbidden commands.
-  toolkit:patch-download            [tk-pd] Download remote patches into a local directory.
-  toolkit:patch-list                [tk-pl] Lists remote patches from the root composer.json.
-  toolkit:requirements              [tk-req] Check the Toolkit Requirements.
-  toolkit:run-blackfire             [tk-bfire|tbf] Run Blackfire.
-  toolkit:run-deploy                [tk-deploy] Run deployment sequence.
-  toolkit:run-gitleaks              [tk-gitleaks] Executes the Gitleaks.
-  toolkit:run-phpcbf                [tk-phpcbf] Run PHP code autofixing.
-  toolkit:setup-behat               Setup the Behat file.
-  toolkit:setup-blackfire-behat     Copy the needed resources to run Behat with Blackfire.
-  toolkit:setup-eslint              Setup the ESLint configurations and dependencies.
-  toolkit:setup-phpcs               Setup PHP code sniffer.
-  toolkit:setup-phpunit             Setup the PHPUnit file.
-  toolkit:test-behat                [tk-behat|tb] Run Behat tests.
-  toolkit:test-phpcs                [tk-phpcs] Run PHP code sniffer.
-  toolkit:test-phpmd                [tk-phpmd] Run PHPMD.
-  toolkit:test-phpstan              [tk-phpstan] Run PHPStan.
-  toolkit:test-phpunit              [tk-phpunit|tp] Run PHPUnit tests.
-  toolkit:vendor-list               Check &#039;Vendor&#039; packages being monitored.</code></pre>
+  toolkit:build-assets               [tk-assets|tba] Build theme assets (Css and Js).
+  toolkit:build-assets-dist          Run the toolkit:build-assets for distribution
+  toolkit:build-dev                  [tk-bdev] Build site for local development.
+  toolkit:build-dev-reset            [tk-bdev-reset] Build site for local development from scratch with a clean git.
+  toolkit:build-dist                 [tk-bdist] Build the distribution package.
+  toolkit:check-phpcs-requirements   Make sure that the config file exists and configuration is correct.
+  toolkit:check-version              Check the Toolkit version.
+  toolkit:code-review                Execute all or specific tools for static testing.
+  toolkit:complock-check             Check if &#039;composer.lock&#039; exists on the project root folder.
+  toolkit:component-check            Check composer for components that are not whitelisted/blacklisted.
+  toolkit:create-dump                [tk-cdump] Export the local snapshot.
+  toolkit:download-dump              [tk-ddump] Download database snapshot.
+  toolkit:fix-permissions            Run script to fix permissions (experimental).
+  toolkit:hooks-delete-all           [tk-hdel] Remove all existing hooks, this will ignore active hooks list.
+  toolkit:hooks-disable              [tk-hdis] Disable the git hooks.
+  toolkit:hooks-enable               [tk-hen] Enable the git hooks defined in the configuration or in given option.
+  toolkit:hooks-list                 [tk-hlist] List available hooks and its status.
+  toolkit:hooks-run                  [tk-hrun] Run a specific hook.
+  toolkit:import-config              [DEPRECATED] Run the Drupal config import.
+  toolkit:install-clean              [tk-iclean] Install a clean website.
+  toolkit:install-clone              [tk-iclone] Install a clone website.
+  toolkit:install-dependencies       Install packages present in the opts.yml file under extra_pkgs section.
+  toolkit:install-dump               [tk-idump] Import the production snapshot.
+  toolkit:lint-js                    [tk-js|tljs] Run lint JS.
+  toolkit:lint-php                   [tk-php|tlp] Run lint PHP.
+  toolkit:lint-yaml                  [tk-yaml|tly] Run lint YAML.
+  toolkit:notifications              [tk-notifications] Display Toolkit notifications.
+  toolkit:opts-review                [tk-opts-review] Check project&#039;s .opts.yml file for forbidden commands.
+  toolkit:patch-download             [tk-pd] Download remote patches into a local directory.
+  toolkit:patch-list                 [tk-pl] Lists remote patches from the root composer.json.
+  toolkit:requirements               [tk-req] Check the Toolkit Requirements.
+  toolkit:run-blackfire              [tk-bfire|tbf] Run Blackfire.
+  toolkit:run-deploy                 [tk-deploy] Run deployment sequence.
+  toolkit:run-gitleaks               [tk-gitleaks] Executes the Gitleaks.
+  toolkit:run-phpcbf                 [tk-phpcbf] Run PHP code autofixing.
+  toolkit:setup-behat                Setup the Behat file.
+  toolkit:setup-blackfire-behat      Copy the needed resources to run Behat with Blackfire.
+  toolkit:setup-eslint               Setup the ESLint configurations and dependencies.
+  toolkit:setup-phpcs                Setup PHP code sniffer.
+  toolkit:setup-phpunit              Setup the PHPUnit file.
+  toolkit:test-behat                 [tk-behat|tb] Run Behat tests.
+  toolkit:test-phpcs                 [tk-phpcs] Run PHP code sniffer.
+  toolkit:test-phpmd                 [tk-phpmd] Run PHPMD.
+  toolkit:test-phpstan               [tk-phpstan] Run PHPStan.
+  toolkit:test-phpunit               [tk-phpunit|tp] Run PHPUnit tests.
+  toolkit:vendor-list                Check &#039;Vendor&#039; packages being monitored.</code></pre>
             <div class="section" id="creating-custom-commands">
     <h2>Creating custom commands</h2>
 
@@ -285,7 +300,7 @@ class ExampleCommands extends AbstractCommands {
     usage: &#039;--simulate&#039;
     tasks:
       - { task: process, source: behat.yml.dist, destination: behat.yml }</code></pre>
-            <p>The configuration commands are a mapping to the <a href="https://robo.li/#tasks">Robo Tasks</a>, the
+            <p>The configuration commands are a mapping to the <a href="https://robo.li">Robo Tasks</a>, the
 list of available tasks is:</p>
             <table>
                 <thead>
@@ -297,47 +312,47 @@ list of available tasks is:</p>
     <tbody>
     <tr>
             <td>mkdir</td>
-            <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+            <td><a href="https://robo.li/tasks/Filesystem.html">FilesystemStack</a></td>
     </tr>
     <tr>
             <td>touch</td>
-            <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+            <td><a href="https://robo.li/tasks/Filesystem.html">FilesystemStack</a></td>
     </tr>
     <tr>
             <td>copy</td>
-            <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+            <td><a href="https://robo.li/tasks/Filesystem.html">FilesystemStack</a></td>
     </tr>
     <tr>
             <td>copyDir</td>
-            <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+            <td><a href="https://robo.li/tasks/Filesystem.html">FilesystemStack</a></td>
     </tr>
     <tr>
             <td>chmod</td>
-            <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+            <td><a href="https://robo.li/tasks/Filesystem.html">FilesystemStack</a></td>
     </tr>
     <tr>
             <td>chgrp</td>
-            <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+            <td><a href="https://robo.li/tasks/Filesystem.html">FilesystemStack</a></td>
     </tr>
     <tr>
             <td>chown</td>
-            <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+            <td><a href="https://robo.li/tasks/Filesystem.html">FilesystemStack</a></td>
     </tr>
     <tr>
             <td>remove</td>
-            <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+            <td><a href="https://robo.li/tasks/Filesystem.html">FilesystemStack</a></td>
     </tr>
     <tr>
             <td>rename</td>
-            <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+            <td><a href="https://robo.li/tasks/Filesystem.html">FilesystemStack</a></td>
     </tr>
     <tr>
             <td>symlink</td>
-            <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+            <td><a href="https://robo.li/tasks/Filesystem.html">FilesystemStack</a></td>
     </tr>
     <tr>
             <td>mirror</td>
-            <td><a href="https://robo.li/tasks/Filesystem/#filesystemstack">FilesystemStack</a></td>
+            <td><a href="https://robo.li/tasks/Filesystem.html">FilesystemStack</a></td>
     </tr>
     <tr>
             <td>process</td>
@@ -345,7 +360,7 @@ list of available tasks is:</p>
     </tr>
     <tr>
             <td>append</td>
-            <td><a href="https://robo.li/tasks/File/#write">Write with append()</a></td>
+            <td><a href="https://robo.li/tasks/File.html#write">Write with append()</a></td>
     </tr>
     <tr>
             <td>run</td>
@@ -353,7 +368,7 @@ list of available tasks is:</p>
     </tr>
     <tr>
             <td>exec</td>
-            <td><a href="https://robo.li/tasks/Base/#exec">Exec</a></td>
+            <td><a href="https://robo.li/tasks/Base.html#exec">Exec</a></td>
     </tr>
     <tr>
             <td>drush</td>
