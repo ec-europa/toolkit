@@ -112,6 +112,22 @@ class ToolCommands extends AbstractCommands
             }
         }
 
+        // Check for wrong syntax used for SANITIZE_OPTS.
+        if (!empty($parseOptsFile['dump_options'])) {
+            foreach ($parseOptsFile['dump_options'] as $dumpOption) {
+                if (is_string($dumpOption) && str_contains($dumpOption, 'SANITIZE_OPTS=')) {
+                    $io->say('Invalid syntax detected in dump_options section for the SANITIZE_OPTS. Use:');
+                    $io->writeln(['dump_options:', '  - SANITIZE_OPTS: "--option=no"']);
+                    $reviewOk = false;
+                } elseif (is_array($dumpOption) && !empty($dumpOption['SANITIZE_OPTS'])) {
+                    if (!DrupalSanitiseCommands::areUserFieldsSanitised()) {
+                        $io->error('Detected forbidden usage of --sanitize-email=no and/or --sanitize-password=no');
+                        $reviewOk = false;
+                    }
+                }
+            }
+        }
+
         if (empty($parseOptsFile['upgrade_commands'])) {
             $io->say('The project is using default deploy instructions.');
             return $reviewOk ? ResultData::EXITCODE_OK : ResultData::EXITCODE_ERROR;
@@ -676,6 +692,44 @@ class ToolCommands extends AbstractCommands
             return false;
         }
         return (array) Yaml::parseFile($opts);
+    }
+
+    /**
+     * Display Toolkit notifications.
+     *
+     * @command toolkit:notifications
+     *
+     * @option endpoint The endpoint to use to connect to QA Website.
+     *
+     * @aliases tk-notifications
+     */
+    public function toolkitNotifications(ConsoleIO $io, array $options = [
+        'endpoint' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        // This command is called from a composer-plugin, so we provide
+        // a way to bypass this execution by config.
+        if (empty($this->getConfigValue('toolkit.notifications.show'))) {
+            return ResultData::EXITCODE_OK;
+        }
+        // Ignore this command on CI/CD.
+        if (Toolkit::isCiCd()) {
+            return ResultData::EXITCODE_OK;
+        }
+        if (!empty($options['endpoint'])) {
+            Website::setUrl($options['endpoint']);
+        }
+        if ($notifications = Website::notifications()) {
+            foreach ($notifications as $notification) {
+                $io->title($notification['title']);
+                $io->writeln($notification['notification']);
+                if (!empty($notification['url'])) {
+                    $io->writeln('See more at: ' . $notification['url']);
+                }
+                $io->newLine(2);
+            }
+        }
+        return ResultData::EXITCODE_OK;
     }
 
 }
