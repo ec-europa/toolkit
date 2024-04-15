@@ -101,7 +101,7 @@
   expectations:
     - string_contains: behat
     - string_contains: drupal
-    - string_contains: phpunit
+    - string_contains: ovidenov
     - string_contains: vlucas
 
 - command: toolkit:code-review
