@@ -1,5 +1,18 @@
 # Toolkit change log
 
+## Version 10.10.0
+  - DQA-8677: Improve check-version.
+  - DQA-8687: Exclude non-drupal packages from is_installed check.
+  - DQA-8678: Improve toolkit:requirements.
+  - DQA-8767: Allow component-check command to execute specific tasks.
+  - DQA-8663: Component check improvements.
+  - DQA-8639: Assets/CSS are not compiled in distribution.
+  - DQA-8675: Restore toolkit notifications feature .
+  - DQA-8681: Transport sanitisation check from audit into toolkit.
+  - DQA-8682: Enforce sanitization code into projects.
+  - DQA-9119: Toolkit opts-review to check DUMP_OPTIONS.
+  - DQA-8963: Update robo documentation links.
+
 ## Version 10.9.0
   - DQA-8674: Include ASDA_URL in the list of forbidden variables.
   - DQA-8699: Update toolkit information in composer and repository.

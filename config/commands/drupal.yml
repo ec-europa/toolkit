@@ -27,3 +27,8 @@ command:
     drush-setup:
       options:
         config-dir: ${drupal.root}/drush
+    check-sanitisation-fields:
+      options:
+        types: ${drupal.sanitisation.types}
+        keywords: ${drupal.sanitisation.keywords}
+        types-ignore: ${drupal.sanitisation.types-ignore}

@@ -6,7 +6,11 @@
       to: composer.lock
     - file: composer.json
       content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+        {
+          "name": "ec-europa/toolkit",
+          "extra": { "composer-exit-on-patch-failure": true },
+          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+        }
   expectations:
     - contains: |
         Checking Mandatory components.
@@ -172,7 +176,11 @@
       to: core.extensions-good.yml
     - file: composer.json
       content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+        {
+          "name": "ec-europa/toolkit",
+          "extra": { "composer-exit-on-patch-failure": true },
+          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+        }
     - from: sample-composer.lock
       to: composer.lock
   expectations:
@@ -214,6 +222,7 @@
     - string_contains: Package test/package:dev-1.0.0 cannot be used in dev version.
     - string_contains: Package test/package2:1.0.0-dev cannot be used in dev version.
     - not_string_contains: Package test/module:1.0.0-dev cannot be used in dev version.
+    - string_contains: Plugin ec-europa/toolkit-composer-plugin must be allowed
     - string_contains: Composer validation check     failed
 
 - command: 'toolkit:component-check'
@@ -236,7 +245,11 @@
   resources:
     - file: composer.json
       content: |
-        { "extra": { "enable-patching": false, "composer-exit-on-patch-failure": true } }
+        {
+          "name": "ec-europa/toolkit",
+          "extra": { "enable-patching": false, "composer-exit-on-patch-failure": true },
+          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+        }
     - file: composer.lock
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
@@ -264,7 +277,11 @@
   resources:
     - file: composer.json
       content: |
-        { "extra": { "composer-exit-on-patch-failure": true } }
+        {
+          "name": "ec-europa/toolkit",
+          "extra": { "composer-exit-on-patch-failure": true },
+          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+        }
     - file: composer.lock
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
@@ -287,6 +304,7 @@
       content: |
         {
           "name": "toolkit",
+          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } },
           "extra": {
             "composer-exit-on-patch-failure": true,
             "patches": {
@@ -363,13 +381,13 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.3/api/v1/project/ec-europa/toolkit/information.json
+    - file: .toolkit-mock/0.0.4/api/v1/project/ec-europa/toolkit/information.json
       content: |
         [ { "name":"toolkit", "type": "Openeuropa", "environments": [{ "profile": "minimal", "type": "Production" }] }]
-    - file: .toolkit-mock/0.0.3/api/v1/toolkit-requirements.json
+    - file: .toolkit-mock/0.0.4/api/v1/toolkit-requirements.json
       content: |
         { "php_version":"8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.3/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.4/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -404,13 +422,13 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.3/api/v1/project/ec-europa/toolkit/information.json
+    - file: .toolkit-mock/0.0.4/api/v1/project/ec-europa/toolkit/information.json
       content: |
         [ { "name": "toolkit", "type": "Openeuropa", "environments": [{ "profile":"minimal", "type":"Production" }] } ]
-    - file: .toolkit-mock/0.0.3/api/v1/toolkit-requirements.json
+    - file: .toolkit-mock/0.0.4/api/v1/toolkit-requirements.json
       content: |
         { "php_version": "8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.3/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.4/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -444,7 +462,7 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "ec-europa/toolkit" } ] }
-    - file: .toolkit-mock/0.0.3/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.4/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -769,6 +787,10 @@
       to: composer.lock
     - file: composer.json
       content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+        {
+          "name": "ec-europa/toolkit",
+          "extra": { "composer-exit-on-patch-failure": true },
+          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+        }
   expectations:
     - string_contains: Composer validation check passed

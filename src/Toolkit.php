@@ -14,12 +14,17 @@ final class Toolkit
     /**
      * Constant holding the current version.
      */
-    public const VERSION = '10.9.0';
+    public const VERSION = '10.10.0';
 
     /**
      * The Toolkit repository.
      */
     public const REPOSITORY = 'ec-europa/toolkit';
+
+    /**
+     * The Toolkit composer plugin repository.
+     */
+    public const PLUGIN = 'ec-europa/toolkit-composer-plugin';
 
     /**
      * Returns the Toolkit root.
@@ -51,7 +56,8 @@ final class Toolkit
      */
     public static function isCiCd(): bool
     {
-        return !empty(getenv('CI'));
+        $ci = getenv('CI');
+        return !empty($ci) && ($ci === 'true' || $ci === 'drone');
     }
 
     /**
