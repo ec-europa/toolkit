@@ -43,7 +43,7 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
          *
          * @param string $command
          *   A command.
-         * @param array $config
+         * @param array $configuration
          *   A configuration array.
          * @param string|null $tokens
          *   Tokens to set in the commit message.
@@ -54,11 +54,11 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
          *
          * @dataProvider dataProvider
          */
-        public function testDrupalCommands(string $command, array $config = [], string $tokens = null, array $resources = [], array $expectations = [])
+        public function testDrupalCommands(string $command, array $configuration = [], string $tokens = null, array $resources = [], array $expectations = [])
         {
             // Setup configuration file.
-            if (!empty($config)) {
-                $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+            if (!empty($configuration)) {
+                $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($configuration));
             }
 
             if ($tokens !== null) {
@@ -81,7 +81,7 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
          *
          * @param string $command
          *   A command.
-         * @param array $config
+         * @param array $configuration
          *   A configuration array.
          * @param array $resources
          *   Resources needed for the test.
@@ -90,11 +90,11 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
          *
          * @dataProvider dataProviderSettings
          */
-        public function testDrupalSettingsSetupCommands(string $command, array $config, array $resources = [], array $expectations = [])
+        public function testDrupalSettingsSetupCommands(string $command, array $configuration, array $resources = [], array $expectations = [])
         {
             // Setup configuration file.
-            if (!empty($config)) {
-                $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+            if (!empty($configuration)) {
+                $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($configuration));
             }
 
             $this->prepareResources($resources);

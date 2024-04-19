@@ -32,7 +32,7 @@ class ToolCommandsTest extends AbstractTest
      *
      * @param string $command
      *   A command.
-     * @param array $config
+     * @param array $configuration
      *   A configuration.
      * @param array $resources
      *   Resources needed for the test.
@@ -41,11 +41,11 @@ class ToolCommandsTest extends AbstractTest
      *
      * @dataProvider dataProvider
      */
-    public function testTool(string $command, array $config = [], array $resources = [], array $expectations = [])
+    public function testTool(string $command, array $configuration = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
-        if (!empty($config)) {
-            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        if (!empty($configuration)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($configuration));
         }
         $this->prepareResources($resources);
 
@@ -75,7 +75,7 @@ class ToolCommandsTest extends AbstractTest
      *
      * @param string $command
      *   A command.
-     * @param array $config
+     * @param array $configuration
      *   A configuration.
      * @param array $resources
      *   Resources needed for the test.
@@ -84,11 +84,11 @@ class ToolCommandsTest extends AbstractTest
      *
      * @dataProvider dataProviderOptsReview
      */
-    public function testOptsReview(string $command, array $config = [], array $resources = [], array $expectations = [])
+    public function testOptsReview(string $command, array $configuration = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
-        if (!empty($config)) {
-            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        if (!empty($configuration)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($configuration));
         }
         $this->prepareResources($resources);
 
@@ -117,9 +117,9 @@ class ToolCommandsTest extends AbstractTest
      *
      * @param string $command
      *   A command.
-     * @param array $config
+     * @param array $configuration
      *   A configuration.
-     * @param array $envVars
+     * @param array $variables
      *   Environment variables to set.
      * @param array $resources
      *   Resources needed for the test.
@@ -128,15 +128,15 @@ class ToolCommandsTest extends AbstractTest
      *
      * @dataProvider dataProviderNotifications
      */
-    public function testNotifications(string $command, array $config = [], array $envVars = [], array $resources = [], array $expectations = [])
+    public function testNotifications(string $command, array $configuration = [], array $variables = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
-        if (!empty($config)) {
-            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        if (!empty($configuration)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($configuration));
         }
-        if (!empty($envVars)) {
-            foreach ($envVars as $envVar) {
-                putenv($envVar);
+        if (!empty($variables)) {
+            foreach ($variables as $variable) {
+                putenv($variable);
             }
         }
         $this->prepareResources($resources);
