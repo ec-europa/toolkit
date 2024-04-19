@@ -65,7 +65,13 @@ toolkit:
     sequence_key: 'upgrade_commands'
   install:
     clone:
-      commands: [ ]
+      commands:
+        before: [ ]
+        after: [ ]
+    clean:
+      commands:
+        before: [ ]
+        after: [ ]
   build:
     dist:
       root: 'dist'

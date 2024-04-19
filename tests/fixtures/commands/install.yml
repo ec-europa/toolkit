@@ -1,12 +1,24 @@
 - command: 'toolkit:install-clean'
-  configuration: []
+  configuration:
+    toolkit:
+      install:
+        clean:
+          commands:
+            before:
+              - task: exec
+                command: echo "Hello!"
+            after:
+              - task: exec
+                command: echo "Goodbye!"
   variables: []
   resources: []
   expectations:
     - contains: |
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
         [Simulator] Simulating Exec('./vendor/bin/run')
           ->arg('drupal:site-install')
         [Simulator] Running ./vendor/bin/run 'drupal:site-install'
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
 
 - command: 'toolkit:install-clean --config-file=core.extensions.yml'
   configuration: []
@@ -22,11 +34,22 @@
         [Simulator] Running ./vendor/bin/run 'drupal:site-install' --existing-config
 
 - command: 'toolkit:install-clone'
-  configuration: []
+  configuration:
+    toolkit:
+      install:
+        clone:
+          commands:
+            before:
+              - task: exec
+                command: echo "Hello!"
+            after:
+              - task: exec
+                command: echo "Goodbye!"
   variables: []
   resources: []
   expectations:
     - contains: |
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
         [Simulator] Simulating Exec('./vendor/bin/run')
           ->arg('toolkit:install-dump')
           ->option('dumpfile', 'mysql.gz', '=')
@@ -34,6 +57,7 @@
         [Simulator] Simulating Exec('./vendor/bin/run')
           ->arg('toolkit:run-deploy')
         [Simulator] Running ./vendor/bin/run 'toolkit:run-deploy'
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
 
 - command: 'toolkit:install-clone --dumpfile=dump.sql'
   configuration: []
