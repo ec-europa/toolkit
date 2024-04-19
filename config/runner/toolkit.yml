@@ -46,13 +46,6 @@ toolkit:
             - 'Subsite\composer\SetupWizard::setup'
           post-install-cmd:
             - 'DrupalComposer\DrupalScaffold\Plugin::scaffold'
-    docker_compose:
-      environment_variables:
-        forbidden:
-          - ASDA_URL
-          - ASDA_USER
-          - ASDA_PASSWORD
-          - QA_API_BASIC_AUTH
     configuration:
       validations:
         - message: 'When using phpstan/extension-installer you should not manually include the extensions in the phpstan.neon file, please remove the includes.'
@@ -72,7 +65,13 @@ toolkit:
     sequence_key: 'upgrade_commands'
   install:
     clone:
-      commands: [ ]
+      commands:
+        before: [ ]
+        after: [ ]
+    clean:
+      commands:
+        before: [ ]
+        after: [ ]
   build:
     dist:
       root: 'dist'
