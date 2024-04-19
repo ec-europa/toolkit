@@ -49,9 +49,9 @@ class InstallCommandsTest extends AbstractTest
         if (!empty($configuration)) {
             $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($configuration));
         }
-        if (!empty($envVars)) {
-            foreach ($envVars as $envVar) {
-                putenv($envVar);
+        if (!empty($variables)) {
+            foreach ($variables as $variable) {
+                putenv($variable);
             }
         }
         $this->prepareResources($resources);

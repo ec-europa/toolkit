@@ -14,9 +14,11 @@
   resources: []
   expectations:
     - contains: |
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
         [Simulator] Simulating Exec('./vendor/bin/run')
           ->arg('drupal:site-install')
         [Simulator] Running ./vendor/bin/run 'drupal:site-install'
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
 
 - command: 'toolkit:install-clean --config-file=core.extensions.yml'
   configuration: []
@@ -35,7 +37,7 @@
   configuration:
     toolkit:
       install:
-        clean:
+        clone:
           commands:
             before:
               - task: exec
@@ -47,6 +49,7 @@
   resources: []
   expectations:
     - contains: |
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
         [Simulator] Simulating Exec('./vendor/bin/run')
           ->arg('toolkit:install-dump')
           ->option('dumpfile', 'mysql.gz', '=')
@@ -54,6 +57,7 @@
         [Simulator] Simulating Exec('./vendor/bin/run')
           ->arg('toolkit:run-deploy')
         [Simulator] Running ./vendor/bin/run 'toolkit:run-deploy'
+        [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
 
 - command: 'toolkit:install-clone --dumpfile=dump.sql'
   configuration: []
