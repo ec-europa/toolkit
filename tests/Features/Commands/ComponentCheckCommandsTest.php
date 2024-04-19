@@ -32,7 +32,7 @@ class ComponentCheckCommandsTest extends AbstractTest
      *
      * @param string $command
      *   A command.
-     * @param array $config
+     * @param array $configuration
      *   A configuration.
      * @param string $tokens
      *   Tokens to set in the commit message.
@@ -43,11 +43,11 @@ class ComponentCheckCommandsTest extends AbstractTest
      *
      * @dataProvider dataProvider
      */
-    public function testComponentCheck(string $command, array $config = [], string $tokens = '', array $resources = [], array $expectations = [])
+    public function testComponentCheck(string $command, array $configuration = [], string $tokens = '', array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
-        if (!empty($config)) {
-            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        if (!empty($configuration)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($configuration));
         }
 
         if (!empty($tokens)) {

@@ -43,7 +43,7 @@ class DockerCommandsTest extends AbstractTest
      *
      * @param string $command
      *   A command.
-     * @param array $config
+     * @param array $configuration
      *   A configuration array.
      * @param array $resources
      *   Resources needed for the test.
@@ -52,11 +52,11 @@ class DockerCommandsTest extends AbstractTest
      *
      * @dataProvider dataProvider
      */
-    public function testDockerCommands(string $command, array $config = [], array $resources = [], array $expectations = [])
+    public function testDockerCommands(string $command, array $configuration = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
-        if (!empty($config)) {
-            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        if (!empty($configuration)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($configuration));
         }
 
         $this->prepareResources($resources);
@@ -75,7 +75,7 @@ class DockerCommandsTest extends AbstractTest
      *
      * @param string $command
      *   A command.
-     * @param array $config
+     * @param array $configuration
      *   A configuration array.
      * @param array $resources
      *   Resources needed for the test.
@@ -84,11 +84,11 @@ class DockerCommandsTest extends AbstractTest
      *
      * @dataProvider dataProviderDockerComposeContent
      */
-    public function testDockerCommandsComposeContent(string $command, array $config, array $resources = [], array $expectations = [])
+    public function testDockerCommandsComposeContent(string $command, array $configuration, array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
-        if (!empty($config)) {
-            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($config));
+        if (!empty($configuration)) {
+            $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($configuration));
         }
 
         $this->prepareResources($resources);
