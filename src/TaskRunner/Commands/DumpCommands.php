@@ -169,20 +169,23 @@ class DumpCommands extends AbstractCommands
      *
      * @option is-admin For nextcloud admin user.
      * @option yes      Skip the question to download newer dump.
+     * @option silent   Disable download progress output.
      *
      * @aliases tk-ddump
      */
     public function toolkitDownloadDump(ConsoleIO $io, array $options = [
         'is-admin' => InputOption::VALUE_NONE,
         'yes' => InputOption::VALUE_NONE,
+        'silent' => InputOption::VALUE_NONE,
     ])
     {
         $type = $this->getConfig()->get('toolkit.clone.type', 'nextcloud');
         $this->say("Download type is: $type");
+        $silent = $options['silent'] !== true ? false : true;
         if ($type === 'nextcloud') {
-            return $this->nextcloudDownloadDump($io, $options);
+            return $this->nextcloudDownloadDump($io, $options, $silent);
         }
-        return $this->customDownloadDump($io, $options);
+        return $this->customDownloadDump($io, $options, $silent);
     }
 
     /**
@@ -191,7 +194,7 @@ class DumpCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    private function nextcloudDownloadDump(ConsoleIO $io, array $options)
+    private function nextcloudDownloadDump(ConsoleIO $io, array $options, bool $silent)
     {
         // Get the username and password, ask if not present.
         if (empty($user = Toolkit::getNextcloudUser())) {
@@ -245,7 +248,7 @@ class DumpCommands extends AbstractCommands
             // Check if the dump is already downloaded.
             if (!file_exists($dump)) {
                 $this->say('Starting download');
-                $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service));
+                $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service, $silent));
                 continue;
             }
 
@@ -264,7 +267,7 @@ class DumpCommands extends AbstractCommands
                 $this->say($question . ' (y/n) Y');
             }
             $this->say('Starting download');
-            $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service));
+            $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service, $silent));
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -273,7 +276,7 @@ class DumpCommands extends AbstractCommands
     /**
      * Download the dumpfile from the custom server.
      */
-    private function customDownloadDump(ConsoleIO $io, array $options)
+    private function customDownloadDump(ConsoleIO $io, array $options, bool $silent)
     {
         $config = $this->getConfig();
         if (empty($url = $config->get('toolkit.clone.custom.url'))) {
@@ -321,7 +324,7 @@ class DumpCommands extends AbstractCommands
         $this->say('Starting download');
 
         // Download the file.
-        $this->wgetDownloadFile($tmpFile, $destination, '.sql.gz,.tar.gz,.tar')
+        $this->wgetDownloadFile($tmpFile, $destination, '.sql.gz,.tar.gz,.tar', $silent)
             ->run();
 
         // Remove temporary file.
@@ -429,7 +432,7 @@ class DumpCommands extends AbstractCommands
      * @return array
      *   The tasks to execute.
      */
-    private function asdaProcessFile(string $link, string $service)
+    private function asdaProcessFile(string $link, string $service, bool $silent)
     {
         $tasks = [];
         $tmpFolder = $this->tmpDirectory();
@@ -457,7 +460,7 @@ class DumpCommands extends AbstractCommands
         // Download the file.
         $this->wgetGenerateInputFile("$link/$filename", "$tmpFolder/$service.txt", true);
         $extension = str_ends_with($filename, '.gz') ? 'gz' : 'tar';
-        $tasks[] = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar');
+        $tasks[] = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar', $silent);
 
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
