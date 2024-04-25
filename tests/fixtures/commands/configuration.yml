@@ -30,6 +30,7 @@
           myloader: /scripts/importdb.sh
           mydumper: /scripts/backupdb.sh
           type: cloud
+          show_progress: false
           nextcloud:
             services: mysql
             url: nextcloud.url/files
