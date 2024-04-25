@@ -201,6 +201,8 @@
     toolkit:
       tmp_folder: .
       project_id: digit-qa
+      clone:
+        show_progress: true
   resources:
     - from: sample-mysql-latest.sh1
       to: mysql-latest.sh1
@@ -232,6 +234,7 @@
       tmp_folder: .
       project_id: digit-joinup
       clone:
+        show_progress: true
         asda_services:
           - mysql
           - virtuoso
@@ -308,6 +311,8 @@
     toolkit:
       tmp_folder: .
       project_id: digit-qa
+      clone:
+        show_progress: true
   resources:
     - from: sample-mysql-latest.sh1
       to: mysql-latest.sh1
@@ -357,6 +362,7 @@
       tmp_folder: .
       clone:
         type: 'custom'
+        show_progress: true
         custom:
           url: example.com
   resources: []
@@ -382,6 +388,7 @@
     toolkit:
       tmp_folder: .
       clone:
+        show_progress: true
         type: 'custom'
         dumpfile: dump.gz
         custom:
@@ -397,6 +404,28 @@
           ->option('-A', '.sql.gz,.tar.gz,.tar')
           ->option('-P', './')
           ->printMetadata()
+        [Simulator] Running wget -i ./tmp.txt -O ./dump.gz -A '.sql.gz,.tar.gz,.tar' -P ./
+        [Simulator] Running rm ./tmp.txt
+
+        [ERROR] Custom : Could not fetch the file example.com/dump.gz
+
+        [Simulator] Running rm ./dump.gz
+
+- command: 'toolkit:download-dump'
+  configuration:
+    toolkit:
+      tmp_folder: .
+      clone:
+        show_progress: false
+        type: 'custom'
+        dumpfile: dump.gz
+        custom:
+          url: example.com
+  resources: []
+  expectations:
+    - string_contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+        >  Starting download
         [Simulator] Running wget -i ./tmp.txt -O ./dump.gz -A '.sql.gz,.tar.gz,.tar' -P ./
         [Simulator] Running rm ./tmp.txt
 

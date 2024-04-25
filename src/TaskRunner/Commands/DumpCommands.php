@@ -321,7 +321,8 @@ class DumpCommands extends AbstractCommands
         $this->say('Starting download');
 
         // Download the file.
-        $this->wgetDownloadFile($tmpFile, $destination, '.sql.gz,.tar.gz,.tar')
+        $show = $this->getConfigValue('toolkit.clone.show_progress', false);
+        $this->wgetDownloadFile($tmpFile, $destination, '.sql.gz,.tar.gz,.tar', !$show)
             ->run();
 
         // Remove temporary file.
@@ -457,7 +458,8 @@ class DumpCommands extends AbstractCommands
         // Download the file.
         $this->wgetGenerateInputFile("$link/$filename", "$tmpFolder/$service.txt", true);
         $extension = str_ends_with($filename, '.gz') ? 'gz' : 'tar';
-        $tasks[] = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar');
+        $show = $this->getConfigValue('toolkit.clone.show_progress', false);
+        $tasks[] = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar', !$show);
 
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
