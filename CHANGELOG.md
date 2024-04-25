@@ -1,5 +1,11 @@
 # Toolkit change log
 
+## Version 10.11.0
+  - DQA-9087: Allow also commands to run before install clone.
+  - DQA-8514: Use toolkit-requirements endpoint to retrieve the list of deprecated environment variables.
+  - DQA-9209: Prepare for phpunit 11.0.
+  - DQA-9219: Add configuration for database download output
+
 ## Version 10.10.0
   - DQA-8677: Improve check-version.
   - DQA-8687: Exclude non-drupal packages from is_installed check.
