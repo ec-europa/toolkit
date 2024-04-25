@@ -167,6 +167,25 @@ docker-compose exec web ./vendor/bin/run toolkit:install-clean</code></pre>
             <p>To install the site from existing configuration run:</p>
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:build-dev
 docker-compose exec web ./vendor/bin/run toolkit:install-clean --existing-config</code></pre>
+            <div class="section" id="commands-to-run-before-after-clean-installation">
+    <h3>Commands to run before/after clean installation</h3>
+
+            <p>Additional commands can be run before and/or after installing the clean site.
+Such commands should be defined in the configuration file <code>runner.yml</code>:</p>
+            <pre><code class="language-yaml">toolkit:
+  install:
+    clean:
+      commands:
+        before:
+          - task: exec
+            command: ls -la
+          - ...
+        after:
+          - task: exec
+            command: whoami
+          - ...</code></pre>
+    </div>
+
     </div>
 
             <div class="section" id="clone-installation">
@@ -185,13 +204,9 @@ project, so make sure you have the following variables in your environment:</p>
 # For default ASDA (deprecated)
 - ASDA_USER
 - ASDA_PASSWORD</code></pre>
-            <p>If you want to run extra commands after the <code>toolkit:install-clone</code> command you
-can configure the following in your <code>runner.yml.dist</code> file:</p>
-            <pre><code class="language-yaml">toolkit:
-  install:
-    clone:
-      commands:
-        - ./vendor/bin/drush status</code></pre>
+            <div class="section" id="commands-part-of-clone-installation">
+    <h3>Commands part of clone installation</h3>
+
             <p>When running the command toolkit:install-clone it will run the following sequence of
 commands after the database import:</p>
             <pre><code class="language-">./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer -y
@@ -203,6 +218,27 @@ commands after the database import:</p>
 alter these commands by providing a file named <strong>.opts.yml</strong> in the root of your project folder. For
 more detailed information on the contents of this <strong>.opts.yml</strong> file please refer to this
 page: <a href="https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides">https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides</a> .</p>
+    </div>
+
+            <div class="section" id="commands-to-run-before-after-clone-installation">
+    <h3>Commands to run before/after clone installation</h3>
+
+            <p>Additional commands can be run before and/or after installing the cloned site.
+Such commands should be defined in the configuration file <code>runner.yml</code>:</p>
+            <pre><code class="language-yaml">toolkit:
+  install:
+    clone:
+      commands:
+        before:
+          - task: exec
+            command: ls -la
+          - ...
+        after:
+          - task: exec
+            command: whoami
+          - ...</code></pre>
+    </div>
+
     </div>
 
     </div>
