@@ -83,7 +83,7 @@
     - file: .opts.yml
       content: |
         dump_options:
-          - SANITIZE_OPTS: "--sanitize-email=sanitised@localhost.localdomain --sanitize-password=123"
+          SANITIZE_OPTS: "--sanitize-email=sanitised@localhost.localdomain --sanitize-password=123"
   expectations:
     - string_contains: The project is using default deploy instructions.
 
@@ -103,7 +103,27 @@
     - file: .opts.yml
       content: |
         dump_options:
-          - SANITIZE_OPTS: "--sanitize-password=no --sanitize-email=no"
+          - SANITIZE_OPTS: "--sanitize-email=sanitised@localhost.localdomain"
+  expectations:
+    - string_contains: Invalid syntax detected in dump_options section for the SANITIZE_OPTS.
+
+- command: 'toolkit:opts-review'
+  configuration: []
+  resources:
+    - file: .opts.yml
+      content: |
+        dump_options:
+          SANITIZE_OPTS= "--sanitize-email=sanitised@localhost.localdomain"
+  expectations:
+    - string_contains: Invalid syntax detected in dump_options section for the SANITIZE_OPTS.
+
+- command: 'toolkit:opts-review'
+  configuration: []
+  resources:
+    - file: .opts.yml
+      content: |
+        dump_options:
+          SANITIZE_OPTS: "--sanitize-password=no --sanitize-email=no"
   expectations:
     - string_contains: "[ERROR] Detected forbidden usage of --sanitize-email=no and"
 
@@ -113,7 +133,7 @@
     - file: .opts.yml
       content: |
         dump_options:
-          - SANITIZE_OPTS: "--sanitize-password no --sanitize-email no"
+          SANITIZE_OPTS: "--sanitize-password no --sanitize-email no"
   expectations:
     - string_contains: "[ERROR] Detected forbidden usage of --sanitize-email=no and"
 
@@ -123,7 +143,7 @@
     - file: .opts.yml
       content: |
         dump_options:
-          - SANITIZE_OPTS: "--sanitize-password='no' --sanitize-email='no'"
+          SANITIZE_OPTS: "--sanitize-password='no' --sanitize-email='no'"
   expectations:
     - string_contains: "[ERROR] Detected forbidden usage of --sanitize-email=no and"
 
@@ -133,6 +153,6 @@
     - file: .opts.yml
       content: |
         dump_options:
-          - SANITIZE_OPTS: '--sanitize-password="no" --sanitize-email="no"'
+          SANITIZE_OPTS: '--sanitize-password="no" --sanitize-email="no"'
   expectations:
     - string_contains: "[ERROR] Detected forbidden usage of --sanitize-email=no and"
