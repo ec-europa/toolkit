@@ -112,4 +112,28 @@ final class Toolkit
         }
     }
 
+  /**
+   * Renders mixed values to a string.
+   *
+   * This function iterates through the given mixed value, which could be a string or an array,
+   * and returns a string containing the values. If the value is an array and it contains a '#markup'
+   * key with a string value, that value is used. If the value is a string, it is directly used.
+   *
+   * @param mixed $mixedValue
+   *   The mixed value to be rendered.
+   *
+   * @return string
+   *   The rendered string.
+   */
+    public static function renderMixedValues($mixedValue): string
+    {
+        $output = [];
+        foreach ((array) $mixedValue as $item) {
+            if (is_string($item) || (is_array($item) && !empty($item['#markup']) && is_string($item['#markup']))) {
+                $output[] = is_string($item) ? $item : $item['#markup'];
+            }
+        }
+        return implode(' ', $output);
+    }
+
 }

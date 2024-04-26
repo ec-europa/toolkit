@@ -571,6 +571,71 @@ class DrupalCommands extends AbstractCommands
     }
 
     /**
+     * Check Drupal Requirements fulfilment - from Drupal Status Page.
+     *
+     * @param array $options
+     *   Command options.
+     *
+     * @command drupal:check-requirements
+     *
+     * @option types Specify which types of requirements return.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    public function drupalCheckRequirements(ConsoleIO $io, array $options = [
+        'types' => InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+    ])
+    {
+        if (!$this->isWebsiteInstalled()) {
+            $io->writeln('Website not installed, skipping.');
+            return ResultData::EXITCODE_OK;
+        }
+        Toolkit::ensureArray($options['types']);
+        $types = [2, 1];
+        if (is_array($options['types'])) {
+            $types = [];
+            foreach ($options['types'] as $type) {
+                switch ($type) {
+                    case 'errors':
+                        $types[] = 2;
+                        break;
+
+                    case 'warnings':
+                        $types[] = 1;
+                        break;
+                }
+            }
+        }
+        $command = "\Drupal::service('system.manager')->listRequirements()";
+        $result = $this->taskExec($this->getBin('drush') . ' eval "echo json_encode(' . $command . ')"')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        $requirements = json_decode($result, true);
+        $remarks = [];
+        foreach ($requirements as $requirement) {
+            if (!empty($requirement['severity']) && in_array($requirement['severity'], $types)) {
+                $remark = "\n- " . Toolkit::renderMixedValues($requirement['title']) .
+                    " -\n" . Toolkit::renderMixedValues($requirement['value']);
+                if (!empty($requirement['description'])) {
+                    $remark .= "\n" . Toolkit::renderMixedValues($requirement['description']);
+                }
+                $remarks[$requirement['severity'] == 2 ? 'errors' : 'warnings'][] = $remark;
+            }
+        }
+        $output = '';
+        if (!empty($remarks)) {
+            foreach ($remarks as $severity => $groupOfRemarks) {
+                $output .= "\n\n--- " . strtoupper($severity) . ":";
+                foreach ($groupOfRemarks as $remark) {
+                    $output .= "\n" . $remark;
+                }
+            }
+        }
+        $io->writeln($output);
+    }
+
+    /**
      * Remove settings block from given content.
      *
      * @return string
