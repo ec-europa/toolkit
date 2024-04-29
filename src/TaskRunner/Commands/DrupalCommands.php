@@ -588,52 +588,68 @@ class DrupalCommands extends AbstractCommands
         'types' => InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
     ])
     {
+        // Exit with message if site was not installed.
         if (!$this->isWebsiteInstalled()) {
             $io->writeln('Website not installed, skipping.');
             return ResultData::EXITCODE_OK;
         }
+        // Requirement severity names and values, defined in:
+        // /core/modules/system/src/SystemManager.php.
+        define("VALID_REQUIREMENT_TYPES", ['errors' => 2, 'warnings' => 1]);
+        // Set default requested requirement types to all defined valid types.
+        $requestedRequirementTypes = VALID_REQUIREMENT_TYPES;
         Toolkit::ensureArray($options['types']);
-        $types = [2, 1];
+        // If types option was provided in command, check if it's valid.
         if (is_array($options['types'])) {
-            $types = [];
-            foreach ($options['types'] as $type) {
-                switch ($type) {
-                    case 'errors':
-                        $types[] = 2;
-                        break;
-
-                    case 'warnings':
-                        $types[] = 1;
-                        break;
-                }
+            $wrongTypes = array_diff($options['types'], array_keys($requestedRequirementTypes));
+            if (!empty($wrongTypes)) {
+                $io->writeln('<error>Wrong requirement types "' . implode(', ', $wrongTypes) . '". Use -help to check allowed types.</error>');
+                return ResultData::EXITCODE_OK;
             }
+            // Once validation passed, override requested requirement types
+            // by types from option provided in command.
+            // Filter VALID_REQUIREMENT_TYPES based on keys present in types option.
+            $requestedRequirementTypes = array_intersect_key(VALID_REQUIREMENT_TYPES, array_flip($options['types']));
         }
+
+        // Retrieve all requirements with Drupal Core system.manager service.
         $command = "\Drupal::service('system.manager')->listRequirements()";
         $result = $this->taskExec($this->getBin('drush') . ' eval "echo json_encode(' . $command . ')"')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
         $requirements = json_decode($result, true);
         $remarks = [];
+        // Process and group requirements by type (error, warning).
         foreach ($requirements as $requirement) {
-            if (!empty($requirement['severity']) && in_array($requirement['severity'], $types)) {
+            if (!empty($requirement['severity']) && in_array($requirement['severity'], $requestedRequirementTypes)) {
                 $remark = "\n- " . Toolkit::renderMixedValues($requirement['title']) .
                     " -\n" . Toolkit::renderMixedValues($requirement['value']);
                 if (!empty($requirement['description'])) {
                     $remark .= "\n" . Toolkit::renderMixedValues($requirement['description']);
                 }
-                $remarks[$requirement['severity'] == 2 ? 'errors' : 'warnings'][] = $remark;
+                $remarks[array_search($requirement['severity'], $requestedRequirementTypes)][] = $remark;
             }
         }
-        $output = '';
-        if (!empty($remarks)) {
-            foreach ($remarks as $severity => $groupOfRemarks) {
-                $output .= "\n\n--- " . strtoupper($severity) . ":";
-                foreach ($groupOfRemarks as $remark) {
-                    $output .= "\n" . $remark;
+        // Process requested and then retrieved requirements.
+        foreach (array_keys($requestedRequirementTypes) as $type) {
+            // If requirements met print OK message..
+            if (empty($remarks[$type])) {
+                $io->writeln('<info>No ' . strtoupper($type) . ' found.</info>');
+            }
+            // or requirements to be met if found.
+            else {
+                // Output styles mapping array.
+                $styleMapping = [
+                    'errors' => 'error',
+                    'warnings' => 'comment'
+                ];
+                // Output the styled type and remarks.
+                $io->writeln("\n" . (isset($styleMapping[$type]) ? "<{$styleMapping[$type]}>" . strtoupper($type) . "</{$styleMapping[$type]}>" : strtoupper($type)) . ":");
+                foreach ($remarks[$type] as $remark) {
+                    $io->writeln($remark);
                 }
             }
         }
-        $io->writeln($output);
     }
 
     /**
