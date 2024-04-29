@@ -1011,8 +1011,6 @@ class ComponentCheckCommands extends AbstractCommands
      */
     private function disableConfigReadOnly()
     {
-        // If the module config_readonly is installed, make sure that is
-        // not enabled and preventing the config from changing.
         if (ToolCommands::isPackageInstalled('drupal/config_readonly')) {
             $config = $this->getConfig();
             $settings = $config->get('drupal.root') . '/sites/' . $config->get('drupal.site.sites_subdir') . '/settings.php';
@@ -1020,7 +1018,6 @@ class ComponentCheckCommands extends AbstractCommands
                 $content = file_get_contents($settings);
                 if (str_contains($content, 'config_readonly')) {
                     file_put_contents($settings, preg_replace('#(^\$settings\[["|\']config_readonly)#m', "//$1", $content));
-                    $this->writeln('config_readonly is now disabled.');
                     $this->disabledConfigReadonly = true;
                 }
             }
@@ -1035,12 +1032,10 @@ class ComponentCheckCommands extends AbstractCommands
         if (!$this->disabledConfigReadonly) {
             return;
         }
-        // Restore any change on the settings.php regarding the config_readonly.
         $config = $this->getConfig();
         $settings = $config->get('drupal.root') . '/sites/' . $config->get('drupal.site.sites_subdir') . '/settings.php';
         $content = file_get_contents($settings);
         file_put_contents($settings, preg_replace('#^//(\$settings\[["|\']config_readonly)#m', "$1", $content));
-        $this->writeln('config_readonly restored to initial state.');
     }
 
 }
