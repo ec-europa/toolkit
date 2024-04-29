@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 10.11.2
+  - DQA-9217: Align SANITIZE_OPTS on .opts.yml.
+
 ## Version 10.11.0
   - DQA-9087: Allow also commands to run before install clone.
   - DQA-8514: Use toolkit-requirements endpoint to retrieve the list of deprecated environment variables.
