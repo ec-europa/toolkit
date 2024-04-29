@@ -579,6 +579,7 @@ class DrupalCommands extends AbstractCommands
      * @command drupal:check-requirements
      *
      * @option types Specify which types of requirements return.
+     * Allowed values: errors,warnings
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
