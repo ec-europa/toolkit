@@ -387,7 +387,7 @@
     - file: .opts.yml
       content: |
         dump_options:
-          - SANITIZE_OPTS: "--sanitize-email=sanitised@localhost.localdomain"
+          SANITIZE_OPTS: "--sanitize-email=sanitised@localhost.localdomain"
   expectations:
     - string_contains: node-field_test_token (string)
     - not_string_contains: user-email (email)
@@ -399,7 +399,7 @@
     - file: .opts.yml
       content: |
         dump_options:
-          - SANITIZE_OPTS: "--sanitize-email=no"
+          SANITIZE_OPTS: "--sanitize-email=no"
   expectations:
     - string_contains: node-field_test_token (string)
     - string_contains: user-email (email)
@@ -412,7 +412,7 @@
     - file: .opts.yml
       content: |
         dump_options:
-          - SANITIZE_OPTS: "--sanitize-password=no"
+          SANITIZE_OPTS: "--sanitize-password=no"
   expectations:
     - string_contains: node-field_test_token (string)
     - string_contains: user-email (email)

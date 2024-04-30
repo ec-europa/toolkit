@@ -196,10 +196,10 @@ class DrupalSanitiseCommands extends AbstractCommands
             return true;
         }
         // By default, the fields are sanitised, skip if not options are defined.
-        if (empty($opts['dump_options'][0]['SANITIZE_OPTS'])) {
+        if (empty($opts['dump_options']['SANITIZE_OPTS'])) {
             return true;
         }
-        $value = $opts['dump_options'][0]['SANITIZE_OPTS'];
+        $value = $opts['dump_options']['SANITIZE_OPTS'];
         if (preg_match(self::optionPattern('sanitize-password'), $value)) {
             return false;
         }
