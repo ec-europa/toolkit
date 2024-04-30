@@ -591,7 +591,7 @@ class DrupalCommands extends AbstractCommands
         // Exit with message if site was not installed.
         if (!$this->isWebsiteInstalled()) {
             $io->writeln('Website not installed, skipping.');
-            return ResultData::EXITCODE_OK;
+            return;
         }
         // Requirement severity names and values, defined in:
         // /core/modules/system/src/SystemManager.php.
