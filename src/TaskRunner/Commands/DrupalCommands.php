@@ -635,9 +635,8 @@ class DrupalCommands extends AbstractCommands
             // If requirements met print OK message..
             if (empty($remarks[$type])) {
                 $io->writeln('<info>No ' . strtoupper($type) . ' found.</info>');
-            }
-            // or requirements to be met if found.
-            else {
+                // or requirements to be met if found.
+            } else {
                 // Output styles mapping array.
                 $styleMapping = [
                     'errors' => 'error',
