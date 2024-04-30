@@ -441,3 +441,9 @@
         }
   expectations:
     - string_contains: ToolkitSanitizeCommand
+
+- command: 'drupal:check-requirements'
+  configuration: []
+  tokens: ''
+  expectations:
+    - string_contains: Website not installed, skipping
