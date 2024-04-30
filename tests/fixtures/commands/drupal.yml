@@ -445,5 +445,8 @@
 - command: 'drupal:check-requirements'
   configuration: []
   tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
   expectations:
     - string_contains: Website not installed, skipping
