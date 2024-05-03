@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Autoload\ClassLoader;
-use Composer\ClassMapGenerator\ClassMapGenerator;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
@@ -119,7 +118,7 @@ class DrupalSanitiseCommands extends AbstractCommands
 
         $sanitiseClasses = [];
         $this->registerCustomClasses($src);
-        $map = ClassMapGenerator::createMap($src);
+        $map = $this->createClassMap($src);
         foreach (array_keys($map) as $class) {
             // Check if the class implements the SanitizePluginInterface.
             // Ignore errors thrown by some classes due to missing dependencies,
@@ -142,40 +141,6 @@ class DrupalSanitiseCommands extends AbstractCommands
         $io->listing($sanitiseClasses);
 
         return ResultData::EXITCODE_OK;
-    }
-
-    /**
-     * Register all classes in custom code directory folder that are not registered.
-     *
-     * This assumes the Drupal namespace \Drupal\[module].
-     *
-     * @param string $directory
-     *   The directory to search for classes.
-     */
-    private function registerCustomClasses(string $directory)
-    {
-        $registered = [];
-        $map = ClassMapGenerator::createMap($directory);
-        $loader = new ClassLoader();
-        foreach ($map as $class => $path) {
-            // Ignore if the class namespace do not start with Drupal or
-            // if is already registered.
-            if (!str_starts_with($class, 'Drupal\\') || class_exists($class)) {
-                continue;
-            }
-            $namespaceExploded = explode('\\', $class);
-            $namespacePrefix = $namespaceExploded[0] . '\\' . $namespaceExploded[1] . '\\';
-            // Skip if we already registered this namespace, we only need to
-            // register one namespace per module, avoid to register all classes
-            // inside the same namespace.
-            if (in_array($namespacePrefix, $registered)) {
-                continue;
-            }
-            $modulePath = strstr($path, $namespaceExploded[1], true) . $namespaceExploded[1];
-            $loader->addPsr4($namespacePrefix, $modulePath . '/src');
-            $registered[] = $namespacePrefix;
-        }
-        $loader->register();
     }
 
     /**
@@ -231,6 +196,65 @@ class DrupalSanitiseCommands extends AbstractCommands
     public static function optionPattern(string $option): string
     {
         return '/(--' . $option . '?( |=|="|=\')no)/';
+    }
+
+    /**
+     * Register all classes in custom code directory folder that are not registered.
+     *
+     * This assumes the Drupal namespace \Drupal\[module].
+     *
+     * @param string $directory
+     *   The directory to search for classes.
+     */
+    private function registerCustomClasses(string $directory)
+    {
+        $registered = [];
+        $map = $this->createClassMap($directory);
+        $loader = new ClassLoader();
+        foreach ($map as $class => $path) {
+            // Ignore if the class namespace do not start with Drupal or
+            // if is already registered.
+            if (!str_starts_with($class, 'Drupal\\') || class_exists($class)) {
+                continue;
+            }
+            $namespaceExploded = explode('\\', $class);
+            $namespacePrefix = $namespaceExploded[0] . '\\' . $namespaceExploded[1] . '\\';
+            // Skip if we already registered this namespace, we only need to
+            // register one namespace per module, avoid to register all classes
+            // inside the same namespace.
+            if (in_array($namespacePrefix, $registered)) {
+                continue;
+            }
+            $modulePath = strstr($path, $namespaceExploded[1], true) . $namespaceExploded[1];
+            $loader->addPsr4($namespacePrefix, $modulePath . '/src');
+            $registered[] = $namespacePrefix;
+        }
+        $loader->register();
+    }
+
+    /**
+     * Generates a class map for given directory.
+     *
+     * Only consider classes inside the src folder.
+     *
+     * @param string $directory
+     *   The directory to scan, usually 'lib'.
+     */
+    private function createClassMap(string $directory): array
+    {
+        $classes = [];
+        $iterator = new \RecursiveDirectoryIterator($directory);
+        foreach (new \RecursiveIteratorIterator($iterator) as $file) {
+            if (!$file->isDir() && $file->getExtension() === 'php' && strpos($file->getPathname(), 'src')) {
+                $filePath = $file->getPathname();
+                $className = str_replace('.php', '', $file->getFilename());
+                $ns = dirname(substr($filePath, (strpos($filePath, 'src') + 4)));
+                $module = basename(strstr($filePath, 'src', true));
+                $namespace = 'Drupal\\' . $module . '\\' . $ns;
+                $classes[$namespace . '\\' . $className] = realpath($filePath);
+            }
+        }
+        return $classes;
     }
 
     /**
