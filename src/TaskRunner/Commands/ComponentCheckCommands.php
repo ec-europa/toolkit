@@ -19,6 +19,7 @@ use Symfony\Component\Yaml\Yaml;
  * Command class for toolkit:component-check
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
 class ComponentCheckCommands extends AbstractCommands
 {
@@ -43,6 +44,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected array $composerLock;
     protected array $packageReviews;
     protected bool $forcedUpdateModule = false;
+    protected bool $disabledConfigReadonly = false;
 
     /**
      * Check composer for components that are not whitelisted/blacklisted.
@@ -395,6 +397,7 @@ class ComponentCheckCommands extends AbstractCommands
             $io->writeln('Website not installed, skipping.');
             return;
         }
+        $this->disableConfigReadOnly();
         if (empty($releases = $this->getReleases())) {
             $io->writeln('Failed to get the available releases.');
             return;
@@ -427,6 +430,7 @@ class ComponentCheckCommands extends AbstractCommands
         if ($this->forcedUpdateModule) {
             $this->_exec($this->getBin('drush') . ' pm:uninstall update -y');
         }
+        $this->restoreConfigReadOnly();
     }
 
     /**
@@ -1000,6 +1004,38 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
         return '';
+    }
+
+    /**
+     * Ensure that config_readonly is not active by commenting the config line.
+     */
+    private function disableConfigReadOnly()
+    {
+        if (ToolCommands::isPackageInstalled('drupal/config_readonly')) {
+            $config = $this->getConfig();
+            $settings = $config->get('drupal.root') . '/sites/' . $config->get('drupal.site.sites_subdir') . '/settings.php';
+            if (file_exists($settings)) {
+                $content = file_get_contents($settings);
+                if (str_contains($content, 'config_readonly')) {
+                    file_put_contents($settings, preg_replace('#(^\$settings\[["|\']config_readonly)#m', "//$1", $content));
+                    $this->disabledConfigReadonly = true;
+                }
+            }
+        }
+    }
+
+    /**
+     * Restore the comment added to the config_readonly setting.
+     */
+    private function restoreConfigReadOnly()
+    {
+        if (!$this->disabledConfigReadonly) {
+            return;
+        }
+        $config = $this->getConfig();
+        $settings = $config->get('drupal.root') . '/sites/' . $config->get('drupal.site.sites_subdir') . '/settings.php';
+        $content = file_get_contents($settings);
+        file_put_contents($settings, preg_replace('#^//(\$settings\[["|\']config_readonly)#m', "$1", $content));
     }
 
 }
