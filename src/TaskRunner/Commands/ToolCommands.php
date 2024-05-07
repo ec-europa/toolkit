@@ -427,6 +427,7 @@ class ToolCommands extends AbstractCommands
     public static function getPackageLatestVersion(string $package)
     {
         $process = Process::fromShellCommandline("composer outdated $package --format=json");
+        $process->setTimeout(300);
         $process->run();
         if ($process->getExitCode()) {
             return null;
