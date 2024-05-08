@@ -427,6 +427,7 @@ class ToolCommands extends AbstractCommands
     public static function getPackageLatestVersion(string $package)
     {
         $process = Process::fromShellCommandline("composer outdated $package --format=json");
+        $process->setTimeout(300);
         $process->run();
         if ($process->getExitCode()) {
             return null;
@@ -634,7 +635,7 @@ class ToolCommands extends AbstractCommands
                 ->run()->getMessage();
             // The package is installed if output contains '[installed]'. If
             // the name is not in the output the package was not found.
-            if (str_contains($info, '[installed]')) {
+            if (str_contains($info, '[installed') || str_contains($info, '[upgradable')) {
                 $data[$package] = 'already installed';
             } elseif (!str_contains($info, $package)) {
                 $data[$package] = 'not found';
@@ -657,7 +658,7 @@ class ToolCommands extends AbstractCommands
                 $info = $this->taskExec("apt list $package")
                     ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                     ->run()->getMessage();
-                if (str_contains($info, '[installed]')) {
+                if (str_contains($info, '[installed') || str_contains($info, '[upgradable')) {
                     $data[$package] = 'installed';
                 } else {
                     $data[$package] = 'fail';
