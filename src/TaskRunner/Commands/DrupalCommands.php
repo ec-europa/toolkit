@@ -661,7 +661,7 @@ class DrupalCommands extends AbstractCommands
                     'warnings' => 'comment'
                 ];
                 // Output the styled type and remarks.
-                $io->writeln("\n" . "<{$styleMapping[$type]}>" . strtoupper($type) . "</{$styleMapping[$type]}>:");
+                $io->writeln("\n<{$styleMapping[$type]}>" . strtoupper($type) . "</{$styleMapping[$type]}>:");
                 foreach ($remarks[$type] as $remark) {
                     $io->writeln($remark);
                 }
