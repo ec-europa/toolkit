@@ -76,6 +76,7 @@
         Checking Configuration components.
         ==================================
 
+        [Simulator] Running ./vendor/bin/run drupal:check-requirements --types=errors --filter --dont_print_msg
         >  Project configuration check passed.
 
 

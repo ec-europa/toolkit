@@ -581,6 +581,7 @@ class DrupalCommands extends AbstractCommands
      * @option types Specify which types of requirements return.
      * Allowed values: errors,warnings
      * @option filter Filter requirements by defined titles and values.
+     * @option dont_print_msg Print info message or not.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -588,11 +589,14 @@ class DrupalCommands extends AbstractCommands
     public function drupalCheckRequirements(ConsoleIO $io, array $options = [
         'types' => InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
         'filter' => false,
+        'dont_print_msg' => false,
     ])
     {
         // Exit with message if site was not installed.
         if (!$this->isWebsiteInstalled()) {
-            $io->writeln('Website not installed, skipping.');
+            if (!$options['dont_print_msg']) {
+                $io->writeln('Website not installed, skipping.');
+            }
             return;
         }
         // Requirement severity names and values, defined in:
