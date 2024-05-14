@@ -580,12 +580,14 @@ class DrupalCommands extends AbstractCommands
      *
      * @option types Specify which types of requirements return.
      * Allowed values: errors,warnings
+     * @option filter Filter requirements by defined titles and values.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function drupalCheckRequirements(ConsoleIO $io, array $options = [
         'types' => InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+        'filter' => false,
     ])
     {
         // Exit with message if site was not installed.
@@ -618,6 +620,18 @@ class DrupalCommands extends AbstractCommands
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
         $requirements = json_decode($result, true);
+        // Filter out requirements that doesn't match any pair in the dynamic array.
+        if ($options['filter']) {
+            $filterRequirements = $this->getConfig()->get('toolkit.components.configuration.drupal.requirements');
+            $requirements = array_filter($requirements, function ($requirement) use ($filterRequirements) {
+                foreach ($filterRequirements as $item) {
+                    if ($requirement['title'] === $item['title'] && $requirement['value'] === $item['value']) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
         $remarks = [];
         // Process and group requirements by type (error, warning).
         foreach ($requirements as $requirement) {

@@ -534,6 +534,16 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
 
+        // If a project have errors reported in the Report Status,
+        // then CI should report it in the delivery.
+        $result = $this->taskExec($this->getBin('run') . ' drupal:check-requirements --types=errors --filter')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        if (!str_contains($result, 'No ERRORS found.')) {
+            $this->io->error($result);
+            $this->configurationFailed = true;
+        }
+
         if (!$this->configurationFailed) {
             $this->say('Project configuration check passed.');
         }

@@ -48,6 +48,10 @@ toolkit:
           post-install-cmd:
             - 'DrupalComposer\DrupalScaffold\Plugin::scaffold'
     configuration:
+      drupal:
+        requirements:
+          - title: 'Trusted Host Settings'
+            value: 'Not enabled'
       validations:
         - message: 'When using phpstan/extension-installer you should not manually include the extensions in the phpstan.neon file, please remove the includes.'
           callback: 'EcEuropa\Toolkit\Callbacks\ConfigurationCallbacks::validatePhpStan'
