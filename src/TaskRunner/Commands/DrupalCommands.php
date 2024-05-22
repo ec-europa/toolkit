@@ -590,7 +590,7 @@ class DrupalCommands extends AbstractCommands
         $result = $this->taskExec($this->getBin('drush') . ' core:requirements --severity=2 --format=yaml')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
-        $requirements = (array)  Yaml::parse($result);
+        $requirements = (array) Yaml::parse($result);
         // Filter the requirements array by the keys in filterKeys.
         if ($options['filter']) {
             $filterRequirements = $this->getConfig()->get('toolkit.components.configuration.drupal.requirements') ?: [];
