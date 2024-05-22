@@ -571,6 +571,35 @@ class DrupalCommands extends AbstractCommands
     }
 
     /**
+     * Check Drupal Requirements fulfilment - from Drupal Status Page.
+     *
+     * @param array $options
+     *   Command options.
+     *
+     * @command drupal:check-requirements
+     *
+     * @option filter Filter out requirements by defined keys in config.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    public function drupalCheckRequirements(ConsoleIO $io, array $options = [
+        'filter' => false,
+    ])
+    {
+        $result = $this->taskExec($this->getBin('drush') . ' core:requirements --severity=2 --format=yaml')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        $requirements = (array)  Yaml::parse($result);
+        // Filter the requirements array by the keys in filterKeys.
+        if ($options['filter']) {
+            $filterRequirements = $this->getConfig()->get('toolkit.components.configuration.drupal.requirements') ?: [];
+            $requirements = array_intersect_key($requirements, array_flip($filterRequirements));
+        }
+        $io->say(Yaml::dump($requirements));
+    }
+
+    /**
      * Remove settings block from given content.
      *
      * @return string
