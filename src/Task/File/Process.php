@@ -82,7 +82,7 @@ class Process extends BaseTask implements BuilderAwareInterface
     protected function extractTokens()
     {
         preg_match_all('/\${(([A-Za-z]([A-Za-z0-9_\-]+)?\.?)+)}/', $this->content, $matches);
-        if (isset($matches[0]) && !empty($matches[0]) && is_array($matches[0])) {
+        if (!empty($matches[0]) && is_array($matches[1])) {
             return array_combine($matches[0], $matches[1]);
         }
 

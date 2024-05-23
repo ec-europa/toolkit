@@ -594,16 +594,18 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Install packages present in the opts.yml file under extra_pkgs section.
+     * Install packages present in the .opts.yml file under extra_pkgs section.
      *
      * @command toolkit:install-dependencies
      *
-     * @option print Shows output from apt commands.
+     * @option packages Specify a list of packages to install instead of read from .opts.yml.
+     * @option print    Shows output from apt commands.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitInstallDependencies(ConsoleIO $io, array $options = [
+        'packages' => InputOption::VALUE_REQUIRED,
         'print' => InputOption::VALUE_NONE,
     ])
     {
@@ -611,13 +613,18 @@ class ToolCommands extends AbstractCommands
         if (!$this->getConfig()->get('toolkit.install_dependencies')) {
             return $return;
         }
-        if (!file_exists('.opts.yml')) {
-            return $return;
-        }
-        $opts = Yaml::parseFile('.opts.yml');
-        $packages = $opts['extra_pkgs'] ?? [];
-        if (empty($packages)) {
-            return $return;
+
+        if (empty($options['packages'])) {
+            if (!($opts = self::parseOptsYml())) {
+                return $return;
+            }
+            $packages = $opts['extra_pkgs'] ?? [];
+            if (empty($packages)) {
+                return $return;
+            }
+        } else {
+            Toolkit::ensureArray($options['packages']);
+            $packages = $options['packages'];
         }
 
         $io->title('Installing dependencies');

@@ -102,3 +102,15 @@ toolkit:
       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
       exclude: [ '${toolkit.build.dist.root}/', '.cache/', 'vendor/', 'web/' ]
       options: ''
+  axe-scan:
+    config: axe-scan.config.json
+    urls:
+      - '/'
+    file-path: axe-scan-urls.txt
+    result-types: [ 'incomplete', 'violations' ]
+    core-tags: [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa' ]
+    locale: en
+    result-file: axe-scan-results.csv
+    allow-list: axe-scan-allowlist.csv
+    run-summary: true
+    summary-result-file: axe-scan-summary.csv

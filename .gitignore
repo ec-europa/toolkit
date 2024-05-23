@@ -25,3 +25,6 @@ docs/*
 !docs/guide/
 docs/guide/*
 !docs/guide/*.rst
+
+# Exclude axe-scan related files.
+/axe*
