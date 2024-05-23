@@ -85,7 +85,6 @@ class Process extends BaseTask implements BuilderAwareInterface
         if (!empty($matches[0]) && is_array($matches[1])) {
             return array_combine($matches[0], $matches[1]);
         }
-
         return [];
     }
 
