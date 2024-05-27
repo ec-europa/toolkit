@@ -21,3 +21,7 @@ command:
         extensions: ${toolkit.lint.php.extensions}
         exclude: ${toolkit.lint.php.exclude}
         options: ${toolkit.lint.php.options}
+    lint-css:
+      options:
+        config: ${toolkit.lint.css.config}
+        files: ${toolkit.lint.css.files}
