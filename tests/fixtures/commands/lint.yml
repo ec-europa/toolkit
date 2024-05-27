@@ -5,8 +5,8 @@
     - contains: |
         [Simulator] Simulating Exec('npm ini -y')
         [Simulator] Running npm ini -y
-        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plugin-yml -y')
-        [Simulator] Running npm install --save-dev eslint-config-drupal eslint-plugin-yml -y
+        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plu ... nt-config-drupal -y')
+        [Simulator] Running npm install --save-dev eslint-config-drupal eslint-plugin-yml stylelint stylelint-config-drupal -y
         [File\Write] Writing to .eslintrc.json.
         [Simulator] Simulating File\Write('.prettierignore')
           ->text('*.yml')
@@ -34,8 +34,8 @@
         [Simulator] Running rm .eslintrc.json
         [Simulator] Simulating Exec('npm ini -y')
         [Simulator] Running npm ini -y
-        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plugin-yml -y')
-        [Simulator] Running npm install --save-dev eslint-config-drupal eslint-plugin-yml -y
+        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plu ... nt-config-drupal -y')
+        [Simulator] Running npm install --save-dev eslint-config-drupal eslint-plugin-yml stylelint stylelint-config-drupal -y
         [Simulator] Simulating File\Write('.prettierignore')
           ->text('*.yml')
 
