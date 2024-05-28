@@ -241,7 +241,7 @@ class DumpCommands extends AbstractCommands
         $tasks = [];
         foreach ($services as $service) {
             $this->say("Checking service '$service'");
-            $dump = $tmpFolder . '/' . $service . ($isMydumper ? '.tar' : '.gz');
+            $dump = $tmpFolder . '/' . $service . ($isMydumper && $service === 'mysql' ? '.tar' : '.gz');
             // Check if the dump is already downloaded.
             if (!file_exists($dump)) {
                 $this->say('Starting download');
