@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 10.12.1
+  - DQA-9451: Fix issue with multiple download of virtuoso and solr dumps.
+
 ## Version 10.12.0
   - DQA-9180: Unsupported packages should enable config-sync.
   - DQA-9265: Increase timeout in getPackageLatestVersion().
