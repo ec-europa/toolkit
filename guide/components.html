@@ -55,8 +55,8 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -three phpdocumentor-sidebar">
-                    <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">index</h2>
+                    <section class="phpdocumentor-sidebar__category -index">
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html#setting-up-a-project" class="">Setting up a project</a>
 </h4>
@@ -106,7 +106,7 @@
 </h4>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -namespaces">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/eceuropa.html" class="">EcEuropa</a>
@@ -119,7 +119,7 @@
             </ul>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -packages">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="packages/Toolkit.html" class="">Toolkit</a>
@@ -127,14 +127,14 @@
 
                         </section>
             
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -reports">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
     </section>
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -indices">
         <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
     </section>
@@ -142,15 +142,23 @@
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
                                         <div class="section" id="components">
-    <h1>Components</h1>
+            <h1>Components</h1>
 
-            <p>In the <a href="https://digit-dqa.fpfis.tech.ec.europa.eu">QA Website</a>, you can find the components being controlled by our CI/CD.</p>
-            <p><a href="https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews">Components</a></p>
+            
+    <p>In the <a href="https://digit-dqa.fpfis.tech.ec.europa.eu">QA Website</a>, you can find the components being controlled by our CI/CD.</p>
+
+            
+    <p><a href="https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews">Components</a></p>
+
             <div class="section" id="mandatory-module-check">
-    <h2>Mandatory module check</h2>
+            <h2>Mandatory module check</h2>
 
-            <p>Ensure that packages marked as Mandatory in the QA website inventory are being used by the project.</p>
-            <p>You can check the <a href="https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews?f[0]=package_mandatory:1">list of mandatory modules</a>.</p>
+            
+    <p>Ensure that packages marked as Mandatory in the QA website inventory are being used by the project.</p>
+
+            
+    <p>You can check the <a href="https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews?f[0]=package_mandatory:1">list of mandatory modules</a>.</p>
+
             
 
 <ul>
@@ -161,10 +169,14 @@
     </div>
 
             <div class="section" id="recommended-module-check">
-    <h2>Recommended module check</h2>
+            <h2>Recommended module check</h2>
 
-            <p>Ensure that packages marked as Recommended in the QA website inventory are being used by the project.</p>
-            <p>You can check the <a href="https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews?f[0]=package_usage:3">list of recommended modules</a>.</p>
+            
+    <p>Ensure that packages marked as Recommended in the QA website inventory are being used by the project.</p>
+
+            
+    <p>You can check the <a href="https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews?f[0]=package_usage:3">list of recommended modules</a>.</p>
+
             
 
 <ul>
@@ -175,31 +187,45 @@
     </div>
 
             <div class="section" id="insecure-module-check">
-    <h2>Insecure module check</h2>
+            <h2>Insecure module check</h2>
 
-            <p>Uses the command <code>composer audit</code> command.</p>
+            
+    <p>Uses the command <code>composer audit</code>
+ command.</p>
+
             
 
 <ul>
-    <li>It is possible to bypass this check using the environment variable <code>QA_SKIP_INSECURE=true</code> or by using the</li>
+    <li>It is possible to bypass this check using the environment variable <code>QA_SKIP_INSECURE=true</code>
+ or by using the</li>
 
 </ul>
 
-            <p>token <code>[SKIP_INSECURE]</code> in the commit message.</p>
+            
+    <p>token <code>[SKIP_INSECURE]</code>
+ in the commit message.</p>
+
     </div>
 
             <div class="section" id="outdated-module-check">
-    <h2>Outdated module check</h2>
+            <h2>Outdated module check</h2>
 
-            <p>Uses the <code>composer outdated</code> command.</p>
+            
+    <p>Uses the <code>composer outdated</code>
+ command.</p>
+
             
 
 <ul>
-    <li>It is possible to bypass this check using the token <code>[SKIP_OUTDATED]</code> in the commit message or by configuration</li>
+    <li>It is possible to bypass this check using the token <code>[SKIP_OUTDATED]</code>
+ in the commit message or by configuration</li>
 
 </ul>
 
-            <p><code>toolkit.components.outdated.check: false</code>.</p>
+            
+    <p><code>toolkit.components.outdated.check: false</code>
+.</p>
+
             
 
 <ul>
@@ -213,61 +239,96 @@
       ignores:
         - name: drupal/webform
           version: 1.1.1</code></pre>
+
     </div>
 
             <div class="section" id="abandoned-module-check">
-    <h2>Abandoned module check</h2>
+            <h2>Abandoned module check</h2>
 
-            <p>Uses the <code>composer outdated</code> command.</p>
+            
+    <p>Uses the <code>composer outdated</code>
+ command.</p>
+
             
 
 <ul>
-    <li>It is possible to bypass this check using the configuration <code>toolkit.components.abandoned.check: false</code>.</li>
+    <li>It is possible to bypass this check using the configuration <code>toolkit.components.abandoned.check: false</code>
+.</li>
 
 </ul>
 
     </div>
 
             <div class="section" id="unsupported-module-check">
-    <h2>Unsupported module check</h2>
+            <h2>Unsupported module check</h2>
 
-            <p>Uses the <a href="https://api.drupal.org/api/drupal/core%21modules%21update%21update.module/function/update_get_available/10">update_available_releases()</a>  in combination with <a href="https://api.drupal.org/api/drupal/core%21modules%21update%21update.compare.inc/function/update_calculate_project_data/8.0.x">update_calculate_project_data()</a> functions.</p>
+            
+    <p>Uses the <a href="https://api.drupal.org/api/drupal/core%21modules%21update%21update.module/function/update_get_available/10">update_available_releases()</a>  in combination with <a href="https://api.drupal.org/api/drupal/core%21modules%21update%21update.compare.inc/function/update_calculate_project_data/8.0.x">update_calculate_project_data()</a> functions.</p>
+
             
 
 <ul>
-    <li>It is possible to bypass this check using the configuration <code>toolkit.components.unsupported.check: false</code>.</li>
+    <li>It is possible to bypass this check using the configuration <code>toolkit.components.unsupported.check: false</code>
+.</li>
 
 </ul>
 
     </div>
 
             <div class="section" id="evaluation-module-check">
-    <h2>Evaluation module check</h2>
+            <h2>Evaluation module check</h2>
 
-            <p>Uses the Quality Assurance packages inventory to validate the used components if they are whitelisted or blacklisted.</p>
-            <p>Using a set of vendors configured in the endpoint to validate the packages, it is possible to restrict the use of packages by project-id, type of
+            
+    <p>Uses the Quality Assurance packages inventory to validate the used components if they are whitelisted or blacklisted.</p>
+
+            
+    <p>Using a set of vendors configured in the endpoint to validate the packages, it is possible to restrict the use of packages by project-id, type of
 project or profile.</p>
-            <p>All <code>metapackages</code> and local packages are ignored.</p>
+
+            
+    <p>All <code>metapackages</code>
+ and local packages are ignored.</p>
+
     </div>
 
             <div class="section" id="development-module-check">
-    <h2>Development module check</h2>
+            <h2>Development module check</h2>
 
-            <p>Uses the Quality Assurance packages inventory to validate that no development packages are used in the production environment.</p>
+            
+    <p>Uses the Quality Assurance packages inventory to validate that no development packages are used in the production environment.</p>
+
     </div>
 
             <div class="section" id="composer-validation-check">
-    <h2>Composer validation check</h2>
+            <h2>Composer validation check</h2>
 
-            <p>Performs a series of checks in the <code>composer.json</code> file.</p>
-            <p>Ensures that packages are not used in dev branches (like: <code>^dev-*</code> or <code>*-dev$</code>).</p>
-            <p>Enforce the setting <code>extra.enable-patching</code> to be <code>false</code>.</p>
-            <p>Enforce the setting <code>extra.composer-exit-on-patch-failure</code> to be <code>true</code>.</p>
-            <p>Validate existing patches, by default only local and Drupal.org patches are allowed.</p>
+            
+    <p>Performs a series of checks in the <code>composer.json</code>
+ file.</p>
+
+            
+    <p>Ensures that packages are not used in dev branches (like: <code>^dev-*</code>
+ or <code>*-dev$</code>
+).</p>
+
+            
+    <p>Enforce the setting <code>extra.enable-patching</code>
+ to be <code>false</code>
+.</p>
+
+            
+    <p>Enforce the setting <code>extra.composer-exit-on-patch-failure</code>
+ to be <code>true</code>
+.</p>
+
+            
+    <p>Validate existing patches, by default only local and Drupal.org patches are allowed.</p>
+
             
 
 <ul>
-    <li>It is possible to block remote patches from Drupal.org by using configuration <code>toolkit.components.composer.drupal_patches: false</code>.</li>
+    <li>It is possible to block remote patches from Drupal.org by using configuration <code>toolkit.components.composer.drupal_patches: false</code>
+.</li>
 
 </ul>
 
@@ -288,7 +349,7 @@ project or profile.</p>
     </section>
 </section>
         </div>
-        <a href="guide/components.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

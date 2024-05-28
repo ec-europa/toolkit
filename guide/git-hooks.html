@@ -55,8 +55,8 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -three phpdocumentor-sidebar">
-                    <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">index</h2>
+                    <section class="phpdocumentor-sidebar__category -index">
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html#setting-up-a-project" class="">Setting up a project</a>
 </h4>
@@ -106,7 +106,7 @@
 </h4>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -namespaces">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/eceuropa.html" class="">EcEuropa</a>
@@ -119,7 +119,7 @@
             </ul>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -packages">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="packages/Toolkit.html" class="">Toolkit</a>
@@ -127,14 +127,14 @@
 
                         </section>
             
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -reports">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
     </section>
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -indices">
         <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
     </section>
@@ -142,13 +142,17 @@
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
                                         <div class="section" id="git-hooks">
-    <h1>Git hooks</h1>
+            <h1>Git hooks</h1>
 
             <div class="section" id="overview">
-    <h2>Overview</h2>
+            <h2>Overview</h2>
 
-            <p>Toolkit provides a way to activate or deactivate git hooks.</p>
-            <p>By default, Toolkit provides three hooks:</p>
+            
+    <p>Toolkit provides a way to activate or deactivate git hooks.</p>
+
+            
+    <p>By default, Toolkit provides three hooks:</p>
+
             
 
 <ul>
@@ -163,9 +167,12 @@
     </div>
 
             <div class="section" id="configuration">
-    <h2>Configuration</h2>
+            <h2>Configuration</h2>
 
-            <p>The default configurations can be found in the runner configurations under <code>toolkit.hooks</code>.</p>
+            
+    <p>The default configurations can be found in the runner configurations under <code>toolkit.hooks</code>
+.</p>
+
             <pre><code class="language-yaml">toolkit:
   hooks:
     # A relative path from the project root where the hooks are located.
@@ -194,15 +201,18 @@
         - toolkit:lint-yaml
         - toolkit:lint-php
         - toolkit:opts-review</code></pre>
+
     </div>
 
             <div class="section" id="how-to-use">
-    <h2>How to use</h2>
+            <h2>How to use</h2>
 
             <div class="section" id="list-available-hooks">
-    <h3>List available hooks</h3>
+            <h3>List available hooks</h3>
 
-            <p>To list the available hooks, execute the following command:</p>
+            
+    <p>To list the available hooks, execute the following command:</p>
+
             <pre><code class="language-">&gt; ./vendor/bin/run toolkit:hooks-list
 +----------------------+------------------+-------------+---------------+
 | Hook                 | Active by config | Hook exists | Modified file |
@@ -211,91 +221,170 @@
 | pre-commit (toolkit) | Yes              | No          | No            |
 | pre-push (toolkit)   | Yes              | No          | No            |
 +----------------------+------------------+-------------+---------------+</code></pre>
-            <p>Labels:</p>
-            <p><code>Hook</code> - Represents the name of the hook.</p>
-            <p><code>Active by config</code> - Whether the hook is active in configuration.</p>
-            <p><code>Hooks exists</code> - Whether the hook is enabled under <code>.git/hooks</code> folder.</p>
-            <p><code>Modified file</code> - Whether the hook is not the same as in the <code>resources/git/hooks</code> folder.</p>
+
+            
+    <p>Labels:</p>
+
+            
+    <p><code>Hook</code>
+ - Represents the name of the hook.</p>
+
+            
+    <p><code>Active by config</code>
+ - Whether the hook is active in configuration.</p>
+
+            
+    <p><code>Hooks exists</code>
+ - Whether the hook is enabled under <code>.git/hooks</code>
+ folder.</p>
+
+            
+    <p><code>Modified file</code>
+ - Whether the hook is not the same as in the <code>resources/git/hooks</code>
+ folder.</p>
+
     </div>
 
             <div class="section" id="enable-all-the-active-hooks">
-    <h3>Enable all the active hooks</h3>
+            <h3>Enable all the active hooks</h3>
 
-            <p>The command <code>toolkit:hooks-enable</code> will read the configuration
-<code>toolkit.hooks.active</code> and enable these hooks.</p>
-            <p>Alternatively you can use the option <code>hooks</code> to enable a set of hooks.</p>
+            
+    <p>The command <code>toolkit:hooks-enable</code>
+ will read the configuration
+<code>toolkit.hooks.active</code>
+ and enable these hooks.</p>
+
+            
+    <p>Alternatively you can use the option <code>hooks</code>
+ to enable a set of hooks.</p>
+
     </div>
 
             <div class="section" id="disable-all-the-active-hooks">
-    <h3>Disable all the active hooks</h3>
+            <h3>Disable all the active hooks</h3>
 
-            <p>The command <code>toolkit:hooks-disable</code> will read the configuration
-<code>toolkit.hooks.active</code> and disable these hooks.</p>
-            <p>Alternatively you can use the option <code>hooks</code> to disable a set of hooks.</p>
+            
+    <p>The command <code>toolkit:hooks-disable</code>
+ will read the configuration
+<code>toolkit.hooks.active</code>
+ and disable these hooks.</p>
+
+            
+    <p>Alternatively you can use the option <code>hooks</code>
+ to disable a set of hooks.</p>
+
     </div>
 
             <div class="section" id="delete-all-the-enabled-hooks">
-    <h3>Delete all the enabled hooks</h3>
+            <h3>Delete all the enabled hooks</h3>
 
-            <p>The command <code>toolkit:hooks-delete-all</code> will delete all the enabled hooks
-in the <code>.git/hooks</code> directory.</p>
+            
+    <p>The command <code>toolkit:hooks-delete-all</code>
+ will delete all the enabled hooks
+in the <code>.git/hooks</code>
+ directory.</p>
+
     </div>
 
     </div>
 
             <div class="section" id="how-it-works">
-    <h2>How it works</h2>
+            <h2>How it works</h2>
 
-            <p>Each hook can call directly the command <code>toolkit:hooks-run</code> with the first
+            
+    <p>Each hook can call directly the command <code>toolkit:hooks-run</code>
+ with the first
 argument representing the hook name, and you can pass up to 3 extra arguments.</p>
-            <p>Example of the <code>pre-commit</code> hook (no extra arguments).</p>
+
+            
+    <p>Example of the <code>pre-commit</code>
+ hook (no extra arguments).</p>
+
             <pre><code class="language-shell">#!/bin/sh
 ./vendor/bin/run toolkit:hooks-run `basename &quot;$0&quot;`</code></pre>
-            <p>Example of the <code>prepare-commit-msg</code> hook (receives two extra arguments).</p>
+
+            
+    <p>Example of the <code>prepare-commit-msg</code>
+ hook (receives two extra arguments).</p>
+
             <pre><code class="language-shell">#!/bin/sh
 ./vendor/bin/run toolkit:hooks-run `basename &quot;$0&quot;` $1 $2</code></pre>
-            <p>The command <code>toolkit:hooks-run</code> will transform the hook name and look for a
-callback in the format <code>runHookName</code>.</p>
-            <p>Example for hook <code>prepare-commit-msg</code>, toolkit will look for a callback
-named <code>runPrepareCommitMsg()</code>.</p>
-            <p>The callback method will receive the ConsoleIO as argument and can get the
-arguments with <code>$io-&gt;input()-&gt;getArguments()</code>.</p>
-            <p>For more details check the Commands class
-at <code>EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands</code></p>
+
+            
+    <p>The command <code>toolkit:hooks-run</code>
+ will transform the hook name and look for a
+callback in the format <code>runHookName</code>
+.</p>
+
+            
+    <p>Example for hook <code>prepare-commit-msg</code>
+, toolkit will look for a callback
+named <code>runPrepareCommitMsg()</code>
+.</p>
+
+            
+    <p>The callback method will receive the ConsoleIO as argument and can get the
+arguments with <code>$io-&gt;input()-&gt;getArguments()</code>
+.</p>
+
+            
+    <p>For more details check the Commands class
+at <code>EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands</code>
+</p>
+
     </div>
 
             <div class="section" id="extending-the-git-hooks">
-    <h2>Extending the git hooks</h2>
+            <h2>Extending the git hooks</h2>
 
-            <p>Toolkit allows you to provide your own hooks and callbacks.</p>
-            <p>To do so, you need to</p>
+            
+    <p>Toolkit allows you to provide your own hooks and callbacks.</p>
+
+            
+    <p>To do so, you need to</p>
+
             
 
 <ul>
-    <li>Create the hook under your <code>resources/git/hooks</code> folder.</li>
+    <li>Create the hook under your <code>resources/git/hooks</code>
+ folder.</li>
 
-    <li>Add the hook name to your active hooks under <code>toolkit.hooks.active</code>.</li>
+    <li>Add the hook name to your active hooks under <code>toolkit.hooks.active</code>
+.</li>
 
-    <li>Create a new class extending the <code>AbstractGitHooks</code> class and define the
-<code>run</code> callback for the hook.</li>
+    <li>Create a new class extending the <code>AbstractGitHooks</code>
+ class and define the
+<code>run</code>
+ callback for the hook.</li>
 
 </ul>
 
             <div class="section" id="create-the-hook">
-    <h3>Create the hook</h3>
+            <h3>Create the hook</h3>
 
-            <p>Add the hook that you want to the <code>resources/git/hooks</code>, in this example we will
-use the hook <code>prepare-commit-msg</code>, so we add the file <code>resources/git/hooks/prepare-commit-msg</code>.</p>
+            
+    <p>Add the hook that you want to the <code>resources/git/hooks</code>
+, in this example we will
+use the hook <code>prepare-commit-msg</code>
+, so we add the file <code>resources/git/hooks/prepare-commit-msg</code>
+.</p>
+
             <pre><code class="language-shell">#!/bin/sh
 ./vendor/bin/run toolkit:hooks-run `basename &quot;$0&quot;` $1 $2</code></pre>
+
     </div>
 
             <div class="section" id="add-the-hook-to-the-active-hooks">
-    <h3>Add the hook to the active hooks</h3>
+            <h3>Add the hook to the active hooks</h3>
 
-            <p>In your <code>runner.yml</code>, extend the Toolkit configuration to add your custom hook.</p>
-            <p>Do not forget to copy the existing ones (in case you want to use them),
+            
+    <p>In your <code>runner.yml</code>
+, extend the Toolkit configuration to add your custom hook.</p>
+
+            
+    <p>Do not forget to copy the existing ones (in case you want to use them),
 otherwise your configuration will override the default provided by Toolkit.</p>
+
             <pre><code class="language-yaml">toolkit:
   hooks:
     active:
@@ -303,14 +392,22 @@ otherwise your configuration will override the default provided by Toolkit.</p>
       - commit-msg
       - pre-push
       - prepare-commit-msg</code></pre>
+
     </div>
 
             <div class="section" id="create-a-class-extending-the-abstractgithooks">
-    <h3>Create a class extending the AbstractGitHooks</h3>
+            <h3>Create a class extending the AbstractGitHooks</h3>
 
-            <p>Is in this class that you will define the callback for your hook.</p>
-            <p>In this class you can also override existing hook callbacks.</p>
-            <p>Add your class under <code>src/TaskRunner/Commands</code>.</p>
+            
+    <p>Is in this class that you will define the callback for your hook.</p>
+
+            
+    <p>In this class you can also override existing hook callbacks.</p>
+
+            
+    <p>Add your class under <code>src/TaskRunner/Commands</code>
+.</p>
+
             <pre><code class="language-php">&lt;?php
 
 namespace Digit\Qa\TaskRunner\Commands;
@@ -329,12 +426,15 @@ class QaGitHooksCommands extends AbstractGitHooks
       return ResultData::EXITCODE_OK;
     }
 }</code></pre>
+
     </div>
 
             <div class="section" id="check-if-your-hooks-it-active">
-    <h3>Check if your hooks it active</h3>
+            <h3>Check if your hooks it active</h3>
 
-            <p>List the available commands, your custom hook should be available.</p>
+            
+    <p>List the available commands, your custom hook should be available.</p>
+
             <pre><code class="language-">&gt; ./vendor/bin/run toolkit:hooks-list
 +-------------------------------+------------------+-------------+---------------+
 | Hook                          | Active by config | Hook exists | Modified file |
@@ -344,6 +444,7 @@ class QaGitHooksCommands extends AbstractGitHooks
 | pre-push (toolkit)            | Yes              | No          | No            |
 | prepare-commit-msg (digit-qa) | Yes              | No          | No            |
 +-------------------------------+------------------+-------------+---------------+</code></pre>
+
     </div>
 
     </div>
@@ -363,7 +464,7 @@ class QaGitHooksCommands extends AbstractGitHooks
     </section>
 </section>
         </div>
-        <a href="guide/git-hooks.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

@@ -55,8 +55,8 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -three phpdocumentor-sidebar">
-                    <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">index</h2>
+                    <section class="phpdocumentor-sidebar__category -index">
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html#setting-up-a-project" class="">Setting up a project</a>
 </h4>
@@ -106,7 +106,7 @@
 </h4>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -namespaces">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/eceuropa.html" class="">EcEuropa</a>
@@ -119,7 +119,7 @@
             </ul>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -packages">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="packages/Toolkit.html" class="">Toolkit</a>
@@ -127,14 +127,14 @@
 
                         </section>
             
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -reports">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
     </section>
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -indices">
         <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
     </section>
@@ -142,11 +142,16 @@
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
                                         <div class="section" id="commands">
-    <h1>Commands</h1>
+            <h1>Commands</h1>
 
-            <p>To list all available tasks, please run:</p>
+            
+    <p>To list all available tasks, please run:</p>
+
             <pre><code class="language-">docker-composer exec web ./vendor/bin/run</code></pre>
-            <p>See bellow current list of available commands:</p>
+
+            
+    <p>See bellow current list of available commands:</p>
+
             <pre><code class="language-">Available commands:
   completion                         Dump the shell completion script
   config                             Dumps the current or given configuration.
@@ -201,8 +206,9 @@
   toolkit:import-config              [DEPRECATED] Run the Drupal config import.
   toolkit:install-clean              [tk-iclean] Install a clean website.
   toolkit:install-clone              [tk-iclone] Install a clone website.
-  toolkit:install-dependencies       Install packages present in the opts.yml file under extra_pkgs section.
+  toolkit:install-dependencies       Install packages present in the .opts.yml file under extra_pkgs section.
   toolkit:install-dump               [tk-idump] Import the production snapshot.
+  toolkit:lint-css                   [tk-css] Run lint CSS.
   toolkit:lint-js                    [tk-js|tljs] Run lint JS.
   toolkit:lint-php                   [tk-php|tlp] Run lint PHP.
   toolkit:lint-yaml                  [tk-yaml|tly] Run lint YAML.
@@ -211,10 +217,13 @@
   toolkit:patch-download             [tk-pd] Download remote patches into a local directory.
   toolkit:patch-list                 [tk-pl] Lists remote patches from the root composer.json.
   toolkit:requirements               [tk-req] Check the Toolkit Requirements.
+  toolkit:run-axe-scan               [tk-axe] Run the axe-scan.
+  toolkit:run-axe-scan-summary       [tk-axe-sum] Run the axe-scan summary.
   toolkit:run-blackfire              [tk-bfire|tbf] Run Blackfire.
   toolkit:run-deploy                 [tk-deploy] Run deployment sequence.
   toolkit:run-gitleaks               [tk-gitleaks] Executes the Gitleaks.
   toolkit:run-phpcbf                 [tk-phpcbf] Run PHP code autofixing.
+  toolkit:setup-axe-scan             Make sure axe-scan is installed and properly configured.
   toolkit:setup-behat                Setup the Behat file.
   toolkit:setup-blackfire-behat      Copy the needed resources to run Behat with Blackfire.
   toolkit:setup-eslint               Setup the ESLint configurations and dependencies.
@@ -226,11 +235,14 @@
   toolkit:test-phpstan               [tk-phpstan] Run PHPStan.
   toolkit:test-phpunit               [tk-phpunit|tp] Run PHPUnit tests.
   toolkit:vendor-list                Check &#039;Vendor&#039; packages being monitored.</code></pre>
-            <div class="section" id="creating-custom-commands">
-    <h2>Creating custom commands</h2>
 
-            <p>To provide custom commands, make sure that your classes are loaded, for example using
+            <div class="section" id="creating-custom-commands">
+            <h2>Creating custom commands</h2>
+
+            
+    <p>To provide custom commands, make sure that your classes are loaded, for example using
 PSR-4 namespacing set the autoload in the composer.json file.</p>
+
             <pre><code class="language-">{
   &quot;autoload&quot;: {
     &quot;psr-4&quot;: {
@@ -238,7 +250,11 @@ PSR-4 namespacing set the autoload in the composer.json file.</p>
     }
   }
 }</code></pre>
-            <p>Create your command class under <code>src/TaskRunner/Commands</code> that will extend the abstract Toolkit command, like:</p>
+
+            
+    <p>Create your command class under <code>src/TaskRunner/Commands</code>
+ that will extend the abstract Toolkit command, like:</p>
+
             <pre><code class="language-">&lt;?php
 namespace My\Project\TaskRunner\Commands;
 
@@ -248,21 +264,27 @@ class ExampleCommands extends AbstractCommands {
   /** @command example:first-command */
   public function commandOne() { }
 }</code></pre>
-            <p>For more detail, check the <a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a>
+
+            
+    <p>For more detail, check the <a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a>
 documentation.</p>
+
     </div>
 
             <div class="section" id="passing-default-options-for-a-command">
-    <h2>Passing default options for a command</h2>
+            <h2>Passing default options for a command</h2>
 
-            <p>You can pass default values for the command options, for that you
+            
+    <p>You can pass default values for the command options, for that you
 need to define a configuration file, and import it as shown below.</p>
+
             <pre><code class="language-"># config/commands/config.yml
 commands:
   example:
     first-command:
       options:
         output: false</code></pre>
+
             <pre><code class="language-">&lt;?php
 namespace My\Project\TaskRunner\Commands;
 
@@ -282,12 +304,16 @@ class ExampleCommands extends AbstractCommands {
     &#039;output&#039; =&gt; InputOption::VALUE_REQUIRED
   ]) { }
 }</code></pre>
+
     </div>
 
             <div class="section" id="creating-configuration-commands">
-    <h2>Creating configuration commands</h2>
+            <h2>Creating configuration commands</h2>
 
-            <p>Configuration commands are created in the configuration file <code>runner.yml</code>, like shown below:</p>
+            
+    <p>Configuration commands are created in the configuration file <code>runner.yml</code>
+, like shown below:</p>
+
             <pre><code class="language-yaml">commands:
   drupal:setup-test:
     - { task: process, source: behat.yml.dist, destination: behat.yml }
@@ -300,8 +326,11 @@ class ExampleCommands extends AbstractCommands {
     usage: &#039;--simulate&#039;
     tasks:
       - { task: process, source: behat.yml.dist, destination: behat.yml }</code></pre>
-            <p>The configuration commands are a mapping to the <a href="https://robo.li">Robo Tasks</a>, the
+
+            
+    <p>The configuration commands are a mapping to the <a href="https://robo.li">Robo Tasks</a>, the
 list of available tasks is:</p>
+
             <table>
                 <thead>
             <tr>
@@ -398,7 +427,7 @@ list of available tasks is:</p>
     </section>
 </section>
         </div>
-        <a href="guide/commands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

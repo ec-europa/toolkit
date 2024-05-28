@@ -55,8 +55,8 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -three phpdocumentor-sidebar">
-                    <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">index</h2>
+                    <section class="phpdocumentor-sidebar__category -index">
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html#setting-up-a-project" class="">Setting up a project</a>
 </h4>
@@ -106,7 +106,7 @@
 </h4>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -namespaces">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/eceuropa.html" class="">EcEuropa</a>
@@ -119,7 +119,7 @@
             </ul>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -packages">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="packages/Toolkit.html" class="">Toolkit</a>
@@ -127,14 +127,14 @@
 
                         </section>
             
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -reports">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
     </section>
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -indices">
         <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
     </section>
@@ -142,19 +142,29 @@
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
                                         <div class="section" id="configuring-a-project">
-    <h1>Configuring a project</h1>
+            <h1>Configuring a project</h1>
 
             <div class="section" id="environment-configuration">
-    <h2>Environment configuration</h2>
+            <h2>Environment configuration</h2>
 
-            <p>By default, Docker Compose reads two files, a <code>docker-compose.yml</code> and an optional <code>docker-compose.override.yml</code> file.
-By convention, the <code>docker-compose.yml</code> contains your base configuration and it&#039;s provided by default.
+            
+    <p>By default, Docker Compose reads two files, a <code>docker-compose.yml</code>
+ and an optional <code>docker-compose.override.yml</code>
+ file.
+By convention, the <code>docker-compose.yml</code>
+ contains your base configuration and it&#039;s provided by default.
 The override file, as its name implies, can contain configuration overrides for existing services or entirely new
 services.
 If a service is defined in both files, Docker Compose merges the configurations.</p>
-            <p>Find more information on Docker Compose extension mechanism on
+
+            
+    <p>Find more information on Docker Compose extension mechanism on
 <a href="https://docs.docker.com/compose/extends/">the official Docker Compose documentation</a>.</p>
-            <p>The following configuration parameters are provided as environment variables in the <code>./.env</code> file:</p>
+
+            
+    <p>The following configuration parameters are provided as environment variables in the <code>./.env</code>
+ file:</p>
+
             <table>
                 <thead>
             <tr>
@@ -197,15 +207,18 @@ If a service is defined in both files, Docker Compose merges the configurations.
     </tr>
     <tr>
             <td>DRUPAL_CAS_HOSTNAME</td>
-            <td>EULogin hostname, use <code>ecas.ec.europa.eu</code> for production</td>
+            <td>EULogin hostname, use <code>ecas.ec.europa.eu</code>
+ for production</td>
     </tr>
     <tr>
             <td>DRUPAL_CAS_PORT</td>
-            <td>EULogin port, use <code>443</code> for production</td>
+            <td>EULogin port, use <code>443</code>
+ for production</td>
     </tr>
     <tr>
             <td>DRUPAL_ACCOUNT_USERNAME</td>
-            <td>Drupal admin account, defaults to <code>admin</code> if empty</td>
+            <td>Drupal admin account, defaults to <code>admin</code>
+ if empty</td>
     </tr>
     <tr>
             <td>DRUPAL_ACCOUNT_PASSWORD</td>
@@ -226,63 +239,104 @@ If a service is defined in both files, Docker Compose merges the configurations.
 </tbody>
 </table>
 
-            <p>Environment variables will be loaded by Docker Compose when running <code>docker-compose up -d</code>.</p>
+            
+    <p>Environment variables will be loaded by Docker Compose when running <code>docker-compose up -d</code>
+.</p>
+
     </div>
 
             <div class="section" id="toolkit-configuration">
-    <h2>Toolkit configuration</h2>
+            <h2>Toolkit configuration</h2>
 
-            <p>Toolkit uses the <a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a> and
+            
+    <p>Toolkit uses the <a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a> and
 <a href="https://robo.li/">Robo</a>, make sure to read the documentation.</p>
-            <p>The configurations are split into multiple files under the <code>config</code> directory and they are loaded
+
+            
+    <p>The configurations are split into multiple files under the <code>config</code>
+ directory and they are loaded
 in the following order:</p>
+
             
 
 <ul>
-    <li class="dash"><code>config/default.yml</code></li>
+    <li class="dash"><code>config/default.yml</code>
+</li>
 
-    <li class="dash">All files in <code>config/runner</code></li>
+    <li class="dash">All files in <code>config/runner</code>
+</li>
 
-    <li class="dash">All commands options defined in the Command files with the method <code>getConfigurationFile()</code></li>
+    <li class="dash">All commands options defined in the Command files with the method <code>getConfigurationFile()</code>
+</li>
 
 </ul>
 
-            <p>Because the configurations are merged, if two different config files provides the same key, they will be merged.
+            
+    <p>Because the configurations are merged, if two different config files provides the same key, they will be merged.
 For example, a configuration providing an array with 3 elements, a project would not be able to override and
 provide only one element. To avoid this, Toolkit has a set of defined configurations that will behave in a
 different way allowing projects to completely override the config.
-These overriding configurations are located in the <code>config/default.yml</code> file under <code>overrides</code> key.</p>
+These overriding configurations are located in the <code>config/default.yml</code>
+ file under <code>overrides</code>
+ key.</p>
+
     </div>
 
             <div class="section" id="project-configuration">
-    <h2>Project configuration</h2>
+            <h2>Project configuration</h2>
 
-            <p>A project inherit the same configurations as Toolkit (described above).</p>
-            <p>To override the default configurations, projects can provide the configurations with the <code>runner.yml.dist</code> file,
-or/and under the <code>config/runner</code> directory (by default). This directory can be changed (in the <code>runner.yml.dist</code>
-only) by specifying a custom path in the config key <code>runner.config_dir</code>.
-Local or development configurations should use the <code>runner.yml</code> file, this file should not be committed and
+            
+    <p>A project inherit the same configurations as Toolkit (described above).</p>
+
+            
+    <p>To override the default configurations, projects can provide the configurations with the <code>runner.yml.dist</code>
+ file,
+or/and under the <code>config/runner</code>
+ directory (by default). This directory can be changed (in the <code>runner.yml.dist</code>
+
+only) by specifying a custom path in the config key <code>runner.config_dir</code>
+.
+Local or development configurations should use the <code>runner.yml</code>
+ file, this file should not be committed and
 will be loaded as last configuration.</p>
-            <p>The configurations are loaded in the following order:</p>
+
+            
+    <p>The configurations are loaded in the following order:</p>
+
             
 
 <ul>
-    <li class="dash"><code>runner.yml.dist</code></li>
+    <li class="dash"><code>runner.yml.dist</code>
+</li>
 
-    <li class="dash"><code>config/runner</code> directory (or other defined in <code>runner.yml.dist</code>)</li>
+    <li class="dash"><code>config/runner</code>
+ directory (or other defined in <code>runner.yml.dist</code>
+)</li>
 
-    <li class="dash"><code>runner.yml</code></li>
+    <li class="dash"><code>runner.yml</code>
+</li>
 
 </ul>
 
-            <p>The following examples describes how to use a single or multiple files to have the same configuration.</p>
-            <p><strong>Example using a single file:</strong></p>
+            
+    <p>The following examples describes how to use a single or multiple files to have the same configuration.</p>
+
+            
+    <p><strong>Example using a single file:</strong>
+</p>
+
             <pre><code class="language-"># runner.yml.dist
 drupal:
    root: &#039;web&#039;
 toolkit:
    project_id: &#039;site-id&#039;</code></pre>
-            <p><strong>Example using multiple files under</strong><code>config/runner</code><strong>directory:</strong></p>
+
+            
+    <p><strong>Example using multiple files under</strong>
+ <code>config/runner</code>
+ <strong>directory:</strong>
+</p>
+
             <pre><code class="language-"># config/runner/drupal.yml
 drupal:
    root: &#039;web&#039;
@@ -290,7 +344,13 @@ drupal:
 # config/runner/toolkit.yml
 toolkit:
    project_id: &#039;site-id&#039;</code></pre>
-            <p><strong>Example using multiple files under</strong><code>config/custom</code><strong>directory:</strong></p>
+
+            
+    <p><strong>Example using multiple files under</strong>
+ <code>config/custom</code>
+ <strong>directory:</strong>
+</p>
+
             <pre><code class="language-"># runner.yml.dist
 runner:
     config_dir: config/custom
@@ -300,13 +360,19 @@ drupal:
    root: &#039;web&#039;
 toolkit:
    project_id: &#039;site-id&#039;</code></pre>
+
     </div>
 
             <div class="section" id="runtime-configuration">
-    <h2>Runtime configuration</h2>
+            <h2>Runtime configuration</h2>
 
-            <p>There are multiple ways to provide runtime configurations.</p>
-            <p><strong>Override a configuration value in runtime</strong></p>
+            
+    <p>There are multiple ways to provide runtime configurations.</p>
+
+            
+    <p><strong>Override a configuration value in runtime</strong>
+</p>
+
             <pre><code class="language-">/** @hook pre-command-event * */
 public function hook() {
   // Load configuration.
@@ -316,18 +382,27 @@ public function hook() {
   // Import newly built configuration.
   $this-&gt;config-&gt;replace($config-&gt;export());
 }</code></pre>
-            <p><strong>Override a specific command option</strong></p>
+
+            
+    <p><strong>Override a specific command option</strong>
+</p>
+
             <pre><code class="language-">/** @hook init toolkit:test-behat */
 public function hook(InputInterface $input, AnnotationData $annotationData) {
   $input-&gt;setOption(&#039;from&#039;, &#039;behat.yml.example&#039;);
 }</code></pre>
-            <p><strong>Override a command option for all commands that has a specific option</strong></p>
+
+            
+    <p><strong>Override a command option for all commands that has a specific option</strong>
+</p>
+
             <pre><code class="language-">/** @hook init * */
 public function hook(InputInterface $input, AnnotationData $annotationData) {
   if ($input-&gt;hasOption(&#039;from&#039;)) {
     $input-&gt;setOption(&#039;from&#039;, &#039;behat.yml.example&#039;);
   }
 }</code></pre>
+
     </div>
 
     </div>
@@ -345,7 +420,7 @@ public function hook(InputInterface $input, AnnotationData $annotationData) {
     </section>
 </section>
         </div>
-        <a href="guide/configuring-project.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

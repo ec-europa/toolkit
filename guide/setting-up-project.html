@@ -55,8 +55,8 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -three phpdocumentor-sidebar">
-                    <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">index</h2>
+                    <section class="phpdocumentor-sidebar__category -index">
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html#setting-up-a-project" class="">Setting up a project</a>
 </h4>
@@ -106,7 +106,7 @@
 </h4>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -namespaces">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/eceuropa.html" class="">EcEuropa</a>
@@ -119,7 +119,7 @@
             </ul>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -packages">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="packages/Toolkit.html" class="">Toolkit</a>
@@ -127,14 +127,14 @@
 
                         </section>
             
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -reports">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
     </section>
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -indices">
         <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
     </section>
@@ -142,31 +142,39 @@
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
                                         <div class="section" id="setting-up-a-project">
-    <h1>Setting up a project</h1>
+            <h1>Setting up a project</h1>
 
             <div class="section" id="getting-the-sourcecode">
-    <h2>Getting the sourcecode</h2>
+            <h2>Getting the sourcecode</h2>
 
-            <p>Below we explain the difference between setting up a new project and setting up
+            
+    <p>Below we explain the difference between setting up a new project and setting up
 an existing project:</p>
-            <div class="section" id="new-project-from-scratch">
-    <h3>New project from scratch</h3>
 
-            <p>To instantiate a new project to running as a subsite you only have to execute one command which will perform multiple steps
+            <div class="section" id="new-project-from-scratch">
+            <h3>New project from scratch</h3>
+
+            
+    <p>To instantiate a new project to running as a subsite you only have to execute one command which will perform multiple steps
 for you automatically.</p>
+
             <pre><code class="language-">composer create-project ec-europa/subsite --stability=dev &lt;dg-name&gt;-&lt;project-id&gt;-reference dev-release/10.x
 docker compose up -d
 docker compose exec web vendor/bin/run</code></pre>
+
     </div>
 
             <div class="section" id="from-existent-project-from-repository">
-    <h3>From existent project from repository</h3>
+            <h3>From existent project from repository</h3>
 
-            <p>To install locally a project running Toolkit you should run the following commands:</p>
+            
+    <p>To install locally a project running Toolkit you should run the following commands:</p>
+
             <pre><code class="language-">git clone git@github.com:ec-europa/&lt;repository-name&gt;.git
 docker compose up -d
 docker compose exec web composer install
 docker compose exec web vendor/bin/run</code></pre>
+
     </div>
 
     </div>
@@ -186,7 +194,7 @@ docker compose exec web vendor/bin/run</code></pre>
     </section>
 </section>
         </div>
-        <a href="guide/setting-up-project.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

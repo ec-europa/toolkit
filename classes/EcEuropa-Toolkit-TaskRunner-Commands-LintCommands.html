@@ -54,8 +54,8 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -three phpdocumentor-sidebar">
-                    <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">index</h2>
+                    <section class="phpdocumentor-sidebar__category -index">
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html#setting-up-a-project" class="">Setting up a project</a>
 </h4>
@@ -105,7 +105,7 @@
 </h4>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -namespaces">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/eceuropa.html" class="">EcEuropa</a>
@@ -118,7 +118,7 @@
             </ul>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -packages">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="packages/Toolkit.html" class="">Toolkit</a>
@@ -126,14 +126,14 @@
 
                         </section>
             
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -reports">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
     </section>
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -indices">
         <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
     </section>
@@ -179,6 +179,8 @@
     </aside>
 
             <p class="phpdocumentor-summary">Commands to lint the source code and interact with ESLint.</p>
+
+
 
 
 
@@ -235,6 +237,13 @@
 <dd>Check if the website is installed.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintCss">toolkitLintCss()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Run lint CSS.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintJs">toolkitLintJs()</a>
     <span>
                                 &nbsp;: mixed    </span>
@@ -258,7 +267,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitSetupEslint">toolkitSetupEslint()</a>
     <span>
-                                &nbsp;: int    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Setup the ESLint configurations and dependencies.</dd>
 
@@ -343,7 +352,6 @@
 
 
 
-
         
 
         
@@ -382,6 +390,8 @@
         </div>
     
     
+    
+
     
 
             <section>
@@ -437,6 +447,8 @@
 
     
 
+    
+
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
@@ -471,6 +483,8 @@
         </div>
     
     
+    
+
     
 
             <section>
@@ -513,11 +527,100 @@
     
     
 
+    
+
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">bool</span>
             </section>
 
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_toolkitLintCss">
+        toolkitLintCss()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintCss" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/LintCommands.php"><a href="files/src-taskrunner-commands-lintcommands.html"><abbr title="src/TaskRunner/Commands/LintCommands.php">LintCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">269</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Run lint CSS.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">toolkitLintCss</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;config&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;files&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$options</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;config&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;files&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintCss#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">command</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>toolkit:lint-css</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>exclude The stylelint config file.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>files   The files to check.</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">aliases</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>tk-css</p>
+</section>
+
+                                    </dd>
+                                            </dl>
+
+    
+
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -533,7 +636,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/LintCommands.php"><a href="files/src-taskrunner-commands-lintcommands.html"><abbr title="src/TaskRunner/Commands/LintCommands.php">LintCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">180</span>
+    <span class="phpdocumentor-element-found-in__line">172</span>
 
     </aside>
 
@@ -545,9 +648,7 @@
 
     <div class="phpdocumentor-label-line">
         </div>
-        <section class="phpdocumentor-description"><p>Check configurations at config/default.yml - 'toolkit.lint.eslint'.</p>
-</section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -623,6 +724,8 @@
                                             </dl>
 
     
+
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -638,7 +741,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/LintCommands.php"><a href="files/src-taskrunner-commands-lintcommands.html"><abbr title="src/TaskRunner/Commands/LintCommands.php">LintCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">238</span>
+    <span class="phpdocumentor-element-found-in__line">228</span>
 
     </aside>
 
@@ -650,9 +753,7 @@
 
     <div class="phpdocumentor-label-line">
         </div>
-        <section class="phpdocumentor-description"><p>Check configurations at config/default.yml - 'toolkit.lint.php'.</p>
-</section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -719,6 +820,8 @@
                                             </dl>
 
     
+
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -734,7 +837,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/LintCommands.php"><a href="files/src-taskrunner-commands-lintcommands.html"><abbr title="src/TaskRunner/Commands/LintCommands.php">LintCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">154</span>
+    <span class="phpdocumentor-element-found-in__line">148</span>
 
     </aside>
 
@@ -746,9 +849,7 @@
 
     <div class="phpdocumentor-label-line">
         </div>
-        <section class="phpdocumentor-description"><p>Check configurations at config/default.yml - 'toolkit.lint.eslint'.</p>
-</section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -824,6 +925,8 @@
                                             </dl>
 
     
+
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -839,7 +942,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/LintCommands.php"><a href="files/src-taskrunner-commands-lintcommands.html"><abbr title="src/TaskRunner/Commands/LintCommands.php">LintCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">42</span>
+    <span class="phpdocumentor-element-found-in__line">38</span>
 
     </aside>
 
@@ -847,19 +950,17 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitSetupEslint</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;config&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;ignores&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;drupal-root&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;packages&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;force&#039; =&gt; false]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
+                    <span class="phpdocumentor-signature__name">toolkitSetupEslint</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;config&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;ignores&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;drupal-root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;packages&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;force&#039; =&gt; false]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
-        <section class="phpdocumentor-description"><p>Check configurations at config/default.yml - 'toolkit.lint.eslint'.</p>
-</section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$options</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;config&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;ignores&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;drupal-root&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;packages&#039; =&gt; InputOption::VALUE_OPTIONAL, &#039;force&#039; =&gt; false]</span>            </dt>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;config&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;ignores&#039; =&gt; InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, &#039;drupal-root&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;packages&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;force&#039; =&gt; false]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 
             </dd>
@@ -928,11 +1029,9 @@
                                     </dd>
                                             </dl>
 
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">int</span>
-            </section>
+    
 
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -991,6 +1090,8 @@
                                     </dd>
                                             </dl>
 
+    
+
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">string</span>
@@ -1038,6 +1139,8 @@
                 
             </dd>
             </dl>
+
+    
 
     
 
@@ -1095,6 +1198,8 @@
                 
             </dd>
             </dl>
+
+    
 
     
 
@@ -1157,6 +1262,8 @@
                                     </dd>
                                             </dl>
 
+    
+
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">string</span>
@@ -1207,6 +1314,8 @@
 
     
 
+    
+
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">string</span>
@@ -1245,6 +1354,8 @@
         </div>
     
     
+    
+
     
 
             <section>
@@ -1296,6 +1407,8 @@
 
             </dd>
             </dl>
+
+    
 
     
 
@@ -1352,6 +1465,8 @@
 
     
 
+    
+
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type"><a href="classes/EcEuropa-Toolkit-Task-File-Process.html"><abbr title="\EcEuropa\Toolkit\Task\File\Process">Process</abbr></a>|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
@@ -1400,6 +1515,8 @@
 
     
 
+    
+
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type"><a href="classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html"><abbr title="\EcEuropa\Toolkit\Task\File\ReplaceBlock">ReplaceBlock</abbr></a>|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
@@ -1420,7 +1537,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/LintCommands.php"><a href="files/src-taskrunner-commands-lintcommands.html"><abbr title="src/TaskRunner/Commands/LintCommands.php">LintCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">100</span>
+    <span class="phpdocumentor-element-found-in__line">96</span>
 
     </aside>
 
@@ -1458,6 +1575,8 @@
     
 
     
+
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -1473,7 +1592,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/LintCommands.php"><a href="files/src-taskrunner-commands-lintcommands.html"><abbr title="src/TaskRunner/Commands/LintCommands.php">LintCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">204</span>
+    <span class="phpdocumentor-element-found-in__line">196</span>
 
     </aside>
 
@@ -1541,6 +1660,8 @@
                                              
                                     </dd>
                                             </dl>
+
+    
 
     
 </article>
@@ -1661,6 +1782,7 @@
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson">getJson()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isWebsiteInstalled">isWebsiteInstalled()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintCss">toolkitLintCss()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintJs">toolkitLintJs()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintPhp">toolkitLintPhp()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintYaml">toolkitLintYaml()</a></li>

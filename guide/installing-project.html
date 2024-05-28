@@ -55,8 +55,8 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -three phpdocumentor-sidebar">
-                    <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">index</h2>
+                    <section class="phpdocumentor-sidebar__category -index">
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html#setting-up-a-project" class="">Setting up a project</a>
 </h4>
@@ -106,7 +106,7 @@
 </h4>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -namespaces">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/eceuropa.html" class="">EcEuropa</a>
@@ -119,7 +119,7 @@
             </ul>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -packages">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="packages/Toolkit.html" class="">Toolkit</a>
@@ -127,14 +127,14 @@
 
                         </section>
             
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -reports">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
     </section>
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -indices">
         <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
     </section>
@@ -142,36 +142,57 @@
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
                                         <div class="section" id="installing-a-project">
-    <h1>Installing a project</h1>
+            <h1>Installing a project</h1>
 
             <div class="section" id="before-install">
-    <h2>Before install</h2>
+            <h2>Before install</h2>
 
-            <p>To start, run:</p>
+            
+    <p>To start, run:</p>
+
             <pre><code class="language-">docker-compose up</code></pre>
-            <p>It&#039;s advised to not daemonize docker-compose, so you can turn it off (CTRL+C) quickly when you&#039;re
-done working. However, if you&#039;d like to daemonize it, you have to add the flag <code>-d</code>:</p>
+
+            
+    <p>It&#039;s advised to not daemonize docker-compose, so you can turn it off (CTRL+C) quickly when you&#039;re
+done working. However, if you&#039;d like to daemonize it, you have to add the flag <code>-d</code>
+:</p>
+
             <pre><code class="language-">docker-compose up -d</code></pre>
-            <p>Build the site by running:</p>
+
+            
+    <p>Build the site by running:</p>
+
             <pre><code class="language-">docker-compose exec web composer install</code></pre>
-            <p>Using default configuration, the development site files should be available in the web directory
+
+            
+    <p>Using default configuration, the development site files should be available in the web directory
 and the development site should be available at: <a href="http://localhost:8080/web">http://localhost:8080/web</a>.</p>
+
     </div>
 
             <div class="section" id="clean-installation">
-    <h2>Clean installation</h2>
+            <h2>Clean installation</h2>
 
-            <p>To setup the site in local development mode and install it run:</p>
+            
+    <p>To setup the site in local development mode and install it run:</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:build-dev
 docker-compose exec web ./vendor/bin/run toolkit:install-clean</code></pre>
-            <p>To install the site from existing configuration run:</p>
+
+            
+    <p>To install the site from existing configuration run:</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:build-dev
 docker-compose exec web ./vendor/bin/run toolkit:install-clean --existing-config</code></pre>
-            <div class="section" id="commands-to-run-before-after-clean-installation">
-    <h3>Commands to run before/after clean installation</h3>
 
-            <p>Additional commands can be run before and/or after installing the clean site.
-Such commands should be defined in the configuration file <code>runner.yml</code>:</p>
+            <div class="section" id="commands-to-run-before-after-clean-installation">
+            <h3>Commands to run before/after clean installation</h3>
+
+            
+    <p>Additional commands can be run before and/or after installing the clean site.
+Such commands should be defined in the configuration file <code>runner.yml</code>
+:</p>
+
             <pre><code class="language-yaml">toolkit:
   install:
     clean:
@@ -184,19 +205,25 @@ Such commands should be defined in the configuration file <code>runner.yml</code
           - task: exec
             command: whoami
           - ...</code></pre>
+
     </div>
 
     </div>
 
             <div class="section" id="clone-installation">
-    <h2>Clone installation</h2>
+            <h2>Clone installation</h2>
 
-            <p>To setup the site using clone mode run:</p>
+            
+    <p>To setup the site using clone mode run:</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:build-dev
 docker-compose exec web ./vendor/bin/run toolkit:download-dump
 docker-compose exec web ./vendor/bin/run toolkit:install-clone</code></pre>
-            <p>Toolkit will load the credentials necessary to download the sanitized database dump for your
+
+            
+    <p>Toolkit will load the credentials necessary to download the sanitized database dump for your
 project, so make sure you have the following variables in your environment:</p>
+
             <pre><code class="language-"># For nextcloud ASDA
 - NEXTCLOUD_USER
 - NEXTCLOUD_PASS
@@ -204,27 +231,38 @@ project, so make sure you have the following variables in your environment:</p>
 # For default ASDA (deprecated)
 - ASDA_USER
 - ASDA_PASSWORD</code></pre>
-            <div class="section" id="commands-part-of-clone-installation">
-    <h3>Commands part of clone installation</h3>
 
-            <p>When running the command toolkit:install-clone it will run the following sequence of
+            <div class="section" id="commands-part-of-clone-installation">
+            <h3>Commands part of clone installation</h3>
+
+            
+    <p>When running the command toolkit:install-clone it will run the following sequence of
 commands after the database import:</p>
+
             <pre><code class="language-">./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer -y
 ./vendor/bin/drush updatedb -y
 ./vendor/bin/run toolkit:import-config
 ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
 ./vendor/bin/drush cache:rebuild</code></pre>
-            <p>These commands simulate the automated deployment that Drone provides through its pipeline. You can
-alter these commands by providing a file named <strong>.opts.yml</strong> in the root of your project folder. For
-more detailed information on the contents of this <strong>.opts.yml</strong> file please refer to this
+
+            
+    <p>These commands simulate the automated deployment that Drone provides through its pipeline. You can
+alter these commands by providing a file named <strong>.opts.yml</strong>
+ in the root of your project folder. For
+more detailed information on the contents of this <strong>.opts.yml</strong>
+ file please refer to this
 page: <a href="https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides">https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides</a> .</p>
+
     </div>
 
             <div class="section" id="commands-to-run-before-after-clone-installation">
-    <h3>Commands to run before/after clone installation</h3>
+            <h3>Commands to run before/after clone installation</h3>
 
-            <p>Additional commands can be run before and/or after installing the cloned site.
-Such commands should be defined in the configuration file <code>runner.yml</code>:</p>
+            
+    <p>Additional commands can be run before and/or after installing the cloned site.
+Such commands should be defined in the configuration file <code>runner.yml</code>
+:</p>
+
             <pre><code class="language-yaml">toolkit:
   install:
     clone:
@@ -237,6 +275,7 @@ Such commands should be defined in the configuration file <code>runner.yml</code
           - task: exec
             command: whoami
           - ...</code></pre>
+
     </div>
 
     </div>
@@ -256,7 +295,7 @@ Such commands should be defined in the configuration file <code>runner.yml</code
     </section>
 </section>
         </div>
-        <a href="guide/installing-project.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

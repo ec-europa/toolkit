@@ -351,6 +351,31 @@ Search.appendIndex(
             "summary": "Projects\u0020should\u0020extend\u0020this\u0020class\u0020to\u0020override\u0020or\u0020extend\u0020the\u0020GitHooks\u0020feature.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractGitHooks.html"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\AxeCommands",
+            "name": "AxeCommands",
+            "summary": "Commands\u0020to\u0020interact\u0020with\u0020the\u0020axe\u002Dscan.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\AxeCommands\u003A\u003AtoolkitRunAxeScan\u0028\u0029",
+            "name": "toolkitRunAxeScan",
+            "summary": "Run\u0020the\u0020axe\u002Dscan.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitRunAxeScan"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\AxeCommands\u003A\u003AtoolkitRunAxeScanSummary\u0028\u0029",
+            "name": "toolkitRunAxeScanSummary",
+            "summary": "Run\u0020the\u0020axe\u002Dscan\u0020summary.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitRunAxeScanSummary"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\AxeCommands\u003A\u003AtoolkitSetupAxeScan\u0028\u0029",
+            "name": "toolkitSetupAxeScan",
+            "summary": "Make\u0020sure\u0020axe\u002Dscan\u0020is\u0020installed\u0020and\u0020properly\u0020configured.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitSetupAxeScan"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\AxeCommands\u003A\u003A\u0024dependencies",
+            "name": "dependencies",
+            "summary": "A\u0020list\u0020of\u0020dependencies\u0020for\u0020axe\u002Dscan.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#property_dependencies"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BlackfireCommands",
             "name": "BlackfireCommands",
             "summary": "Commands\u0020to\u0020interact\u0020with\u0020the\u0020Blackfire.",
@@ -546,6 +571,16 @@ Search.appendIndex(
             "summary": "Load\u0020given\u0020project\u0020from\u0020website\u0020and\u0020return\u0020the\u0020profile\u0020in\u0020the\u0020production\u0020env.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getProjectProfile"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AdisableConfigReadOnly\u0028\u0029",
+            "name": "disableConfigReadOnly",
+            "summary": "Ensure\u0020that\u0020config_readonly\u0020is\u0020not\u0020active\u0020by\u0020commenting\u0020the\u0020config\u0020line.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_disableConfigReadOnly"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003ArestoreConfigReadOnly\u0028\u0029",
+            "name": "restoreConfigReadOnly",
+            "summary": "Restore\u0020the\u0020comment\u0020added\u0020to\u0020the\u0020config_readonly\u0020setting.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_restoreConfigReadOnly"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024evaluationFailed",
             "name": "evaluationFailed",
             "summary": "",
@@ -650,6 +685,11 @@ Search.appendIndex(
             "name": "forcedUpdateModule",
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_forcedUpdateModule"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024disabledConfigReadonly",
+            "name": "disabledConfigReadonly",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_disabledConfigReadonly"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ConfigurationCommands",
             "name": "ConfigurationCommands",
@@ -946,11 +986,6 @@ Search.appendIndex(
             "summary": "Command\u0020to\u0020check\u0020existence\u0020of\u0020Sanitisation\u0020classes.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_drupalCheckSanitisationClasses"
         },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalSanitiseCommands\u003A\u003AregisterCustomClasses\u0028\u0029",
-            "name": "registerCustomClasses",
-            "summary": "Register\u0020all\u0020classes\u0020in\u0020custom\u0020code\u0020directory\u0020folder\u0020that\u0020are\u0020not\u0020registered.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_registerCustomClasses"
-        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalSanitiseCommands\u003A\u003AareUserFieldsSanitised\u0028\u0029",
             "name": "areUserFieldsSanitised",
             "summary": "Checks\u0020if\u0020the\u0020User\u0020fields\u0020are\u0020being\u0020sanitised.",
@@ -965,6 +1000,16 @@ Search.appendIndex(
             "name": "optionPattern",
             "summary": "Prepare\u0020regex\u0020to\u0020check\u0020if\u0020option\u0020exists\u0020with\u0020value\u0020\u0022no\u0022.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_optionPattern"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalSanitiseCommands\u003A\u003AregisterCustomClasses\u0028\u0029",
+            "name": "registerCustomClasses",
+            "summary": "Register\u0020all\u0020classes\u0020in\u0020custom\u0020code\u0020directory\u0020folder\u0020that\u0020are\u0020not\u0020registered.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_registerCustomClasses"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalSanitiseCommands\u003A\u003AcreateClassMap\u0028\u0029",
+            "name": "createClassMap",
+            "summary": "Generates\u0020a\u0020class\u0020map\u0020for\u0020given\u0020directory.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_createClassMap"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalSanitiseCommands\u003A\u003AtestMap\u0028\u0029",
             "name": "testMap",
@@ -1226,6 +1271,11 @@ Search.appendIndex(
             "summary": "Run\u0020lint\u0020PHP.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintPhp"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LintCommands\u003A\u003AtoolkitLintCss\u0028\u0029",
+            "name": "toolkitLintCss",
+            "summary": "Run\u0020lint\u0020CSS.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintCss"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands",
             "name": "PatchCommands",
             "summary": "Commands\u0020for\u0020patch\u0020download\u0020and\u0020list.",
@@ -1483,7 +1533,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AtoolkitInstallDependencies\u0028\u0029",
             "name": "toolkitInstallDependencies",
-            "summary": "Install\u0020packages\u0020present\u0020in\u0020the\u0020opts.yml\u0020file\u0020under\u0020extra_pkgs\u0020section.",
+            "summary": "Install\u0020packages\u0020present\u0020in\u0020the\u0020.opts.yml\u0020file\u0020under\u0020extra_pkgs\u0020section.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_toolkitInstallDependencies"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AparseOptsYml\u0028\u0029",

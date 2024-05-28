@@ -150,7 +150,7 @@
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    InstallCommands
+    AxeCommands
 
         <span class="phpdocumentor-element__extends">
         extends <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html"><abbr title="\EcEuropa\Toolkit\TaskRunner\AbstractCommands">AbstractCommands</abbr></a>
@@ -172,16 +172,47 @@
 </div>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/InstallCommands.php"><a href="files/src-taskrunner-commands-installcommands.html"><abbr title="src/TaskRunner/Commands/InstallCommands.php">InstallCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/AxeCommands.php"><a href="files/src-taskrunner-commands-axecommands.html"><abbr title="src/TaskRunner/Commands/AxeCommands.php">AxeCommands.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">16</span>
 
     </aside>
 
-            <p class="phpdocumentor-summary">Class ToolkitCommands.</p>
+            <p class="phpdocumentor-summary">Commands to interact with the axe-scan.</p>
 
 
 
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">see</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                    <span class="phpdocumentor-tag-link"><a href="https://github.com/ttsukagoshi/axe-scan">https://github.com/ttsukagoshi/axe-scan</a></span>
+                                        
+                                             
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">see</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                    <span class="phpdocumentor-tag-link"><a href="https://github.com/puppeteer/puppeteer">https://github.com/puppeteer/puppeteer</a></span>
+                                        
+                                             
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">see</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                    <span class="phpdocumentor-tag-link"><a href="https://www.deque.com/axe/core-documentation/api-documentation/">https://www.deque.com/axe/core-documentation/api-documentation/</a></span>
+                                        
+                                             
+                                    </dd>
+                                            </dl>
 
 
 
@@ -189,7 +220,7 @@
 
 <h3 id="toc">
     Table of Contents
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h3>
 
@@ -201,15 +232,29 @@
 
 
 
+<h4 id="toc-properties">
+    Properties
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#property_dependencies">$dependencies</a>
+    <span>
+                        &nbsp;: array&lt;string|int, mixed&gt;|array&lt;string|int, string&gt;            </span>
+</dt>
+<dd>A list of dependencies for axe-scan.</dd>
+
+    </dl>
 
 <h4 id="toc-methods">
     Methods
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
@@ -237,25 +282,25 @@
 <dd>Check if the website is installed.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClean">toolkitInstallClean()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitRunAxeScan">toolkitRunAxeScan()</a>
     <span>
-                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
+                                &nbsp;: mixed    </span>
 </dt>
-<dd>Install a clean website.</dd>
+<dd>Run the axe-scan.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClone">toolkitInstallClone()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitRunAxeScanSummary">toolkitRunAxeScanSummary()</a>
     <span>
-                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
+                                &nbsp;: mixed    </span>
 </dt>
-<dd>Install a clone website.</dd>
+<dd>Run the axe-scan summary.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitRunDeploy">toolkitRunDeploy()</a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitSetupAxeScan">toolkitSetupAxeScan()</a>
     <span>
-                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
+                                &nbsp;: mixed    </span>
 </dt>
-<dd>Run deployment sequence.</dd>
+<dd>Make sure axe-scan is installed and properly configured.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a>
@@ -327,11 +372,54 @@
         
 
         
+    <section class="phpdocumentor-properties">
+        <h3 class="phpdocumentor-elements__header" id="properties">
+            Properties
+            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+
+        </h3>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_dependencies">
+        $dependencies
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#property_dependencies" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/AxeCommands.php"><a href="files/src-taskrunner-commands-axecommands.html"><abbr title="src/TaskRunner/Commands/AxeCommands.php">AxeCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">24</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">A list of dependencies for axe-scan.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;|array&lt;string|int, string&gt;</span>
+    <span class="phpdocumentor-signature__name">$dependencies</span>
+     = <span class="phpdocumentor-signature__default-value">[&#039;libnss3-tools&#039;, &#039;libatk1.0-0&#039;, &#039;libatk-bridge2.0-0&#039;, &#039;libdrm2&#039;, &#039;libxcomposite1&#039;, &#039;libxdamage1&#039;, &#039;libxfixes3&#039;, &#039;libxrandr2&#039;, &#039;libgbm1&#039;, &#039;libxkbcommon-x11-0&#039;, &#039;libpangocairo-1.0-0&#039;, &#039;libasound2&#039;, &#039;fonts-liberation&#039;, &#039;libgcc1&#039;, &#039;libxss1&#039;, &#039;libgtk-3-0&#039;, &#039;libx11-xcb1&#039;, &#039;libxcursor1&#039;, &#039;xdg-utils&#039;]</span></code>
+
+    
+    
+    
+
+    
+
+</article>
+            </section>
 
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
@@ -342,13 +430,13 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_getConfigurationFile">
         getConfigurationFile()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/InstallCommands.php"><a href="files/src-taskrunner-commands-installcommands.html"><abbr title="src/TaskRunner/Commands/InstallCommands.php">InstallCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">30</span>
 
     </aside>
 
@@ -360,7 +448,9 @@
 
     <div class="phpdocumentor-label-line">
         </div>
-    
+        <section class="phpdocumentor-description"><p>Command classes should implement this method.</p>
+</section>
+
     
     
 
@@ -513,44 +603,32 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_toolkitInstallClean">
-        toolkitInstallClean()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClean" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_toolkitRunAxeScan">
+        toolkitRunAxeScan()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitRunAxeScan" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/InstallCommands.php"><a href="files/src-taskrunner-commands-installcommands.html"><abbr title="src/TaskRunner/Commands/InstallCommands.php">InstallCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/AxeCommands.php"><a href="files/src-taskrunner-commands-axecommands.html"><abbr title="src/TaskRunner/Commands/AxeCommands.php">AxeCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">42</span>
+    <span class="phpdocumentor-element-found-in__line">53</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Install a clean website.</p>
+        <p class="phpdocumentor-summary">Run the axe-scan.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitInstallClean</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;config-file&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
+                    <span class="phpdocumentor-signature__name">toolkitRunAxeScan</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
     
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;config-file&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Command options.</p>
-</section>
-
-            </dd>
-            </dl>
-
+    
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClean#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitRunAxeScan#tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
@@ -559,16 +637,7 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>toolkit:install-clean</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>config-file The path to the config file.</p>
+                                                 <section class="phpdocumentor-description"><p>toolkit:run-axe-scan</p>
 </section>
 
                                     </dd>
@@ -577,7 +646,7 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>tk-iclean</p>
+                                                 <section class="phpdocumentor-description"><p>tk-axe</p>
 </section>
 
                                     </dd>
@@ -585,15 +654,7 @@
 
     
 
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>Collection builder.</p>
-</section>
-
-            </section>
-
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -601,51 +662,32 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_toolkitInstallClone">
-        toolkitInstallClone()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClone" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_toolkitRunAxeScanSummary">
+        toolkitRunAxeScanSummary()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitRunAxeScanSummary" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/InstallCommands.php"><a href="files/src-taskrunner-commands-installcommands.html"><abbr title="src/TaskRunner/Commands/InstallCommands.php">InstallCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/AxeCommands.php"><a href="files/src-taskrunner-commands-axecommands.html"><abbr title="src/TaskRunner/Commands/AxeCommands.php">AxeCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">85</span>
+    <span class="phpdocumentor-element-found-in__line">86</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Install a clone website.</p>
+        <p class="phpdocumentor-summary">Run the axe-scan summary.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitInstallClone</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;dumpfile&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
+                    <span class="phpdocumentor-signature__name">toolkitRunAxeScanSummary</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
     
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$io</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;dumpfile&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Command options.</p>
-</section>
-
-            </dd>
-            </dl>
-
+    
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClone#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitRunAxeScanSummary#tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
@@ -654,16 +696,7 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>toolkit:install-clone</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>dumpfile The dump file name.</p>
+                                                 <section class="phpdocumentor-description"><p>toolkit:run-axe-scan-summary</p>
 </section>
 
                                     </dd>
@@ -672,7 +705,7 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>tk-iclone</p>
+                                                 <section class="phpdocumentor-description"><p>tk-axe-sum</p>
 </section>
 
                                     </dd>
@@ -680,15 +713,7 @@
 
     
 
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>Collection builder.</p>
-</section>
-
-            </section>
-
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -696,48 +721,32 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_toolkitRunDeploy">
-        toolkitRunDeploy()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitRunDeploy" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_toolkitSetupAxeScan">
+        toolkitSetupAxeScan()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitSetupAxeScan" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/InstallCommands.php"><a href="files/src-taskrunner-commands-installcommands.html"><abbr title="src/TaskRunner/Commands/InstallCommands.php">InstallCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/AxeCommands.php"><a href="files/src-taskrunner-commands-axecommands.html"><abbr title="src/TaskRunner/Commands/AxeCommands.php">AxeCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">141</span>
+    <span class="phpdocumentor-element-found-in__line">107</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Run deployment sequence.</p>
+        <p class="phpdocumentor-summary">Make sure axe-scan is installed and properly configured.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitRunDeploy</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;sequence-file&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;sequence-key&#039; =&gt; InputOption::VALUE_REQUIRED]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
+                    <span class="phpdocumentor-signature__name">toolkitSetupAxeScan</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
-        <section class="phpdocumentor-description"><p>This command will check for a file that holds the deployment sequence. If
-it is available it will run the commands defined in the yaml file under the
-selected key. If not we will run a standard set of deployment commands.</p>
-</section>
-
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;sequence-file&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;sequence-key&#039; =&gt; InputOption::VALUE_REQUIRED]</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Command options.</p>
-</section>
-
-            </dd>
-            </dl>
-
+    
+    
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitRunDeploy#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitSetupAxeScan#tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
@@ -746,34 +755,7 @@ selected key. If not we will run a standard set of deployment commands.</p>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>toolkit:run-deploy</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>sequence-file The file that holds the deployment sequence.</p>
-</section>
-
-                                    </dd>
-                            <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">option</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>sequence-key  The key under which the commands are defined.</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">aliases</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>tk-deploy</p>
+                                                 <section class="phpdocumentor-description"><p>toolkit:setup-axe-scan</p>
 </section>
 
                                     </dd>
@@ -781,15 +763,7 @@ selected key. If not we will run a standard set of deployment commands.</p>
 
     
 
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>Collection builder.</p>
-</section>
-
-            </section>
-
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -1287,7 +1261,7 @@ selected key. If not we will run a standard set of deployment commands.</p>
     <div class="phpdocumentor-modal-bg" data-exit-button></div>
     <div class="phpdocumentor-modal-container">
         <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/TaskRunner/Commands/InstallCommands.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/TaskRunner/Commands/AxeCommands.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
         </div>
         <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
     </div>
@@ -1386,21 +1360,28 @@ selected key. If not we will run a standard set of deployment commands.</p>
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                                                                <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#toc-methods">Methods</a></li>
+                                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#toc-methods">Methods</a></li>
                                     </ul>
             </li>
             
+                            <li class="phpdocumentor-on-this-page-section__title">Properties</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                                                    <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#property_dependencies">$dependencies<a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html"></li>
+                                            </ul>
+                </li>
             
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson">getJson()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isWebsiteInstalled">isWebsiteInstalled()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClean">toolkitInstallClean()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitInstallClone">toolkitInstallClone()</a></li>
-                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#method_toolkitRunDeploy">toolkitRunDeploy()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitRunAxeScan">toolkitRunAxeScan()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitRunAxeScanSummary">toolkitRunAxeScanSummary()</a></li>
+                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#method_toolkitSetupAxeScan">toolkitSetupAxeScan()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBinPath">getBinPath()</a></li>
                                             <li><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigValue">getConfigValue()</a></li>
@@ -1429,7 +1410,7 @@ selected key. If not we will run a standard set of deployment commands.</p>
     </section>
 </section>
         </div>
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-InstallCommands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-AxeCommands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

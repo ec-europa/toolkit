@@ -55,8 +55,8 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -three phpdocumentor-sidebar">
-                    <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">index</h2>
+                    <section class="phpdocumentor-sidebar__category -index">
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html#setting-up-a-project" class="">Setting up a project</a>
 </h4>
@@ -106,7 +106,7 @@
 </h4>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -namespaces">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/eceuropa.html" class="">EcEuropa</a>
@@ -119,7 +119,7 @@
             </ul>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -packages">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="packages/Toolkit.html" class="">Toolkit</a>
@@ -127,14 +127,14 @@
 
                         </section>
             
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -reports">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
     </section>
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -indices">
         <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
     </section>
@@ -142,13 +142,17 @@
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
                                         <div class="section" id="building-assets">
-    <h1>Building assets</h1>
+            <h1>Building assets</h1>
 
             <div class="section" id="overview">
-    <h2>Overview</h2>
+            <h2>Overview</h2>
 
-            <p>Toolkit provides a way to build theme assets with Europa Component Library (ECL) and/or Gulp.js.</p>
-            <p>By default, a config file is included as well as some npm packages in order to:</p>
+            
+    <p>Toolkit provides a way to build theme assets with Europa Component Library (ECL) and/or Gulp.js.</p>
+
+            
+    <p>By default, a config file is included as well as some npm packages in order to:</p>
+
             
 
 <ul>
@@ -167,56 +171,73 @@
     </div>
 
             <div class="section" id="how-to-use">
-    <h2>How to use</h2>
+            <h2>How to use</h2>
 
             <div class="section" id="building-theme-assets-general">
-    <h3>Building theme assets (general)</h3>
+            <h3>Building theme assets (general)</h3>
 
-            <p>Toolkit will install all packages and create config files (if not exist) on the first run.
+            
+    <p>Toolkit will install all packages and create config files (if not exist) on the first run.
 Add the chosen runners and packages to your runner.yml.dist file
 like shown below:</p>
+
             <pre><code class="language-">toolkit:
   build:
     npm:
       theme-task-runner: ecl-builder gulp
       packages: &#039;@ecl/builder pikaday moment gulp gulp-concat gulp-sass gulp-clean-css gulp-minify&#039;
       ecl-command: &#039;styles scripts&#039;</code></pre>
-            <p>Command to run:</p>
+
+            
+    <p>Command to run:</p>
+
             <pre><code class="language-">docker-compose vendor/bin/run toolkit:build-assets</code></pre>
+
     </div>
 
             <div class="section" id="edit-the-config-file-in-order-to-fit-your-needs">
-    <h3>Edit the config file in order to fit your needs</h3>
+            <h3>Edit the config file in order to fit your needs</h3>
 
     </div>
 
             <div class="section" id="ecl-builder-config-js-and-or-gulpfile-js">
-    <h3>(&#039;ecl-builder.config.js&#039; and/or &#039;gulpfile.js&#039;)</h3>
+            <h3>(&#039;ecl-builder.config.js&#039; and/or &#039;gulpfile.js&#039;)</h3>
 
-            <p>Depending on the chosen runners a config file will be created on the theme root folder.
+            
+    <p>Depending on the chosen runners a config file will be created on the theme root folder.
 It&#039;s possible to edit this file after creation and run again the command &#039;toolkit:build-assets&#039;.
 If the file does not exist, Toolkit will create it using the default template.
 After creation please check the entry and output points for your css, scss and js files.
 Make sure that are pointed to the right path.</p>
-            <p>This will (re)generate the output file(s) defined on the config file(s).</p>
+
+            
+    <p>This will (re)generate the output file(s) defined on the config file(s).</p>
+
     </div>
 
             <div class="section" id="build-theme-assets-ecl-builder">
-    <h3>Build theme assets (ecl-builder)</h3>
+            <h3>Build theme assets (ecl-builder)</h3>
 
-            <p>By default Toolkit compiles the Css and Js files, defined in the configuration file
+            
+    <p>By default Toolkit compiles the Css and Js files, defined in the configuration file
 &#039;ecl-builder.config.js&#039; as entry and destination paths.
 The ecl-builder command used for this action is &#039;styles&#039;. This the default command.</p>
-            <p>To use other command listed on &#039;ecl-builder&#039; options an additional parameter can be provided:
+
+            
+    <p>To use other command listed on &#039;ecl-builder&#039; options an additional parameter can be provided:
 &#039;--ecl-command&#039;</p>
+
             <pre><code class="language-">// Execute an available command from the ecl-builder list - Get help:
 docker-compose exec web ./vendor/bin/run toolkit:build-assets --ecl-command=help</code></pre>
+
     </div>
 
             <div class="section" id="define-default-theme">
-    <h3>Define &#039;default-theme&#039;</h3>
+            <h3>Define &#039;default-theme&#039;</h3>
 
-            <p>The default theme can be specified in a parameter in the task call:</p>
+            
+    <p>The default theme can be specified in a parameter in the task call:</p>
+
             <pre><code class="language-">// Command line
 docker-compose vendor/bin/run toolkit:build-assets --default-theme=your-theme
 
@@ -226,23 +247,32 @@ toolkit:
     npm:
       theme-task-runner: ecl-builder
       packages: @ecl/builder pikaday moment</code></pre>
+
     </div>
 
             <div class="section" id="define-custom-code-folder">
-    <h3>Define &#039;custom-code-folder&#039;</h3>
+            <h3>Define &#039;custom-code-folder&#039;</h3>
 
-            <p>If for some reason your project is running custom code in other folder then <code>lib</code>, it&#039;s possible to make it configurable with the following:</p>
+            
+    <p>If for some reason your project is running custom code in other folder then <code>lib</code>
+, it&#039;s possible to make it configurable with the following:</p>
+
             <pre><code class="language-">toolkit:
   build:
     custom-code-folder: &#039;your_folder&#039;</code></pre>
+
     </div>
 
     </div>
 
             <div class="section" id="enable-build-assets-during-ci">
-    <h2>Enable build assets during CI</h2>
+            <h2>Enable build assets during CI</h2>
 
-            <p>To enable auto build of assets you should extend the tasks <code>toolkit:build-dev</code> and <code>toolkit:build-dist</code>. See example below.</p>
+            
+    <p>To enable auto build of assets you should extend the tasks <code>toolkit:build-dev</code>
+ and <code>toolkit:build-dist</code>
+. See example below.</p>
+
             <pre><code class="language-">toolkit:
   project_id: &quot;my-project&quot;
   build:
@@ -254,21 +284,28 @@ toolkit:
       commands:
       - ...
       - ./vendor/bin/run toolkit:build-assets-dist</code></pre>
-            <div class="section" id="install-additional-npm-packages">
-    <h3>Install additional npm packages</h3>
 
-            <p>Additional npm packages can be installed to extend the functionality.
+            <div class="section" id="install-additional-npm-packages">
+            <h3>Install additional npm packages</h3>
+
+            
+    <p>Additional npm packages can be installed to extend the functionality.
 The package version can be added after the package name like shown in the example below:</p>
+
             <pre><code class="language-">&#039;@ecl/preset-ec@3.13.0&#039;
 
 or
 
 &#039;gulp@4.0.1&#039;</code></pre>
-            <p>To do it add them to the file &#039;runner.yml.dist&#039;:</p>
+
+            
+    <p>To do it add them to the file &#039;runner.yml.dist&#039;:</p>
+
             <pre><code class="language-">toolkit:
   build:
     npm:
       packages: &#039;``@ecl/preset-ec@3.13.0`` ``gulp@4.0.1`` gulp-sass gulp-concat gulp-clean-css gulp-minify&#039;</code></pre>
+
     </div>
 
     </div>
@@ -288,7 +325,7 @@ or
     </section>
 </section>
         </div>
-        <a href="guide/building-assets.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

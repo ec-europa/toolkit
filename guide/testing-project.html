@@ -55,8 +55,8 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -three phpdocumentor-sidebar">
-                    <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">index</h2>
+                    <section class="phpdocumentor-sidebar__category -index">
+            <h2 class="phpdocumentor-sidebar__category-header">Index</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="guide/setting-up-project.html#setting-up-a-project" class="">Setting up a project</a>
 </h4>
@@ -106,7 +106,7 @@
 </h4>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -namespaces">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="namespaces/eceuropa.html" class="">EcEuropa</a>
@@ -119,7 +119,7 @@
             </ul>
 
                         </section>
-                <section class="phpdocumentor-sidebar__category">
+                <section class="phpdocumentor-sidebar__category -packages">
             <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
     <a href="packages/Toolkit.html" class="">Toolkit</a>
@@ -127,14 +127,14 @@
 
                         </section>
             
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -reports">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
                 <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
     </section>
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -indices">
         <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
     </section>
@@ -142,23 +142,38 @@
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
                                         <div class="section" id="testing-the-project">
-    <h1>Testing the project</h1>
+            <h1>Testing the project</h1>
 
-            <p>This guide explains how to use the resources provided by Toolkit to test your
+            
+    <p>This guide explains how to use the resources provided by Toolkit to test your
 project. You can list all resources available with the following command:</p>
-            <pre><code class="language-">docker-compose exec web ./vendor/bin/run</code></pre>
-            <div class="section" id="behat-testing">
-    <h2>Behat testing</h2>
 
-            <p>To run behat tests you can make use of the <code>toolkit:test-behat</code> command. This will
-re-generate your behat configuration from <code>./behat.yml.dist</code> and run it on your
+            <pre><code class="language-">docker-compose exec web ./vendor/bin/run</code></pre>
+
+            <div class="section" id="behat-testing">
+            <h2>Behat testing</h2>
+
+            
+    <p>To run behat tests you can make use of the <code>toolkit:test-behat</code>
+ command. This will
+re-generate your behat configuration from <code>./behat.yml.dist</code>
+ and run it on your
 current site installation.</p>
-            <p>New tests should be stored in <code>./tests/features/</code> folder, then they will be executed
+
+            
+    <p>New tests should be stored in <code>./tests/features/</code>
+ folder, then they will be executed
 automatically by toolkit task.</p>
-            <p>To run the behat tests:</p>
+
+            
+    <p>To run the behat tests:</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:test-behat</code></pre>
-            <p>CICD will pick the default profile to run against clone install and clean profile to run
+
+            
+    <p>CICD will pick the default profile to run against clone install and clean profile to run
 against clean install.</p>
+
             
 
 <ul>
@@ -168,7 +183,10 @@ against clean install.</p>
 
 </ul>
 
-            <p>The default configuration for this is to have the following defined in your <code>./behat.yml.dist</code> file:</p>
+            
+    <p>The default configuration for this is to have the following defined in your <code>./behat.yml.dist</code>
+ file:</p>
+
             <pre><code class="language-yaml">default:
   suites:
     default:
@@ -177,11 +195,15 @@ clean:
   suites:
     default:
     ...</code></pre>
-            <div class="section" id="commands-to-run-before-after-behat-tests">
-    <h3>Commands to run before/after Behat tests</h3>
 
-            <p>Additional commands can be run before and/or after the test. Such commands
-should be defined in the configuration file <code>runner.yml</code>:</p>
+            <div class="section" id="commands-to-run-before-after-behat-tests">
+            <h3>Commands to run before/after Behat tests</h3>
+
+            
+    <p>Additional commands can be run before and/or after the test. Such commands
+should be defined in the configuration file <code>runner.yml</code>
+:</p>
+
             <pre><code class="language-yaml">toolkit:
   test:
     behat:
@@ -194,39 +216,64 @@ should be defined in the configuration file <code>runner.yml</code>:</p>
           - task: exec
             command: whoami
           - ...</code></pre>
+
     </div>
 
             <div class="section" id="behat-tests-in-gitlab-ci">
-    <h3>Behat tests in GitLab CI</h3>
+            <h3>Behat tests in GitLab CI</h3>
 
-            <p>In GitLab CI, it is possible to run behat in parallel, to do so, the suites must be split like shown below:</p>
+            
+    <p>In GitLab CI, it is possible to run behat in parallel, to do so, the suites must be split like shown below:</p>
+
             <pre><code class="language-yaml">default:
   suites:
     group_1:
       ...
     group_2:
       ...</code></pre>
+
     </div>
 
     </div>
 
             <div class="section" id="phpcs-testing">
-    <h2>PHPcs testing</h2>
+            <h2>PHPcs testing</h2>
 
-            <p>To run coding standard tests you can make use of the <code>toolkit:test-phpcs</code> command:</p>
+            
+    <p>To run coding standard tests you can make use of the <code>toolkit:test-phpcs</code>
+ command:</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:test-phpcs</code></pre>
-            <p>If the configuration <code>phpcs.xml</code> file is not found, it will be created with the configurations
-provided in the <code>runner.yml</code> file.
-You can manually generate the configuration file using the command <code>toolkit:setup-phpcs</code>:</p>
+
+            
+    <p>If the configuration <code>phpcs.xml</code>
+ file is not found, it will be created with the configurations
+provided in the <code>runner.yml</code>
+ file.
+You can manually generate the configuration file using the command <code>toolkit:setup-phpcs</code>
+:</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:setup-phpcs</code></pre>
-            <p>The configuration file <code>phpcs.xml</code> will be validated by the command <code>toolkit:check-phpcs-requirements</code>.
+
+            
+    <p>The configuration file <code>phpcs.xml</code>
+ will be validated by the command <code>toolkit:check-phpcs-requirements</code>
+.
 You can manually validate your configuration file:</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:check-phpcs-requirements</code></pre>
-            <p>This will enforce the usage of the following standards:</p>
+
+            
+    <p>This will enforce the usage of the following standards:</p>
+
             <pre><code class="language-">vendor/drupal/coder/coder_sniffer/Drupal
 vendor/drupal/coder/coder_sniffer/DrupalPractice
 vendor/ec-europa/qa-automation/phpcs/QualityAssurance</code></pre>
-            <p>These are the default configurations in the <code>runner.yml</code> file.</p>
+
+            
+    <p>These are the default configurations in the <code>runner.yml</code>
+ file.</p>
+
             <pre><code class="language-yaml">toolkit:
   test:
     phpcs:
@@ -257,15 +304,24 @@ vendor/ec-europa/qa-automation/phpcs/QualityAssurance</code></pre>
         - ./lib
         - ./resources
         - ./src</code></pre>
-            <p>If you want to use GrumPHP, you need to require the dependency in your <code>composer.json</code>
-and set the phpcs mode in the configuration file <code>runner.yml</code> as shown below:</p>
+
+            
+    <p>If you want to use GrumPHP, you need to require the dependency in your <code>composer.json</code>
+
+and set the phpcs mode in the configuration file <code>runner.yml</code>
+ as shown below:</p>
+
             <pre><code class="language-yaml">toolkit:
   test:
     phpcs:
       mode: grumphp</code></pre>
-            <p>This will first validate the configuration of your <code>./grumphp.yml.dist</code>. The
+
+            
+    <p>This will first validate the configuration of your <code>./grumphp.yml.dist</code>
+. The
 correct configuration of this file contains the import of the qa conventions
 like shown below:</p>
+
             <pre><code class="language-yaml">imports:
   - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }
 parameters:
@@ -281,34 +337,57 @@ parameters:
     - yml
   extensions:
     - OpenEuropa\CodeReview\ExtraTasksExtension</code></pre>
-            <p>Previously this was hardcoded in your composer.json. But if you want to be able
+
+            
+    <p>Previously this was hardcoded in your composer.json. But if you want to be able
 to override configuration from the qa convention you should remove that setting.
 So if you have the following lines in your composer.json you should remove those
 lines:</p>
+
             <pre><code class="language-json">&quot;grumphp&quot;: {
     &quot;config-default-path&quot;: &quot;vendor/ec-europa/qa-automation/dist/qa-conventions.yml&quot;
 }</code></pre>
-            <p>PHPcbf task is available (not with GrumPHP), to automatic fix your issues please run the following
+
+            
+    <p>PHPcbf task is available (not with GrumPHP), to automatic fix your issues please run the following
 command:</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:run-phpcbf</code></pre>
+
     </div>
 
             <div class="section" id="phpunit-testing">
-    <h2>PHPUnit testing</h2>
+            <h2>PHPUnit testing</h2>
 
-            <p>Use the <code>toolkit:test-phpunit</code> command to run PHPUnit tests. The command will
-look for a <code>phpunit.xml.dist</code> or a  files, in the configured
-locations. If <code>phpunit.xml.dist</code> is found, a <code>phpunit.xml</code> will be generated. If
-<code>phpunit.xml.dist</code> is missing but there&#039;s a <code>phpunit.xml</code> file, the latter is
+            
+    <p>Use the <code>toolkit:test-phpunit</code>
+ command to run PHPUnit tests. The command will
+look for a <code>phpunit.xml.dist</code>
+ or a  files, in the configured
+locations. If <code>phpunit.xml.dist</code>
+ is found, a <code>phpunit.xml</code>
+ will be generated. If
+<code>phpunit.xml.dist</code>
+ is missing but there&#039;s a <code>phpunit.xml</code>
+ file, the latter is
 used.</p>
-            <p>Tests should be organised according to <a href="https://phpunit.readthedocs.io/en/9.5/organizing-tests.html#composing-a-test-suite-using-xml-configuration">PHPUnit documentation</a>.</p>
-            <p>To run the PHPUnit tests:</p>
-            <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:test-phpunit</code></pre>
-            <div class="section" id="commands-to-run-before-after-phpunit-tests">
-    <h3>Commands to run before/after PHPUnit tests</h3>
 
-            <p>Additional commands can be run before and/or after the test. Such commands
-should be defined in the configuration file <code>runner.yml</code>:</p>
+            
+    <p>Tests should be organised according to <a href="https://phpunit.readthedocs.io/en/9.5/organizing-tests.html#composing-a-test-suite-using-xml-configuration">PHPUnit documentation</a>.</p>
+
+            
+    <p>To run the PHPUnit tests:</p>
+
+            <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:test-phpunit</code></pre>
+
+            <div class="section" id="commands-to-run-before-after-phpunit-tests">
+            <h3>Commands to run before/after PHPUnit tests</h3>
+
+            
+    <p>Additional commands can be run before and/or after the test. Such commands
+should be defined in the configuration file <code>runner.yml</code>
+:</p>
+
             <pre><code class="language-yaml">toolkit:
   test:
     phpunit:
@@ -321,19 +400,30 @@ should be defined in the configuration file <code>runner.yml</code>:</p>
           - task: exec
             command: whoami
           - ...</code></pre>
+
     </div>
 
     </div>
 
             <div class="section" id="phpmd-testing">
-    <h2>PHPMD testing</h2>
+            <h2>PHPMD testing</h2>
 
-            <p>To run PHP Mess Detector tests you can make use of the <code>toolkit:test-phpmd</code>
-command. If the project does not have a <code>phpmd.xml</code> file in the root folder,
+            
+    <p>To run PHP Mess Detector tests you can make use of the <code>toolkit:test-phpmd</code>
+
+command. If the project does not have a <code>phpmd.xml</code>
+ file in the root folder,
 Toolkit will create the default config file.</p>
-            <p>To run the PHP Mess Detector checks:</p>
+
+            
+    <p>To run the PHP Mess Detector checks:</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:test-phpmd</code></pre>
-            <p>These are the default configurations in the <code>runner.yml</code> file.</p>
+
+            
+    <p>These are the default configurations in the <code>runner.yml</code>
+ file.</p>
+
             <pre><code class="language-yaml">toolkit:
   test:
     phpmd:
@@ -353,16 +443,28 @@ Toolkit will create the default config file.</p>
       files:
         - lib
         - src</code></pre>
+
     </div>
 
             <div class="section" id="phpstan-testing">
-    <h2>PHPStan testing</h2>
+            <h2>PHPStan testing</h2>
 
-            <p>To run the PHPStan tests you can make use of the <code>toolkit:test-phpstan</code> command:</p>
+            
+    <p>To run the PHPStan tests you can make use of the <code>toolkit:test-phpstan</code>
+ command:</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:test-phpstan</code></pre>
-            <p>If the configuration <code>phpstan.neon</code> file is not found, it will be created with the configurations
-provided in the <code>runner.yml</code> file.</p>
-            <p>These are the default configurations in the <code>runner.yml</code> file.</p>
+
+            
+    <p>If the configuration <code>phpstan.neon</code>
+ file is not found, it will be created with the configurations
+provided in the <code>runner.yml</code>
+ file.</p>
+
+            
+    <p>These are the default configurations in the <code>runner.yml</code>
+ file.</p>
+
             <pre><code class="language-yaml">toolkit:
   test:
     phpstan:
@@ -372,20 +474,35 @@ provided in the <code>runner.yml</code> file.</p>
       ignores: [ &#039;vendor&#039; ]
       memory_limit: &#039;&#039;
       options: &#039;&#039;</code></pre>
+
     </div>
 
             <div class="section" id="eslint-testing">
-    <h2>ESLint testing</h2>
+            <h2>ESLint testing</h2>
 
-            <p>Toolkit uses ESLint to validate the JS and YAML files.</p>
-            <p>To set up the ESLint you can make use of the <code>toolkit:setup-eslint</code> command.</p>
+            
+    <p>Toolkit uses ESLint to validate the JS and YAML files.</p>
+
+            
+    <p>To set up the ESLint you can make use of the <code>toolkit:setup-eslint</code>
+ command.</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:setup-eslint</code></pre>
-            <p>The command will make sure that the project has a <code>package.json</code> file, if not
+
+            
+    <p>The command will make sure that the project has a <code>package.json</code>
+ file, if not
 it will be created and the needed packages will be installed.
-If the configuration file <code>.eslintrc.json</code> is not found, it will be created with
+If the configuration file <code>.eslintrc.json</code>
+ is not found, it will be created with
 the default configurations including the Drupal .eslintrc.json. The file
-<code>.prettierignore</code> will also be created.</p>
-            <p>These are the default configurations in the <code>runner.yml</code> file.</p>
+<code>.prettierignore</code>
+ will also be created.</p>
+
+            
+    <p>These are the default configurations in the <code>runner.yml</code>
+ file.</p>
+
             <pre><code class="language-yaml">toolkit:
   lint:
     eslint:
@@ -396,28 +513,41 @@ the default configurations including the Drupal .eslintrc.json. The file
       options_yaml: &#039;&#039;
       extensions_js: [ &#039;.js&#039; ]
       options_js: &#039;&#039;</code></pre>
-            <div class="section" id="eslint-js-testing">
-    <h3>ESLint JS testing</h3>
 
-            <p>To run the ESLint JS tests you can make use of the <code>toolkit:lint-js</code> command:</p>
+            <div class="section" id="eslint-js-testing">
+            <h3>ESLint JS testing</h3>
+
+            
+    <p>To run the ESLint JS tests you can make use of the <code>toolkit:lint-js</code>
+ command:</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:lint-js</code></pre>
+
     </div>
 
             <div class="section" id="eslint-yaml-testing">
-    <h3>ESLint YAML testing</h3>
+            <h3>ESLint YAML testing</h3>
 
-            <p>To run the ESLint YAML tests you can make use of the <code>toolkit:lint-yaml</code> command:</p>
+            
+    <p>To run the ESLint YAML tests you can make use of the <code>toolkit:lint-yaml</code>
+ command:</p>
+
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:lint-yaml</code></pre>
+
     </div>
 
     </div>
 
             <div class="section" id="testing-in-ci">
-    <h2>Testing in CI</h2>
+            <h2>Testing in CI</h2>
 
-            <p>Toolkit is full integrated with official pipeline that currently requires minimum
+            
+    <p>Toolkit is full integrated with official pipeline that currently requires minimum
 of 1 behat test and a clean report for phpcs check.</p>
-            <p>Any customization done in your project will be respected in Drone build.</p>
+
+            
+    <p>Any customization done in your project will be respected in Drone build.</p>
+
     </div>
 
     </div>
@@ -435,7 +565,7 @@ of 1 behat test and a clean report for phpcs check.</p>
     </section>
 </section>
         </div>
-        <a href="guide/testing-project.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
