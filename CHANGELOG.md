@@ -1,5 +1,14 @@
 # Toolkit change log
 
+## Version 10.12.0
+  - DQA-9180: Unsupported packages should enable config-sync.
+  - DQA-9265: Increase timeout in getPackageLatestVersion().
+  - DQA-9198: Intermittent failures for toolkit:install-dependencies.
+  - DQA-9467: Remove dependency on composer/class-map-generator.
+  - DQA-9396: Component check not validating constraints.
+  - DQA-9426: Create toolkit command to run AXE Scanner.
+  - DQA-8660: Create command toolkit:lint-css.
+
 ## Version 10.11.2
   - DQA-9217: Align SANITIZE_OPTS on .opts.yml.
 
