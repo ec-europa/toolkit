@@ -49,8 +49,9 @@ toolkit:
             - 'DrupalComposer\DrupalScaffold\Plugin::scaffold'
     configuration:
       drupal:
+        # Filter errors by title.
         requirements:
-          - trusted_host_patterns
+          - "Trusted Host Settings"
       validations:
         - message: 'When using phpstan/extension-installer you should not manually include the extensions in the phpstan.neon file, please remove the includes.'
           callback: 'EcEuropa\Toolkit\Callbacks\ConfigurationCallbacks::validatePhpStan'

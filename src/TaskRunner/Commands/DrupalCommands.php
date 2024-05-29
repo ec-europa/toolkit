@@ -587,16 +587,19 @@ class DrupalCommands extends AbstractCommands
         'filter' => false,
     ])
     {
-        $result = $this->taskExec($this->getBin('drush') . ' core:requirements --severity=2 --format=yaml')
+        $filter_by = 'title=';
+        $filter_option = '';
+        if ($options['filter'] ) {
+            $filterRequirements = $this->getConfig()->get('toolkit.components.configuration.drupal.requirements') ?: [];
+            if (count($filterRequirements)) {
+                $filter_option = " --filter='" . $filter_by . implode('||' . $filter_by, $filterRequirements) . "'";
+            }
+        }
+        $result = $this->taskExec($this->getBin('drush') . ' core:requirements --severity=2 --format=yaml' . $filter_option)
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
-        $requirements = (array) Yaml::parse($result);
-        // Filter the requirements array by the keys in filterKeys.
-        if ($options['filter']) {
-            $filterRequirements = $this->getConfig()->get('toolkit.components.configuration.drupal.requirements') ?: [];
-            $requirements = array_intersect_key($requirements, array_flip($filterRequirements));
-        }
-        $io->say(Yaml::dump($requirements));
+
+        $io->say($result);
     }
 
     /**
