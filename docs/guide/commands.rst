@@ -67,8 +67,9 @@ See bellow current list of available commands:
    toolkit:import-config              [DEPRECATED] Run the Drupal config import.
    toolkit:install-clean              [tk-iclean] Install a clean website.
    toolkit:install-clone              [tk-iclone] Install a clone website.
-   toolkit:install-dependencies       Install packages present in the opts.yml file under extra_pkgs section.
+   toolkit:install-dependencies       Install packages present in the .opts.yml file under extra_pkgs section.
    toolkit:install-dump               [tk-idump] Import the production snapshot.
+   toolkit:lint-css                   [tk-css] Run lint CSS.
    toolkit:lint-js                    [tk-js|tljs] Run lint JS.
    toolkit:lint-php                   [tk-php|tlp] Run lint PHP.
    toolkit:lint-yaml                  [tk-yaml|tly] Run lint YAML.
@@ -77,10 +78,13 @@ See bellow current list of available commands:
    toolkit:patch-download             [tk-pd] Download remote patches into a local directory.
    toolkit:patch-list                 [tk-pl] Lists remote patches from the root composer.json.
    toolkit:requirements               [tk-req] Check the Toolkit Requirements.
+   toolkit:run-axe-scan               [tk-axe] Run the axe-scan.
+   toolkit:run-axe-scan-summary       [tk-axe-sum] Run the axe-scan summary.
    toolkit:run-blackfire              [tk-bfire|tbf] Run Blackfire.
    toolkit:run-deploy                 [tk-deploy] Run deployment sequence.
    toolkit:run-gitleaks               [tk-gitleaks] Executes the Gitleaks.
    toolkit:run-phpcbf                 [tk-phpcbf] Run PHP code autofixing.
+   toolkit:setup-axe-scan             Make sure axe-scan is installed and properly configured.
    toolkit:setup-behat                Setup the Behat file.
    toolkit:setup-blackfire-behat      Copy the needed resources to run Behat with Blackfire.
    toolkit:setup-eslint               Setup the ESLint configurations and dependencies.

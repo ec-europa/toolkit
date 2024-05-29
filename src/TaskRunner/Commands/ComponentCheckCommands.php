@@ -784,12 +784,9 @@ class ComponentCheckCommands extends AbstractCommands
         $config = $this->getConfig();
         $modules = $this->packageReviews;
         $packageName = $package['name'];
+        $isRestricted = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
         $hasBeenQaEd = isset($modules[$packageName]);
-        $wasRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
-        $wasNotRejected = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] === '0';
         $packageVersion = isset($package['extra']['drupal']['version']) ? explode('+', str_replace('8.x-', '', $package['extra']['drupal']['version']))[0] : $package['version'];
-        $allowedProjectTypes = !empty($modules[$packageName]['allowed_project_types']) ? $modules[$packageName]['allowed_project_types'] : '';
-        $allowedProfiles = !empty($modules[$packageName]['allowed_profiles']) ? $modules[$packageName]['allowed_profiles'] : '';
 
         // Exclude invalid.
         $packageVersion = in_array($packageVersion, $config->get('toolkit.invalid-versions')) ? $package['version'] : $packageVersion;
@@ -804,49 +801,8 @@ class ComponentCheckCommands extends AbstractCommands
             $message = "Package $packageName:$packageVersion has not been reviewed by QA.";
             $messageType = 'Packages not reviewed:';
         }
-
-        // If module was rejected.
-        if ($hasBeenQaEd && $wasRejected) {
-            $projectId = $config->get('toolkit.project_id');
-            // Check if the module is allowed for this project id.
-            $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
-            if ($allowedInProject) {
-                $message = "The package $packageName is authorised for the project $projectId";
-                $messageType = 'Packages authorised:';
-            }
-
-            // Check if the module is allowed for this type of project.
-            if (!$allowedInProject && !empty($allowedProjectTypes)) {
-                $allowedProjectTypes = array_map('trim', explode(',', $allowedProjectTypes));
-                // Load the project from the website.
-                $project = Website::projectInformation($projectId);
-                if (in_array($project['type'], $allowedProjectTypes)) {
-                    $allowedInProject = true;
-                    $message = "The package $packageName is authorised for the type of project {$project['type']}";
-                    $messageType = 'Packages authorised:';
-                }
-            }
-
-            // Check if the module is allowed for this profile.
-            if (!$allowedInProject && !empty($allowedProfiles)) {
-                $allowedProfiles = array_map('trim', explode(',', $allowedProfiles));
-                $profile = $this->getProjectProfile($projectId);
-                if (in_array($profile, $allowedProfiles)) {
-                    $allowedInProject = true;
-                    $message = "The package $packageName is authorised for the profile $profile";
-                    $messageType = 'Packages authorised:';
-                }
-            }
-
-            // If module was not allowed in project.
-            if (!$allowedInProject) {
-                $this->evaluationFailed = true;
-                $message = "The use of $packageName:$packageVersion is {$modules[$packageName]['status']}.";
-                $messageType = 'Packages rejected/restricted:';
-            }
-        }
-
-        if ($wasNotRejected) {
+        if ($hasBeenQaEd) {
+            // Validate package version against our constraints.
             $constraints = ['whitelist' => false, 'blacklist' => true];
             foreach ($constraints as $constraint => $result) {
                 $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
@@ -854,6 +810,48 @@ class ComponentCheckCommands extends AbstractCommands
                     $this->evaluationFailed = true;
                     $message = "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.";
                     $messageType = "Package's version constraints:";
+                }
+            }
+
+            if (empty($message) && $isRestricted) {
+                $projectId = $config->get('toolkit.project_id');
+                // Check if the module is allowed for this project id.
+                $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
+                if ($allowedInProject) {
+                    $message = "The package $packageName is authorised for the project $projectId";
+                    $messageType = 'Packages authorised:';
+                }
+
+                // Check if the module is allowed for this type of project.
+                $allowedProjectTypes = !empty($modules[$packageName]['allowed_project_types']) ? $modules[$packageName]['allowed_project_types'] : '';
+                if (!$allowedInProject && !empty($allowedProjectTypes)) {
+                    $allowedProjectTypes = array_map('trim', explode(',', $allowedProjectTypes));
+                    // Load the project from the website.
+                    $project = Website::projectInformation($projectId);
+                    if (in_array($project['type'], $allowedProjectTypes)) {
+                        $allowedInProject = true;
+                        $message = "The package $packageName is authorised for the type of project {$project['type']}";
+                        $messageType = 'Packages authorised:';
+                    }
+                }
+
+                // Check if the module is allowed for this profile.
+                $allowedProfiles = !empty($modules[$packageName]['allowed_profiles']) ? $modules[$packageName]['allowed_profiles'] : '';
+                if (!$allowedInProject && !empty($allowedProfiles)) {
+                    $allowedProfiles = array_map('trim', explode(',', $allowedProfiles));
+                    $profile = $this->getProjectProfile($projectId);
+                    if (in_array($profile, $allowedProfiles)) {
+                        $allowedInProject = true;
+                        $message = "The package $packageName is authorised for the profile $profile";
+                        $messageType = 'Packages authorised:';
+                    }
+                }
+
+                // If module was not allowed in project.
+                if (!$allowedInProject) {
+                    $this->evaluationFailed = true;
+                    $message = "The use of $packageName:$packageVersion is {$modules[$packageName]['status']}.";
+                    $messageType = 'Packages rejected/restricted:';
                 }
             }
         }

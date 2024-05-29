@@ -92,7 +92,7 @@ toolkit:
   lint:
     eslint:
       config: .eslintrc.json
-      packages: 'eslint-config-drupal eslint-plugin-yml'
+      packages: 'eslint-config-drupal eslint-plugin-yml stylelint stylelint-config-drupal'
       ignores: [ '${toolkit.build.dist.root}/*', '.cache/*', 'vendor/*', 'web/*', 'dist/*' ]
       extensions_yaml: [ '.yml', '.yaml' ]
       options_yaml: ''
@@ -102,3 +102,18 @@ toolkit:
       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
       exclude: [ '${toolkit.build.dist.root}/', '.cache/', 'vendor/', 'web/' ]
       options: ''
+    css:
+      config: .stylelintrc.json
+      files: '"${toolkit.build.custom-code-folder}/themes/*/css/*.css" "!${toolkit.build.custom-code-folder}/themes/*/css/*.min.css"'
+  axe-scan:
+    config: axe-scan.config.json
+    urls:
+      - '/'
+    file-path: axe-scan-urls.txt
+    result-types: [ 'incomplete', 'violations' ]
+    core-tags: [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa' ]
+    locale: en
+    result-file: axe-scan-results.csv
+    allow-list: axe-scan-allowlist.csv
+    run-summary: true
+    summary-result-file: axe-scan-summary.csv

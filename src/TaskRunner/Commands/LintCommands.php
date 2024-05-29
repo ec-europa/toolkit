@@ -27,8 +27,6 @@ class LintCommands extends AbstractCommands
     /**
      * Setup the ESLint configurations and dependencies.
      *
-     * Check configurations at config/default.yml - 'toolkit.lint.eslint'.
-     *
      * @command toolkit:setup-eslint
      *
      * @option config      The eslint config file.
@@ -36,14 +34,12 @@ class LintCommands extends AbstractCommands
      * @option drupal-root The drupal root.
      * @option packages    The npm packages to install.
      * @option force       If true, the config file will be deleted.
-     *
-     * @return int
      */
     public function toolkitSetupEslint(array $options = [
-        'config' => InputOption::VALUE_OPTIONAL,
+        'config' => InputOption::VALUE_REQUIRED,
         'ignores' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-        'drupal-root' => InputOption::VALUE_OPTIONAL,
-        'packages' => InputOption::VALUE_OPTIONAL,
+        'drupal-root' => InputOption::VALUE_REQUIRED,
+        'packages' => InputOption::VALUE_REQUIRED,
         'force' => false,
     ])
     {
@@ -139,8 +135,6 @@ class LintCommands extends AbstractCommands
     /**
      * Run lint YAML.
      *
-     * Check configurations at config/default.yml - 'toolkit.lint.eslint'.
-     *
      * @command toolkit:lint-yaml
      *
      * @option config     The eslint config file.
@@ -164,8 +158,6 @@ class LintCommands extends AbstractCommands
 
     /**
      * Run lint JS.
-     *
-     * Check configurations at config/default.yml - 'toolkit.lint.eslint'.
      *
      * @command toolkit:lint-js
      *
@@ -225,8 +217,6 @@ class LintCommands extends AbstractCommands
     /**
      * Run lint PHP.
      *
-     * Check configurations at config/default.yml - 'toolkit.lint.php'.
-     *
      * @command toolkit:lint-php
      *
      * @option exclude    The eslint config file.
@@ -264,6 +254,45 @@ class LintCommands extends AbstractCommands
         }
 
         return $result->getExitCode();
+    }
+
+    /**
+     * Run lint CSS.
+     *
+     * @command toolkit:lint-css
+     *
+     * @option exclude The stylelint config file.
+     * @option files   The files to check.
+     *
+     * @aliases tk-css
+     */
+    public function toolkitLintCss(array $options = [
+        'config' => InputOption::VALUE_REQUIRED,
+        'files' => InputOption::VALUE_REQUIRED,
+    ])
+    {
+        $tasks = [];
+
+        // Make sure eslint is properly installed.
+        $tasks[] = $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint');
+
+        // Make sure the stylelint-config-drupal and stylelint are installed.
+        $tasks[] = $this->taskExecStack()
+            ->exec('npm -v || npm i npm')
+            ->exec('[ -f package.json ] || npm init -y --scope')
+            ->exec('npm list stylelint-config-drupal && npm update stylelint-config-drupal || npm install stylelint-config-drupal -y');
+
+        // Generate the config file if missing.
+        if (!file_exists($options['config'])) {
+            $data = ['extends' => 'stylelint-config-drupal'];
+            $tasks[] = $this->taskWriteToFile($options['config'])
+                ->text(json_encode($data, JSON_PRETTY_PRINT));
+        }
+
+        $tasks[] = $this->taskExec($this->getNodeBinPath('stylelint'))
+            ->rawArg($options['files']);
+
+        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
 }
