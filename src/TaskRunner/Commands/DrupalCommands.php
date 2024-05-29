@@ -587,15 +587,15 @@ class DrupalCommands extends AbstractCommands
         'filter' => false,
     ])
     {
-        $filter_by = 'title=';
-        $filter_option = '';
-        if ($options['filter'] ) {
+        $filterBy = 'title=';
+        $filterOption = '';
+        if ($options['filter']) {
             $filterRequirements = $this->getConfig()->get('toolkit.components.configuration.drupal.requirements') ?: [];
             if (count($filterRequirements)) {
-                $filter_option = " --filter='" . $filter_by . implode('||' . $filter_by, $filterRequirements) . "'";
+                $filterOption = " --filter='" . $filterBy . implode('||' . $filterBy, $filterRequirements) . "'";
             }
         }
-        $result = $this->taskExec($this->getBin('drush') . ' core:requirements --severity=2 --format=yaml' . $filter_option)
+        $result = $this->taskExec($this->getBin('drush') . ' core:requirements --severity=2 --format=yaml' . $filterOption)
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
 
