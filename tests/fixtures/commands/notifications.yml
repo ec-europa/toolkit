@@ -11,7 +11,7 @@
     - CI=false
     - QA_WEBSITE_URL=http://ec-behat.com
   resources:
-    - file: .toolkit-mock/0.0.5/api/v1/notifications.json
+    - file: .toolkit-mock/0.0.6/api/v1/notifications.json
       content: |
         [{
           "title": "Notification title 1",
@@ -44,7 +44,7 @@
     - CI=false
     - QA_WEBSITE_URL=http://ec-behat.com
   resources:
-    - file: .toolkit-mock/0.0.5/api/v1/notifications.json
+    - file: .toolkit-mock/0.0.6/api/v1/notifications.json
       content: |
         [{
           "title": "Notification title 1",
