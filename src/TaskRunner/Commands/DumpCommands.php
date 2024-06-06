@@ -383,8 +383,13 @@ class DumpCommands extends AbstractCommands
     private function nextcloudCheckNewerDump(string $link, string $service): bool
     {
         $tmpFolder = $this->tmpDirectory();
-        $opts = ToolCommands::parseOptsYml();
-        $ext = isset($opts['mydumper']) && $opts['mydumper'] ? '.tar' : '.gz';
+        $ext = '.gz';
+        if ($service === 'mysql') {
+            $opts = ToolCommands::parseOptsYml();
+            if (isset($opts['mydumper']) && $opts['mydumper']) {
+                $ext = '.tar';
+            }
+        }
         $dump = "$tmpFolder/$service$ext";
         if (!file_exists($dump)) {
             return false;
