@@ -14,7 +14,7 @@ final class Toolkit
     /**
      * Constant holding the current version.
      */
-    public const VERSION = '10.12.1';
+    public const VERSION = '10.12.3';
 
     /**
      * The Toolkit repository.

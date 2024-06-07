@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 10.12.3
+  - DQA-9535: Update mock to version 0.0.6.
+  - DQA-9538: Fresh Solr & Virtuoso dumps are not downloaded.
+
 ## Version 10.12.1
   - DQA-9451: Fix issue with multiple download of virtuoso and solr dumps.
 
