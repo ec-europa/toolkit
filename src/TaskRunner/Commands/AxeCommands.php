@@ -144,23 +144,27 @@ class AxeCommands extends AbstractCommands
         // Apply temporary patch to axe-scan when starting puppeteer to have the
         // option --no-sandbox, this avoids the error: Running as root without
         // --no-sandbox is not supported.
-        $files = [
-            'node_modules/axe-scan/build/src/commands/run.js',
-            'node_modules/axe-scan/build/src/commands/summary.js',
-        ];
-        $from = 'const browser = await puppeteer.launch();';
-        $args = '["--no-sandbox", "--disable-setuid-sandbox", "--single-process", "--disable-impl-side-painting", "--disable-gpu-sandbox", "--disable-accelerated-2d-canvas", "--disable-accelerated-jpeg-decoding", "--disable-dev-shm-usage"]';
-        $to = 'const browser = await puppeteer.launch({args: ' . $args . '});';
-        foreach ($files as $file) {
-            if (file_exists($file)) {
-                $tasks[] = $this->taskReplaceInFile($file)->from($from)->to($to);
+        $tasks[] = $this->collectionBuilder()->addCode(function () {
+            $files = [
+                'node_modules/axe-scan/build/src/commands/run.js',
+                'node_modules/axe-scan/build/src/commands/summary.js',
+            ];
+            $from = 'const browser = await puppeteer.launch();';
+            $args = '["--no-sandbox", "--disable-setuid-sandbox", "--single-process", "--disable-impl-side-painting", "--disable-gpu-sandbox", "--disable-accelerated-2d-canvas", "--disable-accelerated-jpeg-decoding", "--disable-dev-shm-usage"]';
+            $to = 'const browser = await puppeteer.launch({args: ' . $args . '});';
+            foreach ($files as $file) {
+                if (file_exists($file)) {
+                    $this->taskReplaceInFile($file)->from($from)->to($to)->run();
+                }
             }
-        }
+        });
 
         // Make sure puppeteer is installed.
-        if (file_exists('node_modules/puppeteer/install.mjs')) {
-            $tasks[] = $this->taskExec('node node_modules/puppeteer/install.mjs');
-        }
+        $tasks[] = $this->collectionBuilder()->addCode(function () {
+            if (file_exists('node_modules/puppeteer/install.mjs')) {
+                $this->_exec('node node_modules/puppeteer/install.mjs');
+            }
+        });
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
