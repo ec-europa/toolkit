@@ -84,6 +84,47 @@ class ReleaseCommands extends AbstractCommands
     }
 
     /**
+     * Write the latest tag from toolkit-mock to the Mock class.
+     *
+     * @command toolkit:update-mock-default-tag
+     *
+     * @hidden
+     */
+    public function toolkitUpdateDefaultMockTag(ConsoleIO $io)
+    {
+        if (empty($token = getenv('GITLAB_API_TOKEN'))) {
+            $io->error('Missing env var GITLAB_API_TOKEN.');
+            return ResultData::EXITCODE_ERROR;
+        }
+        $mockFile = 'src/Mock.php';
+        if (!file_exists($mockFile)) {
+            $io->error("Could not find the file $mockFile.");
+            return ResultData::EXITCODE_ERROR;
+        }
+
+        $api = 'https://git.fpfis.tech.ec.europa.eu/api/v4';
+        $url = $api . '/projects/4046/repository/tags';
+        $context = stream_context_create(['http' => ['header' => "Authorization: Bearer $token"]]);
+        $latestTag = file_get_contents($url, false, $context);
+        if (empty($latestTag)) {
+            $io->error('Failed to get response from GitLab.');
+            return ResultData::EXITCODE_ERROR;
+        }
+        $latestTag = json_decode($latestTag, true);
+        $latestTag = $latestTag[0]['name'] ?? false;
+        if (empty($latestTag)) {
+            $io->error('Failed read the latest tag.');
+            return ResultData::EXITCODE_ERROR;
+        }
+
+        $task = $this->taskReplaceInFile($mockFile)
+            ->regex("#\\\$defaultTag = '[^']*'#")
+            ->to("\\\$defaultTag = '" . $latestTag . "'");
+
+        return $this->collectionBuilder()->addTask($task);
+    }
+
+    /**
      * Write the release changelog to the CHANGELOG.md file.
      *
      * @param string $version
@@ -165,6 +206,7 @@ class ReleaseCommands extends AbstractCommands
             $this->taskExec($runnerBin)->args(['toolkit:changelog-write', $version]),
             $this->taskExec($runnerBin)->arg('toolkit:generate-commands-list'),
             $this->taskExec($runnerBin)->arg('toolkit:generate-documentation'),
+            $this->taskExec($runnerBin)->arg('toolkit:update-mock-default-tag'),
         ]);
     }
 
