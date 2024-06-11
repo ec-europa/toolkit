@@ -132,3 +132,6 @@
         [Simulator] Simulating Exec('./vendor/bin/run')
           ->arg('toolkit:generate-documentation')
         [Simulator] Running ./vendor/bin/run 'toolkit:generate-documentation'
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:update-mock-default-tag')
+        [Simulator] Running ./vendor/bin/run 'toolkit:update-mock-default-tag'
