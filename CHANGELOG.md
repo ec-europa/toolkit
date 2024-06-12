@@ -1,5 +1,10 @@
 # Toolkit change log
 
+## Version 10.12.4
+  - DQA-9542: AXE Scanner command fails on 1st attempt.
+  - DQA-9541: Add command to update latest mock tag.
+  - DQA-9566: DRUPAL_REVERSE_PROXY not properly set.
+
 ## Version 10.12.3
   - DQA-9535: Update mock to version 0.0.6.
   - DQA-9538: Fresh Solr & Virtuoso dumps are not downloaded.
