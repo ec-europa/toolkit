@@ -621,7 +621,7 @@ class DrupalCommands extends AbstractCommands
 
 // Reverse proxy.
 if (filter_var(getenv('DRUPAL_REVERSE_PROXY_ENABLE'), FILTER_VALIDATE_BOOLEAN)) {
-  \$settings['reverse_proxy'] = filter_var(getenv('DRUPAL_REVERSE_PROXY_ENABLE'), FILTER_VALIDATE_BOOLEAN);
+  \$settings['reverse_proxy'] = getenv('DRUPAL_REVERSE_PROXY_ENABLE');
   \$settings['reverse_proxy_addresses'] = explode(',', getenv('DRUPAL_REVERSE_PROXY_ADDRESSES'));
 }
 
