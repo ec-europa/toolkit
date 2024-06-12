@@ -1326,6 +1326,11 @@ Search.appendIndex(
             "summary": "Write\u0020the\u0020specified\u0020version\u0020string\u0020into\u0020needed\u0020places.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitVersionWrite"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003AtoolkitUpdateDefaultMockTag\u0028\u0029",
+            "name": "toolkitUpdateDefaultMockTag",
+            "summary": "Write\u0020the\u0020latest\u0020tag\u0020from\u0020toolkit\u002Dmock\u0020to\u0020the\u0020Mock\u0020class.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitUpdateDefaultMockTag"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands\u003A\u003AtoolkitChangelogWrite\u0028\u0029",
             "name": "toolkitChangelogWrite",
             "summary": "Write\u0020the\u0020release\u0020changelog\u0020to\u0020the\u0020CHANGELOG.md\u0020file.",
