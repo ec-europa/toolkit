@@ -57,9 +57,9 @@ class DumpCommands extends AbstractCommands
                 $io->error('The import script was not found, to use MyLoader you must run on the corporate docker image.');
                 return ResultData::EXITCODE_ERROR;
             }
-            if (!str_ends_with($options['dumpfile'], '.tar')) {
-                $io->error('To use MyLoader the dumpfile must be a .tar file.');
-                return ResultData::EXITCODE_ERROR;
+            // When using myloader make sure dumpfile has tar extension.
+            if (!str_ends_with($options['dumpfile'], '.tar') && str_ends_with($options['dumpfile'], '.gz')) {
+                $options['dumpfile'] = str_replace('.gz', '.tar', $options['dumpfile']);
             }
         }
         $dumpFile = $this->tmpDirectory() . '/' . $options['dumpfile'];
