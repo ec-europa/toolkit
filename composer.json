@@ -22,7 +22,7 @@
         "consolidation/annotated-command": "^4.7.0",
         "consolidation/robo": "^3.0 || ^4.0 || ^5",
         "cweagans/composer-patches": "^1.7 || ^2.0",
-        "drush/drush": "^10.0.0 || ^11.0.4 || ^12.0",
+        "drush/drush": "^10.0.0 || ^11.0.4 || ^12.0 || ^13.0",
         "ec-europa/qa-automation": "^9.2.0",
         "ec-europa/toolkit-composer-plugin": "^0.0.1",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
