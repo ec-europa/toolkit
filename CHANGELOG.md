@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 10.12.5
+  - DQA-9707: Dump file name to follow mydumper prop.
+
 ## Version 10.12.4
   - DQA-9542: AXE Scanner command fails on 1st attempt.
   - DQA-9541: Add command to update latest mock tag.
