@@ -24,6 +24,9 @@
         Checking Recommended components.
         ================================
 
+        Package drupal/config_readonly is recommended but is not present on the project.
+        >  See the list of recommended packages at
+        https://digit-dqa.fpfis.tech.ec.europa.eu/requirements.
         >  This step is in reporting mode, skipping.
 
         Checking Insecure components.
@@ -56,7 +59,7 @@
         Packages rejected/restricted:
         The use of drupal/codesnippet:1.8 is restricted.
         The use of drupal/responsive_tables_filter:1.17 is restricted.
-        The use of drupal/restui:1.21 is rejected.
+        The use of drupal/restui:1.21 is restricted.
         In the case you want to use one of the modules listed as restricted, please open a ticket to Quality Assurance indicating the use case for evaluation and more information.
         Package's version constraints:
         Package drupal/github_connect:2.0.0-alpha1 does not meet the whitelist version constraint: ^1.0.
@@ -83,9 +86,9 @@
         Results:
         ========
 
-        ----------------------------- --------
+        ----------------------------- -----------
          Mandatory module check        failed
-         Recommended module check      passed
+         Recommended module check      1 warning
          Insecure module check         passed
          Outdated module check         passed
          Abandoned module check        passed
@@ -94,7 +97,7 @@
          Development module check      passed
          Composer validation check     passed
          Project configuration check   passed
-        ----------------------------- --------
+        ----------------------------- -----------
 
         [ERROR] Failed the components check, please verify the report and update the
         project.
@@ -185,8 +188,9 @@
     - from: sample-composer.lock
       to: composer.lock
   expectations:
+    - string_contains: Package drupal/config_readonly is recommended but is not present on the project
     - string_contains: Mandatory module check        passed
-    - string_contains: Recommended module check      passed
+    - string_contains: Recommended module check      1 warning
     - string_contains: Insecure module check         passed
     - string_contains: Outdated module check         passed
     - string_contains: Abandoned module check        passed
@@ -382,13 +386,13 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.7/api/v1/project/ec-europa/toolkit/information.json
+    - file: .toolkit-mock/0.0.11/api/v1/project/ec-europa/toolkit/information.json
       content: |
         [ { "name":"toolkit", "type": "Openeuropa", "environments": [{ "profile": "minimal", "type": "Production" }] }]
-    - file: .toolkit-mock/0.0.7/api/v1/toolkit-requirements.json
+    - file: .toolkit-mock/0.0.11/api/v1/toolkit-requirements.json
       content: |
         { "php_version":"8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.7/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.11/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -423,13 +427,13 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.7/api/v1/project/ec-europa/toolkit/information.json
+    - file: .toolkit-mock/0.0.11/api/v1/project/ec-europa/toolkit/information.json
       content: |
         [ { "name": "toolkit", "type": "Openeuropa", "environments": [{ "profile":"minimal", "type":"Production" }] } ]
-    - file: .toolkit-mock/0.0.7/api/v1/toolkit-requirements.json
+    - file: .toolkit-mock/0.0.11/api/v1/toolkit-requirements.json
       content: |
         { "php_version": "8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.7/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.11/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -463,7 +467,7 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "ec-europa/toolkit" } ] }
-    - file: .toolkit-mock/0.0.7/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.11/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",

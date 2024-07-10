@@ -3283,7 +3283,7 @@
         },
         {
             "name": "drupal/core",
-            "version": "10.1.8",
+            "version": "10.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
@@ -15594,7 +15594,7 @@
         },
         {
             "name": "ec-europa/toolkit",
-            "version": "10.9.0",
+            "version": "10.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/toolkit.git",
