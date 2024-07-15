@@ -154,9 +154,9 @@ class DrupalSanitiseCommands extends AbstractCommands
     {
         // Fail if the command is not found.
         if (
-            // Drush <=12. @phpstan-ignore function.impossibleType
+            // Drush <=12.
             !method_exists('\Drush\Drupal\Commands\sql\SanitizeUserTableCommands', 'sanitize')
-            // Drush 13. @phpstan-ignore function.impossibleType
+            // Drush 13.
             && !method_exists('\Drush\Commands\sql\sanitize\SanitizeUserTableCommands', 'sanitize')
         ) {
             return false;
@@ -189,9 +189,9 @@ class DrupalSanitiseCommands extends AbstractCommands
      */
     public static function areCommentFieldsSanitised(): bool
     {
-        // Drush <=12. @phpstan-ignore function.impossibleType
+        // Drush <=12.
         return method_exists('\Drush\Drupal\Commands\sql\SanitizeCommentsCommands', 'sanitize')
-            // Drush 13. @phpstan-ignore function.impossibleType
+            // Drush 13.
             || method_exists('\Drush\Commands\sql\sanitize\SanitizeCommentsCommands', 'sanitize');
     }
 
