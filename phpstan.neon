@@ -13,7 +13,6 @@ parameters:
     - '#^Parameter \#2 \$defaultFallback of method Consolidation\\Config\\ConfigInterface::get\(\) expects string\|null, array given#'
     - '#^Call to an undefined method DOMNode::getElementsByTagName\(\)#'
     - '#^Parameter \#1 \$roboClass of class Robo\\Runner constructor expects string\|null, array<int, string> given\.#'
-    - '#^Parameter \#1 \$roboClass of class Robo\\Runner constructor expects string\|null, array<int, string> giveasdassan\.#'
     -
       message: '#^Negated boolean expression is always false\.#'
       path: src/TaskRunner/AbstractCommands.php

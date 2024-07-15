@@ -105,7 +105,7 @@ class DrupalSanitiseCommands extends AbstractCommands
      */
     public function drupalCheckSanitisationClasses(ConsoleIO $io)
     {
-        $interface = '\Drush\Drupal\Commands\sql\SanitizePluginInterface';
+        $interface = $this->getDrushSanitizeInterface();
         if (!interface_exists($interface)) {
             $io->warning("Interface class $interface was not found, skipping.");
             return ResultData::EXITCODE_OK;
@@ -153,7 +153,12 @@ class DrupalSanitiseCommands extends AbstractCommands
     public static function areUserFieldsSanitised(): bool
     {
         // Fail if the command is not found.
-        if (!method_exists('\Drush\Drupal\Commands\sql\SanitizeUserTableCommands', 'sanitize')) {
+        if (
+            // Drush <=12. @phpstan-ignore function.impossibleType
+            !method_exists('\Drush\Drupal\Commands\sql\SanitizeUserTableCommands', 'sanitize')
+            // Drush 13. @phpstan-ignore function.impossibleType
+            && !method_exists('\Drush\Commands\sql\sanitize\SanitizeUserTableCommands', 'sanitize')
+        ) {
             return false;
         }
         // Check if the mail and pass fields are being ignored.
@@ -184,7 +189,10 @@ class DrupalSanitiseCommands extends AbstractCommands
      */
     public static function areCommentFieldsSanitised(): bool
     {
-        return method_exists('\Drush\Drupal\Commands\sql\SanitizeCommentsCommands', 'sanitize');
+        // Drush <=12. @phpstan-ignore function.impossibleType
+        return method_exists('\Drush\Drupal\Commands\sql\SanitizeCommentsCommands', 'sanitize')
+            // Drush 13. @phpstan-ignore function.impossibleType
+            || method_exists('\Drush\Commands\sql\sanitize\SanitizeCommentsCommands', 'sanitize');
     }
 
     /**
@@ -196,6 +204,19 @@ class DrupalSanitiseCommands extends AbstractCommands
     public static function optionPattern(string $option): string
     {
         return '/(--' . $option . '?( |=|="|=\')no)/';
+    }
+
+    /**
+     * Returns the Drush Sanitize Interface namespace depending on the current version.
+     */
+    private function getDrushSanitizeInterface(): string
+    {
+        // Get the current drush version.
+        $version = ToolCommands::getPackagePropertyFromComposer('drush/drush');
+        if (str_starts_with($version ?: '', '13')) {
+            return 'Drush\Commands\sql\sanitize\SanitizePluginInterface';
+        }
+        return 'Drush\Drupal\Commands\sql\SanitizePluginInterface';
     }
 
     /**
