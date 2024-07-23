@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 10.13.0
+  - DQA-9782: Compatibility with Drupal 11.
+
 ## Version 10.12.5
   - DQA-9707: Dump file name to follow mydumper prop.
 
