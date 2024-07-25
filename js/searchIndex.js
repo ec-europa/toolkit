@@ -1001,6 +1001,11 @@ Search.appendIndex(
             "summary": "Prepare\u0020regex\u0020to\u0020check\u0020if\u0020option\u0020exists\u0020with\u0020value\u0020\u0022no\u0022.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_optionPattern"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalSanitiseCommands\u003A\u003AgetDrushSanitizeInterface\u0028\u0029",
+            "name": "getDrushSanitizeInterface",
+            "summary": "Returns\u0020the\u0020Drush\u0020Sanitize\u0020Interface\u0020namespace\u0020depending\u0020on\u0020the\u0020current\u0020version.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html#method_getDrushSanitizeInterface"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalSanitiseCommands\u003A\u003AregisterCustomClasses\u0028\u0029",
             "name": "registerCustomClasses",
             "summary": "Register\u0020all\u0020classes\u0020in\u0020custom\u0020code\u0020directory\u0020folder\u0020that\u0020are\u0020not\u0020registered.",

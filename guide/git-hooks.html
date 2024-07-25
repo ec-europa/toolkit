@@ -141,10 +141,10 @@
 </aside>
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
-                                        <div class="section" id="git-hooks">
+                                        <section class="section " id="git-hooks">
             <h1>Git hooks</h1>
 
-            <div class="section" id="overview">
+            <section class="section " id="overview">
             <h2>Overview</h2>
 
             
@@ -164,9 +164,9 @@
 
 </ul>
 
-    </div>
+    </section>
 
-            <div class="section" id="configuration">
+            <section class="section " id="configuration">
             <h2>Configuration</h2>
 
             
@@ -202,12 +202,12 @@
         - toolkit:lint-php
         - toolkit:opts-review</code></pre>
 
-    </div>
+    </section>
 
-            <div class="section" id="how-to-use">
+            <section class="section " id="how-to-use">
             <h2>How to use</h2>
 
-            <div class="section" id="list-available-hooks">
+            <section class="section " id="list-available-hooks">
             <h3>List available hooks</h3>
 
             
@@ -243,9 +243,9 @@
  - Whether the hook is not the same as in the <code>resources/git/hooks</code>
  folder.</p>
 
-    </div>
+    </section>
 
-            <div class="section" id="enable-all-the-active-hooks">
+            <section class="section " id="enable-all-the-active-hooks">
             <h3>Enable all the active hooks</h3>
 
             
@@ -258,9 +258,9 @@
     <p>Alternatively you can use the option <code>hooks</code>
  to enable a set of hooks.</p>
 
-    </div>
+    </section>
 
-            <div class="section" id="disable-all-the-active-hooks">
+            <section class="section " id="disable-all-the-active-hooks">
             <h3>Disable all the active hooks</h3>
 
             
@@ -273,9 +273,9 @@
     <p>Alternatively you can use the option <code>hooks</code>
  to disable a set of hooks.</p>
 
-    </div>
+    </section>
 
-            <div class="section" id="delete-all-the-enabled-hooks">
+            <section class="section " id="delete-all-the-enabled-hooks">
             <h3>Delete all the enabled hooks</h3>
 
             
@@ -284,11 +284,11 @@
 in the <code>.git/hooks</code>
  directory.</p>
 
-    </div>
+    </section>
 
-    </div>
+    </section>
 
-            <div class="section" id="how-it-works">
+            <section class="section " id="how-it-works">
             <h2>How it works</h2>
 
             
@@ -332,9 +332,9 @@ arguments with <code>$io-&gt;input()-&gt;getArguments()</code>
 at <code>EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands</code>
 </p>
 
-    </div>
+    </section>
 
-            <div class="section" id="extending-the-git-hooks">
+            <section class="section " id="extending-the-git-hooks">
             <h2>Extending the git hooks</h2>
 
             
@@ -359,7 +359,7 @@ at <code>EcEuropa\Toolkit\TaskRunner\Commands\GitHooksCommands</code>
 
 </ul>
 
-            <div class="section" id="create-the-hook">
+            <section class="section " id="create-the-hook">
             <h3>Create the hook</h3>
 
             
@@ -372,9 +372,9 @@ use the hook <code>prepare-commit-msg</code>
             <pre><code class="language-shell">#!/bin/sh
 ./vendor/bin/run toolkit:hooks-run `basename &quot;$0&quot;` $1 $2</code></pre>
 
-    </div>
+    </section>
 
-            <div class="section" id="add-the-hook-to-the-active-hooks">
+            <section class="section " id="add-the-hook-to-the-active-hooks">
             <h3>Add the hook to the active hooks</h3>
 
             
@@ -393,9 +393,9 @@ otherwise your configuration will override the default provided by Toolkit.</p>
       - pre-push
       - prepare-commit-msg</code></pre>
 
-    </div>
+    </section>
 
-            <div class="section" id="create-a-class-extending-the-abstractgithooks">
+            <section class="section " id="create-a-class-extending-the-abstractgithooks">
             <h3>Create a class extending the AbstractGitHooks</h3>
 
             
@@ -427,9 +427,9 @@ class QaGitHooksCommands extends AbstractGitHooks
     }
 }</code></pre>
 
-    </div>
+    </section>
 
-            <div class="section" id="check-if-your-hooks-it-active">
+            <section class="section " id="check-if-your-hooks-it-active">
             <h3>Check if your hooks it active</h3>
 
             
@@ -445,11 +445,11 @@ class QaGitHooksCommands extends AbstractGitHooks
 | prepare-commit-msg (digit-qa) | Yes              | No          | No            |
 +-------------------------------+------------------+-------------+---------------+</code></pre>
 
-    </div>
+    </section>
 
-    </div>
+    </section>
 
-    </div>
+    </section>
 
                             </div>
             <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">

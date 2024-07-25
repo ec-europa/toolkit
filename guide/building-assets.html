@@ -141,10 +141,10 @@
 </aside>
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
-                                        <div class="section" id="building-assets">
+                                        <section class="section " id="building-assets">
             <h1>Building assets</h1>
 
-            <div class="section" id="overview">
+            <section class="section " id="overview">
             <h2>Overview</h2>
 
             
@@ -168,12 +168,12 @@
 
 </ul>
 
-    </div>
+    </section>
 
-            <div class="section" id="how-to-use">
+            <section class="section " id="how-to-use">
             <h2>How to use</h2>
 
-            <div class="section" id="building-theme-assets-general">
+            <section class="section " id="building-theme-assets-general">
             <h3>Building theme assets (general)</h3>
 
             
@@ -193,14 +193,14 @@ like shown below:</p>
 
             <pre><code class="language-">docker-compose vendor/bin/run toolkit:build-assets</code></pre>
 
-    </div>
+    </section>
 
-            <div class="section" id="edit-the-config-file-in-order-to-fit-your-needs">
+            <section class="section " id="edit-the-config-file-in-order-to-fit-your-needs">
             <h3>Edit the config file in order to fit your needs</h3>
 
-    </div>
+    </section>
 
-            <div class="section" id="ecl-builder-config-js-and-or-gulpfile-js">
+            <section class="section " id="ecl-builder-config-js-and-or-gulpfile-js">
             <h3>(&#039;ecl-builder.config.js&#039; and/or &#039;gulpfile.js&#039;)</h3>
 
             
@@ -213,9 +213,9 @@ Make sure that are pointed to the right path.</p>
             
     <p>This will (re)generate the output file(s) defined on the config file(s).</p>
 
-    </div>
+    </section>
 
-            <div class="section" id="build-theme-assets-ecl-builder">
+            <section class="section " id="build-theme-assets-ecl-builder">
             <h3>Build theme assets (ecl-builder)</h3>
 
             
@@ -230,9 +230,9 @@ The ecl-builder command used for this action is &#039;styles&#039;. This the def
             <pre><code class="language-">// Execute an available command from the ecl-builder list - Get help:
 docker-compose exec web ./vendor/bin/run toolkit:build-assets --ecl-command=help</code></pre>
 
-    </div>
+    </section>
 
-            <div class="section" id="define-default-theme">
+            <section class="section " id="define-default-theme">
             <h3>Define &#039;default-theme&#039;</h3>
 
             
@@ -248,9 +248,9 @@ toolkit:
       theme-task-runner: ecl-builder
       packages: @ecl/builder pikaday moment</code></pre>
 
-    </div>
+    </section>
 
-            <div class="section" id="define-custom-code-folder">
+            <section class="section " id="define-custom-code-folder">
             <h3>Define &#039;custom-code-folder&#039;</h3>
 
             
@@ -261,11 +261,11 @@ toolkit:
   build:
     custom-code-folder: &#039;your_folder&#039;</code></pre>
 
-    </div>
+    </section>
 
-    </div>
+    </section>
 
-            <div class="section" id="enable-build-assets-during-ci">
+            <section class="section " id="enable-build-assets-during-ci">
             <h2>Enable build assets during CI</h2>
 
             
@@ -285,7 +285,7 @@ toolkit:
       - ...
       - ./vendor/bin/run toolkit:build-assets-dist</code></pre>
 
-            <div class="section" id="install-additional-npm-packages">
+            <section class="section " id="install-additional-npm-packages">
             <h3>Install additional npm packages</h3>
 
             
@@ -306,11 +306,11 @@ or
     npm:
       packages: &#039;``@ecl/preset-ec@3.13.0`` ``gulp@4.0.1`` gulp-sass gulp-concat gulp-clean-css gulp-minify&#039;</code></pre>
 
-    </div>
+    </section>
 
-    </div>
+    </section>
 
-    </div>
+    </section>
 
                             </div>
             <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
