@@ -43,6 +43,7 @@
         <exclude name="Generic.PHP.NoSilencedErrors.Discouraged"/>
         <exclude name="Generic.PHP.UpperCaseConstant.Found"/>
         <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed"/>
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsedHeredocCloser"/>
         <!-- Disable metrics -->
         <exclude name="Generic.Metrics"/>
     </rule>
