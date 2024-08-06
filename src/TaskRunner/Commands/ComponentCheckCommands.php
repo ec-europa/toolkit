@@ -1015,7 +1015,7 @@ class ComponentCheckCommands extends AbstractCommands
             if (file_exists($settings)) {
                 $content = file_get_contents($settings);
                 if (str_contains($content, 'config_readonly')) {
-                    file_put_contents($settings, preg_replace('#(^\$settings\[["|\']config_readonly)#m', "//$1", $content));
+                    file_put_contents($settings, preg_replace('#(^\s*\$settings\[["\']config_readonly["\']\])#m', "//$1", $content));
                     $this->disabledConfigReadonly = true;
                 }
             }
@@ -1033,7 +1033,7 @@ class ComponentCheckCommands extends AbstractCommands
         $config = $this->getConfig();
         $settings = $config->get('drupal.root') . '/sites/' . $config->get('drupal.site.sites_subdir') . '/settings.php';
         $content = file_get_contents($settings);
-        file_put_contents($settings, preg_replace('#^//(\$settings\[["|\']config_readonly)#m', "$1", $content));
+        file_put_contents($settings, preg_replace('#^//(\s*\$settings\[["\']config_readonly["\']\])#m', "$1", $content));
     }
 
 }
