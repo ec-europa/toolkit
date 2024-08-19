@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 10.14.0
+  - DQA-9954: Improve regex pattern unsupported checks readonly comment.
+
 ## Version 10.13.0
   - DQA-9782: Compatibility with Drupal 11.
 
