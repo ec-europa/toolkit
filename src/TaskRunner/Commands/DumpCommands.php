@@ -595,16 +595,17 @@ class DumpCommands extends AbstractCommands
      *   The path to the dump file.
      *
      * @return \Robo\Task\Base\ExecStack
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     private function taskImportDatabase(string $dump)
     {
-        $mysql = sprintf(
-            'mysql -u%s%s -h%s %s',
-            getenv('DRUPAL_DATABASE_USERNAME'),
-            getenv('DRUPAL_DATABASE_PASSWORD') ? ' -p' . getenv('DRUPAL_DATABASE_PASSWORD') : '',
-            getenv('DRUPAL_DATABASE_HOST'),
-            getenv('DRUPAL_DATABASE_NAME'),
-        );
+        $config = $this->getConfig()->get('drupal.database');
+        $user = !empty($config['user']) && $config['user'] !== '${env.DRUPAL_DATABASE_USERNAME}' ? $config['user'] : '';
+        $pass = !empty($config['password']) && $config['password'] !== '${env.DRUPAL_DATABASE_PASSWORD}' ? $config['password'] : '';
+        $host = !empty($config['host']) && $config['host'] !== '${env.DRUPAL_DATABASE_HOST}' ? $config['host'] : '';
+        $name = !empty($config['name']) && $config['name'] !== '${env.DRUPAL_DATABASE_NAME}' ? $config['name'] : '';
+        $mysql = sprintf('mysql -u%s%s -h%s %s', $user, $pass ? ' -p' . $pass : '', $host, $name);
         if (str_ends_with($dump, '.gz')) {
             $command = "gunzip < $dump | $mysql";
         } else {
