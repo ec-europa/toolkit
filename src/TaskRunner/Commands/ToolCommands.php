@@ -44,7 +44,7 @@ class ToolCommands extends AbstractCommands
         $commitMsg = getenv('DRONE_COMMIT_MESSAGE') !== false ? getenv('DRONE_COMMIT_MESSAGE') : '';
         $commitMsg = getenv('CI_COMMIT_MESSAGE') !== false ? getenv('CI_COMMIT_MESSAGE') : $commitMsg;
         preg_match_all('/\[([^\]]*)\]/', $commitMsg, $findTokens);
-        if (isset($findTokens[1])) {
+        if (!empty($findTokens[1])) {
             foreach ($findTokens[1] as $token) {
                 $transformedToken = strtolower(str_replace('-', '_', $token));
                 if ($transformedToken == 'skip_outdated') {

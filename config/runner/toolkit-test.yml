@@ -105,6 +105,10 @@ toolkit:
     css:
       config: .stylelintrc.json
       files: '"${toolkit.build.custom-code-folder}/themes/*/css/*.css" "!${toolkit.build.custom-code-folder}/themes/*/css/*.min.css"'
+    cspell:
+      config: '${drupal.root}/core/.cspell.json'
+      files: '${toolkit.build.custom-code-folder}/'
+      options: '--dot --gitignore'
   axe-scan:
     config: axe-scan.config.json
     urls:

@@ -22,6 +22,7 @@ class AxeCommands extends AbstractCommands
      * @var array|string[]
      */
     private array $dependencies = [
+        // cspell:disable
         'libnss3-tools',
         'libatk1.0-0',
         'libatk-bridge2.0-0',
@@ -41,6 +42,7 @@ class AxeCommands extends AbstractCommands
         'libx11-xcb1',
         'libxcursor1',
         'xdg-utils',
+        // cspell:enable
     ];
 
     /**
@@ -150,6 +152,7 @@ class AxeCommands extends AbstractCommands
                 'node_modules/axe-scan/build/src/commands/summary.js',
             ];
             $from = 'const browser = await puppeteer.launch();';
+            // cspell:ignore setuid
             $args = '["--no-sandbox", "--disable-setuid-sandbox", "--single-process", "--disable-impl-side-painting", "--disable-gpu-sandbox", "--disable-accelerated-2d-canvas", "--disable-accelerated-jpeg-decoding", "--disable-dev-shm-usage"]';
             $to = 'const browser = await puppeteer.launch({args: ' . $args . '});';
             foreach ($files as $file) {
