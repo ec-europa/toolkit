@@ -101,4 +101,4 @@ pipeline:
     secrets: [ github_api_token, composer_auth ]
     environment: *env
     commands:
-      - ./run toolkit:lint-cspell --config=resources/cspell/.cspell.json
+      - ./run toolkit:lint-cspell --files=src --config=resources/cspell/.cspell.json
