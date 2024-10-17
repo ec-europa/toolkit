@@ -30,26 +30,35 @@
         "\\Wi18n",
         "\\x{[0-9A-F]{4,5}}",
         "CURLOPT_[A-Z]+",
-        "CURLAUTH_[A-Z]+",
         "tk-[a-z]+"
     ],
     "dictionaries": [
         "companies",
         "css",
-        "toolkit",
+        "drupal-dictionary",
+        "drupal-dictionary-extra",
         "en-gb",
         "filetypes",
         "fonts",
+        "git",
         "html",
         "misc",
         "php",
-        "git",
-        "softwareTerms"
+        "softwareTerms",
+        "toolkit"
     ],
     "dictionaryDefinitions": [
         {
+            "name": "drupal-dictionary",
+            "path": "./web/core/misc/cspell/drupal-dictionary.txt"
+        },
+        {
+            "name": "drupal-dictionary-extra",
+            "path": "./web/core/misc/cspell/dictionary.txt"
+        },
+        {
             "name": "toolkit",
-            "path": "./dictionary.txt"
+            "path": "./vendor/ec-europa/toolkit/resources/cspell/dictionary.txt"
         }
     ],
     "flagWords": [
@@ -58,5 +67,11 @@
         "hte",
         "ist",
         "queuing"
+    ],
+    "overrides": [
+        {
+            "filename": "**/{*.engine,*.inc,*.install,*.module,*.profile,*.theme}",
+            "languageId": "php"
+        }
     ]
 }

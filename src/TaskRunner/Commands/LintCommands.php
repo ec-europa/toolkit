@@ -325,13 +325,16 @@ class LintCommands extends AbstractCommands
                 ->exec('npm list cspell && npm update cspell || npm install cspell -y');
         }
 
-        $command = $bin . ' ' . (!empty($options['files']) ? $options['files'] : '**');
-        if (file_exists($options['config'])) {
-            $options['options'] .= ' --config=' . $options['config'];
+        // Ensure the config file exists.
+        if (!file_exists($options['config'])) {
+            $tasks[] = $this->taskFilesystemStack()->copy(
+                Toolkit::getToolkitRoot() . '/resources/cspell/.project-cspell.json',
+                '.cspell.json'
+            );
         }
 
+        $command = $bin . ' ' . $options['files'] . ' --config=' . $options['config'];
         $tasks[] = $this->taskExec($command . ' ' . $options['options']);
-
         return $this->collectionBuilder()->addTaskList($tasks);
     }
 
