@@ -450,8 +450,8 @@ class ComponentCheckCommands extends AbstractCommands
             return 1;
         }
         // Get vendor list.
-        $dataTkReqsEndpoint = Website::requirements();
-        $vendorList = $dataTkReqsEndpoint['vendor_list'] ?? [];
+        $toolkitRequirements = Website::requirements();
+        $vendorList = $toolkitRequirements['vendor_list'] ?? [];
 
         // Proceed with 'blocker' option. Loop over the packages.
         $groupComponents = [];
@@ -687,8 +687,8 @@ class ComponentCheckCommands extends AbstractCommands
         $fileNames = [DockerCommands::DC_YML_FILE, '.env', '.env.dist'];
         $envVarsSet = [];
         // Get forbidden/obsolete vars from config.
-        $toolkitReqs = Website::requirements();
-        $forbiddenVars = $toolkitReqs['forbidden_variables'] ?? [];
+        $toolkitRequirements = Website::requirements();
+        $forbiddenVars = $toolkitRequirements['forbidden_variables'] ?? [];
         if (!empty($forbiddenVars)) {
             // Parse files that contain env variables into sets.
             foreach ($fileNames as $filename) {

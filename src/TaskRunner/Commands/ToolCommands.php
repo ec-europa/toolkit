@@ -233,8 +233,8 @@ class ToolCommands extends AbstractCommands
         }
 
         // Handle NEXTCLOUD.
-        $ncUser = Toolkit::getNExtcloudUser();
-        $ncPass = Toolkit::getNExtcloudPass();
+        $ncUser = Toolkit::getNextcloudUser();
+        $ncPass = Toolkit::getNextcloudPass();
         if (!empty($ncUser) && !empty($ncPass)) {
             $nextcloudCheck = 'OK';
         } else {
