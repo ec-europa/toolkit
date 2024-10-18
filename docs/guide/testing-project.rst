@@ -348,6 +348,26 @@ To run the ESLint YAML tests you can make use of the ``toolkit:lint-yaml`` comma
 
    docker-compose exec web ./vendor/bin/run toolkit:lint-yaml
 
+CSpell testing
+^^^^^^^^^^^^^^^^^^^
+
+To run the CSpell tests you can make use of the ``toolkit:lint-cspell`` command:
+
+.. code-block::
+
+   docker-compose exec web ./vendor/bin/run toolkit:lint-cspell
+
+These are the default configurations in the ``runner.yml`` file.
+
+.. code-block:: yaml
+
+   toolkit:
+     lint:
+       cspell:
+         config: '.cspell.json'
+         files: 'lib/'
+         options: '--dot --gitignore'
+
 Testing in CI
 -------------
 
