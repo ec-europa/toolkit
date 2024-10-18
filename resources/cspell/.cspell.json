@@ -1,0 +1,62 @@
+{
+    "version": "0.2",
+    "language": "en-US",
+    "allowCompoundWords": false,
+    "globRoot": ".",
+    "ignorePaths": [
+        "**/.*.json",
+        ".*ignore",
+        "composer.lock",
+        "assets/vendor/**",
+        "**/LICENSE.txt",
+        "../**/LICENSE.txt",
+        "node_modules/*",
+        "tests/fixtures/*",
+        "CHANGELOG.md",
+        "COPYRIGHT.txt",
+        "MAINTAINERS.txt",
+        "package.json",
+        "yarn.lock",
+        ".yarnrc.yml",
+        ".yarn/*",
+        "phpstan*",
+        ".git/**",
+        "docs/*"
+    ],
+    "ignoreRegExpList": [
+        "^msgstr .*",
+        "!!binary .*",
+        "%[0-9][0-9A-F]",
+        "\\Wi18n",
+        "\\x{[0-9A-F]{4,5}}",
+        "CURLOPT_[A-Z]+",
+        "CURLAUTH_[A-Z]+",
+        "tk-[a-z]+"
+    ],
+    "dictionaries": [
+        "companies",
+        "css",
+        "toolkit",
+        "en-gb",
+        "filetypes",
+        "fonts",
+        "html",
+        "misc",
+        "php",
+        "git",
+        "softwareTerms"
+    ],
+    "dictionaryDefinitions": [
+        {
+            "name": "toolkit",
+            "path": "./dictionary.txt"
+        }
+    ],
+    "flagWords": [
+        "e-mail",
+        "grey",
+        "hte",
+        "ist",
+        "queuing"
+    ]
+}

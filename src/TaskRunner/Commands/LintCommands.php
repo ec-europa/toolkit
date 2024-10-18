@@ -295,4 +295,47 @@ class LintCommands extends AbstractCommands
         return $this->collectionBuilder()->addTaskList($tasks);
     }
 
+    /**
+     * Run lint CSpell.
+     *
+     * @command toolkit:lint-cspell
+     *
+     * @option config  The path to the config file.
+     * @option files   The files to check.
+     * @option options Extra options for the command.
+     *
+     * @aliases tk-cspell
+     *
+     * @usage --files='lib' --config='web/core/.cspell.json' --options='--gitignore'
+     */
+    public function toolkitLintCsPell(array $options = [
+        'config' => InputOption::VALUE_REQUIRED,
+        'files' => InputOption::VALUE_REQUIRED,
+        'options' => InputOption::VALUE_OPTIONAL,
+    ])
+    {
+        $tasks = [];
+        $bin = $this->getNodeBinPath('cspell');
+
+        // Install dependencies if the bin is not present.
+        if (!file_exists($bin)) {
+            $tasks[] = $this->taskExecStack()
+                ->exec('npm -v || npm i npm')
+                ->exec('[ -f package.json ] || npm init -y --scope')
+                ->exec('npm list cspell && npm update cspell || npm install cspell -y');
+        }
+
+        // Ensure the config file exists.
+        if (!file_exists($options['config'])) {
+            $tasks[] = $this->taskFilesystemStack()->copy(
+                Toolkit::getToolkitRoot() . '/resources/cspell/.project-cspell.json',
+                '.cspell.json'
+            );
+        }
+
+        $command = $bin . ' ' . $options['files'] . ' --config=' . $options['config'];
+        $tasks[] = $this->taskExec($command . ' ' . $options['options']);
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
 }
