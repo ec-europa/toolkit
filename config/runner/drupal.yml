@@ -23,11 +23,12 @@ drupal:
   # Drupal database settings.
   database:
     scheme: 'mysql'
-    host: 'mysql'
-    port: '3306'
-    name: ''
-    user: ''
-    password: ''
+    host: '${env.DRUPAL_DATABASE_HOST}'
+    port: '${env.DRUPAL_DATABASE_PORT}'
+    name: '${env.DRUPAL_DATABASE_NAME}'
+    user: '${env.DRUPAL_DATABASE_USERNAME}'
+    password: '${env.DRUPAL_DATABASE_PASSWORD}'
+    prefix: '${env.DRUPAL_DATABASE_PREFIX}'
   # Following lines will be converted in PHP and appended to default.settings.php.
   settings: [ ]
   drush:
