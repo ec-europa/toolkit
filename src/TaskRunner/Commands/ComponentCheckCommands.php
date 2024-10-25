@@ -38,6 +38,10 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $skipUnsupported = false;
     protected bool $skipInsecure = false;
     protected bool $skipRecommended = false;
+    protected bool $skipInsecureNpm = false;
+    protected bool $skipOutdatedNpm = false;
+    protected bool $outdatedNpmFailed = false;
+    protected bool $insecureNpmFailed = false;
     protected int $recommendedFailedCount = 0;
     protected array $composerOutdated;
     protected $io;
@@ -97,6 +101,8 @@ class ComponentCheckCommands extends AbstractCommands
             'Development',
             'Composer',
             'Configuration',
+            'NpmInsecure',
+            'NpmOutdated'
         ];
         foreach ($checks as $check) {
             $io->title("Checking $check components.");
@@ -115,11 +121,14 @@ class ComponentCheckCommands extends AbstractCommands
             $this->devCompRequireFailed ||
             $this->composerFailed ||
             $this->configurationFailed ||
+            $this->insecureNpmFailed ||
+            (!$this->skipOutdatedNpm && $this->outdatedNpmFailed) ||
             (!$this->skipRecommended && $this->recommendedFailed) ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
             (!$this->skipAbandoned && $this->abandonedFailed) ||
             (!$this->skipUnsupported && $this->unsupportedFailed) ||
             (!$this->skipInsecure && $this->insecureFailed)
+            
         ) {
             $io->error([
                 'Failed the components check, please verify the report and update the project.',
@@ -136,7 +145,7 @@ class ComponentCheckCommands extends AbstractCommands
             $io->note([
                 'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
                 '- Using commit message to skip Insecure and/or Outdated check:',
-                '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
+                '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED] and/or [SKIP-NPM-INSECURE]',
                 '',
                 '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
                 '   toolkit:',
@@ -147,6 +156,9 @@ class ComponentCheckCommands extends AbstractCommands
                 '         check: false',
                 '       unsupported:',
                 '         check: false',
+                '       npm:',
+                '         outdated:',
+                '           check: false',
             ]);
         }
 
@@ -662,6 +674,12 @@ class ComponentCheckCommands extends AbstractCommands
         if (isset($commitTokens['skipOutdated']) || !$this->getConfig()->get('toolkit.components.outdated.check')) {
             $this->skipOutdated = true;
         }
+        if (isset($commitTokens['skipInsecureNpm'])) {
+            $this->skipInsecureNpm = true;
+        }
+        if (!$this->getConfig()->get('toolkit.components.npm.outdated.check')) {
+            $this->skipOutdatedNpm = true;
+        }
         if (!$this->getConfig()->get('toolkit.components.abandoned.check')) {
             $this->skipAbandoned = true;
         }
@@ -747,6 +765,8 @@ class ComponentCheckCommands extends AbstractCommands
         $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
         $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
         $skipUnsupported = ($this->skipUnsupported) ? ' (Skipping)' : '';
+        $skipInsecureNpm = ($this->skipInsecureNpm) ? ' (Skipping)' : '';
+        $skipOutdatedNpm = ($this->skipOutdatedNpm) ? ' (Skipping)' : '';
 
         $io->definitionList(
             ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
@@ -759,6 +779,8 @@ class ComponentCheckCommands extends AbstractCommands
             ['Development module check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
             ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
             ['Project configuration check' => $this->getFailedOrPassed($this->configurationFailed)],
+            ['NPM Insecure check' => $this->getFailedOrPassed($this->insecureNpmFailed) . $skipInsecureNpm],
+            ['NPM Outdated check' => $this->getFailedOrPassed($this->outdatedNpmFailed) . $skipOutdatedNpm],
         );
     }
 
@@ -1034,6 +1056,79 @@ class ComponentCheckCommands extends AbstractCommands
         $settings = $config->get('drupal.root') . '/sites/' . $config->get('drupal.site.sites_subdir') . '/settings.php';
         $content = file_get_contents($settings);
         file_put_contents($settings, preg_replace('#^//(\s*\$settings\[["\']config_readonly["\']\])#m', "$1", $content));
+    }
+    
+     /**
+     * Run NPM audit.
+     *
+     * @command check-npm-audit
+     *
+     */
+    public function componentNpmInsecure(ConsoleIO $io)
+    {
+        // Check if package.json exists
+        if (file_exists('package.json')) {
+                $result = $this->taskExec('npm audit --json --audit-level=low --ignore-scripts=true')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
+            $auditModules = array_values(json_decode($result, true));
+            $auditModules = array_values($auditModules[2]);
+            if ($auditModules[0]['total'] === 0) {
+                $this->say('NPM Audit check passed.');
+            } else {
+                $auditModules = array_values(json_decode($result, true));
+                $auditModules = array_values($auditModules[1]);
+                foreach ($auditModules as $key => $vulnerability) {
+                    print_r('The dependency: ' .  $vulnerability['name'] . ' has a vulnerability categorized as severity: '. $vulnerability['severity'] . "\n");
+                }
+                $this->say('NPM Audit check failed.');
+                if ($this->skipInsecureNpm) {
+                    $this->say('This step is in reporting mode, skipping.');
+                } else {
+                    $this->insecureNpmFailed = true;
+                }
+            }
+        } else {
+            $this->say('File package-lock.json not found. Please try creating one first by running the toolkit:setup-eslint command.');
+            if ($this->skipInsecureNpm) {
+                $this->say('This step is in reporting mode, skipping.');
+            } else {
+                $this->insecureNpmFailed = true;
+            }
+        }
+    }
+    
+    /**
+     * Run NPM outdated.
+     *
+     * @command check-npm-outdated
+     *
+     */
+    public function componentNpmOutdated(ConsoleIO $io)
+    {
+        // Check if package.json exists
+        if (file_exists('package.json')) {
+            if (empty($this->taskExec('npm outdated')->run())) {
+                $this->say('NPM Outdated check passed.');
+            } else {
+                $this->say('NPM Outdated check failed.');
+                if (!$this->getConfig()->get('toolkit.components.npm.outdated.check')) {
+                    $this->say('This step is in reporting mode, skipping.');
+                } else {
+                    $this->outdatedNpmFailed = true;
+                    $this->skipOutdatedNpm = false;
+                }
+            }
+        } else {
+            $this->say('File package-lock.json not found. Please try creating one first by running the toolkit:setup-eslint command.');
+            $ignores_npm = $this->getConfig()->get('toolkit.components.npm.outdated.check');
+            if (!$ignores_npm) {
+                $this->say('This step is in reporting mode, skipping.');
+                $this->skipOutdatedNpm = true;
+            } else {
+                $this->outdatedNpmFailed = true;
+            }
+        }
     }
 
 }

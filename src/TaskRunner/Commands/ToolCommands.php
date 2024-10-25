@@ -56,6 +56,9 @@ class ToolCommands extends AbstractCommands
                 if ($transformedToken == 'skip_d9c') {
                     $tokens['skipDus'] = true;
                 }
+                if ($transformedToken == 'skip_npm_insecure') {
+                    $tokens['skipInsecureNpm'] = true;
+                }
             }
         }
         return $tokens;
@@ -231,6 +234,18 @@ class ToolCommands extends AbstractCommands
         } else {
             $drupalCheck = Semver::satisfies($drupalVersion, $data['drupal']) ? 'OK' : 'FAIL';
         }
+                
+        //Check node version running
+        $exec = $this->taskExec('node --version')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run();
+        $nodeVersion = rtrim($exec->getMessage());
+        
+        if (version_compare($nodeVersion, $data['node_version'])) {
+            $nodeCheck = 'OK';
+        } else {
+            $nodeCheck = 'FAIL (Missing node version).';
+        }
 
         // Handle NEXTCLOUD.
         $ncUser = Toolkit::getNExtcloudUser();
@@ -266,9 +281,10 @@ class ToolCommands extends AbstractCommands
             ['PHP version' => "$phpCheck ($phpVersion)"],
             ['Toolkit version' => "$toolkitCheck ($toolkitVersion)$toolkitExtra"],
             ['Drupal version' => "$drupalCheck ($drupalVersion)$drupalExtra"],
+            ['Node version' => "$nodeCheck ($nodeVersion)"],
         );
 
-        if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $drupalCheck !== 'OK') {
+        if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $drupalCheck !== 'OK' || $nodeCheck !== 'OK') {
             return 1;
         }
         return 0;
