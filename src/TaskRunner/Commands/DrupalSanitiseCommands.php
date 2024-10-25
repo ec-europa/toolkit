@@ -266,13 +266,14 @@ class DrupalSanitiseCommands extends AbstractCommands
         $classes = [];
         $iterator = new \RecursiveDirectoryIterator($directory);
         foreach (new \RecursiveIteratorIterator($iterator) as $file) {
-            if (!$file->isDir() && $file->getExtension() === 'php' && strpos($file->getPathname(), 'src')) {
-                $filePath = $file->getPathname();
+            if (!$file->isDir() && $file->getExtension() === 'php' && str_contains($file->getPathname(), 'src')) {
+                $path = $file->getPathname();
                 $className = str_replace('.php', '', $file->getFilename());
-                $ns = dirname(substr($filePath, (strpos($filePath, 'src') + 4)));
-                $module = basename(strstr($filePath, 'src', true));
-                $namespace = 'Drupal\\' . $module . '\\' . $ns;
-                $classes[$namespace . '\\' . $className] = realpath($filePath);
+                $ns = dirname(substr($path, (strpos($path, 'src') + 4)));
+                $ns = str_replace('/', '\\', $ns);
+                $module = basename(strstr($path, 'src', true));
+                $class = 'Drupal\\' . $module . '\\' . $ns . '\\' . $className;
+                $classes[$class] = realpath($path);
             }
         }
         return $classes;
