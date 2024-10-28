@@ -1111,7 +1111,7 @@ class ComponentCheckCommands extends AbstractCommands
             } else {
                 foreach ($outdatedModules as $keys => $outdated) {
                     if ($outdated['current'] !== $outdated['wanted']) {
-                        $this->writeln('The package: ' . $keys . ' version (' . $outdated['current'] . ') has a security update ' . $outdated['wanted'] . ', please update to a safe version.');
+                        $this->writeln('The package ' . $keys . ' with version installed ' . $outdated['current'] . ' is outdated' . ', please update to a the ' . $outdated['wanted'] . ' version.');
                     }
                 }
                 $this->say('NPM Outdated check failed.');
