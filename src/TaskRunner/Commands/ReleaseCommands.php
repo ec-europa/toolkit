@@ -287,12 +287,12 @@ class ReleaseCommands extends AbstractCommands
         // Extract PR from the message.
         $pr = '';
         if (preg_match('#(.+) (\(\#[0-9]+\))$#', $message, $matches)) {
-            $message = $matches[1] ?? '';
-            $pr = isset($matches[2]) ? trim($matches[2], '(#)') : '';
+            $message = $matches[1];
+            $pr = trim($matches[2], '(#)');
         }
         // Try to get username from email.
         if (preg_match('#^[0-9]+\+(.+)@users.noreply.github.com$#', $email, $matches)) {
-            $name = '@' . ($matches[1] ?? '');
+            $name = '@' . $matches[1];
         }
 
         $log = '  - ' . trim($message, '.') . '.';

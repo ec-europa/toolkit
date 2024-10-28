@@ -1,0 +1,77 @@
+{
+    "version": "0.2",
+    "language": "en-US",
+    "allowCompoundWords": false,
+    "globRoot": ".",
+    "ignorePaths": [
+        "**/.*.json",
+        ".*ignore",
+        "composer.lock",
+        "assets/vendor/**",
+        "**/LICENSE.txt",
+        "../**/LICENSE.txt",
+        "node_modules/*",
+        "tests/fixtures/*",
+        "CHANGELOG.md",
+        "COPYRIGHT.txt",
+        "MAINTAINERS.txt",
+        "package.json",
+        "yarn.lock",
+        ".yarnrc.yml",
+        ".yarn/*",
+        "phpstan*",
+        ".git/**",
+        "docs/*"
+    ],
+    "ignoreRegExpList": [
+        "^msgstr .*",
+        "!!binary .*",
+        "%[0-9][0-9A-F]",
+        "\\Wi18n",
+        "\\x{[0-9A-F]{4,5}}",
+        "CURLOPT_[A-Z]+",
+        "tk-[a-z]+"
+    ],
+    "dictionaries": [
+        "companies",
+        "css",
+        "drupal-dictionary",
+        "drupal-dictionary-extra",
+        "en-gb",
+        "filetypes",
+        "fonts",
+        "git",
+        "html",
+        "misc",
+        "php",
+        "softwareTerms",
+        "toolkit"
+    ],
+    "dictionaryDefinitions": [
+        {
+            "name": "drupal-dictionary",
+            "path": "./web/core/misc/cspell/drupal-dictionary.txt"
+        },
+        {
+            "name": "drupal-dictionary-extra",
+            "path": "./web/core/misc/cspell/dictionary.txt"
+        },
+        {
+            "name": "toolkit",
+            "path": "./vendor/ec-europa/toolkit/resources/cspell/dictionary.txt"
+        }
+    ],
+    "flagWords": [
+        "e-mail",
+        "grey",
+        "hte",
+        "ist",
+        "queuing"
+    ],
+    "overrides": [
+        {
+            "filename": "**/{*.engine,*.inc,*.install,*.module,*.profile,*.theme}",
+            "languageId": "php"
+        }
+    ]
+}

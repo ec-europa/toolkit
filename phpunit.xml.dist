@@ -14,6 +14,7 @@
         <env name="DRUPAL_DATABASE_NAME" value="drupal"/>
         <env name="DRUPAL_DATABASE_USERNAME" value="root"/>
         <env name="DRUPAL_DATABASE_HOST" value="mysql"/>
+        <env name="DRUPAL_DATABASE_PORT" value="3306"/>
     </php>
     <testsuites>
         <testsuite name="Unit GitHooks">
