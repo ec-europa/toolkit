@@ -1066,20 +1066,17 @@ class ComponentCheckCommands extends AbstractCommands
     {
         // Check if package.json exists
         if (file_exists('package.json')) {
-                $result = $this->taskExec('npm audit --json --audit-level=low --ignore-scripts=true')
+                $result = $this->taskExec('npm audit --json --audit-level=low --ignore-scripts=true --production --package-lock-only')
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                 ->run()->getMessage();
-            $auditModules = array_values(json_decode($result, true));
-            $auditModules = array_values($auditModules[2]);
-            if ($auditModules[0]['total'] === 0) {
-                $this->say('NPM Audit check passed.');
+            $auditModules = json_decode($result, true);
+            if (empty($auditModules['vulnerabilities'])) {
+                $this->say('NPM Insecure check passed.');
             } else {
-                $auditModules = array_values(json_decode($result, true));
-                $auditModules = array_values($auditModules[1]);
-                foreach ($auditModules as $vulnerability) {
-                    $this->say('The dependency: ' . $vulnerability['name'] . ' has a vulnerability categorized as severity: ' . $vulnerability['severity'] . "\n");
+                foreach ($auditModules['vulnerabilities'] as $vulnerability) {
+                    $this->writeln('The dependency: ' . $vulnerability['name'] . ' has a vulnerability categorized as severity: ' . $vulnerability['severity'] . "\n");
                 }
-                $this->say('NPM Audit check failed.');
+                $this->say('NPM Insecure check failed.');
                 if ($this->skipInsecureNpm) {
                     $this->say('This step is in reporting mode, skipping.');
                 } else {
@@ -1105,10 +1102,18 @@ class ComponentCheckCommands extends AbstractCommands
     {
         // Check if package.json exists
         if (file_exists('package.json')) {
-            $exec = $this->taskExec('npm outdated')->run();
-            if (empty($exec)) {
+            $result = $this->taskExec('npm outdated --json --long')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
+            $outdatedModules = json_decode($result, true);
+            if (empty($outdatedModules)) {
                 $this->say('NPM Outdated check passed.');
             } else {
+                foreach ($outdatedModules as $keys => $outdated) {
+                    if ($outdated['current'] !== $outdated['wanted']) {
+                        $this->writeln('The package: ' . $keys . ' version (' . $outdated['current'] . ') has a security update ' . $outdated['wanted'] . ', please update to a safe version.');
+                    }
+                }
                 $this->say('NPM Outdated check failed.');
                 if (!$this->getConfig()->get('toolkit.components.npm.outdated.check')) {
                     $this->say('This step is in reporting mode, skipping.');
