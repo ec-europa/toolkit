@@ -128,7 +128,6 @@ class ComponentCheckCommands extends AbstractCommands
             (!$this->skipAbandoned && $this->abandonedFailed) ||
             (!$this->skipUnsupported && $this->unsupportedFailed) ||
             (!$this->skipInsecure && $this->insecureFailed)
-            
         ) {
             $io->error([
                 'Failed the components check, please verify the report and update the project.',
@@ -1057,14 +1056,13 @@ class ComponentCheckCommands extends AbstractCommands
         $content = file_get_contents($settings);
         file_put_contents($settings, preg_replace('#^//(\s*\$settings\[["\']config_readonly["\']\])#m', "$1", $content));
     }
-    
-     /**
-     * Run NPM audit.
+
+    /**
+     * Run NPM insecure.
      *
-     * @command check-npm-audit
-     *
+     * @command check-npm-insecure
      */
-    public function componentNpmInsecure(ConsoleIO $io)
+    public function componentNpmInsecure()
     {
         // Check if package.json exists
         if (file_exists('package.json')) {
@@ -1078,8 +1076,8 @@ class ComponentCheckCommands extends AbstractCommands
             } else {
                 $auditModules = array_values(json_decode($result, true));
                 $auditModules = array_values($auditModules[1]);
-                foreach ($auditModules as $key => $vulnerability) {
-                    print_r('The dependency: ' .  $vulnerability['name'] . ' has a vulnerability categorized as severity: '. $vulnerability['severity'] . "\n");
+                foreach ($auditModules as $vulnerability) {
+                    $this->say('The dependency: ' . $vulnerability['name'] . ' has a vulnerability categorized as severity: ' . $vulnerability['severity'] . "\n");
                 }
                 $this->say('NPM Audit check failed.');
                 if ($this->skipInsecureNpm) {
@@ -1097,18 +1095,18 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
     }
-    
+
     /**
-     * Run NPM outdated.
+     * Run NPM outdate.
      *
      * @command check-npm-outdated
-     *
      */
-    public function componentNpmOutdated(ConsoleIO $io)
+    public function componentNpmOutdated()
     {
         // Check if package.json exists
         if (file_exists('package.json')) {
-            if (empty($this->taskExec('npm outdated')->run())) {
+            $exec = $this->taskExec('npm outdated')->run();
+            if (empty($exec)) {
                 $this->say('NPM Outdated check passed.');
             } else {
                 $this->say('NPM Outdated check failed.');
@@ -1121,8 +1119,8 @@ class ComponentCheckCommands extends AbstractCommands
             }
         } else {
             $this->say('File package-lock.json not found. Please try creating one first by running the toolkit:setup-eslint command.');
-            $ignores_npm = $this->getConfig()->get('toolkit.components.npm.outdated.check');
-            if (!$ignores_npm) {
+            $ignoresNpm = $this->getConfig()->get('toolkit.components.npm.outdated.check');
+            if (!$ignoresNpm) {
                 $this->say('This step is in reporting mode, skipping.');
                 $this->skipOutdatedNpm = true;
             } else {

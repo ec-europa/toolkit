@@ -234,7 +234,6 @@ class ToolCommands extends AbstractCommands
         } else {
             $drupalCheck = Semver::satisfies($drupalVersion, $data['drupal']) ? 'OK' : 'FAIL';
         }
-                
         //Check node version running
         $exec = $this->taskExec('node --version')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
