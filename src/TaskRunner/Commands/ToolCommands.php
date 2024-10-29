@@ -244,7 +244,7 @@ class ToolCommands extends AbstractCommands
         if ($isValid >= 0) {
             $nodeCheck = 'OK';
         } else {
-            $nodeCheck = 'FAIL (Missing node version).';
+            $nodeCheck = 'FAIL (not found)';
         }
 
         // Handle NEXTCLOUD.
