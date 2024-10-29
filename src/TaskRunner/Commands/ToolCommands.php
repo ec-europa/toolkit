@@ -239,7 +239,7 @@ class ToolCommands extends AbstractCommands
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run();
         $nodeVersion = rtrim($exec->getMessage());
-        if (version_compare($nodeVersion, $data['node_version'])) {
+        if (version_compare($nodeVersion, $data['defaults']['node_version']['version'])) {
             $nodeCheck = 'OK';
         } else {
             $nodeCheck = 'FAIL (Missing node version).';
