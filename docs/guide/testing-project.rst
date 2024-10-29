@@ -368,6 +368,25 @@ These are the default configurations in the ``runner.yml`` file.
          files: 'lib/'
          options: '--dot --gitignore'
 
+Behat lint testing
+^^^^^^^^^^^^^^^^^^^
+
+To run the Behat lint you can make use of the ``toolkit:lint-behat`` command:
+
+.. code-block::
+
+   docker-compose exec web ./vendor/bin/run toolkit:lint-behat
+
+These are the default configurations in the ``runner.yml`` file.
+
+.. code-block:: yaml
+
+   toolkit:
+     lint:
+       behat:
+         config: 'gherkinlint.json'
+         files: 'tests/features'
+
 Testing in CI
 -------------
 

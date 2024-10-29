@@ -141,3 +141,24 @@
           ->option('show-deprecated')
           ->rawArg('.')
         [Simulator] Running ./vendor/bin/parallel-lint --exclude dist/ --exclude .cache/ --exclude vendor/ --exclude web/ -e 'php,module,inc,theme,install' --show-deprecated .
+
+- command: 'toolkit:lint-behat'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        Could not find the config file, the default will be created in the project root.
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->copy('/test/toolkit/resources/gherkinlint.json', 'gherkinlint.json')
+        [Simulator] Simulating Exec('./vendor/bin/gherkinlint lint tests/features')
+        [Simulator] Running ./vendor/bin/gherkinlint lint tests/features
+
+- command: 'toolkit:lint-behat'
+  configuration: []
+  resources:
+    - from: sample-gherkinlint.json
+      to: gherkinlint.json
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/gherkinlint lint tests/features')
+        [Simulator] Running ./vendor/bin/gherkinlint lint tests/features

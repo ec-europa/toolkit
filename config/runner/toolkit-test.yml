@@ -109,6 +109,9 @@ toolkit:
       config: '.cspell.json'
       files: '${toolkit.build.custom-code-folder}/'
       options: '--dot --gitignore'
+    behat:
+      config: 'gherkinlint.json'
+      files: 'tests/features'
   axe-scan:
     config: axe-scan.config.json
     urls:

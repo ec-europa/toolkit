@@ -338,4 +338,37 @@ class LintCommands extends AbstractCommands
         return $this->collectionBuilder()->addTaskList($tasks);
     }
 
+    /**
+     * Run lint Behat.
+     *
+     * @command toolkit:lint-behat
+     *
+     * @option config  The path to the config file.
+     * @option files   The files to check.
+     *
+     * @aliases tk-lbehat
+     *
+     * @usage --files='tests/features' --config='gherkinlint.json'
+     */
+    public function toolkitLintBehat(array $options = [
+        'config' => InputOption::VALUE_REQUIRED,
+        'files' => InputOption::VALUE_REQUIRED,
+    ])
+    {
+        $tasks = [];
+        $bin = $this->getBinPath('gherkinlint');
+
+        // Ensure the config file exists.
+        if (!file_exists($options['config'])) {
+            $this->output->writeln('Could not find the config file, the default will be created in the project root.');
+            $tasks[] = $this->taskFilesystemStack()->copy(
+                Toolkit::getToolkitRoot() . '/resources/gherkinlint.json',
+                $options['config']
+            );
+        }
+
+        $tasks[] = $this->taskExec($bin . ' lint ' . $options['files']);
+        return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
 }
