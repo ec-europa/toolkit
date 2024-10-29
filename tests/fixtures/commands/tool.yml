@@ -21,6 +21,7 @@
     - string_contains: "PHP version       OK"
     - string_contains: "Toolkit version   FAIL (not found)"
     - string_contains: "Drupal version    FAIL (not found)"
+    - string_contains: "Node version    FAIL (not found)"
 
 - command: toolkit:requirements
   configuration: []
@@ -33,6 +34,7 @@
     - string_contains: "PHP version       OK"
     - string_contains: "Toolkit version   FAIL"
     - string_contains: "Drupal version    OK"
+    - string_contains: "Node version    OK"
 
 - command: toolkit:requirements
   configuration: []
@@ -45,6 +47,7 @@
     - string_contains: "PHP version       OK"
     - string_contains: "Toolkit version   FAIL (not found)"
     - string_contains: "Drupal version    OK"
+    - string_contains: "Node version    OK"
 
 - command: toolkit:requirements
   configuration: []
@@ -57,6 +60,7 @@
     - string_contains: "PHP version       OK"
     - string_contains: "Toolkit version   OK"
     - string_contains: "Drupal version    OK"
+    - string_contains: "Node version    OK"
 
 - command: toolkit:fix-permissions
   configuration: []
