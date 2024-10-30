@@ -240,7 +240,7 @@ class ToolCommands extends AbstractCommands
             ->run();
         $nodeVersion = rtrim($exec->getMessage());
         $nodeVersion = trim($nodeVersion, 'v');
-        $isValid = version_compare($nodeVersion, $data['defaults']['node_version']['version']);
+        $isValid = version_compare($nodeVersion, $data['node']);
         if ($isValid >= 0) {
             $nodeCheck = 'OK';
         } else {
