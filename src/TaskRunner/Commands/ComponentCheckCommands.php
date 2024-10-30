@@ -1061,6 +1061,8 @@ class ComponentCheckCommands extends AbstractCommands
      * Run NPM insecure.
      *
      * @command check:npm-insecure
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function componentNpmInsecure()
     {
@@ -1109,6 +1111,8 @@ class ComponentCheckCommands extends AbstractCommands
      * Run NPM outdated.
      *
      * @command check:npm-outdated
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function componentNpmOutdated()
     {
