@@ -1060,76 +1060,105 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Run NPM insecure.
      *
-     * @command check-npm-insecure
+     * @command check:npm-insecure
      */
     public function componentNpmInsecure()
     {
-        // Check if package.json exists
-        if (file_exists('package.json')) {
-                $result = $this->taskExec('npm audit --json --audit-level=low --ignore-scripts=true --production --package-lock-only')
-                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-                ->run()->getMessage();
-            $auditModules = json_decode($result, true);
-            if (empty($auditModules['vulnerabilities'])) {
-                $this->say('NPM Insecure check passed.');
-            } else {
-                foreach ($auditModules['vulnerabilities'] as $vulnerability) {
-                    $this->writeln('The dependency: ' . $vulnerability['name'] . ' has a vulnerability categorized as severity: ' . $vulnerability['severity'] . "\n");
-                }
-                $this->say('NPM Insecure check failed.');
-                if ($this->skipInsecureNpm) {
-                    $this->say('This step is in reporting mode, skipping.');
-                } else {
-                    $this->insecureNpmFailed = true;
-                }
-            }
+        $parseOptsFile = ToolCommands::parseOptsYml();
+        if ($parseOptsFile === false) {
+            $this->say("The file '.opts.yml' was not found, skipping.");
+            $this->skipInsecureNpm = true;
         } else {
-            $this->say('File package-lock.json not found. Please try creating one first by running the toolkit:setup-eslint command.');
-            if ($this->skipInsecureNpm) {
-                $this->say('This step is in reporting mode, skipping.');
+            //Check if NPM present in the .opts.yml
+            if (isset($parseOptsFile['npm_install']) && $parseOptsFile['npm_install'] == true) {
+                // Check if package.json exists
+                if (file_exists('package-lock.json')) {
+                        $result = $this->taskExec('npm audit --json --audit-level=low --ignore-scripts=true --production --package-lock-only')
+                        ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                        ->run()->getMessage();
+                    $auditModules = json_decode($result, true);
+                    if (empty($auditModules['vulnerabilities'])) {
+                        $this->say('NPM Insecure check passed.');
+                    } else {
+                        foreach ($auditModules['vulnerabilities'] as $vulnerability) {
+                            $this->writeln('The dependency: ' . $vulnerability['name'] . ' has a vulnerability categorized as severity: ' . $vulnerability['severity'] . "\n");
+                        }
+                        $this->say('NPM Insecure check failed.');
+                        if ($this->skipInsecureNpm) {
+                            $this->say('This step is in reporting mode, skipping.');
+                        } else {
+                            $this->insecureNpmFailed = true;
+                        }
+                    }
+                } else {
+                    $this->say('File package-lock.json not found. Please try creating one first by running the toolkit:setup-eslint command.');
+                    if ($this->skipInsecureNpm) {
+                        $this->say('This step is in reporting mode, skipping.');
+                    } else {
+                        $this->insecureNpmFailed = true;
+                    }
+                }
             } else {
-                $this->insecureNpmFailed = true;
+                $this->say('NPM configuration missing, skipping.');
+                $this->skipInsecureNpm = true;
             }
         }
     }
 
     /**
-     * Run NPM outdate.
+     * Run NPM outdated.
      *
-     * @command check-npm-outdated
+     * @command check:npm-outdated
      */
     public function componentNpmOutdated()
     {
-        // Check if package.json exists
-        if (file_exists('package.json')) {
-            $result = $this->taskExec('npm outdated --json --long')
-                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-                ->run()->getMessage();
-            $outdatedModules = json_decode($result, true);
-            if (empty($outdatedModules)) {
-                $this->say('NPM Outdated check passed.');
-            } else {
-                foreach ($outdatedModules as $keys => $outdated) {
-                    if ($outdated['current'] !== $outdated['wanted']) {
-                        $this->writeln('The package ' . $keys . ' with version installed ' . $outdated['current'] . ' is outdated, please update to a the ' . $outdated['wanted'] . ' version.');
+        $parseOptsFile = ToolCommands::parseOptsYml();
+        if ($parseOptsFile === false) {
+            $this->say("The file '.opts.yml' was not found, skipping.");
+            $this->skipOutdatedNpm = true;
+        } else {
+            //Check if NPM present in the .opts.yml
+            if (isset($parseOptsFile['npm_install']) && $parseOptsFile['npm_install'] == true) {
+                // Check if package.json exists
+                if (file_exists('package.json')) {
+                    $result = $this->taskExec('npm outdated --json --long')
+                        ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                        ->run()->getMessage();
+                    $outdatedModules = json_decode($result, true);
+                    if (empty($outdatedModules)) {
+                        $this->say('NPM Outdated check passed.');
+                    } else {
+                        foreach ($outdatedModules as $keys => $outdated) {
+                            if ($outdated['current'] !== $outdated['wanted']) {
+                                $this->writeln('The package ' . $keys . ' with version installed ' . $outdated['current'] . ' is outdated, please update to a the ' . $outdated['wanted'] . ' version.');
+                                $this->outdatedNpmFailed = true;
+                            }
+                        }
+                        if (!$this->getConfig()->get('toolkit.components.npm.outdated.check')) {
+                            $this->say('NPM Outdated check failed.');
+                            $this->say('This step is in reporting mode, skipping.');
+                            $this->skipOutdatedNpm = true;
+                        } else {
+                            if ($this->outdatedNpmFailed) {
+                                $this->say('NPM Outdated check failed.');
+                            } else {
+                                $this->say('NPM Outdated check passed.');
+                            }
+                        }
+                    }
+                } else {
+                    $this->say('File package-lock.json not found. Please try creating one first by running the toolkit:setup-eslint command.');
+                    $ignoresNpm = $this->getConfig()->get('toolkit.components.npm.outdated.check');
+                    if (!$ignoresNpm) {
+                        $this->say('This step is in reporting mode, skipping.');
+                        $this->skipOutdatedNpm = true;
+                    } else {
+                        $this->outdatedNpmFailed = true;
                     }
                 }
-                $this->say('NPM Outdated check failed.');
-                if (!$this->getConfig()->get('toolkit.components.npm.outdated.check')) {
-                    $this->say('This step is in reporting mode, skipping.');
-                } else {
-                    $this->outdatedNpmFailed = true;
-                    $this->skipOutdatedNpm = false;
-                }
-            }
-        } else {
-            $this->say('File package-lock.json not found. Please try creating one first by running the toolkit:setup-eslint command.');
-            $ignoresNpm = $this->getConfig()->get('toolkit.components.npm.outdated.check');
-            if (!$ignoresNpm) {
-                $this->say('This step is in reporting mode, skipping.');
-                $this->skipOutdatedNpm = true;
             } else {
-                $this->outdatedNpmFailed = true;
+                $this->say('NPM configuration missing, skipping.');
+                $this->skipOutdatedNpm = true;
             }
         }
     }
