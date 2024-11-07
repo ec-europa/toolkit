@@ -83,10 +83,20 @@
         >  Project configuration check passed.
 
 
+        Checking NpmInsecure components.
+        ================================
+
+        >  The file '.opts.yml' was not found, skipping.
+
+        Checking NpmOutdated components.
+        ================================
+
+        >  The file '.opts.yml' was not found, skipping.
+
         Results:
         ========
 
-        ----------------------------- -----------
+        ----------------------------- -------------------
          Mandatory module check        failed
          Recommended module check      1 warning
          Insecure module check         passed
@@ -97,7 +107,9 @@
          Development module check      passed
          Composer validation check     passed
          Project configuration check   passed
-        ----------------------------- -----------
+         NPM Insecure check            passed (Skipping) 
+         NPM Outdated check            passed (Skipping)
+        ----------------------------- -------------------
 
         [ERROR] Failed the components check, please verify the report and update the
         project.
@@ -112,6 +124,7 @@
         !        - Using commit message to skip Insecure and/or Outdated check:
         !
         !           - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]
+        !        and/or [SKIP-NPM-INSECURE]
         !
         !
         !
@@ -133,6 +146,13 @@
         !               unsupported:
         !
         !                 check: false
+        !
+        !               npm:                                                           
+        !                                                                              
+        !                 outdated:                                                    
+        !                                                                              
+        !                   check: false                                               
+
 
 - command: 'toolkit:component-check'
   configuration:
@@ -673,6 +693,64 @@
     - not_string_contains: "config.allow-plugins: cweagans/composer-patches"
     - not_string_contains: "config.allow-plugins: dealerdirect/phpcodesniffer-composer-installer"
     - string_contains: "config.allow-plugins: phpstan/extension-installer"
+
+- command: 'toolkit:component-check'
+  configuration:
+    toolkit:
+      components:
+        npm:
+          outdated:
+            check: true
+  tokens: ''
+  resources:
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
+        ] }
+    - touch: package-lock.json
+  expectations:
+    - string_contains: NPM Outdated check            passed
+    
+- command: 'toolkit:component-check'
+  configuration:
+    toolkit:
+      components:
+        npm:
+          outdated:
+            check: false
+  tokens: ''
+  resources:
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
+        ] }
+    - touch: package-lock.json
+  expectations:
+    - string_contains: NPM Outdated check            passed (Skipping)
+    
+- command: 'toolkit:component-check'
+  configuration: []
+  tokens: '[skip_npm_insecure]'
+  resources:
+    - file: composer.json
+      content: |
+        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
+        ] }
+    - touch: package-lock.json
+  expectations:
+    - string_contains: NPM Insecure check            passed (Skipping)
 
 - command: 'check:mandatory'
   configuration: []
