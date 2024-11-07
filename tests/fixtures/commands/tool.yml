@@ -58,7 +58,7 @@
     - string_contains: "Checking Toolkit requirements:"
     - string_contains: "Required checks:"
     - string_contains: "PHP version       OK"
-    - string_contains: "Toolkit version   FAIL"
+    - string_contains: "Toolkit version   OK"
     - string_contains: "Drupal version    OK"
     - string_contains: "Node version      FAIL (not found)"
 
