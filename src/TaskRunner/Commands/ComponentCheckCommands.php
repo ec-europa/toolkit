@@ -11,6 +11,7 @@ use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
+use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
@@ -38,7 +39,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $skipUnsupported = false;
     protected bool $skipInsecure = false;
     protected bool $skipRecommended = false;
-    protected bool $skipInsecureNpm = false;
+    protected bool $skipInsecureNpm = true;
     protected bool $skipOutdatedNpm = false;
     protected bool $outdatedNpmFailed = false;
     protected bool $insecureNpmFailed = false;
@@ -91,23 +92,22 @@ class ComponentCheckCommands extends AbstractCommands
 
         // Execute all checks.
         $checks = [
-            'Mandatory',
-            'Recommended',
-            'Insecure',
-            'Outdated',
-            'Abandoned',
-            'Unsupported',
-            'Evaluation',
-            'Development',
-            'Composer',
-            'Configuration',
-            'NpmInsecure',
-            'NpmOutdated'
+            'componentMandatory' => 'Mandatory',
+            'componentRecommended' => 'Recommended',
+            'componentInsecure' => 'Insecure',
+            'componentOutdated' => 'Outdated',
+            'componentAbandoned' => 'Abandoned',
+            'componentUnsupported' => 'Unsupported',
+            'componentEvaluation' => 'Evaluation',
+            'componentDevelopment' => 'Development',
+            'componentComposer' => 'Composer',
+            'componentConfiguration' => 'Configuration',
+            'componentNpmInsecure' => 'Npm Insecure',
+            'componentNpmOutdated' => 'Npm Outdated',
         ];
-        foreach ($checks as $check) {
-            $io->title("Checking $check components.");
-            $fct = "component$check";
-            $this->{$fct}($io);
+        foreach ($checks as $function => $label) {
+            $io->title("Checking $label components.");
+            $this->{$function}($io);
             $io->newLine();
         }
 
@@ -121,7 +121,7 @@ class ComponentCheckCommands extends AbstractCommands
             $this->devCompRequireFailed ||
             $this->composerFailed ||
             $this->configurationFailed ||
-            $this->insecureNpmFailed ||
+            (!$this->skipInsecureNpm && $this->insecureNpmFailed) ||
             (!$this->skipOutdatedNpm && $this->outdatedNpmFailed) ||
             (!$this->skipRecommended && $this->recommendedFailed) ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
@@ -1067,41 +1067,34 @@ class ComponentCheckCommands extends AbstractCommands
         $parseOptsFile = ToolCommands::parseOptsYml();
         if ($parseOptsFile === false) {
             $this->say("The file '.opts.yml' was not found, skipping.");
-            $this->skipInsecureNpm = true;
-        } else {
-            //Check if NPM present in the .opts.yml
-            if (isset($parseOptsFile['npm_install']) && $parseOptsFile['npm_install'] == true) {
-                // Check if package.json exists
-                if (file_exists('package-lock.json')) {
-                        $result = $this->taskExec('npm audit --json --audit-level=low --ignore-scripts=true --production --package-lock-only')
-                        ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-                        ->run()->getMessage();
-                    $auditModules = json_decode($result, true);
-                    if (empty($auditModules['vulnerabilities'])) {
-                        $this->say('NPM Insecure check passed.');
-                    } else {
-                        foreach ($auditModules['vulnerabilities'] as $vulnerability) {
-                            $this->writeln('The dependency: ' . $vulnerability['name'] . ' has a vulnerability categorized as severity: ' . $vulnerability['severity'] . "\n");
-                        }
-                        $this->say('NPM Insecure check failed.');
-                        if ($this->skipInsecureNpm) {
-                            $this->say('This step is in reporting mode, skipping.');
-                        } else {
-                            $this->insecureNpmFailed = true;
-                        }
-                    }
-                } else {
-                    $this->say('File package-lock.json not found. Please try creating one first by running the toolkit:setup-eslint command.');
-                    if ($this->skipInsecureNpm) {
-                        $this->say('This step is in reporting mode, skipping.');
-                    } else {
-                        $this->insecureNpmFailed = true;
-                    }
-                }
-            } else {
-                $this->say('NPM configuration missing, skipping.');
-                $this->skipInsecureNpm = true;
+            return ResultData::EXITCODE_OK;
+        }
+
+        if (empty($parseOptsFile['npm_install'])) {
+            $this->say('NPM configuration missing, skipping.');
+            return ResultData::EXITCODE_OK;
+        }
+
+        $this->skipInsecureNpm = false;
+        $this->prepareSkips();
+
+        if (!file_exists('package-lock.json')) {
+            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')->run();
+        }
+
+        $result = $this->taskExec('npm audit --json --audit-level=low --ignore-scripts=true --production --package-lock-only')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        $auditModules = json_decode($result, true);
+        if (!empty($auditModules['vulnerabilities'])) {
+            $this->insecureNpmFailed = true;
+            foreach ($auditModules['vulnerabilities'] as $vulnerability) {
+                $this->writeln('The dependency: ' . $vulnerability['name'] . ' has a vulnerability categorized as severity: ' . $vulnerability['severity'] . "\n");
             }
+        }
+
+        if (!$this->insecureNpmFailed) {
+            $this->say('NPM Insecure check passed.');
         }
     }
 

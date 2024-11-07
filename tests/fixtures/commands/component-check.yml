@@ -83,13 +83,13 @@
         >  Project configuration check passed.
 
 
-        Checking NpmInsecure components.
-        ================================
+        Checking Npm Insecure components.
+        =================================
 
         >  The file '.opts.yml' was not found, skipping.
 
-        Checking NpmOutdated components.
-        ================================
+        Checking Npm Outdated components.
+        =================================
 
         >  The file '.opts.yml' was not found, skipping.
 
@@ -107,7 +107,7 @@
          Development module check      passed
          Composer validation check     passed
          Project configuration check   passed
-         NPM Insecure check            passed (Skipping) 
+         NPM Insecure check            passed (Skipping)
          NPM Outdated check            passed (Skipping)
         ----------------------------- -------------------
 
@@ -147,12 +147,11 @@
         !
         !                 check: false
         !
-        !               npm:                                                           
-        !                                                                              
-        !                 outdated:                                                    
-        !                                                                              
-        !                   check: false                                               
-
+        !               npm:
+        !
+        !                 outdated:
+        !
+        !                   check: false
 
 - command: 'toolkit:component-check'
   configuration:
@@ -714,7 +713,7 @@
     - touch: package-lock.json
   expectations:
     - string_contains: NPM Outdated check            passed
-    
+
 - command: 'toolkit:component-check'
   configuration:
     toolkit:
@@ -735,7 +734,7 @@
     - touch: package-lock.json
   expectations:
     - string_contains: NPM Outdated check            passed (Skipping)
-    
+
 - command: 'toolkit:component-check'
   configuration: []
   tokens: '[skip_npm_insecure]'
