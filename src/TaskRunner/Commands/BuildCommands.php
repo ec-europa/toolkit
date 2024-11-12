@@ -445,7 +445,7 @@ class BuildCommands extends AbstractCommands
         if (empty($fileMatch)) {
             return '';
         }
-        return <<< EOF
+        return <<<EOF
 
 {$this->blockStart}
 <FilesMatch "$fileMatch">
