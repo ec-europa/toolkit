@@ -162,7 +162,7 @@ class ConfigurationCommandsTest extends AbstractTest
         ];
         $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($runnerConfig));
 
-        $expectedFooConfig = <<<YAML
+        $expectedFooConfig = <<<'YAML'
         bar: baz
         qux:
           key1: value999
@@ -176,7 +176,7 @@ class ConfigurationCommandsTest extends AbstractTest
 
         // Remove runner.yml and test again.
         $this->fs->remove($this->getSandboxFilepath('runner.yml'));
-        $expectedFooConfig = <<<YAML
+        $expectedFooConfig = <<<'YAML'
         bar: baz
         qux:
           key1: value1
