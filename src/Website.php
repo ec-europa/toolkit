@@ -307,7 +307,7 @@ class Website
         if (empty($auth = self::apiAuth())) {
             return false;
         }
-        $data = self::getWithMockFallback(self::url() . '/api/v1/package-reviews?version=8.x', $auth);
+        $data = self::getWithMockFallback(self::url() . '/api/v1/package-reviews', $auth);
         return empty($data) ? false : $data;
     }
 
