@@ -90,78 +90,104 @@ class ComponentCheckCommands extends AbstractCommands
             $this->composerLock['packages'] = $this->testPackages();
         }
 
+        $parseOptsFile = ToolCommands::parseOptsYml();
         // Execute all checks.
-        $checks = [
-            'componentMandatory' => 'Mandatory',
-            'componentRecommended' => 'Recommended',
-            'componentInsecure' => 'Insecure',
-            'componentOutdated' => 'Outdated',
-            'componentAbandoned' => 'Abandoned',
-            'componentUnsupported' => 'Unsupported',
-            'componentEvaluation' => 'Evaluation',
-            'componentDevelopment' => 'Development',
-            'componentComposer' => 'Composer',
-            'componentConfiguration' => 'Configuration',
-            'componentNpmInsecure' => 'Npm Insecure',
-            'componentNpmOutdated' => 'Npm Outdated',
-        ];
-        foreach ($checks as $function => $label) {
-            $io->title("Checking $label components.");
-            $this->{$function}($io);
-            $io->newLine();
-        }
+            $checks = [
+                'componentMandatory' => 'Mandatory',
+                'componentRecommended' => 'Recommended',
+                'componentInsecure' => 'Insecure',
+                'componentOutdated' => 'Outdated',
+                'componentAbandoned' => 'Abandoned',
+                'componentUnsupported' => 'Unsupported',
+                'componentEvaluation' => 'Evaluation',
+                'componentDevelopment' => 'Development',
+                'componentComposer' => 'Composer',
+                'componentConfiguration' => 'Configuration',
+            ];
+            // Check if npm_install property enabled adding the NPM results if so.
+            if (!empty($parseOptsFile['npm_install'])) {
+                // Add NPM checks
+                $checks += $checksNPM = [
+                    'componentNpmInsecure' => 'Npm Insecure',
+                    'componentNpmOutdated' => 'Npm Outdated',
+                ];
+            }
+            foreach ($checks as $function => $label) {
+                $io->title("Checking $label components.");
+                $this->{$function}($io);
+                $io->newLine();
+            }
 
-        $this->printComponentResults($io);
+            $this->printComponentResults($io);
 
-        // If the validation fail, return according to the blocker.
-        $status = 0;
-        if (
-            $this->evaluationFailed ||
-            $this->mandatoryFailed ||
-            $this->devCompRequireFailed ||
-            $this->composerFailed ||
-            $this->configurationFailed ||
-            (!$this->skipInsecureNpm && $this->insecureNpmFailed) ||
-            (!$this->skipOutdatedNpm && $this->outdatedNpmFailed) ||
-            (!$this->skipRecommended && $this->recommendedFailed) ||
-            (!$this->skipOutdated && $this->outdatedFailed) ||
-            (!$this->skipAbandoned && $this->abandonedFailed) ||
-            (!$this->skipUnsupported && $this->unsupportedFailed) ||
-            (!$this->skipInsecure && $this->insecureFailed)
-        ) {
-            $io->error([
-                'Failed the components check, please verify the report and update the project.',
-                'See the list of packages at',
-                'https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews.',
-            ]);
-            $status = 1;
-        }
+            // If the validation fail, return according to the blocker.
+            $status = 0;
+            if (
+                $this->evaluationFailed ||
+                $this->mandatoryFailed ||
+                $this->devCompRequireFailed ||
+                $this->composerFailed ||
+                $this->configurationFailed ||
+                (!$this->skipInsecureNpm && $this->insecureNpmFailed) ||
+                (!$this->skipOutdatedNpm && $this->outdatedNpmFailed) ||
+                (!$this->skipRecommended && $this->recommendedFailed) ||
+                (!$this->skipOutdated && $this->outdatedFailed) ||
+                (!$this->skipAbandoned && $this->abandonedFailed) ||
+                (!$this->skipUnsupported && $this->unsupportedFailed) ||
+                (!$this->skipInsecure && $this->insecureFailed)
+            ) {
+                $io->error([
+                    'Failed the components check, please verify the report and update the project.',
+                    'See the list of packages at',
+                    'https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews.',
+                ]);
+                $status = 1;
+            }
 
-        // Give feedback if no problems found.
-        if (!$status) {
-            $io->success('Components checked, nothing to report.');
-        } else {
-            $io->note([
-                'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
-                '- Using commit message to skip Insecure and/or Outdated check:',
-                '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED] and/or [SKIP-NPM-INSECURE]',
-                '',
-                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
-                '   toolkit:',
-                '     components:',
-                '       outdated:',
-                '         check: false',
-                '       abandoned:',
-                '         check: false',
-                '       unsupported:',
-                '         check: false',
-                '       npm:',
-                '         outdated:',
-                '           check: false',
-            ]);
-        }
+            // Give feedback if no problems found.
+            if (!$status) {
+                $io->success('Components checked, nothing to report.');
+            } else {
+                $parseOptsFile = ToolCommands::parseOptsYml();
+                if (empty($parseOptsFile['npm_install'])) {
+                    $io->note([
+                        'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
+                        '- Using commit message to skip Insecure and/or Outdated check:',
+                        '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
+                        '',
+                        '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
+                        '   toolkit:',
+                        '     components:',
+                        '       outdated:',
+                        '         check: false',
+                        '       abandoned:',
+                        '         check: false',
+                        '       unsupported:',
+                        '         check: false',
+                    ]);
+                } else {
+                    $io->note([
+                        'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
+                        '- Using commit message to skip Insecure and/or Outdated check:',
+                        '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED] and/or [SKIP-NPM-INSECURE]',
+                        '',
+                        '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
+                        '   toolkit:',
+                        '     components:',
+                        '       outdated:',
+                        '         check: false',
+                        '       abandoned:',
+                        '         check: false',
+                        '       unsupported:',
+                        '         check: false',
+                        '       npm:',
+                        '         outdated:',
+                        '           check: false',
+                    ]);
+                }
+            }
 
-        return $status;
+            return $status;
     }
 
     /**
@@ -759,28 +785,47 @@ class ComponentCheckCommands extends AbstractCommands
     protected function printComponentResults(ConsoleIO $io)
     {
         $io->title('Results:');
-
-        $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
-        $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
-        $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
-        $skipUnsupported = ($this->skipUnsupported) ? ' (Skipping)' : '';
-        $skipInsecureNpm = ($this->skipInsecureNpm) ? ' (Skipping)' : '';
-        $skipOutdatedNpm = ($this->skipOutdatedNpm) ? ' (Skipping)' : '';
-
-        $io->definitionList(
-            ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
-            ['Recommended module check' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
-            ['Insecure module check' => $this->getFailedOrPassed($this->insecureFailed) . $skipInsecure],
-            ['Outdated module check' => $this->getFailedOrPassed($this->outdatedFailed) . $skipOutdated],
-            ['Abandoned module check' => $this->getFailedOrPassed($this->abandonedFailed) . $skipAbandoned],
-            ['Unsupported module check' => $this->getFailedOrPassed($this->unsupportedFailed) . $skipUnsupported],
-            ['Evaluation module check' => $this->getFailedOrPassed($this->evaluationFailed)],
-            ['Development module check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
-            ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
-            ['Project configuration check' => $this->getFailedOrPassed($this->configurationFailed)],
-            ['NPM Insecure check' => $this->getFailedOrPassed($this->insecureNpmFailed) . $skipInsecureNpm],
-            ['NPM Outdated check' => $this->getFailedOrPassed($this->outdatedNpmFailed) . $skipOutdatedNpm],
-        );
+        $parseOptsFile = ToolCommands::parseOptsYml();
+        // Check if npm_install property enabled adding the NPM results if so.
+        if (empty($parseOptsFile['npm_install'])) {
+            $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
+            $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
+            $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
+            $skipUnsupported = ($this->skipUnsupported) ? ' (Skipping)' : '';
+            $io->definitionList(
+                ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
+                ['Recommended module check' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
+                ['Insecure module check' => $this->getFailedOrPassed($this->insecureFailed) . $skipInsecure],
+                ['Outdated module check' => $this->getFailedOrPassed($this->outdatedFailed) . $skipOutdated],
+                ['Abandoned module check' => $this->getFailedOrPassed($this->abandonedFailed) . $skipAbandoned],
+                ['Unsupported module check' => $this->getFailedOrPassed($this->unsupportedFailed) . $skipUnsupported],
+                ['Evaluation module check' => $this->getFailedOrPassed($this->evaluationFailed)],
+                ['Development module check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
+                ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
+                ['Project configuration check' => $this->getFailedOrPassed($this->configurationFailed)],
+            );
+        } else {
+            $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
+            $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
+            $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
+            $skipUnsupported = ($this->skipUnsupported) ? ' (Skipping)' : '';
+            $skipInsecureNpm = ($this->skipInsecureNpm) ? ' (Skipping)' : '';
+            $skipOutdatedNpm = ($this->skipOutdatedNpm) ? ' (Skipping)' : '';
+            $io->definitionList(
+                ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
+                ['Recommended module check' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
+                ['Insecure module check' => $this->getFailedOrPassed($this->insecureFailed) . $skipInsecure],
+                ['Outdated module check' => $this->getFailedOrPassed($this->outdatedFailed) . $skipOutdated],
+                ['Abandoned module check' => $this->getFailedOrPassed($this->abandonedFailed) . $skipAbandoned],
+                ['Unsupported module check' => $this->getFailedOrPassed($this->unsupportedFailed) . $skipUnsupported],
+                ['Evaluation module check' => $this->getFailedOrPassed($this->evaluationFailed)],
+                ['Development module check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
+                ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
+                ['Project configuration check' => $this->getFailedOrPassed($this->configurationFailed)],
+                ['NPM Insecure check' => $this->getFailedOrPassed($this->insecureNpmFailed) . $skipInsecureNpm],
+                ['NPM Outdated check' => $this->getFailedOrPassed($this->outdatedNpmFailed) . $skipOutdatedNpm],
+            );
+        }
     }
 
     /**
@@ -1064,15 +1109,9 @@ class ComponentCheckCommands extends AbstractCommands
      */
     public function componentNpmInsecure()
     {
-        // Check if .opts.yml exists
         $parseOptsFile = ToolCommands::parseOptsYml();
-        if ($parseOptsFile === false) {
-            $this->say("The file '.opts.yml' was not found, skipping.");
-            return ResultData::EXITCODE_OK;
-        }
         // Check if npm_install property enabled
         if (empty($parseOptsFile['npm_install'])) {
-            $this->say('NPM configuration missing in the .opts.yml file, skipping.');
             return ResultData::EXITCODE_OK;
         }
 
@@ -1109,15 +1148,9 @@ class ComponentCheckCommands extends AbstractCommands
     public function componentNpmOutdated()
     {
         $count = 0;
-        // Check if .opts.yml exists
         $parseOptsFile = ToolCommands::parseOptsYml();
-        if ($parseOptsFile === false) {
-            $this->say("The file '.opts.yml' was not found, skipping.");
-            return ResultData::EXITCODE_OK;
-        }
         // Check if npm_install property enabled
         if (empty($parseOptsFile['npm_install'])) {
-            $this->say('NPM configuration missing in the .opts.yml file, skipping.');
             return ResultData::EXITCODE_OK;
         }
 
