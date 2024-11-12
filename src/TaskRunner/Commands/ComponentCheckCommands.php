@@ -107,10 +107,11 @@ class ComponentCheckCommands extends AbstractCommands
             // Check if npm_install property enabled adding the NPM results if so.
             if (!empty($parseOptsFile['npm_install'])) {
                 // Add NPM checks
-                $checks += $checksNPM = [
+                $checksNPM = [
                     'componentNpmInsecure' => 'Npm Insecure',
                     'componentNpmOutdated' => 'Npm Outdated',
                 ];
+                $checks += $checksNPM;
             }
             foreach ($checks as $function => $label) {
                 $io->title("Checking $label components.");
@@ -781,17 +782,22 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Print the component check results.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function printComponentResults(ConsoleIO $io)
     {
         $io->title('Results:');
         $parseOptsFile = ToolCommands::parseOptsYml();
+        $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
+        $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
+        $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
+        $skipUnsupported = ($this->skipUnsupported) ? ' (Skipping)' : '';
+        $skipInsecureNpm = ($this->skipInsecureNpm) ? ' (Skipping)' : '';
+        $skipOutdatedNpm = ($this->skipOutdatedNpm) ? ' (Skipping)' : '';
         // Check if npm_install property enabled adding the NPM results if so.
         if (empty($parseOptsFile['npm_install'])) {
-            $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
-            $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
-            $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
-            $skipUnsupported = ($this->skipUnsupported) ? ' (Skipping)' : '';
             $io->definitionList(
                 ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
                 ['Recommended module check' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
@@ -805,12 +811,6 @@ class ComponentCheckCommands extends AbstractCommands
                 ['Project configuration check' => $this->getFailedOrPassed($this->configurationFailed)],
             );
         } else {
-            $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
-            $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
-            $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
-            $skipUnsupported = ($this->skipUnsupported) ? ' (Skipping)' : '';
-            $skipInsecureNpm = ($this->skipInsecureNpm) ? ' (Skipping)' : '';
-            $skipOutdatedNpm = ($this->skipOutdatedNpm) ? ' (Skipping)' : '';
             $io->definitionList(
                 ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
                 ['Recommended module check' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
