@@ -28,6 +28,7 @@ ewppa
 EXITCODE
 expirable
 fpfis
+gherkinlint
 grasmash
 grumphp
 gulpfile

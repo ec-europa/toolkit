@@ -30,3 +30,7 @@ command:
         config: ${toolkit.lint.cspell.config}
         files: ${toolkit.lint.cspell.files}
         options: ${toolkit.lint.cspell.options}
+    lint-behat:
+      options:
+        config: ${toolkit.lint.behat.config}
+        files: ${toolkit.lint.behat.files}
