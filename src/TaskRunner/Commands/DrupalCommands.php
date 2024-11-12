@@ -594,7 +594,7 @@ class DrupalCommands extends AbstractCommands
         $hashSalt = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(random_bytes(55)));
         $settingsOverrideFile = $this->getConfig()->get('drupal.site.settings_override_file', 'settings.override.php');
 
-        return <<< EOF
+        return <<<EOF
 
 {$this->blockStart}
 
