@@ -1119,7 +1119,9 @@ class ComponentCheckCommands extends AbstractCommands
         $this->prepareSkips();
         // Generate the package files needed in case not exists.
         if (!file_exists('package-lock.json')) {
-            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')->run()->getMessage();
+            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
         }
 
         $result = $this->taskExec('npm audit --json --audit-level=low --ignore-scripts=true --production --package-lock-only')
@@ -1158,7 +1160,9 @@ class ComponentCheckCommands extends AbstractCommands
         $this->prepareSkips();
         // Generate the package files needed in case not exists.
         if (!file_exists('package-lock.json')) {
-            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')->run()->getMessage();
+            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
         }
 
         $result = $this->taskExec('npm outdated --json --long')
