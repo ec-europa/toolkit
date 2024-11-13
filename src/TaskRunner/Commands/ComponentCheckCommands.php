@@ -92,103 +92,103 @@ class ComponentCheckCommands extends AbstractCommands
 
         $parseOptsFile = ToolCommands::parseOptsYml();
         // Execute all checks.
-            $checks = [
-                'componentMandatory' => 'Mandatory',
-                'componentRecommended' => 'Recommended',
-                'componentInsecure' => 'Insecure',
-                'componentOutdated' => 'Outdated',
-                'componentAbandoned' => 'Abandoned',
-                'componentUnsupported' => 'Unsupported',
-                'componentEvaluation' => 'Evaluation',
-                'componentDevelopment' => 'Development',
-                'componentComposer' => 'Composer',
-                'componentConfiguration' => 'Configuration',
+        $checks = [
+            'componentMandatory' => 'Mandatory',
+            'componentRecommended' => 'Recommended',
+            'componentInsecure' => 'Insecure',
+            'componentOutdated' => 'Outdated',
+            'componentAbandoned' => 'Abandoned',
+            'componentUnsupported' => 'Unsupported',
+            'componentEvaluation' => 'Evaluation',
+            'componentDevelopment' => 'Development',
+            'componentComposer' => 'Composer',
+            'componentConfiguration' => 'Configuration',
+        ];
+        // Check if npm_install property enabled adding the NPM results if so.
+        if (!empty($parseOptsFile['npm_install'])) {
+            // Add NPM checks.
+            $checksNPM = [
+                'componentNpmInsecure' => 'Npm Insecure',
+                'componentNpmOutdated' => 'Npm Outdated',
             ];
-            // Check if npm_install property enabled adding the NPM results if so.
-            if (!empty($parseOptsFile['npm_install'])) {
-                // Add NPM checks
-                $checksNPM = [
-                    'componentNpmInsecure' => 'Npm Insecure',
-                    'componentNpmOutdated' => 'Npm Outdated',
-                ];
-                $checks += $checksNPM;
-            }
-            foreach ($checks as $function => $label) {
-                $io->title("Checking $label components.");
-                $this->{$function}($io);
-                $io->newLine();
-            }
+            $checks += $checksNPM;
+        }
+        foreach ($checks as $function => $label) {
+            $io->title("Checking $label components.");
+            $this->{$function}($io);
+            $io->newLine();
+        }
 
-            $this->printComponentResults($io);
+        $this->printComponentResults($io);
 
-            // If the validation fail, return according to the blocker.
-            $status = 0;
-            if (
-                $this->evaluationFailed ||
-                $this->mandatoryFailed ||
-                $this->devCompRequireFailed ||
-                $this->composerFailed ||
-                $this->configurationFailed ||
-                (!$this->skipInsecureNpm && $this->insecureNpmFailed) ||
-                (!$this->skipOutdatedNpm && $this->outdatedNpmFailed) ||
-                (!$this->skipRecommended && $this->recommendedFailed) ||
-                (!$this->skipOutdated && $this->outdatedFailed) ||
-                (!$this->skipAbandoned && $this->abandonedFailed) ||
-                (!$this->skipUnsupported && $this->unsupportedFailed) ||
-                (!$this->skipInsecure && $this->insecureFailed)
-            ) {
-                $io->error([
-                    'Failed the components check, please verify the report and update the project.',
-                    'See the list of packages at',
-                    'https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews.',
+        // If the validation fail, return according to the blocker.
+        $status = 0;
+        if (
+            $this->evaluationFailed ||
+            $this->mandatoryFailed ||
+            $this->devCompRequireFailed ||
+            $this->composerFailed ||
+            $this->configurationFailed ||
+            (!$this->skipInsecureNpm && $this->insecureNpmFailed) ||
+            (!$this->skipOutdatedNpm && $this->outdatedNpmFailed) ||
+            (!$this->skipRecommended && $this->recommendedFailed) ||
+            (!$this->skipOutdated && $this->outdatedFailed) ||
+            (!$this->skipAbandoned && $this->abandonedFailed) ||
+            (!$this->skipUnsupported && $this->unsupportedFailed) ||
+            (!$this->skipInsecure && $this->insecureFailed)
+        ) {
+            $io->error([
+                'Failed the components check, please verify the report and update the project.',
+                'See the list of packages at',
+                'https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews.',
+            ]);
+            $status = 1;
+        }
+
+        // Give feedback if no problems found.
+        if (!$status) {
+            $io->success('Components checked, nothing to report.');
+        } else {
+            $parseOptsFile = ToolCommands::parseOptsYml();
+            if (empty($parseOptsFile['npm_install'])) {
+                $io->note([
+                    'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
+                    '- Using commit message to skip Insecure and/or Outdated check:',
+                    '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
+                    '',
+                    '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
+                    '   toolkit:',
+                    '     components:',
+                    '       outdated:',
+                    '         check: false',
+                    '       abandoned:',
+                    '         check: false',
+                    '       unsupported:',
+                    '         check: false',
                 ]);
-                $status = 1;
-            }
-
-            // Give feedback if no problems found.
-            if (!$status) {
-                $io->success('Components checked, nothing to report.');
             } else {
-                $parseOptsFile = ToolCommands::parseOptsYml();
-                if (empty($parseOptsFile['npm_install'])) {
-                    $io->note([
-                        'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
-                        '- Using commit message to skip Insecure and/or Outdated check:',
-                        '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
-                        '',
-                        '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
-                        '   toolkit:',
-                        '     components:',
-                        '       outdated:',
-                        '         check: false',
-                        '       abandoned:',
-                        '         check: false',
-                        '       unsupported:',
-                        '         check: false',
-                    ]);
-                } else {
-                    $io->note([
-                        'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
-                        '- Using commit message to skip Insecure and/or Outdated check:',
-                        '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED] and/or [SKIP-NPM-INSECURE]',
-                        '',
-                        '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
-                        '   toolkit:',
-                        '     components:',
-                        '       outdated:',
-                        '         check: false',
-                        '       abandoned:',
-                        '         check: false',
-                        '       unsupported:',
-                        '         check: false',
-                        '       npm:',
-                        '         outdated:',
-                        '           check: false',
-                    ]);
-                }
+                $io->note([
+                    'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
+                    '- Using commit message to skip Insecure and/or Outdated check:',
+                    '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED] and/or [SKIP-NPM-INSECURE]',
+                    '',
+                    '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
+                    '   toolkit:',
+                    '     components:',
+                    '       outdated:',
+                    '         check: false',
+                    '       abandoned:',
+                    '         check: false',
+                    '       unsupported:',
+                    '         check: false',
+                    '       npm:',
+                    '         outdated:',
+                    '           check: false',
+                ]);
             }
+        }
 
-            return $status;
+        return $status;
     }
 
     /**
@@ -1110,16 +1110,16 @@ class ComponentCheckCommands extends AbstractCommands
     public function componentNpmInsecure()
     {
         $parseOptsFile = ToolCommands::parseOptsYml();
-        // Check if npm_install property enabled
+        // Check if npm_install property enabled.
         if (empty($parseOptsFile['npm_install'])) {
             return ResultData::EXITCODE_OK;
         }
 
         $this->skipInsecureNpm = false;
         $this->prepareSkips();
-        // Generate the package files needed in case not exists
+        // Generate the package files needed in case not exists.
         if (!file_exists('package-lock.json')) {
-            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')->run();
+            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')->run()->getMessage();
         }
 
         $result = $this->taskExec('npm audit --json --audit-level=low --ignore-scripts=true --production --package-lock-only')
@@ -1149,16 +1149,16 @@ class ComponentCheckCommands extends AbstractCommands
     {
         $count = 0;
         $parseOptsFile = ToolCommands::parseOptsYml();
-        // Check if npm_install property enabled
+        // Check if npm_install property enabled.
         if (empty($parseOptsFile['npm_install'])) {
             return ResultData::EXITCODE_OK;
         }
 
         $this->skipOutdatedNpm = false;
         $this->prepareSkips();
-        // Generate the package files needed in case not exists
+        // Generate the package files needed in case not exists.
         if (!file_exists('package-lock.json')) {
-            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')->run();
+            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')->run()->getMessage();
         }
 
         $result = $this->taskExec('npm outdated --json --long')
@@ -1176,7 +1176,7 @@ class ComponentCheckCommands extends AbstractCommands
                 }
             }
             if ($count == 0) {
-                // Check is passed if modules reported have same current-wanted version
+                // Check is passed if modules reported have same current-wanted version.
                 $this->outdatedNpmFailed = false;
                 $this->say('NPM Outdated check passed.');
             }
