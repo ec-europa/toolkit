@@ -234,17 +234,24 @@ class ToolCommands extends AbstractCommands
         } else {
             $drupalCheck = Semver::satisfies($drupalVersion, $data['drupal']) ? 'OK' : 'FAIL';
         }
-        //Check node version running
-        $exec = $this->taskExec('node --version')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run();
-        $nodeVersion = rtrim($exec->getMessage());
-        $nodeVersion = trim($nodeVersion, 'v');
-        $isValid = version_compare($nodeVersion, $data['node']);
-        if ($isValid >= 0) {
-            $nodeCheck = 'OK';
+        //Check if node_install enable in the .opts.yml.
+        $parseOptsFile = self::parseOptsYml();
+        // Check if npm_install property enabled.
+        if (!empty($parseOptsFile['npm_install'])) {
+            //Check node version running.
+            $exec = $this->taskExec('node --version')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run();
+            $nodeVersion = rtrim($exec->getMessage());
+            $nodeVersion = trim($nodeVersion, 'v');
+            $isValid = version_compare($nodeVersion, $data['node']);
+            if ($isValid >= 0) {
+                $nodeCheck = 'OK';
+            } else {
+                $nodeCheck = 'FAIL (not found)';
+            }
         } else {
-            $nodeCheck = 'FAIL (not found)';
+            $nodeCheck = 'OK';
         }
 
         // Handle NEXTCLOUD.
@@ -281,8 +288,15 @@ class ToolCommands extends AbstractCommands
             ['PHP version' => "$phpCheck ($phpVersion)"],
             ['Toolkit version' => "$toolkitCheck ($toolkitVersion)$toolkitExtra"],
             ['Drupal version' => "$drupalCheck ($drupalVersion)$drupalExtra"],
-            ['Node version' => "$nodeCheck ($nodeVersion)"],
         );
+        if (!empty($parseOptsFile['npm_install'])) {
+            $io->definitionList(
+                ['PHP version' => "$phpCheck ($phpVersion)"],
+                ['Toolkit version' => "$toolkitCheck ($toolkitVersion)$toolkitExtra"],
+                ['Drupal version' => "$drupalCheck ($drupalVersion)$drupalExtra"],
+                ['Node version' => "$nodeCheck ($nodeVersion)"],
+            );
+        }
 
         if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $drupalCheck !== 'OK' || $nodeCheck !== 'OK') {
             return 1;
