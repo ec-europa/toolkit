@@ -21,7 +21,6 @@
     - string_contains: "PHP version       OK"
     - string_contains: "Toolkit version   FAIL (not found)"
     - string_contains: "Drupal version    FAIL (not found)"
-    - string_contains: "Node version      FAIL (not found)"
 
 - command: toolkit:requirements
   configuration: []
@@ -34,7 +33,6 @@
     - string_contains: "PHP version       OK"
     - string_contains: "Toolkit version   FAIL"
     - string_contains: "Drupal version    OK"
-    - string_contains: "Node version      FAIL (not found)"
 
 - command: toolkit:requirements
   configuration: []
@@ -47,20 +45,23 @@
     - string_contains: "PHP version       OK"
     - string_contains: "Toolkit version   FAIL (not found)"
     - string_contains: "Drupal version    OK"
-    - string_contains: "Node version      FAIL (not found)"
+    - not_string_contains: "Node version"
 
 - command: toolkit:requirements
   configuration: []
   resources:
     - from: sample-composer.lock
       to: composer.lock
+    - file: .opts.yml
+      content: |
+        { "npm_install": "True" }
   expectations:
     - string_contains: "Checking Toolkit requirements:"
     - string_contains: "Required checks:"
     - string_contains: "PHP version       OK"
     - string_contains: "Toolkit version   OK"
     - string_contains: "Drupal version    OK"
-    - string_contains: "Node version      FAIL (not found)"
+    - string_contains: "Node version      OK"
 
 - command: toolkit:fix-permissions
   configuration: []

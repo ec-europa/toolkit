@@ -50,6 +50,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected array $packageReviews;
     protected bool $forcedUpdateModule = false;
     protected bool $disabledConfigReadonly = false;
+    protected array $optsYml;
 
     /**
      * Check composer for components that are not whitelisted/blacklisted.
@@ -90,7 +91,7 @@ class ComponentCheckCommands extends AbstractCommands
             $this->composerLock['packages'] = $this->testPackages();
         }
 
-        $parseOptsFile = ToolCommands::parseOptsYml();
+        $parseOptsFile = $this->getOptsYml();
         // Execute all checks.
         $checks = [
             'componentMandatory' => 'Mandatory',
@@ -149,7 +150,6 @@ class ComponentCheckCommands extends AbstractCommands
         if (!$status) {
             $io->success('Components checked, nothing to report.');
         } else {
-            $parseOptsFile = ToolCommands::parseOptsYml();
             if (empty($parseOptsFile['npm_install'])) {
                 $io->note([
                     'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
@@ -789,7 +789,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected function printComponentResults(ConsoleIO $io)
     {
         $io->title('Results:');
-        $parseOptsFile = ToolCommands::parseOptsYml();
+        $parseOptsFile = $this->getOptsYml();
         $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
         $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
         $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
@@ -1109,7 +1109,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     public function componentNpmInsecure()
     {
-        $parseOptsFile = ToolCommands::parseOptsYml();
+        $parseOptsFile = $this->getOptsYml();
         // Check if npm_install property enabled.
         if (empty($parseOptsFile['npm_install'])) {
             return ResultData::EXITCODE_OK;
@@ -1131,7 +1131,7 @@ class ComponentCheckCommands extends AbstractCommands
         if (!empty($auditModules['vulnerabilities'])) {
             $this->insecureNpmFailed = true;
             foreach ($auditModules['vulnerabilities'] as $vulnerability) {
-                $this->writeln('The dependency: ' . $vulnerability['name'] . ' has a vulnerability categorized as severity: ' . $vulnerability['severity'] . "\n");
+                $this->writeln('Package ' . $vulnerability['name'] . ' has a vulnerability with severity ' . $vulnerability['severity'] . '.');
             }
         }
 
@@ -1149,8 +1149,7 @@ class ComponentCheckCommands extends AbstractCommands
      */
     public function componentNpmOutdated()
     {
-        $count = 0;
-        $parseOptsFile = ToolCommands::parseOptsYml();
+        $parseOptsFile = $this->getOptsYml();
         // Check if npm_install property enabled.
         if (empty($parseOptsFile['npm_install'])) {
             return ResultData::EXITCODE_OK;
@@ -1172,19 +1171,28 @@ class ComponentCheckCommands extends AbstractCommands
         if (empty($outdatedModules)) {
             $this->say('NPM Outdated check passed.');
         } else {
-            foreach ($outdatedModules as $keys => $outdated) {
-                if ($outdated['current'] !== $outdated['wanted']) {
-                    $this->writeln('Package ' . $keys . ' with version installed ' . $outdated['current'] . ' is outdated, please update to a the ' . $outdated['wanted'] . ' version.');
+            foreach ($outdatedModules as $packageName => $package) {
+                if ($package['current'] !== $package['wanted']) {
+                    $this->writeln('Package ' . $packageName . ' with version installed ' . $package['current'] . ' is outdated, please update to the ' . $package['wanted'] . ' version.');
                     $this->outdatedNpmFailed = true;
-                    $count++;
                 }
             }
-            if ($count == 0) {
+            if (!$this->outdatedNpmFailed) {
                 // Check is passed if modules reported have same current-wanted version.
-                $this->outdatedNpmFailed = false;
                 $this->say('NPM Outdated check passed.');
             }
         }
+    }
+
+    /**
+     * Returns the .opts.yml content.
+     */
+    private function getOptsYml(): array
+    {
+        if (isset($this->optsYml)) {
+            return $this->optsYml;
+        }
+        return ToolCommands::parseOptsYml() ?: [];
     }
 
 }
