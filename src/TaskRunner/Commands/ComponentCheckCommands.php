@@ -692,6 +692,88 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
+     * Run NPM Insecure.
+     *
+     * @command check:npm-insecure
+     */
+    public function componentNpmInsecure()
+    {
+        $parseOptsFile = $this->getOptsYml();
+        // Check if npm_install property enabled.
+        if (empty($parseOptsFile['npm_install'])) {
+            return ResultData::EXITCODE_OK;
+        }
+
+        $this->skipInsecureNpm = false;
+        $this->prepareSkips();
+        // Generate the package files needed in case not exists.
+        if (!file_exists('package-lock.json')) {
+            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
+        }
+
+        $result = $this->taskExec('npm audit --json --audit-level=low --ignore-scripts=true --production --package-lock-only')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        $auditModules = json_decode($result, true);
+        if (!empty($auditModules['vulnerabilities'])) {
+            $this->insecureNpmFailed = true;
+            foreach ($auditModules['vulnerabilities'] as $vulnerability) {
+                $this->writeln('Package ' . $vulnerability['name'] . ' has a vulnerability with severity ' . $vulnerability['severity'] . '.');
+            }
+        }
+
+        if (!$this->insecureNpmFailed) {
+            $this->say('NPM Insecure check passed.');
+        }
+    }
+
+    /**
+     * Run NPM Outdated.
+     *
+     * @command check:npm-outdated
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function componentNpmOutdated()
+    {
+        $parseOptsFile = $this->getOptsYml();
+        // Check if npm_install property enabled.
+        if (empty($parseOptsFile['npm_install'])) {
+            return ResultData::EXITCODE_OK;
+        }
+
+        $this->skipOutdatedNpm = false;
+        $this->prepareSkips();
+        // Generate the package files needed in case not exists.
+        if (!file_exists('package-lock.json')) {
+            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run()->getMessage();
+        }
+
+        $result = $this->taskExec('npm outdated --json --long')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        $outdatedModules = json_decode($result, true);
+        if (empty($outdatedModules)) {
+            $this->say('NPM Outdated check passed.');
+        } else {
+            foreach ($outdatedModules as $packageName => $package) {
+                if ($package['current'] !== $package['wanted']) {
+                    $this->writeln('Package ' . $packageName . ' with version installed ' . $package['current'] . ' is outdated, please update to the ' . $package['wanted'] . ' version.');
+                    $this->outdatedNpmFailed = true;
+                }
+            }
+            if (!$this->outdatedNpmFailed) {
+                // Check is passed if modules reported have same current-wanted version.
+                $this->say('NPM Outdated check passed.');
+            }
+        }
+    }
+
+    /**
      * Prepare the overrides from config and commit message.
      */
     protected function prepareSkips(): void
@@ -1100,88 +1182,6 @@ class ComponentCheckCommands extends AbstractCommands
         $settings = $config->get('drupal.root') . '/sites/' . $config->get('drupal.site.sites_subdir') . '/settings.php';
         $content = file_get_contents($settings);
         file_put_contents($settings, preg_replace('#^//(\s*\$settings\[["\']config_readonly["\']\])#m', "$1", $content));
-    }
-
-    /**
-     * Run NPM Insecure.
-     *
-     * @command check:npm-insecure
-     */
-    public function componentNpmInsecure()
-    {
-        $parseOptsFile = $this->getOptsYml();
-        // Check if npm_install property enabled.
-        if (empty($parseOptsFile['npm_install'])) {
-            return ResultData::EXITCODE_OK;
-        }
-
-        $this->skipInsecureNpm = false;
-        $this->prepareSkips();
-        // Generate the package files needed in case not exists.
-        if (!file_exists('package-lock.json')) {
-            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')
-                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-                ->run()->getMessage();
-        }
-
-        $result = $this->taskExec('npm audit --json --audit-level=low --ignore-scripts=true --production --package-lock-only')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
-        $auditModules = json_decode($result, true);
-        if (!empty($auditModules['vulnerabilities'])) {
-            $this->insecureNpmFailed = true;
-            foreach ($auditModules['vulnerabilities'] as $vulnerability) {
-                $this->writeln('Package ' . $vulnerability['name'] . ' has a vulnerability with severity ' . $vulnerability['severity'] . '.');
-            }
-        }
-
-        if (!$this->insecureNpmFailed) {
-            $this->say('NPM Insecure check passed.');
-        }
-    }
-
-    /**
-     * Run NPM Outdated.
-     *
-     * @command check:npm-outdated
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     */
-    public function componentNpmOutdated()
-    {
-        $parseOptsFile = $this->getOptsYml();
-        // Check if npm_install property enabled.
-        if (empty($parseOptsFile['npm_install'])) {
-            return ResultData::EXITCODE_OK;
-        }
-
-        $this->skipOutdatedNpm = false;
-        $this->prepareSkips();
-        // Generate the package files needed in case not exists.
-        if (!file_exists('package-lock.json')) {
-            $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')
-                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-                ->run()->getMessage();
-        }
-
-        $result = $this->taskExec('npm outdated --json --long')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
-        $outdatedModules = json_decode($result, true);
-        if (empty($outdatedModules)) {
-            $this->say('NPM Outdated check passed.');
-        } else {
-            foreach ($outdatedModules as $packageName => $package) {
-                if ($package['current'] !== $package['wanted']) {
-                    $this->writeln('Package ' . $packageName . ' with version installed ' . $package['current'] . ' is outdated, please update to the ' . $package['wanted'] . ' version.');
-                    $this->outdatedNpmFailed = true;
-                }
-            }
-            if (!$this->outdatedNpmFailed) {
-                // Check is passed if modules reported have same current-wanted version.
-                $this->say('NPM Outdated check passed.');
-            }
-        }
     }
 
     /**
