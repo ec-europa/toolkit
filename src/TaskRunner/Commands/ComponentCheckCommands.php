@@ -761,13 +761,13 @@ class ComponentCheckCommands extends AbstractCommands
             $this->say('NPM Outdated check passed.');
         } else {
             foreach ($outdatedModules as $packageName => $package) {
-                if ($package['current'] !== $package['wanted']) {
-                    $this->writeln('Package ' . $packageName . ' with version installed ' . $package['current'] . ' is outdated, please update to the ' . $package['wanted'] . ' version.');
+                if ($package['current'] !== $package['latest']) {
+                    $this->writeln('Package ' . $packageName . ' with version installed ' . $package['current'] . ' is outdated, please update to the ' . $package['latest'] . ' version.');
                     $this->outdatedNpmFailed = true;
                 }
             }
             if (!$this->outdatedNpmFailed) {
-                // Check is passed if modules reported have same current-wanted version.
+                // Check is passed if modules reported have same current-latest version.
                 $this->say('NPM Outdated check passed.');
             }
         }
