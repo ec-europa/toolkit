@@ -21,6 +21,9 @@ toolkit:
       user: ~
       pass: ~
   components:
+    npm:
+      outdated:
+        check: true
     outdated:
       check: true
       # Ignore packages in specific version, example:

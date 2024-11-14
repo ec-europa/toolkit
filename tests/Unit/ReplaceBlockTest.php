@@ -82,7 +82,7 @@ class ReplaceBlockTest extends AbstractTest
         $this->assertEquals(0, $result['code']);
 
         $content = file_get_contents($this->getSandboxFilepath('test.txt'));
-//        $this->debugExpectations($content, $expectations);
+        $this->debugExpectations($content, $expectations);
         foreach ($expectations as $expectation) {
             $this->assertDynamic($content, $expectation);
         }

@@ -56,6 +56,9 @@ class ToolCommands extends AbstractCommands
                 if ($transformedToken == 'skip_d9c') {
                     $tokens['skipDus'] = true;
                 }
+                if ($transformedToken == 'skip_npm_insecure') {
+                    $tokens['skipInsecureNpm'] = true;
+                }
             }
         }
         return $tokens;
@@ -231,6 +234,24 @@ class ToolCommands extends AbstractCommands
         } else {
             $drupalCheck = Semver::satisfies($drupalVersion, $data['drupal']) ? 'OK' : 'FAIL';
         }
+        // Check if node_install enable in the .opts.yml.
+        $parseOptsFile = self::parseOptsYml();
+        // Check if npm_install property enabled.
+        $nodeCheck = 'OK';
+        $nodeVersion = '';
+        if (!empty($parseOptsFile['npm_install'])) {
+            // Check node version running.
+            $exec = $this->taskExec('node --version')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run();
+            $nodeVersion = rtrim($exec->getMessage());
+            if (empty($nodeVersion)) {
+                $nodeCheck = 'FAIL (not found)';
+            } else {
+                $nodeVersion = trim($nodeVersion, 'v');
+                $nodeCheck = Semver::satisfies($nodeVersion, $data['node']) ? 'OK' : 'FAIL';
+            }
+        }
 
         // Handle NEXTCLOUD.
         $ncUser = Toolkit::getNextcloudUser();
@@ -262,13 +283,23 @@ class ToolCommands extends AbstractCommands
         }
 
         $io->title('Required checks:');
-        $io->definitionList(
-            ['PHP version' => "$phpCheck ($phpVersion)"],
-            ['Toolkit version' => "$toolkitCheck ($toolkitVersion)$toolkitExtra"],
-            ['Drupal version' => "$drupalCheck ($drupalVersion)$drupalExtra"],
-        );
 
-        if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $drupalCheck !== 'OK') {
+        if (!empty($parseOptsFile['npm_install'])) {
+            $io->definitionList(
+                ['PHP version' => "$phpCheck ($phpVersion)"],
+                ['Toolkit version' => "$toolkitCheck ($toolkitVersion)$toolkitExtra"],
+                ['Drupal version' => "$drupalCheck ($drupalVersion)$drupalExtra"],
+                ['Node version' => "$nodeCheck ($nodeVersion)"],
+            );
+        } else {
+            $io->definitionList(
+                ['PHP version' => "$phpCheck ($phpVersion)"],
+                ['Toolkit version' => "$toolkitCheck ($toolkitVersion)$toolkitExtra"],
+                ['Drupal version' => "$drupalCheck ($drupalVersion)$drupalExtra"],
+            );
+        }
+
+        if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $drupalCheck !== 'OK' || $nodeCheck !== 'OK') {
             return 1;
         }
         return 0;
