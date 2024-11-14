@@ -339,8 +339,6 @@
     <rule ref="DrupalPractice.Objects">
         <exclude name="DrupalPractice.Objects.UnusedPrivateMethod"/>
     </rule>
-    <rule ref="DrupalPractice.Variables"/>
-    <rule ref="DrupalPractice.Yaml"/>
 
     <rule ref="Generic.PHP.ForbiddenFunctions">
         <properties>
