@@ -64,6 +64,8 @@ class ConfigForCommand implements EventSubscriberInterface
     }
 
     /**
+     * Inject configurations.
+     *
      * Before a Console command runs, inject configuration settings
      * for this command into the default value of the options of
      * this command.

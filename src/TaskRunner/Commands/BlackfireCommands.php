@@ -51,7 +51,7 @@ class BlackfireCommands extends AbstractCommands
         // Confirm that blackfire is properly installed.
         $test = $this->taskExec('which blackfire')->silent(true)
             ->run()->getMessage();
-        if (strpos($test, 'not found') !== false) {
+        if (str_contains($test, 'not found')) {
             $problems[] = 'The Blackfire is not installed, skipping.';
         }
 

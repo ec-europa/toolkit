@@ -321,6 +321,7 @@ class ToolCommands extends AbstractCommands
             $this->say("Script was not found at $script, skipping..");
             return 0;
         }
+        $tasks = [];
         if (empty($options['drupal_path'])) {
             $root = $this->getConfig()->get('drupal.root');
             $options['drupal_path'] = getenv('DOCUMENT_ROOT') . '/' . $root;

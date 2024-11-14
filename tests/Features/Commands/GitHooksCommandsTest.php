@@ -52,7 +52,7 @@ class GitHooksCommandsTest extends AbstractTest
      * @param array $configuration
      *   A configuration.
      * @param array $resources
-     *    Resources needed for the test
+     *   Resources needed for the test.
      * @param array $expectations
      *   Tests expected.
      *

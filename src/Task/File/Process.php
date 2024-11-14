@@ -50,7 +50,9 @@ class Process extends BaseTask implements BuilderAwareInterface
      * Constructs a new Process task.
      *
      * @param string $source
+     *   The source file.
      * @param string $destination
+     *   The destination file, if empty assumes the $source as destination.
      */
     public function __construct(string $source, string $destination = '')
     {

@@ -146,8 +146,6 @@ class Runner
 
     /**
      * Returns the current working directory.
-     *
-     * @return string
      */
     private function getWorkingDir()
     {
@@ -156,8 +154,6 @@ class Runner
 
     /**
      * Create and prepare the Application.
-     *
-     * @return $this
      */
     private function prepareApplication()
     {
@@ -196,8 +192,6 @@ class Runner
 
     /**
      * Create the configurations and process overrides.
-     *
-     * @return $this
      */
     private function prepareConfigurations()
     {
@@ -263,8 +257,6 @@ class Runner
 
     /**
      * Prepare the container with the configurations.
-     *
-     * @return $this
      */
     private function prepareContainer()
     {
@@ -285,8 +277,6 @@ class Runner
 
     /**
      * Create and configure the Robo runner.
-     *
-     * @return $this
      */
     private function prepareRunner()
     {
@@ -364,8 +354,7 @@ class Runner
      * Get runner config directory files.
      *
      * @param string $runnerConfigDir
-     *
-     * @return string[]
+     *   The directory to scan.
      */
     private function getConfigDirFilesPaths(string $runnerConfigDir): array
     {

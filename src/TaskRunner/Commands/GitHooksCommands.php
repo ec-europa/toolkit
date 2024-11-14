@@ -215,6 +215,8 @@ class GitHooksCommands extends AbstractCommands
      * @command toolkit:hooks-run
      *
      * @aliases tk-hrun
+     *
+     * phpcs:disable DrupalPractice.CodeAnalysis.VariableAnalysis.UnusedVariable
      */
     public function hooksRun(ConsoleIO $io, string $hook, $arg1 = '', $arg2 = '', $arg3 = '')
     {
