@@ -8,7 +8,7 @@
   - DQA-10386: Remove package version parameter of the endpoint.
   - DQA-10267: Add support to phpunit v11.
   - DQA-10218: Allocate npm audit in toolkit.
-  - DQA-0: Improve phpcs ruleset.
+  - DQA-10550: Improve phpcs ruleset.
 
 ## Version 10.14.0
   - DQA-9954: Improve regex pattern unsupported checks readonly comment.
