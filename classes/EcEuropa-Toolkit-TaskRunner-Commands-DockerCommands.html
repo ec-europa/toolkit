@@ -252,7 +252,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
     <span>
-                                &nbsp;: string    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Path to YAML configuration file containing command defaults.</dd>
 
@@ -329,14 +329,14 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a class="" href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskProcess">taskProcess()</a>
     <span>
-                                &nbsp;: <a href="classes/EcEuropa-Toolkit-Task-File-Process.html"><abbr title="\EcEuropa\Toolkit\Task\File\Process">Process</abbr></a>|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Process the file.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a class="" href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskReplaceBlock">taskReplaceBlock()</a>
     <span>
-                                &nbsp;: <a href="classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html"><abbr title="\EcEuropa\Toolkit\Task\File\ReplaceBlock">ReplaceBlock</abbr></a>|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>Replace block in a file.</dd>
 
@@ -345,33 +345,33 @@
     <span>
                                 &nbsp;: void    </span>
 </dt>
-<dd>Backup current docker-compose.yml to docker-compose.yml.prev</dd>
+<dd>Backup current docker-compose.yml to docker-compose.yml.prev.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_copyDockerComposeDefaultToProject">copyDockerComposeDefaultToProject()</a>
     <span>
                                 &nbsp;: void    </span>
 </dt>
-<dd>Copy ./resources/docker/default.yml file to docker-compose.yml inside project root directory</dd>
+<dd>Copy ./resources/docker/default.yml file to docker-compose.yml inside project root directory.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_extractMajorMinorVersion">extractMajorMinorVersion()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
-<dd>Converts from semantic version to &quot;major.minor&quot; version</dd>
+<dd>Converts from semantic version to &quot;major.minor&quot; version.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getFinalImages">getFinalImages()</a>
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Get final images to update docker-compose.yml</dd>
+<dd>Get final images to update docker-compose.yml.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getProjectPhpFromWebsite">getProjectPhpFromWebsite()</a>
     <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;|array&lt;string|int, string&gt;    </span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Returns the Project&#039;s php service version information from the endpoint.</dd>
 
@@ -380,35 +380,35 @@
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Return the details for a service from ./resources/docker</dd>
+<dd>Return the details for a service from ./resources/docker.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServiceImage">getServiceImage()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
-<dd>Get service image with version</dd>
+<dd>Get service image with version.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServicesImagesFromDockerCompose">getServicesImagesFromDockerCompose()</a>
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Get array of services with images and versions from docker-compose.yml</dd>
+<dd>Get array of services with images and versions from docker-compose.yml.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServicesVersionsFromRequirements">getServicesVersionsFromRequirements()</a>
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Get final services names with versions from requirements</dd>
+<dd>Get final services names with versions from requirements.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWarningMessages">getWarningMessages()</a>
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Get warning messages for versions on .opts.yml that not respect the minimum requirements</dd>
+<dd>Get warning messages for versions on .opts.yml that not respect the minimum requirements.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWebsiteRequirements">getWebsiteRequirements()</a>
@@ -422,21 +422,21 @@
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Remove services that do not exist in project info, requirements or .opts.yml</dd>
+<dd>Remove services that do not exist in project info, requirements or .opts.yml.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_updateDockerComposeFile">updateDockerComposeFile()</a>
     <span>
                                 &nbsp;: void    </span>
 </dt>
-<dd>Update docker-compose.yml</dd>
+<dd>Update docker-compose.yml.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_writeWarningMessages">writeWarningMessages()</a>
     <span>
                                 &nbsp;: void    </span>
 </dt>
-<dd>Write all available warning messages</dd>
+<dd>Write all available warning messages.</dd>
 
     </dl>
 
@@ -597,7 +597,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">44</span>
+    <span class="phpdocumentor-element-found-in__line">42</span>
 
     </aside>
 
@@ -680,7 +680,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">30</span>
+    <span class="phpdocumentor-element-found-in__line">28</span>
 
     </aside>
 
@@ -688,7 +688,7 @@ In case of some information is not available, the images will be updated based o
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getConfigurationFile</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+                    <span class="phpdocumentor-signature__name">getConfigurationFile</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -701,11 +701,7 @@ In case of some information is not available, the images will be updated based o
 
     
 
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">string</span>
-            </section>
-
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -721,7 +717,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">135</span>
+    <span class="phpdocumentor-element-found-in__line">133</span>
 
     </aside>
 
@@ -777,7 +773,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">127</span>
+    <span class="phpdocumentor-element-found-in__line">125</span>
 
     </aside>
 
@@ -820,7 +816,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">151</span>
+    <span class="phpdocumentor-element-found-in__line">149</span>
 
     </aside>
 
@@ -859,7 +855,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">46</span>
+    <span class="phpdocumentor-element-found-in__line">44</span>
 
     </aside>
 
@@ -929,7 +925,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">62</span>
+    <span class="phpdocumentor-element-found-in__line">60</span>
 
     </aside>
 
@@ -982,7 +978,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">113</span>
+    <span class="phpdocumentor-element-found-in__line">111</span>
 
     </aside>
 
@@ -1034,7 +1030,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">78</span>
+    <span class="phpdocumentor-element-found-in__line">76</span>
 
     </aside>
 
@@ -1104,7 +1100,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">94</span>
+    <span class="phpdocumentor-element-found-in__line">92</span>
 
     </aside>
 
@@ -1157,7 +1153,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">105</span>
+    <span class="phpdocumentor-element-found-in__line">103</span>
 
     </aside>
 
@@ -1247,7 +1243,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Task/File/Tasks.php"><a href="files/src-task-file-tasks.html"><abbr title="src/Task/File/Tasks.php">Tasks.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">25</span>
+    <span class="phpdocumentor-element-found-in__line">23</span>
 
     </aside>
 
@@ -1255,7 +1251,7 @@ In case of some information is not available, the images will be updated based o
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-                    <span class="phpdocumentor-signature__name">taskProcess</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$source</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$destination</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/EcEuropa-Toolkit-Task-File-Process.html"><abbr title="\EcEuropa\Toolkit\Task\File\Process">Process</abbr></a>|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
+                    <span class="phpdocumentor-signature__name">taskProcess</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$source</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$destination</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -1287,11 +1283,7 @@ In case of some information is not available, the images will be updated based o
 
     
 
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><a href="classes/EcEuropa-Toolkit-Task-File-Process.html"><abbr title="\EcEuropa\Toolkit\Task\File\Process">Process</abbr></a>|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-            </section>
-
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -1307,7 +1299,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Task/File/Tasks.php"><a href="files/src-task-file-tasks.html"><abbr title="src/Task/File/Tasks.php">Tasks.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">38</span>
+    <span class="phpdocumentor-element-found-in__line">34</span>
 
     </aside>
 
@@ -1315,7 +1307,7 @@ In case of some information is not available, the images will be updated based o
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-                    <span class="phpdocumentor-signature__name">taskReplaceBlock</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$filename</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html"><abbr title="\EcEuropa\Toolkit\Task\File\ReplaceBlock">ReplaceBlock</abbr></a>|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
+                    <span class="phpdocumentor-signature__name">taskReplaceBlock</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$filename</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -1338,11 +1330,7 @@ In case of some information is not available, the images will be updated based o
 
     
 
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><a href="classes/EcEuropa-Toolkit-Task-File-ReplaceBlock.html"><abbr title="\EcEuropa\Toolkit\Task\File\ReplaceBlock">ReplaceBlock</abbr></a>|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-            </section>
-
+    
 </article>
                     <article
         class="phpdocumentor-element
@@ -1358,11 +1346,11 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">189</span>
+    <span class="phpdocumentor-element-found-in__line">176</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Backup current docker-compose.yml to docker-compose.yml.prev</p>
+        <p class="phpdocumentor-summary">Backup current docker-compose.yml to docker-compose.yml.prev.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -1393,11 +1381,11 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">96</span>
+    <span class="phpdocumentor-element-found-in__line">92</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Copy ./resources/docker/default.yml file to docker-compose.yml inside project root directory</p>
+        <p class="phpdocumentor-summary">Copy ./resources/docker/default.yml file to docker-compose.yml inside project root directory.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -1428,11 +1416,11 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">173</span>
+    <span class="phpdocumentor-element-found-in__line">162</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Converts from semantic version to &quot;major.minor&quot; version</p>
+        <p class="phpdocumentor-summary">Converts from semantic version to &quot;major.minor&quot; version.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -1449,7 +1437,9 @@ In case of some information is not available, the images will be updated based o
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The version to convert.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -1477,11 +1467,11 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">296</span>
+    <span class="phpdocumentor-element-found-in__line">282</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Get final images to update docker-compose.yml</p>
+        <p class="phpdocumentor-summary">Get final images to update docker-compose.yml.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -1498,21 +1488,27 @@ In case of some information is not available, the images will be updated based o
                 : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The requirements</p>
+</section>
+
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$websiteRequirements</span>
                 : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The website requirements.</p>
+</section>
+
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$optsFileContent</span>
                 : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The .opts.yml content.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -1540,7 +1536,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">130</span>
+    <span class="phpdocumentor-element-found-in__line">123</span>
 
     </aside>
 
@@ -1548,7 +1544,7 @@ In case of some information is not available, the images will be updated based o
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">getProjectPhpFromWebsite</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$projectId</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|array&lt;string|int, string&gt;</span></code>
+                    <span class="phpdocumentor-signature__name">getProjectPhpFromWebsite</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$projectId</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -1561,32 +1557,19 @@ In case of some information is not available, the images will be updated based o
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The project id.</p>
+</section>
+
             </dd>
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getProjectPhpFromWebsite#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                             
-                                    </dd>
-                                            </dl>
 
     
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|array&lt;string|int, string&gt;</span>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             </section>
 
 </article>
@@ -1604,11 +1587,11 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">231</span>
+    <span class="phpdocumentor-element-found-in__line">217</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Return the details for a service from ./resources/docker</p>
+        <p class="phpdocumentor-summary">Return the details for a service from ./resources/docker.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -1625,7 +1608,9 @@ In case of some information is not available, the images will be updated based o
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The service name.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -1653,11 +1638,11 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">278</span>
+    <span class="phpdocumentor-element-found-in__line">263</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Get service image with version</p>
+        <p class="phpdocumentor-summary">Get service image with version.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -1674,21 +1659,27 @@ In case of some information is not available, the images will be updated based o
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The service.</p>
+</section>
+
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$image</span>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The image.</p>
+</section>
+
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$version</span>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The version.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -1716,11 +1707,11 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">112</span>
+    <span class="phpdocumentor-element-found-in__line">107</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Get array of services with images and versions from docker-compose.yml</p>
+        <p class="phpdocumentor-summary">Get array of services with images and versions from docker-compose.yml.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -1737,7 +1728,9 @@ In case of some information is not available, the images will be updated based o
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The docker-compose content.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -1765,11 +1758,11 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">245</span>
+    <span class="phpdocumentor-element-found-in__line">230</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Get final services names with versions from requirements</p>
+        <p class="phpdocumentor-summary">Get final services names with versions from requirements.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -1786,7 +1779,9 @@ In case of some information is not available, the images will be updated based o
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The content to check.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -1814,11 +1809,11 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">326</span>
+    <span class="phpdocumentor-element-found-in__line">312</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Get warning messages for versions on .opts.yml that not respect the minimum requirements</p>
+        <p class="phpdocumentor-summary">Get warning messages for versions on .opts.yml that not respect the minimum requirements.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -1835,14 +1830,18 @@ In case of some information is not available, the images will be updated based o
                 : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The .opts.yml content.</p>
+</section>
+
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$websiteRequirements</span>
                 : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The website requirements.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -1870,7 +1869,7 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">156</span>
+    <span class="phpdocumentor-element-found-in__line">146</span>
 
     </aside>
 
@@ -1886,21 +1885,6 @@ In case of some information is not available, the images will be updated based o
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWebsiteRequirements#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                             
-                                    </dd>
-                                            </dl>
 
     
 
@@ -1924,11 +1908,11 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">351</span>
+    <span class="phpdocumentor-element-found-in__line">337</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Remove services that do not exist in project info, requirements or .opts.yml</p>
+        <p class="phpdocumentor-summary">Remove services that do not exist in project info, requirements or .opts.yml.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -1945,14 +1929,18 @@ In case of some information is not available, the images will be updated based o
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The services.</p>
+</section>
+
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$finalServicesImages</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The final services.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -1980,11 +1968,11 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">205</span>
+    <span class="phpdocumentor-element-found-in__line">192</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Update docker-compose.yml</p>
+        <p class="phpdocumentor-summary">Update docker-compose.yml.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -2001,14 +1989,18 @@ In case of some information is not available, the images will be updated based o
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The docker-compose content.</p>
+</section>
+
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$finalServicesImages</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>The services images.</p>
+</section>
+
             </dd>
             </dl>
 
@@ -2032,11 +2024,11 @@ In case of some information is not available, the images will be updated based o
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/DockerCommands.php"><a href="files/src-taskrunner-commands-dockercommands.html"><abbr title="src/TaskRunner/Commands/DockerCommands.php">DockerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">262</span>
+    <span class="phpdocumentor-element-found-in__line">246</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Write all available warning messages</p>
+        <p class="phpdocumentor-summary">Write all available warning messages.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
@@ -2053,7 +2045,9 @@ In case of some information is not available, the images will be updated based o
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                
+                    <section class="phpdocumentor-description"><p>Messages to print.</p>
+</section>
+
             </dd>
             </dl>
 

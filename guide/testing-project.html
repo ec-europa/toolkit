@@ -536,6 +536,49 @@ the default configurations including the Drupal .eslintrc.json. The file
 
     </section>
 
+            <section class="section " id="cspell-testing">
+            <h3>CSpell testing</h3>
+
+            
+    <p>To run the CSpell tests you can make use of the <code>toolkit:lint-cspell</code>
+ command:</p>
+
+            <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:lint-cspell</code></pre>
+
+            
+    <p>These are the default configurations in the <code>runner.yml</code>
+ file.</p>
+
+            <pre><code class="language-yaml">toolkit:
+  lint:
+    cspell:
+      config: &#039;.cspell.json&#039;
+      files: &#039;lib/&#039;
+      options: &#039;--dot --gitignore&#039;</code></pre>
+
+    </section>
+
+            <section class="section " id="behat-lint-testing">
+            <h3>Behat lint testing</h3>
+
+            
+    <p>To run the Behat lint you can make use of the <code>toolkit:lint-behat</code>
+ command:</p>
+
+            <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:lint-behat</code></pre>
+
+            
+    <p>These are the default configurations in the <code>runner.yml</code>
+ file.</p>
+
+            <pre><code class="language-yaml">toolkit:
+  lint:
+    behat:
+      config: &#039;gherkinlint.json&#039;
+      files: &#039;tests/features&#039;</code></pre>
+
+    </section>
+
     </section>
 
             <section class="section " id="testing-in-ci">

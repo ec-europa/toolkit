@@ -453,7 +453,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands",
             "name": "ComponentCheckCommands",
-            "summary": "Command\u0020class\u0020for\u0020toolkit\u003Acomponent\u002Dcheck",
+            "summary": "Command\u0020class\u0020for\u0020toolkit\u003Acomponent\u002Dcheck.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentCheck\u0028\u0029",
@@ -510,6 +510,16 @@ Search.appendIndex(
             "name": "componentComposer",
             "summary": "Check\u0020composer\u0020packages.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentComposer"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentNpmInsecure\u0028\u0029",
+            "name": "componentNpmInsecure",
+            "summary": "Run\u0020NPM\u0020Insecure.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentNpmInsecure"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentNpmOutdated\u0028\u0029",
+            "name": "componentNpmOutdated",
+            "summary": "Run\u0020NPM\u0020Outdated.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_componentNpmOutdated"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AprepareSkips\u0028\u0029",
             "name": "prepareSkips",
@@ -580,6 +590,11 @@ Search.appendIndex(
             "name": "restoreConfigReadOnly",
             "summary": "Restore\u0020the\u0020comment\u0020added\u0020to\u0020the\u0020config_readonly\u0020setting.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_restoreConfigReadOnly"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AgetOptsYml\u0028\u0029",
+            "name": "getOptsYml",
+            "summary": "Returns\u0020the\u0020.opts.yml\u0020content.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getOptsYml"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024evaluationFailed",
             "name": "evaluationFailed",
@@ -656,6 +671,26 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_skipRecommended"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024skipInsecureNpm",
+            "name": "skipInsecureNpm",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_skipInsecureNpm"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024skipOutdatedNpm",
+            "name": "skipOutdatedNpm",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_skipOutdatedNpm"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024outdatedNpmFailed",
+            "name": "outdatedNpmFailed",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_outdatedNpmFailed"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024insecureNpmFailed",
+            "name": "insecureNpmFailed",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_insecureNpmFailed"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024recommendedFailedCount",
             "name": "recommendedFailedCount",
             "summary": "",
@@ -691,6 +726,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_disabledConfigReadonly"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024optsYml",
+            "name": "optsYml",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_optsYml"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ConfigurationCommands",
             "name": "ConfigurationCommands",
             "summary": "Configuration\u0020commands\u0020are\u0020defined\u0020in\u0020the\u0020runner.yml\u0020file\u0020under\u0020\u0027commands\u003A\u0027.",
@@ -718,12 +758,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AcopyDockerComposeDefaultToProject\u0028\u0029",
             "name": "copyDockerComposeDefaultToProject",
-            "summary": "Copy\u0020.\/resources\/docker\/default.yml\u0020file\u0020to\u0020docker\u002Dcompose.yml\u0020inside\u0020project\u0020root\u0020directory",
+            "summary": "Copy\u0020.\/resources\/docker\/default.yml\u0020file\u0020to\u0020docker\u002Dcompose.yml\u0020inside\u0020project\u0020root\u0020directory.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_copyDockerComposeDefaultToProject"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetServicesImagesFromDockerCompose\u0028\u0029",
             "name": "getServicesImagesFromDockerCompose",
-            "summary": "Get\u0020array\u0020of\u0020services\u0020with\u0020images\u0020and\u0020versions\u0020from\u0020docker\u002Dcompose.yml",
+            "summary": "Get\u0020array\u0020of\u0020services\u0020with\u0020images\u0020and\u0020versions\u0020from\u0020docker\u002Dcompose.yml.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServicesImagesFromDockerCompose"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetProjectPhpFromWebsite\u0028\u0029",
@@ -738,52 +778,52 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AextractMajorMinorVersion\u0028\u0029",
             "name": "extractMajorMinorVersion",
-            "summary": "Converts\u0020from\u0020semantic\u0020version\u0020to\u0020\u0022major.minor\u0022\u0020version",
+            "summary": "Converts\u0020from\u0020semantic\u0020version\u0020to\u0020\u0022major.minor\u0022\u0020version.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_extractMajorMinorVersion"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AbackupDockerComposeFile\u0028\u0029",
             "name": "backupDockerComposeFile",
-            "summary": "Backup\u0020current\u0020docker\u002Dcompose.yml\u0020to\u0020docker\u002Dcompose.yml.prev",
+            "summary": "Backup\u0020current\u0020docker\u002Dcompose.yml\u0020to\u0020docker\u002Dcompose.yml.prev.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_backupDockerComposeFile"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AupdateDockerComposeFile\u0028\u0029",
             "name": "updateDockerComposeFile",
-            "summary": "Update\u0020docker\u002Dcompose.yml",
+            "summary": "Update\u0020docker\u002Dcompose.yml.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_updateDockerComposeFile"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetServiceDetailsFromResources\u0028\u0029",
             "name": "getServiceDetailsFromResources",
-            "summary": "Return\u0020the\u0020details\u0020for\u0020a\u0020service\u0020from\u0020.\/resources\/docker",
+            "summary": "Return\u0020the\u0020details\u0020for\u0020a\u0020service\u0020from\u0020.\/resources\/docker.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServiceDetailsFromResources"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetServicesVersionsFromRequirements\u0028\u0029",
             "name": "getServicesVersionsFromRequirements",
-            "summary": "Get\u0020final\u0020services\u0020names\u0020with\u0020versions\u0020from\u0020requirements",
+            "summary": "Get\u0020final\u0020services\u0020names\u0020with\u0020versions\u0020from\u0020requirements.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServicesVersionsFromRequirements"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AwriteWarningMessages\u0028\u0029",
             "name": "writeWarningMessages",
-            "summary": "Write\u0020all\u0020available\u0020warning\u0020messages",
+            "summary": "Write\u0020all\u0020available\u0020warning\u0020messages.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_writeWarningMessages"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetServiceImage\u0028\u0029",
             "name": "getServiceImage",
-            "summary": "Get\u0020service\u0020image\u0020with\u0020version",
+            "summary": "Get\u0020service\u0020image\u0020with\u0020version.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getServiceImage"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetFinalImages\u0028\u0029",
             "name": "getFinalImages",
-            "summary": "Get\u0020final\u0020images\u0020to\u0020update\u0020docker\u002Dcompose.yml",
+            "summary": "Get\u0020final\u0020images\u0020to\u0020update\u0020docker\u002Dcompose.yml.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getFinalImages"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AgetWarningMessages\u0028\u0029",
             "name": "getWarningMessages",
-            "summary": "Get\u0020warning\u0020messages\u0020for\u0020versions\u0020on\u0020.opts.yml\u0020that\u0020not\u0020respect\u0020the\u0020minimum\u0020requirements",
+            "summary": "Get\u0020warning\u0020messages\u0020for\u0020versions\u0020on\u0020.opts.yml\u0020that\u0020not\u0020respect\u0020the\u0020minimum\u0020requirements.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_getWarningMessages"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003AremoveUnusedDcServices\u0028\u0029",
             "name": "removeUnusedDcServices",
-            "summary": "Remove\u0020services\u0020that\u0020do\u0020not\u0020exist\u0020in\u0020project\u0020info,\u0020requirements\u0020or\u0020.opts.yml",
+            "summary": "Remove\u0020services\u0020that\u0020do\u0020not\u0020exist\u0020in\u0020project\u0020info,\u0020requirements\u0020or\u0020.opts.yml.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DockerCommands.html#method_removeUnusedDcServices"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DockerCommands\u003A\u003ADC_YML_FILE",
@@ -1281,6 +1321,16 @@ Search.appendIndex(
             "summary": "Run\u0020lint\u0020CSS.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintCss"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LintCommands\u003A\u003AtoolkitLintCsPell\u0028\u0029",
+            "name": "toolkitLintCsPell",
+            "summary": "Run\u0020lint\u0020CSpell.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintCsPell"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\LintCommands\u003A\u003AtoolkitLintBehat\u0028\u0029",
+            "name": "toolkitLintBehat",
+            "summary": "Run\u0020lint\u0020Behat.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-LintCommands.html#method_toolkitLintBehat"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands",
             "name": "PatchCommands",
             "summary": "Commands\u0020for\u0020patch\u0020download\u0020and\u0020list.",
@@ -1578,7 +1628,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Inject\\ConfigForCommand\u003A\u003AinjectConfiguration\u0028\u0029",
             "name": "injectConfiguration",
-            "summary": "Before\u0020a\u0020Console\u0020command\u0020runs,\u0020inject\u0020configuration\u0020settings\nfor\u0020this\u0020command\u0020into\u0020the\u0020default\u0020value\u0020of\u0020the\u0020options\u0020of\nthis\u0020command.",
+            "summary": "Inject\u0020configurations.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Inject-ConfigForCommand.html#method_injectConfiguration"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Inject\\ConfigForCommand\u003A\u003AinjectConfigurationForGlobalOptions\u0028\u0029",
