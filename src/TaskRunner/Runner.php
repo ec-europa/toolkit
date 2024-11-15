@@ -109,10 +109,9 @@ class Runner
         chdir($this->workingDir);
 
         // Create application.
-        $this
-            ->prepareApplication()
-            ->prepareContainer()
-            ->prepareRunner();
+        $this->prepareApplication();
+        $this->prepareContainer();
+        $this->prepareRunner();
     }
 
     /**
