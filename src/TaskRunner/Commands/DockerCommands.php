@@ -33,8 +33,6 @@ final class DockerCommands extends AbstractCommands
      *  If no opts.yml is provided, the newer version from QA requirements or project production version will be used.
      *  In case of some information is not available, the images will be updated based on Quality Assurance default values.
      *
-     * @return int
-     *
      * @command docker:refresh-configuration
      *
      * @aliases dk-rc
@@ -89,9 +87,7 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * Copy ./resources/docker/default.yml file to docker-compose.yml inside project root directory
-     *
-     * @return void
+     * Copy ./resources/docker/default.yml file to docker-compose.yml inside project root directory.
      */
     private function copyDockerComposeDefaultToProject(): void
     {
@@ -103,11 +99,10 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * Get array of services with images and versions from docker-compose.yml
+     * Get array of services with images and versions from docker-compose.yml.
      *
      * @param array $dcContent
-     *
-     * @return array
+     *   The docker-compose content.
      */
     private function getServicesImagesFromDockerCompose(array $dcContent): array
     {
@@ -123,9 +118,7 @@ final class DockerCommands extends AbstractCommands
      * Returns the Project's php service version information from the endpoint.
      *
      * @param string $projectId
-     *
-     * @return array|string[]
-     * @throws \Exception
+     *   The project id.
      */
     private function getProjectPhpFromWebsite(string $projectId): array
     {
@@ -149,9 +142,6 @@ final class DockerCommands extends AbstractCommands
 
     /**
      * Returns the toolkit requirements from the endpoint.
-     *
-     * @return array
-     * @throws \Exception
      */
     private function getWebsiteRequirements(): array
     {
@@ -164,11 +154,10 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * Converts from semantic version to "major.minor" version
+     * Converts from semantic version to "major.minor" version.
      *
      * @param string $version
-     *
-     * @return string
+     *   The version to convert.
      */
     private function extractMajorMinorVersion(string $version): string
     {
@@ -182,9 +171,7 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * Backup current docker-compose.yml to docker-compose.yml.prev
-     *
-     * @return void
+     * Backup current docker-compose.yml to docker-compose.yml.prev.
      */
     private function backupDockerComposeFile(): void
     {
@@ -195,12 +182,12 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * Update docker-compose.yml
+     * Update docker-compose.yml.
      *
      * @param array $dcContent
+     *   The docker-compose content.
      * @param array $finalServicesImages
-     *
-     * @return void
+     *   The services images.
      */
     private function updateDockerComposeFile(array $dcContent, array $finalServicesImages): void
     {
@@ -222,11 +209,10 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * Return the details for a service from ./resources/docker
+     * Return the details for a service from ./resources/docker.
      *
      * @param string $serviceName
-     *
-     * @return array
+     *   The service name.
      */
     private function getServiceDetailsFromResources(string $serviceName): array
     {
@@ -236,11 +222,10 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * Get final services names with versions from requirements
+     * Get final services names with versions from requirements.
      *
      * @param array $content
-     *
-     * @return array
+     *   The content to check.
      */
     private function getServicesVersionsFromRequirements(array $content): array
     {
@@ -253,11 +238,10 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * Write all available warning messages
+     * Write all available warning messages.
      *
      * @param array $messages
-     *
-     * @return void
+     *   Messages to print.
      */
     private function writeWarningMessages(array $messages): void
     {
@@ -267,13 +251,14 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * Get service image with version
+     * Get service image with version.
      *
      * @param string $service
+     *   The service.
      * @param string $image
+     *   The image.
      * @param string $version
-     *
-     * @return string
+     *   The version.
      */
     private function getServiceImage(string $service, string $image, string $version): string
     {
@@ -285,13 +270,14 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * Get final images to update docker-compose.yml
+     * Get final images to update docker-compose.yml.
      *
      * @param $requirements
+     *   The requirements
      * @param $websiteRequirements
+     *   The website requirements.
      * @param $optsFileContent
-     *
-     * @return array
+     *   The .opts.yml content.
      */
     private function getFinalImages($requirements, $websiteRequirements, $optsFileContent): array
     {
@@ -316,12 +302,12 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * Get warning messages for versions on .opts.yml that not respect the minimum requirements
+     * Get warning messages for versions on .opts.yml that not respect the minimum requirements.
      *
      * @param $websiteRequirements
+     *   The website requirements.
      * @param $optsFileContent
-     *
-     * @return array
+     *   The .opts.yml content.
      */
     private function getWarningMessages($optsFileContent, $websiteRequirements): array
     {
@@ -341,12 +327,12 @@ final class DockerCommands extends AbstractCommands
     }
 
     /**
-     * Remove services that do not exist in project info, requirements or .opts.yml
+     * Remove services that do not exist in project info, requirements or .opts.yml.
      *
      * @param array $dcServices
+     *   The services.
      * @param array $finalServicesImages
-     *
-     * @return array
+     *   The final services.
      */
     private function removeUnusedDcServices(array $dcServices, array $finalServicesImages): array
     {

@@ -48,7 +48,7 @@ class ReplaceBlockTest extends AbstractTest
                         'filename' => 'test.txt',
                         'start' => '{start}',
                         'end' => '{end}',
-                    ]
+                    ],
                 ],
                 'test:replace-block' => [
                     [
@@ -57,7 +57,7 @@ class ReplaceBlockTest extends AbstractTest
                         'start' => '{start}',
                         'end' => '{end}',
                         'content' => "\nThis content is new\n",
-                    ]
+                    ],
                 ],
                 'test:replace-block-start-end' => [
                     [
@@ -67,7 +67,7 @@ class ReplaceBlockTest extends AbstractTest
                         'end' => '{end}',
                         'content' => "This content is new",
                         'excludeStartEnd' => true,
-                    ]
+                    ],
                 ],
             ],
         ];

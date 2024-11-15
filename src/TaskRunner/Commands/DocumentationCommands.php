@@ -252,7 +252,7 @@ class DocumentationCommands extends AbstractCommands
      * Clean up given directory.
      *
      * @param string $directory
-     *   The directory to clean
+     *   The directory to clean.
      * @param bool $includeHidden
      *   If true, all hidden files will be removed.
      */

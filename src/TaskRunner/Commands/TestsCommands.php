@@ -348,7 +348,7 @@ class TestsCommands extends AbstractCommands
             ->arg('analyse')
             ->options([
                 'memory-limit' => $options['memory-limit'],
-                'configuration' => $options['config']
+                'configuration' => $options['config'],
             ], '=');
 
         if (!empty($options['options'])) {

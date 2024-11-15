@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Command class for toolkit:component-check
+ * Command class for toolkit:component-check.
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
@@ -662,7 +662,7 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
 
-        // Make sure not installed plugins are not present in composer.json
+        // Make sure not installed plugins are not present in composer.json.
         $installedPackages = $this->getJson('vendor/composer/installed.json', false);
         if (!empty($composerJson['config']['allow-plugins']) && !empty($installedPackages['packages'])) {
             $composerPlugins = array_filter(
@@ -913,7 +913,8 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Helper function to validate the component.
      *
-     * @param array $package The package to validate.
+     * @param array $package
+     *   The package to validate.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)

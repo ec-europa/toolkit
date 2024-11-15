@@ -24,8 +24,6 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
      * Path to YAML configuration file containing command defaults.
      *
      * Command classes should implement this method.
-     *
-     * @return string
      */
     public function getConfigurationFile()
     {

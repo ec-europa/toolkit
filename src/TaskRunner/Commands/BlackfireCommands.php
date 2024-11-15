@@ -51,7 +51,7 @@ class BlackfireCommands extends AbstractCommands
         // Confirm that blackfire is properly installed.
         $test = $this->taskExec('which blackfire')->silent(true)
             ->run()->getMessage();
-        if (strpos($test, 'not found') !== false) {
+        if (str_contains($test, 'not found')) {
             $problems[] = 'The Blackfire is not installed, skipping.';
         }
 
@@ -152,7 +152,7 @@ class BlackfireCommands extends AbstractCommands
                     'field_blackfire_ci_cd_url' => [['value' => $ciUrl]],
                     'field_blackfire_graph_url' => [['value' => $data['graph']]],
                     'field_blackfire_timeline_url' => [['value' => $data['timeline']]],
-                    // cspell:ignore recomendations
+                    // cspell:ignore recomendations .
                     'field_blackfire_recomendations' => [['value' => $data['recommendation']]],
                     'field_blackfire_memory' => [['value' => $data['memory']]],
                     'field_blackfire_wall_time' => [['value' => $data['wall_time']]],

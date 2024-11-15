@@ -55,7 +55,6 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
         'process' => ['required' => ['source'], 'defaults' => 'destination'],
         'append' => ['required' => ['file', 'text']],
         'run' => ['required' => 'command'],
-//        'process-php' => ['required' => ['source', 'destination'], 'defaults' => 'override'],
         'exec' => ['required' => 'command'],
         'drush' => ['required' => 'command'],
         'replace-block' => [

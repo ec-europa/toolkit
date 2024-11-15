@@ -130,13 +130,12 @@ class DrupalCommands extends AbstractCommands
      * This command will set the necessary permissions on the default folder.
      *
      * @param array $options
+     *   Command options.
      *
      * @command drupal:permissions-setup
      *
      * @option root         Drupal root.
      * @option sites-subdir Drupal site subdirectory.
-     *
-     * @return \Robo\Collection\CollectionBuilder
      */
     public function drupalPermissionsSetup(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -162,6 +161,7 @@ class DrupalCommands extends AbstractCommands
      * Validate command drupal:site-install.
      *
      * @param \Consolidation\AnnotatedCommand\CommandData $commandData
+     *   The command data object.
      *
      * @hook validate drupal:site-install
      *
@@ -208,13 +208,12 @@ class DrupalCommands extends AbstractCommands
      * >       uri: "${drupal.base_url}"
      *
      * @param array $options
+     *   Command options.
      *
      * @command drupal:drush-setup
      *
      * @option root       Drupal root.
      * @option config-dir Directory where to store Drush 9 configuration file.
-     *
-     * @return \Robo\Collection\CollectionBuilder
      */
     public function drupalDrushSetup(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -235,6 +234,7 @@ class DrupalCommands extends AbstractCommands
      * provided in local runner.yml.dist/runner.yml files.
      *
      * @param array $options
+     *   Command options.
      *
      * @command drupal:site-install
      *
@@ -258,8 +258,6 @@ class DrupalCommands extends AbstractCommands
      * @option skip-permissions-setup Whether to skip making the settings file and folder writable during installation.
      *
      * @aliases drupal:si,dsi
-     *
-     * @return \Robo\Collection\CollectionBuilder
      */
     public function drupalSiteInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -370,8 +368,6 @@ class DrupalCommands extends AbstractCommands
      * @option root
      *   The Drupal root. All occurrences of "!root" in the pre-install
      *   string-only commands will be substituted with this value.
-     *
-     * @return \Robo\Contract\TaskInterface
      */
     public function drupalSitePreInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -404,8 +400,6 @@ class DrupalCommands extends AbstractCommands
      * @option root
      *   The Drupal root. All occurrences of "!root" in the post-install
      *   string-only commands will be substituted with this value.
-     *
-     * @return \Robo\Contract\TaskInterface
      */
     public function drupalSitePostInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -422,9 +416,6 @@ class DrupalCommands extends AbstractCommands
      * Disable aggregation and clear cache.
      *
      * @command drupal:disable-cache
-     *
-     * @return \Robo\Collection\CollectionBuilder
-     *   Collection builder.
      */
     public function drupalDisableCache()
     {

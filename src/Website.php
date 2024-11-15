@@ -155,15 +155,15 @@ class Website
             return $GLOBALS['session_token'];
         }
         $options = [
-            CURLOPT_RETURNTRANSFER => true,   // return web page
-            CURLOPT_HEADER => false,  // don't return headers
-            CURLOPT_FOLLOWLOCATION => true,   // follow redirects
-            CURLOPT_MAXREDIRS => 10,     // stop after 10 redirects
-            CURLOPT_ENCODING => '',     // handle compressed
-            CURLOPT_USERAGENT => 'Toolkit', // name of client
-            CURLOPT_AUTOREFERER => true,   // set referrer on redirect
-            CURLOPT_CONNECTTIMEOUT => 120,    // time-out on connect
-            CURLOPT_TIMEOUT => 120,    // time-out on response
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => false,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_ENCODING => '',
+            CURLOPT_USERAGENT => 'Toolkit',
+            CURLOPT_AUTOREFERER => true,
+            CURLOPT_CONNECTTIMEOUT => 120,
+            CURLOPT_TIMEOUT => 120,
         ];
         $ch = curl_init(self::url() . '/session/token');
         curl_setopt_array($ch, $options);
@@ -202,7 +202,7 @@ class Website
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/hal+json',
             "X-CSRF-Token: $token",
-            $auth->getAuthorizationHeader()
+            $auth->getAuthorizationHeader(),
         ]);
         curl_exec($ch);
         $code = (string) curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -326,9 +326,9 @@ class Website
      * This should only be executed on CI.
      *
      * @param string $url
-     *    The QA endpoint url.
+     *   The QA endpoint url.
      * @param AuthorizationInterface|null $auth
-     *    The authorization instance or null.
+     *   The authorization instance or null.
      */
     public static function getWithMockFallback(string $url, AuthorizationInterface $auth = null)
     {

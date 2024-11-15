@@ -507,8 +507,6 @@ class DumpCommands extends AbstractCommands
      *   A comma-separated list of accepted extensions.
      * @param bool $silent
      *   Whether show or not output from task.
-     *
-     * @return \Robo\Task\Base\Exec
      */
     private function wgetDownloadFile(string $tmp, string $destination, string $accept = null, bool $silent = false)
     {
@@ -574,11 +572,11 @@ class DumpCommands extends AbstractCommands
         $date = !empty($matches) ? date_parse_from_format('YmdHis', $matches[1] . $matches[2] . ($matches[3] ?? '00')) : [];
         if (
             !empty($date) &&
-            is_integer($date['hour']) &&
-            is_integer($date['minute']) &&
-            is_integer($date['month']) &&
-            is_integer($date['day']) &&
-            is_integer($date['year'])
+            is_int($date['hour']) &&
+            is_int($date['minute']) &&
+            is_int($date['month']) &&
+            is_int($date['day']) &&
+            is_int($date['year'])
         ) {
             $timestamp = mktime($date['hour'], $date['minute'], $date['second'], $date['month'], $date['day'], $date['year']);
             $output = sprintf('%02d %s %d at %02d:%02d', $date['day'], date('M', $timestamp), $date['year'], $date['hour'], $date['minute']);
@@ -593,8 +591,6 @@ class DumpCommands extends AbstractCommands
      *
      * @param string $dump
      *   The path to the dump file.
-     *
-     * @return \Robo\Task\Base\ExecStack
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
