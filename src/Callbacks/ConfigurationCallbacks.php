@@ -38,13 +38,20 @@ class ConfigurationCallbacks
     public static function validatePhpStan(): bool
     {
         $file = 'phpstan.neon';
-        // Stop if the config file do not exist or the package is not installed.
-        if (!file_exists($file) || !ToolCommands::isPackageInstalled('phpstan/extension-installer')) {
+        // Load the config file.
+        $config = Yaml::parseFile($file);
+        // Get if package is installed.
+        $package = ToolCommands::isPackageInstalled('phpstan/extension-installer');
+        // If packaged installed the phpstan.neon file should not have the includes section.
+        if ($package && empty($config['includes'])) {
             return true;
         }
-        // Load the config file and check for the includes.
-        $config = Yaml::parseFile($file);
-        return empty($config['includes']);
+        // If packaged not installed the phpstan.neon file should have the includes section.
+        if (!$package && !empty($config['includes'])) {
+            return true;
+        }
+        // Other cases will fail.
+        return false;
     }
 
 }

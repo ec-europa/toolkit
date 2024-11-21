@@ -52,7 +52,7 @@ toolkit:
             - 'DrupalComposer\DrupalScaffold\Plugin::scaffold'
     configuration:
       validations:
-        - message: 'When using phpstan/extension-installer you should not manually include the extensions in the phpstan.neon file, please remove the includes.'
+        - message: 'When using phpstan/extension-installer you should not manually include the extensions in the phpstan.neon file, please remove the includes, otherwise ensure the includes section is properly set.'
           callback: 'EcEuropa\Toolkit\Callbacks\ConfigurationCallbacks::validatePhpStan'
           blocker: true
         - message: "The .env file was detected!\n In order to avoid loading .env file in ACC or PROD environments, please rename it to something like .env.dist\n The file belongs to your application. You should guarantee that is not being called into any point of your Drupal site. If you are only calling it in docker-compose.yml, it's recommended to drop entirely the file and declare the environment variables straight into docker-compose.yml file."
