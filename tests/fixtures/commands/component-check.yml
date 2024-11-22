@@ -4,6 +4,7 @@
   resources:
     - from: sample-composer.lock
       to: composer.lock
+    - touch: phpstan.neon
     - file: composer.json
       content: |
         {
@@ -147,6 +148,7 @@
   tokens: ''
   resources:
     - touch: composer.json
+    - touch: phpstan.neon
     - from: sample-composer.lock
       to: composer.lock
   expectations:
@@ -163,6 +165,7 @@
   tokens: '[skip_insecure][skip_d9c]'
   resources:
     - touch: composer.json
+    - touch: phpstan.neon
     - from: sample-composer.lock
       to: composer.lock
   expectations:
@@ -176,6 +179,7 @@
         config_file: core.extensions-good.yml
   tokens: ''
   resources:
+    - touch: phpstan.neon
     - from: sample-core.extensions-good.yml
       to: core.extensions-good.yml
     - file: composer.json
@@ -204,6 +208,7 @@
   tokens: ''
   resources:
     - touch: composer.json
+    - touch: phpstan.neon
     - from: sample-internal-dependency.lock
       to: composer.lock
   expectations:
@@ -213,6 +218,7 @@
   configuration: [ ]
   tokens: ''
   resources:
+    - touch: phpstan.neon
     - file: composer.json
       content: |
         { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
@@ -234,6 +240,7 @@
   configuration: [ ]
   tokens: ''
   resources:
+    - touch: phpstan.neon
     - file: composer.json
       content: |
         { "extra": { "enable-patching": true } }
@@ -248,6 +255,7 @@
   configuration: [ ]
   tokens: ''
   resources:
+    - touch: phpstan.neon
     - file: composer.json
       content: |
         {
@@ -266,6 +274,7 @@
   configuration: [ ]
   tokens: ''
   resources:
+    - touch: phpstan.neon
     - file: composer.json
       content: |
         { "extra": { "composer-exit-on-patch-failure": false } }
@@ -280,6 +289,7 @@
   configuration: [ ]
   tokens: ''
   resources:
+    - touch: phpstan.neon
     - file: composer.json
       content: |
         {
@@ -302,6 +312,7 @@
           drupal_patches: true
   tokens: ''
   resources:
+    - touch: phpstan.neon
     - file: composer.lock
       content: |
         { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
@@ -337,6 +348,7 @@
           drupal_patches: false
   tokens: ''
   resources:
+    - touch: phpstan.neon
     - file: composer.lock
       content: |
         { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
@@ -372,6 +384,7 @@
   tokens: ''
   resources:
     - touch: composer.json
+    - touch: phpstan.neon
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/codesnippet", "type": "drupal-module", "version": "1.8.0" } ] }
@@ -383,6 +396,7 @@
   tokens: ''
   resources:
     - touch: composer.json
+    - touch: phpstan.neon
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
@@ -424,6 +438,7 @@
   tokens: ''
   resources:
     - touch: composer.json
+    - touch: phpstan.neon
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
@@ -464,6 +479,7 @@
   configuration: [ ]
   tokens: ''
   resources:
+    - touch: phpstan.neon
     - file: composer.lock
       content: |
         { "packages": [ { "name": "ec-europa/toolkit" } ] }
@@ -499,6 +515,7 @@
   resources:
     - from: sample-composer.lock
       to: composer.lock
+    - touch: phpstan.neon
     - file: composer.json
       content: |
         {
@@ -542,6 +559,7 @@
     - touch: composer.json
     - touch: .env
     - touch: grumphp.yml.dist
+    - touch: phpstan.neon
     - touch: allowed-file.ext
   expectations:
     - not_string_contains: allowed-file.ext
@@ -555,6 +573,7 @@
     - from: sample-composer.lock
       to: composer.lock
     - touch: composer.json
+    - touch: phpstan.neon
     - touch: grumphp.yml.dist
   expectations:
     - string_contains: grumphp.yml.dist file was detected
@@ -566,6 +585,7 @@
     - from: sample-composer.lock
       to: composer.lock
     - touch: composer.json
+    - touch: phpstan.neon
     - file: docker-compose.yml
       content: |
         services:
@@ -592,6 +612,7 @@
     - from: sample-composer.lock
       to: composer.lock
     - touch: composer.json
+    - touch: phpstan.neon
     - file: .env
       content: |
         # Use special characters like `~/.bashrc` or (parentheses).
@@ -616,6 +637,7 @@
     - from: sample-composer.lock
       to: composer.lock
     - touch: composer.json
+    - touch: phpstan.neon
     - file: .env.dist
       content: |
         NEXTCLOUD_USER=
@@ -635,6 +657,7 @@
   tokens: ''
   resources:
     - touch: composer.json
+    - touch: phpstan.neon
     - file: composer.lock
       content: |
         { "packages": [
@@ -663,6 +686,7 @@
       content: |
         { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
     - mkdir: /vendor/composer/
+    - touch: phpstan.neon
     - file: /vendor/composer/installed.json
       content: |
         { "packages": [
@@ -692,6 +716,7 @@
           { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
         ] }
     - touch: package-lock.json
+    - touch: phpstan.neon
     - file: .opts.yml
       content: |
         { "npm_install": "True" }
@@ -716,6 +741,7 @@
           { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
         ] }
     - touch: package-lock.json
+    - touch: phpstan.neon
     - file: .opts.yml
       content: |
         { "npm_install": "True" }
@@ -735,6 +761,7 @@
           { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
         ] }
     - touch: package-lock.json
+    - touch: phpstan.neon
     - touch: .opts.yml
     - file: .opts.yml
       content: |
@@ -844,6 +871,7 @@
   configuration: []
   tokens: ''
   resources:
+    - touch: phpstan.neon
     - from: sample-composer.lock
       to: composer.lock
     - file: composer.json
