@@ -33,18 +33,25 @@ class ConfigurationCallbacks
     }
 
     /**
-     * If project is using phpstan/extension-installer then should not manually include extensions.
+     * Validate when using phpstan/extension-installer the include should not be used, otherwise, include is required.
      */
     public static function validatePhpStan(): bool
     {
         $file = 'phpstan.neon';
-        // Stop if the config file do not exist or the package is not installed.
-        if (!file_exists($file) || !ToolCommands::isPackageInstalled('phpstan/extension-installer')) {
+
+        // Skip if the project does not have the config file.
+        if (!file_exists($file)) {
             return true;
         }
-        // Load the config file and check for the includes.
+
         $config = Yaml::parseFile($file);
-        return empty($config['includes']);
+        // If project is using phpstan/extension-installer then should not manually include extensions.
+        if (ToolCommands::isPackageInstalled('phpstan/extension-installer')) {
+            return empty($config['includes']);
+        }
+
+        // If project is not using phpstan/extension-installer then should manually include extensions.
+        return !empty($config['includes']);
     }
 
 }
