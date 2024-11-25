@@ -4,7 +4,6 @@
   resources:
     - from: sample-composer.lock
       to: composer.lock
-    - touch: phpstan.neon
     - file: composer.json
       content: |
         {
@@ -877,7 +876,6 @@
   configuration: []
   tokens: ''
   resources:
-    - touch: phpstan.neon
     - from: sample-composer.lock
       to: composer.lock
     - file: composer.json
