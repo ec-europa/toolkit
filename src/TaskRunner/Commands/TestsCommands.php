@@ -124,7 +124,7 @@ class TestsCommands extends AbstractCommands
      *
      * @see toolkitRunPhpcs()
      */
-    public function toolkitTestPhpcs()
+    public function toolkitTestPhpcs(array $thisMustFail = null)
     {
         $mode = $this->getConfig()->get('toolkit.test.phpcs.mode', 'phpcs');
         if ($mode === 'grumphp') {
@@ -248,7 +248,7 @@ class TestsCommands extends AbstractCommands
             $options .= ' --ignore-annotations';
         }
         if (!empty($this->input()->getOption('junit'))) {
-            $options .= ' --report=junit --report-file=phpcs.xml';
+            $options .= ' --report=junit --report-file=junit-phpcs.xml';
         }
         return $this->taskExec("$phpcsBin --standard=$configFile$options")
             ->run();
