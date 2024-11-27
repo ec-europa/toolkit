@@ -118,6 +118,8 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:test-phpcs
      *
+     * @option junit  Whether to export results as junit.
+     *
      * @aliases tk-phpcs
      *
      * @see toolkitRunPhpcs()
@@ -244,6 +246,9 @@ class TestsCommands extends AbstractCommands
         $options = '';
         if ($config->get('toolkit.test.phpcs.ignore_annotations') === true) {
             $options .= ' --ignore-annotations';
+        }
+        if (!empty($this->input()->getOption('junit'))) {
+            $options .= ' --report=junit';
         }
         return $this->taskExec("$phpcsBin --standard=$configFile$options")
             ->run();
