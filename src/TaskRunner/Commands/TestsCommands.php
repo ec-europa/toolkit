@@ -248,7 +248,7 @@ class TestsCommands extends AbstractCommands
             $options .= ' --ignore-annotations';
         }
         if (!empty($this->input()->getOption('junit'))) {
-            $options .= ' --report=junit';
+            $options .= ' --report=junit --report-file=phpcs.xml';
         }
         return $this->taskExec("$phpcsBin --standard=$configFile$options")
             ->run();
