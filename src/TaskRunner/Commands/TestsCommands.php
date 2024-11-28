@@ -188,7 +188,7 @@ class TestsCommands extends AbstractCommands
             $execOptions['report-file'] = 'junit-phpmd.xml';
             // Force the format to be xml.
             $options['format'] = 'xml';
-//            $extraArg = ' | xsltproc resources/phpmd-junit.xslt';
+            $extraArg = '| xsltproc resources/phpmd-junit.xslt';
         }
 
         Toolkit::filterFolders($options['files']);
@@ -322,6 +322,7 @@ class TestsCommands extends AbstractCommands
      * @option files        The files to check.
      * @option memory-limit The PHP memory limit.
      * @option options      Extra options for the command without -- (only options with no value).
+     * @option junit        Whether to export results as junit.
      *
      * @aliases tk-phpstan
      *
@@ -381,6 +382,11 @@ class TestsCommands extends AbstractCommands
             $exec->options($extraOptions);
         }
 
+        if (!empty($this->input()->getOption('junit'))) {
+            $exec->option('error-format', 'junit');
+            $exec->rawArg('> junit-phpstan.xml');
+        }
+
         $tasks[] = $exec;
         return $this->collectionBuilder()->addTaskList($tasks);
     }
@@ -398,6 +404,7 @@ class TestsCommands extends AbstractCommands
      * @option profile  The profile to execute.
      * @option suite    The suite to execute, default runs all suites of profile.
      * @option options  Extra options for the command without -- (only options with no value).
+     * @option junit    Whether to export results as junit.
      *
      * @aliases tk-behat, tb
      *
@@ -429,6 +436,11 @@ class TestsCommands extends AbstractCommands
         if (!empty($options['options'])) {
             $extraOptions = array_fill_keys(explode(' ', $options['options']), null);
             $execOpts = array_merge($execOpts, $extraOptions);
+        }
+
+        if (!empty($this->input()->getOption('junit'))) {
+            $execOpts['format'] = 'junit';
+            $execOpts['out'] = 'junit-behat.xml';
         }
 
         // Execute a list of commands to run before tests.
@@ -474,6 +486,7 @@ class TestsCommands extends AbstractCommands
      * @option filter    Filter which tests to run.
      * @option options   Extra options for the command without -- (only options with no value).
      * @option printer   If set, use printer defined in config toolkit.test.phpunit.printer.
+     * @option junit     Whether to export results as junit.
      *
      * @aliases tk-phpunit tp
      *
@@ -526,6 +539,9 @@ class TestsCommands extends AbstractCommands
             }
             if ($options['printer'] === true) {
                 $task->option('printer', $phpunitConfig['printer'], '=');
+            }
+            if (!empty($this->input()->getOption('junit'))) {
+                $task->option('log-junit', 'junit-phpunit.xml');
             }
             $tasks[] = $task;
         }

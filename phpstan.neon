@@ -6,7 +6,6 @@ parameters:
     - vendor
   reportUnmatchedIgnoredErrors: false
   ignoreErrors:
-    - '#^Call to deprecated method toolkitRunGrumphp#'
     - '#^Call to an undefined method Robo\\Collection\\CollectionBuilder::task#'
     - '#^Call to an undefined method Robo\\Collection\\CollectionBuilder\|Robo\\Task\\Filesystem\\FilesystemStack::task#'
     - '#^Call to an undefined method Consolidation\\Config\\ConfigInterface::replace\(\)#'

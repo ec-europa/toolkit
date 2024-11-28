@@ -899,3 +899,4 @@
         }
   expectations:
     - string_contains: Composer validation check passed
+    - string_contains: This must fail!
