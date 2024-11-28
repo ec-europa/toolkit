@@ -184,9 +184,11 @@ class TestsCommands extends AbstractCommands
             $tasks[] = $this->taskExec($this->getBin('run'))
                 ->arg('toolkit:install-dependencies')
                 ->option('packages', 'xsltproc');
+            // Report to a file.
+            $execOptions['report-file'] = 'junit-phpmd.xml';
             // Force the format to be xml.
             $options['format'] = 'xml';
-            $extraArg = ' | xsltproc resources/phpmd-junit.xslt -';
+//            $extraArg = ' | xsltproc resources/phpmd-junit.xslt';
         }
 
         Toolkit::filterFolders($options['files']);
