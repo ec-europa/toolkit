@@ -179,7 +179,7 @@ class TestsCommands extends AbstractCommands
         }
         if (!empty($this->input()->getOption('junit'))) {
             $execOptions['report-file'] = 'junit-phpmd.xml';
-            $options['format'] = 'gitlab';
+            $options['format'] = 'xml';
         }
 
         Toolkit::filterFolders($options['files']);
