@@ -148,6 +148,7 @@ class TestsCommands extends AbstractCommands
      * @option ignore_patterns An array with ignore patterns.
      * @option triggered_by    An array with extensions to check.
      * @option files           An array with paths to check.
+     * @option junit           Whether to export results as junit.
      *
      * @aliases tk-phpmd
      */
@@ -175,6 +176,10 @@ class TestsCommands extends AbstractCommands
         }
         if (!empty($options['triggered_by'])) {
             $execOptions['suffixes'] = implode(',', $options['triggered_by']);
+        }
+        if (!empty($this->input()->getOption('junit'))) {
+            $execOptions['report-file'] = 'junit-phpmd.xml';
+            $options['format'] = 'gitlab';
         }
 
         Toolkit::filterFolders($options['files']);
