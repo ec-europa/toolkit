@@ -161,6 +161,7 @@ class TestsCommands extends AbstractCommands
     ])
     {
         $tasks = $execOptions = [];
+        $extraArg = null;
         Toolkit::ensureArray($options['files']);
         Toolkit::ensureArray($options['ignore_patterns']);
         Toolkit::ensureArray($options['triggered_by']);
@@ -178,16 +179,29 @@ class TestsCommands extends AbstractCommands
             $execOptions['suffixes'] = implode(',', $options['triggered_by']);
         }
         if (!empty($this->input()->getOption('junit'))) {
+            // PHPmd does not provide an out-of-the-box solution to report as junit, instead
+            // it depends on an external library.
+            $tasks[] = $this->taskExec($this->getBin('run'))
+                ->arg('toolkit:install-dependencies')
+                ->option('packages', 'xsltproc');
+
             $execOptions['report-file'] = 'junit-phpmd.xml';
             $options['format'] = 'xml';
+            $extraArg = ' | xsltproc resources/phpmd-junit.xslt';
         }
 
         Toolkit::filterFolders($options['files']);
         $files = implode(',', $options['files']);
 
-        $tasks[] = $this->taskExec($this->getBin('phpmd'))
+        $exec = $this->taskExec($this->getBin('phpmd'))
             ->args([$files, $options['format'], $options['config']])
             ->options($execOptions);
+
+        if (!empty($extraArg)) {
+            $exec->rawArg($extraArg);
+        }
+
+        $tasks[] = $exec;
 
         return $this->collectionBuilder()->addTaskList($tasks);
     }
