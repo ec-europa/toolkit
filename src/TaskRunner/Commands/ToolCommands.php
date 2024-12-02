@@ -93,6 +93,7 @@ class ToolCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function optsReview(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
