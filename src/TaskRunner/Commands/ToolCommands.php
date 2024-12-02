@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
+use EcEuropa\Toolkit\JunitXmlGenerator;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
@@ -86,6 +87,7 @@ class ToolCommands extends AbstractCommands
      * @command toolkit:opts-review
      *
      * @option endpoint The endpoint to use to connect to QA Website.
+     * @option junit    Whether to export results as junit.
      *
      * @aliases tk-opts-review
      *
@@ -103,48 +105,88 @@ class ToolCommands extends AbstractCommands
         $parseOptsFile = self::parseOptsYml();
         if ($parseOptsFile === false) {
             $io->say("The file '.opts.yml' was not found, skipping.");
+            if ($this->isJunit()) {
+                JunitXmlGenerator::generate('Toolkit .opts.yml review ' . Toolkit::VERSION, 'junit-opts.xml');
+            }
             return ResultData::EXITCODE_OK;
         }
 
         // Check for invalid php_version value, if given version is 8.0 as float when converted to string will be 8
         // and will cause issues like in docker images.
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestCase('PHP version');
+        }
         if (!empty($parseOptsFile['php_version']) && is_float($parseOptsFile['php_version'])) {
             if ((string) $parseOptsFile['php_version'] === '8') {
-                $io->say('The php_version should be wrapped with upper-quotes like "php_version: \'8.0\'".');
+                $message = 'The php_version should be wrapped with upper-quotes like "php_version: \'8.0\'".';
+                $io->say($message);
                 $reviewOk = false;
+                if ($this->isJunit()) {
+                    JunitXmlGenerator::addResult('PHP version', $message);
+                }
             }
         }
 
         // Check for wrong syntax used for SANITIZE_OPTS.
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestCase('Sanitise options');
+        }
         if (!empty($parseOptsFile['dump_options'])) {
             if (!empty($parseOptsFile['dump_options']['SANITIZE_OPTS'])) {
                 if (!DrupalSanitiseCommands::areUserFieldsSanitised()) {
-                    $io->error('Detected forbidden usage of --sanitize-email=no and/or --sanitize-password=no');
+                    $message = 'Detected forbidden usage of --sanitize-email=no and/or --sanitize-password=no';
+                    $io->error($message);
                     $reviewOk = false;
+                    if ($this->isJunit()) {
+                        JunitXmlGenerator::addResult('Sanitise options', $message);
+                    }
                 }
             }
             if (!empty($parseOptsFile['dump_options'][0])) {
-                $io->error([
+                $message = [
                     'Invalid syntax detected in dump_options section for the SANITIZE_OPTS. Use:',
                     'dump_options:',
                     '  SANITIZE_OPTS: "--sanitize-email=dummy@example.com"',
-                ]);
+                ];
+                $io->error($message);
                 $reviewOk = false;
+                if ($this->isJunit()) {
+                    JunitXmlGenerator::addResult('Sanitise options', implode(PHP_EOL, $message));
+                }
             }
         }
 
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestCase('Upgrade commands');
+        }
         if (empty($parseOptsFile['upgrade_commands'])) {
             $io->say('The project is using default deploy instructions.');
+            if ($this->isJunit()) {
+                JunitXmlGenerator::generate('Toolkit .opts.yml review ' . Toolkit::VERSION, 'junit-opts.xml');
+            }
             return $reviewOk ? ResultData::EXITCODE_OK : ResultData::EXITCODE_ERROR;
         }
         if (empty($parseOptsFile['upgrade_commands']['default']) && empty($parseOptsFile['upgrade_commands']['append'])) {
-            $io->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
+            $message = "Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override";
+            $io->say($message);
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addResult('Upgrade commands', $message);
+                JunitXmlGenerator::generate('Toolkit .opts.yml review ' . Toolkit::VERSION, 'junit-opts.xml');
+            }
             return ResultData::EXITCODE_ERROR;
         }
 
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestCase('Project id');
+        }
         $projectId = $this->getConfig()->get('toolkit.project_id');
         if (empty($projectId)) {
-            $io->say('The configuration toolkit.project_id value is not valid.');
+            $message = 'The configuration toolkit.project_id value is not valid.';
+            $io->say($message);
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addResult('Project id', $message);
+                JunitXmlGenerator::generate('Toolkit .opts.yml review ' . Toolkit::VERSION, 'junit-opts.xml');
+            }
             return ResultData::EXITCODE_ERROR;
         }
 
@@ -169,10 +211,18 @@ class ToolCommands extends AbstractCommands
             $parsedCommand = preg_split('/[\s;&|]/', $cleanCommand, 0, PREG_SPLIT_NO_EMPTY);
             foreach ($forbiddenCommands as $forbiddenCommand) {
                 if (in_array($forbiddenCommand, $parsedCommand)) {
-                    $io->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
+                    $message = "The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.";
+                    $io->say($message);
                     $reviewOk = false;
+                    if ($this->isJunit()) {
+                        JunitXmlGenerator::addResult('Upgrade commands', $message);
+                    }
                 }
             }
+        }
+
+        if ($this->isJunit()) {
+            JunitXmlGenerator::generate('Toolkit .opts.yml review ' . Toolkit::VERSION, 'junit-opts.xml');
         }
 
         if (!$reviewOk) {

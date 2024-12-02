@@ -116,13 +116,15 @@ class ComponentCheckCommands extends AbstractCommands
         }
         foreach ($checks as $function => $label) {
             $io->title("Checking $label components.");
-            JunitXmlGenerator::addTestCase("$label components");
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addTestCase("$label components");
+            }
             $this->{$function}($io);
             $io->newLine();
         }
 
         $this->printComponentResults($io);
-        if (!empty($this->input()->getOption('junit'))) {
+        if ($this->isJunit()) {
             JunitXmlGenerator::generate('Toolkit Component Check ' . Toolkit::VERSION, 'junit-components.xml');
         }
 
@@ -1237,7 +1239,7 @@ class ComponentCheckCommands extends AbstractCommands
     private function addJunitResult(string $testCase, string $message, string $type = 'error'): void
     {
         // Skip if no junit option is used.
-        if (!$this->input()->hasOption('junit') || empty($this->input()->getOption('junit'))) {
+        if (!$this->isJunit()) {
             return;
         }
 

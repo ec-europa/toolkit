@@ -253,7 +253,7 @@ class TestsCommands extends AbstractCommands
      *
      * Check configurations at config/default.yml - 'toolkit.test.phpcs'.
      */
-    protected function toolkitRunPhpcs(string $thisMustFail = null)
+    protected function toolkitRunPhpcs()
     {
         $config = $this->getConfig();
         $phpcsBin = $this->getBin('phpcs');
