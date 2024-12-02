@@ -1237,7 +1237,7 @@ class ComponentCheckCommands extends AbstractCommands
     private function addJunitResult(string $testCase, string $message, string $type = 'error'): void
     {
         // Skip if no junit option is used.
-        if (empty($this->input()->getOption('junit'))) {
+        if (!$this->input()->hasOption('junit') || empty($this->input()->getOption('junit'))) {
             return;
         }
 
