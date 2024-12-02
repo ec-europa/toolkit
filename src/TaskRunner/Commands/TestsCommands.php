@@ -124,7 +124,7 @@ class TestsCommands extends AbstractCommands
      *
      * @see toolkitRunPhpcs()
      */
-    public function toolkitTestPhpcs(array $thisMustFail = null)
+    public function toolkitTestPhpcs()
     {
         $mode = $this->getConfig()->get('toolkit.test.phpcs.mode', 'phpcs');
         if ($mode === 'grumphp') {
@@ -409,6 +409,8 @@ class TestsCommands extends AbstractCommands
      * @aliases tk-behat, tb
      *
      * @usage --profile='prod' --options='strict stop-on-failure'
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitTestBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
@@ -494,6 +496,7 @@ class TestsCommands extends AbstractCommands
      * @usage --group=Example
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitTestPhpunit(array $options = [
         'execution' => InputOption::VALUE_REQUIRED,
