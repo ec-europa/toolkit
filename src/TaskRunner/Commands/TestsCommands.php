@@ -178,7 +178,7 @@ class TestsCommands extends AbstractCommands
         if (!empty($options['triggered_by'])) {
             $execOptions['suffixes'] = implode(',', $options['triggered_by']);
         }
-        if (!empty($this->input()->getOption('junit'))) {
+        if (!empty($this->isJunit())) {
             // PHPmd does not provide an out-of-the-box solution to report as junit, instead
             // it depends on an external library.
             $tasks[] = $this->taskExec($this->getBin('run'))
@@ -265,7 +265,7 @@ class TestsCommands extends AbstractCommands
         if ($config->get('toolkit.test.phpcs.ignore_annotations') === true) {
             $options .= ' --ignore-annotations';
         }
-        if (!empty($this->input()->getOption('junit'))) {
+        if (!empty($this->isJunit())) {
             $options .= ' --report=junit --report-file=junit-phpcs.xml';
         }
         return $this->taskExec("$phpcsBin --standard=$configFile$options")
@@ -380,7 +380,7 @@ class TestsCommands extends AbstractCommands
             $exec->options($extraOptions);
         }
 
-        if (!empty($this->input()->getOption('junit'))) {
+        if (!empty($this->isJunit())) {
             $exec->option('error-format', 'junit');
             $exec->rawArg('> junit-phpstan.xml');
         }
@@ -438,7 +438,7 @@ class TestsCommands extends AbstractCommands
             $execOpts = array_merge($execOpts, $extraOptions);
         }
 
-        if (!empty($this->input()->getOption('junit'))) {
+        if ($this->isJunit()) {
             $execOpts['format'] = 'junit';
             $execOpts['out'] = 'junit-behat.xml';
         }
@@ -541,7 +541,7 @@ class TestsCommands extends AbstractCommands
             if ($options['printer'] === true) {
                 $task->option('printer', $phpunitConfig['printer'], '=');
             }
-            if (!empty($this->input()->getOption('junit'))) {
+            if (!empty($this->isJunit())) {
                 $task->option('log-junit', 'junit-phpunit.xml');
             }
             $tasks[] = $task;

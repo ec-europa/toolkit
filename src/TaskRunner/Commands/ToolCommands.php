@@ -103,20 +103,25 @@ class ToolCommands extends AbstractCommands
             Website::setUrl($options['endpoint']);
         }
         $reviewOk = true;
+        $junitName = 'Toolkit .opts.yml review ' . Toolkit::VERSION;
         $parseOptsFile = self::parseOptsYml();
         if ($parseOptsFile === false) {
             $io->say("The file '.opts.yml' was not found, skipping.");
             if ($this->isJunit()) {
-                JunitXmlGenerator::generate('Toolkit .opts.yml review ' . Toolkit::VERSION, 'junit-opts.xml');
+                JunitXmlGenerator::generate($junitName, 'junit-opts.xml');
             }
             return ResultData::EXITCODE_OK;
         }
 
-        // Check for invalid php_version value, if given version is 8.0 as float when converted to string will be 8
-        // and will cause issues like in docker images.
         if ($this->isJunit()) {
             JunitXmlGenerator::addTestCase('PHP version');
+            JunitXmlGenerator::addTestCase('Sanitise options');
+            JunitXmlGenerator::addTestCase('Upgrade commands');
+            JunitXmlGenerator::addTestCase('Project id');
         }
+
+        // Check for invalid php_version value, if given version is 8.0 as float when converted to string will be 8
+        // and will cause issues like in docker images.
         if (!empty($parseOptsFile['php_version']) && is_float($parseOptsFile['php_version'])) {
             if ((string) $parseOptsFile['php_version'] === '8') {
                 $message = 'The php_version should be wrapped with upper-quotes like "php_version: \'8.0\'".';
@@ -129,9 +134,6 @@ class ToolCommands extends AbstractCommands
         }
 
         // Check for wrong syntax used for SANITIZE_OPTS.
-        if ($this->isJunit()) {
-            JunitXmlGenerator::addTestCase('Sanitise options');
-        }
         if (!empty($parseOptsFile['dump_options'])) {
             if (!empty($parseOptsFile['dump_options']['SANITIZE_OPTS'])) {
                 if (!DrupalSanitiseCommands::areUserFieldsSanitised()) {
@@ -157,13 +159,10 @@ class ToolCommands extends AbstractCommands
             }
         }
 
-        if ($this->isJunit()) {
-            JunitXmlGenerator::addTestCase('Upgrade commands');
-        }
         if (empty($parseOptsFile['upgrade_commands'])) {
             $io->say('The project is using default deploy instructions.');
             if ($this->isJunit()) {
-                JunitXmlGenerator::generate('Toolkit .opts.yml review ' . Toolkit::VERSION, 'junit-opts.xml');
+                JunitXmlGenerator::generate($junitName, 'junit-opts.xml');
             }
             return $reviewOk ? ResultData::EXITCODE_OK : ResultData::EXITCODE_ERROR;
         }
@@ -172,21 +171,18 @@ class ToolCommands extends AbstractCommands
             $io->say($message);
             if ($this->isJunit()) {
                 JunitXmlGenerator::addResult('Upgrade commands', $message);
-                JunitXmlGenerator::generate('Toolkit .opts.yml review ' . Toolkit::VERSION, 'junit-opts.xml');
+                JunitXmlGenerator::generate($junitName, 'junit-opts.xml');
             }
             return ResultData::EXITCODE_ERROR;
         }
 
-        if ($this->isJunit()) {
-            JunitXmlGenerator::addTestCase('Project id');
-        }
         $projectId = $this->getConfig()->get('toolkit.project_id');
         if (empty($projectId)) {
             $message = 'The configuration toolkit.project_id value is not valid.';
             $io->say($message);
             if ($this->isJunit()) {
                 JunitXmlGenerator::addResult('Project id', $message);
-                JunitXmlGenerator::generate('Toolkit .opts.yml review ' . Toolkit::VERSION, 'junit-opts.xml');
+                JunitXmlGenerator::generate($junitName, 'junit-opts.xml');
             }
             return ResultData::EXITCODE_ERROR;
         }
@@ -223,7 +219,7 @@ class ToolCommands extends AbstractCommands
         }
 
         if ($this->isJunit()) {
-            JunitXmlGenerator::generate('Toolkit .opts.yml review ' . Toolkit::VERSION, 'junit-opts.xml');
+            JunitXmlGenerator::generate($junitName, 'junit-opts.xml');
         }
 
         if (!$reviewOk) {

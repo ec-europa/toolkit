@@ -222,6 +222,7 @@ class LintCommands extends AbstractCommands
      * @option exclude    The eslint config file.
      * @option extensions The extensions to check.
      * @option options    Extra options for the command without -- (only options with no value).
+     * @option junit      Whether to export results as junit.
      *
      * @aliases tk-php, tlp
      */
@@ -248,11 +249,25 @@ class LintCommands extends AbstractCommands
             }
         }
 
-        $result = $task->rawArg('.')->run();
+        $task->rawArg('.');
+
+        if ($this->isJunit()) {
+            $task->option('checkstyle', null, '=');
+            $task->rawArg('> junit-lintphp.xml');
+        }
+
+        $result = $task->run();
         if ($result->getExitCode() === 254) {
             return ResultData::EXITCODE_OK;
         }
 
+        if ($this->isJunit()) {
+            $replace = $this->taskReplaceInFile('junit-lintphp.xml');
+            $replace->from('<checkstyle>')->to('<testsuites>')->run();
+            $replace->from('</checkstyle>')->to('</testsuites>')->run();
+            $replace->from('<file ')->to('<testcase ')->run();
+            $replace->from('</file>')->to('</testcase>')->run();
+        }
         return $result->getExitCode();
     }
 
