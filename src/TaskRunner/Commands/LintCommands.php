@@ -251,9 +251,10 @@ class LintCommands extends AbstractCommands
 
         $task->rawArg('.');
 
+        $junitFile = 'junit-lintphp.xml';
         if ($this->isJunit()) {
             $task->option('checkstyle', null, '=');
-            $task->rawArg('> junit-lintphp.xml');
+            $task->rawArg('> ' . $junitFile);
         }
 
         $result = $task->run();
@@ -262,11 +263,12 @@ class LintCommands extends AbstractCommands
         }
 
         if ($this->isJunit()) {
-            $replace = $this->taskReplaceInFile('junit-lintphp.xml');
-            $replace->from('<checkstyle>')->to('<testsuites>')->run();
-            $replace->from('</checkstyle>')->to('</testsuites>')->run();
-            $replace->from('<file ')->to('<testcase ')->run();
-            $replace->from('</file>')->to('</testcase>')->run();
+            $this->taskReplaceInFile($junitFile)->from('<checkstyle>')->to('<testsuites>')->run();
+            $this->taskReplaceInFile($junitFile)->from('</checkstyle>')->to('</testsuites>')->run();
+            $this->taskReplaceInFile($junitFile)->from('<file ')->to('<testcase ')->run();
+            $this->taskReplaceInFile($junitFile)->from('</file>')->to('</testcase>')->run();
+            $this->taskReplaceInFile($junitFile)->from('<error ')->to('<failure ')->run();
+            $this->taskReplaceInFile($junitFile)->from(' severity=')->to(' type=')->run();
         }
         return $result->getExitCode();
     }
