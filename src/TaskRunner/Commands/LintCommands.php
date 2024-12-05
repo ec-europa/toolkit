@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use EcEuropa\Toolkit\JunitXmlGenerator;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
+use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Exception\TaskException;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
@@ -320,6 +322,7 @@ class LintCommands extends AbstractCommands
      * @option config  The path to the config file.
      * @option files   The files to check.
      * @option options Extra options for the command.
+     * @option junit   Whether to export results as junit.
      *
      * @aliases tk-cspell
      *
@@ -331,28 +334,45 @@ class LintCommands extends AbstractCommands
         'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        $tasks = [];
         $bin = $this->getNodeBinPath('cspell');
 
         // Install dependencies if the bin is not present.
         if (!file_exists($bin)) {
-            $tasks[] = $this->taskExecStack()
+            $this->taskExecStack()
                 ->exec('npm -v || npm i npm')
                 ->exec('[ -f package.json ] || npm init -y --scope')
-                ->exec('npm list cspell && npm update cspell || npm install cspell -y');
+                ->exec('npm list cspell && npm update cspell || npm install cspell -y')
+                ->run();
         }
 
         // Ensure the config file exists.
         if (!file_exists($options['config'])) {
-            $tasks[] = $this->taskFilesystemStack()->copy(
+            $this->taskFilesystemStack()->copy(
                 Toolkit::getToolkitRoot() . '/resources/cspell/.project-cspell.json',
                 '.cspell.json'
-            );
+            )->run();
         }
 
         $command = $bin . ' ' . $options['files'] . ' --config=' . $options['config'];
-        $tasks[] = $this->taskExec($command . ' ' . $options['options']);
-        return $this->collectionBuilder()->addTaskList($tasks);
+        $task = $this->taskExec($command . ' ' . $options['options']);
+
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestCase('CSpell');
+            $result = $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)->run();
+            $message = $result->getMessage();
+            if (!empty($message)) {
+                $this->writeln($message);
+                $findings = array_filter(explode(PHP_EOL, $message));
+                foreach ($findings as $find) {
+                    JunitXmlGenerator::addResult('CSpell', $find);
+                }
+            }
+            JunitXmlGenerator::generate('Toolkit CSpell ' . Toolkit::VERSION, 'junit-cspell.xml');
+            return $result->getExitCode();
+        }
+
+        $result = $task->run();
+        return $result->getExitCode();
     }
 
     /**
