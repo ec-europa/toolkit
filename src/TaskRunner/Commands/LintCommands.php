@@ -282,6 +282,7 @@ class LintCommands extends AbstractCommands
      *
      * @option exclude The stylelint config file.
      * @option files   The files to check.
+     * @option junit   Whether to export results as junit.
      *
      * @aliases tk-css
      */
@@ -290,28 +291,52 @@ class LintCommands extends AbstractCommands
         'files' => InputOption::VALUE_REQUIRED,
     ])
     {
-        $tasks = [];
-
         // Make sure eslint is properly installed.
-        $tasks[] = $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint');
+        $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')->run();
 
         // Make sure the stylelint-config-drupal and stylelint are installed.
-        $tasks[] = $this->taskExecStack()
+        $this->taskExecStack()
             ->exec('npm -v || npm i npm')
             ->exec('[ -f package.json ] || npm init -y --scope')
-            ->exec('npm list stylelint-config-drupal && npm update stylelint-config-drupal || npm install stylelint-config-drupal -y');
+            ->exec('npm list stylelint-config-drupal && npm update stylelint-config-drupal || npm install stylelint-config-drupal -y')
+            ->run();
 
         // Generate the config file if missing.
         if (!file_exists($options['config'])) {
             $data = ['extends' => 'stylelint-config-drupal'];
-            $tasks[] = $this->taskWriteToFile($options['config'])
-                ->text(json_encode($data, JSON_PRETTY_PRINT));
+            $this->taskWriteToFile($options['config'])
+                ->text(json_encode($data, JSON_PRETTY_PRINT))
+                ->run();
         }
 
-        $tasks[] = $this->taskExec($this->getNodeBinPath('stylelint'))
+        $task = $this->taskExec($this->getNodeBinPath('stylelint'))
             ->rawArg($options['files']);
 
-        return $this->collectionBuilder()->addTaskList($tasks);
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestCase('Lint CSS');
+            $task->option('formatter', 'json', '=');
+            $result = $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)->run();
+            $findings = json_decode($result->getMessage(), true);
+            $workingDir = $this->getWorkingDir();
+            if (!empty($findings)) {
+                foreach ($findings as $find) {
+                    if (empty($find['errored'])) {
+                        continue;
+                    }
+                    $this->writeln(str_replace($workingDir, '', $find['source']));
+                    foreach ($find['warnings'] as $warning) {
+                        $text = sprintf(' %d:%d %s %s', $warning['line'], $warning['column'], $warning['text'], $warning['rule']);
+                        $this->writeln($text);
+                        JunitXmlGenerator::addResult('Lint CSS', $text);
+                    }
+                }
+            }
+            JunitXmlGenerator::generate('Toolkit Lint CSS ' . Toolkit::VERSION, 'junit-css.xml');
+            return $result->getExitCode();
+        }
+
+        $result = $task->run();
+        return $result->getExitCode();
     }
 
     /**
