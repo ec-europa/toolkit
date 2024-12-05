@@ -237,6 +237,7 @@ class ToolCommands extends AbstractCommands
      * @command toolkit:requirements
      *
      * @option endpoint The endpoint to use to connect to QA Website.
+     * @option junit    Whether to export results as junit.
      *
      * @aliases tk-req
      *
@@ -250,16 +251,36 @@ class ToolCommands extends AbstractCommands
     {
         $this->say("Checking Toolkit requirements:\n");
 
+        $junitName = 'Toolkit requirements ' . Toolkit::VERSION;
+        $junitFile = 'junit-requirements.xml';
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestCase('Endpoint connection');
+            JunitXmlGenerator::addTestCase('NEXTCLOUD configuration');
+            JunitXmlGenerator::addTestCase('PHP version');
+            JunitXmlGenerator::addTestCase('Toolkit version');
+            JunitXmlGenerator::addTestCase('Drupal version');
+        }
+
         if (!empty($options['endpoint'])) {
             Website::setUrl($options['endpoint']);
         }
         $data = Website::requirements();
         if (empty($data)) {
-            $io->error('Failed to connect to the endpoint ' . Website::url() . '/api/v1/toolkit-requirements');
+            $message = 'Failed to connect to the endpoint ' . Website::url() . '/api/v1/toolkit-requirements';
+            $io->error($message);
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addResult('Endpoint connection', $message);
+                JunitXmlGenerator::generate($junitName, $junitFile);
+            }
             return 1;
         }
         if (!isset($data['toolkit'])) {
-            $this->writeln('Invalid data returned from the endpoint.');
+            $message = 'Invalid data returned from the endpoint.';
+            $this->writeln($message);
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addResult('Endpoint connection', $message);
+                JunitXmlGenerator::generate($junitName, $junitFile);
+            }
             return 1;
         }
         $endpointCheck = 'OK';
@@ -268,6 +289,9 @@ class ToolCommands extends AbstractCommands
         $phpVersion = phpversion();
         $isValid = version_compare($phpVersion, $data['php_version']);
         $phpCheck = ($isValid >= 0) ? 'OK' : 'FAIL';
+        if ($this->isJunit() && $phpCheck === 'FAIL') {
+            JunitXmlGenerator::addResult('PHP version', $phpCheck);
+        }
 
         // Handle Toolkit version.
         if (!($toolkitVersion = self::getPackagePropertyFromComposer('ec-europa/toolkit', 'version', 'packages-dev'))) {
@@ -275,18 +299,27 @@ class ToolCommands extends AbstractCommands
         } else {
             $toolkitCheck = Semver::satisfies($toolkitVersion, $data['toolkit']) ? 'OK' : 'FAIL';
         }
+        if ($this->isJunit() && str_starts_with($toolkitCheck, 'FAIL')) {
+            JunitXmlGenerator::addResult('Toolkit version', $toolkitCheck);
+        }
         // Handle Drupal version.
         if (!($drupalVersion = self::getPackagePropertyFromComposer('drupal/core'))) {
             $drupalCheck = 'FAIL (not found)';
         } else {
             $drupalCheck = Semver::satisfies($drupalVersion, $data['drupal']) ? 'OK' : 'FAIL';
         }
+        if ($this->isJunit() && str_starts_with($drupalCheck, 'FAIL')) {
+            JunitXmlGenerator::addResult('Drupal version', $drupalCheck);
+        }
         // Check if node_install enable in the .opts.yml.
         $parseOptsFile = self::parseOptsYml();
-        // Check if npm_install property enabled.
         $nodeCheck = 'OK';
         $nodeVersion = '';
+        // Check if npm_install property enabled.
         if (!empty($parseOptsFile['npm_install'])) {
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addTestCase('Node version');
+            }
             // Check node version running.
             $exec = $this->taskExec('node --version')
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
@@ -297,6 +330,10 @@ class ToolCommands extends AbstractCommands
             } else {
                 $nodeVersion = trim($nodeVersion, 'v');
                 $nodeCheck = Semver::satisfies($nodeVersion, $data['node']) ? 'OK' : 'FAIL';
+            }
+
+            if ($this->isJunit() && str_starts_with($nodeCheck, 'FAIL')) {
+                JunitXmlGenerator::addResult('Node version', $nodeCheck);
             }
         }
 
@@ -310,6 +347,9 @@ class ToolCommands extends AbstractCommands
             $nextcloudCheck .= empty($ncUser) ? ' NEXTCLOUD_USER' : '';
             $nextcloudCheck .= empty($ncPass) ? ' NEXTCLOUD_PASS' : '';
             $nextcloudCheck .= ')';
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addResult('NEXTCLOUD configuration', $nextcloudCheck);
+            }
         }
 
         $io->title('Checking connections:');
@@ -330,20 +370,20 @@ class ToolCommands extends AbstractCommands
         }
 
         $io->title('Required checks:');
-
+        $headers = ['PHP version', 'Toolkit version', 'Drupal version'];
+        $rows = [
+            "$phpCheck ($phpVersion)",
+            "$toolkitCheck" . (!empty($toolkitVersion) ? "($toolkitVersion)" : '') . (!empty($toolkitExtra) ? $toolkitExtra : ''),
+            "$drupalCheck" . (!empty($drupalVersion) ? "($drupalVersion)" : '') . (!empty($drupalExtra) ? $drupalExtra : ''),
+        ];
         if (!empty($parseOptsFile['npm_install'])) {
-            $io->definitionList(
-                ['PHP version' => "$phpCheck ($phpVersion)"],
-                ['Toolkit version' => "$toolkitCheck ($toolkitVersion)$toolkitExtra"],
-                ['Drupal version' => "$drupalCheck ($drupalVersion)$drupalExtra"],
-                ['Node version' => "$nodeCheck ($nodeVersion)"],
-            );
-        } else {
-            $io->definitionList(
-                ['PHP version' => "$phpCheck ($phpVersion)"],
-                ['Toolkit version' => "$toolkitCheck ($toolkitVersion)$toolkitExtra"],
-                ['Drupal version' => "$drupalCheck ($drupalVersion)$drupalExtra"],
-            );
+            $headers[] = 'Node version';
+            $rows[] = $nodeCheck . (!empty($nodeVersion) ? " ($nodeVersion)" : '');
+        }
+        $io->horizontalTable($headers, [$rows]);
+
+        if ($this->isJunit()) {
+            JunitXmlGenerator::generate($junitName, $junitFile);
         }
 
         if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $drupalCheck !== 'OK' || $nodeCheck !== 'OK') {
