@@ -48,4 +48,3 @@ ruleset
 webform
 xmlsitemap
 xsltproc
-lintphp

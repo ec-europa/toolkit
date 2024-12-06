@@ -253,7 +253,7 @@ class LintCommands extends AbstractCommands
 
         $task->rawArg('.');
 
-        $junitFile = 'junit-lintphp.xml';
+        $junitFile = 'junit-lint-php.xml';
         if ($this->isJunit()) {
             $task->option('checkstyle', null, '=');
             $task->rawArg('> ' . $junitFile);
@@ -314,8 +314,9 @@ class LintCommands extends AbstractCommands
 
         if ($this->isJunit()) {
             JunitXmlGenerator::addTestCase('Lint CSS');
-            $task->option('formatter', 'json', '=');
-            $result = $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)->run();
+            $result = $task->option('formatter', 'json', '=')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run();
             $findings = json_decode($result->getMessage(), true);
             $workingDir = $this->getWorkingDir();
             if (!empty($findings)) {
@@ -331,7 +332,7 @@ class LintCommands extends AbstractCommands
                     }
                 }
             }
-            JunitXmlGenerator::generate('Toolkit Lint CSS ' . Toolkit::VERSION, 'junit-css.xml');
+            JunitXmlGenerator::generate('Toolkit Lint CSS ' . Toolkit::VERSION, 'junit-lint-css.xml');
             return $result->getExitCode();
         }
 
@@ -407,30 +408,62 @@ class LintCommands extends AbstractCommands
      *
      * @option config  The path to the config file.
      * @option files   The files to check.
+     * @option junit   Whether to export results as junit.
      *
      * @aliases tk-lbehat
      *
      * @usage --files='tests/features' --config='gherkinlint.json'
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitLintBehat(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
         'files' => InputOption::VALUE_REQUIRED,
     ])
     {
-        $tasks = [];
-        $bin = $this->getBinPath('gherkinlint');
-
         // Ensure the config file exists.
         if (!file_exists($options['config'])) {
             $this->output->writeln('Could not find the config file, the default will be created in the project root.');
-            $tasks[] = $this->taskFilesystemStack()->copy(
+            $this->taskFilesystemStack()->copy(
                 Toolkit::getToolkitRoot() . '/resources/gherkinlint.json',
                 $options['config']
-            );
+            )->run();
         }
 
-        $tasks[] = $this->taskExec($bin . ' lint ' . $options['files']);
-        return $this->collectionBuilder()->addTaskList($tasks);
+        $task = $this->taskExec($this->getBinPath('gherkinlint') . ' lint ' . $options['files']);
+
+        if ($this->isJunit()) {
+            $result = $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)->run();
+            $table = $result->getMessage();
+            $findings = array_filter(explode(PHP_EOL, $table), function ($item) {
+                $featureLine = str_ends_with($item, '.feature');
+                $validRow = str_starts_with($item, '|') && !str_starts_with($item, '| line');
+                return !empty($item) && ($validRow || $featureLine);
+            });
+            if (!empty($findings)) {
+                $this->writeln($table);
+                foreach ($findings as $find) {
+                    if (str_ends_with($find, '.feature')) {
+                        $featureName = $find;
+                        JunitXmlGenerator::addTestCase($featureName);
+                        continue;
+                    }
+                    $exploded = explode('|', trim($find, '|'));
+                    [$line, $column, $severity, $message] = array_map('trim', $exploded);
+                    if (empty($line) || empty($column) || empty($severity) || empty($message)) {
+                        continue;
+                    }
+                    if (isset($featureName)) {
+                        JunitXmlGenerator::addResult($featureName, "$line:$column - $severity - $message");
+                    }
+                }
+            }
+            JunitXmlGenerator::generate('Toolkit Lint Behat ' . Toolkit::VERSION, 'junit-lint-behat.xml');
+            return $result->getExitCode();
+        }
+
+        $result = $task->run();
+        return $result->getExitCode();
     }
 
 }
