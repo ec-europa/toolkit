@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\InstalledVersions;
+use EcEuropa\Toolkit\JunitXmlGenerator;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Exception\AbortTasksException;
 use Robo\ResultData;
+use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
@@ -151,8 +153,10 @@ class TestsCommands extends AbstractCommands
      * @option junit           Whether to export results as junit.
      *
      * @aliases tk-phpmd
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function toolkitTestPhpmd(array $options = [
+    public function toolkitTestPhpmd(ConsoleIO $io, array $options = [
         'config' => InputOption::VALUE_REQUIRED,
         'format' => InputOption::VALUE_REQUIRED,
         'ignore_patterns' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
@@ -160,16 +164,14 @@ class TestsCommands extends AbstractCommands
         'files' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
     ])
     {
-        $tasks = $execOptions = [];
-        $extraArg = null;
+        $execOptions = [];
         Toolkit::ensureArray($options['files']);
         Toolkit::ensureArray($options['ignore_patterns']);
         Toolkit::ensureArray($options['triggered_by']);
 
         if (!file_exists($options['config'])) {
             $this->output->writeln('Could not find the ruleset file, the default will be created in the project root.');
-            $tasks[] = $this->taskFilesystemStack()
-                ->copy(Toolkit::getToolkitRoot() . '/resources/phpmd.xml', $options['config']);
+            $this->_copy(Toolkit::getToolkitRoot() . '/resources/phpmd.xml', $options['config']);
         }
 
         if (!empty($options['ignore_patterns'])) {
@@ -178,15 +180,8 @@ class TestsCommands extends AbstractCommands
         if (!empty($options['triggered_by'])) {
             $execOptions['suffixes'] = implode(',', $options['triggered_by']);
         }
-        if (!empty($this->isJunit())) {
-            // PHPmd does not provide an out-of-the-box solution to report as junit, instead
-            // it depends on an external library.
-            $tasks[] = $this->taskExec($this->getBin('run'))
-                ->arg('toolkit:install-dependencies')
-                ->option('packages', 'xsltproc');
-            // Force the format to be xml.
-            $options['format'] = 'xml';
-            $extraArg = '| xsltproc resources/phpmd-junit.xslt - > junit-phpmd.xml';
+        if ($this->isJunit()) {
+            $options['format'] = 'json';
         }
 
         Toolkit::filterFolders($options['files']);
@@ -196,13 +191,28 @@ class TestsCommands extends AbstractCommands
             ->args([$files, $options['format'], $options['config']])
             ->options($execOptions);
 
-        if (!empty($extraArg)) {
-            $exec->rawArg($extraArg);
+        if ($this->isJunit()) {
+            $result = $exec->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run();
+            $findings = json_decode($result->getMessage(), true);
+            if (!empty($findings['files'])) {
+                foreach ($findings['files'] as $find) {
+                    $io->writeln('FILE: ' . $find['file']);
+                    $io->writeln(str_repeat('-', strlen('FILE: ' . $find['file'])));
+                    foreach ($find['violations'] as $violation) {
+                        $message = sprintf('%d | VIOLATION | %s', $violation['beginLine'], $violation['description']);
+                        $this->writeln($message);
+                        JunitXmlGenerator::addResult($find['file'], $message);
+                    }
+                    $io->newLine();
+                }
+            }
+            JunitXmlGenerator::generate('Toolkit PHPmd ' . Toolkit::VERSION, 'junit-phpmd.xml');
+        } else {
+            $result = $exec->run();
         }
 
-        $tasks[] = $exec;
-
-        return $this->collectionBuilder()->addTaskList($tasks);
+        return $result->getExitCode();
     }
 
     /**

@@ -160,11 +160,13 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     }
 
     /**
-     * Check whether Junit option is being used.
+     * Check whether Junit option is being used, or env var is set.
      */
     protected function isJunit(): bool
     {
-        return $this->input()->hasOption('junit') && !empty($this->input()->getOption('junit'));
+        $option = $this->input()->hasOption('junit') && !empty($this->input()->getOption('junit'));
+        $env = !empty(getenv('CI_JUNIT'));
+        return $option || $env;
     }
 
 }

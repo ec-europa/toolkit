@@ -227,6 +227,8 @@ class LintCommands extends AbstractCommands
      * @option junit      Whether to export results as junit.
      *
      * @aliases tk-php, tlp
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitLintPhp(array $options = [
         'extensions' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
@@ -253,24 +255,26 @@ class LintCommands extends AbstractCommands
 
         $task->rawArg('.');
 
-        $junitFile = 'junit-lint-php.xml';
         if ($this->isJunit()) {
-            $task->option('checkstyle', null, '=');
-            $task->rawArg('> ' . $junitFile);
+            JunitXmlGenerator::addTestCase('Lint PHP');
+            $result = $task->option('json')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run();
+            $findings = json_decode($result->getMessage(), true);
+            if (!empty($findings['results']['errors'])) {
+                foreach ($findings['results']['errors'] as $find) {
+                    $this->writeln($find['message']);
+                    JunitXmlGenerator::addResult('Lint PHP', $find['message']);
+                }
+            }
+            JunitXmlGenerator::generate('Toolkit Lint PHP ' . Toolkit::VERSION, 'junit-lint-php.xml');
+        } else {
+            $result = $task->run();
         }
 
-        $result = $task->run();
-        if ($result->getExitCode() === 254) {
+        // Exit code 254 is when no files are found to lint.
+        if (empty($result->getExitCode()) || $result->getExitCode() === 254) {
             return ResultData::EXITCODE_OK;
-        }
-
-        if ($this->isJunit()) {
-            $this->taskReplaceInFile($junitFile)->from('<checkstyle>')->to('<testsuites>')->run();
-            $this->taskReplaceInFile($junitFile)->from('</checkstyle>')->to('</testsuites>')->run();
-            $this->taskReplaceInFile($junitFile)->from('<file ')->to('<testcase ')->run();
-            $this->taskReplaceInFile($junitFile)->from('</file>')->to('</testcase>')->run();
-            $this->taskReplaceInFile($junitFile)->from('<error ')->to('<failure ')->run();
-            $this->taskReplaceInFile($junitFile)->from(' severity=')->to(' type=')->run();
         }
         return $result->getExitCode();
     }
