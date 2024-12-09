@@ -142,6 +142,7 @@ class LintCommands extends AbstractCommands
      * @option config     The eslint config file.
      * @option extensions The extensions to check.
      * @option options    Extra options for the command without -- (only options with no value).
+     * @option junit      Whether to export results as junit.
      *
      * @aliases tk-yaml, tly
      *
@@ -166,6 +167,7 @@ class LintCommands extends AbstractCommands
      * @option config     The eslint config file.
      * @option extensions The extensions to check.
      * @option options    Extra options for the command without -- (only options with no value).
+     * @option junit      Whether to export results as junit.
      *
      * @aliases tk-js, tljs
      *
@@ -209,6 +211,12 @@ class LintCommands extends AbstractCommands
         if (!empty($options)) {
             $extra = array_fill_keys(explode(' ', $options), null);
             $opts = array_merge($opts, $extra);
+        }
+
+        if ($this->isJunit()) {
+            $opts['format'] = 'junit';
+            $type = str_ends_with($this->input()->getArgument('command'), 'js') ? 'js' : 'yaml';
+            $opts['output-file'] = "junit-lint-$type.xml";
         }
 
         $tasks[] = $this->taskExec($this->getNodeBinPath('eslint'))->options($opts)->arg('.');
