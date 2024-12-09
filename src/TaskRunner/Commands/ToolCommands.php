@@ -373,8 +373,8 @@ class ToolCommands extends AbstractCommands
         $headers = ['PHP version', 'Toolkit version', 'Drupal version'];
         $rows = [
             "$phpCheck ($phpVersion)",
-            "$toolkitCheck" . (!empty($toolkitVersion) ? "($toolkitVersion)" : '') . (!empty($toolkitExtra) ? $toolkitExtra : ''),
-            "$drupalCheck" . (!empty($drupalVersion) ? "($drupalVersion)" : '') . (!empty($drupalExtra) ? $drupalExtra : ''),
+            "$toolkitCheck" . (!empty($toolkitVersion) ? " ($toolkitVersion)" : '') . (!empty($toolkitExtra) ? $toolkitExtra : ''),
+            "$drupalCheck" . (!empty($drupalVersion) ? " ($drupalVersion)" : '') . (!empty($drupalExtra) ? $drupalExtra : ''),
         ];
         if (!empty($parseOptsFile['npm_install'])) {
             $headers[] = 'Node version';
