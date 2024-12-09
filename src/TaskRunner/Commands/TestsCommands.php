@@ -275,7 +275,7 @@ class TestsCommands extends AbstractCommands
         if ($config->get('toolkit.test.phpcs.ignore_annotations') === true) {
             $options .= ' --ignore-annotations';
         }
-        if (!empty($this->isJunit())) {
+        if ($this->isJunit()) {
             $options .= ' --report=junit --report-file=junit-phpcs.xml';
         }
         return $this->taskExec("$phpcsBin --standard=$configFile$options")
@@ -390,7 +390,7 @@ class TestsCommands extends AbstractCommands
             $exec->options($extraOptions);
         }
 
-        if (!empty($this->isJunit())) {
+        if ($this->isJunit()) {
             $exec->option('error-format', 'junit');
             $exec->rawArg('> junit-phpstan.xml');
         }
@@ -551,7 +551,7 @@ class TestsCommands extends AbstractCommands
             if ($options['printer'] === true) {
                 $task->option('printer', $phpunitConfig['printer'], '=');
             }
-            if (!empty($this->isJunit())) {
+            if ($this->isJunit()) {
                 $task->option('log-junit', 'junit-phpunit.xml');
             }
             $tasks[] = $task;
