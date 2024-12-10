@@ -107,4 +107,31 @@ final class JunitXmlGenerator
         $xml->save($filename);
     }
 
+    /**
+     * Helper to merge multiple files into a single one.
+     *
+     * @param string $rootName
+     *   The root element name attribute.
+     * @param string $destination
+     *   The destination file where multiple files will be merged.
+     * @param string $directory
+     *   The directory where the files are.
+     */
+    public static function mergeFiles(string $rootName, string $destination, string $directory)
+    {
+        $suites = PHP_EOL;
+        foreach (glob("$directory/*.xml") as $file) {
+            $content = simplexml_load_file($file);
+            foreach ($content->testsuite as $item) {
+                $suites .= $item->asXML() . PHP_EOL;
+            }
+        }
+        $content = '<?xml version="1.0" encoding="UTF-8"?><testsuites>' . $suites . '</testsuites>';
+        $xml = new \SimpleXMLElement($content);
+        $xml->addAttribute('name', $rootName);
+        $xml->addAttribute('xmlns:xsi', self::$xsi);
+        $xml->addAttribute('xsi:noNamespaceSchemaLocation', self::$xsd);
+        $xml->asXML($destination);
+    }
+
 }

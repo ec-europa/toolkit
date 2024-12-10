@@ -419,6 +419,7 @@ class TestsCommands extends AbstractCommands
      * @usage --profile='prod' --options='strict stop-on-failure'
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitTestBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
@@ -428,8 +429,6 @@ class TestsCommands extends AbstractCommands
         'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        $tasks = [];
-
         if (Toolkit::isCiCd()) {
             $this->taskExec($this->getBin('run') . ' toolkit:install-dependencies')->run();
         }
@@ -448,14 +447,9 @@ class TestsCommands extends AbstractCommands
             $execOpts = array_merge($execOpts, $extraOptions);
         }
 
-        if ($this->isJunit()) {
-            $execOpts['format'] = 'junit';
-            $execOpts['out'] = 'junit-behat.xml';
-        }
-
         // Execute a list of commands to run before tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.before')) {
-            $tasks[] = $this->taskExecute($commands);
+            $this->taskExecute($commands)->run();
         }
 
         $this->taskProcess($options['from'], $options['to'])->run();
@@ -468,14 +462,28 @@ class TestsCommands extends AbstractCommands
             return new ResultData(1);
         }
 
-        $tasks[] = $this->taskExec($behatBin)->options($execOpts, '=');
+        $exec = $this->taskExec($behatBin)->options($execOpts, '=');
+
+        if ($this->isJunit()) {
+            $exec->option('format', 'progress');
+            $exec->option('out', 'std');
+            $exec->option('format', 'junit');
+            $exec->option('out', 'behat-xml');
+        }
+
+        $exec->run();
+
+        // As behat can only export junit into multiple files, we need to merge them into a single file.
+        if ($this->isJunit()) {
+            JunitXmlGenerator::mergeFiles('Toolkit Behat ' . Toolkit::VERSION, 'junit-behat.xml', 'behat-xml');
+        }
 
         // Execute a list of commands to run after tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.after')) {
-            $tasks[] = $this->taskExecute($commands);
+            $this->taskExecute($commands)->run();
         }
 
-        return $this->collectionBuilder()->addTaskList($tasks);
+        return ResultData::EXITCODE_OK;
     }
 
     /**
