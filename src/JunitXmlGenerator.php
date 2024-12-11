@@ -11,8 +11,6 @@ final class JunitXmlGenerator
 {
 
     protected static array $data = [];
-    private static string $xsd = 'https://raw.githubusercontent.com/junit-team/junit5/r5.5.1/platform-tests/src/test/resources/jenkins-junit.xsd';
-    private static string $xsi = 'http://www.w3.org/2001/XMLSchema-instance';
 
     /**
      * Sets the data array.
@@ -80,14 +78,12 @@ final class JunitXmlGenerator
     /**
      * Generate the Junit XML file.
      *
-     * @param string $rootName
-     *   The root element name attribute.
      * @param string $filename
      *   The filename to export.
      * @param array|null $data
      *   The data to export.
      */
-    public static function generate(string $rootName, string $filename = 'junit.xml', array $data = null)
+    public static function generate(string $filename = 'junit.xml', array $data = null)
     {
         if (!empty($data)) {
             self::setData($data);
@@ -96,10 +92,6 @@ final class JunitXmlGenerator
         $xml->formatOutput = true;
 
         $root = $xml->createElement('testsuites');
-        $root->setAttribute('name', $rootName);
-        $root->setAttribute('xmlns:xsi', self::$xsi);
-        $root->setAttribute('xsi:noNamespaceSchemaLocation', self::$xsd);
-
         foreach (self::getData() as $testSuite => $testCases) {
             $testsCount = $failuresCount = 0;
             $testSuiteElement = $xml->createElement('testsuite');
@@ -128,14 +120,12 @@ final class JunitXmlGenerator
     /**
      * Helper to merge multiple files into a single one.
      *
-     * @param string $rootName
-     *   The root element name attribute.
      * @param string $destination
      *   The destination file where multiple files will be merged.
      * @param string $directory
      *   The directory where the files are.
      */
-    public static function mergeFiles(string $rootName, string $destination, string $directory)
+    public static function mergeFiles(string $destination, string $directory)
     {
         $suites = PHP_EOL;
         foreach (glob("$directory/*.xml") as $file) {
@@ -146,9 +136,6 @@ final class JunitXmlGenerator
         }
         $content = '<?xml version="1.0" encoding="UTF-8"?><testsuites>' . $suites . '</testsuites>';
         $xml = new \SimpleXMLElement($content);
-        $xml->addAttribute('name', $rootName);
-        $xml->addAttribute('xmlns:xsi', self::$xsi);
-        $xml->addAttribute('xsi:noNamespaceSchemaLocation', self::$xsd);
         $xml->asXML($destination);
     }
 

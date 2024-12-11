@@ -208,7 +208,7 @@ class TestsCommands extends AbstractCommands
                     $io->newLine();
                 }
             }
-            JunitXmlGenerator::generate('Toolkit PHPmd ' . Toolkit::VERSION, 'junit-phpmd.xml');
+            JunitXmlGenerator::generate('junit-phpmd.xml');
         } else {
             $result = $exec->run();
         }

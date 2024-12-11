@@ -276,7 +276,7 @@ class LintCommands extends AbstractCommands
                     JunitXmlGenerator::addResult('Lint PHP', 'Lint PHP', $find['message']);
                 }
             }
-            JunitXmlGenerator::generate('Toolkit Lint PHP ' . Toolkit::VERSION, 'junit-lint-php.xml');
+            JunitXmlGenerator::generate('junit-lint-php.xml');
         } else {
             $result = $task->run();
         }
@@ -345,7 +345,7 @@ class LintCommands extends AbstractCommands
                     }
                 }
             }
-            JunitXmlGenerator::generate('Toolkit Lint CSS ' . Toolkit::VERSION, 'junit-lint-css.xml');
+            JunitXmlGenerator::generate('junit-lint-css.xml');
             return $result->getExitCode();
         }
 
@@ -406,7 +406,7 @@ class LintCommands extends AbstractCommands
                     JunitXmlGenerator::addResult('CSpell', 'CSpell', $find);
                 }
             }
-            JunitXmlGenerator::generate('Toolkit CSpell ' . Toolkit::VERSION, 'junit-cspell.xml');
+            JunitXmlGenerator::generate('junit-cspell.xml');
             return $result->getExitCode();
         }
 
@@ -472,7 +472,7 @@ class LintCommands extends AbstractCommands
                     }
                 }
             }
-            JunitXmlGenerator::generate('Toolkit Lint Behat ' . Toolkit::VERSION, 'junit-lint-behat.xml');
+            JunitXmlGenerator::generate('junit-lint-behat.xml');
             return $result->getExitCode();
         }
 

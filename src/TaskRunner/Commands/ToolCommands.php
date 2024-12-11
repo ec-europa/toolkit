@@ -103,12 +103,11 @@ class ToolCommands extends AbstractCommands
             Website::setUrl($options['endpoint']);
         }
         $reviewOk = true;
-        $junitName = 'Toolkit .opts.yml review ' . Toolkit::VERSION;
         $parseOptsFile = self::parseOptsYml();
         if ($parseOptsFile === false) {
             $io->say("The file '.opts.yml' was not found, skipping.");
             if ($this->isJunit()) {
-                JunitXmlGenerator::generate($junitName, 'junit-opts.xml');
+                JunitXmlGenerator::generate('junit-opts.xml');
             }
             return ResultData::EXITCODE_OK;
         }
@@ -162,7 +161,7 @@ class ToolCommands extends AbstractCommands
         if (empty($parseOptsFile['upgrade_commands'])) {
             $io->say('The project is using default deploy instructions.');
             if ($this->isJunit()) {
-                JunitXmlGenerator::generate($junitName, 'junit-opts.xml');
+                JunitXmlGenerator::generate('junit-opts.xml');
             }
             return $reviewOk ? ResultData::EXITCODE_OK : ResultData::EXITCODE_ERROR;
         }
@@ -171,7 +170,7 @@ class ToolCommands extends AbstractCommands
             $io->say($message);
             if ($this->isJunit()) {
                 JunitXmlGenerator::addResult('OPTS review', 'Upgrade commands', $message);
-                JunitXmlGenerator::generate($junitName, 'junit-opts.xml');
+                JunitXmlGenerator::generate('junit-opts.xml');
             }
             return ResultData::EXITCODE_ERROR;
         }
@@ -182,7 +181,7 @@ class ToolCommands extends AbstractCommands
             $io->say($message);
             if ($this->isJunit()) {
                 JunitXmlGenerator::addResult('OPTS review', 'Project id', $message);
-                JunitXmlGenerator::generate($junitName, 'junit-opts.xml');
+                JunitXmlGenerator::generate('junit-opts.xml');
             }
             return ResultData::EXITCODE_ERROR;
         }
@@ -219,7 +218,7 @@ class ToolCommands extends AbstractCommands
         }
 
         if ($this->isJunit()) {
-            JunitXmlGenerator::generate($junitName, 'junit-opts.xml');
+            JunitXmlGenerator::generate('junit-opts.xml');
         }
 
         if (!$reviewOk) {
@@ -251,7 +250,6 @@ class ToolCommands extends AbstractCommands
     {
         $this->say("Checking Toolkit requirements:\n");
 
-        $junitName = 'Toolkit requirements ' . Toolkit::VERSION;
         $junitFile = 'junit-requirements.xml';
         if ($this->isJunit()) {
             JunitXmlGenerator::addTestSuite('Requirements');
@@ -271,7 +269,7 @@ class ToolCommands extends AbstractCommands
             $io->error($message);
             if ($this->isJunit()) {
                 JunitXmlGenerator::addResult('Requirements', 'Endpoint connection', $message);
-                JunitXmlGenerator::generate($junitName, $junitFile);
+                JunitXmlGenerator::generate($junitFile);
             }
             return 1;
         }
@@ -280,7 +278,7 @@ class ToolCommands extends AbstractCommands
             $this->writeln($message);
             if ($this->isJunit()) {
                 JunitXmlGenerator::addResult('Requirements', 'Endpoint connection', $message);
-                JunitXmlGenerator::generate($junitName, $junitFile);
+                JunitXmlGenerator::generate($junitFile);
             }
             return 1;
         }
@@ -384,7 +382,7 @@ class ToolCommands extends AbstractCommands
         $io->horizontalTable($headers, [$rows]);
 
         if ($this->isJunit()) {
-            JunitXmlGenerator::generate($junitName, $junitFile);
+            JunitXmlGenerator::generate($junitFile);
         }
 
         if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $drupalCheck !== 'OK' || $nodeCheck !== 'OK') {

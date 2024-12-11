@@ -125,7 +125,7 @@ class ComponentCheckCommands extends AbstractCommands
 
         $this->printComponentResults($io);
         if ($this->isJunit()) {
-            JunitXmlGenerator::generate('Toolkit Component Check ' . Toolkit::VERSION, 'junit-components.xml');
+            JunitXmlGenerator::generate('junit-components.xml');
         }
 
         // If the validation fail, return according to the blocker.
