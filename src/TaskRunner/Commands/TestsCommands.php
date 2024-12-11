@@ -182,6 +182,7 @@ class TestsCommands extends AbstractCommands
         }
         if ($this->isJunit()) {
             $options['format'] = 'json';
+            JunitXmlGenerator::addTestSuite('PHPmd');
         }
 
         Toolkit::filterFolders($options['files']);
@@ -202,7 +203,7 @@ class TestsCommands extends AbstractCommands
                     foreach ($find['violations'] as $violation) {
                         $message = sprintf('%d | VIOLATION | %s', $violation['beginLine'], $violation['description']);
                         $this->writeln($message);
-                        JunitXmlGenerator::addResult($find['file'], $message);
+                        JunitXmlGenerator::addResult('PHPmd', $find['file'], $message);
                     }
                     $io->newLine();
                 }

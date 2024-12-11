@@ -34,19 +34,34 @@ final class JunitXmlGenerator
     }
 
     /**
-     * Add a test case to the data array.
+     * Add a test suite to the data array.
      *
-     * @param string $name
+     * @param string $testSuite
      *   The test case name.
      */
-    public static function addTestCase(string $name)
+    public static function addTestSuite(string $testSuite)
     {
-        self::$data[$name] = [];
+        self::$data[$testSuite] = [];
+    }
+
+    /**
+     * Add a test case to a test suite in the data array.
+     *
+     * @param string $testSuite
+     *   The test suite to add the test case.
+     * @param string $testCase
+     *   The test case name.
+     */
+    public static function addTestCase(string $testSuite, string $testCase)
+    {
+        self::$data[$testSuite][$testCase] = [];
     }
 
     /**
      * Add a result to a test case.
      *
+     * @param string $testSuite
+     *   The test suite to add.
      * @param string $testCase
      *   The test case to add the result to.
      * @param string $message
@@ -54,9 +69,9 @@ final class JunitXmlGenerator
      * @param string $type
      *   The result type.
      */
-    public static function addResult(string $testCase, string $message, string $type = 'error')
+    public static function addResult(string $testSuite, string $testCase, string $message, string $type = 'error')
     {
-        self::$data[$testCase][] = [
+        self::$data[$testSuite][$testCase][] = [
             'type' => $type,
             'message' => $message,
         ];
@@ -85,25 +100,28 @@ final class JunitXmlGenerator
         $root->setAttribute('xmlns:xsi', self::$xsi);
         $root->setAttribute('xsi:noNamespaceSchemaLocation', self::$xsd);
 
-        $testsCount = $failuresCount = 0;
-        foreach (self::getData() as $testCase => $results) {
-            $testElement = $xml->createElement('testcase');
-            $testElement->setAttribute('name', $testCase);
-            $testsCount++;
-            foreach ($results as $result) {
-                $failureElement = $xml->createElement('failure');
-                $failureElement->setAttribute('type', $result['type']);
-                $failureElement->setAttribute('message', $result['message']);
-                $testElement->appendChild($failureElement);
-                $failuresCount++;
+        foreach (self::getData() as $testSuite => $testCases) {
+            $testsCount = $failuresCount = 0;
+            $testSuiteElement = $xml->createElement('testsuite');
+            $testSuiteElement->setAttribute('name', $testSuite);
+            foreach ($testCases as $testCase => $results) {
+                $testCaseElement = $xml->createElement('testcase');
+                $testCaseElement->setAttribute('name', $testCase);
+                $testsCount++;
+                foreach ($results as $result) {
+                    $failureElement = $xml->createElement('failure');
+                    $failureElement->setAttribute('type', $result['type']);
+                    $failureElement->setAttribute('message', $result['message']);
+                    $testCaseElement->appendChild($failureElement);
+                    $failuresCount++;
+                }
+                $testSuiteElement->appendChild($testCaseElement);
             }
-            $root->appendChild($testElement);
+            $testSuiteElement->setAttribute('tests', (string) $testsCount);
+            $testSuiteElement->setAttribute('failures', (string) $failuresCount);
+            $root->appendChild($testSuiteElement);
         }
-
-        $root->setAttribute('tests', (string) $testsCount);
-        $root->setAttribute('failures', (string) $failuresCount);
         $xml->appendChild($root);
-
         $xml->save($filename);
     }
 

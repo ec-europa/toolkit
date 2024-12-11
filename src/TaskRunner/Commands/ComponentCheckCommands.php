@@ -117,7 +117,7 @@ class ComponentCheckCommands extends AbstractCommands
         foreach ($checks as $function => $label) {
             $io->title("Checking $label components.");
             if ($this->isJunit()) {
-                JunitXmlGenerator::addTestCase("$label components");
+                JunitXmlGenerator::addTestCase('Component check', "$label components");
             }
             $this->{$function}($io);
             $io->newLine();
@@ -1229,12 +1229,16 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Add a result to junit if it is enabled.
      *
+     * All test case will be added to the test suite 'Component check'.
+     *
      * @param string $testCase
      *   The name of the test.
      * @param string $message
      *   The message for the failure.
      * @param string $type
      *   The type of failure.
+     *
+     * @see JunitXmlGenerator::addResult()
      */
     private function addJunitResult(string $testCase, string $message, string $type = 'error'): void
     {
@@ -1242,8 +1246,7 @@ class ComponentCheckCommands extends AbstractCommands
         if (!$this->isJunit()) {
             return;
         }
-
-        JunitXmlGenerator::addResult($testCase, $message, $type);
+        JunitXmlGenerator::addResult('Component check', $testCase, $message, $type);
     }
 
 }

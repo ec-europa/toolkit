@@ -114,10 +114,10 @@ class ToolCommands extends AbstractCommands
         }
 
         if ($this->isJunit()) {
-            JunitXmlGenerator::addTestCase('PHP version');
-            JunitXmlGenerator::addTestCase('Sanitise options');
-            JunitXmlGenerator::addTestCase('Upgrade commands');
-            JunitXmlGenerator::addTestCase('Project id');
+            JunitXmlGenerator::addTestCase('OPTS review', 'PHP version');
+            JunitXmlGenerator::addTestCase('OPTS review', 'Sanitise options');
+            JunitXmlGenerator::addTestCase('OPTS review', 'Upgrade commands');
+            JunitXmlGenerator::addTestCase('OPTS review', 'Project id');
         }
 
         // Check for invalid php_version value, if given version is 8.0 as float when converted to string will be 8
@@ -128,7 +128,7 @@ class ToolCommands extends AbstractCommands
                 $io->say($message);
                 $reviewOk = false;
                 if ($this->isJunit()) {
-                    JunitXmlGenerator::addResult('PHP version', $message);
+                    JunitXmlGenerator::addResult('OPTS review', 'PHP version', $message);
                 }
             }
         }
@@ -141,7 +141,7 @@ class ToolCommands extends AbstractCommands
                     $io->error($message);
                     $reviewOk = false;
                     if ($this->isJunit()) {
-                        JunitXmlGenerator::addResult('Sanitise options', $message);
+                        JunitXmlGenerator::addResult('OPTS review', 'Sanitise options', $message);
                     }
                 }
             }
@@ -154,7 +154,7 @@ class ToolCommands extends AbstractCommands
                 $io->error($message);
                 $reviewOk = false;
                 if ($this->isJunit()) {
-                    JunitXmlGenerator::addResult('Sanitise options', implode(PHP_EOL, $message));
+                    JunitXmlGenerator::addResult('OPTS review', 'Sanitise options', implode(PHP_EOL, $message));
                 }
             }
         }
@@ -170,7 +170,7 @@ class ToolCommands extends AbstractCommands
             $message = "Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override";
             $io->say($message);
             if ($this->isJunit()) {
-                JunitXmlGenerator::addResult('Upgrade commands', $message);
+                JunitXmlGenerator::addResult('OPTS review', 'Upgrade commands', $message);
                 JunitXmlGenerator::generate($junitName, 'junit-opts.xml');
             }
             return ResultData::EXITCODE_ERROR;
@@ -181,7 +181,7 @@ class ToolCommands extends AbstractCommands
             $message = 'The configuration toolkit.project_id value is not valid.';
             $io->say($message);
             if ($this->isJunit()) {
-                JunitXmlGenerator::addResult('Project id', $message);
+                JunitXmlGenerator::addResult('OPTS review', 'Project id', $message);
                 JunitXmlGenerator::generate($junitName, 'junit-opts.xml');
             }
             return ResultData::EXITCODE_ERROR;
@@ -212,7 +212,7 @@ class ToolCommands extends AbstractCommands
                     $io->say($message);
                     $reviewOk = false;
                     if ($this->isJunit()) {
-                        JunitXmlGenerator::addResult('Upgrade commands', $message);
+                        JunitXmlGenerator::addResult('OPTS review', 'Upgrade commands', $message);
                     }
                 }
             }
@@ -254,11 +254,12 @@ class ToolCommands extends AbstractCommands
         $junitName = 'Toolkit requirements ' . Toolkit::VERSION;
         $junitFile = 'junit-requirements.xml';
         if ($this->isJunit()) {
-            JunitXmlGenerator::addTestCase('Endpoint connection');
-            JunitXmlGenerator::addTestCase('NEXTCLOUD configuration');
-            JunitXmlGenerator::addTestCase('PHP version');
-            JunitXmlGenerator::addTestCase('Toolkit version');
-            JunitXmlGenerator::addTestCase('Drupal version');
+            JunitXmlGenerator::addTestSuite('Requirements');
+            JunitXmlGenerator::addTestCase('Requirements', 'Endpoint connection');
+            JunitXmlGenerator::addTestCase('Requirements', 'NEXTCLOUD configuration');
+            JunitXmlGenerator::addTestCase('Requirements', 'PHP version');
+            JunitXmlGenerator::addTestCase('Requirements', 'Toolkit version');
+            JunitXmlGenerator::addTestCase('Requirements', 'Drupal version');
         }
 
         if (!empty($options['endpoint'])) {
@@ -269,7 +270,7 @@ class ToolCommands extends AbstractCommands
             $message = 'Failed to connect to the endpoint ' . Website::url() . '/api/v1/toolkit-requirements';
             $io->error($message);
             if ($this->isJunit()) {
-                JunitXmlGenerator::addResult('Endpoint connection', $message);
+                JunitXmlGenerator::addResult('Requirements', 'Endpoint connection', $message);
                 JunitXmlGenerator::generate($junitName, $junitFile);
             }
             return 1;
@@ -278,7 +279,7 @@ class ToolCommands extends AbstractCommands
             $message = 'Invalid data returned from the endpoint.';
             $this->writeln($message);
             if ($this->isJunit()) {
-                JunitXmlGenerator::addResult('Endpoint connection', $message);
+                JunitXmlGenerator::addResult('Requirements', 'Endpoint connection', $message);
                 JunitXmlGenerator::generate($junitName, $junitFile);
             }
             return 1;
@@ -290,7 +291,7 @@ class ToolCommands extends AbstractCommands
         $isValid = version_compare($phpVersion, $data['php_version']);
         $phpCheck = ($isValid >= 0) ? 'OK' : 'FAIL';
         if ($this->isJunit() && $phpCheck === 'FAIL') {
-            JunitXmlGenerator::addResult('PHP version', $phpCheck);
+            JunitXmlGenerator::addResult('Requirements', 'PHP version', $phpCheck);
         }
 
         // Handle Toolkit version.
@@ -300,7 +301,7 @@ class ToolCommands extends AbstractCommands
             $toolkitCheck = Semver::satisfies($toolkitVersion, $data['toolkit']) ? 'OK' : 'FAIL';
         }
         if ($this->isJunit() && str_starts_with($toolkitCheck, 'FAIL')) {
-            JunitXmlGenerator::addResult('Toolkit version', $toolkitCheck);
+            JunitXmlGenerator::addResult('Requirements', 'Toolkit version', $toolkitCheck);
         }
         // Handle Drupal version.
         if (!($drupalVersion = self::getPackagePropertyFromComposer('drupal/core'))) {
@@ -309,7 +310,7 @@ class ToolCommands extends AbstractCommands
             $drupalCheck = Semver::satisfies($drupalVersion, $data['drupal']) ? 'OK' : 'FAIL';
         }
         if ($this->isJunit() && str_starts_with($drupalCheck, 'FAIL')) {
-            JunitXmlGenerator::addResult('Drupal version', $drupalCheck);
+            JunitXmlGenerator::addResult('Requirements', 'Drupal version', $drupalCheck);
         }
         // Check if node_install enable in the .opts.yml.
         $parseOptsFile = self::parseOptsYml();
@@ -318,7 +319,7 @@ class ToolCommands extends AbstractCommands
         // Check if npm_install property enabled.
         if (!empty($parseOptsFile['npm_install'])) {
             if ($this->isJunit()) {
-                JunitXmlGenerator::addTestCase('Node version');
+                JunitXmlGenerator::addTestCase('Requirements', 'Node version');
             }
             // Check node version running.
             $exec = $this->taskExec('node --version')
@@ -333,7 +334,7 @@ class ToolCommands extends AbstractCommands
             }
 
             if ($this->isJunit() && str_starts_with($nodeCheck, 'FAIL')) {
-                JunitXmlGenerator::addResult('Node version', $nodeCheck);
+                JunitXmlGenerator::addResult('Requirements', 'Node version', $nodeCheck);
             }
         }
 
@@ -348,7 +349,7 @@ class ToolCommands extends AbstractCommands
             $nextcloudCheck .= empty($ncPass) ? ' NEXTCLOUD_PASS' : '';
             $nextcloudCheck .= ')';
             if ($this->isJunit()) {
-                JunitXmlGenerator::addResult('NEXTCLOUD configuration', $nextcloudCheck);
+                JunitXmlGenerator::addResult('Requirements', 'NEXTCLOUD configuration', $nextcloudCheck);
             }
         }
 

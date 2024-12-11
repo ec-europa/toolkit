@@ -55,7 +55,7 @@ class LintCommands extends AbstractCommands
         }
 
         // Create a package.json if it doesn't exist.
-        if (!file_exists('package.json')) {
+        if (!file_exists('package.json') || !file_exists($this->getNodeBinPath('eslint'))) {
             $actions = true;
             $this->taskExec('npm ini -y')->run();
             $this->taskExec("npm install --save-dev {$options['packages']} -y")->run();
@@ -264,7 +264,8 @@ class LintCommands extends AbstractCommands
         $task->rawArg('.');
 
         if ($this->isJunit()) {
-            JunitXmlGenerator::addTestCase('Lint PHP');
+            JunitXmlGenerator::addTestSuite('Lint PHP');
+            JunitXmlGenerator::addTestCase('Lint PHP', 'Lint PHP');
             $result = $task->option('json')
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                 ->run();
@@ -272,7 +273,7 @@ class LintCommands extends AbstractCommands
             if (!empty($findings['results']['errors'])) {
                 foreach ($findings['results']['errors'] as $find) {
                     $this->writeln($find['message']);
-                    JunitXmlGenerator::addResult('Lint PHP', $find['message']);
+                    JunitXmlGenerator::addResult('Lint PHP', 'Lint PHP', $find['message']);
                 }
             }
             JunitXmlGenerator::generate('Toolkit Lint PHP ' . Toolkit::VERSION, 'junit-lint-php.xml');
@@ -325,7 +326,7 @@ class LintCommands extends AbstractCommands
             ->rawArg($options['files']);
 
         if ($this->isJunit()) {
-            JunitXmlGenerator::addTestCase('Lint CSS');
+            JunitXmlGenerator::addTestCase('Lint CSS', 'Lint CSS');
             $result = $task->option('formatter', 'json', '=')
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                 ->run();
@@ -340,7 +341,7 @@ class LintCommands extends AbstractCommands
                     foreach ($find['warnings'] as $warning) {
                         $text = sprintf(' %d:%d %s %s', $warning['line'], $warning['column'], $warning['text'], $warning['rule']);
                         $this->writeln($text);
-                        JunitXmlGenerator::addResult('Lint CSS', $text);
+                        JunitXmlGenerator::addResult('Lint CSS', 'Lint CSS', $text);
                     }
                 }
             }
@@ -395,14 +396,14 @@ class LintCommands extends AbstractCommands
         $task = $this->taskExec($command . ' ' . $options['options']);
 
         if ($this->isJunit()) {
-            JunitXmlGenerator::addTestCase('CSpell');
+            JunitXmlGenerator::addTestCase('CSpell', 'CSpell');
             $result = $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)->run();
             $message = $result->getMessage();
             if (!empty($message)) {
                 $this->writeln($message);
                 $findings = array_filter(explode(PHP_EOL, $message));
                 foreach ($findings as $find) {
-                    JunitXmlGenerator::addResult('CSpell', $find);
+                    JunitXmlGenerator::addResult('CSpell', 'CSpell', $find);
                 }
             }
             JunitXmlGenerator::generate('Toolkit CSpell ' . Toolkit::VERSION, 'junit-cspell.xml');
@@ -445,6 +446,7 @@ class LintCommands extends AbstractCommands
         $task = $this->taskExec($this->getBinPath('gherkinlint') . ' lint ' . $options['files']);
 
         if ($this->isJunit()) {
+            JunitXmlGenerator::addTestSuite('Lint Behat');
             $result = $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)->run();
             $table = $result->getMessage();
             $findings = array_filter(explode(PHP_EOL, $table), function ($item) {
@@ -457,7 +459,7 @@ class LintCommands extends AbstractCommands
                 foreach ($findings as $find) {
                     if (str_ends_with($find, '.feature')) {
                         $featureName = $find;
-                        JunitXmlGenerator::addTestCase($featureName);
+                        JunitXmlGenerator::addTestCase('Lint Behat', $featureName);
                         continue;
                     }
                     $exploded = explode('|', trim($find, '|'));
@@ -466,7 +468,7 @@ class LintCommands extends AbstractCommands
                         continue;
                     }
                     if (isset($featureName)) {
-                        JunitXmlGenerator::addResult($featureName, "$line:$column - $severity - $message");
+                        JunitXmlGenerator::addResult('Lint Behat', $featureName, "$line:$column - $severity - $message");
                     }
                 }
             }
