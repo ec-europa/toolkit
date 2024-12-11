@@ -181,9 +181,19 @@
           ->exec('npm list @ecl/preset-ec || npm install @ecl/preset-ec --save-dev')
           ->exec('npm list @ecl/preset-eu || npm install @ecl/preset-eu --save-dev')
           ->exec('npm list @ecl/preset-reset || npm install @ecl/preset-reset --save-dev')
+          ->exec('cp /test/toolkit/resources/assets/bcl-builder.config.j ... l-builder.config.js')
+          ->exec('npm list @openeuropa/bcl-builder || npm install @openeuropa/bcl-builder --save')
+          ->exec('npm list @openeuropa/bcl-bootstrap || npm install @openeuropa/bcl-bootstrap --save')
+          ->exec('npm list @openeuropa/bcl-theme-default|| npm install @openeuropa/bcl-theme-default --save--save')
         [Simulator] Simulating Exec('./node_modules/.bin/ecl-builder styles')
           ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
         [Simulator] Running ./node_modules/.bin/ecl-builder styles in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
         [Simulator] Simulating Exec('./node_modules/.bin/ecl-builder scripts')
           ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
         [Simulator] Running ./node_modules/.bin/ecl-builder scripts in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('./node_modules/.bin/bcl-builder styles')
+          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running ./node_modules/.bin/bcl-builder styles in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('./node_modules/.bin/bcl-builder scripts')
+          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running ./node_modules/.bin/bcl-builder scripts in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
