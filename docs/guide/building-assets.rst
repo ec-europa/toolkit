@@ -28,8 +28,8 @@ like shown below:
   toolkit:
     build:
       npm:
-        theme-task-runner: ecl-builder gulp
-        packages: '@ecl/builder pikaday moment gulp gulp-concat gulp-sass gulp-clean-css gulp-minify'
+        theme-task-runner: ecl-builder gulp bcl-builder
+        packages: '@ecl/builder pikaday moment gulp gulp-concat gulp-sass gulp-clean-css gulp-minify @openeuropa/bcl-builder @openeuropa/bcl-bootstrap @openeuropa/bcl-theme-default'
         ecl-command: 'styles scripts'
 
 Command to run:
@@ -41,7 +41,7 @@ Command to run:
 
 Edit the config file in order to fit your needs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-('ecl-builder.config.js' and/or 'gulpfile.js')
+('ecl-builder.config.js', 'bcl-builder.config.js' and/or 'gulpfile.js')
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Depending on the chosen runners a config file will be created on the theme root folder.
@@ -68,6 +68,19 @@ To use other command listed on 'ecl-builder' options an additional parameter can
    // Execute an available command from the ecl-builder list - Get help:
    docker-compose exec web ./vendor/bin/run toolkit:build-assets --ecl-command=help
 
+Build theme assets (bcl-builder)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Toolkit compiles the Css and Js files, defined in the configuration file
+'bcl-builder.config.js' as entry and destination paths.
+The bcl-builder command used for this action is 'styles'. This the default command.
+
+To use other command listed on 'bcl-builder' options an additional parameter can be provided:
+'--bcl-command'
+.. code-block::
+
+   // Execute an available command from the bcl-builder list - Get help:
+   docker-compose exec web ./vendor/bin/run toolkit:build-assets --bcl-command=help
 
 Define 'default-theme'
 ^^^^^^^^^^^^^^^^^^^

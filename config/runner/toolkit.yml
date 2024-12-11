@@ -109,7 +109,7 @@ toolkit:
     custom-code-folder: 'lib'
     npm:
       theme-task-runner: ecl-builder
-      packages: '@ecl/builder @ecl/preset-ec @ecl/preset-eu @ecl/preset-reset'
+      packages: '@ecl/builder @ecl/preset-ec @ecl/preset-eu @ecl/preset-reset @openeuropa/bcl-builder @openeuropa/bcl-bootstrap @openeuropa/bcl-theme-default'
       ecl-command: 'styles scripts'
   scss:
     validate: 'false'
