@@ -476,7 +476,7 @@ class TestsCommands extends AbstractCommands
 
         // As behat can only export junit into multiple files, we need to merge them into a single file.
         if ($this->isJunit()) {
-            JunitXmlGenerator::mergeFiles('Toolkit Behat ' . Toolkit::VERSION, 'junit-behat.xml', 'behat-xml');
+            JunitXmlGenerator::mergeFiles('junit-behat.xml', 'behat-xml');
         }
 
         // Execute a list of commands to run after tests.
