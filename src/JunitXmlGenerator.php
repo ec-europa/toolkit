@@ -101,6 +101,7 @@ final class JunitXmlGenerator
             foreach ($testCases as $testCase => $results) {
                 $testCaseElement = $xml->createElement('testcase');
                 $testCaseElement->setAttribute('name', $testCase);
+                $testCaseElement->setAttribute('classname', $testSuite);
                 $testsCount++;
                 foreach ($results as $result) {
                     $failureElement = $xml->createElement('failure');
