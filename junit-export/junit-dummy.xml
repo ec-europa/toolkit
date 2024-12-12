@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Requirements" time="0" tests="5" failures="2" errors="2">
+    <testcase name="Endpoint connection"/>
+    <testcase name="NEXTCLOUD configuration"/>
+    <testcase name="PHP version"/>
+    <testcase name="Toolkit version">
+      <failure type="error" message="FAIL (not found)"/>
+    </testcase>
+    <testcase name="Drupal version">
+      <failure type="error" message="FAIL (not found)"/>
+    </testcase>
+  </testsuite>
+</testsuites>

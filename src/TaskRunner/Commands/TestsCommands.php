@@ -277,7 +277,7 @@ class TestsCommands extends AbstractCommands
             $options .= ' --ignore-annotations';
         }
         if ($this->isJunit()) {
-            $options .= ' --report=junit --report-file=junit-phpcs.xml';
+            $options .= ' --report=junit --report-file=' . JunitXmlGenerator::$dir . '/junit-phpcs.xml';
         }
         return $this->taskExec("$phpcsBin --standard=$configFile$options")
             ->run();
@@ -393,7 +393,7 @@ class TestsCommands extends AbstractCommands
 
         if ($this->isJunit()) {
             $exec->option('error-format', 'junit');
-            $exec->rawArg('> junit-phpstan.xml');
+            $exec->rawArg('> ' . JunitXmlGenerator::$dir . '/junit-phpstan.xml');
         }
 
         $tasks[] = $exec;
@@ -561,7 +561,7 @@ class TestsCommands extends AbstractCommands
                 $task->option('printer', $phpunitConfig['printer'], '=');
             }
             if ($this->isJunit()) {
-                $task->option('log-junit', 'junit-phpunit.xml');
+                $task->option('log-junit', JunitXmlGenerator::$dir . '/junit-phpunit.xml');
             }
             $tasks[] = $task;
         }

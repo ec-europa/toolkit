@@ -11,7 +11,7 @@ final class JunitXmlGenerator
 {
 
     protected static array $data = [];
-    protected static string $dir = 'junit-export';
+    public static string $dir = 'junit-export';
 
     /**
      * Sets the data array.

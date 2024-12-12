@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+<testsuite package="toolkit" time="0" tests="1" errors="1" name="Toolkit test">
+<testcase time="0" name="toolkit.strict" classname="Toolkit">
+    <failure message="&apos;use strict&apos; is unnecessary inside of modules."><![CDATA[line 1, col 1, Error - &apos;use strict&apos; is unnecessary inside of modules. (strict)]]></failure>
+</testcase>
+</testsuite>
+</testsuites>

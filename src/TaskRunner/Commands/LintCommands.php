@@ -216,7 +216,7 @@ class LintCommands extends AbstractCommands
         if ($this->isJunit()) {
             $opts['format'] = 'junit';
             $type = str_ends_with($this->input()->getArgument('command'), 'js') ? 'js' : 'yaml';
-            $opts['output-file'] = "junit-lint-$type.xml";
+            $opts['output-file'] = JunitXmlGenerator::$dir . "/junit-lint-$type.xml";
         }
 
         $tasks[] = $this->taskExec($this->getNodeBinPath('eslint'))->options($opts)->arg('.');
