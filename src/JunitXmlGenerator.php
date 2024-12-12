@@ -11,6 +11,7 @@ final class JunitXmlGenerator
 {
 
     protected static array $data = [];
+    protected static string $dir = 'junit-export';
 
     /**
      * Sets the data array.
@@ -96,6 +97,7 @@ final class JunitXmlGenerator
             $testsCount = $failuresCount = 0;
             $testSuiteElement = $xml->createElement('testsuite');
             $testSuiteElement->setAttribute('name', $testSuite);
+            $testSuiteElement->setAttribute('time', '0');
             foreach ($testCases as $testCase => $results) {
                 $testCaseElement = $xml->createElement('testcase');
                 $testCaseElement->setAttribute('name', $testCase);
@@ -111,10 +113,14 @@ final class JunitXmlGenerator
             }
             $testSuiteElement->setAttribute('tests', (string) $testsCount);
             $testSuiteElement->setAttribute('failures', (string) $failuresCount);
+            $testSuiteElement->setAttribute('errors', (string) $failuresCount);
             $root->appendChild($testSuiteElement);
         }
         $xml->appendChild($root);
-        $xml->save($filename);
+        if (!is_dir(self::$dir)) {
+            mkdir(self::$dir);
+        }
+        $xml->save(self::$dir . '/' . $filename);
     }
 
     /**
@@ -136,7 +142,10 @@ final class JunitXmlGenerator
         }
         $content = '<?xml version="1.0" encoding="UTF-8"?><testsuites>' . $suites . '</testsuites>';
         $xml = new \SimpleXMLElement($content);
-        $xml->asXML($destination);
+        if (!is_dir(self::$dir)) {
+            mkdir(self::$dir);
+        }
+        $xml->asXML(self::$dir . '/' . $destination);
     }
 
 }
