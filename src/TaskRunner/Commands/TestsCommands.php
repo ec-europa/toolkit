@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\InstalledVersions;
+use EcEuropa\Toolkit\JunitXmlGenerator;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Exception\AbortTasksException;
 use Robo\ResultData;
+use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
@@ -118,6 +120,8 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:test-phpcs
      *
+     * @option junit  Whether to export results as junit.
+     *
      * @aliases tk-phpcs
      *
      * @see toolkitRunPhpcs()
@@ -146,10 +150,13 @@ class TestsCommands extends AbstractCommands
      * @option ignore_patterns An array with ignore patterns.
      * @option triggered_by    An array with extensions to check.
      * @option files           An array with paths to check.
+     * @option junit           Whether to export results as junit.
      *
      * @aliases tk-phpmd
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function toolkitTestPhpmd(array $options = [
+    public function toolkitTestPhpmd(ConsoleIO $io, array $options = [
         'config' => InputOption::VALUE_REQUIRED,
         'format' => InputOption::VALUE_REQUIRED,
         'ignore_patterns' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
@@ -157,15 +164,14 @@ class TestsCommands extends AbstractCommands
         'files' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
     ])
     {
-        $tasks = $execOptions = [];
+        $execOptions = [];
         Toolkit::ensureArray($options['files']);
         Toolkit::ensureArray($options['ignore_patterns']);
         Toolkit::ensureArray($options['triggered_by']);
 
         if (!file_exists($options['config'])) {
             $this->output->writeln('Could not find the ruleset file, the default will be created in the project root.');
-            $tasks[] = $this->taskFilesystemStack()
-                ->copy(Toolkit::getToolkitRoot() . '/resources/phpmd.xml', $options['config']);
+            $this->_copy(Toolkit::getToolkitRoot() . '/resources/phpmd.xml', $options['config']);
         }
 
         if (!empty($options['ignore_patterns'])) {
@@ -174,15 +180,40 @@ class TestsCommands extends AbstractCommands
         if (!empty($options['triggered_by'])) {
             $execOptions['suffixes'] = implode(',', $options['triggered_by']);
         }
+        if ($this->isJunit()) {
+            $options['format'] = 'json';
+            JunitXmlGenerator::addTestSuite('PHPmd');
+        }
 
         Toolkit::filterFolders($options['files']);
         $files = implode(',', $options['files']);
 
-        $tasks[] = $this->taskExec($this->getBin('phpmd'))
+        $exec = $this->taskExec($this->getBin('phpmd'))
             ->args([$files, $options['format'], $options['config']])
             ->options($execOptions);
 
-        return $this->collectionBuilder()->addTaskList($tasks);
+        if ($this->isJunit()) {
+            $result = $exec->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run();
+            $findings = json_decode($result->getMessage(), true);
+            if (!empty($findings['files'])) {
+                foreach ($findings['files'] as $find) {
+                    $io->writeln('FILE: ' . $find['file']);
+                    $io->writeln(str_repeat('-', strlen('FILE: ' . $find['file'])));
+                    foreach ($find['violations'] as $violation) {
+                        $message = sprintf('%d | VIOLATION | %s', $violation['beginLine'], $violation['description']);
+                        $this->writeln($message);
+                        JunitXmlGenerator::addResult('PHPmd', $find['file'], $message);
+                    }
+                    $io->newLine();
+                }
+            }
+            JunitXmlGenerator::generate('junit-phpmd.xml');
+        } else {
+            $result = $exec->run();
+        }
+
+        return $result->getExitCode();
     }
 
     /**
@@ -245,6 +276,9 @@ class TestsCommands extends AbstractCommands
         if ($config->get('toolkit.test.phpcs.ignore_annotations') === true) {
             $options .= ' --ignore-annotations';
         }
+        if ($this->isJunit()) {
+            $options .= ' --report=junit --report-file=' . JunitXmlGenerator::$dir . '/junit-phpcs.xml';
+        }
         return $this->taskExec("$phpcsBin --standard=$configFile$options")
             ->run();
     }
@@ -297,6 +331,7 @@ class TestsCommands extends AbstractCommands
      * @option files        The files to check.
      * @option memory-limit The PHP memory limit.
      * @option options      Extra options for the command without -- (only options with no value).
+     * @option junit        Whether to export results as junit.
      *
      * @aliases tk-phpstan
      *
@@ -356,6 +391,11 @@ class TestsCommands extends AbstractCommands
             $exec->options($extraOptions);
         }
 
+        if ($this->isJunit()) {
+            $exec->option('error-format', 'junit');
+            $exec->rawArg('> ' . JunitXmlGenerator::$dir . '/junit-phpstan.xml');
+        }
+
         $tasks[] = $exec;
         return $this->collectionBuilder()->addTaskList($tasks);
     }
@@ -373,10 +413,14 @@ class TestsCommands extends AbstractCommands
      * @option profile  The profile to execute.
      * @option suite    The suite to execute, default runs all suites of profile.
      * @option options  Extra options for the command without -- (only options with no value).
+     * @option junit    Whether to export results as junit.
      *
      * @aliases tk-behat, tb
      *
      * @usage --profile='prod' --options='strict stop-on-failure'
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitTestBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
@@ -386,8 +430,6 @@ class TestsCommands extends AbstractCommands
         'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        $tasks = [];
-
         if (Toolkit::isCiCd()) {
             $this->taskExec($this->getBin('run') . ' toolkit:install-dependencies')->run();
         }
@@ -408,7 +450,7 @@ class TestsCommands extends AbstractCommands
 
         // Execute a list of commands to run before tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.before')) {
-            $tasks[] = $this->taskExecute($commands);
+            $this->taskExecute($commands)->run();
         }
 
         $this->taskProcess($options['from'], $options['to'])->run();
@@ -421,14 +463,28 @@ class TestsCommands extends AbstractCommands
             return new ResultData(1);
         }
 
-        $tasks[] = $this->taskExec($behatBin)->options($execOpts, '=');
+        $exec = $this->taskExec($behatBin)->options($execOpts, '=');
+
+        if ($this->isJunit()) {
+            $exec->option('format', 'progress');
+            $exec->option('out', 'std');
+            $exec->option('format', 'junit');
+            $exec->option('out', 'behat-xml');
+        }
+
+        $exec->run();
+
+        // As behat can only export junit into multiple files, we need to merge them into a single file.
+        if ($this->isJunit()) {
+            JunitXmlGenerator::mergeFiles('junit-behat.xml', 'behat-xml');
+        }
 
         // Execute a list of commands to run after tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.after')) {
-            $tasks[] = $this->taskExecute($commands);
+            $this->taskExecute($commands)->run();
         }
 
-        return $this->collectionBuilder()->addTaskList($tasks);
+        return ResultData::EXITCODE_OK;
     }
 
     /**
@@ -449,6 +505,7 @@ class TestsCommands extends AbstractCommands
      * @option filter    Filter which tests to run.
      * @option options   Extra options for the command without -- (only options with no value).
      * @option printer   If set, use printer defined in config toolkit.test.phpunit.printer.
+     * @option junit     Whether to export results as junit.
      *
      * @aliases tk-phpunit tp
      *
@@ -456,6 +513,7 @@ class TestsCommands extends AbstractCommands
      * @usage --group=Example
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitTestPhpunit(array $options = [
         'execution' => InputOption::VALUE_REQUIRED,
@@ -501,6 +559,9 @@ class TestsCommands extends AbstractCommands
             }
             if ($options['printer'] === true) {
                 $task->option('printer', $phpunitConfig['printer'], '=');
+            }
+            if ($this->isJunit()) {
+                $task->option('log-junit', JunitXmlGenerator::$dir . '/junit-phpunit.xml');
             }
             $tasks[] = $task;
         }

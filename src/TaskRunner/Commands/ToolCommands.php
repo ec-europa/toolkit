@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
+use EcEuropa\Toolkit\JunitXmlGenerator;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
@@ -86,11 +87,13 @@ class ToolCommands extends AbstractCommands
      * @command toolkit:opts-review
      *
      * @option endpoint The endpoint to use to connect to QA Website.
+     * @option junit    Whether to export results as junit.
      *
      * @aliases tk-opts-review
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function optsReview(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
@@ -103,15 +106,29 @@ class ToolCommands extends AbstractCommands
         $parseOptsFile = self::parseOptsYml();
         if ($parseOptsFile === false) {
             $io->say("The file '.opts.yml' was not found, skipping.");
+            if ($this->isJunit()) {
+                JunitXmlGenerator::generate('junit-opts.xml');
+            }
             return ResultData::EXITCODE_OK;
+        }
+
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestCase('OPTS review', 'PHP version');
+            JunitXmlGenerator::addTestCase('OPTS review', 'Sanitise options');
+            JunitXmlGenerator::addTestCase('OPTS review', 'Upgrade commands');
+            JunitXmlGenerator::addTestCase('OPTS review', 'Project id');
         }
 
         // Check for invalid php_version value, if given version is 8.0 as float when converted to string will be 8
         // and will cause issues like in docker images.
         if (!empty($parseOptsFile['php_version']) && is_float($parseOptsFile['php_version'])) {
             if ((string) $parseOptsFile['php_version'] === '8') {
-                $io->say('The php_version should be wrapped with upper-quotes like "php_version: \'8.0\'".');
+                $message = 'The php_version should be wrapped with upper-quotes like "php_version: \'8.0\'".';
+                $io->say($message);
                 $reviewOk = false;
+                if ($this->isJunit()) {
+                    JunitXmlGenerator::addResult('OPTS review', 'PHP version', $message);
+                }
             }
         }
 
@@ -119,32 +136,53 @@ class ToolCommands extends AbstractCommands
         if (!empty($parseOptsFile['dump_options'])) {
             if (!empty($parseOptsFile['dump_options']['SANITIZE_OPTS'])) {
                 if (!DrupalSanitiseCommands::areUserFieldsSanitised()) {
-                    $io->error('Detected forbidden usage of --sanitize-email=no and/or --sanitize-password=no');
+                    $message = 'Detected forbidden usage of --sanitize-email=no and/or --sanitize-password=no';
+                    $io->error($message);
                     $reviewOk = false;
+                    if ($this->isJunit()) {
+                        JunitXmlGenerator::addResult('OPTS review', 'Sanitise options', $message);
+                    }
                 }
             }
             if (!empty($parseOptsFile['dump_options'][0])) {
-                $io->error([
+                $message = [
                     'Invalid syntax detected in dump_options section for the SANITIZE_OPTS. Use:',
                     'dump_options:',
                     '  SANITIZE_OPTS: "--sanitize-email=dummy@example.com"',
-                ]);
+                ];
+                $io->error($message);
                 $reviewOk = false;
+                if ($this->isJunit()) {
+                    JunitXmlGenerator::addResult('OPTS review', 'Sanitise options', implode(PHP_EOL, $message));
+                }
             }
         }
 
         if (empty($parseOptsFile['upgrade_commands'])) {
             $io->say('The project is using default deploy instructions.');
+            if ($this->isJunit()) {
+                JunitXmlGenerator::generate('junit-opts.xml');
+            }
             return $reviewOk ? ResultData::EXITCODE_OK : ResultData::EXITCODE_ERROR;
         }
         if (empty($parseOptsFile['upgrade_commands']['default']) && empty($parseOptsFile['upgrade_commands']['append'])) {
-            $io->say("Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override");
+            $message = "Your structure for the 'upgrade_commands' is invalid.\nSee the documentation at https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override";
+            $io->say($message);
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addResult('OPTS review', 'Upgrade commands', $message);
+                JunitXmlGenerator::generate('junit-opts.xml');
+            }
             return ResultData::EXITCODE_ERROR;
         }
 
         $projectId = $this->getConfig()->get('toolkit.project_id');
         if (empty($projectId)) {
-            $io->say('The configuration toolkit.project_id value is not valid.');
+            $message = 'The configuration toolkit.project_id value is not valid.';
+            $io->say($message);
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addResult('OPTS review', 'Project id', $message);
+                JunitXmlGenerator::generate('junit-opts.xml');
+            }
             return ResultData::EXITCODE_ERROR;
         }
 
@@ -169,10 +207,18 @@ class ToolCommands extends AbstractCommands
             $parsedCommand = preg_split('/[\s;&|]/', $cleanCommand, 0, PREG_SPLIT_NO_EMPTY);
             foreach ($forbiddenCommands as $forbiddenCommand) {
                 if (in_array($forbiddenCommand, $parsedCommand)) {
-                    $io->say("The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.");
+                    $message = "The command '$command' is not allowed. Please remove it from 'upgrade_commands' section.";
+                    $io->say($message);
                     $reviewOk = false;
+                    if ($this->isJunit()) {
+                        JunitXmlGenerator::addResult('OPTS review', 'Upgrade commands', $message);
+                    }
                 }
             }
+        }
+
+        if ($this->isJunit()) {
+            JunitXmlGenerator::generate('junit-opts.xml');
         }
 
         if (!$reviewOk) {
@@ -190,6 +236,7 @@ class ToolCommands extends AbstractCommands
      * @command toolkit:requirements
      *
      * @option endpoint The endpoint to use to connect to QA Website.
+     * @option junit    Whether to export results as junit.
      *
      * @aliases tk-req
      *
@@ -203,16 +250,36 @@ class ToolCommands extends AbstractCommands
     {
         $this->say("Checking Toolkit requirements:\n");
 
+        $junitFile = 'junit-requirements.xml';
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestSuite('Requirements');
+            JunitXmlGenerator::addTestCase('Requirements', 'Endpoint connection');
+            JunitXmlGenerator::addTestCase('Requirements', 'NEXTCLOUD configuration');
+            JunitXmlGenerator::addTestCase('Requirements', 'PHP version');
+            JunitXmlGenerator::addTestCase('Requirements', 'Toolkit version');
+            JunitXmlGenerator::addTestCase('Requirements', 'Drupal version');
+        }
+
         if (!empty($options['endpoint'])) {
             Website::setUrl($options['endpoint']);
         }
         $data = Website::requirements();
         if (empty($data)) {
-            $io->error('Failed to connect to the endpoint ' . Website::url() . '/api/v1/toolkit-requirements');
+            $message = 'Failed to connect to the endpoint ' . Website::url() . '/api/v1/toolkit-requirements';
+            $io->error($message);
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addResult('Requirements', 'Endpoint connection', $message);
+                JunitXmlGenerator::generate($junitFile);
+            }
             return 1;
         }
         if (!isset($data['toolkit'])) {
-            $this->writeln('Invalid data returned from the endpoint.');
+            $message = 'Invalid data returned from the endpoint.';
+            $this->writeln($message);
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addResult('Requirements', 'Endpoint connection', $message);
+                JunitXmlGenerator::generate($junitFile);
+            }
             return 1;
         }
         $endpointCheck = 'OK';
@@ -221,6 +288,9 @@ class ToolCommands extends AbstractCommands
         $phpVersion = phpversion();
         $isValid = version_compare($phpVersion, $data['php_version']);
         $phpCheck = ($isValid >= 0) ? 'OK' : 'FAIL';
+        if ($this->isJunit() && $phpCheck === 'FAIL') {
+            JunitXmlGenerator::addResult('Requirements', 'PHP version', $phpCheck);
+        }
 
         // Handle Toolkit version.
         if (!($toolkitVersion = self::getPackagePropertyFromComposer('ec-europa/toolkit', 'version', 'packages-dev'))) {
@@ -228,18 +298,27 @@ class ToolCommands extends AbstractCommands
         } else {
             $toolkitCheck = Semver::satisfies($toolkitVersion, $data['toolkit']) ? 'OK' : 'FAIL';
         }
+        if ($this->isJunit() && str_starts_with($toolkitCheck, 'FAIL')) {
+            JunitXmlGenerator::addResult('Requirements', 'Toolkit version', $toolkitCheck);
+        }
         // Handle Drupal version.
         if (!($drupalVersion = self::getPackagePropertyFromComposer('drupal/core'))) {
             $drupalCheck = 'FAIL (not found)';
         } else {
             $drupalCheck = Semver::satisfies($drupalVersion, $data['drupal']) ? 'OK' : 'FAIL';
         }
+        if ($this->isJunit() && str_starts_with($drupalCheck, 'FAIL')) {
+            JunitXmlGenerator::addResult('Requirements', 'Drupal version', $drupalCheck);
+        }
         // Check if node_install enable in the .opts.yml.
         $parseOptsFile = self::parseOptsYml();
-        // Check if npm_install property enabled.
         $nodeCheck = 'OK';
         $nodeVersion = '';
+        // Check if npm_install property enabled.
         if (!empty($parseOptsFile['npm_install'])) {
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addTestCase('Requirements', 'Node version');
+            }
             // Check node version running.
             $exec = $this->taskExec('node --version')
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
@@ -250,6 +329,10 @@ class ToolCommands extends AbstractCommands
             } else {
                 $nodeVersion = trim($nodeVersion, 'v');
                 $nodeCheck = Semver::satisfies($nodeVersion, $data['node']) ? 'OK' : 'FAIL';
+            }
+
+            if ($this->isJunit() && str_starts_with($nodeCheck, 'FAIL')) {
+                JunitXmlGenerator::addResult('Requirements', 'Node version', $nodeCheck);
             }
         }
 
@@ -263,6 +346,9 @@ class ToolCommands extends AbstractCommands
             $nextcloudCheck .= empty($ncUser) ? ' NEXTCLOUD_USER' : '';
             $nextcloudCheck .= empty($ncPass) ? ' NEXTCLOUD_PASS' : '';
             $nextcloudCheck .= ')';
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addResult('Requirements', 'NEXTCLOUD configuration', $nextcloudCheck);
+            }
         }
 
         $io->title('Checking connections:');
@@ -283,20 +369,20 @@ class ToolCommands extends AbstractCommands
         }
 
         $io->title('Required checks:');
-
+        $headers = ['PHP version', 'Toolkit version', 'Drupal version'];
+        $rows = [
+            "$phpCheck ($phpVersion)",
+            "$toolkitCheck" . (!empty($toolkitVersion) ? " ($toolkitVersion)" : '') . (!empty($toolkitExtra) ? $toolkitExtra : ''),
+            "$drupalCheck" . (!empty($drupalVersion) ? " ($drupalVersion)" : '') . (!empty($drupalExtra) ? $drupalExtra : ''),
+        ];
         if (!empty($parseOptsFile['npm_install'])) {
-            $io->definitionList(
-                ['PHP version' => "$phpCheck ($phpVersion)"],
-                ['Toolkit version' => "$toolkitCheck ($toolkitVersion)$toolkitExtra"],
-                ['Drupal version' => "$drupalCheck ($drupalVersion)$drupalExtra"],
-                ['Node version' => "$nodeCheck ($nodeVersion)"],
-            );
-        } else {
-            $io->definitionList(
-                ['PHP version' => "$phpCheck ($phpVersion)"],
-                ['Toolkit version' => "$toolkitCheck ($toolkitVersion)$toolkitExtra"],
-                ['Drupal version' => "$drupalCheck ($drupalVersion)$drupalExtra"],
-            );
+            $headers[] = 'Node version';
+            $rows[] = $nodeCheck . (!empty($nodeVersion) ? " ($nodeVersion)" : '');
+        }
+        $io->horizontalTable($headers, [$rows]);
+
+        if ($this->isJunit()) {
+            JunitXmlGenerator::generate($junitFile);
         }
 
         if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $drupalCheck !== 'OK' || $nodeCheck !== 'OK') {

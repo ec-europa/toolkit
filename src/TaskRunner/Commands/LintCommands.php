@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use EcEuropa\Toolkit\JunitXmlGenerator;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
+use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Exception\TaskException;
 use Robo\ResultData;
 use Symfony\Component\Console\Input\InputOption;
@@ -53,7 +55,7 @@ class LintCommands extends AbstractCommands
         }
 
         // Create a package.json if it doesn't exist.
-        if (!file_exists('package.json')) {
+        if (!file_exists('package.json') || !file_exists($this->getNodeBinPath('eslint'))) {
             $actions = true;
             $this->taskExec('npm ini -y')->run();
             $this->taskExec("npm install --save-dev {$options['packages']} -y")->run();
@@ -140,6 +142,7 @@ class LintCommands extends AbstractCommands
      * @option config     The eslint config file.
      * @option extensions The extensions to check.
      * @option options    Extra options for the command without -- (only options with no value).
+     * @option junit      Whether to export results as junit.
      *
      * @aliases tk-yaml, tly
      *
@@ -164,6 +167,7 @@ class LintCommands extends AbstractCommands
      * @option config     The eslint config file.
      * @option extensions The extensions to check.
      * @option options    Extra options for the command without -- (only options with no value).
+     * @option junit      Whether to export results as junit.
      *
      * @aliases tk-js, tljs
      *
@@ -209,6 +213,12 @@ class LintCommands extends AbstractCommands
             $opts = array_merge($opts, $extra);
         }
 
+        if ($this->isJunit()) {
+            $opts['format'] = 'junit';
+            $type = str_ends_with($this->input()->getArgument('command'), 'js') ? 'js' : 'yaml';
+            $opts['output-file'] = JunitXmlGenerator::$dir . "/junit-lint-$type.xml";
+        }
+
         $tasks[] = $this->taskExec($this->getNodeBinPath('eslint'))->options($opts)->arg('.');
 
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -222,8 +232,11 @@ class LintCommands extends AbstractCommands
      * @option exclude    The eslint config file.
      * @option extensions The extensions to check.
      * @option options    Extra options for the command without -- (only options with no value).
+     * @option junit      Whether to export results as junit.
      *
      * @aliases tk-php, tlp
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitLintPhp(array $options = [
         'extensions' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
@@ -248,11 +261,30 @@ class LintCommands extends AbstractCommands
             }
         }
 
-        $result = $task->rawArg('.')->run();
-        if ($result->getExitCode() === 254) {
-            return ResultData::EXITCODE_OK;
+        $task->rawArg('.');
+
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestSuite('Lint PHP');
+            JunitXmlGenerator::addTestCase('Lint PHP', 'Lint PHP');
+            $result = $task->option('json')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run();
+            $findings = json_decode($result->getMessage(), true);
+            if (!empty($findings['results']['errors'])) {
+                foreach ($findings['results']['errors'] as $find) {
+                    $this->writeln($find['message']);
+                    JunitXmlGenerator::addResult('Lint PHP', 'Lint PHP', $find['message']);
+                }
+            }
+            JunitXmlGenerator::generate('junit-lint-php.xml');
+        } else {
+            $result = $task->run();
         }
 
+        // Exit code 254 is when no files are found to lint.
+        if (empty($result->getExitCode()) || $result->getExitCode() === 254) {
+            return ResultData::EXITCODE_OK;
+        }
         return $result->getExitCode();
     }
 
@@ -263,6 +295,7 @@ class LintCommands extends AbstractCommands
      *
      * @option exclude The stylelint config file.
      * @option files   The files to check.
+     * @option junit   Whether to export results as junit.
      *
      * @aliases tk-css
      */
@@ -271,28 +304,53 @@ class LintCommands extends AbstractCommands
         'files' => InputOption::VALUE_REQUIRED,
     ])
     {
-        $tasks = [];
-
         // Make sure eslint is properly installed.
-        $tasks[] = $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint');
+        $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')->run();
 
         // Make sure the stylelint-config-drupal and stylelint are installed.
-        $tasks[] = $this->taskExecStack()
+        $this->taskExecStack()
             ->exec('npm -v || npm i npm')
             ->exec('[ -f package.json ] || npm init -y --scope')
-            ->exec('npm list stylelint-config-drupal && npm update stylelint-config-drupal || npm install stylelint-config-drupal -y');
+            ->exec('npm list stylelint-config-drupal && npm update stylelint-config-drupal || npm install stylelint-config-drupal -y')
+            ->run();
 
         // Generate the config file if missing.
         if (!file_exists($options['config'])) {
             $data = ['extends' => 'stylelint-config-drupal'];
-            $tasks[] = $this->taskWriteToFile($options['config'])
-                ->text(json_encode($data, JSON_PRETTY_PRINT));
+            $this->taskWriteToFile($options['config'])
+                ->text(json_encode($data, JSON_PRETTY_PRINT))
+                ->run();
         }
 
-        $tasks[] = $this->taskExec($this->getNodeBinPath('stylelint'))
+        $task = $this->taskExec($this->getNodeBinPath('stylelint'))
             ->rawArg($options['files']);
 
-        return $this->collectionBuilder()->addTaskList($tasks);
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestCase('Lint CSS', 'Lint CSS');
+            $result = $task->option('formatter', 'json', '=')
+                ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                ->run();
+            $findings = json_decode($result->getMessage(), true);
+            $workingDir = $this->getWorkingDir();
+            if (!empty($findings)) {
+                foreach ($findings as $find) {
+                    if (empty($find['errored'])) {
+                        continue;
+                    }
+                    $this->writeln(str_replace($workingDir, '', $find['source']));
+                    foreach ($find['warnings'] as $warning) {
+                        $text = sprintf(' %d:%d %s %s', $warning['line'], $warning['column'], $warning['text'], $warning['rule']);
+                        $this->writeln($text);
+                        JunitXmlGenerator::addResult('Lint CSS', 'Lint CSS', $text);
+                    }
+                }
+            }
+            JunitXmlGenerator::generate('junit-lint-css.xml');
+            return $result->getExitCode();
+        }
+
+        $result = $task->run();
+        return $result->getExitCode();
     }
 
     /**
@@ -303,6 +361,7 @@ class LintCommands extends AbstractCommands
      * @option config  The path to the config file.
      * @option files   The files to check.
      * @option options Extra options for the command.
+     * @option junit   Whether to export results as junit.
      *
      * @aliases tk-cspell
      *
@@ -314,28 +373,45 @@ class LintCommands extends AbstractCommands
         'options' => InputOption::VALUE_OPTIONAL,
     ])
     {
-        $tasks = [];
         $bin = $this->getNodeBinPath('cspell');
 
         // Install dependencies if the bin is not present.
         if (!file_exists($bin)) {
-            $tasks[] = $this->taskExecStack()
+            $this->taskExecStack()
                 ->exec('npm -v || npm i npm')
                 ->exec('[ -f package.json ] || npm init -y --scope')
-                ->exec('npm list cspell && npm update cspell || npm install cspell -y');
+                ->exec('npm list cspell && npm update cspell || npm install cspell -y')
+                ->run();
         }
 
         // Ensure the config file exists.
         if (!file_exists($options['config'])) {
-            $tasks[] = $this->taskFilesystemStack()->copy(
+            $this->taskFilesystemStack()->copy(
                 Toolkit::getToolkitRoot() . '/resources/cspell/.project-cspell.json',
                 '.cspell.json'
-            );
+            )->run();
         }
 
         $command = $bin . ' ' . $options['files'] . ' --config=' . $options['config'];
-        $tasks[] = $this->taskExec($command . ' ' . $options['options']);
-        return $this->collectionBuilder()->addTaskList($tasks);
+        $task = $this->taskExec($command . ' ' . $options['options']);
+
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestCase('CSpell', 'CSpell');
+            $result = $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)->run();
+            $message = $result->getMessage();
+            if (!empty($message)) {
+                $this->writeln($message);
+                $findings = array_filter(explode(PHP_EOL, $message));
+                foreach ($findings as $find) {
+                    JunitXmlGenerator::addResult('CSpell', 'CSpell', $find);
+                }
+            }
+            JunitXmlGenerator::generate('junit-cspell.xml');
+            return $result->getExitCode();
+        }
+
+        $result = $task->run();
+        return $result->getExitCode();
     }
 
     /**
@@ -345,30 +421,63 @@ class LintCommands extends AbstractCommands
      *
      * @option config  The path to the config file.
      * @option files   The files to check.
+     * @option junit   Whether to export results as junit.
      *
      * @aliases tk-lbehat
      *
      * @usage --files='tests/features' --config='gherkinlint.json'
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitLintBehat(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
         'files' => InputOption::VALUE_REQUIRED,
     ])
     {
-        $tasks = [];
-        $bin = $this->getBinPath('gherkinlint');
-
         // Ensure the config file exists.
         if (!file_exists($options['config'])) {
             $this->output->writeln('Could not find the config file, the default will be created in the project root.');
-            $tasks[] = $this->taskFilesystemStack()->copy(
+            $this->taskFilesystemStack()->copy(
                 Toolkit::getToolkitRoot() . '/resources/gherkinlint.json',
                 $options['config']
-            );
+            )->run();
         }
 
-        $tasks[] = $this->taskExec($bin . ' lint ' . $options['files']);
-        return $this->collectionBuilder()->addTaskList($tasks);
+        $task = $this->taskExec($this->getBinPath('gherkinlint') . ' lint ' . $options['files']);
+
+        if ($this->isJunit()) {
+            JunitXmlGenerator::addTestSuite('Lint Behat');
+            $result = $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)->run();
+            $table = $result->getMessage();
+            $findings = array_filter(explode(PHP_EOL, $table), function ($item) {
+                $featureLine = str_ends_with($item, '.feature');
+                $validRow = str_starts_with($item, '|') && !str_starts_with($item, '| line');
+                return !empty($item) && ($validRow || $featureLine);
+            });
+            if (!empty($findings)) {
+                $this->writeln($table);
+                foreach ($findings as $find) {
+                    if (str_ends_with($find, '.feature')) {
+                        $featureName = $find;
+                        JunitXmlGenerator::addTestCase('Lint Behat', $featureName);
+                        continue;
+                    }
+                    $exploded = explode('|', trim($find, '|'));
+                    [$line, $column, $severity, $message] = array_map('trim', $exploded);
+                    if (empty($line) || empty($column) || empty($severity) || empty($message)) {
+                        continue;
+                    }
+                    if (isset($featureName)) {
+                        JunitXmlGenerator::addResult('Lint Behat', $featureName, "$line:$column - $severity - $message");
+                    }
+                }
+            }
+            JunitXmlGenerator::generate('junit-lint-behat.xml');
+            return $result->getExitCode();
+        }
+
+        $result = $task->run();
+        return $result->getExitCode();
     }
 
 }

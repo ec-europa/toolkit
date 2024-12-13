@@ -92,7 +92,7 @@ toolkit:
   lint:
     eslint:
       config: .eslintrc.json
-      packages: 'eslint-config-drupal eslint-plugin-yml stylelint stylelint-config-drupal'
+      packages: 'eslint-config-drupal eslint-plugin-yml stylelint stylelint-config-drupal eslint-junit'
       ignores: [ '${toolkit.build.dist.root}/*', '.cache/*', 'vendor/*', 'web/*', 'dist/*' ]
       extensions_yaml: [ '.yml', '.yaml' ]
       options_yaml: ''
