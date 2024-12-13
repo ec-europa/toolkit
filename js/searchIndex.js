@@ -73,7 +73,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Callbacks\\ConfigurationCallbacks\u003A\u003AvalidatePhpStan\u0028\u0029",
             "name": "validatePhpStan",
-            "summary": "If\u0020project\u0020is\u0020using\u0020phpstan\/extension\u002Dinstaller\u0020then\u0020should\u0020not\u0020manually\u0020include\u0020extensions.",
+            "summary": "Validate\u0020when\u0020using\u0020phpstan\/extension\u002Dinstaller\u0020the\u0020include\u0020should\u0020not\u0020be\u0020used,\u0020otherwise,\u0020include\u0020is\u0020required.",
             "url": "classes/EcEuropa-Toolkit-Callbacks-ConfigurationCallbacks.html#method_validatePhpStan"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\DrupalReleaseHistory",
@@ -85,6 +85,56 @@ Search.appendIndex(
             "name": "getPackageDetails",
             "summary": "Call\u0020release\u0020history\u0020of\u0020d.org\u0020to\u0020confirm\u0020security\u0020alert.",
             "url": "classes/EcEuropa-Toolkit-DrupalReleaseHistory.html#method_getPackageDetails"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\JunitXmlGenerator",
+            "name": "JunitXmlGenerator",
+            "summary": "A\u0020simple\u0020Junit\u0020XML\u0020generator.",
+            "url": "classes/EcEuropa-Toolkit-JunitXmlGenerator.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\JunitXmlGenerator\u003A\u003AsetData\u0028\u0029",
+            "name": "setData",
+            "summary": "Sets\u0020the\u0020data\u0020array.",
+            "url": "classes/EcEuropa-Toolkit-JunitXmlGenerator.html#method_setData"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\JunitXmlGenerator\u003A\u003AgetData\u0028\u0029",
+            "name": "getData",
+            "summary": "Get\u0020the\u0020existing\u0020data.",
+            "url": "classes/EcEuropa-Toolkit-JunitXmlGenerator.html#method_getData"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\JunitXmlGenerator\u003A\u003AaddTestSuite\u0028\u0029",
+            "name": "addTestSuite",
+            "summary": "Add\u0020a\u0020test\u0020suite\u0020to\u0020the\u0020data\u0020array.",
+            "url": "classes/EcEuropa-Toolkit-JunitXmlGenerator.html#method_addTestSuite"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\JunitXmlGenerator\u003A\u003AaddTestCase\u0028\u0029",
+            "name": "addTestCase",
+            "summary": "Add\u0020a\u0020test\u0020case\u0020to\u0020a\u0020test\u0020suite\u0020in\u0020the\u0020data\u0020array.",
+            "url": "classes/EcEuropa-Toolkit-JunitXmlGenerator.html#method_addTestCase"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\JunitXmlGenerator\u003A\u003AaddResult\u0028\u0029",
+            "name": "addResult",
+            "summary": "Add\u0020a\u0020result\u0020to\u0020a\u0020test\u0020case.",
+            "url": "classes/EcEuropa-Toolkit-JunitXmlGenerator.html#method_addResult"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\JunitXmlGenerator\u003A\u003Agenerate\u0028\u0029",
+            "name": "generate",
+            "summary": "Generate\u0020the\u0020Junit\u0020XML\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-JunitXmlGenerator.html#method_generate"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\JunitXmlGenerator\u003A\u003AmergeFiles\u0028\u0029",
+            "name": "mergeFiles",
+            "summary": "Helper\u0020to\u0020merge\u0020multiple\u0020files\u0020into\u0020a\u0020single\u0020one.",
+            "url": "classes/EcEuropa-Toolkit-JunitXmlGenerator.html#method_mergeFiles"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\JunitXmlGenerator\u003A\u003A\u0024data",
+            "name": "data",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-JunitXmlGenerator.html#property_data"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\JunitXmlGenerator\u003A\u003A\u0024dir",
+            "name": "dir",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-JunitXmlGenerator.html#property_dir"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Mock",
             "name": "Mock",
@@ -346,6 +396,11 @@ Search.appendIndex(
             "summary": "Check\u0020if\u0020the\u0020website\u0020is\u0020installed.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isWebsiteInstalled"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AisJunit\u0028\u0029",
+            "name": "isJunit",
+            "summary": "Check\u0020whether\u0020Junit\u0020option\u0020is\u0020being\u0020used,\u0020or\u0020env\u0020var\u0020is\u0020set.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isJunit"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractGitHooks",
             "name": "AbstractGitHooks",
             "summary": "Projects\u0020should\u0020extend\u0020this\u0020class\u0020to\u0020override\u0020or\u0020extend\u0020the\u0020GitHooks\u0020feature.",
@@ -595,6 +650,11 @@ Search.appendIndex(
             "name": "getOptsYml",
             "summary": "Returns\u0020the\u0020.opts.yml\u0020content.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getOptsYml"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AaddJunitResult\u0028\u0029",
+            "name": "addJunitResult",
+            "summary": "Add\u0020a\u0020result\u0020to\u0020junit\u0020if\u0020it\u0020is\u0020enabled.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_addJunitResult"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024evaluationFailed",
             "name": "evaluationFailed",
