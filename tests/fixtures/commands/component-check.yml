@@ -643,7 +643,7 @@
     - file: phpstan.neon
       content: |
         parameters:
-          level: 6
+          level: 5
         includes:
           - vendor/phpstan/phpstan-deprecation-rules/rules.neon
   expectations:
@@ -660,7 +660,7 @@
     - file: phpstan.neon
       content: |
         parameters:
-          level: 6
+          level: 5
   expectations:
     - string_contains: When using phpstan/extension-installer you should not manually include
 
@@ -677,7 +677,7 @@
     - file: phpstan.neon
       content: |
         parameters:
-          level: 6
+          level: 5
   expectations:
     - not_string_contains: When using phpstan/extension-installer you should not manually include
 
