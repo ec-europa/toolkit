@@ -159,4 +159,14 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
         return !empty($status['bootstrap']) && $status['bootstrap'] === 'Successful';
     }
 
+    /**
+     * Check whether Junit option is being used, or env var is set.
+     */
+    protected function isJunit(): bool
+    {
+        $option = $this->input()->hasOption('junit') && !empty($this->input()->getOption('junit'));
+        $env = !empty(getenv('CI_JUNIT'));
+        return $option || $env;
+    }
+
 }

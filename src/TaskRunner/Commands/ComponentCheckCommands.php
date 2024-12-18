@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 use Composer\Semver\Semver;
 use Dotenv\Dotenv;
 use EcEuropa\Toolkit\DrupalReleaseHistory;
+use EcEuropa\Toolkit\JunitXmlGenerator;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
@@ -59,6 +60,7 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @option endpoint     The endpoint to use to connect to QA Website.
      * @option test-command If set the command will load test packages.
+     * @option junit        Whether to export results as junit.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -105,22 +107,26 @@ class ComponentCheckCommands extends AbstractCommands
             'componentComposer' => 'Composer',
             'componentConfiguration' => 'Configuration',
         ];
-        // Check if npm_install property enabled adding the NPM results if so.
+        // Check if npm_install property enabled adding the NPM checks if so.
         if (!empty($parseOptsFile['npm_install'])) {
-            // Add NPM checks.
-            $checksNPM = [
+            $checks += [
                 'componentNpmInsecure' => 'Npm Insecure',
                 'componentNpmOutdated' => 'Npm Outdated',
             ];
-            $checks += $checksNPM;
         }
         foreach ($checks as $function => $label) {
             $io->title("Checking $label components.");
+            if ($this->isJunit()) {
+                JunitXmlGenerator::addTestCase('Component check', "$label components");
+            }
             $this->{$function}($io);
             $io->newLine();
         }
 
         $this->printComponentResults($io);
+        if ($this->isJunit()) {
+            JunitXmlGenerator::generate('junit-components.xml');
+        }
 
         // If the validation fail, return according to the blocker.
         $status = 0;
@@ -150,42 +156,30 @@ class ComponentCheckCommands extends AbstractCommands
         if (!$status) {
             $io->success('Components checked, nothing to report.');
         } else {
-            if (empty($parseOptsFile['npm_install'])) {
-                $io->note([
-                    'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
-                    '- Using commit message to skip Insecure and/or Outdated check:',
-                    '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
-                    '',
-                    '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
-                    '   toolkit:',
-                    '     components:',
-                    '       outdated:',
-                    '         check: false',
-                    '       abandoned:',
-                    '         check: false',
-                    '       unsupported:',
-                    '         check: false',
-                ]);
-            } else {
-                $io->note([
-                    'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
-                    '- Using commit message to skip Insecure and/or Outdated check:',
-                    '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED] and/or [SKIP-NPM-INSECURE]',
-                    '',
-                    '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
-                    '   toolkit:',
-                    '     components:',
-                    '       outdated:',
-                    '         check: false',
-                    '       abandoned:',
-                    '         check: false',
-                    '       unsupported:',
-                    '         check: false',
+            $note = [
+                'It is possible to bypass the insecure, outdated, abandoned and unsupported checks:',
+                '- Using commit message to skip Insecure and/or Outdated check:',
+                '   - Include in the message: [SKIP-INSECURE] and/or [SKIP-OUTDATED]',
+                '',
+                '- Using the configuration in the runner.yml.dist as shown below to skip Outdated, Abandoned or Unsupported: ',
+                '   toolkit:',
+                '     components:',
+                '       outdated:',
+                '         check: false',
+                '       abandoned:',
+                '         check: false',
+                '       unsupported:',
+                '         check: false',
+            ];
+            if (!empty($parseOptsFile['npm_install'])) {
+                $note += [
                     '       npm:',
                     '         outdated:',
                     '           check: false',
-                ]);
+                ];
+                $note[2] .= ' and/or [SKIP-NPM-INSECURE]';
             }
+            $io->note($note);
         }
 
         return $status;
@@ -234,9 +228,10 @@ class ComponentCheckCommands extends AbstractCommands
             foreach ($diffMandatory as $notPresent) {
                 $index = array_search($notPresent, array_column($mandatoryPackages, 'machine_name'));
                 $date = !empty($mandatoryPackages[$index]['mandatory_date']) ? ' (since ' . $mandatoryPackages[$index]['mandatory_date'] . ')' : '';
-                $this->writeln("Package $notPresent is mandatory$date and is not present on the project.");
-
+                $message = "Package $notPresent is mandatory$date and is not present on the project.";
+                $this->writeln($message);
                 $this->mandatoryFailed = true;
+                $this->addJunitResult('Mandatory components', $message);
             }
         }
         if (!$this->mandatoryFailed) {
@@ -270,8 +265,10 @@ class ComponentCheckCommands extends AbstractCommands
             foreach ($diffRecommended as $notPresent) {
                 $index = array_search($notPresent, array_column($recommendedPackages, 'name'));
                 $date = !empty($recommendedPackages[$index]['mandatory_date']) ? ' (and will be mandatory at ' . $recommendedPackages[$index]['mandatory_date'] . ')' : '';
-                $this->writeln("Package $notPresent is recommended$date but is not present on the project.");
+                $message = "Package $notPresent is recommended$date but is not present on the project.";
+                $this->writeln($message);
                 $this->recommendedFailed = true;
+                $this->addJunitResult('Recommended components', $message, $this->skipRecommended ? 'warning' : 'error');
             }
 
             $this->say("See the list of recommended packages at\nhttps://digit-dqa.fpfis.tech.ec.europa.eu/requirements.");
@@ -299,6 +296,7 @@ class ComponentCheckCommands extends AbstractCommands
             return 1;
         }
         $packages = [];
+        $fullSkip = getenv('QA_SKIP_INSECURE') !== false && getenv('QA_SKIP_INSECURE');
         $drupalReleaseHistory = new DrupalReleaseHistory();
         $exec = $this->taskExec('composer audit --no-dev --locked --no-scripts --format=json')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
@@ -338,12 +336,12 @@ class ComponentCheckCommands extends AbstractCommands
 
             $messages[] = $msg;
             $this->insecureFailed = true;
+            $this->addJunitResult('Insecure components', $msg, $fullSkip || $this->skipInsecure ? 'warning' : 'error');
         }
         if (!empty($messages)) {
             $this->writeln($messages);
         }
 
-        $fullSkip = getenv('QA_SKIP_INSECURE') !== false && getenv('QA_SKIP_INSECURE');
         // Forcing skip due to issues with the security advisor date detection.
         if ($fullSkip) {
             $this->say('Globally skipping security check for components.');
@@ -380,18 +378,25 @@ class ComponentCheckCommands extends AbstractCommands
                 }
                 // Check for ignores and compare versions.
                 if (!empty($ignores) && isset($ignores[$package['name']]) && $package['version'] === $ignores[$package['name']]) {
-                    $io->writeln("Package {$package['name']} with version installed {$package['version']} skipped by config.");
+                    $message = "Package {$package['name']} with version installed {$package['version']} skipped by config.";
+                    $io->writeln($message);
+                    $this->addJunitResult('Outdated components', $message, 'warning');
                     continue;
                 }
 
                 if (!array_key_exists('latest', $package)) {
-                    $io->writeln("Package {$package['name']} does not provide information about last version.");
+                    $message = "Package {$package['name']} does not provide information about last version.";
+                    $io->writeln($message);
+                    $this->addJunitResult('Outdated components', $message, 'warning');
                 } elseif (array_key_exists('warning', $package)) {
                     $io->writeln($package['warning']);
                     $this->outdatedFailed = true;
+                    $this->addJunitResult('Outdated components', $package['warning']);
                 } else {
-                    $io->writeln("Package {$package['name']} with version installed {$package['version']} is outdated, please update to last version - {$package['latest']}");
+                    $message = "Package {$package['name']} with version installed {$package['version']} is outdated, please update to last version - {$package['latest']}";
+                    $io->writeln($message);
                     $this->outdatedFailed = true;
+                    $this->addJunitResult('Outdated components', $message);
                 }
             }
         }
@@ -415,6 +420,7 @@ class ComponentCheckCommands extends AbstractCommands
                 // Only show abandoned packages.
                 if ($package['abandoned'] != false) {
                     $this->writeln($package['warning']);
+                    $this->addJunitResult('Abandoned components', $package['warning']);
                     $this->abandonedFailed = true;
                 }
             }
@@ -450,18 +456,20 @@ class ComponentCheckCommands extends AbstractCommands
             $this->unsupportedFailed = true;
             foreach ($unsupported as $item) {
                 if (array_key_exists('recommended', $item)) {
-                    $io->writeln(sprintf(
+                    $message = sprintf(
                         "Package %s with version installed %s is not supported. Update to the recommended version %s",
                         $item['name'],
                         $item['existing_version'],
                         $item['recommended']
-                    ));
+                    );
                 } else {
-                    $io->writeln(sprintf(
+                    $message = sprintf(
                         "Package %s is no longer supported, and is no longer available for download. Disabling everything included by this project is strongly recommended!",
                         $item['name']
-                    ));
+                    );
                 }
+                $io->writeln($message);
+                $this->addJunitResult('Unsupported components', $message);
             }
         }
 
@@ -537,7 +545,9 @@ class ComponentCheckCommands extends AbstractCommands
         foreach (array_keys($devPackages) as $packageName) {
             if (ToolCommands::getPackagePropertyFromComposer($packageName, 'version', 'packages')) {
                 $this->devCompRequireFailed = true;
-                $this->io->warning("Package $packageName cannot be used on require section, must be on require-dev section.");
+                $message = "Package $packageName cannot be used on require section, must be on require-dev section.";
+                $this->io->warning($message);
+                $this->addJunitResult('Development components', $message);
             }
         }
         if (!$this->devCompRequireFailed) {
@@ -566,8 +576,10 @@ class ComponentCheckCommands extends AbstractCommands
                 if (!empty($validation['blocker'])) {
                     $this->io->error($validation['message']);
                     $this->configurationFailed = true;
+                    $this->addJunitResult('Configuration components', $validation['message']);
                 } else {
                     $this->io->warning($validation['message']);
+                    $this->addJunitResult('Configuration components', $validation['message'], 'warning');
                 }
             }
         }
@@ -604,20 +616,26 @@ class ComponentCheckCommands extends AbstractCommands
             ]);
             if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
                 $this->composerFailed = true;
-                $this->writeln("Package {$package['name']}:{$package['version']} cannot be used in dev version.");
+                $message = "Package {$package['name']}:{$package['version']} cannot be used in dev version.";
+                $this->writeln($message);
+                $this->addJunitResult('Composer components', $message);
             }
         }
 
         // Do not allow setting enable-patching.
         if (!empty($composerJson['extra']['enable-patching'])) {
             $this->composerFailed = true;
-            $this->writeln("The composer property 'extra.enable-patching' cannot be set to true.");
+            $message = "The composer property 'extra.enable-patching' cannot be set to true.";
+            $this->writeln($message);
+            $this->addJunitResult('Composer components', $message);
         }
 
         // Enforce setting composer-exit-on-patch-failure.
         if (empty($composerJson['extra']['composer-exit-on-patch-failure'])) {
             $this->composerFailed = true;
-            $this->writeln("The composer property 'extra.composer-exit-on-patch-failure' must be set to true.");
+            $message = "The composer property 'extra.composer-exit-on-patch-failure' must be set to true.";
+            $this->writeln($message);
+            $this->addJunitResult('Composer components', $message);
         }
 
         // Do not allow remote patches. Check if patches from drupal.org are allowed.
@@ -628,8 +646,10 @@ class ComponentCheckCommands extends AbstractCommands
                     $hostname = parse_url($patch, PHP_URL_HOST);
                     $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
                     if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
-                        $this->writeln("The patch '$patch' is not valid.");
+                        $message = "The patch '$patch' is not valid.";
+                        $this->writeln($message);
                         $this->composerFailed = true;
+                        $this->addJunitResult('Composer components', $message);
                     }
                 }
             }
@@ -655,8 +675,10 @@ class ComponentCheckCommands extends AbstractCommands
                     $check = (!is_numeric($composerKey) ? $composerKey : $composerValue);
                     // If the check value is found in the forbidden values, display an error message.
                     if (in_array($check, $forbiddenValues)) {
-                        $this->io->error(sprintf($error, $check, $entryName, $forbiddenKey));
+                        $message = sprintf($error, $check, $entryName, $forbiddenKey);
+                        $this->io->error($message);
                         $this->composerFailed = true;
+                        $this->addJunitResult('Composer components', $message);
                     }
                 }
             }
@@ -674,15 +696,19 @@ class ComponentCheckCommands extends AbstractCommands
                 array_column($composerPlugins, 'name')
             );
             foreach ($missingPlugins as $missingPlugin) {
-                $this->io->error("Plugin not installed, please remove from composer.json config.allow-plugins: $missingPlugin.");
+                $message = "Plugin not installed, please remove from composer.json config.allow-plugins: $missingPlugin.";
+                $this->io->error($message);
                 $this->composerFailed = true;
+                $this->addJunitResult('Composer components', $message);
             }
         }
 
         // Make sure the toolkit-composer-plugin is allowed.
         if (empty($composerJson['config']['allow-plugins'][Toolkit::PLUGIN])) {
-            $this->io->error('Plugin ' . Toolkit::PLUGIN . ' must be allowed in the config.allow-plugins section of the composer.json.');
+            $message = 'Plugin ' . Toolkit::PLUGIN . ' must be allowed in the config.allow-plugins section of the composer.json.';
+            $this->io->error($message);
             $this->composerFailed = true;
+            $this->addJunitResult('Composer components', $message);
         }
 
         if (!$this->composerFailed) {
@@ -720,7 +746,9 @@ class ComponentCheckCommands extends AbstractCommands
         if (!empty($auditModules['vulnerabilities'])) {
             $this->insecureNpmFailed = true;
             foreach ($auditModules['vulnerabilities'] as $vulnerability) {
-                $this->writeln('Package ' . $vulnerability['name'] . ' has a vulnerability with severity ' . $vulnerability['severity'] . '.');
+                $message = "Package {$vulnerability['name']} has a vulnerability with severity {$vulnerability['severity']}.";
+                $this->writeln($message);
+                $this->addJunitResult('NPM Insecure', $message, $this->skipInsecureNpm ? 'warning' : 'error');
             }
         }
 
@@ -762,8 +790,10 @@ class ComponentCheckCommands extends AbstractCommands
         } else {
             foreach ($outdatedModules as $packageName => $package) {
                 if ($package['current'] !== $package['latest']) {
-                    $this->writeln('Package ' . $packageName . ' with version installed ' . $package['current'] . ' is outdated, please update to the ' . $package['latest'] . ' version.');
+                    $message = "Package {$packageName} with version installed {$package['current']} is outdated, please update to the {$package['latest']} version.";
+                    $this->writeln($message);
                     $this->outdatedNpmFailed = true;
+                    $this->addJunitResult('NPM Outdated', $message, $this->skipOutdatedNpm ? 'warning' : 'error');
                 }
             }
             if (!$this->outdatedNpmFailed) {
@@ -872,42 +902,39 @@ class ComponentCheckCommands extends AbstractCommands
     {
         $io->title('Results:');
         $parseOptsFile = $this->getOptsYml();
-        $skipInsecure = ($this->skipInsecure) ? ' (Skipping)' : '';
-        $skipOutdated = ($this->skipOutdated) ? ' (Skipping)' : '';
-        $skipAbandoned = ($this->skipAbandoned) ? ' (Skipping)' : '';
-        $skipUnsupported = ($this->skipUnsupported) ? ' (Skipping)' : '';
-        $skipInsecureNpm = ($this->skipInsecureNpm) ? ' (Skipping)' : '';
-        $skipOutdatedNpm = ($this->skipOutdatedNpm) ? ' (Skipping)' : '';
-        // Check if npm_install property enabled adding the NPM results if so.
-        if (empty($parseOptsFile['npm_install'])) {
-            $io->definitionList(
-                ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
-                ['Recommended module check' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
-                ['Insecure module check' => $this->getFailedOrPassed($this->insecureFailed) . $skipInsecure],
-                ['Outdated module check' => $this->getFailedOrPassed($this->outdatedFailed) . $skipOutdated],
-                ['Abandoned module check' => $this->getFailedOrPassed($this->abandonedFailed) . $skipAbandoned],
-                ['Unsupported module check' => $this->getFailedOrPassed($this->unsupportedFailed) . $skipUnsupported],
-                ['Evaluation module check' => $this->getFailedOrPassed($this->evaluationFailed)],
-                ['Development module check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
-                ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
-                ['Project configuration check' => $this->getFailedOrPassed($this->configurationFailed)],
-            );
-        } else {
-            $io->definitionList(
-                ['Mandatory module check' => $this->getFailedOrPassed($this->mandatoryFailed)],
-                ['Recommended module check' => $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed'],
-                ['Insecure module check' => $this->getFailedOrPassed($this->insecureFailed) . $skipInsecure],
-                ['Outdated module check' => $this->getFailedOrPassed($this->outdatedFailed) . $skipOutdated],
-                ['Abandoned module check' => $this->getFailedOrPassed($this->abandonedFailed) . $skipAbandoned],
-                ['Unsupported module check' => $this->getFailedOrPassed($this->unsupportedFailed) . $skipUnsupported],
-                ['Evaluation module check' => $this->getFailedOrPassed($this->evaluationFailed)],
-                ['Development module check' => $this->getFailedOrPassed($this->devCompRequireFailed)],
-                ['Composer validation check' => $this->getFailedOrPassed($this->composerFailed)],
-                ['Project configuration check' => $this->getFailedOrPassed($this->configurationFailed)],
-                ['NPM Insecure check' => $this->getFailedOrPassed($this->insecureNpmFailed) . $skipInsecureNpm],
-                ['NPM Outdated check' => $this->getFailedOrPassed($this->outdatedNpmFailed) . $skipOutdatedNpm],
-            );
+        $headers = [
+            'Mandatory module check',
+            'Recommended module check',
+            'Insecure module check',
+            'Outdated module check',
+            'Abandoned module check',
+            'Unsupported module check',
+            'Evaluation module check',
+            'Development module check',
+            'Composer validation check',
+            'Project configuration check',
+        ];
+        $rows = [
+            $this->getFailedOrPassed($this->mandatoryFailed),
+            $this->recommendedFailed ? $this->getRecommendedWarningMessage() : 'passed',
+            $this->getFailedOrPassed($this->insecureFailed) . ($this->skipInsecure ? ' (Skipping)' : ''),
+            $this->getFailedOrPassed($this->outdatedFailed) . ($this->skipOutdated ? ' (Skipping)' : ''),
+            $this->getFailedOrPassed($this->abandonedFailed) . ($this->skipAbandoned ? ' (Skipping)' : ''),
+            $this->getFailedOrPassed($this->unsupportedFailed) . ($this->skipUnsupported ? ' (Skipping)' : ''),
+            $this->getFailedOrPassed($this->evaluationFailed),
+            $this->getFailedOrPassed($this->devCompRequireFailed),
+            $this->getFailedOrPassed($this->composerFailed),
+            $this->getFailedOrPassed($this->configurationFailed),
+        ];
+
+        // Check if npm_install property is enabled and add the NPM results.
+        if (!empty($parseOptsFile['npm_install'])) {
+            $headers[] = 'NPM Insecure check';
+            $headers[] = 'NPM Outdated check';
+            $rows[] = $this->getFailedOrPassed($this->insecureNpmFailed) . ($this->skipInsecureNpm ? ' (Skipping)' : '');
+            $rows[] = $this->getFailedOrPassed($this->outdatedNpmFailed) . ($this->skipOutdatedNpm ? ' (Skipping)' : '');
         }
+        $io->horizontalTable($headers, [$rows]);
     }
 
     /**
@@ -949,6 +976,7 @@ class ComponentCheckCommands extends AbstractCommands
             $this->evaluationFailed = true;
             $message = "Package $packageName:$packageVersion has not been reviewed by QA.";
             $messageType = 'Packages not reviewed:';
+            $this->addJunitResult('Evaluation components', $message);
         }
         if ($hasBeenQaEd) {
             // Validate package version against our constraints.
@@ -959,6 +987,7 @@ class ComponentCheckCommands extends AbstractCommands
                     $this->evaluationFailed = true;
                     $message = "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.";
                     $messageType = "Package's version constraints:";
+                    $this->addJunitResult('Evaluation components', $message);
                 }
             }
 
@@ -1001,6 +1030,7 @@ class ComponentCheckCommands extends AbstractCommands
                     $this->evaluationFailed = true;
                     $message = "The use of $packageName:$packageVersion is {$modules[$packageName]['status']}.";
                     $messageType = 'Packages rejected/restricted:';
+                    $this->addJunitResult('Evaluation components', $message);
                 }
             }
         }
@@ -1194,6 +1224,29 @@ class ComponentCheckCommands extends AbstractCommands
             return $this->optsYml;
         }
         return ToolCommands::parseOptsYml() ?: [];
+    }
+
+    /**
+     * Add a result to junit if it is enabled.
+     *
+     * All test case will be added to the test suite 'Component check'.
+     *
+     * @param string $testCase
+     *   The name of the test.
+     * @param string $message
+     *   The message for the failure.
+     * @param string $type
+     *   The type of failure.
+     *
+     * @see JunitXmlGenerator::addResult()
+     */
+    private function addJunitResult(string $testCase, string $message, string $type = 'error'): void
+    {
+        // Skip if no junit option is used.
+        if (!$this->isJunit()) {
+            return;
+        }
+        JunitXmlGenerator::addResult('Component check', $testCase, $message, $type);
     }
 
 }

@@ -1,5 +1,10 @@
 # Toolkit change log
 
+## Version 10.16.0
+  - DQA-10557: Ensure project using phpstan/extension-installer.
+  - DQA-10486: Export junit xml files for all tests.
+  - DQA-10703: Increase default value for PHPStan to level 6.
+
 ## Version 10.15.0
   - DQA-10278: Drupal config to use config instead of env vars.
   - DQA-10277: Toolkit add command for cspell.
