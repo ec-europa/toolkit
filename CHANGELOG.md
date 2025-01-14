@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 10.16.1
+  - DQA-10832: Fix exit code for test-behat.
+
 ## Version 10.16.0
   - DQA-10557: Ensure project using phpstan/extension-installer.
   - DQA-10486: Export junit xml files for all tests.
