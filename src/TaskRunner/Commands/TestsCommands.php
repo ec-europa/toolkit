@@ -472,7 +472,7 @@ class TestsCommands extends AbstractCommands
             $exec->option('out', 'behat-xml');
         }
 
-        $exec->run();
+        $result = $exec->run();
 
         // As behat can only export junit into multiple files, we need to merge them into a single file.
         if ($this->isJunit()) {
@@ -484,7 +484,7 @@ class TestsCommands extends AbstractCommands
             $this->taskExecute($commands)->run();
         }
 
-        return ResultData::EXITCODE_OK;
+        return $result->getExitCode();
     }
 
     /**
