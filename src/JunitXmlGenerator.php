@@ -84,7 +84,7 @@ final class JunitXmlGenerator
      * @param array|null $data
      *   The data to export.
      */
-    public static function generate(string $filename = 'junit.xml', array $data = null)
+    public static function generate(string $filename = 'junit.xml', ?array $data = null)
     {
         if (!empty($data)) {
             self::setData($data);

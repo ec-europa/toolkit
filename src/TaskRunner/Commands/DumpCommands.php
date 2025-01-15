@@ -508,7 +508,7 @@ class DumpCommands extends AbstractCommands
      * @param bool $silent
      *   Whether show or not output from task.
      */
-    private function wgetDownloadFile(string $tmp, string $destination, string $accept = null, bool $silent = false)
+    private function wgetDownloadFile(string $tmp, string $destination, ?string $accept = null, bool $silent = false)
     {
         $task = $this->taskExec('wget')
             ->option('-i', $tmp)

@@ -496,7 +496,7 @@ class ToolCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public static function getPackagePropertyFromComposer(string $package, string $prop = 'version', string $section = null)
+    public static function getPackagePropertyFromComposer(string $package, string $prop = 'version', ?string $section = null)
     {
         if (!file_exists('composer.lock')) {
             return false;

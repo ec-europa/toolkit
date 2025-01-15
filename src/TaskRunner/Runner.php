@@ -177,7 +177,7 @@ class Runner
      * @param array|null $config
      *   The given, the new configs will be merged.
      */
-    private function parseConfigFiles(array $files, array $config = null): array
+    private function parseConfigFiles(array $files, ?array $config = null): array
     {
         $config = $config ?? [];
         foreach ($files as $file) {
