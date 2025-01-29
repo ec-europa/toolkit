@@ -450,7 +450,7 @@ class TestsCommands extends AbstractCommands
 
         // Execute a list of commands to run before tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.before')) {
-            $this->taskExecute($commands)->run();
+            $this->taskExecute($commands)->run()->stopOnFail();
         }
 
         $this->taskProcess($options['from'], $options['to'])->run();
@@ -472,7 +472,7 @@ class TestsCommands extends AbstractCommands
             $exec->option('out', 'behat-xml');
         }
 
-        $exec->run();
+        $result = $exec->run();
 
         // As behat can only export junit into multiple files, we need to merge them into a single file.
         if ($this->isJunit()) {
@@ -481,10 +481,10 @@ class TestsCommands extends AbstractCommands
 
         // Execute a list of commands to run after tests.
         if ($commands = $this->getConfig()->get('toolkit.test.behat.commands.after')) {
-            $this->taskExecute($commands)->run();
+            $this->taskExecute($commands)->run()->stopOnFail();
         }
 
-        return ResultData::EXITCODE_OK;
+        return $result->getExitCode();
     }
 
     /**

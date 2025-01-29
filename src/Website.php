@@ -95,7 +95,7 @@ class Website
      *
      * @SuppressWarnings(PHPMD.MissingImport)
      */
-    public static function get(string $url, AuthorizationInterface $auth = null): string
+    public static function get(string $url, ?AuthorizationInterface $auth = null): string
     {
         if (!($token = self::getSessionToken())) {
             return '';
@@ -330,7 +330,7 @@ class Website
      * @param AuthorizationInterface|null $auth
      *   The authorization instance or null.
      */
-    public static function getWithMockFallback(string $url, AuthorizationInterface $auth = null)
+    public static function getWithMockFallback(string $url, ?AuthorizationInterface $auth = null)
     {
         try {
             $response = self::get($url, $auth);
