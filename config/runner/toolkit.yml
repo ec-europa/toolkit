@@ -85,6 +85,8 @@ toolkit:
         - vendor
         - composer.lock
         - composer.json
+        - .leaksignore
+        - .snyk
       remove:
         - CHANGELOG.md
         - CHANGELOG.txt
