@@ -372,9 +372,6 @@ class TestsCommands extends AbstractCommands
             if (!InstalledVersions::isInstalled('phpstan/extension-installer')) {
                 $configContent['includes'] = $includes;
             }
-            if (file_exists($config->get('drupal.root'))) {
-                $configContent['parameters']['drupal']['drupal_root'] = '%currentWorkingDirectory%/' . $config->get('drupal.root');
-            }
             $tasks[] = $this->taskWriteToFile($options['config'])
                 ->text(Yaml::dump($configContent, 10, 2));
         }
