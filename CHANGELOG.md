@@ -1,5 +1,10 @@
 # Toolkit change log
 
+## Version 10.17.0
+  - DQA-10835: Add support to PHP 8.4.
+  - DQA-10936: Remove drupal_root parameter from phpstan default config.
+  - DQA-10942: Keep .leaksignore and .snyk on build-dist.
+
 ## Version 10.16.1
   - DQA-10832: Fix exit code for test-behat.
 
