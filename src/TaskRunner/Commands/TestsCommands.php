@@ -369,7 +369,7 @@ class TestsCommands extends AbstractCommands
                     'ignoreErrors' => $ignoreErrors,
                     'parallel' => [
                         'maximumNumberOfProcesses' => 1,
-                    ]
+                    ],
                 ],
             ];
             if (!InstalledVersions::isInstalled('phpstan/extension-installer')) {
