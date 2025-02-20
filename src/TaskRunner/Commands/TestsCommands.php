@@ -367,6 +367,9 @@ class TestsCommands extends AbstractCommands
                     'paths' => array_values($options['files']),
                     'excludePaths' => $ignores,
                     'ignoreErrors' => $ignoreErrors,
+                    'parallel' => [
+                        'maximumNumberOfProcesses' => 1,
+                    ]
                 ],
             ];
             if (!InstalledVersions::isInstalled('phpstan/extension-installer')) {
