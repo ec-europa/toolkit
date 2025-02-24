@@ -87,7 +87,7 @@ toolkit:
         - "#^Unsafe usage of new static#"
       files: [ lib, src ]
       ignores: [ ${toolkit.build.dist.root}, .cache, vendor ]
-      memory_limit: ''
+      memory_limit: '-1'
       options: ''
   lint:
     eslint:

@@ -8,10 +8,10 @@
         [Simulator] Simulating Exec('./vendor/bin/phpstan')
           ->arg('analyse')
           ->options(array (
-            'memory-limit' => '4G',
+            'memory-limit' => '-1',
             'configuration' => 'phpstan.neon',
           ), '=')
-        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=4G --configuration=phpstan.neon
+        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=-1 --configuration=phpstan.neon
 
 - command: 'toolkit:test-phpstan --memory-limit=512M'
   configuration: []
@@ -37,7 +37,7 @@
           config: fake
           level: 3
           files: [ test.php, test2.php ]
-          memory-limit: 512M
+          memory_limit: 512M
           options: debug
   resources:
     - mkdir: web
@@ -52,13 +52,13 @@
         [Simulator] Simulating Exec('./vendor/bin/phpstan')
           ->arg('analyse')
           ->options(array (
-            'memory-limit' => '4G',
+            'memory-limit' => '512M',
             'configuration' => 'fake',
           ), '=')
           ->options(array (
             'debug' => NULL,
           ))
-        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=4G --configuration=fake --debug
+        [Simulator] Running ./vendor/bin/phpstan analyse --memory-limit=512M --configuration=fake --debug
 
 - command: 'toolkit:test-phpstan --memory-limit=512M --config=fake --level=3'
   configuration: []
