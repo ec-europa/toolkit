@@ -71,6 +71,7 @@ class PatchCommands extends AbstractCommands
      *
      *  @param array<mixed> $options
      *   the options.
+     *
      *  @command toolkit:patch-download
      *
      *  @option dir          The destination directory to save the patches.
