@@ -23,7 +23,9 @@ class TestsCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     * @return string
+     *
+     *  @return string
+     *   configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -40,7 +42,8 @@ class TestsCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      *
-     * @return mixed
+     *  @return mixed
+     *   check configuration.
      */
     public function toolkitSetupPhpcs()
     {
@@ -126,7 +129,8 @@ class TestsCommands extends AbstractCommands
      * @option junit  Whether to export results as junit.
      *
      * @aliases tk-phpcs
-     * @return int|\Robo\ResultData
+     *
+     *  @return int|\Robo\ResultData
      *
      * @see toolkitRunPhpcs()
      */
@@ -158,8 +162,10 @@ class TestsCommands extends AbstractCommands
      *
      * @aliases tk-phpmd
      *
-     * @param array<mixed> $options
-     * @return int
+     *  @param array<mixed> $options
+     *
+     *  @return int
+     *   check configuration.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -227,7 +233,9 @@ class TestsCommands extends AbstractCommands
      * Run PHP code sniffer within GrumPHP.
      *
      * @throws \Robo\Exception\TaskException
-     * @return int|\Robo\ResultData
+     *
+     *  @return int|\Robo\ResultData
+     *   run php code sniffer.
      *
      * @deprecated
      */
@@ -271,7 +279,9 @@ class TestsCommands extends AbstractCommands
      * Run PHP code sniffer.
      *
      * Check configurations at config/default.yml - 'toolkit.test.phpcs'.
-     * @return \Robo\Result
+     *
+     *  @return \Robo\Result
+     *   run php code sniffer.
      */
     protected function toolkitRunPhpcs()
     {
@@ -296,7 +306,9 @@ class TestsCommands extends AbstractCommands
      * Make sure that the config file exists and configuration is correct.
      *
      * @command toolkit:check-phpcs-requirements
-     * @return mixed
+     *
+     *  @return mixed
+     *   status if exists config file.
      */
     public function toolkitCheckPhpcsRequirements()
     {
@@ -346,8 +358,9 @@ class TestsCommands extends AbstractCommands
      * @aliases tk-phpstan
      *
      * @usage --memory-limit='4G' --options='debug'
-     * @param array<mixed> $options
-     * @return \Robo\Collection\CollectionBuilder
+     *  @param array<mixed> $options
+     *
+     *  @return \Robo\Collection\CollectionBuilder
      */
     public function toolkitTestPhpstan(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
@@ -434,9 +447,10 @@ class TestsCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *
-     * @param array<mixed> $options
-     * @return int|\Robo\ResultData
+     *  @param array<mixed> $options
      *
+     *  @return int|\Robo\ResultData
+     *   check configuration and accept command.
      */
     public function toolkitTestBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
@@ -531,8 +545,10 @@ class TestsCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      *
-     * @param array<mixed> $options
-     * @return \Robo\Collection\CollectionBuilder
+     *  @param array<mixed> $options
+     *
+     *  @return \Robo\Collection\CollectionBuilder
+     *   check and accept command.
      */
     public function toolkitTestPhpunit(array $options = [
         'execution' => InputOption::VALUE_REQUIRED,
@@ -596,9 +612,11 @@ class TestsCommands extends AbstractCommands
     /**
      * Returns the task to execute PHPUnit in parallel.
      *
-     * @param array<mixed> $options
+     *  @param array<mixed> $options
      *   The options passed to the command test-phpunit.
-     * @return \Robo\Task\Base\ParallelExec
+     *
+     *  @return \Robo\Task\Base\ParallelExec
+     *   task to execute PHPUnit in parallel.
      */
     private function toolkitTestPhpunitParallelTask(array $options)
     {
@@ -639,7 +657,9 @@ class TestsCommands extends AbstractCommands
      * @command toolkit:run-phpcbf
      *
      * @aliases tk-phpcbf
-     * @return mixed
+     *
+     *  @return mixed
+     *   run php code autofixing.
      */
     public function toolkitRunPhpcbf()
     {

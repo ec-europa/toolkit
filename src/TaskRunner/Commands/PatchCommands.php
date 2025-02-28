@@ -27,7 +27,9 @@ class PatchCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     * @return string
+     *
+     *  @return string
+     *   Toolkit root path.
      */
     public function getConfigurationFile()
     {
@@ -44,8 +46,11 @@ class PatchCommands extends AbstractCommands
      * @option dependencies Look for patches defined by dependencies.
      *
      * @aliases tk-pl
-     * @param array<mixed> $options
-     * @return int
+     *  @param array<mixed> $options
+     *   the option to be list.
+     *
+     *  @return int
+     *   remote patch list.
      */
     public function toolkitPatchList(ConsoleIO $io, array $options = [
         'package' => InputOption::VALUE_REQUIRED,
@@ -119,7 +124,9 @@ class PatchCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @return array<mixed>
+     *
+     *  @return array<mixed>
+     *   patches to be downloaded.
      */
     private function getPatches(): array
     {
@@ -173,7 +180,9 @@ class PatchCommands extends AbstractCommands
 
     /**
      * Returns the patches from dependencies.
-     * @return array<mixed>
+     *
+     *  @return array<mixed>
+     *   patches from dependencies.
      */
     private function getDependenciesPatches(): array
     {

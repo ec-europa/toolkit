@@ -145,6 +145,7 @@ class Runner
 
     /**
      * Returns the current working directory.
+     *
      *  @return string
      *   Return the current working directory.
      */
@@ -374,6 +375,7 @@ class Runner
      *
      *  @param string $runnerConfigDir
      *   The directory to scan.
+     *
      *  @return array<mixed>
      *   Return array runner config directory files.
      */
