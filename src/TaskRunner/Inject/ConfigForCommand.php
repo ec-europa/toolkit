@@ -61,7 +61,7 @@ class ConfigForCommand implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      *
-     *  @return string
+     *  @return array<mixed>
      *   command.
      */
     public static function getSubscribedEvents()
