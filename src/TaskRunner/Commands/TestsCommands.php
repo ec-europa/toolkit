@@ -131,6 +131,7 @@ class TestsCommands extends AbstractCommands
      * @aliases tk-phpcs
      *
      *  @return int|\Robo\ResultData
+     *   run php code sniffer.
      *
      * @see toolkitRunPhpcs()
      */
@@ -151,6 +152,8 @@ class TestsCommands extends AbstractCommands
      *
      * Check configurations at config/default.yml - 'toolkit.test.phpmd'.
      *
+     *  @param array<mixed> $options
+     *
      * @command toolkit:test-phpmd
      *
      * @option config          The config file.
@@ -162,7 +165,6 @@ class TestsCommands extends AbstractCommands
      *
      * @aliases tk-phpmd
      *
-     *  @param array<mixed> $options
      *
      *  @return int
      *   check configuration.
@@ -358,9 +360,12 @@ class TestsCommands extends AbstractCommands
      * @aliases tk-phpstan
      *
      * @usage --memory-limit='4G' --options='debug'
+     *
      *  @param array<mixed> $options
+     *   options.
      *
      *  @return \Robo\Collection\CollectionBuilder
+     *   run phpstan.
      */
     public function toolkitTestPhpstan(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
@@ -432,6 +437,8 @@ class TestsCommands extends AbstractCommands
      * Accept commands to run before and/or after the Behat tests.
      *
      * @command toolkit:test-behat
+     *  @param array<mixed> $options
+     *   options.
      *
      * @option from     The dist config file (behat.yml.dist).
      * @option to       The destination config file (behat.yml).
@@ -447,7 +454,6 @@ class TestsCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *
-     *  @param array<mixed> $options
      *
      *  @return int|\Robo\ResultData
      *   check configuration and accept command.
@@ -525,6 +531,9 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:test-phpunit
      *
+     *  @param array<mixed> $options
+     *   options.
+     *
      * @option execution The execution type (default or parallel).
      * @option from      The dist config file (phpunit.xml.dist).
      * @option to        The destination config file (phpunit.xml).
@@ -545,7 +554,6 @@ class TestsCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      *
-     *  @param array<mixed> $options
      *
      *  @return \Robo\Collection\CollectionBuilder
      *   check and accept command.

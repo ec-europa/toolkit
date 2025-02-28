@@ -21,7 +21,8 @@ class PatchCommands extends AbstractCommands
 {
     /**
      * {@inheritdoc}
-     * @var array<mixed> $options
+     *
+     *  @var array<mixed> $options
      */
     protected $options;
 
@@ -46,6 +47,7 @@ class PatchCommands extends AbstractCommands
      * @option dependencies Look for patches defined by dependencies.
      *
      * @aliases tk-pl
+     *
      *  @param array<mixed> $options
      *   the option to be list.
      *
@@ -75,8 +77,11 @@ class PatchCommands extends AbstractCommands
      * @option dependencies Look for patches defined by dependencies.
      *
      * @aliases tk-pd
-     * @param array<mixed> $options
-     * @return int|mixed
+     *
+     *  @param array<mixed> $options
+     *   the options.
+     *
+     *  @return int|mixed
      *
      * phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
      */

@@ -22,7 +22,9 @@ class GitleaksCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     * @return string
+     *
+     *  @return string
+     *   configuration file.
      */
     public function getConfigurationFile()
     {
@@ -34,11 +36,16 @@ class GitleaksCommands extends AbstractCommands
      *
      * @command toolkit:run-gitleaks
      *
+     *  @param array<mixed> $options
+     *    options.
+     *
      * @option tag     The release tag of Gitleaks.
      * @option os      The current OS version.
      * @option options The options to use when executing gitleaks command.
-     * @param array<mixed> $options
-     * @return int|\Robo\Collection\CollectionBuilder
+     *
+     *
+     *  @return int|\Robo\Collection\CollectionBuilder
+     *   object collection builder.
      *
      * @aliases tk-gitleaks
      */
