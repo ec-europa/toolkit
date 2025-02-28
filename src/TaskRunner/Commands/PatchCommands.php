@@ -71,15 +71,15 @@ class PatchCommands extends AbstractCommands
      *
      * @command toolkit:patch-download
      *
-     * @option dir          The destination directory to save the patches.
-     * @option package      Download patches for given package.
-     * @option composer     The composer.json file.
-     * @option dependencies Look for patches defined by dependencies.
-     *
-     * @aliases tk-pd
-     *
      *  @param array<mixed> $options
-     *   the options.
+     *    the options.
+     *
+     *  @option dir          The destination directory to save the patches.
+     *  @option package      Download patches for given package.
+     *  @option composer     The composer.json file.
+     *  @option dependencies Look for patches defined by dependencies.
+     *
+     *  @aliases tk-pd
      *
      *  @return int|mixed
      *   patch download status.
