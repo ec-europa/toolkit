@@ -153,6 +153,7 @@ class TestsCommands extends AbstractCommands
      * Check configurations at config/default.yml - 'toolkit.test.phpmd'.
      *
      *  @param array<mixed> $options
+     *   options.
      *
      *  @command toolkit:test-phpmd
      *
@@ -164,7 +165,6 @@ class TestsCommands extends AbstractCommands
      *  @option junit           Whether to export results as junit.
      *
      *  @aliases tk-phpmd
-     *
      *
      *  @return int
      *   check configuration.
@@ -348,21 +348,21 @@ class TestsCommands extends AbstractCommands
      *
      * Check configurations at config/default.yml - 'toolkit.test.phpstan'.
      *
-     * @command toolkit:test-phpstan
-     *
      *  @param array<mixed> $options
-     *    options.
+     *   options.
      *
-     * @option config       The path to the config file.
-     * @option level        The level of rule options.
-     * @option files        The files to check.
-     * @option memory-limit The PHP memory limit.
-     * @option options      Extra options for the command without -- (only options with no value).
-     * @option junit        Whether to export results as junit.
+     *  @command toolkit:test-phpstan
      *
-     * @aliases tk-phpstan
+     *  @option config       The path to the config file.
+     *  @option level        The level of rule options.
+     *  @option files        The files to check.
+     *  @option memory-limit The PHP memory limit.
+     *  @option options      Extra options for the command without -- (only options with no value).
+     *  @option junit        Whether to export results as junit.
      *
-     * @usage --memory-limit='4G' --options='debug'
+     *  @aliases tk-phpstan
+     *
+     *  @usage --memory-limit='4G' --options='debug'
      *
      *  @return \Robo\Collection\CollectionBuilder
      *   run phpstan.
@@ -436,21 +436,21 @@ class TestsCommands extends AbstractCommands
      * Check configurations at config/default.yml - 'toolkit.test.behat'.
      * Accept commands to run before and/or after the Behat tests.
      *
-     * @command toolkit:test-behat
-     *
      *  @param array<mixed> $options
      *   options.
      *
-     * @option from     The dist config file (behat.yml.dist).
-     * @option to       The destination config file (behat.yml).
-     * @option profile  The profile to execute.
-     * @option suite    The suite to execute, default runs all suites of profile.
-     * @option options  Extra options for the command without -- (only options with no value).
-     * @option junit    Whether to export results as junit.
+     *  @command toolkit:test-behat
      *
-     * @aliases tk-behat, tb
+     *  @option from     The dist config file (behat.yml.dist).
+     *  @option to       The destination config file (behat.yml).
+     *  @option profile  The profile to execute.
+     *  @option suite    The suite to execute, default runs all suites of profile.
+     *  @option options  Extra options for the command without -- (only options with no value).
+     *  @option junit    Whether to export results as junit.
      *
-     * @usage --profile='prod' --options='strict stop-on-failure'
+     *  @aliases tk-behat, tb
+     *
+     *  @usage --profile='prod' --options='strict stop-on-failure'
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -530,10 +530,10 @@ class TestsCommands extends AbstractCommands
      * Check configurations at config/default.yml - 'toolkit.test.phpunit'.
      * Accept commands to run before and/or after the PHPUnit tests.
      *
-     * @command toolkit:test-phpunit
-     *
      *  @param array<mixed> $options
      *   options.
+     *
+     *  @command toolkit:test-phpunit
      *
      *  @option execution The execution type (default or parallel).
      *  @option from      The dist config file (phpunit.xml.dist).
@@ -549,12 +549,11 @@ class TestsCommands extends AbstractCommands
      *
      *  @aliases tk-phpunit tp
      *
-     * @usage --options='stop-on-error process-isolation do-not-cache-result'
-     * @usage --group=Example
+     *  @usage --options='stop-on-error process-isolation do-not-cache-result'
+     *  @usage --group=Example
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      *
      *  @return \Robo\Collection\CollectionBuilder
      *   check and accept command.
