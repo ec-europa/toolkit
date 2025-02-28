@@ -41,10 +41,9 @@ class PatchCommands extends AbstractCommands
      * Lists remote patches from the root composer.json.
      *
      *  @param array<mixed> $options
-     *     the option to be list.
+     *   the option to be list.
      *
      *  @command toolkit:patch-list.
-     *
      *
      *  @option package      List patches for given package.
      *  @option composer     The composer.json relative path.
@@ -71,9 +70,8 @@ class PatchCommands extends AbstractCommands
      * Download remote patches into a local directory.
      *
      *  @param array<mixed> $options
-     *     the options.
+     *   the options.
      *  @command toolkit:patch-download
-     *
      *
      *  @option dir          The destination directory to save the patches.
      *  @option package      Download patches for given package.
