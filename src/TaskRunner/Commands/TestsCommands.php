@@ -154,16 +154,16 @@ class TestsCommands extends AbstractCommands
      *
      *  @param array<mixed> $options
      *
-     * @command toolkit:test-phpmd
+     *  @command toolkit:test-phpmd
      *
-     * @option config          The config file.
-     * @option format          The format to use.
-     * @option ignore_patterns An array with ignore patterns.
-     * @option triggered_by    An array with extensions to check.
-     * @option files           An array with paths to check.
-     * @option junit           Whether to export results as junit.
+     *  @option config          The config file.
+     *  @option format          The format to use.
+     *  @option ignore_patterns An array with ignore patterns.
+     *  @option triggered_by    An array with extensions to check.
+     *  @option files           An array with paths to check.
+     *  @option junit           Whether to export results as junit.
      *
-     * @aliases tk-phpmd
+     *  @aliases tk-phpmd
      *
      *
      *  @return int
@@ -350,6 +350,9 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:test-phpstan
      *
+     *  @param array<mixed> $options
+     *    options.
+     *
      * @option config       The path to the config file.
      * @option level        The level of rule options.
      * @option files        The files to check.
@@ -360,9 +363,6 @@ class TestsCommands extends AbstractCommands
      * @aliases tk-phpstan
      *
      * @usage --memory-limit='4G' --options='debug'
-     *
-     *  @param array<mixed> $options
-     *   options.
      *
      *  @return \Robo\Collection\CollectionBuilder
      *   run phpstan.
@@ -437,6 +437,7 @@ class TestsCommands extends AbstractCommands
      * Accept commands to run before and/or after the Behat tests.
      *
      * @command toolkit:test-behat
+     *
      *  @param array<mixed> $options
      *   options.
      *
@@ -534,19 +535,19 @@ class TestsCommands extends AbstractCommands
      *  @param array<mixed> $options
      *   options.
      *
-     * @option execution The execution type (default or parallel).
-     * @option from      The dist config file (phpunit.xml.dist).
-     * @option to        The destination config file (phpunit.xml).
-     * @option testsuite Filter which testsuite to run.
-     * @option group     Only runs tests from the specified group(s).
-     * @option covers    Only runs tests annotated with "@covers <name>".
-     * @option uses      Only runs tests annotated with "@uses <name>".
-     * @option filter    Filter which tests to run.
-     * @option options   Extra options for the command without -- (only options with no value).
-     * @option printer   If set, use printer defined in config toolkit.test.phpunit.printer.
-     * @option junit     Whether to export results as junit.
+     *  @option execution The execution type (default or parallel).
+     *  @option from      The dist config file (phpunit.xml.dist).
+     *  @option to        The destination config file (phpunit.xml).
+     *  @option testsuite Filter which testsuite to run.
+     *  @option group     Only runs tests from the specified group(s).
+     *  @option covers    Only runs tests annotated with "@covers <name>".
+     *  @option uses      Only runs tests annotated with "@uses <name>".
+     *  @option filter    Filter which tests to run.
+     *  @option options   Extra options for the command without -- (only options with no value).
+     *  @option printer   If set, use printer defined in config toolkit.test.phpunit.printer.
+     *  @option junit     Whether to export results as junit.
      *
-     * @aliases tk-phpunit tp
+     *  @aliases tk-phpunit tp
      *
      * @usage --options='stop-on-error process-isolation do-not-cache-result'
      * @usage --group=Example

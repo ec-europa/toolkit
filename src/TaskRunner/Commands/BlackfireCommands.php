@@ -23,11 +23,12 @@ class BlackfireCommands extends AbstractCommands
      *
      * @command toolkit:run-blackfire
      *
+     *  @param array<mixed> $options
+     *   options.
+     *
      * @option endpoint The endpoint to use to connect to QA Website.
      *
      * @aliases tk-bfire, tbf
-     *
-     *  @param array<mixed> $options
      *
      *  @return \Robo\ResultData
      *   run blackfire.

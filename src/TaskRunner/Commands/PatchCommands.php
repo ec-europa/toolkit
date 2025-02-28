@@ -42,14 +42,14 @@ class PatchCommands extends AbstractCommands
      *
      * @command toolkit:patch-list
      *
+     *  @param array<mixed> $options
+     *    the option to be list.
+     *
      * @option package      List patches for given package.
      * @option composer     The composer.json relative path.
      * @option dependencies Look for patches defined by dependencies.
      *
      * @aliases tk-pl
-     *
-     *  @param array<mixed> $options
-     *   the option to be list.
      *
      *  @return int
      *   remote patch list.
@@ -82,6 +82,7 @@ class PatchCommands extends AbstractCommands
      *   the options.
      *
      *  @return int|mixed
+     *   patch download status.
      *
      * phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
      */
