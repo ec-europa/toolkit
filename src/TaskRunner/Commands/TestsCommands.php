@@ -455,7 +455,6 @@ class TestsCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *
-     *
      *  @return int|\Robo\ResultData
      *   check configuration and accept command.
      */
