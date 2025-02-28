@@ -47,9 +47,11 @@ class ConfigForCommand implements EventSubscriberInterface
     /**
      * Set application.
      *
-     * @param \Symfony\Component\Console\Application $application
+     *  @param \Symfony\Component\Console\Application $application
      *   The application.
-     * @return mixed
+     *
+     *  @return mixed
+     *   Return the application.
      */
     public function setApplication(Application $application)
     {
@@ -71,9 +73,11 @@ class ConfigForCommand implements EventSubscriberInterface
      * for this command into the default value of the options of
      * this command.
      *
-     * @param \Symfony\Component\Console\Event\ConsoleCommandEvent $event
+     *  @param \Symfony\Component\Console\Event\ConsoleCommandEvent $event
      *   The current event.
-     * @return mixed
+     *
+     *  @return mixed
+     *   Return configuration injected.
      */
     public function injectConfiguration(ConsoleCommandEvent $event)
     {
@@ -90,9 +94,11 @@ class ConfigForCommand implements EventSubscriberInterface
     /**
      * Inject configurations for global options.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *  @param \Symfony\Component\Console\Input\InputInterface $input
      *   The current input.
-     * @return mixed
+     *
+     *  @return mixed
+     *   Configuration injected.
      */
     protected function injectConfigurationForGlobalOptions($input)
     {
@@ -111,11 +117,13 @@ class ConfigForCommand implements EventSubscriberInterface
     /**
      * Inject configuration for command.
      *
-     * @param \Symfony\Component\Console\Command\Command $command
+     *  @param \Symfony\Component\Console\Command\Command $command
      *   The command to configure.
-     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *  @param \Symfony\Component\Console\Input\InputInterface $input
      *   The current input.
-     * @return mixed
+     *
+     *  @return mixed
+     *   Configuration injected.
      */
     protected function injectConfigurationForCommand($command, $input)
     {
@@ -132,13 +140,15 @@ class ConfigForCommand implements EventSubscriberInterface
     /**
      * Inject configurations for options.
      *
-     * @param \Consolidation\Config\Util\ConfigGroup $configGroup
+     *  @param \Consolidation\Config\Util\ConfigGroup $configGroup
      *   The current config group.
-     * @param array<mixed> $options
+     *  @param array<mixed> $options
      *   The options.
-     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *  @param \Symfony\Component\Console\Input\InputInterface $input
      *   The input.
-     * @return mixed
+     *
+     *  @return mixed
+     *   Configuration options injected.
      */
     protected function injectConfigGroupIntoOptions($configGroup, $options, $input)
     {
@@ -192,11 +202,13 @@ class ConfigForCommand implements EventSubscriberInterface
     /**
      * Fix arguments for help command.
      *
-     * @param \Symfony\Component\Console\Command\Command $command
+     *  @param \Symfony\Component\Console\Command\Command $command
      *   The command.
-     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *  @param \Symfony\Component\Console\Input\InputInterface $input
      *   The input.
-     * @return mixed
+     *
+     *  @return mixed
+     *  The arguments for help command.
      */
     protected function fixInputForSymfony2($command, $input)
     {

@@ -91,11 +91,11 @@ class Runner
     /**
      * Initialize the Toolkit Runner.
      *
-     * @param \Composer\Autoload\ClassLoader $classLoader
+     *  @param \Composer\Autoload\ClassLoader $classLoader
      *   The autoload file.
-     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *  @param \Symfony\Component\Console\Input\InputInterface $input
      *   The input from CLI arguments.
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     *  @param \Symfony\Component\Console\Output\OutputInterface $output
      *   The CLI output.
      */
     public function __construct(ClassLoader $classLoader, InputInterface $input, OutputInterface $output)
@@ -145,7 +145,8 @@ class Runner
 
     /**
      * Returns the current working directory.
-     * @return string
+     *  @return string
+     *   Return the current working directory.
      */
     private function getWorkingDir()
     {
@@ -154,7 +155,9 @@ class Runner
 
     /**
      * Create and prepare the Application.
-     * @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     *
+     *  @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     *   Return the runner.
      */
     private function prepareApplication()
     {
@@ -174,11 +177,13 @@ class Runner
     /**
      * Recursively merge config files.
      *
-     * @param array<mixed> $files
+     *  @param array<mixed> $files
      *   The file paths to fetch the configs.
-     * @param array<mixed>|null $config
+     *  @param array<mixed>|null $config
      *   The given, the new configs will be merged.
-     * @return array<mixed>
+     *
+     *  @return array<mixed>
+     *   Return array config.
      */
     private function parseConfigFiles(array $files, ?array $config = null): array
     {
@@ -194,7 +199,9 @@ class Runner
 
     /**
      * Create the configurations and process overrides.
-     * @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     *
+     *  @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     *   Return the runner.
      */
     private function prepareConfigurations()
     {
@@ -260,7 +267,9 @@ class Runner
 
     /**
      * Prepare the container with the configurations.
-     * @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     *
+     *  @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     *   Return the runner.
      */
     private function prepareContainer()
     {
@@ -281,7 +290,9 @@ class Runner
 
     /**
      * Create and configure the Robo runner.
-     * @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     *
+     *  @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     *   Return the Robo runner.
      */
     private function prepareRunner()
     {
@@ -300,7 +311,9 @@ class Runner
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @return mixed
+     *
+     *  @return mixed
+     *  Register commands in the runner.yml.
      */
     private function registerConfigurationCommands()
     {
@@ -359,9 +372,10 @@ class Runner
     /**
      * Get runner config directory files.
      *
-     * @param string $runnerConfigDir
+     *  @param string $runnerConfigDir
      *   The directory to scan.
-     * @return array<mixed>
+     *  @return array<mixed>
+     *   Return array runner config directory files.
      */
     private function getConfigDirFilesPaths(string $runnerConfigDir): array
     {
