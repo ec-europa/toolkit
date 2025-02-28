@@ -21,7 +21,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * An array with tasks to execute.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected array $tasks;
 
@@ -32,7 +32,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * the required to ensure they are present, and the defaults
      * to ensure they have the default value.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected array $availableTasks = [
         'mkdir' => ['required' => 'dir', 'defaults' => 'mode'],
@@ -66,7 +66,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Constructs a new Process task.
      *
-     * @param array $tasks
+     * @param array<mixed> $tasks
      *   The Command Tasks.
      */
     public function __construct(array $tasks)
@@ -91,8 +91,9 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Execute single task.
      *
-     * @param $task
+     * @param mixed $task
      *   The task to execute.
+     * @return mixed
      *
      * @throws \Robo\Exception\TaskException
      *
@@ -227,7 +228,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Return the current tasks.
      *
-     * @return array
+     * @return array<mixed>
      *   The tasks.
      */
     public function getTasks()
@@ -238,8 +239,9 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Validate and ensure the parameter are met.
      *
-     * @param $task
+     * @param mixed $task
      *   The task being executed.
+     * @return mixed
      *
      * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::availableTasks
      * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::paramDefaultValue()
@@ -273,8 +275,9 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Prepares the Output of a taskExec.
      *
-     * @param $taskExec
+     * @param mixed $taskExec
      *   The task exec being executed.
+     * @return mixed
      */
     private function prepareOutput($taskExec)
     {
@@ -291,6 +294,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      *   The missing parameter.
      * @param string $task
      *   The task being checked.
+     * @return string
      *
      * @throws \Robo\Exception\TaskException
      */
@@ -305,6 +309,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      *
      * @param string $task
      *   The task being checked.
+     * @return string
      *
      * @throws \Robo\Exception\TaskException
      */

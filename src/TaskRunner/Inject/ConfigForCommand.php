@@ -49,6 +49,7 @@ class ConfigForCommand implements EventSubscriberInterface
      *
      * @param \Symfony\Component\Console\Application $application
      *   The application.
+     * @return mixed
      */
     public function setApplication(Application $application)
     {
@@ -72,6 +73,7 @@ class ConfigForCommand implements EventSubscriberInterface
      *
      * @param \Symfony\Component\Console\Event\ConsoleCommandEvent $event
      *   The current event.
+     * @return mixed
      */
     public function injectConfiguration(ConsoleCommandEvent $event)
     {
@@ -90,6 +92,7 @@ class ConfigForCommand implements EventSubscriberInterface
      *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *   The current input.
+     * @return mixed
      */
     protected function injectConfigurationForGlobalOptions($input)
     {
@@ -112,6 +115,7 @@ class ConfigForCommand implements EventSubscriberInterface
      *   The command to configure.
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *   The current input.
+     * @return mixed
      */
     protected function injectConfigurationForCommand($command, $input)
     {
@@ -130,10 +134,11 @@ class ConfigForCommand implements EventSubscriberInterface
      *
      * @param \Consolidation\Config\Util\ConfigGroup $configGroup
      *   The current config group.
-     * @param array $options
+     * @param array<mixed> $options
      *   The options.
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *   The input.
+     * @return mixed
      */
     protected function injectConfigGroupIntoOptions($configGroup, $options, $input)
     {
@@ -191,6 +196,7 @@ class ConfigForCommand implements EventSubscriberInterface
      *   The command.
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *   The input.
+     * @return mixed
      */
     protected function fixInputForSymfony2($command, $input)
     {
@@ -211,7 +217,7 @@ class ConfigForCommand implements EventSubscriberInterface
      * @param mixed $value
      *   The value to explode.
      *
-     * @return array
+     * @return array<mixed>
      *   The exploded values.
      */
     private function explodeArray(mixed $value)
@@ -222,7 +228,7 @@ class ConfigForCommand implements EventSubscriberInterface
     /**
      * Check whether the option is marked as VALUE_IS_ARRAY.
      *
-     * @param $inputOption
+     * @param mixed $inputOption
      *   The option being checked.
      *
      * @return bool

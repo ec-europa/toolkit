@@ -19,6 +19,7 @@ class DumpCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
+     * @return string
      */
     public function getConfigurationFile()
     {
@@ -28,7 +29,7 @@ class DumpCommands extends AbstractCommands
     /**
      * Import the production snapshot.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return \Robo\Collection\CollectionBuilder|int
@@ -89,7 +90,7 @@ class DumpCommands extends AbstractCommands
      *
      * This command should be only used with the corporate docker image fpfis/httpd-php.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return \Robo\Collection\CollectionBuilder|int
@@ -169,6 +170,8 @@ class DumpCommands extends AbstractCommands
      *
      * @option is-admin For nextcloud admin user.
      * @option yes      Skip the question to download newer dump.
+     * @param array<mixed> $options
+     * @return int
      *
      * @aliases tk-ddump
      */
@@ -187,6 +190,8 @@ class DumpCommands extends AbstractCommands
 
     /**
      * Download the available services from Nextcloud.
+     * @param array<mixed> $options
+     * @return int|\Robo\Collection\CollectionBuilder
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -272,6 +277,8 @@ class DumpCommands extends AbstractCommands
 
     /**
      * Download the dumpfile from the custom server.
+     * @param array<mixed> $options
+     * @return int
      */
     private function customDownloadDump(ConsoleIO $io, array $options)
     {
@@ -432,7 +439,7 @@ class DumpCommands extends AbstractCommands
      * @param string $service
      *   The service to use.
      *
-     * @return array
+     * @return array<mixed>
      *   The tasks to execute.
      */
     private function asdaProcessFile(string $link, string $service)
@@ -484,6 +491,7 @@ class DumpCommands extends AbstractCommands
      *   The temporary filename.
      * @param bool $silent
      *   Whether show or not output from task.
+     * @return mixed
      */
     private function wgetGenerateInputFile(string $url, string $tmp, bool $silent = false)
     {
@@ -507,6 +515,7 @@ class DumpCommands extends AbstractCommands
      *   A comma-separated list of accepted extensions.
      * @param bool $silent
      *   Whether show or not output from task.
+     * @return \Robo\Task\Base\Exec
      */
     private function wgetDownloadFile(string $tmp, string $destination, ?string $accept = null, bool $silent = false)
     {
@@ -527,6 +536,7 @@ class DumpCommands extends AbstractCommands
      *
      * @param string $tmp
      *   The temporary filename.
+     * @return string
      */
     private function wgetGetFileModifiedDate(string $tmp)
     {
@@ -591,6 +601,7 @@ class DumpCommands extends AbstractCommands
      *
      * @param string $dump
      *   The path to the dump file.
+     * @return \Robo\Task\Base\ExecStack
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */

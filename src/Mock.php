@@ -57,6 +57,7 @@ final class Mock
      *
      * @param string $endpoint
      *   The endpoint to return the content from.
+     * @return false|string
      *
      * @throws \Exception
      *   If the mock or endpoint file is not found.

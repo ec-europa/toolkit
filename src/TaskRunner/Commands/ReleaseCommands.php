@@ -39,6 +39,7 @@ class ReleaseCommands extends AbstractCommands
      *   The version to set.
      *
      * @command toolkit:version-write
+     * @return int|\Robo\Collection\CollectionBuilder
      *
      * @hidden
      */
@@ -87,6 +88,7 @@ class ReleaseCommands extends AbstractCommands
      * Write the latest tag from toolkit-mock to the Mock class.
      *
      * @command toolkit:update-mock-default-tag
+     * @return int|\Robo\Collection\CollectionBuilder
      *
      * @hidden
      */
@@ -131,7 +133,7 @@ class ReleaseCommands extends AbstractCommands
      *   The version to set.
      * @param string $from
      *   The version to set.
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command toolkit:changelog-write
@@ -139,6 +141,7 @@ class ReleaseCommands extends AbstractCommands
      * @option show-name If set, the name of the user will be added.
      * @option show-pr   If set, the PR number and link will be added.
      * @option full-link If set, the link to the full changelog will be added.
+     * @return int|\Robo\Result
      *
      * @hidden
      */
@@ -195,6 +198,7 @@ class ReleaseCommands extends AbstractCommands
      *   The version to set.
      *
      * @command toolkit:prepare-release
+     * @return \Robo\Collection\CollectionBuilder
      *
      * @hidden
      */
@@ -236,10 +240,10 @@ class ReleaseCommands extends AbstractCommands
      *
      * @param string $from
      *   The row to process.
-     * @param array $options
+     * @param array<mixed> $options
      *   The command options.
      *
-     * @return array
+     * @return array<mixed>
      *   An array containing the changelog.
      */
     private function prepareChangelog(string $from, array $options)
@@ -271,9 +275,9 @@ class ReleaseCommands extends AbstractCommands
     /**
      * Prepare the changelog row.
      *
-     * @param array $data
+     * @param array<mixed> $data
      *   The row to process.
-     * @param array $options
+     * @param array<mixed> $options
      *   The command options.
      *
      * @return string

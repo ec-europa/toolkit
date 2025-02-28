@@ -32,6 +32,7 @@ class BuildCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
+     * @return string
      */
     public function getConfigurationFile()
     {
@@ -53,7 +54,7 @@ class BuildCommands extends AbstractCommands
      * - ./dist/web
      * - ./dist/web/VERSION.txt
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return \Robo\Collection\CollectionBuilder
@@ -165,7 +166,7 @@ class BuildCommands extends AbstractCommands
     /**
      * Build site for local development.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return \Robo\Collection\CollectionBuilder
@@ -231,7 +232,7 @@ class BuildCommands extends AbstractCommands
     /**
      * Build site for local development from scratch with a clean git.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return \Robo\Collection\CollectionBuilder
@@ -277,7 +278,7 @@ class BuildCommands extends AbstractCommands
      *
      * Install task runner, additional packages and execute.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Additional options for the command.
      *
      * @return \Robo\Result|int
@@ -348,6 +349,12 @@ class BuildCommands extends AbstractCommands
 
     /**
      * Install necessary packages to run toolkit:build-assets.
+     * @param mixed $themeDir
+     * @param mixed $allowedTaskRunners
+     * @param mixed $files
+     * @param mixed $taskRunners
+     * @param mixed $options
+     * @return mixed
      */
     private function buildAssetsInstall($themeDir, $allowedTaskRunners, $taskRunners, $files, $options)
     {
@@ -376,6 +383,10 @@ class BuildCommands extends AbstractCommands
 
     /**
      * Launch task runner(s) to compile assets.
+     * @param array<mixed> $taskRunners
+     * @param array<mixed> $options
+     * @param string $themeDir
+     * @return mixed
      */
     private function buildAssetsCompile($taskRunners, $options, $themeDir,)
     {
@@ -414,6 +425,7 @@ class BuildCommands extends AbstractCommands
      *
      * @param string $root
      *   The drupal root where the .htaccess file is.
+     * @return \Robo\Collection\CollectionBuilder
      */
     private function getHtaccessTask(string $root)
     {
@@ -438,6 +450,7 @@ class BuildCommands extends AbstractCommands
 
     /**
      * Returns the block for the .htaccess file.
+     * @return string
      */
     private function getHtaccessBlock(): string
     {

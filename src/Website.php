@@ -176,7 +176,7 @@ class Website
     /**
      * Helper to send a payload to the QA Website.
      *
-     * @param array $fields
+     * @param array<mixed> $fields
      *   Data to send.
      * @param AuthorizationInterface $auth
      *   The authorization instance.
@@ -216,7 +216,7 @@ class Website
      * @param string $projectId
      *   The project ID to use.
      *
-     * @return false|array
+     * @return false|array<mixed>
      *   An array with the Project information, false if fails.
      *
      * @throws \Exception
@@ -251,7 +251,7 @@ class Website
      * @param string $projectId
      *   The project ID to use.
      *
-     * @return false|array
+     * @return false|array<mixed>
      *   An array with the constraints, false if fails.
      *
      * @throws \Exception
@@ -282,6 +282,7 @@ class Website
      *
      * @throws \Exception
      *   If the request fails.
+     * @return false|mixed|string
      */
     public static function requirements()
     {
@@ -301,6 +302,7 @@ class Website
 
     /**
      * Returns the packages reviews from the endpoint.
+     * @return false|mixed|string
      */
     public static function packages()
     {
@@ -313,6 +315,7 @@ class Website
 
     /**
      * Returns the notifications from the endpoint.
+     * @return false|mixed|string
      */
     public static function notifications()
     {
@@ -329,6 +332,7 @@ class Website
      *   The QA endpoint url.
      * @param AuthorizationInterface|null $auth
      *   The authorization instance or null.
+     * @return false|mixed|string
      */
     public static function getWithMockFallback(string $url, ?AuthorizationInterface $auth = null)
     {

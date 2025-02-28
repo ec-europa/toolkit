@@ -9,15 +9,19 @@ namespace EcEuropa\Toolkit;
  */
 final class JunitXmlGenerator
 {
-
+    /**
+     * @var array<mixed> $data
+     *
+     * */
     protected static array $data = [];
     public static string $dir = 'junit-export';
 
     /**
      * Sets the data array.
      *
-     * @param array $data
+     * @param array<mixed> $data
      *   The data to set.
+     * @return void
      */
     public static function setData(array $data): void
     {
@@ -26,6 +30,7 @@ final class JunitXmlGenerator
 
     /**
      * Get the existing data.
+     * @return array<mixed>
      */
     public static function getData(): array
     {
@@ -37,6 +42,7 @@ final class JunitXmlGenerator
      *
      * @param string $testSuite
      *   The test case name.
+     * @return mixed
      */
     public static function addTestSuite(string $testSuite)
     {
@@ -50,6 +56,7 @@ final class JunitXmlGenerator
      *   The test suite to add the test case.
      * @param string $testCase
      *   The test case name.
+     * @return mixed
      */
     public static function addTestCase(string $testSuite, string $testCase)
     {
@@ -67,6 +74,7 @@ final class JunitXmlGenerator
      *   The result message.
      * @param string $type
      *   The result type.
+     * @return mixed
      */
     public static function addResult(string $testSuite, string $testCase, string $message, string $type = 'error')
     {
@@ -81,8 +89,9 @@ final class JunitXmlGenerator
      *
      * @param string $filename
      *   The filename to export.
-     * @param array|null $data
+     * @param array<mixed>|null $data
      *   The data to export.
+     * @return mixed
      */
     public static function generate(string $filename = 'junit.xml', ?array $data = null)
     {
@@ -131,6 +140,7 @@ final class JunitXmlGenerator
      *   The destination file where multiple files will be merged.
      * @param string $directory
      *   The directory where the files are.
+     * @return mixed
      */
     public static function mergeFiles(string $destination, string $directory)
     {

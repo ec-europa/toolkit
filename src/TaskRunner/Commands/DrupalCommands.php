@@ -36,6 +36,7 @@ class DrupalCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
+     * @return string
      */
     public function getConfigurationFile()
     {
@@ -75,7 +76,7 @@ class DrupalCommands extends AbstractCommands
      * The settings override file name cannot be changed, changing the
      * "drupal.site.settings_override_file" property will have no effect.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return \Robo\Collection\CollectionBuilder
@@ -129,13 +130,14 @@ class DrupalCommands extends AbstractCommands
      *
      * This command will set the necessary permissions on the default folder.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command drupal:permissions-setup
      *
      * @option root         Drupal root.
      * @option sites-subdir Drupal site subdirectory.
+     * @return \Robo\Collection\CollectionBuilder
      */
     public function drupalPermissionsSetup(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -168,6 +170,7 @@ class DrupalCommands extends AbstractCommands
      * @throws \Exception
      *   Thrown when the settings file or its containing folder does not exist
      *   or is not writeable.
+     * @return mixed
      */
     public function drupalSiteInstallValidate(CommandData $commandData)
     {
@@ -207,13 +210,14 @@ class DrupalCommands extends AbstractCommands
      * >       ignored-directories: "${drupal.root}"
      * >       uri: "${drupal.base_url}"
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command drupal:drush-setup
      *
      * @option root       Drupal root.
      * @option config-dir Directory where to store Drush 9 configuration file.
+     * @return \Robo\Collection\CollectionBuilder
      */
     public function drupalDrushSetup(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -233,7 +237,7 @@ class DrupalCommands extends AbstractCommands
      * This command will install a target Drupal site using configuration values
      * provided in local runner.yml.dist/runner.yml files.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command drupal:site-install
@@ -258,6 +262,7 @@ class DrupalCommands extends AbstractCommands
      * @option skip-permissions-setup Whether to skip making the settings file and folder writable during installation.
      *
      * @aliases drupal:si,dsi
+     * @return \Robo\Collection\CollectionBuilder
      */
     public function drupalSiteInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -334,10 +339,11 @@ class DrupalCommands extends AbstractCommands
     /**
      * Process pre and post install string-only commands by replacing given tokens.
      *
-     * @param array $commands
+     * @param array<mixed> $commands
      *   List of commands.
-     * @param array $tokens
+     * @param array<mixed> $tokens
      *   Replacement key-value tokens.
+     * @return mixed
      */
     protected function processPrePostInstallCommands(array &$commands, array $tokens)
     {
@@ -368,6 +374,8 @@ class DrupalCommands extends AbstractCommands
      * @option root
      *   The Drupal root. All occurrences of "!root" in the pre-install
      *   string-only commands will be substituted with this value.
+     * @param array<mixed> $options
+     * @return \Robo\Collection\CollectionBuilder
      */
     public function drupalSitePreInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -400,6 +408,8 @@ class DrupalCommands extends AbstractCommands
      * @option root
      *   The Drupal root. All occurrences of "!root" in the post-install
      *   string-only commands will be substituted with this value.
+     * @param array<mixed> $options
+     * @return \Robo\Collection\CollectionBuilder
      */
     public function drupalSitePostInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -416,6 +426,7 @@ class DrupalCommands extends AbstractCommands
      * Disable aggregation and clear cache.
      *
      * @command drupal:disable-cache
+     * @return \Robo\Collection\CollectionBuilder
      */
     public function drupalDisableCache()
     {
@@ -508,7 +519,7 @@ class DrupalCommands extends AbstractCommands
     /**
      * Command to check the forbidden permissions.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command drupal:check-permissions
@@ -518,6 +529,7 @@ class DrupalCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @return int
      */
     public function drupalCheckPermissions(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,

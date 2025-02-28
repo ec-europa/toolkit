@@ -19,11 +19,15 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class PatchCommands extends AbstractCommands
 {
-
+    /**
+     * {@inheritdoc}
+     * @var array<mixed> $options
+     */
     protected $options;
 
     /**
      * {@inheritdoc}
+     * @return string
      */
     public function getConfigurationFile()
     {
@@ -40,6 +44,8 @@ class PatchCommands extends AbstractCommands
      * @option dependencies Look for patches defined by dependencies.
      *
      * @aliases tk-pl
+     * @param array<mixed> $options
+     * @return int
      */
     public function toolkitPatchList(ConsoleIO $io, array $options = [
         'package' => InputOption::VALUE_REQUIRED,
@@ -64,6 +70,8 @@ class PatchCommands extends AbstractCommands
      * @option dependencies Look for patches defined by dependencies.
      *
      * @aliases tk-pd
+     * @param array<mixed> $options
+     * @return int|mixed
      *
      * phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
      */
@@ -111,6 +119,7 @@ class PatchCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @return array<mixed>
      */
     private function getPatches(): array
     {
@@ -164,6 +173,7 @@ class PatchCommands extends AbstractCommands
 
     /**
      * Returns the patches from dependencies.
+     * @return array<mixed>
      */
     private function getDependenciesPatches(): array
     {

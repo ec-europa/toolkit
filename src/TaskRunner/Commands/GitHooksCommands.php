@@ -22,6 +22,7 @@ class GitHooksCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
+     * @return string
      */
     public function getConfigurationFile()
     {
@@ -31,7 +32,7 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Enable the git hooks defined in the configuration or in given option.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return int
@@ -84,7 +85,7 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Disable the git hooks.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return int
@@ -124,6 +125,7 @@ class GitHooksCommands extends AbstractCommands
      * Remove all existing hooks, this will ignore active hooks list.
      *
      * @command toolkit:hooks-delete-all
+     * @return mixed
      *
      * @aliases tk-hdel
      */
@@ -154,6 +156,7 @@ class GitHooksCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @return mixed
      */
     public function hooksList(ConsoleIO $io)
     {
@@ -252,6 +255,7 @@ class GitHooksCommands extends AbstractCommands
 
     /**
      * Hook: Executes the PHPcs against the modified files.
+     * @return int
      */
     private function runPreCommit(ConsoleIO $io)
     {
@@ -321,6 +325,7 @@ class GitHooksCommands extends AbstractCommands
 
     /**
      * Hook: Executes the commit-msg conditions.
+     * @return int
      */
     private function runCommitMsg(ConsoleIO $io)
     {
@@ -355,6 +360,7 @@ class GitHooksCommands extends AbstractCommands
 
     /**
      * Hook: Executes the pre-push commands.
+     * @return int
      */
     private function runPrePush(ConsoleIO $io)
     {
@@ -371,7 +377,7 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Return the available hooks from Toolkit and Project.
      *
-     * @return array
+     * @return array<mixed>
      *   A list of available hooks.
      */
     private function getAvailableHooks()
@@ -388,7 +394,7 @@ class GitHooksCommands extends AbstractCommands
      * @param string $directory
      *   The directory to check for hooks.
      *
-     * @return array
+     * @return array<mixed>
      *   An array keyed by hook name and path as value, false if do not exist.
      */
     private function getHookFiles(string $directory)

@@ -19,6 +19,7 @@ trait Tasks
      *   The source file to process.
      * @param string $destination
      *   The destination file.
+     * @return \Robo\Collection\CollectionBuilder
      */
     protected function taskProcess(string $source, string $destination = '')
     {
@@ -30,6 +31,7 @@ trait Tasks
      *
      * @param string $filename
      *   The file to process.
+     * @return \Robo\Collection\CollectionBuilder
      */
     protected function taskReplaceBlock(string $filename = '')
     {

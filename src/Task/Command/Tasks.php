@@ -15,8 +15,9 @@ trait Tasks
     /**
      * Execute a command.
      *
-     * @param array $tasks
+     * @param array<mixed> $tasks
      *   An array with tasks to execute.
+     * @return mixed
      */
     protected function taskExecute(array $tasks)
     {

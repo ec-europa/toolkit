@@ -27,7 +27,7 @@ class DrupalSanitiseCommands extends AbstractCommands
     /**
      * Command to check fields for sanitisation.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command drupal:check-sanitisation-fields
@@ -102,6 +102,7 @@ class DrupalSanitiseCommands extends AbstractCommands
      * Command to check existence of Sanitisation classes.
      *
      * @command drupal:check-sanitisation-classes
+     * @return int
      */
     public function drupalCheckSanitisationClasses(ConsoleIO $io)
     {
@@ -208,6 +209,7 @@ class DrupalSanitiseCommands extends AbstractCommands
 
     /**
      * Returns the Drush Sanitize Interface namespace depending on the current version.
+     * @return string
      */
     private function getDrushSanitizeInterface(): string
     {
@@ -226,6 +228,7 @@ class DrupalSanitiseCommands extends AbstractCommands
      *
      * @param string $directory
      *   The directory to search for classes.
+     * @return mixed
      */
     private function registerCustomClasses(string $directory)
     {
@@ -260,6 +263,7 @@ class DrupalSanitiseCommands extends AbstractCommands
      *
      * @param string $directory
      *   The directory to scan, usually 'lib'.
+     * @return array<mixed>
      */
     private function createClassMap(string $directory): array
     {
@@ -281,6 +285,7 @@ class DrupalSanitiseCommands extends AbstractCommands
 
     /**
      * Returns a static field map for test purposes.
+     * @return array<mixed>
      */
     private function testMap(): array
     {

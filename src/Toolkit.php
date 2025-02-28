@@ -87,8 +87,10 @@ final class Toolkit
     /**
      * Remove un-existing folders from given array.
      *
-     * @param array $files
+     * @param array<mixed> $files
      *   The folders to check.
+     * @return mixed
+     *
      */
     public static function filterFolders(array &$files)
     {
@@ -104,6 +106,7 @@ final class Toolkit
      *   If the data is a string it will be exploded by comma.
      * @param string $sep
      *   The separator to explode the string.
+     * @return void
      */
     public static function ensureArray(mixed &$data, string $sep = ',')
     {

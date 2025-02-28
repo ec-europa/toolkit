@@ -62,6 +62,7 @@ class DocumentationCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
+     * @return string
      */
     public function getConfigurationFile()
     {
@@ -83,6 +84,8 @@ class DocumentationCommands extends AbstractCommands
      * @hidden
      *
      * @aliases tk-docs
+     * @param array<mixed> $options
+     * @return int|\Robo\Collection\CollectionBuilder
      */
     public function toolkitGenerateDocumentation(ConsoleIO $io, array $options = [
         'token' => InputOption::VALUE_REQUIRED,
@@ -144,6 +147,7 @@ class DocumentationCommands extends AbstractCommands
      * Generate the list of commands in the commands.rst file.
      *
      * @command toolkit:generate-commands-list
+     * @return int|\Robo\Collection\CollectionBuilder
      *
      * @hidden
      *
@@ -181,6 +185,7 @@ class DocumentationCommands extends AbstractCommands
 
     /**
      * Backup all *.rst files.
+     * @return \Robo\Collection\CollectionBuilder
      */
     private function backupRelevantFiles()
     {
@@ -198,6 +203,7 @@ class DocumentationCommands extends AbstractCommands
 
     /**
      * Clone the documentation branch (hide output to avoid expose token).
+     * @return array<mixed>
      */
     private function gitClone(): array
     {
@@ -230,6 +236,7 @@ class DocumentationCommands extends AbstractCommands
 
     /**
      * Git add commit and push to the documentation branch.
+     * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Base\ExecStack
      */
     private function gitAddCommitPush()
     {
@@ -255,6 +262,7 @@ class DocumentationCommands extends AbstractCommands
      *   The directory to clean.
      * @param bool $includeHidden
      *   If true, all hidden files will be removed.
+     * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Filesystem\FilesystemStack
      */
     private function cleanDir(string $directory, bool $includeHidden = true)
     {
@@ -268,6 +276,7 @@ class DocumentationCommands extends AbstractCommands
 
     /**
      * Clean up documentation to keep only .html files.
+     * @return \Robo\Collection\CollectionBuilder
      */
     private function cleanUpRstFiles()
     {
@@ -284,6 +293,7 @@ class DocumentationCommands extends AbstractCommands
 
     /**
      * Ensure that the phpDoc phar file exists.
+     * @return bool
      */
     private function downloadPhpDocPhar(): bool
     {

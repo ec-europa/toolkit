@@ -27,6 +27,7 @@ class ToolCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
+     * @return string
      */
     public function getConfigurationFile()
     {
@@ -36,7 +37,7 @@ class ToolCommands extends AbstractCommands
     /**
      * Check the commit message for SKIPPING tokens.
      *
-     * @return array
+     * @return array<mixed>
      *   An array with tokens present in the commit message.
      */
     public static function getCommitTokens()
@@ -88,12 +89,14 @@ class ToolCommands extends AbstractCommands
      *
      * @option endpoint The endpoint to use to connect to QA Website.
      * @option junit    Whether to export results as junit.
+     * @param array<mixed> $options
      *
      * @aliases tk-opts-review
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @return int
      */
     public function optsReview(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
@@ -237,12 +240,15 @@ class ToolCommands extends AbstractCommands
      *
      * @option endpoint The endpoint to use to connect to QA Website.
      * @option junit    Whether to export results as junit.
+     * @param array<mixed> $options
      *
      * @aliases tk-req
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     *
+     * @return int
      */
     public function toolkitRequirements(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
@@ -395,6 +401,8 @@ class ToolCommands extends AbstractCommands
      * Run script to fix permissions (experimental).
      *
      * @command toolkit:fix-permissions
+     * @param array<int> $options
+     * @return int|\Robo\Collection\CollectionBuilder
      */
     public function fixPermissions(array $options = [
         'drupal_path' => InputOption::VALUE_OPTIONAL,
@@ -438,6 +446,7 @@ class ToolCommands extends AbstractCommands
      * Check the Toolkit version.
      *
      * @command toolkit:check-version
+     * @return int
      */
     public function toolkitVersion(ConsoleIO $io)
     {
@@ -578,6 +587,7 @@ class ToolCommands extends AbstractCommands
      * Check 'Vendor' packages being monitored.
      *
      * @command toolkit:vendor-list
+     * @return int
      */
     public function toolkitVendorList(ConsoleIO $io)
     {
@@ -633,9 +643,12 @@ class ToolCommands extends AbstractCommands
      * @option phpstan     Execute the command toolkit:test-phpstan.
      * @option phpmd       Execute the command toolkit:test-phpmd.
      * @option phpunit     Execute the command toolkit:test-phpunit.
+     * @param array<mixed> $options
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     *
+     * @return ResultData
      */
     public function toolkitCodeReview(ConsoleIO $io, array $options = [
         'phpcs' => InputOption::VALUE_NONE,
@@ -718,9 +731,12 @@ class ToolCommands extends AbstractCommands
      *
      * @option packages Specify a list of packages to install instead of read from .opts.yml.
      * @option print    Shows output from apt commands.
+     * @param array<mixed> $options
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     *
+     * @return int
      */
     public function toolkitInstallDependencies(ConsoleIO $io, array $options = [
         'packages' => InputOption::VALUE_REQUIRED,
@@ -807,7 +823,7 @@ class ToolCommands extends AbstractCommands
     /**
      * Returns the .opts.yml file content.
      *
-     * @return array|false
+     * @return array<mixed>|false
      *   An array with the content or false if the file do not exist.
      *
      * @throws \Symfony\Component\Yaml\Exception\ParseException
@@ -830,6 +846,9 @@ class ToolCommands extends AbstractCommands
      * @option endpoint The endpoint to use to connect to QA Website.
      *
      * @aliases tk-notifications
+     *
+     * @param array<mixed> $options
+     * @return int
      */
     public function toolkitNotifications(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_OPTIONAL,
