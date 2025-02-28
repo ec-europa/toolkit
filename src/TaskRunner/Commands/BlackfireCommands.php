@@ -21,10 +21,10 @@ class BlackfireCommands extends AbstractCommands
     /**
      * Run Blackfire.
      *
-     * @command toolkit:run-blackfire
-     *
      *  @param array<mixed> $options
-     *   options.
+     *    options.
+     *
+     *  @command toolkit:run-blackfire
      *
      *  @option endpoint The endpoint to use to connect to QA Website.
      *
