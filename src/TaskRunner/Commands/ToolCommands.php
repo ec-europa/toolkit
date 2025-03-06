@@ -21,6 +21,7 @@ use Symfony\Component\Yaml\Yaml;
  * Generic tools.
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class ToolCommands extends AbstractCommands
 {
@@ -666,6 +667,7 @@ class ToolCommands extends AbstractCommands
      *
      *  @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *  @SuppressWarnings(PHPMD.NPathComplexity)
+     *  @SuppressWarnings(PHPMD.CouplingBetweenObjects)
      *
      *  @return \Robo\ResultData
      *   result data.
