@@ -667,7 +667,6 @@ class ToolCommands extends AbstractCommands
      *
      *  @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *  @SuppressWarnings(PHPMD.NPathComplexity)
-     *  @SuppressWarnings(PHPMD.CouplingBetweenObjects)
      *
      *  @return \Robo\ResultData
      *   result data.
