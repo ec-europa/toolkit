@@ -46,21 +46,29 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $insecureNpmFailed = false;
     protected int $recommendedFailedCount = 0;
     /**
+     * Variable.
+     *
      * @var array<mixed> $composerOutdated
      */
     protected array $composerOutdated;
     protected $io;
     /**
+     * Variable.
+     *
      * @var array<mixed> $composerLock
      */
     protected array $composerLock;
     /**
+     * Variable.
+     *
      * @var array<mixed> $packageReviews
      */
     protected array $packageReviews;
     protected bool $forcedUpdateModule = false;
     protected bool $disabledConfigReadonly = false;
     /**
+     * Variable.
+     *
      * @var array<mixed> $optsYml
      */
     protected array $optsYml;
@@ -68,13 +76,17 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Check composer for components that are not whitelisted/blacklisted.
      *
-     * @command toolkit:component-check
+     *  @param array<mixed> $options
+     *   Options array.
      *
-     * @option endpoint     The endpoint to use to connect to QA Website.
-     * @option test-command If set the command will load test packages.
-     * @option junit        Whether to export results as junit.
-     * @param array<mixed> $options
-     * @return int
+     *  @command toolkit:component-check
+     *
+     *  @option endpoint     The endpoint to use to connect to QA Website.
+     *  @option test-command If set the command will load test packages.
+     *  @option junit        Whether to export results as junit.
+     *
+     *  @return int
+     *   status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -202,8 +214,10 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Check mandatory components.
      *
-     * @command check:mandatory
-     * @return mixed
+     *  @command check:mandatory
+     *
+     *  @return mixed
+     *   status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -257,8 +271,10 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Check recommended components.
      *
-     * @command check:recommended
-     * @return mixed
+     *  @command check:recommended
+     *
+     *  @return mixed
+     *   status.
      */
     public function componentRecommended(ConsoleIO $io)
     {
@@ -299,8 +315,10 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Check insecure components.
      *
-     * @command check:insecure
-     * @return mixed
+     *  @command check:insecure
+     *
+     *  @return mixed
+     *   status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -371,8 +389,10 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Check outdated components.
      *
-     * @command check:outdated
-     * @return mixed
+     *  @command check:outdated
+     *
+     *  @return mixed
+     *   status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -427,8 +447,10 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Check abandoned components.
      *
-     * @command check:abandoned
-     * @return mixed
+     *  @command check:abandoned
+     *
+     *  @return mixed
+     *   status.
      */
     public function componentAbandoned(ConsoleIO $io)
     {
@@ -452,8 +474,10 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Check unsupported components.
      *
-     * @command check:unsupported
-     * @return mixed
+     *  @command check:unsupported
+     *
+     *  @return mixed
+     *   status.
      */
     public function componentUnsupported(ConsoleIO $io)
     {
@@ -502,8 +526,10 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Check Evaluation components.
      *
-     * @command check:evaluation
-     * @return mixed
+     *  @command check:evaluation
+     *
+     *  @return mixed
+     *   status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -549,8 +575,10 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Check development components.
      *
-     * @command check:development
-     * @return mixed
+     *  @command check:development
+     *
+     *  @return mixed
+     *   status.
      */
     public function componentDevelopment(ConsoleIO $io)
     {
@@ -581,8 +609,10 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Check project configuration.
      *
-     * @command check:configuration
-     * @return mixed
+     *  @command check:configuration
+     *
+     *  @return mixed
+     *   status.
      */
     public function componentConfiguration(ConsoleIO $io)
     {
@@ -616,12 +646,14 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Check composer packages.
      *
-     * @command check:composer
+     *  @command check:composer
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     * @return mixed
+     *
+     *  @return mixed
+     *   status.
      */
     public function componentComposer(ConsoleIO $io)
     {
@@ -744,8 +776,10 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Run NPM Insecure.
      *
-     * @command check:npm-insecure
-     * @return mixed
+     *  @command check:npm-insecure
+     *
+     *  @return mixed
+     *   status.
      */
     public function componentNpmInsecure()
     {
@@ -785,8 +819,10 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Run NPM Outdated.
      *
-     * @command check:npm-outdated
-     * @return mixed
+     *  @command check:npm-outdated
+     *
+     *  @return mixed
+     *   status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -863,7 +899,9 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @return mixed
+     *
+     *  @return mixed
+     *   status.
      */
     protected function validateEnvironmentVariables()
     {
@@ -924,7 +962,9 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @return mixed
+     *
+     *  @return mixed
+     *   status.
      */
     protected function printComponentResults(ConsoleIO $io)
     {
@@ -968,9 +1008,11 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Helper function to validate the component.
      *
-     * @param array<mixed> $package
+     *  @param array<mixed> $package
      *   The package to validate.
-     * @return mixed|array<mixed>
+     *
+     *  @return mixed|array<mixed>
+     *   status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -1119,7 +1161,7 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Returns a list of packages to test.
      *
-     * @return array<mixed>
+     *  @return array<mixed>
      *   An array with packages to test.
      */
     private function testPackages()
@@ -1150,7 +1192,9 @@ class ComponentCheckCommands extends AbstractCommands
      * Returns the modules releases.
      *
      * If the update module is not enabled, it will be enabled, and later disabled.
-     * @return array<mixed>
+     *
+     *  @return array<mixed>
+     *   releases.
      */
     private function getReleases(): array
     {
@@ -1215,7 +1259,9 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Ensure that config_readonly is not active by commenting the config line.
-     * @return mixed
+     *
+     *  @return mixed
+     *   status.
      */
     private function disableConfigReadOnly()
     {
@@ -1234,7 +1280,9 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Restore the comment added to the config_readonly setting.
-     * @return mixed
+     *
+     *  @return mixed
+     *   status.
      */
     private function restoreConfigReadOnly()
     {
@@ -1249,7 +1297,9 @@ class ComponentCheckCommands extends AbstractCommands
 
     /**
      * Returns the .opts.yml content.
-     * @return array<mixed>
+     *
+     *  @return array<mixed>
+     *   opts content.
      */
     private function getOptsYml(): array
     {

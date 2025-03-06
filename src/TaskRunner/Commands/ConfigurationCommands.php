@@ -16,7 +16,9 @@ class ConfigurationCommands extends AbstractCommands
 
     /**
      * Execute a configuration command.
-     * @return \Robo\Collection\CollectionBuilder
+     *
+     *  @return \Robo\Collection\CollectionBuilder
+     *   status.
      */
     public function execute()
     {
