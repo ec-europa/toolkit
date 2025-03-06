@@ -65,7 +65,9 @@ class Process extends BaseTask implements BuilderAwareInterface
 
     /**
      * Get the content from the source.
-     * @return bool
+     *
+     *  @return bool
+     *   true.
      */
     protected function loadContent()
     {

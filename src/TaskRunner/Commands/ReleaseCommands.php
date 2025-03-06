@@ -35,13 +35,15 @@ class ReleaseCommands extends AbstractCommands
     /**
      * Write the specified version string into needed places.
      *
-     * @param string $version
+     *  @param string $version
      *   The version to set.
      *
-     * @command toolkit:version-write
-     * @return int|\Robo\Collection\CollectionBuilder
+     *  @command toolkit:version-write
      *
-     * @hidden
+     *  @return int|\Robo\Collection\CollectionBuilder
+     *   task.
+     *
+     *  @hidden
      */
     public function toolkitVersionWrite(ConsoleIO $io, string $version)
     {
@@ -87,10 +89,12 @@ class ReleaseCommands extends AbstractCommands
     /**
      * Write the latest tag from toolkit-mock to the Mock class.
      *
-     * @command toolkit:update-mock-default-tag
-     * @return int|\Robo\Collection\CollectionBuilder
+     *  @command toolkit:update-mock-default-tag
      *
-     * @hidden
+     *  @return int|\Robo\Collection\CollectionBuilder
+     *   task.
+     *
+     *  @hidden
      */
     public function toolkitUpdateDefaultMockTag(ConsoleIO $io)
     {
@@ -141,7 +145,9 @@ class ReleaseCommands extends AbstractCommands
      * @option show-name If set, the name of the user will be added.
      * @option show-pr   If set, the PR number and link will be added.
      * @option full-link If set, the link to the full changelog will be added.
-     * @return int|\Robo\Result
+     *
+     *  @return int|\Robo\Result
+     *   status.
      *
      * @hidden
      */
@@ -194,13 +200,15 @@ class ReleaseCommands extends AbstractCommands
     /**
      * Prepare a release for Toolkit.
      *
-     * @param string $version
+     *  @param string $version
      *   The version to set.
      *
-     * @command toolkit:prepare-release
-     * @return \Robo\Collection\CollectionBuilder
+     *  @command toolkit:prepare-release
      *
-     * @hidden
+     *  @return \Robo\Collection\CollectionBuilder
+     *   task.
+     *
+     *  @hidden
      */
     public function toolkitPrepareRelease(string $version)
     {

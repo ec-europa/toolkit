@@ -91,15 +91,17 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Execute single task.
      *
-     * @param mixed $task
+     *  @param mixed $task
      *   The task to execute.
-     * @return mixed
      *
-     * @throws \Robo\Exception\TaskException
+     *  @return mixed
+     *   mixed.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     *  @throws \Robo\Exception\TaskException
+     *
+     *  @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *  @SuppressWarnings(PHPMD.NPathComplexity)
+     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function taskExecute($task)
     {
@@ -239,14 +241,16 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Validate and ensure the parameter are met.
      *
-     * @param mixed $task
+     *  @param mixed $task
      *   The task being executed.
-     * @return mixed
      *
-     * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::availableTasks
-     * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::paramDefaultValue()
+     *  @return mixed
+     *   mixed.
      *
-     * @throws \Robo\Exception\TaskException
+     *  @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::availableTasks
+     *  @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::paramDefaultValue()
+     *
+     *  @throws \Robo\Exception\TaskException
      */
     private function validateAndEnsureParameters(&$task)
     {
@@ -275,9 +279,11 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Prepares the Output of a taskExec.
      *
-     * @param mixed $taskExec
+     *  @param mixed $taskExec
      *   The task exec being executed.
-     * @return mixed
+     *
+     *  @return mixed
+     *   mixed.
      */
     private function prepareOutput($taskExec)
     {
@@ -290,11 +296,13 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Report missing parameter, this stops the execution.
      *
-     * @param string $param
+     *  @param string $param
      *   The missing parameter.
-     * @param string $task
+     *  @param string $task
      *   The task being checked.
-     * @return string
+     *
+     *  @return string
+     *   string.
      *
      * @throws \Robo\Exception\TaskException
      */
@@ -307,9 +315,11 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Report missing parameter, this stops the execution.
      *
-     * @param string $task
+     *  @param string $task
      *   The task being checked.
-     * @return string
+     *
+     *  @return string
+     *   string.
      *
      * @throws \Robo\Exception\TaskException
      */

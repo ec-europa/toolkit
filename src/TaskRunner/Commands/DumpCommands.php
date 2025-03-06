@@ -19,7 +19,9 @@ class DumpCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     * @return string
+     *
+     *  @return string
+     *   configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -132,7 +134,10 @@ class DumpCommands extends AbstractCommands
     /**
      * Download database snapshot.
      *
-     * @codingStandardsIgnoreStart Generic.Commenting.DocComment.TagsNotGrouped
+     *  @param array<mixed> $options
+     *   options.
+     *
+     *  @codingStandardsIgnoreStart Generic.Commenting.DocComment.TagsNotGrouped
      *
      * Configuration for database snapshot in NEXTCLOUD.
      * - Environment variables: NEXTCLOUD_USER, NEXTCLOUD_PASS (EU Login).
@@ -170,8 +175,9 @@ class DumpCommands extends AbstractCommands
      *
      * @option is-admin For nextcloud admin user.
      * @option yes      Skip the question to download newer dump.
-     * @param array<mixed> $options
+     *
      * @return int
+     *  status.
      *
      * @aliases tk-ddump
      */
@@ -190,8 +196,12 @@ class DumpCommands extends AbstractCommands
 
     /**
      * Download the available services from Nextcloud.
-     * @param array<mixed> $options
-     * @return int|\Robo\Collection\CollectionBuilder
+     *
+     *  @param array<mixed> $options
+     *   options.
+     *
+     *  @return int|\Robo\Collection\CollectionBuilder
+     *   task.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -277,8 +287,12 @@ class DumpCommands extends AbstractCommands
 
     /**
      * Download the dumpfile from the custom server.
-     * @param array<mixed> $options
-     * @return int
+     *
+     *  @param array<mixed> $options
+     *   options.
+     *
+     *  @return int
+     *   status.
      */
     private function customDownloadDump(ConsoleIO $io, array $options)
     {
@@ -485,13 +499,15 @@ class DumpCommands extends AbstractCommands
     /**
      * Create a file containing the url to be used by wget --input-file option.
      *
-     * @param string $url
+     *  @param string $url
      *   Url to fill in the temp file.
-     * @param string $tmp
+     *  @param string $tmp
      *   The temporary filename.
-     * @param bool $silent
+     *  @param bool $silent
      *   Whether show or not output from task.
-     * @return mixed
+     *
+     *  @return mixed
+     *   file.
      */
     private function wgetGenerateInputFile(string $url, string $tmp, bool $silent = false)
     {
@@ -507,15 +523,17 @@ class DumpCommands extends AbstractCommands
     /**
      * Download the file present in the tmp file.
      *
-     * @param string $tmp
+     *  @param string $tmp
      *   The temporary filename.
-     * @param string $destination
+     *  @param string $destination
      *   The destination filename.
-     * @param string|null $accept
+     *  @param string|null $accept
      *   A comma-separated list of accepted extensions.
-     * @param bool $silent
+     *  @param bool $silent
      *   Whether show or not output from task.
-     * @return \Robo\Task\Base\Exec
+     *
+     *  @return \Robo\Task\Base\Exec
+     *   task.
      */
     private function wgetDownloadFile(string $tmp, string $destination, ?string $accept = null, bool $silent = false)
     {
@@ -534,9 +552,11 @@ class DumpCommands extends AbstractCommands
     /**
      * Get the modified date from the remote file.
      *
-     * @param string $tmp
+     *  @param string $tmp
      *   The temporary filename.
-     * @return string
+     *
+     *  @return string
+     *   file modified by date.
      */
     private function wgetGetFileModifiedDate(string $tmp)
     {
@@ -599,9 +619,11 @@ class DumpCommands extends AbstractCommands
     /**
      * Import given dump file, gunzip is used if dump ends with .gz.
      *
-     * @param string $dump
+     *  @param string $dump
      *   The path to the dump file.
-     * @return \Robo\Task\Base\ExecStack
+     *
+     *  @return \Robo\Task\Base\ExecStack
+     *   task.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */

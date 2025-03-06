@@ -18,7 +18,9 @@ class InstallCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     * @return string
+     *
+     *  @return string
+     *   configuration file path.
      */
     public function getConfigurationFile()
     {

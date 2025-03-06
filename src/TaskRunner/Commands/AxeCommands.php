@@ -48,10 +48,12 @@ class AxeCommands extends AbstractCommands
     /**
      * Run the axe-scan.
      *
-     * @command toolkit:run-axe-scan
-     * @return \Robo\Collection\CollectionBuilder
+     *  @command toolkit:run-axe-scan
      *
-     * @aliases tk-axe
+     *  @return \Robo\Collection\CollectionBuilder
+     *   task.
+     *
+     *  @aliases tk-axe
      */
     public function toolkitRunAxeScan()
     {
@@ -82,10 +84,12 @@ class AxeCommands extends AbstractCommands
     /**
      * Run the axe-scan summary.
      *
-     * @command toolkit:run-axe-scan-summary
-     * @return \Robo\Collection\CollectionBuilder
+     *  @command toolkit:run-axe-scan-summary
      *
-     * @aliases tk-axe-sum
+     *  @return \Robo\Collection\CollectionBuilder
+     *   task.
+     *
+     *  @aliases tk-axe-sum
      */
     public function toolkitRunAxeScanSummary()
     {
@@ -106,8 +110,10 @@ class AxeCommands extends AbstractCommands
     /**
      * Make sure axe-scan is installed and properly configured.
      *
-     * @command toolkit:setup-axe-scan
-     * @return string|\Robo\Collection\CollectionBuilder
+     *  @command toolkit:setup-axe-scan
+     *
+     *  @return string|\Robo\Collection\CollectionBuilder
+     *   task.
      */
     public function toolkitSetupAxeScan()
     {

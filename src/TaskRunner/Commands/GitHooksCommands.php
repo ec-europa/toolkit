@@ -22,7 +22,9 @@ class GitHooksCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     * @return string
+     *
+     *  @return string
+     *   configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -124,10 +126,12 @@ class GitHooksCommands extends AbstractCommands
     /**
      * Remove all existing hooks, this will ignore active hooks list.
      *
-     * @command toolkit:hooks-delete-all
-     * @return mixed
+     *  @command toolkit:hooks-delete-all
      *
-     * @aliases tk-hdel
+     *  @return mixed
+     *   status.
+     *
+     *  @aliases tk-hdel
      */
     public function hooksDeleteAll(ConsoleIO $io)
     {
@@ -150,13 +154,15 @@ class GitHooksCommands extends AbstractCommands
     /**
      * List available hooks and its status.
      *
-     * @command toolkit:hooks-list
+     *  @command toolkit:hooks-list
      *
-     * @aliases tk-hlist
+     *  @aliases tk-hlist
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @return mixed
+     *
+     *  @return mixed
+     *   hooks list.
      */
     public function hooksList(ConsoleIO $io)
     {
@@ -255,7 +261,9 @@ class GitHooksCommands extends AbstractCommands
 
     /**
      * Hook: Executes the PHPcs against the modified files.
-     * @return int
+     *
+     *  @return int
+     *   status.
      */
     private function runPreCommit(ConsoleIO $io)
     {
@@ -325,7 +333,9 @@ class GitHooksCommands extends AbstractCommands
 
     /**
      * Hook: Executes the commit-msg conditions.
-     * @return int
+     *
+     *  @return int
+     *   status.
      */
     private function runCommitMsg(ConsoleIO $io)
     {
@@ -360,7 +370,9 @@ class GitHooksCommands extends AbstractCommands
 
     /**
      * Hook: Executes the pre-push commands.
-     * @return int
+     *
+     *  @return int
+     *   status.
      */
     private function runPrePush(ConsoleIO $io)
     {
