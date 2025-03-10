@@ -484,7 +484,7 @@ class DrupalCommands extends AbstractCommands
         $qaCompatibilityResult = 0;
         if (is_string($result)) {
             foreach (['Check manually', 'Fix now'] as $flag) {
-                if (strpos($result, $flag) !== false) {
+                if (str_contains($result, $flag)) {
                     $qaCompatibilityResult = 1;
                 }
             }
@@ -497,11 +497,9 @@ class DrupalCommands extends AbstractCommands
         $drupalVersion = ToolCommands::getPackagePropertyFromComposer('drupal/core');
         if (Semver::satisfies($drupalVersion, '^8')) {
             $this->say('Congrats, looks like your project is Drupal 9 compatible.');
-        }
-        elseif (Semver::satisfies($drupalVersion, '^9')) {
+        } elseif (Semver::satisfies($drupalVersion, '^9')) {
             $this->say('Congrats, looks like your project is Drupal 10 compatible.');
-        }
-        elseif (Semver::satisfies($drupalVersion, '^10')) {
+        } elseif (Semver::satisfies($drupalVersion, '^10')) {
             $this->say('Congrats, looks like your project is Drupal 11 compatible.');
         }
         return $qaCompatibilityResult;
