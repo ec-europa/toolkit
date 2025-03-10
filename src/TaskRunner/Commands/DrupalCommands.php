@@ -433,7 +433,7 @@ class DrupalCommands extends AbstractCommands
     }
 
     /**
-     * Check project compatibility for Drupal 9/10 upgrade.
+     * Check project compatibility for Drupal 9/10/11 upgrade.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -457,7 +457,7 @@ class DrupalCommands extends AbstractCommands
         // Require 'drupal/upgrade_status' if does not exist on the project.
         if (!ToolCommands::getPackagePropertyFromComposer('drupal/upgrade_status')) {
             $collection->taskComposerRequire()
-                ->dependency('drupal/upgrade_status', '^3')
+                ->dependency('drupal/upgrade_status', '^3||^4')
                 ->dev()->run();
         }
         // Require 'drupal/core-dev' if does not exist on the project.
@@ -498,10 +498,12 @@ class DrupalCommands extends AbstractCommands
         if (Semver::satisfies($drupalVersion, '^8')) {
             $this->say('Congrats, looks like your project is Drupal 9 compatible.');
         }
-        if (Semver::satisfies($drupalVersion, '^9')) {
+        elseif (Semver::satisfies($drupalVersion, '^9')) {
             $this->say('Congrats, looks like your project is Drupal 10 compatible.');
         }
-
+        elseif (Semver::satisfies($drupalVersion, '^10')) {
+            $this->say('Congrats, looks like your project is Drupal 11 compatible.');
+        }
         return $qaCompatibilityResult;
     }
 
