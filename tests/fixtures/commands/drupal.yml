@@ -297,7 +297,7 @@
     - contains: |
         >  Preparing the project to run upgrade_status.
         [Simulator] Simulating Composer\RequireDependency(null)
-        ->dependency('drupal/upgrade_status', '^3')
+        ->dependency('drupal/upgrade_status', '^3||^4')
         ->dev()
         [Simulator] Simulating Exec('./vendor/bin/drush en upgrade_status -y')
         [Simulator] Running ./vendor/bin/drush en upgrade_status -y
@@ -317,7 +317,7 @@
     - contains: |
         >  Preparing the project to run upgrade_status.
         [Simulator] Simulating Composer\RequireDependency(null)
-        ->dependency('drupal/upgrade_status', '^3')
+        ->dependency('drupal/upgrade_status', '^3||^4')
         ->dev()
         [Simulator] Simulating Exec('./vendor/bin/drush en upgrade_status -y')
         [Simulator] Running ./vendor/bin/drush en upgrade_status -y
