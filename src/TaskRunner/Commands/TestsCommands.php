@@ -154,21 +154,21 @@ class TestsCommands extends AbstractCommands
      *
      * Check configurations at config/default.yml - 'toolkit.test.phpmd'.
      *
-     *  @param array<mixed> $options
-     *   options.
+     * @param array<mixed> $options
+     *   Options.
      *
-     *  @command toolkit:test-phpmd
+     * @command toolkit:test-phpmd
      *
-     *  @option config          The config file.
-     *  @option format          The format to use.
-     *  @option ignore_patterns An array with ignore patterns.
-     *  @option triggered_by    An array with extensions to check.
-     *  @option files           An array with paths to check.
-     *  @option junit           Whether to export results as junit.
+     * @option config          The config file.
+     * @option format          The format to use.
+     * @option ignore_patterns An array with ignore patterns.
+     * @option triggered_by    An array with extensions to check.
+     * @option files           An array with paths to check.
+     * @option junit           Whether to export results as junit.
      *
-     *  @aliases tk-phpmd
+     * @aliases tk-phpmd
      *
-     *  @return int
+     * @return int
      *   check configuration.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
