@@ -15,12 +15,12 @@ trait Tasks
     /**
      * Process the file.
      *
-     *  @param string $source
+     * @param string $source
      *   The source file to process.
-     *  @param string $destination
+     * @param string $destination
      *   The destination file.
      *
-     *  @return \Robo\Collection\CollectionBuilder
+     * @return \EcEuropa\Toolkit\Task\File\ReplaceBlock|\Robo\Collection\CollectionBuilder
      *   task.
      */
     protected function taskProcess(string $source, string $destination = '')
@@ -31,10 +31,10 @@ trait Tasks
     /**
      * Replace block in a file.
      *
-     *  @param string $filename
+     * @param string $filename
      *   The file to process.
      *
-     *  @return \Robo\Collection\CollectionBuilder
+     * @return \EcEuropa\Toolkit\Task\File\ReplaceBlock|\Robo\Collection\CollectionBuilder
      *   task.
      */
     protected function taskReplaceBlock(string $filename = '')
