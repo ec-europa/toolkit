@@ -66,8 +66,8 @@ class Process extends BaseTask implements BuilderAwareInterface
     /**
      * Get the content from the source.
      *
-     *  @return bool
-     *   true.
+     * @return bool
+     *   True as the content was load.
      */
     protected function loadContent()
     {
@@ -81,7 +81,7 @@ class Process extends BaseTask implements BuilderAwareInterface
     /**
      * Return the tokens found in the content.
      *
-     * @return array<mixed>
+     * @return array<string>|false
      *   An array with the tokens found in the content.
      */
     protected function extractTokens()

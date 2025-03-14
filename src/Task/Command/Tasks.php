@@ -15,11 +15,11 @@ trait Tasks
     /**
      * Execute a command.
      *
-     *  @param array<mixed> $tasks
+     * @param array<mixed> $tasks
      *   An array with tasks to execute.
      *
-     *  @return mixed
-     *   mixed.
+     * @return \Robo\Collection\CollectionBuilder
+     *   The task executed.
      */
     protected function taskExecute(array $tasks)
     {

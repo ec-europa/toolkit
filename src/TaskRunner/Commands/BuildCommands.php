@@ -33,7 +33,7 @@ class BuildCommands extends AbstractCommands
     /**
      * {@inheritdoc}
      *
-     *  @return string
+     * @return string
      *   Configuration file path.
      */
     public function getConfigurationFile()
@@ -352,16 +352,16 @@ class BuildCommands extends AbstractCommands
     /**
      * Install necessary packages to run toolkit:build-assets.
      *
-     *  @param mixed $themeDir
-     *   variable.
-     *  @param mixed $allowedTaskRunners
-     *   variable.
-     *  @param mixed $files
-     *   variable.
-     *  @param mixed $taskRunners
-     *   variable.
-     *  @param mixed $options
-     *   variable.
+     * @param mixed $themeDir
+     *   The theme directory.
+     * @param mixed $allowedTaskRunners
+     *   The tasks runners allowed.
+     * @param mixed $files
+     *   The files to be used.
+     * @param mixed $taskRunners
+     *   The task runners.
+     * @param mixed $options
+     *   The extra options for the command.
      *
      *  @return mixed
      *   status.
@@ -394,15 +394,15 @@ class BuildCommands extends AbstractCommands
     /**
      * Launch task runner(s) to compile assets.
      *
-     *  @param array<mixed> $taskRunners
-     *   variable.
-     *  @param array<mixed> $options
-     *   variable.
-     *  @param string $themeDir
-     *   variable.
+     * @param array<mixed> $taskRunners
+     *   The task runners.
+     * @param array<mixed> $options
+     *   The extra options for the command.
+     * @param string $themeDir
+     *   The theme directory.
      *
-     *  @return mixed
-     *   status.
+     * @return int|void
+     *   The build assets compile result.
      */
     private function buildAssetsCompile($taskRunners, $options, $themeDir,)
     {
@@ -439,11 +439,11 @@ class BuildCommands extends AbstractCommands
     /**
      * Returns the task for adding custom block to htaccess file.
      *
-     *  @param string $root
+     * @param string $root
      *   The drupal root where the .htaccess file is.
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   status.
+     * @return \Robo\Collection\CollectionBuilder
+     *   The htaccess file status.
      */
     private function getHtaccessTask(string $root)
     {
@@ -469,8 +469,8 @@ class BuildCommands extends AbstractCommands
     /**
      * Returns the block for the .htaccess file.
      *
-     *  @return string
-     *   status.
+     * @return string
+     *   The htaccess file block content.
      */
     private function getHtaccessBlock(): string
     {

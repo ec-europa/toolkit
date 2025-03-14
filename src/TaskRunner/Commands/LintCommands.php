@@ -21,8 +21,8 @@ class LintCommands extends AbstractCommands
     /**
      * {@inheritdoc}
      *
-     *  @return string
-     *   configuration file.
+     * @return string
+     *   The configuration file.
      */
     public function getConfigurationFile()
     {
@@ -32,19 +32,19 @@ class LintCommands extends AbstractCommands
     /**
      * Setup the ESLint configurations and dependencies.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:setup-eslint
+     * @command toolkit:setup-eslint
      *
-     *  @option config      The eslint config file.
-     *  @option ignores     The patterns to ignore.
-     *  @option drupal-root The drupal root.
-     *  @option packages    The npm packages to install.
-     *  @option force       If true, the config file will be deleted.
+     * @option config      The eslint config file.
+     * @option ignores     The patterns to ignore.
+     * @option drupal-root The drupal root.
+     * @option packages    The npm packages to install.
+     * @option force       If true, the config file will be deleted.
      *
-     *  @return int
-     *   setup eslint.
+     * @return int
+     *   The setup eslint configuration status.
      */
     public function toolkitSetupEslint(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
@@ -104,8 +104,8 @@ class LintCommands extends AbstractCommands
      * @param array<mixed> $options
      *   The options passed to the command.
      *
-     *  @return mixed
-     *   configuration.
+     *  @return void
+     *   The eslint configuration generated.
      */
     private function generateEslintConfigurations(string $config, array $options)
     {
@@ -149,20 +149,20 @@ class LintCommands extends AbstractCommands
     /**
      * Run lint YAML.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:lint-yaml
+     * @command toolkit:lint-yaml
      *
-     *  @option config     The eslint config file.
-     *  @option extensions The extensions to check.
-     *  @option options    Extra options for the command without -- (only options with no value).
-     *  @option junit      Whether to export results as junit.
+     * @option config     The eslint config file.
+     * @option extensions The extensions to check.
+     * @option options    Extra options for the command without -- (only options with no value).
+     * @option junit      Whether to export results as junit.
      *
-     *  @aliases tk-yaml, tly
+     * @aliases tk-yaml, tly
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   collection builder.
+     * @return \Robo\Collection\CollectionBuilder
+     *   The Toolkit lint yaml command status.
      *
      *  @usage --extensions='.yml' --options='fix no-eslintrc'
      */
@@ -180,22 +180,22 @@ class LintCommands extends AbstractCommands
     /**
      * Run lint JS.
      *
-     *  @param array<mixed> $options
+     * @param array<string, int> $options
      *   options.
      *
-     *  @command toolkit:lint-js
+     * @command toolkit:lint-js
      *
-     *  @option config     The eslint config file.
-     *  @option extensions The extensions to check.
-     *  @option options    Extra options for the command without -- (only options with no value).
-     *  @option junit      Whether to export results as junit.
+     * @option config     The eslint config file.
+     * @option extensions The extensions to check.
+     * @option options    Extra options for the command without -- (only options with no value).
+     * @option junit      Whether to export results as junit.
      *
-     *  @aliases tk-js, tljs
+     * @aliases tk-js, tljs
      *
-     *  @usage --extensions='.js' --options='fix no-eslintrc'
+     * @usage --extensions='.js' --options='fix no-eslintrc'
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   collection builder.
+     * @return \Robo\Collection\CollectionBuilder
+     *   The toolkit lint js status.
      */
     public function toolkitLintJs(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
@@ -211,15 +211,15 @@ class LintCommands extends AbstractCommands
     /**
      * Execute the eslint.
      *
-     *  @param string $config
+     * @param string $config
      *   The eslint config file.
-     *  @param array<mixed> $extensions
+     * @param array<mixed> $extensions
      *   The extensions to check.
-     *  @param string $options
+     * @param string $options
      *   Extra options for the command.
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   collection builder.
+     * @return \Robo\Collection\CollectionBuilder
+     *   The toolkit run eslint status.
      *
      * @see toolkitLintYaml()
      * @see toolkitLintJs()
@@ -254,20 +254,20 @@ class LintCommands extends AbstractCommands
     /**
      * Run lint PHP.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:lint-php
+     * @command toolkit:lint-php
      *
-     *  @option exclude    The eslint config file.
-     *  @option extensions The extensions to check.
-     *  @option options    Extra options for the command without -- (only options with no value).
-     *  @option junit      Whether to export results as junit.
+     * @option exclude    The eslint config file.
+     * @option extensions The extensions to check.
+     * @option options    Extra options for the command without -- (only options with no value).
+     * @option junit      Whether to export results as junit.
      *
-     *  @aliases tk-php, tlp
+     * @aliases tk-php, tlp
      *
-     *  @return int
-     *   status.
+     * @return int
+     *   The toolkit lint php command status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -324,19 +324,19 @@ class LintCommands extends AbstractCommands
     /**
      * Run lint CSS.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:lint-css
+     * @command toolkit:lint-css
      *
-     *  @option exclude The stylelint config file.
-     *  @option files   The files to check.
-     *  @option junit   Whether to export results as junit.
+     * @option exclude The stylelint config file.
+     * @option files   The files to check.
+     * @option junit   Whether to export results as junit.
      *
-     *  @aliases tk-css
+     * @aliases tk-css
      *
-     *  @return int
-     *   status.
+     * @return int
+     *   The toolkit lint css command status.
      */
     public function toolkitLintCss(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
@@ -395,22 +395,22 @@ class LintCommands extends AbstractCommands
     /**
      * Run lint CSpell.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:lint-cspell
+     * @command toolkit:lint-cspell
      *
-     *  @option config  The path to the config file.
-     *  @option files   The files to check.
-     *  @option options Extra options for the command.
-     *  @option junit   Whether to export results as junit.
+     * @option config  The path to the config file.
+     * @option files   The files to check.
+     * @option options Extra options for the command.
+     * @option junit   Whether to export results as junit.
      *
-     *  @aliases tk-cspell
+     * @aliases tk-cspell
      *
-     *  @usage --files='lib' --config='web/core/.cspell.json' --options='--gitignore'
+     * @usage --files='lib' --config='web/core/.cspell.json' --options='--gitignore'
      *
-     *  @return int
-     *   status.
+     * @return int
+     *   The toolkit lint-cspell command status.
      */
     public function toolkitLintCsPell(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
@@ -462,21 +462,21 @@ class LintCommands extends AbstractCommands
     /**
      * Run lint Behat.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:lint-behat
+     * @command toolkit:lint-behat
      *
-     *  @option config  The path to the config file.
-     *  @option files   The files to check.
-     *  @option junit   Whether to export results as junit.
+     * @option config  The path to the config file.
+     * @option files   The files to check.
+     * @option junit   Whether to export results as junit.
      *
-     *  @aliases tk-lbehat
+     * @aliases tk-lbehat
      *
-     *  @usage --files='tests/features' --config='gherkinlint.json'
+     * @usage --files='tests/features' --config='gherkinlint.json'
      *
-     *  @return int
-     *   status.
+     * @return int
+     *   The toolkit lint-behat command status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */

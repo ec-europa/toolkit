@@ -21,7 +21,7 @@ trait Tasks
      *   The destination file.
      *
      * @return \EcEuropa\Toolkit\Task\File\ReplaceBlock|\Robo\Collection\CollectionBuilder
-     *   task.
+     *   The file task processed.
      */
     protected function taskProcess(string $source, string $destination = '')
     {
@@ -35,7 +35,7 @@ trait Tasks
      *   The file to process.
      *
      * @return \EcEuropa\Toolkit\Task\File\ReplaceBlock|\Robo\Collection\CollectionBuilder
-     *   task.
+     *   The file replaced.
      */
     protected function taskReplaceBlock(string $filename = '')
     {

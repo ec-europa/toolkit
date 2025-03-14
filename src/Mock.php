@@ -55,13 +55,13 @@ final class Mock
     /**
      * Returns the content of the endpoint from the mock.
      *
-     *  @param string $endpoint
+     * @param string $endpoint
      *   The endpoint to return the content from.
      *
-     *  @return false|string
-     *   content or false.
+     * @return false|string
+     *   Content or false.
      *
-     *  @throws \Exception
+     * @throws \Exception
      *   If the mock or endpoint file is not found.
      */
     public static function getEndpointContent(string $endpoint)

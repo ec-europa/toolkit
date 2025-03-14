@@ -63,8 +63,8 @@ class DocumentationCommands extends AbstractCommands
     /**
      * {@inheritdoc}
      *
-     *  @return string
-     *   configuration file path.
+     * @return string
+     *   The configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -74,24 +74,24 @@ class DocumentationCommands extends AbstractCommands
     /**
      * Generate the documentation.
      *
-     *  @param array<mixed> $options
-     *   options.
+     * @param array<mixed> $options
+     *   The option choice to generate documentation.
      *
-     *  @command toolkit:generate-documentation
+     * @command toolkit:generate-documentation
      *
-     *  @option token    The GitHub token to use.
-     *  @option repo     The repository.
-     *  @option docs-dir The documentation directory.
-     *  @option tmp-dir  The temporary directory.
-     *  @option branch   The documentation branch.
-     *  @option push     If set, the documentation will be pushed.
+     * @option token    The GitHub token to use.
+     * @option repo     The repository.
+     * @option docs-dir The documentation directory.
+     * @option tmp-dir  The temporary directory.
+     * @option branch   The documentation branch.
+     * @option push     If set, the documentation will be pushed.
      *
-     *  @hidden
+     * @hidden
      *
-     *  @aliases tk-docs
+     * @aliases tk-docs
      *
-     *  @return int|\Robo\Collection\CollectionBuilder
-     *   tasks.
+     * @return int|\Robo\Collection\CollectionBuilder
+     *   The documentation task result.
      */
     public function toolkitGenerateDocumentation(ConsoleIO $io, array $options = [
         'token' => InputOption::VALUE_REQUIRED,
@@ -152,14 +152,14 @@ class DocumentationCommands extends AbstractCommands
     /**
      * Generate the list of commands in the commands.rst file.
      *
-     *  @command toolkit:generate-commands-list
+     * @command toolkit:generate-commands-list
      *
-     *  @return int|\Robo\Collection\CollectionBuilder
-     *   tasks.
+     * @return int|\Robo\Collection\CollectionBuilder
+     *   The command list task generated.
      *
-     *  @hidden
+     * @hidden
      *
-     *  @aliases tk-gcl
+     * @aliases tk-gcl
      */
     public function toolkitGenerateCommandsList(ConsoleIO $io)
     {
@@ -195,7 +195,7 @@ class DocumentationCommands extends AbstractCommands
      * Backup all *.rst files.
      *
      *  @return \Robo\Collection\CollectionBuilder
-     *   task.
+     *   The backup files task.
      */
     private function backupRelevantFiles()
     {
@@ -214,8 +214,8 @@ class DocumentationCommands extends AbstractCommands
     /**
      * Clone the documentation branch (hide output to avoid expose token).
      *
-     *  @return array<mixed>
-     *   tasks.
+     * @return array<mixed>
+     *   The documentation branch task cloned.
      */
     private function gitClone(): array
     {
@@ -249,8 +249,8 @@ class DocumentationCommands extends AbstractCommands
     /**
      * Git add commit and push to the documentation branch.
      *
-     *  @return \Robo\Collection\CollectionBuilder|\Robo\Task\Base\ExecStack
-     *   commit.
+     * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Base\ExecStack
+     *   The commit and push task status.
      */
     private function gitAddCommitPush()
     {
@@ -272,13 +272,13 @@ class DocumentationCommands extends AbstractCommands
     /**
      * Clean up given directory.
      *
-     *  @param string $directory
+     * @param string $directory
      *   The directory to clean.
-     *  @param bool $includeHidden
+     * @param bool $includeHidden
      *   If true, all hidden files will be removed.
      *
-     *  @return \Robo\Collection\CollectionBuilder|\Robo\Task\Filesystem\FilesystemStack
-     *   directory cleaned.
+     * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Filesystem\FilesystemStack
+     *   The directory cleaned.
      */
     private function cleanDir(string $directory, bool $includeHidden = true)
     {
@@ -293,8 +293,8 @@ class DocumentationCommands extends AbstractCommands
     /**
      * Clean up documentation to keep only .html files.
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   files.
+     * @return \Robo\Collection\CollectionBuilder
+     *   The documentation files updated.
      */
     private function cleanUpRstFiles()
     {
@@ -312,8 +312,8 @@ class DocumentationCommands extends AbstractCommands
     /**
      * Ensure that the phpDoc phar file exists.
      *
-     *  @return bool
-     *   status.
+     * @return bool
+     *   True if phar file exists.
      */
     private function downloadPhpDocPhar(): bool
     {

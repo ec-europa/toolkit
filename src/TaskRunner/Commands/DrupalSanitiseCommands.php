@@ -103,8 +103,8 @@ class DrupalSanitiseCommands extends AbstractCommands
      *
      * @command drupal:check-sanitisation-classes
      *
-     *  @return int
-     *   Return status
+     * @return int
+     *   The drupal check sanitize status.
      */
     public function drupalCheckSanitisationClasses(ConsoleIO $io)
     {
@@ -212,7 +212,7 @@ class DrupalSanitiseCommands extends AbstractCommands
     /**
      * Returns the Drush Sanitize Interface namespace depending on the current version.
      *
-     *  @return string
+     * @return string
      *   Drush Sanitize Interface namespace.
      */
     private function getDrushSanitizeInterface(): string
@@ -230,10 +230,10 @@ class DrupalSanitiseCommands extends AbstractCommands
      *
      * This assumes the Drupal namespace \Drupal\[module].
      *
-     *  @param string $directory
+     * @param string $directory
      *   The directory to search for classes.
      *
-     *  @return mixed
+     * @return void
      *   Register all classes in custom code directory folder.
      */
     private function registerCustomClasses(string $directory)
@@ -267,10 +267,10 @@ class DrupalSanitiseCommands extends AbstractCommands
      *
      * Only consider classes inside the src folder.
      *
-     *  @param string $directory
+     * @param string $directory
      *   The directory to scan, usually 'lib'.
      *
-     *  @return array<mixed>
+     * @return array<string>
      *   Class map array generated.
      */
     private function createClassMap(string $directory): array
@@ -294,8 +294,8 @@ class DrupalSanitiseCommands extends AbstractCommands
     /**
      * Returns a static field map for test purposes.
      *
-     *  @return array<mixed>
-     *   static field map.
+     * @return array<string, array<string, array<string, string>>>
+     *   The static field map.
      */
     private function testMap(): array
     {

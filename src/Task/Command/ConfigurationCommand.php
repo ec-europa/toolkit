@@ -66,7 +66,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Constructs a new Process task.
      *
-     * @param array<mixed> $tasks
+     * @param array<string> $tasks
      *   The Command Tasks.
      */
     public function __construct(array $tasks)
@@ -91,17 +91,17 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Execute single task.
      *
-     *  @param mixed $task
+     * @param mixed $task
      *   The task to execute.
      *
-     *  @return mixed
-     *   mixed.
+     * @return mixed
+     *   The task to be executed.
      *
-     *  @throws \Robo\Exception\TaskException
+     * @throws \Robo\Exception\TaskException
      *
-     *  @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *  @SuppressWarnings(PHPMD.NPathComplexity)
-     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function taskExecute($task)
     {
@@ -230,8 +230,8 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Return the current tasks.
      *
-     * @return array<mixed>
-     *   The tasks.
+     * @return array<string>
+     *   An array with tasks to execute.
      */
     public function getTasks()
     {
@@ -241,16 +241,16 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Validate and ensure the parameter are met.
      *
-     *  @param mixed $task
+     * @param mixed $task
      *   The task being executed.
      *
-     *  @return mixed
-     *   mixed.
+     * @return void
+     *   Validate and ensure the parameter are met.
      *
-     *  @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::availableTasks
-     *  @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::paramDefaultValue()
+     * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::availableTasks
+     * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::paramDefaultValue()
      *
-     *  @throws \Robo\Exception\TaskException
+     * @throws \Robo\Exception\TaskException
      */
     private function validateAndEnsureParameters(&$task)
     {
@@ -279,11 +279,11 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Prepares the Output of a taskExec.
      *
-     *  @param mixed $taskExec
+     * @param mixed $taskExec
      *   The task exec being executed.
      *
-     *  @return mixed
-     *   mixed.
+     * @return void
+     *   Print the output.
      */
     private function prepareOutput($taskExec)
     {
@@ -296,13 +296,13 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Report missing parameter, this stops the execution.
      *
-     *  @param string $param
+     * @param string $param
      *   The missing parameter.
-     *  @param string $task
+     * @param string $task
      *   The task being checked.
      *
-     *  @return string
-     *   string.
+     * @return void
+     *   The parameter exception message.
      *
      * @throws \Robo\Exception\TaskException
      */
@@ -315,11 +315,11 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Report missing parameter, this stops the execution.
      *
-     *  @param string $task
+     * @param string $task
      *   The task being checked.
      *
-     *  @return string
-     *   string.
+     * @return void
+     *   The invalid exception message.
      *
      * @throws \Robo\Exception\TaskException
      */

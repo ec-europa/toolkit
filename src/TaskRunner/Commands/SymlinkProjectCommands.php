@@ -28,8 +28,8 @@ class SymlinkProjectCommands extends AbstractCommands
     /**
      * {@inheritdoc}
      *
-     *  @return string
-     *   configuration file path.
+     * @return string
+     *   The configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -106,13 +106,13 @@ class SymlinkProjectCommands extends AbstractCommands
     /**
      * Scan given directory excluding specific folders.
      *
-     *  @param string $directory
+     * @param string $directory
      *   The directory to scan.
-     *  @param array<mixed> $ignore
+     * @param array<mixed> $ignore
      *   Extra folders to ignore.
      *
-     *  @return array<mixed>
-     *   directory.
+     * @return array<mixed>
+     *   The directory scanned.
      */
     private function scanDir(string $directory, array $ignore = []): array
     {

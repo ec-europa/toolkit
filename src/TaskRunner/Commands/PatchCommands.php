@@ -22,14 +22,14 @@ class PatchCommands extends AbstractCommands
     /**
      * {@inheritdoc}
      *
-     *  @var array<mixed> $options
+     * @var array<mixed> $options
      */
     protected $options;
 
     /**
      * {@inheritdoc}
      *
-     *  @return string
+     * @return string
      *   Toolkit root path.
      */
     public function getConfigurationFile()
@@ -40,19 +40,19 @@ class PatchCommands extends AbstractCommands
     /**
      * Lists remote patches from the root composer.json.
      *
-     *  @param array<mixed> $options
-     *   the option to be list.
+     * @param array<mixed> $options
+     *   The option to be list.
      *
-     *  @command toolkit:patch-list.
+     * @command toolkit:patch-list.
      *
-     *  @option package      List patches for given package.
-     *  @option composer     The composer.json relative path.
-     *  @option dependencies Look for patches defined by dependencies.
+     * @option package      List patches for given package.
+     * @option composer     The composer.json relative path.
+     * @option dependencies Look for patches defined by dependencies.
      *
-     *  @aliases tk-pl.
+     * @aliases tk-pl.
      *
-     *  @return int
-     *   remote patch list.
+     * @return int
+     *   Remote patch list.
      */
     public function toolkitPatchList(ConsoleIO $io, array $options = [
         'package' => InputOption::VALUE_REQUIRED,
@@ -69,20 +69,20 @@ class PatchCommands extends AbstractCommands
     /**
      * Download remote patches into a local directory.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   the options.
      *
-     *  @command toolkit:patch-download
+     * @command toolkit:patch-download
      *
-     *  @option dir          The destination directory to save the patches.
-     *  @option package      Download patches for given package.
-     *  @option composer     The composer.json file.
-     *  @option dependencies Look for patches defined by dependencies.
+     * @option dir          The destination directory to save the patches.
+     * @option package      Download patches for given package.
+     * @option composer     The composer.json file.
+     * @option dependencies Look for patches defined by dependencies.
      *
-     *  @aliases tk-pd
+     * @aliases tk-pd
      *
-     *  @return int|mixed
-     *   patch download status.
+     * @return int|mixed
+     *  Patch download status.
      *
      * phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
      */
@@ -131,8 +131,8 @@ class PatchCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      *
-     *  @return array<mixed>
-     *   patches to be downloaded.
+     * @return array<mixed>
+     *   Patches to be downloaded.
      */
     private function getPatches(): array
     {
@@ -187,8 +187,8 @@ class PatchCommands extends AbstractCommands
     /**
      * Returns the patches from dependencies.
      *
-     *  @return array<mixed>
-     *   patches from dependencies.
+     * @return array<mixed>
+     *   Patches from dependencies.
      */
     private function getDependenciesPatches(): array
     {

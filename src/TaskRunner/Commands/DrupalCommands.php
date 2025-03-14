@@ -37,8 +37,8 @@ class DrupalCommands extends AbstractCommands
     /**
      * {@inheritdoc}
      *
-     *  @return string
-     *   configuration file path.
+     * @return string
+     *   The configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -132,16 +132,16 @@ class DrupalCommands extends AbstractCommands
      *
      * This command will set the necessary permissions on the default folder.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   Command options.
      *
-     *  @command drupal:permissions-setup
+     * @command drupal:permissions-setup
      *
-     *  @option root         Drupal root.
-     *  @option sites-subdir Drupal site subdirectory.
+     * @option root         Drupal root.
+     * @option sites-subdir Drupal site subdirectory.
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   tasks.
+     * @return \Robo\Collection\CollectionBuilder
+     *   The permissions set status task.
      */
     public function drupalPermissionsSetup(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -166,17 +166,17 @@ class DrupalCommands extends AbstractCommands
     /**
      * Validate command drupal:site-install.
      *
-     *  @param \Consolidation\AnnotatedCommand\CommandData $commandData
+     * @param \Consolidation\AnnotatedCommand\CommandData $commandData
      *   The command data object.
      *
-     *  @hook validate drupal:site-install
+     * @hook validate drupal:site-install
      *
-     *  @throws \Exception
+     * @throws \Exception
      *   Thrown when the settings file or its containing folder does not exist
      *   or is not writeable.
      *
-     *  @return mixed
-     *   status.
+     * @return void
+     *   Drupal site install validate status.
      */
     public function drupalSiteInstallValidate(CommandData $commandData)
     {
@@ -224,8 +224,8 @@ class DrupalCommands extends AbstractCommands
      * @option root       Drupal root.
      * @option config-dir Directory where to store Drush 9 configuration file.
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   setup.
+     * @return \Robo\Collection\CollectionBuilder
+     *   The drupal drush setup.
      */
     public function drupalDrushSetup(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -349,13 +349,13 @@ class DrupalCommands extends AbstractCommands
     /**
      * Process pre and post install string-only commands by replacing given tokens.
      *
-     * @param array<mixed> $commands
+     * @param array<string> $commands
      *   List of commands.
-     * @param array<mixed> $tokens
+     * @param array<string> $tokens
      *   Replacement key-value tokens.
      *
-     *  @return mixed
-     *   status.
+     * @return void
+     *   The process pre and post install commands.
      */
     protected function processPrePostInstallCommands(array &$commands, array $tokens)
     {
@@ -372,7 +372,7 @@ class DrupalCommands extends AbstractCommands
      * Commands have to be listed under the "drupal.pre_install" property in
      * your local runner.yml.dist/runner.yml files, as shown below:
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *
      *   > drupal:
      *   >   ...
@@ -380,17 +380,17 @@ class DrupalCommands extends AbstractCommands
      *   >     - { task: "symlink", from: "../libraries", to: "${drupal.root}/libraries" }
      *   >     - { task: "process", source: "behat.yml.dist", destination: "behat.yml" }
      *
-     *   Pre-install commands are automatically executed before installing the site
-     *   when running "drupal:site-install".
+     *    Pre-install commands are automatically executed before installing the site
+     *    when running "drupal:site-install".
      *
-     *  @command drupal:site-pre-install
+     * @command drupal:site-pre-install
      *
-     *  @option root
+     * @option root
      *   The Drupal root. All occurrences of "!root" in the pre-install
      *   string-only commands will be substituted with this value.
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   tasks.
+     * @return \Robo\Collection\CollectionBuilder
+     *   The drupal site tasks to be execute.
      */
     public function drupalSitePreInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,

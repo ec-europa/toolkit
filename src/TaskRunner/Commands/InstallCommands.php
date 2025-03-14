@@ -19,8 +19,8 @@ class InstallCommands extends AbstractCommands
     /**
      * {@inheritdoc}
      *
-     *  @return string
-     *   configuration file path.
+     * @return string
+     *   The configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -83,7 +83,7 @@ class InstallCommands extends AbstractCommands
      * @aliases tk-iclone
      *
      * @return \Robo\Collection\CollectionBuilder
-     *   Collection builder.
+     *   The cloned website task.
      */
     public function toolkitInstallClone(ConsoleIO $io, array $options = [
         'dumpfile' => InputOption::VALUE_REQUIRED,

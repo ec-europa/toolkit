@@ -22,7 +22,7 @@ class DrupalReleaseHistory
      * @param string $core
      *   The package core version.
      *
-     * @return array<mixed>|int
+     * @return array<string>|int
      *   Array with package info from d.org, 1
      *   if no release history found.
      */

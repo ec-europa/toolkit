@@ -23,10 +23,10 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     /**
      * Path to YAML configuration file containing command defaults.
      *
-     *  Command classes should implement this method.
+     * Command classes should implement this method.
      *
-     *  @return string
-     *   configuration file path.
+     * @return string
+     *   Configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -111,13 +111,13 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     /**
      * {@inheritdoc}
      *
-     *  @param mixed $key
-     *   key.
-     *  @param mixed $default
-     *   default.
+     * @param string $key
+     *   The config item to look up.
+     * @param string|null|bool $default
+     *   Default configuration value for the key item if neither has value nor exists.
      *
-     *  @return mixed
-     *   configuration.
+     *  @return array<mixed>|null|string
+     *   The configuration value.
      */
     protected function getConfigValue($key, $default = null)
     {

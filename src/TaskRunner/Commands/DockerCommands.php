@@ -37,8 +37,8 @@ final class DockerCommands extends AbstractCommands
      *
      * @aliases dk-rc
      *
-     *  @return int
-     *   status.
+     * @return int
+     *   The docker Refresh configuration status.
      *
      * @throws \Exception
      */
@@ -92,8 +92,8 @@ final class DockerCommands extends AbstractCommands
     /**
      * Copy ./resources/docker/default.yml file to docker-compose.yml inside project root directory.
      *
-     *  @return void
-     *   status.
+     * @return void
+     *   The docker-compose file copied into project.
      */
     private function copyDockerComposeDefaultToProject(): void
     {
@@ -107,10 +107,10 @@ final class DockerCommands extends AbstractCommands
     /**
      * Get array of services with images and versions from docker-compose.yml.
      *
-     *  @param array<mixed> $dcContent
+     * @param array<mixed> $dcContent
      *   The docker-compose content.
      *
-     *  @return array<mixed>
+     * @return array<string>
      *   services.
      */
     private function getServicesImagesFromDockerCompose(array $dcContent): array
@@ -126,10 +126,10 @@ final class DockerCommands extends AbstractCommands
     /**
      * Returns the Project's php service version information from the endpoint.
      *
-     *  @param string $projectId
+     * @param string $projectId
      *   The project id.
      *
-     *  @return array<mixed>
+     * @return array<mixed>
      *   project service.
      */
     private function getProjectPhpFromWebsite(string $projectId): array
@@ -155,7 +155,7 @@ final class DockerCommands extends AbstractCommands
     /**
      * Returns the toolkit requirements from the endpoint.
      *
-     *  @return array<mixed>
+     * @return array<mixed>
      *   toolkit requirements.
      */
     private function getWebsiteRequirements(): array
@@ -171,11 +171,11 @@ final class DockerCommands extends AbstractCommands
     /**
      * Converts from semantic version to "major.minor" version.
      *
-     *  @param string $version
+     * @param string $version
      *   The version to convert.
      *
      *  @return string
-     *   version.
+     *   The major minor version.
      */
     private function extractMajorMinorVersion(string $version): string
     {
@@ -191,8 +191,8 @@ final class DockerCommands extends AbstractCommands
     /**
      * Backup current docker-compose.yml to docker-compose.yml.prev.
      *
-     *  @return void
-     *   status.
+     * @return void
+     *   The backup docker-compose file.
      */
     private function backupDockerComposeFile(): void
     {
@@ -205,13 +205,13 @@ final class DockerCommands extends AbstractCommands
     /**
      * Update docker-compose.yml.
      *
-     *  @param array<mixed> $dcContent
+     * @param array<mixed> $dcContent
      *   The docker-compose content.
-     *  @param array<mixed> $finalServicesImages
-     *   The services images.
+     * @param array<string> $finalServicesImages
+     *   The service images.
      *
-     *  @return void
-     *   status.
+     * @return void
+     *   The docker-compose file updated.
      */
     private function updateDockerComposeFile(array $dcContent, array $finalServicesImages): void
     {
@@ -235,11 +235,11 @@ final class DockerCommands extends AbstractCommands
     /**
      * Return the details for a service from ./resources/docker.
      *
-     *  @param string $serviceName
+     * @param string $serviceName
      *   The service name.
      *
-     *  @return array<mixed>
-     *   service detail.
+     * @return array<string>
+     *   The service detail.
      */
     private function getServiceDetailsFromResources(string $serviceName): array
     {
@@ -251,11 +251,11 @@ final class DockerCommands extends AbstractCommands
     /**
      * Get final services names with versions from requirements.
      *
-     *  @param array<mixed> $content
-     *   The content to check.
+     * @param array<mixed> $content
+     *   The requirement content to be checked.
      *
-     *  @return array<mixed>
-     *   services.
+     * @return array<mixed>
+     *   The services version.
      */
     private function getServicesVersionsFromRequirements(array $content): array
     {
@@ -270,11 +270,11 @@ final class DockerCommands extends AbstractCommands
     /**
      * Write all available warning messages.
      *
-     *  @param array<mixed> $messages
+     * @param array<mixed> $messages
      *   Messages to print.
      *
-     *  @return void
-     *   message.
+     * @return void
+     *   The warning messages.
      */
     private function writeWarningMessages(array $messages): void
     {
@@ -286,15 +286,15 @@ final class DockerCommands extends AbstractCommands
     /**
      * Get service image with version.
      *
-     *  @param string $service
+     * @param string $service
      *   The service.
-     *  @param string $image
+     * @param string $image
      *   The image.
-     *  @param string $version
+     * @param string $version
      *   The version.
      *
-     *  @return string
-     *   service image.
+     * @return string
+     *   The service image version.
      */
     private function getServiceImage(string $service, string $image, string $version): string
     {
@@ -308,15 +308,15 @@ final class DockerCommands extends AbstractCommands
     /**
      * Get final images to update docker-compose.yml.
      *
-     *  @param mixed $requirements
+     * @param mixed $requirements
      *   The requirements.
-     *  @param mixed $websiteRequirements
+     * @param mixed $websiteRequirements
      *   The website requirements.
-     *  @param mixed $optsFileContent
-     *   The .opts.yml content.
+     * @param mixed $optsFileContent
+     *   The .opts.yml file content.
      *
-     *  @return array<mixed>
-     *   final images.
+     * @return array<string>
+     *   The final images to update the docker-compose.yml file.
      */
     private function getFinalImages($requirements, $websiteRequirements, $optsFileContent): array
     {
@@ -343,13 +343,13 @@ final class DockerCommands extends AbstractCommands
     /**
      * Get warning messages for versions on .opts.yml that not respect the minimum requirements.
      *
-     *  @param mixed $websiteRequirements
+     * @param mixed $websiteRequirements
      *   The website requirements.
-     *  @param mixed $optsFileContent
+     * @param mixed $optsFileContent
      *   The .opts.yml content.
      *
-     *  @return array<mixed>
-     *   warning messages.
+     * @return array<string>
+     *   The warning messages.
      */
     private function getWarningMessages($optsFileContent, $websiteRequirements): array
     {
@@ -371,12 +371,12 @@ final class DockerCommands extends AbstractCommands
     /**
      * Remove services that do not exist in project info, requirements or .opts.yml.
      *
-     *  @param array<mixed> $dcServices
-     *   The services.
-     *  @param array<mixed> $finalServicesImages
-     *   The final services.
+     * @param array<string> $dcServices
+     *   The services to be removed.
+     * @param array<string> $finalServicesImages
+     *   The final services that should exist.
      *
-     *  @return array<mixed>
+     * @return array<string>
      *   services.
      */
     private function removeUnusedDcServices(array $dcServices, array $finalServicesImages): array

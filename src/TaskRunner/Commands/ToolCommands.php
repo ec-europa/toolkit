@@ -29,8 +29,8 @@ class ToolCommands extends AbstractCommands
     /**
      * {@inheritdoc}
      *
-     *  @return string
-     *   configuration file path.
+     * @return string
+     *   The configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -88,22 +88,22 @@ class ToolCommands extends AbstractCommands
     /**
      * Check project's .opts.yml file for forbidden commands.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:opts-review
+     * @command toolkit:opts-review
      *
-     *  @option endpoint The endpoint to use to connect to QA Website.
-     *  @option junit    Whether to export results as junit.
+     * @option endpoint The endpoint to use to connect to QA Website.
+     * @option junit    Whether to export results as junit.
      *
-     *  @aliases tk-opts-review
+     * @aliases tk-opts-review
      *
-     *  @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *  @SuppressWarnings(PHPMD.NPathComplexity)
-     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      *
-     *  @return int
-     *   status.
+     * @return int
+     *   The opts-review command status.
      */
     public function optsReview(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
@@ -243,22 +243,22 @@ class ToolCommands extends AbstractCommands
     /**
      * Check the Toolkit Requirements.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:requirements
+     * @command toolkit:requirements
      *
-     *  @option endpoint The endpoint to use to connect to QA Website.
-     *  @option junit    Whether to export results as junit.
+     * @option endpoint The endpoint to use to connect to QA Website.
+     * @option junit    Whether to export results as junit.
      *
-     *  @aliases tk-req
+     * @aliases tk-req
      *
-     *  @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *  @SuppressWarnings(PHPMD.NPathComplexity)
-     *  @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      *
-     *  @return int
-     *   status.
+     * @return int
+     *   The toolkit requirements command status.
      */
     public function toolkitRequirements(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
@@ -410,13 +410,13 @@ class ToolCommands extends AbstractCommands
     /**
      * Run script to fix permissions (experimental).
      *
-     *  @param array<int> $options
+     * @param array<int> $options
      *   options.
      *
-     *  @command toolkit:fix-permissions
+     * @command toolkit:fix-permissions
      *
-     *  @return int|\Robo\Collection\CollectionBuilder
-     *   task.
+     * @return int|\Robo\Collection\CollectionBuilder
+     *   The fix permissions command task status.
      */
     public function fixPermissions(array $options = [
         'drupal_path' => InputOption::VALUE_OPTIONAL,
@@ -461,8 +461,8 @@ class ToolCommands extends AbstractCommands
      *
      * @command toolkit:check-version
      *
-     *  @return int
-     *   status.
+     * @return int
+     *   The toolkit version command status.
      */
     public function toolkitVersion(ConsoleIO $io)
     {
@@ -602,10 +602,10 @@ class ToolCommands extends AbstractCommands
     /**
      * Check 'Vendor' packages being monitored.
      *
-     *  @command toolkit:vendor-list
+     * @command toolkit:vendor-list
      *
-     *  @return int
-     *   status.
+     * @return int
+     *   The toolkit vendor list command status.
      */
     public function toolkitVendorList(ConsoleIO $io)
     {
@@ -649,27 +649,27 @@ class ToolCommands extends AbstractCommands
     /**
      * Execute all or specific tools for static testing.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
      *   If no option is given, all the tests will be executed.
      *
-     *  @command toolkit:code-review
+     * @command toolkit:code-review
      *
-     *  @option phpcs       Execute the command toolkit:test-phpcs.
-     *  @option opts-review Execute the command toolkit:opts-review.
-     *  @option lint-php    Execute the command toolkit:lint-php.
-     *  @option lint-yaml   Execute the command toolkit:lint-yaml.
-     *  @option lint-js     Execute the command toolkit:lint-js.
-     *  @option phpstan     Execute the command toolkit:test-phpstan.
-     *  @option phpmd       Execute the command toolkit:test-phpmd.
-     *  @option phpunit     Execute the command toolkit:test-phpunit.
+     * @option phpcs       Execute the command toolkit:test-phpcs.
+     * @option opts-review Execute the command toolkit:opts-review.
+     * @option lint-php    Execute the command toolkit:lint-php.
+     * @option lint-yaml   Execute the command toolkit:lint-yaml.
+     * @option lint-js     Execute the command toolkit:lint-js.
+     * @option phpstan     Execute the command toolkit:test-phpstan.
+     * @option phpmd       Execute the command toolkit:test-phpmd.
+     * @option phpunit     Execute the command toolkit:test-phpunit.
      *
-     *  @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *  @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      *
-     *  @return \Robo\ResultData
-     *   result data.
+     * @return \Robo\ResultData
+     *   The toolkit code-review command status.
      */
     public function toolkitCodeReview(ConsoleIO $io, array $options = [
         'phpcs' => InputOption::VALUE_NONE,
@@ -748,19 +748,19 @@ class ToolCommands extends AbstractCommands
     /**
      * Install packages present in the .opts.yml file under extra_pkgs section.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:install-dependencies
+     * @command toolkit:install-dependencies
      *
-     *  @option packages Specify a list of packages to install instead of read from .opts.yml.
-     *  @option print    Shows output from apt commands.
+     * @option packages Specify a list of packages to install instead of read from .opts.yml.
+     * @option print    Shows output from apt commands.
      *
-     *  @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *  @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      *
-     *  @return int
-     *   status.
+     * @return int
+     *   The toolkit install-dependencies command status.
      */
     public function toolkitInstallDependencies(ConsoleIO $io, array $options = [
         'packages' => InputOption::VALUE_REQUIRED,
@@ -865,17 +865,17 @@ class ToolCommands extends AbstractCommands
     /**
      * Display Toolkit notifications.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:notifications
+     * @command toolkit:notifications
      *
-     *  @option endpoint The endpoint to use to connect to QA Website.
+     * @option endpoint The endpoint to use to connect to QA Website.
      *
-     *  @aliases tk-notifications
+     * @aliases tk-notifications
      *
-     *  @return int
-     *   status.
+     * @return int
+     *   The toolkit notifications command status.
      */
     public function toolkitNotifications(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_OPTIONAL,

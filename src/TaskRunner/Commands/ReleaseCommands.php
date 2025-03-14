@@ -35,15 +35,15 @@ class ReleaseCommands extends AbstractCommands
     /**
      * Write the specified version string into needed places.
      *
-     *  @param string $version
+     * @param string $version
      *   The version to set.
      *
-     *  @command toolkit:version-write
+     * @command toolkit:version-write
      *
-     *  @return int|\Robo\Collection\CollectionBuilder
-     *   task.
+     * @return int|\Robo\Collection\CollectionBuilder
+     *   The toolkit version write task status.
      *
-     *  @hidden
+     * @hidden
      */
     public function toolkitVersionWrite(ConsoleIO $io, string $version)
     {
@@ -89,12 +89,12 @@ class ReleaseCommands extends AbstractCommands
     /**
      * Write the latest tag from toolkit-mock to the Mock class.
      *
-     *  @command toolkit:update-mock-default-tag
+     * @command toolkit:update-mock-default-tag
      *
-     *  @return int|\Robo\Collection\CollectionBuilder
-     *   task.
+     * @return int|\Robo\Collection\CollectionBuilder
+     *   The toolkit Update default mock tag task status.
      *
-     *  @hidden
+     * @hidden
      */
     public function toolkitUpdateDefaultMockTag(ConsoleIO $io)
     {
@@ -200,15 +200,15 @@ class ReleaseCommands extends AbstractCommands
     /**
      * Prepare a release for Toolkit.
      *
-     *  @param string $version
+     * @param string $version
      *   The version to set.
      *
-     *  @command toolkit:prepare-release
+     * @command toolkit:prepare-release
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   task.
+     * @return \Robo\Collection\CollectionBuilder
+     *   The toolkit prepare release task status.
      *
-     *  @hidden
+     * @hidden
      */
     public function toolkitPrepareRelease(string $version)
     {

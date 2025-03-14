@@ -26,8 +26,8 @@ class TestsCommands extends AbstractCommands
     /**
      * {@inheritdoc}
      *
-     *  @return string
-     *   configuration file path.
+     * @return string
+     *   The configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -44,8 +44,8 @@ class TestsCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      *
-     *  @return mixed
-     *   check configuration.
+     * @return void
+     *   The toolkit setup check configuration status.
      */
     public function toolkitSetupPhpcs()
     {
@@ -132,8 +132,8 @@ class TestsCommands extends AbstractCommands
      *
      * @aliases tk-phpcs
      *
-     *  @return int|\Robo\ResultData
-     *   run php code sniffer.
+     * @return int|\Robo\ResultData
+     *   The toolkit run phpcs task status.
      *
      * @see toolkitRunPhpcs()
      */
@@ -169,7 +169,7 @@ class TestsCommands extends AbstractCommands
      * @aliases tk-phpmd
      *
      * @return int
-     *   check configuration.
+     *   The toolkit phpmd task status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -238,8 +238,8 @@ class TestsCommands extends AbstractCommands
      *
      * @throws \Robo\Exception\TaskException
      *
-     *  @return int|\Robo\ResultData
-     *   run php code sniffer.
+     * @return int|\Robo\ResultData
+     *   The toolkit run grumphp task status.
      *
      * @deprecated
      */
@@ -284,8 +284,8 @@ class TestsCommands extends AbstractCommands
      *
      * Check configurations at config/default.yml - 'toolkit.test.phpcs'.
      *
-     *  @return \Robo\Result
-     *   run php code sniffer.
+     * @return \Robo\Result
+     *   The toolkit run phpcs code sniffer.
      */
     protected function toolkitRunPhpcs()
     {
@@ -311,8 +311,8 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:check-phpcs-requirements
      *
-     *  @return mixed
-     *   status if exists config file.
+     * @return mixed
+     *   The status if exists config file.
      */
     public function toolkitCheckPhpcsRequirements()
     {
@@ -350,24 +350,24 @@ class TestsCommands extends AbstractCommands
      *
      * Check configurations at config/default.yml - 'toolkit.test.phpstan'.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:test-phpstan
+     * @command toolkit:test-phpstan
      *
-     *  @option config       The path to the config file.
-     *  @option level        The level of rule options.
-     *  @option files        The files to check.
-     *  @option memory-limit The PHP memory limit.
-     *  @option options      Extra options for the command without -- (only options with no value).
-     *  @option junit        Whether to export results as junit.
+     * @option config       The path to the config file.
+     * @option level        The level of rule options.
+     * @option files        The files to check.
+     * @option memory-limit The PHP memory limit.
+     * @option options      Extra options for the command without -- (only options with no value).
+     * @option junit        Whether to export results as junit.
      *
-     *  @aliases tk-phpstan
+     * @aliases tk-phpstan
      *
-     *  @usage --memory-limit='4G' --options='debug'
+     * @usage --memory-limit='4G' --options='debug'
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   run phpstan.
+     * @return \Robo\Collection\CollectionBuilder
+     *   The toolkit test phpstan task status.
      */
     public function toolkitTestPhpstan(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
@@ -438,27 +438,27 @@ class TestsCommands extends AbstractCommands
      * Check configurations at config/default.yml - 'toolkit.test.behat'.
      * Accept commands to run before and/or after the Behat tests.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:test-behat
+     * @command toolkit:test-behat
      *
-     *  @option from     The dist config file (behat.yml.dist).
-     *  @option to       The destination config file (behat.yml).
-     *  @option profile  The profile to execute.
-     *  @option suite    The suite to execute, default runs all suites of profile.
-     *  @option options  Extra options for the command without -- (only options with no value).
-     *  @option junit    Whether to export results as junit.
+     * @option from     The dist config file (behat.yml.dist).
+     * @option to       The destination config file (behat.yml).
+     * @option profile  The profile to execute.
+     * @option suite    The suite to execute, default runs all suites of profile.
+     * @option options  Extra options for the command without -- (only options with no value).
+     * @option junit    Whether to export results as junit.
      *
-     *  @aliases tk-behat, tb
+     * @aliases tk-behat, tb
      *
-     *  @usage --profile='prod' --options='strict stop-on-failure'
+     * @usage --profile='prod' --options='strict stop-on-failure'
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *
-     *  @return int|\Robo\ResultData
-     *   check configuration and accept command.
+     * @return int|\Robo\ResultData
+     *   The check toolkit test behat status.
      */
     public function toolkitTestBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
@@ -531,33 +531,33 @@ class TestsCommands extends AbstractCommands
      * Check configurations at config/default.yml - 'toolkit.test.phpunit'.
      * Accept commands to run before and/or after the PHPUnit tests.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   options.
      *
-     *  @command toolkit:test-phpunit
+     * @command toolkit:test-phpunit
      *
-     *  @option execution The execution type (default or parallel).
-     *  @option from      The dist config file (phpunit.xml.dist).
-     *  @option to        The destination config file (phpunit.xml).
-     *  @option testsuite Filter which testsuite to run.
-     *  @option group     Only runs tests from the specified group(s).
-     *  @option covers    Only runs tests annotated with "@covers <name>".
-     *  @option uses      Only runs tests annotated with "@uses <name>".
-     *  @option filter    Filter which tests to run.
-     *  @option options   Extra options for the command without -- (only options with no value).
-     *  @option printer   If set, use printer defined in config toolkit.test.phpunit.printer.
-     *  @option junit     Whether to export results as junit.
+     * @option execution The execution type (default or parallel).
+     * @option from      The dist config file (phpunit.xml.dist).
+     * @option to        The destination config file (phpunit.xml).
+     * @option testsuite Filter which testsuite to run.
+     * @option group     Only runs tests from the specified group(s).
+     * @option covers    Only runs tests annotated with "@covers <name>".
+     * @option uses      Only runs tests annotated with "@uses <name>".
+     * @option filter    Filter which tests to run.
+     * @option options   Extra options for the command without -- (only options with no value).
+     * @option printer   If set, use printer defined in config toolkit.test.phpunit.printer.
+     * @option junit     Whether to export results as junit.
      *
-     *  @aliases tk-phpunit tp
+     * @aliases tk-phpunit tp
      *
-     *  @usage --options='stop-on-error process-isolation do-not-cache-result'
-     *  @usage --group=Example
+     * @usage --options='stop-on-error process-isolation do-not-cache-result'
+     * @usage --group=Example
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   check and accept command.
+     * @return \Robo\Collection\CollectionBuilder
+     *   The toolkit phpunit task status.
      */
     public function toolkitTestPhpunit(array $options = [
         'execution' => InputOption::VALUE_REQUIRED,
@@ -621,10 +621,10 @@ class TestsCommands extends AbstractCommands
     /**
      * Returns the task to execute PHPUnit in parallel.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   The options passed to the command test-phpunit.
      *
-     *  @return \Robo\Task\Base\ParallelExec
+     * @return \Robo\Task\Base\ParallelExec
      *   task to execute PHPUnit in parallel.
      */
     private function toolkitTestPhpunitParallelTask(array $options)
@@ -667,8 +667,8 @@ class TestsCommands extends AbstractCommands
      *
      * @aliases tk-phpcbf
      *
-     *  @return mixed
-     *   run php code autofixing.
+     * @return mixed
+     *   The run phpcbf code autofixing.
      */
     public function toolkitRunPhpcbf()
     {
