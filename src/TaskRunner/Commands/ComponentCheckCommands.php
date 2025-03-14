@@ -1161,8 +1161,8 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Returns a list of packages to test.
      *
-     * @return array<int, array<string, array<string, array<string, string>>|string>>
-     *   An array with packages to test.
+     * @return array<string[]>
+     *   The list of packages to test array.
      */
     private function testPackages()
     {

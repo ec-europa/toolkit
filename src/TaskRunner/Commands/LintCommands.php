@@ -164,7 +164,7 @@ class LintCommands extends AbstractCommands
      * @return \Robo\Collection\CollectionBuilder
      *   The Toolkit lint yaml command status.
      *
-     *  @usage --extensions='.yml' --options='fix no-eslintrc'
+     * @usage --extensions='.yml' --options='fix no-eslintrc'
      */
     public function toolkitLintYaml(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
@@ -180,7 +180,7 @@ class LintCommands extends AbstractCommands
     /**
      * Run lint JS.
      *
-     * @param array<string, int> $options
+     * @param array<string,int> $options
      *   options.
      *
      * @command toolkit:lint-js

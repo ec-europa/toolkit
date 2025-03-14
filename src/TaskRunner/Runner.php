@@ -310,11 +310,11 @@ class Runner
     /**
      * Register commands in the runner.yml under 'commands:'.
      *
+     * @return void
+     *   Register commands in the runner.yml.
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
-     * @return mixed
-     *  Register commands in the runner.yml.
      */
     private function registerConfigurationCommands()
     {
