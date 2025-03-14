@@ -109,14 +109,14 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Return the configuration value.
      *
      * @param string $key
      *   The config item to look up.
-     * @param string|null|bool $default
+     * @param mixed|null $default
      *   Default configuration value for the key item if neither has value nor exists.
      *
-     *  @return array<mixed>|null|string
+     * @return mixed|null
      *   The configuration value.
      */
     protected function getConfigValue($key, $default = null)
