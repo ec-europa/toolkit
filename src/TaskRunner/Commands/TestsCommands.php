@@ -586,7 +586,7 @@ class TestsCommands extends AbstractCommands
         $result = $this->taskExec($phpunitBin)->option('list-suites')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
-        preg_match_all('/ - (.+)/', $result, $matches);
+        preg_match_all('/ - ([\w\s]+)/', $result, $matches);
         $parallel = $this->taskParallelExec()->printOutput();
         if (!empty($matches[1])) {
             $opts = ' ';
@@ -602,7 +602,7 @@ class TestsCommands extends AbstractCommands
             if ($options['printer'] === true) {
                 $opts .= " --printer=" . $this->getConfig()->get('toolkit.test.phpunit.printer');
             }
-            foreach ($matches[1] as $suite) {
+            foreach (array_map('trim', $matches[1]) as $suite) {
                 if (strlen($suite) > 2) {
                     $parallel->process("$phpunitBin --testsuite='$suite'$opts");
                 }
