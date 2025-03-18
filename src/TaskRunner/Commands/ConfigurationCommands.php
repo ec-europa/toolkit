@@ -17,7 +17,7 @@ class ConfigurationCommands extends AbstractCommands
     /**
      * Execute a configuration command.
      *
-     * @return mixed
+     * @return \EcEuropa\Toolkit\Task\Command\ConfigurationCommand|\Robo\Collection\CollectionBuilder
      *   The executed task.
      */
     public function execute()

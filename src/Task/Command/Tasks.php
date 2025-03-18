@@ -15,7 +15,7 @@ trait Tasks
     /**
      * Execute a command.
      *
-     * @param array<mixed> $tasks
+     * @param string[] $tasks
      *   An array with tasks to execute.
      *
      * @return \Robo\Collection\CollectionBuilder
