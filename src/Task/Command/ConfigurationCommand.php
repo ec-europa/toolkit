@@ -21,7 +21,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * An array with tasks to execute.
      *
-     * @var array
+     * @var string[][]
      */
     protected array $tasks;
 
@@ -32,7 +32,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * the required to ensure they are present, and the defaults
      * to ensure they have the default value.
      *
-     * @var array
+     * @var string[][]
      */
     protected array $availableTasks = [
         'mkdir' => ['required' => 'dir', 'defaults' => 'mode'],
@@ -66,7 +66,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Constructs a new Process task.
      *
-     * @param array $tasks
+     * @param string[][] $tasks
      *   The Command Tasks.
      */
     public function __construct(array $tasks)
@@ -91,8 +91,11 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Execute single task.
      *
-     * @param $task
+     * @param string[]|string[][] $task
      *   The task to execute.
+     *
+     * @return mixed
+     *   The task to be executed.
      *
      * @throws \Robo\Exception\TaskException
      *
@@ -227,8 +230,8 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Return the current tasks.
      *
-     * @return array
-     *   The tasks.
+     * @return string[]|string[][]
+     *   An array with tasks to execute.
      */
     public function getTasks()
     {
@@ -238,8 +241,11 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Validate and ensure the parameter are met.
      *
-     * @param $task
+     * @param string|string[] $task
      *   The task being executed.
+     *
+     * @return void
+     *   Validate and ensure the parameter are met.
      *
      * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::availableTasks
      * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::paramDefaultValue()
@@ -273,8 +279,11 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Prepares the Output of a taskExec.
      *
-     * @param $taskExec
+     * @param \Robo\Task\Base\Exec $taskExec
      *   The task exec being executed.
+     *
+     * @return void
+     *   Print the output.
      */
     private function prepareOutput($taskExec)
     {
@@ -292,6 +301,9 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * @param string $task
      *   The task being checked.
      *
+     * @return void
+     *   The parameter exception message.
+     *
      * @throws \Robo\Exception\TaskException
      */
     private function throwParamException(string $param, string $task)
@@ -305,6 +317,9 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      *
      * @param string $task
      *   The task being checked.
+     *
+     * @return void
+     *   The invalid exception message.
      *
      * @throws \Robo\Exception\TaskException
      */
@@ -320,7 +335,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * @param string $key
      *   The parameter name.
      *
-     * @return string|bool|mixed
+     * @return mixed
      *   The default value for given name.
      */
     private function paramDefaultValue(string $key)

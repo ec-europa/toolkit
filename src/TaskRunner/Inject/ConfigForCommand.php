@@ -49,6 +49,9 @@ class ConfigForCommand implements EventSubscriberInterface
      *
      * @param \Symfony\Component\Console\Application $application
      *   The application.
+     *
+     * @return void
+     *   Set the application.
      */
     public function setApplication(Application $application)
     {
@@ -57,6 +60,9 @@ class ConfigForCommand implements EventSubscriberInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return array<string, string|array{0: string, 1: int}|list<array{0: string, 1?: int}>>
+     *   The subscribed events.
      */
     public static function getSubscribedEvents()
     {
@@ -72,6 +78,9 @@ class ConfigForCommand implements EventSubscriberInterface
      *
      * @param \Symfony\Component\Console\Event\ConsoleCommandEvent $event
      *   The current event.
+     *
+     * @return void
+     *   Configuration injected.
      */
     public function injectConfiguration(ConsoleCommandEvent $event)
     {
@@ -90,6 +99,9 @@ class ConfigForCommand implements EventSubscriberInterface
      *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *   The current input.
+     *
+     * @return void
+     *   Configuration injected.
      */
     protected function injectConfigurationForGlobalOptions($input)
     {
@@ -112,6 +124,9 @@ class ConfigForCommand implements EventSubscriberInterface
      *   The command to configure.
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *   The current input.
+     *
+     * @return void
+     *   Configuration injected.
      */
     protected function injectConfigurationForCommand($command, $input)
     {
@@ -130,10 +145,13 @@ class ConfigForCommand implements EventSubscriberInterface
      *
      * @param \Consolidation\Config\Util\ConfigGroup $configGroup
      *   The current config group.
-     * @param array $options
+     * @param array<mixed> $options
      *   The options.
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *   The input.
+     *
+     * @return void
+     *   Configuration options injected.
      */
     protected function injectConfigGroupIntoOptions($configGroup, $options, $input)
     {
@@ -191,6 +209,9 @@ class ConfigForCommand implements EventSubscriberInterface
      *   The command.
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *   The input.
+     *
+     * @return void
+     *   The arguments for help command.
      */
     protected function fixInputForSymfony2($command, $input)
     {
@@ -211,7 +232,7 @@ class ConfigForCommand implements EventSubscriberInterface
      * @param mixed $value
      *   The value to explode.
      *
-     * @return array
+     * @return array<string>
      *   The exploded values.
      */
     private function explodeArray(mixed $value)
@@ -222,7 +243,7 @@ class ConfigForCommand implements EventSubscriberInterface
     /**
      * Check whether the option is marked as VALUE_IS_ARRAY.
      *
-     * @param $inputOption
+     * @param mixed $inputOption
      *   The option being checked.
      *
      * @return bool

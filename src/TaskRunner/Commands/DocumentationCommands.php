@@ -71,6 +71,9 @@ class DocumentationCommands extends AbstractCommands
     /**
      * Generate the documentation.
      *
+     * @param array<mixed> $options
+     *   The option choice to generate documentation.
+     *
      * @command toolkit:generate-documentation
      *
      * @option token    The GitHub token to use.
@@ -83,6 +86,9 @@ class DocumentationCommands extends AbstractCommands
      * @hidden
      *
      * @aliases tk-docs
+     *
+     * @return int|\Robo\Collection\CollectionBuilder
+     *   The documentation task result.
      */
     public function toolkitGenerateDocumentation(ConsoleIO $io, array $options = [
         'token' => InputOption::VALUE_REQUIRED,
@@ -145,6 +151,9 @@ class DocumentationCommands extends AbstractCommands
      *
      * @command toolkit:generate-commands-list
      *
+     * @return int|\Robo\Collection\CollectionBuilder
+     *   The command list task generated.
+     *
      * @hidden
      *
      * @aliases tk-gcl
@@ -181,6 +190,9 @@ class DocumentationCommands extends AbstractCommands
 
     /**
      * Backup all *.rst files.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The backup files task.
      */
     private function backupRelevantFiles()
     {
@@ -198,6 +210,9 @@ class DocumentationCommands extends AbstractCommands
 
     /**
      * Clone the documentation branch (hide output to avoid expose token).
+     *
+     * @return array<mixed>
+     *   The documentation branch task cloned.
      */
     private function gitClone(): array
     {
@@ -230,6 +245,9 @@ class DocumentationCommands extends AbstractCommands
 
     /**
      * Git add commit and push to the documentation branch.
+     *
+     * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Base\ExecStack
+     *   The commit and push task status.
      */
     private function gitAddCommitPush()
     {
@@ -255,6 +273,9 @@ class DocumentationCommands extends AbstractCommands
      *   The directory to clean.
      * @param bool $includeHidden
      *   If true, all hidden files will be removed.
+     *
+     * @return \Robo\Collection\CollectionBuilder|\Robo\Task\Filesystem\FilesystemStack
+     *   The directory cleaned.
      */
     private function cleanDir(string $directory, bool $includeHidden = true)
     {
@@ -268,6 +289,9 @@ class DocumentationCommands extends AbstractCommands
 
     /**
      * Clean up documentation to keep only .html files.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The documentation files updated.
      */
     private function cleanUpRstFiles()
     {
@@ -284,6 +308,9 @@ class DocumentationCommands extends AbstractCommands
 
     /**
      * Ensure that the phpDoc phar file exists.
+     *
+     * @return bool
+     *   True if phar file exists.
      */
     private function downloadPhpDocPhar(): bool
     {

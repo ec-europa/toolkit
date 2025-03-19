@@ -21,6 +21,7 @@ use Symfony\Component\Yaml\Yaml;
  * Generic tools.
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class ToolCommands extends AbstractCommands
 {
@@ -36,7 +37,7 @@ class ToolCommands extends AbstractCommands
     /**
      * Check the commit message for SKIPPING tokens.
      *
-     * @return array
+     * @return array<mixed>
      *   An array with tokens present in the commit message.
      */
     public static function getCommitTokens()
@@ -84,12 +85,18 @@ class ToolCommands extends AbstractCommands
     /**
      * Check project's .opts.yml file for forbidden commands.
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:opts-review
      *
      * @option endpoint The endpoint to use to connect to QA Website.
      * @option junit    Whether to export results as junit.
      *
      * @aliases tk-opts-review
+     *
+     * @return int
+     *   The opts-review command status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -233,12 +240,18 @@ class ToolCommands extends AbstractCommands
     /**
      * Check the Toolkit Requirements.
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:requirements
      *
      * @option endpoint The endpoint to use to connect to QA Website.
      * @option junit    Whether to export results as junit.
      *
      * @aliases tk-req
+     *
+     * @return int
+     *   The toolkit requirements command status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -394,7 +407,13 @@ class ToolCommands extends AbstractCommands
     /**
      * Run script to fix permissions (experimental).
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:fix-permissions
+     *
+     * @return int|\Robo\Collection\CollectionBuilder
+     *   The fix permissions command task status.
      */
     public function fixPermissions(array $options = [
         'drupal_path' => InputOption::VALUE_OPTIONAL,
@@ -438,6 +457,9 @@ class ToolCommands extends AbstractCommands
      * Check the Toolkit version.
      *
      * @command toolkit:check-version
+     *
+     * @return int
+     *   The toolkit version command status.
      */
     public function toolkitVersion(ConsoleIO $io)
     {
@@ -578,6 +600,9 @@ class ToolCommands extends AbstractCommands
      * Check 'Vendor' packages being monitored.
      *
      * @command toolkit:vendor-list
+     *
+     * @return int
+     *   The toolkit vendor list command status.
      */
     public function toolkitVendorList(ConsoleIO $io)
     {
@@ -623,6 +648,9 @@ class ToolCommands extends AbstractCommands
      *
      * If no option is given, all the tests will be executed.
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:code-review
      *
      * @option phpcs       Execute the command toolkit:test-phpcs.
@@ -633,6 +661,9 @@ class ToolCommands extends AbstractCommands
      * @option phpstan     Execute the command toolkit:test-phpstan.
      * @option phpmd       Execute the command toolkit:test-phpmd.
      * @option phpunit     Execute the command toolkit:test-phpunit.
+     *
+     * @return \Robo\ResultData
+     *   The toolkit code-review command status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -714,10 +745,16 @@ class ToolCommands extends AbstractCommands
     /**
      * Install packages present in the .opts.yml file under extra_pkgs section.
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:install-dependencies
      *
      * @option packages Specify a list of packages to install instead of read from .opts.yml.
      * @option print    Shows output from apt commands.
+     *
+     * @return int
+     *   The toolkit install-dependencies command status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -807,7 +844,7 @@ class ToolCommands extends AbstractCommands
     /**
      * Returns the .opts.yml file content.
      *
-     * @return array|false
+     * @return array<mixed>|false
      *   An array with the content or false if the file do not exist.
      *
      * @throws \Symfony\Component\Yaml\Exception\ParseException
@@ -825,11 +862,17 @@ class ToolCommands extends AbstractCommands
     /**
      * Display Toolkit notifications.
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:notifications
      *
      * @option endpoint The endpoint to use to connect to QA Website.
      *
      * @aliases tk-notifications
+     *
+     * @return int
+     *   The toolkit notifications command status.
      */
     public function toolkitNotifications(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_OPTIONAL,

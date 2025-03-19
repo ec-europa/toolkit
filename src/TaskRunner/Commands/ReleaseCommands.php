@@ -40,6 +40,9 @@ class ReleaseCommands extends AbstractCommands
      *
      * @command toolkit:version-write
      *
+     * @return int|\Robo\Collection\CollectionBuilder
+     *   The toolkit version write task status.
+     *
      * @hidden
      */
     public function toolkitVersionWrite(ConsoleIO $io, string $version)
@@ -88,6 +91,9 @@ class ReleaseCommands extends AbstractCommands
      *
      * @command toolkit:update-mock-default-tag
      *
+     * @return int|\Robo\Collection\CollectionBuilder
+     *   The toolkit Update default mock tag task status.
+     *
      * @hidden
      */
     public function toolkitUpdateDefaultMockTag(ConsoleIO $io)
@@ -131,7 +137,7 @@ class ReleaseCommands extends AbstractCommands
      *   The version to set.
      * @param string $from
      *   The version to set.
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command toolkit:changelog-write
@@ -139,6 +145,9 @@ class ReleaseCommands extends AbstractCommands
      * @option show-name If set, the name of the user will be added.
      * @option show-pr   If set, the PR number and link will be added.
      * @option full-link If set, the link to the full changelog will be added.
+     *
+     * @return int|\Robo\Result
+     *   The exit code.
      *
      * @hidden
      */
@@ -196,6 +205,9 @@ class ReleaseCommands extends AbstractCommands
      *
      * @command toolkit:prepare-release
      *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The toolkit prepare release task status.
+     *
      * @hidden
      */
     public function toolkitPrepareRelease(string $version)
@@ -236,10 +248,10 @@ class ReleaseCommands extends AbstractCommands
      *
      * @param string $from
      *   The row to process.
-     * @param array $options
-     *   The command options.
+     * @param array<mixed> $options
+     *   Command options.
      *
-     * @return array
+     * @return array<mixed>
      *   An array containing the changelog.
      */
     private function prepareChangelog(string $from, array $options)
@@ -271,10 +283,10 @@ class ReleaseCommands extends AbstractCommands
     /**
      * Prepare the changelog row.
      *
-     * @param array $data
+     * @param array<mixed> $data
      *   The row to process.
-     * @param array $options
-     *   The command options.
+     * @param array<mixed> $options
+     *   Command options.
      *
      * @return string
      *   The prepared row.

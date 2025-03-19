@@ -31,11 +31,17 @@ class GitleaksCommands extends AbstractCommands
     /**
      * Executes the Gitleaks.
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:run-gitleaks
      *
      * @option tag     The release tag of Gitleaks.
      * @option os      The current OS version.
      * @option options The options to use when executing gitleaks command.
+     *
+     * @return int|\Robo\Collection\CollectionBuilder
+     *   The object collection builder or integer if failed.
      *
      * @aliases tk-gitleaks
      */

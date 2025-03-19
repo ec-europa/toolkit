@@ -35,6 +35,8 @@
         <exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassAfterLastUsed"/>
         <exclude name="Generic.Commenting.Todo.TaskFound"/>
         <exclude name="Generic.Commenting.DocComment.ContentAfterOpen"/>
+        <exclude name="Generic.Commenting.DocComment.MissingShort"/>
+        <exclude name="Generic.Commenting.DocComment.SpacingBetween"/>
         <exclude name="Generic.Files.EndFileNoNewline.Found"/>
         <exclude name="Generic.Files.LowercasedFilename.NotFound"/>
         <exclude name="Generic.Files.LineLength.TooLong"/>
@@ -314,13 +316,16 @@
     <rule ref="Drupal.Classes.UseLeadingBackslash"/>
     <rule ref="Drupal.Commenting.DataTypeNamespace"/>
     <rule ref="Drupal.Commenting.DocComment"/>
+    <rule ref="Drupal.Commenting.DocCommentAlignment.SpaceAfterStar"/>
     <rule ref="Drupal.Commenting.DocCommentStar"/>
     <rule ref="Drupal.Commenting.InlineComment"/>
-    <rule ref="Drupal.Commenting.FunctionComment.ParamCommentIndentation"/>
-    <rule ref="Drupal.Commenting.FunctionComment.ParamCommentFullStop"/>
     <rule ref="Drupal.Commenting.FunctionComment.MissingReturnComment"/>
     <rule ref="Drupal.Commenting.FunctionComment.MissingParamComment"/>
+    <rule ref="Drupal.Commenting.FunctionComment.ParamCommentFullStop"/>
+    <rule ref="Drupal.Commenting.FunctionComment.ParamCommentIndentation"/>
     <rule ref="Drupal.Commenting.FunctionComment.ParamCommentNewLine"/>
+    <rule ref="Drupal.Commenting.FunctionComment.ParamCommentNotCapital"/>
+    <rule ref="Drupal.Commenting.FunctionComment.ReturnCommentIndentation"/>
     <rule ref="Drupal.Files.EndFileNewline"/>
     <rule ref="Drupal.Arrays.Array.CommaLastItem"/>
     <rule ref="Drupal.Formatting"/>

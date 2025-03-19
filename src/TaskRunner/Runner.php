@@ -84,7 +84,7 @@ class Runner
     /**
      * The loaded command classes.
      *
-     * @var array
+     * @var array<mixed>
      */
     private array $commandClasses;
 
@@ -132,7 +132,7 @@ class Runner
     /**
      * Discover Command classes.
      *
-     * @return array|string[]
+     * @return array<mixed>|string[]
      *   An array with the Command classes.
      */
     private function discoverCommandClasses()
@@ -145,6 +145,9 @@ class Runner
 
     /**
      * Returns the current working directory.
+     *
+     * @return string
+     *   Return the current working directory.
      */
     private function getWorkingDir()
     {
@@ -153,6 +156,9 @@ class Runner
 
     /**
      * Create and prepare the Application.
+     *
+     * @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     *   Return the runner.
      */
     private function prepareApplication()
     {
@@ -172,10 +178,13 @@ class Runner
     /**
      * Recursively merge config files.
      *
-     * @param array $files
+     * @param array<mixed> $files
      *   The file paths to fetch the configs.
-     * @param array|null $config
+     * @param array<mixed>|null $config
      *   The given, the new configs will be merged.
+     *
+     * @return array<mixed>
+     *   The merged files.
      */
     private function parseConfigFiles(array $files, ?array $config = null): array
     {
@@ -191,6 +200,9 @@ class Runner
 
     /**
      * Create the configurations and process overrides.
+     *
+     * @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     *   The configurations updated.
      */
     private function prepareConfigurations()
     {
@@ -256,6 +268,9 @@ class Runner
 
     /**
      * Prepare the container with the configurations.
+     *
+     * @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     *   The container configured.
      */
     private function prepareContainer()
     {
@@ -276,6 +291,9 @@ class Runner
 
     /**
      * Create and configure the Robo runner.
+     *
+     * @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     *   The Robo runner configured.
      */
     private function prepareRunner()
     {
@@ -291,6 +309,9 @@ class Runner
 
     /**
      * Register commands in the runner.yml under 'commands:'.
+     *
+     * @return void
+     *   Register commands in the runner.yml.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -354,6 +375,9 @@ class Runner
      *
      * @param string $runnerConfigDir
      *   The directory to scan.
+     *
+     * @return array<string>
+     *   Return array runner config directory files.
      */
     private function getConfigDirFilesPaths(string $runnerConfigDir): array
     {

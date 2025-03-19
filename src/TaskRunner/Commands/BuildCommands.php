@@ -53,7 +53,7 @@ class BuildCommands extends AbstractCommands
      * - ./dist/web
      * - ./dist/web/VERSION.txt
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return \Robo\Collection\CollectionBuilder
@@ -165,7 +165,7 @@ class BuildCommands extends AbstractCommands
     /**
      * Build site for local development.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return \Robo\Collection\CollectionBuilder
@@ -231,7 +231,7 @@ class BuildCommands extends AbstractCommands
     /**
      * Build site for local development from scratch with a clean git.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return \Robo\Collection\CollectionBuilder
@@ -277,7 +277,7 @@ class BuildCommands extends AbstractCommands
      *
      * Install task runner, additional packages and execute.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Additional options for the command.
      *
      * @return \Robo\Result|int
@@ -348,8 +348,22 @@ class BuildCommands extends AbstractCommands
 
     /**
      * Install necessary packages to run toolkit:build-assets.
+     *
+     * @param string $themeDir
+     *   The theme directory.
+     * @param string[] $allowedTaskRunners
+     *   The tasks runners allowed.
+     * @param string[] $files
+     *   The files to be used.
+     * @param string[] $taskRunners
+     *   The task runners.
+     * @param array<mixed> $options
+     *   The extra options for the command.
+     *
+     * @return void
+     *   Tasks are performed.
      */
-    private function buildAssetsInstall($themeDir, $allowedTaskRunners, $taskRunners, $files, $options)
+    private function buildAssetsInstall(string $themeDir, array $allowedTaskRunners, array $taskRunners, array $files, array $options)
     {
         $collection = $this->collectionBuilder();
         $stack = $collection->taskExecStack()->dir($themeDir)->stopOnFail();
@@ -376,8 +390,18 @@ class BuildCommands extends AbstractCommands
 
     /**
      * Launch task runner(s) to compile assets.
+     *
+     * @param array<mixed> $taskRunners
+     *   The task runners.
+     * @param array<mixed> $options
+     *   The extra options for the command.
+     * @param string $themeDir
+     *   The theme directory.
+     *
+     * @return int|void
+     *   The build assets compile result.
      */
-    private function buildAssetsCompile($taskRunners, $options, $themeDir,)
+    private function buildAssetsCompile(array $taskRunners, array $options, string $themeDir)
     {
         $collection = $this->collectionBuilder();
 
@@ -414,6 +438,9 @@ class BuildCommands extends AbstractCommands
      *
      * @param string $root
      *   The drupal root where the .htaccess file is.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The htaccess file status.
      */
     private function getHtaccessTask(string $root)
     {
@@ -438,6 +465,9 @@ class BuildCommands extends AbstractCommands
 
     /**
      * Returns the block for the .htaccess file.
+     *
+     * @return string
+     *   The htaccess file block content.
      */
     private function getHtaccessBlock(): string
     {
