@@ -20,9 +20,6 @@ class LintCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
-     *   The configuration file.
      */
     public function getConfigurationFile()
     {
@@ -33,7 +30,7 @@ class LintCommands extends AbstractCommands
      * Setup the ESLint configurations and dependencies.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:setup-eslint
      *
@@ -104,7 +101,7 @@ class LintCommands extends AbstractCommands
      * @param array<mixed> $options
      *   The options passed to the command.
      *
-     *  @return void
+     * @return void
      *   The eslint configuration generated.
      */
     private function generateEslintConfigurations(string $config, array $options)
@@ -150,7 +147,7 @@ class LintCommands extends AbstractCommands
      * Run lint YAML.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:lint-yaml
      *
@@ -180,8 +177,8 @@ class LintCommands extends AbstractCommands
     /**
      * Run lint JS.
      *
-     * @param array<string,int> $options
-     *   options.
+     * @param array<mixed> $options
+     *   Command options.
      *
      * @command toolkit:lint-js
      *
@@ -255,7 +252,7 @@ class LintCommands extends AbstractCommands
      * Run lint PHP.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:lint-php
      *
@@ -325,7 +322,7 @@ class LintCommands extends AbstractCommands
      * Run lint CSS.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:lint-css
      *
@@ -396,7 +393,7 @@ class LintCommands extends AbstractCommands
      * Run lint CSpell.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:lint-cspell
      *
@@ -463,7 +460,7 @@ class LintCommands extends AbstractCommands
      * Run lint Behat.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:lint-behat
      *

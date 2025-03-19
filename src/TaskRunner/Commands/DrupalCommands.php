@@ -36,9 +36,6 @@ class DrupalCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
-     *   The configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -272,7 +269,7 @@ class DrupalCommands extends AbstractCommands
      * @aliases drupal:si,dsi
      *
      * @return \Robo\Collection\CollectionBuilder
-     *  tasks.
+     *   The collection builder.
      */
     public function drupalSiteInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -373,6 +370,7 @@ class DrupalCommands extends AbstractCommands
      * your local runner.yml.dist/runner.yml files, as shown below:
      *
      * @param array<mixed> $options
+     *   Command options.
      *
      *   > drupal:
      *   >   ...
@@ -390,7 +388,7 @@ class DrupalCommands extends AbstractCommands
      *   string-only commands will be substituted with this value.
      *
      * @return \Robo\Collection\CollectionBuilder
-     *   The drupal site tasks to be execute.
+     *   The drupal site tasks to be executed.
      */
     public function drupalSitePreInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -409,8 +407,6 @@ class DrupalCommands extends AbstractCommands
      * Commands have to be listed under the "drupal.post_install" property in
      * your local runner.yml.dist/runner.yml files, as shown below:
      *
-     *  @param array<mixed> $options
-     *
      *   > drupal:
      *   >   ...
      *   >   post_install:
@@ -420,14 +416,17 @@ class DrupalCommands extends AbstractCommands
      *   Post-install commands are automatically executed after installing the site
      *   when running "drupal:site-install".
      *
-     *  @command drupal:site-post-install
+     * @param array<mixed> $options
+     *   Command options.
      *
-     *  @option root
+     * @command drupal:site-post-install
+     *
+     * @option root
      *   The Drupal root. All occurrences of "!root" in the post-install
      *   string-only commands will be substituted with this value.
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   tasks.
+     * @return \Robo\Collection\CollectionBuilder
+     *   Collection builder.
      */
     public function drupalSitePostInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -443,10 +442,10 @@ class DrupalCommands extends AbstractCommands
     /**
      * Disable aggregation and clear cache.
      *
-     *  @command drupal:disable-cache
+     * @command drupal:disable-cache
      *
-     *  @return \Robo\Collection\CollectionBuilder
-     *   task collection.
+     * @return \Robo\Collection\CollectionBuilder
+     *   Collection builder.
      */
     public function drupalDisableCache()
     {
@@ -466,12 +465,12 @@ class DrupalCommands extends AbstractCommands
     /**
      * Check project compatibility for Drupal 9/10/11 upgrade.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @command drupal:upgrade-status
      *
      * @aliases tdus
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function drupalUpgradeStatus(): int
     {
@@ -539,19 +538,19 @@ class DrupalCommands extends AbstractCommands
     /**
      * Command to check the forbidden permissions.
      *
-     *  @param array<mixed> $options
+     * @param array<mixed> $options
      *   Command options.
      *
-     *  @command drupal:check-permissions
+     * @command drupal:check-permissions
      *
      * @option endpoint The endpoint to use to connect to QA Website.
      * @option blocker  If given and in case of error the command will fail.
      *
+     * @return int
+     *   Command exit code.
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
-     *  @return int
-     *   status.
      */
     public function drupalCheckPermissions(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,

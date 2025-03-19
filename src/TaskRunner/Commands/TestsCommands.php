@@ -41,11 +41,11 @@ class TestsCommands extends AbstractCommands
      *
      * @command toolkit:setup-phpcs
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @return void
      *   The toolkit setup check configuration status.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitSetupPhpcs()
     {
@@ -155,7 +155,7 @@ class TestsCommands extends AbstractCommands
      * Check configurations at config/default.yml - 'toolkit.test.phpmd'.
      *
      * @param array<mixed> $options
-     *   Options.
+     *   Command options.
      *
      * @command toolkit:test-phpmd
      *
@@ -351,7 +351,7 @@ class TestsCommands extends AbstractCommands
      * Check configurations at config/default.yml - 'toolkit.test.phpstan'.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:test-phpstan
      *
@@ -439,7 +439,7 @@ class TestsCommands extends AbstractCommands
      * Accept commands to run before and/or after the Behat tests.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:test-behat
      *
@@ -454,11 +454,11 @@ class TestsCommands extends AbstractCommands
      *
      * @usage --profile='prod' --options='strict stop-on-failure'
      *
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *
      * @return int|\Robo\ResultData
      *   The check toolkit test behat status.
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitTestBehat(array $options = [
         'from' => InputOption::VALUE_OPTIONAL,
@@ -532,7 +532,7 @@ class TestsCommands extends AbstractCommands
      * Accept commands to run before and/or after the PHPUnit tests.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:test-phpunit
      *
@@ -553,11 +553,11 @@ class TestsCommands extends AbstractCommands
      * @usage --options='stop-on-error process-isolation do-not-cache-result'
      * @usage --group=Example
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @return \Robo\Collection\CollectionBuilder
      *   The toolkit phpunit task status.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitTestPhpunit(array $options = [
         'execution' => InputOption::VALUE_REQUIRED,
@@ -622,10 +622,10 @@ class TestsCommands extends AbstractCommands
      * Returns the task to execute PHPUnit in parallel.
      *
      * @param array<mixed> $options
-     *   The options passed to the command test-phpunit.
+     *   Command options.
      *
      * @return \Robo\Task\Base\ParallelExec
-     *   task to execute PHPUnit in parallel.
+     *   Task to execute PHPUnit in parallel.
      */
     private function toolkitTestPhpunitParallelTask(array $options)
     {

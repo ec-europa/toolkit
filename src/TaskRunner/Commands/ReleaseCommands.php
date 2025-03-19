@@ -146,8 +146,8 @@ class ReleaseCommands extends AbstractCommands
      * @option show-pr   If set, the PR number and link will be added.
      * @option full-link If set, the link to the full changelog will be added.
      *
-     *  @return int|\Robo\Result
-     *   status.
+     * @return int|\Robo\Result
+     *   The exit code.
      *
      * @hidden
      */
@@ -249,7 +249,7 @@ class ReleaseCommands extends AbstractCommands
      * @param string $from
      *   The row to process.
      * @param array<mixed> $options
-     *   The command options.
+     *   Command options.
      *
      * @return array<mixed>
      *   An array containing the changelog.
@@ -286,7 +286,7 @@ class ReleaseCommands extends AbstractCommands
      * @param array<mixed> $data
      *   The row to process.
      * @param array<mixed> $options
-     *   The command options.
+     *   Command options.
      *
      * @return string
      *   The prepared row.

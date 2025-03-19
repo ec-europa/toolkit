@@ -280,10 +280,10 @@ class Website
     /**
      * Returns the toolkit requirements from the endpoint.
      *
-     *  @throws \Exception
+     * @throws \Exception
      *   If the request fails.
      *
-     *  @return false|mixed|string
+     * @return false|array<mixed>
      *   The toolkit requirements.
      */
     public static function requirements()
@@ -305,7 +305,7 @@ class Website
     /**
      * Returns the packages reviews from the endpoint.
      *
-     *  @return false|mixed|string
+     * @return false|array<mixed>
      *   The packages review from the endpoint.
      */
     public static function packages()
@@ -320,7 +320,7 @@ class Website
     /**
      * Returns the notifications from the endpoint.
      *
-     * @return false|mixed|string
+     * @return false|array<mixed>
      *   The notifications from the endpoint.
      */
     public static function notifications()
@@ -339,7 +339,7 @@ class Website
      * @param AuthorizationInterface|null $auth
      *   The authorization instance or null.
      *
-     * @return false|mixed|string
+     * @return false|array<mixed>
      *   The content from given endpoint and fallback to mock if possible.
      */
     public static function getWithMockFallback(string $url, ?AuthorizationInterface $auth = null)

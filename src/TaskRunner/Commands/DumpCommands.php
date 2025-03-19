@@ -19,9 +19,6 @@ class DumpCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
-     *   The configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -135,9 +132,9 @@ class DumpCommands extends AbstractCommands
      * Download database snapshot.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
-     *  @codingStandardsIgnoreStart Generic.Commenting.DocComment.TagsNotGrouped
+     * @codingStandardsIgnoreStart Generic.Commenting.DocComment.TagsNotGrouped
      *
      * Configuration for database snapshot in NEXTCLOUD.
      * - Environment variables: NEXTCLOUD_USER, NEXTCLOUD_PASS (EU Login).
@@ -177,7 +174,7 @@ class DumpCommands extends AbstractCommands
      * @option yes      Skip the question to download newer dump.
      *
      * @return int
-     *  The toolkit download file status.
+     *   The toolkit download file status.
      *
      * @aliases tk-ddump
      */
@@ -198,7 +195,7 @@ class DumpCommands extends AbstractCommands
      * Download the available services from Nextcloud.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @return int|\Robo\Collection\CollectionBuilder
      *   The service download from Nextcloud task.
@@ -289,7 +286,7 @@ class DumpCommands extends AbstractCommands
      * Download the dumpfile from the custom server.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @return int
      *   The file download from custom server status.

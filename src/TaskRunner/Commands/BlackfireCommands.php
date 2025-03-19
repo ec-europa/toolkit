@@ -22,7 +22,7 @@ class BlackfireCommands extends AbstractCommands
      * Run Blackfire.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:run-blackfire
      *

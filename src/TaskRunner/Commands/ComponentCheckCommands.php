@@ -77,7 +77,7 @@ class ComponentCheckCommands extends AbstractCommands
      * Check composer for components that are not whitelisted/blacklisted.
      *
      * @param array<mixed> $options
-     *   Options array.
+     *   Command options.
      *
      * @command toolkit:component-check
      *
@@ -648,12 +648,12 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @command check:composer
      *
+     * @return void|int
+     *   The component composer status.
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     *
-     * @return void|int
-     *   The component composer status.
      */
     public function componentComposer(ConsoleIO $io)
     {
@@ -897,11 +897,11 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Component Configuration Helper - Validate environment variables.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @return void
      *   Environment variable validated.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function validateEnvironmentVariables()
     {
@@ -960,11 +960,11 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Print the component check results.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @return void
      *   The printed component list results.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function printComponentResults(ConsoleIO $io)
     {

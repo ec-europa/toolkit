@@ -62,9 +62,6 @@ class DocumentationCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
-     *   The configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -194,7 +191,7 @@ class DocumentationCommands extends AbstractCommands
     /**
      * Backup all *.rst files.
      *
-     *  @return \Robo\Collection\CollectionBuilder
+     * @return \Robo\Collection\CollectionBuilder
      *   The backup files task.
      */
     private function backupRelevantFiles()

@@ -13,7 +13,7 @@ final class JunitXmlGenerator
      * Variable data.
      *
      * @var array<mixed> $data
-     * */
+     */
     protected static array $data = [];
     public static string $dir = 'junit-export';
 
@@ -24,7 +24,7 @@ final class JunitXmlGenerator
      *   The data to set.
      *
      * @return void
-     *   void.
+     *   Data set to $data array.
      */
     public static function setData(array $data): void
     {

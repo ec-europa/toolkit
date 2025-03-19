@@ -21,7 +21,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * An array with tasks to execute.
      *
-     * @var array<mixed>
+     * @var string[][]
      */
     protected array $tasks;
 
@@ -32,7 +32,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * the required to ensure they are present, and the defaults
      * to ensure they have the default value.
      *
-     * @var array<mixed>
+     * @var string[][]
      */
     protected array $availableTasks = [
         'mkdir' => ['required' => 'dir', 'defaults' => 'mode'],
@@ -66,7 +66,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Constructs a new Process task.
      *
-     * @param array<string> $tasks
+     * @param string[][] $tasks
      *   The Command Tasks.
      */
     public function __construct(array $tasks)
@@ -91,7 +91,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Execute single task.
      *
-     * @param mixed $task
+     * @param string[]|string[][] $task
      *   The task to execute.
      *
      * @return mixed
@@ -230,7 +230,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Return the current tasks.
      *
-     * @return array<string>
+     * @return string[]|string[][]
      *   An array with tasks to execute.
      */
     public function getTasks()
@@ -241,7 +241,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Validate and ensure the parameter are met.
      *
-     * @param mixed $task
+     * @param string|string[] $task
      *   The task being executed.
      *
      * @return void
@@ -279,7 +279,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
     /**
      * Prepares the Output of a taskExec.
      *
-     * @param mixed $taskExec
+     * @param \Robo\Task\Base\Exec $taskExec
      *   The task exec being executed.
      *
      * @return void
@@ -335,7 +335,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * @param string $key
      *   The parameter name.
      *
-     * @return string|bool|mixed
+     * @return mixed
      *   The default value for given name.
      */
     private function paramDefaultValue(string $key)

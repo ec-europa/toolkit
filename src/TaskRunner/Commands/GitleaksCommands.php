@@ -22,9 +22,6 @@ class GitleaksCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
-     *   The configuration file.
      */
     public function getConfigurationFile()
     {
@@ -35,7 +32,7 @@ class GitleaksCommands extends AbstractCommands
      * Executes the Gitleaks.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:run-gitleaks
      *

@@ -32,9 +32,6 @@ class BuildCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
-     *   Configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -352,21 +349,21 @@ class BuildCommands extends AbstractCommands
     /**
      * Install necessary packages to run toolkit:build-assets.
      *
-     * @param mixed $themeDir
+     * @param string $themeDir
      *   The theme directory.
-     * @param mixed $allowedTaskRunners
+     * @param string[] $allowedTaskRunners
      *   The tasks runners allowed.
-     * @param mixed $files
+     * @param string[] $files
      *   The files to be used.
-     * @param mixed $taskRunners
+     * @param string[] $taskRunners
      *   The task runners.
-     * @param mixed $options
+     * @param array<mixed> $options
      *   The extra options for the command.
      *
-     *  @return mixed
-     *   status.
+     * @return void
+     *   Tasks are performed.
      */
-    private function buildAssetsInstall($themeDir, $allowedTaskRunners, $taskRunners, $files, $options)
+    private function buildAssetsInstall(string $themeDir, array $allowedTaskRunners, array $taskRunners, array $files, array $options)
     {
         $collection = $this->collectionBuilder();
         $stack = $collection->taskExecStack()->dir($themeDir)->stopOnFail();
@@ -404,7 +401,7 @@ class BuildCommands extends AbstractCommands
      * @return int|void
      *   The build assets compile result.
      */
-    private function buildAssetsCompile($taskRunners, $options, $themeDir,)
+    private function buildAssetsCompile(array $taskRunners, array $options, string $themeDir)
     {
         $collection = $this->collectionBuilder();
 

@@ -20,7 +20,7 @@ use Symfony\Component\Console\Input\InputOption;
 class PatchCommands extends AbstractCommands
 {
     /**
-     * {@inheritdoc}
+     * The command options.
      *
      * @var array<mixed> $options
      */
@@ -28,9 +28,6 @@ class PatchCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
-     *   Toolkit root path.
      */
     public function getConfigurationFile()
     {
@@ -70,7 +67,7 @@ class PatchCommands extends AbstractCommands
      * Download remote patches into a local directory.
      *
      * @param array<mixed> $options
-     *   the options.
+     *   Command options.
      *
      * @command toolkit:patch-download
      *
@@ -82,7 +79,7 @@ class PatchCommands extends AbstractCommands
      * @aliases tk-pd
      *
      * @return int|mixed
-     *  Patch download status.
+     *   Patch download status.
      *
      * phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
      */
@@ -128,11 +125,11 @@ class PatchCommands extends AbstractCommands
     /**
      * Returns the patches to be downloaded.
      *
+     * @return string[]
+     *   Patches to be downloaded.
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
-     * @return array<mixed>
-     *   Patches to be downloaded.
      */
     private function getPatches(): array
     {

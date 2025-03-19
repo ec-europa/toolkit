@@ -174,7 +174,7 @@ final class DockerCommands extends AbstractCommands
      * @param string $version
      *   The version to convert.
      *
-     *  @return string
+     * @return string
      *   The major minor version.
      */
     private function extractMajorMinorVersion(string $version): string

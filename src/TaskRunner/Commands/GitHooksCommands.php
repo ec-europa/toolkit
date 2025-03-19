@@ -22,9 +22,6 @@ class GitHooksCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
-     *   The configuration file path.
      */
     public function getConfigurationFile()
     {
@@ -158,11 +155,11 @@ class GitHooksCommands extends AbstractCommands
      *
      * @aliases tk-hlist
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @return void
      *   The hooks list.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function hooksList(ConsoleIO $io)
     {

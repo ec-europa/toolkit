@@ -89,7 +89,7 @@ class ToolCommands extends AbstractCommands
      * Check project's .opts.yml file for forbidden commands.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:opts-review
      *
@@ -98,12 +98,12 @@ class ToolCommands extends AbstractCommands
      *
      * @aliases tk-opts-review
      *
+     * @return int
+     *   The opts-review command status.
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     *
-     * @return int
-     *   The opts-review command status.
      */
     public function optsReview(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
@@ -244,7 +244,7 @@ class ToolCommands extends AbstractCommands
      * Check the Toolkit Requirements.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:requirements
      *
@@ -253,12 +253,12 @@ class ToolCommands extends AbstractCommands
      *
      * @aliases tk-req
      *
+     * @return int
+     *   The toolkit requirements command status.
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     *
-     * @return int
-     *   The toolkit requirements command status.
      */
     public function toolkitRequirements(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
@@ -410,8 +410,8 @@ class ToolCommands extends AbstractCommands
     /**
      * Run script to fix permissions (experimental).
      *
-     * @param array<int> $options
-     *   options.
+     * @param array<mixed> $options
+     *   Command options.
      *
      * @command toolkit:fix-permissions
      *
@@ -649,10 +649,10 @@ class ToolCommands extends AbstractCommands
     /**
      * Execute all or specific tools for static testing.
      *
-     * @param array<mixed> $options
-     *   options.
+     * If no option is given, all the tests will be executed.
      *
-     *   If no option is given, all the tests will be executed.
+     * @param array<mixed> $options
+     *   Command options.
      *
      * @command toolkit:code-review
      *
@@ -665,11 +665,11 @@ class ToolCommands extends AbstractCommands
      * @option phpmd       Execute the command toolkit:test-phpmd.
      * @option phpunit     Execute the command toolkit:test-phpunit.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @return \Robo\ResultData
      *   The toolkit code-review command status.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitCodeReview(ConsoleIO $io, array $options = [
         'phpcs' => InputOption::VALUE_NONE,
@@ -749,18 +749,18 @@ class ToolCommands extends AbstractCommands
      * Install packages present in the .opts.yml file under extra_pkgs section.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:install-dependencies
      *
      * @option packages Specify a list of packages to install instead of read from .opts.yml.
      * @option print    Shows output from apt commands.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @return int
      *   The toolkit install-dependencies command status.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitInstallDependencies(ConsoleIO $io, array $options = [
         'packages' => InputOption::VALUE_REQUIRED,
@@ -866,7 +866,7 @@ class ToolCommands extends AbstractCommands
      * Display Toolkit notifications.
      *
      * @param array<mixed> $options
-     *   options.
+     *   Command options.
      *
      * @command toolkit:notifications
      *

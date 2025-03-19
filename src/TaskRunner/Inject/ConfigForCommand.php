@@ -211,7 +211,7 @@ class ConfigForCommand implements EventSubscriberInterface
      *   The input.
      *
      * @return void
-     *  The arguments for help command.
+     *   The arguments for help command.
      */
     protected function fixInputForSymfony2($command, $input)
     {
