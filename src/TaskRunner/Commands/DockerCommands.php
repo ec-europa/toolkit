@@ -111,7 +111,7 @@ final class DockerCommands extends AbstractCommands
      *   The docker-compose content.
      *
      * @return array<string>
-     *   services.
+     *   The images and versions array services.
      */
     private function getServicesImagesFromDockerCompose(array $dcContent): array
     {
@@ -130,7 +130,7 @@ final class DockerCommands extends AbstractCommands
      *   The project id.
      *
      * @return array<mixed>
-     *   project service.
+     *   The project service.
      */
     private function getProjectPhpFromWebsite(string $projectId): array
     {
@@ -156,7 +156,7 @@ final class DockerCommands extends AbstractCommands
      * Returns the toolkit requirements from the endpoint.
      *
      * @return array<mixed>
-     *   toolkit requirements.
+     *   The toolkit requirements.
      */
     private function getWebsiteRequirements(): array
     {
@@ -287,11 +287,11 @@ final class DockerCommands extends AbstractCommands
      * Get service image with version.
      *
      * @param string $service
-     *   The service.
+     *   The image service.
      * @param string $image
      *   The image.
      * @param string $version
-     *   The version.
+     *   The image version.
      *
      * @return string
      *   The service image version.
@@ -377,7 +377,7 @@ final class DockerCommands extends AbstractCommands
      *   The final services that should exist.
      *
      * @return array<string>
-     *   services.
+     *   The array services updated.
      */
     private function removeUnusedDcServices(array $dcServices, array $finalServicesImages): array
     {

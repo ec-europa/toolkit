@@ -109,7 +109,7 @@ final class Toolkit
      *   The separator to explode the string.
      *
      * @return void
-     *   void.
+     *   The array updated.
      */
     public static function ensureArray(mixed &$data, string $sep = ',')
     {
