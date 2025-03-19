@@ -270,7 +270,7 @@ final class DockerCommands extends AbstractCommands
     /**
      * Write all available warning messages.
      *
-     * @param array<mixed> $messages
+     * @param string[] $messages
      *   Messages to print.
      *
      * @return void
@@ -308,17 +308,17 @@ final class DockerCommands extends AbstractCommands
     /**
      * Get final images to update docker-compose.yml.
      *
-     * @param mixed $requirements
+     * @param array<mixed> $requirements
      *   The requirements.
-     * @param mixed $websiteRequirements
+     * @param array<mixed> $websiteRequirements
      *   The website requirements.
-     * @param mixed $optsFileContent
+     * @param array<mixed> $optsFileContent
      *   The .opts.yml file content.
      *
      * @return array<string>
      *   The final images to update the docker-compose.yml file.
      */
-    private function getFinalImages($requirements, $websiteRequirements, $optsFileContent): array
+    private function getFinalImages(array $requirements, array $websiteRequirements, array $optsFileContent): array
     {
         $finalImages = [];
         foreach ($requirements as $service => $version) {
@@ -326,7 +326,7 @@ final class DockerCommands extends AbstractCommands
             $dockerServiceConfig = $this->getConfig()->get('docker.services.' . $defaultService);
 
             $isDefaultService = filter_var($dockerServiceConfig['default'], FILTER_VALIDATE_BOOLEAN);
-            $isServiceExistOnOptsFile = !empty($optsFileContent) && !empty($optsFileContent[$service]);
+            $isServiceExistOnOptsFile = !empty($optsFileContent[$service]);
 
             if (!$isDefaultService && !$isServiceExistOnOptsFile) {
                 continue;
@@ -343,15 +343,15 @@ final class DockerCommands extends AbstractCommands
     /**
      * Get warning messages for versions on .opts.yml that not respect the minimum requirements.
      *
-     * @param mixed $websiteRequirements
+     * @param array<mixed> $websiteRequirements
      *   The website requirements.
-     * @param mixed $optsFileContent
+     * @param array<mixed> $optsFileContent
      *   The .opts.yml content.
      *
      * @return array<string>
      *   The warning messages.
      */
-    private function getWarningMessages($optsFileContent, $websiteRequirements): array
+    private function getWarningMessages(array $optsFileContent, array $websiteRequirements): array
     {
         $warningMessages = [];
         foreach ($optsFileContent as $service => $version) {

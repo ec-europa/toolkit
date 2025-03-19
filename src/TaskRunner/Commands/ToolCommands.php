@@ -28,9 +28,6 @@ class ToolCommands extends AbstractCommands
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
-     *   The configuration file path.
      */
     public function getConfigurationFile()
     {

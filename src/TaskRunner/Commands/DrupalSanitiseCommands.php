@@ -294,7 +294,7 @@ class DrupalSanitiseCommands extends AbstractCommands
     /**
      * Returns a static field map for test purposes.
      *
-     * @return array<string, array<string, array<string, string>>>
+     * @return array<mixed>
      *   The static field map.
      */
     private function testMap(): array

@@ -51,7 +51,7 @@ class ConfigForCommand implements EventSubscriberInterface
      *   The application.
      *
      * @return void
-     *   Return the application.
+     *   Set the application.
      */
     public function setApplication(Application $application)
     {
@@ -60,9 +60,6 @@ class ConfigForCommand implements EventSubscriberInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @return array<string>
-     *   The call to the injectConfiguration command.
      */
     public static function getSubscribedEvents()
     {
@@ -80,7 +77,7 @@ class ConfigForCommand implements EventSubscriberInterface
      *   The current event.
      *
      * @return void
-     *   Return configuration injected.
+     *   Configuration injected.
      */
     public function injectConfiguration(ConsoleCommandEvent $event)
     {

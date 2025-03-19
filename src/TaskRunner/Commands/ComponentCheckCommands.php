@@ -46,20 +46,20 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $insecureNpmFailed = false;
     protected int $recommendedFailedCount = 0;
     /**
-     * Variable.
+     * The composer outdated packages.
      *
      * @var array<mixed> $composerOutdated
      */
     protected array $composerOutdated;
     protected $io;
     /**
-     * Variable.
+     * The composer.lock content.
      *
      * @var array<mixed> $composerLock
      */
     protected array $composerLock;
     /**
-     * Variable.
+     * The packages from the website.
      *
      * @var array<mixed> $packageReviews
      */
@@ -67,7 +67,7 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $forcedUpdateModule = false;
     protected bool $disabledConfigReadonly = false;
     /**
-     * Variable.
+     * The opts.yml content.
      *
      * @var array<mixed> $optsYml
      */
