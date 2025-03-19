@@ -60,6 +60,9 @@ class ConfigForCommand implements EventSubscriberInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return array<string, string|array{0: string, 1: int}|list<array{0: string, 1?: int}>>
+     *   The subscribed events.
      */
     public static function getSubscribedEvents()
     {
