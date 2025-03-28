@@ -128,7 +128,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\JunitXmlGenerator\u003A\u003A\u0024data",
             "name": "data",
-            "summary": "",
+            "summary": "Variable\u0020data.",
             "url": "classes/EcEuropa-Toolkit-JunitXmlGenerator.html#property_data"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\JunitXmlGenerator\u003A\u003A\u0024dir",
@@ -378,7 +378,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AgetConfigValue\u0028\u0029",
             "name": "getConfigValue",
-            "summary": "\u007B\u0040inheritdoc\u007D",
+            "summary": "Return\u0020the\u0020configuration\u0020value.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigValue"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AgetWorkingDir\u0028\u0029",
@@ -758,7 +758,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024composerOutdated",
             "name": "composerOutdated",
-            "summary": "",
+            "summary": "The\u0020composer\u0020outdated\u0020packages.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_composerOutdated"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024io",
@@ -768,12 +768,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024composerLock",
             "name": "composerLock",
-            "summary": "",
+            "summary": "The\u0020composer.lock\u0020content.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_composerLock"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024packageReviews",
             "name": "packageReviews",
-            "summary": "",
+            "summary": "The\u0020packages\u0020from\u0020the\u0020website.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_packageReviews"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024forcedUpdateModule",
@@ -788,7 +788,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024optsYml",
             "name": "optsYml",
-            "summary": "",
+            "summary": "The\u0020opts.yml\u0020content.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#property_optsYml"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ConfigurationCommands",
@@ -1043,7 +1043,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalCommands\u003A\u003AdrupalUpgradeStatus\u0028\u0029",
             "name": "drupalUpgradeStatus",
-            "summary": "Check\u0020project\u0020compatibility\u0020for\u0020Drupal\u00209\/10\u0020upgrade.",
+            "summary": "Check\u0020project\u0020compatibility\u0020for\u0020Drupal\u00209\/10\/11\u0020upgrade.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalCommands.html#method_drupalUpgradeStatus"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalCommands\u003A\u003AdrupalCheckPermissions\u0028\u0029",
@@ -1428,7 +1428,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\PatchCommands\u003A\u003A\u0024options",
             "name": "options",
-            "summary": "",
+            "summary": "The\u0020command\u0020options.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-PatchCommands.html#property_options"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ReleaseCommands",

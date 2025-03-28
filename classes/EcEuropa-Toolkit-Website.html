@@ -255,21 +255,21 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a class="" href="classes/EcEuropa-Toolkit-Website.html#method_getWithMockFallback">getWithMockFallback()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: false|array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Returns content from given endpoint and fallback to mock if possible.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a class="" href="classes/EcEuropa-Toolkit-Website.html#method_notifications">notifications()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: false|array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Returns the notifications from the endpoint.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a class="" href="classes/EcEuropa-Toolkit-Website.html#method_packages">packages()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: false|array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Returns the packages reviews from the endpoint.</dd>
 
@@ -297,7 +297,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a class="" href="classes/EcEuropa-Toolkit-Website.html#method_requirements">requirements()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: false|array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Returns the toolkit requirements from the endpoint.</dd>
 
@@ -604,7 +604,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">333</span>
+    <span class="phpdocumentor-element-found-in__line">345</span>
 
     </aside>
 
@@ -612,7 +612,7 @@ projects to call. Then we have to maintain less code.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">getWithMockFallback</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$url</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/EcEuropa-Toolkit-AuthorizationInterface.html"><abbr title="\EcEuropa\Toolkit\AuthorizationInterface">AuthorizationInterface</abbr></a>|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$auth</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">getWithMockFallback</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$url</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/EcEuropa-Toolkit-AuthorizationInterface.html"><abbr title="\EcEuropa\Toolkit\AuthorizationInterface">AuthorizationInterface</abbr></a>|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$auth</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">false|array&lt;string|int, mixed&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -646,7 +646,15 @@ projects to call. Then we have to maintain less code.</p>
 
     
 
-    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">false|array&lt;string|int, mixed&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>The content from given endpoint and fallback to mock if possible.</p>
+</section>
+
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -662,7 +670,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">317</span>
+    <span class="phpdocumentor-element-found-in__line">326</span>
 
     </aside>
 
@@ -670,7 +678,7 @@ projects to call. Then we have to maintain less code.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">notifications</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">notifications</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">false|array&lt;string|int, mixed&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -681,7 +689,15 @@ projects to call. Then we have to maintain less code.</p>
 
     
 
-    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">false|array&lt;string|int, mixed&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>The notifications from the endpoint.</p>
+</section>
+
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -697,7 +713,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">305</span>
+    <span class="phpdocumentor-element-found-in__line">311</span>
 
     </aside>
 
@@ -705,7 +721,7 @@ projects to call. Then we have to maintain less code.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">packages</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">packages</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">false|array&lt;string|int, mixed&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -716,7 +732,15 @@ projects to call. Then we have to maintain less code.</p>
 
     
 
-    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">false|array&lt;string|int, mixed&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>The packages review from the endpoint.</p>
+</section>
+
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -955,7 +979,7 @@ projects to call. Then we have to maintain less code.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Website.php"><a href="files/src-website.html"><abbr title="src/Website.php">Website.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">286</span>
+    <span class="phpdocumentor-element-found-in__line">289</span>
 
     </aside>
 
@@ -963,7 +987,7 @@ projects to call. Then we have to maintain less code.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">requirements</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">requirements</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">false|array&lt;string|int, mixed&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -991,7 +1015,15 @@ projects to call. Then we have to maintain less code.</p>
 
     
 
-    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">false|array&lt;string|int, mixed&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>The toolkit requirements.</p>
+</section>
+
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element

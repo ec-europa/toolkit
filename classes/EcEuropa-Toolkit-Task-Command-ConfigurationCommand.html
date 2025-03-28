@@ -224,14 +224,14 @@
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
     <a class="" href="classes/EcEuropa-Toolkit-Task-Command-ConfigurationCommand.html#property_availableTasks">$availableTasks</a>
     <span>
-                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
+                        &nbsp;: array&lt;string|int, array&lt;string|int, string&gt;&gt;            </span>
 </dt>
 <dd>Contains the available tasks and configuration.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
     <a class="" href="classes/EcEuropa-Toolkit-Task-Command-ConfigurationCommand.html#property_tasks">$tasks</a>
     <span>
-                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
+                        &nbsp;: array&lt;string|int, array&lt;string|int, string&gt;&gt;            </span>
 </dt>
 <dd>An array with tasks to execute.</dd>
 
@@ -253,7 +253,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a class="" href="classes/EcEuropa-Toolkit-Task-Command-ConfigurationCommand.html#method_getTasks">getTasks()</a>
     <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
+                                &nbsp;: array&lt;string|int, string&gt;|array&lt;string|int, array&lt;string|int, string&gt;&gt;    </span>
 </dt>
 <dd>Return the current tasks.</dd>
 
@@ -274,35 +274,35 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-Task-Command-ConfigurationCommand.html#method_paramDefaultValue">paramDefaultValue()</a>
     <span>
-                                &nbsp;: string|bool|mixed    </span>
+                                &nbsp;: mixed    </span>
 </dt>
 <dd>The default parameter values, return all or given parameter default value.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-Task-Command-ConfigurationCommand.html#method_prepareOutput">prepareOutput()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: void    </span>
 </dt>
 <dd>Prepares the Output of a taskExec.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-Task-Command-ConfigurationCommand.html#method_throwInvalidTaskException">throwInvalidTaskException()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: void    </span>
 </dt>
 <dd>Report missing parameter, this stops the execution.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-Task-Command-ConfigurationCommand.html#method_throwParamException">throwParamException()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: void    </span>
 </dt>
 <dd>Report missing parameter, this stops the execution.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-Task-Command-ConfigurationCommand.html#method_validateAndEnsureParameters">validateAndEnsureParameters()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: void    </span>
 </dt>
 <dd>Validate and ensure the parameter are met.</dd>
 
@@ -345,7 +345,7 @@
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, array&lt;string|int, string&gt;&gt;</span>
     <span class="phpdocumentor-signature__name">$availableTasks</span>
      = <span class="phpdocumentor-signature__default-value">[&#039;mkdir&#039; =&gt; [&#039;required&#039; =&gt; &#039;dir&#039;, &#039;defaults&#039; =&gt; &#039;mode&#039;], &#039;touch&#039; =&gt; [&#039;required&#039; =&gt; &#039;file&#039;, &#039;defaults&#039; =&gt; [&#039;time&#039;, &#039;atime&#039;]], &#039;copy&#039; =&gt; [&#039;required&#039; =&gt; [&#039;from&#039;, &#039;to&#039;], &#039;defaults&#039; =&gt; &#039;force&#039;], &#039;copy-dir&#039; =&gt; [&#039;required&#039; =&gt; [&#039;from&#039;, &#039;to&#039;]], &#039;rename&#039; =&gt; [&#039;required&#039; =&gt; [&#039;from&#039;, &#039;to&#039;], &#039;defaults&#039; =&gt; &#039;force&#039;], &#039;chmod&#039; =&gt; [&#039;required&#039; =&gt; [&#039;file&#039;, &#039;permissions&#039;], &#039;defaults&#039; =&gt; [&#039;umask&#039;, &#039;recursive&#039;]], &#039;chgrp&#039; =&gt; [&#039;required&#039; =&gt; [&#039;file&#039;, &#039;group&#039;], &#039;defaults&#039; =&gt; &#039;recursive&#039;], &#039;chown&#039; =&gt; [&#039;required&#039; =&gt; [&#039;file&#039;, &#039;user&#039;], &#039;defaults&#039; =&gt; &#039;recursive&#039;], &#039;remove&#039; =&gt; [&#039;required&#039; =&gt; &#039;file&#039;], &#039;symlink&#039; =&gt; [&#039;required&#039; =&gt; [&#039;from&#039;, &#039;to&#039;]], &#039;mirror&#039; =&gt; [&#039;required&#039; =&gt; [&#039;from&#039;, &#039;to&#039;]], &#039;process&#039; =&gt; [&#039;required&#039; =&gt; [&#039;source&#039;], &#039;defaults&#039; =&gt; &#039;destination&#039;], &#039;append&#039; =&gt; [&#039;required&#039; =&gt; [&#039;file&#039;, &#039;text&#039;]], &#039;run&#039; =&gt; [&#039;required&#039; =&gt; &#039;command&#039;], &#039;exec&#039; =&gt; [&#039;required&#039; =&gt; &#039;command&#039;], &#039;drush&#039; =&gt; [&#039;required&#039; =&gt; &#039;command&#039;], &#039;replace-block&#039; =&gt; [&#039;required&#039; =&gt; [&#039;filename&#039;, &#039;start&#039;, &#039;end&#039;], &#039;defaults&#039; =&gt; [&#039;content&#039;, &#039;excludeStartEnd&#039;]]]</span></code>
 
@@ -386,7 +386,7 @@ to ensure they have the default value.</p>
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, array&lt;string|int, string&gt;&gt;</span>
     <span class="phpdocumentor-signature__name">$tasks</span>
     </code>
 
@@ -427,7 +427,7 @@ to ensure they have the default value.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tasks</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, array&lt;string|int, string&gt;&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tasks</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -437,7 +437,7 @@ to ensure they have the default value.</p>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$tasks</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, array&lt;string|int, string&gt;&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>The Command Tasks.</p>
@@ -466,7 +466,7 @@ to ensure they have the default value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Task/Command/ConfigurationCommand.php"><a href="files/src-task-command-configurationcommand.html"><abbr title="src/Task/Command/ConfigurationCommand.php">ConfigurationCommand.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">233</span>
+    <span class="phpdocumentor-element-found-in__line">236</span>
 
     </aside>
 
@@ -474,7 +474,7 @@ to ensure they have the default value.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getTasks</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+                    <span class="phpdocumentor-signature__name">getTasks</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;|array&lt;string|int, array&lt;string|int, string&gt;&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -487,9 +487,9 @@ to ensure they have the default value.</p>
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;|array&lt;string|int, array&lt;string|int, string&gt;&gt;</span>
                     &mdash;
-                <section class="phpdocumentor-description"><p>The tasks.</p>
+                <section class="phpdocumentor-description"><p>An array with tasks to execute.</p>
 </section>
 
             </section>
@@ -544,7 +544,7 @@ to ensure they have the default value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Task/Command/ConfigurationCommand.php"><a href="files/src-task-command-configurationcommand.html"><abbr title="src/Task/Command/ConfigurationCommand.php">ConfigurationCommand.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">103</span>
+    <span class="phpdocumentor-element-found-in__line">106</span>
 
     </aside>
 
@@ -552,7 +552,7 @@ to ensure they have the default value.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-                    <span class="phpdocumentor-signature__name">taskExecute</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$task</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">taskExecute</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;|array&lt;string|int, array&lt;string|int, string&gt;&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$task</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -562,7 +562,7 @@ to ensure they have the default value.</p>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$task</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, string&gt;|array&lt;string|int, array&lt;string|int, string&gt;&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>The task to execute.</p>
@@ -617,7 +617,15 @@ to ensure they have the default value.</p>
 
     
 
-    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">mixed</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>The task to be executed.</p>
+</section>
+
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -633,7 +641,7 @@ to ensure they have the default value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Task/Command/ConfigurationCommand.php"><a href="files/src-task-command-configurationcommand.html"><abbr title="src/Task/Command/ConfigurationCommand.php">ConfigurationCommand.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">326</span>
+    <span class="phpdocumentor-element-found-in__line">341</span>
 
     </aside>
 
@@ -641,7 +649,7 @@ to ensure they have the default value.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">paramDefaultValue</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$key</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string|bool|mixed</span></code>
+                    <span class="phpdocumentor-signature__name">paramDefaultValue</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$key</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -666,7 +674,7 @@ to ensure they have the default value.</p>
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">string|bool|mixed</span>
+        <span class="phpdocumentor-signature__response_type">mixed</span>
                     &mdash;
                 <section class="phpdocumentor-description"><p>The default value for given name.</p>
 </section>
@@ -688,7 +696,7 @@ to ensure they have the default value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Task/Command/ConfigurationCommand.php"><a href="files/src-task-command-configurationcommand.html"><abbr title="src/Task/Command/ConfigurationCommand.php">ConfigurationCommand.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">279</span>
+    <span class="phpdocumentor-element-found-in__line">288</span>
 
     </aside>
 
@@ -696,7 +704,7 @@ to ensure they have the default value.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">prepareOutput</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$taskExec</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">prepareOutput</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Task\Base\Exec">Exec</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$taskExec</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -706,7 +714,7 @@ to ensure they have the default value.</p>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$taskExec</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Task\Base\Exec">Exec</abbr></span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>The task exec being executed.</p>
@@ -719,7 +727,15 @@ to ensure they have the default value.</p>
 
     
 
-    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">void</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Print the output.</p>
+</section>
+
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -735,7 +751,7 @@ to ensure they have the default value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Task/Command/ConfigurationCommand.php"><a href="files/src-task-command-configurationcommand.html"><abbr title="src/Task/Command/ConfigurationCommand.php">ConfigurationCommand.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">311</span>
+    <span class="phpdocumentor-element-found-in__line">326</span>
 
     </aside>
 
@@ -743,7 +759,7 @@ to ensure they have the default value.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">throwInvalidTaskException</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$task</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">throwInvalidTaskException</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$task</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -781,7 +797,15 @@ to ensure they have the default value.</p>
 
     
 
-    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">void</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>The invalid exception message.</p>
+</section>
+
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -797,7 +821,7 @@ to ensure they have the default value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Task/Command/ConfigurationCommand.php"><a href="files/src-task-command-configurationcommand.html"><abbr title="src/Task/Command/ConfigurationCommand.php">ConfigurationCommand.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">297</span>
+    <span class="phpdocumentor-element-found-in__line">309</span>
 
     </aside>
 
@@ -805,7 +829,7 @@ to ensure they have the default value.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">throwParamException</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$param</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$task</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">throwParamException</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$param</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$task</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -852,7 +876,15 @@ to ensure they have the default value.</p>
 
     
 
-    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">void</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>The parameter exception message.</p>
+</section>
+
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -868,7 +900,7 @@ to ensure they have the default value.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Task/Command/ConfigurationCommand.php"><a href="files/src-task-command-configurationcommand.html"><abbr title="src/Task/Command/ConfigurationCommand.php">ConfigurationCommand.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">249</span>
+    <span class="phpdocumentor-element-found-in__line">255</span>
 
     </aside>
 
@@ -876,7 +908,7 @@ to ensure they have the default value.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">validateAndEnsureParameters</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__reference-operator">&amp;</span><span class="phpdocumentor-signature__argument__name">$task</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">validateAndEnsureParameters</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string|array&lt;string|int, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__reference-operator">&amp;</span><span class="phpdocumentor-signature__argument__name">$task</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -886,7 +918,7 @@ to ensure they have the default value.</p>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$task</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string|array&lt;string|int, string&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>The task being executed.</p>
@@ -930,7 +962,15 @@ to ensure they have the default value.</p>
 
     
 
-    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">void</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>Validate and ensure the parameter are met.</p>
+</section>
+
+            </section>
+
 </article>
             </section>
 

@@ -207,7 +207,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a class="" href="classes/EcEuropa-Toolkit-DrupalReleaseHistory.html#method_getPackageDetails">getPackageDetails()</a>
     <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;|int    </span>
+                                &nbsp;: array&lt;string|int, array&lt;string|int, string&gt;&gt;|int    </span>
 </dt>
 <dd>Call release history of d.org to confirm security alert.</dd>
 
@@ -247,7 +247,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getPackageDetails</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$package</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$core</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|int</span></code>
+                    <span class="phpdocumentor-signature__name">getPackageDetails</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$package</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$core</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, array&lt;string|int, string&gt;&gt;|int</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -290,7 +290,7 @@
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|int</span>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, array&lt;string|int, string&gt;&gt;|int</span>
                     &mdash;
                 <section class="phpdocumentor-description"><p>Array with package info from d.org, 1
 if no release history found.</p>
