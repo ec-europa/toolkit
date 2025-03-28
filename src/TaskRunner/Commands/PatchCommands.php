@@ -40,7 +40,7 @@ class PatchCommands extends AbstractCommands
      * @param array<mixed> $options
      *   The option to be list.
      *
-     * @command toolkit:patch-list.
+     * @command toolkit:patch-list
      *
      * @option package      List patches for given package.
      * @option composer     The composer.json relative path.
