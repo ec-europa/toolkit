@@ -98,7 +98,8 @@ class ReleaseCommands extends AbstractCommands
      */
     public function toolkitUpdateDefaultMockTag(ConsoleIO $io)
     {
-        if (empty($token = getenv('GITLAB_API_TOKEN'))) {
+        $config = $this->getConfig()->get('gitlab');
+        if (empty($token = $config['token'])) {
             $io->error('Missing env var GITLAB_API_TOKEN.');
             return ResultData::EXITCODE_ERROR;
         }
@@ -108,10 +109,8 @@ class ReleaseCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        $api = 'https://git.fpfis.tech.ec.europa.eu/api/v4';
-        $url = $api . '/projects/4046/repository/tags';
         $context = stream_context_create(['http' => ['header' => "Authorization: Bearer $token"]]);
-        $latestTag = file_get_contents($url, false, $context);
+        $latestTag = file_get_contents($config['endpoints']['mock_tags'], false, $context);
         if (empty($latestTag)) {
             $io->error('Failed to get response from GitLab.');
             return ResultData::EXITCODE_ERROR;

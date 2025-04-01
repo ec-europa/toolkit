@@ -158,6 +158,11 @@ class BuildCommands extends AbstractCommands
         // Add custom block to .htaccess file.
         $tasks[] = $this->getHtaccessTask("{$options['dist-root']}/{$options['root']}");
 
+        if (!empty(getenv('USER_ESCALATION'))) {
+            $tasks[] = $this->taskExec($this->getBin('run'))
+                ->arg('toolkit:setup-user-escalation');
+        }
+
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
     }
