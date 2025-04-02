@@ -33,7 +33,12 @@ class UserEscalationCommands extends AbstractCommands
         }
 
         $context = stream_context_create(['http' => ['header' => "Authorization: Bearer $token"]]);
-        $content = file_get_contents($config['endpoints']['user_escalation'], false, $context);
+        $endpoint = $config['endpoints']['user_escalation'];
+        // If we have set an env var with this endpoint, use it.
+        if (!empty($override = getenv('USER_ESCALATION_ENDPOINT'))) {
+            $endpoint = $override;
+        }
+        $content = file_get_contents($endpoint, false, $context);
         if (empty($content)) {
             $io->error('Failed to get the script from GitLab.');
             return ResultData::EXITCODE_ERROR;
