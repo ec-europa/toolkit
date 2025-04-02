@@ -15,8 +15,11 @@ trait Tasks
     /**
      * Execute a command.
      *
-     * @param array $tasks
+     * @param string[] $tasks
      *   An array with tasks to execute.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The task executed.
      */
     protected function taskExecute(array $tasks)
     {

@@ -81,7 +81,7 @@
           ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
           ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
         [Simulator] Simulating Exec('find dist -maxdepth 1 ! -name "dist" ! -name "web" ! - ... " -exec rm -rf {} +')
-        [Simulator] Running find dist -maxdepth 1 ! -name "dist" ! -name "web" ! -name "config" ! -name "vendor" ! -name "composer.lock" ! -name "composer.json" -exec rm -rf {} +
+        [Simulator] Running find dist -maxdepth 1 ! -name "dist" ! -name "web" ! -name "config" ! -name "vendor" ! -name "composer.lock" ! -name "composer.json" ! -name ".leaksignore" ! -name ".snyk" -exec rm -rf {} +
         [Simulator] Simulating File\Write('dist/manifest.json')
           ->text('{"drupal_profile":"minimal","project_id":"toolkit","dr ... rsion":"","sha":""}')
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')

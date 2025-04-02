@@ -19,7 +19,11 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class PatchCommands extends AbstractCommands
 {
-
+    /**
+     * The command options.
+     *
+     * @var array<mixed> $options
+     */
     protected $options;
 
     /**
@@ -33,13 +37,19 @@ class PatchCommands extends AbstractCommands
     /**
      * Lists remote patches from the root composer.json.
      *
+     * @param array<mixed> $options
+     *   The option to be list.
+     *
      * @command toolkit:patch-list
      *
      * @option package      List patches for given package.
      * @option composer     The composer.json relative path.
      * @option dependencies Look for patches defined by dependencies.
      *
-     * @aliases tk-pl
+     * @aliases tk-pl.
+     *
+     * @return int
+     *   Remote patch list.
      */
     public function toolkitPatchList(ConsoleIO $io, array $options = [
         'package' => InputOption::VALUE_REQUIRED,
@@ -56,6 +66,9 @@ class PatchCommands extends AbstractCommands
     /**
      * Download remote patches into a local directory.
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:patch-download
      *
      * @option dir          The destination directory to save the patches.
@@ -64,6 +77,9 @@ class PatchCommands extends AbstractCommands
      * @option dependencies Look for patches defined by dependencies.
      *
      * @aliases tk-pd
+     *
+     * @return int|mixed
+     *   Patch download status.
      *
      * phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
      */
@@ -108,6 +124,9 @@ class PatchCommands extends AbstractCommands
 
     /**
      * Returns the patches to be downloaded.
+     *
+     * @return string[]
+     *   Patches to be downloaded.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -164,6 +183,9 @@ class PatchCommands extends AbstractCommands
 
     /**
      * Returns the patches from dependencies.
+     *
+     * @return array<mixed>
+     *   Patches from dependencies.
      */
     private function getDependenciesPatches(): array
     {

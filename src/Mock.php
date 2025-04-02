@@ -17,7 +17,7 @@ final class Mock
      *
      * @var string
      */
-    private static string $defaultTag = '0.0.29';
+    private static string $defaultTag = '0.0.39';
 
     /**
      * The directory to download the mock to.
@@ -57,6 +57,9 @@ final class Mock
      *
      * @param string $endpoint
      *   The endpoint to return the content from.
+     *
+     * @return false|string
+     *   Content or false.
      *
      * @throws \Exception
      *   If the mock or endpoint file is not found.

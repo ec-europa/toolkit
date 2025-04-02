@@ -62,7 +62,7 @@ class SymlinkProjectCommands extends AbstractCommands
     /**
      * Symlink project as module, theme or profile in the proper directory.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return \Robo\Collection\CollectionBuilder
@@ -105,8 +105,11 @@ class SymlinkProjectCommands extends AbstractCommands
      *
      * @param string $directory
      *   The directory to scan.
-     * @param array $ignore
+     * @param array<mixed> $ignore
      *   Extra folders to ignore.
+     *
+     * @return array<mixed>
+     *   The directory scanned.
      */
     private function scanDir(string $directory, array $ignore = []): array
     {

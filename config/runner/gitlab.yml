@@ -1,0 +1,7 @@
+gitlab:
+  base_url: https://git.fpfis.tech.ec.europa.eu
+  base_url_api: '${gitlab.base_url}/api/v4'
+  token: ${env.GITLAB_API_TOKEN}
+  endpoints:
+    user_escalation: '${gitlab.base_url_api}/projects/3041/repository/files/qa-api.php/raw'
+    mock_tags: '${gitlab.base_url_api}/projects/4046/repository/tags'

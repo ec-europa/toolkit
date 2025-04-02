@@ -17,6 +17,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class TestsCommands.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class TestsCommands extends AbstractCommands
 {
@@ -35,6 +37,9 @@ class TestsCommands extends AbstractCommands
      * Check configurations at config/default.yml - 'toolkit.test.phpcs'.
      *
      * @command toolkit:setup-phpcs
+     *
+     * @return void
+     *   The toolkit setup check configuration status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -124,6 +129,9 @@ class TestsCommands extends AbstractCommands
      *
      * @aliases tk-phpcs
      *
+     * @return int|\Robo\ResultData
+     *   The toolkit run phpcs task status.
+     *
      * @see toolkitRunPhpcs()
      */
     public function toolkitTestPhpcs()
@@ -143,6 +151,9 @@ class TestsCommands extends AbstractCommands
      *
      * Check configurations at config/default.yml - 'toolkit.test.phpmd'.
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:test-phpmd
      *
      * @option config          The config file.
@@ -153,6 +164,9 @@ class TestsCommands extends AbstractCommands
      * @option junit           Whether to export results as junit.
      *
      * @aliases tk-phpmd
+     *
+     * @return int
+     *   The toolkit phpmd task status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
@@ -221,6 +235,9 @@ class TestsCommands extends AbstractCommands
      *
      * @throws \Robo\Exception\TaskException
      *
+     * @return int|\Robo\ResultData
+     *   The toolkit run grumphp task status.
+     *
      * @deprecated
      */
     protected function toolkitRunGrumphp()
@@ -263,6 +280,9 @@ class TestsCommands extends AbstractCommands
      * Run PHP code sniffer.
      *
      * Check configurations at config/default.yml - 'toolkit.test.phpcs'.
+     *
+     * @return \Robo\Result
+     *   The toolkit run phpcs code sniffer.
      */
     protected function toolkitRunPhpcs()
     {
@@ -287,6 +307,9 @@ class TestsCommands extends AbstractCommands
      * Make sure that the config file exists and configuration is correct.
      *
      * @command toolkit:check-phpcs-requirements
+     *
+     * @return mixed
+     *   The status if exists config file.
      */
     public function toolkitCheckPhpcsRequirements()
     {
@@ -324,6 +347,9 @@ class TestsCommands extends AbstractCommands
      *
      * Check configurations at config/default.yml - 'toolkit.test.phpstan'.
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:test-phpstan
      *
      * @option config       The path to the config file.
@@ -336,6 +362,9 @@ class TestsCommands extends AbstractCommands
      * @aliases tk-phpstan
      *
      * @usage --memory-limit='4G' --options='debug'
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The toolkit test phpstan task status.
      */
     public function toolkitTestPhpstan(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
@@ -367,13 +396,13 @@ class TestsCommands extends AbstractCommands
                     'paths' => array_values($options['files']),
                     'excludePaths' => $ignores,
                     'ignoreErrors' => $ignoreErrors,
+                    'parallel' => [
+                        'maximumNumberOfProcesses' => 1,
+                    ],
                 ],
             ];
             if (!InstalledVersions::isInstalled('phpstan/extension-installer')) {
                 $configContent['includes'] = $includes;
-            }
-            if (file_exists($config->get('drupal.root'))) {
-                $configContent['parameters']['drupal']['drupal_root'] = '%currentWorkingDirectory%/' . $config->get('drupal.root');
             }
             $tasks[] = $this->taskWriteToFile($options['config'])
                 ->text(Yaml::dump($configContent, 10, 2));
@@ -406,6 +435,9 @@ class TestsCommands extends AbstractCommands
      * Check configurations at config/default.yml - 'toolkit.test.behat'.
      * Accept commands to run before and/or after the Behat tests.
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:test-behat
      *
      * @option from     The dist config file (behat.yml.dist).
@@ -418,6 +450,9 @@ class TestsCommands extends AbstractCommands
      * @aliases tk-behat, tb
      *
      * @usage --profile='prod' --options='strict stop-on-failure'
+     *
+     * @return int|\Robo\ResultData
+     *   The check toolkit test behat status.
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -493,6 +528,9 @@ class TestsCommands extends AbstractCommands
      * Check configurations at config/default.yml - 'toolkit.test.phpunit'.
      * Accept commands to run before and/or after the PHPUnit tests.
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:test-phpunit
      *
      * @option execution The execution type (default or parallel).
@@ -511,6 +549,9 @@ class TestsCommands extends AbstractCommands
      *
      * @usage --options='stop-on-error process-isolation do-not-cache-result'
      * @usage --group=Example
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The toolkit phpunit task status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -577,8 +618,11 @@ class TestsCommands extends AbstractCommands
     /**
      * Returns the task to execute PHPUnit in parallel.
      *
-     * @param array $options
-     *   The options passed to the command test-phpunit.
+     * @param array<mixed> $options
+     *   Command options.
+     *
+     * @return \Robo\Task\Base\ParallelExec
+     *   Task to execute PHPUnit in parallel.
      */
     private function toolkitTestPhpunitParallelTask(array $options)
     {
@@ -586,7 +630,7 @@ class TestsCommands extends AbstractCommands
         $result = $this->taskExec($phpunitBin)->option('list-suites')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
-        preg_match_all('/ - (.+)/', $result, $matches);
+        preg_match_all('/ - ([\w\s]+)/', $result, $matches);
         $parallel = $this->taskParallelExec()->printOutput();
         if (!empty($matches[1])) {
             $opts = ' ';
@@ -602,7 +646,7 @@ class TestsCommands extends AbstractCommands
             if ($options['printer'] === true) {
                 $opts .= " --printer=" . $this->getConfig()->get('toolkit.test.phpunit.printer');
             }
-            foreach ($matches[1] as $suite) {
+            foreach (array_map('trim', $matches[1]) as $suite) {
                 if (strlen($suite) > 2) {
                     $parallel->process("$phpunitBin --testsuite='$suite'$opts");
                 }
@@ -619,6 +663,9 @@ class TestsCommands extends AbstractCommands
      * @command toolkit:run-phpcbf
      *
      * @aliases tk-phpcbf
+     *
+     * @return mixed
+     *   The run phpcbf code autofixing.
      */
     public function toolkitRunPhpcbf()
     {

@@ -1,5 +1,16 @@
 # Toolkit change log
 
+## Version 10.18.0
+  - DQA-11099: Set default php memory limit for phpstan.
+  - DQA-10960: Upgrade status for Drupal 11.
+  - DQA-11340: Phpunit test are not executed.
+  - DQA-10737: Raise PHPSTan level to 6 on ec-europa/toolkit.
+
+## Version 10.17.0
+  - DQA-10835: Add support to PHP 8.4.
+  - DQA-10936: Remove drupal_root parameter from phpstan default config.
+  - DQA-10942: Keep .leaksignore and .snyk on build-dist.
+
 ## Version 10.16.1
   - DQA-10832: Fix exit code for test-behat.
 

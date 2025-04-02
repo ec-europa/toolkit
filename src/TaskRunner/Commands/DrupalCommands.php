@@ -75,7 +75,7 @@ class DrupalCommands extends AbstractCommands
      * The settings override file name cannot be changed, changing the
      * "drupal.site.settings_override_file" property will have no effect.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @return \Robo\Collection\CollectionBuilder
@@ -129,13 +129,16 @@ class DrupalCommands extends AbstractCommands
      *
      * This command will set the necessary permissions on the default folder.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command drupal:permissions-setup
      *
      * @option root         Drupal root.
      * @option sites-subdir Drupal site subdirectory.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The permissions set status task.
      */
     public function drupalPermissionsSetup(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -168,6 +171,9 @@ class DrupalCommands extends AbstractCommands
      * @throws \Exception
      *   Thrown when the settings file or its containing folder does not exist
      *   or is not writeable.
+     *
+     * @return void
+     *   Drupal site install validate status.
      */
     public function drupalSiteInstallValidate(CommandData $commandData)
     {
@@ -207,13 +213,16 @@ class DrupalCommands extends AbstractCommands
      * >       ignored-directories: "${drupal.root}"
      * >       uri: "${drupal.base_url}"
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command drupal:drush-setup
      *
      * @option root       Drupal root.
      * @option config-dir Directory where to store Drush 9 configuration file.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The drupal drush setup.
      */
     public function drupalDrushSetup(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -233,7 +242,7 @@ class DrupalCommands extends AbstractCommands
      * This command will install a target Drupal site using configuration values
      * provided in local runner.yml.dist/runner.yml files.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command drupal:site-install
@@ -258,6 +267,9 @@ class DrupalCommands extends AbstractCommands
      * @option skip-permissions-setup Whether to skip making the settings file and folder writable during installation.
      *
      * @aliases drupal:si,dsi
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The collection builder.
      */
     public function drupalSiteInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -334,10 +346,13 @@ class DrupalCommands extends AbstractCommands
     /**
      * Process pre and post install string-only commands by replacing given tokens.
      *
-     * @param array $commands
+     * @param array<string> $commands
      *   List of commands.
-     * @param array $tokens
+     * @param array<string> $tokens
      *   Replacement key-value tokens.
+     *
+     * @return void
+     *   The process pre and post install commands.
      */
     protected function processPrePostInstallCommands(array &$commands, array $tokens)
     {
@@ -354,20 +369,26 @@ class DrupalCommands extends AbstractCommands
      * Commands have to be listed under the "drupal.pre_install" property in
      * your local runner.yml.dist/runner.yml files, as shown below:
      *
-     * > drupal:
-     * >   ...
-     * >   pre_install:
-     * >     - { task: "symlink", from: "../libraries", to: "${drupal.root}/libraries" }
-     * >     - { task: "process", source: "behat.yml.dist", destination: "behat.yml" }
+     * @param array<mixed> $options
+     *   Command options.
      *
-     * Pre-install commands are automatically executed before installing the site
-     * when running "drupal:site-install".
+     *   > drupal:
+     *   >   ...
+     *   >   pre_install:
+     *   >     - { task: "symlink", from: "../libraries", to: "${drupal.root}/libraries" }
+     *   >     - { task: "process", source: "behat.yml.dist", destination: "behat.yml" }
+     *
+     *    Pre-install commands are automatically executed before installing the site
+     *    when running "drupal:site-install".
      *
      * @command drupal:site-pre-install
      *
      * @option root
      *   The Drupal root. All occurrences of "!root" in the pre-install
      *   string-only commands will be substituted with this value.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   The drupal site tasks to be executed.
      */
     public function drupalSitePreInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -386,20 +407,26 @@ class DrupalCommands extends AbstractCommands
      * Commands have to be listed under the "drupal.post_install" property in
      * your local runner.yml.dist/runner.yml files, as shown below:
      *
-     * > drupal:
-     * >   ...
-     * >   post_install:
-     * >     - "./vendor/bin/drush en views -y"
-     * >     - { task: "process", source: "behat.yml.dist", destination: "behat.yml" }
+     *   > drupal:
+     *   >   ...
+     *   >   post_install:
+     *   >     - "./vendor/bin/drush en views -y"
+     *   >     - { task: "process", source: "behat.yml.dist", destination: "behat.yml" }
      *
-     * Post-install commands are automatically executed after installing the site
-     * when running "drupal:site-install".
+     *   Post-install commands are automatically executed after installing the site
+     *   when running "drupal:site-install".
+     *
+     * @param array<mixed> $options
+     *   Command options.
      *
      * @command drupal:site-post-install
      *
      * @option root
      *   The Drupal root. All occurrences of "!root" in the post-install
      *   string-only commands will be substituted with this value.
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   Collection builder.
      */
     public function drupalSitePostInstall(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
@@ -416,6 +443,9 @@ class DrupalCommands extends AbstractCommands
      * Disable aggregation and clear cache.
      *
      * @command drupal:disable-cache
+     *
+     * @return \Robo\Collection\CollectionBuilder
+     *   Collection builder.
      */
     public function drupalDisableCache()
     {
@@ -433,14 +463,14 @@ class DrupalCommands extends AbstractCommands
     }
 
     /**
-     * Check project compatibility for Drupal 9/10 upgrade.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * Check project compatibility for Drupal 9/10/11 upgrade.
      *
      * @command drupal:upgrade-status
      *
      * @aliases tdus
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function drupalUpgradeStatus(): int
     {
@@ -457,7 +487,7 @@ class DrupalCommands extends AbstractCommands
         // Require 'drupal/upgrade_status' if does not exist on the project.
         if (!ToolCommands::getPackagePropertyFromComposer('drupal/upgrade_status')) {
             $collection->taskComposerRequire()
-                ->dependency('drupal/upgrade_status', '^3')
+                ->dependency('drupal/upgrade_status', '^3||^4')
                 ->dev()->run();
         }
         // Require 'drupal/core-dev' if does not exist on the project.
@@ -484,7 +514,7 @@ class DrupalCommands extends AbstractCommands
         $qaCompatibilityResult = 0;
         if (is_string($result)) {
             foreach (['Check manually', 'Fix now'] as $flag) {
-                if (strpos($result, $flag) !== false) {
+                if (str_contains($result, $flag)) {
                     $qaCompatibilityResult = 1;
                 }
             }
@@ -497,24 +527,27 @@ class DrupalCommands extends AbstractCommands
         $drupalVersion = ToolCommands::getPackagePropertyFromComposer('drupal/core');
         if (Semver::satisfies($drupalVersion, '^8')) {
             $this->say('Congrats, looks like your project is Drupal 9 compatible.');
-        }
-        if (Semver::satisfies($drupalVersion, '^9')) {
+        } elseif (Semver::satisfies($drupalVersion, '^9')) {
             $this->say('Congrats, looks like your project is Drupal 10 compatible.');
+        } elseif (Semver::satisfies($drupalVersion, '^10')) {
+            $this->say('Congrats, looks like your project is Drupal 11 compatible.');
         }
-
         return $qaCompatibilityResult;
     }
 
     /**
      * Command to check the forbidden permissions.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command drupal:check-permissions
      *
      * @option endpoint The endpoint to use to connect to QA Website.
      * @option blocker  If given and in case of error the command will fail.
+     *
+     * @return int
+     *   Command exit code.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)

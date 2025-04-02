@@ -21,11 +21,17 @@ class BlackfireCommands extends AbstractCommands
     /**
      * Run Blackfire.
      *
+     * @param array<mixed> $options
+     *   Command options.
+     *
      * @command toolkit:run-blackfire
      *
      * @option endpoint The endpoint to use to connect to QA Website.
      *
      * @aliases tk-bfire, tbf
+     *
+     * @return \Robo\ResultData
+     *   Run blackfire.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -181,6 +187,9 @@ class BlackfireCommands extends AbstractCommands
      * Copy the needed resources to run Behat with Blackfire.
      *
      * @command toolkit:setup-blackfire-behat
+     *
+     * @return int
+     *   The setup blackfire behat status.
      */
     public function setupBlackfireBehat()
     {

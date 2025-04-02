@@ -27,7 +27,7 @@ class InstallCommands extends AbstractCommands
     /**
      * Install a clean website.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command toolkit:install-clean
@@ -70,7 +70,7 @@ class InstallCommands extends AbstractCommands
     /**
      * Install a clone website.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command toolkit:install-clone
@@ -80,7 +80,7 @@ class InstallCommands extends AbstractCommands
      * @aliases tk-iclone
      *
      * @return \Robo\Collection\CollectionBuilder
-     *   Collection builder.
+     *   The cloned website task.
      */
     public function toolkitInstallClone(ConsoleIO $io, array $options = [
         'dumpfile' => InputOption::VALUE_REQUIRED,
@@ -125,7 +125,7 @@ class InstallCommands extends AbstractCommands
      * it is available it will run the commands defined in the yaml file under the
      * selected key. If not we will run a standard set of deployment commands.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *   Command options.
      *
      * @command toolkit:run-deploy
