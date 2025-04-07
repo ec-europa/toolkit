@@ -1666,6 +1666,16 @@ Search.appendIndex(
             "summary": "Display\u0020Toolkit\u0020notifications.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_toolkitNotifications"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\UserEscalationCommands",
+            "name": "UserEscalationCommands",
+            "summary": "Provides\u0020a\u0020setup\u0020command\u0020for\u0020user\u0020escalation\u0020script.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-UserEscalationCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\UserEscalationCommands\u003A\u003AtoolkitSetupUserEscalation\u0028\u0029",
+            "name": "toolkitSetupUserEscalation",
+            "summary": "Perform\u0020the\u0020setup\u0020of\u0020the\u0020user\u0020escalation\u0020script.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-UserEscalationCommands.html#method_toolkitSetupUserEscalation"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Inject\\ConfigForCommand",
             "name": "ConfigForCommand",
             "summary": "This\u0020class\u0020is\u0020based\u0020on\u0020\\Consolidation\\Config\\Inject\\ConfigForCommand.",
