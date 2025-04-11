@@ -46,7 +46,7 @@ class PatchCommands extends AbstractCommands
      * @option composer     The composer.json relative path.
      * @option dependencies Look for patches defined by dependencies.
      *
-     * @aliases tk-pl.
+     * @aliases tk-pl
      *
      * @return int
      *   Remote patch list.

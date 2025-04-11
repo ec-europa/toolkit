@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 10.19.1
+  - DQA-11423: User escalation: mechanism to deploy script.
+
 ## Version 10.18.0
   - DQA-11099: Set default php memory limit for phpstan.
   - DQA-10960: Upgrade status for Drupal 11.
