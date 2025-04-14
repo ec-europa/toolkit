@@ -99,7 +99,7 @@ class GeneratePackagesComposerCommands extends AbstractCommands
                 unset($result['path']);
                 $tasks[] = $this
                     ->taskWriteToFile("$path/composer.json")
-                    ->text(json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+                    ->text(json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL);
             }
             if (empty($options['skip-project-composer'])) {
                 $composer = $this->getJson('composer.json', false);
@@ -107,33 +107,47 @@ class GeneratePackagesComposerCommands extends AbstractCommands
                     if (!isset($composer['repositories'])) {
                         $composer['repositories'] = [];
                     }
-                    $localRepoExists = false;
+                    $packages = array_column($results, 'name');
+                    $path = str_replace($customCodeFolder . '/', '', $results[0]['path']);
+                    $levels = str_repeat('/*', count(explode('/', $path)));
+                    $localRepoExists = $composerChanged = false;
                     foreach ($composer['repositories'] as $repository) {
-                        if (isset($repository['path']) && isset($repository['url'])) {
-                            if (str_starts_with($repository, $customCodeFolder)) {
-                                $localRepoExists = true;
-                                break;
+                        if (!isset($repository['type']) || !isset($repository['url'])) {
+                            continue;
+                        }
+                        if ($repository['type'] === 'path' && $repository['url'] === $customCodeFolder . $levels) {
+                            $localRepoExists = true;
+                            // Update existing repositories.
+                            if (!isset($repository['options']['versions'])) {
+                                $repository['options']['versions'] = [];
                             }
+                            foreach ($results as $result) {
+                                if (!isset($repository['options']['versions'][$result['name']])) {
+                                    $composerChanged = true;
+                                    $repository['options']['versions'][$result['name']] = '1.0.0';
+                                }
+                            }
+                            break;
                         }
                     }
                     if (!$localRepoExists) {
-                        $packages = array_column($results, 'name');
-                        $path = str_replace($customCodeFolder . '/', '', $results[0]['path']);
-                        $levels = str_repeat('/*', count(explode('/', $path)));
+                        $composerChanged = true;
                         $composer['repositories'][] = [
                             'type' => 'path',
                             'url' => $customCodeFolder . $levels,
                             'options' => [
-                                'versions' => array_combine(
-                                    $packages,
-                                    array_fill(0, count($results), '1.0.0')
-                                ),
+                                'versions' => array_combine($packages, array_fill(0, count($results), '1.0.0')),
                             ],
                         ];
+                    }
+
+                    if ($composerChanged) {
                         $tasks[] = $this
                             ->taskWriteToFile('composer.json')
                             ->text(json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
                         $tasks[] = $this->taskExec('composer require ' . implode(':^1.0.0 ', $packages) . ':^1.0.0');
+                    } else {
+                        $io->writeln('Nothing to update on the Project composer.json.');
                     }
                 }
             }
