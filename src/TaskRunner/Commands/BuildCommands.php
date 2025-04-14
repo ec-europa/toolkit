@@ -291,6 +291,7 @@ class BuildCommands extends AbstractCommands
      * @command toolkit:build-assets
      *
      * @option default-theme          The theme where to build assets.
+     * @option custom-code-folder     The location of the custom code.
      * @option build-npm-packages     The packages to install.
      * @option theme-task-runner      The task runner to use: 'ecl-builder' or 'gulp' as alternative.
      * @option ecl-command=[COMMAND]  Run 'ecl-builder' with append command(s) (use '--ecl-command=help' to see all options).
