@@ -42,6 +42,7 @@ class GeneratePackagesComposerCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function toolkitGeneratePackagesComposer(ConsoleIO $io, array $options = [
         'custom-code-folder' => InputOption::VALUE_REQUIRED,
@@ -179,7 +180,7 @@ class GeneratePackagesComposerCommands extends AbstractCommands
         }
         // Make sure the pattern is correct.
         if (!empty($exploded[0]) && !empty($exploded[1])) {
-            return $exploded[0];
+            return strtolower($exploded[0]);
         }
 
         return 'digit';
