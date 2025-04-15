@@ -306,3 +306,46 @@
       file_actual: composer.json
     - string_contains: '[File\Write] Writing to lib/modules/module_one/composer.json.'
     - not_string_contains: '[File\Write] Writing to composer.json.'
+
+- command: 'toolkit:generate-packages-composer --skip-project-composer'
+  configuration: [ ]
+  variables: []
+  resources:
+    - file: test_module_one.json
+      content: |
+        {
+            "name": "digit/module_one",
+            "type": "drupal-custom-module",
+            "description": "Module One description.",
+            "minimum-stability": "dev",
+            "prefer-stable": true,
+            "require": {
+                "drupal/core": "^10 || ^11"
+            }
+        }
+
+    - file: composer.json
+      content: '{"name": "digit/toolkit"}'
+    - mkdir: lib/modules/module_one
+    - file: lib/modules/module_one/module_one.info.yml
+      content: |
+          name: 'Module One'
+          type: module
+          description: 'Module One description.'
+          core_version_requirement: ^10 || ^11
+          package: 'Digit'
+    - mkdir: lib/modules/module_one/modules
+    - file: lib/modules/module_one/modules/module_nested/module_nested.info.yml
+      content: |
+          name: 'Module Nested'
+          type: module
+          description: 'Module Nested description.'
+          core_version_requirement: ^10 || ^11
+          package: 'Digit'
+  simulate: false
+  expectations:
+    - file_expected: test_module_one.json
+      file_actual: lib/modules/module_one/composer.json
+    - string_contains: '[File\Write] Writing to lib/modules/module_one/composer.json.'
+    - not_string_contains: '[File\Write] Writing to composer.json.'
+    - not_string_contains: '[File\Write] Writing to lib/modules/module_one/modules/module_nested/composer.json.'

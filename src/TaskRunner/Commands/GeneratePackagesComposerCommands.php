@@ -55,8 +55,11 @@ class GeneratePackagesComposerCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        $finder = new Finder();
-        $files = $finder->files()->name('*.info.yml')->in($customCodeFolder);
+        $files = (new Finder())->files()
+            ->name('*.info.yml')
+            ->in($customCodeFolder)
+            ->depth('< 4')
+            ->sortByName();
         if (empty($files->count())) {
             $io->warning("The folder $customCodeFolder does not contain any package.");
             return ResultData::EXITCODE_OK;
