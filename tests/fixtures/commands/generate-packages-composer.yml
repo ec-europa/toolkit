@@ -55,14 +55,13 @@
         drupal-custom-module   digit/module_two   lib/modules/module_two
         drupal-custom-theme    digit/theme        lib/themes/theme
         ---------------------- ------------------ ------------------------
-    - string_contains: The following packages were found, do you want to proceed with composer.json creation? (yes/no)
     - string_contains: |
-        >  [Simulator] Simulating File\Write('lib/modules/module_one/composer.json')
-            ->text('{ ... ')
-         [Simulator] Simulating File\Write('lib/modules/module_two/composer.json')
-            ->text('{ ... ')
-         [Simulator] Simulating File\Write('lib/themes/theme/composer.json')
-            ->text('{ ... ')
+        [Simulator] Simulating File\Write('lib/modules/module_one/composer.json')
+           ->text('{ ... ')
+        [Simulator] Simulating File\Write('lib/modules/module_two/composer.json')
+           ->text('{ ... ')
+        [Simulator] Simulating File\Write('lib/themes/theme/composer.json')
+           ->text('{ ... ')
 
 - command: 'toolkit:generate-packages-composer'
   configuration: [ ]

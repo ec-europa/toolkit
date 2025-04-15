@@ -59,7 +59,7 @@ class GeneratePackagesComposerCommandsTest extends AbstractTest
         $this->prepareResources($resources);
 
         // Run command.
-        $result = $this->runCommand($command, $simulate);
+        $result = $this->runCommand("$command --no-interaction", $simulate);
 
         $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
