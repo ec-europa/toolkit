@@ -6,6 +6,7 @@ namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
+use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
@@ -149,7 +150,8 @@ class GeneratePackagesComposerCommands extends AbstractCommands
                         $tasks[] = $this
                             ->taskWriteToFile('composer.json')
                             ->text(json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-                        $tasks[] = $this->taskExec('composer require ' . implode(':^1.0.0 ', $packages) . ':^1.0.0');
+                        $tasks[] = $this->taskExec('composer require --no-update ' . implode(':^1.0.0 ', $packages) . ':^1.0.0')
+                            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG);
                     } else {
                         $io->writeln('Nothing to update on the Project composer.json.');
                     }

@@ -156,8 +156,7 @@
         drupal-custom-module   owner/module_two   lib/modules/module_two
         drupal-custom-theme    owner/theme        lib/themes/theme
     - string_contains: |
-        [Simulator] Simulating Exec('composer require owner/module_one:^1.0.0 owner/module_ ...  owner/theme:^1.0.0')
-        [Simulator] Running composer require owner/module_one:^1.0.0 owner/module_two:^1.0.0 owner/theme:^1.0.0
+        [Simulator] Running composer require --no-update owner/module_one:^1.0.0 owner/module_two:^1.0.0 owner/theme:^1.0.0
 
 - command: 'toolkit:generate-packages-composer'
   configuration: [ ]
@@ -267,7 +266,6 @@
         [File\Write] Writing to lib/modules/module_two/composer.json.
         [File\Write] Writing to lib/themes/theme/composer.json.
         [File\Write] Writing to composer.json.
-        [Exec] Running composer require digit/module_one:^1.0.0 digit/module_two:^1.0.0 digit/theme:^1.0.0
 
 - command: 'toolkit:generate-packages-composer --skip-project-composer'
   configuration: [ ]
