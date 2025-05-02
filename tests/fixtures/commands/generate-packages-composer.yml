@@ -1,0 +1,349 @@
+- command: 'toolkit:generate-packages-composer'
+  configuration: [ ]
+  variables: [ ]
+  resources: [ ]
+  simulate: true
+  expectations:
+    - contains: "[ERROR] The folder lib does not exist."
+
+- command: 'toolkit:generate-packages-composer'
+  configuration: [ ]
+  variables: [ ]
+  resources:
+    - mkdir: lib/modules/module_one
+    - mkdir: lib/modules/module_two
+    - mkdir: lib/themes/theme
+  simulate: true
+  expectations:
+    - contains: "[WARNING] The folder lib does not contain any package."
+
+- command: 'toolkit:generate-packages-composer'
+  configuration: [ ]
+  variables: [ ]
+  resources:
+    - mkdir: lib/modules/module_one
+    - file: lib/modules/module_one/module_one.info.yml
+      content: |
+          name: 'Module One'
+          type: module
+          description: 'Module One description.'
+          core_version_requirement: ^10 || ^11
+          package: 'Digit'
+    - mkdir: lib/modules/module_two
+    - file: lib/modules/module_two/module_two.info.yml
+      content: |
+        name: 'Module Two'
+        type: module
+        description: 'Module Two description.'
+        core_version_requirement: ^10 || ^11
+        package: 'Digit'
+    - mkdir: lib/themes/theme
+    - file: lib/themes/theme/theme.info.yml
+      content: |
+        name: 'Theme'
+        type: theme
+        description: 'Theme description.'
+        core_version_requirement: ^10 || ^11
+        package: 'Digit'
+  simulate: true
+  expectations:
+    - string_contains: |
+        ---------------------- ------------------ ------------------------
+        Type                   Name               Location
+        ---------------------- ------------------ ------------------------
+        drupal-custom-module   digit/module_one   lib/modules/module_one
+        drupal-custom-module   digit/module_two   lib/modules/module_two
+        drupal-custom-theme    digit/theme        lib/themes/theme
+        ---------------------- ------------------ ------------------------
+    - string_contains: |
+        [Simulator] Simulating File\Write('lib/modules/module_one/composer.json')
+           ->text('{ ... ')
+        [Simulator] Simulating File\Write('lib/modules/module_two/composer.json')
+           ->text('{ ... ')
+        [Simulator] Simulating File\Write('lib/themes/theme/composer.json')
+           ->text('{ ... ')
+
+- command: 'toolkit:generate-packages-composer'
+  configuration: [ ]
+  variables:
+    - TOOLKIT_PROJECT_ID=OWNER-TOOLKIT
+  resources:
+    - mkdir: lib/modules/module_one
+    - file: lib/modules/module_one/module_one.info.yml
+      content: |
+          name: 'Module One'
+          type: module
+          description: 'Module One description.'
+          core_version_requirement: ^10 || ^11
+          package: 'Digit'
+    - mkdir: lib/modules/module_two
+    - file: lib/modules/module_two/module_two.info.yml
+      content: |
+        name: 'Module Two'
+        type: module
+        description: 'Module Two description.'
+        core_version_requirement: ^10 || ^11
+        package: 'Digit'
+    - mkdir: lib/themes/theme
+    - file: lib/themes/theme/theme.info.yml
+      content: |
+        name: 'Theme'
+        type: theme
+        description: 'Theme description.'
+        core_version_requirement: ^10 || ^11
+        package: 'Digit'
+  simulate: true
+  expectations:
+    - string_contains: |
+        drupal-custom-module   owner/module_one   lib/modules/module_one
+        drupal-custom-module   owner/module_two   lib/modules/module_two
+        drupal-custom-theme    owner/theme        lib/themes/theme
+
+- command: 'toolkit:generate-packages-composer'
+  configuration:
+    toolkit:
+      build:
+        custom-code-folder: src
+  variables: []
+  resources:
+    - mkdir: src/modules/module_one
+    - file: src/modules/module_one/module_one.info.yml
+      content: |
+          name: 'Module One'
+          type: module
+          description: 'Module One description.'
+          core_version_requirement: ^10 || ^11
+          package: 'Digit'
+  simulate: true
+  expectations:
+    - string_contains: |
+        drupal-custom-module   digit/module_one   src/modules/module_one
+
+- command: 'toolkit:generate-packages-composer'
+  configuration: [ ]
+  variables: []
+  resources:
+    - file: composer.json
+      content: '{"name": "owner/toolkit"}'
+    - mkdir: lib/modules/module_one
+    - file: lib/modules/module_one/module_one.info.yml
+      content: |
+          name: 'Module One'
+          type: module
+          description: 'Module One description.'
+          core_version_requirement: ^10 || ^11
+          package: 'Digit'
+    - mkdir: lib/modules/module_two
+    - file: lib/modules/module_two/module_two.info.yml
+      content: |
+        name: 'Module Two'
+        type: module
+        description: 'Module Two description.'
+        core_version_requirement: ^10 || ^11
+        package: 'Digit'
+    - mkdir: lib/themes/theme
+    - file: lib/themes/theme/theme.info.yml
+      content: |
+        name: 'Theme'
+        type: theme
+        description: 'Theme description.'
+        core_version_requirement: ^10 || ^11
+        package: 'Digit'
+  simulate: true
+  expectations:
+    - string_contains: |
+        drupal-custom-module   owner/module_one   lib/modules/module_one
+        drupal-custom-module   owner/module_two   lib/modules/module_two
+        drupal-custom-theme    owner/theme        lib/themes/theme
+    - string_contains: |
+        [Simulator] Running composer require --no-update owner/module_one:^1.0.0 owner/module_two:^1.0.0 owner/theme:^1.0.0
+
+- command: 'toolkit:generate-packages-composer'
+  configuration: [ ]
+  variables: []
+  resources:
+    - file: test_module_one.json
+      content: |
+        {
+            "name": "digit/module_one",
+            "type": "drupal-custom-module",
+            "description": "Module One description.",
+            "minimum-stability": "dev",
+            "prefer-stable": true,
+            "require": {
+                "drupal/core": "^10 || ^11"
+            }
+        }
+
+    - file: test_module_two.json
+      content: |
+        {
+            "name": "digit/module_two",
+            "type": "drupal-custom-module",
+            "description": "Module Two description.",
+            "minimum-stability": "dev",
+            "prefer-stable": true,
+            "require": {
+                "drupal/core": "^11"
+            }
+        }
+
+    - file: test_theme.json
+      content: |
+        {
+            "name": "digit/theme",
+            "type": "drupal-custom-theme",
+            "description": "Theme description.",
+            "minimum-stability": "dev",
+            "prefer-stable": true,
+            "require": {
+                "drupal/core": "^10 || ^11"
+            }
+        }
+
+    - file: test_composer.json
+      content: |
+        {
+            "name": "digit/toolkit",
+            "repositories": [
+                {
+                    "type": "path",
+                    "url": "lib/*/*",
+                    "options": {
+                        "versions": {
+                            "digit/module_one": "1.0.0",
+                            "digit/module_two": "1.0.0",
+                            "digit/theme": "1.0.0"
+                        }
+                    }
+                }
+            ],
+            "require": {
+                "digit/module_one": "^1.0.0",
+                "digit/module_two": "^1.0.0",
+                "digit/theme": "^1.0.0"
+            }
+        }
+
+    - file: composer.json
+      content: '{"name": "digit/toolkit"}'
+    - mkdir: lib/modules/module_one
+    - file: lib/modules/module_one/module_one.info.yml
+      content: |
+          name: 'Module One'
+          type: module
+          description: 'Module One description.'
+          core_version_requirement: ^10 || ^11
+          package: 'Digit'
+    - mkdir: lib/modules/module_two
+    - file: lib/modules/module_two/module_two.info.yml
+      content: |
+        name: 'Module Two'
+        type: module
+        description: 'Module Two description.'
+        core_version_requirement: ^11
+        package: 'Digit'
+    - mkdir: lib/themes/theme
+    - file: lib/themes/theme/theme.info.yml
+      content: |
+        name: 'Theme'
+        type: theme
+        description: 'Theme description.'
+        core_version_requirement: ^10 || ^11
+        package: 'Digit'
+  simulate: false
+  expectations:
+    - file_expected: test_module_one.json
+      file_actual: lib/modules/module_one/composer.json
+    - file_expected: test_module_two.json
+      file_actual: lib/modules/module_two/composer.json
+    - file_expected: test_theme.json
+      file_actual: lib/themes/theme/composer.json
+    - file_expected: test_composer.json
+      file_actual: composer.json
+    - string_contains: |
+        [File\Write] Writing to lib/modules/module_one/composer.json.
+        [File\Write] Writing to lib/modules/module_two/composer.json.
+        [File\Write] Writing to lib/themes/theme/composer.json.
+        [File\Write] Writing to composer.json.
+
+- command: 'toolkit:generate-packages-composer --skip-project-composer'
+  configuration: [ ]
+  variables: []
+  resources:
+    - file: test_module_one.json
+      content: |
+        {
+            "name": "digit/module_one",
+            "type": "drupal-custom-module",
+            "description": "Module One description.",
+            "minimum-stability": "dev",
+            "prefer-stable": true,
+            "require": {
+                "drupal/core": "^10 || ^11"
+            }
+        }
+
+    - file: test_composer.json
+      content: '{"name": "digit/toolkit"}'
+    - file: composer.json
+      content: '{"name": "digit/toolkit"}'
+    - mkdir: lib/modules/module_one
+    - file: lib/modules/module_one/module_one.info.yml
+      content: |
+          name: 'Module One'
+          type: module
+          description: 'Module One description.'
+          core_version_requirement: ^10 || ^11
+          package: 'Digit'
+  simulate: false
+  expectations:
+    - file_expected: test_module_one.json
+      file_actual: lib/modules/module_one/composer.json
+    - file_expected: test_composer.json
+      file_actual: composer.json
+    - string_contains: '[File\Write] Writing to lib/modules/module_one/composer.json.'
+    - not_string_contains: '[File\Write] Writing to composer.json.'
+
+- command: 'toolkit:generate-packages-composer --skip-project-composer'
+  configuration: [ ]
+  variables: []
+  resources:
+    - file: test_module_one.json
+      content: |
+        {
+            "name": "digit/module_one",
+            "type": "drupal-custom-module",
+            "description": "Module One description.",
+            "minimum-stability": "dev",
+            "prefer-stable": true,
+            "require": {
+                "drupal/core": "^10 || ^11"
+            }
+        }
+
+    - file: composer.json
+      content: '{"name": "digit/toolkit"}'
+    - mkdir: lib/modules/module_one
+    - file: lib/modules/module_one/module_one.info.yml
+      content: |
+          name: 'Module One'
+          type: module
+          description: 'Module One description.'
+          core_version_requirement: ^10 || ^11
+          package: 'Digit'
+    - mkdir: lib/modules/module_one/modules
+    - file: lib/modules/module_one/modules/module_nested/module_nested.info.yml
+      content: |
+          name: 'Module Nested'
+          type: module
+          description: 'Module Nested description.'
+          core_version_requirement: ^10 || ^11
+          package: 'Digit'
+  simulate: false
+  expectations:
+    - file_expected: test_module_one.json
+      file_actual: lib/modules/module_one/composer.json
+    - string_contains: '[File\Write] Writing to lib/modules/module_one/composer.json.'
+    - not_string_contains: '[File\Write] Writing to composer.json.'
+    - not_string_contains: '[File\Write] Writing to lib/modules/module_one/modules/module_nested/composer.json.'
