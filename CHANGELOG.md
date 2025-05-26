@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 10.19.2
+  - DQA-11542: Toolkit command to generate composer.json for packages.
+  - DQA-11423: User escalation: Fallback to ci token.
+
 ## Version 10.19.1
   - DQA-11423: User escalation: mechanism to deploy script.
 
