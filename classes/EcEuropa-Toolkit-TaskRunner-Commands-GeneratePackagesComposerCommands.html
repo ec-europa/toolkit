@@ -150,7 +150,7 @@
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    UserEscalationCommands
+    GeneratePackagesComposerCommands
 
         <span class="phpdocumentor-element__extends">
         extends <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html"><abbr title="\EcEuropa\Toolkit\TaskRunner\AbstractCommands">AbstractCommands</abbr></a>
@@ -172,13 +172,13 @@
 </div>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/UserEscalationCommands.php"><a href="files/src-taskrunner-commands-userescalationcommands.html"><abbr title="src/TaskRunner/Commands/UserEscalationCommands.php">UserEscalationCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GeneratePackagesComposerCommands.php"><a href="files/src-taskrunner-commands-generatepackagescomposercommands.html"><abbr title="src/TaskRunner/Commands/GeneratePackagesComposerCommands.php">GeneratePackagesComposerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">15</span>
+    <span class="phpdocumentor-element-found-in__line">19</span>
 
     </aside>
 
-            <p class="phpdocumentor-summary">Provides a setup command for user escalation script.</p>
+            <p class="phpdocumentor-summary">Provides command to generate composer.json files for local packages.</p>
 
 
 
@@ -190,7 +190,7 @@
 
 <h3 id="toc">
     Table of Contents
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-UserEscalationCommands.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h3>
 
@@ -205,12 +205,12 @@
 
 <h4 id="toc-methods">
     Methods
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-UserEscalationCommands.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
+    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
@@ -238,11 +238,11 @@
 <dd>Check if the website is installed.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-UserEscalationCommands.html#method_toolkitSetupUserEscalation">toolkitSetupUserEscalation()</a>
+    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_toolkitGeneratePackagesComposer">toolkitGeneratePackagesComposer()</a>
     <span>
-                                &nbsp;: int|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
+                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>|int    </span>
 </dt>
-<dd>Perform the setup of the user escalation script.</dd>
+<dd>Generate composer.json files for each local package.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a>
@@ -314,6 +314,13 @@
 </dt>
 <dd>Replace block in a file.</dd>
 
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_getProjectOwner">getProjectOwner()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Returns the project owner.</dd>
+
     </dl>
 
 
@@ -325,7 +332,7 @@
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-UserEscalationCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
@@ -336,13 +343,13 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_getConfigurationFile">
         getConfigurationFile()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GeneratePackagesComposerCommands.php"><a href="files/src-taskrunner-commands-generatepackagescomposercommands.html"><abbr title="src/TaskRunner/Commands/GeneratePackagesComposerCommands.php">GeneratePackagesComposerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">31</span>
+    <span class="phpdocumentor-element-found-in__line">25</span>
 
     </aside>
 
@@ -355,9 +362,7 @@
     <div class="phpdocumentor-label-line">
         </div>
     
-        <section class="phpdocumentor-description"><p>Command classes should implement this method.</p>
-</section>
-
+    
     
     
 
@@ -523,23 +528,23 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_toolkitSetupUserEscalation">
-        toolkitSetupUserEscalation()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-UserEscalationCommands.html#method_toolkitSetupUserEscalation" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_toolkitGeneratePackagesComposer">
+        toolkitGeneratePackagesComposer()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_toolkitGeneratePackagesComposer" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/UserEscalationCommands.php"><a href="files/src-taskrunner-commands-userescalationcommands.html"><abbr title="src/TaskRunner/Commands/UserEscalationCommands.php">UserEscalationCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GeneratePackagesComposerCommands.php"><a href="files/src-taskrunner-commands-generatepackagescomposercommands.html"><abbr title="src/TaskRunner/Commands/GeneratePackagesComposerCommands.php">GeneratePackagesComposerCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">28</span>
+    <span class="phpdocumentor-element-found-in__line">48</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Perform the setup of the user escalation script.</p>
+        <p class="phpdocumentor-summary">Generate composer.json files for each local package.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitSetupUserEscalation</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
+                    <span class="phpdocumentor-signature__name">toolkitGeneratePackagesComposer</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;custom-code-folder&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;skip-project-composer&#039; =&gt; InputOption::VALUE_NONE]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>|int</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -554,12 +559,21 @@
             <dd class="phpdocumentor-argument-list__definition">
                 
             </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$options</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;custom-code-folder&#039; =&gt; InputOption::VALUE_REQUIRED, &#039;skip-project-composer&#039; =&gt; InputOption::VALUE_NONE]</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>Command options.</p>
+</section>
+
+            </dd>
             </dl>
 
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-UserEscalationCommands.html#method_toolkitSetupUserEscalation#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_toolkitGeneratePackagesComposer#tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
@@ -568,16 +582,52 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>toolkit:setup-user-escalation</p>
+                                                 <section class="phpdocumentor-description"><p>toolkit:generate-packages-composer</p>
 </section>
 
                                     </dd>
                                                 <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">hidden</span>
+                    <span class="phpdocumentor-tag__name">option</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>true</p>
+                                                 <section class="phpdocumentor-description"><p>custom-code-folder     The location of the custom code.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>skip-project-composer  Skip update of the project composer.json.</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.ExcessiveMethodLength)</p>
 </section>
 
                                     </dd>
@@ -587,9 +637,9 @@
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">int|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
+        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>|int</span>
                     &mdash;
-                <section class="phpdocumentor-description"><p>The tasks to execute, or exit code.</p>
+                <section class="phpdocumentor-description"><p>Collection builder.</p>
 </section>
 
             </section>
@@ -1161,13 +1211,58 @@
             </section>
 
 </article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getProjectOwner">
+        getProjectOwner()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_getProjectOwner" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GeneratePackagesComposerCommands.php"><a href="files/src-taskrunner-commands-generatepackagescomposercommands.html"><abbr title="src/TaskRunner/Commands/GeneratePackagesComposerCommands.php">GeneratePackagesComposerCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">174</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns the project owner.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">getProjectOwner</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <section class="phpdocumentor-description"><p>Try to get it from environment variable or composer.json, fallback to digit.</p>
+</section>
+
+    
+    
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">string</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>The project owner, i.e: digit.</p>
+</section>
+
+            </section>
+
+</article>
             </section>
 
         <div class="phpdocumentor-modal" id="source-view">
     <div class="phpdocumentor-modal-bg" data-exit-button></div>
     <div class="phpdocumentor-modal-container">
         <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/TaskRunner/Commands/UserEscalationCommands.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/TaskRunner/Commands/GeneratePackagesComposerCommands.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
         </div>
         <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
     </div>
@@ -1266,7 +1361,7 @@
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                                                                <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-UserEscalationCommands.html#toc-methods">Methods</a></li>
+                                                                                <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#toc-methods">Methods</a></li>
                                     </ul>
             </li>
             
@@ -1274,11 +1369,11 @@
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
+                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson">getJson()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isWebsiteInstalled">isWebsiteInstalled()</a></li>
-                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-UserEscalationCommands.html#method_toolkitSetupUserEscalation">toolkitSetupUserEscalation()</a></li>
+                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_toolkitGeneratePackagesComposer">toolkitGeneratePackagesComposer()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBinPath">getBinPath()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigValue">getConfigValue()</a></li>
@@ -1289,6 +1384,7 @@
                                             <li class=""><a href="classes/EcEuropa-Toolkit-Task-Command-Tasks.html#method_taskExecute">taskExecute()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskProcess">taskProcess()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskReplaceBlock">taskReplaceBlock()</a></li>
+                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_getProjectOwner">getProjectOwner()</a></li>
                                     </ul>
             </li>
                     </ul>
@@ -1308,7 +1404,7 @@
     </section>
 </section>
         </div>
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-UserEscalationCommands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

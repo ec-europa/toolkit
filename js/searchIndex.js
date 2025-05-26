@@ -1211,6 +1211,26 @@ Search.appendIndex(
             "summary": "Prepare\u0020given\u0020URL\u0020to\u0020include\u0020the\u0020user\u0020and\u0020pass\/token.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_addAuthToUrl"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GeneratePackagesComposerCommands",
+            "name": "GeneratePackagesComposerCommands",
+            "summary": "Provides\u0020command\u0020to\u0020generate\u0020composer.json\u0020files\u0020for\u0020local\u0020packages.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GeneratePackagesComposerCommands\u003A\u003AgetConfigurationFile\u0028\u0029",
+            "name": "getConfigurationFile",
+            "summary": "Path\u0020to\u0020YAML\u0020configuration\u0020file\u0020containing\u0020command\u0020defaults.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_getConfigurationFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GeneratePackagesComposerCommands\u003A\u003AtoolkitGeneratePackagesComposer\u0028\u0029",
+            "name": "toolkitGeneratePackagesComposer",
+            "summary": "Generate\u0020composer.json\u0020files\u0020for\u0020each\u0020local\u0020package.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_toolkitGeneratePackagesComposer"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GeneratePackagesComposerCommands\u003A\u003AgetProjectOwner\u0028\u0029",
+            "name": "getProjectOwner",
+            "summary": "Returns\u0020the\u0020project\u0020owner.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GeneratePackagesComposerCommands.html#method_getProjectOwner"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitHooksCommands",
             "name": "GitHooksCommands",
             "summary": "Provides\u0020commands\u0020to\u0020interact\u0020with\u0020git\u0020hooks.",
