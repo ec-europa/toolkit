@@ -275,6 +275,8 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @return bool|string|int|void
      *   The component recommended result.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function componentRecommended(ConsoleIO $io)
     {
