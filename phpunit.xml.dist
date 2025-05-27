@@ -27,6 +27,9 @@
             <file>tests/Features/Commands/BlackfireCommandsTest.php</file>
             <file>tests/Features/Commands/BuildCommandsTest.php</file>
         </testsuite>
+        <testsuite name="CodeReview">
+            <file>tests/Features/Commands/CodeReviewCommandsTest.php</file>
+        </testsuite>
         <testsuite name="ComponentCheck">
             <file>tests/Features/Commands/ComponentCheckCommandsTest.php</file>
         </testsuite>
