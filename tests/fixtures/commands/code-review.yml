@@ -1,0 +1,68 @@
+- command: toolkit:code-review
+  configuration: []
+  resources: []
+  expectations:
+    - string_contains: PHPcs           passed
+    - string_contains: PHPStan         passed
+    - string_contains: PHPMD           passed
+    - string_contains: Opts review     passed
+    - string_contains: Lint PHP        passed
+    - string_contains: Lint YAML       passed
+    - string_contains: Lint JS         passed
+    - string_contains: Lint CSS        passed
+    - string_contains: Lint CSpell     passed
+    - string_contains: Lint Behat      passed
+    - string_contains: Composer lock   passed
+    - string_contains: Requirements    passed
+
+- command: toolkit:code-review --phpcs --phpstan --phpmd --opts-review --lint-php --lint-yaml --lint-js
+  configuration: []
+  resources: []
+  expectations:
+    - string_contains: PHPcs           passed
+    - string_contains: PHPStan         passed
+    - string_contains: PHPMD           passed
+    - string_contains: Opts review     passed
+    - string_contains: Lint PHP        passed
+    - string_contains: Lint YAML       passed
+    - string_contains: Lint JS         passed
+    - string_contains: Lint CSS        skip
+    - string_contains: Lint CSpell     skip
+    - string_contains: Lint Behat      skip
+    - string_contains: Composer lock   skip
+    - string_contains: Requirements    skip
+
+- command: toolkit:code-review --phpcs
+  configuration: []
+  resources: []
+  expectations:
+    - string_contains: PHPcs           passed
+    - string_contains: PHPStan         skip
+    - string_contains: PHPMD           skip
+    - string_contains: Opts review     skip
+    - string_contains: Lint PHP        skip
+    - string_contains: Lint YAML       skip
+    - string_contains: Lint JS         skip
+    - string_contains: Lint CSS        skip
+    - string_contains: Lint CSpell     skip
+    - string_contains: Lint Behat      skip
+    - string_contains: Composer lock   skip
+    - string_contains: Requirements    skip
+
+- command: toolkit:run-tests
+  configuration: []
+  resources: []
+  expectations:
+    - string_contains: PHPUnit      passed
+    - string_contains: Behat        passed
+    - string_contains: Blackfire    passed
+    - string_contains: Components   passed
+
+- command: toolkit:run-tests --behat
+  configuration: []
+  resources: []
+  expectations:
+    - string_contains: PHPUnit      skip
+    - string_contains: Behat        passed
+    - string_contains: Blackfire    skip
+    - string_contains: Components   skip

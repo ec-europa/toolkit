@@ -85,6 +85,8 @@ class ComponentCheckCommands extends AbstractCommands
      * @option test-command If set the command will load test packages.
      * @option junit        Whether to export results as junit.
      *
+     * @aliases tk-components
+     *
      * @return int|void
      *   The component check status.
      *
