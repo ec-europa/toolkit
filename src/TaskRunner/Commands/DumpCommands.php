@@ -87,7 +87,7 @@ class DumpCommands extends AbstractCommands
     /**
      * Export the local snapshot.
      *
-     * This command should be only used with the corporate docker image fpfis/httpd-php.
+     * This command should be only used with the corporate docker image httpd-php.
      *
      * @param array<mixed> $options
      *   Command options.
