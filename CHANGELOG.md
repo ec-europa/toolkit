@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 10.20.0
+  - DQA-11464: Toolkit add command to run all tests in a single command.
+  - DQA-11776: Update image registry.
+
 ## Version 10.19.2
   - DQA-11542: Toolkit command to generate composer.json for packages.
   - DQA-11423: User escalation: Fallback to ci token.
