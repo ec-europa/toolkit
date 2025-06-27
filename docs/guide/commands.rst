@@ -57,7 +57,7 @@ See bellow current list of available commands:
    toolkit:check-version               Check the Toolkit version.
    toolkit:code-review                 Execute all or specific tools for static testing.
    toolkit:complock-check              Check if 'composer.lock' exists on the project root folder.
-   toolkit:component-check             Check composer for components that are not whitelisted/blacklisted.
+   toolkit:component-check             [tk-components] Check composer for components that are not whitelisted/blacklisted.
    toolkit:create-dump                 [tk-cdump] Export the local snapshot.
    toolkit:download-dump               [tk-ddump] Download database snapshot.
    toolkit:fix-permissions             Run script to fix permissions (experimental).
@@ -89,6 +89,7 @@ See bellow current list of available commands:
    toolkit:run-deploy                  [tk-deploy] Run deployment sequence.
    toolkit:run-gitleaks                [tk-gitleaks] Executes the Gitleaks.
    toolkit:run-phpcbf                  [tk-phpcbf] Run PHP code autofixing.
+   toolkit:run-tests                   Execute all or specific tools for testing.
    toolkit:setup-axe-scan              Make sure axe-scan is installed and properly configured.
    toolkit:setup-behat                 Setup the Behat file.
    toolkit:setup-blackfire-behat       Copy the needed resources to run Behat with Blackfire.
