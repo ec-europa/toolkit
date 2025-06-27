@@ -30,7 +30,7 @@ like shown below:
       npm:
         theme-task-runner: ecl-builder gulp
         packages: '@ecl/builder pikaday moment gulp gulp-concat gulp-sass gulp-clean-css gulp-minify'
-        ecl-command: 'styles scripts'
+        ecl-command: 'styles scripts copy'
 
 Command to run:
 
@@ -58,9 +58,9 @@ Build theme assets (ecl-builder)
 
 By default Toolkit compiles the Css and Js files, defined in the configuration file
 'ecl-builder.config.js' as entry and destination paths.
-The ecl-builder command used for this action is 'styles'. This the default command.
+The ecl-builder commands used by default are related to 'ecl-command' in your runner.yml.dist file.
 
-To use other command listed on 'ecl-builder' options an additional parameter can be provided:
+To use a specific command listed on 'ecl-builder' options an additional parameter can be provided:
 '--ecl-command'
 
 .. code-block::
