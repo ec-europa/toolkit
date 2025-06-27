@@ -506,6 +506,26 @@ Search.appendIndex(
             "summary": "Comment\u0020ending\u0020the\u0020Toolkit\u0020block.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#property_blockEnd"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\CodeReviewCommands",
+            "name": "CodeReviewCommands",
+            "summary": "Command\u0020class\u0020for\u0020toolkit\u003Acode\u002Dreview\u0020and\u0020toolkit\u003Arun\u002Dtests.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\CodeReviewCommands\u003A\u003AgetConfigurationFile\u0028\u0029",
+            "name": "getConfigurationFile",
+            "summary": "Path\u0020to\u0020YAML\u0020configuration\u0020file\u0020containing\u0020command\u0020defaults.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_getConfigurationFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\CodeReviewCommands\u003A\u003AtoolkitCodeReview\u0028\u0029",
+            "name": "toolkitCodeReview",
+            "summary": "Execute\u0020all\u0020or\u0020specific\u0020tools\u0020for\u0020static\u0020testing.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_toolkitCodeReview"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\CodeReviewCommands\u003A\u003AtoolkitRunTests\u0028\u0029",
+            "name": "toolkitRunTests",
+            "summary": "Execute\u0020all\u0020or\u0020specific\u0020tools\u0020for\u0020testing.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_toolkitRunTests"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands",
             "name": "ComponentCheckCommands",
             "summary": "Command\u0020class\u0020for\u0020toolkit\u003Acomponent\u002Dcheck.",
@@ -1660,11 +1680,6 @@ Search.appendIndex(
             "name": "getDeploymentEnvironment",
             "summary": "Returns\u0020the\u0020current\u0020environment\u0020based\u0020on\u0020env\u0020vars.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_getDeploymentEnvironment"
-        },                {
-            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AtoolkitCodeReview\u0028\u0029",
-            "name": "toolkitCodeReview",
-            "summary": "Execute\u0020all\u0020or\u0020specific\u0020tools\u0020for\u0020static\u0020testing.",
-            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_toolkitCodeReview"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AformatBytes\u0028\u0029",
             "name": "formatBytes",

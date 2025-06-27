@@ -150,7 +150,7 @@
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    ReleaseCommands
+    CodeReviewCommands
 
         <span class="phpdocumentor-element__extends">
         extends <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html"><abbr title="\EcEuropa\Toolkit\TaskRunner\AbstractCommands">AbstractCommands</abbr></a>
@@ -172,13 +172,13 @@
 </div>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/CodeReviewCommands.php"><a href="files/src-taskrunner-commands-codereviewcommands.html"><abbr title="src/TaskRunner/Commands/CodeReviewCommands.php">CodeReviewCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">18</span>
+    <span class="phpdocumentor-element-found-in__line">17</span>
 
     </aside>
 
-            <p class="phpdocumentor-summary">Provides commands to generate Toolkit release.</p>
+            <p class="phpdocumentor-summary">Command class for toolkit:code-review and toolkit:run-tests.</p>
 
 
 
@@ -190,7 +190,7 @@
 
 <h3 id="toc">
     Table of Contents
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h3>
 
@@ -202,36 +202,15 @@
 
 
 
-<h4 id="toc-properties">
-    Properties
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
-
-</h4>
-<dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_changelog">$changelog</a>
-    <span>
-                        &nbsp;: string            </span>
-</dt>
-<dd>The changelog file.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -private">
-    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_releaseBranch">$releaseBranch</a>
-    <span>
-                        &nbsp;: string            </span>
-</dt>
-<dd>The release branch.</dd>
-
-    </dl>
 
 <h4 id="toc-methods">
     Methods
-    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
+    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_getConfigurationFile">getConfigurationFile()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
@@ -259,32 +238,18 @@
 <dd>Check if the website is installed.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitChangelogWrite">toolkitChangelogWrite()</a>
+    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_toolkitCodeReview">toolkitCodeReview()</a>
     <span>
-                                &nbsp;: int|<abbr title="\Robo\Result">Result</abbr>    </span>
+                                &nbsp;: <abbr title="\Robo\ResultData">ResultData</abbr>    </span>
 </dt>
-<dd>Write the release changelog to the CHANGELOG.md file.</dd>
+<dd>Execute all or specific tools for static testing.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitPrepareRelease">toolkitPrepareRelease()</a>
+    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_toolkitRunTests">toolkitRunTests()</a>
     <span>
-                                &nbsp;: <abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
+                                &nbsp;: <abbr title="\Robo\ResultData">ResultData</abbr>    </span>
 </dt>
-<dd>Prepare a release for Toolkit.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitUpdateDefaultMockTag">toolkitUpdateDefaultMockTag()</a>
-    <span>
-                                &nbsp;: int|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
-</dt>
-<dd>Write the latest tag from toolkit-mock to the Mock class.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitVersionWrite">toolkitVersionWrite()</a>
-    <span>
-                                &nbsp;: int|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
-</dt>
-<dd>Write the specified version string into needed places.</dd>
+<dd>Execute all or specific tools for testing.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a>
@@ -356,27 +321,6 @@
 </dt>
 <dd>Replace block in a file.</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_getLatestChangelogVersion">getLatestChangelogVersion()</a>
-    <span>
-                                &nbsp;: string    </span>
-</dt>
-<dd>Reads the changelog file and returns the latest version.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_prepareChangelog">prepareChangelog()</a>
-    <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
-</dt>
-<dd>Get the git log and process it.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_prepareChangelogRow">prepareChangelogRow()</a>
-    <span>
-                                &nbsp;: string    </span>
-</dt>
-<dd>Prepare the changelog row.</dd>
-
     </dl>
 
 
@@ -384,96 +328,11 @@
         
 
         
-    <section class="phpdocumentor-properties">
-        <h3 class="phpdocumentor-elements__header" id="properties">
-            Properties
-            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
-
-        </h3>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -private
-                                                                    "
->
-    <h4 class="phpdocumentor-element__name" id="property_changelog">
-        $changelog
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_changelog" class="headerlink"><i class="fas fa-link"></i></a>
-
-        <span class="phpdocumentor-element__modifiers">
-                                            </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">26</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">The changelog file.</p>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">private</span>
-            <span class="phpdocumentor-signature__type">string</span>
-    <span class="phpdocumentor-signature__name">$changelog</span>
-     = <span class="phpdocumentor-signature__default-value">&#039;CHANGELOG.md&#039;</span></code>
-
-    
-    
-    
-
-    
-
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -private
-                                                                    "
->
-    <h4 class="phpdocumentor-element__name" id="property_releaseBranch">
-        $releaseBranch
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_releaseBranch" class="headerlink"><i class="fas fa-link"></i></a>
-
-        <span class="phpdocumentor-element__modifiers">
-                                            </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">33</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">The release branch.</p>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">private</span>
-            <span class="phpdocumentor-signature__type">string</span>
-    <span class="phpdocumentor-signature__name">$releaseBranch</span>
-     = <span class="phpdocumentor-signature__default-value">&#039;release/10.x&#039;</span></code>
-
-    
-    
-    
-
-    
-
-    
-
-</article>
-            </section>
 
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
@@ -484,13 +343,13 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_getConfigurationFile">
         getConfigurationFile()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_getConfigurationFile" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/AbstractCommands.php"><a href="files/src-taskrunner-abstractcommands.html"><abbr title="src/TaskRunner/AbstractCommands.php">AbstractCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/CodeReviewCommands.php"><a href="files/src-taskrunner-commands-codereviewcommands.html"><abbr title="src/TaskRunner/Commands/CodeReviewCommands.php">CodeReviewCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">31</span>
+    <span class="phpdocumentor-element-found-in__line">23</span>
 
     </aside>
 
@@ -503,9 +362,7 @@
     <div class="phpdocumentor-label-line">
         </div>
     
-        <section class="phpdocumentor-description"><p>Command classes should implement this method.</p>
-</section>
-
+    
     
     
 
@@ -671,28 +528,30 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_toolkitChangelogWrite">
-        toolkitChangelogWrite()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitChangelogWrite" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_toolkitCodeReview">
+        toolkitCodeReview()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_toolkitCodeReview" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/CodeReviewCommands.php"><a href="files/src-taskrunner-commands-codereviewcommands.html"><abbr title="src/TaskRunner/Commands/CodeReviewCommands.php">CodeReviewCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">153</span>
+    <span class="phpdocumentor-element-found-in__line">58</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Write the release changelog to the CHANGELOG.md file.</p>
+        <p class="phpdocumentor-summary">Execute all or specific tools for static testing.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitChangelogWrite</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$from</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;show-name&#039; =&gt; InputOption::VALUE_NONE, &#039;show-pr&#039; =&gt; InputOption::VALUE_NONE, &#039;full-link&#039; =&gt; InputOption::VALUE_NONE]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|<abbr title="\Robo\Result">Result</abbr></span></code>
+                    <span class="phpdocumentor-signature__name">toolkitCodeReview</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;phpcs&#039; =&gt; InputOption::VALUE_NONE, &#039;phpstan&#039; =&gt; InputOption::VALUE_NONE, &#039;phpmd&#039; =&gt; InputOption::VALUE_NONE, &#039;opts-review&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-php&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-yaml&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-js&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-css&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-cspell&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-behat&#039; =&gt; InputOption::VALUE_NONE, &#039;complock-check&#039; =&gt; InputOption::VALUE_NONE, &#039;requirements&#039; =&gt; InputOption::VALUE_NONE]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\ResultData">ResultData</abbr></span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
     
-    
+        <section class="phpdocumentor-description"><p>If no option is given, all the tests will be executed.</p>
+</section>
+
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -703,27 +562,9 @@
                 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$version</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The version to set.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$from</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The version to set.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$options</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;show-name&#039; =&gt; InputOption::VALUE_NONE, &#039;show-pr&#039; =&gt; InputOption::VALUE_NONE, &#039;full-link&#039; =&gt; InputOption::VALUE_NONE]</span>            </dt>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;phpcs&#039; =&gt; InputOption::VALUE_NONE, &#039;phpstan&#039; =&gt; InputOption::VALUE_NONE, &#039;phpmd&#039; =&gt; InputOption::VALUE_NONE, &#039;opts-review&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-php&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-yaml&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-js&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-css&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-cspell&#039; =&gt; InputOption::VALUE_NONE, &#039;lint-behat&#039; =&gt; InputOption::VALUE_NONE, &#039;complock-check&#039; =&gt; InputOption::VALUE_NONE, &#039;requirements&#039; =&gt; InputOption::VALUE_NONE]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>Command options.</p>
 </section>
@@ -734,7 +575,7 @@
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitChangelogWrite#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_toolkitCodeReview#tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
@@ -743,7 +584,7 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>toolkit:changelog-write</p>
+                                                 <section class="phpdocumentor-description"><p>toolkit:code-review</p>
 </section>
 
                                     </dd>
@@ -752,7 +593,7 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>show-name If set, the name of the user will be added.</p>
+                                                 <section class="phpdocumentor-description"><p>phpcs          Execute the command toolkit:test-phpcs.</p>
 </section>
 
                                     </dd>
@@ -761,7 +602,7 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>show-pr   If set, the PR number and link will be added.</p>
+                                                 <section class="phpdocumentor-description"><p>phpstan        Execute the command toolkit:test-phpstan.</p>
 </section>
 
                                     </dd>
@@ -770,16 +611,117 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>full-link If set, the link to the full changelog will be added.</p>
+                                                 <section class="phpdocumentor-description"><p>phpmd          Execute the command toolkit:test-phpmd.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>opts-review    Execute the command toolkit:opts-review.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>lint-php       Execute the command toolkit:lint-php.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>lint-yaml      Execute the command toolkit:lint-yaml.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>lint-js        Execute the command toolkit:lint-js.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>lint-css       Execute the command toolkit:lint-css.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>lint-cspell    Execute the command toolkit:lint-cspell.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>lint-behat     Execute the command toolkit:lint-behat.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>complock-check Execute the command toolkit:complock-check.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>requirements   Execute the command toolkit:requirements.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>junit          Whether to export results as junit.</p>
 </section>
 
                                     </dd>
                                                 <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">hidden</span>
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                             
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
+</section>
+
                                     </dd>
                                             </dl>
 
@@ -787,9 +729,9 @@
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">int|<abbr title="\Robo\Result">Result</abbr></span>
+        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\ResultData">ResultData</abbr></span>
                     &mdash;
-                <section class="phpdocumentor-description"><p>The exit code.</p>
+                <section class="phpdocumentor-description"><p>The toolkit code-review command status.</p>
 </section>
 
             </section>
@@ -801,182 +743,30 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_toolkitPrepareRelease">
-        toolkitPrepareRelease()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitPrepareRelease" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_toolkitRunTests">
+        toolkitRunTests()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_toolkitRunTests" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/CodeReviewCommands.php"><a href="files/src-taskrunner-commands-codereviewcommands.html"><abbr title="src/TaskRunner/Commands/CodeReviewCommands.php">CodeReviewCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">212</span>
+    <span class="phpdocumentor-element-found-in__line">156</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Prepare a release for Toolkit.</p>
+        <p class="phpdocumentor-summary">Execute all or specific tools for testing.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitPrepareRelease</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
+                    <span class="phpdocumentor-signature__name">toolkitRunTests</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[&#039;phpunit&#039; =&gt; InputOption::VALUE_NONE, &#039;behat&#039; =&gt; InputOption::VALUE_NONE, &#039;blackfire&#039; =&gt; InputOption::VALUE_NONE, &#039;components&#039; =&gt; InputOption::VALUE_NONE]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\ResultData">ResultData</abbr></span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
     
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$version</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The version to set.</p>
+        <section class="phpdocumentor-description"><p>If no option is given, all the tests will be executed.</p>
 </section>
 
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitPrepareRelease#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:prepare-release</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">hidden</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                             
-                                    </dd>
-                                            </dl>
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>The toolkit prepare release task status.</p>
-</section>
-
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_toolkitUpdateDefaultMockTag">
-        toolkitUpdateDefaultMockTag()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitUpdateDefaultMockTag" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">99</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Write the latest tag from toolkit-mock to the Mock class.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitUpdateDefaultMockTag</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$io</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitUpdateDefaultMockTag#tags" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">command</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>toolkit:update-mock-default-tag</p>
-</section>
-
-                                    </dd>
-                                                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">hidden</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                             
-                                    </dd>
-                                            </dl>
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">int|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>The toolkit Update default mock tag task status.</p>
-</section>
-
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_toolkitVersionWrite">
-        toolkitVersionWrite()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitVersionWrite" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">48</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Write the specified version string into needed places.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitVersionWrite</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -987,11 +777,11 @@
                 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$version</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
+                <span class="phpdocumentor-signature__argument__name">$options</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">[&#039;phpunit&#039; =&gt; InputOption::VALUE_NONE, &#039;behat&#039; =&gt; InputOption::VALUE_NONE, &#039;blackfire&#039; =&gt; InputOption::VALUE_NONE, &#039;components&#039; =&gt; InputOption::VALUE_NONE]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The version to set.</p>
+                    <section class="phpdocumentor-description"><p>Command options.</p>
 </section>
 
             </dd>
@@ -1000,7 +790,7 @@
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitVersionWrite#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_toolkitRunTests#tags" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h5>
     <dl class="phpdocumentor-tag-list">
@@ -1009,16 +799,72 @@
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                                 <section class="phpdocumentor-description"><p>toolkit:version-write</p>
+                                                 <section class="phpdocumentor-description"><p>toolkit:run-tests</p>
 </section>
 
                                     </dd>
                                                 <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">hidden</span>
+                    <span class="phpdocumentor-tag__name">option</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
                                                                                 
-                                             
+                                                 <section class="phpdocumentor-description"><p>phpunit    Execute the command toolkit:test-phpunit.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>behat      Execute the command toolkit:run-behat.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>blackfire  Execute the command toolkit:run-blackfire.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>components Execute the command toolkit:component-check.</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">option</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>junit      Whether to export results as junit.</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.CyclomaticComplexity)</p>
+</section>
+
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">SuppressWarnings</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>(PHPMD.NPathComplexity)</p>
+</section>
+
                                     </dd>
                                             </dl>
 
@@ -1026,9 +872,9 @@
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">int|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
+        <span class="phpdocumentor-signature__response_type"><abbr title="\Robo\ResultData">ResultData</abbr></span>
                     &mdash;
-                <section class="phpdocumentor-description"><p>The toolkit version write task status.</p>
+                <section class="phpdocumentor-description"><p>The toolkit run-tests command status.</p>
 </section>
 
             </section>
@@ -1600,184 +1446,13 @@
             </section>
 
 </article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getLatestChangelogVersion">
-        getLatestChangelogVersion()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_getLatestChangelogVersion" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">230</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Reads the changelog file and returns the latest version.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">getLatestChangelogVersion</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-    
-    
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">string</span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>The latest version or empty string if not found.</p>
-</section>
-
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_prepareChangelog">
-        prepareChangelog()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_prepareChangelog" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">256</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Get the git log and process it.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">prepareChangelog</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$from</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$from</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The row to process.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Command options.</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>An array containing the changelog.</p>
-</section>
-
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_prepareChangelogRow">
-        prepareChangelogRow()
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_prepareChangelogRow" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/ReleaseCommands.php"><a href="files/src-taskrunner-commands-releasecommands.html"><abbr title="src/TaskRunner/Commands/ReleaseCommands.php">ReleaseCommands.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">293</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Prepare the changelog row.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">prepareChangelogRow</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$data</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$data</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The row to process.</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$options</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>Command options.</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">string</span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>The prepared row.</p>
-</section>
-
-            </section>
-
-</article>
             </section>
 
         <div class="phpdocumentor-modal" id="source-view">
     <div class="phpdocumentor-modal-bg" data-exit-button></div>
     <div class="phpdocumentor-modal-container">
         <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/TaskRunner/Commands/ReleaseCommands.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/src/TaskRunner/Commands/CodeReviewCommands.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
         </div>
         <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
     </div>
@@ -1876,30 +1551,20 @@
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#toc-properties">Properties</a></li>
-                                                            <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#toc-methods">Methods</a></li>
+                                                                                <li><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#toc-methods">Methods</a></li>
                                     </ul>
             </li>
             
-                            <li class="phpdocumentor-on-this-page-section__title">Properties</li>
-                <li>
-                    <ul class="phpdocumentor-list -clean">
-                                                    <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_changelog">$changelog</a></li>
-                                                    <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#property_releaseBranch">$releaseBranch</a></li>
-                                            </ul>
-                </li>
             
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
+                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson">getJson()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isWebsiteInstalled">isWebsiteInstalled()</a></li>
-                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitChangelogWrite">toolkitChangelogWrite()</a></li>
-                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitPrepareRelease">toolkitPrepareRelease()</a></li>
-                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitUpdateDefaultMockTag">toolkitUpdateDefaultMockTag()</a></li>
-                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_toolkitVersionWrite">toolkitVersionWrite()</a></li>
+                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_toolkitCodeReview">toolkitCodeReview()</a></li>
+                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#method_toolkitRunTests">toolkitRunTests()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBinPath">getBinPath()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getConfigValue">getConfigValue()</a></li>
@@ -1910,9 +1575,6 @@
                                             <li class=""><a href="classes/EcEuropa-Toolkit-Task-Command-Tasks.html#method_taskExecute">taskExecute()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskProcess">taskProcess()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskReplaceBlock">taskReplaceBlock()</a></li>
-                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_getLatestChangelogVersion">getLatestChangelogVersion()</a></li>
-                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_prepareChangelog">prepareChangelog()</a></li>
-                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#method_prepareChangelogRow">prepareChangelogRow()</a></li>
                                     </ul>
             </li>
                     </ul>
@@ -1932,7 +1594,7 @@
     </section>
 </section>
         </div>
-        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ReleaseCommands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-CodeReviewCommands.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
