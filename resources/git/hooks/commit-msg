@@ -11,7 +11,7 @@
 # Detect docker-compose or docker compose.
 DC=$(docker compose version 2>/dev/null | grep -q 'version' && echo 'docker compose' || echo 'docker-compose')
 # Check if running corporate docker image httpd-php.
-SERVICE=$SERVICE=$($DC ps --format '{{.Service}} {{.Image}}' 2>/dev/null | grep 'httpd-php' | awk '{print $1}')
+SERVICE=$($DC ps --format '{{.Service}} {{.Image}}' 2>/dev/null | grep 'httpd-php' | awk '{print $1}')
 # Prefix with the docker compose exec if running docker.
 PREFIX=$([ "$SERVICE" ] && echo "$DC exec -T $SERVICE ./vendor/bin/run" || echo './vendor/bin/run')
 # Call the hook.
