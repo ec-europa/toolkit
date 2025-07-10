@@ -1,0 +1,6 @@
+command:
+  toolkit:
+    generate-packages-composer:
+      options:
+        custom-code-folder: ${toolkit.build.custom-code-folder}
+        skip-project-composer: false

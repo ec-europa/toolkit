@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use EcEuropa\Toolkit\Toolkit;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 
@@ -27,9 +28,15 @@ class UserEscalationCommands extends AbstractCommands
     public function toolkitSetupUserEscalation(ConsoleIO $io)
     {
         $config = $this->getConfig()->get('gitlab');
-        if (empty($token = $config['token'])) {
-            $io->error('Missing env var GITLAB_API_TOKEN.');
-            return ResultData::EXITCODE_ERROR;
+        $token = $config['token'];
+        if (empty($token) || $token === '${env.GITLAB_API_TOKEN}') {
+            // If we are running on CI/CD try to use the api_token.
+            if (Toolkit::isCiCd() && !empty(getenv('API_TOKEN'))) {
+                $token = getenv('API_TOKEN');
+            } else {
+                $io->error('Missing env var GITLAB_API_TOKEN.');
+                return ResultData::EXITCODE_ERROR;
+            }
         }
 
         $context = stream_context_create(['http' => ['header' => "Authorization: Bearer $token"]]);

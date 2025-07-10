@@ -85,6 +85,8 @@ class ComponentCheckCommands extends AbstractCommands
      * @option test-command If set the command will load test packages.
      * @option junit        Whether to export results as junit.
      *
+     * @aliases tk-components
+     *
      * @return int|void
      *   The component check status.
      *
@@ -248,7 +250,7 @@ class ComponentCheckCommands extends AbstractCommands
         // Get mandatory packages.
         if (!empty($this->packageReviews)) {
             $mandatoryPackages = array_values(array_filter($this->packageReviews, function ($item) {
-                return $item['mandatory'] === '1' && $item['type'] === 'drupal-module';
+                return $item['type'] === 'drupal-module' && filter_var($item['mandatory'], FILTER_VALIDATE_BOOLEAN);
             }));
         }
 
@@ -275,11 +277,16 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @return bool|string|int|void
      *   The component recommended result.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function componentRecommended(ConsoleIO $io)
     {
         $this->io = $io;
         if (!$this->loadComposerLock()) {
+            return 1;
+        }
+        if (!$this->loadWebsitePackages()) {
             return 1;
         }
         $recommendedPackages = [];
@@ -589,7 +596,7 @@ class ComponentCheckCommands extends AbstractCommands
         $devPackages = array_filter(
             array_column($this->packageReviews, 'dev_component', 'name'),
             function ($value) {
-                return $value == 'true';
+                return filter_var($value, FILTER_VALIDATE_BOOLEAN);
             }
         );
         foreach (array_keys($devPackages) as $packageName) {

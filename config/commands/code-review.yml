@@ -1,0 +1,22 @@
+command:
+  toolkit:
+    code-review:
+      options:
+        phpcs: false
+        phpstan: false
+        phpmd: false
+        opts-review: false
+        lint-php: false
+        lint-yaml: false
+        lint-js: false
+        lint-css: false
+        lint-cspell: false
+        lint-behat: false
+        complock-check: false
+        requirements: false
+    run-tests:
+      options:
+        phpunit: false
+        behat: false
+        blackfire: false
+        components: false

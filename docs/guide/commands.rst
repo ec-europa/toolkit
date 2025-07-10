@@ -14,92 +14,94 @@ See bellow current list of available commands:
 .. code-block::
 
  Available commands:
-   completion                         Dump the shell completion script
-   config                             Dumps the current or given configuration.
-   help                               Display help for a command
-   list                               List commands
+   completion                          Dump the shell completion script
+   config                              Dumps the current or given configuration.
+   help                                Display help for a command
+   list                                List commands
   check
-   check:abandoned                    Check abandoned components.
-   check:composer                     Check composer packages.
-   check:configuration                Check project configuration.
-   check:development                  Check development components.
-   check:evaluation                   Check Evaluation components.
-   check:insecure                     Check insecure components.
-   check:mandatory                    Check mandatory components.
-   check:npm-insecure                 Run NPM Insecure.
-   check:npm-outdated                 Run NPM Outdated.
-   check:outdated                     Check outdated components.
-   check:recommended                  Check recommended components.
-   check:unsupported                  Check unsupported components.
+   check:abandoned                     Check abandoned components.
+   check:composer                      Check composer packages.
+   check:configuration                 Check project configuration.
+   check:development                   Check development components.
+   check:evaluation                    Check Evaluation components.
+   check:insecure                      Check insecure components.
+   check:mandatory                     Check mandatory components.
+   check:npm-insecure                  Run NPM Insecure.
+   check:npm-outdated                  Run NPM Outdated.
+   check:outdated                      Check outdated components.
+   check:recommended                   Check recommended components.
+   check:unsupported                   Check unsupported components.
   docker
-   docker:refresh-configuration       [dk-rc] Update docker-compose.yml file based on project's configurations.
+   docker:refresh-configuration        [dk-rc] Update docker-compose.yml file based on project's configurations.
   drupal
-   drupal:check-permissions           Command to check the forbidden permissions.
-   drupal:check-sanitisation-classes  Command to check existence of Sanitisation classes.
-   drupal:check-sanitisation-fields   Command to check fields for sanitisation.
-   drupal:config-import               Run the Drupal config import.
-   drupal:disable-cache               Disable aggregation and clear cache.
-   drupal:drush-setup                 Write Drush configuration file at "${drupal.root}/drush/drush.yml".
-   drupal:permissions-setup           Setup Drupal permissions.
-   drupal:settings-setup              Setup Drupal settings.php file in compliance with Toolkit conventions.
-   drupal:site-install                [drupal:si|dsi] Install target site.
-   drupal:site-post-install           Run Drupal post-install commands.
-   drupal:site-pre-install            Run Drupal pre-install commands.
-   drupal:symlink-project             Symlink project as module, theme or profile in the proper directory.
-   drupal:upgrade-status              [tdus] Check project compatibility for Drupal 9/10/11 upgrade.
+   drupal:check-permissions            Command to check the forbidden permissions.
+   drupal:check-sanitisation-classes   Command to check existence of Sanitisation classes.
+   drupal:check-sanitisation-fields    Command to check fields for sanitisation.
+   drupal:config-import                Run the Drupal config import.
+   drupal:disable-cache                Disable aggregation and clear cache.
+   drupal:drush-setup                  Write Drush configuration file at "${drupal.root}/drush/drush.yml".
+   drupal:permissions-setup            Setup Drupal permissions.
+   drupal:settings-setup               Setup Drupal settings.php file in compliance with Toolkit conventions.
+   drupal:site-install                 [drupal:si|dsi] Install target site.
+   drupal:site-post-install            Run Drupal post-install commands.
+   drupal:site-pre-install             Run Drupal pre-install commands.
+   drupal:symlink-project              Symlink project as module, theme or profile in the proper directory.
+   drupal:upgrade-status               [tdus] Check project compatibility for Drupal 9/10/11 upgrade.
   toolkit
-   toolkit:build-assets               [tk-assets|tba] Build theme assets (Css and Js).
-   toolkit:build-assets-dist          Run the toolkit:build-assets for distribution
-   toolkit:build-dev                  [tk-bdev] Build site for local development.
-   toolkit:build-dev-reset            [tk-bdev-reset] Build site for local development from scratch with a clean git.
-   toolkit:build-dist                 [tk-bdist] Build the distribution package.
-   toolkit:check-phpcs-requirements   Make sure that the config file exists and configuration is correct.
-   toolkit:check-version              Check the Toolkit version.
-   toolkit:code-review                Execute all or specific tools for static testing.
-   toolkit:complock-check             Check if 'composer.lock' exists on the project root folder.
-   toolkit:component-check            Check composer for components that are not whitelisted/blacklisted.
-   toolkit:create-dump                [tk-cdump] Export the local snapshot.
-   toolkit:download-dump              [tk-ddump] Download database snapshot.
-   toolkit:fix-permissions            Run script to fix permissions (experimental).
-   toolkit:hooks-delete-all           [tk-hdel] Remove all existing hooks, this will ignore active hooks list.
-   toolkit:hooks-disable              [tk-hdis] Disable the git hooks.
-   toolkit:hooks-enable               [tk-hen] Enable the git hooks defined in the configuration or in given option.
-   toolkit:hooks-list                 [tk-hlist] List available hooks and its status.
-   toolkit:hooks-run                  [tk-hrun] Run a specific hook.
-   toolkit:import-config              [DEPRECATED] Run the Drupal config import.
-   toolkit:install-clean              [tk-iclean] Install a clean website.
-   toolkit:install-clone              [tk-iclone] Install a clone website.
-   toolkit:install-dependencies       Install packages present in the .opts.yml file under extra_pkgs section.
-   toolkit:install-dump               [tk-idump] Import the production snapshot.
-   toolkit:lint-behat                 [tk-lbehat] Run lint Behat.
-   toolkit:lint-cspell                [tk-cspell] Run lint CSpell.
-   toolkit:lint-css                   [tk-css] Run lint CSS.
-   toolkit:lint-js                    [tk-js|tljs] Run lint JS.
-   toolkit:lint-php                   [tk-php|tlp] Run lint PHP.
-   toolkit:lint-yaml                  [tk-yaml|tly] Run lint YAML.
-   toolkit:notifications              [tk-notifications] Display Toolkit notifications.
-   toolkit:opts-review                [tk-opts-review] Check project's .opts.yml file for forbidden commands.
-   toolkit:patch-download             [tk-pd] Download remote patches into a local directory.
-   toolkit:patch-list                 [tk-pl] Lists remote patches from the root composer.json.
-   toolkit:requirements               [tk-req] Check the Toolkit Requirements.
-   toolkit:run-axe-scan               [tk-axe] Run the axe-scan.
-   toolkit:run-axe-scan-summary       [tk-axe-sum] Run the axe-scan summary.
-   toolkit:run-blackfire              [tk-bfire|tbf] Run Blackfire.
-   toolkit:run-deploy                 [tk-deploy] Run deployment sequence.
-   toolkit:run-gitleaks               [tk-gitleaks] Executes the Gitleaks.
-   toolkit:run-phpcbf                 [tk-phpcbf] Run PHP code autofixing.
-   toolkit:setup-axe-scan             Make sure axe-scan is installed and properly configured.
-   toolkit:setup-behat                Setup the Behat file.
-   toolkit:setup-blackfire-behat      Copy the needed resources to run Behat with Blackfire.
-   toolkit:setup-eslint               Setup the ESLint configurations and dependencies.
-   toolkit:setup-phpcs                Setup PHP code sniffer.
-   toolkit:setup-phpunit              Setup the PHPUnit file.
-   toolkit:test-behat                 [tk-behat|tb] Run Behat tests.
-   toolkit:test-phpcs                 [tk-phpcs] Run PHP code sniffer.
-   toolkit:test-phpmd                 [tk-phpmd] Run PHPMD.
-   toolkit:test-phpstan               [tk-phpstan] Run PHPStan.
-   toolkit:test-phpunit               [tk-phpunit|tp] Run PHPUnit tests.
-   toolkit:vendor-list                Check 'Vendor' packages being monitored.
+   toolkit:build-assets                [tk-assets|tba] Build theme assets (Css and Js).
+   toolkit:build-assets-dist           Run the toolkit:build-assets for distribution
+   toolkit:build-dev                   [tk-bdev] Build site for local development.
+   toolkit:build-dev-reset             [tk-bdev-reset] Build site for local development from scratch with a clean git.
+   toolkit:build-dist                  [tk-bdist] Build the distribution package.
+   toolkit:check-phpcs-requirements    Make sure that the config file exists and configuration is correct.
+   toolkit:check-version               Check the Toolkit version.
+   toolkit:code-review                 Execute all or specific tools for static testing.
+   toolkit:complock-check              Check if 'composer.lock' exists on the project root folder.
+   toolkit:component-check             [tk-components] Check composer for components that are not whitelisted/blacklisted.
+   toolkit:create-dump                 [tk-cdump] Export the local snapshot.
+   toolkit:download-dump               [tk-ddump] Download database snapshot.
+   toolkit:fix-permissions             Run script to fix permissions (experimental).
+   toolkit:generate-packages-composer  Generate composer.json files for each local package.
+   toolkit:hooks-delete-all            [tk-hdel] Remove all existing hooks, this will ignore active hooks list.
+   toolkit:hooks-disable               [tk-hdis] Disable the git hooks.
+   toolkit:hooks-enable                [tk-hen] Enable the git hooks defined in the configuration or in given option.
+   toolkit:hooks-list                  [tk-hlist] List available hooks and its status.
+   toolkit:hooks-run                   [tk-hrun] Run a specific hook.
+   toolkit:import-config               [DEPRECATED] Run the Drupal config import.
+   toolkit:install-clean               [tk-iclean] Install a clean website.
+   toolkit:install-clone               [tk-iclone] Install a clone website.
+   toolkit:install-dependencies        Install packages present in the .opts.yml file under extra_pkgs section.
+   toolkit:install-dump                [tk-idump] Import the production snapshot.
+   toolkit:lint-behat                  [tk-lbehat] Run lint Behat.
+   toolkit:lint-cspell                 [tk-cspell] Run lint CSpell.
+   toolkit:lint-css                    [tk-css] Run lint CSS.
+   toolkit:lint-js                     [tk-js|tljs] Run lint JS.
+   toolkit:lint-php                    [tk-php|tlp] Run lint PHP.
+   toolkit:lint-yaml                   [tk-yaml|tly] Run lint YAML.
+   toolkit:notifications               [tk-notifications] Display Toolkit notifications.
+   toolkit:opts-review                 [tk-opts-review] Check project's .opts.yml file for forbidden commands.
+   toolkit:patch-download              [tk-pd] Download remote patches into a local directory.
+   toolkit:patch-list                  [tk-pl] Lists remote patches from the root composer.json.
+   toolkit:requirements                [tk-req] Check the Toolkit Requirements.
+   toolkit:run-axe-scan                [tk-axe] Run the axe-scan.
+   toolkit:run-axe-scan-summary        [tk-axe-sum] Run the axe-scan summary.
+   toolkit:run-blackfire               [tk-bfire|tbf] Run Blackfire.
+   toolkit:run-deploy                  [tk-deploy] Run deployment sequence.
+   toolkit:run-gitleaks                [tk-gitleaks] Executes the Gitleaks.
+   toolkit:run-phpcbf                  [tk-phpcbf] Run PHP code autofixing.
+   toolkit:run-tests                   Execute all or specific tools for testing.
+   toolkit:setup-axe-scan              Make sure axe-scan is installed and properly configured.
+   toolkit:setup-behat                 Setup the Behat file.
+   toolkit:setup-blackfire-behat       Copy the needed resources to run Behat with Blackfire.
+   toolkit:setup-eslint                Setup the ESLint configurations and dependencies.
+   toolkit:setup-phpcs                 Setup PHP code sniffer.
+   toolkit:setup-phpunit               Setup the PHPUnit file.
+   toolkit:test-behat                  [tk-behat|tb] Run Behat tests.
+   toolkit:test-phpcs                  [tk-phpcs] Run PHP code sniffer.
+   toolkit:test-phpmd                  [tk-phpmd] Run PHPMD.
+   toolkit:test-phpstan                [tk-phpstan] Run PHPStan.
+   toolkit:test-phpunit                [tk-phpunit|tp] Run PHPUnit tests.
+   toolkit:vendor-list                 Check 'Vendor' packages being monitored.
 
 .. toolkit-block-commands-end
 

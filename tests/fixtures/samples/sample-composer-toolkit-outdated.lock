@@ -8,7 +8,7 @@
     "packages": [
         {
             "name": "drupal/core",
-            "version": "10.3.13",
+            "version": "10.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",

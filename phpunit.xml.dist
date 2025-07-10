@@ -27,6 +27,9 @@
             <file>tests/Features/Commands/BlackfireCommandsTest.php</file>
             <file>tests/Features/Commands/BuildCommandsTest.php</file>
         </testsuite>
+        <testsuite name="CodeReview">
+            <file>tests/Features/Commands/CodeReviewCommandsTest.php</file>
+        </testsuite>
         <testsuite name="ComponentCheck">
             <file>tests/Features/Commands/ComponentCheckCommandsTest.php</file>
         </testsuite>
@@ -45,8 +48,14 @@
         <testsuite name="Dump">
             <file>tests/Features/Commands/DumpCommandsTest.php</file>
         </testsuite>
+        <testsuite name="GeneratePackagesComposer">
+            <file>tests/Features/Commands/GeneratePackagesComposerCommandsTest.php</file>
+        </testsuite>
         <testsuite name="GitHooks">
             <file>tests/Features/Commands/GitHooksCommandsTest.php</file>
+        </testsuite>
+        <testsuite name="Gitleaks">
+            <file>tests/Features/Commands/GitleaksCommandsTest.php</file>
         </testsuite>
         <testsuite name="Install">
             <file>tests/Features/Commands/InstallCommandsTest.php</file>
@@ -68,9 +77,6 @@
         </testsuite>
         <testsuite name="Tool">
             <file>tests/Features/Commands/ToolCommandsTest.php</file>
-        </testsuite>
-        <testsuite name="Gitleaks">
-            <file>tests/Features/Commands/GitleaksCommandsTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

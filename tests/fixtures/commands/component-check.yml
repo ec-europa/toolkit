@@ -386,13 +386,13 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.41/api/v1/project/ec-europa/toolkit/information.json
+    - file: .toolkit-mock/0.0.54/api/v1/project/ec-europa/toolkit/information.json
       content: |
         [ { "name":"toolkit", "type": "Openeuropa", "environments": [{ "profile": "minimal", "type": "Production" }] }]
-    - file: .toolkit-mock/0.0.41/api/v1/toolkit-requirements.json
+    - file: .toolkit-mock/0.0.54/api/v1/toolkit-requirements.json
       content: |
         { "php_version":"8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.41/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.54/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -408,13 +408,13 @@
           "restricted_use": "1",
           "allowed_profiles": "minimal",
           "allowed_project_types": "Openeuropa",
-          "mandatory": "0",
+          "mandatory": false,
           "mandatory_date": false,
           "core": "8.x",
           "cores": "8.x",
           "usage": "Free",
           "nid": "10889",
-          "dev_component": "false"
+          "dev_component": false
         } ]
   expectations:
     - string_contains: The package drupal/pipeline is authorised for the type of project Openeuropa
@@ -427,13 +427,13 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.41/api/v1/project/ec-europa/toolkit/information.json
+    - file: .toolkit-mock/0.0.54/api/v1/project/ec-europa/toolkit/information.json
       content: |
         [ { "name": "toolkit", "type": "Openeuropa", "environments": [{ "profile":"minimal", "type":"Production" }] } ]
-    - file: .toolkit-mock/0.0.41/api/v1/toolkit-requirements.json
+    - file: .toolkit-mock/0.0.54/api/v1/toolkit-requirements.json
       content: |
         { "php_version": "8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.41/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.54/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -449,13 +449,13 @@
           "restricted_use": "1",
           "allowed_profiles": "minimal",
           "allowed_project_types": false,
-          "mandatory": "0",
+          "mandatory": false,
           "mandatory_date": false,
           "core": "8.x",
           "cores": "8.x",
           "usage": "Free",
           "nid": "10889",
-          "dev_component": "false"
+          "dev_component": false
         } ]
   expectations:
     - string_contains: The package drupal/pipeline is authorised for the profile minimal
@@ -467,7 +467,7 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "ec-europa/toolkit" } ] }
-    - file: .toolkit-mock/0.0.41/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.54/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -480,7 +480,7 @@
           "machine_name": "pipeline",
           "name": "drupal/pipeline",
           "full_name": "drupal/pipeline",
-          "mandatory": "1"
+          "mandatory": true
         } ]
   expectations:
     - string_contains: Package mandatory is mandatory and is not present on the project
@@ -798,7 +798,7 @@
       content: |
         { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
   expectations:
-    - empty: ~
+    - string_contains: Package drupal/config_readonly is recommended but is not present on the project.
 
 - command: 'check:insecure'
   configuration: []
