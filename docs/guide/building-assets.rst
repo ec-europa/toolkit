@@ -90,7 +90,7 @@ The default theme can be specified in a parameter in the task call:
 Define 'custom-code-folder'
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If for some reason your project is running custom code in other folder then ``lib``, it's possible to make it configurable with the following:
+If for some reason your project is running custom code in a folder other than ``lib``, it's possible to make it configurable with the following:
 
 .. code-block::
 
@@ -117,6 +117,20 @@ To enable auto build of assets you should extend the tasks ``toolkit:build-dev``
          commands:
          - ...
          - ./vendor/bin/run toolkit:build-assets-dist
+
+If your custom theme is located in a folder other than ``themes`` (default folder for ``toolkit:build-assets-dist``).
+For example the folder ``themes/custom`` as in the original digit drupal template:
+
+.. code-block::
+
+   toolkit:
+     build:
+       dist:
+         commands:
+         - ...
+        - { task: run, command: toolkit:build-assets, options: {
+            custom-code-folder: '${toolkit.build.dist.root}/${drupal.root}/themes/custom'
+          }}
 
 
 Install additional npm packages
