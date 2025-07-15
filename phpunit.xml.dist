@@ -23,6 +23,9 @@
         <testsuite name="Unit ReplaceBlock">
             <file>tests/Unit/ReplaceBlockTest.php</file>
         </testsuite>
+        <testsuite name="Unit DrupalCore11Upgrade">
+            <file>tests/Unit/DrupalCore11UpgradeTest.php</file>
+        </testsuite>
         <testsuite name="Blackfire and Build">
             <file>tests/Features/Commands/BlackfireCommandsTest.php</file>
             <file>tests/Features/Commands/BuildCommandsTest.php</file>
