@@ -20,6 +20,11 @@ class DrupalCore11UpgradeTest extends AbstractTest
      */
     public function testConvertHookToMethod()
     {
+        // Run this test only for php >=8.3.
+        if (!version_compare(phpversion(), '8.3', '>=')) {
+            $this->markTestSkipped('Skipping test, php version is not >=8.3.');
+        }
+
         // Copy the toolkit composer.json file.
         $this->fs->copy('composer.json', $this->getSandboxFilepath('composer.json'));
 

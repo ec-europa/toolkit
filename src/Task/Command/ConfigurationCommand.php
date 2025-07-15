@@ -32,7 +32,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * the required to ensure they are present, and the defaults
      * to ensure they have the default value.
      *
-     * @var string[][]
+     * @var array<string, array<string, list<string>|string>>
      */
     protected array $availableTasks = [
         'mkdir' => ['required' => 'dir', 'defaults' => 'mode'],
@@ -105,7 +105,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      */
     protected function taskExecute($task)
     {
-        $this->validateAndEnsureParameters($task);
+        $task = $this->validateAndEnsureParameters($task);
         switch ($task['task']) {
             case 'mkdir':
                 return $this->collectionBuilder()->taskFilesystemStack()
@@ -223,7 +223,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                 return $replaceBlock;
 
             default:
-                $this->throwInvalidTaskException($task['task'] ?? '');
+                $this->throwInvalidTaskException($task['task']);
         }
     }
 
@@ -244,15 +244,15 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * @param string|string[] $task
      *   The task being executed.
      *
-     * @return void
+     * @return array|string[]
      *   Validate and ensure the parameter are met.
+     *
+     * @throws \Robo\Exception\TaskException
      *
      * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::availableTasks
      * @see \EcEuropa\Toolkit\Task\Command\ConfigurationCommand::paramDefaultValue()
-     *
-     * @throws \Robo\Exception\TaskException
      */
-    private function validateAndEnsureParameters(&$task)
+    private function validateAndEnsureParameters(string|array $task): array
     {
         $availableTasks = $this->availableTasks;
 
@@ -274,6 +274,8 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
                 $task[$default] = $task[$default] ?? $this->paramDefaultValue($default);
             }
         }
+
+        return $task;
     }
 
     /**
@@ -335,7 +337,7 @@ class ConfigurationCommand extends BaseTask implements BuilderAwareInterface
      * @param string $key
      *   The parameter name.
      *
-     * @return mixed
+     * @return mixed|array<string>|string
      *   The default value for given name.
      */
     private function paramDefaultValue(string $key)

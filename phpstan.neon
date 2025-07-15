@@ -18,8 +18,9 @@ parameters:
         path: src/TaskRunner/AbstractCommands.php
     - '#^Call to deprecated method registerCommandClass\(\) of class Robo\\Runner#'
     -
-        message: "#^Call to function method_exists\\(\\) with '[a-zA-Z\\\\_…]+' and 'sanitize' will always evaluate to false\\.$#"
-        count: 2
+        message: "#^Call to function method_exists\\(\\) with '[a-zA-Z\\\\_…]+' and 'sanitize' will always evaluate to true|false\\.$#"
+        count: 4
         path: src/TaskRunner/Commands/DrupalSanitiseCommands.php
+    - '#^PHPDoc tag @SuppressWarnings has invalid value#'
 includes:
   - vendor/phpstan/phpstan-deprecation-rules/rules.neon

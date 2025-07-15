@@ -50,7 +50,7 @@ class SymlinkProjectCommands extends AbstractCommands
         }
         // Check if the project_id is valid.
         $project = explode('/', $composer['name']);
-        if (empty($project[1]) || !is_array($project)) {
+        if (empty($project[1]) || empty($project[0])) {
             throw new \Exception('Could not find the project id in the composer.json file.');
         }
         // Check if the project type is valid.

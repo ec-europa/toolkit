@@ -149,7 +149,7 @@ class Runner
      * @return string
      *   Return the current working directory.
      */
-    private function getWorkingDir()
+    private function getWorkingDir(): string
     {
         return (string) $this->input->getParameterOption('--working-dir', getcwd());
     }
@@ -157,10 +157,10 @@ class Runner
     /**
      * Create and prepare the Application.
      *
-     * @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     * @return $this
      *   Return the runner.
      */
-    private function prepareApplication()
+    private function prepareApplication(): self
     {
         $this->application = Robo::createDefaultApplication(self::APPLICATION_NAME, Toolkit::VERSION);
         $this->application->getDefinition()
@@ -201,10 +201,10 @@ class Runner
     /**
      * Create the configurations and process overrides.
      *
-     * @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     * @return $this
      *   The configurations updated.
      */
-    private function prepareConfigurations()
+    private function prepareConfigurations(): self
     {
         $workingDir = realpath($this->workingDir);
         // Load the Toolkit default configurations.
@@ -269,10 +269,10 @@ class Runner
     /**
      * Prepare the container with the configurations.
      *
-     * @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     * @return $this
      *   The container configured.
      */
-    private function prepareContainer()
+    private function prepareContainer(): self
     {
         $this->container = new Container();
         $this->container->defaultToShared();
@@ -292,10 +292,10 @@ class Runner
     /**
      * Create and configure the Robo runner.
      *
-     * @return $this(EcEuropa\Toolkit\TaskRunner\Runner)
+     * @return $this
      *   The Robo runner configured.
      */
-    private function prepareRunner()
+    private function prepareRunner(): self
     {
         // Passing an array as RoboClass will avoid Robo from processing a RoboFile.
         $this->runner = new RoboRunner(['']);
@@ -316,7 +316,7 @@ class Runner
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    private function registerConfigurationCommands()
+    private function registerConfigurationCommands(): void
     {
         if (!$commands = $this->getConfig()->get('commands')) {
             return;
