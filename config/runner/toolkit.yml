@@ -112,7 +112,7 @@ toolkit:
     npm:
       theme-task-runner: ecl-builder
       packages: '@ecl/builder @ecl/preset-ec @ecl/preset-eu @ecl/preset-reset'
-      ecl-command: 'styles scripts'
+      ecl-command: 'styles scripts copy'
   scss:
     validate: 'false'
   invalid-versions:

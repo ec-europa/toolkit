@@ -187,3 +187,6 @@
         [Simulator] Simulating Exec('./node_modules/.bin/ecl-builder scripts')
           ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
         [Simulator] Running ./node_modules/.bin/ecl-builder scripts in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('./node_modules/.bin/ecl-builder copy')
+          ->dir('/test/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running ./node_modules/.bin/ecl-builder copy in /test/toolkit/tests/sandbox/BuildCommandsTest/code/theme
