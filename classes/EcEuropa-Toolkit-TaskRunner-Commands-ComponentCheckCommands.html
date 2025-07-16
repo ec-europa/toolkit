@@ -704,7 +704,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_testPackages">testPackages()</a>
     <span>
-                                &nbsp;: array&lt;string|int, array&lt;string|int, string&gt;&gt;    </span>
+                                &nbsp;: array&lt;int, array&lt;string, array&lt;string, array&lt;string, string&gt;&gt;|string&gt;&gt;    </span>
 </dt>
 <dd>Returns a list of packages to test.</dd>
 
@@ -2468,13 +2468,23 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">componentNpmInsecure</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|void</span></code>
+                    <span class="phpdocumentor-signature__name">componentNpmInsecure</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|void</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
     
     
-    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
@@ -2527,13 +2537,23 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">componentNpmOutdated</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|void</span></code>
+                    <span class="phpdocumentor-signature__name">componentNpmOutdated</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|void</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
     
     
-    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$io</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
@@ -4350,7 +4370,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">testPackages</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, array&lt;string|int, string&gt;&gt;</span></code>
+                    <span class="phpdocumentor-signature__name">testPackages</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;int, array&lt;string, array&lt;string, array&lt;string, string&gt;&gt;|string&gt;&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -4363,7 +4383,7 @@
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, array&lt;string|int, string&gt;&gt;</span>
+        <span class="phpdocumentor-signature__response_type">array&lt;int, array&lt;string, array&lt;string, array&lt;string, string&gt;&gt;|string&gt;&gt;</span>
                     &mdash;
                 <section class="phpdocumentor-description"><p>The list of packages to test array.</p>
 </section>

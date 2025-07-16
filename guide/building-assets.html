@@ -186,7 +186,7 @@ like shown below:</p>
     npm:
       theme-task-runner: ecl-builder gulp
       packages: &#039;@ecl/builder pikaday moment gulp gulp-concat gulp-sass gulp-clean-css gulp-minify&#039;
-      ecl-command: &#039;styles scripts&#039;</code></pre>
+      ecl-command: &#039;styles scripts copy&#039;</code></pre>
 
             
     <p>Command to run:</p>
@@ -221,10 +221,10 @@ Make sure that are pointed to the right path.</p>
             
     <p>By default Toolkit compiles the Css and Js files, defined in the configuration file
 &#039;ecl-builder.config.js&#039; as entry and destination paths.
-The ecl-builder command used for this action is &#039;styles&#039;. This the default command.</p>
+The ecl-builder commands used by default are related to &#039;ecl-command&#039; in your runner.yml.dist file.</p>
 
             
-    <p>To use other command listed on &#039;ecl-builder&#039; options an additional parameter can be provided:
+    <p>To use a specific command listed on &#039;ecl-builder&#039; options an additional parameter can be provided:
 &#039;--ecl-command&#039;</p>
 
             <pre><code class="language-">// Execute an available command from the ecl-builder list - Get help:
@@ -254,7 +254,7 @@ toolkit:
             <h3>Define &#039;custom-code-folder&#039;</h3>
 
             
-    <p>If for some reason your project is running custom code in other folder then <code>lib</code>
+    <p>If for some reason your project is running custom code in a folder other than <code>lib</code>
 , it&#039;s possible to make it configurable with the following:</p>
 
             <pre><code class="language-">toolkit:
@@ -284,6 +284,22 @@ toolkit:
       commands:
       - ...
       - ./vendor/bin/run toolkit:build-assets-dist</code></pre>
+
+            
+    <p>If your custom theme is located in a folder other than <code>themes</code>
+ (default folder for <code>toolkit:build-assets-dist</code>
+).
+For example the folder <code>themes/custom</code>
+ as in the original digit drupal template:</p>
+
+            <pre><code class="language-">toolkit:
+  build:
+    dist:
+      commands:
+      - ...
+     - { task: run, command: toolkit:build-assets, options: {
+         custom-code-folder: &#039;${toolkit.build.dist.root}/${drupal.root}/themes/custom&#039;
+       }}</code></pre>
 
             <section class="section " id="install-additional-npm-packages">
             <h3>Install additional npm packages</h3>
