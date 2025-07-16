@@ -357,9 +357,7 @@ class DrupalCommands extends AbstractCommands
     protected function processPrePostInstallCommands(array &$commands, array $tokens)
     {
         foreach ($commands as $key => $value) {
-            if (is_string($value)) {
-                $commands[$key] = str_replace(array_keys($tokens), array_values($tokens), $value);
-            }
+            $commands[$key] = str_replace(array_keys($tokens), array_values($tokens), $value);
         }
     }
 

@@ -85,6 +85,7 @@ toolkit:
         - vendor/phpstan/phpstan-deprecation-rules/rules.neon
       ignore_errors:
         - "#^Unsafe usage of new static#"
+        - "#^PHPDoc tag @SuppressWarnings has invalid value#"
       files: [ lib, src ]
       ignores: [ ${toolkit.build.dist.root}, .cache, vendor ]
       memory_limit: '-1'

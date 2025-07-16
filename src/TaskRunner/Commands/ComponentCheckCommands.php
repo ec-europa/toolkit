@@ -407,7 +407,7 @@ class ComponentCheckCommands extends AbstractCommands
     {
         $this->loadComposerOutdated();
         // Using the option --locked, we must check for the "locked" key.
-        if (is_array($this->composerOutdated) && !empty($this->composerOutdated['locked'])) {
+        if (!empty($this->composerOutdated['locked'])) {
             $ignores = $this->getConfig()->get('toolkit.components.outdated.ignores');
             if (!empty($ignores)) {
                 $ignores = array_combine(
@@ -788,7 +788,7 @@ class ComponentCheckCommands extends AbstractCommands
      * @return int|void
      *   The component NPM insecure status.
      */
-    public function componentNpmInsecure()
+    public function componentNpmInsecure(ConsoleIO $io)
     {
         $parseOptsFile = $this->getOptsYml();
         // Check if npm_install property enabled.
@@ -813,13 +813,13 @@ class ComponentCheckCommands extends AbstractCommands
             $this->insecureNpmFailed = true;
             foreach ($auditModules['vulnerabilities'] as $vulnerability) {
                 $message = "Package {$vulnerability['name']} has a vulnerability with severity {$vulnerability['severity']}.";
-                $this->writeln($message);
+                $io->writeln($message);
                 $this->addJunitResult('NPM Insecure', $message, $this->skipInsecureNpm ? 'warning' : 'error');
             }
         }
 
         if (!$this->insecureNpmFailed) {
-            $this->say('NPM Insecure check passed.');
+            $io->say('NPM Insecure check passed.');
         }
     }
 
@@ -833,7 +833,7 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function componentNpmOutdated()
+    public function componentNpmOutdated(ConsoleIO $io)
     {
         $parseOptsFile = $this->getOptsYml();
         // Check if npm_install property enabled.
@@ -855,19 +855,19 @@ class ComponentCheckCommands extends AbstractCommands
             ->run()->getMessage();
         $outdatedModules = json_decode($result, true);
         if (empty($outdatedModules)) {
-            $this->say('NPM Outdated check passed.');
+            $io->say('NPM Outdated check passed.');
         } else {
             foreach ($outdatedModules as $packageName => $package) {
                 if ($package['current'] !== $package['latest']) {
                     $message = "Package {$packageName} with version installed {$package['current']} is outdated, please update to the {$package['latest']} version.";
-                    $this->writeln($message);
+                    $io->writeln($message);
                     $this->outdatedNpmFailed = true;
                     $this->addJunitResult('NPM Outdated', $message, $this->skipOutdatedNpm ? 'warning' : 'error');
                 }
             }
             if (!$this->outdatedNpmFailed) {
                 // Check is passed if modules reported have same current-latest version.
-                $this->say('NPM Outdated check passed.');
+                $io->say('NPM Outdated check passed.');
             }
         }
     }
@@ -938,7 +938,7 @@ class ComponentCheckCommands extends AbstractCommands
                     } else {
                         // Add environment variables set for check.
                         $contentParsed = Dotenv::parse(file_get_contents($filename));
-                        if (is_array($contentParsed)) {
+                        if (!empty($contentParsed)) {
                             $envVarsSet[$filename] = $contentParsed;
                         }
                     }
@@ -1168,10 +1168,10 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Returns a list of packages to test.
      *
-     * @return array<string[]>
+     * @return array<int, array<string, array<string, array<string, string>>|string>>
      *   The list of packages to test array.
      */
-    private function testPackages()
+    private function testPackages(): array
     {
         return [
             // Lines below should trow a warning.
