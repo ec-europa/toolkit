@@ -17,7 +17,7 @@
         "ext-dom": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
-        "behat/behat": "^3.7",
+        "behat/behat": "^3.11",
         "composer/composer": "^2.7",
         "consolidation/annotated-command": "^4.7.0",
         "consolidation/robo": "^3.0 || ^4.0 || ^5.0",
