@@ -23,8 +23,6 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Toolkit Runner.
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Runner
 {
