@@ -337,6 +337,9 @@ class ComponentCheckCommands extends AbstractCommands
         if (!$this->loadComposerLock()) {
             return 1;
         }
+        if (!$this->loadWebsitePackages()) {
+            return 1;
+        }
         $packages = [];
         $fullSkip = getenv('QA_SKIP_INSECURE') !== false && getenv('QA_SKIP_INSECURE');
         $drupalReleaseHistory = new DrupalReleaseHistory();
@@ -361,9 +364,13 @@ class ComponentCheckCommands extends AbstractCommands
         foreach ($packages as $name => $package) {
             $msg = "Package $name has a security update, please update to a safe version. (" . $package['title'] . ")";
             if (!empty($this->packageReviews[$name]['secure'])) {
-                if (Semver::satisfies($package['version'], $this->packageReviews[$name]['secure'])) {
-                    $messages[] = "$msg (Version marked as secure)";
-                    continue;
+                try {
+                    if (Semver::satisfies($package['version'], $this->packageReviews[$name]['secure'])) {
+                        $messages[] = "$msg (Version marked as secure)";
+                        continue;
+                    }
+                } catch (\UnexpectedValueException $exception) {
+                    $messages[] = "$msg (Fail to parse constraint {$this->packageReviews[$name]['secure']})";
                 }
             }
             $historyTerms = $drupalReleaseHistory->getPackageDetails($name, $package['version'], '8.x');
@@ -1061,9 +1068,16 @@ class ComponentCheckCommands extends AbstractCommands
             $constraints = ['whitelist' => false, 'blacklist' => true];
             foreach ($constraints as $constraint => $result) {
                 $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
-                if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
+                try {
+                    if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
+                        $this->evaluationFailed = true;
+                        $message = "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.";
+                        $messageType = "Package's version constraints:";
+                        $this->addJunitResult('Evaluation components', $message);
+                    }
+                } catch (\UnexpectedValueException $exception) {
                     $this->evaluationFailed = true;
-                    $message = "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.";
+                    $message = "Package $packageName:$packageVersion failed to parse $constraint version constraint: $constraintValue.";
                     $messageType = "Package's version constraints:";
                     $this->addJunitResult('Evaluation components', $message);
                 }
