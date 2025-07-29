@@ -21,7 +21,6 @@ use Symfony\Component\Yaml\Yaml;
  * Generic tools.
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class ToolCommands extends AbstractCommands
 {

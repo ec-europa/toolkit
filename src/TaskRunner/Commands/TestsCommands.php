@@ -17,8 +17,6 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class TestsCommands.
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class TestsCommands extends AbstractCommands
 {
