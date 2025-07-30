@@ -1,5 +1,5 @@
 gitleaks:
   repo: https://github.com/gitleaks/gitleaks
-  tag: 8.17.0
+  tag: 8.27.2
   os: linux_x64
   options: '--no-banner -v --no-git --follow-symlinks'
