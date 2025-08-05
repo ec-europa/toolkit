@@ -390,6 +390,7 @@ class TestsCommands extends AbstractCommands
         if (!file_exists($options['config'])) {
             $configContent = [
                 'parameters' => [
+                    'reportUnmatchedIgnoredErrors' => false,
                     'level' => $options['level'],
                     'paths' => array_values($options['files']),
                     'excludePaths' => $ignores,
