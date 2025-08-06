@@ -296,7 +296,7 @@
         <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$defaultTag</span>
-     = <span class="phpdocumentor-signature__default-value">&#039;0.0.57&#039;</span></code>
+     = <span class="phpdocumentor-signature__default-value">&#039;0.0.60&#039;</span></code>
 
     
     
@@ -615,6 +615,8 @@
                         if (xhr.status < 400 && xhr.responseText) {
                             code.textContent = xhr.responseText;
                             Prism.highlightElement(code);
+                            d=document.getElementsByClassName("line-numbers");
+                            d[0].scrollTop = d[0].children[1].offsetTop;
                             return;
                         }
 
