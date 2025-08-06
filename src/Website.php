@@ -313,7 +313,11 @@ class Website
         if (empty($auth = self::apiAuth())) {
             return false;
         }
-        $data = self::getWithMockFallback(self::url() . '/api/v1/package-reviews', $auth);
+        $url = self::url() . '/api/v1/package-reviews';
+        if (!empty($projectId = getenv('TOOLKIT_PROJECT_ID'))) {
+            $url .= '?project=' . $projectId;
+        }
+        $data = self::getWithMockFallback($url, $auth);
         return empty($data) ? false : $data;
     }
 
