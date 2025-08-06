@@ -1,5 +1,11 @@
 # Toolkit change log
 
+## Version 10.22.0
+  - DQA-11963: Validate component form.
+  - DQA-11050: Update gitleaks.
+  - DQA-12096: Add reportUnmatchedIgnoredErrors to phpstan.
+  - DQA-12200: Enable the mandatory modules field view and requirements list.
+
 ## Version 10.21.0
   - DQA-12052: Update Git Hooks to use format method.
   - DQA-12096: Drupal 11.2.2 compatibility.
