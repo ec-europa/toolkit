@@ -326,7 +326,7 @@ class TestsCommands extends AbstractCommands
 
         // Make sure the required standards are present.
         $standards = [
-            './vendor/squizlabs/php_codesniffer/bin/phpcs',
+            './vendor/squizlabs/php_codesniffer/CodeSniffer.conf',
         ];
         $rules = [];
         $data = simplexml_load_file($configFile);
