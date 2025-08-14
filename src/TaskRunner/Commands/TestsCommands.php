@@ -326,7 +326,7 @@ class TestsCommands extends AbstractCommands
 
         // Make sure the required standards are present.
         $standards = [
-            './vendor/squizlabs/php_codesniffer/CodeSniffer.conf',
+            'moodle',
         ];
         $rules = [];
         $data = simplexml_load_file($configFile);
@@ -335,9 +335,9 @@ class TestsCommands extends AbstractCommands
                 $rules[] = (string) $item['ref'];
             }
         }
-        /*if ($diff = array_diff($standards, $rules)) {
+        if ($diff = array_diff($standards, $rules)) {
             throw new AbortTasksException("The following standards are missing, please add them to the configuration file '$configFile'.\n" . implode("\n", $diff));
-        }*/
+        }
     }
 
     /**
