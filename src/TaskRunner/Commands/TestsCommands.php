@@ -326,9 +326,7 @@ class TestsCommands extends AbstractCommands
 
         // Make sure the required standards are present.
         $standards = [
-            './vendor/drupal/coder/coder_sniffer/Drupal',
-            './vendor/drupal/coder/coder_sniffer/DrupalPractice',
-            './vendor/ec-europa/qa-automation/phpcs/QualityAssurance',
+            './vendor/squizlabs/php_codesniffer/bin/phpcs',
         ];
         $rules = [];
         $data = simplexml_load_file($configFile);
