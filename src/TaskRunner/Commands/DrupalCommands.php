@@ -568,6 +568,8 @@ class DrupalCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
         $forbiddenPermissions = $data['forbidden_permissions'];
+        $trustedRoles = array_values((array) ($data['trusted_roles'] ?? []));
+        $trustedExemptPermissions = array_values((array) ($data['trusted_exempt_permissions'] ?? []));
 
         $roles = $this->taskExec($this->getBin('drush'))
             ->arg('role:list')
@@ -577,8 +579,14 @@ class DrupalCommands extends AbstractCommands
 
         $fail = false;
         foreach ($roles as $role) {
+            $roleId = $role['rid'] ?? null;
+            $isTrustedRole = $roleId && in_array($roleId, $trustedRoles, true);
             foreach ($role['perms'] ?? [] as $permission) {
                 if (in_array($permission, $forbiddenPermissions)) {
+                    // Allow only if role is trusted AND permission is explicitly exempt.
+                    if ($isTrustedRole && in_array($permission, $trustedExemptPermissions, true)) {
+                        continue;
+                    }
                     $io->say(sprintf(
                         "The role '%s' contains a forbidden permission '%s'",
                         $role['label'],
