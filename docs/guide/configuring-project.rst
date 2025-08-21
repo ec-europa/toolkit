@@ -1,3 +1,5 @@
+.. contents:: On this page
+
 Configuring a project
 =====================
 
