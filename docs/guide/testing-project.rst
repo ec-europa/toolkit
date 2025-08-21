@@ -393,4 +393,4 @@ Testing in CI
 Toolkit is full integrated with official pipeline that currently requires minimum
 of 1 behat test and a clean report for phpcs check.
 
-Any customization done in your project will be respected in Drone build.
+Any customization done in your project will be respected in pipeline build.
