@@ -68,9 +68,13 @@ in the following order:
 
 Because the configurations are merged, if two different config files provides the same key, they will be merged.
 For example, a configuration providing an array with 3 elements, a project would not be able to override and
-provide only one element. To avoid this, Toolkit has a set of defined configurations that will behave in a
-different way allowing projects to completely override the config.
-These overriding configurations are located in the ``config/default.yml`` file under ``overrides`` key.
+provide only one element.
+
+.. hint::
+
+   To avoid this, Toolkit has a set of defined configurations that will behave in a
+   different way allowing projects to completely override the config.
+   These overriding configurations are located in the ``config/default.yml`` file under ``overrides`` key.
 
 
 Project configuration
@@ -81,8 +85,11 @@ A project inherit the same configurations as Toolkit (described above).
 To override the default configurations, projects can provide the configurations with the ``runner.yml.dist`` file,
 or/and under the ``config/runner`` directory (by default). This directory can be changed (in the ``runner.yml.dist``
 only) by specifying a custom path in the config key ``runner.config_dir``.
-Local or development configurations should use the ``runner.yml`` file, this file should not be committed and
-will be loaded as last configuration.
+
+.. hint::
+
+   Local or development configurations should use the ``runner.yml`` file, this file should not be committed and
+   will be loaded as last configuration.
 
 The configurations are loaded in the following order:
 

@@ -47,7 +47,7 @@ Commands to run before/after clean installation
 """""""""""""""""""""""""""""""""""""""""""""""
 
 Additional commands can be run before and/or after installing the clean site.
-Such commands should be defined in the configuration file ``runner.yml``:
+Such commands should be defined in the configuration file ``runner.yml.dist`` and/or ``runner.yml`` - :doc:`(read more) <configuring-project#project-configuration>`::
 
 .. code-block:: yaml
 
@@ -111,7 +111,7 @@ Commands to run before/after clone installation
 """""""""""""""""""""""""""""""""""""""""""""""
 
 Additional commands can be run before and/or after installing the cloned site.
-Such commands should be defined in the configuration file ``runner.yml``:
+Such commands should be defined in the configuration file ``runner.yml.dist`` and/or ``runner.yml`` - :doc:`(read more) <configuring-project#project-configuration>`:
 
 .. code-block:: yaml
 
