@@ -178,7 +178,7 @@ need to define a configuration file, and import it as shown below.
 Creating configuration commands
 ----
 
-Configuration commands are created in the configuration file ``runner.yml``, like shown below:
+Configuration commands are created in the configuration file `runner.yml.dist and/or runner.yml <runner-yml_>`_, like shown below:
 
 .. code-block:: yaml
 

@@ -76,19 +76,20 @@ provide only one element.
    different way allowing projects to completely override the config.
    These overriding configurations are located in the ``config/default.yml`` file under ``overrides`` key.
 
+.. _runner-yml:
 
 Project configuration
 ^^^^^^^^^^^^^^^^^^^^^
 
 A project inherit the same configurations as Toolkit (described above).
 
-To override the default configurations, projects can provide the configurations with the ``runner.yml.dist`` file,
+To override the default configurations, projects can provide the configurations with the **``runner.yml.dist``** file,
 or/and under the ``config/runner`` directory (by default). This directory can be changed (in the ``runner.yml.dist``
 only) by specifying a custom path in the config key ``runner.config_dir``.
 
 .. hint::
 
-   Local or development configurations should use the ``runner.yml`` file, this file should not be committed and
+   Local or development configurations should use the **``runner.yml``** file, this file should not be committed and
    will be loaded as last configuration.
 
 The configurations are loaded in the following order:

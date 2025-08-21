@@ -8,6 +8,7 @@ Index
     configuring-project
     installing-project
     testing-project
+    continuous-integration
     commands
     building-assets
     git-hooks
