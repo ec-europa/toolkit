@@ -223,7 +223,7 @@ list of available tasks is:
 +---------------+------------------------------------------------------------------------+
 | mirror        | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
-| process       | `Process </src/Task/File/Process.php>`_                                |
+| process       | `Process </src/Task/File/Process.php>`                                 |
 +---------------+------------------------------------------------------------------------+
 | append        | `Write with append() <https://robo.li/tasks/File.html#write>`_         |
 +---------------+------------------------------------------------------------------------+
@@ -233,5 +233,5 @@ list of available tasks is:
 +---------------+------------------------------------------------------------------------+
 | drush         | Executes a Drush command                                               |
 +---------------+------------------------------------------------------------------------+
-| replace-block | `ReplaceBlock </src/Task/File/ReplaceBlock.php>`_                      |
+| replace-block | `ReplaceBlock </src/Task/File/ReplaceBlock.php>`                       |
 +---------------+------------------------------------------------------------------------+
