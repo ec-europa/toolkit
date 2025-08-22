@@ -56,8 +56,8 @@ Environment variables will be loaded by Docker Compose when running ``docker-com
 Toolkit configuration
 ^^^^^^^^^^^^^^^^^^^^^
 
-Toolkit uses the `consolidation/annotated-command <https://github.com/consolidation/annotated-command#hooks>`_ and
-`Robo <https://robo.li/>`_, make sure to read the documentation.
+Toolkit uses the `consolidation/annotated-command`_ and
+`Robo`_, make sure to read the documentation.
 
 The configurations are split into multiple files under the ``config`` directory and they are loaded
 in the following order:
@@ -139,7 +139,14 @@ The following examples describes how to use a single or multiple files to have t
 Runtime configuration
 ^^^^^^^^^^^^^^^^^^^^^
 
-There are multiple ways to provide runtime configurations.
+You can also override the default configurations from your project codebase.
+There are multiple ways to provide runtime configurations and
+`consolidation/annotated-command#hooks`_ provides the various types of hooks in
+the command processing request flow. Hooks make it possible to add features like
+validation, logging, auditing, input sanitization, dry-run support, or UX
+improvements without altering your command logic.
+
+Examples:
 
 **Override a configuration value in runtime**
 
@@ -174,3 +181,5 @@ There are multiple ways to provide runtime configurations.
         $input->setOption('from', 'behat.yml.example');
       }
     }
+
+.. include:: inc/_common.rst
