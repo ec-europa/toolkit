@@ -13,6 +13,8 @@ use Robo\Tasks;
 
 /**
  * Class AbstractCommands.
+ *
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
 {

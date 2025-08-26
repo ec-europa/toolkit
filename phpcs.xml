@@ -329,7 +329,10 @@
     <rule ref="Drupal.Files.EndFileNewline"/>
     <rule ref="Drupal.Arrays.Array.CommaLastItem"/>
     <rule ref="Drupal.Formatting"/>
-    <rule ref="Drupal.NamingConventions"/>
+    <rule ref="Drupal.NamingConventions">
+        <exclude name="Drupal.NamingConventions.ValidGlobal.GlobalUnderScore"/>
+        <exclude name="Drupal.NamingConventions.ValidVariableName.LowerStart"/>
+    </rule>
     <rule ref="Drupal.Scope"/>
     <rule ref="Drupal.Semantics"/>
     <rule ref="Drupal.Strings"/>
