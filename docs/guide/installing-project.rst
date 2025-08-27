@@ -47,7 +47,7 @@ Commands to run before/after clean installation
 """""""""""""""""""""""""""""""""""""""""""""""
 
 Additional commands can be run before and/or after installing the clean site.
-Such commands should be defined in the configuration file ``runner.yml``:
+Such commands should be defined in the configuration file `runner.yml.dist and/or runner.yml <runner-yml_>`_:
 
 .. code-block:: yaml
 
@@ -102,16 +102,16 @@ commands after the database import:
    ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer -y
    ./vendor/bin/drush cache:rebuild
 
-These commands simulate the automated deployment that Drone provides through its pipeline. You can
+These commands simulate the automated deployment that CI provides through its pipeline. You can
 alter these commands by providing a file named **.opts.yml** in the root of your project folder. For
 more detailed information on the contents of this **.opts.yml** file please refer to this
-page: https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides .
+page: `DevOps Pipelines`_.
 
 Commands to run before/after clone installation
 """""""""""""""""""""""""""""""""""""""""""""""
 
 Additional commands can be run before and/or after installing the cloned site.
-Such commands should be defined in the configuration file ``runner.yml``:
+Such commands should be defined in the configuration file `runner.yml.dist and/or runner.yml <runner-yml_>`_:
 
 .. code-block:: yaml
 

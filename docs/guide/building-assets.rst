@@ -20,7 +20,7 @@ Building theme assets (general)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Toolkit will install all packages and create config files (if not exist) on the first run.
-Add the chosen runners and packages to your runner.yml.dist file
+Add the chosen runners and packages to your `runner.yml.dist and/or runner.yml <runner-yml_>`_ file
 like shown below:
 
 .. code-block::
@@ -58,7 +58,7 @@ Build theme assets (ecl-builder)
 
 By default Toolkit compiles the Css and Js files, defined in the configuration file
 'ecl-builder.config.js' as entry and destination paths.
-The ecl-builder commands used by default are related to 'ecl-command' in your runner.yml.dist file.
+The ecl-builder commands used by default are related to 'ecl-command' in your `runner.yml.dist and/or runner.yml <runner-yml_>`_ file.
 
 To use a specific command listed on 'ecl-builder' options an additional parameter can be provided:
 '--ecl-command'
@@ -147,7 +147,7 @@ The package version can be added after the package name like shown in the exampl
 
    'gulp@4.0.1'
 
-To do it add them to the file 'runner.yml.dist':
+To do it add them to the file `runner.yml.dist and/or runner.yml <runner-yml_>`_:
 
 .. code-block::
 

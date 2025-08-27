@@ -1,3 +1,5 @@
+.. contents:: On this page
+
 Configuring a project
 =====================
 
@@ -54,7 +56,7 @@ Environment variables will be loaded by Docker Compose when running ``docker-com
 Toolkit configuration
 ^^^^^^^^^^^^^^^^^^^^^
 
-Toolkit uses the `consolidation/annotated-command <https://github.com/consolidation/annotated-command#hooks>`_ and
+Toolkit uses the `consolidation/annotated-command <https://github.com/consolidation/annotated-command>`_ and
 `Robo <https://robo.li/>`_, make sure to read the documentation.
 
 The configurations are split into multiple files under the ``config`` directory and they are loaded
@@ -66,10 +68,15 @@ in the following order:
 
 Because the configurations are merged, if two different config files provides the same key, they will be merged.
 For example, a configuration providing an array with 3 elements, a project would not be able to override and
-provide only one element. To avoid this, Toolkit has a set of defined configurations that will behave in a
-different way allowing projects to completely override the config.
-These overriding configurations are located in the ``config/default.yml`` file under ``overrides`` key.
+provide only one element.
 
+.. hint::
+
+   To avoid this, Toolkit has a set of defined configurations that will behave in a
+   different way allowing projects to completely override the config.
+   These overriding configurations are located in the ``config/default.yml`` file under ``overrides`` key.
+
+.. _runner-yml:
 
 Project configuration
 ^^^^^^^^^^^^^^^^^^^^^
@@ -79,8 +86,11 @@ A project inherit the same configurations as Toolkit (described above).
 To override the default configurations, projects can provide the configurations with the ``runner.yml.dist`` file,
 or/and under the ``config/runner`` directory (by default). This directory can be changed (in the ``runner.yml.dist``
 only) by specifying a custom path in the config key ``runner.config_dir``.
-Local or development configurations should use the ``runner.yml`` file, this file should not be committed and
-will be loaded as last configuration.
+
+.. hint::
+
+   Local or development configurations should use the ``runner.yml`` file, this file should not be committed and
+   will be loaded as last configuration.
 
 The configurations are loaded in the following order:
 
@@ -129,7 +139,14 @@ The following examples describes how to use a single or multiple files to have t
 Runtime configuration
 ^^^^^^^^^^^^^^^^^^^^^
 
-There are multiple ways to provide runtime configurations.
+You can also override the default configurations from your project codebase.
+There are multiple ways to provide runtime configurations and
+`consolidation/annotated-command <https://github.com/consolidation/annotated-command#hooks>`_ provides the various types of hooks in
+the command processing request flow. Hooks make it possible to add features like
+validation, logging, auditing, input sanitization, dry-run support, or UX
+improvements without altering your command logic.
+
+Examples:
 
 **Override a configuration value in runtime**
 
