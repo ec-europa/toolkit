@@ -24,7 +24,7 @@ class Website
      *
      * @var string
      */
-    protected static string $url = 'https://digit-dqa.fpfis.tech.ec.europa.eu';
+    protected static string $url = 'https://digit-dqa.dhs.tech.ec.europa.eu';
 
     /**
      * Returns the QA website base url.
