@@ -115,7 +115,7 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         // To test this command execute it with the --test-command option:
-        // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://digit-dqa.fpfis.tech.ec.europa.eu"
+        // ./vendor/bin/run toolkit:component-check --test-command --endpoint="https://digit-dqa.dhs.tech.ec.europa.eu"
         // Then we provide an array in the packages that fails on each type of validation.
         if ($options['test-command']) {
             $this->composerLock['packages'] = $this->testPackages();
@@ -175,7 +175,7 @@ class ComponentCheckCommands extends AbstractCommands
             $io->error([
                 'Failed the components check, please verify the report and update the project.',
                 'See the list of packages at',
-                'https://digit-dqa.fpfis.tech.ec.europa.eu/package-reviews.',
+                'https://digit-dqa.dhs.tech.ec.europa.eu/package-reviews.',
             ]);
             $status = 1;
         }
@@ -310,7 +310,7 @@ class ComponentCheckCommands extends AbstractCommands
                 $this->addJunitResult('Recommended components', $message, $this->skipRecommended ? 'warning' : 'error');
             }
 
-            $this->say("See the list of recommended packages at\nhttps://digit-dqa.fpfis.tech.ec.europa.eu/requirements.");
+            $this->say("See the list of recommended packages at\nhttps://digit-dqa.dhs.tech.ec.europa.eu/requirements.");
             $this->recommendedFailedCount = count($diffRecommended);
         }
 
