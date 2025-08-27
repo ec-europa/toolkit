@@ -11,7 +11,8 @@
 /.phpunit.cache/
 *.sql
 phpda.*
-.phpdoc*
+.phpdoc/*
+!.phpdoc/template/
 node_modules/
 .prettierignore
 package.json
