@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 10.23.0
+  - DQA-12268: DQA url change.
+  - DQA-12227: Update documentation.
+
 ## Version 10.22.0
   - DQA-11963: Validate component form.
   - DQA-11050: Update gitleaks.

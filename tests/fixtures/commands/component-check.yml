@@ -19,12 +19,13 @@
         [Simulator] Running ./vendor/bin/drush status --format=json
         Website not installed, using config/sync/core.extension.yml file.
         Config file not found at config/sync/core.extension.yml.
-        Package dropsolid_purge is mandatory and is not present on the project.
+        >  Mandatory components check passed.
 
         Checking Recommended components.
         ================================
 
         Package drupal/config_readonly is recommended but is not present on the project.
+        Package drupal/dropsolid_purge is recommended but is not present on the project.
         >  See the list of recommended packages at
         https://digit-dqa.dhs.tech.ec.europa.eu/requirements.
         >  This step is in reporting mode, skipping.
@@ -86,9 +87,9 @@
         Results:
         ========
 
-        ----------------------------- -----------
-         Mandatory module check        failed
-         Recommended module check      1 warning
+        ----------------------------- ------------
+         Mandatory module check        passed
+         Recommended module check      2 warnings
          Insecure module check         passed
          Outdated module check         passed
          Abandoned module check        passed
@@ -97,7 +98,7 @@
          Development module check      passed
          Composer validation check     passed
          Project configuration check   passed
-        ----------------------------- -----------
+        ----------------------------- ------------
 
         [ERROR] Failed the components check, please verify the report and update the
         project.
@@ -189,8 +190,9 @@
       to: composer.lock
   expectations:
     - string_contains: Package drupal/config_readonly is recommended but is not present on the project
+    - string_contains: Package drupal/dropsolid_purge is recommended but is not present on the project
     - string_contains: Mandatory module check        passed
-    - string_contains: Recommended module check      1 warning
+    - string_contains: Recommended module check      2 warnings
     - string_contains: Insecure module check         passed
     - string_contains: Outdated module check         passed
     - string_contains: Abandoned module check        passed
@@ -386,13 +388,13 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.60/api/v1/project/ec-europa/toolkit/information.json
+    - file: .toolkit-mock/0.0.63/api/v1/project/ec-europa/toolkit/information.json
       content: |
         [{ "name": "toolkit", "type": "Openeuropa", "environments": [{ "profile": "minimal", "type": "Production" }] }]
-    - file: .toolkit-mock/0.0.60/api/v1/toolkit-requirements.json
+    - file: .toolkit-mock/0.0.63/api/v1/toolkit-requirements.json
       content: |
         { "php_version": "8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.60/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.63/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -427,13 +429,13 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.60/api/v1/project/ec-europa/toolkit/information.json
+    - file: .toolkit-mock/0.0.63/api/v1/project/ec-europa/toolkit/information.json
       content: |
         [{ "name": "toolkit", "type": "Openeuropa", "environments": [{ "profile": "minimal", "type": "Production" }] }]
-    - file: .toolkit-mock/0.0.60/api/v1/toolkit-requirements.json
+    - file: .toolkit-mock/0.0.63/api/v1/toolkit-requirements.json
       content: |
         { "php_version": "8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.60/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.63/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -467,7 +469,7 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "ec-europa/toolkit" } ] }
-    - file: .toolkit-mock/0.0.60/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.63/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
