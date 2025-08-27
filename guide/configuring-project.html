@@ -141,7 +141,37 @@
 </aside>
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
-                                        <section class="section " id="configuring-a-project">
+                                        <div class="contents">
+        <p class="topic-title">On this page</p>
+        <ul class="phpdocumentor-list">
+    <li class="toc-item">
+    <a href="guide/configuring-project.html#environment-configuration">Environment configuration</a>
+
+
+</li>
+
+    <li class="toc-item">
+    <a href="guide/configuring-project.html#toolkit-configuration">Toolkit configuration</a>
+
+
+</li>
+
+    <li class="toc-item">
+    <a href="guide/configuring-project.html#project-configuration">Project configuration</a>
+
+
+</li>
+
+    <li class="toc-item">
+    <a href="guide/configuring-project.html#runtime-configuration">Runtime configuration</a>
+
+
+</li>
+
+    </ul>
+</div>
+
+<section class="section " id="configuring-a-project">
             <h1>Configuring a project</h1>
 
             <section class="section " id="environment-configuration">
@@ -249,7 +279,7 @@ If a service is defined in both files, Docker Compose merges the configurations.
             <h2>Toolkit configuration</h2>
 
             
-    <p>Toolkit uses the <a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a> and
+    <p>Toolkit uses the <a href="https://github.com/consolidation/annotated-command">consolidation/annotated-command</a> and
 <a href="https://robo.li/">Robo</a>, make sure to read the documentation.</p>
 
             
@@ -274,15 +304,26 @@ in the following order:</p>
             
     <p>Because the configurations are merged, if two different config files provides the same key, they will be merged.
 For example, a configuration providing an array with 3 elements, a project would not be able to override and
-provide only one element. To avoid this, Toolkit has a set of defined configurations that will behave in a
+provide only one element.</p>
+
+            <div class="phpdocumentor-admonition hint">
+                    <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <article>
+        
+    <p>To avoid this, Toolkit has a set of defined configurations that will behave in a
 different way allowing projects to completely override the config.
 These overriding configurations are located in the <code>config/default.yml</code>
  file under <code>overrides</code>
  key.</p>
 
+    </article>
+</div>
+
     </section>
 
             <section class="section " id="project-configuration">
+            <a id="runner-yml"></a>
+
             <h2>Project configuration</h2>
 
             
@@ -295,10 +336,18 @@ or/and under the <code>config/runner</code>
  directory (by default). This directory can be changed (in the <code>runner.yml.dist</code>
 
 only) by specifying a custom path in the config key <code>runner.config_dir</code>
-.
-Local or development configurations should use the <code>runner.yml</code>
+.</p>
+
+            <div class="phpdocumentor-admonition hint">
+                    <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <article>
+        
+    <p>Local or development configurations should use the <code>runner.yml</code>
  file, this file should not be committed and
 will be loaded as last configuration.</p>
+
+    </article>
+</div>
 
             
     <p>The configurations are loaded in the following order:</p>
@@ -367,7 +416,15 @@ toolkit:
             <h2>Runtime configuration</h2>
 
             
-    <p>There are multiple ways to provide runtime configurations.</p>
+    <p>You can also override the default configurations from your project codebase.
+There are multiple ways to provide runtime configurations and
+<a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a> provides the various types of hooks in
+the command processing request flow. Hooks make it possible to add features like
+validation, logging, auditing, input sanitization, dry-run support, or UX
+improvements without altering your command logic.</p>
+
+            
+    <p>Examples:</p>
 
             
     <p><strong>Override a configuration value in runtime</strong>

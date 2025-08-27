@@ -201,8 +201,7 @@ clean:
 
             
     <p>Additional commands can be run before and/or after the test. Such commands
-should be defined in the configuration file <code>runner.yml</code>
-:</p>
+should be defined in the configuration file <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a>:</p>
 
             <pre><code class="language-yaml">toolkit:
   test:
@@ -219,11 +218,11 @@ should be defined in the configuration file <code>runner.yml</code>
 
     </section>
 
-            <section class="section " id="behat-tests-in-gitlab-ci">
-            <h3>Behat tests in GitLab CI</h3>
+            <section class="section " id="behat-tests-in-ci">
+            <h3>Behat tests in CI</h3>
 
             
-    <p>In GitLab CI, it is possible to run behat in parallel, to do so, the suites must be split like shown below:</p>
+    <p>In the CI, it is possible to run behat in parallel, to do so, the suites must be split like shown below:</p>
 
             <pre><code class="language-yaml">default:
   suites:
@@ -248,8 +247,7 @@ should be defined in the configuration file <code>runner.yml</code>
             
     <p>If the configuration <code>phpcs.xml</code>
  file is not found, it will be created with the configurations
-provided in the <code>runner.yml</code>
- file.
+provided in the <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a> file.
 You can manually generate the configuration file using the command <code>toolkit:setup-phpcs</code>
 :</p>
 
@@ -271,8 +269,7 @@ vendor/drupal/coder/coder_sniffer/DrupalPractice
 vendor/ec-europa/qa-automation/phpcs/QualityAssurance</code></pre>
 
             
-    <p>These are the default configurations in the <code>runner.yml</code>
- file.</p>
+    <p>These are the default configurations that can be overridden in the <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a> file.</p>
 
             <pre><code class="language-yaml">toolkit:
   test:
@@ -308,8 +305,7 @@ vendor/ec-europa/qa-automation/phpcs/QualityAssurance</code></pre>
             
     <p>If you want to use GrumPHP, you need to require the dependency in your <code>composer.json</code>
 
-and set the phpcs mode in the configuration file <code>runner.yml</code>
- as shown below:</p>
+and set the phpcs mode in the configuration file <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a> as shown below:</p>
 
             <pre><code class="language-yaml">toolkit:
   test:
@@ -385,8 +381,7 @@ used.</p>
 
             
     <p>Additional commands can be run before and/or after the test. Such commands
-should be defined in the configuration file <code>runner.yml</code>
-:</p>
+should be defined in the configuration file <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a>:</p>
 
             <pre><code class="language-yaml">toolkit:
   test:
@@ -421,8 +416,7 @@ Toolkit will create the default config file.</p>
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:test-phpmd</code></pre>
 
             
-    <p>These are the default configurations in the <code>runner.yml</code>
- file.</p>
+    <p>These are the default configurations that can be overridden in the <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a> file.</p>
 
             <pre><code class="language-yaml">toolkit:
   test:
@@ -458,12 +452,10 @@ Toolkit will create the default config file.</p>
             
     <p>If the configuration <code>phpstan.neon</code>
  file is not found, it will be created with the configurations
-provided in the <code>runner.yml</code>
- file.</p>
+provided in the <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a> file.</p>
 
             
-    <p>These are the default configurations in the <code>runner.yml</code>
- file.</p>
+    <p>These are the default configurations that can be overridden in the <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a> file.</p>
 
             <pre><code class="language-yaml">toolkit:
   test:
@@ -500,8 +492,7 @@ the default configurations including the Drupal .eslintrc.json. The file
  will also be created.</p>
 
             
-    <p>These are the default configurations in the <code>runner.yml</code>
- file.</p>
+    <p>These are the default configurations that can be overridden in the <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a> file.</p>
 
             <pre><code class="language-yaml">toolkit:
   lint:
@@ -546,8 +537,7 @@ the default configurations including the Drupal .eslintrc.json. The file
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:lint-cspell</code></pre>
 
             
-    <p>These are the default configurations in the <code>runner.yml</code>
- file.</p>
+    <p>These are the default configurations that can be overridden in the <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a> file.</p>
 
             <pre><code class="language-yaml">toolkit:
   lint:
@@ -568,8 +558,7 @@ the default configurations including the Drupal .eslintrc.json. The file
             <pre><code class="language-">docker-compose exec web ./vendor/bin/run toolkit:lint-behat</code></pre>
 
             
-    <p>These are the default configurations in the <code>runner.yml</code>
- file.</p>
+    <p>These are the default configurations that can be overridden in the <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a> file.</p>
 
             <pre><code class="language-yaml">toolkit:
   lint:
@@ -589,7 +578,7 @@ the default configurations including the Drupal .eslintrc.json. The file
 of 1 behat test and a clean report for phpcs check.</p>
 
             
-    <p>Any customization done in your project will be respected in Drone build.</p>
+    <p>Any customization done in your project will be respected in pipeline build.</p>
 
     </section>
 

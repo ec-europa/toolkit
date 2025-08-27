@@ -274,6 +274,78 @@
 .phpdocumentor-tag-link {
     margin-right: var(--spacing-sm);
 }
+.phpdocumentor-content {
+    .admonition-wrapper, .contents {
+        display: none;
+    }
+
+    .sidebar-title, .contents .topic-title {
+        display: block;
+        font-weight: bold;
+        margin-bottom: var(--spacing-sm);
+        color: var(--link-color-primary);
+    }
+    .contents .topic-title {
+        border-left: 1px solid var(--sidebar-border-color);
+        margin-bottom: 0;
+        padding-bottom: var(--spacing-sm);
+    }
+
+    @media (min-width: 1000px) {
+        .admonition-wrapper, .contents {
+            display: block;
+            position: relative;
+            order: 2;
+        }
+
+        .admonition-sidebar::-webkit-scrollbar,
+        [scrollbars]::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .admonition-sidebar::-webkit-scrollbar-corner,
+        [scrollbars]::-webkit-scrollbar-corner {
+            background: 0;
+        }
+
+        .admonition-sidebar::-webkit-scrollbar-thumb,
+        [scrollbars]::-webkit-scrollbar-thumb {
+            background: rgba(128, 134, 139, 0.26);
+            border-radius: 8px;
+        }
+
+        .admonition-sidebar, .contents ul {
+            position: sticky;
+            height: calc(100vh - var(--header-height));
+            overflow-y: auto;
+            border-left: 1px solid var(--sidebar-border-color);
+            padding-left: var(--spacing-lg);
+            font-size: 90%;
+            top: 30px; /* Needed for the javascript to make the .-stuck trick work */
+            flex: 0 1 auto;
+            width: 15vw;
+        }
+        .contents ul {
+            padding-left: calc(2 * var(--spacing-lg));
+        }
+        .contents .topic-title {
+            position: sticky;
+            top: -1px; /* Needed for the javascript to make the .-stuck trick work */
+            flex: 0 1 auto;
+            padding-left: var(--spacing-lg)
+        }
+
+        .admonition-sidebar {
+            height: 100vh;
+        }
+
+        .admonition-sidebar li {
+            word-break: break-all;
+            line-height: normal;
+        }
+    }
+}
 .phpdocumentor-uml-diagram svg {
     cursor: zoom-in;
 }

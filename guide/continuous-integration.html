@@ -145,45 +145,53 @@
             <h1>Continuous integration</h1>
 
             
-    <p>To check the status of the continuous integration of your project, go to <a href="https://drone.fpfis.eu/ec-europa">Drone</a>.</p>
+    <p>To check the status of the continuous integration of your project, go to CI/CD Platform.</p>
 
             
     <p>A pipeline - created and maintained by DIGIT - is applied by default. It manages the code review of the code, runs all
-the business tests on the repository and builds the site artifact for the deployment. Customizing this pipeline, under
-express approval, is possible by adding a custom .drone.yml file to the project&#039;s root folder. For more detailed
-information on the pipelines you can visit <a href="https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines">https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines</a> .</p>
+the business tests on the repository and builds the site artifact for the deployment. Minimal customisation of this pipeline is possible by providing a file named <strong>.opts.yml</strong>
+ in the root of your project folder. For more detailed
+information on the pipelines you can visit DevOps Pipelines.</p>
+
+            <section class="section " id="development-fork-testing">
+            <h2>Development Fork Testing</h2>
+
+            
+    <p>Before creating a merge request and deploying, you can test your project in the pipeline. To run the CI test pipeline in development fork, push a branch or commits, or merge one branch into another.</p>
+
+    </section>
 
             <section class="section " id="demo-mode">
             <h2>Demo mode</h2>
 
             
-    <p>The pipeline allows for an ephemeral environment to be spawned for a limited amount of time. This is done by creating a
-pull request from a branch named <strong>demo</strong>
- to the <strong>master</strong>
- branch. After the project is built a tunnel will open that
-gives you access to the build. The url comes in the format of:</p>
-
-            <pre><code class="language-">URL saved to /test/toolkit4/.frpc
-URL parts save to /test/toolkit4/.frpc.env
-HTML email saved to /test/toolkit4/.frpc.html
-Starting tunnel at https://user:pass@reponame-buildid1-buildid2-demo.ci.fpfis.tech.ec.europa.eu/
-2019/08/06 06:20:17 [I] [control.go:276] [b6a48e313c53a474] login to server success, get run id [b6a48e313c53a474]
-2019/08/06 06:20:17 [I] [control.go:411] [b6a48e313c53a474] [reponame-buildid1-buildid2--demo] start proxy success</code></pre>
-
-            
-    <p>You can simply copy/paste the tunnel url and visit your site.</p>
+    <p>The pipeline allows an ephemeral environment to be spawned for a limited time. This is done by running a pipeline from an ephemeral-[x] branch in your project&#039;s reference repository. After the project is built, a tunnel opens that
+gives you access to the build. The url can be found in the Environments tab in your project&#039;s reference repository of CI/CD Platform</p>
 
     </section>
 
-            <section class="section " id="deploy-mode">
-            <h2>Deploy mode</h2>
+            <section class="section " id="container-registry">
+            <h2>Container registry</h2>
 
             
-    <p>The pipeline allows for an automatic deployment to the acceptance environment. This is done by creating a pull request
-from a branch named <strong>deploy</strong>
- to the <strong>master</strong>
- branch. After the pipeline passes all required tests it will
-automatically merge your pull request into master and trigger the deployment to the acceptance environment.</p>
+    <p>Access to container registry from where you can pull latest image version of your website 1:1 –  to do that you can simply update your docker-compose.yml file with image reference. The history of deployed image can be found in the Environments tab in your project&#039;s reference repository of CI/CD Platform</p>
+
+    </section>
+
+            <section class="section " id="openeuropa-registry">
+            <h2>OpenEuropa registry</h2>
+
+            
+    <p>Your custom modules can be stored and reused across projects. The corporate pipeline ensures development is done in a consistent manner. The pipeline is quite simple and very similar to what is used on Drupal.org. Once a module passes the pipeline and becomes installable, you can create a tag. For more information please visit OpenEuropa registry in CI/CD Platform</p>
+
+    </section>
+
+            <section class="section " id="logs">
+            <h2>Logs</h2>
+
+            
+    <p>Logs from various tools like Solr, CloudFront, Drupal, Apache are aggregated into one single single logging platform.
+Logs related to deployment are also connected to the platform. You just need to find a link with the appropriate filters inside the &quot;logs&quot; job in one of the deployment pipelines.</p>
 
     </section>
 

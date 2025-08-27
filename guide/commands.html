@@ -317,8 +317,7 @@ class ExampleCommands extends AbstractCommands {
             <h2>Creating configuration commands</h2>
 
             
-    <p>Configuration commands are created in the configuration file <code>runner.yml</code>
-, like shown below:</p>
+    <p>Configuration commands are created in the configuration file <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a>, like shown below:</p>
 
             <pre><code class="language-yaml">commands:
   drupal:setup-test:
@@ -391,7 +390,8 @@ list of available tasks is:</p>
     </tr>
     <tr>
             <td>process</td>
-            <td>Process</td>
+            <td><code>Process &lt;/src/Task/File/Process.php&gt;</code>
+</td>
     </tr>
     <tr>
             <td>append</td>
@@ -411,7 +411,8 @@ list of available tasks is:</p>
     </tr>
     <tr>
             <td>replace-block</td>
-            <td>ReplaceBlock</td>
+            <td><code>ReplaceBlock &lt;/src/Task/File/ReplaceBlock.php&gt;</code>
+</td>
     </tr>
 </tbody>
 </table>

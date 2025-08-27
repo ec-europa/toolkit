@@ -190,8 +190,7 @@ docker-compose exec web ./vendor/bin/run toolkit:install-clean --existing-config
 
             
     <p>Additional commands can be run before and/or after installing the clean site.
-Such commands should be defined in the configuration file <code>runner.yml</code>
-:</p>
+Such commands should be defined in the configuration file <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a>:</p>
 
             <pre><code class="language-yaml">toolkit:
   install:
@@ -246,12 +245,12 @@ commands after the database import:</p>
 ./vendor/bin/drush cache:rebuild</code></pre>
 
             
-    <p>These commands simulate the automated deployment that Drone provides through its pipeline. You can
+    <p>These commands simulate the automated deployment that CI provides through its pipeline. You can
 alter these commands by providing a file named <strong>.opts.yml</strong>
  in the root of your project folder. For
 more detailed information on the contents of this <strong>.opts.yml</strong>
  file please refer to this
-page: <a href="https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides">https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pipelines#NEPipelines-DeploymentOverrides</a> .</p>
+page: DevOps Pipelines.</p>
 
     </section>
 
@@ -260,8 +259,7 @@ page: <a href="https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/NE+Pip
 
             
     <p>Additional commands can be run before and/or after installing the cloned site.
-Such commands should be defined in the configuration file <code>runner.yml</code>
-:</p>
+Such commands should be defined in the configuration file <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a>:</p>
 
             <pre><code class="language-yaml">toolkit:
   install:
