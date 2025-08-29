@@ -28,6 +28,8 @@ class ComponentCheckCommands extends AbstractCommands
     protected bool $abandonedFailed = false;
     protected bool $composerFailed = false;
     protected bool $configurationFailed = false;
+    protected bool $validatorFailed = false;
+    protected bool $savepointsFailed = false;
     protected bool $devCompRequireFailed = false;
     protected bool $skipOutdated = false;
     protected bool $skipAbandoned = false;
@@ -101,6 +103,8 @@ class ComponentCheckCommands extends AbstractCommands
             'componentDevelopment' => 'Development',
             'componentComposer' => 'Composer',
             'componentConfiguration' => 'Configuration',
+            'componentValidator' => 'Validator',
+            'componentSavepoints' => 'Savepoints',
         ];
         // Check if npm_install property enabled adding the NPM checks if so.
         if (!empty($parseOptsFile['npm_install'])) {
@@ -129,6 +133,8 @@ class ComponentCheckCommands extends AbstractCommands
             $this->devCompRequireFailed ||
             $this->composerFailed ||
             $this->configurationFailed ||
+            $this->validatorFailed ||
+            $this->savepointsFailed ||
             (!$this->skipInsecureNpm && $this->insecureNpmFailed) ||
             (!$this->skipOutdatedNpm && $this->outdatedNpmFailed) ||
             (!$this->skipOutdated && $this->outdatedFailed) ||
@@ -591,6 +597,66 @@ class ComponentCheckCommands extends AbstractCommands
     }
 
     /**
+     * Check project configuration.
+     *
+     * @command check:validator
+     *
+     * @return void
+     *   The component validator status.
+     *
+     * @throws \Robo\Exception\TaskException
+     */
+    public function componentValidator(ConsoleIO $io)
+    {
+        $this->io = $io;
+
+        $runnerBin = $this->getBin('run');
+        $result = $this->taskExecStack()
+            ->exec("$runnerBin moodle:plugin-validator")
+            ->run();
+
+        if ($result->getExitCode() === ResultData::EXITCODE_ERROR) {
+            $this->io->error($result->getMessage());
+            $this->validatorFailed = true;
+            $this->addJunitResult('Plugin validator', $result->getMessage());
+        }
+
+        if (!$this->validatorFailed) {
+            $this->say('Plugin validator check passed.');
+        }
+        $this->io->newLine();
+    }
+
+    /**
+     * Check component savepoints.
+     *
+     * @command check:savepoints
+     *
+     * @return void
+     *   The component savepoints status.
+     */
+    public function componentSavepoints(ConsoleIO $io)
+    {
+        $this->io = $io;
+
+        $runnerBin = $this->getBin('run');
+        $result = $this->taskExecStack()
+            ->exec("$runnerBin moodle:plugin-savepoints")
+            ->run();
+
+        if ($result->getExitCode() === ResultData::EXITCODE_ERROR) {
+            $this->io->error($result->getMessage());
+            $this->savepointsFailed = true;
+            $this->addJunitResult('Plugin savepoints', $result->getMessage());
+        }
+
+        if (!$this->savepointsFailed) {
+            $this->say('Plugin savepoints check passed.');
+        }
+        $this->io->newLine();
+    }
+
+    /**
      * Prepare the overrides from config and commit message.
      */
     protected function prepareSkips(): void
@@ -692,12 +758,14 @@ class ComponentCheckCommands extends AbstractCommands
         $io->title('Results:');
         $parseOptsFile = $this->getOptsYml();
         $headers = [
-            'Insecure module check',
-            'Outdated module check',
-            'Abandoned module check',
-            'Development module check',
+            'Insecure plugin check',
+            'Outdated plugin check',
+            'Abandoned plugin check',
+            'Development plugin check',
             'Composer validation check',
             'Project configuration check',
+            'Plugin validator check',
+            'Plugin savepoints check',
         ];
         $rows = [
             $this->getFailedOrPassed($this->insecureFailed) . ($this->skipInsecure ? ' (Skipping)' : ''),
@@ -706,6 +774,8 @@ class ComponentCheckCommands extends AbstractCommands
             $this->getFailedOrPassed($this->devCompRequireFailed),
             $this->getFailedOrPassed($this->composerFailed),
             $this->getFailedOrPassed($this->configurationFailed),
+            $this->getFailedOrPassed($this->validatorFailed),
+            $this->getFailedOrPassed($this->savepointsFailed),
         ];
 
         // Check if npm_install property is enabled and add the NPM results.

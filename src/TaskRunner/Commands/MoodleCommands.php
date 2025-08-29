@@ -243,7 +243,7 @@ class MoodleCommands extends AbstractCommands
         $tasks[] = $this->taskFilesystemStack()
             ->chmod($dataRoot, octdec('777'));
 
-         // Setup the site.
+        // Setup the site.
         $runnerBin = $this->getBin('run');
         $tasks[] = $this->taskExecStack()
             ->stopOnFail()
