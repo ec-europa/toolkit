@@ -83,13 +83,13 @@ Project configuration
 
 A project inherit the same configurations as Toolkit (described above).
 
-To override the default configurations, projects can provide the configurations with the **``runner.yml.dist``** file,
+To override the default configurations, projects can provide the configurations with the **runner.yml.dist** file,
 or/and under the ``config/runner`` directory (by default). This directory can be changed (in the ``runner.yml.dist``
 only) by specifying a custom path in the config key ``runner.config_dir``.
 
 .. hint::
 
-   Local or development configurations should use the **``runner.yml``** file, this file should not be committed and
+   Local or development configurations should use the **runner.yml** file, this file should not be committed and
    will be loaded as last configuration.
 
 The configurations are loaded in the following order:
@@ -102,7 +102,7 @@ The following examples describes how to use a single or multiple files to have t
 
 **Example using a single file:**
 
-.. code-block::
+.. code-block:: yaml
 
     # runner.yml.dist
     drupal:
@@ -112,7 +112,7 @@ The following examples describes how to use a single or multiple files to have t
 
 **Example using multiple files under** ``config/runner`` **directory:**
 
-.. code-block::
+.. code-block:: yaml
 
     # config/runner/drupal.yml
     drupal:
@@ -124,7 +124,7 @@ The following examples describes how to use a single or multiple files to have t
 
 **Example using multiple files under** ``config/custom`` **directory:**
 
-.. code-block::
+.. code-block:: yaml
 
     # runner.yml.dist
     runner:
@@ -150,7 +150,7 @@ Examples:
 
 **Override a configuration value in runtime**
 
-.. code-block::
+.. code-block:: php
 
     /** @hook pre-command-event * */
     public function hook() {
@@ -164,7 +164,7 @@ Examples:
 
 **Override a specific command option**
 
-.. code-block::
+.. code-block:: php
 
     /** @hook init toolkit:test-behat */
     public function hook(InputInterface $input, AnnotationData $annotationData) {
@@ -173,7 +173,7 @@ Examples:
 
 **Override a command option for all commands that has a specific option**
 
-.. code-block::
+.. code-block:: php
 
     /** @hook init * */
     public function hook(InputInterface $input, AnnotationData $annotationData) {

@@ -37,7 +37,7 @@ Uses the ``composer outdated`` command.
 
 * It is also possible to bypass specific package in a specific version, example:
 
-.. code-block::
+.. code-block:: yaml
 
     toolkit:
       components:
