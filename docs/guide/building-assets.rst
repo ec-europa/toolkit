@@ -23,7 +23,7 @@ Toolkit will install all packages and create config files (if not exist) on the 
 Add the chosen runners and packages to your `runner.yml.dist and/or runner.yml <runner-yml_>`_ file
 like shown below:
 
-.. code-block::
+.. code-block:: yaml
 
   toolkit:
     build:
@@ -92,7 +92,7 @@ Define 'custom-code-folder'
 
 If for some reason your project is running custom code in a folder other than ``lib``, it's possible to make it configurable with the following:
 
-.. code-block::
+.. code-block:: yaml
 
    toolkit:
      build:
@@ -104,7 +104,7 @@ Enable build assets during CI
 
 To enable auto build of assets you should extend the tasks ``toolkit:build-dev`` and ``toolkit:build-dist``. See example below.
 
-.. code-block::
+.. code-block:: yaml
 
    toolkit:
      project_id: "my-project"
@@ -121,16 +121,16 @@ To enable auto build of assets you should extend the tasks ``toolkit:build-dev``
 If your custom theme is located in a folder other than ``themes`` (default folder for ``toolkit:build-assets-dist``).
 For example the folder ``themes/custom`` as in the original digit drupal template:
 
-.. code-block::
+.. code-block:: yaml
 
    toolkit:
      build:
        dist:
          commands:
          - ...
-        - { task: run, command: toolkit:build-assets, options: {
-            custom-code-folder: '${toolkit.build.dist.root}/${drupal.root}/themes/custom'
-          }}
+         - { task: run, command: toolkit:build-assets, options: {
+           custom-code-folder: '${toolkit.build.dist.root}/${drupal.root}/themes/custom'
+         }}
 
 
 Install additional npm packages
@@ -149,7 +149,7 @@ The package version can be added after the package name like shown in the exampl
 
 To do it add them to the file `runner.yml.dist and/or runner.yml <runner-yml_>`_:
 
-.. code-block::
+.. code-block:: yaml
 
    toolkit:
      build:

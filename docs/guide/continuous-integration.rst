@@ -33,3 +33,5 @@ Logs
 
 Logs from various tools like Solr, CloudFront, Drupal, Apache are aggregated into one single `single logging platform <logging platform>`_.
 Logs related to deployment are also connected to the platform. You just need to find a link with the appropriate filters inside the "logs" job in one of the deployment pipelines.
+
+.. include:: inc/_common.rst

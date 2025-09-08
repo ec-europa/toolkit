@@ -22,11 +22,10 @@ package-lock.json
 /gherkinlint.json
 
 # Documentation folder exclusions.
-!docs/
-docs/*
+docs/**
 !docs/guide/
-docs/guide/*
-!docs/guide/*.rst
+!docs/guide/**/
+!docs/guide/**/*.rst
 
 # Exclude axe-scan related files.
 /axe*
