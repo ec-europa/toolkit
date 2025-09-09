@@ -111,7 +111,7 @@ Creating custom commands
 To provide custom commands, make sure that your classes are loaded, for example using
 PSR-4 namespacing set the autoload in the composer.json file.
 
-.. code-block::
+.. code-block:: json
 
     {
       "autoload": {
@@ -123,7 +123,7 @@ PSR-4 namespacing set the autoload in the composer.json file.
 
 Create your command class under ``src/TaskRunner/Commands`` that will extend the abstract Toolkit command, like:
 
-.. code-block::
+.. code-block:: php
 
     <?php
     namespace My\Project\TaskRunner\Commands;
@@ -135,8 +135,7 @@ Create your command class under ``src/TaskRunner/Commands`` that will extend the
       public function commandOne() { }
     }
 
-For more detail, check the `consolidation/annotated-command <https://github.com/consolidation/annotated-command#hooks>`_
-documentation.
+For more detail, check the `consolidation/annotated-command`_ documentation.
 
 Passing default options for a command
 ----
@@ -144,7 +143,7 @@ Passing default options for a command
 You can pass default values for the command options, for that you
 need to define a configuration file, and import it as shown below.
 
-.. code-block::
+.. code-block:: yaml
 
     # config/commands/config.yml
     commands:
@@ -153,7 +152,7 @@ need to define a configuration file, and import it as shown below.
           options:
             output: false
 
-.. code-block::
+.. code-block:: php
 
     <?php
     namespace My\Project\TaskRunner\Commands;
@@ -235,3 +234,5 @@ list of available tasks is:
 +---------------+------------------------------------------------------------------------+
 | replace-block | `ReplaceBlock </src/Task/File/ReplaceBlock.php>`                       |
 +---------------+------------------------------------------------------------------------+
+
+.. include:: inc/_common.rst

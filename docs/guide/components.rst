@@ -1,15 +1,15 @@
 Components
 ===================
 
-In the `QA Website <https://digit-dqa.dhs.tech.ec.europa.eu>`_, you can find the components being controlled by our CI/CD.
+In the `QA Website`_, you can find the components being controlled by our CI/CD.
 
-`Components <https://digit-dqa.dhs.tech.ec.europa.eu/package-reviews>`_
+`Components`_
 
 Mandatory module check
 ----
 Ensure that packages marked as Mandatory in the QA website inventory are being used by the project.
 
-You can check the `list of mandatory modules <https://digit-dqa.dhs.tech.ec.europa.eu/package-reviews?f[0]=package_mandatory:1>`_.
+You can check the list of mandatory modules on the `requirements`_ page.
 
 * It is not possible to bypass this check.
 
@@ -17,7 +17,7 @@ Recommended module check
 ----
 Ensure that packages marked as Recommended in the QA website inventory are being used by the project.
 
-You can check the `list of recommended modules <https://digit-dqa.dhs.tech.ec.europa.eu/package-reviews?f[0]=package_usage:3>`_.
+You can check the list of recommended modules on the `requirements`_ page.
 
 * This step is in reporting mode.
 
@@ -37,7 +37,7 @@ Uses the ``composer outdated`` command.
 
 * It is also possible to bypass specific package in a specific version, example:
 
-.. code-block::
+.. code-block:: yaml
 
     toolkit:
       components:
@@ -84,3 +84,5 @@ Enforce the setting ``extra.composer-exit-on-patch-failure`` to be ``true``.
 Validate existing patches, by default only local and Drupal.org patches are allowed.
 
 * It is possible to block remote patches from Drupal.org by using configuration ``toolkit.components.composer.drupal_patches: false``.
+
+.. include:: inc/_common.rst

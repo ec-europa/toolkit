@@ -127,3 +127,5 @@ Such commands should be defined in the configuration file `runner.yml.dist and/o
              - task: exec
                command: whoami
              - ...
+
+.. include:: inc/_common.rst
