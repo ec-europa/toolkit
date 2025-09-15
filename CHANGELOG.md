@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 10.23.1
+  - DQA-12227: Gitignore fix and more common links.
+  - DQA-12429: Improve configs & fix code-review.
+
 ## Version 10.23.0
   - DQA-12268: DQA url change.
   - DQA-12227: Update documentation.
