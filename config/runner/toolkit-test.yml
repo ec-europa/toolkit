@@ -40,7 +40,7 @@ toolkit:
         - ${toolkit.build.dist.root}/
         - .cache/
         - vendor/
-        - web/
+        - ${drupal.root}/
         - node_modules/
         - config/
         - '*.min.css'
@@ -54,7 +54,7 @@ toolkit:
         - install
         - yml
       files:
-        - ./lib
+        - ./${toolkit.build.custom-code-folder}
         - ./resources
         - ./src
     phpmd:
@@ -64,7 +64,7 @@ toolkit:
         - ${toolkit.build.dist.root}/
         - .cache/
         - vendor/
-        - web/
+        - ${drupal.root}/
         - node_modules/
         - config/
       triggered_by:
@@ -74,7 +74,7 @@ toolkit:
         - theme
         - install
       files:
-        - lib
+        - ${toolkit.build.custom-code-folder}
         - src
     phpstan:
       config: phpstan.neon
@@ -86,7 +86,7 @@ toolkit:
       ignore_errors:
         - "#^Unsafe usage of new static#"
         - "#^PHPDoc tag @SuppressWarnings has invalid value#"
-      files: [ lib, src ]
+      files: [ ${toolkit.build.custom-code-folder}, src ]
       ignores: [ ${toolkit.build.dist.root}, .cache, vendor ]
       memory_limit: '-1'
       options: ''
@@ -94,14 +94,14 @@ toolkit:
     eslint:
       config: .eslintrc.json
       packages: 'eslint-config-drupal eslint-plugin-yml stylelint stylelint-config-drupal eslint-junit'
-      ignores: [ '${toolkit.build.dist.root}/*', '.cache/*', 'vendor/*', 'web/*', 'dist/*' ]
+      ignores: [ '${toolkit.build.dist.root}/*', '.cache/*', 'vendor/*', '${drupal.root}/*' ]
       extensions_yaml: [ '.yml', '.yaml' ]
       options_yaml: ''
       extensions_js: [ '.js' ]
       options_js: ''
     php:
       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
-      exclude: [ '${toolkit.build.dist.root}/', '.cache/', 'vendor/', 'web/' ]
+      exclude: [ '${toolkit.build.dist.root}/', '.cache/', 'vendor/', '${drupal.root}/' ]
       options: ''
     css:
       config: .stylelintrc.json

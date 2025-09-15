@@ -80,7 +80,7 @@ class CodeReviewCommands extends AbstractCommands
             'Lint JS' => ['cmd' => 'tk-js', 'exec' => $options['lint-js'] === true, 'result' => []],
             'Lint CSS' => ['cmd' => 'tk-css', 'exec' => $options['lint-css'] === true, 'result' => []],
             'Lint CSpell' => ['cmd' => 'tk-cspell', 'exec' => $options['lint-cspell'] === true, 'result' => []],
-            'Lint Behat' => ['cmd' => 'tk-behat', 'exec' => $options['lint-behat'] === true, 'result' => []],
+            'Lint Behat' => ['cmd' => 'tk-lbehat', 'exec' => $options['lint-behat'] === true, 'result' => []],
             'Composer lock' => ['cmd' => 'toolkit:complock-check', 'exec' => $options['complock-check'] === true, 'result' => []],
             'Requirements' => ['cmd' => 'tk-req', 'exec' => $options['requirements'] === true, 'result' => []],
         ];
