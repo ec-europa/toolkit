@@ -181,7 +181,7 @@
 Add the chosen runners and packages to your <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a> file
 like shown below:</p>
 
-            <pre><code class="language-">toolkit:
+            <pre><code class="language-yaml">toolkit:
   build:
     npm:
       theme-task-runner: ecl-builder gulp
@@ -257,7 +257,7 @@ toolkit:
     <p>If for some reason your project is running custom code in a folder other than <code>lib</code>
 , it&#039;s possible to make it configurable with the following:</p>
 
-            <pre><code class="language-">toolkit:
+            <pre><code class="language-yaml">toolkit:
   build:
     custom-code-folder: &#039;your_folder&#039;</code></pre>
 
@@ -273,7 +273,7 @@ toolkit:
  and <code>toolkit:build-dist</code>
 . See example below.</p>
 
-            <pre><code class="language-">toolkit:
+            <pre><code class="language-yaml">toolkit:
   project_id: &quot;my-project&quot;
   build:
     dev:
@@ -292,14 +292,14 @@ toolkit:
 For example the folder <code>themes/custom</code>
  as in the original digit drupal template:</p>
 
-            <pre><code class="language-">toolkit:
+            <pre><code class="language-yaml">toolkit:
   build:
     dist:
       commands:
       - ...
-     - { task: run, command: toolkit:build-assets, options: {
-         custom-code-folder: &#039;${toolkit.build.dist.root}/${drupal.root}/themes/custom&#039;
-       }}</code></pre>
+      - { task: run, command: toolkit:build-assets, options: {
+        custom-code-folder: &#039;${toolkit.build.dist.root}/${drupal.root}/themes/custom&#039;
+      }}</code></pre>
 
             <section class="section " id="install-additional-npm-packages">
             <h3>Install additional npm packages</h3>
@@ -317,7 +317,7 @@ or
             
     <p>To do it add them to the file <a href="guide/configuring-project.html#runner-yml">runner.yml.dist and/or runner.yml</a>:</p>
 
-            <pre><code class="language-">toolkit:
+            <pre><code class="language-yaml">toolkit:
   build:
     npm:
       packages: &#039;``@ecl/preset-ec@3.13.0`` ``gulp@4.0.1`` gulp-sass gulp-concat gulp-clean-css gulp-minify&#039;</code></pre>

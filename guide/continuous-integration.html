@@ -145,13 +145,13 @@
             <h1>Continuous integration</h1>
 
             
-    <p>To check the status of the continuous integration of your project, go to CI/CD Platform.</p>
+    <p>To check the status of the continuous integration of your project, go to <a href="https://git.fpfis.tech.ec.europa.eu">CI/CD Platform</a>.</p>
 
             
     <p>A pipeline - created and maintained by DIGIT - is applied by default. It manages the code review of the code, runs all
 the business tests on the repository and builds the site artifact for the deployment. Minimal customisation of this pipeline is possible by providing a file named <strong>.opts.yml</strong>
  in the root of your project folder. For more detailed
-information on the pipelines you can visit DevOps Pipelines.</p>
+information on the pipelines you can visit <a href="https://webgate.ec.europa.eu/fpfis/wikis/spaces/MULTISITE/pages/487392076/Pipeline+configuration+and+override">DevOps Pipelines</a>.</p>
 
             <section class="section " id="development-fork-testing">
             <h2>Development Fork Testing</h2>
@@ -166,7 +166,7 @@ information on the pipelines you can visit DevOps Pipelines.</p>
 
             
     <p>The pipeline allows an ephemeral environment to be spawned for a limited time. This is done by running a pipeline from an ephemeral-[x] branch in your project&#039;s reference repository. After the project is built, a tunnel opens that
-gives you access to the build. The url can be found in the Environments tab in your project&#039;s reference repository of CI/CD Platform</p>
+gives you access to the build. The url can be found in the Environments tab in your project&#039;s reference repository of <a href="https://git.fpfis.tech.ec.europa.eu">CI/CD Platform</a></p>
 
     </section>
 
@@ -174,7 +174,7 @@ gives you access to the build. The url can be found in the Environments tab in y
             <h2>Container registry</h2>
 
             
-    <p>Access to container registry from where you can pull latest image version of your website 1:1 –  to do that you can simply update your docker-compose.yml file with image reference. The history of deployed image can be found in the Environments tab in your project&#039;s reference repository of CI/CD Platform</p>
+    <p>Access to container registry from where you can pull latest image version of your website 1:1 –  to do that you can simply update your docker-compose.yml file with image reference. The history of deployed image can be found in the Environments tab in your project&#039;s reference repository of <a href="https://git.fpfis.tech.ec.europa.eu">CI/CD Platform</a></p>
 
     </section>
 
@@ -182,7 +182,7 @@ gives you access to the build. The url can be found in the Environments tab in y
             <h2>OpenEuropa registry</h2>
 
             
-    <p>Your custom modules can be stored and reused across projects. The corporate pipeline ensures development is done in a consistent manner. The pipeline is quite simple and very similar to what is used on Drupal.org. Once a module passes the pipeline and becomes installable, you can create a tag. For more information please visit OpenEuropa registry in CI/CD Platform</p>
+    <p>Your custom modules can be stored and reused across projects. The corporate pipeline ensures development is done in a consistent manner. The pipeline is quite simple and very similar to what is used on Drupal.org. Once a module passes the pipeline and becomes installable, you can create a tag. For more information please visit OpenEuropa registry in <a href="https://git.fpfis.tech.ec.europa.eu">CI/CD Platform</a></p>
 
     </section>
 
@@ -190,8 +190,10 @@ gives you access to the build. The url can be found in the Environments tab in y
             <h2>Logs</h2>
 
             
-    <p>Logs from various tools like Solr, CloudFront, Drupal, Apache are aggregated into one single single logging platform.
+    <p>Logs from various tools like Solr, CloudFront, Drupal, Apache are aggregated into one single <a href="https://graylog.fpfis.tech.ec.europa.eu">single logging platform</a>.
 Logs related to deployment are also connected to the platform. You just need to find a link with the appropriate filters inside the &quot;logs&quot; job in one of the deployment pipelines.</p>
+
+            
 
     </section>
 

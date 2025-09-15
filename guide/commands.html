@@ -249,7 +249,7 @@
     <p>To provide custom commands, make sure that your classes are loaded, for example using
 PSR-4 namespacing set the autoload in the composer.json file.</p>
 
-            <pre><code class="language-">{
+            <pre><code class="language-json">{
   &quot;autoload&quot;: {
     &quot;psr-4&quot;: {
       &quot;My\\Project\\&quot;: &quot;./src/&quot;
@@ -261,7 +261,7 @@ PSR-4 namespacing set the autoload in the composer.json file.</p>
     <p>Create your command class under <code>src/TaskRunner/Commands</code>
  that will extend the abstract Toolkit command, like:</p>
 
-            <pre><code class="language-">&lt;?php
+            <pre><code class="language-php">&lt;?php
 namespace My\Project\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
@@ -272,8 +272,7 @@ class ExampleCommands extends AbstractCommands {
 }</code></pre>
 
             
-    <p>For more detail, check the <a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a>
-documentation.</p>
+    <p>For more detail, check the <a href="https://github.com/consolidation/annotated-command">consolidation/annotated-command</a> documentation.</p>
 
     </section>
 
@@ -284,14 +283,14 @@ documentation.</p>
     <p>You can pass default values for the command options, for that you
 need to define a configuration file, and import it as shown below.</p>
 
-            <pre><code class="language-"># config/commands/config.yml
+            <pre><code class="language-yaml"># config/commands/config.yml
 commands:
   example:
     first-command:
       options:
         output: false</code></pre>
 
-            <pre><code class="language-">&lt;?php
+            <pre><code class="language-php">&lt;?php
 namespace My\Project\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
@@ -416,6 +415,8 @@ list of available tasks is:</p>
     </tr>
 </tbody>
 </table>
+
+            
 
     </section>
 

@@ -280,7 +280,7 @@ If a service is defined in both files, Docker Compose merges the configurations.
 
             
     <p>Toolkit uses the <a href="https://github.com/consolidation/annotated-command">consolidation/annotated-command</a> and
-<a href="https://robo.li/">Robo</a>, make sure to read the documentation.</p>
+<a href="https://robo.li">Robo</a>, make sure to read the documentation.</p>
 
             
     <p>The configurations are split into multiple files under the <code>config</code>
@@ -330,7 +330,7 @@ These overriding configurations are located in the <code>config/default.yml</cod
     <p>A project inherit the same configurations as Toolkit (described above).</p>
 
             
-    <p>To override the default configurations, projects can provide the configurations with the <code>runner.yml.dist</code>
+    <p>To override the default configurations, projects can provide the configurations with the <strong>runner.yml.dist</strong>
  file,
 or/and under the <code>config/runner</code>
  directory (by default). This directory can be changed (in the <code>runner.yml.dist</code>
@@ -342,7 +342,7 @@ only) by specifying a custom path in the config key <code>runner.config_dir</cod
                     <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
             <article>
         
-    <p>Local or development configurations should use the <code>runner.yml</code>
+    <p>Local or development configurations should use the <strong>runner.yml</strong>
  file, this file should not be committed and
 will be loaded as last configuration.</p>
 
@@ -374,7 +374,7 @@ will be loaded as last configuration.</p>
     <p><strong>Example using a single file:</strong>
 </p>
 
-            <pre><code class="language-"># runner.yml.dist
+            <pre><code class="language-yaml"># runner.yml.dist
 drupal:
    root: &#039;web&#039;
 toolkit:
@@ -386,7 +386,7 @@ toolkit:
  <strong>directory:</strong>
 </p>
 
-            <pre><code class="language-"># config/runner/drupal.yml
+            <pre><code class="language-yaml"># config/runner/drupal.yml
 drupal:
    root: &#039;web&#039;
 
@@ -400,7 +400,7 @@ toolkit:
  <strong>directory:</strong>
 </p>
 
-            <pre><code class="language-"># runner.yml.dist
+            <pre><code class="language-yaml"># runner.yml.dist
 runner:
     config_dir: config/custom
 
@@ -418,7 +418,7 @@ toolkit:
             
     <p>You can also override the default configurations from your project codebase.
 There are multiple ways to provide runtime configurations and
-<a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command</a> provides the various types of hooks in
+<a href="https://github.com/consolidation/annotated-command#hooks">consolidation/annotated-command#hooks</a> provides the various types of hooks in
 the command processing request flow. Hooks make it possible to add features like
 validation, logging, auditing, input sanitization, dry-run support, or UX
 improvements without altering your command logic.</p>
@@ -430,7 +430,7 @@ improvements without altering your command logic.</p>
     <p><strong>Override a configuration value in runtime</strong>
 </p>
 
-            <pre><code class="language-">/** @hook pre-command-event * */
+            <pre><code class="language-php">/** @hook pre-command-event * */
 public function hook() {
   // Load configuration.
   $config = $this-&gt;getConfig();
@@ -444,7 +444,7 @@ public function hook() {
     <p><strong>Override a specific command option</strong>
 </p>
 
-            <pre><code class="language-">/** @hook init toolkit:test-behat */
+            <pre><code class="language-php">/** @hook init toolkit:test-behat */
 public function hook(InputInterface $input, AnnotationData $annotationData) {
   $input-&gt;setOption(&#039;from&#039;, &#039;behat.yml.example&#039;);
 }</code></pre>
@@ -453,12 +453,14 @@ public function hook(InputInterface $input, AnnotationData $annotationData) {
     <p><strong>Override a command option for all commands that has a specific option</strong>
 </p>
 
-            <pre><code class="language-">/** @hook init * */
+            <pre><code class="language-php">/** @hook init * */
 public function hook(InputInterface $input, AnnotationData $annotationData) {
   if ($input-&gt;hasOption(&#039;from&#039;)) {
     $input-&gt;setOption(&#039;from&#039;, &#039;behat.yml.example&#039;);
   }
 }</code></pre>
+
+            
 
     </section>
 
