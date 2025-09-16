@@ -50,11 +50,11 @@
     "dictionaryDefinitions": [
         {
             "name": "drupal-dictionary",
-            "path": "./web/core/misc/cspell/drupal-dictionary.txt"
+            "path": "./${drupal.root}/core/misc/cspell/drupal-dictionary.txt"
         },
         {
             "name": "drupal-dictionary-extra",
-            "path": "./web/core/misc/cspell/dictionary.txt"
+            "path": "./${drupal.root}/core/misc/cspell/dictionary.txt"
         },
         {
             "name": "toolkit",

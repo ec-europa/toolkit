@@ -428,9 +428,9 @@ class LintCommands extends AbstractCommands
 
         // Ensure the config file exists.
         if (!file_exists($options['config'])) {
-            $this->taskFilesystemStack()->copy(
+            $this->taskProcess(
                 Toolkit::getToolkitRoot() . '/resources/cspell/.project-cspell.json',
-                '.cspell.json'
+                $options['config']
             )->run();
         }
 
