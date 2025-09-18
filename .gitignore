@@ -20,6 +20,7 @@ package-lock.json
 /docs_tmp/
 /.toolkit-mock
 /gherkinlint.json
+/.stylelintrc.json
 
 # Documentation folder exclusions.
 docs/**
