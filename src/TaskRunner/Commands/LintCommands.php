@@ -328,6 +328,7 @@ class LintCommands extends AbstractCommands
      *
      * @option exclude The stylelint config file.
      * @option files   The files to check.
+     * @option options Extra options for the command without -- (only options with no value).
      * @option junit   Whether to export results as junit.
      *
      * @aliases tk-css
@@ -338,6 +339,7 @@ class LintCommands extends AbstractCommands
     public function toolkitLintCss(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
         'files' => InputOption::VALUE_REQUIRED,
+        'options' => InputOption::VALUE_REQUIRED,
     ])
     {
         // Make sure eslint is properly installed.
@@ -360,6 +362,13 @@ class LintCommands extends AbstractCommands
 
         $task = $this->taskExec($this->getNodeBinPath('stylelint'))
             ->rawArg($options['files']);
+
+        if (!empty($options['options'])) {
+            $opts = explode(' ', $options['options']);
+            foreach ($opts as $opt) {
+                $task->option($opt);
+            }
+        }
 
         if ($this->isJunit()) {
             JunitXmlGenerator::addTestCase('Lint CSS', 'Lint CSS');

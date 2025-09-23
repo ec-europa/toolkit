@@ -66,12 +66,9 @@
           ->arg('toolkit:setup-eslint')
         [Simulator] Running ./vendor/bin/run 'toolkit:setup-eslint'
         [Simulator] Simulating Exec('./node_modules/.bin/eslint')
-          ->options(array (
-            'config' => '.eslintrc.json',
-            'ext' => '.yml,.yaml',
-          ))
+          ->options(array ( ... ))
           ->arg('.')
-        [Simulator] Running ./node_modules/.bin/eslint --config .eslintrc.json --ext '.yml,.yaml' .
+        [Simulator] Running ./node_modules/.bin/eslint --config .eslintrc.json --ext '.yml,.yaml' --no-error-on-unmatched-pattern .
 
 - command: 'toolkit:lint-yaml --options=fix'
   configuration: []
@@ -95,12 +92,9 @@
           ->arg('toolkit:setup-eslint')
         [Simulator] Running ./vendor/bin/run 'toolkit:setup-eslint'
         [Simulator] Simulating Exec('./node_modules/.bin/eslint')
-          ->options(array (
-            'config' => '.eslintrc.json',
-            'ext' => '.js',
-          ))
+          ->options(array ( ... ))
           ->arg('.')
-        [Simulator] Running ./node_modules/.bin/eslint --config .eslintrc.json --ext .js .
+        [Simulator] Running ./node_modules/.bin/eslint --config .eslintrc.json --ext .js --no-error-on-unmatched-pattern .
 
 - command: 'toolkit:lint-js --options=fix'
   configuration: []
@@ -168,3 +162,24 @@
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/gherkinlint lint tests/features')
         [Simulator] Running ./vendor/bin/gherkinlint lint tests/features
+
+- command: 'toolkit:lint-css'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:setup-eslint')
+        [Simulator] Running ./vendor/bin/run 'toolkit:setup-eslint'
+        [Simulator] Simulating ExecStack()
+          ->exec('npm -v || npm i npm')
+          ->exec('[ -f package.json ] || npm init -y --scope')
+          ->exec('npm list stylelint-config-drupal && npm update styleli ... nt-config-drupal -y')
+        [Simulator] Simulating File\Write('.stylelintrc.json')
+          ->text('{
+            "extends": "stylelint-config-drupal"
+          }')
+        [Simulator] Simulating Exec('./node_modules/.bin/stylelint')
+          ->rawArg('"lib/themes/*/css/*.css" "!lib/themes/*/css/*.min.css"')
+          ->option('allow-empty-input')
+        [Simulator] Running ./node_modules/.bin/stylelint "lib/themes/*/css/*.css" "!lib/themes/*/css/*.min.css" --allow-empty-input
