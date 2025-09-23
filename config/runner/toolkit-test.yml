@@ -96,9 +96,9 @@ toolkit:
       packages: 'eslint-config-drupal eslint-plugin-yml stylelint stylelint-config-drupal eslint-junit'
       ignores: [ '${toolkit.build.dist.root}/*', '.cache/*', 'vendor/*', '${drupal.root}/*' ]
       extensions_yaml: [ '.yml', '.yaml' ]
-      options_yaml: ''
+      options_yaml: 'no-error-on-unmatched-pattern'
       extensions_js: [ '.js' ]
-      options_js: ''
+      options_js: 'no-error-on-unmatched-pattern'
     php:
       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
       exclude: [ '${toolkit.build.dist.root}/', '.cache/', 'vendor/', '${drupal.root}/' ]
@@ -106,6 +106,7 @@ toolkit:
     css:
       config: .stylelintrc.json
       files: '"${toolkit.build.custom-code-folder}/themes/*/css/*.css" "!${toolkit.build.custom-code-folder}/themes/*/css/*.min.css"'
+      options: 'allow-empty-input'
     cspell:
       config: '.cspell.json'
       files: '${toolkit.build.custom-code-folder}/'

@@ -21,7 +21,10 @@
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
 
 - command: 'toolkit:install-clean --config-file=core.extensions.yml'
-  configuration: []
+  configuration:
+    drupal:
+      site:
+        existing_config: true
   variables: []
   resources:
     - from: 'sample-core.extensions.yml'
@@ -32,6 +35,20 @@
           ->arg('drupal:site-install')
           ->option('existing-config')
         [Simulator] Running ./vendor/bin/run 'drupal:site-install' --existing-config
+
+- command: 'toolkit:install-clean --config-file=core.extensions.yml'
+  configuration:
+    drupal:
+      site:
+        existing_config: true
+  variables: []
+  resources: []
+  expectations:
+    - contains: |
+        Using 'drupal.site.existing_config' but no config-file was found, skipping
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('drupal:site-install')
+        [Simulator] Running ./vendor/bin/run 'drupal:site-install'
 
 - command: 'toolkit:install-clone'
   configuration:
