@@ -270,7 +270,6 @@ class ToolCommands extends AbstractCommands
             JunitXmlGenerator::addTestCase('Requirements', 'NEXTCLOUD configuration');
             JunitXmlGenerator::addTestCase('Requirements', 'PHP version');
             JunitXmlGenerator::addTestCase('Requirements', 'Toolkit version');
-            JunitXmlGenerator::addTestCase('Requirements', 'Drupal version');
         }
 
         if (!empty($options['endpoint'])) {
@@ -314,15 +313,7 @@ class ToolCommands extends AbstractCommands
         if ($this->isJunit() && str_starts_with($toolkitCheck, 'FAIL')) {
             JunitXmlGenerator::addResult('Requirements', 'Toolkit version', $toolkitCheck);
         }
-        // Handle Drupal version.
-        if (!($drupalVersion = self::getPackagePropertyFromComposer('drupal/core'))) {
-            $drupalCheck = 'FAIL (not found)';
-        } else {
-            $drupalCheck = Semver::satisfies($drupalVersion, $data['drupal']) ? 'OK' : 'FAIL';
-        }
-        if ($this->isJunit() && str_starts_with($drupalCheck, 'FAIL')) {
-            JunitXmlGenerator::addResult('Requirements', 'Drupal version', $drupalCheck);
-        }
+
         // Check if node_install enable in the .opts.yml.
         $parseOptsFile = self::parseOptsYml();
         $nodeCheck = 'OK';
@@ -375,18 +366,12 @@ class ToolCommands extends AbstractCommands
                 $toolkitExtra = " <comment>($latestToolkit available)</>";
             }
         }
-        if ($drupalVersion && $latestDrupal = self::getPackageLatestVersion('drupal/core')) {
-            if (!Semver::satisfies($drupalVersion, $latestDrupal)) {
-                $drupalExtra = " <comment>($latestDrupal available)</>";
-            }
-        }
 
         $io->title('Required checks:');
-        $headers = ['PHP version', 'Toolkit version', 'Drupal version'];
+        $headers = ['PHP version', 'Toolkit version'];
         $rows = [
             "$phpCheck ($phpVersion)",
             "$toolkitCheck" . (!empty($toolkitVersion) ? " ($toolkitVersion)" : '') . (!empty($toolkitExtra) ? $toolkitExtra : ''),
-            "$drupalCheck" . (!empty($drupalVersion) ? " ($drupalVersion)" : '') . (!empty($drupalExtra) ? $drupalExtra : ''),
         ];
         if (!empty($parseOptsFile['npm_install'])) {
             $headers[] = 'Node version';
@@ -398,7 +383,7 @@ class ToolCommands extends AbstractCommands
             JunitXmlGenerator::generate($junitFile);
         }
 
-        if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $drupalCheck !== 'OK' || $nodeCheck !== 'OK') {
+        if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $nodeCheck !== 'OK') {
             return 1;
         }
         return 0;

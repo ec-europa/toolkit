@@ -492,7 +492,8 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         // Make sure the toolkit-composer-plugin is allowed.
-        if (!array_key_exists(Toolkit::PLUGIN, $composerJson['replace']) && empty($composerJson['config']['allow-plugins'][Toolkit::PLUGIN])) {
+        if (empty($composerJson['replace'][Toolkit::PLUGIN]) &&
+            empty($composerJson['config']['allow-plugins'][Toolkit::PLUGIN])) {
             $message = 'Plugin ' . Toolkit::PLUGIN . ' must be allowed in the config.allow-plugins section of the composer.json.';
             $this->io->error($message);
             $this->composerFailed = true;
