@@ -11,7 +11,7 @@ permissions:
 jobs:
   code-review:
     runs-on: ubuntu-latest
-    container: fpfis/httpd-php:8.3-ci
+    container: registry.fpfis.eu/digit/devsecops/httpd-php:8.3-ci
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,10 +25,13 @@ jobs:
         run: ./vendor/bin/run toolkit:test-phpcs
 
       - name: PHPmd
-        run: ./vendor/bin/run toolkit:test-phpmd
+        run: ./vendor/bin/run toolkit:test-phpmd --files=src/,tests/
 
       - name: PHPUnit
-        run: ./vendor/bin/run toolkit:test-phpunit
+        run: |
+          mkdir -p /test/toolkit
+          cp -r $GITHUB_WORKSPACE/* /test/toolkit
+          ./vendor/bin/run toolkit:test-phpunit --working-dir=/test/toolkit --execution=parallel
 
       - name: Lint PHP
         run: ./vendor/bin/run toolkit:lint-php
