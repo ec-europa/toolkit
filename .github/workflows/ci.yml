@@ -40,6 +40,10 @@ jobs:
         run: ./vendor/bin/run toolkit:lint-cspell --files=src --config=resources/cspell/.cspell.json
 
       - name: PHPUnit
+        env:
+          DOCUMENT_ROOT: /test/toolkit
+          QA_API_AUTH_TOKEN: ${{ secrets.QA_API_AUTH_TOKEN }}
+          TOOLKIT_MOCK_REPO: ${{ secrets.TOOLKIT_MOCK_REPO }}
         run: |
           mkdir -p /test/toolkit
           cp -r $GITHUB_WORKSPACE/* /test/toolkit
