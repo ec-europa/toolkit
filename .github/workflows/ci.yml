@@ -8,18 +8,28 @@ permissions:
   contents: read
   pull-requests: read
 
+env:
+  DOCUMENT_ROOT: /test/toolkit
+  QA_API_AUTH_TOKEN: ${{ secrets.QA_API_AUTH_TOKEN }}
+  TOOLKIT_MOCK_REPO: ${{ secrets.TOOLKIT_MOCK_REPO }}
+  GITHUB_API_TOKEN: ${{ secrets.API_TOKEN }}
+
+
 jobs:
   code-review:
     runs-on: ubuntu-latest
     container: registry.fpfis.eu/digit/devsecops/httpd-php:8.3-ci
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Composer
         run: |
           composer validate
           composer install --no-ansi --no-interaction
+
+      - name: test-clone
+        run: git clone "$TOOLKIT_MOCK_REPO" test
 
       - name: PHPcs
         run: ./vendor/bin/run toolkit:test-phpcs
@@ -40,11 +50,6 @@ jobs:
         run: ./vendor/bin/run toolkit:lint-cspell --files=src --config=resources/cspell/.cspell.json
 
       - name: PHPUnit
-        env:
-          DOCUMENT_ROOT: /test/toolkit
-          QA_API_AUTH_TOKEN: ${{ secrets.QA_API_AUTH_TOKEN }}
-          TOOLKIT_MOCK_REPO: ${{ secrets.TOOLKIT_MOCK_REPO }}
-          GITHUB_API_TOKEN: ${{ secrets.API_TOKEN }}
         run: |
           mkdir -p /test/toolkit
           cp -r $GITHUB_WORKSPACE/* /test/toolkit
