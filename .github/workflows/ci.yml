@@ -44,6 +44,7 @@ jobs:
           DOCUMENT_ROOT: /test/toolkit
           QA_API_AUTH_TOKEN: ${{ secrets.QA_API_AUTH_TOKEN }}
           TOOLKIT_MOCK_REPO: ${{ secrets.TOOLKIT_MOCK_REPO }}
+          GITHUB_API_TOKEN: ${{ secrets.API_TOKEN }}
         run: |
           mkdir -p /test/toolkit
           cp -r $GITHUB_WORKSPACE/* /test/toolkit

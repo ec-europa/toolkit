@@ -15,6 +15,8 @@
         <env name="DRUPAL_DATABASE_USERNAME" value="root"/>
         <env name="DRUPAL_DATABASE_HOST" value="mysql"/>
         <env name="DRUPAL_DATABASE_PORT" value="3306"/>
+        <env name="NEXTCLOUD_USER" value="test"/>
+        <env name="NEXTCLOUD_PASS" value="test"/>
     </php>
     <testsuites>
         <testsuite name="Unit GitHooks">

@@ -35,7 +35,7 @@ final class Mock
     public static function download(): bool
     {
         $tag = self::tag();
-        $mockDir = self::$directory . '/' . $tag;
+        $mockDir = self::mockDirectory();
         if (file_exists($mockDir)) {
             return true;
         }
@@ -66,8 +66,7 @@ final class Mock
      */
     public static function getEndpointContent(string $endpoint)
     {
-        $tag = self::tag();
-        $mockDir = self::$directory . '/' . $tag;
+        $mockDir = self::mockDirectory();
         if (!file_exists($mockDir)) {
             throw new \Exception("Mock not found at '$mockDir'.");
         }
@@ -101,6 +100,20 @@ final class Mock
             return (string) $tag;
         }
         return self::$defaultTag;
+    }
+
+    /**
+     * Returns the mock location.
+     */
+    public static function mockDirectory(): string
+    {
+        $dir = self::$directory . '/' . self::tag();
+        // If we are running PHPUnit set the mock location
+        // outside the test sandbox to download only once.
+        if (getenv('TOOLKIT_DEBUG_EXPECTATIONS') !== false) {
+            $dir = "../../$dir";
+        }
+        return $dir;
     }
 
 }
