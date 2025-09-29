@@ -1,0 +1,43 @@
+name: 'Toolkit testing pipeline'
+
+on:
+  workflow_dispatch:
+  push:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+    container: fpfis/httpd-php:8.3-ci
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Composer
+        run: |
+          composer validate
+          composer install --no-ansi --no-interaction
+
+      - name: PHPcs
+        run: ./vendor/bin/run toolkit:test-phpcs
+
+      - name: PHPmd
+        run: ./vendor/bin/run toolkit:test-phpmd
+
+      - name: PHPUnit
+        run: ./vendor/bin/run toolkit:test-phpunit
+
+      - name: Lint PHP
+        run: ./vendor/bin/run toolkit:lint-php
+
+      - name: PHPStan
+        run: ./vendor/bin/run toolkit:test-phpstan
+
+      - name: Lint Yaml
+        run: ./vendor/bin/run toolkit:lint-yaml
+
+      - name: Lint CSpell
+        run: ./vendor/bin/run toolkit:lint-cspell --files=src --config=resources/cspell/.cspell.json
