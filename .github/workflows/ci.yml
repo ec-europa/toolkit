@@ -29,9 +29,9 @@ jobs:
 
       - name: test-clone
         run: |
-          git clone "$TOOLKIT_MOCK_REPO" test
-          ls -la test || echo 'fail'
-          ls -la test/api || echo 'fail'
+          git clone --depth 1 --branch 0.0.66 "$TOOLKIT_MOCK_REPO" tests/mock
+          ls -la tests/mock || echo 'fail'
+          ls -la tests/mock/api || echo 'fail'
 
       - name: PHPcs
         run: ./vendor/bin/run toolkit:test-phpcs
