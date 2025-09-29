@@ -27,12 +27,6 @@ jobs:
       - name: PHPmd
         run: ./vendor/bin/run toolkit:test-phpmd --files=src/,tests/
 
-      - name: PHPUnit
-        run: |
-          mkdir -p /test/toolkit
-          cp -r $GITHUB_WORKSPACE/* /test/toolkit
-          ./vendor/bin/run toolkit:test-phpunit --working-dir=/test/toolkit --execution=parallel
-
       - name: Lint PHP
         run: ./vendor/bin/run toolkit:lint-php
 
@@ -44,3 +38,9 @@ jobs:
 
       - name: Lint CSpell
         run: ./vendor/bin/run toolkit:lint-cspell --files=src --config=resources/cspell/.cspell.json
+
+      - name: PHPUnit
+        run: |
+          mkdir -p /test/toolkit
+          cp -r $GITHUB_WORKSPACE/* /test/toolkit
+          ./vendor/bin/run toolkit:test-phpunit --working-dir=/test/toolkit --execution=parallel
