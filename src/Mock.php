@@ -42,6 +42,7 @@ final class Mock
         if (!Toolkit::isCiCd()) {
             return false;
         }
+        echo "Downloading mock...\n";
         $repo = self::repo();
         $command = "git clone --depth 1 --branch $tag $repo $mockDir";
         $process = Process::fromShellCommandline($command);
@@ -110,9 +111,9 @@ final class Mock
         $dir = self::$directory . '/' . self::tag();
         // If we are running PHPUnit set the mock location
         // outside the test sandbox to download only once.
-        if (getenv('TOOLKIT_DEBUG_EXPECTATIONS') !== false) {
-            $dir = "../../$dir";
-        }
+        // if (getenv('TOOLKIT_DEBUG_EXPECTATIONS') !== false) {
+        // $dir = "../../$dir";
+        // }.
         return $dir;
     }
 
