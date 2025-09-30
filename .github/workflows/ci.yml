@@ -17,15 +17,26 @@ env:
 jobs:
   code-review:
     runs-on: ubuntu-latest
-    container: registry.fpfis.eu/digit/devsecops/httpd-php:8.3-ci
+    container: registry.fpfis.eu/digit/devsecops/httpd-php:${{ matrix.php_version }}-ci
+    strategy:
+      matrix:
+        php_version: [ 8.3, 8.4 ]
+        composer_boundary: [ highest, lowest ]
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Composer
+      - name: Composer Highest
+        if: matrix.composer_boundary == 'highest'
         run: |
           composer validate
           composer install --no-ansi --no-interaction
+
+      - name: Composer Lowest
+        if: matrix.composer_boundary == 'lowest'
+        run: |
+          composer validate
+          composer update --prefer-lowest --prefer-stable --ansi --no-progress
 
       - name: PHPcs
         run: ./vendor/bin/run toolkit:test-phpcs
