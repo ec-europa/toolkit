@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\Tests;
 
-use EcEuropa\Toolkit\Mock;
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
@@ -51,17 +50,6 @@ abstract class AbstractTest extends TestCase
     protected function tearDown(): void
     {
         $this->fs->remove(glob($this->getSandboxRoot() . '/{,.}[!.,!..]*', GLOB_BRACE));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $mockDir = Mock::mockDirectory();
-        if (is_dir($mockDir)) {
-            (new Filesystem())->remove($mockDir);
-        }
     }
 
     /**

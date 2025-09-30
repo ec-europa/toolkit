@@ -1,4 +1,4 @@
-name: 'Toolkit testing pipeline'
+name: 'Testing pipeline'
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ env:
   GITHUB_API_TOKEN: ${{ secrets.API_TOKEN }}
 
 jobs:
-  code-review:
+  Testing:
     runs-on: ubuntu-latest
     container: registry.fpfis.eu/digit/devsecops/httpd-php:${{ matrix.php_version }}-ci
     strategy:
@@ -42,11 +42,11 @@ jobs:
       - name: PHPmd
         run: ./vendor/bin/run toolkit:test-phpmd --files=src/,tests/
 
-      - name: Lint PHP
-        run: ./vendor/bin/run toolkit:lint-php
-
       - name: PHPStan
         run: ./vendor/bin/run toolkit:test-phpstan
+
+      - name: Lint PHP
+        run: ./vendor/bin/run toolkit:lint-php
 
       - name: Lint Yaml
         run: ./vendor/bin/run toolkit:lint-yaml

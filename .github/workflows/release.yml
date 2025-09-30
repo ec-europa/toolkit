@@ -1,4 +1,4 @@
-name: 'Release pipeline'
+name: 'Documentation pipeline'
 
 on:
   workflow_dispatch:
@@ -17,11 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Validate composer
-        run: composer validate
-
       - name: Composer
-        run: composer install --prefer-dist --no-ansi --no-interaction
+        run: |
+          composer validate
+          composer install --prefer-dist--no-ansi --no-progress --no-interaction
 
       - name: Generate documentation
         run: ./vendor/bin/run toolkit:generate-documentation --token=${{ secrets.API_TOKEN }} --push || echo "skip"

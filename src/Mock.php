@@ -35,14 +35,13 @@ final class Mock
     public static function download(): bool
     {
         $tag = self::tag();
-        $mockDir = self::mockDirectory();
+        $mockDir = self::$directory . '/' . $tag;
         if (file_exists($mockDir)) {
             return true;
         }
         if (!Toolkit::isCiCd()) {
             return false;
         }
-        echo "Downloading mock...\n";
         $repo = self::repo();
         $command = "git clone --depth 1 --branch $tag $repo $mockDir";
         $process = Process::fromShellCommandline($command);
@@ -67,7 +66,7 @@ final class Mock
      */
     public static function getEndpointContent(string $endpoint)
     {
-        $mockDir = self::mockDirectory();
+        $mockDir = self::$directory . '/' . self::tag();
         if (!file_exists($mockDir)) {
             throw new \Exception("Mock not found at '$mockDir'.");
         }
@@ -101,20 +100,6 @@ final class Mock
             return (string) $tag;
         }
         return self::$defaultTag;
-    }
-
-    /**
-     * Returns the mock location.
-     */
-    public static function mockDirectory(): string
-    {
-        $dir = self::$directory . '/' . self::tag();
-        // If we are running PHPUnit set the mock location
-        // outside the test sandbox to download only once.
-        // if (getenv('TOOLKIT_DEBUG_EXPECTATIONS') !== false) {
-        // $dir = "../../$dir";
-        // }.
-        return $dir;
     }
 
 }
