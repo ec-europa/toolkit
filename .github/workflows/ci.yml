@@ -26,17 +26,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Composer Highest
-        if: matrix.composer_boundary == 'highest'
+      - name: Composer
         run: |
+          git config --global --add safe.directory $GITHUB_WORKSPACE
           composer validate
-          composer install --no-ansi --no-interaction
-
-      - name: Composer Lowest
-        if: matrix.composer_boundary == 'lowest'
-        run: |
-          composer validate
-          composer update --prefer-lowest --prefer-stable --ansi --no-progress
+          if [[ ${{ matrix.composer_boundary }} == "highest" ]]; then
+            composer install --no-ansi --no-progress --no-interaction
+          else
+            composer update --prefer-lowest --prefer-stable --no-ansi --no-progress --no-interaction
+          fi
 
       - name: PHPcs
         run: ./vendor/bin/run toolkit:test-phpcs
