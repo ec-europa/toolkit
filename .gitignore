@@ -15,6 +15,7 @@ phpda.*
 !.phpdoc/template/
 node_modules/
 .prettierignore
+package.json
 package-lock.json
 /docs_tmp/
 /.toolkit-mock
