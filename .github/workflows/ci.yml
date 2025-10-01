@@ -1,0 +1,61 @@
+name: 'Testing pipeline'
+
+on:
+  workflow_dispatch:
+  push:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+env:
+  DOCUMENT_ROOT: /test/toolkit
+  QA_API_AUTH_TOKEN: ${{ secrets.QA_API_AUTH_TOKEN }}
+  TOOLKIT_MOCK_REPO: ${{ secrets.TOOLKIT_MOCK_REPO }}
+  GITHUB_API_TOKEN: ${{ secrets.API_TOKEN }}
+
+jobs:
+  Testing:
+    runs-on: ubuntu-latest
+    container: registry.fpfis.eu/digit/devsecops/httpd-php:${{ matrix.php_version }}-ci
+    strategy:
+      matrix:
+        php_version: [ 8.1, 8.2, 8.3, 8.4 ]
+        composer_boundary: [ highest, lowest ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Composer
+        run: |
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          composer validate
+          if [[ ${{ matrix.composer_boundary }} == "highest" ]]; then
+            composer install --no-ansi --no-progress --no-interaction
+          else
+            composer update --prefer-lowest --prefer-stable --no-ansi --no-progress --no-interaction
+          fi
+
+      - name: PHPcs
+        run: ./vendor/bin/run toolkit:test-phpcs
+
+      - name: PHPmd
+        run: ./vendor/bin/run toolkit:test-phpmd --files=src/,tests/
+
+      - name: PHPStan
+        run: ./vendor/bin/run toolkit:test-phpstan
+
+      - name: Lint PHP
+        run: ./vendor/bin/run toolkit:lint-php
+
+      - name: Lint Yaml
+        run: ./vendor/bin/run toolkit:lint-yaml
+
+      - name: Lint CSpell
+        run: ./vendor/bin/run toolkit:lint-cspell --files=src --config=resources/cspell/.cspell.json
+
+      - name: PHPUnit
+        run: |
+          mkdir -p /test/toolkit
+          cp -r $GITHUB_WORKSPACE/* /test/toolkit
+          ./vendor/bin/run toolkit:test-phpunit --working-dir=/test/toolkit --execution=parallel
