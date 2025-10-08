@@ -317,8 +317,8 @@ class MoodleCommands extends AbstractCommands
             ->chmod($behatDataRoot, octdec('777'))
             ->chmod($behatFailDumps, octdec('777'));
 
-        // Run behat init script.
-        $tasks[] = $this->taskExec("php $root/admin/tool/behat/cli/init.php")->options($execOpts, '=');
+        // Run behat init script. Force use disable-composer option to not update composer packages.
+        $tasks[] = $this->taskExec("php $root/admin/tool/behat/cli/init.php --disable-composer")->options($execOpts, '=');
 
         $result = $this->collectionBuilder()->addTaskList($tasks)->run();
 
@@ -411,7 +411,8 @@ class MoodleCommands extends AbstractCommands
             // en_AU locale must be installed on the server.
             // @see: https://moodledev.io/general/development/tools/phpunit#initialisation-of-test-environment
             ->exec('locale-gen en_AU.UTF-8')
-            ->exec("php $root/admin/tool/phpunit/cli/init.php");
+            // Force use disable-composer option to not update composer packages.
+            ->exec("php $root/admin/tool/phpunit/cli/init.php --disable-composer");
 
         return $exec->run()->getExitCode();
     }
