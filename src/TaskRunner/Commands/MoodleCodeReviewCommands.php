@@ -82,7 +82,7 @@ class MoodleCodeReviewCommands extends AbstractCommands
             'Lint CSpell' => ['cmd' => 'tk-cspell', 'exec' => $options['lint-cspell'] === true, 'result' => []],
             'Lint Behat' => ['cmd' => 'tk-lbehat', 'exec' => $options['lint-behat'] === true, 'result' => []],
             'Composer lock' => ['cmd' => 'toolkit:complock-check', 'exec' => $options['complock-check'] === true, 'result' => []],
-            'Requirements' => ['cmd' => 'tk-req', 'exec' => $options['requirements'] === true, 'result' => []],
+            'Requirements' => ['cmd' => 'md-req', 'exec' => $options['requirements'] === true, 'result' => []],
         ];
         $exit = 0;
         $runAll = false;
