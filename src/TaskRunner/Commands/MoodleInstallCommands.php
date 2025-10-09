@@ -38,7 +38,7 @@ class MoodleInstallCommands extends AbstractCommands
      * @return \Robo\Collection\CollectionBuilder
      *   The cloned website task.
      */
-    public function moodleInstallClone(ConsoleIO $io, array $options = [
+    public function moodleInstallClone(array $options = [
         'dumpfile' => InputOption::VALUE_REQUIRED,
     ])
     {
