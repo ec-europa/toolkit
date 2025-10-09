@@ -7,3 +7,7 @@ command:
     create-dump:
       options:
         dumpfile: ${toolkit.clone.dumpfile}
+  moodle:
+    install-dump:
+      options:
+        dumpfile: ${toolkit.clone.dumpfile}

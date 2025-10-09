@@ -4,15 +4,26 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use EcEuropa\Toolkit\Toolkit;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
+use Robo\Task\Base\ExecStack;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Provides commands to download and install dump files.
  */
-class MoodleDumpCommands extends DumpCommands
+class MoodleDumpCommands extends AbstractCommands
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFile()
+    {
+        return Toolkit::getToolkitRoot() . '/config/commands/dump.yml';
+    }
 
     /**
      * Import the production snapshot.
@@ -28,30 +39,63 @@ class MoodleDumpCommands extends DumpCommands
      * @option dumpfile The dump file name.
      *
      * @aliases md-idump
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function toolkitInstallDump(ConsoleIO $io, array $options = [
-        'dumpfile' => InputOption::VALUE_REQUIRED
+    public function moodleInstallDump(ConsoleIO $io, array $options = [
+        'dumpfile' => InputOption::VALUE_REQUIRED,
     ])
     {
-        $config = $this->getConfig();
-        $databaseName = $config->get('moodle.db_name');
-        $opts = ToolCommands::parseOptsYml();
+        $config = $this->getConfig()->get('drupal.database');
+        $databaseName = !empty($config['name']) && $config['name'] !== '${env.MOODLE_DB_NAME}' ? $config['name'] : '';
 
         $dumpFile = $this->tmpDirectory() . '/' . $options['dumpfile'];
         if (!file_exists($dumpFile)) {
             $io->error("'$dumpFile' file not found, use the command 'toolkit:download-dump'.");
             return ResultData::EXITCODE_ERROR;
         }
+
+        $user = !empty($config['user']) && $config['user'] !== '${env.MOODLE_DB_USER}' ? $config['user'] : '';
+        $pass = !empty($config['password']) && $config['password'] !== '${env.MOODLE_DB_PASS}' ? $config['password'] : '';
+        $host = !empty($config['host']) && $config['host'] !== '${env.MOODLE_DB_HOST}' ? $config['host'] : '';
+
         $tasks = [];
 
-        // Recreate the database.
-        //$tasks[] = $this->taskExec("mysql --defaults-extra-file=$mySqlConfigFile -e 'DROP DATABASE IF EXISTS $databaseName'");
-        //$tasks[] = $this->taskExec("mysql --defaults-extra-file=$mySqlConfigFile -e 'CREATE DATABASE IF NOT EXISTS $databaseName'");
+        // Generate database config file.
+        $dbConfigFile = $this->tmpDirectory() . '/.mycnf';
+        if (!file_exists($dbConfigFile)) {
+            $tasks[] = $this->taskWriteToFile($dbConfigFile)
+                ->line("[client]")
+                ->line("host=$host")
+                ->line("user=$user")
+                ->line("password=$pass");
+        }
 
-        $tasks[] = $this->taskImportDatabase($dumpFile);
+        // Recreate the database.
+        $tasks[] = $this->taskExec("mysql --defaults-extra-file=$dbConfigFile -e 'DROP DATABASE IF EXISTS $databaseName'");
+        $tasks[] = $this->taskExec("mysql --defaults-extra-file=$dbConfigFile -e 'CREATE DATABASE IF NOT EXISTS $databaseName'");
+
+        $tasks[] = $this->taskImportDatabase($dumpFile, $dbConfigFile);
 
         // Build and return task collection.
         return $this->collectionBuilder()->addTaskList($tasks);
+    }
+
+    /**
+     * Return the tmp folder path, folder is created if missing.
+     *
+     * @return string
+     *   The tmp folder path.
+     */
+    private function tmpDirectory(): string
+    {
+        $tmpFolder = (string) $this->getConfig()->get('toolkit.tmp_folder');
+        if (!file_exists($tmpFolder)) {
+            if (!@mkdir($tmpFolder)) {
+                $tmpFolder = sys_get_temp_dir();
+            }
+        }
+        return $tmpFolder;
     }
 
     /**
@@ -59,25 +103,16 @@ class MoodleDumpCommands extends DumpCommands
      *
      * @param string $dump
      *   The path to the dump file.
+     * @param string $dbConfigFile
+     *   The path to the database config file.
      *
      * @return \Robo\Task\Base\ExecStack
      *   The file imported task.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    private function taskImportDatabase(string $dump)
+    private function taskImportDatabase(string $dump, string $dbConfigFile): ExecStack
     {
-        $config = $this->getConfig()->get('drupal.database');
-        $user = !empty($config['user']) && $config['user'] !== '${env.MOODLE_DB_USER}' ? $config['user'] : '';
-        $pass = !empty($config['password']) && $config['password'] !== '${env.MOODLE_DB_PASS}' ? $config['password'] : '';
-        $host = !empty($config['host']) && $config['host'] !== '${env.MOODLE_DB_HOST}' ? $config['host'] : '';
-        $name = !empty($config['name']) && $config['name'] !== '${env.MOODLE_DB_NAME}' ? $config['name'] : '';
-        $mysql = sprintf('mysql -u%s%s -h%s %s', $user, $pass ? ' -p' . $pass : '', $host, $name);
-        if (str_ends_with($dump, '.gz')) {
-            $command = "gunzip < $dump | $mysql";
-        } else {
-            $command = "$mysql < $dump";
-        }
+        $databaseName = $this->getConfig()->get('drupal.database.name');
+        $command = "zcat $dump | mysql --defaults-extra-file=$dbConfigFile $databaseName";
 
         return $this->taskExecStack()->stopOnFail()->silent(true)
             ->exec($command);
