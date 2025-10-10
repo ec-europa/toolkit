@@ -8,7 +8,6 @@ use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
-use Robo\Task\Base\ExecStack;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -109,7 +108,7 @@ class MoodleDumpCommands extends AbstractCommands
      * @return \Robo\Task\Base\ExecStack
      *   The file imported task.
      */
-    private function taskImportDatabase(string $dump, string $dbConfigFile): ExecStack
+    private function taskImportDatabase(string $dump, string $dbConfigFile)
     {
         $databaseName = $this->getConfig()->get('drupal.database.name');
         $command = "zcat $dump | mysql --defaults-extra-file=$dbConfigFile $databaseName";
