@@ -257,12 +257,12 @@ class DumpCommands extends AbstractCommands
             // Check if the dump is already downloaded.
             if (!file_exists($dump)) {
                 $this->say('Starting download');
-                $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service));
+                $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service, $projectId));
                 continue;
             }
 
             $this->say("File found '$dump', checking server for newer dump");
-            if (!$this->nextcloudCheckNewerDump($downloadLink, $service)) {
+            if (!$this->nextcloudCheckNewerDump($downloadLink, $service, $projectId)) {
                 $this->say('Local dump is up-to-date');
                 continue;
             }
@@ -390,15 +390,17 @@ class DumpCommands extends AbstractCommands
      * Check if a newer dump exists on the Nextcloud server.
      *
      * @param string $link
-     *   The link to the folder.
+     *   The link to the folder (includes authentication).
      * @param string $service
      *   The service to use.
+     * @param string $projectId
+     * The project id.
      *
      * @return bool
      *   Return true if sha1 from local is different from the server,
      *   False is case of error or no local file exists.
      */
-    private function nextcloudCheckNewerDump(string $link, string $service): bool
+    private function nextcloudCheckNewerDump(string $link, string $service, string $projectId): bool
     {
         $tmpFolder = $this->tmpDirectory();
         $ext = '.gz';
@@ -414,18 +416,7 @@ class DumpCommands extends AbstractCommands
         }
         $link .= "/$service";
         // Download the .sha file.
-        $this->wgetGenerateInputFile("$link/latest.sh1", "$tmpFolder/$service.txt", true);
-        $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service-latest.sh1", '.sh1', true)
-            ->run();
-        if (!file_exists("$tmpFolder/$service-latest.sh1")) {
-            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
-            return false;
-        }
-        $latest = file_get_contents("$tmpFolder/$service-latest.sh1");
-        if (empty($latest)) {
-            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
-            return false;
-        }
+        $latest = $this->downloadShaFile($link, $tmpFolder, $service, $projectId);
         $sha1 = trim(explode('  ', $latest)[0]);
 
         // Remove temporary files.
@@ -446,31 +437,22 @@ class DumpCommands extends AbstractCommands
      * Helper to download and process a Nextcloud dump file.
      *
      * @param string $link
-     *   The link to the folder.
+     *    The link to the folder (includes authentication).
      * @param string $service
-     *   The service to use.
+     *    The service to use.
+     * @param string $projectId
+     *  The project id.
      *
      * @return array<mixed>
      *   The tasks to execute.
      */
-    private function asdaProcessFile(string $link, string $service)
+    private function asdaProcessFile(string $link, string $service, string $projectId)
     {
         $tasks = [];
         $tmpFolder = $this->tmpDirectory();
 
         // Download the .sha file.
-        $this->wgetGenerateInputFile("$link/latest.sh1", "$tmpFolder/$service.txt", true);
-        $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service-latest.sh1", '.sh1', true)
-            ->run();
-        if (!file_exists("$tmpFolder/$service-latest.sh1")) {
-            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
-            return $tasks;
-        }
-        $latest = file_get_contents("$tmpFolder/$service-latest.sh1");
-        if (empty($latest)) {
-            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
-            return $tasks;
-        }
+        $latest = $this->downloadShaFile($link, $tmpFolder, $service, $projectId);
         $filename = trim(explode('  ', $latest)[1]);
 
         // Display information about ASDA creation date.
@@ -491,6 +473,52 @@ class DumpCommands extends AbstractCommands
             ->arg("$tmpFolder/$service.txt");
 
         return $tasks;
+    }
+
+    /**
+     * Download the .sha file.
+     *
+     * This file consists of dump hash and database filename.
+     *
+     * @param string $link
+     *     The link to the folder (includes authentication).
+     * @param string $service
+     *     The service to use.
+     * @param string $projectId
+     *  The project id.
+     *
+     * @return string
+     *   The file.
+     */
+    private function downloadShaFile(string $link, string $tmpFolder, string $service, string $projectId)
+    {
+        try {
+            $this->wgetGenerateInputFile("$link/latest.sh1", "$tmpFolder/$service.txt", true);
+            $result = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service-latest.sh1", '.sh1', true)
+                ->run();
+            if ($result->getExitCode() !== ResultData::EXITCODE_OK) {
+                $output = $result->getMessage();
+                $lastStatus = null;
+                // Parse wget output line by line
+                foreach (explode("\n", $output) as $line) {
+                    $line = trim($line);
+                    // Match full HTTP response line
+                    if (preg_match('/HTTP\/[0-9\.]+ \d{3} .*/', $line, $matches)) {
+                        $lastStatus = $matches[0]; // overwrite to always keep the last one.
+                    }
+                }
+                throw new \RuntimeException(
+                    "HTTP status: '" . ($lastStatus ?? 'N/A') . "' for Project id: '$projectId'"
+                );
+            }
+            return file_get_contents("$tmpFolder/$service-latest.sh1");
+        } catch (\Throwable $e) {
+            throw new \RuntimeException(
+                "Error downloading database for service '$service': \n" . $e->getMessage(),
+                0,
+                $e
+            );
+        }
     }
 
     /**
@@ -539,6 +567,7 @@ class DumpCommands extends AbstractCommands
             ->option('-O', $destination)
             ->option('-A', $accept)
             ->option('-P', './')
+            ->option('--server-response 2>&1')
             ->printMetadata(false);
         if ($silent) {
             $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG);
