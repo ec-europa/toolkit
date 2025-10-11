@@ -279,7 +279,7 @@ class DumpCommands extends AbstractCommands
                 $this->say('Starting download');
                 $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service, $projectId));
             } catch (\Throwable $e) {
-                $io->error("Failed processing service '$service': " . $e->getMessage());
+                $io->error($e->getMessage());
                 return ResultData::EXITCODE_ERROR;
             }
         }
@@ -519,7 +519,7 @@ class DumpCommands extends AbstractCommands
             return file_get_contents("$tmpFolder/$service-latest.sh1");
         } catch (\Throwable $e) {
             throw new \RuntimeException(
-                "Error downloading database for service '$service': \n" . $e->getMessage(),
+                "Failed downloading database for service '$service': \n" . $e->getMessage(),
                 0,
                 $e
             );
