@@ -254,29 +254,34 @@ class DumpCommands extends AbstractCommands
         foreach ($services as $service) {
             $this->say("Checking service '$service'");
             $dump = $tmpFolder . '/' . $service . ($isMydumper && $service === 'mysql' ? '.tar' : '.gz');
-            // Check if the dump is already downloaded.
-            if (!file_exists($dump)) {
-                $this->say('Starting download');
-                $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service, $projectId));
-                continue;
-            }
-
-            $this->say("File found '$dump', checking server for newer dump");
-            if (!$this->nextcloudCheckNewerDump($downloadLink, $service, $projectId)) {
-                $this->say('Local dump is up-to-date');
-                continue;
-            }
-            $question = 'A newer dump was found, would you like to download?';
-            if (!Toolkit::isCiCd() && $options['yes'] === InputOption::VALUE_NONE) {
-                if (!$this->confirm($question)) {
-                    $this->say('Skipping download');
+            try {
+                // Check if the dump is already downloaded.
+                if (!file_exists($dump)) {
+                    $this->say('Starting download');
+                    $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service, $projectId));
                     continue;
                 }
-            } else {
-                $this->say($question . ' (y/n) Y');
+
+                $this->say("File found '$dump', checking server for newer dump");
+                if (!$this->nextcloudCheckNewerDump($downloadLink, $service, $projectId)) {
+                    $this->say('Local dump is up-to-date');
+                    continue;
+                }
+                $question = 'A newer dump was found, would you like to download?';
+                if (!Toolkit::isCiCd() && $options['yes'] === InputOption::VALUE_NONE) {
+                    if (!$this->confirm($question)) {
+                        $this->say('Skipping download');
+                        continue;
+                    }
+                } else {
+                    $this->say($question . ' (y/n) Y');
+                }
+                $this->say('Starting download');
+                $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service, $projectId));
+            } catch (\Throwable $e) {
+                $io->error("Failed processing service '$service': " . $e->getMessage());
+                return ResultData::EXITCODE_ERROR;
             }
-            $this->say('Starting download');
-            $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service));
         }
 
         return $this->collectionBuilder()->addTaskList($tasks);
@@ -394,7 +399,7 @@ class DumpCommands extends AbstractCommands
      * @param string $service
      *   The service to use.
      * @param string $projectId
-     * The project id.
+     *   The project id.
      *
      * @return bool
      *   Return true if sha1 from local is different from the server,
@@ -437,11 +442,11 @@ class DumpCommands extends AbstractCommands
      * Helper to download and process a Nextcloud dump file.
      *
      * @param string $link
-     *    The link to the folder (includes authentication).
+     *   The link to the folder (includes authentication).
      * @param string $service
-     *    The service to use.
+     *   The service to use.
      * @param string $projectId
-     *  The project id.
+     *   The project id.
      *
      * @return array<mixed>
      *   The tasks to execute.
@@ -481,11 +486,11 @@ class DumpCommands extends AbstractCommands
      * This file consists of dump hash and database filename.
      *
      * @param string $link
-     *     The link to the folder (includes authentication).
+     *   The link to the folder (includes authentication).
      * @param string $service
-     *     The service to use.
+     *   The service to use.
      * @param string $projectId
-     *  The project id.
+     *   The project id.
      *
      * @return string
      *   The file.
@@ -499,12 +504,12 @@ class DumpCommands extends AbstractCommands
             if ($result->getExitCode() !== ResultData::EXITCODE_OK) {
                 $output = $result->getMessage();
                 $lastStatus = null;
-                // Parse wget output line by line
+                // Parse wget output line by line.
                 foreach (explode("\n", $output) as $line) {
                     $line = trim($line);
-                    // Match full HTTP response line
-                    if (preg_match('/HTTP\/[0-9\.]+ \d{3} .*/', $line, $matches)) {
-                        $lastStatus = $matches[0]; // overwrite to always keep the last one.
+                    // Match full HTTP response line.
+                    if (preg_match('/HTTP\/[0-9.]+ \d{3} .*/', $line, $matches)) {
+                        $lastStatus = $matches[0]; // Overwrite to always keep the last one.
                     }
                 }
                 throw new \RuntimeException(
