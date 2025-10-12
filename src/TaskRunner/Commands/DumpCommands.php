@@ -250,12 +250,10 @@ class DumpCommands extends AbstractCommands
         $downloadLink = $this->addAuthToUrl($url, $user, $password);
 
         $this->say('Download services: ' . implode(', ', $services));
-        $tasks = [];
         $collection = $this->collectionBuilder();
         foreach ($services as $service) {
-            // Set removing temporary files task.
-            $tasks = array_merge($tasks, $this->removeTemporaryFiles($tmpFolder, $service));
-            $collection->addTaskList($tasks);
+            // Add cleanup removing temporary files task.
+            $collection->addTask($this->removeTemporaryFiles($tmpFolder, $service));
             $this->say("Checking service '$service'");
             $dump = $tmpFolder . '/' . $service . ($isMydumper && $service === 'mysql' ? '.tar' : '.gz');
             try {
@@ -448,8 +446,7 @@ class DumpCommands extends AbstractCommands
      * @param string $tmpFolder
      *   The system temporary folder for toolkit.
      *
-     * @return int
-     *   The tasks to execute.
+     * @return void
      */
     private function asdaProcessFile(string $link, string $service, string $projectId, string $tmpFolder)
     {
@@ -469,8 +466,6 @@ class DumpCommands extends AbstractCommands
         $result = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar', !$show)
             ->run();
         $this->handleWgetErrors($result, $projectId);
-
-        return 0;
     }
 
     /**
@@ -514,17 +509,15 @@ class DumpCommands extends AbstractCommands
      * @param string $service
      *   The service to use.
      *
-     * @return array<mixed>
+     * @return \Robo\Contract\TaskInterface
      *   The array of tasks.
      */
     private function removeTemporaryFiles($tmpFolder, $service)
     {
-        $tasks = [];
-        $tasks[] = $this->taskExec('rm')
+        return $this->taskExec('rm')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->arg("$tmpFolder/$service-latest.sh1")
             ->arg("$tmpFolder/$service.txt");
-        return $tasks;
     }
 
     /**
