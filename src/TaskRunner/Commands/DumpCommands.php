@@ -252,13 +252,16 @@ class DumpCommands extends AbstractCommands
         $this->say('Download services: ' . implode(', ', $services));
         $tasks = [];
         foreach ($services as $service) {
+            // Set removing temporary files task.
+            $tasks = array_merge($tasks, $this->removeTemporaryFiles($tmpFolder, $service));
+            $collection = $this->collectionBuilder()->addTaskList($tasks);
             $this->say("Checking service '$service'");
             $dump = $tmpFolder . '/' . $service . ($isMydumper && $service === 'mysql' ? '.tar' : '.gz');
             try {
                 // Check if the dump is already downloaded.
                 if (!file_exists($dump)) {
                     $this->say('Starting download');
-                    $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service, $projectId));
+                    $this->asdaProcessFile("$downloadLink/$service", $service, $projectId, $tmpFolder);
                     continue;
                 }
 
@@ -277,14 +280,15 @@ class DumpCommands extends AbstractCommands
                     $this->say($question . ' (y/n) Y');
                 }
                 $this->say('Starting download');
-                $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service, $projectId));
+                $this->asdaProcessFile("$downloadLink/$service", $service, $projectId, $tmpFolder);
             } catch (\Throwable $e) {
                 $io->error($e->getMessage());
+                // Clean-up if failed as well.
+                $collection->run();
                 return ResultData::EXITCODE_ERROR;
             }
         }
-
-        return $this->collectionBuilder()->addTaskList($tasks);
+        return  $collection;
     }
 
     /**
@@ -424,13 +428,6 @@ class DumpCommands extends AbstractCommands
         $latest = $this->downloadShaFile($link, $tmpFolder, $service, $projectId);
         $sha1 = trim(explode('  ', $latest)[0]);
 
-        // Remove temporary files.
-        $this->taskExec('rm')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->arg("$tmpFolder/$service-latest.sh1")
-            ->arg("$tmpFolder/$service.txt")
-            ->run();
-
         // Compare with the local dump.
         if ($sha1 !== sha1_file($dump)) {
             return true;
@@ -447,15 +444,14 @@ class DumpCommands extends AbstractCommands
      *   The service to use.
      * @param string $projectId
      *   The project id.
+     * @param string $tmpFolder
+     * The system temporary folder for toolkit.
      *
      * @return array<mixed>
      *   The tasks to execute.
      */
-    private function asdaProcessFile(string $link, string $service, string $projectId)
+    private function asdaProcessFile(string $link, string $service, string $projectId, string $tmpFolder)
     {
-        $tasks = [];
-        $tmpFolder = $this->tmpDirectory();
-
         // Download the .sha file.
         $latest = $this->downloadShaFile($link, $tmpFolder, $service, $projectId);
         $filename = trim(explode('  ', $latest)[1]);
@@ -466,18 +462,14 @@ class DumpCommands extends AbstractCommands
         $this->writeln("\n<info>$output\n$separator</info>\n");
 
         // Download the database file.
-        $this->wgetGenerateInputFile("$link/$filename", "$tmpFolder/$service.txt", true);
+        $this->wgetGenerateInputFile("$link/$filename" . "x", "$tmpFolder/$service.txt", true);
         $extension = str_ends_with($filename, '.gz') ? 'gz' : 'tar';
         $show = $this->getConfigValue('toolkit.clone.show_progress', false);
-        $tasks[] = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar', !$show);
-        // TODO: $this->handleWget(...);
-        // Remove temporary files.
-        $tasks[] = $this->taskExec('rm')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->arg("$tmpFolder/$service-latest.sh1")
-            ->arg("$tmpFolder/$service.txt");
+        $result = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar', !$show)
+            ->run();
+        $this->handleWgetErrors($result, $projectId);
 
-        return $tasks;
+        return 0;
     }
 
     /**
@@ -501,7 +493,8 @@ class DumpCommands extends AbstractCommands
             $this->wgetGenerateInputFile("$link/latest.sh1", "$tmpFolder/$service.txt", true);
             $result = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service-latest.sh1", '.sh1', true)
                 ->run();
-            $this->handleWget($result, $projectId);
+            // Handle errors.
+            $this->handleWgetErrors($result, $projectId);
             return file_get_contents("$tmpFolder/$service-latest.sh1");
         } catch (\Throwable $e) {
             throw new \RuntimeException(
@@ -511,7 +504,37 @@ class DumpCommands extends AbstractCommands
             );
         }
     }
-    private function handleWget($result, $projectId){
+    /**
+     * Cleanup helper files for download.
+     *
+     * @param string $tmpFolder
+     *   The link to the folder (includes authentication).
+     * @param string $service
+     *
+     * @return array
+     *   The array of tasks.
+     */
+    private function removeTemporaryFiles($tmpFolder, $service)
+    {
+        $tasks[] = $this->taskExec('rm')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->arg("$tmpFolder/$service-latest.sh1")
+            ->arg("$tmpFolder/$service.txt");
+        return $tasks;
+    }
+
+    /**
+     * Cleanup helper files for download.
+     *
+     * @param string $tmpFolder
+     *   The link to the folder (includes authentication).
+     * @param string $service
+     *
+     * @return array
+     *   The array of tasks.
+     */
+    private function handleWgetErrors($result, $projectId)
+    {
         if ($result->getExitCode() !== ResultData::EXITCODE_OK) {
             $output = $result->getMessage();
             $lastStatus = null;
