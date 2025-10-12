@@ -251,10 +251,11 @@ class DumpCommands extends AbstractCommands
 
         $this->say('Download services: ' . implode(', ', $services));
         $tasks = [];
+        $collection = $this->collectionBuilder();
         foreach ($services as $service) {
             // Set removing temporary files task.
             $tasks = array_merge($tasks, $this->removeTemporaryFiles($tmpFolder, $service));
-            $collection = $this->collectionBuilder()->addTaskList($tasks);
+            $collection->addTaskList($tasks);
             $this->say("Checking service '$service'");
             $dump = $tmpFolder . '/' . $service . ($isMydumper && $service === 'mysql' ? '.tar' : '.gz');
             try {
@@ -288,7 +289,7 @@ class DumpCommands extends AbstractCommands
                 return ResultData::EXITCODE_ERROR;
             }
         }
-        return  $collection;
+        return $collection;
     }
 
     /**
@@ -445,9 +446,9 @@ class DumpCommands extends AbstractCommands
      * @param string $projectId
      *   The project id.
      * @param string $tmpFolder
-     * The system temporary folder for toolkit.
+     *   The system temporary folder for toolkit.
      *
-     * @return array<mixed>
+     * @return int
      *   The tasks to execute.
      */
     private function asdaProcessFile(string $link, string $service, string $projectId, string $tmpFolder)
@@ -462,7 +463,7 @@ class DumpCommands extends AbstractCommands
         $this->writeln("\n<info>$output\n$separator</info>\n");
 
         // Download the database file.
-        $this->wgetGenerateInputFile("$link/$filename" . "x", "$tmpFolder/$service.txt", true);
+        $this->wgetGenerateInputFile("$link/$filename", "$tmpFolder/$service.txt", true);
         $extension = str_ends_with($filename, '.gz') ? 'gz' : 'tar';
         $show = $this->getConfigValue('toolkit.clone.show_progress', false);
         $result = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar', !$show)
@@ -504,18 +505,21 @@ class DumpCommands extends AbstractCommands
             );
         }
     }
+
     /**
      * Cleanup helper files for download.
      *
      * @param string $tmpFolder
      *   The link to the folder (includes authentication).
      * @param string $service
+     *   The service to use.
      *
-     * @return array
+     * @return array<mixed>
      *   The array of tasks.
      */
     private function removeTemporaryFiles($tmpFolder, $service)
     {
+        $tasks = [];
         $tasks[] = $this->taskExec('rm')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->arg("$tmpFolder/$service-latest.sh1")
@@ -526,12 +530,13 @@ class DumpCommands extends AbstractCommands
     /**
      * Cleanup helper files for download.
      *
-     * @param string $tmpFolder
+     * @param \Robo\Result $result
      *   The link to the folder (includes authentication).
-     * @param string $service
+     * @param string $projectId
+     *   The project id.
      *
-     * @return array
-     *   The array of tasks.
+     * @return void
+     *   Just throwing exceptions.
      */
     private function handleWgetErrors($result, $projectId)
     {
