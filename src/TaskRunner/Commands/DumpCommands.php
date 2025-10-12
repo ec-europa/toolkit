@@ -465,12 +465,12 @@ class DumpCommands extends AbstractCommands
         $separator = str_repeat('=', strlen($output));
         $this->writeln("\n<info>$output\n$separator</info>\n");
 
-        // Download the file.
+        // Download the database file.
         $this->wgetGenerateInputFile("$link/$filename", "$tmpFolder/$service.txt", true);
         $extension = str_ends_with($filename, '.gz') ? 'gz' : 'tar';
         $show = $this->getConfigValue('toolkit.clone.show_progress', false);
         $tasks[] = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar', !$show);
-
+        // TODO: $this->handleWget(...);
         // Remove temporary files.
         $tasks[] = $this->taskExec('rm')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
@@ -501,27 +501,30 @@ class DumpCommands extends AbstractCommands
             $this->wgetGenerateInputFile("$link/latest.sh1", "$tmpFolder/$service.txt", true);
             $result = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service-latest.sh1", '.sh1', true)
                 ->run();
-            if ($result->getExitCode() !== ResultData::EXITCODE_OK) {
-                $output = $result->getMessage();
-                $lastStatus = null;
-                // Parse wget output line by line.
-                foreach (explode("\n", $output) as $line) {
-                    $line = trim($line);
-                    // Match full HTTP response line.
-                    if (preg_match('/HTTP\/[0-9.]+ \d{3} .*/', $line, $matches)) {
-                        $lastStatus = $matches[0]; // Overwrite to always keep the last one.
-                    }
-                }
-                throw new \RuntimeException(
-                    "HTTP status: '" . ($lastStatus ?? 'N/A') . "' for Project id: '$projectId'"
-                );
-            }
+            $this->handleWget($result, $projectId);
             return file_get_contents("$tmpFolder/$service-latest.sh1");
         } catch (\Throwable $e) {
             throw new \RuntimeException(
                 "Failed downloading database for service '$service': \n" . $e->getMessage(),
                 0,
                 $e
+            );
+        }
+    }
+    private function handleWget($result, $projectId){
+        if ($result->getExitCode() !== ResultData::EXITCODE_OK) {
+            $output = $result->getMessage();
+            $lastStatus = null;
+            // Parse wget output line by line.
+            foreach (explode("\n", $output) as $line) {
+                $line = trim($line);
+                // Match full HTTP response line.
+                if (preg_match('/HTTP\/[0-9.]+ \d{3} .*/', $line, $matches)) {
+                    $lastStatus = $matches[0]; // Overwrite to always keep the last one.
+                }
+            }
+            throw new \RuntimeException(
+                "HTTP status: '" . ($lastStatus ?? 'N/A') . "' for Project id: '$projectId'"
             );
         }
     }
