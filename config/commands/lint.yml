@@ -25,6 +25,7 @@ command:
       options:
         config: ${toolkit.lint.css.config}
         files: ${toolkit.lint.css.files}
+        options: ${toolkit.lint.css.options}
     lint-cspell:
       options:
         config: ${toolkit.lint.cspell.config}

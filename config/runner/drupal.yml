@@ -1,7 +1,7 @@
 drupal:
   root: 'web'
-  base_url: 'http://web:8080/web'
-  virtual_host: 'http://web:8080/web'
+  base_url: 'http://web:8080/${drupal.root}'
+  virtual_host: 'http://web:8080/${drupal.root}'
   root_absolute: ~
   # Drupal site information.
   site:

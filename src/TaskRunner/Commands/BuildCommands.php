@@ -64,6 +64,7 @@ class BuildCommands extends AbstractCommands
      * @option root      Drupal root.
      * @option dist-root Distribution package root.
      * @option keep      Comma separated list of files and folders to keep.
+     * @option remove    Comma separated list of files and folders to remove.
      * @option tag       Version tag for manifest.
      * @option sha       Commit hash for manifest.
      *

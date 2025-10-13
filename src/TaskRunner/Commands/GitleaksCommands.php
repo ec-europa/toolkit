@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
+use Composer\Semver\Semver;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\ResultData;
@@ -57,8 +58,22 @@ class GitleaksCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        $command = $this->getBin('gitleaks') . ' detect ' . $options['options'];
-        return $this->taskExec($command);
+        $command = 'detect';
+        $optionsExploded = array_filter(explode(' ', $options['options']));
+
+        // Detect newer versions of gitleaks and adapt command and options.
+        // @see https://github.com/gitleaks/gitleaks?tab=readme-ov-file#commands
+        if (Semver::satisfies($options['tag'], '>=8.19.0')) {
+            // Remove the --no-git option if present.
+            if (($index = array_search('--no-git', $optionsExploded)) !== false) {
+                unset($optionsExploded[$index]);
+            }
+            // Change the command from 'detect' to 'directory'.
+            $command = 'directory';
+        }
+
+        $options['options'] = implode(' ', $optionsExploded);
+        return $this->taskExec($this->getBin('gitleaks') . ' ' . $command . ' ' . $options['options']);
     }
 
     /**
