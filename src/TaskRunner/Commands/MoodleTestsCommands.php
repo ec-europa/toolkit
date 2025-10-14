@@ -79,7 +79,7 @@ class MoodleTestsCommands extends AbstractCommands
             ->chmod($behatFailDumps, octdec('777'));
 
         // Run behat init script. Force use disable-composer option to not update composer packages.
-        $tasks[] = $this->taskExec("php $root/admin/tool/behat/cli/init.php --disable-composer")->options($execOpts, '=');
+        $tasks[] = $this->taskExec("php $root/admin/tool/behat/cli/init.php")->options($execOpts, '=');
 
         $result = $this->collectionBuilder()->addTaskList($tasks)->run();
 
@@ -137,14 +137,15 @@ class MoodleTestsCommands extends AbstractCommands
             }
         }
 
-        $exec = $this->taskExec("php $root/admin/tool/behat/cli/run.php")->options($execOpts, '=');
+        $currentCwd = getcwd();
+        chdir($root);
+        $exec = $this->taskExec("php admin/tool/behat/cli/run.php")->options($execOpts, '=');
 
         if ($this->isJunit()) {
-            $cwd = getcwd();
             $exec->option('format', 'moodle_progress', '=');
             $exec->option('out', 'std', '=');
             $exec->option('format', 'junit', '=');
-            $exec->option('out', "$cwd/junit-export/behat-xml", '=');
+            $exec->option('out', "$currentCwd/junit-export/behat-xml", '=');
         }
 
         return $exec->run()->getExitCode();
@@ -173,7 +174,7 @@ class MoodleTestsCommands extends AbstractCommands
             // @see: https://moodledev.io/general/development/tools/phpunit#initialisation-of-test-environment
             ->exec('locale-gen en_AU.UTF-8')
             // Force use disable-composer option to not update composer packages.
-            ->exec("php $root/admin/tool/phpunit/cli/init.php --disable-composer");
+            ->exec("php $root/admin/tool/phpunit/cli/init.php");
 
         return $exec->run()->getExitCode();
     }

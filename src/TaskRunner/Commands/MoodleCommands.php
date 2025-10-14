@@ -96,6 +96,40 @@ class MoodleCommands extends AbstractCommands
     }
 
     /**
+     * Upgrade Moodle.
+     *
+     * @return int
+     *   The command exit code.
+     *
+     * @command moodle:upgrade
+     */
+    public function moodleUpgrade(): int
+    {
+        // Root config variable.
+        $root = $this->getConfig()->get('drupal.root');
+        $task = $this->taskExec("php $root/admin/cli/upgrade.php");
+
+        return $task->run()->getExitCode();
+    }
+
+    /**
+     * Clear moodle cache.
+     *
+     * @return int
+     *   The command exit code.
+     *
+     * @command moodle:clear-cache
+     */
+    public function moodleClearCache(): int
+    {
+        // Root config variable.
+        $root = $this->getConfig()->get('drupal.root');
+        $task = $this->taskExec("php $root/admin/cli/purge_caches.php");
+
+        return $task->run()->getExitCode();
+    }
+
+    /**
      * Remove settings block from given content.
      *
      * @return string

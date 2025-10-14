@@ -573,7 +573,7 @@ class DumpCommands extends AbstractCommands
      * @return string
      *   The tmp folder path.
      */
-    private function tmpDirectory(): string
+    protected function tmpDirectory(): string
     {
         $tmpFolder = (string) $this->getConfig()->get('toolkit.tmp_folder');
         if (!file_exists($tmpFolder)) {

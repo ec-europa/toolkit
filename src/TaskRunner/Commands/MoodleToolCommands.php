@@ -173,18 +173,4 @@ class MoodleToolCommands extends ToolCommands
         return 0;
     }
 
-    /**
-     * Helper to tell if package is installed.
-     *
-     * @param string $package
-     *   The package name to search.
-     *
-     * @return bool
-     *   True or false if not found.
-     */
-    public static function isPackageInstalled(string $package): bool
-    {
-        return !empty(MoodleToolCommands::getPackagePropertyFromComposer($package));
-    }
-
 }

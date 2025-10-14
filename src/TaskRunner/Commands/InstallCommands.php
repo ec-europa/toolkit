@@ -53,8 +53,13 @@ class InstallCommands extends AbstractCommands
         }
 
         $task = $this->taskExec($runnerBin)->arg('drupal:site-install');
-        if (!empty($options['config-file']) && file_exists($options['config-file'])) {
-            $task->option('existing-config');
+        $existingConfig = $this->getConfigValue('drupal.site.existing_config');
+        if (filter_var($existingConfig, FILTER_VALIDATE_BOOLEAN)) {
+            if (!empty($options['config-file']) && file_exists($options['config-file'])) {
+                $task->option('existing-config');
+            } else {
+                $this->writeln("Using 'drupal.site.existing_config' but no config-file was found, skipping");
+            }
         }
         $tasks[] = $task;
 
