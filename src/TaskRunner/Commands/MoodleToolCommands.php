@@ -98,6 +98,16 @@ class MoodleToolCommands extends ToolCommands
             JunitXmlGenerator::addResult('Requirements', 'Toolkit version', $toolkitCheck);
         }
 
+        // Handle Moodle version.
+        if (!($moodleVersion = self::getPackagePropertyFromComposer('moodle/moodle'))) {
+            $moodleCheck = 'FAIL (not found)';
+        } else {
+            $moodleCheck = Semver::satisfies($moodleVersion, $data['moodle']) ? 'OK' : 'FAIL';
+        }
+        if ($this->isJunit() && str_starts_with($moodleCheck, 'FAIL')) {
+            JunitXmlGenerator::addResult('Requirements', 'Moodle version', $moodleCheck);
+        }
+
         // Check if node_install enable in the .opts.yml.
         $parseOptsFile = self::parseOptsYml();
         $nodeCheck = 'OK';
@@ -144,18 +154,24 @@ class MoodleToolCommands extends ToolCommands
             ['QA Endpoint access' => $endpointCheck],
             ['NEXTCLOUD configuration' => $nextcloudCheck],
         );
-        $toolkitExtra = '';
+        $toolkitExtra = $moodleExtra = '';
         if ($toolkitVersion && $latestToolkit = self::getPackageLatestVersion(Toolkit::REPOSITORY)) {
             if (!Semver::satisfies($toolkitVersion, $latestToolkit)) {
                 $toolkitExtra = " <comment>($latestToolkit available)</>";
             }
         }
+        if ($moodleVersion && $latestMoodle = self::getPackageLatestVersion('moodle/moodle')) {
+            if (!Semver::satisfies($moodleVersion, $latestMoodle)) {
+                $moodleExtra = " <comment>($latestMoodle available)</>";
+            }
+        }
 
         $io->title('Required checks:');
-        $headers = ['PHP version', 'Toolkit version'];
+        $headers = ['PHP version', 'Toolkit version', 'Moodle version'];
         $rows = [
             "$phpCheck ($phpVersion)",
             "$toolkitCheck" . (!empty($toolkitVersion) ? " ($toolkitVersion)" : '') . (!empty($toolkitExtra) ? $toolkitExtra : ''),
+            "$moodleCheck" . (!empty($moodleVersion) ? " ($moodleVersion)" : '') . (!empty($moodleExtra) ? $moodleExtra : ''),
         ];
         if (!empty($parseOptsFile['npm_install'])) {
             $headers[] = 'Node version';
@@ -167,7 +183,7 @@ class MoodleToolCommands extends ToolCommands
             JunitXmlGenerator::generate($junitFile);
         }
 
-        if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $nodeCheck !== 'OK') {
+        if ($phpCheck !== 'OK' || $toolkitCheck !== 'OK' || $moodleCheck !== 'OK' || $nodeCheck !== 'OK') {
             return 1;
         }
         return 0;
