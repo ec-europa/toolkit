@@ -230,6 +230,12 @@ class DumpCommands extends AbstractCommands
         $services = $config->get('toolkit.clone.nextcloud.services', 'mysql');
         Toolkit::ensureArray($services);
 
+        if (empty($projectId) || $projectId === '${env.TOOLKIT_PROJECT_ID}') {
+            $io->error('The project id cannot be empty!');
+            return ResultData::EXITCODE_ERROR;
+        }
+        $this->say('Using project_id: ' . $projectId);
+
         // Keep backwards compatibility.
         $asdaServices = $config->get('toolkit.clone.asda_services');
         if (!empty($asdaServices)) {
@@ -250,36 +256,44 @@ class DumpCommands extends AbstractCommands
         $downloadLink = $this->addAuthToUrl($url, $user, $password);
 
         $this->say('Download services: ' . implode(', ', $services));
-        $tasks = [];
+        $collection = $this->collectionBuilder();
         foreach ($services as $service) {
+            // Add cleanup removing temporary files task.
+            $collection->addTask($this->removeTemporaryFiles($tmpFolder, $service));
             $this->say("Checking service '$service'");
             $dump = $tmpFolder . '/' . $service . ($isMydumper && $service === 'mysql' ? '.tar' : '.gz');
-            // Check if the dump is already downloaded.
-            if (!file_exists($dump)) {
-                $this->say('Starting download');
-                $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service));
-                continue;
-            }
-
-            $this->say("File found '$dump', checking server for newer dump");
-            if (!$this->nextcloudCheckNewerDump($downloadLink, $service)) {
-                $this->say('Local dump is up-to-date');
-                continue;
-            }
-            $question = 'A newer dump was found, would you like to download?';
-            if (!Toolkit::isCiCd() && $options['yes'] === InputOption::VALUE_NONE) {
-                if (!$this->confirm($question)) {
-                    $this->say('Skipping download');
+            try {
+                // Check if the dump is already downloaded.
+                if (!file_exists($dump)) {
+                    $this->say('Starting download');
+                    $this->asdaProcessFile("$downloadLink/$service", $service, $projectId, $tmpFolder);
                     continue;
                 }
-            } else {
-                $this->say($question . ' (y/n) Y');
-            }
-            $this->say('Starting download');
-            $tasks = array_merge($tasks, $this->asdaProcessFile("$downloadLink/$service", $service));
-        }
 
-        return $this->collectionBuilder()->addTaskList($tasks);
+                $this->say("File found '$dump', checking server for newer dump");
+                if (!$this->nextcloudCheckNewerDump($downloadLink, $service, $projectId)) {
+                    $this->say('Local dump is up-to-date');
+                    continue;
+                }
+                $question = 'A newer dump was found, would you like to download?';
+                if (!Toolkit::isCiCd() && $options['yes'] === InputOption::VALUE_NONE) {
+                    if (!$this->confirm($question)) {
+                        $this->say('Skipping download');
+                        continue;
+                    }
+                } else {
+                    $this->say($question . ' (y/n) Y');
+                }
+                $this->say('Starting download');
+                $this->asdaProcessFile("$downloadLink/$service", $service, $projectId, $tmpFolder);
+            } catch (\Throwable $e) {
+                $io->error($e->getMessage());
+                // Clean-up if failed as well.
+                $collection->run();
+                return ResultData::EXITCODE_ERROR;
+            }
+        }
+        return $collection;
     }
 
     /**
@@ -390,15 +404,17 @@ class DumpCommands extends AbstractCommands
      * Check if a newer dump exists on the Nextcloud server.
      *
      * @param string $link
-     *   The link to the folder.
+     *   The link to the folder (includes authentication).
      * @param string $service
      *   The service to use.
+     * @param string $projectId
+     *   The project id.
      *
      * @return bool
      *   Return true if sha1 from local is different from the server,
      *   False is case of error or no local file exists.
      */
-    private function nextcloudCheckNewerDump(string $link, string $service): bool
+    private function nextcloudCheckNewerDump(string $link, string $service, string $projectId): bool
     {
         $tmpFolder = $this->tmpDirectory();
         $ext = '.gz';
@@ -414,26 +430,8 @@ class DumpCommands extends AbstractCommands
         }
         $link .= "/$service";
         // Download the .sha file.
-        $this->wgetGenerateInputFile("$link/latest.sh1", "$tmpFolder/$service.txt", true);
-        $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service-latest.sh1", '.sh1', true)
-            ->run();
-        if (!file_exists("$tmpFolder/$service-latest.sh1")) {
-            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
-            return false;
-        }
-        $latest = file_get_contents("$tmpFolder/$service-latest.sh1");
-        if (empty($latest)) {
-            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
-            return false;
-        }
+        $latest = $this->downloadShaFile($link, $tmpFolder, $service, $projectId);
         $sha1 = trim(explode('  ', $latest)[0]);
-
-        // Remove temporary files.
-        $this->taskExec('rm')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->arg("$tmpFolder/$service-latest.sh1")
-            ->arg("$tmpFolder/$service.txt")
-            ->run();
 
         // Compare with the local dump.
         if ($sha1 !== sha1_file($dump)) {
@@ -446,31 +444,21 @@ class DumpCommands extends AbstractCommands
      * Helper to download and process a Nextcloud dump file.
      *
      * @param string $link
-     *   The link to the folder.
+     *   The link to the folder (includes authentication).
      * @param string $service
      *   The service to use.
+     * @param string $projectId
+     *   The project id.
+     * @param string $tmpFolder
+     *   The system temporary folder for toolkit.
      *
-     * @return array<mixed>
-     *   The tasks to execute.
+     * @return void
+     *   Just run the task and download.
      */
-    private function asdaProcessFile(string $link, string $service)
+    private function asdaProcessFile(string $link, string $service, string $projectId, string $tmpFolder)
     {
-        $tasks = [];
-        $tmpFolder = $this->tmpDirectory();
-
         // Download the .sha file.
-        $this->wgetGenerateInputFile("$link/latest.sh1", "$tmpFolder/$service.txt", true);
-        $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service-latest.sh1", '.sh1', true)
-            ->run();
-        if (!file_exists("$tmpFolder/$service-latest.sh1")) {
-            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
-            return $tasks;
-        }
-        $latest = file_get_contents("$tmpFolder/$service-latest.sh1");
-        if (empty($latest)) {
-            $this->writeln("<error>$service : Could not fetch the file latest.sh1</error>");
-            return $tasks;
-        }
+        $latest = $this->downloadShaFile($link, $tmpFolder, $service, $projectId);
         $filename = trim(explode('  ', $latest)[1]);
 
         // Display information about ASDA creation date.
@@ -478,19 +466,95 @@ class DumpCommands extends AbstractCommands
         $separator = str_repeat('=', strlen($output));
         $this->writeln("\n<info>$output\n$separator</info>\n");
 
-        // Download the file.
+        // Download the database file.
         $this->wgetGenerateInputFile("$link/$filename", "$tmpFolder/$service.txt", true);
         $extension = str_ends_with($filename, '.gz') ? 'gz' : 'tar';
         $show = $this->getConfigValue('toolkit.clone.show_progress', false);
-        $tasks[] = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar', !$show);
+        $result = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar', !$show)
+            ->run();
+        $this->handleWgetErrors($result, $projectId);
+    }
 
-        // Remove temporary files.
-        $tasks[] = $this->taskExec('rm')
+    /**
+     * Download the .sha file.
+     *
+     * This file consists of dump hash and database filename.
+     *
+     * @param string $link
+     *   The link to the folder (includes authentication).
+     * @param string $service
+     *   The service to use.
+     * @param string $projectId
+     *   The project id.
+     *
+     * @return string
+     *   The file.
+     */
+    private function downloadShaFile(string $link, string $tmpFolder, string $service, string $projectId)
+    {
+        try {
+            $this->wgetGenerateInputFile("$link/latest.sh1", "$tmpFolder/$service.txt", true);
+            $result = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service-latest.sh1", '.sh1', true)
+                ->run();
+            // Handle errors.
+            $this->handleWgetErrors($result, $projectId);
+            return file_get_contents("$tmpFolder/$service-latest.sh1");
+        } catch (\Throwable $e) {
+            throw new \RuntimeException(
+                "Failed downloading database for service '$service': \n" . $e->getMessage(),
+                0,
+                $e
+            );
+        }
+    }
+
+    /**
+     * Cleanup helper files for download.
+     *
+     * @param string $tmpFolder
+     *   The link to the folder (includes authentication).
+     * @param string $service
+     *   The service to use.
+     *
+     * @return \Robo\Contract\TaskInterface
+     *   The array of tasks.
+     */
+    private function removeTemporaryFiles($tmpFolder, $service)
+    {
+        return $this->taskExec('rm')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->arg("$tmpFolder/$service-latest.sh1")
             ->arg("$tmpFolder/$service.txt");
+    }
 
-        return $tasks;
+    /**
+     * Cleanup helper files for download.
+     *
+     * @param \Robo\Result $result
+     *   The link to the folder (includes authentication).
+     * @param string $projectId
+     *   The project id.
+     *
+     * @return void
+     *   Just throwing exceptions.
+     */
+    private function handleWgetErrors($result, $projectId)
+    {
+        if ($result->getExitCode() !== ResultData::EXITCODE_OK) {
+            $output = $result->getMessage();
+            $lastStatus = null;
+            // Parse wget output line by line.
+            foreach (explode("\n", $output) as $line) {
+                $line = trim($line);
+                // Match full HTTP response line.
+                if (preg_match('/HTTP\/[0-9.]+ \d{3} .*/', $line, $matches)) {
+                    $lastStatus = $matches[0]; // Overwrite to always keep the last one.
+                }
+            }
+            throw new \RuntimeException(
+                "HTTP status: '" . ($lastStatus ?? 'N/A') . "' for Project id: '$projectId'"
+            );
+        }
     }
 
     /**
@@ -539,6 +603,7 @@ class DumpCommands extends AbstractCommands
             ->option('-O', $destination)
             ->option('-A', $accept)
             ->option('-P', './')
+            ->option('--server-response 2>&1')
             ->printMetadata(false);
         if ($silent) {
             $task->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG);
