@@ -230,6 +230,12 @@ class DumpCommands extends AbstractCommands
         $services = $config->get('toolkit.clone.nextcloud.services', 'mysql');
         Toolkit::ensureArray($services);
 
+        if (empty($projectId) || $projectId === '${env.TOOLKIT_PROJECT_ID}') {
+            $io->error('The project id cannot be empty!');
+            return ResultData::EXITCODE_ERROR;
+        }
+        $this->say('Using project_id: ' . $projectId);
+
         // Keep backwards compatibility.
         $asdaServices = $config->get('toolkit.clone.asda_services');
         if (!empty($asdaServices)) {

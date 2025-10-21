@@ -209,6 +209,7 @@
   expectations:
     - contains: |
         >  Download type is: nextcloud
+        >  Using project_id: digit-qa
         >  Download services: mysql
         >  Checking service 'mysql'
         >  Starting download
@@ -233,6 +234,30 @@
   configuration:
     toolkit:
       tmp_folder: .
+      project_id: ~
+  resources:
+    - from: sample-mysql-latest.sh1
+      to: mysql-latest.sh1
+  expectations:
+    - string_contains: |
+        [ERROR] The project id cannot be empty!
+
+- command: 'toolkit:download-dump'
+  configuration:
+    toolkit:
+      tmp_folder: .
+      project_id: ${env.TOOLKIT_PROJECT_ID}
+  resources:
+    - from: sample-mysql-latest.sh1
+      to: mysql-latest.sh1
+  expectations:
+    - string_contains: |
+        [ERROR] The project id cannot be empty!
+
+- command: 'toolkit:download-dump'
+  configuration:
+    toolkit:
+      tmp_folder: .
       project_id: digit-joinup
       clone:
         show_progress: true
@@ -250,6 +275,7 @@
   expectations:
     - contains: |
         >  Download type is: nextcloud
+        >  Using project_id: digit-joinup
 
         [WARNING] Using the config ${toolkit.clone.asda_services} is deprecated, please
         update to ${toolkit.clone.nextcloud.services}.
@@ -325,6 +351,7 @@
   expectations:
     - contains: |
         >  Download type is: nextcloud
+        >  Using project_id: digit-qa
         >  Download services: mysql
         >  Checking service 'mysql'
         >  File found './mysql.gz', checking server for newer dump
