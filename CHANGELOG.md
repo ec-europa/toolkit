@@ -1,5 +1,13 @@
 # Toolkit change log
 
+## Version 10.24.0
+  - DQA-12429: Cspell to use drupal.root config.
+  - DQA-12468: Add possibility to have options on lint-css and alter defaults.
+  - DQA-12406: Check existing config in runner.
+  - DQA-12403: Add workflow for testing on Github Actions.
+  - DQA-12549: Remove package.json file.
+  - DQA-12285: Improve toolkit:download-dump.
+
 ## Version 10.23.1
   - DQA-12227: Gitignore fix and more common links.
   - DQA-12429: Improve configs & fix code-review.
