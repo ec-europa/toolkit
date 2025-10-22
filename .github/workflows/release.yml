@@ -15,12 +15,13 @@ jobs:
     container: registry.fpfis.eu/digit/devsecops/httpd-php:8.3-ci
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Composer
         run: |
+          git config --global --add safe.directory $GITHUB_WORKSPACE
           composer validate
-          composer install --prefer-dist--no-ansi --no-progress --no-interaction
+          composer install --prefer-dist --no-ansi --no-progress --no-interaction
 
       - name: Generate documentation
         run: ./vendor/bin/run toolkit:generate-documentation --token=${{ secrets.API_TOKEN }} --push || echo "skip"
