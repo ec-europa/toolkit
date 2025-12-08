@@ -645,7 +645,9 @@ class TestsCommands extends AbstractCommands
             if ($options['printer'] === true) {
                 $opts .= " --printer=" . $this->getConfig()->get('toolkit.test.phpunit.printer');
             }
-            foreach (array_map('trim', $matches[1]) as $suite) {
+            $suites = array_map('trim', $matches[1]);
+            $this->writeln('Suites found: ' . implode(', ', $suites));
+            foreach ($suites as $suite) {
                 if (strlen($suite) > 2) {
                     $parallel->process("$phpunitBin --testsuite='$suite'$opts");
                 }
