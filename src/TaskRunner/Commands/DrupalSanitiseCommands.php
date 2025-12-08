@@ -12,7 +12,7 @@ use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
- * Provides commands to check sanitisation fields.
+ * Provides commands to check sanitisation fields and classes.
  */
 class DrupalSanitiseCommands extends AbstractCommands
 {
@@ -109,10 +109,9 @@ class DrupalSanitiseCommands extends AbstractCommands
     public function drupalCheckSanitisationClasses(ConsoleIO $io)
     {
         $interface = $this->getDrushSanitizeInterface();
-        if (!interface_exists($interface)) {
-            $io->warning("Interface class $interface was not found, skipping.");
-            return ResultData::EXITCODE_OK;
-        }
+        $interfaceExists = interface_exists($interface);
+        $listenerClass = 'Symfony\Component\EventDispatcher\Attribute\AsEventListener';
+        $listenerClassExists = class_exists($listenerClass);
         $src = $this->getConfig()->get('toolkit.build.custom-code-folder');
         if (!file_exists($src)) {
             $io->warning("The directory $src could not be found, skipping.");
@@ -125,14 +124,30 @@ class DrupalSanitiseCommands extends AbstractCommands
         foreach (array_keys($map) as $class) {
             // Check if the class implements the SanitizePluginInterface.
             // Ignore errors thrown by some classes due to missing dependencies,
-            // Toolkit requires Drush and the drush commands classes do not throw any error.
+            // Toolkit requires Drush and the drush commands classes do not
+            // throw any error.
             try {
-                if (is_a($class, $interface, true)) {
+                if ($interfaceExists && is_a($class, $interface, true)) {
                     $sanitiseClasses[] = $class;
                 }
                 // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
             } catch (\Error $error) {
                 // Do nothing.
+            }
+            // Check if the class respects a Drush listener.
+            if ($listenerClassExists && str_contains($class, '\Drush\Listeners')) {
+                // Make sure the listener has attributes.
+                $reflection = new \ReflectionClass($class);
+                if (empty($reflection->getAttributes($listenerClass))) {
+                    continue;
+                }
+                // The class is a Drush listener, check if it contains a
+                // condition for the command sql:sanitize. This is not very
+                // efficient, but for the moment is the best way.
+                $content = file_get_contents($reflection->getFileName());
+                if (str_contains($content, 'sql:sanitize')) {
+                    $sanitiseClasses[] = $class;
+                }
             }
         }
         if (empty($sanitiseClasses)) {
