@@ -546,6 +546,7 @@ class ComponentCheckCommands extends AbstractCommands
      *   The check evaluation status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function componentEvaluation(ConsoleIO $io)
     {
