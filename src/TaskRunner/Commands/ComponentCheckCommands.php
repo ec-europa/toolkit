@@ -1049,7 +1049,7 @@ class ComponentCheckCommands extends AbstractCommands
         $config = $this->getConfig();
         $modules = $this->packageReviews;
         $packageName = $package['name'];
-        $isRestricted = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
+        $isRestricted = ($modules[$packageName]['status'] ?? '') === 'restricted';
         $hasBeenQaEd = isset($modules[$packageName]);
         $packageVersion = isset($package['extra']['drupal']['version']) ? explode('+', str_replace('8.x-', '', $package['extra']['drupal']['version']))[0] : $package['version'];
 
