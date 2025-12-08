@@ -559,16 +559,16 @@ class ComponentCheckCommands extends AbstractCommands
 
         $groupComponents = [];
         foreach ($this->composerLock['packages'] as $package) {
-            $vendor = strtok($package['name'], '/'); // cleaner vendor extraction
+            $vendor = strtok($package['name'], '/');
             $isMonitoredVendor = in_array($vendor, $vendorList, true);
             $isReviewedPackage = isset($this->packageReviews[$package['name']]);
 
-            // Skip packages that don't belong to either group.
+            // Skip packages that don't belong to either group and not evaluated.
             if (!$isMonitoredVendor && !$isReviewedPackage) {
                 continue;
             }
 
-            // Validate & group
+            // Validate & group.
             $validated = $this->validateComponent($package);
             if ($validated) {
                 [$message, $group] = $validated;
