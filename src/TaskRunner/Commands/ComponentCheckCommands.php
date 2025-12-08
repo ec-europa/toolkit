@@ -546,29 +546,34 @@ class ComponentCheckCommands extends AbstractCommands
      *   The check evaluation status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function componentEvaluation(ConsoleIO $io)
     {
         $this->io = $io;
-        if (!$this->loadComposerLock()) {
+        if (!$this->loadComposerLock() || !$this->loadWebsitePackages()) {
             return 1;
         }
-        if (!$this->loadWebsitePackages()) {
-            return 1;
-        }
-        // Get vendor list.
+
         $toolkitRequirements = Website::requirements();
         $vendorList = $toolkitRequirements['vendor_list'] ?? [];
 
-        // Proceed with 'blocker' option. Loop over the packages.
         $groupComponents = [];
         foreach ($this->composerLock['packages'] as $package) {
-            // Check if vendor belongs to the monitored vendor list.
-            if (in_array(explode('/', $package['name'])['0'], $vendorList)) {
-                $validateComponent = $this->validateComponent($package);
-                if ($validateComponent) {
-                    $groupComponents[$validateComponent['1']][] = $validateComponent['0'];
-                }
+            $vendor = strtok($package['name'], '/');
+            $isMonitoredVendor = in_array($vendor, $vendorList, true);
+            $isReviewedPackage = isset($this->packageReviews[$package['name']]);
+
+            // Skip packages that don't belong to either group and not evaluated.
+            if (!$isMonitoredVendor && !$isReviewedPackage) {
+                continue;
+            }
+
+            // Validate & group.
+            $validated = $this->validateComponent($package);
+            if ($validated) {
+                [$message, $group] = $validated;
+                $groupComponents[$group][] = $message;
             }
         }
         foreach ($groupComponents as $groupComponent => $messages) {
