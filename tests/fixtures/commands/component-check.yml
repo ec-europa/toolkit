@@ -57,7 +57,7 @@
         Checking Evaluation components.
         ===============================
 
-        Packages rejected/restricted:
+        Restricted Package(s):
         The use of drupal/codesnippet:1.8 is restricted.
         The use of drupal/responsive_tables_filter:1.17 is restricted.
         The use of drupal/restui:1.21 is restricted.

@@ -1035,6 +1035,7 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function validateComponent(array $package)
     {
@@ -1060,8 +1061,7 @@ class ComponentCheckCommands extends AbstractCommands
         $packageVersion = in_array($packageVersion, $config->get('toolkit.invalid-versions')) ? $package['version'] : $packageVersion;
 
         // Define vars.
-        $message = false;
-        $messageType = false;
+        $message = $messageType = false;
 
         // If module was not reviewed yet.
         if (!$hasBeenQaEd) {
@@ -1137,7 +1137,7 @@ class ComponentCheckCommands extends AbstractCommands
             if (!$allowedInProject) {
                 $this->evaluationFailed = true;
                 $message = "The use of $packageName:$packageVersion is {$modules[$packageName]['status']}.";
-                $messageType = 'Restritect package(s):';
+                $messageType = 'Restricted package(s):';
                 $this->addJunitResult('Evaluation components', $message);
             }
         }
