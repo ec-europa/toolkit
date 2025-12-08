@@ -1093,7 +1093,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalSanitiseCommands",
             "name": "DrupalSanitiseCommands",
-            "summary": "Provides\u0020commands\u0020to\u0020check\u0020sanitisation\u0020fields.",
+            "summary": "Provides\u0020commands\u0020to\u0020check\u0020sanitisation\u0020fields\u0020and\u0020classes.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DrupalSanitiseCommands.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DrupalSanitiseCommands\u003A\u003AdrupalCheckSanitisationFields\u0028\u0029",
@@ -1195,6 +1195,21 @@ Search.appendIndex(
             "name": "asdaProcessFile",
             "summary": "Helper\u0020to\u0020download\u0020and\u0020process\u0020a\u0020Nextcloud\u0020dump\u0020file.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_asdaProcessFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AdownloadShaFile\u0028\u0029",
+            "name": "downloadShaFile",
+            "summary": "Download\u0020the\u0020.sha\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_downloadShaFile"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AremoveTemporaryFiles\u0028\u0029",
+            "name": "removeTemporaryFiles",
+            "summary": "Cleanup\u0020helper\u0020files\u0020for\u0020download.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_removeTemporaryFiles"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AhandleWgetErrors\u0028\u0029",
+            "name": "handleWgetErrors",
+            "summary": "Cleanup\u0020helper\u0020files\u0020for\u0020download.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_handleWgetErrors"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AwgetGenerateInputFile\u0028\u0029",
             "name": "wgetGenerateInputFile",
