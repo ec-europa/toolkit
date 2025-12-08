@@ -105,6 +105,8 @@ class DrupalSanitiseCommands extends AbstractCommands
      *
      * @return int
      *   The drupal check sanitize status.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function drupalCheckSanitisationClasses(ConsoleIO $io)
     {
@@ -129,25 +131,26 @@ class DrupalSanitiseCommands extends AbstractCommands
             try {
                 if ($interfaceExists && is_a($class, $interface, true)) {
                     $sanitiseClasses[] = $class;
-                }
-                // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-            } catch (\Error $error) {
-                // Do nothing.
-            }
-            // Check if the class respects a Drush listener.
-            if ($listenerClassExists && str_contains($class, '\Drush\Listeners')) {
-                // Make sure the listener has attributes.
-                $reflection = new \ReflectionClass($class);
-                if (empty($reflection->getAttributes($listenerClass))) {
                     continue;
                 }
-                // The class is a Drush listener, check if it contains a
-                // condition for the command sql:sanitize. This is not very
-                // efficient, but for the moment is the best way.
-                $content = file_get_contents($reflection->getFileName());
-                if (str_contains($content, 'sql:sanitize')) {
-                    $sanitiseClasses[] = $class;
+                // Check if the class respects a Drush listener.
+                if ($listenerClassExists && str_contains($class, '\Drush\Listeners')) {
+                    // Make sure the listener has attributes.
+                    $reflection = new \ReflectionClass($class);
+                    if (empty($reflection->getAttributes($listenerClass))) {
+                        continue;
+                    }
+                    // The class is a Drush listener, check if it contains a
+                    // condition for the command sql:sanitize. This is not very
+                    // efficient, but for the moment is the best way.
+                    $content = file_get_contents($reflection->getFileName());
+                    if (str_contains($content, 'sql:sanitize')) {
+                        $sanitiseClasses[] = $class;
+                    }
                 }
+                // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+            } catch (\Error | \ReflectionException $exception) {
+                // Do nothing.
             }
         }
         if (empty($sanitiseClasses)) {
