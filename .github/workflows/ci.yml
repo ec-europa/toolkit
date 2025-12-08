@@ -56,4 +56,5 @@ jobs:
 
       - name: PHPUnit
         run: |
+          ./vendor/bin/phpunit --list-suites
           ./vendor/bin/run toolkit:test-phpunit --execution=parallel
