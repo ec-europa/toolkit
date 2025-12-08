@@ -9,7 +9,7 @@ permissions:
   pull-requests: read
 
 env:
-  DOCUMENT_ROOT: /test/toolkit
+  DOCUMENT_ROOT: /__w/toolkit/toolkit
   QA_API_AUTH_TOKEN: ${{ secrets.QA_API_AUTH_TOKEN }}
   TOOLKIT_MOCK_REPO: ${{ secrets.TOOLKIT_MOCK_REPO }}
   GITHUB_API_TOKEN: ${{ secrets.API_TOKEN }}
@@ -56,6 +56,4 @@ jobs:
 
       - name: PHPUnit
         run: |
-          mkdir -p /test/toolkit
-          cp -r $GITHUB_WORKSPACE/* /test/toolkit
-          ./vendor/bin/run toolkit:test-phpunit --working-dir=/test/toolkit
+          ./vendor/bin/run toolkit:test-phpunit

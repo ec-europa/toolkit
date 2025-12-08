@@ -68,18 +68,18 @@
   resources: []
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('/test/toolkit/resources/scripts/fix-permissions.sh')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/resources/scripts/fix-permissions.sh')
           ->options(array ( ... ), '=')
-        [Simulator] Running /test/toolkit/resources/scripts/fix-permissions.sh --drupal_path=/test/toolkit/web --drupal_user=www-data --httpd_group=www-data
+        [Simulator] Running /__w/toolkit/toolkit/resources/scripts/fix-permissions.sh --drupal_path=/__w/toolkit/toolkit/web --drupal_user=www-data --httpd_group=www-data
 
-- command: toolkit:fix-permissions  --drupal_path=/test/toolkit/test --drupal_user=test --httpd_group=test
+- command: toolkit:fix-permissions  --drupal_path=/__w/toolkit/toolkit/test --drupal_user=test --httpd_group=test
   configuration: []
   resources: []
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('/test/toolkit/resources/scripts/fix-permissions.sh')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/resources/scripts/fix-permissions.sh')
           ->options(array ( ... ), '=')
-        [Simulator] Running /test/toolkit/resources/scripts/fix-permissions.sh --drupal_path=/test/toolkit/test --drupal_user=test --httpd_group=test
+        [Simulator] Running /__w/toolkit/toolkit/resources/scripts/fix-permissions.sh --drupal_path=/__w/toolkit/toolkit/test --drupal_user=test --httpd_group=test
 
 - command: toolkit:check-version
   configuration: []

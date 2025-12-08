@@ -1,16 +1,16 @@
 services:
   web:
     image: registry.fpfis.eu/digit/devsecops/httpd-php:8.3-ci
-    working_dir: /test/toolkit
+    working_dir: /__w/toolkit/toolkit
     ports:
       # Use port "8080:8080" to access the mock in the browser OR to use xdebug.
       - "8080"
 #      - "8080:8080"
     volumes:
-      - ${PWD}:/test/toolkit
+      - ${PWD}:/__w/toolkit/toolkit
 #      - ${PWD}/resources/xDebug/xdebug.custom.ini:/etc/php/8.1/mods-available/xdebug.ini
     environment:
-      DOCUMENT_ROOT: /test/toolkit
+      DOCUMENT_ROOT: /__w/toolkit/toolkit
       VIRTUAL_HOST: localhost:8080
       NEXTCLOUD_USER:
       NEXTCLOUD_PASS:

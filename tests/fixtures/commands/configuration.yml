@@ -84,7 +84,7 @@
         bin_dir: ./vendor/bin
         bin_node_dir: ./node_modules/.bin
         config_dir: ./config/runner
-        working_dir: /test/toolkit/tests/sandbox/ConfigurationCommandsTest
+        working_dir: /__w/toolkit/toolkit/tests/sandbox/ConfigurationCommandsTest
 
 - command: 'config drupal.site'
   configuration: []
