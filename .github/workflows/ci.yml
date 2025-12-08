@@ -58,4 +58,4 @@ jobs:
         run: |
           mkdir -p /test/toolkit
           cp -r $GITHUB_WORKSPACE/* /test/toolkit
-          ./vendor/bin/run toolkit:test-phpunit --working-dir=/test/toolkit --execution=parallel
+          ./vendor/bin/run toolkit:test-phpunit --working-dir=/test/toolkit
