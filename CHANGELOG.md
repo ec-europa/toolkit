@@ -1,5 +1,12 @@
 # Toolkit change log
 
+## Version 10.25.0
+  - DQA-12700: Issue with documentation workflow.
+  - DQA-12869: Restricted being bypassed when project-id is set to 0.
+  - DQA-12860: Ignore vendor settings if module is included in the inventory.
+  - DQA-13031: Adapt Sanitisation classes detection for drush >13.7.
+  - DQA-12981: Fix rejected status and improve messages.
+
 ## Version 10.24.0
   - DQA-12429: Cspell to use drupal.root config.
   - DQA-12468: Add possibility to have options on lint-css and alter defaults.

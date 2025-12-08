@@ -581,7 +581,7 @@ class ComponentCheckCommands extends AbstractCommands
             foreach ($messages as $message) {
                 $this->writeln($message);
             }
-            if ($groupComponent == 'Packages rejected/restricted:') {
+            if ($groupComponent == 'Restricted package(s):') {
                 $this->writeln('<options=reverse>In the case you want to use one of the modules listed as restricted, please open a ticket to Quality Assurance indicating the use case for evaluation and more information.</>');
             }
         }
