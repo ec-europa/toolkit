@@ -628,6 +628,7 @@ class TestsCommands extends AbstractCommands
         $phpunitBin = $this->getBin('phpunit');
         $parallel = $this->taskParallelExec()->printOutput();
         $suites = $this->getPhpUnitSuites();
+        $this->writeln(sprintf('Suites found (%d): %s', count($suites), implode(',', $suites)));
         if (!empty($suites)) {
             $opts = ' ';
             if (!empty($options['options'])) {
@@ -669,13 +670,11 @@ class TestsCommands extends AbstractCommands
         preg_match_all('/ - (.+)/', $result, $matches);
         if (!empty($matches[1])) {
             $suites = array_map(function ($item) {
-                $item = trim($item);
                 if (str_contains($item, '(')) {
                     $item = substr($item, 0, strrpos($item, '('));
                 }
-                return $item;
+                return trim($item);
             }, $matches[1]);
-            $this->writeln('Found: ' . implode(PHP_EOL, $suites));
         }
         return $suites;
     }
