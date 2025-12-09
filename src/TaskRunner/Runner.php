@@ -364,7 +364,7 @@ class Runner
                 }
             }
 
-            $this->application->add($command);
+            $this->application->addCommands([$command]);
         }
     }
 
